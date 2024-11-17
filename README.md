@@ -142,7 +142,7 @@ cd resume-builder
 ```
 
 3. **Prepare your input**: 
-    - Explore the Resume [Templates](#Templates) section below to preview available resume styles and choose the one that best suits your needs.
+    - Explore the Resume [Templates](#Templates) section preview available resume styles and choose the one that best suits your needs.
     - Edit the `.yaml` file from the `samples/` folder with your details.
         - **First time use**: Start with the sample template by simply updating the content with your details. Then, proceed to the [execution](#execution) step.
         - **Advanced Use**: Refer to the [Supported Section Types](#supported-section-types) section to customize your resume format with additional or modified sections.
