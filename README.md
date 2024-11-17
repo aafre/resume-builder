@@ -1,6 +1,6 @@
 # **Resume/CV Builder**🛠️
 
-**Build Professional Resumes with Ease 🚀** 
+**Build Professional Résumés with Ease 🚀** 
 
 ## 🎯 Project Goal
 
