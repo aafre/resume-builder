@@ -27,7 +27,6 @@ A clean, single-column layout with no custom icons.
 
 ---
 
----
 <details>
   <summary>View Upcoming Templates</summary>
 
@@ -51,7 +50,6 @@ A streamlined, no-frills layout focused purely on content with minimal design el
 
 *(Screenshot coming soon)*
 
----
 
 ### Creative (Planned)
 
@@ -63,8 +61,6 @@ A visually striking layout featuring color highlights and unique typography for 
 *(Screenshot and YAML file coming soon)*
 
 </details>
----
----
 
 
 ## Features
