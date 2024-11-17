@@ -64,14 +64,14 @@ cd resume-builder
 
 #### Option 2: Run Using Python
 
-1. Create a virtual environment and Install dependencies: 
+1. **Create a virtual environment and Install dependencies**: 
 
 ```bash
 pip install -r requirements.txt
 ```
 
 
-2. Generate your resume:
+2. **Generate your resume**:
 Run the script using the command below. Replace <template> with the desired template name, <input> with the path to your `.yaml` file, and <output> with the desired output file location.
 
 ```bash 
@@ -86,13 +86,13 @@ Flag Details:
 
 #### Option 2: Run Using Python
 
-1. Build the Docker Image:
+1. **Build the Docker Image**:
 
 ```bash 
 docker build -t resume-builder .
 ```
 
-2. Run the container: 
+2. **Run the container**: 
 
 ```bash 
 docker run -it --rm -v "${pwd}:/app/" --entrypoint /bin/bash resume-builder
@@ -100,7 +100,7 @@ docker run -it --rm -v "${pwd}:/app/" --entrypoint /bin/bash resume-builder
 
 For windows users, replace `${pwd}` with `%cd%`.
 
-3. Generate Your Resume:
+3. **Generate Your Resume**:
 
 ```bash
 python resume_generator.py --template modern --input data/sample.yml --output output/resume.pdf
