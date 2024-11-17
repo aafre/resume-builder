@@ -32,6 +32,76 @@ This tool helps simplify the process of building professional, ATS-compliant, an
 
 ## Getting Started
 
-### Quick Start Guide
+### Quick Start Guide: 
 
-#### Download the executable (.exe): 
+1. Clone the repository:
+
+```bash
+git clone https://github.com/aafre/resume-builder.git
+```
+
+2. Navigate to the project directory: 
+
+```bash
+cd resume-builder
+```
+
+3. Prepare your input: 
+    - Explore the `samples/` folder to identify a template that matches your preferred style.
+    - Edit the `.yaml` file from the `samples/` folder with your details.
+        - **First time use**: Start with the sample template by simply updating the content with your details. Then, proceed to the [execution](#execution) step.
+        - **Advanced Use**: Refer to the [Supported Section Types](#supported-section-types) section to customize your resume format with additional or modified sections.
+
+
+### Execution
+
+
+#### Option 1: Simplest Approach – Executable (Work in Progress)
+
+- This feature is currently under development.
+- Once available, this option will allow you to generate resumes without any setup by running a pre-built executable file.
+
+
+#### Option 2: Run Using Python
+
+1. Create a virtual environment and Install dependencies: 
+
+```bash
+pip install -r requirements.txt
+```
+
+
+2. Generate your resume:
+Run the script using the command below. Replace <template> with the desired template name, <input> with the path to your `.yaml` file, and <output> with the desired output file location.
+
+```bash 
+python resume_generator.py --template modern --input data/sample.yml --output output/resume.pdf
+```
+
+Flag Details:
+- `--template`: Specify the template name (modern, etc.).
+- `--input`: Path to the .yaml file containing resume data.
+- `--output`: Path to save the generated PDF.
+
+
+#### Option 3:Run Using Docker
+
+1. Build the Docker Image:
+
+```bash 
+docker build -t resume-builder .
+```
+
+2. Run the container: 
+
+```bash 
+docker run -it --rm -v "${pwd}:/app/" --entrypoint /bin/bash resume-builder
+```
+
+For windows users, replace `${pwd}` with `%cd%`.
+
+3. Generate Your Resume:
+
+```bash
+python resume_generator.py --template modern --input data/sample.yml --output output/resume.pdf
+```
