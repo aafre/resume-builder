@@ -27,81 +27,20 @@ A clean, single-column layout with no custom icons.
 
 ---
 
+---
+<details>
+  <summary>View Upcoming Templates</summary>
+
+
 ### Modern (With Icons)
-
-A clean, single-column layout with user-specified icons for sections like contact information and certifications.
-
-**YAML Sample:**  
-`template_path: samples/modern_with_icons.yml`
-
-**Screenshot:**  
-![Modern Resume (With Icons)](docs/templates/modern-with-icons.png)
-
----
-
-### Minimalist (Work in Progress)
-
-A streamlined, no-frills layout focused purely on content with minimal design elements.
-
-**YAML Sample:**  
-`template_path: samples/minimalist_sample.yml`
-
-*(Screenshot coming soon)*
-
----
-
-### Creative (Planned)
-
-A visually striking layout featuring color highlights and unique typography for a bold statement.
-
-**YAML Sample:**  
-`template_path: samples/creative_sample.yml`
-
-*(Screenshot and YAML file coming soon)*
-
----
-
-
-## Features
-
-### Core Features
-
-- **Dynamic Templates**: Choose from multiple styles with distinct layouts and formatting.
-- **ATS Compatibility**: Ensures resumes are parsed correctly by Applicant Tracking Systems.
-- **Structured Data**: Use YAML to input resume data for flexibility and ease of use.
-- **Customizable Icons and Logos**: Add company icons, skill logos, or section-specific icons (optional).
-- **Custom fonts**: Supports Google fonts.
-- **Multi-column Support**: Dynamic adjustment for skill lists and other sections to optimize space.
-- **PDF Generation**: Output resumes in a polished PDF format.
-
-
-### Templates
-
-#### Modern (No Icons)
-
-A clean, single-column layout with no custom icons.
-
-**YAML Sample:**  
-`template_path: samples/modern_sample.yml`
-
-**Screenshot:**  
-![Modern Resume (No Icons)](docs/templates/modern-no-icons.png)
-
----
-
-#### Modern (With Icons)
 
 A clean, single-column layout with decorative icons for sections like contact information and certifications.
 
 **YAML Sample:**  
 `template_path: samples/modern_with_icons.yml`
 
-**Screenshot:**  
-![Modern Resume (With Icons)](docs/templates/modern-with-icons.png)
+*(Screenshot coming soon)*
 
----
-<details>
-  <summary>View Upcoming Templates</summary>
 
 ### Minimalist (Work in Progress)
 
@@ -125,12 +64,20 @@ A visually striking layout featuring color highlights and unique typography for 
 
 </details>
 ---
+---
 
-### Notes:
-- Each template provides a corresponding YAML file in the `samples/` folder to customize your resume content.  
-- Screenshots give a visual preview of the output to help you choose the right template for your needs.  
-- New templates will be added regularly, so stay tuned!  
 
+## Features
+
+### Core Features
+
+- **Dynamic Templates**: Choose from multiple styles with distinct layouts and formatting.
+- **ATS Compatibility**: Ensures resumes are parsed correctly by Applicant Tracking Systems.
+- **Structured Data**: Use YAML to input resume data for flexibility and ease of use.
+- **Customizable Icons and Logos**: Add company icons, skill logos, or section-specific icons (optional).
+- **Custom fonts**: Supports Google fonts.
+- **Multi-column Support**: Dynamic adjustment for skill lists and other sections to optimize space.
+- **PDF Generation**: Output resumes in a polished PDF format.
 
 
 ## Getting Started
