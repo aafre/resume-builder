@@ -18,11 +18,6 @@ This tool is built to simplify the process of creating and updating resumes. The
 * **Customizable PDFs:** 
   Add icons, hyperlinks, and logos to enhance your resume's visual appeal, while adhering to industry standards.
 
-**Who can benefit?**
-
-* **Job Seekers:** From recent graduates to seasoned professionals, streamline your resume creation process.
-* **Career Changers:** Adapt your resume for new industries or roles with minimal effort.
-* **Freelancers:** Present an impressive and well-structured resume to attract clients and showcase expertise.
 
 Checkout the guide to [getting started](#getting-started). 
 Here are all the [features](#features) available. 
