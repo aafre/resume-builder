@@ -24,6 +24,9 @@ Here are all the [features](#features) available.
 
 ## Templates
 
+<details>
+  <summary>🚀 View Available Templates</summary>
+
 ### Modern (No Icons)
 
 A clean, single-column layout with no custom icons.
@@ -45,6 +48,8 @@ A clean, single-column layout with decorative icons for sections like experience
 
 **Screenshot:**  
 ![Modern Resume (No Icons)](docs/templates/modern-with-icons.png)
+
+</details>
 
 <details>
   <summary>View Upcoming Templates</summary>
