@@ -1,0 +1,19 @@
+<div class="section">
+    <h2 class="section-heading">{{ section.name }}</h2>
+    <table class="multi-column-table">
+        <tr>
+            {% set chunk_size = (section.content | length) // section.num_cols + (1 if (section.content | length) % section.num_cols != 0 else 0) %}
+            {% for column in section.content | batch(chunk_size, fill_with='') %}
+                <td>
+                    <ul>
+                        {% for item in column %}
+                            {% if item %}
+                                <li>{{ item }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </td>
+            {% endfor %}
+        </tr>
+    </table>
+</div>

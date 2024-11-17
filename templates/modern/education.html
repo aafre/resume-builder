@@ -1,0 +1,13 @@
+<div class="section">
+    <h2 class="section-heading">Education</h2>
+    {% for edu in section.content %}
+        <div class="education-item">
+            <p>
+                {% if edu.icon %}
+                    <img src="{{ icon_path }}/{{ edu.icon }}" alt="School Icon" class="school-icon">
+                {% endif %}
+                <strong>{{ edu.degree }}</strong>, {{ edu.school }} - {{ edu.year }}
+            </p>
+        </div>
+    {% endfor %}
+</div>
