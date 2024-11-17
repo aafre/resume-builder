@@ -11,7 +11,7 @@ This tool is built to simplify the process of creating and updating resumes or .
 * **Effortless Updates:** 
   Update content in a YAML file to instantly refresh or customize your resume.
 * **Modern & Professional Designs:** 
-  - Select from a range of sleek, ATS-compliant templates with consistent formatting. 🚀 View Available [Templates](#templates).  
+  - Select from a range of sleek, ATS-compliant [templates](#templates) with consistent formatting.
   - Ensure consistent formatting across all versions.
 * **ATS-Optimized:** 
   Ensure your resume is fully scannable by Applicant Tracking Systems (ATS), helping you stand out in the job market.
