@@ -1,0 +1,9 @@
+<div class="contact">
+    <h1>{{ contact_info.name }}</h1>
+    <p>
+        <img src="{{ icon_path }}/location.png" alt="Location Icon" class="icon"> {{ contact_info.location }} |
+        <img src="{{ icon_path }}/email.png" alt="Email Icon" class="icon"> <a href="mailto:{{ contact_info.email }}">{{ contact_info.email }}</a> |
+        <img src="{{ icon_path }}/phone.png" alt="Phone Icon" class="icon"> {{ contact_info.phone }} |
+        <img src="{{ icon_path }}/linkedin.png" alt="LinkedIn Icon" class="icon"> <a href="https://{{ contact_info.linkedin }}">{{ contact_info.linkedin }}</a>
+    </p>
+</div>
