@@ -13,6 +13,55 @@ This tool helps simplify the process of building professional, ATS-compliant, an
 - Highly flexible YAML file to design your resume. Use one of our preexisting templates from the `templates/` folder. 
 
 
+## Templates
+
+### Modern (No Icons)
+
+A clean, single-column layout with no custom icons.
+
+**YAML Sample:**  
+`template_path: samples/modern_sample.yml`
+
+**Screenshot:**  
+![Modern Resume (No Icons)](docs/templates/modern-no-icons.png)
+
+---
+
+### Modern (With Icons)
+
+A clean, single-column layout with user-specified icons for sections like contact information and certifications.
+
+**YAML Sample:**  
+`template_path: samples/modern_with_icons.yml`
+
+**Screenshot:**  
+![Modern Resume (With Icons)](docs/templates/modern-with-icons.png)
+
+---
+
+### Minimalist (Work in Progress)
+
+A streamlined, no-frills layout focused purely on content with minimal design elements.
+
+**YAML Sample:**  
+`template_path: samples/minimalist_sample.yml`
+
+*(Screenshot coming soon)*
+
+---
+
+### Creative (Planned)
+
+A visually striking layout featuring color highlights and unique typography for a bold statement.
+
+**YAML Sample:**  
+`template_path: samples/creative_sample.yml`
+
+*(Screenshot and YAML file coming soon)*
+
+---
+
+
 ## Features
 
 ### Core Features
@@ -21,14 +70,68 @@ This tool helps simplify the process of building professional, ATS-compliant, an
 - **ATS Compatibility**: Ensures resumes are parsed correctly by Applicant Tracking Systems.
 - **Structured Data**: Use YAML to input resume data for flexibility and ease of use.
 - **Customizable Icons and Logos**: Add company icons, skill logos, or section-specific icons (optional).
+- **Custom fonts**: Supports Google fonts.
 - **Multi-column Support**: Dynamic adjustment for skill lists and other sections to optimize space.
 - **PDF Generation**: Output resumes in a polished PDF format.
 
 
-### Current Templates
-- [READY] Modern: Clean layout with company logos and structured alignment.
-- [Under development] Minimalist: Simplified design with emphasis on text clarity and space.
-- [Under development] Professional: A balanced layout emphasizing ATS compliance and readability.
+### Templates
+
+#### Modern (No Icons)
+
+A clean, single-column layout with no custom icons.
+
+**YAML Sample:**  
+`template_path: samples/modern_sample.yml`
+
+**Screenshot:**  
+![Modern Resume (No Icons)](docs/templates/modern-no-icons.png)
+
+---
+
+#### Modern (With Icons)
+
+A clean, single-column layout with decorative icons for sections like contact information and certifications.
+
+**YAML Sample:**  
+`template_path: samples/modern_with_icons.yml`
+
+**Screenshot:**  
+![Modern Resume (With Icons)](docs/templates/modern-with-icons.png)
+
+---
+<details>
+  <summary>View Upcoming Templates</summary>
+
+### Minimalist (Work in Progress)
+
+A streamlined, no-frills layout focused purely on content with minimal design elements.
+
+**YAML Sample:**  
+`template_path: samples/minimalist_sample.yml`
+
+*(Screenshot coming soon)*
+
+---
+
+### Creative (Planned)
+
+A visually striking layout featuring color highlights and unique typography for a bold statement.
+
+**YAML Sample:**  
+`template_path: samples/creative_sample.yml`
+
+*(Screenshot and YAML file coming soon)*
+
+</details>
+---
+
+### Notes:
+- Each template provides a corresponding YAML file in the `samples/` folder to customize your resume content.  
+- Screenshots give a visual preview of the output to help you choose the right template for your needs.  
+- New templates will be added regularly, so stay tuned!  
+
+
 
 ## Getting Started
 
@@ -47,7 +150,7 @@ cd resume-builder
 ```
 
 3. **Prepare your input**: 
-    - Explore the `samples/` folder to identify a template that matches your preferred style.
+    - Explore the Resume [Templates](#Templates) section below to preview available resume styles and choose the one that best suits your needs.
     - Edit the `.yaml` file from the `samples/` folder with your details.
         - **First time use**: Start with the sample template by simply updating the content with your details. Then, proceed to the [execution](#execution) step.
         - **Advanced Use**: Refer to the [Supported Section Types](#supported-section-types) section to customize your resume format with additional or modified sections.
