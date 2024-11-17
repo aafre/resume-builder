@@ -1,0 +1,97 @@
+template: classic
+font: Tahoma
+
+contact_info:
+  name: John Doe
+  location: "London, UK"
+  email: john.doe@example.com
+  phone: +44 7000000000
+  linkedin: linkedin.com/in/JohnDoe
+
+sections:
+  - name: Summary
+    type: text
+    content: "Experienced Software Engineer with over 10 years of expertise in automation, platform engineering, and cloud computing. Proven track record in optimizing system reliability, streamlining deployment processes, and driving operational excellence."
+
+  - name: Professional Qualifications
+    type: bulleted-list
+    content:
+      - "Proficient in developing scalable software and APIs using industry-leading technologies."
+      - "Experienced in creating and optimizing CI/CD pipelines for efficient deployments."
+      - "Certified Cloud Architect across multiple platforms, including AWS, Azure, and Google Cloud."
+      - "Extensive knowledge of infrastructure automation using Ansible, Terraform, and Azure ARM."
+
+  - name: Key Skills
+    type: dynamic-column-list
+    content:
+      - Agile Methodologies
+      - Kubernetes"
+      - Infrastructure as Code
+      - Docker Containers
+      - Continuous Integration
+      - Continuous Deployment
+      - Ansible
+      - Cloud Computing
+
+
+  - name: Experience
+    content:
+      - company: "Lorem Ipsum Corp"
+        title: "Senior Software Engineer"
+        dates: "Sep 2023 – Present"
+        description:
+          - "Developed and maintained applications to address business needs using modern programming practices."
+          - "Optimized performance by identifying and resolving code inefficiencies."
+          - "Created ETL flows with robust data validation, ensuring data integrity."
+          - "Provided mentorship and technical guidance to junior engineers."
+        icon: "company_google.png"
+
+      - company: "Dolor Sit Solutions"
+        title: "Platform Engineer"
+        dates: "Nov 2021 – Aug 2023"
+        description:
+          - "Enhanced application performance through efficient automation using Ansible and Terraform."
+          - "Automated CI/CD pipelines, reducing deployment times and minimizing manual interventions."
+          - "Collaborated with cross-functional teams to support cloud migration strategies."
+        icon: "company_apple.png"
+
+      - company: "Consectetur Cloud Services"
+        title: "Cloud Engineer"
+        dates: "Jul 2020 – Sep 2021"
+        description:
+          - "Obtained Professional Cloud Architect certification, demonstrating advanced cloud architecture skills."
+          - "Advised clients on cloud adoption strategies, focusing on scalability and security."
+        icon: "company_amazon.png"
+
+  - name: Education
+    content:
+      - degree: "MSc in Computer Science"
+        school: "University of Oxford"
+        year: "2021"
+        field_of_study: "Artificial Intelligence"
+        icon: "school_oxford.png"
+      - degree: "BSc in Computer Engineering"
+        school: "Harvard University"
+        year: "2017"
+        icon: "school_harvard.png"
+
+
+  - name: Certifications
+    type: icon-list
+    content:
+      - certification: "Certified Kubernetes Administrator (CKA)"
+        issuer: "Cloud Native Computing Foundation"
+        date: "2022"
+        icon: "certification_k8s.png"
+      - certification: "AWS Certified Solutions Architect – Associate"
+        issuer: "Amazon Web Services"
+        date: "2021"
+        icon: "certification_aws.png"
+      - certification: "Microsoft Certified: Azure Solutions Architect Expert"
+        issuer: "Microsoft"
+        date: "2020"
+        icon: "certification_azure.png"
+      - certification: "Google Cloud Professional Cloud Architect"
+        issuer: "Google Cloud"
+        date: "2019"
+        icon: "certification_google.png"
