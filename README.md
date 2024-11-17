@@ -34,35 +34,32 @@ Here are all the [features](#features) available.
 A clean, single-column layout with no custom icons.
 
 **YAML Sample:**  
-`template_path: samples/modern_sample.yml`
+`template_path: samples/modern/john_doe_no_icon.yml`
 
 **Screenshot:**  
 ![Modern Resume (No Icons)](docs/templates/modern-no-icons.png)
 
 ---
 
-<details>
-  <summary>View Upcoming Templates</summary>
-
-
 ### Modern (With Icons)
 
-A clean, single-column layout with decorative icons for sections like contact information and certifications.
+A clean, single-column layout with decorative icons for sections like experience, education and certifications.
 
 **YAML Sample:**  
-`template_path: samples/modern_with_icons.yml`
+`template_path: samples/modern/john_doe.yml`
 
-*(Screenshot coming soon)*
+**Screenshot:**  
+![Modern Resume (No Icons)](docs/templates/modern-with-icons.png)
+
+<details>
+  <summary>View Upcoming Templates</summary>
 
 
 ### Minimalist (Work in Progress)
 
 A streamlined, no-frills layout focused purely on content with minimal design elements.
 
-**YAML Sample:**  
-`template_path: samples/minimalist_sample.yml`
-
-*(Screenshot coming soon)*
+![Classic (No Icons)](docs/templates/classic-no-icon.png)
 
 
 ### Creative (Planned)
@@ -146,6 +143,7 @@ cd resume-builder
     - Edit the `.yaml` file from the `samples/` folder with your details.
         - **First time use**: Start with the sample template by simply updating the content with your details. Then, proceed to the [execution](#execution) step.
         - **Advanced Use**: Refer to the [Supported Section Types](#supported-section-types) section to customize your resume format with additional or modified sections.
+    - If you wish to use icons, please drop them in the `icons/` folder. And in the `YAML` config, just specify the icon file name. No need to specify absoluete or relative paths. This is something that needs to be improved. 
 
 
 ### Execution
