@@ -1,16 +1,27 @@
-# Resume Builder 
+# Resume Builder: Build Professional Resumes with Ease 🚀
 
 
-## Project Goal
+## 🎯 Project Goal
 
-This tool helps simplify the process of building professional, ATS-compliant, and visually appealing resumes using structured user-provided data. By separating content from design, this project empowers users to:
-- Quickly update your resume without worrying about formatting.
-- Maintain a consistent and polished appearance.
-- Generate PDF resumes that:
-    - Include icons, hyperlinks, and logos where appropriate.
-    - Are ATS-compatible to ensure resumes are parsed correctly by job application systems.
-    - Present information in a clean, modern layout with multiple template options.
-- Highly flexible YAML file to design your resume. Use one of our preexisting templates from the `templates/` folder. 
+This tool is built to simplify the process of creating and updating resumes. The idea is for the users to be able to **Focus on your content, not the formatting.**
+
+**Key Benefits:**
+
+* **Effortless Updates:** 
+  Update content in a YAML file to instantly refresh or customize your resume.
+* **Modern & Professional Designs:** 
+  - Select from a range of sleek, ATS-compliant templates with consistent formatting. 🚀 View Available [Templates](#templates).  
+  - Ensure consistent formatting across all versions.
+* **ATS-Optimized:** 
+  Ensure your resume is fully scannable by Applicant Tracking Systems (ATS), helping you stand out in the job market.
+* **Customizable PDFs:** 
+  Add icons, hyperlinks, and logos to enhance your resume's visual appeal, while adhering to industry standards.
+
+**Who can benefit?**
+
+* **Job Seekers:** From recent graduates to seasoned professionals, streamline your resume creation process.
+* **Career Changers:** Adapt your resume for new industries or roles with minimal effort.
+* **Freelancers:** Present an impressive and well-structured resume to attract clients and showcase expertise.
 
 
 ## Templates
@@ -74,6 +85,41 @@ A visually striking layout featuring color highlights and unique typography for 
 - **Custom fonts**: Supports Google fonts.
 - **Multi-column Support**: Dynamic adjustment for skill lists and other sections to optimize space.
 - **PDF Generation**: Output resumes in a polished PDF format.
+
+
+## Supported Section Types
+
+The following section types are supported, each designed to present information in a structured and visually appealing way.
+
+| **Type**         | **Description**                                                                                         | **Example Usage**                |
+|-------------------|---------------------------------------------------------------------------------------------------------|----------------------------------|
+| `text`           | A simple text block, typically used for sections like "Summary" or single-paragraph content.            | Summary, Objective               |
+| `bulleted-list`  | A bulleted list format for sections requiring multiple items listed in bullets.                          | Professional Qualifications      |
+| `inline-list`    | A horizontally displayed list, usually without bullets, for a compact, single-line view.                | Key Skills, Personal Interests   |
+| `icon-list`      | A list with optional icons next to each item, often used for certifications or awards with specific icons.| Certifications                   |
+| `dynamic-column-list` | Dynamically adjusts the number of columns based on the items, ideal for skill sections or compact lists. | Skills                           |
+| `experience`     | A structured format for job experience with fields for company, title, dates, and description as bullet points.| Experience                       |
+| `education`      | A structured format for academic qualifications with institution, degree, and date.                     | Education                        |
+
+
+### Generic Section Example
+
+Below is a generic section structure that can be modified to use any of the supported types above:
+
+```yaml
+- name: [Section Name]
+  type: [Section Type] # Replace with a supported type (e.g., text, bulleted-list, experience, etc.)
+  content:
+    # Replace with content matching the selected type
+    - Example Content 1
+    - Example Content 2
+    - Example Content 3
+```
+
+### Notes:
+- Replace `[Section Name]` with the title of your section (e.g., Summary, Skills, Experience).
+- Replace `[Section Type]` with one of the supported types listed in the table above (e.g., text, bulleted-list, experience).
+- Update `content` to match the data format for the selected type.
 
 
 ## Getting Started
@@ -151,3 +197,6 @@ For windows users, replace `${pwd}` with `%cd%`.
 ```bash
 python resume_generator.py --template modern --input data/sample.yml --output output/resume.pdf
 ```
+
+
+
