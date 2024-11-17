@@ -11,21 +11,22 @@ contact_info:
 sections:
   - name: Summary
     type: text
-    content: "Experienced Software Engineer with over 10 years of expertise in automation, platform engineering, and cloud computing. Proven track record in optimizing system reliability, streamlining deployment processes, and driving operational excellence."
+    content: "Software Engineer with a proven track record of making significant, specific, and self-direction contributions to challenging and complex UX projects. Seeking a position to apply exceptional problem-solving and collaborative skills as part of a team."
 
   - name: Professional Qualifications
     type: bulleted-list
     content:
-      - "Proficient in developing scalable software and APIs using industry-leading technologies."
-      - "Experienced in creating and optimizing CI/CD pipelines for efficient deployments."
-      - "Certified Cloud Architect across multiple platforms, including AWS, Azure, and Google Cloud."
-      - "Extensive knowledge of infrastructure automation using Ansible, Terraform, and Azure ARM."
+      - "Led cross-functional teams of engineers, achieving an 80% average quality score across 20+ testing cycles per release."
+      - "Gathered and analyzed user requirements, tailoring Salesforce solutions to enhance user experience and efficiency."
+      - "Designed and implemented Salesforce integrations, reducing order processing time by 15%."
+      - "Developed automated reports and metrics to drive strategic business decisions for multiple clients."
+      - "Provided training and support to clients, improving end-user adoption by 20%."
 
   - name: Key Skills
     type: dynamic-column-list
     content:
       - Agile Methodologies
-      - Kubernetes"
+      - Kubernetes
       - Infrastructure as Code
       - Docker Containers
       - Continuous Integration
