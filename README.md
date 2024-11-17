@@ -34,19 +34,19 @@ This tool helps simplify the process of building professional, ATS-compliant, an
 
 ### Quick Start Guide: 
 
-1. Clone the repository:
+1. **Clone the repository**:
 
 ```bash
 git clone https://github.com/aafre/resume-builder.git
 ```
 
-2. Navigate to the project directory: 
+2. **Navigate to the project directory**: 
 
 ```bash
 cd resume-builder
 ```
 
-3. Prepare your input: 
+3. **Prepare your input**: 
     - Explore the `samples/` folder to identify a template that matches your preferred style.
     - Edit the `.yaml` file from the `samples/` folder with your details.
         - **First time use**: Start with the sample template by simply updating the content with your details. Then, proceed to the [execution](#execution) step.
