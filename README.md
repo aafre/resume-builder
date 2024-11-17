@@ -84,7 +84,7 @@ Flag Details:
 - `--output`: Path to save the generated PDF.
 
 
-#### Option 3:Run Using Docker
+#### Option 2: Run Using Python
 
 1. Build the Docker Image:
 
