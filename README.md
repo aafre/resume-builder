@@ -25,6 +25,7 @@ This tool is built to simplify the process of creating and updating resumes. The
 * **Freelancers:** Present an impressive and well-structured resume to attract clients and showcase expertise.
 
 Checkout the guide to [getting started](#getting-started). 
+Here are all the [features](#features) available. 
 
 ## Templates
 
