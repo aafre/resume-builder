@@ -1,9 +1,10 @@
-# Resume Builder: Build Professional Resumes with Ease 🚀
+# **Resume/CV Builder**🛠️
 
+**Build Professional Resumes with Ease 🚀** 
 
 ## 🎯 Project Goal
 
-This tool is built to simplify the process of creating and updating resumes. The idea is for the users to be able to **Focus on your content, not the formatting.**
+This tool is built to simplify the process of creating and updating resumes or . The idea is for the users to be able to **Focus on your content, not the formatting.**
 
 **Key Benefits:**
 
