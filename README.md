@@ -2,6 +2,17 @@
 
 **Build Professional Résumés with Ease 🚀** 
 
+## 🌐 Try It Online
+
+You can now use the **Resume/CV Builder** directly on the web! 
+
+1. Download a [sample template](samples/modern/) to get started.
+2. Edit the `.yaml` file with your details.
+3. Go to: https://easyfreeresume.com/ and Upload your template and generate your resume instantly.
+
+---
+
+
 ## 🎯 Project Goal
 
 This tool is built to simplify the process of creating and updating resumes. The idea is for the users to be able to **Focus on your content, not the formatting.**
