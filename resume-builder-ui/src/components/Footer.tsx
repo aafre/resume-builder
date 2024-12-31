@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { FaShieldAlt, FaLock, FaUsers } from "react-icons/fa";
 
 export default function Footer() {
@@ -6,12 +7,15 @@ export default function Footer() {
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
         {/* Privacy and Terms Links */}
         <div className="flex gap-4 mb-4 md:mb-0">
-          <a href="/privacy-policy" className="text-blue-500 hover:underline">
+          <Link to="/privacy-policy" className="text-blue-500 hover:underline">
             Privacy Policy
-          </a>
-          <a href="/terms-of-service" className="text-blue-500 hover:underline">
+          </Link>
+          <Link
+            to="/terms-of-service"
+            className="text-blue-500 hover:underline"
+          >
             Terms of Service
-          </a>
+          </Link>
         </div>
 
         {/* Copyright Text */}
