@@ -19,3 +19,6 @@ __pycache__/
 
 # Ignore node_modules, if applicable
 node_modules/
+
+
+.zip 
