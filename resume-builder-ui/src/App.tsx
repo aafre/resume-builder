@@ -6,6 +6,8 @@ import TemplateCarousel from "./components/TemplateCarousel";
 import Editor from "./components/Editor";
 import NotFound from "./components/NotFound";
 import ErrorPage from "./components/ErrorPage";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import TermsOfService from "./components/TermsOfService";
 
 export default function App() {
   return (
@@ -22,8 +24,13 @@ export default function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/templates" element={<TemplateCarousel />} />
             <Route path="/editor" element={<Editor />} />
+
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+
             {/* Catch-all route for undefined paths */}
             <Route path="*" element={<NotFound />} />
+
             {/* Redirect to ErrorPage for any specific server-side error */}
             <Route path="/error" element={<ErrorPage />} />
           </Routes>
