@@ -80,7 +80,11 @@ body {
 /* Section Content */
 .section {
     margin-bottom: 12px;
-    page-break-inside: avoid; /* Prevents section content from splitting across pages */
+    /* page-break-inside: avoid;  Prevents section content from splitting across pages */
+}
+
+.section:last-of-type {
+    page-break-after: auto; /* Avoid blank pages at the end */
 }
 
 .summary, .qualifications-list {
