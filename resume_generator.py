@@ -97,6 +97,7 @@ def generate_pdf(template_name, data, output_file):
 
     # Render HTML with data
     print("Rendering HTML with data...")
+
     template = env.get_template("base.html")
     html_content = template.render(
         contact_info=contact_info,
@@ -118,6 +119,7 @@ def generate_pdf(template_name, data, output_file):
 
     # Convert the HTML file to PDF with the enable-local-file-access option
     options = {"enable-local-file-access": ""}
+
     print("Converting HTML file to PDF...")
     try:
         pdfkit.from_file(temp_html_file.as_posix(), output_file, options=options)
