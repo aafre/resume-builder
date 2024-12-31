@@ -4,6 +4,8 @@ import Footer from "./components/Footer";
 import LandingPage from "./components/LandingPage";
 import TemplateCarousel from "./components/TemplateCarousel";
 import Editor from "./components/Editor";
+import NotFound from "./components/NotFound";
+import ErrorPage from "./components/ErrorPage";
 
 export default function App() {
   return (
@@ -20,6 +22,10 @@ export default function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/templates" element={<TemplateCarousel />} />
             <Route path="/editor" element={<Editor />} />
+            {/* Catch-all route for undefined paths */}
+            <Route path="*" element={<NotFound />} />
+            {/* Redirect to ErrorPage for any specific server-side error */}
+            <Route path="/error" element={<ErrorPage />} />
           </Routes>
         </main>
 
