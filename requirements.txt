@@ -2,4 +2,7 @@ pyyaml
 jinja2
 pdfkit
 markdown2
-wkhtmltopdf
+flask
+flask-cors
+flask-talisman
+gunicorn
