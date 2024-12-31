@@ -34,7 +34,7 @@ export async function fetchTemplate(templateId: string) {
 /**
  * Generate a resume PDF by submitting YAML and template ID, along with icons.
  * @param {FormData} formData - The FormData containing YAML, template ID, and icons.
- * @returns {Promise<any>} The response from the backend with the PDF blob.
+ * @returns {Promise<any>} The response from the backend with the PDF blob and filename.
  */
 export async function generateResume(formData: FormData) {
   const response = await fetch(`${API_BASE_URL}/generate`, {
@@ -48,12 +48,16 @@ export async function generateResume(formData: FormData) {
   }
 
   const contentType = response.headers.get("content-type");
+  const contentDisposition = response.headers.get("Content-Disposition");
+
   if (contentType && contentType.includes("application/pdf")) {
-    // Return the blob for PDF download
     const pdfBlob = await response.blob();
-    return { pdfBlob };
+
+    // Extract filename from Content-Disposition header
+    const fileName = contentDisposition?.split("filename=")[1]?.replace(/"/g, "") || "resume.pdf";
+
+    return { pdfBlob, fileName };
   } else {
-    // Handle unexpected content type or response
     const errorResponse = await response.json();
     throw new Error(
       errorResponse.error || "Unexpected response: Expected a PDF file"

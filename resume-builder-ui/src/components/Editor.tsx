@@ -202,12 +202,12 @@ const Editor: React.FC = () => {
         }
       });
 
-      const { pdfBlob } = await generateResume(formData);
+      const { pdfBlob, fileName } = await generateResume(formData);
 
       const pdfUrl = URL.createObjectURL(pdfBlob);
       const link = document.createElement("a");
       link.href = pdfUrl;
-      link.download = "resume.pdf";
+      link.download = fileName; // Use dynamic filename
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
