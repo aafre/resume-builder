@@ -3,3 +3,6 @@ jinja2
 pdfkit
 markdown2
 wkhtmltopdf
+flask
+flask-cors
+gunicorn
