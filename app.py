@@ -3,11 +3,13 @@ import tempfile
 from flask import (
     Flask,
     request,
-    render_template,
     send_file,
     jsonify,
     url_for,
+    send_from_directory,
 )
+
+
 from werkzeug.middleware.proxy_fix import ProxyFix
 import os
 import subprocess
@@ -22,9 +24,12 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
 )
 
-app = Flask(__name__)
+
+app = Flask(__name__, static_folder="static", static_url_path="/")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+CORS(app, resources={r"/*": {"origins": "*"}})
+
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB
 
 # Define paths for the project
 PROJECT_ROOT = Path(__file__).parent.resolve()
@@ -39,6 +44,24 @@ TEMPLATE_FILE_MAP = {
     "modern-no-icons": TEMPLATES_DIR / "john_doe_no_icon.yml",
     "modern-with-icons": TEMPLATES_DIR / "john_doe.yml",
 }
+
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve(path):
+    """
+    Serve the React app from the static folder. If a specific file is requested
+    and exists, serve it. Otherwise, serve 'index.html' for React routes.
+    """
+    try:
+        # If the requested path exists in the static folder, serve it
+        if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+            return send_from_directory(app.static_folder, path)
+        # Otherwise, serve the React app's index.html
+        return send_from_directory(app.static_folder, "index.html")
+    except Exception as e:
+        # Log and handle any unexpected errors gracefully
+        return f"An error occurred: {str(e)}", 500
 
 
 @app.route("/api/templates", methods=["GET"])
@@ -188,19 +211,20 @@ def generate_resume():
                 raise ValueError(
                     f"Invalid template: {template}. Available templates: {', '.join(valid_templates)}"
                 )
+            cmd = [
+                "python",
+                "resume_generator.py",
+                "--template",
+                template,
+                "--input",
+                str(yaml_path),
+                "--output",
+                str(output_path),
+            ]
 
             # Generate the resume using subprocess
             result = subprocess.run(
-                [
-                    "python",
-                    "resume_generator.py",
-                    "--template",
-                    template,
-                    "--input",
-                    str(yaml_path),
-                    "--output",
-                    str(output_path),
-                ],
+                cmd,
                 capture_output=True,
                 text=True,
             )
@@ -213,7 +237,12 @@ def generate_resume():
                 raise FileNotFoundError("The generated resume file was not found")
 
             # Send the generated PDF file
-            return send_file(output_path, as_attachment=True)
+            return send_file(
+                output_path,
+                as_attachment=True,
+                mimetype="application/pdf",
+                download_name=output_path.name,
+            )
 
         except ValueError as ve:
             logging.warning("Validation error: %s", ve)
@@ -251,6 +280,25 @@ def serve_templates(filename):
     except Exception as e:
         logging.error(f"Error serving template image {filename}: {e}")
         return jsonify({"success": False, "error": "Image not found"}), 404
+
+
+@app.errorhandler(404)
+def not_found(e):
+    """
+    Handle 404 errors by serving the React app's index.html for unmatched routes.
+    """
+    return send_from_directory(app.static_folder, "index.html")
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    """
+    Handle 500 errors by providing a JSON response or redirecting to a specific route.
+    """
+    return (
+        jsonify({"success": False, "error": "An internal server error occurred."}),
+        500,
+    )
 
 
 if __name__ == "__main__":
