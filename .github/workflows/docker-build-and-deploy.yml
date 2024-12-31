@@ -1,0 +1,64 @@
+name: Build, Push, and Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual trigger
+    inputs:
+      deploy:
+        description: "Deploy to Cloud Run after building?"
+        required: false
+        default: "false"
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout repository code
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Authenticate with GCP
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Build and Push Docker Image with versioning
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.CR_NAME }}:latest
+            ${{ secrets.CR_NAME }}:run-${{ github.run_number }}
+            ${{ secrets.CR_NAME }}:sha-${{ github.sha }}
+
+  deploy:
+    needs: build-and-push
+    if: ${{ github.event.inputs.deploy == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      # Authenticate with GCP
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      # Deploy to Cloud Run
+      - id: deploy-cloudrun
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: "resume-builder-app"
+          image: "${{ secrets.CR_NAME }}:latest"
+          region: "europe-west2"
+
+      # Output deployed URL
+      - name: Display Deployed URL
+        run: echo "Deployed to ${{ steps.deploy-cloudrun.outputs.url }}"
