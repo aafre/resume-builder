@@ -1,0 +1,21 @@
+# Ignore local environment and secrets
+.env
+
+# Ignore runtime artifacts
+*.pdf
+*.log
+*.tmp
+
+# Ignore IDE/Editor configuration and cache
+.vscode/
+.idea/
+*.swp
+
+# Ignore Python cache files and directories
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore node_modules, if applicable
+node_modules/
