@@ -11,6 +11,11 @@ on:
         required: false
         default: "false"
 
+env:
+  GCP_IMAGE_PATH: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder
+  GCP_IMAGE_NAME: easyfreeresume-app
+  GCP_IMAGE: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -30,26 +35,23 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-      
+
       # Build the Docker image
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.GCP_ARTIFACT_REGISTRY_REPO }}:${{ env.DOCKER_TAG }} .
+          docker build -t ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }} .
           docker images
 
       # Configure Docker to use the GCP Container Registry
       - name: Configure Docker to use GCP Container Registry
         run: |
-          echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' | docker login -u _json_key --password-stdin ${{ secrets.GCP_DOCKER_LOGIN }}
-
+          echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' | docker login -u _json_key_base64 --password-stdin europe-west2-docker.pkg.dev
 
       # Push the Docker image to Container Registry
       - name: Push Docker image
         run: |
-          docker push ${{ secrets.GCP_ARTIFACT_REGISTRY_REPO }}:${{ env.DOCKER_TAG }}
-          echo "Pushed Docker Image: ${{ secrets.GCP_ARTIFACT_REGISTRY_REPO }}:${{ env.DOCKER_TAG }}"
-
-
+          docker push ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }}
+          echo "Pushed Docker Image: ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }}"
 
   deploy:
     needs: build-and-push
@@ -67,7 +69,7 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: ${{ secrets.GCP_CLOUD_RUN_SERVICE }}
-          image: "${{ secrets.GCP_ARTIFACT_REGISTRY_REPO }}:${{ env.DOCKER_TAG }}"
+          image: ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }}
           region: "europe-west2"
 
       # Output deployed URL
