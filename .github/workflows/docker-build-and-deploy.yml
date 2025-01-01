@@ -40,7 +40,7 @@ jobs:
       # Configure Docker to use the GCP Container Registry
       - name: Configure Docker to use GCP Container Registry
         run: |
-          echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | docker login -u _json_key --password-stdin ${{ secrets.GCP_DOCKER_LOGIN }}
+          echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' | docker login -u _json_key --password-stdin ${{ secrets.GCP_DOCKER_LOGIN }}
 
 
       # Push the Docker image to Container Registry
