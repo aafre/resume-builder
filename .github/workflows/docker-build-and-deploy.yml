@@ -19,26 +19,37 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Generate a timestamp for tagging
+      - name: Generate timestamp for Docker tag
+        run: |
+          TIMESTAMP=$(date -u +"%Y.%m.%d.%H-%M-%S")
+          echo "DOCKER_TAG=$TIMESTAMP" >> $GITHUB_ENV
+
       # Authenticate with GCP
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+      
+      # Build the Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.GCP_ARTIFACT_REGISTRY_REPO }}:${{ env.DOCKER_TAG }} .
+          docker images
 
-      # Set up Docker Buildx
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      # Configure Docker to use the GCP Container Registry
+      - name: Configure Docker to use GCP Container Registry
+        run: |
+          echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | docker login ${{ secrets.GCP_DOCKER_LOGIN }} -u _json_key_base64 --password-stdin
 
-      # Build and Push Docker Image with versioning
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: |
-            ${{ secrets.CR_NAME }}:latest
-            ${{ secrets.CR_NAME }}:run-${{ github.run_number }}
-            ${{ secrets.CR_NAME }}:sha-${{ github.sha }}
+
+      # Push the Docker image to Container Registry
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.GCP_ARTIFACT_REGISTRY_REPO }}:${{ env.DOCKER_TAG }}
+          echo "Pushed Docker Image: ${{ secrets.GCP_ARTIFACT_REGISTRY_REPO }}:${{ env.DOCKER_TAG }}"
+
+
 
   deploy:
     needs: build-and-push
@@ -55,8 +66,8 @@ jobs:
       - id: deploy-cloudrun
         uses: google-github-actions/deploy-cloudrun@v2
         with:
-          service: "resume-builder-app"
-          image: "${{ secrets.CR_NAME }}:latest"
+          service: ${{ secrets.GCP_CLOUD_RUN_SERVICE }}
+          image: "${{ secrets.GCP_ARTIFACT_REGISTRY_REPO }}:${{ env.DOCKER_TAG }}"
           region: "europe-west2"
 
       # Output deployed URL
