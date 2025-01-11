@@ -1,7 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import { FaFileExport, FaFileImport, FaFilePdf, FaPlus } from "react-icons/fa";
+import {
+  FaFileExport,
+  FaFileImport,
+  FaFilePdf,
+  FaPlus,
+  FaQuestionCircle,
+} from "react-icons/fa";
 import { fetchTemplate, generateResume } from "../services/templates";
 import yaml from "js-yaml";
 import ExperienceSection from "./ExperienceSection";
@@ -31,7 +37,7 @@ const Editor: React.FC = () => {
 
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [sections, setSections] = useState<Section[]>([]);
-  const [supportsIcons, setSupportsIcons] = useState(false); // Dynamically set
+  const [supportsIcons, setSupportsIcons] = useState(false);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
   const [editingTitleIndex, setEditingTitleIndex] = useState<number | null>(
@@ -40,6 +46,7 @@ const Editor: React.FC = () => {
   const [temporaryTitle, setTemporaryTitle] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
   const newSectionRef = useRef<HTMLDivElement | null>(null);
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   useEffect(() => {
     if (!templateId) {
@@ -73,6 +80,21 @@ const Editor: React.FC = () => {
 
   const processSections = (sections: Section[]) => {
     return sections.map((section) => {
+      // Handle Experience, Education, and Certifications (if icon-list type)
+      if (section.name === "Certifications" && section.type === "icon-list") {
+        const updatedContent = section.content.map((item: any) => ({
+          certification: item.certification || "",
+          issuer: item.issuer || "",
+          date: item.date || "",
+          icon: item.icon || "",
+        }));
+        return {
+          ...section,
+          content: updatedContent,
+        };
+      }
+
+      // Handle structured lists (Experience, Education)
       if (["Experience", "Education"].includes(section.name)) {
         const updatedContent = Array.isArray(section.content)
           ? section.content.map((item: any) => {
@@ -86,6 +108,8 @@ const Editor: React.FC = () => {
           content: updatedContent,
         };
       }
+
+      // Return other sections unchanged
       return section;
     });
   };
@@ -142,17 +166,24 @@ const Editor: React.FC = () => {
   };
 
   const handleExportYAML = () => {
-    const processedSections = processSections(sections);
-    const yamlData = yaml.dump({
-      contact_info: contactInfo,
-      sections: processedSections,
-    });
-    const blob = new Blob([yamlData], { type: "application/x-yaml" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "resume.yaml";
-    link.click();
+    try {
+      const processedSections = processSections(sections);
+
+      const yamlData = yaml.dump({
+        contact_info: contactInfo,
+        sections: processedSections,
+      });
+
+      const blob = new Blob([yamlData], { type: "application/x-yaml" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "resume.yaml";
+      link.click();
+    } catch (error) {
+      console.error("Error exporting YAML:", error);
+      toast.error("Failed to export YAML. Please try again.");
+    }
   };
 
   const handleImportYAML = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -233,11 +264,14 @@ const Editor: React.FC = () => {
 
   if (loading) return <p>Loading...</p>;
 
+  const toggleHelpModal = () => setShowHelpModal(!showHelpModal);
+
   return (
     <div className="container mx-auto my-10">
       <ToastContainer position="top-center" autoClose={3000} />
 
-      <div className="mb-6 flex gap-4">
+      <div className="flex justify-between items-center mb-6">
+        {/* Left Side: Add Section Button */}
         <button
           onClick={() => setShowModal(true)}
           className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2"
@@ -245,23 +279,84 @@ const Editor: React.FC = () => {
           <FaPlus />
           Add Section
         </button>
-        <button
-          onClick={handleExportYAML}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-        >
-          <FaFileExport />
-          Export as YAML
-        </button>
-        <label className="bg-blue-500 text-white px-4 py-2 rounded-lg cursor-pointer flex items-center gap-2">
-          <FaFileImport />
-          Import YAML
-          <input
-            type="file"
-            accept=".yaml,.yml"
-            className="hidden"
-            onChange={handleImportYAML}
-          />
-        </label>
+
+        {/* Right Side: Export, Import, and Help Buttons */}
+        <div className="flex gap-2">
+          {/* Export Button */}
+          <button
+            onClick={handleExportYAML}
+            className="bg-yellow-500 text-white p-3 rounded-md shadow-md hover:bg-yellow-600 transition-all"
+            title="Export your resume as a YAML file"
+          >
+            <FaFileExport />
+          </button>
+
+          {/* Import Button */}
+          <label
+            className="bg-green-500 text-white p-3 rounded-md shadow-md cursor-pointer hover:bg-green-600 transition-all"
+            title="Import your resume as a YAML file"
+          >
+            <FaFileImport />
+            <input
+              type="file"
+              accept=".yaml,.yml"
+              className="hidden"
+              onChange={handleImportYAML}
+              title="Import your resume as a YAML file"
+            />
+          </label>
+
+          {/* Help Button */}
+          <button
+            onClick={toggleHelpModal}
+            className="bg-gray-500 text-white p-3 rounded-md shadow-md hover:bg-gray-600 transition-all"
+            title="What is YAML Export/Import?"
+          >
+            <FaQuestionCircle />
+          </button>
+
+          {/* Help Modal */}
+          {showHelpModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+                <h2 className="text-xl font-bold text-gray-800 mb-4">
+                  Why Use YAML Export/Import?
+                </h2>
+                <p className="text-gray-700 mb-4">
+                  We don’t ask you to create an account, and we don’t store your
+                  resume data. This means if you close the app and come back
+                  later, your resume edits will be gone.
+                </p>
+                <div className="bg-blue-100 border border-blue-300 p-3 rounded-lg mb-4">
+                  <h3 className="text-blue-700 font-medium mb-2">
+                    💡 Here's How to Use It:
+                  </h3>
+                  <ul className="list-disc list-inside text-gray-700">
+                    <li>
+                      <strong>Export:</strong> After creating your resume, save
+                      it as a YAML file to your computer.
+                    </li>
+                    <li>
+                      <strong>Import:</strong> When you come back later, upload
+                      that YAML file to quickly load your saved resume and
+                      continue editing.
+                    </li>
+                  </ul>
+                </div>
+                <p className="text-gray-700 mb-4">
+                  It's like saving your work — without needing to create an
+                  account!
+                </p>
+                <button
+                  onClick={toggleHelpModal}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                >
+                  Got It!
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="border p-6 mb-6 bg-gray-100 rounded-lg">
