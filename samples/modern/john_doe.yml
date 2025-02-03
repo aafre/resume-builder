@@ -2,37 +2,27 @@ template: classic
 font: Tahoma
 
 contact_info:
-  name: John Doe
-  location: "London, UK"
-  email: john.doe@example.com
-  phone: +44 7000000000
+  name: Walter Papak
+  location: "Windsor, ON"
+  email: walterpapak@gmail.com
+  phone: 226-344-1039
   linkedin: linkedin.com/in/JohnDoe
 
 sections:
   - name: Summary
     type: text
-    content: "Software Engineer with a proven track record of making significant, specific, and self-direction contributions to challenging and complex UX projects. Seeking a position to apply exceptional problem-solving and collaborative skills as part of a team."
+    content: "Tool & Die apprentice with 5 years floor experience and 4 year die design experience. Completed the "430A Tool & Die Maker"  3 year apprenticeship program from St. Clair College with straight A's. Currently studying for the 430 Tool & Die Red Seal Exam. Seeking a position to apply exceptional problem-solving and collaborative skills as part of a team."
 
-  - name: Professional Qualifications
-    type: bulleted-list
-    content:
-      - "Led cross-functional teams of engineers, achieving an 80% average quality score across 20+ testing cycles per release."
-      - "Gathered and analyzed user requirements, tailoring Salesforce solutions to enhance user experience and efficiency."
-      - "Designed and implemented Salesforce integrations, reducing order processing time by 15%."
-      - "Developed automated reports and metrics to drive strategic business decisions for multiple clients."
-      - "Provided training and support to clients, improving end-user adoption by 20%."
-
+  
   - name: Key Skills
     type: dynamic-column-list
     content:
-      - Agile Methodologies
-      - Kubernetes
-      - Infrastructure as Code
-      - Docker Containers
-      - Continuous Integration
-      - Continuous Deployment
-      - Ansible
-      - Cloud Computing
+      - Designed and built blanking dies, trim & pierce, draw, restrikes & forms as well as progressive dies with some CAM experience.
+      - Skilled in operating CNC and manual machining to produce precision components. 
+      - SolidWorks CAD software.
+      - Microsoft Word, excel and PowerPoint
+      - Hosted design reviews with customers to ensure standards were followed & satisfaction with the tool.
+      
 
 
   - name: Experience
