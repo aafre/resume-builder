@@ -7,7 +7,7 @@ interface EducationItem {
   year: string;
   field_of_study?: string;
   icon?: string;
-  iconFile?: File; // Added to track the actual file object for upload
+  iconFile?: File;
 }
 
 interface EducationSectionProps {
@@ -85,6 +85,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({
                     handleIconUpload(index, renamedIcon, file)
                   }
                   onClear={() => handleIconClear(index)}
+                  existingIcon={item.icon || ""}
                 />
               </div>
             )}
