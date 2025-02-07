@@ -80,13 +80,13 @@ const Editor: React.FC = () => {
 
   const processSections = (sections: Section[]) => {
     return sections.map((section) => {
-      // Handle Experience, Education, and Certifications (if icon-list type)
+      // Handle Experience, Education, and Certifications sections
       if (section.name === "Certifications" && section.type === "icon-list") {
         const updatedContent = section.content.map((item: any) => ({
           certification: item.certification || "",
           issuer: item.issuer || "",
           date: item.date || "",
-          icon: item.icon || "",
+          icon: item.icon ? `/icons/${item.icon}` : null,
         }));
         return {
           ...section,
@@ -94,12 +94,14 @@ const Editor: React.FC = () => {
         };
       }
 
-      // Handle structured lists (Experience, Education)
       if (["Experience", "Education"].includes(section.name)) {
         const updatedContent = Array.isArray(section.content)
           ? section.content.map((item: any) => {
               const { icon, iconFile, ...rest } = item;
-              return icon ? { ...rest, icon } : rest;
+              return {
+                ...rest,
+                icon: icon ? `/icons/${icon}` : null,
+              };
             })
           : section.content;
 
@@ -109,7 +111,6 @@ const Editor: React.FC = () => {
         };
       }
 
-      // Return other sections unchanged
       return section;
     });
   };

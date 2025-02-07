@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPencilAlt, FaTimes, FaImage } from "react-icons/fa";
 
 interface IconUploadProps {
-  onUpload: (renamedIcon: string, file: File) => void; // Callback with the renamed file and file object
-  onClear?: () => void; // Optional, for clearing the uploaded icon
+  onUpload: (renamedIcon: string, file: File) => void;
+  onClear?: () => void;
+  existingIcon?: string | null; // Updated to handle both string and null
 }
 
-const IconUpload: React.FC<IconUploadProps> = ({ onUpload, onClear }) => {
-  const [iconPreview, setIconPreview] = useState<string | null>(null); // Default to null
+const IconUpload: React.FC<IconUploadProps> = ({
+  onUpload,
+  onClear,
+  existingIcon,
+}) => {
+  const [iconPreview, setIconPreview] = useState<string | null>(null);
 
-  const generateRandomId = (): string => {
-    return Math.random().toString(36).substring(2, 15);
-  };
+  useEffect(() => {
+    // If there's an existing icon, show it
+    if (existingIcon) {
+      setIconPreview(`/icons/${existingIcon}`);
+    } else {
+      setIconPreview(null); // No icon shows placeholder
+    }
+  }, [existingIcon]);
 
   const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -19,28 +29,27 @@ const IconUpload: React.FC<IconUploadProps> = ({ onUpload, onClear }) => {
 
     // Generate a random file name
     const fileExtension = file.name.split(".").pop()?.toLowerCase();
-    const renamedFileName = `${generateRandomId()}.${fileExtension}`;
+    const renamedFileName = `${Math.random()
+      .toString(36)
+      .substring(2, 15)}.${fileExtension}`;
 
     // Show preview
     const reader = new FileReader();
     reader.onload = () => setIconPreview(reader.result as string);
     reader.readAsDataURL(file);
 
-    // Notify parent with renamed file and file object
+    // Notify parent
     onUpload(renamedFileName, file);
   };
 
   const handleClear = () => {
     setIconPreview(null); // Clear preview
-    if (onClear) {
-      onClear(); // Notify parent to clear the icon
-    }
+    if (onClear) onClear(); // Notify parent
   };
 
   return (
     <div className="icon-upload relative w-12 h-12">
       <label className="cursor-pointer relative group">
-        {/* Icon Preview or Placeholder */}
         <div className="w-12 h-12 flex items-center justify-center border bg-gray-100 rounded-full overflow-hidden relative group">
           {iconPreview ? (
             <img
@@ -50,10 +59,9 @@ const IconUpload: React.FC<IconUploadProps> = ({ onUpload, onClear }) => {
             />
           ) : (
             <div className="text-gray-400 flex items-center justify-center">
-              <FaImage className="text-2xl" /> {/* Placeholder icon */}
+              <FaImage className="text-2xl" />
             </div>
           )}
-          {/* Pencil Icon on Hover */}
           <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
             <FaPencilAlt className="text-white" />
           </div>
@@ -65,7 +73,6 @@ const IconUpload: React.FC<IconUploadProps> = ({ onUpload, onClear }) => {
           onChange={handleIconChange}
         />
       </label>
-      {/* Clear Icon */}
       {iconPreview && (
         <button
           type="button"
