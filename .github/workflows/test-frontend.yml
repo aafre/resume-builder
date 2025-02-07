@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  test:
+  TestReact:
     runs-on: ubuntu-latest
     defaults:
       run:
