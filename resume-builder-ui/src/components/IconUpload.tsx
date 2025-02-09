@@ -15,7 +15,7 @@ const IconUpload: React.FC<IconUploadProps> = ({
   const [iconPreview, setIconPreview] = useState<string | null>(null);
 
   useEffect(() => {
-    // If there's an existing icon, show it
+    // Check if existingIcon is not null
     if (existingIcon) {
       setIconPreview(`/icons/${existingIcon}`);
     } else {
@@ -56,6 +56,7 @@ const IconUpload: React.FC<IconUploadProps> = ({
               src={iconPreview}
               alt="Uploaded Icon"
               className="w-full h-full object-cover"
+              onError={() => setIconPreview(null)}
             />
           ) : (
             <div className="text-gray-400 flex items-center justify-center">
