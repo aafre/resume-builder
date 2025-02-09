@@ -131,8 +131,8 @@ describe("IconUpload", () => {
       />
     );
 
-    // Expected behavior (after bug fix): the component would clear the preview for a broken icon.
-    // For now, since the bug is not fixed, the image will still be rendered with src "/icons/nonexistent.png".
+    // Expected behavior: if the image fails to load, the component should clear the preview,
+    // so no <img> with alt "Uploaded Icon" is rendered.
     await waitFor(() => {
       expect(screen.queryByAltText("Uploaded Icon")).not.toBeInTheDocument();
     });
