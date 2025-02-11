@@ -212,8 +212,8 @@ Visit our [GitHub Issues](https://github.com/aafre/resume-builder/issues) page.
 
 ## 🛠️ Contributions
 
-<a href = "https://github.com/Tanu-N-Prabhu/Python/graphs/contributors">
-  <img src = "https://contrib.rocks/image?repo = aafre/resume-builder"/>
+<a href = "https://github.com/aafre/resume-builder/contributors">
+  <img src = "https://contrib.rocks/image?repo = GitHub_username/repository_name"/>
 </a>
 
 Contributions are welcome! Submit a pull request or report an issue to improve this project.
