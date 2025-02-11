@@ -23,12 +23,12 @@ const SectionEditor: React.FC<{
     const updatedSections = [...sections];
     updatedSections[sectionIndex].name = newName;
     setSections(updatedSections);
-    setIsEditingName(false); // Exit edit mode
+    setIsEditingName(false);
   };
 
   const handleCancelEdit = () => {
-    setNewName(section.name); // Reset to original name
-    setIsEditingName(false); // Exit edit mode
+    setNewName(section.name);
+    setIsEditingName(false);
   };
 
   return (
@@ -92,7 +92,7 @@ const SectionEditor: React.FC<{
         <select
           value={section.type}
           onChange={(e) => {
-            if (isFixedSection) return; // Prevent type change for fixed sections
+            if (isFixedSection) return;
             const updatedSections = [...sections];
             updatedSections[sectionIndex].type = e.target.value;
             setSections(updatedSections);
@@ -122,18 +122,31 @@ const SectionEditor: React.FC<{
       <div>
         <label className="block text-gray-700 font-medium mb-1">Content</label>
         {Array.isArray(section.content) ? (
-          section.content.map((item: string, itemIndex: number) => (
+          section.content.map((item: any, itemIndex: number) => (
             <div key={itemIndex} className="flex items-center gap-2 mb-2">
               <input
                 type="text"
-                value={item}
+                value={item.icon || ""}
                 onChange={(e) => {
                   const updatedSections = [...sections];
-                  updatedSections[sectionIndex].content[itemIndex] =
+                  updatedSections[sectionIndex].content[itemIndex].icon =
                     e.target.value;
                   setSections(updatedSections);
                 }}
                 className="w-full border border-gray-300 rounded-lg p-2"
+                placeholder="Enter icon name"
+              />
+              <input
+                type="text"
+                value={item.text || ""}
+                onChange={(e) => {
+                  const updatedSections = [...sections];
+                  updatedSections[sectionIndex].content[itemIndex].text =
+                    e.target.value;
+                  setSections(updatedSections);
+                }}
+                className="w-full border border-gray-300 rounded-lg p-2"
+                placeholder="Enter item text"
               />
               <button
                 onClick={() => {
@@ -162,7 +175,10 @@ const SectionEditor: React.FC<{
           <button
             onClick={() => {
               const updatedSections = [...sections];
-              updatedSections[sectionIndex].content.push("");
+              updatedSections[sectionIndex].content.push({
+                icon: "",
+                text: "",
+              });
               setSections(updatedSections);
             }}
             className="bg-blue-500 text-white px-4 py-2 mt-2 rounded hover:bg-blue-600"
