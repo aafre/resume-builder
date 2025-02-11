@@ -194,17 +194,18 @@ Visit our [GitHub Issues](https://github.com/aafre/resume-builder/issues) page.
 
 1. **Build the Docker Image**:
    ```bash
-   docker build -t resume-builder .
+   docker build -t resume-api -f .\Docker.dev.api .
    ```
 
 2. **Run the Container**:
    ```bash
-   docker run -it --rm -v "${pwd}:/app/" resume-builder
+   docker run -p 5000:5000 resume-api
    ```
 
-3. **Generate Your Resume**:
+3. **Run the frontend**:
    ```bash
-   python resume_generator.py --template modern --input data/sample.yml --output output/resume.pdf
+   cd resume-builder-ui
+   npm run dev
    ```
 
 ---
