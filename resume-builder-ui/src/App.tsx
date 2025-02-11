@@ -8,6 +8,7 @@ import NotFound from "./components/NotFound";
 import ErrorPage from "./components/ErrorPage";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsOfService from "./components/TermsOfService";
+import ReviewForm from "./components/ReviewForm";
 
 export default function App() {
   return (
@@ -40,6 +41,8 @@ export default function App() {
         <footer className="bg-gray-100 text-gray-700 border-t shadow-sm">
           <Footer />
         </footer>
+
+        <ReviewForm />
       </div>
     </Router>
   );
