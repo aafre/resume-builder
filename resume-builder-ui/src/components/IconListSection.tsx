@@ -47,8 +47,8 @@ const IconListSection: React.FC<IconListSectionProps> = ({
       {data.length > 0 ? (
         data.map((item, index) => (
           <div key={index} className="mb-4 border-b pb-4">
-            <div className="grid grid-cols-3 gap-4 mb-2">
-              <div>
+            <div className="grid grid-cols-8 gap-2 mb-2 items-center">
+              <div className="col-span-3" >
                 <label className="block text-gray-700 font-medium mb-1">
                   Certification
                 </label>
@@ -58,10 +58,10 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                   onChange={(e) =>
                     handleUpdateItem(index, "certification", e.target.value)
                   }
-                  className="w-full border border-gray-300 rounded-lg p-2"
+                  className="w-full border border-gray-300 rounded-lg p-2 "
                 />
               </div>
-              <div>
+              <div className="col-span-3">
                 <label className="block text-gray-700 font-medium mb-1">
                   Issuer
                 </label>
@@ -74,7 +74,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                   className="w-full border border-gray-300 rounded-lg p-2"
                 />
               </div>
-              <div>
+              <div className="col-span-1">
                 <label className="block text-gray-700 font-medium mb-1">
                   Date
                 </label>
@@ -87,14 +87,16 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                   className="w-full border border-gray-300 rounded-lg p-2"
                 />
               </div>
+              <div className="flex justify-end items-center pt-6 col-span-1">
+                <button
+                onClick={() => handleRemoveItem(index)}
+                className="text-red-600 hover:text-red-800"
+                title="Remove Certification"
+              >
+                🗑️
+              </button>
+              </div>
             </div>
-            <button
-              onClick={() => handleRemoveItem(index)}
-              className="text-red-600 hover:text-red-800"
-              title="Remove Certification"
-            >
-              🗑️
-            </button>
           </div>
         ))
       ) : (
