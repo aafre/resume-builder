@@ -63,7 +63,7 @@
     }
 
     return (
-      <div className="flex flex-col md:flex-row h-screen">
+      <div className="flex flex-col md:flex-row min-h-screen">
         {/* Left Pane: List of Templates */}
         <div className="w-full md:w-1/3 bg-gray-100 p-4 overflow-y-auto">
           <h2 className="text-lg font-bold text-gray-700 mb-4">Templates</h2>
