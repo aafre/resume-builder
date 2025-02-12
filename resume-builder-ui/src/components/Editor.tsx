@@ -275,8 +275,7 @@ const Editor: React.FC = () => {
         {/* Left Side: Add Section Button */}
         <button
           onClick={() => setShowModal(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-        >
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2">
           <FaPlus />
           Add Section
         </button>
@@ -428,8 +427,7 @@ const Editor: React.FC = () => {
           return (
             <div
               key={index}
-              ref={index === sections.length - 1 ? newSectionRef : null}
-            >
+              ref={index === sections.length - 1 ? newSectionRef : null}>
               <GenericSection
                 section={section}
                 onUpdate={(updatedSection) =>
@@ -448,14 +446,15 @@ const Editor: React.FC = () => {
         }
       })}
 
-      <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 z-50">
+      <div
+        className="sticky bottom-5 transform z-50 "
+        style={{ display: "flex", justifyContent: "center" }}>
         <button
           onClick={handleGenerateResume}
           className={`bg-green-600 text-white px-6 py-3 rounded-full shadow hover:bg-green-700 transition-all ${
             generating ? "opacity-50 cursor-not-allowed" : ""
           }`}
-          disabled={generating}
-        >
+          disabled={generating}>
           <FaFilePdf className="inline mr-2" />
           {generating ? "Generating..." : "Generate PDF"}
         </button>
