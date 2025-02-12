@@ -194,7 +194,7 @@ Visit our [GitHub Issues](https://github.com/aafre/resume-builder/issues) page.
 
 1. **Build the Docker Image**:
    ```bash
-   docker build -t resume-api -f .\Docker.dev.api .
+   docker build -t resume-api -f .\Dockerfile.dev.api .
    ```
 
 2. **Run the Container**:
