@@ -1,3 +1,5 @@
+[![Frontend Tests and Coverage](https://github.com/aafre/resume-builder/actions/workflows/test-frontend.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/test-frontend.yml)
+
 
 # **Resume/CV Builder** 🛠️
 
