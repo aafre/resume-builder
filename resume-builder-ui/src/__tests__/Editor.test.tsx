@@ -33,6 +33,18 @@ const sampleTemplate = {
         },
       ],
     },
+    {
+      name: "Certifications",
+      type: "icon-list",
+      content: [
+        {
+          certification: "Test Cert",
+          issuer: "Test Issuer",
+          date: "2020",
+          icon: "nonexistent.png", // Use a broken icon to test processSections behavior.
+        },
+      ],
+    },
   ],
 };
 
