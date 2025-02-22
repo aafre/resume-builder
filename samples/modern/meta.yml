@@ -1,0 +1,11 @@
+templates:
+  - id: modern-with-icons
+    name: "Modern (With Icons)"
+    description: "Professional layout with decorative icons."
+    resume_file: "john_doe.yml"
+    image_url: "modern-with-icons.png"
+  - id: modern-no-icons
+    name: "Modern (No Icons)"
+    description: "Simple and clean layout without icons."
+    resume_file: "john_doe_no_icon.yml"
+    image_url: "modern-no-icons.png"
