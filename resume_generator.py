@@ -1,18 +1,9 @@
-import yaml
 import pdfkit
 import argparse
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 
-
-# Load data from YAML
-def load_resume_data(file_path):
-    print("Loading resume data...")
-    with open(file_path, "r") as file:
-        try:
-            return yaml.safe_load(file)
-        except yaml.YAMLError as e:
-            raise ValueError(f"Error parsing YAML file: {e}")
+from resume_builder_api.utils import load_resume_data
 
 
 def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
@@ -27,6 +18,9 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
     Returns:
         int: Calculated number of columns.
     """
+    if max_columns < 1:
+        raise ValueError("max_columns must be at least 1")
+
     if num_items <= min_items_per_column:
         return 1  # Single column if items are too few
 
@@ -142,6 +136,8 @@ def get_social_media_handle(url):
         str: The social media handle.
     """
     if url:
+        # Remove any trailing slashes
+        url = url.rstrip("/")
         return url.split("/")[-1]
     return ""
 
