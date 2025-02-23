@@ -6,7 +6,7 @@ from resume_builder_api.models import Template, TemplatesResponse, TemplateDataR
 from resume_builder_api.constants import TEMPLATES_DIR
 from resume_builder_api.services.template_service import load_templates_map
 
-router = APIRouter()
+router = APIRouter(tags=["Templates"])
 
 
 @router.get("/templates", response_model=TemplatesResponse)
@@ -90,8 +90,6 @@ async def download_template(template_id: str):
 async def get_template_image(template_id: str):
     """
     Serve the image for the specified template.
-
-    The image is located in the same folder as the resume YAML file.
     """
     templates_map = load_templates_map(TEMPLATES_DIR)
     if template_id not in templates_map:
