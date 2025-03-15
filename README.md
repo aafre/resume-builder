@@ -1,64 +1,54 @@
 [![Frontend Tests and Coverage](https://github.com/aafre/resume-builder/actions/workflows/test-frontend.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/test-frontend.yml)
 
+# Resume/CV Builder 🛠️
+**Create Professional Résumés with Ease 🚀**
 
-# **Resume/CV Builder** 🛠️
-
-**Build Professional Résumés with Ease 🚀**
-
----
-
-## 🌐 Try It Online
-
-You can now use the **Resume/CV Builder** directly on the web!  
-
-1. **[Download a sample template](samples/modern/)** to get started.
-2. **Edit the file** with your details using any text editor.
-3. **Visit [easyfreeresume.com](https://easyfreeresume.com)**, upload your template, and generate your resume instantly!
-
----
-
-## 🎯 Project Goal
-
-This tool simplifies the process of creating and updating resumes, so you can **focus on your content, not the formatting.**
-
-### Key Benefits:
-- **Effortless Updates**: Modify your resume by editing a single file.
-- **Modern & Professional Designs**:
-  - Select from sleek, ATS-compliant [templates](#templates).
-  - Ensure consistent formatting across all versions.
-- **ATS-Optimized**: Your resume will be fully scannable by Applicant Tracking Systems.
-- **Customizable PDFs**: Add icons, hyperlinks, and logos for a visually appealing, industry-standard resume.
+## Table of Contents
+- [Try It Online](#try-it-online)
+- [Project Overview](#project-overview)
+- [Usage Guide](#usage-guide)
+- [YAML Template Guide](#yaml-template-guide)
+- [Templates](#templates)
+- [Features](#features)
+- [Troubleshooting](#troubleshooting)
+- [Getting Started](#getting-started)
+- [Docker Setup](#docker-setup)
+- [Contributing](#contributing)
 
 ---
 
-## 🛠️ How to Use (Step-by-Step Guide)
-
-1. **[Download a Template](samples/modern/)**  
-   Choose a sample template to get started.
-
-2. **Add Your Details**  
-   Open the file in any text editor (e.g., Notepad, Notepad++ (recommended) or VS Code) and fill in your personal details.
-
-3. **Upload Your File**  
-   Visit [easyfreeresume.com](https://easyfreeresume.com) to upload your template. Optionally, upload icons to personalize your resume.
-
-4. **Generate Your Resume**  
-   Click "Generate Resume" to instantly download your polished, ATS-friendly PDF resume.
-
-For more advanced customization, check out the [YAML Template Guide](#yaml-template-guide).
+## Try It Online
+Generate your resume instantly:
+1. **[Download a Sample Template](samples/modern/).**
+2. Edit it with your details.
+3. Upload it at [easyfreeresume.com](https://easyfreeresume.com).
 
 ---
 
-## 📝 YAML Template Guide
+## Project Overview
+Simplify your resume creation process and focus on what matters—your content.
+- **Effortless Updates:** Edit one YAML file.
+- **Modern Designs:** Choose from sleek, ATS-friendly templates.
+- **Custom PDFs:** Instantly generate a polished resume.
 
-Your resume data is stored in a structured text file (template). No coding required!
+---
 
-### **What Is a Template?**
-A template is a simple text file where you add details about your experience, skills, and education.
+## Usage Guide
+1. **Download a Template:**  
+   [Modern Template](samples/modern/)
+2. **Edit Your Details:**  
+   Open the file in any text editor (Notepad, VS Code, etc.) and update your info.
+3. **Generate Your Resume:**  
+   Upload your file at [easyfreeresume.com](https://easyfreeresume.com).
 
-### **Example Template**
-Here’s how a skills section looks in the template:
+For more advanced customization, see the YAML Template Guide.
 
+---
+
+## YAML Template Guide
+Your resume is defined in a simple YAML file—no coding required!
+
+**Example:**
 ```yaml
 - name: Skills
   type: dynamic-column-list
@@ -68,152 +58,96 @@ Here’s how a skills section looks in the template:
     - Team Management
 ```
 
-### **Supported Section Types**
-| **Type**           | **Description**                                                                                       | **Example Usage**               |
-|---------------------|-------------------------------------------------------------------------------------------------------|---------------------------------|
-| `text`             | A simple text block for single-paragraph sections.                                                   | Summary, Objective              |
-| `bulleted-list`    | A bulleted list format for multiple items.                                                            | Skills, Hobbies                 |
-| `inline-list`      | A compact, single-line list without bullets.                                                         | Key Skills, Personal Interests  |
-| `icon-list`        | A list with optional icons, often used for certifications or awards.                                  | Certifications                  |
-| `dynamic-column-list` | Automatically adjusts columns for space efficiency.                                                  | Skills                          |
-| `experience`       | Structured format for job experience, including company name, title, and dates.                      | Work History                    |
-| `education`        | Structured format for academic qualifications.                                                       | Education                       |
+**Supported Types:**
+- **text:** Single-paragraph content.
+- **bulleted-list:** A list of items.
+- **inline-list:** Compact, inline list.
+- **icon-list:** List with optional icons.
+- **dynamic-column-list:** Auto-adjusting columns.
+- **experience:** Job history details.
+- **education:** Academic qualifications.
 
-### **Generic Section Example**
-Customize sections with the following structure:
-
+Customize any section like so:
 ```yaml
 - name: [Section Name]
-  type: [Section Type] # Replace with a supported type (e.g., text, bulleted-list, experience)
+  type: [Section Type]
   content:
-    - Example Item 1
-    - Example Item 2
+    - Item 1
+    - Item 2
 ```
 
-For detailed guidance, visit the [full YAML guide](#supported-section-types).
-
 ---
 
-## 🚀 Templates
-
+## Templates
 <details>
-  <summary>Expand to View Available Templates</summary>
+  <summary>Available Templates</summary>
 
-### Modern (No Icons)
-A clean, single-column layout without decorative icons.
+**Modern (No Icons)**  
+YAML: `samples/modern/john_doe_no_icon.yml`  
+![Modern No Icons](docs/templates/modern-no-icons.png)
 
-**YAML Sample**:  
-`template_path: samples/modern/john_doe_no_icon.yml`  
-
-**Screenshot**:  
-![Modern Resume (No Icons)](docs/templates/modern-no-icons.png)
-
----
-
-### Modern (With Icons)
-A clean, single-column layout with decorative icons for sections like experience, education, and certifications.
-
-**YAML Sample**:  
-`template_path: samples/modern/john_doe.yml`  
-
-**Screenshot**:  
-![Modern Resume (With Icons)](docs/templates/modern-with-icons.png)
-
+**Modern (With Icons)**  
+YAML: `samples/modern/john_doe.yml`  
+![Modern With Icons](docs/templates/modern-with-icons.png)
 </details>
 
 <details>
-  <summary>Expand to View Upcoming Templates</summary>
+  <summary>Upcoming Templates</summary>
 
-### Minimalist (Work in Progress)
-A simple, no-frills design focused on clarity.
+**Minimalist (Work in Progress)**  
+![Minimalist](docs/templates/classic-no-icon.png)
 
-**Screenshot**:  
-![Classic (No Icons)](docs/templates/classic-no-icon.png)
-
-### Creative (Planned)
-A bold, colorful design for showcasing creativity.
-
-**YAML Sample**:  
-`template_path: samples/creative_sample.yml`  
-*(Coming Soon)*
-
+**Creative (Planned)**  
+YAML: `samples/creative_sample.yml` *(Coming Soon)*
 </details>
 
 ---
 
-## ✨ Features
-
-- **Dynamic Templates**: Multiple ATS-friendly designs.
-- **Flexible Customization**: Edit your resume in YAML format for structured content.
-- **Icon and Logo Support**: Add a personal touch with icons.
-- **Responsive Layouts**: Optimized for modern, clean formatting.
-- **PDF Generation**: Download your resume as a polished PDF.
+## Features
+- **Dynamic Templates:** Multiple ATS-friendly designs.
+- **Flexible Customization:** Edit your YAML files with ease.
+- **Icon & Logo Support:** Personalize your resume.
+- **Responsive Layouts:** Modern, clean formatting.
+- **PDF Generation:** Download a ready-to-use resume.
 
 ---
 
-## ❓ Troubleshooting
-
-### Why isn’t my resume generating?
-- Ensure all required fields in the template are filled.
-- Use the correct file format (`.yaml`).
-
-### Can I add custom icons?
-- Yes! Upload PNG, JPG, or SVG files along with your template.
-
-### Need more help?  
-Visit our [GitHub Issues](https://github.com/aafre/resume-builder/issues) page.
+## Troubleshooting
+- **Resume Not Generating?**  
+  Verify that all required fields are filled and your file is in `.yaml` format.
+- **Custom Icons?**  
+  Upload PNG, JPG, or SVG files with your template.
+- Need help? Visit our [GitHub Issues](https://github.com/aafre/resume-builder/issues).
 
 ---
 
 ## Getting Started
-
-### Quick Start Guide:
-
-1. **Clone the repository**:  
-   ```bash
-   git clone https://github.com/aafre/resume-builder.git
-   ```
-
-2. **Navigate to the project directory**:  
-   ```bash
-   cd resume-builder
-   ```
-
-3. **Prepare your input**:  
-   - Choose a sample template from the [templates](#templates) section.
-   - Edit the `.yaml` file with your details.
-
-4. **Generate your resume**:  
-   Run the script to generate your PDF resume:
-
-   ```bash
-   python resume_generator.py --template modern --input data/sample.yml --output output/resume.pdf
-   ```
+Quick setup:
+```bash
+git clone https://github.com/aafre/resume-builder.git
+cd resume-builder
+```
+- Edit a sample template from the [Templates](#templates) section.
+- Generate your resume:
+```bash
+python resume_generator.py --template modern --input data/sample.yml --output output/resume.pdf
+```
 
 ---
 
-## 🐳 Run Using Docker
-
-1. **Build the Docker Image**:
-   ```bash
-   docker build -t resume-api -f .\Dockerfile.dev.api .
-   ```
-
-2. **Run the Container**:
-   ```bash
-   docker run -p 5000:5000 resume-api
-   ```
-
-3. **Run the frontend**:
-   ```bash
-   cd resume-builder-ui
-   npm run dev
-   ```
+## Docker Setup
+Build and run using Docker:
+```bash
+docker build -t resume-api -f Dockerfile.dev.api .
+docker run -p 5000:5000 resume-api
+```
+For the frontend:
+```bash
+cd resume-builder-ui
+npm run dev
+```
 
 ---
 
-## 🛠️ Contributions
-Contributions are welcome! Submit a pull request or report an issue to improve this project.
-
-
----
+## Contributing
+Contributions are welcome! Please submit a pull request or open an issue to help improve this project.
