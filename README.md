@@ -1,4 +1,6 @@
-[![Frontend Tests and Coverage](https://github.com/aafre/resume-builder/actions/workflows/test-frontend.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/test-frontend.yml)
+[![Tests and Coverage](https://github.com/aafre/resume-builder/actions/workflows/test-frontend.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/test-frontend.yml)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/aafre/resume-builder/test-frontend.yml?branch=main)](https://github.com/aafre/resume-builder/actions)
+[![License](https://img.shields.io/github/license/aafre/resume-builder.svg)](LICENSE)
 
 # Resume/CV Builder 🛠️
 **Create Professional Résumés with Ease 🚀**
