@@ -97,7 +97,6 @@ const GenericSection: React.FC<GenericSectionProps> = ({
           Remove
         </button>
       </div>
-
       <div className="mt-4">
         {section.type === "text" && (
           <textarea
@@ -106,18 +105,19 @@ const GenericSection: React.FC<GenericSectionProps> = ({
             className="w-full border border-gray-300 rounded-lg p-2"
           ></textarea>
         )}
-        {["bulleted-list", "inline-list", "dynamic-column-list"].includes(
+        {["bulleted-list"].includes(
           section.type || ""
         ) && (
           <>
+          <div className={`flex justify-start ${(section.type === "inline-list" || section.type === "dynamic-column-list")? "flex-row flex-wrap" : "flex-col"}`}>
             {Array.isArray(section.content) &&
               section.content.map((item: string, index: number) => (
-                <div key={index} className="flex items-center gap-2 mb-4">
+                <div key={index} className="flex items-center gap-2 mb-4 mr-10">
                   <input
                     type="text"
                     value={item}
                     onChange={(e) => handleContentChange(e.target.value, index)}
-                    className="w-full border border-gray-300 rounded-lg p-2"
+                    className="w-full border border-gray-300 rounded-lg p-2 overflow-hidden text-ellipsis"
                   />
                   <button
                     onClick={() => handleRemoveItem(index)}
@@ -128,12 +128,57 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                   </button>
                 </div>
               ))}
+            </div>
             <button
               onClick={() => {
                 const updatedContent = [...(section.content || []), ""];
                 onUpdate({ ...section, content: updatedContent });
               }}
               className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2"
+            >
+              Add Item
+            </button>
+          </>
+        )}
+      </div>
+      <div className="mt-4 flex flex-col gap-4">
+        {section.type === "text" && (
+          <textarea
+            value={section.content || ""}
+            onChange={(e) => handleContentChange(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg p-2"
+          ></textarea>
+        )}
+        {["inline-list", "dynamic-column-list"].includes(
+          section.type || ""
+        ) && (
+          <>
+          <div className="flex flex-wrap justify-start gap-4">
+            {Array.isArray(section.content) &&
+              section.content.map((item: string, index: number) => (
+                <div key={index} className="flex items-center gap-2 mb-4 mr-4">
+                  <input
+                    type="text"
+                    value={item}
+                    onChange={(e) => handleContentChange(e.target.value, index)}
+                    className="w-full border border-gray-300 rounded-lg p-2 text-ellipsis" 
+                  />
+                  <button
+                    onClick={() => handleRemoveItem(index)}
+                    className="text-red-600 hover:text-red-800"
+                    title="Remove Item"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => {
+                const updatedContent = [...(section.content || []), ""];
+                onUpdate({ ...section, content: updatedContent });
+              }}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 w-fit"
             >
               Add Item
             </button>
