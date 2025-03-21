@@ -25,6 +25,11 @@ Generate your resume instantly:
 2. Edit it with your details.
 3. Upload it at [easyfreeresume.com](https://easyfreeresume.com).
 
+## React UI (Development)
+
+The React UI for creating, editing, and updating resumes is available at [dev.easyfreeresume.com](http://dev.easyfreeresume.com). Please note that this interface is currently in development and may be unstable. The homepage presently displays dummy data.
+
+
 ---
 
 ## Project Overview
