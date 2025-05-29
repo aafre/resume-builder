@@ -1,13 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import {
-  FaFileExport,
-  FaFileImport,
-  FaFilePdf,
-  FaPlus,
-  FaQuestionCircle,
-} from "react-icons/fa";
+import { FaFilePdf, FaPlus } from "react-icons/fa";
 import { fetchTemplate, generateResume } from "../services/templates";
 import yaml from "js-yaml";
 import ExperienceSection from "./ExperienceSection";
@@ -15,6 +9,7 @@ import EducationSection from "./EducationSection";
 import GenericSection from "./GenericSection";
 import IconListSection from "./IconListSection";
 import SectionTypeModal from "./SectionTypeModal";
+import { MdFileDownload, MdFileUpload, MdHelpOutline } from "react-icons/md";
 
 interface Section {
   name: string;
@@ -275,7 +270,8 @@ const Editor: React.FC = () => {
         {/* Left Side: Add Section Button */}
         <button
           onClick={() => setShowModal(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+        >
           <FaPlus />
           Add Section
         </button>
@@ -285,24 +281,25 @@ const Editor: React.FC = () => {
           {/* Export Button */}
           <button
             onClick={handleExportYAML}
-            className="bg-yellow-500 text-white p-3 rounded-md shadow-md hover:bg-yellow-600 transition-all"
+            className="bg-teal-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow hover:bg-teal-800 transition-all"
             title="Export your resume as a YAML file"
           >
-            <FaFileExport />
+            <MdFileDownload />
+            Export YAML
           </button>
 
           {/* Import Button */}
           <label
-            className="bg-green-500 text-white p-3 rounded-md shadow-md cursor-pointer hover:bg-green-600 transition-all"
+            className="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 cursor-pointer shadow hover:bg-green-600 transition-all"
             title="Import your resume as a YAML file"
           >
-            <FaFileImport />
+            <MdFileUpload />
+            Import YAML
             <input
               type="file"
               accept=".yaml,.yml"
               className="hidden"
               onChange={handleImportYAML}
-              title="Import your resume as a YAML file"
             />
           </label>
 
@@ -312,7 +309,7 @@ const Editor: React.FC = () => {
             className="bg-gray-500 text-white p-3 rounded-md shadow-md hover:bg-gray-600 transition-all"
             title="What is YAML Export/Import?"
           >
-            <FaQuestionCircle />
+            <MdHelpOutline />
           </button>
 
           {/* Help Modal */}
@@ -427,7 +424,8 @@ const Editor: React.FC = () => {
           return (
             <div
               key={index}
-              ref={index === sections.length - 1 ? newSectionRef : null}>
+              ref={index === sections.length - 1 ? newSectionRef : null}
+            >
               <GenericSection
                 section={section}
                 onUpdate={(updatedSection) =>
@@ -448,13 +446,15 @@ const Editor: React.FC = () => {
 
       <div
         className="sticky bottom-5 transform z-50 "
-        style={{ display: "flex", justifyContent: "center" }}>
+        style={{ display: "flex", justifyContent: "center" }}
+      >
         <button
           onClick={handleGenerateResume}
           className={`bg-green-600 text-white px-6 py-3 rounded-full shadow hover:bg-green-700 transition-all ${
             generating ? "opacity-50 cursor-not-allowed" : ""
           }`}
-          disabled={generating}>
+          disabled={generating}
+        >
           <FaFilePdf className="inline mr-2" />
           {generating ? "Generating..." : "Generate PDF"}
         </button>
