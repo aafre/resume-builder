@@ -6,3 +6,5 @@ flask
 flask-cors
 flask-talisman
 gunicorn
+pytest
+fastapi[standard]
