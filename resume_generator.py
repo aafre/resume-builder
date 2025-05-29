@@ -162,11 +162,19 @@ if __name__ == "__main__":
         required=True,
         help="The output PDF file path to save the generated resume.",
     )
+    parser.add_argument(
+        "--category",
+        help="The template category to use for generating the resume (e.g., 'modern').",
+    )
 
     args = parser.parse_args()
 
     try:
         resume_data = load_resume_data(args.input)
-        generate_pdf(args.template, resume_data, args.output)
+        generate_pdf(
+            args.template,
+            resume_data,
+            args.output,
+        )
     except Exception as e:
         print(f"Error: {e}")
