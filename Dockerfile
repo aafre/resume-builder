@@ -10,29 +10,36 @@ RUN npm install
 COPY resume-builder-ui/ ./
 RUN npm run build
 
-# Step 2: Set up the Python (Flask) environment
-FROM python:3.11-slim-bullseye AS flask 
+
+# Step 2: Set up the Flask/uv environment
+# Use the uv image (Python 3.11 on slim-bookworm) so uv is preinstalled
+FROM ghcr.io/astral-sh/uv:0.7.8-python3.11-bookworm-slim AS flask
+
 WORKDIR /app
 
-# Install wkhtmltopdf and other dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    wkhtmltopdf \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+# Install system deps
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends wkhtmltopdf && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Copy only requirements first for better layer caching
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
 
-# Step 3: Copy the Flask app
+# Use uv to install into the system Python environment
+# (--system avoids creating a virtualenv inside the container)
+RUN uv pip install --system --no-cache -r requirements.txt
+
+# Copy the rest of your Flask app
 COPY . .
 
-# Remove React code 
+# Remove the React source directory (we only need the built assets)
 RUN rm -rf /app/resume-builder-ui
 
-# Copy React build output to Flask's static folder
+# Copy the React build output into Flask’s static folder
 COPY --from=react-build /app/react/dist/ /app/static/
 
-# Expose the port that Cloud Run requires
+# Expose Cloud Run port
 EXPOSE 5000
 
-# Command to run the app with gunicorn
+# Start with gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
