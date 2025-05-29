@@ -1,5 +1,9 @@
 # Step 1: Build the React app
 FROM node:22 AS react-build
+
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
+
 WORKDIR /app/react
 COPY resume-builder-ui/package*.json ./
 RUN npm install
