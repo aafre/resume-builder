@@ -25,7 +25,7 @@ export default function Header() {
           onClick={() => navigate("/")}
         >
           <img src={logo} alt="EasyFreeResume Logo" className="w-12 h-12" />
-          <span className="text-2xl font-bold text-blue-500 ml-2">
+          <span className="text-2xl font-bold text-blue-600 ml-2">
             EasyFreeResume
           </span>
         </div>
@@ -41,7 +41,8 @@ export default function Header() {
         {location.pathname === "/" && (
           <button
             onClick={() => navigate("/templates")}
-            className="bg-blue-500 text-white py-2 px-6 rounded-full text-sm font-medium shadow-md hover:bg-blue-600 transition-all"
+            className="bg-blue-600 text-white py-2 px-6 rounded-full text-sm font-medium shadow-md
+                       hover:bg-blue-700 transition-all"
           >
             Get Started
           </button>
