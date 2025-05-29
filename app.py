@@ -230,7 +230,7 @@ def generate_resume():
             )
 
             if result.returncode != 0:
-                logging.error("Resume generation error: %s", result.stderr.strip())
+                logging.error(f"Resume generation error: {result.stderr}")
                 raise RuntimeError("Failed to generate the resume")
 
             if not output_path.exists():

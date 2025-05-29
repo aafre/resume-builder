@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "resume-builder-api"
+version = "1.0.0"
+description = "FastAPI backend for the Resume Builder application."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+license-files = ["LICENSE*"]
+dependencies = [
+  "fastapi==0.115.8",
+  "uvicorn==0.34.0",
+  "pydantic==2.10.6",
+  "jinja2==3.1.5",
+  "pdfkit==1.0.0",
+  "PyYAML==6.0.2",
+  "python-multipart==0.0.20"
+]
+authors = [
+  { name = "Amit Afre", email = "amit.afre93+resumebuilderapp@gmail.com" }
+]
+maintainers = [
+  { name = "Amit Afre", email = "youremail@example.com" }
+]
+keywords = ["resume", "builder", "fastapi", "api", "pdf", "reactjs" ]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://easyfreeresume.com/"
+Repository = "https://github.com/aafre/resume-builder"
+Documentation = "https://github.com/yourusername/resume-builder-api#readme"
+
+[project.scripts]
+resume-builder = "resume_builder_api.app:main"
+
+[project.optional-dependencies]
+dev = [
+  "pytest==8.3.4"
+]
