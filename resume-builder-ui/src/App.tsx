@@ -9,11 +9,13 @@ import ErrorPage from "./components/ErrorPage";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsOfService from "./components/TermsOfService";
 import ReviewForm from "./components/ReviewForm";
+import EnvironmentBanner from "./components/EnvironmentBanner";
 
 export default function App() {
   return (
     <Router>
       <div className="flex flex-col min-h-screen bg-gray-50">
+        <EnvironmentBanner />
         {/* Header */}
         <header className="bg-white shadow-md sticky top-0 z-50">
           <Header />
