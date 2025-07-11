@@ -88,7 +88,7 @@
                     <h3 className="text-sm font-semibold text-gray-800">
                       {template.name}
                     </h3>
-                    <p className="text-xs text-gray-600 truncate">
+                    <p className="text-xs text-gray-600 truncate max-w-[2/3]">
                       {template.description}
                     </p>
                   </div>
