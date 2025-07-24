@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { FaFilePdf, FaPlus } from "react-icons/fa";
 import { fetchTemplate, generateResume } from "../services/templates";
+import { getSessionId } from "../utils/session";
 import yaml from "js-yaml";
 import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
@@ -81,7 +82,11 @@ const Editor: React.FC = () => {
           certification: item.certification || "",
           issuer: item.issuer || "",
           date: item.date || "",
-          icon: item.icon ? `/icons/${item.icon}` : null,
+          icon: item.icon
+            ? item.icon.startsWith("/icons/")
+              ? item.icon.replace("/icons/", "")
+              : item.icon
+            : null,
         }));
         return {
           ...section,
@@ -95,7 +100,11 @@ const Editor: React.FC = () => {
               const { icon, iconFile, ...rest } = item;
               return {
                 ...rest,
-                icon: icon ? `/icons/${icon}` : null,
+                icon: icon
+                  ? icon.startsWith("/icons/")
+                    ? icon.replace("/icons/", "")
+                    : icon
+                  : null,
               };
             })
           : section.content;
@@ -215,6 +224,11 @@ const Editor: React.FC = () => {
       const formData = new FormData();
       const yamlBlob = new Blob([yamlData], { type: "application/x-yaml" });
       formData.append("yaml_file", yamlBlob, "resume.yaml");
+      formData.append("template", templateId || "modern-no-icons");
+
+      // Add session ID for session-based icon isolation
+      const sessionId = getSessionId();
+      formData.append("session_id", sessionId);
 
       sections.forEach((section) => {
         if (
