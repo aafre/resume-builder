@@ -34,11 +34,11 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
 
 
 # Generate PDF from HTML file
-def generate_pdf(template_name, data, output_file):
+def generate_pdf(template_name, data, output_file, session_icons_dir=None):
     # Set up paths using pathlib
     project_root = Path(__file__).parent.resolve()
     templates_base_dir = project_root / "templates"
-    icons_dir = project_root / "icons"
+    default_icons_dir = project_root / "icons"
     output_dir = project_root / "output"
 
     # Template-specific directory
@@ -50,9 +50,15 @@ def generate_pdf(template_name, data, output_file):
 
     css_file = template_dir / "styles.css"
 
-    # Define paths in data dictionary for Jinja rendering
-    data["icon_path"] = icons_dir.as_posix()
-    data["css_path"] = css_file.as_posix()
+    # Use session icons directory if provided, otherwise default icons
+    if session_icons_dir and Path(session_icons_dir).exists():
+        icon_base_path = Path(session_icons_dir)
+    else:
+        icon_base_path = default_icons_dir
+
+    # Define paths in data dictionary for Jinja rendering - use file:// URLs for wkhtmltopdf
+    data["icon_path"] = f"file://{icon_base_path.as_posix()}"
+    data["css_path"] = f"file://{css_file.as_posix()}"
 
     # Set up Jinja2 environment
     env = Environment(loader=FileSystemLoader(template_dir))
@@ -96,8 +102,8 @@ def generate_pdf(template_name, data, output_file):
     html_content = template.render(
         contact_info=contact_info,
         sections=sections,
-        icon_path=icons_dir.as_posix(),
-        css_path=css_file.as_posix(),
+        icon_path=data["icon_path"],
+        css_path=data["css_path"],
         font=data.get("font", "Arial"),
     )
 
@@ -122,7 +128,8 @@ def generate_pdf(template_name, data, output_file):
         print("Error generating PDF:", e)
 
     # Clean up temporary HTML file
-    temp_html_file.unlink()
+    temp_html_file.unlink()  # Keep HTML file for debugging
+    print(f"HTML file kept at: {temp_html_file}")
 
 
 def get_social_media_handle(url):
@@ -166,6 +173,10 @@ if __name__ == "__main__":
         "--category",
         help="The template category to use for generating the resume (e.g., 'modern').",
     )
+    parser.add_argument(
+        "--session-icons-dir",
+        help="The session-specific icons directory path for user-uploaded icons.",
+    )
 
     args = parser.parse_args()
 
@@ -175,6 +186,7 @@ if __name__ == "__main__":
             args.template,
             resume_data,
             args.output,
+            getattr(args, "session_icons_dir", None),
         )
     except Exception as e:
         print(f"Error: {e}")

@@ -1,5 +1,6 @@
 import yaml
 import tempfile
+import shutil
 from flask import (
     Flask,
     request,
@@ -185,7 +186,63 @@ def generate_resume():
 
             yaml_file.save(yaml_path)
 
-            # Handle icon files if provided
+            # Parse YAML to extract icon references
+            with open(yaml_path, 'r') as f:
+                yaml_data = yaml.safe_load(f)
+
+            # Get session ID for icon isolation
+            session_id = request.form.get("session_id")
+            if not session_id:
+                raise ValueError("No session ID provided")
+            
+            # Create session-specific icon directory
+            session_icons_dir = Path("/tmp") / "sessions" / session_id / "icons"
+            session_icons_dir.mkdir(parents=True, exist_ok=True)
+
+            # Copy default icons referenced in YAML to session directory
+            def extract_icons_from_yaml(data):
+                icons = set()
+                if isinstance(data, dict):
+                    for key, value in data.items():
+                        if key == "icon" and isinstance(value, str):
+                            # Frontend now sends clean filenames, but handle both cases
+                            clean_icon_name = value.replace('/icons/', '') if value.startswith('/icons/') else value
+                            icons.add(clean_icon_name)
+                        else:
+                            icons.update(extract_icons_from_yaml(value))
+                elif isinstance(data, list):
+                    for item in data:
+                        icons.update(extract_icons_from_yaml(item))
+                return icons
+
+            # Always copy base contact icons that are hardcoded in templates
+            base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
+            for icon_name in base_contact_icons:
+                default_icon_path = ICONS_DIR / icon_name
+                if default_icon_path.exists():
+                    session_icon_path = session_icons_dir / icon_name
+                    shutil.copy2(default_icon_path, session_icon_path)
+                    logging.info(f"Copied base contact icon: {icon_name} to session directory")
+                else:
+                    logging.warning(f"Base contact icon not found: {icon_name} at {default_icon_path}")
+
+            # Copy additional icons referenced in YAML content
+            referenced_icons = extract_icons_from_yaml(yaml_data)
+            logging.info(f"Found {len(referenced_icons)} referenced icons: {referenced_icons}")
+            for icon_name in referenced_icons:
+                # Skip if already copied as base contact icon
+                if icon_name in base_contact_icons:
+                    continue
+                    
+                default_icon_path = ICONS_DIR / icon_name
+                if default_icon_path.exists():
+                    session_icon_path = session_icons_dir / icon_name
+                    shutil.copy2(default_icon_path, session_icon_path)
+                    logging.info(f"Copied default icon: {icon_name} to session directory")
+                else:
+                    logging.warning(f"Default icon not found: {icon_name} at {default_icon_path}")
+
+            # Handle icon files if provided - save to session directory
             icon_files = request.files.getlist("icons")
             for icon_file in icon_files:
                 if icon_file.filename == "":
@@ -200,41 +257,71 @@ def generate_resume():
                 ):
                     raise ValueError(f"Invalid icon file type: {icon_file.filename}")
 
-                # Save icon to the icons directory
-                icon_path = ICONS_DIR / icon_file.filename
+                # Save icon to the session-specific icons directory
+                icon_path = session_icons_dir / icon_file.filename
                 icon_file.save(icon_path)
 
             # Select the template
             template = request.form.get("template", "modern")
-            valid_templates = ["modern", "classic", "minimal"]
-            if template not in valid_templates:
+            
+            # Map template IDs to actual template directories
+            template_mapping = {
+                "modern-with-icons": "modern",
+                "modern-no-icons": "modern",
+                "modern": "modern",
+                "classic": "classic", 
+                "minimal": "minimal"
+            }
+            
+            if template not in template_mapping:
                 raise ValueError(
-                    f"Invalid template: {template}. Available templates: {', '.join(valid_templates)}"
+                    f"Invalid template: {template}. Available templates: {', '.join(template_mapping.keys())}"
                 )
+            
+            # Use the mapped template directory
+            actual_template = template_mapping[template]
             cmd = [
                 "python",
                 "resume_generator.py",
                 "--template",
-                template,
+                actual_template,
                 "--input",
                 str(yaml_path),
                 "--output",
                 str(output_path),
+                "--session-icons-dir",
+                str(session_icons_dir),
             ]
 
             # Generate the resume using subprocess
+            logging.info(f"Running command: {' '.join(cmd)}")
             result = subprocess.run(
                 cmd,
                 capture_output=True,
                 text=True,
             )
 
+            logging.info(f"Subprocess returncode: {result.returncode}")
+            logging.info(f"Subprocess stdout: {result.stdout}")
+            if result.stderr:
+                logging.error(f"Subprocess stderr: {result.stderr}")
+
             if result.returncode != 0:
                 logging.error(f"Resume generation error: {result.stderr}")
                 raise RuntimeError("Failed to generate the resume")
 
             if not output_path.exists():
+                logging.error(f"Expected output file at: {output_path}")
                 raise FileNotFoundError("The generated resume file was not found")
+
+            # Clean up session directory after successful PDF generation
+            try:
+                session_dir = Path("/tmp") / "sessions" / session_id
+                if session_dir.exists():
+                    shutil.rmtree(session_dir)
+                    logging.info(f"Cleaned up session directory: {session_dir}")
+            except Exception as cleanup_error:
+                logging.warning(f"Failed to cleanup session directory: {cleanup_error}")
 
             # Send the generated PDF file
             return send_file(
@@ -267,6 +354,22 @@ def download_file(filename):
     if file_path.exists():
         return send_file(file_path, as_attachment=True)
     return jsonify({"success": False, "error": "File not found"}), 404
+
+
+@app.route("/icons/<filename>")
+def serve_icon(filename):
+    """
+    Serve icons from the icons directory for frontend display.
+    """
+    try:
+        icon_path = ICONS_DIR / filename
+        if not icon_path.exists():
+            return jsonify({"success": False, "error": "Icon not found"}), 404
+        
+        return send_file(icon_path)
+    except Exception as e:
+        logging.error(f"Error serving icon {filename}: {e}")
+        return jsonify({"success": False, "error": "Icon not found"}), 404
 
 
 @app.route("/docs/templates/<path:filename>")
