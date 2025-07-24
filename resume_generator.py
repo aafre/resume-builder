@@ -1,9 +1,20 @@
 import pdfkit
 import argparse
+import yaml
+import uuid
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 
-from resume_builder_api.utils import load_resume_data
+
+def load_resume_data(yaml_file_path):
+    """Load and validate resume data from YAML file."""
+    with open(yaml_file_path, 'r') as file:
+        data = yaml.safe_load(file)
+    
+    if not isinstance(data, dict):
+        raise ValueError("Invalid YAML format: Root must be a dictionary")
+    
+    return data
 
 
 def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
@@ -34,7 +45,7 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
 
 
 # Generate PDF from HTML file
-def generate_pdf(template_name, data, output_file, session_icons_dir=None):
+def generate_pdf(template_name, data, output_file, session_icons_dir=None, session_id=None):
     # Set up paths using pathlib
     project_root = Path(__file__).parent.resolve()
     templates_base_dir = project_root / "templates"
@@ -110,8 +121,13 @@ def generate_pdf(template_name, data, output_file, session_icons_dir=None):
     # Ensure output directory exists
     output_dir.mkdir(exist_ok=True)
 
-    # Write HTML content to a temporary file
-    temp_html_file = output_dir / f"temp_{template_name}.html"
+    # Write HTML content to a temporary file with unique name
+    if session_id:
+        temp_html_file = output_dir / f"temp_{template_name}_{session_id}.html"
+    else:
+        # Use UUID for local runs to avoid conflicts
+        unique_id = str(uuid.uuid4())[:8]
+        temp_html_file = output_dir / f"temp_{template_name}_{unique_id}.html"
 
     with open(temp_html_file, "w") as html_file:
         html_file.write(html_content)
@@ -128,8 +144,14 @@ def generate_pdf(template_name, data, output_file, session_icons_dir=None):
         print("Error generating PDF:", e)
 
     # Clean up temporary HTML file
-    temp_html_file.unlink()  # Keep HTML file for debugging
-    print(f"HTML file kept at: {temp_html_file}")
+    try:
+        temp_html_file.unlink()  # Remove temp file
+        print(f"Temporary HTML file cleaned up: {temp_html_file}")
+    except FileNotFoundError:
+        # File already removed, no issue
+        pass
+    except Exception as e:
+        print(f"Warning: Could not remove temporary file {temp_html_file}: {e}")
 
 
 def get_social_media_handle(url):
@@ -177,6 +199,10 @@ if __name__ == "__main__":
         "--session-icons-dir",
         help="The session-specific icons directory path for user-uploaded icons.",
     )
+    parser.add_argument(
+        "--session-id",
+        help="The session ID for unique temp file naming.",
+    )
 
     args = parser.parse_args()
 
@@ -187,6 +213,7 @@ if __name__ == "__main__":
             resume_data,
             args.output,
             getattr(args, "session_icons_dir", None),
+            session_id=getattr(args, "session_id", None),
         )
     except Exception as e:
         print(f"Error: {e}")
