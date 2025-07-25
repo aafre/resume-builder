@@ -1,5 +1,5 @@
 export default function EnvironmentBanner() {
-  const env = process.env.NODE_ENV || "development";
+  const env = import.meta.env.MODE;
   if (env === "production") return null;
 
   return (
