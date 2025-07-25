@@ -3,24 +3,14 @@
 [![License](https://img.shields.io/github/license/aafre/resume-builder.svg)](LICENSE)
 
 # Professional Resume Builder 📝
-**Build Professional Resumes in Minutes - Free, Private, ATS-Friendly**
+Effortlessly Create, Update, and Perfect Your ATS-Friendly Resume - Your Content, Always Perfectly Formatted.
+
 
 **[🔗 Start Building Your Resume →](https://easyfreeresume.com)**
 
-No signup required • Your data stays private • Works on all devices
+No signup required • Your data stays private 
 
----
-
-## Why Choose Our Resume Builder?
-
-🆓 **Completely Free** - No hidden costs, no premium plans  
-🔒 **Privacy First** - Your data never leaves your device  
-⚡ **Auto-Save** - Never lose your work  
-📱 **Works Everywhere** - Desktop, tablet, mobile  
-🎯 **ATS-Friendly** - Pass applicant tracking systems  
-🎨 **Professional Templates** - Modern, clean designs  
-
----
+--
 
 ## How It Works
 
@@ -45,7 +35,7 @@ That's it! No account creation, no email verification, no complicated setup.
 - **No Sign-Up**: Start building immediately
 - **Local Storage**: Your data stays on your device
 - **No Tracking**: We don't collect personal information
-- **Export Control**: Download and keep your resume file
+- **Export Control**: Download and keep your resume as YAML file
 
 ### 📝 **Professional Output**
 - **ATS-Compatible**: Optimized for applicant tracking systems
