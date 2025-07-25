@@ -377,7 +377,7 @@ const Editor: React.FC = () => {
                   Save/Load
                 </button>
                 {showAdvancedMenu && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[100]">
+                  <div className="absolute right-0 top-full mt-2 w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[9999]">
                     <div className="p-2">
                       <button
                         onClick={() => {
