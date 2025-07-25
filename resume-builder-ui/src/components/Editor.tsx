@@ -78,8 +78,8 @@ const Editor: React.FC = () => {
 
   const processSections = (sections: Section[]) => {
     return sections.map((section) => {
-      // Handle Experience, Education, and Certifications sections
-      if (section.name === "Certifications" && section.type === "icon-list") {
+      // Handle icon-list sections (Certifications, Awards, etc.)
+      if (section.type === "icon-list") {
         const updatedContent = section.content.map((item: any) => ({
           certification: item.certification || "",
           issuer: item.issuer || "",
@@ -151,16 +151,45 @@ const Editor: React.FC = () => {
   };
 
   const handleAddSection = (type: string) => {
-    const defaultContent = [
-      "bulleted-list",
-      "inline-list",
-      "dynamic-column-list",
-    ].includes(type)
-      ? []
-      : "";
+    // Check for duplicates - generate a unique name if needed
+    const getUniqueDefaultName = (baseType: string) => {
+      const typeNameMap: { [key: string]: string } = {
+        "text": "New Text Section",
+        "bulleted-list": "New Bulleted List Section", 
+        "inline-list": "New Inline List Section",
+        "dynamic-column-list": "New Dynamic Column List Section",
+        "icon-list": "New Icon List Section"
+      };
+      
+      const baseName = typeNameMap[baseType] || "New Section";
+      const existingNames = sections.map(s => s.name.toLowerCase());
+      
+      // If base name doesn't exist, use it
+      if (!existingNames.includes(baseName.toLowerCase())) {
+        return baseName;
+      }
+      
+      // Otherwise, append a number
+      let counter = 2;
+      let uniqueName = `${baseName} ${counter}`;
+      while (existingNames.includes(uniqueName.toLowerCase())) {
+        counter++;
+        uniqueName = `${baseName} ${counter}`;
+      }
+      return uniqueName;
+    };
+
+    const defaultName = getUniqueDefaultName(type);
+    
+    let defaultContent;
+    if (["bulleted-list", "inline-list", "dynamic-column-list", "icon-list"].includes(type)) {
+      defaultContent = [];
+    } else {
+      defaultContent = "";
+    }
 
     const newSection: Section = {
-      name: "New Section",
+      name: defaultName,
       type: type,
       content: defaultContent,
     };
@@ -246,9 +275,8 @@ const Editor: React.FC = () => {
           });
         }
 
-        // Handle Certifications section icons
+        // Handle icon-list section icons (Certifications, Awards, etc.)
         if (
-          section.name === "Certifications" &&
           section.type === "icon-list" &&
           Array.isArray(section.content)
         ) {
@@ -372,7 +400,7 @@ const Editor: React.FC = () => {
                   </ul>
                 </div>
                 <p className="text-gray-700 mb-4">
-                  It's like saving your work — without needing to create an
+                  It's like saving your work - without needing to create an
                   account!
                 </p>
                 <button
@@ -412,44 +440,67 @@ const Editor: React.FC = () => {
       {sections.map((section, index) => {
         if (section.name === "Experience") {
           return (
-            <ExperienceSection
+            <div
               key={index}
-              experiences={section.content}
-              onUpdate={(updatedExperiences) =>
-                handleUpdateSection(index, {
-                  ...section,
-                  content: updatedExperiences,
-                })
-              }
-              supportsIcons={supportsIcons}
-            />
+              ref={index === sections.length - 1 ? newSectionRef : null}
+            >
+              <ExperienceSection
+                key={index}
+                experiences={section.content}
+                onUpdate={(updatedExperiences) =>
+                  handleUpdateSection(index, {
+                    ...section,
+                    content: updatedExperiences,
+                  })
+                }
+                supportsIcons={supportsIcons}
+              />
+            </div>
           );
         } else if (section.name === "Education") {
           return (
-            <EducationSection
+            <div
               key={index}
-              education={section.content}
-              onUpdate={(updatedEducation) =>
-                handleUpdateSection(index, {
-                  ...section,
-                  content: updatedEducation,
-                })
-              }
-              supportsIcons={supportsIcons}
-            />
+              ref={index === sections.length - 1 ? newSectionRef : null}
+            >
+              <EducationSection
+                key={index}
+                education={section.content}
+                onUpdate={(updatedEducation) =>
+                  handleUpdateSection(index, {
+                    ...section,
+                    content: updatedEducation,
+                  })
+                }
+                supportsIcons={supportsIcons}
+              />
+            </div>
           );
         } else if (section.type === "icon-list") {
           return (
-            <IconListSection
+            <div
               key={index}
-              data={section.content}
-              onUpdate={(updatedContent) =>
-                handleUpdateSection(index, {
-                  ...section,
-                  content: updatedContent,
-                })
-              }
-            />
+              ref={index === sections.length - 1 ? newSectionRef : null}
+            >
+              <IconListSection
+                key={index}
+                data={section.content}
+                onUpdate={(updatedContent) =>
+                  handleUpdateSection(index, {
+                    ...section,
+                    content: updatedContent,
+                  })
+                }
+                onDelete={() => handleDeleteSection(index)}
+                sectionName={section.name}
+                onEditTitle={() => handleTitleEdit(index)}
+                onSaveTitle={handleTitleSave}
+                onCancelTitle={handleTitleCancel}
+                isEditing={editingTitleIndex === index}
+                temporaryTitle={temporaryTitle}
+                setTemporaryTitle={setTemporaryTitle}
+              />
+            </div>
           );
         } else {
           return (
