@@ -353,89 +353,11 @@ const Editor: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <ToastContainer position="top-center" autoClose={3000} />
       
-      {/* Header with Actions */}
-      <div className="bg-white/90 backdrop-blur-sm shadow-lg border-b border-gray-200">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-800">Build Your Resume</h1>
-            
-            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-              <button
-                onClick={() => setShowModal(true)}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2"
-              >
-                <FaPlus />
-                Add New Section
-              </button>
-              
-              <div className="relative advanced-menu-container">
-                <button
-                  onClick={() => setShowAdvancedMenu(!showAdvancedMenu)}
-                  className="bg-white/80 backdrop-blur-sm text-gray-700 px-4 py-3 rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-                >
-                  <MdMoreVert />
-                  Save/Load
-                </button>
-                {showAdvancedMenu && (
-                  <div className="absolute right-0 top-full mt-2 w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[9999]">
-                    <div className="p-2">
-                      <button
-                        onClick={() => {
-                          handleExportYAML();
-                          setShowAdvancedMenu(false);
-                        }}
-                        className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3"
-                      >
-                        <MdFileDownload className="text-blue-600" />
-                        <div>
-                          <div className="font-medium">Save My Work</div>
-                          <div className="text-xs text-gray-500">Download to continue later</div>
-                        </div>
-                      </button>
-                      <label className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3 cursor-pointer">
-                        <MdFileUpload className="text-green-600" />
-                        <div>
-                          <div className="font-medium">Load Previous Work</div>
-                          <div className="text-xs text-gray-500">Upload your saved resume</div>
-                        </div>
-                        <input
-                          type="file"
-                          accept=".yaml,.yml"
-                          className="hidden"
-                          onChange={(e) => {
-                            handleImportYAML(e);
-                            setShowAdvancedMenu(false);
-                          }}
-                        />
-                      </label>
-                      <button
-                        onClick={() => {
-                          toggleHelpModal();
-                          setShowAdvancedMenu(false);
-                        }}
-                        className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3"
-                      >
-                        <MdHelpOutline className="text-purple-600" />
-                        <div>
-                          <div className="font-medium">Help & Tips</div>
-                          <div className="text-xs text-gray-500">How to save your work</div>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Content Container */}
       <div className="container mx-auto px-4 pt-8 pb-32">
         {/* Contact Information Card */}
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
-          <div className="flex items-center gap-3 mb-6">
-            <MdCheckCircle className="text-blue-600 text-2xl" />
+          <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-800">Contact Information</h2>
           </div>
           <p className="text-gray-600 mb-6">
@@ -553,18 +475,102 @@ const Editor: React.FC = () => {
           }
         })}
 
-        {/* Generate Button - Sticky with footer spacing */}
-        <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-50">
-          <button
-            onClick={handleGenerateResume}
-            className={`bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-4 rounded-full shadow-xl hover:shadow-2xl font-semibold text-lg transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 ${
-              generating ? "opacity-75 cursor-not-allowed scale-95" : "hover:scale-105"
-            }`}
-            disabled={generating}
-          >
-            <FaFilePdf className="text-xl" />
-            {generating ? "Creating Your Resume..." : "Download My Resume"}
-          </button>
+        {/* Unified Floating Action Toolbar */}
+        <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-50">
+          <div className="flex items-center gap-4">
+            {/* Add New Section - Enhanced Hover */}
+            <div className="relative group">
+              <button
+                onClick={() => setShowModal(true)}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110"
+              >
+                <FaPlus className="text-xl" />
+              </button>
+              {/* Hover Label */}
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                Add New Section
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
+              </div>
+            </div>
+            
+            {/* Download Resume - Primary Action */}
+            <button
+              onClick={handleGenerateResume}
+              className={`bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-4 rounded-full shadow-xl hover:shadow-2xl font-semibold text-lg transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 ${
+                generating ? "opacity-75 cursor-not-allowed scale-95" : "hover:scale-105"
+              }`}
+              disabled={generating}
+            >
+              <FaFilePdf className="text-xl" />
+              {generating ? "Creating Your Resume..." : "Download My Resume"}
+            </button>
+
+            {/* Save/Load - Floating */}
+            <div className="relative group advanced-menu-container">
+              <button
+                onClick={() => setShowAdvancedMenu(!showAdvancedMenu)}
+                className="bg-gradient-to-r from-gray-600 to-gray-700 text-white p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110"
+              >
+                <MdMoreVert className="text-xl" />
+              </button>
+              
+              {/* Hover Label */}
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                Save/Load Work
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
+              </div>
+
+              {/* Dropdown Menu */}
+              {showAdvancedMenu && (
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[9999]">
+                  <div className="p-2">
+                    <button
+                      onClick={() => {
+                        handleExportYAML();
+                        setShowAdvancedMenu(false);
+                      }}
+                      className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3"
+                    >
+                      <MdFileDownload className="text-blue-600" />
+                      <div>
+                        <div className="font-medium">Save My Work</div>
+                        <div className="text-xs text-gray-500">Download to continue later</div>
+                      </div>
+                    </button>
+                    <label className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3 cursor-pointer">
+                      <MdFileUpload className="text-green-600" />
+                      <div>
+                        <div className="font-medium">Load Previous Work</div>
+                        <div className="text-xs text-gray-500">Upload your saved resume</div>
+                      </div>
+                      <input
+                        type="file"
+                        accept=".yaml,.yml"
+                        className="hidden"
+                        onChange={(e) => {
+                          handleImportYAML(e);
+                          setShowAdvancedMenu(false);
+                        }}
+                      />
+                    </label>
+                    <button
+                      onClick={() => {
+                        toggleHelpModal();
+                        setShowAdvancedMenu(false);
+                      }}
+                      className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3"
+                    >
+                      <MdHelpOutline className="text-purple-600" />
+                      <div>
+                        <div className="font-medium">Help & Tips</div>
+                        <div className="text-xs text-gray-500">How to save your work</div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
