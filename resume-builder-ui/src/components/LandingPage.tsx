@@ -12,7 +12,6 @@ import {
   DocumentTextIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
-import TestimonialsMarquee from "./TestimonialsMarquee";
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -37,63 +36,63 @@ const LandingPage: React.FC = () => {
   const features = [
     {
       icon: <WrenchScrewdriverIcon className="w-10 h-10 text-blue-600" />,
-      title: "ATS-Optimized Templates",
+      title: "Beat the ATS",
       description:
-        "Our templates are rigorously tested to pass Applicant Tracking Systems, ensuring your resume lands where it matters.",
+        "Get past automated screening systems with templates optimized for Applicant Tracking Systems.",
     },
     {
-      icon: <SparklesIcon className="w-10 h-10 text-blue-600" />,
-      title: "Effortless Customization",
+      icon: <SparklesIcon className="w-10 h-10 text-indigo-600" />,
+      title: "Simple & Intuitive",
       description:
-        "Enjoy a drag-and-drop interface with real-time previews, making your resume creation seamless and fun.",
+        "Build your resume with an easy-to-use editor that shows exactly how your resume will look.",
     },
     {
       icon: <ClockIcon className="w-10 h-10 text-blue-600" />,
-      title: "Instant PDF Downloads",
+      title: "Ready in Minutes",
       description:
-        "Export your polished resumes in seconds, ready for your next big opportunity.",
+        "Download your professional PDF resume immediately - no waiting, no registration required.",
     },
     {
-      icon: <PaintBrushIcon className="w-10 h-10 text-blue-600" />,
-      title: "Professional Designs",
+      icon: <PaintBrushIcon className="w-10 h-10 text-indigo-600" />,
+      title: "Hiring Manager Approved",
       description:
-        "Choose from a range of stylish and industry-standard templates tailored to impress hiring managers.",
+        "Clean, modern designs that recruiters love and that help you stand out from the crowd.",
     },
     {
-      icon: <LockClosedIcon className="w-10 h-10 text-blue-600" />,
-      title: "Secure & Private",
+      icon: <LockClosedIcon className="w-10 h-10 text-green-600" />,
+      title: "Your Data Stays Private",
       description:
-        "Your data is SSL encrypted and GDPR compliant. We value your privacy as much as you do.",
+        "We don't store your personal information. Create and download with complete privacy.",
     },
     {
       icon: <DocumentTextIcon className="w-10 h-10 text-blue-600" />,
-      title: "Unlimited Resumes",
+      title: "Completely Free",
       description:
-        "Create and download as many resumes as you need—absolutely free and without limits.",
+        "Build unlimited resumes at no cost. No hidden fees, no premium upgrades, no catch.",
     },
   ];
 
   // FAQs
   const faqs = [
     {
-      question: "Is EasyFreeResume really free?",
+      question: "Is this resume builder really free?",
       answer:
-        "Yes, our resume builder is 100% free with no hidden costs. Create and download as many resumes as you need.",
+        "Yes, completely free with no hidden fees or premium upgrades. Create and download unlimited resumes at no cost.",
     },
     {
-      question: "How do I create an ATS-friendly resume?",
+      question: "Are the templates ATS-friendly?",
       answer:
-        "Our templates are specifically designed to pass ATS systems. Just choose a template and fill in your details.",
+        "All our templates are designed to pass Applicant Tracking Systems used by most companies. Your resume will be properly formatted and easily readable by both ATS and human recruiters.",
     },
     {
-      question: "Can I download my resume as PDF?",
+      question: "Do I need to sign up or create an account?",
       answer:
-        "Yes, you can download your resume in PDF format, which is perfect for job applications.",
+        "No registration required! You can start building your resume immediately and download it without providing any personal information.",
     },
     {
-      question: "Do I need to create an account?",
+      question: "What format will my resume be downloaded in?",
       answer:
-        "No account needed! Start creating your resume right away without any sign-up process.",
+        "Your resume is generated as a high-quality PDF that's perfect for email applications and printing. The PDF maintains professional formatting across all devices.",
     },
   ];
 
@@ -104,78 +103,81 @@ const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gradient-to-b from-white to-gray-50 text-gray-800">
+    <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-gray-800">
       {/* Hero Section */}
-      <div className="text-center my-12 px-4">
-        {/* Rainbow Gradient Title */}
-        <h1
-          className="
-            text-4xl md:text-5xl font-extrabold mb-6 leading-tight
-            text-transparent bg-clip-text
-            bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500
-          "
-        >
-          Create Your Professional Resume in Minutes - 100% Free
+      <div className="text-center my-16 px-4 max-w-4xl mx-auto">
+        {/* Professional Gradient Title */}
+        <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800">
+          Build Your Professional Resume in Minutes
         </h1>
-        <p className="text-lg md:text-xl max-w-2xl mx-auto text-gray-700">
-          Build an ATS-friendly resume that lands more interviews.
-          <br className="hidden md:block" />
-          No sign-up required. Free forever.
+        <p className="text-xl md:text-2xl max-w-3xl mx-auto text-gray-600 mb-4 leading-relaxed">
+          Create ATS-optimized resumes that get you noticed by hiring managers.
         </p>
+        <div className="flex items-center justify-center gap-4 mb-10">
+          <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
+            <LockClosedIcon className="w-4 h-4 text-green-600 mr-2" />
+            <span className="text-sm font-medium text-gray-700">100% Free</span>
+          </div>
+          <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
+            <ClockIcon className="w-4 h-4 text-blue-600 mr-2" />
+            <span className="text-sm font-medium text-gray-700">No Sign-up</span>
+          </div>
+        </div>
         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
           <button
-            className="inline-flex items-center justify-center bg-blue-600 text-white py-3 px-6 rounded-full text-lg font-semibold shadow-md
-                       hover:bg-blue-700 transition-colors duration-300 ease-in-out"
+            className="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 ease-out"
             onClick={() => navigate("/templates")}
           >
-            Create Your Resume Now
+            Start Building Now
             <ArrowRightIcon className="w-5 h-5 ml-2" />
           </button>
           <button
-            className="inline-flex items-center justify-center bg-gray-200 text-blue-600 py-3 px-6 rounded-full text-lg font-semibold shadow-md
-                       hover:bg-gray-300 transition-colors duration-300 ease-in-out"
+            className="inline-flex items-center justify-center bg-white/80 backdrop-blur-sm text-gray-700 py-4 px-8 rounded-xl text-lg font-semibold shadow-md hover:shadow-lg hover:bg-white transition-all duration-300 ease-out"
             onClick={() => navigate("/templates")}
           >
-            View Sample Templates
+            View Templates
             <EyeIcon className="w-5 h-5 ml-2" />
           </button>
         </div>
       </div>
 
       {/* Stats Section */}
-      <div className="flex justify-center items-center gap-16 my-12">
-        <div className="text-center">
-          <h3 className="text-5xl font-bold text-blue-600">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-16 my-16 px-4">
+        <div className="text-center bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+          <h3 className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">
             <CountUp end={finalResumesCreated} duration={3} separator="," />+
           </h3>
-          <p className="text-gray-700 mt-1">Resumes Created</p>
+          <p className="text-gray-600 font-medium">Resumes Created</p>
         </div>
-        <div className="text-center">
-          <h3 className="text-5xl font-bold text-green-600">4.9/5</h3>
-          <p className="text-gray-700 mt-1">User Rating</p>
+        <div className="text-center bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+          <h3 className="text-4xl md:text-5xl font-bold text-indigo-600 mb-2">99%</h3>
+          <p className="text-gray-600 font-medium">ATS Compatible</p>
         </div>
       </div>
 
       {/* Why Job Seekers Choose Us */}
-      <div className="container mx-auto max-w-5xl my-12 px-4 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-blue-700 mb-8">
-          Why Job Seekers Choose Us
+      <div className="container mx-auto max-w-6xl my-20 px-4 text-center">
+        <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
+          Why Choose Our Resume Builder?
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <p className="text-lg text-gray-600 mb-16 max-w-2xl mx-auto">
+          Trusted by job seekers worldwide to create resumes that stand out
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((item, index) => (
             <div
               key={index}
-              className="group p-6 bg-white rounded-lg shadow-lg transition-transform duration-300 transform hover:-translate-y-1 hover:scale-105"
+              className="group p-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
             >
-              <div className="flex items-center justify-center mb-4">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 group-hover:bg-blue-100 transition-colors duration-300">
+              <div className="flex items-center justify-center mb-6">
+                <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 group-hover:from-blue-100 group-hover:to-indigo-100 transition-all duration-300">
                   {item.icon}
                 </div>
               </div>
-              <h3 className="text-xl font-bold text-blue-600 mb-3 transition-colors duration-300 group-hover:text-blue-700">
+              <h3 className="text-xl font-bold text-gray-800 mb-4 transition-colors duration-300 group-hover:text-blue-600">
                 {item.title}
               </h3>
-              <p className="text-gray-600 transition-colors duration-300 group-hover:text-gray-700">
+              <p className="text-gray-600 leading-relaxed transition-colors duration-300 group-hover:text-gray-700">
                 {item.description}
               </p>
             </div>
@@ -183,45 +185,65 @@ const LandingPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Testimonials Section */}
-      <TestimonialsMarquee />
 
       {/* FAQ Section */}
-      <div className="container mx-auto max-w-5xl my-12 px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-blue-700 mb-8">
+      <div className="container mx-auto max-w-4xl my-20 px-4">
+        <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4 text-center">
           Frequently Asked Questions
         </h2>
-        <div className="grid grid-cols-1 gap-6">
+        <p className="text-lg text-gray-600 mb-12 text-center max-w-2xl mx-auto">
+          Everything you need to know about building your resume
+        </p>
+        <div className="space-y-4">
           {faqs.map((faq, index) => {
             const isOpen = openFAQIndex === index;
             return (
               <div
                 key={index}
-                className="p-6 bg-white rounded-lg shadow-lg transition-shadow hover:shadow-xl"
+                className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
                 <button
                   onClick={() => handleFAQToggle(index)}
-                  className="flex items-center justify-between w-full text-left"
+                  className="flex items-center justify-between w-full text-left p-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-2xl"
                 >
-                  <h3 className="text-lg font-semibold text-blue-600">
+                  <h3 className="text-lg font-semibold text-gray-800 pr-4">
                     {faq.question}
                   </h3>
                   <ChevronDownIcon
-                    className={`w-5 h-5 ml-2 transition-transform duration-300 ${
-                      isOpen ? "rotate-180" : ""
+                    className={`w-6 h-6 text-gray-400 transition-transform duration-300 flex-shrink-0 ${
+                      isOpen ? "rotate-180 text-blue-600" : ""
                     }`}
                   />
                 </button>
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    isOpen ? "max-h-40 mt-2" : "max-h-0"
+                    isOpen ? "max-h-48 pb-6" : "max-h-0"
                   }`}
                 >
-                  <p className="text-gray-600">{faq.answer}</p>
+                  <p className="text-gray-600 px-6 leading-relaxed">{faq.answer}</p>
                 </div>
               </div>
             );
           })}
+        </div>
+      </div>
+
+      {/* Final CTA Section */}
+      <div className="container mx-auto max-w-4xl my-20 px-4 text-center">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl shadow-2xl p-12 text-white">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Ready to Land Your Dream Job?
+          </h2>
+          <p className="text-xl mb-8 text-blue-100 max-w-2xl mx-auto">
+            Join thousands of job seekers who've successfully created professional resumes with our free builder.
+          </p>
+          <button
+            className="inline-flex items-center justify-center bg-white text-blue-600 py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 ease-out hover:scale-105"
+            onClick={() => navigate("/templates")}
+          >
+            Start Building Your Resume
+            <ArrowRightIcon className="w-5 h-5 ml-2" />
+          </button>
         </div>
       </div>
     </div>
