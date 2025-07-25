@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 interface Section {
   name: string;
@@ -29,6 +29,19 @@ const GenericSection: React.FC<GenericSectionProps> = ({
   temporaryTitle,
   setTemporaryTitle,
 }) => {
+  const [showHint, setShowHint] = useState(true);
+
+  useEffect(() => {
+    if (section.name.startsWith('New ')) {
+      const timer = setTimeout(() => {
+        setShowHint(false);
+      }, 5000); // Hide hint after 5 seconds
+      
+      return () => clearTimeout(timer);
+    } else {
+      setShowHint(false);
+    }
+  }, [section.name]);
   const handleContentChange = (value: string | string[], index?: number) => {
     if (Array.isArray(section.content)) {
       const updatedContent = [...section.content];
@@ -59,7 +72,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
               type="text"
               value={temporaryTitle}
               onChange={(e) => setTemporaryTitle(e.target.value)}
-              className="border border-gray-300 rounded-lg p-2 w-full"
+              className="border border-gray-300 rounded-lg p-2 w-full text-xl font-semibold"
               autoFocus
             />
             <button
@@ -78,7 +91,9 @@ const GenericSection: React.FC<GenericSectionProps> = ({
             </button>
           </div>
         ) : (
-          <h2 className="text-xl font-semibold">
+          <h2 className={`text-xl font-semibold ${
+            section.name.startsWith('New ') ? 'text-gray-500 italic' : ''
+          }`}>
             {section.name}
             <button
               onClick={onEditTitle}
@@ -87,6 +102,11 @@ const GenericSection: React.FC<GenericSectionProps> = ({
             >
               ✏️
             </button>
+            {section.name.startsWith('New ') && showHint && (
+              <span className="ml-2 text-sm text-blue-500 font-normal">
+                (Click ✏️ to rename)
+              </span>
+            )}
           </h2>
         )}
         <button

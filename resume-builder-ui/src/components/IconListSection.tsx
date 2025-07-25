@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import IconUpload from "./IconUpload";
 
 interface Certification {
@@ -14,6 +14,12 @@ interface IconListSectionProps {
   onUpdate: (updatedData: Certification[]) => void;
   onDelete?: () => void;
   sectionName?: string;
+  onEditTitle?: () => void;
+  onSaveTitle?: () => void;
+  onCancelTitle?: () => void;
+  isEditing?: boolean;
+  temporaryTitle?: string;
+  setTemporaryTitle?: (title: string) => void;
 }
 
 const IconListSection: React.FC<IconListSectionProps> = ({
@@ -21,7 +27,26 @@ const IconListSection: React.FC<IconListSectionProps> = ({
   onUpdate,
   onDelete,
   sectionName = "Certifications",
+  onEditTitle,
+  onSaveTitle,
+  onCancelTitle,
+  isEditing = false,
+  temporaryTitle = "",
+  setTemporaryTitle,
 }) => {
+  const [showHint, setShowHint] = useState(true);
+
+  useEffect(() => {
+    if (sectionName.startsWith('New ')) {
+      const timer = setTimeout(() => {
+        setShowHint(false);
+      }, 5000); // Hide hint after 5 seconds
+      
+      return () => clearTimeout(timer);
+    } else {
+      setShowHint(false);
+    }
+  }, [sectionName]);
   const handleUpdateItem = (
     index: number,
     field: keyof Certification,
@@ -61,7 +86,51 @@ const IconListSection: React.FC<IconListSectionProps> = ({
   return (
     <div className="border p-6 mb-6 bg-white shadow-sm rounded-lg">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">{sectionName}</h2>
+        {isEditing ? (
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              value={temporaryTitle}
+              onChange={(e) => setTemporaryTitle?.(e.target.value)}
+              className="border border-gray-300 rounded-lg p-2 w-full text-xl font-semibold"
+              autoFocus
+            />
+            <button
+              onClick={onSaveTitle}
+              className="text-green-600 hover:text-green-800"
+              title="Save Title"
+            >
+              ✅
+            </button>
+            <button
+              onClick={onCancelTitle}
+              className="text-red-600 hover:text-red-800"
+              title="Cancel"
+            >
+              ✕
+            </button>
+          </div>
+        ) : (
+          <h2 className={`text-xl font-semibold ${
+            sectionName.startsWith('New ') ? 'text-gray-500 italic' : ''
+          }`}>
+            {sectionName}
+            {onEditTitle && (
+              <button
+                onClick={onEditTitle}
+                className="ml-2 text-gray-500 hover:text-gray-700"
+                title="Edit Title"
+              >
+                ✏️
+              </button>
+            )}
+            {sectionName.startsWith('New ') && showHint && (
+              <span className="ml-2 text-sm text-blue-500 font-normal">
+                (Click ✏️ to rename)
+              </span>
+            )}
+          </h2>
+        )}
         {onDelete && (
           <button
             onClick={onDelete}
