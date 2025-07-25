@@ -193,7 +193,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
     );
 
     // For the first experience, click the delete button for the first description.
-    const deleteButtons = screen.getAllByText("🗑️");
+    const deleteButtons = screen.getAllByText("✕");
     fireEvent.click(deleteButtons[0]);
 
     expect(onUpdateMock).toHaveBeenCalledTimes(1);
