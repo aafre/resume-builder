@@ -37,6 +37,13 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
       useFor:
         "Technical Skills, Certifications, Tools, Key Projects, Accomplishments",
     },
+    {
+      type: "icon-list",
+      title: "Icon List",
+      description: "A list of items with optional icons for visual enhancement.",
+      useFor:
+        "Certifications, Awards, Professional Memberships, Licenses, Achievements",
+    },
   ];
 
   return (

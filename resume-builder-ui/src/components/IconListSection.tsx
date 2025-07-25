@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import IconUpload from "./IconUpload";
 
 interface Certification {
@@ -12,12 +12,41 @@ interface Certification {
 interface IconListSectionProps {
   data: Certification[];
   onUpdate: (updatedData: Certification[]) => void;
+  onDelete?: () => void;
+  sectionName?: string;
+  onEditTitle?: () => void;
+  onSaveTitle?: () => void;
+  onCancelTitle?: () => void;
+  isEditing?: boolean;
+  temporaryTitle?: string;
+  setTemporaryTitle?: (title: string) => void;
 }
 
 const IconListSection: React.FC<IconListSectionProps> = ({
   data,
   onUpdate,
+  onDelete,
+  sectionName = "Certifications",
+  onEditTitle,
+  onSaveTitle,
+  onCancelTitle,
+  isEditing = false,
+  temporaryTitle = "",
+  setTemporaryTitle,
 }) => {
+  const [showHint, setShowHint] = useState(true);
+
+  useEffect(() => {
+    if (sectionName.startsWith('New ')) {
+      const timer = setTimeout(() => {
+        setShowHint(false);
+      }, 5000); // Hide hint after 5 seconds
+      
+      return () => clearTimeout(timer);
+    } else {
+      setShowHint(false);
+    }
+  }, [sectionName]);
   const handleUpdateItem = (
     index: number,
     field: keyof Certification,
@@ -56,7 +85,61 @@ const IconListSection: React.FC<IconListSectionProps> = ({
 
   return (
     <div className="border p-6 mb-6 bg-white shadow-sm rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">Certifications</h2>
+      <div className="flex justify-between items-center mb-4">
+        {isEditing ? (
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              value={temporaryTitle}
+              onChange={(e) => setTemporaryTitle?.(e.target.value)}
+              className="border border-gray-300 rounded-lg p-2 w-full text-xl font-semibold"
+              autoFocus
+            />
+            <button
+              onClick={onSaveTitle}
+              className="text-green-600 hover:text-green-800"
+              title="Save Title"
+            >
+              ✅
+            </button>
+            <button
+              onClick={onCancelTitle}
+              className="text-red-600 hover:text-red-800"
+              title="Cancel"
+            >
+              ✕
+            </button>
+          </div>
+        ) : (
+          <h2 className={`text-xl font-semibold ${
+            sectionName.startsWith('New ') ? 'text-gray-500 italic' : ''
+          }`}>
+            {sectionName}
+            {onEditTitle && (
+              <button
+                onClick={onEditTitle}
+                className="ml-2 text-gray-500 hover:text-gray-700"
+                title="Edit Title"
+              >
+                ✏️
+              </button>
+            )}
+            {sectionName.startsWith('New ') && showHint && (
+              <span className="ml-2 text-sm text-blue-500 font-normal">
+                (Click ✏️ to rename)
+              </span>
+            )}
+          </h2>
+        )}
+        {onDelete && (
+          <button
+            onClick={onDelete}
+            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+          >
+            Remove
+          </button>
+        )}
+      </div>
       {data.length > 0 ? (
         data.map((item, index) => (
             <div key={index} className="mb-4 border-b pb-4">
@@ -74,54 +157,56 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                 </div>
                 
                 {/* Form Fields */}
-                <div className="grid grid-cols-8 gap-2 flex-grow items-center">
-                  <div className="col-span-3">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Certification
-                    </label>
-                    <input
-                      type="text"
-                      value={item.certification}
-                      onChange={(e) =>
-                        handleUpdateItem(index, "certification", e.target.value)
-                      }
-                      className="w-full border border-gray-300 rounded-lg p-2"
-                    />
-                  </div>
-                  <div className="col-span-3">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Issuer
-                    </label>
-                    <input
-                      type="text"
-                      value={item.issuer}
-                      onChange={(e) =>
-                        handleUpdateItem(index, "issuer", e.target.value)
-                      }
-                      className="w-full border border-gray-300 rounded-lg p-2"
-                    />
-                  </div>
-                  <div className="col-span-1">
-                    <label className="block text-gray-700 font-medium mb-1">
-                      Date
-                    </label>
-                    <input
-                      type="text"
-                      value={item.date}
-                      onChange={(e) =>
-                        handleUpdateItem(index, "date", e.target.value)
-                      }
-                      className="w-full border border-gray-300 rounded-lg p-2"
-                    />
-                  </div>
-                  <div className="col-span-1 flex justify-end items-center pt-6">
-                    <button
-                      onClick={() => handleRemoveItem(index)}
-                      className="text-red-600 hover:text-red-800"
-                      title="Remove Certification"
-                    >
-                      🗑️
-                    </button>
+                <div className="flex-grow">
+                  <div className="grid grid-cols-12 gap-4 items-end">
+                    <div className="col-span-4">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Certification
+                      </label>
+                      <input
+                        type="text"
+                        value={item.certification}
+                        onChange={(e) =>
+                          handleUpdateItem(index, "certification", e.target.value)
+                        }
+                        className="w-full border border-gray-300 rounded-lg p-2"
+                      />
+                    </div>
+                    <div className="col-span-4">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Issuer
+                      </label>
+                      <input
+                        type="text"
+                        value={item.issuer}
+                        onChange={(e) =>
+                          handleUpdateItem(index, "issuer", e.target.value)
+                        }
+                        className="w-full border border-gray-300 rounded-lg p-2"
+                      />
+                    </div>
+                    <div className="col-span-3">
+                      <label className="block text-gray-700 font-medium mb-1">
+                        Date
+                      </label>
+                      <input
+                        type="text"
+                        value={item.date}
+                        onChange={(e) =>
+                          handleUpdateItem(index, "date", e.target.value)
+                        }
+                        className="w-full border border-gray-300 rounded-lg p-2"
+                      />
+                    </div>
+                    <div className="col-span-1 flex justify-end items-center">
+                      <button
+                        onClick={() => handleRemoveItem(index)}
+                        className="text-red-600 hover:text-red-800 text-lg"
+                        title="Remove Certification"
+                      >
+                        ✕
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
