@@ -1,10 +1,12 @@
 import React from "react";
+import IconUpload from "./IconUpload";
 
 interface Certification {
   certification: string;
   issuer: string;
   date: string;
   icon?: string;
+  iconFile?: File;
 }
 
 interface IconListSectionProps {
@@ -19,11 +21,21 @@ const IconListSection: React.FC<IconListSectionProps> = ({
   const handleUpdateItem = (
     index: number,
     field: keyof Certification,
-    value: string
+    value: string | File | null
   ) => {
     const updatedData = [...data];
     updatedData[index] = { ...updatedData[index], [field]: value };
     onUpdate(updatedData);
+  };
+
+  const handleIconUpload = (index: number, renamedIcon: string, file: File) => {
+    handleUpdateItem(index, "icon", renamedIcon);
+    handleUpdateItem(index, "iconFile", file);
+  };
+
+  const handleIconClear = (index: number) => {
+    handleUpdateItem(index, "icon", null);
+    handleUpdateItem(index, "iconFile", null);
   };
 
   const handleAddItem = () => {
@@ -32,6 +44,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
       issuer: "",
       date: "",
       icon: "",
+      iconFile: undefined,
     };
     onUpdate([...data, newItem]);
   };
@@ -46,58 +59,73 @@ const IconListSection: React.FC<IconListSectionProps> = ({
       <h2 className="text-xl font-semibold mb-4">Certifications</h2>
       {data.length > 0 ? (
         data.map((item, index) => (
-          <div key={index} className="mb-4 border-b pb-4">
-            <div className="grid grid-cols-8 gap-2 mb-2 items-center">
-              <div className="col-span-3" >
-                <label className="block text-gray-700 font-medium mb-1">
-                  Certification
-                </label>
-                <input
-                  type="text"
-                  value={item.certification}
-                  onChange={(e) =>
-                    handleUpdateItem(index, "certification", e.target.value)
-                  }
-                  className="w-full border border-gray-300 rounded-lg p-2 "
-                />
-              </div>
-              <div className="col-span-3">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Issuer
-                </label>
-                <input
-                  type="text"
-                  value={item.issuer}
-                  onChange={(e) =>
-                    handleUpdateItem(index, "issuer", e.target.value)
-                  }
-                  className="w-full border border-gray-300 rounded-lg p-2"
-                />
-              </div>
-              <div className="col-span-1">
-                <label className="block text-gray-700 font-medium mb-1">
-                  Date
-                </label>
-                <input
-                  type="text"
-                  value={item.date}
-                  onChange={(e) =>
-                    handleUpdateItem(index, "date", e.target.value)
-                  }
-                  className="w-full border border-gray-300 rounded-lg p-2"
-                />
-              </div>
-              <div className="flex justify-end items-center pt-6 col-span-1">
-                <button
-                onClick={() => handleRemoveItem(index)}
-                className="text-red-600 hover:text-red-800"
-                title="Remove Certification"
-              >
-                🗑️
-              </button>
+            <div key={index} className="mb-4 border-b pb-4">
+              <div className="flex items-start gap-4">
+                {/* Icon Upload Component */}
+                <div className="flex-shrink-0 pt-6">
+                  <IconUpload
+                    onUpload={(renamedIcon, file) =>
+                      handleIconUpload(index, renamedIcon, file)
+                    }
+                    onClear={() => handleIconClear(index)}
+                    existingIcon={item.icon || null}
+                    existingIconFile={item.iconFile || null}
+                  />
+                </div>
+                
+                {/* Form Fields */}
+                <div className="grid grid-cols-8 gap-2 flex-grow items-center">
+                  <div className="col-span-3">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Certification
+                    </label>
+                    <input
+                      type="text"
+                      value={item.certification}
+                      onChange={(e) =>
+                        handleUpdateItem(index, "certification", e.target.value)
+                      }
+                      className="w-full border border-gray-300 rounded-lg p-2"
+                    />
+                  </div>
+                  <div className="col-span-3">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Issuer
+                    </label>
+                    <input
+                      type="text"
+                      value={item.issuer}
+                      onChange={(e) =>
+                        handleUpdateItem(index, "issuer", e.target.value)
+                      }
+                      className="w-full border border-gray-300 rounded-lg p-2"
+                    />
+                  </div>
+                  <div className="col-span-1">
+                    <label className="block text-gray-700 font-medium mb-1">
+                      Date
+                    </label>
+                    <input
+                      type="text"
+                      value={item.date}
+                      onChange={(e) =>
+                        handleUpdateItem(index, "date", e.target.value)
+                      }
+                      className="w-full border border-gray-300 rounded-lg p-2"
+                    />
+                  </div>
+                  <div className="col-span-1 flex justify-end items-center pt-6">
+                    <button
+                      onClick={() => handleRemoveItem(index)}
+                      className="text-red-600 hover:text-red-800"
+                      title="Remove Certification"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
         ))
       ) : (
         <p>
