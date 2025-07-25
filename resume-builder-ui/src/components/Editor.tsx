@@ -54,6 +54,11 @@ const Editor: React.FC = () => {
   const [showRecoveryModal, setShowRecoveryModal] = useState(false);
   const [recoveredData, setRecoveredData] = useState<{contactInfo: ContactInfo, sections: Section[]} | null>(null);
   const [originalTemplateData, setOriginalTemplateData] = useState<{contactInfo: ContactInfo, sections: Section[]} | null>(null);
+  const [loadingRecover, setLoadingRecover] = useState(false);
+  const [loadingStartFresh, setLoadingStartFresh] = useState(false);
+  const [loadingSave, setLoadingSave] = useState(false);
+  const [loadingLoad, setLoadingLoad] = useState(false);
+  const [loadingAddSection, setLoadingAddSection] = useState(false);
 
   useEffect(() => {
     if (!templateId) {
@@ -254,8 +259,12 @@ const Editor: React.FC = () => {
     }, 100);
   };
 
-  const handleExportYAML = () => {
+  const handleExportYAML = async () => {
     try {
+      setLoadingSave(true);
+      // Longer delay for noticeable feedback on file operations
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       const processedSections = processSections(sections);
 
       const yamlData = yaml.dump({
@@ -270,7 +279,7 @@ const Editor: React.FC = () => {
       link.download = "resume.yaml";
       link.click();
 
-      toast.success("Resume saved successfully", {
+      toast.success("Resume data file downloaded", {
         autoClose: 3000,
       });
 
@@ -285,6 +294,8 @@ const Editor: React.FC = () => {
     } catch (error) {
       console.error("Error exporting YAML:", error);
       toast.error("Unable to save file. Please check your browser settings and try again.");
+    } finally {
+      setLoadingSave(false);
     }
   };
 
@@ -292,9 +303,13 @@ const Editor: React.FC = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    setLoadingLoad(true);
+    
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       try {
+        // Longer delay for noticeable feedback on file operations
+        await new Promise(resolve => setTimeout(resolve, 1200));
         const parsedYaml = yaml.load(e.target?.result as string) as {
           contact_info: ContactInfo;
           sections: Section[];
@@ -315,6 +330,8 @@ const Editor: React.FC = () => {
         toast.error(
           "Invalid file format. Please upload a resume file saved from this application."
         );
+      } finally {
+        setLoadingLoad(false);
       }
     };
     reader.readAsText(file);
@@ -394,6 +411,16 @@ const Editor: React.FC = () => {
   };
 
   const toggleHelpModal = () => setShowHelpModal(!showHelpModal);
+
+  const handleAddNewSectionClick = async () => {
+    setLoadingAddSection(true);
+    
+    // Brief delay for subtle visual feedback
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    setShowModal(true);
+    setLoadingAddSection(false);
+  };
 
   const handleTourComplete = (dontShowAgain: boolean = false) => {
     setShowWelcomeTour(false);
@@ -603,18 +630,30 @@ const Editor: React.FC = () => {
     }
   };
 
-  const handleRecoverData = () => {
+  const handleRecoverData = async () => {
     if (recoveredData) {
+      setLoadingRecover(true);
+      
+      // Longer delay for noticeable feedback
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      
       setContactInfo(recoveredData.contactInfo);
       setSections(recoveredData.sections);
       setShowRecoveryModal(false);
+      setLoadingRecover(false);
       toast.success("Previous work restored successfully");
     }
   };
 
-  const handleStartFresh = () => {
+  const handleStartFresh = async () => {
+    setLoadingStartFresh(true);
+    
+    // Longer delay for noticeable feedback
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
     clearAutoSave();
     setShowRecoveryModal(false);
+    setLoadingStartFresh(false);
     // Keep the current template data (already loaded)
   };
 
@@ -845,10 +884,17 @@ const Editor: React.FC = () => {
             {/* Add New Section - Enhanced Hover */}
             <div className="relative group">
               <button
-                onClick={() => setShowModal(true)}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 sm:p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110"
+                onClick={handleAddNewSectionClick}
+                disabled={loadingAddSection}
+                className={`bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 sm:p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110 ${
+                  loadingAddSection ? 'scale-95 opacity-80' : ''
+                }`}
               >
-                <FaPlus className="text-lg sm:text-xl" />
+                {loadingAddSection ? (
+                  <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-2 border-white border-t-transparent"></div>
+                ) : (
+                  <FaPlus className="text-lg sm:text-xl" />
+                )}
               </button>
               {/* Hover Label */}
               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
@@ -867,7 +913,11 @@ const Editor: React.FC = () => {
               }`}
               disabled={generating}
             >
-              <FaFilePdf className="text-lg sm:text-xl" />
+              {generating ? (
+                <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-2 border-white border-t-transparent"></div>
+              ) : (
+                <FaFilePdf className="text-lg sm:text-xl" />
+              )}
               <span className="hidden sm:inline">{generating ? "Creating Your Resume..." : "Download My Resume"}</span>
               <span className="sm:hidden">{generating ? "Creating..." : "Download"}</span>
             </button>
@@ -896,28 +946,46 @@ const Editor: React.FC = () => {
                         handleExportYAML();
                         setShowAdvancedMenu(false);
                       }}
-                      className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3"
+                      disabled={loadingSave}
+                      className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
+                        loadingSave ? 'bg-blue-50 cursor-not-allowed animate-pulse' : ''
+                      }`}
                     >
-                      <MdFileDownload className="text-blue-600" />
+                      {loadingSave ? (
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent"></div>
+                      ) : (
+                        <MdFileDownload className="text-blue-600" />
+                      )}
                       <div>
-                        <div className="font-medium">Save My Work</div>
+                        <div className="font-medium">
+                          {loadingSave ? 'Preparing File...' : 'Save My Work'}
+                        </div>
                         <div className="text-xs text-gray-500">
-                          Download to continue later
+                          {loadingSave ? 'This will start downloading shortly' : 'Download to continue later'}
                         </div>
                       </div>
                     </button>
-                    <label className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3 cursor-pointer">
-                      <MdFileUpload className="text-green-600" />
+                    <label className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-green-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
+                      loadingLoad ? 'bg-green-50 cursor-not-allowed animate-pulse' : 'cursor-pointer'
+                    }`}>
+                      {loadingLoad ? (
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-green-600 border-t-transparent"></div>
+                      ) : (
+                        <MdFileUpload className="text-green-600" />
+                      )}
                       <div>
-                        <div className="font-medium">Load Previous Work</div>
+                        <div className="font-medium">
+                          {loadingLoad ? 'Processing File...' : 'Load Previous Work'}
+                        </div>
                         <div className="text-xs text-gray-500">
-                          Upload your saved resume
+                          {loadingLoad ? 'Reading and validating your resume' : 'Upload your saved resume'}
                         </div>
                       </div>
                       <input
                         type="file"
                         accept=".yaml,.yml"
                         className="hidden"
+                        disabled={loadingLoad}
                         onChange={(e) => {
                           handleImportYAML(e);
                           setShowAdvancedMenu(false);
@@ -1040,18 +1108,40 @@ const Editor: React.FC = () => {
               <div className="space-y-4">
                 <button
                   onClick={handleRecoverData}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2"
+                  disabled={loadingRecover || loadingStartFresh}
+                  className={`w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 ${
+                    loadingRecover ? 'opacity-75 cursor-not-allowed scale-95' : ''
+                  }`}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  Continue Previous Work
+                  {loadingRecover ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      Restoring Work...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Continue Previous Work
+                    </>
+                  )}
                 </button>
                 <button
                   onClick={handleStartFresh}
-                  className="w-full bg-white/80 backdrop-blur-sm text-gray-700 py-4 px-6 rounded-xl font-medium border border-gray-200 hover:bg-gray-50 transition-all duration-300"
+                  disabled={loadingRecover || loadingStartFresh}
+                  className={`w-full bg-white/80 backdrop-blur-sm text-gray-700 py-4 px-6 rounded-xl font-medium border border-gray-200 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center gap-2 ${
+                    loadingStartFresh ? 'opacity-75 cursor-not-allowed scale-95' : ''
+                  }`}
                 >
-                  Start With Clean Template
+                  {loadingStartFresh ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-600"></div>
+                      Starting Fresh...
+                    </>
+                  ) : (
+                    'Start With Clean Template'
+                  )}
                 </button>
               </div>
             </div>
