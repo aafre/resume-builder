@@ -10,7 +10,14 @@ import EducationSection from "./EducationSection";
 import GenericSection from "./GenericSection";
 import IconListSection from "./IconListSection";
 import SectionTypeModal from "./SectionTypeModal";
-import { MdFileDownload, MdFileUpload, MdHelpOutline, MdMoreVert, MdCheckCircle, MdRadioButtonUnchecked } from "react-icons/md";
+import {
+  MdFileDownload,
+  MdFileUpload,
+  MdHelpOutline,
+  MdMoreVert,
+  MdCheckCircle,
+  MdRadioButtonUnchecked,
+} from "react-icons/md";
 
 interface Section {
   name: string;
@@ -44,6 +51,7 @@ const Editor: React.FC = () => {
   const newSectionRef = useRef<HTMLDivElement | null>(null);
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
+  const [showWelcomeTour, setShowWelcomeTour] = useState(false);
 
   useEffect(() => {
     if (!templateId) {
@@ -76,6 +84,18 @@ const Editor: React.FC = () => {
 
     loadTemplate();
   }, [templateId]);
+
+  // Check if user should see welcome tour
+  useEffect(() => {
+    const hasSeenTour = localStorage.getItem("resume-builder-tour-seen");
+    if (!hasSeenTour) {
+      // Show tour after a brief delay to let page load
+      const timer = setTimeout(() => {
+        setShowWelcomeTour(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   const processSections = (sections: Section[]) => {
     return sections.map((section) => {
@@ -155,21 +175,21 @@ const Editor: React.FC = () => {
     // Check for duplicates - generate a unique name if needed
     const getUniqueDefaultName = (baseType: string) => {
       const typeNameMap: { [key: string]: string } = {
-        "text": "New Text Section",
-        "bulleted-list": "New Bulleted List Section", 
+        text: "New Text Section",
+        "bulleted-list": "New Bulleted List Section",
         "inline-list": "New Inline List Section",
         "dynamic-column-list": "New Dynamic Column List Section",
-        "icon-list": "New Icon List Section"
+        "icon-list": "New Icon List Section",
       };
-      
+
       const baseName = typeNameMap[baseType] || "New Section";
-      const existingNames = sections.map(s => s.name.toLowerCase());
-      
+      const existingNames = sections.map((s) => s.name.toLowerCase());
+
       // If base name doesn't exist, use it
       if (!existingNames.includes(baseName.toLowerCase())) {
         return baseName;
       }
-      
+
       // Otherwise, append a number
       let counter = 2;
       let uniqueName = `${baseName} ${counter}`;
@@ -181,9 +201,16 @@ const Editor: React.FC = () => {
     };
 
     const defaultName = getUniqueDefaultName(type);
-    
+
     let defaultContent;
-    if (["bulleted-list", "inline-list", "dynamic-column-list", "icon-list"].includes(type)) {
+    if (
+      [
+        "bulleted-list",
+        "inline-list",
+        "dynamic-column-list",
+        "icon-list",
+      ].includes(type)
+    ) {
       defaultContent = [];
     } else {
       defaultContent = "";
@@ -217,9 +244,24 @@ const Editor: React.FC = () => {
       link.href = url;
       link.download = "resume.yaml";
       link.click();
+
+      // Show helpful success message
+      toast.success("Your work has been saved! 💾", {
+        autoClose: 5000,
+      });
+
+      // Show additional info after short delay
+      setTimeout(() => {
+        toast.info(
+          "💡 Keep this file safe! Upload it anytime to continue editing your resume.",
+          {
+            autoClose: 8000,
+          }
+        );
+      }, 2000);
     } catch (error) {
       console.error("Error exporting YAML:", error);
-      toast.error("Failed to export YAML. Please try again.");
+      toast.error("Failed to save your work. Please try again.");
     }
   };
 
@@ -238,8 +280,19 @@ const Editor: React.FC = () => {
         // Process sections to clean up icon paths when importing YAML
         const processedSections = processSections(parsedYaml.sections);
         setSections(processedSections);
+
+        // Show success message
+        toast.success(
+          "Welcome back! Your work has been loaded successfully! 🎉",
+          {
+            autoClose: 4000,
+          }
+        );
       } catch (error) {
         console.error("Error parsing YAML file:", error);
+        toast.error(
+          "Unable to load this file. Please make sure it's a valid resume file saved from this app."
+        );
       }
     };
     reader.readAsText(file);
@@ -277,10 +330,7 @@ const Editor: React.FC = () => {
         }
 
         // Handle icon-list section icons (Certifications, Awards, etc.)
-        if (
-          section.type === "icon-list" &&
-          Array.isArray(section.content)
-        ) {
+        if (section.type === "icon-list" && Array.isArray(section.content)) {
           section.content.forEach((item: any) => {
             if (item.icon && item.iconFile) {
               formData.append("icons", item.iconFile, item.icon);
@@ -299,7 +349,19 @@ const Editor: React.FC = () => {
       link.click();
       document.body.removeChild(link);
 
-      toast.success("Resume generated successfully!");
+      toast.success("Your resume is ready! 🎯", {
+        autoClose: 4000,
+      });
+
+      // Show save tip after resume download
+      setTimeout(() => {
+        toast.info(
+          "💡 Pro tip: Use 'Save My Work' to keep your progress safe for future edits!",
+          {
+            autoClose: 8000,
+          }
+        );
+      }, 3000);
     } catch (error) {
       console.error("Error generating resume:", error);
       const errorMessage =
@@ -312,23 +374,29 @@ const Editor: React.FC = () => {
 
   const toggleHelpModal = () => setShowHelpModal(!showHelpModal);
 
+  const handleTourComplete = (dontShowAgain: boolean = false) => {
+    setShowWelcomeTour(false);
+    if (dontShowAgain) {
+      localStorage.setItem("resume-builder-tour-seen", "true");
+    }
+  };
+
   // Close advanced menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (showAdvancedMenu) {
         const target = event.target as Element;
-        if (!target.closest('.advanced-menu-container')) {
+        if (!target.closest(".advanced-menu-container")) {
           setShowAdvancedMenu(false);
         }
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showAdvancedMenu]);
-
 
   if (!templateId) {
     return (
@@ -343,7 +411,9 @@ const Editor: React.FC = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
         <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-xl text-gray-600">Loading your resume builder...</p>
+          <p className="text-xl text-gray-600">
+            Loading your resume builder...
+          </p>
         </div>
       </div>
     );
@@ -352,13 +422,15 @@ const Editor: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <ToastContainer position="top-center" autoClose={3000} />
-      
+
       {/* Main Content Container */}
       <div className="container mx-auto px-4 pt-8 pb-32">
         {/* Contact Information Card */}
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Contact Information</h2>
+            <h2 className="text-2xl font-bold text-gray-800">
+              Contact Information
+            </h2>
           </div>
           <p className="text-gray-600 mb-6">
             Start by filling out your basic contact information
@@ -492,12 +564,14 @@ const Editor: React.FC = () => {
                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
               </div>
             </div>
-            
+
             {/* Download Resume - Primary Action */}
             <button
               onClick={handleGenerateResume}
               className={`bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-4 rounded-full shadow-xl hover:shadow-2xl font-semibold text-lg transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 ${
-                generating ? "opacity-75 cursor-not-allowed scale-95" : "hover:scale-105"
+                generating
+                  ? "opacity-75 cursor-not-allowed scale-95"
+                  : "hover:scale-105"
               }`}
               disabled={generating}
             >
@@ -513,7 +587,7 @@ const Editor: React.FC = () => {
               >
                 <MdMoreVert className="text-xl" />
               </button>
-              
+
               {/* Hover Label */}
               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
                 Save/Load Work
@@ -534,14 +608,18 @@ const Editor: React.FC = () => {
                       <MdFileDownload className="text-blue-600" />
                       <div>
                         <div className="font-medium">Save My Work</div>
-                        <div className="text-xs text-gray-500">Download to continue later</div>
+                        <div className="text-xs text-gray-500">
+                          Download to continue later
+                        </div>
                       </div>
                     </button>
                     <label className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3 cursor-pointer">
                       <MdFileUpload className="text-green-600" />
                       <div>
                         <div className="font-medium">Load Previous Work</div>
-                        <div className="text-xs text-gray-500">Upload your saved resume</div>
+                        <div className="text-xs text-gray-500">
+                          Upload your saved resume
+                        </div>
                       </div>
                       <input
                         type="file"
@@ -563,7 +641,9 @@ const Editor: React.FC = () => {
                       <MdHelpOutline className="text-purple-600" />
                       <div>
                         <div className="font-medium">Help & Tips</div>
-                        <div className="text-xs text-gray-500">How to save your work</div>
+                        <div className="text-xs text-gray-500">
+                          How to save your work
+                        </div>
                       </div>
                     </button>
                   </div>
@@ -584,8 +664,8 @@ const Editor: React.FC = () => {
                 Save Your Work
               </h2>
               <p className="text-gray-700 mb-6 leading-relaxed">
-                We don't require accounts, so your resume isn't automatically saved. 
-                Here's how to keep your work safe:
+                We don't require accounts, so your resume isn't automatically
+                saved. Here's how to keep your work safe:
               </p>
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 p-4 rounded-xl mb-6">
                 <h3 className="text-blue-800 font-semibold mb-3 flex items-center gap-2">
@@ -594,21 +674,28 @@ const Editor: React.FC = () => {
                 </h3>
                 <div className="space-y-3 text-gray-700">
                   <div className="flex gap-3">
-                    <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">1</span>
+                    <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
+                      1
+                    </span>
                     <div>
-                      <strong>Save My Work:</strong> Downloads a file you can reopen later
+                      <strong>Save My Work:</strong> Downloads a file you can
+                      reopen later
                     </div>
                   </div>
                   <div className="flex gap-3">
-                    <span className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">2</span>
+                    <span className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
+                      2
+                    </span>
                     <div>
-                      <strong>Load Previous Work:</strong> Upload that file to continue editing
+                      <strong>Load Previous Work:</strong> Upload that file to
+                      continue editing
                     </div>
                   </div>
                 </div>
               </div>
               <p className="text-gray-600 text-sm mb-6">
-                Think of it like saving a document - you can pick up exactly where you left off!
+                Think of it like saving a document - you can pick up exactly
+                where you left off!
               </p>
               <button
                 onClick={toggleHelpModal}
@@ -616,6 +703,75 @@ const Editor: React.FC = () => {
               >
                 Got It, Thanks!
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Welcome Tour Modal */}
+      {showWelcomeTour && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-lg w-full border border-gray-200 animate-in fade-in duration-300">
+            <div className="p-8">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">👋</span>
+                </div>
+                <h2 className="text-3xl font-bold text-gray-800 mb-2">
+                  Welcome!
+                </h2>
+                <p className="text-gray-600">
+                  Let's make sure you don't lose your hard work
+                </p>
+              </div>
+
+              <div className="space-y-6 mb-8">
+                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                  <h3 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
+                    💾 Save Your Work
+                  </h3>
+                  <p className="text-blue-700 text-sm">
+                    We don't store your data online for privacy. Click the gray
+                    button in the floating toolbar to download your work as a
+                    file.
+                  </p>
+                </div>
+
+                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                  <h3 className="font-semibold text-green-800 mb-2 flex items-center gap-2">
+                    📂 Load Previous Work
+                  </h3>
+                  <p className="text-green-700 text-sm">
+                    Coming back later? Upload your saved file to continue
+                    exactly where you left off.
+                  </p>
+                </div>
+
+                <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
+                  <h3 className="font-semibold text-purple-800 mb-2 flex items-center gap-2">
+                    ✨ Pro Tip
+                  </h3>
+                  <p className="text-purple-700 text-sm">
+                    Save your work before leaving. This way you can make changes
+                    anytime!
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <button
+                  onClick={() => handleTourComplete(true)}
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
+                >
+                  Got it! Don't show this again
+                </button>
+                <button
+                  onClick={() => handleTourComplete(false)}
+                  className="w-full bg-gray-100 text-gray-700 py-3 px-6 rounded-xl font-medium hover:bg-gray-200 transition-colors"
+                >
+                  Got it! (Show next time)
+                </button>
+              </div>
             </div>
           </div>
         </div>
