@@ -47,28 +47,28 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   ];
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg max-w-xl w-full">
-        <h2 className="text-2xl font-bold mb-6">Select Section Type</h2>
-        <div className="space-y-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4">
+      <div className="bg-white/95 backdrop-blur-sm p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl max-w-sm sm:max-w-lg lg:max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-200 shadow-2xl">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 sm:mb-6 text-gray-800">Select Section Type</h2>
+        <div className="space-y-3 sm:space-y-4">
           {sectionTypes.map((section) => (
             <div
               key={section.type}
-              className="p-4 border rounded-lg shadow-sm hover:shadow-md cursor-pointer flex flex-col"
+              className="p-3 sm:p-4 lg:p-5 border border-gray-200 rounded-lg sm:rounded-xl shadow-sm hover:shadow-md cursor-pointer flex flex-col transition-all duration-300 hover:border-blue-300 hover:bg-blue-50/50 touch-manipulation"
               onClick={() => onSelect(section.type)}
             >
-              <h3 className="font-semibold text-lg">{section.title}</h3>
-              <p className="text-sm text-gray-600 mb-2">
+              <h3 className="font-semibold text-base sm:text-lg lg:text-xl text-gray-800 mb-2">{section.title}</h3>
+              <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3 leading-relaxed">
                 {section.description}
               </p>
-              <p className="text-sm text-gray-500 italic">
-                <strong>Use for:</strong> {section.useFor}
+              <p className="text-xs sm:text-sm text-gray-500 italic">
+                <strong className="text-gray-700">Use for:</strong> {section.useFor}
               </p>
             </div>
           ))}
         </div>
         <button
-          className="mt-6 bg-red-500 text-white px-4 py-2 rounded-lg w-full"
+          className="mt-4 sm:mt-6 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-lg sm:rounded-xl w-full font-semibold text-sm sm:text-base transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg touch-manipulation"
           onClick={onClose}
         >
           Cancel
