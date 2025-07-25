@@ -372,7 +372,7 @@ const Editor: React.FC = () => {
                   </ul>
                 </div>
                 <p className="text-gray-700 mb-4">
-                  It's like saving your work — without needing to create an
+                  It's like saving your work - without needing to create an
                   account!
                 </p>
                 <button
@@ -449,6 +449,8 @@ const Editor: React.FC = () => {
                   content: updatedContent,
                 })
               }
+              onDelete={() => handleDeleteSection(index)}
+              sectionName={section.name}
             />
           );
         } else {
