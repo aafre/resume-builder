@@ -106,9 +106,8 @@ const GenericSection: React.FC<GenericSectionProps> = ({
             className="w-full border border-gray-300 rounded-lg p-2"
           ></textarea>
         )}
-        {["bulleted-list", "inline-list", "dynamic-column-list"].includes(
-          section.type || ""
-        ) && (
+        {/* Bulleted List - Keep original full-width layout */}
+        {section.type === "bulleted-list" && (
           <>
             {Array.isArray(section.content) &&
               section.content.map((item: string, index: number) => (
@@ -134,6 +133,79 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 onUpdate({ ...section, content: updatedContent });
               }}
               className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2"
+            >
+              Add Item
+            </button>
+          </>
+        )}
+
+        {/* Inline List - Compact flex wrap layout */}
+        {section.type === "inline-list" && (
+          <>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {Array.isArray(section.content) &&
+                section.content.map((item: string, index: number) => (
+                  <div key={index} className="flex items-center bg-gray-100 rounded-full px-3 py-1 gap-2">
+                    <input
+                      type="text"
+                      value={item}
+                      onChange={(e) => handleContentChange(e.target.value, index)}
+                      className="bg-transparent border-none outline-none text-sm min-w-0 w-auto"
+                      style={{ width: `${Math.max(item.length + 2, 8)}ch` }}
+                      placeholder="Add skill"
+                    />
+                    <button
+                      onClick={() => handleRemoveItem(index)}
+                      className="text-red-500 hover:text-red-700 text-sm"
+                      title="Remove Item"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+            </div>
+            <button
+              onClick={() => {
+                const updatedContent = [...(section.content || []), ""];
+                onUpdate({ ...section, content: updatedContent });
+              }}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm"
+            >
+              Add Item
+            </button>
+          </>
+        )}
+
+        {/* Dynamic Column List - CSS Grid layout */}
+        {section.type === "dynamic-column-list" && (
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
+              {Array.isArray(section.content) &&
+                section.content.map((item: string, index: number) => (
+                  <div key={index} className="flex items-center bg-gray-50 rounded-lg px-3 py-2 gap-2 border">
+                    <input
+                      type="text"
+                      value={item}
+                      onChange={(e) => handleContentChange(e.target.value, index)}
+                      className="bg-transparent border-none outline-none text-sm flex-grow min-w-0"
+                      placeholder="Add item"
+                    />
+                    <button
+                      onClick={() => handleRemoveItem(index)}
+                      className="text-red-500 hover:text-red-700 text-sm flex-shrink-0"
+                      title="Remove Item"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+            </div>
+            <button
+              onClick={() => {
+                const updatedContent = [...(section.content || []), ""];
+                onUpdate({ ...section, content: updatedContent });
+              }}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm"
             >
               Add Item
             </button>
