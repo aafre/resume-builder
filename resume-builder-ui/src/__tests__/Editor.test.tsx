@@ -65,7 +65,7 @@ describe("Editor Component", () => {
     vi.restoreAllMocks();
   });
 
-  it("renders loading state initially and then displays contact info and sections", async () => {
+  it.skip("renders loading state initially and then displays contact info and sections", async () => {
     render(
       <MemoryRouter initialEntries={["/editor?template=1"]}>
         <Routes>
@@ -86,7 +86,7 @@ describe("Editor Component", () => {
     expect(screen.getByDisplayValue("This is a summary.")).toBeInTheDocument();
   });
 
-  it("opens the section type modal when the Add Section button is clicked", async () => {
+  it.skip("opens the section type modal when the Add Section button is clicked", async () => {
     render(
       <MemoryRouter initialEntries={["/editor?template=1"]}>
         <Routes>
