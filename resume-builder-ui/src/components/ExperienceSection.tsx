@@ -75,7 +75,8 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                     handleIconUpload(index, renamedIcon, file)
                   }
                   onClear={() => handleIconClear(index)}
-                  existingIcon={experience.icon || ""}
+                  existingIcon={experience.icon || null}
+                  existingIconFile={experience.iconFile || null}
                 />
               </div>
             )}

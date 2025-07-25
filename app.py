@@ -291,6 +291,8 @@ def generate_resume():
                 str(output_path),
                 "--session-icons-dir",
                 str(session_icons_dir),
+                "--session-id",
+                session_id,
             ]
 
             # Generate the resume using subprocess

@@ -85,7 +85,8 @@ const EducationSection: React.FC<EducationSectionProps> = ({
                     handleIconUpload(index, renamedIcon, file)
                   }
                   onClear={() => handleIconClear(index)}
-                  existingIcon={item.icon || ""}
+                  existingIcon={item.icon || null}
+                  existingIconFile={item.iconFile || null}
                 />
               </div>
             )}

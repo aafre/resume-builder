@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { FaPencilAlt, FaTimes, FaImage } from "react-icons/fa";
+import { getIconSource } from "../utils/icons";
 
 interface IconUploadProps {
   onUpload: (renamedIcon: string, file: File) => void;
   onClear?: () => void;
-  existingIcon?: string | null; // Updated to handle both string and null
+  existingIcon?: string | null;
+  existingIconFile?: File | null;
 }
 
 const IconUpload: React.FC<IconUploadProps> = ({
   onUpload,
   onClear,
   existingIcon,
+  existingIconFile,
 }) => {
   const [iconPreview, setIconPreview] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check if existingIcon is not null
-    if (existingIcon) {
-      setIconPreview(`/icons/${existingIcon}`);
-    } else {
-      setIconPreview(null); // No icon shows placeholder
-    }
-  }, [existingIcon]);
+    const { iconSrc } = getIconSource(existingIcon, existingIconFile);
+    setIconPreview(iconSrc);
+  }, [existingIcon, existingIconFile]);
 
   const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
