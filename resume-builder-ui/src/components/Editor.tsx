@@ -785,34 +785,33 @@ const Editor: React.FC = () => {
 
       {/* Auto-save indicator */}
       {lastSaved && (
-        <div className="fixed top-24 right-2 sm:right-4 bg-white/95 backdrop-blur-sm text-green-700 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-sm sm:text-base font-medium shadow-lg border border-green-200 z-[60] max-w-[calc(100vw-1rem)]">
-          <span className="hidden sm:inline">
+        <div className="fixed top-20 right-2 sm:top-24 sm:right-4 lg:right-6 bg-white/95 backdrop-blur-sm text-green-700 px-2 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm lg:text-base font-medium shadow-lg border border-green-200 z-[60] max-w-[calc(100vw-1rem)] sm:max-w-xs">
+          <span className="hidden md:inline">
             ✓ Auto-saved {new Date(lastSaved).toLocaleTimeString()}
           </span>
-          <span className="sm:hidden">
-            ✓ Saved{" "}
-            {new Date(lastSaved).toLocaleTimeString([], { timeStyle: "short" })}
+          <span className="md:hidden">
+            ✓ {new Date(lastSaved).toLocaleTimeString([], { timeStyle: "short" })}
           </span>
         </div>
       )}
 
       {/* Main Content Container */}
-      <div className="container mx-auto px-4 pt-8 pb-32">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 pt-4 sm:pt-6 lg:pt-8 pb-28 sm:pb-32 lg:pb-36">
         {/* Contact Information Card */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">
+        <div className="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 border border-gray-200">
+          <div className="mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
               Contact Information
             </h2>
           </div>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">
             Start by filling out your basic contact information
           </p>
           {contactInfo && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4 sm:space-y-6">
               {Object.keys(contactInfo).map((key) => (
-                <div key={key}>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                <div key={key} className="space-y-2 sm:space-y-3">
+                  <label className="block text-gray-700 font-semibold text-sm sm:text-base lg:text-lg">
                     {key.charAt(0).toUpperCase() + key.slice(1)}
                   </label>
                   <input
@@ -821,7 +820,7 @@ const Editor: React.FC = () => {
                     onChange={(e) =>
                       setContactInfo({ ...contactInfo, [key]: e.target.value })
                     }
-                    className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                    className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-4 sm:p-5 lg:p-6 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-base sm:text-lg font-medium bg-white/50 backdrop-blur-sm hover:bg-white/80 focus:bg-white"
                     placeholder={`Enter your ${key}`}
                   />
                 </div>
@@ -921,25 +920,25 @@ const Editor: React.FC = () => {
         })}
 
         {/* Unified Floating Action Toolbar */}
-        <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-50 px-4">
-          <div className="flex items-center gap-2 sm:gap-4 flex-wrap justify-center max-w-screen-sm">
+        <div className="fixed bottom-24 sm:bottom-32 left-1/2 transform -translate-x-1/2 z-50 px-2 sm:px-4 w-full max-w-md sm:max-w-lg lg:max-w-xl">
+          <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 flex-wrap justify-center">
             {/* Add New Section - Enhanced Hover */}
             <div className="relative group">
               <button
                 onClick={handleAddNewSectionClick}
                 disabled={loadingAddSection}
-                className={`bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 sm:p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110 ${
+                className={`bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 sm:p-4 lg:p-5 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110 touch-manipulation ${
                   loadingAddSection ? "scale-95 opacity-80" : ""
                 }`}
               >
                 {loadingAddSection ? (
-                  <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-2 border-white border-t-transparent"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 border-2 border-white border-t-transparent"></div>
                 ) : (
-                  <FaPlus className="text-lg sm:text-xl" />
+                  <FaPlus className="text-base sm:text-lg lg:text-xl" />
                 )}
               </button>
-              {/* Hover Label */}
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+              {/* Hover Label - Hidden on mobile */}
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none hidden sm:block">
                 Add New Section
                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
               </div>
@@ -948,7 +947,7 @@ const Editor: React.FC = () => {
             {/* Download Resume - Primary Action */}
             <button
               onClick={handleGenerateResume}
-              className={`bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 sm:px-8 py-3 sm:py-4 rounded-full shadow-xl hover:shadow-2xl font-semibold text-sm sm:text-lg transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 sm:gap-3 ${
+              className={`bg-gradient-to-r from-green-600 to-emerald-600 text-white px-3 sm:px-6 lg:px-8 py-3 sm:py-4 rounded-full shadow-xl hover:shadow-2xl font-semibold text-xs sm:text-sm lg:text-lg transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-1 sm:gap-2 lg:gap-3 touch-manipulation min-h-[48px] ${
                 generating
                   ? "opacity-75 cursor-not-allowed scale-95"
                   : "hover:scale-105"
@@ -956,14 +955,14 @@ const Editor: React.FC = () => {
               disabled={generating}
             >
               {generating ? (
-                <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-2 border-white border-t-transparent"></div>
+                <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 border-2 border-white border-t-transparent"></div>
               ) : (
-                <FaFilePdf className="text-lg sm:text-xl" />
+                <FaFilePdf className="text-sm sm:text-lg lg:text-xl" />
               )}
               <span className="hidden sm:inline">
                 {generating ? "Creating Your Resume..." : "Download My Resume"}
               </span>
-              <span className="sm:hidden">
+              <span className="sm:hidden text-xs">
                 {generating ? "Creating..." : "Download"}
               </span>
             </button>
@@ -972,43 +971,43 @@ const Editor: React.FC = () => {
             <div className="relative group advanced-menu-container">
               <button
                 onClick={() => setShowAdvancedMenu(!showAdvancedMenu)}
-                className="bg-gradient-to-r from-gray-600 to-gray-700 text-white p-3 sm:p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110"
+                className="bg-gradient-to-r from-gray-600 to-gray-700 text-white p-3 sm:p-4 lg:p-5 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110 touch-manipulation"
               >
-                <MdMoreVert className="text-lg sm:text-xl" />
+                <MdMoreVert className="text-base sm:text-lg lg:text-xl" />
               </button>
 
-              {/* Hover Label */}
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+              {/* Hover Label - Hidden on mobile */}
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none hidden sm:block">
                 Save/Load Work
                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
               </div>
 
               {/* Dropdown Menu */}
               {showAdvancedMenu && (
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 w-48 sm:w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[9999] max-w-[90vw]">
-                  <div className="p-2">
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 w-64 sm:w-72 lg:w-80 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[9999] max-w-[calc(100vw-2rem)]">
+                  <div className="p-2 sm:p-3">
                     <button
                       onClick={() => {
                         handleExportYAML();
                         setShowAdvancedMenu(false);
                       }}
                       disabled={loadingSave}
-                      className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
+                      className={`w-full text-left px-3 py-3 sm:py-4 text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-300 flex items-center gap-3 touch-manipulation ${
                         loadingSave
                           ? "bg-blue-50 cursor-not-allowed animate-pulse"
                           : ""
                       }`}
                     >
                       {loadingSave ? (
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent"></div>
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent flex-shrink-0"></div>
                       ) : (
-                        <MdFileDownload className="text-blue-600" />
+                        <MdFileDownload className="text-blue-600 text-xl flex-shrink-0" />
                       )}
-                      <div>
-                        <div className="font-medium">
+                      <div className="min-w-0">
+                        <div className="font-medium text-sm sm:text-base">
                           {loadingSave ? "Preparing File..." : "Save My Work"}
                         </div>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-gray-500 truncate">
                           {loadingSave
                             ? "This will start downloading shortly"
                             : "Download to continue later"}
@@ -1016,24 +1015,24 @@ const Editor: React.FC = () => {
                       </div>
                     </button>
                     <label
-                      className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-green-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
+                      className={`w-full text-left px-3 py-3 sm:py-4 text-gray-700 hover:bg-green-50 rounded-lg transition-all duration-300 flex items-center gap-3 touch-manipulation ${
                         loadingLoad
                           ? "bg-green-50 cursor-not-allowed animate-pulse"
                           : "cursor-pointer"
                       }`}
                     >
                       {loadingLoad ? (
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-green-600 border-t-transparent"></div>
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-green-600 border-t-transparent flex-shrink-0"></div>
                       ) : (
-                        <MdFileUpload className="text-green-600" />
+                        <MdFileUpload className="text-green-600 text-xl flex-shrink-0" />
                       )}
-                      <div>
-                        <div className="font-medium">
+                      <div className="min-w-0">
+                        <div className="font-medium text-sm sm:text-base">
                           {loadingLoad
                             ? "Processing File..."
                             : "Load Previous Work"}
                         </div>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-gray-500 truncate">
                           {loadingLoad
                             ? "Reading and validating your resume"
                             : "Upload your saved resume"}
@@ -1055,12 +1054,12 @@ const Editor: React.FC = () => {
                         toggleHelpModal();
                         setShowAdvancedMenu(false);
                       }}
-                      className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3"
+                      className="w-full text-left px-3 py-3 sm:py-4 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3 touch-manipulation"
                     >
-                      <MdHelpOutline className="text-purple-600" />
-                      <div>
-                        <div className="font-medium">Help & Tips</div>
-                        <div className="text-xs text-gray-500">
+                      <MdHelpOutline className="text-purple-600 text-xl flex-shrink-0" />
+                      <div className="min-w-0">
+                        <div className="font-medium text-sm sm:text-base">Help & Tips</div>
+                        <div className="text-xs text-gray-500 truncate">
                           How to save your work
                         </div>
                       </div>
@@ -1075,50 +1074,50 @@ const Editor: React.FC = () => {
 
       {/* Help Modal - Improved */}
       {showHelpModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-md w-full border border-gray-200">
-            <div className="p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                <MdHelpOutline className="text-blue-600" />
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4">
+          <div className="bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-2xl max-w-sm sm:max-w-md lg:max-w-lg w-full border border-gray-200 max-h-[90vh] overflow-y-auto">
+            <div className="p-4 sm:p-6 lg:p-8">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+                <MdHelpOutline className="text-blue-600 text-xl sm:text-2xl" />
                 Save Your Work
               </h2>
-              <p className="text-gray-700 mb-6 leading-relaxed">
+              <p className="text-gray-700 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
                 We don't require accounts, so your resume isn't automatically
                 saved. Here's how to keep your work safe:
               </p>
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 p-4 rounded-xl mb-6">
-                <h3 className="text-blue-800 font-semibold mb-3 flex items-center gap-2">
-                  <MdFileDownload className="text-blue-600" />
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 p-3 sm:p-4 rounded-lg sm:rounded-xl mb-4 sm:mb-6">
+                <h3 className="text-blue-800 font-semibold mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
+                  <MdFileDownload className="text-blue-600 text-lg sm:text-xl" />
                   💾 Two Easy Steps:
                 </h3>
-                <div className="space-y-3 text-gray-700">
-                  <div className="flex gap-3">
-                    <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
+                <div className="space-y-2 sm:space-y-3 text-gray-700">
+                  <div className="flex gap-2 sm:gap-3">
+                    <span className="bg-blue-600 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
                       1
                     </span>
-                    <div>
+                    <div className="text-xs sm:text-sm lg:text-base">
                       <strong>Save My Work:</strong> Downloads a file you can
                       reopen later
                     </div>
                   </div>
-                  <div className="flex gap-3">
-                    <span className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
+                  <div className="flex gap-2 sm:gap-3">
+                    <span className="bg-green-600 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0">
                       2
                     </span>
-                    <div>
+                    <div className="text-xs sm:text-sm lg:text-base">
                       <strong>Load Previous Work:</strong> Upload that file to
                       continue editing
                     </div>
                   </div>
                 </div>
               </div>
-              <p className="text-gray-600 text-sm mb-6">
+              <p className="text-gray-600 text-xs sm:text-sm mb-4 sm:mb-6 leading-relaxed">
                 Think of it like saving a document - you can pick up exactly
                 where you left off!
               </p>
               <button
                 onClick={toggleHelpModal}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg sm:rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 text-sm sm:text-base touch-manipulation"
               >
                 Got It, Thanks!
               </button>
@@ -1129,14 +1128,14 @@ const Editor: React.FC = () => {
 
       {/* Recovery Modal */}
       {showRecoveryModal && recoveredData && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl max-w-lg w-full border border-gray-200">
-            <div className="p-8">
-              <div className="text-center mb-8">
-                <div className="w-20 h-20 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-blue-100">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-3 sm:p-4">
+          <div className="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl max-w-xs sm:max-w-lg w-full border border-gray-200 max-h-[90vh] overflow-y-auto">
+            <div className="p-4 sm:p-6 lg:p-8">
+              <div className="text-center mb-6 sm:mb-8">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 border border-blue-100">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center">
                     <svg
-                      className="w-6 h-6 text-white"
+                      className="w-5 h-5 sm:w-6 sm:h-6 text-white"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1150,20 +1149,20 @@ const Editor: React.FC = () => {
                     </svg>
                   </div>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-3">
+                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 mb-2 sm:mb-3">
                   Continue Your Resume
                 </h2>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
                   We found work you were doing earlier. You can pick up exactly
                   where you left off.
                 </p>
               </div>
 
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 mb-8">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg sm:rounded-xl p-3 sm:p-4 lg:p-6 border border-blue-200 mb-6 sm:mb-8">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-lg flex items-center justify-center">
                     <svg
-                      className="w-5 h-5 text-white"
+                      className="w-4 h-4 sm:w-5 sm:h-5 text-white"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1176,11 +1175,11 @@ const Editor: React.FC = () => {
                       />
                     </svg>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-blue-800 mb-2">
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-blue-800 mb-1 sm:mb-2 text-sm sm:text-base">
                       Your Previous Session
                     </h3>
-                    <div className="text-blue-700 text-sm space-y-1 leading-relaxed">
+                    <div className="text-blue-700 text-xs sm:text-sm space-y-1 leading-relaxed">
                       <p>
                         Last worked on:{" "}
                         {recoveredData.timestamp.toLocaleDateString()} at{" "}
@@ -1195,11 +1194,11 @@ const Editor: React.FC = () => {
                 </div>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <button
                   onClick={handleRecoverData}
                   disabled={loadingRecover || loadingStartFresh}
-                  className={`w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 ${
+                  className={`w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg sm:rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base touch-manipulation ${
                     loadingRecover
                       ? "opacity-75 cursor-not-allowed scale-95"
                       : ""
@@ -1207,13 +1206,14 @@ const Editor: React.FC = () => {
                 >
                   {loadingRecover ? (
                     <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                      Restoring Work...
+                      <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white"></div>
+                      <span className="hidden sm:inline">Restoring Work...</span>
+                      <span className="sm:hidden">Restoring...</span>
                     </>
                   ) : (
                     <>
                       <svg
-                        className="w-5 h-5"
+                        className="w-4 h-4 sm:w-5 sm:h-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -1225,14 +1225,15 @@ const Editor: React.FC = () => {
                           d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                       </svg>
-                      Continue Previous Work
+                      <span className="hidden sm:inline">Continue Previous Work</span>
+                      <span className="sm:hidden">Continue Work</span>
                     </>
                   )}
                 </button>
                 <button
                   onClick={handleStartFresh}
                   disabled={loadingRecover || loadingStartFresh}
-                  className={`w-full bg-white/80 backdrop-blur-sm text-gray-700 py-4 px-6 rounded-xl font-medium border border-gray-200 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center gap-2 ${
+                  className={`w-full bg-white/80 backdrop-blur-sm text-gray-700 py-3 sm:py-4 px-4 sm:px-6 rounded-lg sm:rounded-xl font-medium border border-gray-200 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base touch-manipulation ${
                     loadingStartFresh
                       ? "opacity-75 cursor-not-allowed scale-95"
                       : ""
@@ -1240,11 +1241,15 @@ const Editor: React.FC = () => {
                 >
                   {loadingStartFresh ? (
                     <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-600"></div>
-                      Starting Fresh...
+                      <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-gray-600"></div>
+                      <span className="hidden sm:inline">Starting Fresh...</span>
+                      <span className="sm:hidden">Starting...</span>
                     </>
                   ) : (
-                    "Start With Clean Template"
+                    <>
+                      <span className="hidden sm:inline">Start With Clean Template</span>
+                      <span className="sm:hidden">Start Fresh</span>
+                    </>
                   )}
                 </button>
               </div>
@@ -1255,77 +1260,79 @@ const Editor: React.FC = () => {
 
       {/* Welcome Tour Modal */}
       {showWelcomeTour && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-lg w-full border border-gray-200 animate-in fade-in duration-300">
-            <div className="p-8">
-              <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">👋</span>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-3 sm:p-4">
+          <div className="bg-white/95 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-2xl max-w-xs sm:max-w-lg w-full border border-gray-200 animate-in fade-in duration-300 max-h-[90vh] overflow-y-auto">
+            <div className="p-4 sm:p-6 lg:p-8">
+              <div className="text-center mb-4 sm:mb-6">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                  <span className="text-lg sm:text-2xl">👋</span>
                 </div>
-                <h2 className="text-3xl font-bold text-gray-800 mb-2">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">
                   Welcome!
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-gray-600 text-sm sm:text-base">
                   Let's make sure you don't lose your hard work
                 </p>
               </div>
 
-              <div className="space-y-6 mb-8">
-                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
-                  <h3 className="font-semibold text-green-800 mb-2 flex items-center gap-2">
+              <div className="space-y-3 sm:space-y-4 lg:space-y-6 mb-6 sm:mb-8">
+                <div className="bg-green-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-green-200">
+                  <h3 className="font-semibold text-green-800 mb-1 sm:mb-2 flex items-center gap-2 text-sm sm:text-base">
                     ⚡ Your Work is Auto-Saved
                   </h3>
-                  <p className="text-green-700 text-sm">
+                  <p className="text-green-700 text-xs sm:text-sm leading-relaxed">
                     No need to worry! Your resume is automatically saved as you
                     work. Look for the "Auto-saved" message in the top corner.
                   </p>
                 </div>
 
-                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                  <h3 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
+                <div className="bg-blue-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-blue-200">
+                  <h3 className="font-semibold text-blue-800 mb-1 sm:mb-2 flex items-center gap-2 text-sm sm:text-base">
                     🔄 Working on Different Devices?
                   </h3>
-                  <p className="text-blue-700 text-sm">
+                  <p className="text-blue-700 text-xs sm:text-sm leading-relaxed">
                     Auto-save only works on this device and browser. To continue
                     on your phone, laptop, or different browser - download your
                     work first!
                   </p>
                 </div>
 
-                <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
-                  <h3 className="font-semibold text-amber-800 mb-2 flex items-center gap-2">
+                <div className="bg-amber-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-amber-200">
+                  <h3 className="font-semibold text-amber-800 mb-1 sm:mb-2 flex items-center gap-2 text-sm sm:text-base">
                     💾 How to Download Your Work
                   </h3>
-                  <p className="text-amber-700 text-sm">
+                  <p className="text-amber-700 text-xs sm:text-sm leading-relaxed">
                     See those floating buttons at the bottom? Click the 3-dot
                     menu, then "Save My Work". Keep that file safe - it's your
                     resume!
                   </p>
                 </div>
 
-                <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
-                  <h3 className="font-semibold text-purple-800 mb-2 flex items-center gap-2">
+                <div className="bg-purple-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-purple-200">
+                  <h3 className="font-semibold text-purple-800 mb-1 sm:mb-2 flex items-center gap-2 text-sm sm:text-base">
                     🔒 We Protect Your Privacy
                   </h3>
-                  <p className="text-purple-700 text-sm">
+                  <p className="text-purple-700 text-xs sm:text-sm leading-relaxed">
                     Your personal information never leaves your device. We don't
                     store your resume data - you're in complete control.
                   </p>
                 </div>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 <button
                   onClick={() => handleTourComplete(true)}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg sm:rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 text-sm sm:text-base touch-manipulation"
                 >
-                  Got it! Don't show this again
+                  <span className="hidden sm:inline">Got it! Don't show this again</span>
+                  <span className="sm:hidden">Got it! Don't show again</span>
                 </button>
                 <button
                   onClick={() => handleTourComplete(false)}
-                  className="w-full bg-gray-100 text-gray-700 py-3 px-6 rounded-xl font-medium hover:bg-gray-200 transition-colors"
+                  className="w-full bg-gray-100 text-gray-700 py-3 sm:py-4 px-4 sm:px-6 rounded-lg sm:rounded-xl font-medium hover:bg-gray-200 transition-colors text-sm sm:text-base touch-manipulation"
                 >
-                  Got it! (Show next time)
+                  <span className="hidden sm:inline">Got it! (Show next time)</span>
+                  <span className="sm:hidden">Got it! (Show again)</span>
                 </button>
               </div>
             </div>

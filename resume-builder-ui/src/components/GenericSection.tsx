@@ -64,15 +64,15 @@ const GenericSection: React.FC<GenericSectionProps> = ({
   };
 
   return (
-    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
-      <div className="flex items-center justify-between mb-4">
+    <div className="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 border border-gray-200">
+      <div className="flex items-center justify-between mb-4 sm:mb-6">
         {isEditing ? (
           <div className="flex items-center gap-2">
             <input
               type="text"
               value={temporaryTitle}
               onChange={(e) => setTemporaryTitle(e.target.value)}
-              className="border border-gray-300 rounded-lg p-2 w-full text-xl font-semibold"
+              className="border border-gray-300 rounded-lg sm:rounded-xl p-3 sm:p-4 w-full text-lg sm:text-xl font-semibold bg-white/50 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
               autoFocus
             />
             <button
@@ -91,8 +91,8 @@ const GenericSection: React.FC<GenericSectionProps> = ({
             </button>
           </div>
         ) : (
-          <h2 className={`text-xl font-semibold ${
-            section.name.startsWith('New ') ? 'text-gray-500 italic' : ''
+          <h2 className={`text-lg sm:text-xl lg:text-2xl font-semibold ${
+            section.name.startsWith('New ') ? 'text-gray-500 italic' : 'text-gray-800'
           }`}>
             {section.name}
             <button
@@ -111,36 +111,44 @@ const GenericSection: React.FC<GenericSectionProps> = ({
         )}
         <button
           onClick={onDelete}
-          className="bg-red-500 text-white px-3 py-1 rounded-lg"
+          className="bg-red-500 hover:bg-red-600 text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-colors touch-manipulation"
           title="Remove Section"
         >
           Remove
         </button>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 sm:mt-6">
         {section.type === "text" && (
-          <textarea
-            value={section.content || ""}
-            onChange={(e) => handleContentChange(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg p-2"
-          ></textarea>
+          <div className="space-y-2 sm:space-y-3">
+            <label className="block text-gray-700 font-semibold text-sm sm:text-base lg:text-lg">
+              Content
+            </label>
+            <textarea
+              value={section.content || ""}
+              onChange={(e) => handleContentChange(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-4 sm:p-5 lg:p-6 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-base sm:text-lg font-medium bg-white/50 backdrop-blur-sm hover:bg-white/80 focus:bg-white min-h-[120px] resize-y"
+              placeholder="Enter your content here..."
+              rows={4}
+            ></textarea>
+          </div>
         )}
         {/* Bulleted List - Keep original full-width layout */}
         {section.type === "bulleted-list" && (
           <>
             {Array.isArray(section.content) &&
               section.content.map((item: string, index: number) => (
-                <div key={index} className="flex items-center gap-2 mb-4">
+                <div key={index} className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                   <input
                     type="text"
                     value={item}
                     onChange={(e) => handleContentChange(e.target.value, index)}
-                    className="w-full border border-gray-300 rounded-lg p-2"
+                    className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-4 sm:p-5 lg:p-6 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-base sm:text-lg font-medium bg-white/50 backdrop-blur-sm hover:bg-white/80 focus:bg-white"
+                    placeholder="Enter list item..."
                   />
                   <button
                     onClick={() => handleRemoveItem(index)}
-                    className="text-red-600 hover:text-red-800"
+                    className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 touch-manipulation"
                     title="Remove Item"
                   >
                     ✕
@@ -152,7 +160,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 const updatedContent = [...(section.content || []), ""];
                 onUpdate({ ...section, content: updatedContent });
               }}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 mt-2"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-lg sm:rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 mt-2 sm:mt-4 text-sm sm:text-base touch-manipulation"
             >
               Add Item
             </button>
@@ -162,34 +170,39 @@ const GenericSection: React.FC<GenericSectionProps> = ({
         {/* Inline List - Compact flex wrap layout */}
         {section.type === "inline-list" && (
           <>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {Array.isArray(section.content) &&
-                section.content.map((item: string, index: number) => (
-                  <div key={index} className="flex items-center bg-gray-100 rounded-full px-3 py-1 gap-2">
-                    <input
-                      type="text"
-                      value={item}
-                      onChange={(e) => handleContentChange(e.target.value, index)}
-                      className="bg-transparent border-none outline-none text-sm min-w-0 w-auto"
-                      style={{ width: `${Math.max(item.length + 2, 8)}ch` }}
-                      placeholder="Add skill"
-                    />
-                    <button
-                      onClick={() => handleRemoveItem(index)}
-                      className="text-red-500 hover:text-red-700 text-sm"
-                      title="Remove Item"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
+            <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
+              <label className="block text-gray-700 font-semibold text-sm sm:text-base lg:text-lg">
+                Items (displayed inline)
+              </label>
+              <div className="flex flex-wrap gap-2 sm:gap-3">
+                {Array.isArray(section.content) &&
+                  section.content.map((item: string, index: number) => (
+                    <div key={index} className="flex items-center bg-gray-100/80 backdrop-blur-sm rounded-full px-3 sm:px-4 py-2 sm:py-3 gap-2 border border-gray-200 shadow-sm">
+                      <input
+                        type="text"
+                        value={item}
+                        onChange={(e) => handleContentChange(e.target.value, index)}
+                        className="bg-transparent border-none outline-none min-w-0 w-auto text-sm sm:text-base font-medium"
+                        style={{ width: `${Math.max(item.length + 2, 8)}ch` }}
+                        placeholder="Add item"
+                      />
+                      <button
+                        onClick={() => handleRemoveItem(index)}
+                        className="text-red-500 hover:text-red-700 p-1 hover:bg-red-100 rounded-full transition-colors flex-shrink-0 touch-manipulation"
+                        title="Remove Item"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+              </div>
             </div>
             <button
               onClick={() => {
                 const updatedContent = [...(section.content || []), ""];
                 onUpdate({ ...section, content: updatedContent });
               }}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 text-sm"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-lg sm:rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base touch-manipulation"
             >
               Add Item
             </button>
@@ -199,33 +212,38 @@ const GenericSection: React.FC<GenericSectionProps> = ({
         {/* Dynamic Column List - CSS Grid layout */}
         {section.type === "dynamic-column-list" && (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
-              {Array.isArray(section.content) &&
-                section.content.map((item: string, index: number) => (
-                  <div key={index} className="flex items-center bg-gray-50 rounded-lg px-3 py-2 gap-2 border">
-                    <input
-                      type="text"
-                      value={item}
-                      onChange={(e) => handleContentChange(e.target.value, index)}
-                      className="bg-transparent border-none outline-none text-sm flex-grow min-w-0"
-                      placeholder="Add item"
-                    />
-                    <button
-                      onClick={() => handleRemoveItem(index)}
-                      className="text-red-500 hover:text-red-700 text-sm flex-shrink-0"
-                      title="Remove Item"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
+            <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
+              <label className="block text-gray-700 font-semibold text-sm sm:text-base lg:text-lg">
+                Items (arranged in columns)
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+                {Array.isArray(section.content) &&
+                  section.content.map((item: string, index: number) => (
+                    <div key={index} className="flex items-center bg-gray-50/80 backdrop-blur-sm rounded-lg sm:rounded-xl px-3 sm:px-4 py-3 sm:py-4 gap-2 sm:gap-3 border border-gray-200 shadow-sm">
+                      <input
+                        type="text"
+                        value={item}
+                        onChange={(e) => handleContentChange(e.target.value, index)}
+                        className="bg-transparent border-none outline-none text-sm sm:text-base font-medium flex-grow min-w-0 focus:outline-none"
+                        placeholder="Add item"
+                      />
+                      <button
+                        onClick={() => handleRemoveItem(index)}
+                        className="text-red-500 hover:text-red-700 p-1 hover:bg-red-100 rounded-full transition-colors flex-shrink-0 touch-manipulation"
+                        title="Remove Item"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+              </div>
             </div>
             <button
               onClick={() => {
                 const updatedContent = [...(section.content || []), ""];
                 onUpdate({ ...section, content: updatedContent });
               }}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 text-sm"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-lg sm:rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base touch-manipulation"
             >
               Add Item
             </button>
