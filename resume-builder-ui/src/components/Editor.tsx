@@ -10,7 +10,7 @@ import EducationSection from "./EducationSection";
 import GenericSection from "./GenericSection";
 import IconListSection from "./IconListSection";
 import SectionTypeModal from "./SectionTypeModal";
-import { MdFileDownload, MdFileUpload, MdHelpOutline } from "react-icons/md";
+import { MdFileDownload, MdFileUpload, MdHelpOutline, MdMoreVert, MdCheckCircle, MdRadioButtonUnchecked } from "react-icons/md";
 
 interface Section {
   name: string;
@@ -43,6 +43,7 @@ const Editor: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const newSectionRef = useRef<HTMLDivElement | null>(null);
   const [showHelpModal, setShowHelpModal] = useState(false);
+  const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
 
   useEffect(() => {
     if (!templateId) {
@@ -309,6 +310,26 @@ const Editor: React.FC = () => {
     }
   };
 
+  const toggleHelpModal = () => setShowHelpModal(!showHelpModal);
+
+  // Close advanced menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showAdvancedMenu) {
+        const target = event.target as Element;
+        if (!target.closest('.advanced-menu-container')) {
+          setShowAdvancedMenu(false);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showAdvancedMenu]);
+
+
   if (!templateId) {
     return (
       <p className="text-red-500">
@@ -317,230 +338,282 @@ const Editor: React.FC = () => {
     );
   }
 
-  if (loading) return <p>Loading...</p>;
-
-  const toggleHelpModal = () => setShowHelpModal(!showHelpModal);
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+        <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-xl text-gray-600">Loading your resume builder...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="container mx-auto my-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <ToastContainer position="top-center" autoClose={3000} />
-
-      <div className="flex justify-between items-center mb-6">
-        {/* Left Side: Add Section Button */}
-        <button
-          onClick={() => setShowModal(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-        >
-          <FaPlus />
-          Add Section
-        </button>
-
-        {/* Right Side: Export, Import, and Help Buttons */}
-        <div className="flex gap-2">
-          {/* Export Button */}
-          <button
-            onClick={handleExportYAML}
-            className="bg-teal-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow hover:bg-teal-800 transition-all"
-            title="Export your resume as a YAML file"
-          >
-            <MdFileDownload />
-            Export YAML
-          </button>
-
-          {/* Import Button */}
-          <label
-            className="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 cursor-pointer shadow hover:bg-green-600 transition-all"
-            title="Import your resume as a YAML file"
-          >
-            <MdFileUpload />
-            Import YAML
-            <input
-              type="file"
-              accept=".yaml,.yml"
-              className="hidden"
-              onChange={handleImportYAML}
-            />
-          </label>
-
-          {/* Help Button */}
-          <button
-            onClick={toggleHelpModal}
-            className="bg-gray-500 text-white p-3 rounded-md shadow-md hover:bg-gray-600 transition-all"
-            title="What is YAML Export/Import?"
-          >
-            <MdHelpOutline />
-          </button>
-
-          {/* Help Modal */}
-          {showHelpModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-                <h2 className="text-xl font-bold text-gray-800 mb-4">
-                  Why Use YAML Export/Import?
-                </h2>
-                <p className="text-gray-700 mb-4">
-                  We don’t ask you to create an account, and we don’t store your
-                  resume data. This means if you close the app and come back
-                  later, your resume edits will be gone.
-                </p>
-                <div className="bg-blue-100 border border-blue-300 p-3 rounded-lg mb-4">
-                  <h3 className="text-blue-700 font-medium mb-2">
-                    💡 Here's How to Use It:
-                  </h3>
-                  <ul className="list-disc list-inside text-gray-700">
-                    <li>
-                      <strong>Export:</strong> After creating your resume, save
-                      it as a YAML file to your computer.
-                    </li>
-                    <li>
-                      <strong>Import:</strong> When you come back later, upload
-                      that YAML file to quickly load your saved resume and
-                      continue editing.
-                    </li>
-                  </ul>
-                </div>
-                <p className="text-gray-700 mb-4">
-                  It's like saving your work - without needing to create an
-                  account!
-                </p>
+      
+      {/* Header with Actions */}
+      <div className="bg-white/90 backdrop-blur-sm shadow-lg border-b border-gray-200">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <h1 className="text-2xl font-bold text-gray-800">Build Your Resume</h1>
+            
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <button
+                onClick={() => setShowModal(true)}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2"
+              >
+                <FaPlus />
+                Add New Section
+              </button>
+              
+              <div className="relative advanced-menu-container">
                 <button
-                  onClick={toggleHelpModal}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                  onClick={() => setShowAdvancedMenu(!showAdvancedMenu)}
+                  className="bg-white/80 backdrop-blur-sm text-gray-700 px-4 py-3 rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2"
                 >
-                  Got It!
+                  <MdMoreVert />
+                  Save/Load
                 </button>
+                {showAdvancedMenu && (
+                  <div className="absolute right-0 mt-2 w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[100]">
+                    <div className="p-2">
+                      <button
+                        onClick={() => {
+                          handleExportYAML();
+                          setShowAdvancedMenu(false);
+                        }}
+                        className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3"
+                      >
+                        <MdFileDownload className="text-blue-600" />
+                        <div>
+                          <div className="font-medium">Save My Work</div>
+                          <div className="text-xs text-gray-500">Download to continue later</div>
+                        </div>
+                      </button>
+                      <label className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3 cursor-pointer">
+                        <MdFileUpload className="text-green-600" />
+                        <div>
+                          <div className="font-medium">Load Previous Work</div>
+                          <div className="text-xs text-gray-500">Upload your saved resume</div>
+                        </div>
+                        <input
+                          type="file"
+                          accept=".yaml,.yml"
+                          className="hidden"
+                          onChange={(e) => {
+                            handleImportYAML(e);
+                            setShowAdvancedMenu(false);
+                          }}
+                        />
+                      </label>
+                      <button
+                        onClick={() => {
+                          toggleHelpModal();
+                          setShowAdvancedMenu(false);
+                        }}
+                        className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3"
+                      >
+                        <MdHelpOutline className="text-purple-600" />
+                        <div>
+                          <div className="font-medium">Help & Tips</div>
+                          <div className="text-xs text-gray-500">How to save your work</div>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
 
-      <div className="border p-6 mb-6 bg-gray-100 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4">Contact Information</h2>
-        {contactInfo && (
-          <div className="grid grid-cols-2 gap-4">
-            {Object.keys(contactInfo).map((key) => (
-              <div key={key}>
-                <label className="block text-gray-700 font-medium mb-1">
-                  {key.charAt(0).toUpperCase() + key.slice(1)}
-                </label>
-                <input
-                  type="text"
-                  value={contactInfo[key as keyof ContactInfo] || ""}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, [key]: e.target.value })
+      {/* Main Content Container */}
+      <div className="container mx-auto px-4 pt-8 pb-32">
+        {/* Contact Information Card */}
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
+          <div className="flex items-center gap-3 mb-6">
+            <MdCheckCircle className="text-blue-600 text-2xl" />
+            <h2 className="text-2xl font-bold text-gray-800">Contact Information</h2>
+          </div>
+          <p className="text-gray-600 mb-6">
+            Start by filling out your basic contact information
+          </p>
+          {contactInfo && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {Object.keys(contactInfo).map((key) => (
+                <div key={key}>
+                  <label className="block text-gray-700 font-semibold mb-2">
+                    {key.charAt(0).toUpperCase() + key.slice(1)}
+                  </label>
+                  <input
+                    type="text"
+                    value={contactInfo[key as keyof ContactInfo] || ""}
+                    onChange={(e) =>
+                      setContactInfo({ ...contactInfo, [key]: e.target.value })
+                    }
+                    className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                    placeholder={`Enter your ${key}`}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Resume Sections */}
+        {sections.map((section, index) => {
+          if (section.name === "Experience") {
+            return (
+              <div
+                key={index}
+                ref={index === sections.length - 1 ? newSectionRef : null}
+              >
+                <ExperienceSection
+                  key={index}
+                  experiences={section.content}
+                  onUpdate={(updatedExperiences) =>
+                    handleUpdateSection(index, {
+                      ...section,
+                      content: updatedExperiences,
+                    })
                   }
-                  className="w-full border border-gray-300 rounded-lg p-2"
+                  supportsIcons={supportsIcons}
                 />
               </div>
-            ))}
-          </div>
-        )}
-      </div>
-      {sections.map((section, index) => {
-        if (section.name === "Experience") {
-          return (
-            <div
-              key={index}
-              ref={index === sections.length - 1 ? newSectionRef : null}
-            >
-              <ExperienceSection
+            );
+          } else if (section.name === "Education") {
+            return (
+              <div
                 key={index}
-                experiences={section.content}
-                onUpdate={(updatedExperiences) =>
-                  handleUpdateSection(index, {
-                    ...section,
-                    content: updatedExperiences,
-                  })
-                }
-                supportsIcons={supportsIcons}
-              />
-            </div>
-          );
-        } else if (section.name === "Education") {
-          return (
-            <div
-              key={index}
-              ref={index === sections.length - 1 ? newSectionRef : null}
-            >
-              <EducationSection
+                ref={index === sections.length - 1 ? newSectionRef : null}
+              >
+                <EducationSection
+                  key={index}
+                  education={section.content}
+                  onUpdate={(updatedEducation) =>
+                    handleUpdateSection(index, {
+                      ...section,
+                      content: updatedEducation,
+                    })
+                  }
+                  supportsIcons={supportsIcons}
+                />
+              </div>
+            );
+          } else if (section.type === "icon-list") {
+            return (
+              <div
                 key={index}
-                education={section.content}
-                onUpdate={(updatedEducation) =>
-                  handleUpdateSection(index, {
-                    ...section,
-                    content: updatedEducation,
-                  })
-                }
-                supportsIcons={supportsIcons}
-              />
-            </div>
-          );
-        } else if (section.type === "icon-list") {
-          return (
-            <div
-              key={index}
-              ref={index === sections.length - 1 ? newSectionRef : null}
-            >
-              <IconListSection
+                ref={index === sections.length - 1 ? newSectionRef : null}
+              >
+                <IconListSection
+                  key={index}
+                  data={section.content}
+                  onUpdate={(updatedContent) =>
+                    handleUpdateSection(index, {
+                      ...section,
+                      content: updatedContent,
+                    })
+                  }
+                  onDelete={() => handleDeleteSection(index)}
+                  sectionName={section.name}
+                  onEditTitle={() => handleTitleEdit(index)}
+                  onSaveTitle={handleTitleSave}
+                  onCancelTitle={handleTitleCancel}
+                  isEditing={editingTitleIndex === index}
+                  temporaryTitle={temporaryTitle}
+                  setTemporaryTitle={setTemporaryTitle}
+                />
+              </div>
+            );
+          } else {
+            return (
+              <div
                 key={index}
-                data={section.content}
-                onUpdate={(updatedContent) =>
-                  handleUpdateSection(index, {
-                    ...section,
-                    content: updatedContent,
-                  })
-                }
-                onDelete={() => handleDeleteSection(index)}
-                sectionName={section.name}
-                onEditTitle={() => handleTitleEdit(index)}
-                onSaveTitle={handleTitleSave}
-                onCancelTitle={handleTitleCancel}
-                isEditing={editingTitleIndex === index}
-                temporaryTitle={temporaryTitle}
-                setTemporaryTitle={setTemporaryTitle}
-              />
-            </div>
-          );
-        } else {
-          return (
-            <div
-              key={index}
-              ref={index === sections.length - 1 ? newSectionRef : null}
-            >
-              <GenericSection
-                section={section}
-                onUpdate={(updatedSection) =>
-                  handleUpdateSection(index, updatedSection)
-                }
-                onEditTitle={() => handleTitleEdit(index)}
-                onSaveTitle={handleTitleSave}
-                onCancelTitle={handleTitleCancel}
-                onDelete={() => handleDeleteSection(index)}
-                isEditing={editingTitleIndex === index}
-                temporaryTitle={temporaryTitle}
-                setTemporaryTitle={setTemporaryTitle}
-              />
-            </div>
-          );
-        }
-      })}
+                ref={index === sections.length - 1 ? newSectionRef : null}
+              >
+                <GenericSection
+                  section={section}
+                  onUpdate={(updatedSection) =>
+                    handleUpdateSection(index, updatedSection)
+                  }
+                  onEditTitle={() => handleTitleEdit(index)}
+                  onSaveTitle={handleTitleSave}
+                  onCancelTitle={handleTitleCancel}
+                  onDelete={() => handleDeleteSection(index)}
+                  isEditing={editingTitleIndex === index}
+                  temporaryTitle={temporaryTitle}
+                  setTemporaryTitle={setTemporaryTitle}
+                />
+              </div>
+            );
+          }
+        })}
 
-      <div
-        className="sticky bottom-5 transform z-50 "
-        style={{ display: "flex", justifyContent: "center" }}
-      >
-        <button
-          onClick={handleGenerateResume}
-          className={`bg-green-600 text-white px-6 py-3 rounded-full shadow hover:bg-green-700 transition-all ${
-            generating ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={generating}
-        >
-          <FaFilePdf className="inline mr-2" />
-          {generating ? "Generating..." : "Generate PDF"}
-        </button>
+        {/* Generate Button - Sticky with footer spacing */}
+        <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-50">
+          <button
+            onClick={handleGenerateResume}
+            className={`bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-4 rounded-full shadow-xl hover:shadow-2xl font-semibold text-lg transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 ${
+              generating ? "opacity-75 cursor-not-allowed scale-95" : "hover:scale-105"
+            }`}
+            disabled={generating}
+          >
+            <FaFilePdf className="text-xl" />
+            {generating ? "Creating Your Resume..." : "Download My Resume"}
+          </button>
+        </div>
       </div>
+
+      {/* Help Modal - Improved */}
+      {showHelpModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-md w-full border border-gray-200">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+                <MdHelpOutline className="text-blue-600" />
+                Save Your Work
+              </h2>
+              <p className="text-gray-700 mb-6 leading-relaxed">
+                We don't require accounts, so your resume isn't automatically saved. 
+                Here's how to keep your work safe:
+              </p>
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 p-4 rounded-xl mb-6">
+                <h3 className="text-blue-800 font-semibold mb-3 flex items-center gap-2">
+                  <MdFileDownload className="text-blue-600" />
+                  💾 Two Easy Steps:
+                </h3>
+                <div className="space-y-3 text-gray-700">
+                  <div className="flex gap-3">
+                    <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">1</span>
+                    <div>
+                      <strong>Save My Work:</strong> Downloads a file you can reopen later
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <span className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">2</span>
+                    <div>
+                      <strong>Load Previous Work:</strong> Upload that file to continue editing
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-600 text-sm mb-6">
+                Think of it like saving a document - you can pick up exactly where you left off!
+              </p>
+              <button
+                onClick={toggleHelpModal}
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
+              >
+                Got It, Thanks!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {showModal && (
         <SectionTypeModal

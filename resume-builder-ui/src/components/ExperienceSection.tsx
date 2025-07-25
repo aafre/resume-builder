@@ -45,12 +45,14 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   };
 
   return (
-    <div className="border p-6 mb-6 bg-white shadow-sm rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">Experience</h2>
+    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
+      <div className="flex items-center gap-3 mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Experience</h2>
+      </div>
       {experiences.map((experience, index) => (
         <div
           key={index}
-          className="border p-4 mb-4 bg-gray-50 rounded-lg shadow-sm"
+          className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md"
         >
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-medium">Experience #{index + 1}</h3>
@@ -178,7 +180,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
           };
           onUpdate([...experiences, newExperience]);
         }}
-        className="bg-green-500 text-white px-4 py-2 mt-4 rounded hover:bg-green-600"
+        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
       >
         Add Experience
       </button>

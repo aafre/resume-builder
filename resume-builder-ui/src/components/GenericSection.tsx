@@ -64,7 +64,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
   };
 
   return (
-    <div className="border p-6 mb-8 bg-white shadow-sm rounded-lg">
+    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
       <div className="flex items-center justify-between mb-4">
         {isEditing ? (
           <div className="flex items-center gap-2">
@@ -152,7 +152,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 const updatedContent = [...(section.content || []), ""];
                 onUpdate({ ...section, content: updatedContent });
               }}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 mt-2"
             >
               Add Item
             </button>
@@ -189,7 +189,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 const updatedContent = [...(section.content || []), ""];
                 onUpdate({ ...section, content: updatedContent });
               }}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 text-sm"
             >
               Add Item
             </button>
@@ -225,7 +225,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 const updatedContent = [...(section.content || []), ""];
                 onUpdate({ ...section, content: updatedContent });
               }}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 text-sm"
             >
               Add Item
             </button>
