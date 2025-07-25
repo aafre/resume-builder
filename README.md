@@ -2,11 +2,10 @@
 [![Build Status](https://img.shields.io/github/actions/workflow/status/aafre/resume-builder/test-frontend.yml?branch=main)](https://github.com/aafre/resume-builder/actions)
 [![License](https://img.shields.io/github/license/aafre/resume-builder.svg)](LICENSE)
 
-# Professional Resume Builder 🚀
+# Professional Resume Builder 📝
 **Build Professional Resumes in Minutes - Free, Private, ATS-Friendly**
 
-## ✨ Try It Now
-**[🔗 Start Building Your Resume →](https://dev.easyfreeresume.com)**
+**[🔗 Start Building Your Resume →](https://easyfreeresume.com)**
 
 No signup required • Your data stays private • Works on all devices
 
@@ -25,7 +24,7 @@ No signup required • Your data stays private • Works on all devices
 
 ## How It Works
 
-1. **[Visit the App](https://dev.easyfreeresume.com)** - Open in any browser
+1. **[Visit the App](https://easyfreeresume.com)** - Open in any browser
 2. **Choose a Template** - Select from professional designs
 3. **Fill Your Info** - Easy visual editor with auto-save
 4. **Download PDF** - Get your polished resume instantly
@@ -160,6 +159,6 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-**[🚀 Start Building Your Resume Now →](https://dev.easyfreeresume.com)**
+**[🚀 Start Building Your Resume Now →](https://easyfreeresume.com)**
 
 *Build professional resumes in minutes, not hours.*
