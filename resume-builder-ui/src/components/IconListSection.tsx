@@ -84,7 +84,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
   };
 
   return (
-    <div className="border p-6 mb-6 bg-white shadow-sm rounded-lg">
+    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
       <div className="flex justify-between items-center mb-4">
         {isEditing ? (
           <div className="flex items-center gap-2">
@@ -142,7 +142,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
       </div>
       {data.length > 0 ? (
         data.map((item, index) => (
-            <div key={index} className="mb-4 border-b pb-4">
+            <div key={index} className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
               <div className="flex items-start gap-4">
                 {/* Icon Upload Component */}
                 <div className="flex-shrink-0 pt-6">
@@ -212,14 +212,10 @@ const IconListSection: React.FC<IconListSectionProps> = ({
               </div>
             </div>
         ))
-      ) : (
-        <p>
-          No certifications added yet. Use the button below to add a new one.
-        </p>
-      )}
+      ) : null}
       <button
         onClick={handleAddItem}
-        className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
       >
         Add Certification
       </button>
