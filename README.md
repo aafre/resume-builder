@@ -2,30 +2,19 @@
 [![Build Status](https://img.shields.io/github/actions/workflow/status/aafre/resume-builder/test-frontend.yml?branch=main)](https://github.com/aafre/resume-builder/actions)
 [![License](https://img.shields.io/github/license/aafre/resume-builder.svg)](LICENSE)
 
-# Professional Resume Builder 🚀
-**Build Professional Resumes in Minutes - Free, Private, ATS-Friendly**
+# Professional Resume Builder 📝
+Effortlessly Create, Update, and Perfect Your ATS-Friendly Resume - Your Content, Always Perfectly Formatted.
 
-## ✨ Try It Now
-**[🔗 Start Building Your Resume →](https://dev.easyfreeresume.com)**
 
-No signup required • Your data stays private • Works on all devices
+**[🔗 Start Building Your Resume →](https://easyfreeresume.com)**
 
----
+No signup required • Your data stays private 
 
-## Why Choose Our Resume Builder?
-
-🆓 **Completely Free** - No hidden costs, no premium plans  
-🔒 **Privacy First** - Your data never leaves your device  
-⚡ **Auto-Save** - Never lose your work  
-📱 **Works Everywhere** - Desktop, tablet, mobile  
-🎯 **ATS-Friendly** - Pass applicant tracking systems  
-🎨 **Professional Templates** - Modern, clean designs  
-
----
+--
 
 ## How It Works
 
-1. **[Visit the App](https://dev.easyfreeresume.com)** - Open in any browser
+1. **[Visit the App](https://easyfreeresume.com)** - Open in any browser
 2. **Choose a Template** - Select from professional designs
 3. **Fill Your Info** - Easy visual editor with auto-save
 4. **Download PDF** - Get your polished resume instantly
@@ -46,7 +35,7 @@ That's it! No account creation, no email verification, no complicated setup.
 - **No Sign-Up**: Start building immediately
 - **Local Storage**: Your data stays on your device
 - **No Tracking**: We don't collect personal information
-- **Export Control**: Download and keep your resume file
+- **Export Control**: Download and keep your resume as YAML file
 
 ### 📝 **Professional Output**
 - **ATS-Compatible**: Optimized for applicant tracking systems
@@ -160,6 +149,6 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-**[🚀 Start Building Your Resume Now →](https://dev.easyfreeresume.com)**
+**[🚀 Start Building Your Resume Now →](https://easyfreeresume.com)**
 
 *Build professional resumes in minutes, not hours.*
