@@ -18,7 +18,10 @@ const IconUpload: React.FC<IconUploadProps> = ({
   const [iconPreview, setIconPreview] = useState<string | null>(null);
 
   useEffect(() => {
-    const { iconSrc } = getIconSource(existingIcon, existingIconFile);
+    const { iconSrc } = getIconSource(
+      existingIcon ?? null,
+      existingIconFile ?? undefined
+    );
     setIconPreview(iconSrc);
   }, [existingIcon, existingIconFile]);
 

@@ -52,8 +52,15 @@ const Editor: React.FC = () => {
   const [showWelcomeTour, setShowWelcomeTour] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [showRecoveryModal, setShowRecoveryModal] = useState(false);
-  const [recoveredData, setRecoveredData] = useState<{contactInfo: ContactInfo, sections: Section[]} | null>(null);
-  const [originalTemplateData, setOriginalTemplateData] = useState<{contactInfo: ContactInfo, sections: Section[]} | null>(null);
+  const [recoveredData, setRecoveredData] = useState<{
+    timestamp: any;
+    contactInfo: ContactInfo;
+    sections: Section[];
+  } | null>(null);
+  const [originalTemplateData, setOriginalTemplateData] = useState<{
+    contactInfo: ContactInfo;
+    sections: Section[];
+  } | null>(null);
   const [loadingRecover, setLoadingRecover] = useState(false);
   const [loadingStartFresh, setLoadingStartFresh] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
@@ -81,21 +88,20 @@ const Editor: React.FC = () => {
         const processedSections = processSections(parsedYaml.sections);
         setSections(processedSections);
         setSupportsIcons(supportsIcons);
-        
+
         // Store original template data to compare against changes
         setOriginalTemplateData({
           contactInfo: parsedYaml.contact_info,
-          sections: processedSections
+          sections: processedSections,
         });
 
         // Check for auto-saved data after template loads
         setTimeout(() => {
           const savedData = loadFromLocalStorage();
           if (savedData) {
-            const timeDiff = new Date().getTime() - savedData.timestamp.getTime();
-            const hoursAgo = Math.floor(timeDiff / (1000 * 60 * 60));
-            const minutesAgo = Math.floor(timeDiff / (1000 * 60));
-            
+            const timeDiff =
+              new Date().getTime() - savedData.timestamp.getTime();
+
             // Only show recovery if saved within last 7 days
             if (timeDiff < 7 * 24 * 60 * 60 * 1000) {
               setRecoveredData(savedData);
@@ -103,7 +109,6 @@ const Editor: React.FC = () => {
             }
           }
         }, 500);
-
       } catch (error) {
         console.error("Error fetching template:", error);
         toast.error("Unable to load template. Please try refreshing the page.");
@@ -263,8 +268,8 @@ const Editor: React.FC = () => {
     try {
       setLoadingSave(true);
       // Longer delay for noticeable feedback on file operations
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       const processedSections = processSections(sections);
 
       const yamlData = yaml.dump({
@@ -293,7 +298,9 @@ const Editor: React.FC = () => {
       }, 1500);
     } catch (error) {
       console.error("Error exporting YAML:", error);
-      toast.error("Unable to save file. Please check your browser settings and try again.");
+      toast.error(
+        "Unable to save file. Please check your browser settings and try again."
+      );
     } finally {
       setLoadingSave(false);
     }
@@ -304,12 +311,12 @@ const Editor: React.FC = () => {
     if (!file) return;
 
     setLoadingLoad(true);
-    
+
     const reader = new FileReader();
     reader.onload = async (e) => {
       try {
         // Longer delay for noticeable feedback on file operations
-        await new Promise(resolve => setTimeout(resolve, 1200));
+        await new Promise((resolve) => setTimeout(resolve, 1200));
         const parsedYaml = yaml.load(e.target?.result as string) as {
           contact_info: ContactInfo;
           sections: Section[];
@@ -319,12 +326,9 @@ const Editor: React.FC = () => {
         const processedSections = processSections(parsedYaml.sections);
         setSections(processedSections);
 
-        toast.success(
-          "Resume loaded successfully",
-          {
-            autoClose: 3000,
-          }
-        );
+        toast.success("Resume loaded successfully", {
+          autoClose: 3000,
+        });
       } catch (error) {
         console.error("Error parsing YAML file:", error);
         toast.error(
@@ -414,10 +418,10 @@ const Editor: React.FC = () => {
 
   const handleAddNewSectionClick = async () => {
     setLoadingAddSection(true);
-    
+
     // Brief delay for subtle visual feedback
-    await new Promise(resolve => setTimeout(resolve, 300));
-    
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
     setShowModal(true);
     setLoadingAddSection(false);
   };
@@ -431,46 +435,58 @@ const Editor: React.FC = () => {
 
   // Auto-save localStorage functions
   const getAutoSaveKey = () => `resume-builder-${templateId}-autosave`;
-  
+
   const hasDataChanged = (): boolean => {
     if (!originalTemplateData) return false;
-    
+
     // Compare contact info
-    if (JSON.stringify(contactInfo) !== JSON.stringify(originalTemplateData.contactInfo)) {
+    if (
+      JSON.stringify(contactInfo) !==
+      JSON.stringify(originalTemplateData.contactInfo)
+    ) {
       return true;
     }
-    
+
     // Compare sections (excluding iconFile objects as they're not part of original data)
-    const currentSectionsForComparison = sections.map(section => {
-      if (['Experience', 'Education'].includes(section.name) && Array.isArray(section.content)) {
+    const currentSectionsForComparison = sections.map((section) => {
+      if (
+        ["Experience", "Education"].includes(section.name) &&
+        Array.isArray(section.content)
+      ) {
         return {
           ...section,
           content: section.content.map((item: any) => {
             const { iconFile, iconBase64, ...rest } = item;
             return rest;
-          })
+          }),
         };
-      } else if (section.type === 'icon-list' && Array.isArray(section.content)) {
+      } else if (
+        section.type === "icon-list" &&
+        Array.isArray(section.content)
+      ) {
         return {
           ...section,
           content: section.content.map((item: any) => {
             const { iconFile, iconBase64, ...rest } = item;
             return rest;
-          })
+          }),
         };
       }
       return section;
     });
-    
-    return JSON.stringify(currentSectionsForComparison) !== JSON.stringify(originalTemplateData.sections);
+
+    return (
+      JSON.stringify(currentSectionsForComparison) !==
+      JSON.stringify(originalTemplateData.sections)
+    );
   };
-  
+
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result as string);
-      reader.onerror = error => reject(error);
+      reader.onerror = (error) => reject(error);
     });
   };
 
@@ -498,7 +514,10 @@ const Editor: React.FC = () => {
               })
             );
             return { ...section, content: processedContent };
-          } else if (section.name === "Education" && Array.isArray(section.content)) {
+          } else if (
+            section.name === "Education" &&
+            Array.isArray(section.content)
+          ) {
             const processedContent = await Promise.all(
               section.content.map(async (item: any) => {
                 if (item.iconFile instanceof File) {
@@ -513,7 +532,10 @@ const Editor: React.FC = () => {
               })
             );
             return { ...section, content: processedContent };
-          } else if (section.type === "icon-list" && Array.isArray(section.content)) {
+          } else if (
+            section.type === "icon-list" &&
+            Array.isArray(section.content)
+          ) {
             const processedContent = await Promise.all(
               section.content.map(async (item: any) => {
                 if (item.iconFile instanceof File) {
@@ -538,7 +560,7 @@ const Editor: React.FC = () => {
         sections: processedSections,
         timestamp: new Date().toISOString(),
       };
-      
+
       // Store as JSON (basic obfuscation can be added later if needed)
       localStorage.setItem(getAutoSaveKey(), JSON.stringify(data));
       setLastSaved(new Date());
@@ -548,8 +570,8 @@ const Editor: React.FC = () => {
   };
 
   const base64ToFile = (base64: string, filename: string): File => {
-    const arr = base64.split(',');
-    const mime = arr[0].match(/:(.*?);/)?.[1] || '';
+    const arr = base64.split(",");
+    const mime = arr[0].match(/:(.*?);/)?.[1] || "";
     const bstr = atob(arr[1]);
     let n = bstr.length;
     const u8arr = new Uint8Array(n);
@@ -565,13 +587,16 @@ const Editor: React.FC = () => {
       if (saved) {
         // Parse JSON data
         const decodedData = JSON.parse(saved);
-        
+
         // Process sections to convert base64 back to File objects
         const processedSections = decodedData.sections.map((section: any) => {
           if (section.name === "Experience" && Array.isArray(section.content)) {
             const processedContent = section.content.map((item: any) => {
               if (item.iconBase64) {
-                const file = base64ToFile(item.iconBase64, item.icon || 'icon.png');
+                const file = base64ToFile(
+                  item.iconBase64,
+                  item.icon || "icon.png"
+                );
                 return {
                   ...item,
                   iconFile: file,
@@ -581,10 +606,16 @@ const Editor: React.FC = () => {
               return item;
             });
             return { ...section, content: processedContent };
-          } else if (section.name === "Education" && Array.isArray(section.content)) {
+          } else if (
+            section.name === "Education" &&
+            Array.isArray(section.content)
+          ) {
             const processedContent = section.content.map((item: any) => {
               if (item.iconBase64) {
-                const file = base64ToFile(item.iconBase64, item.icon || 'icon.png');
+                const file = base64ToFile(
+                  item.iconBase64,
+                  item.icon || "icon.png"
+                );
                 return {
                   ...item,
                   iconFile: file,
@@ -593,10 +624,16 @@ const Editor: React.FC = () => {
               return item;
             });
             return { ...section, content: processedContent };
-          } else if (section.type === "icon-list" && Array.isArray(section.content)) {
+          } else if (
+            section.type === "icon-list" &&
+            Array.isArray(section.content)
+          ) {
             const processedContent = section.content.map((item: any) => {
               if (item.iconBase64) {
-                const file = base64ToFile(item.iconBase64, item.icon || 'icon.png');
+                const file = base64ToFile(
+                  item.iconBase64,
+                  item.icon || "icon.png"
+                );
                 return {
                   ...item,
                   iconFile: file,
@@ -633,10 +670,10 @@ const Editor: React.FC = () => {
   const handleRecoverData = async () => {
     if (recoveredData) {
       setLoadingRecover(true);
-      
+
       // Longer delay for noticeable feedback
-      await new Promise(resolve => setTimeout(resolve, 1200));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+
       setContactInfo(recoveredData.contactInfo);
       setSections(recoveredData.sections);
       setShowRecoveryModal(false);
@@ -647,10 +684,10 @@ const Editor: React.FC = () => {
 
   const handleStartFresh = async () => {
     setLoadingStartFresh(true);
-    
+
     // Longer delay for noticeable feedback
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     clearAutoSave();
     setShowRecoveryModal(false);
     setLoadingStartFresh(false);
@@ -678,7 +715,7 @@ const Editor: React.FC = () => {
   useEffect(() => {
     if (!contactInfo && sections.length === 0) return; // Don't save empty state
     if (!originalTemplateData) return; // Don't save until template is loaded
-    
+
     const timer = setTimeout(async () => {
       await saveToLocalStorage();
     }, 2000); // Save 2 seconds after user stops editing
@@ -705,8 +742,8 @@ const Editor: React.FC = () => {
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [contactInfo, sections, templateId, originalTemplateData]);
 
   if (!templateId) {
@@ -732,8 +769,8 @@ const Editor: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      <ToastContainer 
-        position="bottom-right" 
+      <ToastContainer
+        position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop
@@ -749,8 +786,13 @@ const Editor: React.FC = () => {
       {/* Auto-save indicator */}
       {lastSaved && (
         <div className="fixed top-24 right-2 sm:right-4 bg-white/95 backdrop-blur-sm text-green-700 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-sm sm:text-base font-medium shadow-lg border border-green-200 z-[60] max-w-[calc(100vw-1rem)]">
-          <span className="hidden sm:inline">✓ Auto-saved {new Date(lastSaved).toLocaleTimeString()}</span>
-          <span className="sm:hidden">✓ Saved {new Date(lastSaved).toLocaleTimeString([], {timeStyle: 'short'})}</span>
+          <span className="hidden sm:inline">
+            ✓ Auto-saved {new Date(lastSaved).toLocaleTimeString()}
+          </span>
+          <span className="sm:hidden">
+            ✓ Saved{" "}
+            {new Date(lastSaved).toLocaleTimeString([], { timeStyle: "short" })}
+          </span>
         </div>
       )}
 
@@ -887,7 +929,7 @@ const Editor: React.FC = () => {
                 onClick={handleAddNewSectionClick}
                 disabled={loadingAddSection}
                 className={`bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 sm:p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110 ${
-                  loadingAddSection ? 'scale-95 opacity-80' : ''
+                  loadingAddSection ? "scale-95 opacity-80" : ""
                 }`}
               >
                 {loadingAddSection ? (
@@ -918,8 +960,12 @@ const Editor: React.FC = () => {
               ) : (
                 <FaFilePdf className="text-lg sm:text-xl" />
               )}
-              <span className="hidden sm:inline">{generating ? "Creating Your Resume..." : "Download My Resume"}</span>
-              <span className="sm:hidden">{generating ? "Creating..." : "Download"}</span>
+              <span className="hidden sm:inline">
+                {generating ? "Creating Your Resume..." : "Download My Resume"}
+              </span>
+              <span className="sm:hidden">
+                {generating ? "Creating..." : "Download"}
+              </span>
             </button>
 
             {/* Save/Load - Floating */}
@@ -948,7 +994,9 @@ const Editor: React.FC = () => {
                       }}
                       disabled={loadingSave}
                       className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
-                        loadingSave ? 'bg-blue-50 cursor-not-allowed animate-pulse' : ''
+                        loadingSave
+                          ? "bg-blue-50 cursor-not-allowed animate-pulse"
+                          : ""
                       }`}
                     >
                       {loadingSave ? (
@@ -958,16 +1006,22 @@ const Editor: React.FC = () => {
                       )}
                       <div>
                         <div className="font-medium">
-                          {loadingSave ? 'Preparing File...' : 'Save My Work'}
+                          {loadingSave ? "Preparing File..." : "Save My Work"}
                         </div>
                         <div className="text-xs text-gray-500">
-                          {loadingSave ? 'This will start downloading shortly' : 'Download to continue later'}
+                          {loadingSave
+                            ? "This will start downloading shortly"
+                            : "Download to continue later"}
                         </div>
                       </div>
                     </button>
-                    <label className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-green-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
-                      loadingLoad ? 'bg-green-50 cursor-not-allowed animate-pulse' : 'cursor-pointer'
-                    }`}>
+                    <label
+                      className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-green-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
+                        loadingLoad
+                          ? "bg-green-50 cursor-not-allowed animate-pulse"
+                          : "cursor-pointer"
+                      }`}
+                    >
                       {loadingLoad ? (
                         <div className="animate-spin rounded-full h-5 w-5 border-2 border-green-600 border-t-transparent"></div>
                       ) : (
@@ -975,10 +1029,14 @@ const Editor: React.FC = () => {
                       )}
                       <div>
                         <div className="font-medium">
-                          {loadingLoad ? 'Processing File...' : 'Load Previous Work'}
+                          {loadingLoad
+                            ? "Processing File..."
+                            : "Load Previous Work"}
                         </div>
                         <div className="text-xs text-gray-500">
-                          {loadingLoad ? 'Reading and validating your resume' : 'Upload your saved resume'}
+                          {loadingLoad
+                            ? "Reading and validating your resume"
+                            : "Upload your saved resume"}
                         </div>
                       </div>
                       <input
@@ -1077,29 +1135,61 @@ const Editor: React.FC = () => {
               <div className="text-center mb-8">
                 <div className="w-20 h-20 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-blue-100">
                   <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <svg
+                      className="w-6 h-6 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   </div>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-3">Continue Your Resume</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-3">
+                  Continue Your Resume
+                </h2>
                 <p className="text-gray-600 leading-relaxed">
-                  We found work you were doing earlier. You can pick up exactly where you left off.
+                  We found work you were doing earlier. You can pick up exactly
+                  where you left off.
                 </p>
               </div>
 
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 mb-8">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    <svg
+                      className="w-5 h-5 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-blue-800 mb-2">Your Previous Session</h3>
+                    <h3 className="font-semibold text-blue-800 mb-2">
+                      Your Previous Session
+                    </h3>
                     <div className="text-blue-700 text-sm space-y-1 leading-relaxed">
-                      <p>Last worked on: {recoveredData.timestamp.toLocaleDateString()} at {recoveredData.timestamp.toLocaleTimeString()}</p>
-                      <p>Contains: Contact info + {recoveredData.sections.length} section{recoveredData.sections.length !== 1 ? 's' : ''}</p>
+                      <p>
+                        Last worked on:{" "}
+                        {recoveredData.timestamp.toLocaleDateString()} at{" "}
+                        {recoveredData.timestamp.toLocaleTimeString()}
+                      </p>
+                      <p>
+                        Contains: Contact info + {recoveredData.sections.length}{" "}
+                        section{recoveredData.sections.length !== 1 ? "s" : ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -1110,7 +1200,9 @@ const Editor: React.FC = () => {
                   onClick={handleRecoverData}
                   disabled={loadingRecover || loadingStartFresh}
                   className={`w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 ${
-                    loadingRecover ? 'opacity-75 cursor-not-allowed scale-95' : ''
+                    loadingRecover
+                      ? "opacity-75 cursor-not-allowed scale-95"
+                      : ""
                   }`}
                 >
                   {loadingRecover ? (
@@ -1120,8 +1212,18 @@ const Editor: React.FC = () => {
                     </>
                   ) : (
                     <>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
                       </svg>
                       Continue Previous Work
                     </>
@@ -1131,7 +1233,9 @@ const Editor: React.FC = () => {
                   onClick={handleStartFresh}
                   disabled={loadingRecover || loadingStartFresh}
                   className={`w-full bg-white/80 backdrop-blur-sm text-gray-700 py-4 px-6 rounded-xl font-medium border border-gray-200 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center gap-2 ${
-                    loadingStartFresh ? 'opacity-75 cursor-not-allowed scale-95' : ''
+                    loadingStartFresh
+                      ? "opacity-75 cursor-not-allowed scale-95"
+                      : ""
                   }`}
                 >
                   {loadingStartFresh ? (
@@ -1140,7 +1244,7 @@ const Editor: React.FC = () => {
                       Starting Fresh...
                     </>
                   ) : (
-                    'Start With Clean Template'
+                    "Start With Clean Template"
                   )}
                 </button>
               </div>
@@ -1172,8 +1276,8 @@ const Editor: React.FC = () => {
                     ⚡ Your Work is Auto-Saved
                   </h3>
                   <p className="text-green-700 text-sm">
-                    No need to worry! Your resume is automatically saved as you work. 
-                    Look for the "Auto-saved" message in the top corner.
+                    No need to worry! Your resume is automatically saved as you
+                    work. Look for the "Auto-saved" message in the top corner.
                   </p>
                 </div>
 
@@ -1182,8 +1286,9 @@ const Editor: React.FC = () => {
                     🔄 Working on Different Devices?
                   </h3>
                   <p className="text-blue-700 text-sm">
-                    Auto-save only works on this device and browser. To continue on 
-                    your phone, laptop, or different browser - download your work first!
+                    Auto-save only works on this device and browser. To continue
+                    on your phone, laptop, or different browser - download your
+                    work first!
                   </p>
                 </div>
 
@@ -1192,8 +1297,9 @@ const Editor: React.FC = () => {
                     💾 How to Download Your Work
                   </h3>
                   <p className="text-amber-700 text-sm">
-                    See those floating buttons at the bottom? Click the 3-dot menu, 
-                    then "Save My Work". Keep that file safe - it's your resume!
+                    See those floating buttons at the bottom? Click the 3-dot
+                    menu, then "Save My Work". Keep that file safe - it's your
+                    resume!
                   </p>
                 </div>
 
@@ -1202,8 +1308,8 @@ const Editor: React.FC = () => {
                     🔒 We Protect Your Privacy
                   </h3>
                   <p className="text-purple-700 text-sm">
-                    Your personal information never leaves your device. We don't store 
-                    your resume data - you're in complete control.
+                    Your personal information never leaves your device. We don't
+                    store your resume data - you're in complete control.
                   </p>
                 </div>
               </div>
