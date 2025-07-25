@@ -60,12 +60,14 @@ const EducationSection: React.FC<EducationSectionProps> = ({
   };
 
   return (
-    <div className="border p-6 mb-6 bg-white shadow-sm rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">Education</h2>
+    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
+      <div className="flex items-center gap-3 mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Education</h2>
+      </div>
       {education.map((item, index) => (
         <div
           key={index}
-          className="border p-4 mb-4 bg-gray-50 rounded-lg shadow-inner"
+          className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md"
         >
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold">Entry {index + 1}</h3>
@@ -150,7 +152,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({
       ))}
       <button
         onClick={handleAddItem}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4"
+        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 mt-4"
       >
         Add Entry
       </button>

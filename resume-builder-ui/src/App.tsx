@@ -8,7 +8,6 @@ import NotFound from "./components/NotFound";
 import ErrorPage from "./components/ErrorPage";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsOfService from "./components/TermsOfService";
-import ReviewForm from "./components/ReviewForm";
 import EnvironmentBanner from "./components/EnvironmentBanner";
 
 export default function App() {
@@ -44,7 +43,6 @@ export default function App() {
           <Footer />
         </footer>
 
-        <ReviewForm />
       </div>
     </Router>
   );

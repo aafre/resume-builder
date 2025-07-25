@@ -65,6 +65,18 @@ def serve(path):
         return f"An error occurred: {str(e)}", 500
 
 
+@app.route("/icons/<filename>")
+def serve_icons(filename):
+    """
+    Serve icon files from the icons directory.
+    """
+    try:
+        return send_from_directory(ICONS_DIR, filename)
+    except Exception as e:
+        logging.error(f"Error serving icon {filename}: {str(e)}")
+        return f"Icon not found: {filename}", 404
+
+
 @app.route("/api/templates", methods=["GET"])
 def get_templates():
     """

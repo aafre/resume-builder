@@ -18,29 +18,29 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
     },
     {
       type: "bulleted-list",
-      title: "Bulleted List",
-      description: "A bulleted list format for multiple items.",
+      title: "List with Bullets",
+      description: "Traditional bulleted list format with clear visual separation.",
       useFor:
         "Technical Skills, Hobbies, Key Achievements, Certifications, Volunteer Work, Strengths",
     },
     {
       type: "inline-list",
-      title: "Inline List",
-      description: "A compact, single-line list without bullets.",
+      title: "Horizontal List",
+      description: "Items displayed in a single row, separated by commas.",
       useFor:
         "Key Skills, Software Proficiencies, Technologies, Languages, Personal Interests",
     },
     {
       type: "dynamic-column-list",
-      title: "Dynamic Column List",
-      description: "Automatically adjusts columns for space efficiency.",
+      title: "Smart Table",
+      description: "Automatically arranges items in columns for optimal space usage.",
       useFor:
         "Technical Skills, Certifications, Tools, Key Projects, Accomplishments",
     },
     {
       type: "icon-list",
-      title: "Icon List",
-      description: "A list of items with optional icons for visual enhancement.",
+      title: "Bullet List with Icons",
+      description: "Traditional bulleted list enhanced with visual icons for each item.",
       useFor:
         "Certifications, Awards, Professional Memberships, Licenses, Achievements",
     },
