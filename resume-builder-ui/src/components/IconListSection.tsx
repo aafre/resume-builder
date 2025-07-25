@@ -217,7 +217,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
         onClick={handleAddItem}
         className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
       >
-        Add Certification
+        Add Item
       </button>
     </div>
   );
