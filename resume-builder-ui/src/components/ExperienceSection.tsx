@@ -68,67 +68,77 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
             </button>
           </div>
 
-          <div className="flex gap-6 mt-4">
-            {/* Icon Upload Section */}
-            {supportsIcons && (
-              <div className="flex-shrink-0">
-                <IconUpload
-                  onUpload={(renamedIcon, file) =>
-                    handleIconUpload(index, renamedIcon, file)
-                  }
-                  onClear={() => handleIconClear(index)}
-                  existingIcon={experience.icon || null}
-                  existingIconFile={experience.iconFile || null}
-                />
+          <div className="mt-4">
+            {/* Top Row: Icon + Company/Title/Dates */}
+            <div className="flex gap-6 mb-6">
+              {/* Icon Upload Section */}
+              {supportsIcons && (
+                <div className="flex-shrink-0">
+                  <IconUpload
+                    onUpload={(renamedIcon, file) =>
+                      handleIconUpload(index, renamedIcon, file)
+                    }
+                    onClear={() => handleIconClear(index)}
+                    existingIcon={experience.icon || null}
+                    existingIconFile={experience.iconFile || null}
+                  />
+                </div>
+              )}
+              {/* Basic Experience Fields */}
+              <div className="flex-grow grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-gray-700 font-medium mb-1">
+                    Company
+                  </label>
+                  <input
+                    type="text"
+                    value={experience.company}
+                    onChange={(e) =>
+                      handleUpdateField(index, "company", e.target.value)
+                    }
+                    className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                    placeholder="Enter company name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-1">
+                    Title
+                  </label>
+                  <input
+                    type="text"
+                    value={experience.title}
+                    onChange={(e) =>
+                      handleUpdateField(index, "title", e.target.value)
+                    }
+                    className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                    placeholder="Enter job title"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-1">
+                    Dates
+                  </label>
+                  <input
+                    type="text"
+                    value={experience.dates}
+                    onChange={(e) =>
+                      handleUpdateField(index, "dates", e.target.value)
+                    }
+                    className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                    placeholder="e.g., Jan 2020 - Present"
+                  />
+                </div>
               </div>
-            )}
-            {/* Experience Fields */}
-            <div className="flex-grow grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  Company
-                </label>
-                <input
-                  type="text"
-                  value={experience.company}
-                  onChange={(e) =>
-                    handleUpdateField(index, "company", e.target.value)
-                  }
-                  className="w-full border border-gray-300 rounded-lg p-2"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  Title
-                </label>
-                <input
-                  type="text"
-                  value={experience.title}
-                  onChange={(e) =>
-                    handleUpdateField(index, "title", e.target.value)
-                  }
-                  className="w-full border border-gray-300 rounded-lg p-2"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  Dates
-                </label>
-                <input
-                  type="text"
-                  value={experience.dates}
-                  onChange={(e) =>
-                    handleUpdateField(index, "dates", e.target.value)
-                  }
-                  className="w-full border border-gray-300 rounded-lg p-2"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  Description
-                </label>
+            </div>
+
+            {/* Full Width Description Section */}
+            <div className="w-full">
+              <label className="block text-gray-700 font-medium mb-3">
+                Job Description & Achievements
+              </label>
+              <div className="space-y-3">
                 {experience.description.map((desc, descIndex) => (
-                  <div key={descIndex} className="flex items-center gap-2 mb-2">
+                  <div key={descIndex} className="flex items-center gap-3">
                     <input
                       type="text"
                       value={desc}
@@ -138,7 +148,8 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                           e.target.value;
                         onUpdate(updatedExperiences);
                       }}
-                      className="w-full border border-gray-300 rounded-lg p-2"
+                      className="flex-1 border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                      placeholder="Describe your responsibilities, achievements, or key projects..."
                     />
                     <button
                       onClick={() => {
@@ -149,23 +160,24 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                         );
                         onUpdate(updatedExperiences);
                       }}
-                      className="text-red-600 hover:text-red-800"
+                      className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors"
+                      title="Remove description point"
                     >
                       ✕
                     </button>
                   </div>
                 ))}
-                <button
-                  onClick={() => {
-                    const updatedExperiences = [...experiences];
-                    updatedExperiences[index].description.push("");
-                    onUpdate(updatedExperiences);
-                  }}
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                >
-                  Add Description
-                </button>
               </div>
+              <button
+                onClick={() => {
+                  const updatedExperiences = [...experiences];
+                  updatedExperiences[index].description.push("");
+                  onUpdate(updatedExperiences);
+                }}
+                className="mt-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
+              >
+                + Add Description Point
+              </button>
             </div>
           </div>
         </div>
