@@ -15,8 +15,6 @@ import {
   MdFileUpload,
   MdHelpOutline,
   MdMoreVert,
-  MdCheckCircle,
-  MdRadioButtonUnchecked,
 } from "react-icons/md";
 
 interface Section {
@@ -52,6 +50,10 @@ const Editor: React.FC = () => {
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
   const [showWelcomeTour, setShowWelcomeTour] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
+  const [recoveredData, setRecoveredData] = useState<{contactInfo: ContactInfo, sections: Section[]} | null>(null);
+  const [originalTemplateData, setOriginalTemplateData] = useState<{contactInfo: ContactInfo, sections: Section[]} | null>(null);
 
   useEffect(() => {
     if (!templateId) {
@@ -74,9 +76,32 @@ const Editor: React.FC = () => {
         const processedSections = processSections(parsedYaml.sections);
         setSections(processedSections);
         setSupportsIcons(supportsIcons);
+        
+        // Store original template data to compare against changes
+        setOriginalTemplateData({
+          contactInfo: parsedYaml.contact_info,
+          sections: processedSections
+        });
+
+        // Check for auto-saved data after template loads
+        setTimeout(() => {
+          const savedData = loadFromLocalStorage();
+          if (savedData) {
+            const timeDiff = new Date().getTime() - savedData.timestamp.getTime();
+            const hoursAgo = Math.floor(timeDiff / (1000 * 60 * 60));
+            const minutesAgo = Math.floor(timeDiff / (1000 * 60));
+            
+            // Only show recovery if saved within last 7 days
+            if (timeDiff < 7 * 24 * 60 * 60 * 1000) {
+              setRecoveredData(savedData);
+              setShowRecoveryModal(true);
+            }
+          }
+        }, 500);
+
       } catch (error) {
         console.error("Error fetching template:", error);
-        toast.error("Failed to load template.");
+        toast.error("Unable to load template. Please try refreshing the page.");
       } finally {
         setLoading(false);
       }
@@ -245,23 +270,21 @@ const Editor: React.FC = () => {
       link.download = "resume.yaml";
       link.click();
 
-      // Show helpful success message
-      toast.success("Your work has been saved! 💾", {
-        autoClose: 5000,
+      toast.success("Resume saved successfully", {
+        autoClose: 3000,
       });
 
-      // Show additional info after short delay
       setTimeout(() => {
         toast.info(
-          "💡 Keep this file safe! Upload it anytime to continue editing your resume.",
+          "💡 Your work is auto-saved in this browser. For other devices, keep this file safe!",
           {
-            autoClose: 8000,
+            autoClose: 6000,
           }
         );
-      }, 2000);
+      }, 1500);
     } catch (error) {
       console.error("Error exporting YAML:", error);
-      toast.error("Failed to save your work. Please try again.");
+      toast.error("Unable to save file. Please check your browser settings and try again.");
     }
   };
 
@@ -281,17 +304,16 @@ const Editor: React.FC = () => {
         const processedSections = processSections(parsedYaml.sections);
         setSections(processedSections);
 
-        // Show success message
         toast.success(
-          "Welcome back! Your work has been loaded successfully! 🎉",
+          "Resume loaded successfully",
           {
-            autoClose: 4000,
+            autoClose: 3000,
           }
         );
       } catch (error) {
         console.error("Error parsing YAML file:", error);
         toast.error(
-          "Unable to load this file. Please make sure it's a valid resume file saved from this app."
+          "Invalid file format. Please upload a resume file saved from this application."
         );
       }
     };
@@ -349,24 +371,23 @@ const Editor: React.FC = () => {
       link.click();
       document.body.removeChild(link);
 
-      toast.success("Your resume is ready! 🎯", {
-        autoClose: 4000,
+      toast.success("Resume generated successfully", {
+        autoClose: 3000,
       });
 
-      // Show save tip after resume download
       setTimeout(() => {
         toast.info(
-          "💡 Pro tip: Use 'Save My Work' to keep your progress safe for future edits!",
+          "💡 Working on another device? Use the 3-dot menu to save your work as a file",
           {
-            autoClose: 8000,
+            autoClose: 5000,
           }
         );
-      }, 3000);
+      }, 2000);
     } catch (error) {
       console.error("Error generating resume:", error);
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
-      toast.error(`Error generating resume: ${errorMessage}`);
+      toast.error(`Unable to generate resume: ${errorMessage}`);
     } finally {
       setGenerating(false);
     }
@@ -379,6 +400,222 @@ const Editor: React.FC = () => {
     if (dontShowAgain) {
       localStorage.setItem("resume-builder-tour-seen", "true");
     }
+  };
+
+  // Auto-save localStorage functions
+  const getAutoSaveKey = () => `resume-builder-${templateId}-autosave`;
+  
+  const hasDataChanged = (): boolean => {
+    if (!originalTemplateData) return false;
+    
+    // Compare contact info
+    if (JSON.stringify(contactInfo) !== JSON.stringify(originalTemplateData.contactInfo)) {
+      return true;
+    }
+    
+    // Compare sections (excluding iconFile objects as they're not part of original data)
+    const currentSectionsForComparison = sections.map(section => {
+      if (['Experience', 'Education'].includes(section.name) && Array.isArray(section.content)) {
+        return {
+          ...section,
+          content: section.content.map((item: any) => {
+            const { iconFile, iconBase64, ...rest } = item;
+            return rest;
+          })
+        };
+      } else if (section.type === 'icon-list' && Array.isArray(section.content)) {
+        return {
+          ...section,
+          content: section.content.map((item: any) => {
+            const { iconFile, iconBase64, ...rest } = item;
+            return rest;
+          })
+        };
+      }
+      return section;
+    });
+    
+    return JSON.stringify(currentSectionsForComparison) !== JSON.stringify(originalTemplateData.sections);
+  };
+  
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  };
+
+  const saveToLocalStorage = async () => {
+    try {
+      // Only save if data has changed from original template
+      if (!hasDataChanged()) {
+        return;
+      }
+      // Process sections to convert File objects to base64
+      const processedSections = await Promise.all(
+        sections.map(async (section) => {
+          if (section.name === "Experience" && Array.isArray(section.content)) {
+            const processedContent = await Promise.all(
+              section.content.map(async (item: any) => {
+                if (item.iconFile instanceof File) {
+                  const base64 = await fileToBase64(item.iconFile);
+                  return {
+                    ...item,
+                    iconFile: null, // Remove File object
+                    iconBase64: base64, // Store base64 instead
+                  };
+                }
+                return item;
+              })
+            );
+            return { ...section, content: processedContent };
+          } else if (section.name === "Education" && Array.isArray(section.content)) {
+            const processedContent = await Promise.all(
+              section.content.map(async (item: any) => {
+                if (item.iconFile instanceof File) {
+                  const base64 = await fileToBase64(item.iconFile);
+                  return {
+                    ...item,
+                    iconFile: null, // Remove File object
+                    iconBase64: base64, // Store base64 instead
+                  };
+                }
+                return item;
+              })
+            );
+            return { ...section, content: processedContent };
+          } else if (section.type === "icon-list" && Array.isArray(section.content)) {
+            const processedContent = await Promise.all(
+              section.content.map(async (item: any) => {
+                if (item.iconFile instanceof File) {
+                  const base64 = await fileToBase64(item.iconFile);
+                  return {
+                    ...item,
+                    iconFile: null, // Remove File object
+                    iconBase64: base64, // Store base64 instead
+                  };
+                }
+                return item;
+              })
+            );
+            return { ...section, content: processedContent };
+          }
+          return section;
+        })
+      );
+
+      const data = {
+        contactInfo,
+        sections: processedSections,
+        timestamp: new Date().toISOString(),
+      };
+      
+      // Store as JSON (basic obfuscation can be added later if needed)
+      localStorage.setItem(getAutoSaveKey(), JSON.stringify(data));
+      setLastSaved(new Date());
+    } catch (error) {
+      console.error("Failed to auto-save to localStorage:", error);
+    }
+  };
+
+  const base64ToFile = (base64: string, filename: string): File => {
+    const arr = base64.split(',');
+    const mime = arr[0].match(/:(.*?);/)?.[1] || '';
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
+
+  const loadFromLocalStorage = () => {
+    try {
+      const saved = localStorage.getItem(getAutoSaveKey());
+      if (saved) {
+        // Parse JSON data
+        const decodedData = JSON.parse(saved);
+        
+        // Process sections to convert base64 back to File objects
+        const processedSections = decodedData.sections.map((section: any) => {
+          if (section.name === "Experience" && Array.isArray(section.content)) {
+            const processedContent = section.content.map((item: any) => {
+              if (item.iconBase64) {
+                const file = base64ToFile(item.iconBase64, item.icon || 'icon.png');
+                return {
+                  ...item,
+                  iconFile: file,
+                  // Keep iconBase64 for reference, will be cleaned up on next save
+                };
+              }
+              return item;
+            });
+            return { ...section, content: processedContent };
+          } else if (section.name === "Education" && Array.isArray(section.content)) {
+            const processedContent = section.content.map((item: any) => {
+              if (item.iconBase64) {
+                const file = base64ToFile(item.iconBase64, item.icon || 'icon.png');
+                return {
+                  ...item,
+                  iconFile: file,
+                };
+              }
+              return item;
+            });
+            return { ...section, content: processedContent };
+          } else if (section.type === "icon-list" && Array.isArray(section.content)) {
+            const processedContent = section.content.map((item: any) => {
+              if (item.iconBase64) {
+                const file = base64ToFile(item.iconBase64, item.icon || 'icon.png');
+                return {
+                  ...item,
+                  iconFile: file,
+                };
+              }
+              return item;
+            });
+            return { ...section, content: processedContent };
+          }
+          return section;
+        });
+
+        return {
+          contactInfo: decodedData.contactInfo,
+          sections: processedSections,
+          timestamp: new Date(decodedData.timestamp),
+        };
+      }
+    } catch (error) {
+      console.error("Failed to load from localStorage:", error);
+    }
+    return null;
+  };
+
+  const clearAutoSave = () => {
+    try {
+      localStorage.removeItem(getAutoSaveKey());
+      setLastSaved(null);
+    } catch (error) {
+      console.error("Failed to clear auto-save:", error);
+    }
+  };
+
+  const handleRecoverData = () => {
+    if (recoveredData) {
+      setContactInfo(recoveredData.contactInfo);
+      setSections(recoveredData.sections);
+      setShowRecoveryModal(false);
+      toast.success("Previous work restored successfully");
+    }
+  };
+
+  const handleStartFresh = () => {
+    clearAutoSave();
+    setShowRecoveryModal(false);
+    // Keep the current template data (already loaded)
   };
 
   // Close advanced menu when clicking outside
@@ -397,6 +634,41 @@ const Editor: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showAdvancedMenu]);
+
+  // Debounced auto-save effect
+  useEffect(() => {
+    if (!contactInfo && sections.length === 0) return; // Don't save empty state
+    if (!originalTemplateData) return; // Don't save until template is loaded
+    
+    const timer = setTimeout(async () => {
+      await saveToLocalStorage();
+    }, 2000); // Save 2 seconds after user stops editing
+
+    return () => clearTimeout(timer);
+  }, [contactInfo, sections, templateId, originalTemplateData]);
+
+  // Periodic auto-save backup
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if ((contactInfo || sections.length > 0) && originalTemplateData) {
+        await saveToLocalStorage();
+      }
+    }, 30000); // Save every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [contactInfo, sections, templateId, originalTemplateData]);
+
+  // Save before page unload
+  useEffect(() => {
+    const handleBeforeUnload = async () => {
+      if ((contactInfo || sections.length > 0) && originalTemplateData) {
+        await saveToLocalStorage();
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [contactInfo, sections, templateId, originalTemplateData]);
 
   if (!templateId) {
     return (
@@ -421,7 +693,27 @@ const Editor: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      <ToastContainer position="top-center" autoClose={3000} />
+      <ToastContainer 
+        position="bottom-right" 
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        className="custom-toast-container"
+        toastClassName="custom-toast"
+      />
+
+      {/* Auto-save indicator */}
+      {lastSaved && (
+        <div className="fixed top-24 right-2 sm:right-4 bg-white/95 backdrop-blur-sm text-green-700 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-sm sm:text-base font-medium shadow-lg border border-green-200 z-[60] max-w-[calc(100vw-1rem)]">
+          <span className="hidden sm:inline">✓ Auto-saved {new Date(lastSaved).toLocaleTimeString()}</span>
+          <span className="sm:hidden">✓ Saved {new Date(lastSaved).toLocaleTimeString([], {timeStyle: 'short'})}</span>
+        </div>
+      )}
 
       {/* Main Content Container */}
       <div className="container mx-auto px-4 pt-8 pb-32">
@@ -548,15 +840,15 @@ const Editor: React.FC = () => {
         })}
 
         {/* Unified Floating Action Toolbar */}
-        <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-50">
-          <div className="flex items-center gap-4">
+        <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-50 px-4">
+          <div className="flex items-center gap-2 sm:gap-4 flex-wrap justify-center max-w-screen-sm">
             {/* Add New Section - Enhanced Hover */}
             <div className="relative group">
               <button
                 onClick={() => setShowModal(true)}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110"
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 sm:p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110"
               >
-                <FaPlus className="text-xl" />
+                <FaPlus className="text-lg sm:text-xl" />
               </button>
               {/* Hover Label */}
               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
@@ -568,24 +860,25 @@ const Editor: React.FC = () => {
             {/* Download Resume - Primary Action */}
             <button
               onClick={handleGenerateResume}
-              className={`bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-4 rounded-full shadow-xl hover:shadow-2xl font-semibold text-lg transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 ${
+              className={`bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 sm:px-8 py-3 sm:py-4 rounded-full shadow-xl hover:shadow-2xl font-semibold text-sm sm:text-lg transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 sm:gap-3 ${
                 generating
                   ? "opacity-75 cursor-not-allowed scale-95"
                   : "hover:scale-105"
               }`}
               disabled={generating}
             >
-              <FaFilePdf className="text-xl" />
-              {generating ? "Creating Your Resume..." : "Download My Resume"}
+              <FaFilePdf className="text-lg sm:text-xl" />
+              <span className="hidden sm:inline">{generating ? "Creating Your Resume..." : "Download My Resume"}</span>
+              <span className="sm:hidden">{generating ? "Creating..." : "Download"}</span>
             </button>
 
             {/* Save/Load - Floating */}
             <div className="relative group advanced-menu-container">
               <button
                 onClick={() => setShowAdvancedMenu(!showAdvancedMenu)}
-                className="bg-gradient-to-r from-gray-600 to-gray-700 text-white p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110"
+                className="bg-gradient-to-r from-gray-600 to-gray-700 text-white p-3 sm:p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110"
               >
-                <MdMoreVert className="text-xl" />
+                <MdMoreVert className="text-lg sm:text-xl" />
               </button>
 
               {/* Hover Label */}
@@ -596,7 +889,7 @@ const Editor: React.FC = () => {
 
               {/* Dropdown Menu */}
               {showAdvancedMenu && (
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[9999]">
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 w-48 sm:w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[9999] max-w-[90vw]">
                   <div className="p-2">
                     <button
                       onClick={() => {
@@ -708,6 +1001,64 @@ const Editor: React.FC = () => {
         </div>
       )}
 
+      {/* Recovery Modal */}
+      {showRecoveryModal && recoveredData && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl max-w-lg w-full border border-gray-200">
+            <div className="p-8">
+              <div className="text-center mb-8">
+                <div className="w-20 h-20 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-blue-100">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+                <h2 className="text-2xl font-bold text-gray-800 mb-3">Continue Your Resume</h2>
+                <p className="text-gray-600 leading-relaxed">
+                  We found work you were doing earlier. You can pick up exactly where you left off.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 mb-8">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-blue-800 mb-2">Your Previous Session</h3>
+                    <div className="text-blue-700 text-sm space-y-1 leading-relaxed">
+                      <p>Last worked on: {recoveredData.timestamp.toLocaleDateString()} at {recoveredData.timestamp.toLocaleTimeString()}</p>
+                      <p>Contains: Contact info + {recoveredData.sections.length} section{recoveredData.sections.length !== 1 ? 's' : ''}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <button
+                  onClick={handleRecoverData}
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Continue Previous Work
+                </button>
+                <button
+                  onClick={handleStartFresh}
+                  className="w-full bg-white/80 backdrop-blur-sm text-gray-700 py-4 px-6 rounded-xl font-medium border border-gray-200 hover:bg-gray-50 transition-all duration-300"
+                >
+                  Start With Clean Template
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Welcome Tour Modal */}
       {showWelcomeTour && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
@@ -726,34 +1077,43 @@ const Editor: React.FC = () => {
               </div>
 
               <div className="space-y-6 mb-8">
-                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                  <h3 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                    💾 Save Your Work
+                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                  <h3 className="font-semibold text-green-800 mb-2 flex items-center gap-2">
+                    ⚡ Your Work is Auto-Saved
                   </h3>
-                  <p className="text-blue-700 text-sm">
-                    We don't store your data online for privacy. Click the gray
-                    button in the floating toolbar to download your work as a
-                    file.
+                  <p className="text-green-700 text-sm">
+                    No need to worry! Your resume is automatically saved as you work. 
+                    Look for the "Auto-saved" message in the top corner.
                   </p>
                 </div>
 
-                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
-                  <h3 className="font-semibold text-green-800 mb-2 flex items-center gap-2">
-                    📂 Load Previous Work
+                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                  <h3 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
+                    🔄 Working on Different Devices?
                   </h3>
-                  <p className="text-green-700 text-sm">
-                    Coming back later? Upload your saved file to continue
-                    exactly where you left off.
+                  <p className="text-blue-700 text-sm">
+                    Auto-save only works on this device and browser. To continue on 
+                    your phone, laptop, or different browser - download your work first!
+                  </p>
+                </div>
+
+                <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
+                  <h3 className="font-semibold text-amber-800 mb-2 flex items-center gap-2">
+                    💾 How to Download Your Work
+                  </h3>
+                  <p className="text-amber-700 text-sm">
+                    See those floating buttons at the bottom? Click the 3-dot menu, 
+                    then "Save My Work". Keep that file safe - it's your resume!
                   </p>
                 </div>
 
                 <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
                   <h3 className="font-semibold text-purple-800 mb-2 flex items-center gap-2">
-                    ✨ Pro Tip
+                    🔒 We Protect Your Privacy
                   </h3>
                   <p className="text-purple-700 text-sm">
-                    Save your work before leaving. This way you can make changes
-                    anytime!
+                    Your personal information never leaves your device. We don't store 
+                    your resume data - you're in complete control.
                   </p>
                 </div>
               </div>
