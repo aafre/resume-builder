@@ -3,42 +3,61 @@ import { FaShieldAlt, FaLock, FaUsers } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-100 text-gray-700 py-6 border-t w-full">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-        {/* Privacy and Terms Links */}
-        <div className="flex gap-4 mb-4 md:mb-0">
-          <Link to="/privacy-policy" className="text-blue-600 hover:underline">
-            Privacy Policy
-          </Link>
-          <Link
-            to="/terms-of-service"
-            className="text-blue-600 hover:underline"
-          >
-            Terms of Service
-          </Link>
+    <footer className="bg-white/90 backdrop-blur-sm border-t border-gray-200 shadow-lg">
+      <div className="container mx-auto px-4 py-8">
+        {/* Main Footer Content */}
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
+          {/* Left Section - Links */}
+          <div className="flex flex-col sm:flex-row gap-4 items-center">
+            <div className="flex gap-6">
+              <Link 
+                to="/privacy-policy" 
+                className="text-blue-600 hover:text-indigo-600 font-medium transition-colors duration-200"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                to="/terms-of-service"
+                className="text-blue-600 hover:text-indigo-600 font-medium transition-colors duration-200"
+              >
+                Terms of Service
+              </Link>
+            </div>
+          </div>
+
+          {/* Center Section - Copyright */}
+          <div className="text-center">
+            <p className="text-sm text-gray-600">
+              © {new Date().getFullYear()} <span className="font-semibold">EasyFreeResume.com</span>
+            </p>
+            <p className="text-xs text-gray-500 mt-1 hidden sm:block">
+              Build professional resumes effortlessly
+            </p>
+          </div>
+
+          {/* Right Section - Trust Badges */}
+          <div className="flex flex-wrap justify-center lg:justify-end gap-4 text-xs">
+            <div className="flex items-center gap-2 bg-green-50 px-3 py-2 rounded-full">
+              <FaShieldAlt className="text-green-600" />
+              <span className="text-green-700 font-medium">GDPR</span>
+            </div>
+            <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-full">
+              <FaLock className="text-blue-600" />
+              <span className="text-blue-700 font-medium">SSL</span>
+            </div>
+            <div className="flex items-center gap-2 bg-yellow-50 px-3 py-2 rounded-full">
+              <FaUsers className="text-yellow-600" />
+              <span className="text-yellow-700 font-medium">50K+ Users</span>
+            </div>
+          </div>
         </div>
 
-        {/* Copyright */}
-        <div className="flex gap-4 justify-center md:justify-start">
-          <p className="text-sm">
-            © {new Date().getFullYear()} EasyFreeResume.com - Build professional
-            resumes effortlessly.
-          </p>
-        </div>
-
-        {/* Icons and Features */}
-        <div className="flex gap-6 items-center mt-4 md:mt-0">
-          <div className="flex items-center gap-2 text-sm">
-            <FaShieldAlt className="text-green-500" />
-            <span>GDPR Compliant</span>
-          </div>
-          <div className="flex items-center gap-2 text-sm">
-            <FaLock className="text-blue-600" />
-            <span>SSL Secured</span>
-          </div>
-          <div className="flex items-center gap-2 text-sm">
-            <FaUsers className="text-yellow-500" />
-            <span>Trusted by 50K+ Users</span>
+        {/* Mobile Trust Badges - Simplified */}
+        <div className="lg:hidden mt-6 pt-6 border-t border-gray-200">
+          <div className="flex justify-center gap-8 text-xs text-gray-500">
+            <span>🔒 Secure</span>
+            <span>🛡️ Private</span>
+            <span>👥 Trusted</span>
           </div>
         </div>
       </div>

@@ -15,9 +15,9 @@ describe("SectionTypeModal", () => {
 
     // Verify that each section option is rendered.
     expect(screen.getByText("Text Section")).toBeInTheDocument();
-    expect(screen.getByText("Bulleted List")).toBeInTheDocument();
-    expect(screen.getByText("Inline List")).toBeInTheDocument();
-    expect(screen.getByText("Dynamic Column List")).toBeInTheDocument();
+    expect(screen.getByText("List with Bullets")).toBeInTheDocument();
+    expect(screen.getByText("Horizontal List")).toBeInTheDocument();
+    expect(screen.getByText("Smart Table")).toBeInTheDocument();
 
     // For the "Text Section" card, check the "Use for:" text.
     const textSectionCard = screen.getByText("Text Section").closest("div");
@@ -53,7 +53,7 @@ describe("SectionTypeModal", () => {
     expect(onSelectMock).toHaveBeenCalledWith("text");
 
     // Click the "Bulleted List" card.
-    fireEvent.click(screen.getByText("Bulleted List"));
+    fireEvent.click(screen.getByText("List with Bullets"));
     expect(onSelectMock).toHaveBeenCalledWith("bulleted-list");
   });
 
