@@ -61,7 +61,9 @@ const Editor: React.FC = () => {
           sections: Section[];
         };
         setContactInfo(parsedYaml.contact_info);
-        setSections(parsedYaml.sections);
+        // Process sections to clean up icon paths when loading template
+        const processedSections = processSections(parsedYaml.sections);
+        setSections(processedSections);
         setSupportsIcons(supportsIcons);
       } catch (error) {
         console.error("Error fetching template:", error);
@@ -203,7 +205,9 @@ const Editor: React.FC = () => {
           sections: Section[];
         };
         setContactInfo(parsedYaml.contact_info);
-        setSections(parsedYaml.sections);
+        // Process sections to clean up icon paths when importing YAML
+        const processedSections = processSections(parsedYaml.sections);
+        setSections(processedSections);
       } catch (error) {
         console.error("Error parsing YAML file:", error);
       }
@@ -233,6 +237,19 @@ const Editor: React.FC = () => {
       sections.forEach((section) => {
         if (
           ["Experience", "Education"].includes(section.name) &&
+          Array.isArray(section.content)
+        ) {
+          section.content.forEach((item: any) => {
+            if (item.icon && item.iconFile) {
+              formData.append("icons", item.iconFile, item.icon);
+            }
+          });
+        }
+
+        // Handle Certifications section icons
+        if (
+          section.name === "Certifications" &&
+          section.type === "icon-list" &&
           Array.isArray(section.content)
         ) {
           section.content.forEach((item: any) => {
