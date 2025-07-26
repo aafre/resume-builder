@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import { FaFilePdf, FaPlus } from "react-icons/fa";
 import { fetchTemplate, generateResume } from "../services/templates";
 import { getSessionId } from "../utils/session";
 import yaml from "js-yaml";
@@ -10,11 +9,11 @@ import EducationSection from "./EducationSection";
 import GenericSection from "./GenericSection";
 import IconListSection from "./IconListSection";
 import SectionTypeModal from "./SectionTypeModal";
+import EditorToolbar from "./EditorToolbar";
+import { useEditorContext } from "../contexts/EditorContext";
 import {
   MdFileDownload,
-  MdFileUpload,
   MdHelpOutline,
-  MdMoreVert,
 } from "react-icons/md";
 
 interface Section {
@@ -35,6 +34,12 @@ const Editor: React.FC = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const templateId = queryParams.get("template");
+  
+  // Get context for footer integration
+  const {
+    isAtBottom: contextIsAtBottom,
+    setIsAtBottom: setContextIsAtBottom,
+  } = useEditorContext();
 
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [sections, setSections] = useState<Section[]>([]);
@@ -66,6 +71,9 @@ const Editor: React.FC = () => {
   const [loadingSave, setLoadingSave] = useState(false);
   const [loadingLoad, setLoadingLoad] = useState(false);
   const [loadingAddSection, setLoadingAddSection] = useState(false);
+  
+  // Simple scroll detection for footer visibility
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     if (!templateId) {
@@ -746,6 +754,31 @@ const Editor: React.FC = () => {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [contactInfo, sections, templateId, originalTemplateData]);
 
+  // Simple scroll detection for footer visibility
+  const handleScroll = useCallback(() => {
+    const currentScrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    
+    // Check if at bottom (with threshold accounting for footer height)
+    const atBottom = windowHeight + currentScrollY >= documentHeight - 150;
+    
+    // Update context with bottom state for footer visibility
+    setContextIsAtBottom(atBottom);
+    
+    lastScrollY.current = currentScrollY;
+  }, [setContextIsAtBottom]);
+
+  useEffect(() => {
+    const throttledHandleScroll = () => {
+      requestAnimationFrame(handleScroll);
+    };
+
+    window.addEventListener("scroll", throttledHandleScroll);
+    return () => window.removeEventListener("scroll", throttledHandleScroll);
+  }, [handleScroll]);
+
+
   if (!templateId) {
     return (
       <p className="text-red-500">
@@ -797,7 +830,7 @@ const Editor: React.FC = () => {
       )}
 
       {/* Main Content Container */}
-      <div className="container mx-auto px-4 pt-8 pb-32">
+      <div className="container mx-auto px-4 pt-8 pb-72 sm:pb-56 lg:pb-44">
         {/* Contact Information Card */}
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
           <div className="mb-6">
@@ -920,157 +953,39 @@ const Editor: React.FC = () => {
           }
         })}
 
-        {/* Unified Floating Action Toolbar */}
-        <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-50 px-4">
-          <div className="flex items-center gap-2 sm:gap-4 flex-wrap justify-center max-w-screen-sm">
-            {/* Add New Section - Enhanced Hover */}
-            <div className="relative group">
-              <button
-                onClick={handleAddNewSectionClick}
-                disabled={loadingAddSection}
-                className={`bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 sm:p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110 ${
-                  loadingAddSection ? "scale-95 opacity-80" : ""
-                }`}
-              >
-                {loadingAddSection ? (
-                  <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-2 border-white border-t-transparent"></div>
-                ) : (
-                  <FaPlus className="text-lg sm:text-xl" />
-                )}
-              </button>
-              {/* Hover Label */}
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                Add New Section
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
-              </div>
-            </div>
+        {/* Visual Divider when at bottom - Between content and toolbar */}
+        {contextIsAtBottom && (
+          <div className="fixed left-0 right-0 z-50 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 transition-all duration-300 bottom-72 sm:bottom-56 lg:bottom-44" style={{ height: '1px' }}>
+            <div className="w-full h-full bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50"></div>
+          </div>
+        )}
 
-            {/* Download Resume - Primary Action */}
-            <button
-              onClick={handleGenerateResume}
-              className={`bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 sm:px-8 py-3 sm:py-4 rounded-full shadow-xl hover:shadow-2xl font-semibold text-sm sm:text-lg transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 sm:gap-3 ${
-                generating
-                  ? "opacity-75 cursor-not-allowed scale-95"
-                  : "hover:scale-105"
-              }`}
-              disabled={generating}
-            >
-              {generating ? (
-                <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-2 border-white border-t-transparent"></div>
-              ) : (
-                <FaFilePdf className="text-lg sm:text-xl" />
-              )}
-              <span className="hidden sm:inline">
-                {generating ? "Creating Your Resume..." : "Download My Resume"}
-              </span>
-              <span className="sm:hidden">
-                {generating ? "Creating..." : "Download"}
-              </span>
-            </button>
-
-            {/* Save/Load - Floating */}
-            <div className="relative group advanced-menu-container">
-              <button
-                onClick={() => setShowAdvancedMenu(!showAdvancedMenu)}
-                className="bg-gradient-to-r from-gray-600 to-gray-700 text-white p-3 sm:p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110"
-              >
-                <MdMoreVert className="text-lg sm:text-xl" />
-              </button>
-
-              {/* Hover Label */}
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                Save/Load Work
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
-              </div>
-
-              {/* Dropdown Menu */}
-              {showAdvancedMenu && (
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 w-48 sm:w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[9999] max-w-[90vw]">
-                  <div className="p-2">
-                    <button
-                      onClick={() => {
-                        handleExportYAML();
-                        setShowAdvancedMenu(false);
-                      }}
-                      disabled={loadingSave}
-                      className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
-                        loadingSave
-                          ? "bg-blue-50 cursor-not-allowed animate-pulse"
-                          : ""
-                      }`}
-                    >
-                      {loadingSave ? (
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent"></div>
-                      ) : (
-                        <MdFileDownload className="text-blue-600" />
-                      )}
-                      <div>
-                        <div className="font-medium">
-                          {loadingSave ? "Preparing File..." : "Save My Work"}
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {loadingSave
-                            ? "This will start downloading shortly"
-                            : "Download to continue later"}
-                        </div>
-                      </div>
-                    </button>
-                    <label
-                      className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-green-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
-                        loadingLoad
-                          ? "bg-green-50 cursor-not-allowed animate-pulse"
-                          : "cursor-pointer"
-                      }`}
-                    >
-                      {loadingLoad ? (
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-green-600 border-t-transparent"></div>
-                      ) : (
-                        <MdFileUpload className="text-green-600" />
-                      )}
-                      <div>
-                        <div className="font-medium">
-                          {loadingLoad
-                            ? "Processing File..."
-                            : "Load Previous Work"}
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {loadingLoad
-                            ? "Reading and validating your resume"
-                            : "Upload your saved resume"}
-                        </div>
-                      </div>
-                      <input
-                        type="file"
-                        accept=".yaml,.yml"
-                        className="hidden"
-                        disabled={loadingLoad}
-                        onChange={(e) => {
-                          handleImportYAML(e);
-                          setShowAdvancedMenu(false);
-                        }}
-                      />
-                    </label>
-                    <button
-                      onClick={() => {
-                        toggleHelpModal();
-                        setShowAdvancedMenu(false);
-                      }}
-                      className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3"
-                    >
-                      <MdHelpOutline className="text-purple-600" />
-                      <div>
-                        <div className="font-medium">Help & Tips</div>
-                        <div className="text-xs text-gray-500">
-                          How to save your work
-                        </div>
-                      </div>
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+        {/* Docked Bottom Toolbar - Always visible, positioned above footer when footer shows */}
+        <div className={`fixed left-0 right-0 z-[60] bg-white/98 backdrop-blur-md border-t border-gray-300 shadow-2xl transition-all duration-300 ${contextIsAtBottom ? 'bottom-56 sm:bottom-40 lg:bottom-28' : 'bottom-0'}`}>
+          <div className="flex items-center justify-center gap-2 sm:gap-4 p-4 max-w-screen-lg mx-auto">
+            <EditorToolbar
+              onAddSection={handleAddNewSectionClick}
+              onGenerateResume={handleGenerateResume}
+              onExportYAML={handleExportYAML}
+              onImportYAML={handleImportYAML}
+              onToggleHelp={toggleHelpModal}
+              loadingAddSection={loadingAddSection}
+              generating={generating}
+              loadingSave={loadingSave}
+              loadingLoad={loadingLoad}
+              showAdvancedMenu={showAdvancedMenu}
+              setShowAdvancedMenu={setShowAdvancedMenu}
+              mode="integrated"
+            />
           </div>
         </div>
+
+        {/* Visual Divider when at bottom - Between toolbar and footer */}
+        {contextIsAtBottom && (
+          <div className="fixed left-0 right-0 z-50 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 transition-all duration-300 bottom-56 sm:bottom-40 lg:bottom-28" style={{ height: '1px' }}>
+            <div className="w-full h-full bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50"></div>
+          </div>
+        )}
       </div>
 
       {/* Help Modal - Improved */}
