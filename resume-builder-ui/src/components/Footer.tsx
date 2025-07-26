@@ -1,7 +1,15 @@
 import { Link } from "react-router-dom";
 import { FaShieldAlt, FaLock, FaUsers } from "react-icons/fa";
 
-export default function Footer() {
+interface FooterProps {
+  isEditorPage?: boolean;
+  showAboveToolbar?: boolean;
+}
+
+export default function Footer({
+  isEditorPage = false,
+  showAboveToolbar = false,
+}: FooterProps) {
   return (
     <footer className="bg-white/90 backdrop-blur-sm border-t border-gray-200 shadow-lg">
       <div className="container mx-auto px-4 py-8">
