@@ -1,5 +1,3 @@
-import React from "react";
-
 interface TemplateSelectorProps {
   onSelect: (template: string) => void;
 }

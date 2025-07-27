@@ -65,4 +65,62 @@ describe("ContactInfoEditor", { timeout: 5000 }, () => {
 
     expect(container.firstChild).toBeNull();
   });
+
+  describe("Form Validation", () => {
+    it("handles empty email field gracefully", () => {
+      const setContactInfoMock = vi.fn();
+      render(
+        <ContactInfoEditor
+          contactInfo={mockContactInfo}
+          setContactInfo={setContactInfoMock}
+        />
+      );
+
+      const emailInput = screen.getByDisplayValue(mockContactInfo.email);
+      fireEvent.change(emailInput, { target: { value: "" } });
+
+      expect(setContactInfoMock).toHaveBeenCalledWith({
+        ...mockContactInfo,
+        email: "",
+      });
+    });
+
+    it("handles long input values", () => {
+      const setContactInfoMock = vi.fn();
+      render(
+        <ContactInfoEditor
+          contactInfo={mockContactInfo}
+          setContactInfo={setContactInfoMock}
+        />
+      );
+
+      const longName = "A".repeat(100);
+      const nameInput = screen.getByDisplayValue(mockContactInfo.name);
+      fireEvent.change(nameInput, { target: { value: longName } });
+
+      expect(setContactInfoMock).toHaveBeenCalledWith({
+        ...mockContactInfo,
+        name: longName,
+      });
+    });
+
+    it("handles special characters in input fields", () => {
+      const setContactInfoMock = vi.fn();
+      render(
+        <ContactInfoEditor
+          contactInfo={mockContactInfo}
+          setContactInfo={setContactInfoMock}
+        />
+      );
+
+      const specialName = "José María & Smith-Jones Jr.";
+      const nameInput = screen.getByDisplayValue(mockContactInfo.name);
+      fireEvent.change(nameInput, { target: { value: specialName } });
+
+      expect(setContactInfoMock).toHaveBeenCalledWith({
+        ...mockContactInfo,
+        name: specialName,
+      });
+    });
+  });
 });
