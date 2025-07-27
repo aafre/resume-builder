@@ -121,7 +121,7 @@ const Editor: React.FC = () => {
         }, 500);
       } catch (error) {
         console.error("Error fetching template:", error);
-        toast.error("Unable to load template. Please try refreshing the page.");
+        toast.error("Failed to load template. Please refresh and try again.");
       } finally {
         setLoading(false);
       }
@@ -294,14 +294,10 @@ const Editor: React.FC = () => {
       link.download = "resume.yaml";
       link.click();
 
-      toast.success("Resume data file downloaded", {
-        autoClose: 3000,
-      });
+      toast.success("Resume saved successfully!");
     } catch (error) {
       console.error("Error exporting YAML:", error);
-      toast.error(
-        "Unable to save file. Please check your browser settings and try again."
-      );
+      toast.error("Save failed. Check browser settings and try again.");
     } finally {
       setLoadingSave(false);
     }
@@ -327,14 +323,10 @@ const Editor: React.FC = () => {
         const processedSections = processSections(parsedYaml.sections);
         setSections(processedSections);
 
-        toast.success("Resume loaded successfully", {
-          autoClose: 3000,
-        });
+        toast.success("Resume loaded successfully!");
       } catch (error) {
         console.error("Error parsing YAML file:", error);
-        toast.error(
-          "Invalid file format. Please upload a resume file saved from this application."
-        );
+        toast.error("Invalid file format. Please upload a valid resume file.");
       } finally {
         setLoadingLoad(false);
       }
@@ -393,23 +385,16 @@ const Editor: React.FC = () => {
       link.click();
       document.body.removeChild(link);
 
-      toast.success("Resume generated successfully", {
-        autoClose: 3000,
-      });
+      toast.success("Resume downloaded successfully!");
 
       setTimeout(() => {
-        toast.info(
-          "💡 Working on another device? Use the 3-dot menu to save your work as a file",
-          {
-            autoClose: 5000,
-          }
-        );
+        toast.info("Need to continue on another device? Save your work via the ⋮ menu");
       }, 2000);
     } catch (error) {
       console.error("Error generating resume:", error);
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
-      toast.error(`Unable to generate resume: ${errorMessage}`);
+      toast.error(`Resume generation failed: ${errorMessage}`);
     } finally {
       setGenerating(false);
     }
@@ -808,8 +793,8 @@ const Editor: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
+        position="top-right"
+        autoClose={4000}
         hideProgressBar={false}
         newestOnTop
         closeOnClick
