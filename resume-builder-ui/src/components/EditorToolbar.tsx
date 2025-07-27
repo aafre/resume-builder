@@ -50,7 +50,7 @@ export default function EditorToolbar({
   const buttonClasses = mode === 'floating' ? floatingButtonClasses : integratedButtonClasses;
 
   return (
-    <div className={`flex items-center justify-center gap-2 sm:gap-4 ${mode === 'integrated' ? 'w-full' : ''}`}>
+    <div className={`flex items-center justify-center gap-2 sm:gap-4 lg:flex-col lg:gap-3 ${mode === 'integrated' ? 'w-full lg:w-auto' : ''}`}>
       {/* Add New Section */}
       <div className="relative group">
         <button
@@ -67,9 +67,9 @@ export default function EditorToolbar({
           )}
         </button>
         {mode === 'floating' && (
-          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 lg:left-auto lg:right-0 lg:transform-none mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
             Add New Section
-            <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
+            <div className="absolute top-full left-1/2 transform -translate-x-1/2 lg:left-auto lg:right-4 lg:transform-none border-4 border-transparent border-t-gray-800"></div>
           </div>
         )}
       </div>
@@ -107,15 +107,15 @@ export default function EditorToolbar({
         </button>
 
         {mode === 'floating' && (
-          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 lg:left-auto lg:right-0 lg:transform-none mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
             Save/Load Work
-            <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
+            <div className="absolute top-full left-1/2 transform -translate-x-1/2 lg:left-auto lg:right-4 lg:transform-none border-4 border-transparent border-t-gray-800"></div>
           </div>
         )}
 
         {/* Dropdown Menu */}
         {showAdvancedMenu && (
-          <div className={`absolute ${mode === 'floating' ? 'bottom-full mb-4' : 'top-full mt-2'} left-1/2 transform -translate-x-1/2 w-48 sm:w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[9999] max-w-[90vw]`}>
+          <div className={`absolute ${mode === 'floating' ? 'bottom-full mb-4' : 'top-full mt-2'} left-1/2 transform -translate-x-1/2 lg:left-auto lg:right-0 lg:transform-none w-48 sm:w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[9999] max-w-[90vw]`}>
             <div className="p-2">
               <button
                 onClick={() => {
