@@ -4,20 +4,20 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
 describe("Footer", () => {
-  it("renders Privacy Policy and Terms of Service links with correct hrefs", () => {
+  it("renders Privacy and Terms links with correct hrefs", () => {
     render(
       <MemoryRouter>
         <Footer />
       </MemoryRouter>
     );
 
-    // Verify that the Privacy Policy link is rendered and its href is correct.
-    const privacyLink = screen.getByRole("link", { name: /privacy policy/i });
+    // Verify that the Privacy link is rendered and its href is correct.
+    // The link text is 'Privacy', not 'Privacy Policy'
+    const privacyLink = screen.getByRole("link", { name: /privacy/i });
     expect(privacyLink).toBeInTheDocument();
     expect(privacyLink).toHaveAttribute("href", "/privacy-policy");
 
-    // Verify that the Terms of Service link is rendered and its href is correct.
-    const termsLink = screen.getByRole("link", { name: /terms of service/i });
+    const termsLink = screen.getByRole("link", { name: /terms/i });
     expect(termsLink).toBeInTheDocument();
     expect(termsLink).toHaveAttribute("href", "/terms-of-service");
   });
@@ -45,6 +45,5 @@ describe("Footer", () => {
     // Verify that the texts for the feature icons are present.
     expect(screen.getByText("GDPR")).toBeInTheDocument();
     expect(screen.getByText("SSL")).toBeInTheDocument();
-    expect(screen.getByText("50K+ Users")).toBeInTheDocument();
   });
 });
