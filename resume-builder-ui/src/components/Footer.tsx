@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaShieldAlt, FaLock, FaUsers } from "react-icons/fa";
+import { FaShieldAlt, FaLock } from "react-icons/fa";
 
 interface FooterProps {
   isEditorPage?: boolean;
