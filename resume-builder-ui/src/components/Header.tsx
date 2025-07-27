@@ -1,9 +1,23 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { useEditorContext } from "../contexts/EditorContext";
+import AutoSaveIndicator from "./AutoSaveIndicator";
 import logo from "/android-chrome-192x192.png";
 
 export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
+  
+  // Safely get editor context (might not be available)
+  const isEditorPage = location.pathname === "/editor";
+  let editorContext = null;
+  
+  try {
+    if (isEditorPage) {
+      editorContext = useEditorContext();
+    }
+  } catch {
+    // Context not available, which is fine for non-editor pages
+  }
 
   const getPageTitle = () => {
     switch (location.pathname) {
@@ -40,7 +54,7 @@ export default function Header() {
             </div>
           )}
 
-          {/* Action Button (only on the home page) */}
+          {/* Right Side Content */}
           {location.pathname === "/" && (
             <button
               onClick={() => navigate("/templates")}
@@ -49,6 +63,17 @@ export default function Header() {
               <span className="hidden sm:inline">Get Started</span>
               <span className="sm:hidden">Start</span>
             </button>
+          )}
+          
+          {/* Auto-Save Indicator (only on editor page) */}
+          {isEditorPage && editorContext && (
+            <div className="flex items-center justify-end min-w-0">
+              <AutoSaveIndicator
+                lastSaved={editorContext.lastSaved}
+                isSaving={editorContext.isSaving}
+                hasError={editorContext.saveError}
+              />
+            </div>
           )}
         </div>
         

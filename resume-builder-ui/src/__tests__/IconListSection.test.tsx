@@ -48,14 +48,11 @@ describe("IconListSection", { timeout: 5000 }, () => {
     expect(screen.getByDisplayValue("2021")).toBeInTheDocument();
   });
 
-  it.skip("renders fallback message when no certifications are provided", () => {
+  it("renders add button when no certifications are provided", () => {
     const onUpdateMock = vi.fn();
     render(<IconListSection data={[]} onUpdate={onUpdateMock} />);
-    expect(
-      screen.getByText(
-        "No certifications added yet. Use the button below to add a new one."
-      )
-    ).toBeInTheDocument();
+    // Component doesn't render empty state message, just the Add Item button
+    expect(screen.getByText("Add Item")).toBeInTheDocument();
   });
 
   it("calls onUpdate when a certification field is changed", () => {
@@ -95,13 +92,13 @@ describe("IconListSection", { timeout: 5000 }, () => {
     );
   });
 
-  it.skip("adds a new certification when the Add Certification button is clicked", () => {
+  it("adds a new certification when the Add Item button is clicked", () => {
     const onUpdateMock = vi.fn();
     render(
       <IconListSection data={getMockCertifications()} onUpdate={onUpdateMock} />
     );
 
-    const addButton = screen.getByText("Add Certification");
+    const addButton = screen.getByText("Add Item");
     fireEvent.click(addButton);
 
     expect(onUpdateMock).toHaveBeenCalledTimes(1);

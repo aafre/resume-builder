@@ -30,4 +30,50 @@ describe("fetchTemplate", {}, () => {
 
     await expect(fetchTemplate(templateId)).rejects.toThrow("Failed to fetch template");
   });
+
+  describe("Error Handling", () => {
+    it("should handle network errors gracefully", async () => {
+      const templateId = "1";
+
+      // Simulate a network error
+      vi.spyOn(globalThis, 'fetch').mockRejectedValueOnce(
+        new Error("Network error")
+      );
+
+      await expect(fetchTemplate(templateId)).rejects.toThrow("Network error");
+    });
+
+    it("should handle malformed JSON responses", async () => {
+      const templateId = "1";
+
+      // Simulate a response with invalid JSON
+      vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+        new Response("Invalid JSON {", { status: 200 })
+      );
+
+      await expect(fetchTemplate(templateId)).rejects.toThrow();
+    });
+
+    it("should handle server errors (5xx)", async () => {
+      const templateId = "1";
+
+      // Simulate a server error
+      vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+        new Response("Internal Server Error", { status: 500 })
+      );
+
+      await expect(fetchTemplate(templateId)).rejects.toThrow("Failed to fetch template");
+    });
+
+    it("should handle empty template ID", async () => {
+      const templateId = "";
+
+      // This should still make the API call (validation might be server-side)
+      vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+        new Response("Bad Request", { status: 400 })
+      );
+
+      await expect(fetchTemplate(templateId)).rejects.toThrow("Failed to fetch template");
+    });
+  });
 });
