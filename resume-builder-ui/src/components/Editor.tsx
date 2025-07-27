@@ -33,15 +33,13 @@ const Editor: React.FC = () => {
   const templateId = queryParams.get("template");
 
   // Get context for footer integration and auto-save
-  const { 
-    isAtBottom: contextIsAtBottom, 
+  const {
+    isAtBottom: contextIsAtBottom,
     setIsAtBottom: setContextIsAtBottom,
-    lastSaved,
     setLastSaved,
     isSaving,
     setIsSaving,
-    saveError,
-    setSaveError
+    setSaveError,
   } = useEditorContext();
 
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
@@ -388,7 +386,9 @@ const Editor: React.FC = () => {
       toast.success("Resume downloaded successfully!");
 
       setTimeout(() => {
-        toast.info("Need to continue on another device? Save your work via the ⋮ menu");
+        toast.info(
+          "Need to continue on another device? Save your work via the ⋮ menu"
+        );
       }, 2000);
     } catch (error) {
       console.error("Error generating resume:", error);
@@ -718,12 +718,24 @@ const Editor: React.FC = () => {
     }, 2000); // Save 2 seconds after user stops editing
 
     return () => clearTimeout(timer);
-  }, [contactInfo, sections, templateId, originalTemplateData, setIsSaving, setLastSaved, setSaveError]);
+  }, [
+    contactInfo,
+    sections,
+    templateId,
+    originalTemplateData,
+    setIsSaving,
+    setLastSaved,
+    setSaveError,
+  ]);
 
   // Periodic auto-save backup
   useEffect(() => {
     const interval = setInterval(async () => {
-      if ((contactInfo || sections.length > 0) && originalTemplateData && !isSaving) {
+      if (
+        (contactInfo || sections.length > 0) &&
+        originalTemplateData &&
+        !isSaving
+      ) {
         setIsSaving(true);
         await saveToLocalStorage();
         setIsSaving(false);
@@ -731,7 +743,16 @@ const Editor: React.FC = () => {
     }, 30000); // Save every 30 seconds
 
     return () => clearInterval(interval);
-  }, [contactInfo, sections, templateId, originalTemplateData, isSaving, setIsSaving, setLastSaved, setSaveError]);
+  }, [
+    contactInfo,
+    sections,
+    templateId,
+    originalTemplateData,
+    isSaving,
+    setIsSaving,
+    setLastSaved,
+    setSaveError,
+  ]);
 
   // Save before page unload
   useEffect(() => {
@@ -805,7 +826,6 @@ const Editor: React.FC = () => {
         className="custom-toast-container"
         toastClassName="custom-toast"
       />
-
 
       {/* Main Content Container */}
       <div className="container mx-auto px-4 pt-8 pb-72 sm:pb-56 lg:pb-44">
@@ -944,10 +964,10 @@ const Editor: React.FC = () => {
         <div
           className={`fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 
             left-0 right-0 border-t border-gray-200/60 lg:left-auto lg:right-6 lg:border-t-0 lg:border lg:border-gray-200/60 lg:rounded-2xl lg:w-auto lg:max-w-none ${
-            contextIsAtBottom
-              ? "bottom-56 sm:bottom-40 lg:bottom-24"
-              : "bottom-0 lg:bottom-6"
-          }`}
+              contextIsAtBottom
+                ? "bottom-56 sm:bottom-40 lg:bottom-24"
+                : "bottom-0 lg:bottom-6"
+            }`}
         >
           <div className="flex items-center justify-center gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
             <EditorToolbar
