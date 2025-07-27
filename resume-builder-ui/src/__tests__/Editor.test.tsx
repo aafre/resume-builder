@@ -1,5 +1,5 @@
 /// <reference types="vitest" />
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import Editor from "../components/Editor";
@@ -107,19 +107,21 @@ describe("Editor Component", () => {
 
     // Find the "+" button (Add Section button) and verify it exists
     const buttons = screen.getAllByRole("button");
-    const addButton = buttons.find(button => {
+    const addButton = buttons.find((button) => {
       const className = button.className || "";
       const textContent = button.textContent || "";
-      return className.includes("from-blue-600") && 
-             className.includes("to-indigo-600") &&
-             !textContent.includes("Download") &&
-             !textContent.includes("Creating");
+      return (
+        className.includes("from-blue-600") &&
+        className.includes("to-indigo-600") &&
+        !textContent.includes("Download") &&
+        !textContent.includes("Creating")
+      );
     });
-    
+
     // Verify the add button exists and is clickable
     expect(addButton).toBeTruthy();
     expect(addButton).not.toBeDisabled();
-    
+
     // Verify it has the expected styling
     expect(addButton?.className).toContain("from-blue-600");
     expect(addButton?.className).toContain("to-indigo-600");
