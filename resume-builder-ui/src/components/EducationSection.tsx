@@ -1,4 +1,3 @@
-import React from "react";
 import IconUpload from "./IconUpload";
 
 interface EducationItem {

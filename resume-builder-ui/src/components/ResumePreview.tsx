@@ -1,5 +1,3 @@
-import React from "react";
-
 const ResumePreview: React.FC<{ fields: Record<string, string> }> = ({
   fields,
 }) => {
