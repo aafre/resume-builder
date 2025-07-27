@@ -151,7 +151,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
     expect(newExperience.description).toEqual([]);
   });
 
-  it.skip("adds a new description line when the Add Description button is clicked", () => {
+  it("adds a new description line when the Add Description Point button is clicked", () => {
     const onUpdateMock = vi.fn();
     // Get a fresh copy and record the initial description length.
     const experiences = getMockExperiences();
@@ -164,8 +164,8 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
       />
     );
 
-    // For the first experience, click the Add Description button.
-    const addDescButton = screen.getAllByText("Add Description")[0];
+    // For the first experience, click the Add Description Point button.
+    const addDescButton = screen.getAllByText("+ Add Description Point")[0];
     fireEvent.click(addDescButton);
 
     expect(onUpdateMock).toHaveBeenCalledTimes(1);
