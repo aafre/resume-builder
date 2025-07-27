@@ -947,19 +947,18 @@ const Editor: React.FC = () => {
           }
         })}
 
-        {/* Visual Divider when at bottom - Between content and toolbar */}
+        {/* Elegant Separator - Between content and toolbar */}
         {contextIsAtBottom && (
-          <div
-            className="fixed left-0 right-0 z-50 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 transition-all duration-300 bottom-72 sm:bottom-56 lg:bottom-44"
-            style={{ height: "1px" }}
-          >
-            <div className="w-full h-full bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50"></div>
+          <div className="fixed left-0 right-0 z-50 transition-all duration-300 bottom-72 sm:bottom-56 lg:bottom-44 px-4">
+            <div className="max-w-screen-lg mx-auto">
+              <div className="bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-white/30 h-0.5 w-full"></div>
+            </div>
           </div>
         )}
 
         {/* Docked Bottom Toolbar - Always visible, positioned above footer when footer shows */}
         <div
-          className={`fixed left-0 right-0 z-[60] bg-white/98 backdrop-blur-md border-t border-gray-300 shadow-2xl transition-all duration-300 ${
+          className={`fixed left-0 right-0 z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm border-t border-gray-200/60 shadow-lg transition-all duration-300 ${
             contextIsAtBottom
               ? "bottom-56 sm:bottom-40 lg:bottom-28"
               : "bottom-0"
@@ -983,13 +982,12 @@ const Editor: React.FC = () => {
           </div>
         </div>
 
-        {/* Visual Divider when at bottom - Between toolbar and footer */}
+        {/* Elegant Separator - Between toolbar and footer */}
         {contextIsAtBottom && (
-          <div
-            className="fixed left-0 right-0 z-50 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 transition-all duration-300 bottom-56 sm:bottom-40 lg:bottom-28"
-            style={{ height: "1px" }}
-          >
-            <div className="w-full h-full bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50"></div>
+          <div className="fixed left-0 right-0 z-50 transition-all duration-300 bottom-56 sm:bottom-40 lg:bottom-28 px-4">
+            <div className="max-w-screen-lg mx-auto">
+              <div className="bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-white/30 h-0.5 w-full"></div>
+            </div>
           </div>
         )}
       </div>
