@@ -47,28 +47,28 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   ];
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg max-w-xl w-full">
-        <h2 className="text-2xl font-bold mb-6">Select Section Type</h2>
-        <div className="space-y-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white p-4 sm:p-6 rounded-lg max-w-sm sm:max-w-xl w-full">
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Select Section Type</h2>
+        <div className="space-y-3 sm:space-y-4">
           {sectionTypes.map((section) => (
             <div
               key={section.type}
-              className="p-4 border rounded-lg shadow-sm hover:shadow-md cursor-pointer flex flex-col"
+              className="p-3 sm:p-4 border rounded-lg shadow-sm hover:shadow-md cursor-pointer flex flex-col"
               onClick={() => onSelect(section.type)}
             >
-              <h3 className="font-semibold text-lg">{section.title}</h3>
-              <p className="text-sm text-gray-600 mb-2">
+              <h3 className="font-semibold text-base sm:text-lg">{section.title}</h3>
+              <p className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2">
                 {section.description}
               </p>
-              <p className="text-sm text-gray-500 italic">
+              <p className="text-xs sm:text-sm text-gray-500 italic">
                 <strong>Use for:</strong> {section.useFor}
               </p>
             </div>
           ))}
         </div>
         <button
-          className="mt-6 bg-red-500 text-white px-4 py-2 rounded-lg w-full"
+          className="mt-4 sm:mt-6 bg-red-500 text-white px-4 py-2 rounded-lg w-full"
           onClick={onClose}
         >
           Cancel
