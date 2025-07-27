@@ -69,23 +69,22 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
           </div>
 
           <div className="mt-4">
-            {/* Top Row: Icon + Company/Title/Dates */}
-            <div className="flex gap-6 mb-6">
-              {/* Icon Upload Section */}
-              {supportsIcons && (
-                <div className="flex-shrink-0">
-                  <IconUpload
-                    onUpload={(renamedIcon, file) =>
-                      handleIconUpload(index, renamedIcon, file)
-                    }
-                    onClear={() => handleIconClear(index)}
-                    existingIcon={experience.icon || null}
-                    existingIconFile={experience.iconFile || null}
-                  />
-                </div>
-              )}
-              {/* Basic Experience Fields */}
-              <div className="flex-grow grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Icon Upload Section */}
+            {supportsIcons && (
+              <div className="mb-4">
+                <IconUpload
+                  onUpload={(renamedIcon, file) =>
+                    handleIconUpload(index, renamedIcon, file)
+                  }
+                  onClear={() => handleIconClear(index)}
+                  existingIcon={experience.icon || null}
+                  existingIconFile={experience.iconFile || null}
+                />
+              </div>
+            )}
+            
+            {/* Basic Experience Fields */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div>
                   <label className="block text-gray-700 font-medium mb-1">
                     Company
@@ -129,7 +128,6 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                   />
                 </div>
               </div>
-            </div>
 
             {/* Full Width Description Section */}
             <div className="w-full">
