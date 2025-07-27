@@ -10,8 +10,6 @@ Effortlessly Create, Update, and Perfect Your ATS-Friendly Resume - Your Content
 
 No signup required • Your data stays private 
 
---
-
 ## How It Works
 
 1. **[Visit the App](https://easyfreeresume.com)** - Open in any browser
@@ -103,25 +101,27 @@ If you prefer working with code, you can create resumes using YAML files:
 git clone https://github.com/aafre/resume-builder.git
 cd resume-builder
 
-# For the web app
+# For the React Frontend: 
 cd resume-builder-ui
 npm install
 npm run dev
-
-# For direct PDF generation
-python resume_generator.py --template modern --input samples/modern/john_doe.yml --output output/resume.pdf
 ```
 
-**Docker Setup:**
+**Docker for running backend:**
 ```bash
 # API Backend
 docker build -t resume-api -f Dockerfile.dev.api .
 docker run -p 5000:5000 resume-api
 
-# Frontend
-cd resume-builder-ui
-npm run dev
+# For direct PDF generation (without API)
+python resume_generator.py --template modern --input samples/modern/john_doe.yml --output output/resume.pdf
+
+# Run Flask API 
+python app.py 
 ```
+
+At this point the frontend should work with the backend locally. 
+
 
 ---
 
@@ -151,4 +151,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 **[🚀 Start Building Your Resume Now →](https://easyfreeresume.com)**
 
-*Build professional resumes in minutes, not hours.*
+*Build professional resumes in minutes.*
