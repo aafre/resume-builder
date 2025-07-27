@@ -1,4 +1,3 @@
-import React from "react";
 import IconUpload from "./IconUpload";
 
 interface ExperienceItem {
@@ -69,65 +68,63 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
           </div>
 
           <div className="mt-4">
-            {/* Top Row: Icon + Company/Title/Dates */}
-            <div className="flex gap-6 mb-6">
-              {/* Icon Upload Section */}
-              {supportsIcons && (
-                <div className="flex-shrink-0">
-                  <IconUpload
-                    onUpload={(renamedIcon, file) =>
-                      handleIconUpload(index, renamedIcon, file)
-                    }
-                    onClear={() => handleIconClear(index)}
-                    existingIcon={experience.icon || null}
-                    existingIconFile={experience.iconFile || null}
-                  />
-                </div>
-              )}
-              {/* Basic Experience Fields */}
-              <div className="flex-grow grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-gray-700 font-medium mb-1">
-                    Company
-                  </label>
-                  <input
-                    type="text"
-                    value={experience.company}
-                    onChange={(e) =>
-                      handleUpdateField(index, "company", e.target.value)
-                    }
-                    className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                    placeholder="Enter company name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 font-medium mb-1">
-                    Title
-                  </label>
-                  <input
-                    type="text"
-                    value={experience.title}
-                    onChange={(e) =>
-                      handleUpdateField(index, "title", e.target.value)
-                    }
-                    className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                    placeholder="Enter job title"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 font-medium mb-1">
-                    Dates
-                  </label>
-                  <input
-                    type="text"
-                    value={experience.dates}
-                    onChange={(e) =>
-                      handleUpdateField(index, "dates", e.target.value)
-                    }
-                    className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                    placeholder="e.g., Jan 2020 - Present"
-                  />
-                </div>
+            {/* Icon Upload Section */}
+            {supportsIcons && (
+              <div className="mb-4">
+                <IconUpload
+                  onUpload={(renamedIcon, file) =>
+                    handleIconUpload(index, renamedIcon, file)
+                  }
+                  onClear={() => handleIconClear(index)}
+                  existingIcon={experience.icon || null}
+                  existingIconFile={experience.iconFile || null}
+                />
+              </div>
+            )}
+
+            {/* Basic Experience Fields */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">
+                  Company
+                </label>
+                <input
+                  type="text"
+                  value={experience.company}
+                  onChange={(e) =>
+                    handleUpdateField(index, "company", e.target.value)
+                  }
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  placeholder="Enter company name"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  value={experience.title}
+                  onChange={(e) =>
+                    handleUpdateField(index, "title", e.target.value)
+                  }
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  placeholder="Enter job title"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">
+                  Dates
+                </label>
+                <input
+                  type="text"
+                  value={experience.dates}
+                  onChange={(e) =>
+                    handleUpdateField(index, "dates", e.target.value)
+                  }
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  placeholder="e.g., Jan 2020 - Present"
+                />
               </div>
             </div>
 

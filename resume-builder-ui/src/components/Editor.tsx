@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import { FaFilePdf, FaPlus } from "react-icons/fa";
 import { fetchTemplate, generateResume } from "../services/templates";
 import { getSessionId } from "../utils/session";
 import yaml from "js-yaml";
@@ -10,12 +9,9 @@ import EducationSection from "./EducationSection";
 import GenericSection from "./GenericSection";
 import IconListSection from "./IconListSection";
 import SectionTypeModal from "./SectionTypeModal";
-import {
-  MdFileDownload,
-  MdFileUpload,
-  MdHelpOutline,
-  MdMoreVert,
-} from "react-icons/md";
+import EditorToolbar from "./EditorToolbar";
+import { useEditorContext } from "../contexts/EditorContext";
+import { MdFileDownload, MdHelpOutline } from "react-icons/md";
 
 interface Section {
   name: string;
@@ -36,6 +32,18 @@ const Editor: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const templateId = queryParams.get("template");
 
+  // Get context for footer integration and auto-save
+  const { 
+    isAtBottom: contextIsAtBottom, 
+    setIsAtBottom: setContextIsAtBottom,
+    lastSaved,
+    setLastSaved,
+    isSaving,
+    setIsSaving,
+    saveError,
+    setSaveError
+  } = useEditorContext();
+
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [sections, setSections] = useState<Section[]>([]);
   const [supportsIcons, setSupportsIcons] = useState(false);
@@ -50,7 +58,6 @@ const Editor: React.FC = () => {
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
   const [showWelcomeTour, setShowWelcomeTour] = useState(false);
-  const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [showRecoveryModal, setShowRecoveryModal] = useState(false);
   const [recoveredData, setRecoveredData] = useState<{
     timestamp: any;
@@ -66,6 +73,9 @@ const Editor: React.FC = () => {
   const [loadingSave, setLoadingSave] = useState(false);
   const [loadingLoad, setLoadingLoad] = useState(false);
   const [loadingAddSection, setLoadingAddSection] = useState(false);
+
+  // Simple scroll detection for footer visibility
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     if (!templateId) {
@@ -111,7 +121,7 @@ const Editor: React.FC = () => {
         }, 500);
       } catch (error) {
         console.error("Error fetching template:", error);
-        toast.error("Unable to load template. Please try refreshing the page.");
+        toast.error("Failed to load template. Please refresh and try again.");
       } finally {
         setLoading(false);
       }
@@ -284,23 +294,10 @@ const Editor: React.FC = () => {
       link.download = "resume.yaml";
       link.click();
 
-      toast.success("Resume data file downloaded", {
-        autoClose: 3000,
-      });
-
-      setTimeout(() => {
-        toast.info(
-          "💡 Your work is auto-saved in this browser. For other devices, keep this file safe!",
-          {
-            autoClose: 6000,
-          }
-        );
-      }, 1500);
+      toast.success("Resume saved successfully!");
     } catch (error) {
       console.error("Error exporting YAML:", error);
-      toast.error(
-        "Unable to save file. Please check your browser settings and try again."
-      );
+      toast.error("Save failed. Check browser settings and try again.");
     } finally {
       setLoadingSave(false);
     }
@@ -326,14 +323,10 @@ const Editor: React.FC = () => {
         const processedSections = processSections(parsedYaml.sections);
         setSections(processedSections);
 
-        toast.success("Resume loaded successfully", {
-          autoClose: 3000,
-        });
+        toast.success("Resume loaded successfully!");
       } catch (error) {
         console.error("Error parsing YAML file:", error);
-        toast.error(
-          "Invalid file format. Please upload a resume file saved from this application."
-        );
+        toast.error("Invalid file format. Please upload a valid resume file.");
       } finally {
         setLoadingLoad(false);
       }
@@ -392,23 +385,16 @@ const Editor: React.FC = () => {
       link.click();
       document.body.removeChild(link);
 
-      toast.success("Resume generated successfully", {
-        autoClose: 3000,
-      });
+      toast.success("Resume downloaded successfully!");
 
       setTimeout(() => {
-        toast.info(
-          "💡 Working on another device? Use the 3-dot menu to save your work as a file",
-          {
-            autoClose: 5000,
-          }
-        );
+        toast.info("Need to continue on another device? Save your work via the ⋮ menu");
       }, 2000);
     } catch (error) {
       console.error("Error generating resume:", error);
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
-      toast.error(`Unable to generate resume: ${errorMessage}`);
+      toast.error(`Resume generation failed: ${errorMessage}`);
     } finally {
       setGenerating(false);
     }
@@ -563,9 +549,18 @@ const Editor: React.FC = () => {
 
       // Store as JSON (basic obfuscation can be added later if needed)
       localStorage.setItem(getAutoSaveKey(), JSON.stringify(data));
-      setLastSaved(new Date());
+      const savedTime = new Date();
+      setLastSaved(savedTime);
+      setSaveError(false); // Clear any previous errors
     } catch (error) {
       console.error("Failed to auto-save to localStorage:", error);
+      setSaveError(true);
+      // Auto-retry after 5 seconds
+      setTimeout(() => {
+        if (contactInfo && sections.length > 0) {
+          saveToLocalStorage();
+        }
+      }, 5000);
     }
   };
 
@@ -717,22 +712,26 @@ const Editor: React.FC = () => {
     if (!originalTemplateData) return; // Don't save until template is loaded
 
     const timer = setTimeout(async () => {
+      setIsSaving(true);
       await saveToLocalStorage();
+      setIsSaving(false);
     }, 2000); // Save 2 seconds after user stops editing
 
     return () => clearTimeout(timer);
-  }, [contactInfo, sections, templateId, originalTemplateData]);
+  }, [contactInfo, sections, templateId, originalTemplateData, setIsSaving, setLastSaved, setSaveError]);
 
   // Periodic auto-save backup
   useEffect(() => {
     const interval = setInterval(async () => {
-      if ((contactInfo || sections.length > 0) && originalTemplateData) {
+      if ((contactInfo || sections.length > 0) && originalTemplateData && !isSaving) {
+        setIsSaving(true);
         await saveToLocalStorage();
+        setIsSaving(false);
       }
     }, 30000); // Save every 30 seconds
 
     return () => clearInterval(interval);
-  }, [contactInfo, sections, templateId, originalTemplateData]);
+  }, [contactInfo, sections, templateId, originalTemplateData, isSaving, setIsSaving, setLastSaved, setSaveError]);
 
   // Save before page unload
   useEffect(() => {
@@ -745,6 +744,30 @@ const Editor: React.FC = () => {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [contactInfo, sections, templateId, originalTemplateData]);
+
+  // Simple scroll detection for footer visibility
+  const handleScroll = useCallback(() => {
+    const currentScrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    // Check if at bottom (with threshold accounting for footer height)
+    const atBottom = windowHeight + currentScrollY >= documentHeight - 150;
+
+    // Update context with bottom state for footer visibility
+    setContextIsAtBottom(atBottom);
+
+    lastScrollY.current = currentScrollY;
+  }, [setContextIsAtBottom]);
+
+  useEffect(() => {
+    const throttledHandleScroll = () => {
+      requestAnimationFrame(handleScroll);
+    };
+
+    window.addEventListener("scroll", throttledHandleScroll);
+    return () => window.removeEventListener("scroll", throttledHandleScroll);
+  }, [handleScroll]);
 
   if (!templateId) {
     return (
@@ -770,8 +793,8 @@ const Editor: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
+        position="top-right"
+        autoClose={4000}
         hideProgressBar={false}
         newestOnTop
         closeOnClick
@@ -783,21 +806,9 @@ const Editor: React.FC = () => {
         toastClassName="custom-toast"
       />
 
-      {/* Auto-save indicator */}
-      {lastSaved && (
-        <div className="fixed top-24 right-2 sm:right-4 bg-white/95 backdrop-blur-sm text-green-700 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-sm sm:text-base font-medium shadow-lg border border-green-200 z-[60] max-w-[calc(100vw-1rem)]">
-          <span className="hidden sm:inline">
-            ✓ Auto-saved {new Date(lastSaved).toLocaleTimeString()}
-          </span>
-          <span className="sm:hidden">
-            ✓ Saved{" "}
-            {new Date(lastSaved).toLocaleTimeString([], { timeStyle: "short" })}
-          </span>
-        </div>
-      )}
 
       {/* Main Content Container */}
-      <div className="container mx-auto px-4 pt-8 pb-32">
+      <div className="container mx-auto px-4 pt-8 pb-72 sm:pb-56 lg:pb-44">
         {/* Contact Information Card */}
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
           <div className="mb-6">
@@ -920,157 +931,50 @@ const Editor: React.FC = () => {
           }
         })}
 
-        {/* Unified Floating Action Toolbar */}
-        <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-50 px-4">
-          <div className="flex items-center gap-2 sm:gap-4 flex-wrap justify-center max-w-screen-sm">
-            {/* Add New Section - Enhanced Hover */}
-            <div className="relative group">
-              <button
-                onClick={handleAddNewSectionClick}
-                disabled={loadingAddSection}
-                className={`bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 sm:p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110 ${
-                  loadingAddSection ? "scale-95 opacity-80" : ""
-                }`}
-              >
-                {loadingAddSection ? (
-                  <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-2 border-white border-t-transparent"></div>
-                ) : (
-                  <FaPlus className="text-lg sm:text-xl" />
-                )}
-              </button>
-              {/* Hover Label */}
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                Add New Section
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
-              </div>
-            </div>
-
-            {/* Download Resume - Primary Action */}
-            <button
-              onClick={handleGenerateResume}
-              className={`bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 sm:px-8 py-3 sm:py-4 rounded-full shadow-xl hover:shadow-2xl font-semibold text-sm sm:text-lg transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 sm:gap-3 ${
-                generating
-                  ? "opacity-75 cursor-not-allowed scale-95"
-                  : "hover:scale-105"
-              }`}
-              disabled={generating}
-            >
-              {generating ? (
-                <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-2 border-white border-t-transparent"></div>
-              ) : (
-                <FaFilePdf className="text-lg sm:text-xl" />
-              )}
-              <span className="hidden sm:inline">
-                {generating ? "Creating Your Resume..." : "Download My Resume"}
-              </span>
-              <span className="sm:hidden">
-                {generating ? "Creating..." : "Download"}
-              </span>
-            </button>
-
-            {/* Save/Load - Floating */}
-            <div className="relative group advanced-menu-container">
-              <button
-                onClick={() => setShowAdvancedMenu(!showAdvancedMenu)}
-                className="bg-gradient-to-r from-gray-600 to-gray-700 text-white p-3 sm:p-4 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 hover:scale-110"
-              >
-                <MdMoreVert className="text-lg sm:text-xl" />
-              </button>
-
-              {/* Hover Label */}
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                Save/Load Work
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
-              </div>
-
-              {/* Dropdown Menu */}
-              {showAdvancedMenu && (
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 w-48 sm:w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[9999] max-w-[90vw]">
-                  <div className="p-2">
-                    <button
-                      onClick={() => {
-                        handleExportYAML();
-                        setShowAdvancedMenu(false);
-                      }}
-                      disabled={loadingSave}
-                      className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
-                        loadingSave
-                          ? "bg-blue-50 cursor-not-allowed animate-pulse"
-                          : ""
-                      }`}
-                    >
-                      {loadingSave ? (
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent"></div>
-                      ) : (
-                        <MdFileDownload className="text-blue-600" />
-                      )}
-                      <div>
-                        <div className="font-medium">
-                          {loadingSave ? "Preparing File..." : "Save My Work"}
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {loadingSave
-                            ? "This will start downloading shortly"
-                            : "Download to continue later"}
-                        </div>
-                      </div>
-                    </button>
-                    <label
-                      className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-green-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
-                        loadingLoad
-                          ? "bg-green-50 cursor-not-allowed animate-pulse"
-                          : "cursor-pointer"
-                      }`}
-                    >
-                      {loadingLoad ? (
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-green-600 border-t-transparent"></div>
-                      ) : (
-                        <MdFileUpload className="text-green-600" />
-                      )}
-                      <div>
-                        <div className="font-medium">
-                          {loadingLoad
-                            ? "Processing File..."
-                            : "Load Previous Work"}
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {loadingLoad
-                            ? "Reading and validating your resume"
-                            : "Upload your saved resume"}
-                        </div>
-                      </div>
-                      <input
-                        type="file"
-                        accept=".yaml,.yml"
-                        className="hidden"
-                        disabled={loadingLoad}
-                        onChange={(e) => {
-                          handleImportYAML(e);
-                          setShowAdvancedMenu(false);
-                        }}
-                      />
-                    </label>
-                    <button
-                      onClick={() => {
-                        toggleHelpModal();
-                        setShowAdvancedMenu(false);
-                      }}
-                      className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3"
-                    >
-                      <MdHelpOutline className="text-purple-600" />
-                      <div>
-                        <div className="font-medium">Help & Tips</div>
-                        <div className="text-xs text-gray-500">
-                          How to save your work
-                        </div>
-                      </div>
-                    </button>
-                  </div>
-                </div>
-              )}
+        {/* Elegant Separator - Between content and toolbar (mobile/tablet only) */}
+        {contextIsAtBottom && (
+          <div className="fixed left-0 right-0 z-50 transition-all duration-300 bottom-80 sm:bottom-64 lg:bottom-48 px-4 lg:hidden">
+            <div className="max-w-screen-lg mx-auto">
+              <div className="bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-white/30 h-0.5 w-full"></div>
             </div>
           </div>
+        )}
+
+        {/* Docked Bottom Toolbar - Always visible, positioned above footer when footer shows */}
+        <div
+          className={`fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 
+            left-0 right-0 border-t border-gray-200/60 lg:left-auto lg:right-6 lg:border-t-0 lg:border lg:border-gray-200/60 lg:rounded-2xl lg:w-auto lg:max-w-none ${
+            contextIsAtBottom
+              ? "bottom-56 sm:bottom-40 lg:bottom-24"
+              : "bottom-0 lg:bottom-6"
+          }`}
+        >
+          <div className="flex items-center justify-center gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
+            <EditorToolbar
+              onAddSection={handleAddNewSectionClick}
+              onGenerateResume={handleGenerateResume}
+              onExportYAML={handleExportYAML}
+              onImportYAML={handleImportYAML}
+              onToggleHelp={toggleHelpModal}
+              loadingAddSection={loadingAddSection}
+              generating={generating}
+              loadingSave={loadingSave}
+              loadingLoad={loadingLoad}
+              showAdvancedMenu={showAdvancedMenu}
+              setShowAdvancedMenu={setShowAdvancedMenu}
+              mode="integrated"
+            />
+          </div>
         </div>
+
+        {/* Elegant Separator - Between toolbar and footer (mobile/tablet only) */}
+        {contextIsAtBottom && (
+          <div className="fixed left-0 right-0 z-50 transition-all duration-300 bottom-64 sm:bottom-48 lg:bottom-20 px-4 lg:hidden">
+            <div className="max-w-screen-lg mx-auto">
+              <div className="bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-white/30 h-0.5 w-full"></div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Help Modal - Improved */}
@@ -1253,79 +1157,66 @@ const Editor: React.FC = () => {
         </div>
       )}
 
-      {/* Welcome Tour Modal */}
+      {/* Welcome Modal - Clean & Simple */}
       {showWelcomeTour && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-lg w-full border border-gray-200 animate-in fade-in duration-300">
+          <div className="bg-white rounded-xl shadow-xl max-w-lg w-full border border-gray-200">
             <div className="p-8">
-              <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">👋</span>
-                </div>
-                <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                  Welcome!
-                </h2>
-                <p className="text-gray-600">
-                  Let's make sure you don't lose your hard work
-                </p>
-              </div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                Quick heads up
+              </h2>
 
               <div className="space-y-6 mb-8">
-                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
-                  <h3 className="font-semibold text-green-800 mb-2 flex items-center gap-2">
-                    ⚡ Your Work is Auto-Saved
-                  </h3>
-                  <p className="text-green-700 text-sm">
-                    No need to worry! Your resume is automatically saved as you
-                    work. Look for the "Auto-saved" message in the top corner.
-                  </p>
+                <div className="flex gap-4">
+                  <div className="text-green-600 text-xl">✅</div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-1">
+                      Auto-saved
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                      As you make edits, your work is automatically saved
+                    </p>
+                  </div>
                 </div>
 
-                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                  <h3 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                    🔄 Working on Different Devices?
-                  </h3>
-                  <p className="text-blue-700 text-sm">
-                    Auto-save only works on this device and browser. To continue
-                    on your phone, laptop, or different browser - download your
-                    work first!
-                  </p>
+                <div className="flex gap-4">
+                  <div className="text-amber-600 text-xl">⚠️</div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-1">
+                      Only on this device
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                      To use it elsewhere: tap ⋮ → "Save My Work"
+                    </p>
+                  </div>
                 </div>
 
-                <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
-                  <h3 className="font-semibold text-amber-800 mb-2 flex items-center gap-2">
-                    💾 How to Download Your Work
-                  </h3>
-                  <p className="text-amber-700 text-sm">
-                    See those floating buttons at the bottom? Click the 3-dot
-                    menu, then "Save My Work". Keep that file safe - it's your
-                    resume!
-                  </p>
-                </div>
-
-                <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
-                  <h3 className="font-semibold text-purple-800 mb-2 flex items-center gap-2">
-                    🔒 We Protect Your Privacy
-                  </h3>
-                  <p className="text-purple-700 text-sm">
-                    Your personal information never leaves your device. We don't
-                    store your resume data - you're in complete control.
-                  </p>
+                <div className="flex gap-4">
+                  <div className="text-blue-600 text-xl">🛡️</div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-1">
+                      Your data stays yours
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                      We don't store or send your resume anywhere. You're always
+                      in control.
+                    </p>
+                  </div>
                 </div>
               </div>
 
               <div className="space-y-3">
                 <button
                   onClick={() => handleTourComplete(true)}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
+                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors"
                 >
-                  Got it! Don't show this again
+                  Got it, don't show again
                 </button>
                 <button
                   onClick={() => handleTourComplete(false)}
-                  className="w-full bg-gray-100 text-gray-700 py-3 px-6 rounded-xl font-medium hover:bg-gray-200 transition-colors"
+                  className="w-full text-gray-600 py-2 px-6 rounded-lg hover:text-gray-800 transition-colors"
                 >
-                  Got it! (Show next time)
+                  Show next time
                 </button>
               </div>
             </div>

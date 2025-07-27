@@ -37,11 +37,11 @@ const IconListSection: React.FC<IconListSectionProps> = ({
   const [showHint, setShowHint] = useState(true);
 
   useEffect(() => {
-    if (sectionName.startsWith('New ')) {
+    if (sectionName.startsWith("New ")) {
       const timer = setTimeout(() => {
         setShowHint(false);
       }, 5000); // Hide hint after 5 seconds
-      
+
       return () => clearTimeout(timer);
     } else {
       setShowHint(false);
@@ -111,9 +111,11 @@ const IconListSection: React.FC<IconListSectionProps> = ({
             </button>
           </div>
         ) : (
-          <h2 className={`text-xl font-semibold ${
-            sectionName.startsWith('New ') ? 'text-gray-500 italic' : ''
-          }`}>
+          <h2
+            className={`text-xl font-semibold ${
+              sectionName.startsWith("New ") ? "text-gray-500 italic" : ""
+            }`}
+          >
             {sectionName}
             {onEditTitle && (
               <button
@@ -124,7 +126,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                 ✏️
               </button>
             )}
-            {sectionName.startsWith('New ') && showHint && (
+            {sectionName.startsWith("New ") && showHint && (
               <span className="ml-2 text-sm text-blue-500 font-normal">
                 (Click ✏️ to rename)
               </span>
@@ -140,12 +142,15 @@ const IconListSection: React.FC<IconListSectionProps> = ({
           </button>
         )}
       </div>
-      {data.length > 0 ? (
-        data.map((item, index) => (
-            <div key={index} className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
-              <div className="flex items-start gap-4">
+      {data.length > 0
+        ? data.map((item, index) => (
+            <div
+              key={index}
+              className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md"
+            >
+              <div>
                 {/* Icon Upload Component */}
-                <div className="flex-shrink-0 pt-6">
+                <div className="mb-4">
                   <IconUpload
                     onUpload={(renamedIcon, file) =>
                       handleIconUpload(index, renamedIcon, file)
@@ -155,11 +160,11 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                     existingIconFile={item.iconFile || null}
                   />
                 </div>
-                
+
                 {/* Form Fields */}
-                <div className="flex-grow">
-                  <div className="grid grid-cols-12 gap-4 items-end">
-                    <div className="col-span-4">
+                <div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
                       <label className="block text-gray-700 font-medium mb-1">
                         Certification
                       </label>
@@ -167,12 +172,16 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                         type="text"
                         value={item.certification}
                         onChange={(e) =>
-                          handleUpdateItem(index, "certification", e.target.value)
+                          handleUpdateItem(
+                            index,
+                            "certification",
+                            e.target.value
+                          )
                         }
                         className="w-full border border-gray-300 rounded-lg p-2"
                       />
                     </div>
-                    <div className="col-span-4">
+                    <div>
                       <label className="block text-gray-700 font-medium mb-1">
                         Issuer
                       </label>
@@ -185,7 +194,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                         className="w-full border border-gray-300 rounded-lg p-2"
                       />
                     </div>
-                    <div className="col-span-3">
+                    <div>
                       <label className="block text-gray-700 font-medium mb-1">
                         Date
                       </label>
@@ -198,21 +207,21 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                         className="w-full border border-gray-300 rounded-lg p-2"
                       />
                     </div>
-                    <div className="col-span-1 flex justify-end items-center">
-                      <button
-                        onClick={() => handleRemoveItem(index)}
-                        className="text-red-600 hover:text-red-800 text-lg"
-                        title="Remove Certification"
-                      >
-                        ✕
-                      </button>
-                    </div>
+                  </div>
+                  <div className="flex justify-end mt-4">
+                    <button
+                      onClick={() => handleRemoveItem(index)}
+                      className="text-red-600 hover:text-red-800 text-lg"
+                      title="Remove Certification"
+                    >
+                      ✕
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-        ))
-      ) : null}
+          ))
+        : null}
       <button
         onClick={handleAddItem}
         className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
