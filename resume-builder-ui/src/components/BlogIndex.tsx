@@ -14,6 +14,15 @@ interface BlogPost {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "ai-resume-builder",
+    title: "AI Resume Builders: Your Secret Weapon for Job Search in 2025?",
+    description:
+      "Explore how AI can revolutionize your resume writing, from drafting content to optimizing for ATS, and learn best practices for smart usage in today's job market.",
+    publishDate: "2025-07-27",
+    readTime: "11 min",
+    category: "AI & Tools",
+  },
+  {
     slug: "resume-mistakes-to-avoid",
     title: "10 Critical Resume Mistakes That Kill Your Job Prospects",
     description:
@@ -29,7 +38,7 @@ const blogPosts: BlogPost[] = [
     description:
       "Master the art of creating ATS-friendly resumes that pass automated screening systems and reach human recruiters.",
     publishDate: "2025-07-22",
-    readTime: "10 min",
+    readTime: "8 min",
     category: "ATS Optimization",
   },
   {
@@ -47,7 +56,7 @@ const blogPosts: BlogPost[] = [
     description:
       "Craft a compelling professional summary that grabs attention with these proven examples and templates.",
     publishDate: "2025-07-18",
-    readTime: "9 min",
+    readTime: "12 min",
     category: "Resume Sections",
     featured: false,
   },
@@ -57,7 +66,7 @@ const blogPosts: BlogPost[] = [
     description:
       "Boost your resume visibility with industry-specific keywords that recruiters and ATS systems are looking for.",
     publishDate: "2025-07-15",
-    readTime: "8 min",
+    readTime: "6 min",
     category: "Keywords",
   },
   {

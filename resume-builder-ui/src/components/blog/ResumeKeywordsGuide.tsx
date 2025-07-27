@@ -6,7 +6,7 @@ export default function ResumeKeywordsGuide() {
       title="Resume Keywords by Industry: The Complete 2025 Guide"
       description="Boost your resume visibility with industry-specific keywords that recruiters and ATS systems are looking for."
       publishDate="2025-07-15"
-      readTime="15 min"
+      readTime="6 min"
       keywords={[
         "resume keywords",
         "industry keywords",
