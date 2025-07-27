@@ -24,9 +24,10 @@ export default function CompanyMarquee({
     const loadCompanyLogos = async () => {
       try {
         // Use Vite's import.meta.glob to dynamically discover all logo files
-        const logoModules = import.meta.glob('/public/logos/*', { 
+        const logoModules = import.meta.glob("/public/logos/*", {
           eager: true,
-          as: 'url'
+          query: "?url",
+          import: "default",
         });
 
         const loadedCompanies: Company[] = [];
@@ -34,18 +35,18 @@ export default function CompanyMarquee({
         // Process each discovered logo file
         Object.keys(logoModules).forEach((path) => {
           // Extract filename with extension
-          const filename = path.split('/').pop();
+          const filename = path.split("/").pop();
           if (filename) {
             // Remove extension for display name
-            const nameWithoutExt = filename.replace(/\.[^/.]+$/, '');
-            
+            const nameWithoutExt = filename.replace(/\.[^/.]+$/, "");
+
             // Convert filename to readable company name (optional formatting)
             const companyName = nameWithoutExt
               .split(/[-_]/) // Split on hyphens or underscores
-              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(' ');
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ");
 
-            // Create logo path for public access
+            // Use the correct public path (without /public prefix)
             const logoPath = `/logos/${filename}`;
 
             loadedCompanies.push({
@@ -60,7 +61,7 @@ export default function CompanyMarquee({
         loadedCompanies.sort((a, b) => a.name.localeCompare(b.name));
         setCompanies(loadedCompanies);
       } catch (error) {
-        console.warn('Failed to load company logos:', error);
+        console.warn("Failed to load company logos:", error);
         setCompanies([]);
       } finally {
         setIsLoading(false);
@@ -99,9 +100,11 @@ export default function CompanyMarquee({
       {/* Gradient overlays for fade effect */}
       <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white via-white/90 to-transparent z-10 pointer-events-none" />
-      
+
       <div
-        className={`flex space-x-6 ${pauseOnHover ? "hover:animation-pause" : ""}`}
+        className={`flex space-x-6 ${
+          pauseOnHover ? "hover:animation-pause" : ""
+        }`}
         style={{
           animation: `marquee ${speed}s linear infinite`,
           width: `${totalWidth}rem`,
@@ -134,7 +137,7 @@ export default function CompanyMarquee({
         ))}
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes marquee {
           0% {
             transform: translateX(0);
@@ -143,7 +146,7 @@ export default function CompanyMarquee({
             transform: translateX(-50%);
           }
         }
-        
+
         .hover\\:animation-pause:hover {
           animation-play-state: paused;
         }
