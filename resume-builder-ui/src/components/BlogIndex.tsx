@@ -30,7 +30,6 @@ const blogPosts: BlogPost[] = [
     publishDate: "2025-07-25",
     readTime: "7 min",
     category: "Resume Tips",
-    featured: true,
   },
   {
     slug: "ats-resume-optimization",
@@ -40,6 +39,7 @@ const blogPosts: BlogPost[] = [
     publishDate: "2025-07-22",
     readTime: "8 min",
     category: "ATS Optimization",
+    featured: true,
   },
   {
     slug: "resume-no-experience",

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CountUp from "react-countup";
 import SEOHead from "./SEOHead";
+import CompanyMarquee from "./CompanyMarquee";
 import {
   ArrowRightIcon,
   EyeIcon,
@@ -189,6 +190,27 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
 
+        {/* Trusted Companies Section */}
+        <div className="container mx-auto max-w-6xl my-20 px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
+              Used by Professionals from Leading Companies
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              People from these companies trust our resume builder for their career advancement
+            </p>
+          </div>
+          
+          <CompanyMarquee speed={45} pauseOnHover={true} />
+          
+          <div className="text-center mt-8">
+            <p className="text-sm text-gray-500 max-w-3xl mx-auto">
+              * We respect user privacy and don't track employment details. The companies shown 
+              represent professionals who have chosen our platform for building their resumes.
+            </p>
+          </div>
+        </div>
+
         {/* Why Job Seekers Choose Us */}
         <div className="container mx-auto max-w-6xl my-20 px-4 text-center">
           <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
@@ -216,60 +238,6 @@ const LandingPage: React.FC = () => {
                 </p>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Trusted Companies Section */}
-        <div className="container mx-auto max-w-6xl my-20 px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
-              Trusted by professionals from top companies worldwide
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Join thousands of successful professionals who've used our
-              platform to land roles at leading organizations
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center opacity-70 hover:opacity-90 transition-opacity duration-300">
-            <div className="text-center">
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300">
-                <h3 className="text-lg font-bold text-gray-800">Google</h3>
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300">
-                <h3 className="text-lg font-bold text-gray-800">Meta</h3>
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300">
-                <h3 className="text-lg font-bold text-gray-800">JP Morgan</h3>
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300">
-                <h3 className="text-lg font-bold text-gray-800">Microsoft</h3>
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300">
-                <h3 className="text-lg font-bold text-gray-800">Amazon</h3>
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300">
-                <h3 className="text-lg font-bold text-gray-800">Apple</h3>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center mt-8">
-            <p className="text-sm text-gray-500 italic">
-              * Individual professionals working at these companies have used
-              our platform. Company names are used for reference only and do not
-              imply endorsement.
-            </p>
           </div>
         </div>
 

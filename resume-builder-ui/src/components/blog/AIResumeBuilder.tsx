@@ -6,7 +6,7 @@ export default function AIResumeBuilder() {
       title="AI Resume Builders: Your Secret Weapon for Job Search in 2025?"
       description="Explore how AI can revolutionize your resume writing, from drafting content to optimizing for ATS, and learn best practices for smart usage in today's job market."
       publishDate="2025-07-27"
-      readTime="11 min"
+      readTime="9 min"
       keywords={[
         "AI resume builder",
         "resume writing AI",
