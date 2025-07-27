@@ -10,8 +10,6 @@ Effortlessly Create, Update, and Perfect Your ATS-Friendly Resume - Your Content
 
 No signup required • Your data stays private 
 
---
-
 ## How It Works
 
 1. **[Visit the App](https://easyfreeresume.com)** - Open in any browser
@@ -28,20 +26,18 @@ That's it! No account creation, no email verification, no complicated setup.
 ### 🎯 **Smart Resume Builder**
 - **Visual Editor**: No coding or YAML editing required
 - **Auto-Save**: Your work is automatically saved as you type
-- **Cross-Device**: Start on your phone, finish on your laptop
-- **Template Switching**: Change designs without losing data
 
 ### 🔒 **Privacy Focused**
 - **No Sign-Up**: Start building immediately
-- **Local Storage**: Your data stays on your device
-- **No Tracking**: We don't collect personal information
-- **Export Control**: Download and keep your resume as YAML file
+- **Local Storage**: Your data saved on your device
+- **No Tracking**: No personal information saved, ever. 
+- **Export Control**: Download and keep your resume as YAML file.
 
 ### 📝 **Professional Output**
-- **ATS-Compatible**: Optimized for applicant tracking systems
-- **Multiple Formats**: Clean, modern designs
-- **Customizable Sections**: Add skills, experience, education, and more
-- **Icon Support**: Enhance with professional icons
+- **ATS-Compatible**: Content is exported as text into PDF, the effectiveness of the content, of course depends on the user. 
+- **Multiple Formats**: Clean, modern designs (more upcoming designs coming soon).
+- **Customizable Sections**: Re-use sections and use your creativity to design your resume as you would like. 
+- **Icon Support**: Upload your own icons. 
 
 ---
 
@@ -103,25 +99,27 @@ If you prefer working with code, you can create resumes using YAML files:
 git clone https://github.com/aafre/resume-builder.git
 cd resume-builder
 
-# For the web app
+# For the React Frontend: 
 cd resume-builder-ui
 npm install
 npm run dev
-
-# For direct PDF generation
-python resume_generator.py --template modern --input samples/modern/john_doe.yml --output output/resume.pdf
 ```
 
-**Docker Setup:**
+**Docker for running backend:**
 ```bash
 # API Backend
 docker build -t resume-api -f Dockerfile.dev.api .
 docker run -p 5000:5000 resume-api
 
-# Frontend
-cd resume-builder-ui
-npm run dev
+# For direct PDF generation (without API)
+python resume_generator.py --template modern --input samples/modern/john_doe.yml --output output/resume.pdf
+
+# Run Flask API 
+python app.py 
 ```
+
+At this point the frontend should work with the backend locally. 
+
 
 ---
 
@@ -151,4 +149,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 **[🚀 Start Building Your Resume Now →](https://easyfreeresume.com)**
 
-*Build professional resumes in minutes, not hours.*
+*Build professional resumes in minutes.*
