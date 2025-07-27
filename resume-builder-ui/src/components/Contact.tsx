@@ -14,6 +14,7 @@ const setCookie = (name: string, value: string, hours: number) => {
 };
 
 export default function Contact() {
+  const [justSubmittedNow, setJustSubmittedNow] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,10 +27,12 @@ export default function Contact() {
     "idle" | "success" | "error"
   >("idle");
   const [formDisabled, setFormDisabled] = useState(false);
+  const [previouslySubmitted, setPreviouslySubmitted] = useState(false);
 
   useEffect(() => {
     if (getCookie("formSubmitted") === "true") {
       setFormDisabled(true);
+      setPreviouslySubmitted(true);
     }
   }, []);
 
@@ -63,13 +66,15 @@ export default function Contact() {
 
       if (result.success === "true" || response.ok) {
         setSubmitStatus("success");
+        setJustSubmittedNow(true);
         setFormDisabled(true);
-        setCookie("formSubmitted", "true", 1); // disable form for 1 hour
+        setCookie("formSubmitted", "true", 1); // 1-hour cooldown
         setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
         setSubmitStatus("error");
       }
     } catch (err) {
+      console.error("Submission failed", err);
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -81,14 +86,7 @@ export default function Contact() {
       <SEOHead
         title="Contact EasyFreeResume | Get Help With Your Resume and Career"
         description="Contact our team for support, feedback, or career guidance. We're here to help you succeed in your job search with free professional assistance."
-        keywords={[
-          "contact us",
-          "customer support",
-          "career help",
-          "resume assistance",
-          "technical support",
-          "feedback",
-        ]}
+        keywords="contact us, customer support, career help, resume assistance, technical support, feedback"
         structuredData={{
           "@context": "https://schema.org",
           "@type": "ContactPage",
@@ -97,6 +95,7 @@ export default function Contact() {
             "Get in touch with our team for support and career guidance",
         }}
       />
+
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
         <div className="container mx-auto px-4 py-12 max-w-4xl">
           <nav className="mb-8" aria-label="breadcrumb">
@@ -127,7 +126,7 @@ export default function Contact() {
                 Send us a Message
               </h2>
 
-              {submitStatus === "success" && (
+              {justSubmittedNow ? (
                 <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6">
                   <div className="flex items-center gap-3">
                     <span className="text-green-600 text-xl">✅</span>
@@ -141,7 +140,29 @@ export default function Contact() {
                     </div>
                   </div>
                 </div>
-              )}
+              ) : previouslySubmitted ? (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
+                  <div className="flex items-center gap-3">
+                    <span className="text-yellow-600 text-xl">⏰</span>
+                    <div>
+                      <h3 className="font-medium text-yellow-800">
+                        Already Submitted
+                      </h3>
+                      <p className="text-yellow-700 text-sm">
+                        You've already sent us a message. Please wait a while before
+                        submitting another one, or email us directly at{" "}
+                        <a
+                          href="mailto:support@easyfreeresume.com"
+                          className="text-blue-600 underline hover:text-blue-700"
+                        >
+                          support@easyfreeresume.com
+                        </a>
+                        .
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
 
               {submitStatus === "error" && (
                 <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
@@ -156,19 +177,6 @@ export default function Contact() {
                       </p>
                     </div>
                   </div>
-                </div>
-              )}
-              {formDisabled && (
-                <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 text-sm rounded-xl px-4 py-3 mb-6">
-                  You've already sent us a message. Please wait a while before
-                  submitting another one, or email us directly at{" "}
-                  <a
-                    href="mailto:support@easyfreeresume.com"
-                    className="text-blue-600 underline"
-                  >
-                    support@easyfreeresume.com
-                  </a>
-                  .
                 </div>
               )}
 
