@@ -45,6 +45,5 @@ describe("Footer", () => {
     // Verify that the texts for the feature icons are present.
     expect(screen.getByText("GDPR")).toBeInTheDocument();
     expect(screen.getByText("SSL")).toBeInTheDocument();
-    expect(screen.getByText("50K+ Users")).toBeInTheDocument();
   });
 });

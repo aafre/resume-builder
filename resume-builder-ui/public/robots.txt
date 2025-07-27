@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Main sitemap
+Sitemap: https://easyfreeresume.com/sitemap.xml
+
+# Allow all well-behaved bots
+Allow: /blog/
+Allow: /templates/
+Allow: /about/
+Allow: /contact/
+Allow: /privacy-policy/
+Allow: /terms-of-service/
+
+# Disallow certain paths (optional)
+Disallow: /api/
+Disallow: /error/
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1

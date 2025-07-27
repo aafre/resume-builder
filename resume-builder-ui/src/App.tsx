@@ -8,6 +8,13 @@ import NotFound from "./components/NotFound";
 import ErrorPage from "./components/ErrorPage";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsOfService from "./components/TermsOfService";
+import AboutUs from "./components/AboutUs";
+import Contact from "./components/Contact";
+import BlogIndex from "./components/BlogIndex";
+import ResumeMistakesToAvoid from "./components/blog/ResumeMistakesToAvoid";
+import ATSOptimization from "./components/blog/ATSOptimization";
+import ResumeNoExperience from "./components/blog/ResumeNoExperience";
+import ProfessionalSummaryExamples from "./components/blog/ProfessionalSummaryExamples";
 import EnvironmentBanner from "./components/EnvironmentBanner";
 import { EditorProvider, useEditorContext } from "./contexts/EditorContext";
 
@@ -29,15 +36,23 @@ function AppContent() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/templates" element={<TemplateCarousel />} />
           <Route path="/editor" element={<Editor />} />
+          
+          {/* Blog Routes */}
+          <Route path="/blog" element={<BlogIndex />} />
+          <Route path="/blog/resume-mistakes-to-avoid" element={<ResumeMistakesToAvoid />} />
+          <Route path="/blog/ats-resume-optimization" element={<ATSOptimization />} />
+          <Route path="/blog/resume-no-experience" element={<ResumeNoExperience />} />
+          <Route path="/blog/professional-summary-examples" element={<ProfessionalSummaryExamples />} />
 
+          {/* Static Pages */}
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
 
-          {/* Catch-all route for undefined paths */}
-          <Route path="*" element={<NotFound />} />
-
-          {/* Redirect to ErrorPage for any specific server-side error */}
+          {/* Error Handling */}
           <Route path="/error" element={<ErrorPage />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
 

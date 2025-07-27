@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useEditorContext } from "../contexts/EditorContext";
 import AutoSaveIndicator from "./AutoSaveIndicator";
 import logo from "/android-chrome-192x192.png";
@@ -12,11 +12,11 @@ export default function Header() {
   let editorContext = null;
   
   try {
-    if (isEditorPage) {
-      editorContext = useEditorContext();
-    }
+    // Always call the hook to maintain hook order
+    editorContext = useEditorContext();
   } catch {
     // Context not available, which is fine for non-editor pages
+    editorContext = null;
   }
 
   const getPageTitle = () => {
@@ -54,16 +54,43 @@ export default function Header() {
             </div>
           )}
 
-          {/* Right Side Content */}
-          {location.pathname === "/" && (
-            <button
-              onClick={() => navigate("/templates")}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2 px-4 sm:py-3 sm:px-6 rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
-            >
-              <span className="hidden sm:inline">Get Started</span>
-              <span className="sm:hidden">Start</span>
-            </button>
-          )}
+          {/* Navigation and Right Side Content */}
+          <div className="flex items-center gap-6">
+            {/* Navigation Menu (hidden on mobile) */}
+            {location.pathname !== "/editor" && (
+              <nav className="hidden md:flex items-center space-x-6">
+                <Link 
+                  to="/blog" 
+                  className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                >
+                  Blog
+                </Link>
+                <Link 
+                  to="/about" 
+                  className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                >
+                  About
+                </Link>
+                <Link 
+                  to="/contact" 
+                  className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                >
+                  Contact
+                </Link>
+              </nav>
+            )}
+
+            {/* CTA Button */}
+            {location.pathname === "/" && (
+              <button
+                onClick={() => navigate("/templates")}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2 px-4 sm:py-3 sm:px-6 rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+              >
+                <span className="hidden sm:inline">Get Started</span>
+                <span className="sm:hidden">Start</span>
+              </button>
+            )}
+          </div>
           
           {/* Auto-Save Indicator (only on editor page) */}
           {isEditorPage && editorContext && (
