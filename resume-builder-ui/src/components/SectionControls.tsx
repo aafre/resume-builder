@@ -1,5 +1,3 @@
-import React from "react";
-
 const SectionControls: React.FC<{
   sectionIndex: number;
   sections: any[];

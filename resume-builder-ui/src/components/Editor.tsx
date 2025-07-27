@@ -32,9 +32,17 @@ const Editor: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const templateId = queryParams.get("template");
 
-  // Get context for footer integration
-  const { isAtBottom: contextIsAtBottom, setIsAtBottom: setContextIsAtBottom } =
-    useEditorContext();
+  // Get context for footer integration and auto-save
+  const { 
+    isAtBottom: contextIsAtBottom, 
+    setIsAtBottom: setContextIsAtBottom,
+    lastSaved,
+    setLastSaved,
+    isSaving,
+    setIsSaving,
+    saveError,
+    setSaveError
+  } = useEditorContext();
 
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [sections, setSections] = useState<Section[]>([]);
@@ -50,7 +58,6 @@ const Editor: React.FC = () => {
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
   const [showWelcomeTour, setShowWelcomeTour] = useState(false);
-  const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [showRecoveryModal, setShowRecoveryModal] = useState(false);
   const [recoveredData, setRecoveredData] = useState<{
     timestamp: any;
@@ -290,15 +297,6 @@ const Editor: React.FC = () => {
       toast.success("Resume data file downloaded", {
         autoClose: 3000,
       });
-
-      setTimeout(() => {
-        toast.info(
-          "💡 Your work is auto-saved in this browser. For other devices, keep this file safe!",
-          {
-            autoClose: 6000,
-          }
-        );
-      }, 1500);
     } catch (error) {
       console.error("Error exporting YAML:", error);
       toast.error(
@@ -566,9 +564,18 @@ const Editor: React.FC = () => {
 
       // Store as JSON (basic obfuscation can be added later if needed)
       localStorage.setItem(getAutoSaveKey(), JSON.stringify(data));
-      setLastSaved(new Date());
+      const savedTime = new Date();
+      setLastSaved(savedTime);
+      setSaveError(false); // Clear any previous errors
     } catch (error) {
       console.error("Failed to auto-save to localStorage:", error);
+      setSaveError(true);
+      // Auto-retry after 5 seconds
+      setTimeout(() => {
+        if (contactInfo && sections.length > 0) {
+          saveToLocalStorage();
+        }
+      }, 5000);
     }
   };
 
@@ -720,22 +727,26 @@ const Editor: React.FC = () => {
     if (!originalTemplateData) return; // Don't save until template is loaded
 
     const timer = setTimeout(async () => {
+      setIsSaving(true);
       await saveToLocalStorage();
+      setIsSaving(false);
     }, 2000); // Save 2 seconds after user stops editing
 
     return () => clearTimeout(timer);
-  }, [contactInfo, sections, templateId, originalTemplateData]);
+  }, [contactInfo, sections, templateId, originalTemplateData, setIsSaving, setLastSaved, setSaveError]);
 
   // Periodic auto-save backup
   useEffect(() => {
     const interval = setInterval(async () => {
-      if ((contactInfo || sections.length > 0) && originalTemplateData) {
+      if ((contactInfo || sections.length > 0) && originalTemplateData && !isSaving) {
+        setIsSaving(true);
         await saveToLocalStorage();
+        setIsSaving(false);
       }
     }, 30000); // Save every 30 seconds
 
     return () => clearInterval(interval);
-  }, [contactInfo, sections, templateId, originalTemplateData]);
+  }, [contactInfo, sections, templateId, originalTemplateData, isSaving, setIsSaving, setLastSaved, setSaveError]);
 
   // Save before page unload
   useEffect(() => {
@@ -810,18 +821,6 @@ const Editor: React.FC = () => {
         toastClassName="custom-toast"
       />
 
-      {/* Auto-save indicator */}
-      {lastSaved && (
-        <div className="fixed top-24 right-2 sm:right-4 bg-white/95 backdrop-blur-sm text-green-700 px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-sm sm:text-base font-medium shadow-lg border border-green-200 z-[60] max-w-[calc(100vw-1rem)]">
-          <span className="hidden sm:inline">
-            ✓ Auto-saved {new Date(lastSaved).toLocaleTimeString()}
-          </span>
-          <span className="sm:hidden">
-            ✓ Saved{" "}
-            {new Date(lastSaved).toLocaleTimeString([], { timeStyle: "short" })}
-          </span>
-        </div>
-      )}
 
       {/* Main Content Container */}
       <div className="container mx-auto px-4 pt-8 pb-72 sm:pb-56 lg:pb-44">
