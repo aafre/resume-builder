@@ -50,7 +50,7 @@ export default function EditorToolbar({
   const buttonClasses = mode === 'floating' ? floatingButtonClasses : integratedButtonClasses;
 
   return (
-    <div className={`flex items-center justify-center gap-2 sm:gap-4 lg:flex-col lg:gap-3 ${mode === 'integrated' ? 'w-full lg:w-auto' : ''}`}>
+    <div className={`flex items-center justify-center gap-2 sm:gap-4 ${mode === 'integrated' ? 'w-full lg:w-auto' : ''}`}>
       {/* Add New Section */}
       <div className="relative group">
         <button
