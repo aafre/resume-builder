@@ -26,20 +26,18 @@ That's it! No account creation, no email verification, no complicated setup.
 ### 🎯 **Smart Resume Builder**
 - **Visual Editor**: No coding or YAML editing required
 - **Auto-Save**: Your work is automatically saved as you type
-- **Cross-Device**: Start on your phone, finish on your laptop
-- **Template Switching**: Change designs without losing data
 
 ### 🔒 **Privacy Focused**
 - **No Sign-Up**: Start building immediately
-- **Local Storage**: Your data stays on your device
-- **No Tracking**: We don't collect personal information
-- **Export Control**: Download and keep your resume as YAML file
+- **Local Storage**: Your data saved on your device
+- **No Tracking**: No personal information saved, ever. 
+- **Export Control**: Download and keep your resume as YAML file.
 
 ### 📝 **Professional Output**
-- **ATS-Compatible**: Optimized for applicant tracking systems
-- **Multiple Formats**: Clean, modern designs
-- **Customizable Sections**: Add skills, experience, education, and more
-- **Icon Support**: Enhance with professional icons
+- **ATS-Compatible**: Content is exported as text into PDF, the effectiveness of the content, of course depends on the user. 
+- **Multiple Formats**: Clean, modern designs (more upcoming designs coming soon).
+- **Customizable Sections**: Re-use sections and use your creativity to design your resume as you would like. 
+- **Icon Support**: Upload your own icons. 
 
 ---
 
