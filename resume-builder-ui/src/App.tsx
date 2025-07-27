@@ -28,6 +28,7 @@ import RemoteWorkResume from "./components/blog/RemoteWorkResume";
 import ResumeLengthGuide from "./components/blog/ResumeLengthGuide";
 import TechResumeGuide from "./components/blog/TechResumeGuide";
 import ResumeVsCvDifference from "./components/blog/ResumeVsCvDifference";
+import AIResumeBuilder from "./components/blog/AIResumeBuilder";
 
 function AppContent() {
   const location = useLocation();
@@ -86,14 +87,12 @@ function AppContent() {
             path="/blog/resume-length-guide"
             element={<ResumeLengthGuide />}
           />
-          <Route
-            path="/blog/tech-resume-guide"
-            element={<TechResumeGuide />}
-          />
+          <Route path="/blog/tech-resume-guide" element={<TechResumeGuide />} />
           <Route
             path="/blog/resume-vs-cv-difference"
             element={<ResumeVsCvDifference />}
           />
+          <Route path="/blog/ai-resume-builder" element={<AIResumeBuilder />} />
 
           {/* Static Pages */}
           <Route path="/about" element={<AboutUs />} />
