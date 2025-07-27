@@ -59,7 +59,7 @@ function FooterWithContext({ isEditorPage }: { isEditorPage: boolean }) {
   const { isAtBottom } = useEditorContext();
 
   return (
-    <footer className={`bg-gray-100 text-gray-700 border-t shadow-sm transition-all duration-300 ${isAtBottom ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full pointer-events-none'} fixed bottom-0 left-0 right-0 z-40`}>
+    <footer className={`bg-white/95 backdrop-blur-sm text-gray-700 border-t border-gray-200 shadow-lg transition-all duration-300 ${isAtBottom ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full pointer-events-none'} fixed bottom-0 left-0 right-0 z-40`}>
       <Footer
         isEditorPage={true}
         showAboveToolbar={false}

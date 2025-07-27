@@ -11,8 +11,8 @@ export default function Footer({
   showAboveToolbar = false,
 }: FooterProps) {
   return (
-    <footer className="bg-white/90 backdrop-blur-sm border-t border-gray-200 shadow-lg">
-      <div className="container mx-auto px-4 py-8">
+    <footer className="bg-transparent">
+      <div className="container mx-auto px-4 py-6">
         {/* Main Footer Content */}
         <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
           {/* Left Section - Links */}
@@ -61,7 +61,7 @@ export default function Footer({
         </div>
 
         {/* Mobile Trust Badges - Simplified */}
-        <div className="lg:hidden mt-6 pt-6 border-t border-gray-200">
+        <div className="lg:hidden mt-4 pt-4 border-t border-gray-200/60">
           <div className="flex justify-center gap-8 text-xs text-gray-500">
             <span>🔒 Secure</span>
             <span>🛡️ Private</span>

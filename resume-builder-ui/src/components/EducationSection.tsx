@@ -1,4 +1,3 @@
-import React from "react";
 import IconUpload from "./IconUpload";
 
 interface EducationItem {
@@ -78,10 +77,10 @@ const EducationSection: React.FC<EducationSectionProps> = ({
               Remove
             </button>
           </div>
-          <div className="flex gap-6 mt-4">
+          <div className="mt-4">
             {/* Icon Upload Section */}
             {supportsIcons && (
-              <div className="flex-shrink-0">
+              <div className="mb-4">
                 <IconUpload
                   onUpload={(renamedIcon, file) =>
                     handleIconUpload(index, renamedIcon, file)
@@ -93,7 +92,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({
               </div>
             )}
             {/* Other Fields */}
-            <div className="grid grid-cols-2 gap-4 flex-grow">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-gray-700 font-medium mb-1">
                   Degree

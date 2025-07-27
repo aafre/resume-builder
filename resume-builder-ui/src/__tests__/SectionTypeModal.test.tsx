@@ -25,7 +25,7 @@ describe("SectionTypeModal", () => {
 
     // Within this card, locate the paragraph with the "Use for:" text.
     const useForParagraph = textSectionCard?.querySelector(
-      "p.text-sm.text-gray-500.italic"
+      "p.text-gray-500.italic"
     );
     expect(useForParagraph).toBeTruthy();
 
