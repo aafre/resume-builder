@@ -6,7 +6,7 @@ export default function ResumeMistakesToAvoid() {
       title="10 Critical Resume Mistakes That Kill Your Job Prospects"
       description="Discover the most common resume errors that send your application straight to the rejection pile and learn how to avoid them."
       publishDate="2025-07-25"
-      readTime="8 min"
+      readTime="7 min"
       keywords={['resume mistakes', 'job application tips', 'resume writing', 'career advice', 'job search']}
     >
       <div className="space-y-8">

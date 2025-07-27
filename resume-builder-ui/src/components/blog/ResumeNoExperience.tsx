@@ -6,7 +6,7 @@ export default function ResumeNoExperience() {
       title="How to Write a Resume with No Experience (Entry-Level Guide)"
       description="Land your first job with a compelling resume that showcases your potential, even without professional experience."
       publishDate="2025-07-20"
-      readTime="10 min"
+      readTime="8 min"
       keywords={['entry level resume', 'no experience resume', 'first job resume', 'new graduate resume', 'student resume']}
     >
       <div className="space-y-8">

@@ -26,7 +26,6 @@ export default function AboutUs() {
       />
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
         <div className="container mx-auto px-4 py-12 max-w-4xl">
-          {/* Breadcrumbs */}
           <nav className="mb-8" aria-label="breadcrumb">
             <ol className="flex items-center space-x-2 text-sm text-gray-600">
               <li>
@@ -39,48 +38,55 @@ export default function AboutUs() {
             </ol>
           </nav>
 
-          {/* Header */}
           <header className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               About EasyFreeResume
             </h1>
             <p className="text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
-              We're on a mission to democratize career opportunities by
-              providing everyone with the tools to create professional,
-              impactful resumes - completely free.
+              We believe building a professional resume should be simple,
+              stress-free, and accessible to everyone - no matter where you’re
+              from or what stage you’re at in your career.
             </p>
           </header>
 
-          {/* Main Content */}
           <div className="space-y-16">
-            {/* Our Story */}
             <section className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 md:p-12 border border-gray-200">
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Our Story
+                Why We Built This
               </h2>
               <div className="prose prose-lg prose-slate max-w-none">
                 <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                  EasyFreeResume was born from a simple observation: creating a
-                  professional resume shouldn't be expensive, complicated, or
-                  restricted by subscription barriers. Too many talented
-                  individuals were being held back by inadequate resume tools or
-                  costly alternatives that put professional presentation out of
-                  reach.
+                  EasyFreeResume started with a simple goal - take the headache
+                  out of making resumes. Every time we had to update ours, we’d
+                  waste hours adjusting layouts, fixing formatting, or
+                  re-downloading templates that looked outdated or broke things
+                  when exported.
                 </p>
-
                 <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                  Our founders experienced this frustration firsthand-watching
-                  qualified candidates struggle with outdated templates, limited
-                  customization options, and hidden fees. We knew there had to
-                  be a better way.
+                  Too many resume tools put essential features behind
+                  subscriptions, had confusing editors, or made it difficult to
+                  recreate past work. It felt wrong that something as
+                  fundamental as presenting yourself professionally had become
+                  expensive or overly complicated.
                 </p>
-
+                <p className="text-lg leading-relaxed text-gray-700 mb-6">
+                  So we built something better - a clean, fast, fully free
+                  resume builder that works out of the box and stays out of your
+                  way. Just pick a template, fill in your details, and download.
+                  That’s it.
+                </p>
                 <p className="text-lg leading-relaxed text-gray-700">
-                  That's why we built EasyFreeResume: a completely free,
-                  professional-grade resume builder that puts powerful tools in
-                  everyone's hands. No subscriptions, no hidden costs, no limits
-                  on downloads-just the resources you need to present your best
-                  professional self.
+                  It’s open-source too. If there’s a feature or new template you
+                  want, you can raise a request directly on our{" "}
+                  <a
+                    href="https://github.com/aafre/resume-builder"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline hover:text-blue-800"
+                  >
+                    GitHub repository
+                  </a>
+                  .
                 </p>
               </div>
             </section>
@@ -215,7 +221,7 @@ export default function AboutUs() {
                 Our Impact
               </h2>
 
-              <div className="grid md:grid-cols-4 gap-8 text-center">
+              <div className="grid md:grid-cols-3 gap-8 text-center">
                 <div>
                   <div className="text-3xl font-bold text-green-600 mb-2">
                     95%

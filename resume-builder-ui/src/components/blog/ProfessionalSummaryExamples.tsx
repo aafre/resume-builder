@@ -6,7 +6,7 @@ export default function ProfessionalSummaryExamples() {
       title="Professional Summary Examples: 20+ Winning Templates"
       description="Craft a compelling professional summary that grabs attention with these proven examples and templates for every industry and experience level."
       publishDate="2025-07-18"
-      readTime="13 min"
+      readTime="9 min"
       keywords={[
         "professional summary",
         "resume summary",
