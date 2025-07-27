@@ -6,7 +6,7 @@ export default function TechResumeGuide() {
       title="Tech Resume Guide: Land Your Dream Developer Job in 2025"
       description="Create a standout tech resume with industry-specific tips, project showcases, and skill presentations."
       publishDate="2025-07-05"
-      readTime="14 min"
+      readTime="9 min"
       keywords={[
         "tech resume",
         "developer resume",
