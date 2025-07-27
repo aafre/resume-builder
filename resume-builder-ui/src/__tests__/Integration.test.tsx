@@ -39,7 +39,10 @@ describe("Integration Tests", () => {
   beforeEach(() => {
     vi.spyOn(templateService, "fetchTemplate").mockResolvedValue(mockTemplateData);
     // Mock generateResume to avoid actual PDF generation
-    vi.spyOn(templateService, "generateResume").mockResolvedValue(new Blob());
+    vi.spyOn(templateService, "generateResume").mockResolvedValue({
+      pdfBlob: new Blob(),
+      fileName: "test-resume.pdf"
+    });
   });
 
   afterEach(() => {

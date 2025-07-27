@@ -6,10 +6,7 @@ interface FooterProps {
   showAboveToolbar?: boolean;
 }
 
-export default function Footer({
-  isEditorPage = false,
-  showAboveToolbar = false,
-}: FooterProps) {
+export default function Footer({}: FooterProps) {
   return (
     <footer className="bg-transparent">
       <div className="container mx-auto px-4 py-6">
@@ -18,8 +15,8 @@ export default function Footer({
           {/* Left Section - Links */}
           <div className="flex flex-col sm:flex-row gap-4 items-center">
             <div className="flex gap-6">
-              <Link 
-                to="/privacy-policy" 
+              <Link
+                to="/privacy-policy"
                 className="text-blue-600 hover:text-indigo-600 font-medium transition-colors duration-200"
               >
                 Privacy Policy
@@ -36,7 +33,8 @@ export default function Footer({
           {/* Center Section - Copyright */}
           <div className="text-center">
             <p className="text-sm text-gray-600">
-              © {new Date().getFullYear()} <span className="font-semibold">EasyFreeResume.com</span>
+              © {new Date().getFullYear()}{" "}
+              <span className="font-semibold">EasyFreeResume.com</span>
             </p>
             <p className="text-xs text-gray-500 mt-1 hidden sm:block">
               Build professional resumes effortlessly
