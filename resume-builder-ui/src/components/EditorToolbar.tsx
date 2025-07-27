@@ -115,7 +115,7 @@ export default function EditorToolbar({
 
         {/* Dropdown Menu */}
         {showAdvancedMenu && (
-          <div className={`absolute ${mode === 'floating' ? 'bottom-full mb-4' : 'top-full mt-2'} left-1/2 transform -translate-x-1/2 lg:left-auto lg:right-0 lg:transform-none w-48 sm:w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[9999] max-w-[90vw]`}>
+          <div className={`absolute bottom-full mb-4 left-1/2 transform -translate-x-1/2 lg:left-auto lg:right-0 lg:transform-none w-48 sm:w-56 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200 z-[9999] max-w-[90vw]`}>
             <div className="p-2">
               <button
                 onClick={() => {
