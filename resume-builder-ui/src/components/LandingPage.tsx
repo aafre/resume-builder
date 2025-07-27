@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CountUp from "react-countup";
 import SEOHead from "./SEOHead";
+import CompanyMarquee from "./CompanyMarquee";
 import {
   ArrowRightIcon,
   EyeIcon,
@@ -186,6 +187,27 @@ const LandingPage: React.FC = () => {
               99%
             </h3>
             <p className="text-gray-600 font-medium">ATS Compatible</p>
+          </div>
+        </div>
+
+        {/* Trusted Companies Section */}
+        <div className="container mx-auto max-w-6xl my-20 px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
+              Used by Professionals from Leading Companies
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              People from these companies trust our resume builder for their career advancement
+            </p>
+          </div>
+          
+          <CompanyMarquee speed={45} pauseOnHover={true} />
+          
+          <div className="text-center mt-8">
+            <p className="text-sm text-gray-500 max-w-3xl mx-auto">
+              * We respect user privacy and don't track employment details. The companies shown 
+              represent professionals who have chosen our platform for building their resumes.
+            </p>
           </div>
         </div>
 
