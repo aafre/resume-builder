@@ -947,9 +947,9 @@ const Editor: React.FC = () => {
           }
         })}
 
-        {/* Elegant Separator - Between content and toolbar */}
+        {/* Elegant Separator - Between content and toolbar (mobile/tablet only) */}
         {contextIsAtBottom && (
-          <div className="fixed left-0 right-0 z-50 transition-all duration-300 bottom-72 sm:bottom-56 lg:bottom-44 px-4">
+          <div className="fixed left-0 right-0 z-50 transition-all duration-300 bottom-72 sm:bottom-56 lg:bottom-44 px-4 lg:hidden">
             <div className="max-w-screen-lg mx-auto">
               <div className="bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-white/30 h-0.5 w-full"></div>
             </div>
@@ -958,13 +958,14 @@ const Editor: React.FC = () => {
 
         {/* Docked Bottom Toolbar - Always visible, positioned above footer when footer shows */}
         <div
-          className={`fixed left-0 right-0 z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm border-t border-gray-200/60 shadow-lg transition-all duration-300 ${
+          className={`fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 
+            left-0 right-0 border-t border-gray-200/60 lg:left-auto lg:right-6 lg:border-t-0 lg:border lg:border-gray-200/60 lg:rounded-2xl lg:w-auto lg:max-w-none ${
             contextIsAtBottom
               ? "bottom-56 sm:bottom-40 lg:bottom-28"
-              : "bottom-0"
+              : "bottom-0 lg:bottom-6"
           }`}
         >
-          <div className="flex items-center justify-center gap-2 sm:gap-4 p-4 max-w-screen-lg mx-auto">
+          <div className="flex items-center justify-center gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
             <EditorToolbar
               onAddSection={handleAddNewSectionClick}
               onGenerateResume={handleGenerateResume}
@@ -982,9 +983,9 @@ const Editor: React.FC = () => {
           </div>
         </div>
 
-        {/* Elegant Separator - Between toolbar and footer */}
+        {/* Elegant Separator - Between toolbar and footer (mobile/tablet only) */}
         {contextIsAtBottom && (
-          <div className="fixed left-0 right-0 z-50 transition-all duration-300 bottom-56 sm:bottom-40 lg:bottom-28 px-4">
+          <div className="fixed left-0 right-0 z-50 transition-all duration-300 bottom-56 sm:bottom-40 lg:bottom-28 px-4 lg:hidden">
             <div className="max-w-screen-lg mx-auto">
               <div className="bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-white/30 h-0.5 w-full"></div>
             </div>
