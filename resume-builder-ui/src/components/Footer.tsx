@@ -14,18 +14,36 @@ export default function Footer({}: FooterProps) {
         <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
           {/* Left Section - Links */}
           <div className="flex flex-col sm:flex-row gap-4 items-center">
-            <div className="flex gap-6">
+            <div className="flex flex-wrap gap-4 sm:gap-6 text-sm">
+              <Link
+                to="/blog"
+                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
+              >
+                Career Blog
+              </Link>
+              <Link
+                to="/about"
+                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
+              >
+                About Us
+              </Link>
+              <Link
+                to="/contact"
+                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
+              >
+                Contact
+              </Link>
               <Link
                 to="/privacy-policy"
-                className="text-blue-600 hover:text-indigo-600 font-medium transition-colors duration-200"
+                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
               >
-                Privacy Policy
+                Privacy
               </Link>
               <Link
                 to="/terms-of-service"
-                className="text-blue-600 hover:text-indigo-600 font-medium transition-colors duration-200"
+                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
               >
-                Terms of Service
+                Terms
               </Link>
             </div>
           </div>
@@ -50,10 +68,6 @@ export default function Footer({}: FooterProps) {
             <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-full">
               <FaLock className="text-blue-600" />
               <span className="text-blue-700 font-medium">SSL</span>
-            </div>
-            <div className="flex items-center gap-2 bg-yellow-50 px-3 py-2 rounded-full">
-              <FaUsers className="text-yellow-600" />
-              <span className="text-yellow-700 font-medium">50K+ Users</span>
             </div>
           </div>
         </div>
