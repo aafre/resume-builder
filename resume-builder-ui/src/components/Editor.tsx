@@ -11,10 +11,7 @@ import IconListSection from "./IconListSection";
 import SectionTypeModal from "./SectionTypeModal";
 import EditorToolbar from "./EditorToolbar";
 import { useEditorContext } from "../contexts/EditorContext";
-import {
-  MdFileDownload,
-  MdHelpOutline,
-} from "react-icons/md";
+import { MdFileDownload, MdHelpOutline } from "react-icons/md";
 
 interface Section {
   name: string;
@@ -34,12 +31,10 @@ const Editor: React.FC = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const templateId = queryParams.get("template");
-  
+
   // Get context for footer integration
-  const {
-    isAtBottom: contextIsAtBottom,
-    setIsAtBottom: setContextIsAtBottom,
-  } = useEditorContext();
+  const { isAtBottom: contextIsAtBottom, setIsAtBottom: setContextIsAtBottom } =
+    useEditorContext();
 
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [sections, setSections] = useState<Section[]>([]);
@@ -71,7 +66,7 @@ const Editor: React.FC = () => {
   const [loadingSave, setLoadingSave] = useState(false);
   const [loadingLoad, setLoadingLoad] = useState(false);
   const [loadingAddSection, setLoadingAddSection] = useState(false);
-  
+
   // Simple scroll detection for footer visibility
   const lastScrollY = useRef(0);
 
@@ -759,13 +754,13 @@ const Editor: React.FC = () => {
     const currentScrollY = window.scrollY;
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
-    
+
     // Check if at bottom (with threshold accounting for footer height)
     const atBottom = windowHeight + currentScrollY >= documentHeight - 150;
-    
+
     // Update context with bottom state for footer visibility
     setContextIsAtBottom(atBottom);
-    
+
     lastScrollY.current = currentScrollY;
   }, [setContextIsAtBottom]);
 
@@ -777,7 +772,6 @@ const Editor: React.FC = () => {
     window.addEventListener("scroll", throttledHandleScroll);
     return () => window.removeEventListener("scroll", throttledHandleScroll);
   }, [handleScroll]);
-
 
   if (!templateId) {
     return (
@@ -955,13 +949,22 @@ const Editor: React.FC = () => {
 
         {/* Visual Divider when at bottom - Between content and toolbar */}
         {contextIsAtBottom && (
-          <div className="fixed left-0 right-0 z-50 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 transition-all duration-300 bottom-72 sm:bottom-56 lg:bottom-44" style={{ height: '1px' }}>
+          <div
+            className="fixed left-0 right-0 z-50 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 transition-all duration-300 bottom-72 sm:bottom-56 lg:bottom-44"
+            style={{ height: "1px" }}
+          >
             <div className="w-full h-full bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50"></div>
           </div>
         )}
 
         {/* Docked Bottom Toolbar - Always visible, positioned above footer when footer shows */}
-        <div className={`fixed left-0 right-0 z-[60] bg-white/98 backdrop-blur-md border-t border-gray-300 shadow-2xl transition-all duration-300 ${contextIsAtBottom ? 'bottom-56 sm:bottom-40 lg:bottom-28' : 'bottom-0'}`}>
+        <div
+          className={`fixed left-0 right-0 z-[60] bg-white/98 backdrop-blur-md border-t border-gray-300 shadow-2xl transition-all duration-300 ${
+            contextIsAtBottom
+              ? "bottom-56 sm:bottom-40 lg:bottom-28"
+              : "bottom-0"
+          }`}
+        >
           <div className="flex items-center justify-center gap-2 sm:gap-4 p-4 max-w-screen-lg mx-auto">
             <EditorToolbar
               onAddSection={handleAddNewSectionClick}
@@ -982,7 +985,10 @@ const Editor: React.FC = () => {
 
         {/* Visual Divider when at bottom - Between toolbar and footer */}
         {contextIsAtBottom && (
-          <div className="fixed left-0 right-0 z-50 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 transition-all duration-300 bottom-56 sm:bottom-40 lg:bottom-28" style={{ height: '1px' }}>
+          <div
+            className="fixed left-0 right-0 z-50 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 transition-all duration-300 bottom-56 sm:bottom-40 lg:bottom-28"
+            style={{ height: "1px" }}
+          >
             <div className="w-full h-full bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50"></div>
           </div>
         )}
@@ -1168,79 +1174,66 @@ const Editor: React.FC = () => {
         </div>
       )}
 
-      {/* Welcome Tour Modal */}
+      {/* Welcome Modal - Clean & Simple */}
       {showWelcomeTour && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-lg w-full border border-gray-200 animate-in fade-in duration-300">
+          <div className="bg-white rounded-xl shadow-xl max-w-lg w-full border border-gray-200">
             <div className="p-8">
-              <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">👋</span>
-                </div>
-                <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                  Welcome!
-                </h2>
-                <p className="text-gray-600">
-                  Let's make sure you don't lose your hard work
-                </p>
-              </div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                Quick heads up
+              </h2>
 
               <div className="space-y-6 mb-8">
-                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
-                  <h3 className="font-semibold text-green-800 mb-2 flex items-center gap-2">
-                    ⚡ Your Work is Auto-Saved
-                  </h3>
-                  <p className="text-green-700 text-sm">
-                    No need to worry! Your resume is automatically saved as you
-                    work. Look for the "Auto-saved" message in the top corner.
-                  </p>
+                <div className="flex gap-4">
+                  <div className="text-green-600 text-xl">✅</div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-1">
+                      Auto-saved
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                      As you make edits, your work is automatically saved
+                    </p>
+                  </div>
                 </div>
 
-                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                  <h3 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                    🔄 Working on Different Devices?
-                  </h3>
-                  <p className="text-blue-700 text-sm">
-                    Auto-save only works on this device and browser. To continue
-                    on your phone, laptop, or different browser - download your
-                    work first!
-                  </p>
+                <div className="flex gap-4">
+                  <div className="text-amber-600 text-xl">⚠️</div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-1">
+                      Only on this device
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                      To use it elsewhere: tap ⋮ → "Save My Work"
+                    </p>
+                  </div>
                 </div>
 
-                <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
-                  <h3 className="font-semibold text-amber-800 mb-2 flex items-center gap-2">
-                    💾 How to Download Your Work
-                  </h3>
-                  <p className="text-amber-700 text-sm">
-                    See those floating buttons at the bottom? Click the 3-dot
-                    menu, then "Save My Work". Keep that file safe - it's your
-                    resume!
-                  </p>
-                </div>
-
-                <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
-                  <h3 className="font-semibold text-purple-800 mb-2 flex items-center gap-2">
-                    🔒 We Protect Your Privacy
-                  </h3>
-                  <p className="text-purple-700 text-sm">
-                    Your personal information never leaves your device. We don't
-                    store your resume data - you're in complete control.
-                  </p>
+                <div className="flex gap-4">
+                  <div className="text-blue-600 text-xl">🛡️</div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-1">
+                      Your data stays yours
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                      We don't store or send your resume anywhere. You're always
+                      in control.
+                    </p>
+                  </div>
                 </div>
               </div>
 
               <div className="space-y-3">
                 <button
                   onClick={() => handleTourComplete(true)}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
+                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors"
                 >
-                  Got it! Don't show this again
+                  Got it, don't show again
                 </button>
                 <button
                   onClick={() => handleTourComplete(false)}
-                  className="w-full bg-gray-100 text-gray-700 py-3 px-6 rounded-xl font-medium hover:bg-gray-200 transition-colors"
+                  className="w-full text-gray-600 py-2 px-6 rounded-lg hover:text-gray-800 transition-colors"
                 >
-                  Got it! (Show next time)
+                  Show next time
                 </button>
               </div>
             </div>
