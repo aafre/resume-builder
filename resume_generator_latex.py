@@ -11,6 +11,33 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
+    """
+    Dynamically calculate the number of columns and ensure minimum items per column.
+
+    Args:
+        num_items (int): The total number of items.
+        max_columns (int): The maximum number of columns to allow.
+        min_items_per_column (int): Minimum items per column to justify adding a new column.
+
+    Returns:
+        int: Calculated number of columns.
+    """
+    if max_columns < 1:
+        raise ValueError("max_columns must be at least 1")
+
+    if num_items <= min_items_per_column:
+        return 1  # Single column if items are too few
+
+    # Start with 2 columns and increase dynamically
+    for cols in range(2, max_columns + 1):
+        avg_items_per_col = num_items / cols
+        if avg_items_per_col < min_items_per_column:
+            return cols - 1
+
+    return max_columns  # Default to max columns if all checks pass
+
+
 def _escape_latex(text):
     """
     Escapes special LaTeX characters in a string to prevent compilation errors.
@@ -209,6 +236,18 @@ def generate_latex_pdf(template_name: str, data: dict, output_file: Path):
             f"Could not load resume.tex from template '{template_name}': {e}"
         )
 
+    # Process sections and dynamically calculate column count for dynamic-column-list
+    sections = data.get("sections", [])
+    for section in sections:
+        if section.get("type") == "dynamic-column-list":
+            content = section.get("content", [])
+            if not isinstance(content, list):
+                raise ValueError(f"Invalid content for dynamic-column-list: {content}")
+            section["num_cols"] = calculate_columns(len(content))
+            logger.info(
+                f"Calculated {section['num_cols']} columns for section '{section.get('name')}'"
+            )
+
     # Prepare and escape data for LaTeX
     prepared_data = _prepare_latex_data(data)
 
@@ -354,14 +393,15 @@ def generate_latex_pdf(template_name: str, data: dict, output_file: Path):
                     logger.warning(f"Could not remove temporary file {temp_file}: {e}")
 
         # Finally, remove the temporary .tex file itself
-        if temp_tex_file_path.exists():
-            try:
-                temp_tex_file_path.unlink()
-                logger.debug(f"Cleaned up temporary .tex file: {temp_tex_file_path}")
-            except OSError as e:
-                logger.warning(
-                    f"Could not remove temporary .tex file {temp_tex_file_path}: {e}"
-                )
+        # Temporarily disabled for debugging
+        # if temp_tex_file_path.exists():
+        #     try:
+        #         temp_tex_file_path.unlink()
+        #         logger.debug(f"Cleaned up temporary .tex file: {temp_tex_file_path}")
+        #     except OSError as e:
+        #         logger.warning(
+        #             f"Could not remove temporary .tex file {temp_tex_file_path}: {e}"
+        #         )
         logger.info("Temporary LaTeX files cleaned up.")
 
 
