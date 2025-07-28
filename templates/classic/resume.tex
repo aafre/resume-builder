@@ -54,6 +54,14 @@
     \small{#1}\par\vspace{0.5em}
 }
 
+\newcommand{\rdynamiccolumns}[2]{%
+    \small
+    \begin{tabular}{#1}
+        #2
+    \end{tabular}
+    \par\vspace{0.5em}
+}
+
 \begin{document}
 
 % --- Header ---
@@ -91,8 +99,31 @@
             \BLOCK{endfor}
         \end{itemize}\vspace{0.5em}
 
-    \BLOCK{elif section_type == "inline-list" or section_type == "dynamic-column-list"}
+    \BLOCK{elif section_type == "inline-list"}
         \rhorizontalbullets{\VAR{" \\textbullet\\ ".join(section.content)}}
+
+    \BLOCK{elif section_type == "dynamic-column-list"}
+        \BLOCK{set num_cols = section.get('num_cols', 1)}
+        \BLOCK{set items = section.content}
+        % DEBUG: Section '\VAR{section.name}' has \VAR{items|length} items, using \VAR{num_cols} columns
+        \BLOCK{set items_per_row = (items|length / num_cols)|round(0, 'ceil')|int}
+        \BLOCK{set col_spec = 'l@{\\hspace{1em}}' * (num_cols - 1) + 'l'}
+        \small
+        \begin{tabular}{\VAR{col_spec}}
+            \BLOCK{for row in range(items_per_row)}
+                \BLOCK{set row_items = []}
+                \BLOCK{for col in range(num_cols)}
+                    \BLOCK{set item_index = row * num_cols + col}
+                    \BLOCK{if item_index < items|length}
+                        \BLOCK{set _ = row_items.append(items[item_index])}
+                    \BLOCK{else}
+                        \BLOCK{set _ = row_items.append('~')}
+                    \BLOCK{endif}
+                \BLOCK{endfor}
+                \VAR{' & '.join(row_items)} \\
+            \BLOCK{endfor}
+        \end{tabular}
+        \par\vspace{0.5em}
 
     \BLOCK{elif section_type == "icon-list"}
         \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
