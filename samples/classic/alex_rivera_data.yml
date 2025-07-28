@@ -1,0 +1,96 @@
+font: Source Sans Pro
+
+contact_info:
+  name: Alex Rivera
+  location: "Austin, TX"
+  email: alex.rivera@email.com
+  phone: +1 (512) 555-7890
+  linkedin: https://linkedin.com/in/alex-rivera-data
+
+sections:
+  - name: Professional Summary
+    type: text
+    content: "Data-driven Analytics Specialist with 3+ years of experience transforming complex datasets into actionable business insights. Expertise in statistical analysis, machine learning, and data visualization. Successfully implemented analytics solutions that improved operational efficiency by 35% and reduced costs by $500K annually."
+
+  - name: Technical Expertise
+    type: inline-list
+    content:
+      - "Python"
+      - "R"
+      - "SQL"
+      - "JavaScript"
+      - "Pandas"
+      - "NumPy"
+      - "Scikit-learn"
+      - "TensorFlow"
+      - "Keras"
+      - "Statistical Analysis"
+      - "Machine Learning"
+      - "Predictive Modeling"
+      - "Data Mining"
+      - "A/B Testing"
+      - "Regression Analysis"
+      - "Time Series Analysis"
+
+  - name: Experience
+    content:
+      - company: "DataDriven Solutions"
+        title: "Senior Data Analyst"
+        dates: "Feb 2022 – Present"
+        description:
+          - "Analyze customer behavior data for 500K+ users, identifying key trends that increased retention by 28%"
+          - "Build automated reporting dashboards using Tableau and Python, reducing manual reporting time by 60%"
+          - "Develop predictive models for customer churn, achieving 85% accuracy and saving $300K in retention efforts"
+          - "Lead cross-departmental analytics initiatives with marketing, product, and operations teams"
+
+      - company: "TechMetrics Inc"
+        title: "Data Analyst"
+        dates: "Jun 2021 – Jan 2022"
+        description:
+          - "Created comprehensive KPI tracking systems for executive leadership, improving decision-making speed by 40%"
+          - "Performed statistical analysis on A/B testing results, optimizing conversion rates by 15%"
+          - "Collaborated with engineering teams to implement data collection improvements and ensure data quality"
+
+      - company: "Analytics Startup"
+        title: "Junior Data Analyst"
+        dates: "Jan 2021 – May 2021"
+        description:
+          - "Cleaned and processed large datasets using Python and SQL, improving data accuracy by 25%"
+          - "Developed automated data pipelines that reduced processing time from hours to minutes"
+
+  - name: Education
+    content:
+      - degree: "Master of Science in Data Science"
+        school: "University of Texas at Austin"
+        year: "2020"
+      - degree: "Bachelor of Science in Mathematics"
+        school: "Texas A&M University"
+        year: "2018"
+
+  - name: Professional Certifications
+    type: bulleted-list
+    content:
+      - "Google Analytics Individual Qualification (IQ) Certified (2023)"
+      - "Tableau Desktop Specialist Certification (2022)"
+      - "AWS Certified Cloud Practitioner (2021)"
+      - "Microsoft Power BI Data Analyst Associate (2021)"
+
+  - name: Database & Cloud Technologies
+    type: dynamic-column-list
+    content:
+      - "MySQL"
+      - "PostgreSQL"
+      - "MongoDB"
+      - "Amazon Web Services"
+      - "Google Cloud Platform"
+      - "Microsoft Azure"
+      - "Docker"
+      - "Git"
+      - "Apache Airflow"
+      - "Kafka"
+      - "Elasticsearch"
+      - "Redis"
+      - "Hadoop"
+      - "Hive"
+      - "Spark"
+      - "Kubernetes"

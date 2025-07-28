@@ -13,6 +13,9 @@ logger = logging.getLogger(__name__)
 
 def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
     """
+    DEPRECATED: This function is no longer used. The LaTeX template now uses fixed-width 
+    columns for better consistency and appearance.
+    
     Dynamically calculate the number of columns and ensure minimum items per column.
 
     Args:
@@ -236,17 +239,17 @@ def generate_latex_pdf(template_name: str, data: dict, output_file: Path):
             f"Could not load resume.tex from template '{template_name}': {e}"
         )
 
-    # Process sections and dynamically calculate column count for dynamic-column-list
-    sections = data.get("sections", [])
-    for section in sections:
-        if section.get("type") == "dynamic-column-list":
-            content = section.get("content", [])
-            if not isinstance(content, list):
-                raise ValueError(f"Invalid content for dynamic-column-list: {content}")
-            section["num_cols"] = calculate_columns(len(content))
-            logger.info(
-                f"Calculated {section['num_cols']} columns for section '{section.get('name')}'"
-            )
+    # DEPRECATED: Column calculation no longer used - LaTeX template uses fixed-width columns
+    # sections = data.get("sections", [])
+    # for section in sections:
+    #     if section.get("type") == "dynamic-column-list":
+    #         content = section.get("content", [])
+    #         if not isinstance(content, list):
+    #             raise ValueError(f"Invalid content for dynamic-column-list: {content}")
+    #         section["num_cols"] = calculate_columns(len(content))
+    #         logger.info(
+    #             f"Calculated {section['num_cols']} columns for section '{section.get('name')}'"
+    #         )
 
     # Prepare and escape data for LaTeX
     prepared_data = _prepare_latex_data(data)
