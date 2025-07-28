@@ -15,12 +15,14 @@
 
 \usepackage{ragged2e}
 \usepackage{titlesec}
-\titleformat{\section}{\Large\bfseries\scshape\RaggedRight}{}{0em}{}[\vspace{-0.1em}\rule{\linewidth}{0.8pt}\vspace{-0.1em}]
-\titlespacing*{\section}{0pt}{*1.5}{*0.5}
+\titleformat{\section}{\Large\bfseries\scshape\RaggedRight}{}{0em}{}[\vspace{-0.6em}\rule{\linewidth}{0.8pt}\vspace{-0.1em}]
+\titlespacing*{\section}{0pt}{*1.0}{*0.1}
 
 \usepackage{enumitem}
 \setlist{nosep, itemsep=0.0em, parsep=0.0em, topsep=0.1em, partopsep=0em}
 \setlist[itemize]{leftmargin=1.5em,label=\textbullet}
+
+\usepackage{needspace}
 
 \usepackage{xcolor}
 \definecolor{linkcolor}{RGB}{51,51,153}
@@ -36,13 +38,12 @@
 
 % --- Custom Commands for Resume Elements ---
 \newcommand{\rjobtitle}[1]{%
-    \vspace{0.3em}\noindent\normalsize{\textbf{#1}}\par
-    \vspace{-0.1em}
+    \vspace{0.4em}\noindent\normalsize{\textbf{#1}}\par
 }
 
 \newcommand{\rcompanydate}[2]{%
     \noindent\normalsize{#1} \enspace $\cdot$ \enspace #2\par
-    \vspace{0.1em}
+    \vspace{0.2em}
 }
 
 \newcommand{\rbullet}[1]{%
@@ -65,12 +66,16 @@
     \par\vspace{0.5em}
 }
 
+\newcommand{\reducationentry}[3]{%
+    \vspace{0.4em}\noindent\normalsize{\textbf{#1}, \textit{#2} - #3}\par
+}
+
 \begin{document}
 
 % --- Header ---
 \begin{center}
     \textbf{\Huge{\VAR{contact_info.name}}} \\
-    \vspace{0.05em}
+    \vspace{0.3em}
     \normalsize{%
         \faMapMarker* \enspace \VAR{contact_info.location} \enspace $\cdot$ \enspace
         \faPhone* \enspace \VAR{contact_info.phone} \enspace $\cdot$ \enspace
@@ -78,7 +83,7 @@
         \faLinkedin \enspace \href{\VAR{contact_info.linkedin}}{\VAR{contact_info.linkedin_handle}}%
     }
 \end{center}
-\vspace{0.1em}
+\vspace{0.4em}
 
 % --- Sections ---
 \BLOCK{for section in sections}
@@ -106,13 +111,12 @@
         \rhorizontalbullets{\VAR{" \\textbullet\\ ".join(section.content)}}
 
     \BLOCK{elif section_type == "dynamic-column-list"}
-        \BLOCK{set num_cols = section.get('num_cols', 1)}
         \BLOCK{set items = section.content}
-        % DEBUG: Section '\VAR{section.name}' has \VAR{items|length} items, using \VAR{num_cols} columns
+        \BLOCK{set num_cols = 4}
         \BLOCK{set items_per_row = (items|length / num_cols)|round(0, 'ceil')|int}
-        \BLOCK{set col_spec = 'l@{\\hspace{1em}}' * (num_cols - 1) + 'l'}
         \small
-        \begin{tabular}{\VAR{col_spec}}
+        \begin{center}
+        \begin{tabular*}{\linewidth}[t]{@{\extracolsep{\fill}}*{4}{p{0.22\linewidth}}@{}}
             \BLOCK{for row in range(items_per_row)}
                 \BLOCK{set row_items = []}
                 \BLOCK{for col in range(num_cols)}
@@ -120,12 +124,13 @@
                     \BLOCK{if item_index < items|length}
                         \BLOCK{set _ = row_items.append(items[item_index])}
                     \BLOCK{else}
-                        \BLOCK{set _ = row_items.append('~')}
+                        \BLOCK{set _ = row_items.append('')}
                     \BLOCK{endif}
                 \BLOCK{endfor}
                 \VAR{' & '.join(row_items)} \\
             \BLOCK{endfor}
-        \end{tabular}
+        \end{tabular*}
+        \end{center}
         \par\vspace{0.5em}
 
     \BLOCK{elif section_type == "icon-list"}
@@ -148,18 +153,17 @@
                     \rbullet{\VAR{bullet}}
                 \BLOCK{endfor}
             \end{itemize}
-            \BLOCK{if not loop.last}\vspace{0.6em}\BLOCK{endif}
+            \BLOCK{if not loop.last}\vspace{0.4em}\BLOCK{endif}
         \BLOCK{endfor}
+        \vspace{0.5em}
 
     \BLOCK{elif section_type == "education" or section.name|lower == "education"}
         \BLOCK{for edu in section.content}
-            \rjobtitle{\VAR{edu.degree}}
-            \rcompanydate{\textit{\VAR{edu.school}}}{\VAR{edu.year}}
-            \BLOCK{if edu.field_of_study}
-                \small{\VAR{edu.field_of_study}}\vspace{0.1em}
-            \BLOCK{endif}
-            \vspace{0.6em}
+            \needspace{2\baselineskip}
+            \reducationentry{\VAR{edu.degree}}{\VAR{edu.school}}{\VAR{edu.year}}
+            \BLOCK{if not loop.last}\vspace{0.4em}\BLOCK{endif}
         \BLOCK{endfor}
+        \vspace{0.5em}
 
     \BLOCK{else}
         \textit{Unsupported section type: \VAR{section_type}}\vspace{0.5em}
