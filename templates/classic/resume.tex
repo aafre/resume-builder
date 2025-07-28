@@ -22,10 +22,12 @@
 \setlist{nosep, itemsep=0.0em, parsep=0.0em, topsep=0.1em, partopsep=0em}
 \setlist[itemize]{leftmargin=1.5em,label=\textbullet}
 
+\usepackage{xcolor}
+\definecolor{linkcolor}{RGB}{51,51,153}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
-    urlcolor=blue,
+    urlcolor=linkcolor,
     linkcolor=black,
     citecolor=black
 }
@@ -33,13 +35,14 @@
 \usepackage{fontawesome5}
 
 % --- Custom Commands for Resume Elements ---
-\newcommand{\rsubtitle}[2]{%
-    \vspace{0.1em}\normalsize{\textbf{#1}} \hfill \normalsize{#2}\par
+\newcommand{\rjobtitle}[1]{%
+    \vspace{0.3em}\noindent\normalsize{\textbf{#1}}\par
+    \vspace{-0.1em}
 }
 
-\newcommand{\rcompany}[1]{%
-    \normalsize{\textit{#1}}\par
-    \vspace{-0.1em}
+\newcommand{\rcompanydate}[2]{%
+    \noindent\normalsize{#1} \enspace $\cdot$ \enspace #2\par
+    \vspace{0.1em}
 }
 
 \newcommand{\rbullet}[1]{%
@@ -69,10 +72,10 @@
     \textbf{\Huge{\VAR{contact_info.name}}} \\
     \vspace{0.05em}
     \normalsize{%
-        \faMapMarker \hspace{2pt} \VAR{contact_info.location} \textbullet\
-        \faPhone \hspace{2pt} \VAR{contact_info.phone} \textbullet\
-        \faEnvelope \hspace{2pt} \href{mailto:\VAR{contact_info.email}}{\VAR{contact_info.email}} \textbullet\
-        \faLinkedin \hspace{2pt} \href{\VAR{contact_info.linkedin}}{\VAR{contact_info.linkedin_handle}}%
+        \faMapMarker* \enspace \VAR{contact_info.location} \enspace $\cdot$ \enspace
+        \faPhone* \enspace \VAR{contact_info.phone} \enspace $\cdot$ \enspace
+        \faEnvelope \enspace \href{mailto:\VAR{contact_info.email}}{\VAR{contact_info.email}} \enspace $\cdot$ \enspace
+        \faLinkedin \enspace \href{\VAR{contact_info.linkedin}}{\VAR{contact_info.linkedin_handle}}%
     }
 \end{center}
 \vspace{0.1em}
@@ -138,23 +141,24 @@
 
     \BLOCK{elif section_type == "experience" or section.name|lower == "experience"}
         \BLOCK{for job in section.content}
-            \rsubtitle{\VAR{job.title}}{\VAR{job.dates}}
-            \rcompany{\VAR{job.company}}
-            \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
+            \rjobtitle{\VAR{job.title}}
+            \rcompanydate{\textit{\VAR{job.company}}}{\VAR{job.dates}}
+            \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.15em,parsep=0pt,topsep=0.1em]
                 \BLOCK{for bullet in job.description}
                     \rbullet{\VAR{bullet}}
                 \BLOCK{endfor}
-            \end{itemize}\vspace{0.4em}
+            \end{itemize}
+            \BLOCK{if not loop.last}\vspace{0.6em}\BLOCK{endif}
         \BLOCK{endfor}
 
     \BLOCK{elif section_type == "education" or section.name|lower == "education"}
         \BLOCK{for edu in section.content}
-            \rsubtitle{\VAR{edu.degree}}{\VAR{edu.year}}
-            \rcompany{\VAR{edu.school}}
+            \rjobtitle{\VAR{edu.degree}}
+            \rcompanydate{\textit{\VAR{edu.school}}}{\VAR{edu.year}}
             \BLOCK{if edu.field_of_study}
                 \small{\VAR{edu.field_of_study}}\vspace{0.1em}
             \BLOCK{endif}
-            \vspace{0.4em}
+            \vspace{0.6em}
         \BLOCK{endfor}
 
     \BLOCK{else}
