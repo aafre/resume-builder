@@ -52,7 +52,7 @@ export default function Footer({}: FooterProps) {
               </Link>
               <Link
                 to="/terms-of-service"
-                onClick={scrollToTop('terms-of-service')} className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
+                onClick={scrollToTop('/terms-of-service')} className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Terms
               </Link>
