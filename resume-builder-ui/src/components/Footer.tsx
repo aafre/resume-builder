@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FaShieldAlt, FaLock } from "react-icons/fa";
 
 interface FooterProps {
@@ -7,6 +8,16 @@ interface FooterProps {
 }
 
 export default function Footer({}: FooterProps) {
+ const location = useLocation();
+  const navigate = useNavigate();
+
+  const scrollToTop = (path: string) => () => {
+    if (location.pathname === path) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      navigate(path);
+    }
+  };
   return (
     <footer className="bg-transparent">
       <div className="container mx-auto px-4 py-6">
@@ -17,31 +28,31 @@ export default function Footer({}: FooterProps) {
             <div className="flex flex-wrap gap-4 sm:gap-6 text-sm">
               <Link
                 to="/blog"
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
+                onClick={scrollToTop('/blog')} className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Career Blog
               </Link>
               <Link
                 to="/about"
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
+                onClick={scrollToTop('/about')} className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 About Us
               </Link>
               <Link
                 to="/contact"
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
+                onClick={scrollToTop('/contact')} className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Contact
               </Link>
               <Link
                 to="/privacy-policy"
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
+                onClick={scrollToTop('/privacy-policy')} className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Privacy
               </Link>
               <Link
                 to="/terms-of-service"
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
+                onClick={scrollToTop('terms-of-service')} className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
               >
                 Terms
               </Link>

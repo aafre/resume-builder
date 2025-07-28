@@ -29,12 +29,16 @@ import ResumeLengthGuide from "./components/blog/ResumeLengthGuide";
 import TechResumeGuide from "./components/blog/TechResumeGuide";
 import ResumeVsCvDifference from "./components/blog/ResumeVsCvDifference";
 import AIResumeBuilder from "./components/blog/AIResumeBuilder";
+import ScrollToTop from "./components/ScrollToTop";
+
 
 function AppContent() {
   const location = useLocation();
   const isEditorPage = location.pathname === "/editor";
 
   return (
+  <>
+   <ScrollToTop/>
     <div className="flex flex-col min-h-screen bg-gray-50">
       <EnvironmentBanner />
       {/* Header */}
@@ -109,6 +113,7 @@ function AppContent() {
       {/* Footer with integrated toolbar support */}
       <FooterWithContext isEditorPage={isEditorPage} />
     </div>
+  </>
   );
 }
 
