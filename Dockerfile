@@ -2,7 +2,7 @@ FROM node:24 AS react-build
 
 WORKDIR /app/react
 COPY resume-builder-ui/package*.json ./
-RUN npm install
+RUN npm ci
 COPY resume-builder-ui/ ./
 RUN npm run build
 
