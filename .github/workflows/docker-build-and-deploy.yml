@@ -141,7 +141,7 @@ jobs:
 
       - name: Image digest
         if: success()
-        run: echo "Built image with digest: ${{ steps.build.outputs.digest }}"
+        run: "echo \"Built image with digest: ${{ steps.build.outputs.digest }}\""
 
   # Security scan the built image
   security-scan:
