@@ -1,0 +1,104 @@
+font: Source Sans Pro
+
+contact_info:
+  name: Jane Doe
+  location: "San Francisco, CA"
+  email: jane.doe@email.com
+  phone: +1 (555) 123-4567
+  linkedin: https://linkedin.com/in/jane-doe-marketing
+
+sections:
+  - name: Professional Summary
+    type: text
+    content: "Results-driven Digital Marketing Specialist with 3+ years of experience in social media management, content creation, and data analytics. Proven track record of increasing brand engagement by 150% and driving lead generation through integrated marketing campaigns."
+
+  - name: Core Marketing Skills
+    type: inline-list
+    content:
+      - "Google Ads"
+      - "Facebook Ads Manager"
+      - "SEO/SEM"
+      - "Content Marketing"
+      - "Email Marketing"
+      - "Social Media Management"
+      - "Google Analytics"
+      - "A/B Testing"
+      - "Marketing Automation"
+      - "Influencer Marketing" 
+      - "Lead Generation"
+      - "Brand Management"
+      - "Campaign Strategy"
+      - "Performance Analysis"
+      - "PPC Advertising"
+      - "Conversion Optimization"
+
+  - name: Technical Platforms & Tools
+    type: inline-list
+    content:
+      - "HubSpot"
+      - "Mailchimp"
+      - "Hootsuite"
+      - "Buffer"
+      - "Canva"
+      - "Adobe Creative Suite"
+      - "WordPress"
+      - "Shopify"
+      - "Salesforce"
+      - "LinkedIn Campaign Manager"
+      - "Instagram Business"
+      - "Twitter Ads"
+      - "Analytics"
+      - "Microsoft Excel"
+      - "Google Sheets"
+      - "Slack"
+
+  - name: Experience
+    content:
+      - company: "Digital Solutions Agency"
+        title: "Digital Marketing Specialist"
+        dates: "Jan 2023 – Present"
+        description:
+          - "Manage integrated marketing campaigns for 15+ B2B clients, driving average lead increase of 35%"
+          - "Optimize Google Ads and Facebook campaigns, reducing client acquisition costs by 30% on average"
+          - "Create and schedule social media content across LinkedIn, Instagram, and Twitter for multiple accounts"
+          - "Develop comprehensive marketing reports and analytics dashboards for client presentations"
+
+      - company: "TechStart Innovations"
+        title: "Marketing Coordinator"
+        dates: "Jun 2022 – Dec 2022"
+        description:
+          - "Assisted in launching product marketing campaigns that generated 500+ qualified leads per month"
+          - "Managed company blog and social media accounts, increasing organic traffic by 80%"
+          - "Coordinated email marketing campaigns with 25% open rates and 8% click-through rates"
+
+  - name: Education
+    content:
+      - degree: "Bachelor of Arts in Marketing"
+        school: "University of California, Berkeley"
+        year: "2021"
+      - degree: "Google Digital Marketing Certificate"
+        school: "Coursera"
+        year: "2021"
+
+  - name: Industry Certifications
+    type: bulleted-list
+    content:
+      - "Google Ads Certified - Search, Display, and Video Advertising (2023)"
+      - "Google Analytics Individual Qualification (IQ) Certified (2023)"
+      - "Facebook Blueprint Certified - Marketing API and Ads Manager (2022)"
+      - "HubSpot Content Marketing Certification (2022)"
+
+  - name: Soft Skills & Languages
+    type: inline-list
+    content:
+      - "English (Native)"
+      - "Spanish (Conversational)"
+      - "Project Management"
+      - "Team Leadership"
+      - "Client Relations"
+      - "Data Analysis"
+      - "Creative Writing"
+      - "Public Speaking"
+      - "Event Planning"
+      - "Photography"
+      - "Video Editing"

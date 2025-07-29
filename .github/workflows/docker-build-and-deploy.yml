@@ -1,15 +1,23 @@
-name: Build, Push, and Deploy to Cloud Run
+name: Build, Push, and Deploy
+
+# - PR branches: test → build (validate only, no push)
+# - Main branch: test → build → security scan → push → deploy
+# - Tests must pass before any build/deploy occurs
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
   workflow_dispatch: # Allows manual trigger
     inputs:
-      deploy:
-        description: "Deploy to Cloud Run after building?"
+      force_deploy:
+        description: "Force deployment (bypass normal flow)"
         required: false
-        default: "false"
+        default: false
+        type: boolean
 
 env:
   GCP_IMAGE_PATH: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder
@@ -17,61 +25,183 @@ env:
   GCP_IMAGE: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app
 
 jobs:
-  build-and-push:
+  # Frontend Tests
+  test-frontend:
+    name: Frontend Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: resume-builder-ui
+
     steps:
-      # Checkout repository code
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Generate a timestamp for tagging
-      - name: Generate timestamp for Docker tag
-        run: |
-          TIMESTAMP=$(date -u +"%Y.%m.%d.%H-%M-%S")
-          echo "DOCKER_TAG=$TIMESTAMP" >> $GITHUB_ENV
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: resume-builder-ui/package-lock.json
 
-      # Authenticate with GCP
+      - name: Install dependencies
+        run: npm ci
+
+      # - name: Run ESLint
+      #   run: npm run lint
+
+      - name: Run tests with coverage
+        run: npm run coverage
+
+  # Backend Tests - TODO: Add backend tests
+  # test-backend:
+  #   name: Backend Tests
+  #   runs-on: ubuntu-latest
+  #   
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+  #
+  #     - name: Setup Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.13'
+  #         cache: 'pip'
+  #
+  #     - name: Install uv
+  #       run: pip install uv
+  #
+  #     - name: Install dependencies
+  #       run: uv pip install --system -r requirements.txt
+  #
+  #     - name: Install test dependencies
+  #       run: |
+  #         uv pip install --system pytest pytest-cov pytest-flask ruff
+  #
+  #     - name: Run Python linting
+  #       run: ruff check .
+  #
+  #     - name: Run backend tests
+  #       run: pytest --cov=. --cov-report=xml --cov-report=html -v
+
+  # Build Docker image (runs after tests pass)
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: [test-frontend]  # TODO: Add test-backend when backend tests exist
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+      image-digest: ${{ steps.build.outputs.digest }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Generate metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.GCP_IMAGE }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix=sha-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      # Only authenticate with GCP for main branch or manual dispatch
       - name: Authenticate with GCP
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
-      # Build the Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }} .
-          docker images
-
-      # Configure Docker to use the GCP Container Registry
-      - name: Configure Docker to use GCP Container Registry
+      # Configure Docker to use GCP Artifact Registry (only for main/manual)
+      - name: Configure Docker for GCP
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
         run: |
           echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' | docker login -u _json_key_base64 --password-stdin europe-west2-docker.pkg.dev
 
-      # Push the Docker image to Container Registry
-      - name: Push Docker image
-        run: |
-          docker push ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }}
-          echo "Pushed Docker Image: ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }}"
+      # Build Docker image with caching
+      - name: Build Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64
+          push: ${{ github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
+          sbom: false
 
-  deploy:
-    needs: build-and-push
-    if: ${{ github.event.inputs.deploy == 'true' }}
+      - name: Image digest
+        if: success()
+        run: "echo \"Built image with digest: ${{ steps.build.outputs.digest }}\""
+
+  # Security scan the built image
+  security-scan:
+    name: Security Scan Image
     runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    
     steps:
-      # Authenticate with GCP
+      - name: Run Trivy vulnerability scanner on image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ needs.build.outputs.image-tag }}
+          format: 'sarif'
+          output: 'trivy-image-results.sarif'
+
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-image-results.sarif'
+
+  # Deploy to Cloud Run (only on main branch or manual force)
+  deploy:
+    name: Deploy to Cloud Run
+    runs-on: ubuntu-latest
+    needs: [build, security-scan]
+    if: |
+      (github.ref == 'refs/heads/main' && success()) || 
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.force_deploy == 'true')
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.url }}
+    
+    steps:
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
-      # Deploy to Cloud Run
-      - id: deploy-cloudrun
+      - name: Deploy to Cloud Run
+        id: deploy
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: ${{ secrets.GCP_CLOUD_RUN_SERVICE }}
-          image: ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }}
+          image: ${{ needs.build.outputs.image-tag }}
           region: "europe-west2"
+          flags: |
+            --cpu=1
+            --memory=1Gi
+            --min-instances=0
+            --max-instances=10
+            --concurrency=80
+            --timeout=300
+            --allow-unauthenticated
 
-      # Output deployed URL
-      - name: Display Deployed URL
-        run: echo "Deployed to ${{ steps.deploy-cloudrun.outputs.url }}"
+      - name: Deployment Summary
+        run: |
+          echo "🚀 **Deployment Successful!**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Service URL:** ${{ steps.deploy.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Image:** ${{ needs.build.outputs.image-tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Region:** europe-west2" >> $GITHUB_STEP_SUMMARY
