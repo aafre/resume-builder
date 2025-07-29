@@ -8,12 +8,12 @@ from pathlib import Path
 
 def load_resume_data(yaml_file_path):
     """Load and validate resume data from YAML file."""
-    with open(yaml_file_path, 'r') as file:
+    with open(yaml_file_path, "r") as file:
         data = yaml.safe_load(file)
-    
+
     if not isinstance(data, dict):
         raise ValueError("Invalid YAML format: Root must be a dictionary")
-    
+
     return data
 
 
@@ -45,7 +45,9 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
 
 
 # Generate PDF from HTML file
-def generate_pdf(template_name, data, output_file, session_icons_dir=None, session_id=None):
+def generate_pdf(
+    template_name, data, output_file, session_icons_dir=None, session_id=None
+):
     # Set up paths using pathlib
     project_root = Path(__file__).parent.resolve()
     templates_base_dir = project_root / "templates"
@@ -169,6 +171,10 @@ def get_social_media_handle(url):
         url = url.rstrip("/")
         return url.split("/")[-1]
     return ""
+
+
+# LaTeX functions have been moved to Flask app.py for unified processing
+# This file now serves as CLI-only tool for development/testing
 
 
 # Main function to run the generator
