@@ -31,7 +31,8 @@ logging.basicConfig(
 )
 
 
-# LaTeX Helper Functions
+# Resume Generation Helper Functions
+# These functions support both HTML and LaTeX template generation
 def get_social_media_handle(url):
     """Extract social media handle from URL."""
     if url:
@@ -109,7 +110,10 @@ def _prepare_latex_data(data):
 
 
 def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic"):
-    """Generate PDF from YAML data using LaTeX template."""
+    """
+    Generate PDF from YAML data using LaTeX template and XeLaTeX compilation.
+    Used for classic templates that require LaTeX formatting.
+    """
     logging.info(f"Starting LaTeX PDF generation for template: {template_name}")
     
     try:
@@ -237,7 +241,10 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
 
 
 def generate_html_pdf(yaml_data, template_name, output_file, session_icons_dir=None, session_id=None):
-    """Generate PDF from YAML data using HTML template and pdfkit."""
+    """
+    Generate PDF from YAML data using HTML template and pdfkit conversion.
+    Used for modern templates that use HTML/CSS with wkhtmltopdf.
+    """
     logging.info(f"Starting HTML PDF generation for template: {template_name}")
     
     try:
@@ -617,14 +624,15 @@ def generate_resume():
             template = request.form.get("template", "modern")
             
             # Map template IDs to actual template directories
+            # Modern templates use HTML/CSS generation, Classic templates use LaTeX
             template_mapping = {
-                "modern-with-icons": "modern",
-                "modern-no-icons": "modern",
-                "modern": "modern",
-                "classic": "classic",
-                "classic-alex-rivera": "classic",
-                "classic-jane-doe": "classic",
-                "minimal": "minimal"
+                "modern-with-icons": "modern",     # HTML template with icons
+                "modern-no-icons": "modern",       # HTML template without icons
+                "modern": "modern",                 # Default HTML template
+                "classic": "classic",               # LaTeX template (generic)
+                "classic-alex-rivera": "classic",   # LaTeX template (data analytics)
+                "classic-jane-doe": "classic",      # LaTeX template (marketing)
+                "minimal": "minimal"                # Future template
             }
             
             if template not in template_mapping:
@@ -635,13 +643,13 @@ def generate_resume():
             # Use the mapped template directory
             actual_template = template_mapping[template]
             
-            # Unified template dispatch - no subprocess needed
+            # Unified template dispatch - direct function calls, no subprocess overhead
             if actual_template == "classic":
-                # Use direct LaTeX generation
+                # LaTeX path: Use XeLaTeX compilation for classic templates
                 logging.info(f"Using direct LaTeX generation for template: {actual_template}")
                 generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
             else:
-                # Use direct HTML generation (no subprocess)
+                # HTML path: Use pdfkit/wkhtmltopdf for modern templates
                 logging.info(f"Using direct HTML generation for template: {actual_template}")
                 generate_html_pdf(yaml_data, actual_template, str(output_path), str(session_icons_dir), session_id)
 
