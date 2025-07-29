@@ -17,6 +17,10 @@ import subprocess
 import logging
 from datetime import datetime
 from pathlib import Path
+import uuid
+import re
+import copy
+from jinja2 import Environment, FileSystemLoader
 
 from flask_cors import CORS
 
@@ -24,6 +28,173 @@ from flask_cors import CORS
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
 )
+
+
+# LaTeX Helper Functions
+def get_social_media_handle(url):
+    """Extract social media handle from URL."""
+    if url:
+        url = url.rstrip("/")
+        return url.split("/")[-1]
+    return ""
+
+
+def _escape_latex(text):
+    """Escapes special LaTeX characters in a string to prevent compilation errors."""
+    if not isinstance(text, str):
+        return text
+
+    latex_special_chars = {
+        "\\": r"\textbackslash{}",
+        "&": r"\&",
+        "%": r"\%",
+        "$": r"\$",
+        "#": r"\#",
+        "_": r"\_",
+        "{": r"\{",
+        "}": r"\}",
+        "~": r"\textasciitilde{}",
+        "^": r"\textasciicircum{}",
+        "<": r"\textless{}",
+        ">": r"\textgreater{}",
+        "|": r"\textbar{}",
+        "-": r"{-}",
+    }
+
+    pattern = re.compile("|".join(re.escape(key) for key in latex_special_chars.keys()))
+    escaped_text = pattern.sub(lambda match: latex_special_chars[match.group(0)], text)
+    return escaped_text
+
+
+def _prepare_latex_data(data):
+    """Recursively applies LaTeX escaping to all string values in the data dictionary."""
+    logging.info("Preparing data for LaTeX rendering, applying escaping and deriving fields.")
+    
+    prepared_data = copy.deepcopy(data)
+
+    def apply_escaping_recursive(item, current_key=None):
+        if isinstance(item, str):
+            if current_key == "type":
+                return item
+            return _escape_latex(item)
+        elif isinstance(item, dict):
+            return {k: apply_escaping_recursive(v, k) for k, v in item.items()}
+        elif isinstance(item, list):
+            return [apply_escaping_recursive(elem) for elem in item]
+        else:
+            return item
+
+    prepared_data = apply_escaping_recursive(prepared_data)
+
+    # Derive linkedin_handle and ensure LinkedIn URL has protocol
+    contact_info = prepared_data.get("contact_info", {})
+    if contact_info:
+        linkedin_url = contact_info.get("linkedin", "")
+        if (
+            linkedin_url
+            and not linkedin_url.startswith("http://")
+            and not linkedin_url.startswith("https://")
+        ):
+            contact_info["linkedin"] = "https://" + linkedin_url
+            logging.info(f"Prepended https:// to LinkedIn URL: {contact_info['linkedin']}")
+
+        contact_info["linkedin_handle"] = get_social_media_handle(
+            contact_info.get("linkedin", "")
+        )
+        logging.info(f"Derived LinkedIn handle: {contact_info['linkedin_handle']}")
+
+    prepared_data["contact_info"] = contact_info
+    return prepared_data
+
+
+def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic"):
+    """Generate PDF from YAML data using LaTeX template."""
+    logging.info(f"Starting LaTeX PDF generation for template: {template_name}")
+    
+    try:
+        # Load and prepare data
+        prepared_data = _prepare_latex_data(yaml_data)
+        
+        # Setup template directory and Jinja2 environment
+        template_dir = PROJECT_ROOT / "templates" / template_name
+        
+        # Configure Jinja2 with LaTeX-compatible delimiters
+        latex_env = Environment(
+            loader=FileSystemLoader(template_dir),
+            block_start_string='\\BLOCK{',
+            block_end_string='}',
+            variable_start_string='\\VAR{',
+            variable_end_string='}',
+            comment_start_string='\\#{',
+            comment_end_string='}',
+            line_statement_prefix='%%',
+            line_comment_prefix='%#',
+            trim_blocks=True,
+            autoescape=False
+        )
+        
+        # Render the LaTeX template
+        template = latex_env.get_template("resume.tex")
+        latex_content = template.render(**prepared_data)
+        
+        # Create unique temporary file for LaTeX
+        session_id = str(uuid.uuid4())
+        temp_dir = Path(tempfile.gettempdir())
+        temp_tex_file = temp_dir / f"resume_{session_id}.tex"
+        temp_pdf_file = temp_dir / f"resume_{session_id}.pdf"
+        
+        # Write LaTeX content to temporary file
+        with open(temp_tex_file, "w", encoding="utf-8") as f:
+            f.write(latex_content)
+        
+        logging.info(f"LaTeX content written to: {temp_tex_file}")
+        
+        # Compile LaTeX to PDF using xelatex
+        compile_command = [
+            "xelatex",
+            "-interaction=nonstopmode",
+            "-output-directory", str(temp_dir),
+            str(temp_tex_file)
+        ]
+        
+        logging.info(f"Running LaTeX compilation: {' '.join(compile_command)}")
+        
+        result = subprocess.run(
+            compile_command,
+            capture_output=True,
+            text=True,
+            cwd=str(temp_dir)
+        )
+        
+        if result.returncode != 0:
+            logging.error(f"LaTeX compilation failed with return code {result.returncode}")
+            logging.error(f"LaTeX stdout: {result.stdout}")
+            logging.error(f"LaTeX stderr: {result.stderr}")
+            raise Exception(f"LaTeX compilation failed: {result.stderr}")
+        
+        # Check if PDF was generated
+        if not temp_pdf_file.exists():
+            logging.error("PDF file was not generated by LaTeX compilation")
+            raise Exception("PDF file was not generated")
+        
+        # Copy the generated PDF to the output location
+        shutil.copy2(temp_pdf_file, output_path)
+        logging.info(f"PDF successfully generated at: {output_path}")
+        
+        # Clean up temporary files
+        for pattern in [f"resume_{session_id}.*"]:
+            for temp_file in temp_dir.glob(pattern):
+                try:
+                    temp_file.unlink()
+                    logging.debug(f"Cleaned up temporary file: {temp_file}")
+                except Exception as e:
+                    logging.warning(f"Could not remove temporary file {temp_file}: {e}")
+        
+        return str(output_path)
+        
+    except Exception as e:
+        logging.error(f"LaTeX PDF generation failed: {str(e)}")
+        raise e
 
 
 app = Flask(__name__, static_folder="static", static_url_path="/")
@@ -44,6 +215,8 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 TEMPLATE_FILE_MAP = {
     "modern-no-icons": TEMPLATES_DIR / "john_doe_no_icon.yml",
     "modern-with-icons": TEMPLATES_DIR / "john_doe.yml",
+    "classic-alex-rivera": PROJECT_ROOT / "samples" / "classic" / "alex_rivera_data.yml",
+    "classic-jane-doe": PROJECT_ROOT / "samples" / "classic" / "jane_doe.yml",
 }
 
 
@@ -98,6 +271,22 @@ def get_templates():
                 "description": "Professional layout with decorative icons.",
                 "image_url": url_for(
                     "serve_templates", filename="modern-with-icons.png", _external=True
+                ),
+            },
+            {
+                "id": "classic-alex-rivera",
+                "name": "Classic - Data Analytics",
+                "description": "Professional LaTeX template showcasing data analytics experience.",
+                "image_url": url_for(
+                    "serve_templates", filename="alex_rivera.png", _external=True
+                ),
+            },
+            {
+                "id": "classic-jane-doe",
+                "name": "Classic - Marketing",
+                "description": "Professional LaTeX template for marketing professionals.",
+                "image_url": url_for(
+                    "serve_templates", filename="jane_doe.png", _external=True
                 ),
             },
         ]
@@ -281,7 +470,9 @@ def generate_resume():
                 "modern-with-icons": "modern",
                 "modern-no-icons": "modern",
                 "modern": "modern",
-                "classic": "classic", 
+                "classic": "classic",
+                "classic-alex-rivera": "classic",
+                "classic-jane-doe": "classic",
                 "minimal": "minimal"
             }
             
@@ -292,37 +483,45 @@ def generate_resume():
             
             # Use the mapped template directory
             actual_template = template_mapping[template]
-            cmd = [
-                "python",
-                "resume_generator.py",
-                "--template",
-                actual_template,
-                "--input",
-                str(yaml_path),
-                "--output",
-                str(output_path),
-                "--session-icons-dir",
-                str(session_icons_dir),
-                "--session-id",
-                session_id,
-            ]
+            
+            # Check if this is a LaTeX template (classic)
+            if actual_template == "classic":
+                # Use direct LaTeX generation (no subprocess)
+                logging.info(f"Using direct LaTeX generation for template: {actual_template}")
+                generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
+            else:
+                # Use existing subprocess approach for HTML templates
+                cmd = [
+                    "python",
+                    "resume_generator.py",
+                    "--template",
+                    actual_template,
+                    "--input",
+                    str(yaml_path),
+                    "--output",
+                    str(output_path),
+                    "--session-icons-dir",
+                    str(session_icons_dir),
+                    "--session-id",
+                    session_id,
+                ]
 
-            # Generate the resume using subprocess
-            logging.info(f"Running command: {' '.join(cmd)}")
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-            )
+                # Generate the resume using subprocess
+                logging.info(f"Running command: {' '.join(cmd)}")
+                result = subprocess.run(
+                    cmd,
+                    capture_output=True,
+                    text=True,
+                )
 
-            logging.info(f"Subprocess returncode: {result.returncode}")
-            logging.info(f"Subprocess stdout: {result.stdout}")
-            if result.stderr:
-                logging.error(f"Subprocess stderr: {result.stderr}")
+                logging.info(f"Subprocess returncode: {result.returncode}")
+                logging.info(f"Subprocess stdout: {result.stdout}")
+                if result.stderr:
+                    logging.error(f"Subprocess stderr: {result.stderr}")
 
-            if result.returncode != 0:
-                logging.error(f"Resume generation error: {result.stderr}")
-                raise RuntimeError("Failed to generate the resume")
+                if result.returncode != 0:
+                    logging.error(f"Resume generation error: {result.stderr}")
+                    raise RuntimeError("Failed to generate the resume")
 
             if not output_path.exists():
                 logging.error(f"Expected output file at: {output_path}")
