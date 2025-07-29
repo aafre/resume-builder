@@ -173,8 +173,11 @@ def get_social_media_handle(url):
     return ""
 
 
-# LaTeX functions have been moved to Flask app.py for unified processing
-# This file now serves as CLI-only tool for development/testing
+# NOTE: This file now serves as CLI-only tool for development/testing
+# All production resume generation logic has been moved to Flask app.py for:
+# - Unified template dispatch (HTML and LaTeX)
+# - Elimination of subprocess overhead
+# - Better error handling and performance
 
 
 # Main function to run the generator
