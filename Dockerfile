@@ -1,8 +1,5 @@
 FROM node:24 AS react-build
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
 WORKDIR /app/react
 COPY resume-builder-ui/package*.json ./
 RUN npm install
