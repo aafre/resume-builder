@@ -17,6 +17,11 @@ import subprocess
 import logging
 from datetime import datetime
 from pathlib import Path
+import uuid
+import re
+import copy
+import pdfkit
+from jinja2 import Environment, FileSystemLoader
 
 from flask_cors import CORS
 
@@ -24,6 +29,330 @@ from flask_cors import CORS
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
 )
+
+
+# Resume Generation Helper Functions
+# These functions support both HTML and LaTeX template generation
+def get_social_media_handle(url):
+    """Extract social media handle from URL."""
+    if url:
+        url = url.rstrip("/")
+        return url.split("/")[-1]
+    return ""
+
+
+def _escape_latex(text):
+    """Escapes special LaTeX characters in a string to prevent compilation errors."""
+    if not isinstance(text, str):
+        return text
+
+    latex_special_chars = {
+        "\\": r"\textbackslash{}",
+        "&": r"\&",
+        "%": r"\%",
+        "$": r"\$",
+        "#": r"\#",
+        "_": r"\_",
+        "{": r"\{",
+        "}": r"\}",
+        "~": r"\textasciitilde{}",
+        "^": r"\textasciicircum{}",
+        "<": r"\textless{}",
+        ">": r"\textgreater{}",
+        "|": r"\textbar{}",
+        "-": r"{-}",
+    }
+
+    pattern = re.compile("|".join(re.escape(key) for key in latex_special_chars.keys()))
+    escaped_text = pattern.sub(lambda match: latex_special_chars[match.group(0)], text)
+    return escaped_text
+
+
+def _prepare_latex_data(data):
+    """Recursively applies LaTeX escaping to all string values in the data dictionary."""
+    logging.info("Preparing data for LaTeX rendering, applying escaping and deriving fields.")
+    
+    prepared_data = copy.deepcopy(data)
+
+    def apply_escaping_recursive(item, current_key=None):
+        if isinstance(item, str):
+            if current_key == "type":
+                return item
+            return _escape_latex(item)
+        elif isinstance(item, dict):
+            return {k: apply_escaping_recursive(v, k) for k, v in item.items()}
+        elif isinstance(item, list):
+            return [apply_escaping_recursive(elem) for elem in item]
+        else:
+            return item
+
+    prepared_data = apply_escaping_recursive(prepared_data)
+
+    # Derive linkedin_handle and ensure LinkedIn URL has protocol
+    contact_info = prepared_data.get("contact_info", {})
+    if contact_info:
+        linkedin_url = contact_info.get("linkedin", "")
+        if (
+            linkedin_url
+            and not linkedin_url.startswith("http://")
+            and not linkedin_url.startswith("https://")
+        ):
+            contact_info["linkedin"] = "https://" + linkedin_url
+            logging.info(f"Prepended https:// to LinkedIn URL: {contact_info['linkedin']}")
+
+        contact_info["linkedin_handle"] = get_social_media_handle(
+            contact_info.get("linkedin", "")
+        )
+        logging.info(f"Derived LinkedIn handle: {contact_info['linkedin_handle']}")
+
+    prepared_data["contact_info"] = contact_info
+    return prepared_data
+
+
+def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic"):
+    """
+    Generate PDF from YAML data using LaTeX template and XeLaTeX compilation.
+    Used for classic templates that require LaTeX formatting.
+    """
+    logging.info(f"Starting LaTeX PDF generation for template: {template_name}")
+    
+    try:
+        # Load and prepare data
+        prepared_data = _prepare_latex_data(yaml_data)
+        
+        # Setup template directory and Jinja2 environment
+        template_dir = PROJECT_ROOT / "templates" / template_name
+        
+        # Configure Jinja2 with LaTeX-compatible delimiters
+        latex_env = Environment(
+            loader=FileSystemLoader(template_dir),
+            block_start_string='\\BLOCK{',
+            block_end_string='}',
+            variable_start_string='\\VAR{',
+            variable_end_string='}',
+            comment_start_string='\\#{',
+            comment_end_string='}',
+            line_statement_prefix='%%',
+            line_comment_prefix='%#',
+            trim_blocks=True,
+            autoescape=False
+        )
+        
+        # Render the LaTeX template
+        template = latex_env.get_template("resume.tex")
+        latex_content = template.render(**prepared_data)
+        
+        # Create unique temporary file for LaTeX
+        session_id = str(uuid.uuid4())
+        temp_dir = Path(tempfile.gettempdir())
+        temp_tex_file = temp_dir / f"resume_{session_id}.tex"
+        temp_pdf_file = temp_dir / f"resume_{session_id}.pdf"
+        
+        # Write LaTeX content to temporary file
+        with open(temp_tex_file, "w", encoding="utf-8") as f:
+            f.write(latex_content)
+        
+        logging.info(f"LaTeX content written to: {temp_tex_file}")
+        
+        # Compile LaTeX to PDF using xelatex
+        compile_command = [
+            "xelatex",
+            "-interaction=nonstopmode",
+            "-output-directory", str(temp_dir),
+            str(temp_tex_file)
+        ]
+        
+        logging.info(f"Running LaTeX compilation: {' '.join(compile_command)}")
+        
+        result = subprocess.run(
+            compile_command,
+            capture_output=True,
+            text=True,
+            cwd=str(temp_dir)
+        )
+        
+        if result.returncode != 0:
+            logging.error(f"LaTeX compilation failed with return code {result.returncode}")
+            logging.error(f"LaTeX stdout: {result.stdout}")
+            logging.error(f"LaTeX stderr: {result.stderr}")
+            raise Exception(f"LaTeX compilation failed: {result.stderr}")
+        
+        # Check if PDF was generated
+        if not temp_pdf_file.exists():
+            logging.error("PDF file was not generated by LaTeX compilation")
+            raise Exception("PDF file was not generated")
+        
+        # Copy the generated PDF to the output location
+        shutil.copy2(temp_pdf_file, output_path)
+        logging.info(f"PDF successfully generated at: {output_path}")
+        
+        # Clean up temporary files
+        for pattern in [f"resume_{session_id}.*"]:
+            for temp_file in temp_dir.glob(pattern):
+                try:
+                    temp_file.unlink()
+                    logging.debug(f"Cleaned up temporary file: {temp_file}")
+                except Exception as e:
+                    logging.warning(f"Could not remove temporary file {temp_file}: {e}")
+        
+        return str(output_path)
+        
+    except Exception as e:
+        logging.error(f"LaTeX PDF generation failed: {str(e)}")
+        raise e
+
+
+def load_resume_data(yaml_file_path):
+    """Load and validate resume data from YAML file."""
+    with open(yaml_file_path, "r") as file:
+        data = yaml.safe_load(file)
+
+    if not isinstance(data, dict):
+        raise ValueError("Invalid YAML format: Root must be a dictionary")
+
+    return data
+
+
+def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
+    """
+    Dynamically calculate the number of columns and ensure minimum items per column.
+
+    Args:
+        num_items (int): The total number of items.
+        max_columns (int): The maximum number of columns to allow.
+        min_items_per_column (int): Minimum items per column to justify adding a new column.
+
+    Returns:
+        int: Calculated number of columns.
+    """
+    if max_columns < 1:
+        raise ValueError("max_columns must be at least 1")
+
+    if num_items <= min_items_per_column:
+        return 1  # Single column if items are too few
+
+    # Start with 2 columns and increase dynamically
+    for cols in range(2, max_columns + 1):
+        avg_items_per_col = num_items / cols
+        if avg_items_per_col < min_items_per_column:
+            return cols - 1
+
+    return max_columns  # Default to max columns if all checks pass
+
+
+def generate_html_pdf(yaml_data, template_name, output_file, session_icons_dir=None, session_id=None):
+    """
+    Generate PDF from YAML data using HTML template and pdfkit conversion.
+    Used for modern templates that use HTML/CSS with wkhtmltopdf.
+    """
+    logging.info(f"Starting HTML PDF generation for template: {template_name}")
+    
+    try:
+        # Set up paths using pathlib
+        templates_base_dir = PROJECT_ROOT / "templates"
+        default_icons_dir = ICONS_DIR
+
+        # Template-specific directory
+        template_dir = templates_base_dir / template_name
+        if not template_dir.exists():
+            raise ValueError(
+                f"Template directory '{template_name}' not found at {template_dir}"
+            )
+
+        css_file = template_dir / "styles.css"
+
+        # Use session icons directory if provided, otherwise default icons
+        if session_icons_dir and Path(session_icons_dir).exists():
+            icon_base_path = Path(session_icons_dir)
+        else:
+            icon_base_path = default_icons_dir
+
+        # Define paths in data dictionary for Jinja rendering - use file:// URLs for wkhtmltopdf
+        yaml_data["icon_path"] = f"file://{icon_base_path.as_posix()}"
+        yaml_data["css_path"] = f"file://{css_file.as_posix()}"
+
+        # Set up Jinja2 environment
+        env = Environment(loader=FileSystemLoader(template_dir))
+
+        # Process sections and dynamically calculate column count for dynamic-column-list
+        sections = yaml_data.get("sections", [])
+        for section in sections:
+            if section.get("type") == "dynamic-column-list":
+                content = section.get("content", [])
+                if not isinstance(content, list):
+                    raise ValueError(f"Invalid content for dynamic-column-list: {content}")
+                section["num_cols"] = calculate_columns(len(content))
+                logging.info(
+                    f"Calculated {section['num_cols']} columns for section '{section.get('name')}'"
+                )
+
+        # Contact info parsing
+        contact_info = yaml_data.get("contact_info", {})
+        if not isinstance(contact_info, dict):
+            raise ValueError(f"Invalid contact_info: {contact_info}")
+        if not contact_info:
+            raise ValueError("No contact information provided")
+
+        # Social media handle extraction
+        linkedin_url = contact_info.get("linkedin", "")
+
+        if linkedin_url and not linkedin_url.startswith("https://"):
+            linkedin_url = "https://" + linkedin_url
+
+        if linkedin_url and "linkedin" not in linkedin_url:
+            raise ValueError("Invalid LinkedIn URL provided")
+
+        contact_info["linkedin_handle"] = (
+            get_social_media_handle(linkedin_url) if linkedin_url else linkedin_url
+        )
+
+        # Render HTML with data
+        logging.info("Rendering HTML with data...")
+
+        template = env.get_template("base.html")
+        html_content = template.render(
+            contact_info=contact_info,
+            sections=sections,
+            icon_path=yaml_data["icon_path"],
+            css_path=yaml_data["css_path"],
+            font=yaml_data.get("font", "Arial"),
+        )
+
+        # Write HTML content to a temporary file with unique name
+        temp_dir = Path(tempfile.gettempdir())
+        if session_id:
+            temp_html_file = temp_dir / f"temp_{template_name}_{session_id}.html"
+        else:
+            # Use UUID for local runs to avoid conflicts
+            unique_id = str(uuid.uuid4())[:8]
+            temp_html_file = temp_dir / f"temp_{template_name}_{unique_id}.html"
+
+        with open(temp_html_file, "w") as html_file:
+            html_file.write(html_content)
+        logging.info(f"HTML written to temporary file: {temp_html_file}")
+
+        # Convert the HTML file to PDF with the enable-local-file-access option
+        options = {"enable-local-file-access": ""}
+
+        logging.info("Converting HTML file to PDF...")
+        pdfkit.from_file(temp_html_file.as_posix(), output_file, options=options)
+        logging.info(f"PDF generated successfully at {output_file}")
+
+        # Clean up temporary HTML file
+        try:
+            temp_html_file.unlink()  # Remove temp file
+            logging.info(f"Temporary HTML file cleaned up: {temp_html_file}")
+        except FileNotFoundError:
+            # File already removed, no issue
+            pass
+        except Exception as e:
+            logging.warning(f"Could not remove temporary file {temp_html_file}: {e}")
+            
+        return str(output_file)
+        
+    except Exception as e:
+        logging.error(f"HTML PDF generation failed: {str(e)}")
+        raise e
 
 
 app = Flask(__name__, static_folder="static", static_url_path="/")
@@ -44,6 +373,8 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 TEMPLATE_FILE_MAP = {
     "modern-no-icons": TEMPLATES_DIR / "john_doe_no_icon.yml",
     "modern-with-icons": TEMPLATES_DIR / "john_doe.yml",
+    "classic-alex-rivera": PROJECT_ROOT / "samples" / "classic" / "alex_rivera_data.yml",
+    "classic-jane-doe": PROJECT_ROOT / "samples" / "classic" / "jane_doe.yml",
 }
 
 
@@ -85,17 +416,33 @@ def get_templates():
     try:
         templates = [
             {
+                "id": "classic-alex-rivera",
+                "name": "Professional",
+                "description": "Clean, structured layout with traditional formatting and excellent space utilization.",
+                "image_url": url_for(
+                    "serve_templates", filename="alex_rivera.png", _external=True
+                ),
+            },
+            {
+                "id": "classic-jane-doe",
+                "name": "Elegant",
+                "description": "Refined design with sophisticated typography and organized section layout.",
+                "image_url": url_for(
+                    "serve_templates", filename="jane_doe.png", _external=True
+                ),
+            },
+            {
                 "id": "modern-no-icons",
-                "name": "Modern (No Icons)",
-                "description": "Simple and clean layout without icons.",
+                "name": "Minimalist",
+                "description": "Clean and simple design focused on content clarity and easy readability.",
                 "image_url": url_for(
                     "serve_templates", filename="modern-no-icons.png", _external=True
                 ),
             },
             {
                 "id": "modern-with-icons",
-                "name": "Modern (With Icons)",
-                "description": "Professional layout with decorative icons.",
+                "name": "Modern",
+                "description": "Contemporary design enhanced with visual icons and dynamic styling elements.",
                 "image_url": url_for(
                     "serve_templates", filename="modern-with-icons.png", _external=True
                 ),
@@ -129,12 +476,9 @@ def get_template_data(template_id):
         with open(template_path, "r") as file:
             yaml_content = yaml.safe_load(file)
 
-        # Check if any section supports icons
-        supports_icons = any(
-            "icon" in item
-            for section in yaml_content.get("sections", [])
-            for item in section.get("content", [])
-        )
+        # Determine icon support based on template type, not YAML content
+        # Classic templates (LaTeX) don't support icons, Modern templates (HTML) do
+        supports_icons = not template_id.startswith("classic")
 
         # Return the YAML content and supportsIcons flag
         return jsonify(
@@ -277,12 +621,15 @@ def generate_resume():
             template = request.form.get("template", "modern")
             
             # Map template IDs to actual template directories
+            # Modern templates use HTML/CSS generation, Classic templates use LaTeX
             template_mapping = {
-                "modern-with-icons": "modern",
-                "modern-no-icons": "modern",
-                "modern": "modern",
-                "classic": "classic", 
-                "minimal": "minimal"
+                "modern-with-icons": "modern",     # HTML template with icons
+                "modern-no-icons": "modern",       # HTML template without icons
+                "modern": "modern",                 # Default HTML template
+                "classic": "classic",               # LaTeX template (generic)
+                "classic-alex-rivera": "classic",   # LaTeX template (data analytics)
+                "classic-jane-doe": "classic",      # LaTeX template (marketing)
+                "minimal": "minimal"                # Future template
             }
             
             if template not in template_mapping:
@@ -292,37 +639,16 @@ def generate_resume():
             
             # Use the mapped template directory
             actual_template = template_mapping[template]
-            cmd = [
-                "python",
-                "resume_generator.py",
-                "--template",
-                actual_template,
-                "--input",
-                str(yaml_path),
-                "--output",
-                str(output_path),
-                "--session-icons-dir",
-                str(session_icons_dir),
-                "--session-id",
-                session_id,
-            ]
-
-            # Generate the resume using subprocess
-            logging.info(f"Running command: {' '.join(cmd)}")
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-            )
-
-            logging.info(f"Subprocess returncode: {result.returncode}")
-            logging.info(f"Subprocess stdout: {result.stdout}")
-            if result.stderr:
-                logging.error(f"Subprocess stderr: {result.stderr}")
-
-            if result.returncode != 0:
-                logging.error(f"Resume generation error: {result.stderr}")
-                raise RuntimeError("Failed to generate the resume")
+            
+            # Unified template dispatch - direct function calls, no subprocess overhead
+            if actual_template == "classic":
+                # LaTeX path: Use XeLaTeX compilation for classic templates
+                logging.info(f"Using direct LaTeX generation for template: {actual_template}")
+                generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
+            else:
+                # HTML path: Use pdfkit/wkhtmltopdf for modern templates
+                logging.info(f"Using direct HTML generation for template: {actual_template}")
+                generate_html_pdf(yaml_data, actual_template, str(output_path), str(session_icons_dir), session_id)
 
             if not output_path.exists():
                 logging.error(f"Expected output file at: {output_path}")

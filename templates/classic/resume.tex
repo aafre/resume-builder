@@ -1,0 +1,174 @@
+\documentclass[10pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[
+    left=0.75in,
+    right=0.75in,
+    top=0.75in,
+    bottom=0.75in,
+    headheight=0pt,
+    footskip=0pt
+]{geometry}
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+
+\usepackage{ragged2e}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\scshape\RaggedRight}{}{0em}{}[\vspace{-0.6em}\rule{\linewidth}{0.8pt}\vspace{-0.1em}]
+\titlespacing*{\section}{0pt}{*1.0}{*0.1}
+
+\usepackage{enumitem}
+\setlist{nosep, itemsep=0.0em, parsep=0.0em, topsep=0.1em, partopsep=0em}
+\setlist[itemize]{leftmargin=1.5em,label=\textbullet}
+
+\usepackage{needspace}
+
+\usepackage{xcolor}
+\definecolor{linkcolor}{RGB}{51,51,153}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    urlcolor=linkcolor,
+    linkcolor=black,
+    citecolor=black
+}
+
+\usepackage{fontawesome5}
+
+% --- Custom Commands for Resume Elements ---
+\newcommand{\rjobtitle}[1]{%
+    \vspace{0.4em}\noindent\normalsize{\textbf{#1}}\par
+}
+
+\newcommand{\rcompanydate}[2]{%
+    \noindent\normalsize{#1} \enspace $\cdot$ \enspace #2\par
+    \vspace{0.2em}
+}
+
+\newcommand{\rbullet}[1]{%
+    \item \small{#1}
+}
+
+\newcommand{\rinlinelists}[1]{%
+    \small{#1}\par\vspace{0.5em}
+}
+
+\newcommand{\rhorizontalbullets}[1]{%
+    \small{#1}\par\vspace{0.5em}
+}
+
+\newcommand{\rdynamiccolumns}[2]{%
+    \small
+    \begin{tabular}{#1}
+        #2
+    \end{tabular}
+    \par\vspace{0.5em}
+}
+
+\newcommand{\reducationentry}[3]{%
+    \vspace{0.4em}\noindent\normalsize{\textbf{#1}, \textit{#2} - #3}\par
+}
+
+\begin{document}
+
+% --- Header ---
+\begin{center}
+    \textbf{\Huge{\VAR{contact_info.name}}} \\
+    \vspace{0.3em}
+    \normalsize{%
+        \faMapMarker* \enspace \VAR{contact_info.location} \enspace $\cdot$ \enspace
+        \faPhone* \enspace \VAR{contact_info.phone} \enspace $\cdot$ \enspace
+        \faEnvelope \enspace \href{mailto:\VAR{contact_info.email}}{\VAR{contact_info.email}} \enspace $\cdot$ \enspace
+        \faLinkedin \enspace \href{\VAR{contact_info.linkedin}}{\VAR{contact_info.linkedin_handle}}%
+    }
+\end{center}
+\vspace{0.4em}
+
+% --- Sections ---
+\BLOCK{for section in sections}
+    \BLOCK{set section_type = section.get('type', '').lower()}
+    \BLOCK{if not section_type}
+        \BLOCK{if section.name|lower == "experience"}
+            \BLOCK{set section_type = "experience"}
+        \BLOCK{elif section.name|lower == "education"}
+            \BLOCK{set section_type = "education"}
+        \BLOCK{endif}
+    \BLOCK{endif}
+    \section*{\VAR{section.name}}
+
+    \BLOCK{if section_type == "text"}
+        \small{\VAR{section.content}}\vspace{0.5em}
+
+    \BLOCK{elif section_type == "bulleted-list"}
+        \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
+            \BLOCK{for item in section.content}
+                \rbullet{\VAR{item}}
+            \BLOCK{endfor}
+        \end{itemize}\vspace{0.5em}
+
+    \BLOCK{elif section_type == "inline-list"}
+        \rhorizontalbullets{\VAR{" \\textbullet\\ ".join(section.content)}}
+
+    \BLOCK{elif section_type == "dynamic-column-list"}
+        \BLOCK{set items = section.content}
+        \BLOCK{set num_cols = 4}
+        \BLOCK{set items_per_row = (items|length / num_cols)|round(0, 'ceil')|int}
+        \small
+        \begin{center}
+        \begin{tabular*}{\linewidth}[t]{@{\extracolsep{\fill}}*{4}{p{0.22\linewidth}}@{}}
+            \BLOCK{for row in range(items_per_row)}
+                \BLOCK{set row_items = []}
+                \BLOCK{for col in range(num_cols)}
+                    \BLOCK{set item_index = row * num_cols + col}
+                    \BLOCK{if item_index < items|length}
+                        \BLOCK{set _ = row_items.append(items[item_index])}
+                    \BLOCK{else}
+                        \BLOCK{set _ = row_items.append('')}
+                    \BLOCK{endif}
+                \BLOCK{endfor}
+                \VAR{' & '.join(row_items)} \\
+            \BLOCK{endfor}
+        \end{tabular*}
+        \end{center}
+        \par\vspace{0.5em}
+
+    \BLOCK{elif section_type == "icon-list"}
+        \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
+            \BLOCK{for item in section.content}
+                \BLOCK{if item is mapping}
+                    \rbullet{\VAR{item.certification} (\VAR{item.issuer}, \VAR{item.date})}
+                \BLOCK{else}
+                    \rbullet{\VAR{item}}
+                \BLOCK{endif}
+            \BLOCK{endfor}
+        \end{itemize}\vspace{0.5em}
+
+    \BLOCK{elif section_type == "experience" or section.name|lower == "experience"}
+        \BLOCK{for job in section.content}
+            \rjobtitle{\VAR{job.title}}
+            \rcompanydate{\textit{\VAR{job.company}}}{\VAR{job.dates}}
+            \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.15em,parsep=0pt,topsep=0.1em]
+                \BLOCK{for bullet in job.description}
+                    \rbullet{\VAR{bullet}}
+                \BLOCK{endfor}
+            \end{itemize}
+            \BLOCK{if not loop.last}\vspace{0.4em}\BLOCK{endif}
+        \BLOCK{endfor}
+        \vspace{0.5em}
+
+    \BLOCK{elif section_type == "education" or section.name|lower == "education"}
+        \BLOCK{for edu in section.content}
+            \needspace{2\baselineskip}
+            \reducationentry{\VAR{edu.degree}}{\VAR{edu.school}}{\VAR{edu.year}}
+            \BLOCK{if not loop.last}\vspace{0.4em}\BLOCK{endif}
+        \BLOCK{endfor}
+        \vspace{0.5em}
+
+    \BLOCK{else}
+        \textit{Unsupported section type: \VAR{section_type}}\vspace{0.5em}
+    \BLOCK{endif}
+\BLOCK{endfor}
+
+
+\end{document}

@@ -1248,6 +1248,7 @@ const Editor: React.FC = () => {
         <SectionTypeModal
           onClose={() => setShowModal(false)}
           onSelect={handleAddSection}
+          supportsIcons={supportsIcons}
         />
       )}
     </div>

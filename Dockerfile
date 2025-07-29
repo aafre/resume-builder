@@ -1,45 +1,59 @@
-# Step 1: Build the React app
-FROM node:22 AS react-build
-
-ARG NODE_ENV=development
-ENV NODE_ENV=${NODE_ENV}
+FROM node:24 AS react-build
 
 WORKDIR /app/react
 COPY resume-builder-ui/package*.json ./
-RUN npm install
+RUN npm ci
 COPY resume-builder-ui/ ./
 RUN npm run build
 
 
-# Step 2: Set up the Flask/uv environment
-# Use the uv image (Python 3.11 on slim-bookworm) so uv is preinstalled
-FROM ghcr.io/astral-sh/uv:0.7.8-python3.11-bookworm-slim AS flask
+# Step 2: Set up Flask with Python 3.13 on Bookworm (LaTeX-friendly)
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim AS flask
+
+# Create non-root user for security
+RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 WORKDIR /app
 
-# Install system deps
+# Install system dependencies including curl for health checks
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends wkhtmltopdf && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends \
+        wkhtmltopdf \   
+        texlive-xetex \
+        texlive-fonts-recommended \
+        texlive-latex-recommended \
+        fontconfig \
+        curl \
+        && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy only requirements first for better layer caching
+# Copy requirements and install Python dependencies
 COPY requirements.txt .
-
-# Use uv to install into the system Python environment
-# (--system avoids creating a virtualenv inside the container)
 RUN uv pip install --system --no-cache -r requirements.txt
 
-# Copy the rest of your Flask app
-COPY . .
+# Copy application files with proper ownership
+COPY --chown=appuser:appuser . .
 
-# Remove the React source directory (we only need the built assets)
+# Remove React source directory and copy built assets with proper ownership
 RUN rm -rf /app/resume-builder-ui
+COPY --from=react-build --chown=appuser:appuser /app/react/dist/ /app/static/
 
-# Copy the React build output into Flask’s static folder
-COPY --from=react-build /app/react/dist/ /app/static/
+# Set proper permissions for the app directory
+RUN chown -R appuser:appuser /app
 
-# Expose Cloud Run port
+# Security: Set production environment variables
+ENV FLASK_ENV=production
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Add security labels
+LABEL security.non-root=true
+LABEL version="1.0"
+LABEL description="EasyFreeResume - A free, open-source resume builder"
+
+# Switch to non-root user
+USER appuser
+
 EXPOSE 5000
 
-# Start with gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+# Start with gunicorn with production settings
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "--timeout", "120", "app:app"]
