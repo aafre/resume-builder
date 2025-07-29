@@ -416,35 +416,35 @@ def get_templates():
     try:
         templates = [
             {
-                "id": "modern-no-icons",
-                "name": "Modern (No Icons)",
-                "description": "Simple and clean layout without icons.",
-                "image_url": url_for(
-                    "serve_templates", filename="modern-no-icons.png", _external=True
-                ),
-            },
-            {
-                "id": "modern-with-icons",
-                "name": "Modern (With Icons)",
-                "description": "Professional layout with decorative icons.",
-                "image_url": url_for(
-                    "serve_templates", filename="modern-with-icons.png", _external=True
-                ),
-            },
-            {
                 "id": "classic-alex-rivera",
-                "name": "Classic - Data Analytics",
-                "description": "Professional LaTeX template showcasing data analytics experience.",
+                "name": "Professional",
+                "description": "Clean, structured layout with traditional formatting and excellent space utilization.",
                 "image_url": url_for(
                     "serve_templates", filename="alex_rivera.png", _external=True
                 ),
             },
             {
                 "id": "classic-jane-doe",
-                "name": "Classic - Marketing",
-                "description": "Professional LaTeX template for marketing professionals.",
+                "name": "Elegant",
+                "description": "Refined design with sophisticated typography and organized section layout.",
                 "image_url": url_for(
                     "serve_templates", filename="jane_doe.png", _external=True
+                ),
+            },
+            {
+                "id": "modern-no-icons",
+                "name": "Minimalist",
+                "description": "Clean and simple design focused on content clarity and easy readability.",
+                "image_url": url_for(
+                    "serve_templates", filename="modern-no-icons.png", _external=True
+                ),
+            },
+            {
+                "id": "modern-with-icons",
+                "name": "Modern",
+                "description": "Contemporary design enhanced with visual icons and dynamic styling elements.",
+                "image_url": url_for(
+                    "serve_templates", filename="modern-with-icons.png", _external=True
                 ),
             },
         ]
@@ -476,12 +476,9 @@ def get_template_data(template_id):
         with open(template_path, "r") as file:
             yaml_content = yaml.safe_load(file)
 
-        # Check if any section supports icons
-        supports_icons = any(
-            "icon" in item
-            for section in yaml_content.get("sections", [])
-            for item in section.get("content", [])
-        )
+        # Determine icon support based on template type, not YAML content
+        # Classic templates (LaTeX) don't support icons, Modern templates (HTML) do
+        supports_icons = not template_id.startswith("classic")
 
         # Return the YAML content and supportsIcons flag
         return jsonify(
