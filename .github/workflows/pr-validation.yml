@@ -25,5 +25,31 @@ jobs:
             chore
           requireScope: false
           validateSingleCommit: false
+          warnOnFail: false  # Hard fail - block merge on invalid titles
           ignoreLabels: |
             ignore-semantic-pull-request
+            
+      - name: Add comment on validation failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `❌ **PR Title Validation Failed**
+              
+              Your PR title doesn't follow [Conventional Commits](https://www.conventionalcommits.org/) format.
+              
+              **Required format:** \`type: description\`
+              
+              **Valid types:** feat, fix, docs, style, refactor, perf, test, chore
+              
+              **Examples:**
+              - \`feat: add new resume template\`
+              - \`fix: resolve PDF generation issue\`
+              - \`docs: update installation guide\`
+              
+              Please update your PR title and the check will re-run automatically.`
+            })
