@@ -2,7 +2,7 @@ name: Release & Deploy
 
 on:
   workflow_run:
-    workflows: ["Test Main Branch"]
+    workflows: ["Frontend Tests"]
     branches: [main]
     types: [completed]
 
