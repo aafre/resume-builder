@@ -1,13 +1,15 @@
 interface SectionTypeModalProps {
   onClose: () => void;
   onSelect: (type: string) => void;
+  supportsIcons?: boolean;
 }
 
 const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   onClose,
   onSelect,
+  supportsIcons = true,
 }) => {
-  const sectionTypes = [
+  const allSectionTypes = [
     {
       type: "text",
       title: "Text Section",
@@ -46,6 +48,11 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
         "Certifications, Awards, Professional Memberships, Licenses, Achievements",
     },
   ];
+
+  // Filter out icon-list if template doesn't support icons
+  const sectionTypes = supportsIcons 
+    ? allSectionTypes 
+    : allSectionTypes.filter(section => section.type !== "icon-list");
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
