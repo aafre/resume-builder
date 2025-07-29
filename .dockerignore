@@ -1,27 +1,61 @@
 # Ignore local environment and secrets
-.env
+.env*
+*.key
+*.pem
+*.crt
+*.p12
+
+# Ignore version control
+.git/
+.gitignore
 
 # Ignore runtime artifacts
 *.pdf
 *.log
 *.tmp
+output/
+temp/
 
 # Ignore IDE/Editor configuration and cache
 .vscode/
+.devcontainer/
 .idea/
 *.swp
+*.swo
 
 # Ignore Python cache files and directories
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+.pytest_cache/
 
-# Ignore node_modules, if applicable
+# Ignore node_modules and npm artifacts
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
+# Ignore documentation and development files
+*.md
+README*
+LICENSE
+CHANGELOG*
+
+# Ignore test files
+tests/
+test/
+*.test.*
+*test*
+coverage/
+
+# Ignore Docker files (prevent copying other Dockerfiles)
+Dockerfile*
+docker-compose*
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
 
 .zip 
 
-# Allow failing tests 
-*Editor.integration.test.tsx*
