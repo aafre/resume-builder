@@ -1,13 +1,15 @@
-name: Build and Test
-
-# - PR branches: test → build (validate only, no push)
-# - Main branch releases are handled by release.yml workflow
-# - This workflow focuses on testing and validation
+name: Build, Push, and Deploy to Cloud Run
 
 on:
-  pull_request:
+  push:
     branches:
       - main
+  workflow_dispatch: # Allows manual trigger
+    inputs:
+      deploy:
+        description: "Deploy to Cloud Run after building?"
+        required: false
+        default: "false"
 
 env:
   GCP_IMAGE_PATH: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder
@@ -15,108 +17,61 @@ env:
   GCP_IMAGE: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app
 
 jobs:
-  # Frontend Tests
-  test-frontend:
-    name: Frontend Tests
+  build-and-push:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: resume-builder-ui
-
     steps:
-      - name: Checkout repository
+      # Checkout repository code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      # Generate a timestamp for tagging
+      - name: Generate timestamp for Docker tag
+        run: |
+          TIMESTAMP=$(date -u +"%Y.%m.%d.%H-%M-%S")
+          echo "DOCKER_TAG=$TIMESTAMP" >> $GITHUB_ENV
+
+      # Authenticate with GCP
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
         with:
-          node-version: '24'
-          cache: 'npm'
-          cache-dependency-path: resume-builder-ui/package-lock.json
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
-      - name: Install dependencies
-        run: npm ci
-
-      # - name: Run ESLint
-      #   run: npm run lint
-
-      - name: Run tests with coverage
-        run: npm run coverage
-
-  # Backend Tests - TODO: Add backend tests
-  # test-backend:
-  #   name: Backend Tests
-  #   runs-on: ubuntu-latest
-  #   
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-  #
-  #     - name: Setup Python
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: '3.13'
-  #         cache: 'pip'
-  #
-  #     - name: Install uv
-  #       run: pip install uv
-  #
-  #     - name: Install dependencies
-  #       run: uv pip install --system -r requirements.txt
-  #
-  #     - name: Install test dependencies
-  #       run: |
-  #         uv pip install --system pytest pytest-cov pytest-flask ruff
-  #
-  #     - name: Run Python linting
-  #       run: ruff check .
-  #
-  #     - name: Run backend tests
-  #       run: pytest --cov=. --cov-report=xml --cov-report=html -v
-
-  # Build Docker image (runs after tests pass)
-  build:
-    name: Build Docker Image
-    runs-on: ubuntu-latest
-    needs: [test-frontend]  # TODO: Add test-backend when backend tests exist
-    outputs:
-      image-tag: ${{ steps.meta.outputs.tags }}
-      image-digest: ${{ steps.build.outputs.digest }}
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Generate metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.GCP_IMAGE }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=sha,prefix=sha-
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      # Build Docker image for validation (no push for PRs)
+      # Build the Docker image
       - name: Build Docker image
-        id: build
-        uses: docker/build-push-action@v5
+        run: |
+          docker build -t ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }} .
+          docker images
+
+      # Configure Docker to use the GCP Container Registry
+      - name: Configure Docker to use GCP Container Registry
+        run: |
+          echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' | docker login -u _json_key_base64 --password-stdin europe-west2-docker.pkg.dev
+
+      # Push the Docker image to Container Registry
+      - name: Push Docker image
+        run: |
+          docker push ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }}
+          echo "Pushed Docker Image: ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }}"
+
+  deploy:
+    needs: build-and-push
+    if: ${{ github.event.inputs.deploy == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      # Authenticate with GCP
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
         with:
-          context: .
-          platforms: linux/amd64
-          push: false
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          provenance: false
-          sbom: false
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
-      - name: Image digest
-        if: success()
-        run: "echo \"Built image with digest: ${{ steps.build.outputs.digest }}\""
+      # Deploy to Cloud Run
+      - id: deploy-cloudrun
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ secrets.GCP_CLOUD_RUN_SERVICE }}
+          image: ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }}
+          region: "europe-west2"
 
+      # Output deployed URL
+      - name: Display Deployed URL
+        run: echo "Deployed to ${{ steps.deploy-cloudrun.outputs.url }}"
