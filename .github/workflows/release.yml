@@ -42,11 +42,17 @@ jobs:
           CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
           echo "Current version: $CURRENT_VERSION"
           
+          # Check for conventional commits since last tag
+          echo "Recent commits:"
+          git log --oneline -5
+          
           # Generate new version based on conventional commits
           NEW_VERSION=$(git cliff --bumped-version 2>/dev/null || echo "")
+          echo "New version from git-cliff: '$NEW_VERSION'"
           
           if [ -z "$NEW_VERSION" ] || [ "$CURRENT_VERSION" = "$NEW_VERSION" ]; then
-            echo "No version bump needed"
+            echo "❌ No conventional commits found - no release created"
+            echo "💡 Recent commits must follow format: 'feat:', 'fix:', 'docs:', etc."
             echo "released=false" >> $GITHUB_OUTPUT
             exit 0
           fi
