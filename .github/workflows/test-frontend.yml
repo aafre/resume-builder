@@ -1,20 +1,15 @@
-name: Frontend Tests
-
-# Frontend test workflow for PR validation and main branch quality gates
+name: Test and Coverage
 
 on:
   pull_request:
     branches:
       - main
-    paths:
-      - 'resume-builder-ui/**'
   push:
     branches:
       - main
 
 jobs:
-  test-frontend:
-    name: Frontend Quick Tests
+  Test-ReactApp:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -25,34 +20,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: '24'
-          cache: 'npm'
-          cache-dependency-path: resume-builder-ui/package-lock.json
+          node-version: '20'  
 
       - name: Install dependencies
         run: npm ci
 
-      # - name: Run ESLint
-      #   run: npm run lint
-
-      # - name: Run TypeScript check
-      #   run: npm run type-check
-
       - name: Run tests with coverage
         run: npm run coverage
 
-      - name: Upload frontend coverage
+      - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
-        if: always()
         with:
-          name: frontend-coverage-${{ github.run_number }}
+          name: coverage-report
           path: resume-builder-ui/coverage
-          retention-days: 7
-
-      - name: Test Summary
-        if: github.ref == 'refs/heads/main'
-        run: |
-          echo "✅ **Frontend Tests Passed on Main**" >> $GITHUB_STEP_SUMMARY
-          echo "🚀 **Ready for Release Creation**" >> $GITHUB_STEP_SUMMARY
