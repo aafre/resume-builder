@@ -1,0 +1,19 @@
+{
+  "name": "Resume Builder Script Dev Container",
+  "build": {
+    "dockerfile": "../Dockerfile.dev.script",
+    "context": ".."
+  },
+  "workspaceFolder": "/app",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.pythonPath": "/usr/local/bin/python"
+      },
+      "extensions": [
+        "ms-python.python"
+      ]
+    }
+  },
+  "postCreateCommand": "echo 'Container setup complete!'"
+}

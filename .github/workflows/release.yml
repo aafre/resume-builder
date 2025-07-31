@@ -43,10 +43,16 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install git-cliff
+<<<<<<< HEAD
         run: |
           curl -sSL https://github.com/orhun/git-cliff/releases/latest/download/git-cliff-x86_64-unknown-linux-musl.tar.gz | tar -xz
           chmod +x git-cliff
           sudo mv git-cliff /usr/local/bin/
+=======
+        uses: taiki-e/install-action@v1
+        with:
+          tool: git-cliff
+>>>>>>> origin/main
 
       - name: Install GitHub CLI
         run: |
