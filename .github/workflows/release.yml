@@ -34,7 +34,7 @@ jobs:
       released: ${{ steps.release.outputs.released }}
       version: ${{ steps.release.outputs.version }}
       tag: ${{ steps.release.outputs.tag }}
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -43,7 +43,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install git-cliff
-        uses: taiki-e/install-action@git-cliff
+        uses: taiki-e/install-action@v1
+        with:
+          tool: git-cliff
 
       - name: Install GitHub CLI
         run: |
@@ -56,39 +58,33 @@ jobs:
       - name: Generate changelog and create release
         id: release
         run: |
-          # Get current version
           CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
           echo "Current version: $CURRENT_VERSION"
-          
-          # Check for conventional commits since last tag
+
           echo "Recent commits:"
           git log --oneline -10
-          
-          # Determine if this is a hotfix release
+
           IS_HOTFIX="${{ github.event_name == 'push' && startsWith(github.ref, 'refs/heads/hotfix/') }}"
           VERSION_BUMP="${{ github.event.inputs.version_bump || 'auto' }}"
-          
+
           echo "Is hotfix: $IS_HOTFIX"
           echo "Version bump type: $VERSION_BUMP"
-          
-          # Generate new version
+
           if [ "$VERSION_BUMP" = "auto" ]; then
-            # Use conventional commits to determine version
             NEW_VERSION=$(git cliff --bumped-version 2>/dev/null || echo "")
             echo "New version from git-cliff: '$NEW_VERSION'"
           else
-            # Manual version bump
             if [ "$CURRENT_VERSION" = "v0.0.0" ]; then
               CURRENT_VERSION="0.0.0"
             else
-              CURRENT_VERSION="${CURRENT_VERSION#v}"  # Remove 'v' prefix
+              CURRENT_VERSION="${CURRENT_VERSION#v}"
             fi
-            
+
             IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
             MAJOR=${VERSION_PARTS[0]:-0}
             MINOR=${VERSION_PARTS[1]:-0}
             PATCH=${VERSION_PARTS[2]:-0}
-            
+
             case "$VERSION_BUMP" in
               "major") NEW_VERSION="v$((MAJOR + 1)).0.0" ;;
               "minor") NEW_VERSION="v$MAJOR.$((MINOR + 1)).0" ;;
@@ -96,11 +92,9 @@ jobs:
             esac
             echo "Manual version bump: $NEW_VERSION"
           fi
-          
-          # For manual releases, proceed even if no conventional commits found
+
           if [ -z "$NEW_VERSION" ] || [ "$CURRENT_VERSION" = "$NEW_VERSION" ]; then
             if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-              # Force a patch release for manual triggers with no conventional commits
               if [ "$CURRENT_VERSION" = "v0.0.0" ]; then
                 CURRENT_VERSION="0.0.0"
               else
@@ -119,46 +113,36 @@ jobs:
               exit 0
             fi
           fi
-          
+
           echo "New version: $NEW_VERSION"
           echo "released=true" >> $GITHUB_OUTPUT
           echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "tag=$NEW_VERSION" >> $GITHUB_OUTPUT
-          
-          # Generate changelog
+
           git cliff --tag "$NEW_VERSION" > CHANGELOG.md
-          
-          # Configure git
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Commit changelog
+
           git add CHANGELOG.md
           git commit -m "chore(release): prepare for $NEW_VERSION"
-          
-          # Create and push tag
+
           git tag "$NEW_VERSION"
           git push origin main --tags
-          
-          # Generate release notes
+
           RELEASE_NOTES=$(git cliff --tag "$NEW_VERSION" --strip all | tail -n +3)
-          
-          # Add manual release notes if provided
+
           ADDITIONAL_NOTES="${{ github.event.inputs.release_notes }}"
           if [ -n "$ADDITIONAL_NOTES" ]; then
-            RELEASE_NOTES="$ADDITIONAL_NOTES
-
-$RELEASE_NOTES"
+            RELEASE_NOTES="$(printf '%s\n\n%s' "$ADDITIONAL_NOTES" "$RELEASE_NOTES")"
           fi
-          
-          # Add hotfix label if this is a hotfix release
+
           if [ "$IS_HOTFIX" = "true" ]; then
             RELEASE_TITLE="🚨 Hotfix Release $NEW_VERSION"
           else
             RELEASE_TITLE="Release $NEW_VERSION"
           fi
-          
-          # Create GitHub release
+
           echo "$RELEASE_NOTES" | gh release create "$NEW_VERSION" \
             --title "$RELEASE_TITLE" \
             --notes-file - \
@@ -171,7 +155,7 @@ $RELEASE_NOTES"
     needs: release
     if: needs.release.outputs.released == 'true'
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -221,7 +205,7 @@ $RELEASE_NOTES"
           image-ref: 'local-scan:latest'
           format: 'sarif'
           output: 'trivy-results.sarif'
-          exit-code: '0'  # Don't fail the build on vulnerabilities, just report them
+          exit-code: '0'
 
       - name: Display security scan summary
         if: always()
@@ -236,14 +220,10 @@ $RELEASE_NOTES"
       - name: Tag and push scanned image to registry
         if: success()
         run: |
-          # Re-tag the scanned image with proper registry tags
           docker tag local-scan:latest europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:${{ needs.release.outputs.version }}
           docker tag local-scan:latest europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:latest
-          
-          # Push the exact same image that was scanned
           docker push europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:${{ needs.release.outputs.version }}
           docker push europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:latest
-          
           echo "📦 **Image pushed to GCP Artifact Registry**" >> $GITHUB_STEP_SUMMARY
           echo "**Tags:** ${{ needs.release.outputs.version }}, latest" >> $GITHUB_STEP_SUMMARY
 
