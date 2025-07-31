@@ -1,201 +1,203 @@
-# name: Release & Deploy
+name: Release & Deploy
 
-# on:
-#   workflow_run:
-#     workflows: ["Frontend Tests"]
-#     branches: [main]
-#     types: [completed]
+on:
+  push:
+    branches:
+      - main
 
-# jobs:
-#   release:
-#     name: Create Release
-#     runs-on: ubuntu-latest
-#     # Only run if tests passed
-#     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-#     outputs:
-#       released: ${{ steps.release.outputs.released }}
-#       version: ${{ steps.release.outputs.version }}
-#       tag: ${{ steps.release.outputs.tag }}
+jobs:
+  test:
+    name: Frontend Tests
+    uses: ./.github/workflows/test-reusable.yml
+
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: test
+    outputs:
+      released: ${{ steps.release.outputs.released }}
+      version: ${{ steps.release.outputs.version }}
+      tag: ${{ steps.release.outputs.tag }}
     
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
-#         with:
-#           fetch-depth: 0
-#           token: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-#       - name: Install git-cliff
-#         uses: taiki-e/install-action@git-cliff
+      - name: Install git-cliff
+        uses: taiki-e/install-action@git-cliff
 
-#       - name: Install GitHub CLI
-#         run: |
-#           type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
-#           curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-#           sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
-#           echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list
-#           sudo apt update && sudo apt install gh -y
+      - name: Install GitHub CLI
+        run: |
+          type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+          sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list
+          sudo apt update && sudo apt install gh -y
 
-#       - name: Generate changelog and create release
-#         id: release
-#         run: |
-#           # Get current version
-#           CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-#           echo "Current version: $CURRENT_VERSION"
+      - name: Generate changelog and create release
+        id: release
+        run: |
+          # Get current version
+          CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "Current version: $CURRENT_VERSION"
           
-#           # Check for conventional commits since last tag
-#           echo "Recent commits:"
-#           git log --oneline -5
+          # Check for conventional commits since last tag
+          echo "Recent commits:"
+          git log --oneline -5
           
-#           # Generate new version based on conventional commits
-#           NEW_VERSION=$(git cliff --bumped-version 2>/dev/null || echo "")
-#           echo "New version from git-cliff: '$NEW_VERSION'"
+          # Generate new version based on conventional commits
+          NEW_VERSION=$(git cliff --bumped-version 2>/dev/null || echo "")
+          echo "New version from git-cliff: '$NEW_VERSION'"
           
-#           if [ -z "$NEW_VERSION" ] || [ "$CURRENT_VERSION" = "$NEW_VERSION" ]; then
-#             echo "❌ No conventional commits found - no release created"
-#             echo "💡 Recent commits must follow format: 'feat:', 'fix:', 'docs:', etc."
-#             echo "released=false" >> $GITHUB_OUTPUT
-#             exit 0
-#           fi
+          if [ -z "$NEW_VERSION" ] || [ "$CURRENT_VERSION" = "$NEW_VERSION" ]; then
+            echo "❌ No conventional commits found - no release created"
+            echo "💡 Recent commits must follow format: 'feat:', 'fix:', 'docs:', etc."
+            echo "released=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
           
-#           echo "New version: $NEW_VERSION"
-#           echo "released=true" >> $GITHUB_OUTPUT
-#           echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
-#           echo "tag=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "New version: $NEW_VERSION"
+          echo "released=true" >> $GITHUB_OUTPUT
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "tag=$NEW_VERSION" >> $GITHUB_OUTPUT
           
-#           # Generate changelog
-#           git cliff --tag "$NEW_VERSION" > CHANGELOG.md
+          # Generate changelog
+          git cliff --tag "$NEW_VERSION" > CHANGELOG.md
           
-#           # Configure git
-#           git config user.name "github-actions[bot]"
-#           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           
-#           # Commit changelog
-#           git add CHANGELOG.md
-#           git commit -m "chore(release): prepare for $NEW_VERSION"
+          # Commit changelog
+          git add CHANGELOG.md
+          git commit -m "chore(release): prepare for $NEW_VERSION"
           
-#           # Create and push tag
-#           git tag "$NEW_VERSION"
-#           git push origin main --tags
+          # Create and push tag
+          git tag "$NEW_VERSION"
+          git push origin main --tags
           
-#           # Generate release notes
-#           RELEASE_NOTES=$(git cliff --tag "$NEW_VERSION" --strip header --strip footer | tail -n +3)
+          # Generate release notes
+          RELEASE_NOTES=$(git cliff --tag "$NEW_VERSION" --strip header --strip footer | tail -n +3)
           
-#           # Create GitHub release
-#           echo "$RELEASE_NOTES" | gh release create "$NEW_VERSION" \
-#             --title "Release $NEW_VERSION" \
-#             --notes-file - \
-#             --latest
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Create GitHub release
+          echo "$RELEASE_NOTES" | gh release create "$NEW_VERSION" \
+            --title "Release $NEW_VERSION" \
+            --notes-file - \
+            --latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-#   build-and-deploy:
-#     name: Build and Deploy
-#     needs: release
-#     if: needs.release.outputs.released == 'true'
-#     runs-on: ubuntu-latest
+  build-and-deploy:
+    name: Build and Deploy
+    needs: release
+    if: needs.release.outputs.released == 'true'
+    runs-on: ubuntu-latest
     
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
-#         with:
-#           ref: ${{ needs.release.outputs.tag }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release.outputs.tag }}
 
-#       - name: Set up Docker Buildx
-#         uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-#       - name: Generate metadata
-#         id: meta
-#         uses: docker/metadata-action@v5
-#         with:
-#           images: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app
-#           tags: |
-#             type=raw,value=${{ needs.release.outputs.version }}
-#             type=raw,value=latest
+      - name: Generate metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app
+          tags: |
+            type=raw,value=${{ needs.release.outputs.version }}
+            type=raw,value=latest
 
-#       - name: Authenticate with GCP
-#         uses: google-github-actions/auth@v2
-#         with:
-#           credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
-#       - name: Configure Docker for GCP
-#         run: |
-#           echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' | docker login -u _json_key_base64 --password-stdin europe-west2-docker.pkg.dev
+      - name: Configure Docker for GCP
+        run: |
+          echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' | docker login -u _json_key_base64 --password-stdin europe-west2-docker.pkg.dev
 
-#       - name: Build Docker image
-#         id: build
-#         uses: docker/build-push-action@v5
-#         with:
-#           context: .
-#           platforms: linux/amd64
-#           load: true
-#           tags: |
-#             local-scan:latest
-#             scan-ready:${{ needs.release.outputs.version }}
-#           labels: ${{ steps.meta.outputs.labels }}
-#           cache-from: type=gha
-#           cache-to: type=gha,mode=max
-#           provenance: false
-#           sbom: false
+      - name: Build Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64
+          load: true
+          tags: |
+            local-scan:latest
+            scan-ready:${{ needs.release.outputs.version }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
+          sbom: false
 
-#       - name: Run Trivy vulnerability scanner
-#         uses: aquasecurity/trivy-action@master
-#         with:
-#           image-ref: 'local-scan:latest'
-#           format: 'sarif'
-#           output: 'trivy-results.sarif'
-#           exit-code: '0'  # Don't fail the build on vulnerabilities, just report them
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'local-scan:latest'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          exit-code: '0'  # Don't fail the build on vulnerabilities, just report them
 
-#       - name: Display security scan summary
-#         if: always()
-#         run: |
-#           if [ -f trivy-results.sarif ]; then
-#             echo "🔍 **Security Scan Completed**" >> $GITHUB_STEP_SUMMARY
-#             echo "Scan results uploaded to GitHub Security tab" >> $GITHUB_STEP_SUMMARY
-#           else
-#             echo "⚠️ **Security Scan Failed**" >> $GITHUB_STEP_SUMMARY
-#           fi
+      - name: Display security scan summary
+        if: always()
+        run: |
+          if [ -f trivy-results.sarif ]; then
+            echo "🔍 **Security Scan Completed**" >> $GITHUB_STEP_SUMMARY
+            echo "Scan results uploaded to GitHub Security tab" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ **Security Scan Failed**" >> $GITHUB_STEP_SUMMARY
+          fi
 
-#       - name: Tag and push scanned image to registry
-#         if: success()
-#         run: |
-#           # Re-tag the scanned image with proper registry tags
-#           docker tag local-scan:latest europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:${{ needs.release.outputs.version }}
-#           docker tag local-scan:latest europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:latest
+      - name: Tag and push scanned image to registry
+        if: success()
+        run: |
+          # Re-tag the scanned image with proper registry tags
+          docker tag local-scan:latest europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:${{ needs.release.outputs.version }}
+          docker tag local-scan:latest europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:latest
           
-#           # Push the exact same image that was scanned
-#           docker push europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:${{ needs.release.outputs.version }}
-#           docker push europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:latest
+          # Push the exact same image that was scanned
+          docker push europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:${{ needs.release.outputs.version }}
+          docker push europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:latest
           
-#           echo "📦 **Image pushed to GCP Artifact Registry**" >> $GITHUB_STEP_SUMMARY
-#           echo "**Tags:** ${{ needs.release.outputs.version }}, latest" >> $GITHUB_STEP_SUMMARY
+          echo "📦 **Image pushed to GCP Artifact Registry**" >> $GITHUB_STEP_SUMMARY
+          echo "**Tags:** ${{ needs.release.outputs.version }}, latest" >> $GITHUB_STEP_SUMMARY
 
-#       - name: Upload Trivy scan results
-#         uses: github/codeql-action/upload-sarif@v3
-#         if: always()
-#         with:
-#           sarif_file: 'trivy-results.sarif'
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
 
-#       - name: Deploy to Cloud Run
-#         id: deploy
-#         uses: google-github-actions/deploy-cloudrun@v2
-#         with:
-#           service: ${{ secrets.GCP_CLOUD_RUN_SERVICE }}
-#           image: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:${{ needs.release.outputs.version }}
-#           region: "europe-west2"
-#           flags: |
-#             --cpu=1
-#             --memory=1Gi
-#             --min-instances=0
-#             --max-instances=10
-#             --concurrency=80
-#             --timeout=300
-#             --allow-unauthenticated
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ secrets.GCP_CLOUD_RUN_SERVICE }}
+          image: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:${{ needs.release.outputs.version }}
+          region: "europe-west2"
+          flags: |
+            --cpu=1
+            --memory=1Gi
+            --min-instances=0
+            --max-instances=10
+            --concurrency=80
+            --timeout=300
+            --allow-unauthenticated
 
-#       - name: Deployment Summary
-#         run: |
-#           echo "🚀 **Release ${{ needs.release.outputs.version }} Deployed Successfully!**" >> $GITHUB_STEP_SUMMARY
-#           echo "" >> $GITHUB_STEP_SUMMARY
-#           echo "**Service URL:** ${{ steps.deploy.outputs.url }}" >> $GITHUB_STEP_SUMMARY
-#           echo "**Version:** ${{ needs.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-#           echo "**Image:** europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:${{ needs.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-#           echo "**Region:** europe-west2" >> $GITHUB_STEP_SUMMARY
+      - name: Deployment Summary
+        run: |
+          echo "🚀 **Release ${{ needs.release.outputs.version }} Deployed Successfully!**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Service URL:** ${{ steps.deploy.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ needs.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Image:** europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:${{ needs.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Region:** europe-west2" >> $GITHUB_STEP_SUMMARY

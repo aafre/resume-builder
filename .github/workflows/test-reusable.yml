@@ -1,0 +1,44 @@
+name: Reusable Tests
+
+on:
+  workflow_call:
+    outputs:
+      tests-passed:
+        description: "Whether tests passed"
+        value: ${{ jobs.test.outputs.success }}
+
+jobs:
+  test:
+    name: Run Frontend Tests
+    runs-on: ubuntu-latest
+    outputs:
+      success: ${{ steps.test-step.outputs.success }}
+    defaults:
+      run:
+        working-directory: resume-builder-ui
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: resume-builder-ui/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        id: test-step
+        run: |
+          npm run coverage
+          echo "success=true" >> $GITHUB_OUTPUT
+
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-${{ github.run_id }}
+          path: resume-builder-ui/coverage

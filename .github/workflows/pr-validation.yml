@@ -1,55 +1,25 @@
-# name: PR Validation
+name: PR Validation
 
-# on:
-#   pull_request:
-#     types: [opened, edited, synchronize]
+on:
+  pull_request:
+    branches:
+      - main
 
-# jobs:
-#   validate-pr-title:
-#     name: Validate PR Title
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Validate PR title follows conventional commits
-#         uses: amannn/action-semantic-pull-request@v5
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         with:
-#           types: |
-#             feat
-#             fix
-#             docs
-#             style
-#             refactor
-#             perf
-#             test
-#             chore
-#           requireScope: false
-#           validateSingleCommit: false
-#           warnOnFail: false  # Hard fail - block merge on invalid titles
-#           ignoreLabels: |
-#             ignore-semantic-pull-request
-            
-#       - name: Add comment on validation failure
-#         if: failure()
-#         uses: actions/github-script@v7
-#         with:
-#           script: |
-#             github.rest.issues.createComment({
-#               issue_number: context.issue.number,
-#               owner: context.repo.owner,
-#               repo: context.repo.repo,
-#               body: `❌ **PR Title Validation Failed**
-              
-#               Your PR title doesn't follow [Conventional Commits](https://www.conventionalcommits.org/) format.
-              
-#               **Required format:** \`type: description\`
-              
-#               **Valid types:** feat, fix, docs, style, refactor, perf, test, chore
-              
-#               **Examples:**
-#               - \`feat: add new resume template\`
-#               - \`fix: resolve PDF generation issue\`
-#               - \`docs: update installation guide\`
-              
-#               Please update your PR title and the check will re-run automatically.`
-#             })
+jobs:
+  test:
+    name: Frontend Tests
+    uses: ./.github/workflows/test-reusable.yml
+
+  docker-build:
+    name: Build Docker (Verify)
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image (verification only)
+        run: |
+          docker build -t resume-builder:pr-${{ github.event.number }} .
+          echo "✅ Docker build successful - image not pushed on PR"
