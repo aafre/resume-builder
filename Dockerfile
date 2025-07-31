@@ -22,6 +22,7 @@ RUN apt-get update && \
         texlive-xetex \
         texlive-fonts-recommended \
         texlive-latex-recommended \
+        texlive-fonts-extra \
         fontconfig \
         curl \
         && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -56,4 +57,4 @@ USER appuser
 EXPOSE 5000
 
 # Start with gunicorn with production settings
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "--timeout", "120", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "1", "--timeout", "120", "app:app"]
