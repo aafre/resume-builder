@@ -240,120 +240,6 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
     return max_columns  # Default to max columns if all checks pass
 
 
-def generate_html_pdf(yaml_data, template_name, output_file, session_icons_dir=None, session_id=None):
-    """
-    Generate PDF from YAML data using HTML template and pdfkit conversion.
-    Used for modern templates that use HTML/CSS with wkhtmltopdf.
-    """
-    logging.info(f"Starting HTML PDF generation for template: {template_name}")
-    
-    try:
-        # Set up paths using pathlib
-        templates_base_dir = PROJECT_ROOT / "templates"
-        default_icons_dir = ICONS_DIR
-
-        # Template-specific directory
-        template_dir = templates_base_dir / template_name
-        if not template_dir.exists():
-            raise ValueError(
-                f"Template directory '{template_name}' not found at {template_dir}"
-            )
-
-        css_file = template_dir / "styles.css"
-
-        # Use session icons directory if provided, otherwise default icons
-        if session_icons_dir and Path(session_icons_dir).exists():
-            icon_base_path = Path(session_icons_dir)
-        else:
-            icon_base_path = default_icons_dir
-
-        # Define paths in data dictionary for Jinja rendering - use file:// URLs for wkhtmltopdf
-        yaml_data["icon_path"] = f"file://{icon_base_path.as_posix()}"
-        yaml_data["css_path"] = f"file://{css_file.as_posix()}"
-
-        # Set up Jinja2 environment
-        env = Environment(loader=FileSystemLoader(template_dir))
-
-        # Process sections and dynamically calculate column count for dynamic-column-list
-        sections = yaml_data.get("sections", [])
-        for section in sections:
-            if section.get("type") == "dynamic-column-list":
-                content = section.get("content", [])
-                if not isinstance(content, list):
-                    raise ValueError(f"Invalid content for dynamic-column-list: {content}")
-                section["num_cols"] = calculate_columns(len(content))
-                logging.info(
-                    f"Calculated {section['num_cols']} columns for section '{section.get('name')}'"
-                )
-
-        # Contact info parsing
-        contact_info = yaml_data.get("contact_info", {})
-        if not isinstance(contact_info, dict):
-            raise ValueError(f"Invalid contact_info: {contact_info}")
-        if not contact_info:
-            raise ValueError("No contact information provided")
-
-        # Social media handle extraction
-        linkedin_url = contact_info.get("linkedin", "")
-
-        if linkedin_url and not linkedin_url.startswith("https://"):
-            linkedin_url = "https://" + linkedin_url
-
-        if linkedin_url and "linkedin" not in linkedin_url:
-            raise ValueError("Invalid LinkedIn URL provided")
-
-        contact_info["linkedin_handle"] = (
-            get_social_media_handle(linkedin_url) if linkedin_url else linkedin_url
-        )
-
-        # Render HTML with data
-        logging.info("Rendering HTML with data...")
-
-        template = env.get_template("base.html")
-        html_content = template.render(
-            contact_info=contact_info,
-            sections=sections,
-            icon_path=yaml_data["icon_path"],
-            css_path=yaml_data["css_path"],
-            font=yaml_data.get("font", "Arial"),
-        )
-
-        # Write HTML content to a temporary file with unique name
-        temp_dir = Path(tempfile.gettempdir())
-        if session_id:
-            temp_html_file = temp_dir / f"temp_{template_name}_{session_id}.html"
-        else:
-            # Use UUID for local runs to avoid conflicts
-            unique_id = str(uuid.uuid4())[:8]
-            temp_html_file = temp_dir / f"temp_{template_name}_{unique_id}.html"
-
-        with open(temp_html_file, "w") as html_file:
-            html_file.write(html_content)
-        logging.info(f"HTML written to temporary file: {temp_html_file}")
-
-        # Convert the HTML file to PDF with the enable-local-file-access option
-        options = {"enable-local-file-access": ""}
-
-        logging.info("Converting HTML file to PDF...")
-        pdfkit.from_file(temp_html_file.as_posix(), output_file, options=options)
-        logging.info(f"PDF generated successfully at {output_file}")
-
-        # Clean up temporary HTML file
-        try:
-            temp_html_file.unlink()  # Remove temp file
-            logging.info(f"Temporary HTML file cleaned up: {temp_html_file}")
-        except FileNotFoundError:
-            # File already removed, no issue
-            pass
-        except Exception as e:
-            logging.warning(f"Could not remove temporary file {temp_html_file}: {e}")
-            
-        return str(output_file)
-        
-    except Exception as e:
-        logging.error(f"HTML PDF generation failed: {str(e)}")
-        raise e
-
 
 app = Flask(__name__, static_folder="static", static_url_path="/")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
@@ -571,60 +457,71 @@ def generate_resume():
                         icons.update(extract_icons_from_yaml(item))
                 return icons
 
-            # Always copy base contact icons that are hardcoded in templates
-            base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
-            for icon_name in base_contact_icons:
-                default_icon_path = ICONS_DIR / icon_name
-                if default_icon_path.exists():
-                    session_icon_path = session_icons_dir / icon_name
-                    shutil.copy2(default_icon_path, session_icon_path)
-                    logging.info(f"Copied base contact icon: {icon_name} to session directory")
-                else:
-                    logging.warning(f"Base contact icon not found: {icon_name} at {default_icon_path}")
-
-            # Copy additional icons referenced in YAML content
-            referenced_icons = extract_icons_from_yaml(yaml_data)
-            logging.info(f"Found {len(referenced_icons)} referenced icons: {referenced_icons}")
-            for icon_name in referenced_icons:
-                # Skip if already copied as base contact icon
-                if icon_name in base_contact_icons:
-                    continue
-                    
-                default_icon_path = ICONS_DIR / icon_name
-                if default_icon_path.exists():
-                    session_icon_path = session_icons_dir / icon_name
-                    shutil.copy2(default_icon_path, session_icon_path)
-                    logging.info(f"Copied default icon: {icon_name} to session directory")
-                else:
-                    logging.warning(f"Default icon not found: {icon_name} at {default_icon_path}")
-
-            # Handle icon files if provided - save to session directory
-            icon_files = request.files.getlist("icons")
-            for icon_file in icon_files:
-                if icon_file.filename == "":
-                    continue
-
-                # Validate icon file type
-                allowed_extensions = {"png", "jpg", "jpeg", "svg"}
-                if (
-                    "." not in icon_file.filename
-                    or icon_file.filename.rsplit(".", 1)[1].lower()
-                    not in allowed_extensions
-                ):
-                    raise ValueError(f"Invalid icon file type: {icon_file.filename}")
-
-                # Save icon to the session-specific icons directory
-                icon_path = session_icons_dir / icon_file.filename
-                icon_file.save(icon_path)
-
-            # Select the template
+            # Select the template and determine if it uses icons
             template = request.form.get("template", "modern")
+            uses_icons = template != "modern-no-icons"  # Skip icons for no-icons variant
+            
+            if uses_icons:
+                # Copy base contact icons that are hardcoded in templates
+                base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
+                for icon_name in base_contact_icons:
+                    default_icon_path = ICONS_DIR / icon_name
+                    if default_icon_path.exists():
+                        session_icon_path = session_icons_dir / icon_name
+                        shutil.copy2(default_icon_path, session_icon_path)
+                        logging.info(f"Copied base contact icon: {icon_name} to session directory")
+                    else:
+                        logging.warning(f"Base contact icon not found: {icon_name} at {default_icon_path}")
+            else:
+                logging.info("Skipping base contact icons for no-icons template variant")
+
+            # Copy additional icons referenced in YAML content (only for icon-supporting templates)
+            if uses_icons:
+                referenced_icons = extract_icons_from_yaml(yaml_data)
+                logging.info(f"Found {len(referenced_icons)} referenced icons: {referenced_icons}")
+                base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
+                for icon_name in referenced_icons:
+                    # Skip if already copied as base contact icon
+                    if icon_name in base_contact_icons:
+                        continue
+                        
+                    default_icon_path = ICONS_DIR / icon_name
+                    if default_icon_path.exists():
+                        session_icon_path = session_icons_dir / icon_name
+                        shutil.copy2(default_icon_path, session_icon_path)
+                        logging.info(f"Copied default icon: {icon_name} to session directory")
+                    else:
+                        logging.warning(f"Default icon not found: {icon_name} at {default_icon_path}")
+            else:
+                logging.info("Skipping referenced icons for no-icons template variant")
+
+            # Handle icon files if provided - save to session directory (only for icon-supporting templates)
+            if uses_icons:
+                icon_files = request.files.getlist("icons")
+                for icon_file in icon_files:
+                    if icon_file.filename == "":
+                        continue
+
+                    # Validate icon file type
+                    allowed_extensions = {"png", "jpg", "jpeg", "svg"}
+                    if (
+                        "." not in icon_file.filename
+                        or icon_file.filename.rsplit(".", 1)[1].lower()
+                        not in allowed_extensions
+                    ):
+                        raise ValueError(f"Invalid icon file type: {icon_file.filename}")
+
+                    # Save icon to the session-specific icons directory
+                    icon_path = session_icons_dir / icon_file.filename
+                    icon_file.save(icon_path)
+            else:
+                logging.info("Skipping user uploaded icons for no-icons template variant")
             
             # Map template IDs to actual template directories
-            # Modern templates use HTML/CSS generation, Classic templates use LaTeX
+            # Modern templates (both with/without icons) use HTML/CSS generation, Classic templates use LaTeX
             template_mapping = {
-                "modern-with-icons": "modern",     # HTML template with icons
-                "modern-no-icons": "modern",       # HTML template without icons
+                "modern-with-icons": "modern",     # HTML template - icons will be copied above
+                "modern-no-icons": "modern",       # HTML template - no icons copied above
                 "modern": "modern",                 # Default HTML template
                 "classic": "classic",               # LaTeX template (generic)
                 "classic-alex-rivera": "classic",   # LaTeX template (data analytics)
@@ -640,15 +537,46 @@ def generate_resume():
             # Use the mapped template directory
             actual_template = template_mapping[template]
             
-            # Unified template dispatch - direct function calls, no subprocess overhead
+            # Use subprocess for PDF generation to avoid Qt state issues
             if actual_template == "classic":
                 # LaTeX path: Use XeLaTeX compilation for classic templates
                 logging.info(f"Using direct LaTeX generation for template: {actual_template}")
                 generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
             else:
-                # HTML path: Use pdfkit/wkhtmltopdf for modern templates
-                logging.info(f"Using direct HTML generation for template: {actual_template}")
-                generate_html_pdf(yaml_data, actual_template, str(output_path), str(session_icons_dir), session_id)
+                # HTML path: Use subprocess to avoid Qt state contamination
+                logging.info(f"Using subprocess HTML generation for template: {actual_template}")
+                cmd = [
+                    "python",
+                    "resume_generator.py",
+                    "--template",
+                    actual_template,
+                    "--input",
+                    str(yaml_path),
+                    "--output",
+                    str(output_path),
+                    "--session-icons-dir",
+                    str(session_icons_dir),
+                    "--session-id",
+                    session_id,
+                ]
+
+                # Generate the resume using subprocess
+                logging.info(f"Running command: {' '.join(cmd)}")
+                result = subprocess.run(
+                    cmd,
+                    capture_output=True,
+                    text=True,
+                    cwd=str(PROJECT_ROOT)
+                )
+
+                logging.info(f"Subprocess returncode: {result.returncode}")
+                logging.info(f"Subprocess stdout: {result.stdout}")
+                if result.stderr:
+                    logging.error(f"Subprocess stderr: {result.stderr}")
+
+                if result.returncode != 0:
+                    logging.error(f"Resume generation error: {result.stderr}")
+                    raise RuntimeError("Failed to generate the resume")
 
             if not output_path.exists():
                 logging.error(f"Expected output file at: {output_path}")
