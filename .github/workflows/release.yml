@@ -43,9 +43,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install git-cliff
-        uses: taiki-e/install-action@v1
-        with:
-          tool: git-cliff
+        uses: taiki-e/install-action@git-cliff
 
       - name: Install GitHub CLI
         run: |
