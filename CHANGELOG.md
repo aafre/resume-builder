@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.3] - 2025-07-31
+
+### ⚙️ Miscellaneous Tasks
+
+- Google ads script ([#84](https://github.com/aafre/resume-builder/pull/84))
+
 ## [0.2.2] - 2025-07-31
 
 ### 🐛 Bug Fixes
