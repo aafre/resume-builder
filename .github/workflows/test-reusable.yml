@@ -36,9 +36,3 @@ jobs:
         run: |
           npm run coverage
           echo "success=true" >> $GITHUB_OUTPUT
-
-      - name: Upload coverage report artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report-${{ github.run_id }}
-          path: resume-builder-ui/coverage
