@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.2] - 2025-07-31
+
+### 🐛 Bug Fixes
+
+- Implement process pool for html to pdf  ([#76](https://github.com/aafre/resume-builder/pull/76))
+- Git-cliff install in ci  ([#79](https://github.com/aafre/resume-builder/pull/79))
+
 ## [0.2.1] - 2025-07-31
 
 ### 🐛 Bug Fixes
