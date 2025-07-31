@@ -10,8 +10,27 @@ import GenericSection from "./GenericSection";
 import IconListSection from "./IconListSection";
 import SectionTypeModal from "./SectionTypeModal";
 import EditorToolbar from "./EditorToolbar";
+import DragHandle from "./DragHandle";
 import { useEditorContext } from "../contexts/EditorContext";
 import { MdFileDownload, MdHelpOutline } from "react-icons/md";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+  DragStartEvent,
+  DragOverlay,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { restrictToVerticalAxis, restrictToWindowEdges } from '@dnd-kit/modifiers';
 
 interface Section {
   name: string;
@@ -71,9 +90,23 @@ const Editor: React.FC = () => {
   const [loadingSave, setLoadingSave] = useState(false);
   const [loadingLoad, setLoadingLoad] = useState(false);
   const [loadingAddSection, setLoadingAddSection] = useState(false);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [draggedSection, setDraggedSection] = useState<Section | null>(null);
 
   // Simple scroll detection for footer visibility
   const lastScrollY = useRef(0);
+
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   useEffect(() => {
     if (!templateId) {
@@ -212,6 +245,40 @@ const Editor: React.FC = () => {
   const handleDeleteSection = (index: number) => {
     const updatedSections = sections.filter((_, i) => i !== index);
     setSections(updatedSections);
+  };
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    setActiveId(active.id as string);
+    
+    const sectionIndex = parseInt(active.id as string);
+    setDraggedSection(sections[sectionIndex]);
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      const oldIndex = parseInt(active.id as string);
+      const newIndex = parseInt(over?.id as string);
+
+      if (oldIndex !== undefined && newIndex !== undefined) {
+        setSections((sections) => {
+          return arrayMove(sections, oldIndex, newIndex);
+        });
+        
+        // Toast notification for successful reorder
+        toast.success('Section reordered successfully!');
+      }
+    }
+
+    setActiveId(null);
+    setDraggedSection(null);
+  };
+
+  const handleDragCancel = () => {
+    setActiveId(null);
+    setDraggedSection(null);
   };
 
   const handleAddSection = (type: string) => {
@@ -861,95 +928,171 @@ const Editor: React.FC = () => {
           )}
         </div>
 
-        {/* Resume Sections */}
-        {sections.map((section, index) => {
+        {/* Resume Sections with Drag and Drop */}
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onDragCancel={handleDragCancel}
+          modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
+        >
+          <SortableContext 
+            items={sections.map((_, index) => index.toString())}
+            strategy={verticalListSortingStrategy}
+          >
+            {sections.map((section, index) => {
           if (section.name === "Experience") {
             return (
-              <div
+              <DragHandle
                 key={index}
-                ref={index === sections.length - 1 ? newSectionRef : null}
+                id={index.toString()}
+                disabled={false}
               >
-                <ExperienceSection
-                  key={index}
-                  experiences={section.content}
-                  onUpdate={(updatedExperiences) =>
-                    handleUpdateSection(index, {
-                      ...section,
-                      content: updatedExperiences,
-                    })
-                  }
-                  supportsIcons={supportsIcons}
-                />
-              </div>
+                <div
+                  ref={index === sections.length - 1 ? newSectionRef : null}
+                >
+                  <ExperienceSection
+                    experiences={section.content}
+                    onUpdate={(updatedExperiences) =>
+                      handleUpdateSection(index, {
+                        ...section,
+                        content: updatedExperiences,
+                      })
+                    }
+                    supportsIcons={supportsIcons}
+                  />
+                </div>
+              </DragHandle>
             );
           } else if (section.name === "Education") {
             return (
-              <div
+              <DragHandle
                 key={index}
-                ref={index === sections.length - 1 ? newSectionRef : null}
+                id={index.toString()}
+                disabled={false}
               >
-                <EducationSection
-                  key={index}
-                  education={section.content}
-                  onUpdate={(updatedEducation) =>
-                    handleUpdateSection(index, {
-                      ...section,
-                      content: updatedEducation,
-                    })
-                  }
-                  supportsIcons={supportsIcons}
-                />
-              </div>
+                <div
+                  ref={index === sections.length - 1 ? newSectionRef : null}
+                >
+                  <EducationSection
+                    education={section.content}
+                    onUpdate={(updatedEducation) =>
+                      handleUpdateSection(index, {
+                        ...section,
+                        content: updatedEducation,
+                      })
+                    }
+                    supportsIcons={supportsIcons}
+                  />
+                </div>
+              </DragHandle>
             );
           } else if (section.type === "icon-list") {
             return (
-              <div
+              <DragHandle
                 key={index}
-                ref={index === sections.length - 1 ? newSectionRef : null}
+                id={index.toString()}
+                disabled={false}
               >
-                <IconListSection
-                  key={index}
-                  data={section.content}
-                  onUpdate={(updatedContent) =>
-                    handleUpdateSection(index, {
-                      ...section,
-                      content: updatedContent,
-                    })
-                  }
-                  onDelete={() => handleDeleteSection(index)}
-                  sectionName={section.name}
-                  onEditTitle={() => handleTitleEdit(index)}
-                  onSaveTitle={handleTitleSave}
-                  onCancelTitle={handleTitleCancel}
-                  isEditing={editingTitleIndex === index}
-                  temporaryTitle={temporaryTitle}
-                  setTemporaryTitle={setTemporaryTitle}
-                />
-              </div>
+                <div
+                  ref={index === sections.length - 1 ? newSectionRef : null}
+                >
+                  <IconListSection
+                    data={section.content}
+                    onUpdate={(updatedContent) =>
+                      handleUpdateSection(index, {
+                        ...section,
+                        content: updatedContent,
+                      })
+                    }
+                    onDelete={() => handleDeleteSection(index)}
+                    sectionName={section.name}
+                    onEditTitle={() => handleTitleEdit(index)}
+                    onSaveTitle={handleTitleSave}
+                    onCancelTitle={handleTitleCancel}
+                    isEditing={editingTitleIndex === index}
+                    temporaryTitle={temporaryTitle}
+                    setTemporaryTitle={setTemporaryTitle}
+                  />
+                </div>
+              </DragHandle>
             );
           } else {
             return (
-              <div
+              <DragHandle
                 key={index}
-                ref={index === sections.length - 1 ? newSectionRef : null}
+                id={index.toString()}
+                disabled={false}
               >
-                <GenericSection
-                  section={section}
-                  onUpdate={(updatedSection) =>
-                    handleUpdateSection(index, updatedSection)
-                  }
-                  onEditTitle={() => handleTitleEdit(index)}
-                  onSaveTitle={handleTitleSave}
-                  onCancelTitle={handleTitleCancel}
-                  onDelete={() => handleDeleteSection(index)}
-                  isEditing={editingTitleIndex === index}
-                  temporaryTitle={temporaryTitle}
-                  setTemporaryTitle={setTemporaryTitle}
-                />
-              </div>
+                <div
+                  ref={index === sections.length - 1 ? newSectionRef : null}
+                >
+                  <GenericSection
+                    section={section}
+                    onUpdate={(updatedSection) =>
+                      handleUpdateSection(index, updatedSection)
+                    }
+                    onEditTitle={() => handleTitleEdit(index)}
+                    onSaveTitle={handleTitleSave}
+                    onCancelTitle={handleTitleCancel}
+                    onDelete={() => handleDeleteSection(index)}
+                    isEditing={editingTitleIndex === index}
+                    temporaryTitle={temporaryTitle}
+                    setTemporaryTitle={setTemporaryTitle}
+                  />
+                </div>
+              </DragHandle>
             );
           }
         })}
+          </SortableContext>
+          
+          <DragOverlay modifiers={[restrictToVerticalAxis]}>
+            {activeId && draggedSection ? (
+              <div className="drag-overlay">
+                {draggedSection.name === "Experience" ? (
+                  <ExperienceSection
+                    experiences={draggedSection.content}
+                    onUpdate={() => {}}
+                    supportsIcons={supportsIcons}
+                  />
+                ) : draggedSection.name === "Education" ? (
+                  <EducationSection
+                    education={draggedSection.content}
+                    onUpdate={() => {}}
+                    supportsIcons={supportsIcons}
+                  />
+                ) : draggedSection.type === "icon-list" ? (
+                  <IconListSection
+                    data={draggedSection.content}
+                    onUpdate={() => {}}
+                    onDelete={() => {}}
+                    sectionName={draggedSection.name}
+                    onEditTitle={() => {}}
+                    onSaveTitle={() => {}}
+                    onCancelTitle={() => {}}
+                    isEditing={false}
+                    temporaryTitle={""}
+                    setTemporaryTitle={() => {}}
+                  />
+                ) : (
+                  <GenericSection
+                    section={draggedSection}
+                    onUpdate={() => {}}
+                    onEditTitle={() => {}}
+                    onSaveTitle={() => {}}
+                    onCancelTitle={() => {}}
+                    onDelete={() => {}}
+                    isEditing={false}
+                    temporaryTitle={""}
+                    setTemporaryTitle={() => {}}
+                  />
+                )}
+              </div>
+            ) : null}
+          </DragOverlay>
+        </DndContext>
 
         {/* Elegant Separator - Between content and toolbar (mobile/tablet only) */}
         {contextIsAtBottom && (

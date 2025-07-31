@@ -1,9 +1,25 @@
 name: Release & Deploy
 
 on:
+  workflow_dispatch:
+    inputs:
+      version_bump:
+        description: 'Version bump type (auto uses conventional commits)'
+        required: false
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - patch
+          - minor
+          - major
+      release_notes:
+        description: 'Additional release notes (optional)'
+        required: false
+        type: string
   push:
     branches:
-      - main
+      - 'hotfix/**'  # Auto-release for emergency hotfixes only
 
 jobs:
   test:
@@ -46,17 +62,62 @@ jobs:
           
           # Check for conventional commits since last tag
           echo "Recent commits:"
-          git log --oneline -5
+          git log --oneline -10
           
-          # Generate new version based on conventional commits
-          NEW_VERSION=$(git cliff --bumped-version 2>/dev/null || echo "")
-          echo "New version from git-cliff: '$NEW_VERSION'"
+          # Determine if this is a hotfix release
+          IS_HOTFIX="${{ github.event_name == 'push' && startsWith(github.ref, 'refs/heads/hotfix/') }}"
+          VERSION_BUMP="${{ github.event.inputs.version_bump || 'auto' }}"
           
+          echo "Is hotfix: $IS_HOTFIX"
+          echo "Version bump type: $VERSION_BUMP"
+          
+          # Generate new version
+          if [ "$VERSION_BUMP" = "auto" ]; then
+            # Use conventional commits to determine version
+            NEW_VERSION=$(git cliff --bumped-version 2>/dev/null || echo "")
+            echo "New version from git-cliff: '$NEW_VERSION'"
+          else
+            # Manual version bump
+            if [ "$CURRENT_VERSION" = "v0.0.0" ]; then
+              CURRENT_VERSION="0.0.0"
+            else
+              CURRENT_VERSION="${CURRENT_VERSION#v}"  # Remove 'v' prefix
+            fi
+            
+            IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+            MAJOR=${VERSION_PARTS[0]:-0}
+            MINOR=${VERSION_PARTS[1]:-0}
+            PATCH=${VERSION_PARTS[2]:-0}
+            
+            case "$VERSION_BUMP" in
+              "major") NEW_VERSION="v$((MAJOR + 1)).0.0" ;;
+              "minor") NEW_VERSION="v$MAJOR.$((MINOR + 1)).0" ;;
+              "patch") NEW_VERSION="v$MAJOR.$MINOR.$((PATCH + 1))" ;;
+            esac
+            echo "Manual version bump: $NEW_VERSION"
+          fi
+          
+          # For manual releases, proceed even if no conventional commits found
           if [ -z "$NEW_VERSION" ] || [ "$CURRENT_VERSION" = "$NEW_VERSION" ]; then
-            echo "❌ No conventional commits found - no release created"
-            echo "💡 Recent commits must follow format: 'feat:', 'fix:', 'docs:', etc."
-            echo "released=false" >> $GITHUB_OUTPUT
-            exit 0
+            if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+              # Force a patch release for manual triggers with no conventional commits
+              if [ "$CURRENT_VERSION" = "v0.0.0" ]; then
+                CURRENT_VERSION="0.0.0"
+              else
+                CURRENT_VERSION="${CURRENT_VERSION#v}"
+              fi
+              IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+              MAJOR=${VERSION_PARTS[0]:-0}
+              MINOR=${VERSION_PARTS[1]:-0}
+              PATCH=${VERSION_PARTS[2]:-0}
+              NEW_VERSION="v$MAJOR.$MINOR.$((PATCH + 1))"
+              echo "⚠️ No conventional commits found - creating patch release: $NEW_VERSION"
+            else
+              echo "❌ No conventional commits found - no release created"
+              echo "💡 Recent commits must follow format: 'feat:', 'fix:', 'docs:', etc."
+              echo "released=false" >> $GITHUB_OUTPUT
+              exit 0
+            fi
           fi
           
           echo "New version: $NEW_VERSION"
@@ -80,12 +141,26 @@ jobs:
           git push origin main --tags
           
           # Generate release notes
-
           RELEASE_NOTES=$(git cliff --tag "$NEW_VERSION" --strip all | tail -n +3)
+          
+          # Add manual release notes if provided
+          ADDITIONAL_NOTES="${{ github.event.inputs.release_notes }}"
+          if [ -n "$ADDITIONAL_NOTES" ]; then
+            RELEASE_NOTES="$ADDITIONAL_NOTES
+
+$RELEASE_NOTES"
+          fi
+          
+          # Add hotfix label if this is a hotfix release
+          if [ "$IS_HOTFIX" = "true" ]; then
+            RELEASE_TITLE="🚨 Hotfix Release $NEW_VERSION"
+          else
+            RELEASE_TITLE="Release $NEW_VERSION"
+          fi
           
           # Create GitHub release
           echo "$RELEASE_NOTES" | gh release create "$NEW_VERSION" \
-            --title "Release $NEW_VERSION" \
+            --title "$RELEASE_TITLE" \
             --notes-file - \
             --latest
         env:
