@@ -15,10 +15,10 @@ RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 WORKDIR /app
 
-# Install system dependencies including curl for health checks
+# Install system dependencies for HTML PDF generation and LaTeX support
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        wkhtmltopdf \   
+        wkhtmltopdf \
         texlive-xetex \
         texlive-fonts-recommended \
         texlive-latex-recommended \
@@ -56,5 +56,4 @@ USER appuser
 
 EXPOSE 5000
 
-# Start with gunicorn with production settings
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "1", "--timeout", "120", "app:app"]
