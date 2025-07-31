@@ -105,6 +105,20 @@
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8976874751886843"
       crossorigin="anonymous"
     ></script>
+    <script>
+      // This script will ensure all ads open in a new tab.
+      (function () {
+        var push = window.adsbygoogle.push;
+        window.adsbygoogle.push = function (args) {
+          if (typeof args === "object" && args.google_ad_client) {
+            args.google_ad_host_config = {
+              adTarget: "_blank",
+            };
+          }
+          return push.apply(this, arguments);
+        };
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
