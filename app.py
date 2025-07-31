@@ -22,6 +22,8 @@ import re
 import copy
 import pdfkit
 from jinja2 import Environment, FileSystemLoader
+from concurrent.futures import ProcessPoolExecutor
+import atexit
 
 from flask_cors import CORS
 
@@ -29,6 +31,92 @@ from flask_cors import CORS
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
 )
+
+
+def pdf_generation_worker(template_name, yaml_path, output_path, session_icons_dir, session_id):
+    """
+    Worker function for process pool PDF generation.
+    Runs in isolated process to avoid Qt state contamination.
+    """
+    try:
+        import subprocess
+        import logging
+        from pathlib import Path
+        
+        # Set up logging for worker process
+        logging.basicConfig(level=logging.INFO, format="%(asctime)s [WORKER] %(message)s")
+        
+        cmd = [
+            "python",
+            "resume_generator.py",
+            "--template",
+            template_name,
+            "--input",
+            str(yaml_path),
+            "--output",
+            str(output_path),
+            "--session-icons-dir",
+            str(session_icons_dir),
+            "--session-id",
+            session_id,
+        ]
+        
+        logging.info(f"Worker running command: {' '.join(cmd)}")
+        
+        # Get the project root (worker process needs proper cwd)
+        project_root = Path(__file__).parent.resolve()
+        
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            cwd=str(project_root)
+        )
+        
+        if result.returncode != 0:
+            error_msg = f"Worker subprocess failed: {result.stderr}"
+            logging.error(error_msg)
+            return {"success": False, "error": error_msg}
+        
+        # Verify PDF was created
+        if not Path(output_path).exists():
+            error_msg = "PDF file was not created by worker subprocess"
+            logging.error(error_msg)
+            return {"success": False, "error": error_msg}
+        
+        logging.info("Worker PDF generation completed successfully")
+        return {"success": True, "output": str(output_path)}
+        
+    except Exception as e:
+        error_msg = f"Worker process failed: {str(e)}"
+        logging.error(error_msg)
+        return {"success": False, "error": error_msg}
+
+
+# Initialize process pool for PDF generation
+PDF_PROCESS_POOL = None
+
+def initialize_pdf_pool():
+    """Initialize the process pool for PDF generation."""
+    global PDF_PROCESS_POOL
+    try:
+        # Create pool with 3 worker processes
+        PDF_PROCESS_POOL = ProcessPoolExecutor(max_workers=3)
+        logging.info("PDF process pool initialized with 3 workers")
+        
+        # Register cleanup function
+        atexit.register(cleanup_pdf_pool)
+    except Exception as e:
+        logging.error(f"Failed to initialize PDF process pool: {e}")
+        PDF_PROCESS_POOL = None
+
+def cleanup_pdf_pool():
+    """Clean up the process pool on app shutdown."""
+    global PDF_PROCESS_POOL
+    if PDF_PROCESS_POOL:
+        logging.info("Shutting down PDF process pool")
+        PDF_PROCESS_POOL.shutdown(wait=True)
+        PDF_PROCESS_POOL = None
 
 
 # Resume Generation Helper Functions
@@ -246,6 +334,9 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB
+
+# Initialize PDF process pool on app startup
+initialize_pdf_pool()
 
 # Define paths for the project
 PROJECT_ROOT = Path(__file__).parent.resolve()
@@ -543,40 +634,61 @@ def generate_resume():
                 logging.info(f"Using direct LaTeX generation for template: {actual_template}")
                 generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
             else:
-                # HTML path: Use subprocess to avoid Qt state contamination
-                logging.info(f"Using subprocess HTML generation for template: {actual_template}")
-                cmd = [
-                    "python",
-                    "resume_generator.py",
-                    "--template",
-                    actual_template,
-                    "--input",
-                    str(yaml_path),
-                    "--output",
-                    str(output_path),
-                    "--session-icons-dir",
-                    str(session_icons_dir),
-                    "--session-id",
-                    session_id,
-                ]
+                # HTML path: Use process pool for fast PDF generation with Qt isolation
+                logging.info(f"Using process pool HTML generation for template: {actual_template}")
+                
+                if PDF_PROCESS_POOL is None:
+                    # Fallback to subprocess if pool not available
+                    logging.warning("Process pool not available, falling back to subprocess")
+                    cmd = [
+                        "python",
+                        "resume_generator.py",
+                        "--template",
+                        actual_template,
+                        "--input",
+                        str(yaml_path),
+                        "--output",
+                        str(output_path),
+                        "--session-icons-dir",
+                        str(session_icons_dir),
+                        "--session-id",
+                        session_id,
+                    ]
 
-                # Generate the resume using subprocess
-                logging.info(f"Running command: {' '.join(cmd)}")
-                result = subprocess.run(
-                    cmd,
-                    capture_output=True,
-                    text=True,
-                    cwd=str(PROJECT_ROOT)
-                )
+                    result = subprocess.run(
+                        cmd,
+                        capture_output=True,
+                        text=True,
+                        cwd=str(PROJECT_ROOT)
+                    )
 
-                logging.info(f"Subprocess returncode: {result.returncode}")
-                logging.info(f"Subprocess stdout: {result.stdout}")
-                if result.stderr:
-                    logging.error(f"Subprocess stderr: {result.stderr}")
-
-                if result.returncode != 0:
-                    logging.error(f"Resume generation error: {result.stderr}")
-                    raise RuntimeError("Failed to generate the resume")
+                    if result.returncode != 0:
+                        logging.error(f"Subprocess error: {result.stderr}")
+                        raise RuntimeError("Failed to generate the resume")
+                else:
+                    # Use process pool for faster execution
+                    logging.info("Submitting PDF generation task to process pool")
+                    future = PDF_PROCESS_POOL.submit(
+                        pdf_generation_worker,
+                        actual_template,
+                        yaml_path,
+                        output_path,
+                        session_icons_dir,
+                        session_id
+                    )
+                    
+                    # Wait for result with timeout
+                    try:
+                        result = future.result(timeout=60)  # 60 second timeout
+                        
+                        if not result["success"]:
+                            logging.error(f"Process pool worker failed: {result['error']}")
+                            raise RuntimeError(f"Failed to generate the resume: {result['error']}")
+                        
+                        logging.info("Process pool PDF generation completed successfully")
+                    except Exception as e:
+                        logging.error(f"Process pool execution failed: {e}")
+                        raise RuntimeError(f"Failed to generate the resume: {str(e)}")
 
             if not output_path.exists():
                 logging.error(f"Expected output file at: {output_path}")
