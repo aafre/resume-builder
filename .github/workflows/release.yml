@@ -80,7 +80,8 @@ jobs:
           git push origin main --tags
           
           # Generate release notes
-          RELEASE_NOTES=$(git cliff --tag "$NEW_VERSION" --strip header --strip footer | tail -n +3)
+
+          RELEASE_NOTES=$(git cliff --tag "$NEW_VERSION" --strip all | tail -n +3)
           
           # Create GitHub release
           echo "$RELEASE_NOTES" | gh release create "$NEW_VERSION" \
