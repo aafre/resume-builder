@@ -1,77 +1,66 @@
-name: Build, Push, and Deploy to Cloud Run
+name: Manual Deploy to GCP
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch: # Allows manual trigger
+  workflow_dispatch:
     inputs:
-      deploy:
-        description: "Deploy to Cloud Run after building?"
-        required: false
-        default: "false"
+      version:
+        description: "Docker image version to deploy (e.g., v1.2.3 or latest)"
+        required: true
+        default: "latest"
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        default: "production"
+        type: choice
+        options:
+          - production
 
 env:
-  GCP_IMAGE_PATH: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder
-  GCP_IMAGE_NAME: easyfreeresume-app
   GCP_IMAGE: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app
 
 jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout repository code
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      # Generate a timestamp for tagging
-      - name: Generate timestamp for Docker tag
-        run: |
-          TIMESTAMP=$(date -u +"%Y.%m.%d.%H-%M-%S")
-          echo "DOCKER_TAG=$TIMESTAMP" >> $GITHUB_ENV
-
-      # Authenticate with GCP
-      - name: Authenticate with GCP
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-
-      # Build the Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }} .
-          docker images
-
-      # Configure Docker to use the GCP Container Registry
-      - name: Configure Docker to use GCP Container Registry
-        run: |
-          echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' | docker login -u _json_key_base64 --password-stdin europe-west2-docker.pkg.dev
-
-      # Push the Docker image to Container Registry
-      - name: Push Docker image
-        run: |
-          docker push ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }}
-          echo "Pushed Docker Image: ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }}"
-
   deploy:
-    needs: build-and-push
-    if: ${{ github.event.inputs.deploy == 'true' }}
+    name: Deploy to Cloud Run
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    
     steps:
-      # Authenticate with GCP
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
-      # Deploy to Cloud Run
-      - id: deploy-cloudrun
+      - name: Verify image exists
+        run: |
+          echo "Verifying image exists: ${{ env.GCP_IMAGE }}:${{ github.event.inputs.version }}"
+          echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' | docker login -u _json_key_base64 --password-stdin europe-west2-docker.pkg.dev
+          docker manifest inspect ${{ env.GCP_IMAGE }}:${{ github.event.inputs.version }} || {
+            echo "❌ Image not found: ${{ env.GCP_IMAGE }}:${{ github.event.inputs.version }}"
+            echo "Available tags can be found in GCP Artifact Registry"
+            exit 1
+          }
+
+      - name: Deploy to Cloud Run
+        id: deploy
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: ${{ secrets.GCP_CLOUD_RUN_SERVICE }}
-          image: ${{ env.GCP_IMAGE }}:${{ env.DOCKER_TAG }}
+          image: ${{ env.GCP_IMAGE }}:${{ github.event.inputs.version }}
           region: "europe-west2"
+          flags: |
+            --cpu=1
+            --memory=1Gi
+            --min-instances=0
+            --max-instances=10
+            --concurrency=80
+            --timeout=300
+            --allow-unauthenticated
 
-      # Output deployed URL
-      - name: Display Deployed URL
-        run: echo "Deployed to ${{ steps.deploy-cloudrun.outputs.url }}"
+      - name: Deployment Summary
+        run: |
+          echo "🚀 **Manual Deployment Successful!**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Service URL:** ${{ steps.deploy.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ github.event.inputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** ${{ github.event.inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Image:** ${{ env.GCP_IMAGE }}:${{ github.event.inputs.version }}" >> $GITHUB_STEP_SUMMARY
