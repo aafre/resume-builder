@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2025-07-31
+
+### 🐛 Bug Fixes
+
+- Ci ([#75](https://github.com/aafre/resume-builder/pull/75))
+
 ## [0.2.0] - 2025-07-31
 
 ### 🚀 Features
