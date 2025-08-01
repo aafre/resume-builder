@@ -7,7 +7,6 @@ export default function AboutUs() {
       <SEOHead
         title="About EasyFreeResume | Our Mission to Democratize Career Success"
         description="Learn about EasyFreeResume's mission to provide completely free, professional-quality resume tools. Discover our values, impact, and commitment to your career success."
-        keywords="about us, free resume tools, career success, democratize hiring, professional resumes, company mission"
         structuredData={{
           "@context": "https://schema.org",
           "@type": "AboutPage",
@@ -274,7 +273,12 @@ export default function AboutUs() {
                 </h2>
                 <p className="text-xl mb-8 opacity-90">
                   Join thousands of successful job seekers who've landed their
-                  dream roles
+                  dream roles with our <Link
+                    to="/"
+                    className="text-white underline hover:text-blue-100 font-medium"
+                  >
+                    easy-to-use resume builder
+                  </Link>
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link
