@@ -1,4 +1,14 @@
-import { useEffect, useState } from "react";
+// Static imports for all company logos
+import appleLogoUrl from '/logos/apple.svg';
+import bloombergLogoUrl from '/logos/bloomberg.png';
+import bnppLogoUrl from '/logos/bnpp.svg';
+import googleLogoUrl from '/logos/google.svg';
+import jpmorganLogoUrl from '/logos/jpmorgan.svg';
+import metaLogoUrl from '/logos/meta.svg';
+import morganstanleyLogoUrl from '/logos/morganstanley.svg';
+import msciLogoUrl from '/logos/msci.svg';
+import servicenowLogoUrl from '/logos/servicenow.svg';
+import skiptonLogoUrl from '/logos/skipton.svg';
 
 interface Company {
   name: string;
@@ -12,83 +22,25 @@ interface CompanyMarqueeProps {
   className?: string;
 }
 
+// Hardcoded companies array for immediate availability
+const companies: Company[] = [
+  { name: 'Apple', logo: appleLogoUrl, alt: 'Apple logo' },
+  { name: 'Bloomberg', logo: bloombergLogoUrl, alt: 'Bloomberg logo' },
+  { name: 'BNP Paribas', logo: bnppLogoUrl, alt: 'BNP Paribas logo' },
+  { name: 'Google', logo: googleLogoUrl, alt: 'Google logo' },
+  { name: 'JPMorgan', logo: jpmorganLogoUrl, alt: 'JPMorgan logo' },
+  { name: 'Meta', logo: metaLogoUrl, alt: 'Meta logo' },
+  { name: 'Morgan Stanley', logo: morganstanleyLogoUrl, alt: 'Morgan Stanley logo' },
+  { name: 'MSCI', logo: msciLogoUrl, alt: 'MSCI logo' },
+  { name: 'ServiceNow', logo: servicenowLogoUrl, alt: 'ServiceNow logo' },
+  { name: 'Skipton', logo: skiptonLogoUrl, alt: 'Skipton logo' },
+];
+
 export default function CompanyMarquee({
   speed = 40,
   pauseOnHover = true,
   className = "",
 }: CompanyMarqueeProps) {
-  const [companies, setCompanies] = useState<Company[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const loadCompanyLogos = async () => {
-      try {
-        // Use Vite's import.meta.glob to dynamically discover all logo files
-        const logoModules = import.meta.glob("/public/logos/*", {
-          eager: true,
-          query: "?url",
-          import: "default",
-        });
-
-        const loadedCompanies: Company[] = [];
-
-        // Process each discovered logo file
-        Object.keys(logoModules).forEach((path) => {
-          // Extract filename with extension
-          const filename = path.split("/").pop();
-          if (filename) {
-            // Remove extension for display name
-            const nameWithoutExt = filename.replace(/\.[^/.]+$/, "");
-
-            // Convert filename to readable company name (optional formatting)
-            const companyName = nameWithoutExt
-              .split(/[-_]/) // Split on hyphens or underscores
-              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(" ");
-
-            // Use the correct public path (without /public prefix)
-            const logoPath = `/logos/${filename}`;
-
-            loadedCompanies.push({
-              name: companyName,
-              logo: logoPath,
-              alt: `${companyName} logo`,
-            });
-          }
-        });
-
-        // Sort companies alphabetically for consistent display
-        loadedCompanies.sort((a, b) => a.name.localeCompare(b.name));
-        setCompanies(loadedCompanies);
-      } catch (error) {
-        console.warn("Failed to load company logos:", error);
-        setCompanies([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadCompanyLogos();
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className={`relative overflow-hidden py-4 ${className}`}>
-        <div className="flex space-x-6 animate-pulse">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <div
-              key={index}
-              className="flex-shrink-0 w-36 h-16 bg-gray-200/50 rounded-xl"
-            />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (companies.length === 0) {
-    return null; // Don't render if no logos found
-  }
 
   // Duplicate companies for seamless loop
   const duplicatedCompanies = [...companies, ...companies];
