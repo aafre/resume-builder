@@ -107,8 +107,8 @@ const LandingPage: React.FC = () => {
   return (
     <>
       <SEOHead
-        title="EasyFreeResume | Free & Simple Online Resume Builder (No Sign-Up)"
-        description="Build your professional resume in minutes with our 100% free online builder. Get ATS-optimized templates with no subscriptions, sign-ups, or hidden fees."
+        title="EasyFreeResume: The Easiest Free Resume Builder (No Sign-Ups)"
+        description="Build a professional resume in minutes with our completely free, no sign-up required online tool. Simple, clean templates that make your application stand out."
         structuredData={{
           "@context": "https://schema.org",
           "@type": "WebApplication",
@@ -196,16 +196,18 @@ const LandingPage: React.FC = () => {
               Used by Professionals from Leading Companies
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              People from these companies trust our resume builder for their career advancement
+              People from these companies trust our resume builder for their
+              career advancement
             </p>
           </div>
-          
+
           <CompanyMarquee speed={45} pauseOnHover={true} />
-          
+
           <div className="text-center mt-8">
             <p className="text-sm text-gray-500 max-w-3xl mx-auto">
-              * We respect user privacy and don't track employment details. The companies shown 
-              represent professionals who have chosen our platform for building their resumes.
+              * We respect user privacy and don't track employment details. The
+              companies shown represent professionals who have chosen our
+              platform for building their resumes.
             </p>
           </div>
         </div>
@@ -218,13 +220,16 @@ const LandingPage: React.FC = () => {
             </h2>
             <div className="text-xl mb-8 text-green-100 max-w-3xl mx-auto space-y-4">
               <p>
-                <strong>Yes, absolutely 100% free!</strong> No hidden fees, no premium tiers, and no subscription traps.
+                <strong>Yes, absolutely 100% free!</strong> No hidden fees, no
+                premium tiers, and no subscription traps.
               </p>
               <p>
-                Create unlimited resumes, download as many PDFs as you want, and access all templates - completely free, forever.
+                Create unlimited resumes, download as many PDFs as you want, and
+                access all templates - completely free, forever.
               </p>
               <p>
-                We believe professional resume tools should be accessible to everyone, regardless of budget.
+                We believe professional resume tools should be accessible to
+                everyone, regardless of budget.
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6 mt-8">
@@ -236,7 +241,9 @@ const LandingPage: React.FC = () => {
               <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
                 <div className="text-2xl mb-2">✅</div>
                 <div className="font-semibold">No Watermarks</div>
-                <div className="text-sm text-green-100">Clean, professional PDFs</div>
+                <div className="text-sm text-green-100">
+                  Clean, professional PDFs
+                </div>
               </div>
               <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
                 <div className="text-2xl mb-2">✅</div>
