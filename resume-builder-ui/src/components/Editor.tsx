@@ -1,4 +1,11 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  lazy,
+  Suspense,
+} from "react";
 import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { fetchTemplate, generateResume } from "../services/templates";
@@ -23,14 +30,31 @@ import {
   DragEndEvent,
   DragStartEvent,
   DragOverlay,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { restrictToVerticalAxis, restrictToWindowEdges } from '@dnd-kit/modifiers';
+} from "@dnd-kit/sortable";
+import {
+  restrictToVerticalAxis,
+  restrictToWindowEdges,
+} from "@dnd-kit/modifiers";
+
+// Lazy-loaded error components
+const NotFound = lazy(() => import("./NotFound"));
+const ErrorPage = lazy(() => import("./ErrorPage"));
+
+// Loading component for Suspense fallback
+const LoadingSpinner = () => (
+  <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+    <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+      <p className="text-xl text-gray-600">Loading...</p>
+    </div>
+  </div>
+);
 
 interface Section {
   name: string;
@@ -65,6 +89,7 @@ const Editor: React.FC = () => {
   const [sections, setSections] = useState<Section[]>([]);
   const [supportsIcons, setSupportsIcons] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loadingError, setLoadingError] = useState<string | null>(null);
   const [generating, setGenerating] = useState(false);
   const [editingTitleIndex, setEditingTitleIndex] = useState<number | null>(
     null
@@ -152,7 +177,10 @@ const Editor: React.FC = () => {
         }, 500);
       } catch (error) {
         console.error("Error fetching template:", error);
-        toast.error("Failed to load template. Please refresh and try again.");
+        setLoadingError(
+          "Failed to load template. Please check your connection and try again."
+        );
+        // Don't show toast when we're going to show error page
       } finally {
         setLoading(false);
       }
@@ -250,7 +278,7 @@ const Editor: React.FC = () => {
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     setActiveId(active.id as string);
-    
+
     const sectionIndex = parseInt(active.id as string);
     setDraggedSection(sections[sectionIndex]);
   };
@@ -266,9 +294,9 @@ const Editor: React.FC = () => {
         setSections((sections) => {
           return arrayMove(sections, oldIndex, newIndex);
         });
-        
+
         // Toast notification for successful reorder
-        toast.success('Section reordered successfully!');
+        toast.success("Section reordered successfully!");
       }
     }
 
@@ -859,9 +887,18 @@ const Editor: React.FC = () => {
 
   if (!templateId) {
     return (
-      <p className="text-red-500">
-        Invalid template ID. Please select a template.
-      </p>
+      <Suspense fallback={<LoadingSpinner />}>
+        <NotFound />
+      </Suspense>
+    );
+  }
+
+  // Show error page if template loading failed
+  if (loadingError) {
+    return (
+      <Suspense fallback={<LoadingSpinner />}>
+        <ErrorPage />
+      </Suspense>
     );
   }
 
@@ -937,117 +974,117 @@ const Editor: React.FC = () => {
           onDragCancel={handleDragCancel}
           modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
         >
-          <SortableContext 
+          <SortableContext
             items={sections.map((_, index) => index.toString())}
             strategy={verticalListSortingStrategy}
           >
             {sections.map((section, index) => {
-          if (section.name === "Experience") {
-            return (
-              <DragHandle
-                key={index}
-                id={index.toString()}
-                disabled={false}
-              >
-                <div
-                  ref={index === sections.length - 1 ? newSectionRef : null}
-                >
-                  <ExperienceSection
-                    experiences={section.content}
-                    onUpdate={(updatedExperiences) =>
-                      handleUpdateSection(index, {
-                        ...section,
-                        content: updatedExperiences,
-                      })
-                    }
-                    supportsIcons={supportsIcons}
-                  />
-                </div>
-              </DragHandle>
-            );
-          } else if (section.name === "Education") {
-            return (
-              <DragHandle
-                key={index}
-                id={index.toString()}
-                disabled={false}
-              >
-                <div
-                  ref={index === sections.length - 1 ? newSectionRef : null}
-                >
-                  <EducationSection
-                    education={section.content}
-                    onUpdate={(updatedEducation) =>
-                      handleUpdateSection(index, {
-                        ...section,
-                        content: updatedEducation,
-                      })
-                    }
-                    supportsIcons={supportsIcons}
-                  />
-                </div>
-              </DragHandle>
-            );
-          } else if (section.type === "icon-list") {
-            return (
-              <DragHandle
-                key={index}
-                id={index.toString()}
-                disabled={false}
-              >
-                <div
-                  ref={index === sections.length - 1 ? newSectionRef : null}
-                >
-                  <IconListSection
-                    data={section.content}
-                    onUpdate={(updatedContent) =>
-                      handleUpdateSection(index, {
-                        ...section,
-                        content: updatedContent,
-                      })
-                    }
-                    onDelete={() => handleDeleteSection(index)}
-                    sectionName={section.name}
-                    onEditTitle={() => handleTitleEdit(index)}
-                    onSaveTitle={handleTitleSave}
-                    onCancelTitle={handleTitleCancel}
-                    isEditing={editingTitleIndex === index}
-                    temporaryTitle={temporaryTitle}
-                    setTemporaryTitle={setTemporaryTitle}
-                  />
-                </div>
-              </DragHandle>
-            );
-          } else {
-            return (
-              <DragHandle
-                key={index}
-                id={index.toString()}
-                disabled={false}
-              >
-                <div
-                  ref={index === sections.length - 1 ? newSectionRef : null}
-                >
-                  <GenericSection
-                    section={section}
-                    onUpdate={(updatedSection) =>
-                      handleUpdateSection(index, updatedSection)
-                    }
-                    onEditTitle={() => handleTitleEdit(index)}
-                    onSaveTitle={handleTitleSave}
-                    onCancelTitle={handleTitleCancel}
-                    onDelete={() => handleDeleteSection(index)}
-                    isEditing={editingTitleIndex === index}
-                    temporaryTitle={temporaryTitle}
-                    setTemporaryTitle={setTemporaryTitle}
-                  />
-                </div>
-              </DragHandle>
-            );
-          }
-        })}
+              if (section.name === "Experience") {
+                return (
+                  <DragHandle
+                    key={index}
+                    id={index.toString()}
+                    disabled={false}
+                  >
+                    <div
+                      ref={index === sections.length - 1 ? newSectionRef : null}
+                    >
+                      <ExperienceSection
+                        experiences={section.content}
+                        onUpdate={(updatedExperiences) =>
+                          handleUpdateSection(index, {
+                            ...section,
+                            content: updatedExperiences,
+                          })
+                        }
+                        supportsIcons={supportsIcons}
+                      />
+                    </div>
+                  </DragHandle>
+                );
+              } else if (section.name === "Education") {
+                return (
+                  <DragHandle
+                    key={index}
+                    id={index.toString()}
+                    disabled={false}
+                  >
+                    <div
+                      ref={index === sections.length - 1 ? newSectionRef : null}
+                    >
+                      <EducationSection
+                        education={section.content}
+                        onUpdate={(updatedEducation) =>
+                          handleUpdateSection(index, {
+                            ...section,
+                            content: updatedEducation,
+                          })
+                        }
+                        supportsIcons={supportsIcons}
+                      />
+                    </div>
+                  </DragHandle>
+                );
+              } else if (section.type === "icon-list") {
+                return (
+                  <DragHandle
+                    key={index}
+                    id={index.toString()}
+                    disabled={false}
+                  >
+                    <div
+                      ref={index === sections.length - 1 ? newSectionRef : null}
+                    >
+                      <IconListSection
+                        data={section.content}
+                        onUpdate={(updatedContent) =>
+                          handleUpdateSection(index, {
+                            ...section,
+                            content: updatedContent,
+                          })
+                        }
+                        onDelete={() => handleDeleteSection(index)}
+                        sectionName={section.name}
+                        onEditTitle={() => handleTitleEdit(index)}
+                        onSaveTitle={handleTitleSave}
+                        onCancelTitle={handleTitleCancel}
+                        isEditing={editingTitleIndex === index}
+                        temporaryTitle={temporaryTitle}
+                        setTemporaryTitle={setTemporaryTitle}
+                      />
+                    </div>
+                  </DragHandle>
+                );
+              } else {
+                return (
+                  <DragHandle
+                    key={index}
+                    id={index.toString()}
+                    disabled={false}
+                  >
+                    <div
+                      ref={index === sections.length - 1 ? newSectionRef : null}
+                    >
+                      <GenericSection
+                        section={section}
+                        onUpdate={(updatedSection) =>
+                          handleUpdateSection(index, updatedSection)
+                        }
+                        onEditTitle={() => handleTitleEdit(index)}
+                        onSaveTitle={handleTitleSave}
+                        onCancelTitle={handleTitleCancel}
+                        onDelete={() => handleDeleteSection(index)}
+                        isEditing={editingTitleIndex === index}
+                        temporaryTitle={temporaryTitle}
+                        setTemporaryTitle={setTemporaryTitle}
+                      />
+                    </div>
+                  </DragHandle>
+                );
+              }
+            })}
           </SortableContext>
-          
+
           <DragOverlay modifiers={[restrictToVerticalAxis]}>
             {activeId && draggedSection ? (
               <div className="drag-overlay">
