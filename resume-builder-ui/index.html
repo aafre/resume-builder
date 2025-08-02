@@ -49,6 +49,15 @@
     <!-- Web App Manifest -->
     <link rel="manifest" href="/site.webmanifest" />
 
+    <!-- Resource Hints for Critical Assets -->
+    <link rel="preload" href="/favicon-32x32.png" as="image" type="image/png" />
+    <link
+      rel="preload"
+      href="/android-chrome-192x192.png"
+      as="image"
+      type="image/png"
+    />
+
     <!-- Favicon Links -->
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -65,7 +74,17 @@
     <!-- Title -->
     <title>EasyFreeResume: The Easiest Free Resume Builder (No Sign-Ups)</title>
 
-    <!-- Structured Data -->
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8976874751886843"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Structured Data - Non-blocking -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -96,28 +115,23 @@
       }
     </script>
 
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8976874751886843"
-      crossorigin="anonymous"
-    ></script>
+    <!-- AdSense Configuration - Non-blocking -->
     <script>
       // This script will ensure all ads open in a new tab.
       (function () {
-        var push = window.adsbygoogle.push;
-        window.adsbygoogle.push = function (args) {
-          if (typeof args === "object" && args.google_ad_client) {
-            args.google_ad_host_config = {
-              adTarget: "_blank",
-            };
-          }
-          return push.apply(this, arguments);
-        };
+        // Wait for AdSense to load before modifying
+        if (window.adsbygoogle) {
+          var push = window.adsbygoogle.push;
+          window.adsbygoogle.push = function (args) {
+            if (typeof args === "object" && args.google_ad_client) {
+              args.google_ad_host_config = {
+                adTarget: "_blank",
+              };
+            }
+            return push.apply(this, arguments);
+          };
+        }
       })();
     </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
