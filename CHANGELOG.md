@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.5] - 2025-08-02
+
+### ⚙️ Miscellaneous Tasks
+
+- Implement lazy loading, improve logo loading and seo ([#96](https://github.com/aafre/resume-builder/pull/96))
+
 ## [0.2.4] - 2025-07-31
 
 ### ⚙️ Miscellaneous Tasks
