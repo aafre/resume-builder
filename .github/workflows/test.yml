@@ -21,6 +21,7 @@ on:
       - 'templates/**'
       - 'requirements.txt'
       - 'package*.json'
+  workflow_call:
 
 jobs:
   test:
