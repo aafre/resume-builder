@@ -1,5 +1,5 @@
-[![Tests and Build](https://github.com/aafre/resume-builder/actions/workflows/pr-validation.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/pr-validation.yml)
-[![Tests and Build](https://img.shields.io/github/actions/workflow/status/aafre/resume-builder/pr-validation.yml?branch=main)](https://github.com/aafre/resume-builder/actions)
+[![Tests](https://github.com/aafre/resume-builder/actions/workflows/test.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/test.yml)
+[![Build](https://github.com/aafre/resume-builder/actions/workflows/build.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/build.yml)
 [![License](https://img.shields.io/github/license/aafre/resume-builder.svg)](LICENSE)
 
 # Professional Resume Builder 📝

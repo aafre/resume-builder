@@ -1,0 +1,94 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Docker image tag to deploy (e.g., v1.0.0, latest)'
+        required: true
+        default: 'latest'
+        type: string
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+jobs:
+  deploy:
+    name: Deploy to Cloud Run
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    
+    steps:
+      - name: Validate inputs
+        run: |
+          echo "🚀 **Deploying to ${{ inputs.environment }}**" >> $GITHUB_STEP_SUMMARY
+          echo "**Image Tag:** ${{ inputs.image_tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Verify image exists
+        run: |
+          IMAGE="europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:${{ inputs.image_tag }}"
+          echo "Checking if image exists: $IMAGE"
+          
+          if ! gcloud container images describe $IMAGE --quiet; then
+            echo "❌ Error: Image $IMAGE not found in registry"
+            echo "Available tags:"
+            gcloud container images list-tags europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app --limit=10
+            exit 1
+          fi
+          
+          echo "✅ Image verified: $IMAGE"
+
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ secrets.GCP_CLOUD_RUN_SERVICE }}
+          image: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:${{ inputs.image_tag }}
+          region: "europe-west2"
+          flags: |
+            --cpu=1
+            --memory=1Gi
+            --min-instances=0
+            --max-instances=10
+            --concurrency=80
+            --timeout=300
+            --allow-unauthenticated
+
+      - name: Deployment Summary
+        run: |
+          echo "🎉 **Deployment Completed Successfully!**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Service URL:** ${{ steps.deploy.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Image:** europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app:${{ inputs.image_tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Region:** europe-west2" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 **Access your application:** ${{ steps.deploy.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Post-deployment verification
+        run: |
+          # Wait a moment for deployment to be ready
+          sleep 10
+          
+          # Basic health check
+          if curl -f -s "${{ steps.deploy.outputs.url }}" > /dev/null; then
+            echo "✅ Health check passed - application is responding"
+            echo "**Health Check:** ✅ Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ Health check failed - please verify deployment manually"
+            echo "**Health Check:** ⚠️ Failed - manual verification needed" >> $GITHUB_STEP_SUMMARY
+          fi
