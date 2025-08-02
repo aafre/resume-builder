@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.7] - 2025-08-02
+
+### ⚙️ Miscellaneous Tasks
+
+- Update and simplify ([#99](https://github.com/aafre/resume-builder/pull/99))
+- Fix build and tag ([#101](https://github.com/aafre/resume-builder/pull/101))
+- Fix build and tag ([#102](https://github.com/aafre/resume-builder/pull/102))
+
 ## [0.2.6] - 2025-08-02
 
 ### 📚 Documentation
