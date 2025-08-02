@@ -4,32 +4,75 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
+import { lazy, Suspense } from "react";
+
+// Critical components - loaded immediately
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import LandingPage from "./components/LandingPage";
-import TemplateCarousel from "./components/TemplateCarousel";
-import Editor from "./components/Editor";
-import NotFound from "./components/NotFound";
-import ErrorPage from "./components/ErrorPage";
-import PrivacyPolicy from "./components/PrivacyPolicy";
-import TermsOfService from "./components/TermsOfService";
-import AboutUs from "./components/AboutUs";
-import Contact from "./components/Contact";
-import BlogIndex from "./components/BlogIndex";
-import ResumeMistakesToAvoid from "./components/blog/ResumeMistakesToAvoid";
-import ATSOptimization from "./components/blog/ATSOptimization";
-import ResumeNoExperience from "./components/blog/ResumeNoExperience";
-import ProfessionalSummaryExamples from "./components/blog/ProfessionalSummaryExamples";
 import EnvironmentBanner from "./components/EnvironmentBanner";
-import { EditorProvider, useEditorContext } from "./contexts/EditorContext";
-import ResumeKeywordsGuide from "./components/blog/ResumeKeywordsGuide";
-import CoverLetterGuide from "./components/blog/CoverLetterGuide";
-import RemoteWorkResume from "./components/blog/RemoteWorkResume";
-import ResumeLengthGuide from "./components/blog/ResumeLengthGuide";
-import TechResumeGuide from "./components/blog/TechResumeGuide";
-import ResumeVsCvDifference from "./components/blog/ResumeVsCvDifference";
-import AIResumeBuilder from "./components/blog/AIResumeBuilder";
 import ScrollToTop from "./components/ScrollToTop";
+import { EditorProvider, useEditorContext } from "./contexts/EditorContext";
+
+// Lazy-loaded route components
+const TemplateCarousel = lazy(() => import("./components/TemplateCarousel"));
+const Editor = lazy(() => import("./components/Editor"));
+
+// Static pages - lazy loaded
+const AboutUs = lazy(() => import("./components/AboutUs"));
+const Contact = lazy(() => import("./components/Contact"));
+const PrivacyPolicy = lazy(() => import("./components/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./components/TermsOfService"));
+
+// Blog components - lazy loaded
+const BlogIndex = lazy(() => import("./components/BlogIndex"));
+const ResumeMistakesToAvoid = lazy(() => import("./components/blog/ResumeMistakesToAvoid"));
+const ATSOptimization = lazy(() => import("./components/blog/ATSOptimization"));
+const ResumeNoExperience = lazy(() => import("./components/blog/ResumeNoExperience"));
+const ProfessionalSummaryExamples = lazy(() => import("./components/blog/ProfessionalSummaryExamples"));
+const ResumeKeywordsGuide = lazy(() => import("./components/blog/ResumeKeywordsGuide"));
+const CoverLetterGuide = lazy(() => import("./components/blog/CoverLetterGuide"));
+const RemoteWorkResume = lazy(() => import("./components/blog/RemoteWorkResume"));
+const ResumeLengthGuide = lazy(() => import("./components/blog/ResumeLengthGuide"));
+const TechResumeGuide = lazy(() => import("./components/blog/TechResumeGuide"));
+const ResumeVsCvDifference = lazy(() => import("./components/blog/ResumeVsCvDifference"));
+const AIResumeBuilder = lazy(() => import("./components/blog/AIResumeBuilder"));
+
+// Error pages - lazy loaded
+const NotFound = lazy(() => import("./components/NotFound"));
+const ErrorPage = lazy(() => import("./components/ErrorPage"));
+
+// Loading components for different contexts
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-[200px]">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+  </div>
+);
+
+const BlogLoadingSkeleton = () => (
+  <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="animate-pulse">
+      <div className="h-8 bg-gray-200 rounded-md mb-4"></div>
+      <div className="h-4 bg-gray-200 rounded-md mb-2"></div>
+      <div className="h-4 bg-gray-200 rounded-md mb-2 w-3/4"></div>
+      <div className="h-4 bg-gray-200 rounded-md mb-8 w-1/2"></div>
+      <div className="space-y-3">
+        <div className="h-4 bg-gray-200 rounded-md"></div>
+        <div className="h-4 bg-gray-200 rounded-md"></div>
+        <div className="h-4 bg-gray-200 rounded-md w-5/6"></div>
+      </div>
+    </div>
+  </div>
+);
+
+const EditorLoadingSkeleton = () => (
+  <div className="h-screen flex items-center justify-center bg-gray-50">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+      <p className="text-gray-600">Loading Resume Editor...</p>
+    </div>
+  </div>
+);
 
 
 function AppContent() {
@@ -53,60 +96,176 @@ function AppContent() {
         }`}
       >
         <Routes>
+          {/* Critical route - no lazy loading */}
           <Route path="/" element={<LandingPage />} />
-          <Route path="/templates" element={<TemplateCarousel />} />
-          <Route path="/editor" element={<Editor />} />
+          
+          {/* High-priority routes with appropriate loading states */}
+          <Route 
+            path="/templates" 
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <TemplateCarousel />
+              </Suspense>
+            }
+          />
+          <Route 
+            path="/editor" 
+            element={
+              <Suspense fallback={<EditorLoadingSkeleton />}>
+                <Editor />
+              </Suspense>
+            }
+          />
 
-          {/* Blog Routes */}
-          <Route path="/blog" element={<BlogIndex />} />
+          {/* Blog Routes - lazy loaded with blog skeleton */}
+          <Route 
+            path="/blog" 
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <BlogIndex />
+              </Suspense>
+            }
+          />
           <Route
             path="/blog/resume-mistakes-to-avoid"
-            element={<ResumeMistakesToAvoid />}
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ResumeMistakesToAvoid />
+              </Suspense>
+            }
           />
           <Route
             path="/blog/ats-resume-optimization"
-            element={<ATSOptimization />}
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ATSOptimization />
+              </Suspense>
+            }
           />
           <Route
             path="/blog/resume-no-experience"
-            element={<ResumeNoExperience />}
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ResumeNoExperience />
+              </Suspense>
+            }
           />
           <Route
             path="/blog/professional-summary-examples"
-            element={<ProfessionalSummaryExamples />}
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ProfessionalSummaryExamples />
+              </Suspense>
+            }
           />
           <Route
             path="/blog/resume-keywords-guide"
-            element={<ResumeKeywordsGuide />}
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ResumeKeywordsGuide />
+              </Suspense>
+            }
           />
           <Route
             path="/blog/cover-letter-guide"
-            element={<CoverLetterGuide />}
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <CoverLetterGuide />
+              </Suspense>
+            }
           />
           <Route
             path="/blog/remote-work-resume"
-            element={<RemoteWorkResume />}
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <RemoteWorkResume />
+              </Suspense>
+            }
           />
           <Route
             path="/blog/resume-length-guide"
-            element={<ResumeLengthGuide />}
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ResumeLengthGuide />
+              </Suspense>
+            }
           />
-          <Route path="/blog/tech-resume-guide" element={<TechResumeGuide />} />
+          <Route 
+            path="/blog/tech-resume-guide" 
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <TechResumeGuide />
+              </Suspense>
+            }
+          />
           <Route
             path="/blog/resume-vs-cv-difference"
-            element={<ResumeVsCvDifference />}
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ResumeVsCvDifference />
+              </Suspense>
+            }
           />
-          <Route path="/blog/ai-resume-builder" element={<AIResumeBuilder />} />
+          <Route 
+            path="/blog/ai-resume-builder" 
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <AIResumeBuilder />
+              </Suspense>
+            }
+          />
 
-          {/* Static Pages */}
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms-of-service" element={<TermsOfService />} />
+          {/* Static Pages - lazy loaded */}
+          <Route 
+            path="/about" 
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <AboutUs />
+              </Suspense>
+            }
+          />
+          <Route 
+            path="/contact" 
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <Contact />
+              </Suspense>
+            }
+          />
+          <Route 
+            path="/privacy-policy" 
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <PrivacyPolicy />
+              </Suspense>
+            }
+          />
+          <Route 
+            path="/terms-of-service" 
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <TermsOfService />
+              </Suspense>
+            }
+          />
 
-          {/* Error Handling */}
-          <Route path="/error" element={<ErrorPage />} />
-          <Route path="*" element={<NotFound />} />
+          {/* Error Handling - lazy loaded */}
+          <Route 
+            path="/error" 
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ErrorPage />
+              </Suspense>
+            }
+          />
+          <Route 
+            path="*" 
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <NotFound />
+              </Suspense>
+            }
+          />
         </Routes>
       </main>
 
