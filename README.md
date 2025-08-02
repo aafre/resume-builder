@@ -7,7 +7,7 @@ Create Professional, ATS-Friendly Resumes. Private, Free, and No Sign-Up Require
 
 **[🔗 Start Building Your Resume →](https://easyfreeresume.com)**
 
-✨ Visual editor • 🔒 Privacy-first • ⚡ Instant PDF download 
+✨ Intuitive User Interface • 🔒 Privacy-first • ⚡ Instant PDF download 
 
 ## How It Works
 
