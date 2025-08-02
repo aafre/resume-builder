@@ -7,11 +7,7 @@
     <!-- SEO Meta Tags -->
     <meta
       name="description"
-      content="Create professional, ATS-friendly resumes in minutes with our completely free resume builder. No subscriptions, no hidden fees, unlimited downloads."
-    />
-    <meta
-      name="keywords"
-      content="free resume builder, professional resume, ATS resume, resume template, job application, career tools, online resume maker"
+      content="Build a professional resume in minutes with our completely free, no sign-up required online tool. Simple, clean templates that make your application stand out."
     />
     <meta name="robots" content="index, follow" />
     <meta name="language" content="English" />
@@ -22,11 +18,11 @@
     <meta property="og:url" content="https://easyfreeresume.com/" />
     <meta
       property="og:title"
-      content="Free Professional Resume Builder | EasyFreeResume"
+      content="EasyFreeResume: The Easiest Free Resume Builder (No Sign-Ups)"
     />
     <meta
       property="og:description"
-      content="Create professional, ATS-friendly resumes in minutes with our completely free resume builder. No subscriptions, no hidden fees, unlimited downloads."
+      content="Build a professional resume in minutes with our completely free, no sign-up required online tool. Simple, clean templates that make your application stand out."
     />
     <meta
       property="og:image"
@@ -39,11 +35,11 @@
     <meta property="twitter:url" content="https://easyfreeresume.com/" />
     <meta
       property="twitter:title"
-      content="Free Professional Resume Builder | EasyFreeResume"
+      content="EasyFreeResume: The Easiest Free Resume Builder (No Sign-Ups)"
     />
     <meta
       property="twitter:description"
-      content="Create professional, ATS-friendly resumes in minutes with our completely free resume builder. No subscriptions, no hidden fees, unlimited downloads."
+      content="Build a professional resume in minutes with our completely free, no sign-up required online tool. Simple, clean templates that make your application stand out."
     />
     <meta
       property="twitter:image"
@@ -52,6 +48,15 @@
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Resource Hints for Critical Assets -->
+    <link rel="preload" href="/favicon-32x32.png" as="image" type="image/png" />
+    <link
+      rel="preload"
+      href="/android-chrome-192x192.png"
+      as="image"
+      type="image/png"
+    />
 
     <!-- Favicon Links -->
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -67,9 +72,19 @@
     <link rel="canonical" href="https://easyfreeresume.com/" />
 
     <!-- Title -->
-    <title>Free Professional Resume Builder | EasyFreeResume</title>
+    <title>EasyFreeResume: The Easiest Free Resume Builder (No Sign-Ups)</title>
 
-    <!-- Structured Data -->
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8976874751886843"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Structured Data - Non-blocking -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -100,28 +115,23 @@
       }
     </script>
 
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8976874751886843"
-      crossorigin="anonymous"
-    ></script>
+    <!-- AdSense Configuration - Non-blocking -->
     <script>
       // This script will ensure all ads open in a new tab.
       (function () {
-        var push = window.adsbygoogle.push;
-        window.adsbygoogle.push = function (args) {
-          if (typeof args === "object" && args.google_ad_client) {
-            args.google_ad_host_config = {
-              adTarget: "_blank",
-            };
-          }
-          return push.apply(this, arguments);
-        };
+        // Wait for AdSense to load before modifying
+        if (window.adsbygoogle) {
+          var push = window.adsbygoogle.push;
+          window.adsbygoogle.push = function (args) {
+            if (typeof args === "object" && args.google_ad_client) {
+              args.google_ad_host_config = {
+                adTarget: "_blank",
+              };
+            }
+            return push.apply(this, arguments);
+          };
+        }
       })();
     </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
