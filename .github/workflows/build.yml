@@ -1,0 +1,103 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'resume-builder-ui/**'
+      - 'app.py'
+      - 'resume_generator*.py'
+      - 'templates/**'
+      - 'requirements.txt'
+      - 'package*.json'
+      - 'Dockerfile*'
+  workflow_call:
+    inputs:
+      version:
+        description: 'Version tag for the image'
+        required: true
+        type: string
+    outputs:
+      image-tag:
+        description: 'Built image tag'
+        value: ${{ jobs.build.outputs.image-tag }}
+
+jobs:
+  build:
+    name: Build and Push
+    runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Generate metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app
+          tags: |
+            type=raw,value=${{ inputs.version || 'latest' }}
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,prefix={{branch}}-
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      - name: Configure Docker for GCP
+        run: |
+          echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' | docker login -u _json_key_base64 --password-stdin europe-west2-docker.pkg.dev
+
+      - name: Build Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64
+          load: true
+          tags: local-scan:latest
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
+          sbom: false
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'local-scan:latest'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          exit-code: '0'  # Don't fail the build on vulnerabilities, just report them
+
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: Tag and push image to registry
+        if: success()
+        run: |
+          # Re-tag the scanned image with proper registry tags
+          for tag in ${{ steps.meta.outputs.tags }}; do
+            docker tag local-scan:latest $tag
+            docker push $tag
+          done
+
+      - name: Build Summary
+        run: |
+          echo "📦 **Docker Image Built and Pushed Successfully!**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Tags:** ${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Registry:** GCP Artifact Registry (europe-west2)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🔍 **Security scan completed** - results uploaded to GitHub Security tab" >> $GITHUB_STEP_SUMMARY

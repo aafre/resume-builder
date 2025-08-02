@@ -1,0 +1,54 @@
+name: Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'resume-builder-ui/**'
+      - 'app.py'
+      - 'resume_generator*.py'
+      - 'templates/**'
+      - 'requirements.txt'
+      - 'package*.json'
+  push:
+    branches:
+      - main
+    paths:
+      - 'resume-builder-ui/**'
+      - 'app.py'
+      - 'resume_generator*.py'
+      - 'templates/**'
+      - 'requirements.txt'
+      - 'package*.json'
+
+jobs:
+  test:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: resume-builder-ui
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: resume-builder-ui/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        run: npm run coverage
+
+      - name: Test Summary
+        run: |
+          echo "✅ **Frontend Tests Completed Successfully**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "All unit tests passed with coverage reporting." >> $GITHUB_STEP_SUMMARY

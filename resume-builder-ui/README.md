@@ -1,6 +1,6 @@
 # Resume Builder Frontend
 
-[![Tests and Build](https://github.com/aafre/resume-builder/actions/workflows/pr-validation.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/pr-validation.yml)
+[![Tests](https://github.com/aafre/resume-builder/actions/workflows/test.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/test.yml)
 [![License](https://img.shields.io/github/license/aafre/resume-builder.svg)](../LICENSE)
 
 React + TypeScript + Vite frontend for the Professional Resume Builder.
