@@ -62,13 +62,13 @@ const LandingPage: React.FC = () => {
     },
     {
       icon: <LockClosedIcon className="w-10 h-10 text-green-600" />,
-      title: "Your Data Stays Private",
+      title: "No Sign-Up, No Data Collection",
       description:
-        "We don't store your personal information. Create and download with complete privacy.",
+        "Start building immediately without registration. We don't store your personal information - complete privacy guaranteed.",
     },
     {
       icon: <GiftIcon className="w-10 h-10 text-purple-600" />,
-      title: "Completely Free",
+      title: "100% Free & Unlimited",
       description:
         "Build unlimited resumes at no cost. No hidden fees, no premium upgrades, no catch.",
     },
@@ -135,9 +135,9 @@ const LandingPage: React.FC = () => {
         <div className="text-center my-16 px-4 max-w-4xl mx-auto">
           {/* Professional Gradient Title */}
           <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800">
-            Easy & Free Resume Builder: Create a Professional Resume in Minutes
+            Create a Professional Resume in Minutes
           </h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto text-gray-600 mb-4 leading-relaxed">
+          <p className="text-xl md:text-2xl max-w-3xl mx-auto text-gray-800 mb-4 leading-relaxed">
             Create ATS-optimized resumes that get you noticed by hiring
             managers.
           </p>
@@ -212,52 +212,10 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Is This Really Free Section */}
-        <div className="container mx-auto max-w-4xl my-20 px-4">
-          <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-3xl shadow-2xl p-8 md:p-12 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Is This Resume Builder Really Free?
-            </h2>
-            <div className="text-xl mb-8 text-green-100 max-w-3xl mx-auto space-y-4">
-              <p>
-                <strong>Yes, absolutely 100% free!</strong> No hidden fees, no
-                premium tiers, and no subscription traps.
-              </p>
-              <p>
-                Create unlimited resumes, download as many PDFs as you want, and
-                access all templates - completely free, forever.
-              </p>
-              <p>
-                We believe professional resume tools should be accessible to
-                everyone, regardless of budget.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-6 mt-8">
-              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
-                <div className="text-2xl mb-2">✅</div>
-                <div className="font-semibold">No Sign-Up</div>
-                <div className="text-sm text-green-100">Start immediately</div>
-              </div>
-              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
-                <div className="text-2xl mb-2">✅</div>
-                <div className="font-semibold">No Watermarks</div>
-                <div className="text-sm text-green-100">
-                  Clean, professional PDFs
-                </div>
-              </div>
-              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
-                <div className="text-2xl mb-2">✅</div>
-                <div className="font-semibold">Unlimited Downloads</div>
-                <div className="text-sm text-green-100">No limits, ever</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Why Job Seekers Choose Us */}
         <div className="container mx-auto max-w-6xl my-20 px-4 text-center">
           <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
-            Why Choose Our Resume Builder?
+            Why Thousands of Job Seekers Trust EasyFreeResume
           </h2>
           <p className="text-lg text-gray-600 mb-16 max-w-2xl mx-auto">
             Trusted by job seekers worldwide to create resumes that stand out
@@ -330,11 +288,11 @@ const LandingPage: React.FC = () => {
 
         {/* Final CTA Section */}
         <div className="container mx-auto max-w-4xl my-20 px-4 text-center">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl shadow-2xl p-12 text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <div className="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-3xl shadow-2xl p-12 text-white">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
               Ready to Land Your Dream Job?
             </h2>
-            <p className="text-xl mb-8 text-blue-100 max-w-2xl mx-auto">
+            <p className="text-xl mb-8 text-blue-50 max-w-2xl mx-auto">
               Join thousands of job seekers who've successfully created
               professional resumes with our free builder.
             </p>
