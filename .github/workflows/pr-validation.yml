@@ -37,10 +37,10 @@ jobs:
               - '.gitignore'
 
   test:
-    name: Frontend Tests
+    name: Run Tests
     needs: changes
     if: needs.changes.outputs.code-changed == 'true'
-    uses: ./.github/workflows/test-reusable.yml
+    uses: ./.github/workflows/test.yml
 
   docker-build:
     name: Build Docker (Verify)
