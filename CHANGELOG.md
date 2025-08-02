@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.6] - 2025-08-02
+
+### 📚 Documentation
+
+- Update readme ([#97](https://github.com/aafre/resume-builder/pull/97))
+
+### ⚙️ Miscellaneous Tasks
+
+- Fix git ref
+
 ## [0.2.5] - 2025-08-02
 
 ### ⚙️ Miscellaneous Tasks
