@@ -1,50 +1,125 @@
-# React + TypeScript + Vite
+# Resume Builder Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![Tests and Build](https://github.com/aafre/resume-builder/actions/workflows/pr-validation.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/pr-validation.yml)
+[![License](https://img.shields.io/github/license/aafre/resume-builder.svg)](../LICENSE)
 
-Currently, two official plugins are available:
+React + TypeScript + Vite frontend for the Professional Resume Builder.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Live Application
+**[Start Building Your Resume →](https://easyfreeresume.com)**
 
-## Expanding the ESLint configuration
+## About This Frontend
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+This is the React-based user interface for the Resume Builder application. It provides:
 
-- Configure the top-level `parserOptions` property like this:
+- **Visual Resume Editor** - No YAML editing required
+- **Real-time Preview** - See changes as you type
+- **Template Selection** - Choose from professional designs
+- **Auto-save** - Work saved locally in your browser
+- **Privacy-focused** - No account required, data stays local
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Tech Stack
+
+- **React 18** with TypeScript
+- **Vite** for fast development and building
+- **Tailwind CSS** for styling
+- **React Router** for navigation
+- **Vitest** for testing
+- **ESLint** for code quality
+
+## Development Setup
+
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+
+### Quick Start
+```bash
+# Clone the repository
+git clone https://github.com/aafre/resume-builder.git
+cd resume-builder/resume-builder-ui
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+The app will be available at `http://localhost:5173`
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Available Scripts
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm run dev          # Start development server with HMR
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run test         # Run tests with Vitest
+npm run test:watch   # Run tests in watch mode
+npm run coverage     # Generate test coverage report
+npm run lint         # Run ESLint
 ```
+
+## Project Structure
+
+```
+src/
+├── components/          # React components
+│   ├── blog/           # Blog-related components
+│   └── ...
+├── contexts/           # React contexts (Editor state)
+├── services/           # API services and utilities
+├── utils/              # Helper functions
+├── types.ts            # TypeScript type definitions
+├── styles.css          # Global styles
+└── main.tsx           # Application entry point
+```
+
+## Key Features
+
+### Code Splitting & Performance
+- Lazy loading for non-critical routes
+- Optimized bundle sizes
+- Resource preloading for critical assets
+
+### State Management
+- Context API for editor state
+- Local storage for data persistence
+- Auto-save functionality
+
+### Testing
+- Component tests with Vitest + Testing Library
+- Coverage reporting
+- CI/CD integration
+
+## Backend Integration
+
+This frontend connects to the Flask backend API for:
+- Template data retrieval
+- PDF generation
+- Icon upload handling
+
+Backend API runs on `http://localhost:5000` in development.
+
+## Building for Production
+
+```bash
+npm run build
+```
+
+Outputs optimized bundle to `dist/` directory with:
+- Code splitting
+- Asset optimization
+- Gzip compression ready
+
+## Contributing
+
+See the [main project README](../README.md) for contribution guidelines.
+
+## License
+
+MIT License - see [LICENSE](../LICENSE) file for details.
+
+---
+
+Part of the [Professional Resume Builder](../README.md) project.

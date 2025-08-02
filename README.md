@@ -1,14 +1,13 @@
-[![Tests and Coverage](https://github.com/aafre/resume-builder/actions/workflows/test-frontend.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/test-frontend.yml)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/aafre/resume-builder/test-frontend.yml?branch=main)](https://github.com/aafre/resume-builder/actions)
+[![Tests and Build](https://github.com/aafre/resume-builder/actions/workflows/pr-validation.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/pr-validation.yml)
+[![Tests and Build](https://img.shields.io/github/actions/workflow/status/aafre/resume-builder/pr-validation.yml?branch=main)](https://github.com/aafre/resume-builder/actions)
 [![License](https://img.shields.io/github/license/aafre/resume-builder.svg)](LICENSE)
 
 # Professional Resume Builder 📝
-Effortlessly Create, Update, and Perfect Your ATS-Friendly Resume - Your Content, Always Perfectly Formatted.
-
+Create Professional, ATS-Friendly Resumes. Private, Free, and No Sign-Up Required.
 
 **[🔗 Start Building Your Resume →](https://easyfreeresume.com)**
 
-No signup required • Your data stays private 
+✨ Intuitive User Interface • 🔒 Privacy-first • ⚡ Instant PDF download 
 
 ## How It Works
 
@@ -34,35 +33,62 @@ That's it! No account creation, no email verification, no complicated setup.
 - **Export Control**: Download and keep your resume as YAML file.
 
 ### 📝 **Professional Output**
-- **ATS-Compatible**: Content is exported as text into PDF, the effectiveness of the content, of course depends on the user. 
-- **Multiple Formats**: Clean, modern designs (more upcoming designs coming soon).
-- **Customizable Sections**: Re-use sections and use your creativity to design your resume as you would like. 
-- **Icon Support**: Upload your own icons. 
+- **ATS-Compatible**: Optimized text formatting ensures your resume passes automated screening systems
+- **Multiple Templates**: Clean, modern designs that stand out to hiring managers
+- **Customizable Sections**: Rearrange, add, or remove resume sections to perfectly tailor your resume for any job
+- **Icon Support**: Upload custom icons to personalize your resume and highlight key information 
 
 ---
 
 ## Templates
 
+Choose from professionally designed templates that showcase your experience effectively. All templates are ATS-optimized and customizable to match your personal style.
+
 <details>
-  <summary>Available Templates</summary>
+  <summary><strong>Available Templates (4)</strong></summary>
 
-**Modern (No Icons)**  
-YAML: `samples/modern/john_doe_no_icon.yml`  
-![Modern No Icons](docs/templates/modern-no-icons.png)
+### Professional
+Clean, structured layout with traditional formatting and excellent space utilization
+- **Sample YAML:** `samples/classic/alex_rivera_data.yml`
+- **Template ID:** `classic-alex-rivera`
+- **Best for:** Data professionals, traditional industries, structured presentations
 
-**Modern (With Icons)**  
-YAML: `samples/modern/john_doe.yml`  
-![Modern With Icons](docs/templates/modern-with-icons.png)
+![Professional Template](docs/templates/alex_rivera.png)
+
+### Elegant  
+Refined design with sophisticated typography and organized section layout
+- **Sample YAML:** `samples/classic/jane_doe.yml`
+- **Template ID:** `classic-jane-doe`
+- **Best for:** Marketing, consulting, professional services
+
+![Elegant Template](docs/templates/jane_doe.png)
+
+### Minimalist
+Clean, professional design focusing on content clarity
+- **Sample YAML:** `samples/modern/john_doe_no_icon.yml`
+- **Template ID:** `modern-no-icons`
+- **Best for:** Traditional industries, conservative companies
+
+![Minimalist Template](docs/templates/modern-no-icons.png)
+
+### Modern
+Contemporary design enhanced with visual icons and dynamic styling elements
+- **Sample YAML:** `samples/modern/john_doe.yml`  
+- **Template ID:** `modern-with-icons`
+- **Best for:** Tech, creative, and modern industries
+
+![Modern Template](docs/templates/modern-with-icons.png)
 </details>
 
 <details>
-  <summary>Upcoming Templates</summary>
+  <summary><strong>Future Templates</strong></summary>
 
-**Minimalist (Work in Progress)**  
-![Minimalist](docs/templates/classic-no-icon.png)
+### Creative (Planned)
+Bold, visual-first design for creative professionals
+- **Status:** Design phase - accepting feedback and suggestions
+- **Expected:** Future release
 
-**Creative (Planned)**  
-YAML: `samples/creative_sample.yml` *(Coming Soon)*
+*Have a template idea? [Open an issue](https://github.com/aafre/resume-builder/issues) to suggest new designs!*
 </details>
 
 ---
@@ -94,32 +120,68 @@ If you prefer working with code, you can create resumes using YAML files:
 
 ### Local Development
 
-**Quick Setup:**
+#### Prerequisites
+- **Node.js** 18+ and npm
+- **Python** 3.8+
+- **Docker** (optional, for containerized backend)
+
+#### Frontend Setup
 ```bash
 git clone https://github.com/aafre/resume-builder.git
-cd resume-builder
+cd resume-builder/resume-builder-ui
 
-# For the React Frontend: 
-cd resume-builder-ui
 npm install
 npm run dev
 ```
+Frontend will be available at `http://localhost:5173`
 
-**Docker for running backend:**
+#### Backend Setup
+
+**Option 1: Docker (Recommended)**
 ```bash
-# API Backend
+# From project root
 docker build -t resume-api -f Dockerfile.dev.api .
 docker run -p 5000:5000 resume-api
-
-# For direct PDF generation (without API)
-python resume_generator.py --template modern --input samples/modern/john_doe.yml --output output/resume.pdf
-
-# Run Flask API 
-python app.py 
 ```
 
-At this point the frontend should work with the backend locally. 
+**Option 2: Direct Python**
+```bash
+# Install Python dependencies
+pip install -r requirements.txt
 
+# Run Flask API server
+python app.py
+```
+API will be available at `http://localhost:5000`
+
+**Direct PDF Generation (No API)**
+```bash
+python resume_generator.py --template modern --input samples/modern/john_doe.yml --output output/resume.pdf
+``` 
+
+
+---
+
+## Technologies Used
+
+### Frontend
+- **React 18** - Modern UI framework with hooks and context
+- **TypeScript** - Type-safe JavaScript for better development experience  
+- **Vite** - Fast build tool and development server
+- **Tailwind CSS** - Utility-first CSS framework for rapid styling
+- **React Router** - Client-side routing for single-page application
+
+### Backend  
+- **Flask** - Lightweight Python web framework
+- **Jinja2** - Template engine for dynamic HTML generation
+- **pdfkit** - PDF generation from HTML/CSS
+- **Python 3.8+** - Core backend language
+
+### Development & Testing
+- **Vitest** - Fast unit testing framework
+- **ESLint** - Code linting and style enforcement
+- **Docker** - Containerization for consistent environments
+- **GitHub Actions** - Automated testing and deployment
 
 ---
 
@@ -147,6 +209,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-**[🚀 Start Building Your Resume Now →](https://easyfreeresume.com)**
-
-*Build professional resumes in minutes.*
+*Ready to build your professional resume? [Get started at easyfreeresume.com →](https://easyfreeresume.com)*
