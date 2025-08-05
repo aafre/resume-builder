@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
-import IconUpload from "./IconUpload";
+import IconManager from "./IconManager";
 
 interface Certification {
   certification: string;
   issuer: string;
   date: string;
-  icon?: string;
-  iconFile?: File;
+  icon?: string | null;
+  iconFile?: File | null;
+  iconBase64?: string | null;
+}
+
+// Icon registry methods passed from parent Editor component
+interface IconRegistryMethods {
+  registerIcon: (file: File) => string;
+  getIconFile: (filename: string) => File | null;
+  removeIcon: (filename: string) => void;
 }
 
 interface IconListSectionProps {
@@ -20,6 +28,7 @@ interface IconListSectionProps {
   isEditing?: boolean;
   temporaryTitle?: string;
   setTemporaryTitle?: (title: string) => void;
+  iconRegistry?: IconRegistryMethods;
 }
 
 const IconListSection: React.FC<IconListSectionProps> = ({
@@ -33,6 +42,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
   isEditing = false,
   temporaryTitle = "",
   setTemporaryTitle,
+  iconRegistry,
 }) => {
   const [showHint, setShowHint] = useState(true);
 
@@ -57,14 +67,17 @@ const IconListSection: React.FC<IconListSectionProps> = ({
     onUpdate(updatedData);
   };
 
-  const handleIconUpload = (index: number, renamedIcon: string, file: File) => {
-    handleUpdateItem(index, "icon", renamedIcon);
-    handleUpdateItem(index, "iconFile", file);
-  };
-
-  const handleIconClear = (index: number) => {
-    handleUpdateItem(index, "icon", null);
-    handleUpdateItem(index, "iconFile", null);
+  // Handle icon changes from IconManager
+  const handleIconChange = (index: number, filename: string | null, file: File | null) => {
+    // Single atomic update - IconManager handles file storage
+    const updatedData = [...data];
+    updatedData[index] = {
+      ...updatedData[index],
+      icon: filename,
+      iconFile: file, // Keep for transition compatibility
+      iconBase64: null, // Clear any old base64 data
+    };
+    onUpdate(updatedData);
   };
 
   const handleAddItem = () => {
@@ -72,8 +85,9 @@ const IconListSection: React.FC<IconListSectionProps> = ({
       certification: "",
       issuer: "",
       date: "",
-      icon: "",
-      iconFile: undefined,
+      icon: null,
+      iconFile: null,
+      iconBase64: null,
     };
     onUpdate([...data, newItem]);
   };
@@ -149,17 +163,18 @@ const IconListSection: React.FC<IconListSectionProps> = ({
               className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md"
             >
               <div>
-                {/* Icon Upload Component */}
-                <div className="mb-4">
-                  <IconUpload
-                    onUpload={(renamedIcon, file) =>
-                      handleIconUpload(index, renamedIcon, file)
-                    }
-                    onClear={() => handleIconClear(index)}
-                    existingIcon={item.icon || null}
-                    existingIconFile={item.iconFile || null}
-                  />
-                </div>
+                {/* Icon Manager Component */}
+                {iconRegistry && (
+                  <div className="mb-4">
+                    <IconManager
+                      value={item.icon || null}
+                      onChange={(filename, file) => handleIconChange(index, filename, file)}
+                      registerIcon={iconRegistry.registerIcon}
+                      getIconFile={iconRegistry.getIconFile}
+                      removeIcon={iconRegistry.removeIcon}
+                    />
+                  </div>
+                )}
 
                 {/* Form Fields */}
                 <div>

@@ -109,6 +109,6 @@ describe("IconListSection", { timeout: 5000 }, () => {
     expect(newCertification.certification).toBe("");
     expect(newCertification.issuer).toBe("");
     expect(newCertification.date).toBe("");
-    expect(newCertification.icon).toBe("");
+    expect(newCertification.icon).toBe(null);
   });
 });

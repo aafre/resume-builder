@@ -1,24 +1,34 @@
-import IconUpload from "./IconUpload";
+import IconManager from "./IconManager";
 
 interface EducationItem {
   degree: string;
   school: string;
   year: string;
   field_of_study?: string;
-  icon?: string;
-  iconFile?: File;
+  icon?: string | null;
+  iconFile?: File | null;
+  iconBase64?: string | null;
+}
+
+// Icon registry methods passed from parent Editor component
+interface IconRegistryMethods {
+  registerIcon: (file: File) => string;
+  getIconFile: (filename: string) => File | null;
+  removeIcon: (filename: string) => void;
 }
 
 interface EducationSectionProps {
   education: EducationItem[];
   onUpdate: (updatedEducation: EducationItem[]) => void;
   supportsIcons?: boolean;
+  iconRegistry?: IconRegistryMethods;
 }
 
 const EducationSection: React.FC<EducationSectionProps> = ({
   education,
   onUpdate,
   supportsIcons = false,
+  iconRegistry,
 }) => {
   const handleUpdateItem = (
     index: number,
@@ -36,8 +46,9 @@ const EducationSection: React.FC<EducationSectionProps> = ({
       school: "",
       year: "",
       field_of_study: "",
-      icon: "",
-      iconFile: undefined,
+      icon: null,
+      iconFile: null,
+      iconBase64: null,
     };
     onUpdate([...education, newEducation]);
   };
@@ -48,14 +59,17 @@ const EducationSection: React.FC<EducationSectionProps> = ({
     onUpdate(updatedEducation);
   };
 
-  const handleIconUpload = (index: number, renamedIcon: string, file: File) => {
-    handleUpdateItem(index, "icon", renamedIcon);
-    handleUpdateItem(index, "iconFile", file);
-  };
-
-  const handleIconClear = (index: number) => {
-    handleUpdateItem(index, "icon", null);
-    handleUpdateItem(index, "iconFile", null);
+  // Handle icon changes from IconManager
+  const handleIconChange = (index: number, filename: string | null, file: File | null) => {
+    // Single atomic update - IconManager handles file storage
+    const updatedEducation = [...education];
+    updatedEducation[index] = {
+      ...updatedEducation[index],
+      icon: filename,
+      iconFile: file, // Keep for transition compatibility
+      iconBase64: null, // Clear any old base64 data
+    };
+    onUpdate(updatedEducation);
   };
 
   return (
@@ -78,16 +92,15 @@ const EducationSection: React.FC<EducationSectionProps> = ({
             </button>
           </div>
           <div className="mt-4">
-            {/* Icon Upload Section */}
-            {supportsIcons && (
+            {/* Icon Manager Section */}
+            {supportsIcons && iconRegistry && (
               <div className="mb-4">
-                <IconUpload
-                  onUpload={(renamedIcon, file) =>
-                    handleIconUpload(index, renamedIcon, file)
-                  }
-                  onClear={() => handleIconClear(index)}
-                  existingIcon={item.icon || null}
-                  existingIconFile={item.iconFile || null}
+                <IconManager
+                  value={item.icon || null}
+                  onChange={(filename, file) => handleIconChange(index, filename, file)}
+                  registerIcon={iconRegistry.registerIcon}
+                  getIconFile={iconRegistry.getIconFile}
+                  removeIcon={iconRegistry.removeIcon}
                 />
               </div>
             )}

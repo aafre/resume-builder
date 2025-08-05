@@ -1,24 +1,34 @@
-import IconUpload from "./IconUpload";
+import IconManager from "./IconManager";
 
 interface ExperienceItem {
   company: string;
   title: string;
   dates: string;
   description: string[];
-  icon?: string;
-  iconFile?: File;
+  icon?: string | null;
+  iconFile?: File | null;
+  iconBase64?: string | null;
+}
+
+// Icon registry methods passed from parent Editor component
+interface IconRegistryMethods {
+  registerIcon: (file: File) => string;
+  getIconFile: (filename: string) => File | null;
+  removeIcon: (filename: string) => void;
 }
 
 interface ExperienceSectionProps {
   experiences: ExperienceItem[];
   onUpdate: (updatedExperiences: ExperienceItem[]) => void;
   supportsIcons?: boolean;
+  iconRegistry?: IconRegistryMethods;
 }
 
 const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   experiences,
   onUpdate,
   supportsIcons = false,
+  iconRegistry,
 }) => {
   const handleUpdateField = (
     index: number,
@@ -33,14 +43,17 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
     onUpdate(updatedExperiences);
   };
 
-  const handleIconUpload = (index: number, renamedIcon: string, file: File) => {
-    handleUpdateField(index, "icon", renamedIcon);
-    handleUpdateField(index, "iconFile", file);
-  };
-
-  const handleIconClear = (index: number) => {
-    handleUpdateField(index, "icon", null);
-    handleUpdateField(index, "iconFile", null);
+  // Handle icon changes from IconManager
+  const handleIconChange = (index: number, filename: string | null, file: File | null) => {
+    // Single atomic update - IconManager handles file storage
+    const updatedExperiences = [...experiences];
+    updatedExperiences[index] = {
+      ...updatedExperiences[index],
+      icon: filename,
+      iconFile: file, // Keep for transition compatibility
+      iconBase64: null, // Clear any old base64 data
+    };
+    onUpdate(updatedExperiences);
   };
 
   return (
@@ -68,16 +81,15 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
           </div>
 
           <div className="mt-4">
-            {/* Icon Upload Section */}
-            {supportsIcons && (
+            {/* Icon Manager Section */}
+            {supportsIcons && iconRegistry && (
               <div className="mb-4">
-                <IconUpload
-                  onUpload={(renamedIcon, file) =>
-                    handleIconUpload(index, renamedIcon, file)
-                  }
-                  onClear={() => handleIconClear(index)}
-                  existingIcon={experience.icon || null}
-                  existingIconFile={experience.iconFile || null}
+                <IconManager
+                  value={experience.icon || null}
+                  onChange={(filename, file) => handleIconChange(index, filename, file)}
+                  registerIcon={iconRegistry.registerIcon}
+                  getIconFile={iconRegistry.getIconFile}
+                  removeIcon={iconRegistry.removeIcon}
                 />
               </div>
             )}
@@ -186,6 +198,9 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
             title: "",
             dates: "",
             description: [],
+            icon: null,
+            iconFile: null,
+            iconBase64: null,
           };
           onUpdate([...experiences, newExperience]);
         }}
