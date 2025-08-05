@@ -12,6 +12,8 @@ import { fetchTemplate, generateResume } from "../services/templates";
 import { getSessionId } from "../utils/session";
 import { useIconRegistry } from "../hooks/useIconRegistry";
 import yaml from "js-yaml";
+import { PortableYAMLData } from "../types/iconTypes";
+import { extractReferencedIconFilenames } from "../utils/iconExtractor";
 import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
 import GenericSection from "./GenericSection";
@@ -91,7 +93,7 @@ const Editor: React.FC = () => {
   const [supportsIcons, setSupportsIcons] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loadingError, setLoadingError] = useState<string | null>(null);
-  
+
   // Central icon registry for all uploaded icons
   const iconRegistry = useIconRegistry();
   const [generating, setGenerating] = useState(false);
@@ -166,8 +168,8 @@ const Editor: React.FC = () => {
         });
 
         // Check for auto-saved data after template loads
-        setTimeout(() => {
-          const savedData = loadFromLocalStorage();
+        setTimeout(async () => {
+          const savedData = await loadFromLocalStorage();
           if (savedData) {
             const timeDiff =
               new Date().getTime() - savedData.timestamp.getTime();
@@ -384,10 +386,27 @@ const Editor: React.FC = () => {
 
       const processedSections = processSections(sections);
 
-      const yamlData = yaml.dump({
+      // Extract all referenced icon filenames from the sections
+      const referencedIcons = extractReferencedIconFilenames(processedSections);
+
+      // Get icon data for only the referenced icons (efficient export)
+      const iconData =
+        referencedIcons.length > 0
+          ? await iconRegistry.exportIconsForYAML(referencedIcons)
+          : {};
+
+      // Create portable YAML with embedded icons
+      const portableData: PortableYAMLData = {
         contact_info: contactInfo,
         sections: processedSections,
-      });
+      };
+
+      // Only include __icons__ section if there are icons to embed
+      if (Object.keys(iconData).length > 0) {
+        portableData.__icons__ = iconData;
+      }
+
+      const yamlData = yaml.dump(portableData);
 
       const blob = new Blob([yamlData], { type: "application/x-yaml" });
       const url = URL.createObjectURL(blob);
@@ -396,7 +415,15 @@ const Editor: React.FC = () => {
       link.download = "resume.yaml";
       link.click();
 
-      toast.success("Resume saved successfully!");
+      // Show success message with icon count if applicable
+      const iconCount = Object.keys(iconData).length;
+      const message =
+        iconCount > 0
+          ? `Resume saved successfully with ${iconCount} embedded icon${
+              iconCount === 1 ? "" : "s"
+            }!`
+          : "Resume saved successfully!";
+      toast.success(message);
     } catch (error) {
       console.error("Error exporting YAML:", error);
       toast.error("Save failed. Check browser settings and try again.");
@@ -416,11 +443,20 @@ const Editor: React.FC = () => {
       try {
         // Longer delay for noticeable feedback on file operations
         await new Promise((resolve) => setTimeout(resolve, 1200));
-        const parsedYaml = yaml.load(e.target?.result as string) as {
-          contact_info: ContactInfo;
-          sections: Section[];
-        };
+        const parsedYaml = yaml.load(
+          e.target?.result as string
+        ) as PortableYAMLData;
+
         setContactInfo(parsedYaml.contact_info);
+
+        // Import icons first if they exist in the YAML
+        if (
+          parsedYaml.__icons__ &&
+          Object.keys(parsedYaml.__icons__).length > 0
+        ) {
+          await iconRegistry.importIconsFromYAML(parsedYaml.__icons__);
+        }
+
         // Process sections to clean up icon paths when importing YAML
         const processedSections = processSections(parsedYaml.sections);
         setSections(processedSections);
@@ -455,27 +491,14 @@ const Editor: React.FC = () => {
       const sessionId = getSessionId();
       formData.append("session_id", sessionId);
 
-      sections.forEach((section) => {
-        if (
-          ["Experience", "Education"].includes(section.name) &&
-          Array.isArray(section.content)
-        ) {
-          section.content.forEach((item: any) => {
-            if (item.icon && item.iconFile) {
-              formData.append("icons", item.iconFile, item.icon);
-            }
-          });
+      // Use centralized IconRegistry to get icon files for PDF generation
+      const referencedIcons = extractReferencedIconFilenames(sections);
+      for (const iconFilename of referencedIcons) {
+        const iconFile = iconRegistry.getIconFile(iconFilename);
+        if (iconFile) {
+          formData.append("icons", iconFile, iconFilename);
         }
-
-        // Handle icon-list section icons (Certifications, Awards, etc.)
-        if (section.type === "icon-list" && Array.isArray(section.content)) {
-          section.content.forEach((item: any) => {
-            if (item.icon && item.iconFile) {
-              formData.append("icons", item.iconFile, item.icon);
-            }
-          });
-        }
-      });
+      }
 
       const { pdfBlob, fileName } = await generateResume(formData);
 
@@ -571,83 +594,20 @@ const Editor: React.FC = () => {
     );
   };
 
-  const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
   const saveToLocalStorage = async () => {
     try {
       // Only save if data has changed from original template
       if (!hasDataChanged()) {
         return;
       }
-      // Process sections to convert File objects to base64
-      const processedSections = await Promise.all(
-        sections.map(async (section) => {
-          if (section.name === "Experience" && Array.isArray(section.content)) {
-            const processedContent = await Promise.all(
-              section.content.map(async (item: any) => {
-                if (item.iconFile instanceof File) {
-                  const base64 = await fileToBase64(item.iconFile);
-                  return {
-                    ...item,
-                    iconFile: null, // Remove File object
-                    iconBase64: base64, // Store base64 instead
-                  };
-                }
-                return item;
-              })
-            );
-            return { ...section, content: processedContent };
-          } else if (
-            section.name === "Education" &&
-            Array.isArray(section.content)
-          ) {
-            const processedContent = await Promise.all(
-              section.content.map(async (item: any) => {
-                if (item.iconFile instanceof File) {
-                  const base64 = await fileToBase64(item.iconFile);
-                  return {
-                    ...item,
-                    iconFile: null, // Remove File object
-                    iconBase64: base64, // Store base64 instead
-                  };
-                }
-                return item;
-              })
-            );
-            return { ...section, content: processedContent };
-          } else if (
-            section.type === "icon-list" &&
-            Array.isArray(section.content)
-          ) {
-            const processedContent = await Promise.all(
-              section.content.map(async (item: any) => {
-                if (item.iconFile instanceof File) {
-                  const base64 = await fileToBase64(item.iconFile);
-                  return {
-                    ...item,
-                    iconFile: null, // Remove File object
-                    iconBase64: base64, // Store base64 instead
-                  };
-                }
-                return item;
-              })
-            );
-            return { ...section, content: processedContent };
-          }
-          return section;
-        })
-      );
+
+      // Export icon registry data for storage
+      const iconRegistryData = await iconRegistry.exportForStorage();
 
       const data = {
         contactInfo,
-        sections: processedSections,
+        sections,
+        iconRegistry: iconRegistryData,
         timestamp: new Date().toISOString(),
       };
 
@@ -668,86 +628,21 @@ const Editor: React.FC = () => {
     }
   };
 
-  const base64ToFile = (base64: string, filename: string): File => {
-    const arr = base64.split(",");
-    const mime = arr[0].match(/:(.*?);/)?.[1] || "";
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, { type: mime });
-  };
-
-  const loadFromLocalStorage = () => {
+  const loadFromLocalStorage = async () => {
     try {
       const saved = localStorage.getItem(getAutoSaveKey());
       if (saved) {
         // Parse JSON data
         const decodedData = JSON.parse(saved);
 
-        // Process sections to convert base64 back to File objects
-        const processedSections = decodedData.sections.map((section: any) => {
-          if (section.name === "Experience" && Array.isArray(section.content)) {
-            const processedContent = section.content.map((item: any) => {
-              if (item.iconBase64) {
-                const file = base64ToFile(
-                  item.iconBase64,
-                  item.icon || "icon.png"
-                );
-                return {
-                  ...item,
-                  iconFile: file,
-                  // Keep iconBase64 for reference, will be cleaned up on next save
-                };
-              }
-              return item;
-            });
-            return { ...section, content: processedContent };
-          } else if (
-            section.name === "Education" &&
-            Array.isArray(section.content)
-          ) {
-            const processedContent = section.content.map((item: any) => {
-              if (item.iconBase64) {
-                const file = base64ToFile(
-                  item.iconBase64,
-                  item.icon || "icon.png"
-                );
-                return {
-                  ...item,
-                  iconFile: file,
-                };
-              }
-              return item;
-            });
-            return { ...section, content: processedContent };
-          } else if (
-            section.type === "icon-list" &&
-            Array.isArray(section.content)
-          ) {
-            const processedContent = section.content.map((item: any) => {
-              if (item.iconBase64) {
-                const file = base64ToFile(
-                  item.iconBase64,
-                  item.icon || "icon.png"
-                );
-                return {
-                  ...item,
-                  iconFile: file,
-                };
-              }
-              return item;
-            });
-            return { ...section, content: processedContent };
-          }
-          return section;
-        });
+        // Import icon registry data if it exists
+        if (decodedData.iconRegistry) {
+          await iconRegistry.importFromStorage(decodedData.iconRegistry);
+        }
 
         return {
           contactInfo: decodedData.contactInfo,
-          sections: processedSections,
+          sections: decodedData.sections,
           timestamp: new Date(decodedData.timestamp),
         };
       }

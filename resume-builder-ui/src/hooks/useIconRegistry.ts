@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
+import { IconExportData, IconStorageData } from '../types/iconTypes';
 
 interface IconRegistryEntry {
   file: File;
@@ -23,6 +24,12 @@ interface UseIconRegistryReturn {
   getRegisteredFilenames: () => string[];
   // Get registry size
   getRegistrySize: () => number;
+  // Export methods for YAML portability
+  exportIconsForYAML: (filenames?: string[]) => Promise<IconExportData>;
+  importIconsFromYAML: (iconData: IconExportData) => Promise<void>;
+  // Storage methods for localStorage persistence
+  exportForStorage: () => Promise<IconStorageData>;
+  importFromStorage: (storageData: IconStorageData) => Promise<void>;
 }
 
 /**
@@ -105,6 +112,96 @@ export const useIconRegistry = (): UseIconRegistryReturn => {
     return Object.keys(registry).length;
   }, [registry]);
 
+  // Convert File to base64 data URL
+  const fileToBase64 = useCallback((file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }, []);
+
+  // Convert base64 data URL back to File
+  const base64ToFile = useCallback((base64: string, filename: string): File => {
+    const arr = base64.split(',');
+    const mime = arr[0].match(/:(.*?);/)?.[1] || 'application/octet-stream';
+    const bstr = atob(arr[1]);
+    const n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    for (let i = 0; i < n; i++) {
+      u8arr[i] = bstr.charCodeAt(i);
+    }
+    return new File([u8arr], filename, { type: mime });
+  }, []);
+
+  // Export icons for YAML portability
+  const exportIconsForYAML = useCallback(async (filenames?: string[]): Promise<IconExportData> => {
+    const targetFilenames = filenames || Object.keys(registry);
+    const exportData: IconExportData = {};
+
+    for (const filename of targetFilenames) {
+      const entry = registry[filename];
+      if (entry) {
+        try {
+          const base64Data = await fileToBase64(entry.file);
+          exportData[filename] = {
+            data: base64Data,
+            type: entry.file.type,
+            size: entry.file.size,
+            uploadedAt: entry.uploadedAt.toISOString(),
+          };
+        } catch (error) {
+          console.warn(`Failed to export icon ${filename}:`, error);
+        }
+      }
+    }
+
+    return exportData;
+  }, [registry, fileToBase64]);
+
+  // Import icons from YAML data
+  const importIconsFromYAML = useCallback(async (iconData: IconExportData): Promise<void> => {
+    const importedRegistry: IconRegistry = {};
+
+    for (const [filename, iconItem] of Object.entries(iconData)) {
+      try {
+        const file = base64ToFile(iconItem.data, filename);
+        importedRegistry[filename] = {
+          file,
+          filename,
+          uploadedAt: new Date(iconItem.uploadedAt),
+        };
+        usedFilenames.current.add(filename);
+      } catch (error) {
+        console.warn(`Failed to import icon ${filename}:`, error);
+      }
+    }
+
+    // Merge with existing registry
+    setRegistry(prev => ({
+      ...prev,
+      ...importedRegistry,
+    }));
+  }, [base64ToFile]);
+
+  // Export for localStorage storage
+  const exportForStorage = useCallback(async (): Promise<IconStorageData> => {
+    const iconData = await exportIconsForYAML();
+    return {
+      icons: iconData,
+      version: '1.0',
+      timestamp: new Date().toISOString(),
+    };
+  }, [exportIconsForYAML]);
+
+  // Import from localStorage storage
+  const importFromStorage = useCallback(async (storageData: IconStorageData): Promise<void> => {
+    if (storageData.icons) {
+      await importIconsFromYAML(storageData.icons);
+    }
+  }, [importIconsFromYAML]);
+
   return {
     registerIcon,
     getIconFile,
@@ -112,5 +209,9 @@ export const useIconRegistry = (): UseIconRegistryReturn => {
     clearRegistry,
     getRegisteredFilenames,
     getRegistrySize,
+    exportIconsForYAML,
+    importIconsFromYAML,
+    exportForStorage,
+    importFromStorage,
   };
 };
