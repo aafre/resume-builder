@@ -18,6 +18,29 @@ interface GenericSectionProps {
   setTemporaryTitle: (title: string) => void;
 }
 
+interface BulkControlsProps {
+  bulkText: string;
+  setBulkText: (value: string) => void;
+  applyBulk: () => void;
+}
+
+const BulkControls: React.FC<BulkControlsProps> = ({ bulkText, setBulkText, applyBulk }) => (
+  <div className="mb-4">
+    <textarea
+      value={bulkText}
+      onChange={(e) => setBulkText(e.target.value)}
+      placeholder="Enter items separated by commas"
+      className="w-full border border-gray-300 rounded-lg p-2 mb-2"
+    />
+    <button
+      onClick={applyBulk}
+      className="bg-green-500 text-white px-4 py-2 rounded-lg"
+    >
+      Apply Bulk Add
+    </button>
+  </div>
+);
+
 const GenericSection: React.FC<GenericSectionProps> = ({
   section,
   onUpdate,
@@ -30,7 +53,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
   setTemporaryTitle,
 }) => {
   const [showHint, setShowHint] = useState(true);
-  const [bulkMode, setBulkMode] = useState(false);
+  const [isBulkMode, setIsBulkMode] = useState(false);
   const [bulkText, setBulkText] = useState("");
 
   useEffect(() => {
@@ -65,43 +88,24 @@ const GenericSection: React.FC<GenericSectionProps> = ({
     onUpdate({ ...section, content: updatedContent });
   };
 
-  const handleAddItems = () => {
-    if (bulkMode) {
-      const items = bulkText
-        .split(",")
-        .map((item) => item.trim())
-        .filter(Boolean);
-      const updatedContent = [...(section.content || []), ...items];
-      onUpdate({ ...section, content: updatedContent });
+  const applyBulk = () => {
+    const items = bulkText
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+    if (items.length > 0) {
+      onUpdate({ ...section, content: [...section.content, ...items] });
       setBulkText("");
-    } else {
-      const updatedContent = [...(section.content || []), ""];
-      onUpdate({ ...section, content: updatedContent });
     }
   };
 
-  const BulkControls = () => (
-    <>
-      <div className="mb-2">
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={bulkMode}
-            onChange={() => setBulkMode(!bulkMode)}
-          />
-          Bulk Add Mode
-        </label>
-      </div>
-      {bulkMode && (
-        <textarea
-          value={bulkText}
-          onChange={(e) => setBulkText(e.target.value)}
-          placeholder="Enter items separated by commas"
-          className="w-full border border-gray-300 rounded-lg p-2 mb-2"
-        />
-      )}
-    </>
-  );
+  const toggleBulkMode = () => {
+    setIsBulkMode((prev) => {
+      const newMode = !prev;
+      if (!newMode) setBulkText(""); // Clear when turning off
+      return newMode;
+    });
+  };
 
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
@@ -160,6 +164,29 @@ const GenericSection: React.FC<GenericSectionProps> = ({
         </button>
       </div>
 
+      {/* Bulk Mode Toggle */}
+      {section.type?.includes("list") && (
+        <div className="mb-4">
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={isBulkMode}
+              onChange={toggleBulkMode}
+            />
+            Bulk Add Mode
+          </label>
+        </div>
+      )}
+
+      {/* Bulk Controls */}
+      {isBulkMode && (
+        <BulkControls
+          bulkText={bulkText}
+          setBulkText={setBulkText}
+          applyBulk={applyBulk}
+        />
+      )}
+
       <div className="mt-4">
         {section.type === "text" && (
           <textarea
@@ -191,13 +218,16 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                   </button>
                 </div>
               ))}
-            <BulkControls />
-            <button
-              onClick={handleAddItems}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 mt-2"
-            >
-              Add Item
-            </button>
+            {!isBulkMode && (
+              <button
+                onClick={() =>
+                  handleContentChange("", undefined)
+                }
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 mt-2"
+              >
+                Add Item
+              </button>
+            )}
           </>
         )}
 
@@ -217,7 +247,9 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                         handleContentChange(e.target.value, index)
                       }
                       className="bg-transparent border-none outline-none text-sm min-w-0 w-auto"
-                      style={{ width: `${Math.max(item.length + 2, 8)}ch` }}
+                      style={{
+                        width: `${Math.max(item.length + 2, 8)}ch`,
+                      }}
                       placeholder="Add skill"
                     />
                     <button
@@ -230,51 +262,16 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                   </div>
                 ))}
             </div>
-            <BulkControls />
-            <button
-              onClick={handleAddItems}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 text-sm"
-            >
-              Add Item
-            </button>
-          </>
-        )}
-
-        {section.type === "dynamic-column-list" && (
-          <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
-              {Array.isArray(section.content) &&
-                section.content.map((item: string, index: number) => (
-                  <div
-                    key={index}
-                    className="flex items-center bg-gray-50 rounded-lg px-3 py-2 gap-2 border"
-                  >
-                    <input
-                      type="text"
-                      value={item}
-                      onChange={(e) =>
-                        handleContentChange(e.target.value, index)
-                      }
-                      className="bg-transparent border-none outline-none text-sm flex-grow min-w-0"
-                      placeholder="Add item"
-                    />
-                    <button
-                      onClick={() => handleRemoveItem(index)}
-                      className="text-red-500 hover:text-red-700 text-sm flex-shrink-0"
-                      title="Remove Item"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
-            </div>
-            <BulkControls />
-            <button
-              onClick={handleAddItems}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 text-sm"
-            >
-              Add Item
-            </button>
+            {!isBulkMode && (
+              <button
+                onClick={() =>
+                  handleContentChange("", undefined)
+                }
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 text-sm"
+              >
+                Add Item
+              </button>
+            )}
           </>
         )}
       </div>
