@@ -2,13 +2,13 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import ExperienceSection from "../components/ExperienceSection";
 
-// --- Mock the IconUpload Component ---
-// This dummy component renders a div with a data attribute for the existing icon.
-vi.mock("../components/IconUpload", () => {
+// --- Mock the IconManager Component ---
+// This dummy component renders a div with a data attribute for the existing icon value.
+vi.mock("../components/IconManager", () => {
   return {
-    default: (props: { existingIcon: string; onUpload: any; onClear: any }) => (
-      <div data-testid="icon-upload" data-existing-icon={props.existingIcon}>
-        IconUpload
+    default: (props: { value: string; onChange: any; registerIcon: any; getIconFile: any; removeIcon: any }) => (
+      <div data-testid="icon-manager" data-value={props.value}>
+        IconManager
       </div>
     ),
   };
@@ -204,20 +204,26 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
 
   it("renders the IconUpload component when supportsIcons is true", () => {
     const onUpdateMock = vi.fn();
+    const mockIconRegistry = {
+      registerIcon: vi.fn(),
+      getIconFile: vi.fn(),
+      removeIcon: vi.fn(),
+    };
     render(
       <ExperienceSection
         experiences={getMockExperiences()}
         onUpdate={onUpdateMock}
         supportsIcons={true}
+        iconRegistry={mockIconRegistry}
       />
     );
 
-    // Check that IconUpload is rendered for each experience entry.
-    const iconUploadElements = screen.getAllByTestId("icon-upload");
-    expect(iconUploadElements).toHaveLength(getMockExperiences().length);
+    // Check that IconManager is rendered for each experience entry.
+    const iconManagerElements = screen.getAllByTestId("icon-manager");
+    expect(iconManagerElements).toHaveLength(getMockExperiences().length);
     // Verify that the first experience's icon is passed correctly.
-    expect(iconUploadElements[0]).toHaveAttribute(
-      "data-existing-icon",
+    expect(iconManagerElements[0]).toHaveAttribute(
+      "data-value",
       "company_google.png"
     );
   });

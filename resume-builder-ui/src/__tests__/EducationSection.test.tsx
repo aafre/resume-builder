@@ -2,14 +2,14 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import EducationSection from "../components/EducationSection";
 
-// --- Mock the IconUpload Component ---
-// We include the existingIcon prop as a data attribute to test its value.
-vi.mock("../components/IconUpload", () => {
+// --- Mock the IconManager Component ---
+// We include the value prop as a data attribute to test its value.
+vi.mock("../components/IconManager", () => {
   return {
-    default: (props: { existingIcon: string; onUpload: any; onClear: any }) => {
+    default: (props: { value: string; onChange: any; registerIcon: any; getIconFile: any; removeIcon: any }) => {
       return (
-        <div data-testid="icon-upload" data-existing-icon={props.existingIcon}>
-          IconUpload
+        <div data-testid="icon-manager" data-value={props.value}>
+          IconManager
         </div>
       );
     },
@@ -128,22 +128,28 @@ describe("EducationSection", { timeout: 5000 }, () => {
     expect(newEntry.school).toBe("");
     expect(newEntry.year).toBe("");
     expect(newEntry.field_of_study).toBe("");
-    expect(newEntry.icon).toBe("");
-    expect(newEntry.iconFile).toBeUndefined();
+    expect(newEntry.icon).toBe(null);
+    expect(newEntry.iconFile).toBe(null);
   });
 
   it("renders the IconUpload component when supportsIcons is true", () => {
     const onUpdateMock = vi.fn();
+    const mockIconRegistry = {
+      registerIcon: vi.fn(),
+      getIconFile: vi.fn(),
+      removeIcon: vi.fn(),
+    };
     render(
       <EducationSection
         education={mockEducation}
         onUpdate={onUpdateMock}
         supportsIcons={true}
+        iconRegistry={mockIconRegistry}
       />
     );
 
-    const iconUploadElements = screen.getAllByTestId("icon-upload");
-    expect(iconUploadElements).toHaveLength(mockEducation.length);
+    const iconManagerElements = screen.getAllByTestId("icon-manager");
+    expect(iconManagerElements).toHaveLength(mockEducation.length);
   });
 
   it("renders IconUpload with broken icon path as-is", () => {
@@ -159,17 +165,24 @@ describe("EducationSection", { timeout: 5000 }, () => {
       },
     ];
 
+    const mockIconRegistry = {
+      registerIcon: vi.fn(),
+      getIconFile: vi.fn(),
+      removeIcon: vi.fn(),
+    };
+
     render(
       <EducationSection
         education={educationWithBrokenIcon}
         onUpdate={onUpdateMock}
         supportsIcons={true}
+        iconRegistry={mockIconRegistry}
       />
     );
 
-    // The current behavior is that the component passes the icon path as-is to IconUpload
-    // IconUpload will handle the broken image display
-    const iconUploadElement = screen.getByTestId("icon-upload");
-    expect(iconUploadElement).toHaveAttribute("data-existing-icon", "non-existent.png");
+    // The current behavior is that the component passes the icon path as-is to IconManager
+    // IconManager will handle the broken image display
+    const iconManagerElement = screen.getByTestId("icon-manager");
+    expect(iconManagerElement).toHaveAttribute("data-value", "non-existent.png");
   });
 });

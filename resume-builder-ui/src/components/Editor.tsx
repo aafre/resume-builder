@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { fetchTemplate, generateResume } from "../services/templates";
 import { getSessionId } from "../utils/session";
+import { useIconRegistry } from "../hooks/useIconRegistry";
 import yaml from "js-yaml";
 import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
@@ -90,6 +91,9 @@ const Editor: React.FC = () => {
   const [supportsIcons, setSupportsIcons] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loadingError, setLoadingError] = useState<string | null>(null);
+  
+  // Central icon registry for all uploaded icons
+  const iconRegistry = useIconRegistry();
   const [generating, setGenerating] = useState(false);
   const [editingTitleIndex, setEditingTitleIndex] = useState<number | null>(
     null
@@ -205,16 +209,20 @@ const Editor: React.FC = () => {
     return sections.map((section) => {
       // Handle icon-list sections (Certifications, Awards, etc.)
       if (section.type === "icon-list") {
-        const updatedContent = section.content.map((item: any) => ({
-          certification: item.certification || "",
-          issuer: item.issuer || "",
-          date: item.date || "",
-          icon: item.icon
-            ? item.icon.startsWith("/icons/")
-              ? item.icon.replace("/icons/", "")
-              : item.icon
-            : null,
-        }));
+        const updatedContent = section.content.map((item: any) => {
+          // Remove iconFile and iconBase64 for export, keep only clean icon filename
+          const { iconFile, iconBase64, ...cleanItem } = item;
+          return {
+            certification: cleanItem.certification || "",
+            issuer: cleanItem.issuer || "",
+            date: cleanItem.date || "",
+            icon: cleanItem.icon
+              ? cleanItem.icon.startsWith("/icons/")
+                ? cleanItem.icon.replace("/icons/", "")
+                : cleanItem.icon
+              : null,
+          };
+        });
         return {
           ...section,
           content: updatedContent,
@@ -224,13 +232,14 @@ const Editor: React.FC = () => {
       if (["Experience", "Education"].includes(section.name)) {
         const updatedContent = Array.isArray(section.content)
           ? section.content.map((item: any) => {
-              const { icon, iconFile, ...rest } = item;
+              // Remove iconFile and iconBase64 for export, keep only clean icon filename
+              const { iconFile, iconBase64, ...rest } = item;
               return {
                 ...rest,
-                icon: icon
-                  ? icon.startsWith("/icons/")
-                    ? icon.replace("/icons/", "")
-                    : icon
+                icon: rest.icon
+                  ? rest.icon.startsWith("/icons/")
+                    ? rest.icon.replace("/icons/", "")
+                    : rest.icon
                   : null,
               };
             })
@@ -998,6 +1007,7 @@ const Editor: React.FC = () => {
                           })
                         }
                         supportsIcons={supportsIcons}
+                        iconRegistry={iconRegistry}
                       />
                     </div>
                   </DragHandle>
@@ -1021,6 +1031,7 @@ const Editor: React.FC = () => {
                           })
                         }
                         supportsIcons={supportsIcons}
+                        iconRegistry={iconRegistry}
                       />
                     </div>
                   </DragHandle>
@@ -1051,6 +1062,7 @@ const Editor: React.FC = () => {
                         isEditing={editingTitleIndex === index}
                         temporaryTitle={temporaryTitle}
                         setTemporaryTitle={setTemporaryTitle}
+                        iconRegistry={iconRegistry}
                       />
                     </div>
                   </DragHandle>
@@ -1093,12 +1105,14 @@ const Editor: React.FC = () => {
                     experiences={draggedSection.content}
                     onUpdate={() => {}}
                     supportsIcons={supportsIcons}
+                    iconRegistry={iconRegistry}
                   />
                 ) : draggedSection.name === "Education" ? (
                   <EducationSection
                     education={draggedSection.content}
                     onUpdate={() => {}}
                     supportsIcons={supportsIcons}
+                    iconRegistry={iconRegistry}
                   />
                 ) : draggedSection.type === "icon-list" ? (
                   <IconListSection
@@ -1112,6 +1126,7 @@ const Editor: React.FC = () => {
                     isEditing={false}
                     temporaryTitle={""}
                     setTemporaryTitle={() => {}}
+                    iconRegistry={iconRegistry}
                   />
                 ) : (
                   <GenericSection
