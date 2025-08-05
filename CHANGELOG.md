@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.8] - 2025-08-05
+
+### 🐛 Bug Fixes
+
+- Streamline icon handling and loading from saved yaml ([#103](https://github.com/aafre/resume-builder/pull/103))
+
 ## [0.2.7] - 2025-08-02
 
 ### ⚙️ Miscellaneous Tasks
