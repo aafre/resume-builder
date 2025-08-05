@@ -30,18 +30,20 @@ const GenericSection: React.FC<GenericSectionProps> = ({
   setTemporaryTitle,
 }) => {
   const [showHint, setShowHint] = useState(true);
+  const [bulkMode, setBulkMode] = useState(false);
+  const [bulkText, setBulkText] = useState("");
 
   useEffect(() => {
-    if (section.name.startsWith('New ')) {
+    if (section.name.startsWith("New ")) {
       const timer = setTimeout(() => {
         setShowHint(false);
-      }, 5000); // Hide hint after 5 seconds
-      
+      }, 5000);
       return () => clearTimeout(timer);
     } else {
       setShowHint(false);
     }
   }, [section.name]);
+
   const handleContentChange = (value: string | string[], index?: number) => {
     if (Array.isArray(section.content)) {
       const updatedContent = [...section.content];
@@ -62,6 +64,44 @@ const GenericSection: React.FC<GenericSectionProps> = ({
     );
     onUpdate({ ...section, content: updatedContent });
   };
+
+  const handleAddItems = () => {
+    if (bulkMode) {
+      const items = bulkText
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
+      const updatedContent = [...(section.content || []), ...items];
+      onUpdate({ ...section, content: updatedContent });
+      setBulkText("");
+    } else {
+      const updatedContent = [...(section.content || []), ""];
+      onUpdate({ ...section, content: updatedContent });
+    }
+  };
+
+  const BulkControls = () => (
+    <>
+      <div className="mb-2">
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={bulkMode}
+            onChange={() => setBulkMode(!bulkMode)}
+          />
+          Bulk Add Mode
+        </label>
+      </div>
+      {bulkMode && (
+        <textarea
+          value={bulkText}
+          onChange={(e) => setBulkText(e.target.value)}
+          placeholder="Enter items separated by commas"
+          className="w-full border border-gray-300 rounded-lg p-2 mb-2"
+        />
+      )}
+    </>
+  );
 
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
@@ -91,9 +131,11 @@ const GenericSection: React.FC<GenericSectionProps> = ({
             </button>
           </div>
         ) : (
-          <h2 className={`text-xl font-semibold ${
-            section.name.startsWith('New ') ? 'text-gray-500 italic' : ''
-          }`}>
+          <h2
+            className={`text-xl font-semibold ${
+              section.name.startsWith("New ") ? "text-gray-500 italic" : ""
+            }`}
+          >
             {section.name}
             <button
               onClick={onEditTitle}
@@ -102,7 +144,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
             >
               ✏️
             </button>
-            {section.name.startsWith('New ') && showHint && (
+            {section.name.startsWith("New ") && showHint && (
               <span className="ml-2 text-sm text-blue-500 font-normal">
                 (Click ✏️ to rename)
               </span>
@@ -126,7 +168,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
             className="w-full border border-gray-300 rounded-lg p-2"
           ></textarea>
         )}
-        {/* Bulleted List - Keep original full-width layout */}
+
         {section.type === "bulleted-list" && (
           <>
             {Array.isArray(section.content) &&
@@ -135,7 +177,9 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                   <input
                     type="text"
                     value={item}
-                    onChange={(e) => handleContentChange(e.target.value, index)}
+                    onChange={(e) =>
+                      handleContentChange(e.target.value, index)
+                    }
                     className="w-full border border-gray-300 rounded-lg p-2"
                   />
                   <button
@@ -147,11 +191,9 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                   </button>
                 </div>
               ))}
+            <BulkControls />
             <button
-              onClick={() => {
-                const updatedContent = [...(section.content || []), ""];
-                onUpdate({ ...section, content: updatedContent });
-              }}
+              onClick={handleAddItems}
               className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 mt-2"
             >
               Add Item
@@ -159,17 +201,21 @@ const GenericSection: React.FC<GenericSectionProps> = ({
           </>
         )}
 
-        {/* Inline List - Compact flex wrap layout */}
         {section.type === "inline-list" && (
           <>
             <div className="flex flex-wrap gap-2 mb-4">
               {Array.isArray(section.content) &&
                 section.content.map((item: string, index: number) => (
-                  <div key={index} className="flex items-center bg-gray-100 rounded-full px-3 py-1 gap-2">
+                  <div
+                    key={index}
+                    className="flex items-center bg-gray-100 rounded-full px-3 py-1 gap-2"
+                  >
                     <input
                       type="text"
                       value={item}
-                      onChange={(e) => handleContentChange(e.target.value, index)}
+                      onChange={(e) =>
+                        handleContentChange(e.target.value, index)
+                      }
                       className="bg-transparent border-none outline-none text-sm min-w-0 w-auto"
                       style={{ width: `${Math.max(item.length + 2, 8)}ch` }}
                       placeholder="Add skill"
@@ -184,11 +230,9 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                   </div>
                 ))}
             </div>
+            <BulkControls />
             <button
-              onClick={() => {
-                const updatedContent = [...(section.content || []), ""];
-                onUpdate({ ...section, content: updatedContent });
-              }}
+              onClick={handleAddItems}
               className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 text-sm"
             >
               Add Item
@@ -196,17 +240,21 @@ const GenericSection: React.FC<GenericSectionProps> = ({
           </>
         )}
 
-        {/* Dynamic Column List - CSS Grid layout */}
         {section.type === "dynamic-column-list" && (
           <>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
               {Array.isArray(section.content) &&
                 section.content.map((item: string, index: number) => (
-                  <div key={index} className="flex items-center bg-gray-50 rounded-lg px-3 py-2 gap-2 border">
+                  <div
+                    key={index}
+                    className="flex items-center bg-gray-50 rounded-lg px-3 py-2 gap-2 border"
+                  >
                     <input
                       type="text"
                       value={item}
-                      onChange={(e) => handleContentChange(e.target.value, index)}
+                      onChange={(e) =>
+                        handleContentChange(e.target.value, index)
+                      }
                       className="bg-transparent border-none outline-none text-sm flex-grow min-w-0"
                       placeholder="Add item"
                     />
@@ -220,11 +268,9 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                   </div>
                 ))}
             </div>
+            <BulkControls />
             <button
-              onClick={() => {
-                const updatedContent = [...(section.content || []), ""];
-                onUpdate({ ...section, content: updatedContent });
-              }}
+              onClick={handleAddItems}
               className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 text-sm"
             >
               Add Item
