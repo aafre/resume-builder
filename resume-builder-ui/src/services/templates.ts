@@ -65,3 +65,37 @@ export async function generateResume(formData: FormData) {
   }
 }
 
+/**
+ * Generate a resume preview image by submitting YAML and template ID, along with icons.
+ * @param {FormData} formData - The FormData containing YAML, template ID, and icons.
+ * @returns {Promise<any>} The response from the backend with the PNG blob and filename.
+ */
+export async function generatePreview(formData: FormData) {
+  const response = await fetch(`${API_BASE_URL}/preview/img`, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    throw new Error(errorResponse.error || "Failed to generate preview");
+  }
+
+  const contentType = response.headers.get("content-type");
+  const contentDisposition = response.headers.get("Content-Disposition");
+
+  if (contentType && contentType.includes("image/png")) {
+    const imageBlob = await response.blob();
+
+    // Extract filename from Content-Disposition header
+    const fileName = contentDisposition?.split("filename=")[1]?.replace(/"/g, "") || "resume_preview.png";
+
+    return { imageBlob, fileName };
+  } else {
+    const errorResponse = await response.json();
+    throw new Error(
+      errorResponse.error || "Unexpected response: Expected a PNG image"
+    );
+  }
+}
+
