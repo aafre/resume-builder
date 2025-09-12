@@ -27,8 +27,8 @@ const LandingPage: React.FC = () => {
     const daysSinceLaunch = Math.floor(
       (now.getTime() - launchDate.getTime()) / msPerDay
     );
-    const baseCount = 52000; // Starting above 50k to align with our messaging
-    const dailyUsers = 18; // Daily growth rate
+    const baseCount = 52000; 
+    const dailyUsers = 28; 
     return baseCount + daysSinceLaunch * dailyUsers;
   };
 
@@ -208,7 +208,7 @@ const LandingPage: React.FC = () => {
             </p>
           </div>
 
-          <CompanyMarquee speed={45} pauseOnHover={true} />
+          <CompanyMarquee speed={12} pauseOnHover={true} />
 
           <div className="text-center mt-8">
             <p className="text-sm text-gray-500 max-w-3xl mx-auto">
