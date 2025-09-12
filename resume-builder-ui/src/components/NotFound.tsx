@@ -4,10 +4,10 @@ const NotFound: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-indigo-100/40 flex items-center justify-center px-4">
       <div className="max-w-lg w-full">
         {/* 404 Card */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8 md:p-12 border border-gray-200 text-center">
+        <div className="glass glass-hover rounded-3xl p-8 md:p-12 text-center">
           {/* 404 Code */}
           <div className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600 mb-6">
             404
@@ -29,13 +29,13 @@ const NotFound: React.FC = () => {
             <div className="flex gap-3">
               <button
                 onClick={() => navigate("/templates")}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+                className="btn-primary flex-1 py-4 px-6"
               >
-                Browse Templates
+                <span className="relative z-10">Browse Templates</span>
               </button>
               <button
                 onClick={() => navigate("/")}
-                className="flex-1 bg-white/80 backdrop-blur-sm text-gray-700 py-4 px-6 rounded-xl font-medium border border-gray-200 hover:bg-gray-50 hover:shadow-md transition-all duration-300"
+                className="btn-secondary flex-1 py-4 px-6"
               >
                 Go Home
               </button>
