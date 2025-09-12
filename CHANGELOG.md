@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2025-09-12
+
+### 🚀 Features
+
+- Add blogs, update styling and disable console log using terser ([#109](https://github.com/aafre/resume-builder/pull/109))
+
 ## [0.2.8] - 2025-08-05
 
 ### 🐛 Bug Fixes
