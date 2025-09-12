@@ -175,8 +175,8 @@ const TemplateCarousel: React.FC = () => {
                           </button>
                         </>
                       ) : (
-                        <button className="w-full text-blue-600 bg-blue-50 border-2 border-blue-200 py-4 px-6 rounded-xl font-semibold hover:bg-blue-100 transition-colors duration-300">
-                          Select This Template
+                        <button className="btn-primary w-full py-4 px-6">
+                          <span className="relative z-10">Select This Template</span>
                         </button>
                       )}
                     </div>

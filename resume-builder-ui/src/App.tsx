@@ -37,6 +37,18 @@ const ResumeLengthGuide = lazy(() => import("./components/blog/ResumeLengthGuide
 const TechResumeGuide = lazy(() => import("./components/blog/TechResumeGuide"));
 const ResumeVsCvDifference = lazy(() => import("./components/blog/ResumeVsCvDifference"));
 const AIResumeBuilder = lazy(() => import("./components/blog/AIResumeBuilder"));
+const JobInterviewGuide = lazy(() => import("./components/blog/JobInterviewGuide"));
+const BehavioralInterviewQuestions = lazy(() => import("./components/blog/BehavioralInterviewQuestions"));
+const IntroducingPrepAI = lazy(() => import("./components/blog/IntroducingPrepAI"));
+const HowToWriteResumeGuide = lazy(() => import("./components/blog/HowToWriteResumeGuide"));
+const ResumeActionVerbs = lazy(() => import("./components/blog/ResumeActionVerbs"));
+const HowToUseResumeKeywords = lazy(() => import("./components/blog/HowToUseResumeKeywords"));
+const SoftwareEngineerResumeKeywords = lazy(() => import("./components/blog/SoftwareEngineerResumeKeywords"));
+const CustomerServiceResumeKeywords = lazy(() => import("./components/blog/CustomerServiceResumeKeywords"));
+const EasyFreeResumeFreeBlog = lazy(() => import("./components/blog/EasyFreeResumeFreeBlog"));
+const ZetyVsEasyFreeResume = lazy(() => import("./components/blog/ZetyVsEasyFreeResume"));
+const HowToListSkills = lazy(() => import("./components/blog/HowToListSkills"));
+const QuantifyResumeAccomplishments = lazy(() => import("./components/blog/QuantifyResumeAccomplishments"));
 
 // Error pages - lazy loaded
 const NotFound = lazy(() => import("./components/NotFound"));
@@ -211,6 +223,104 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <AIResumeBuilder />
+              </Suspense>
+            }
+          />
+
+          {/* New blog routes */}
+          <Route
+            path="/blog/job-interview-guide"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <JobInterviewGuide />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/behavioral-interview-questions"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <BehavioralInterviewQuestions />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/introducing-prepai-ai-interview-coach"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <IntroducingPrepAI />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/how-to-write-a-resume-guide"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <HowToWriteResumeGuide />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/resume-action-verbs"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ResumeActionVerbs />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/how-to-use-resume-keywords"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <HowToUseResumeKeywords />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/software-engineer-resume-keywords"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <SoftwareEngineerResumeKeywords />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/customer-service-resume-keywords"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <CustomerServiceResumeKeywords />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/easy-free-resume-free-blog"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <EasyFreeResumeFreeBlog />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/zety-vs-easy-free-resume"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ZetyVsEasyFreeResume />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/how-to-list-skills"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <HowToListSkills />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/quantify-resume-accomplishments"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <QuantifyResumeAccomplishments />
               </Suspense>
             }
           />
