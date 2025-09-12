@@ -130,11 +130,17 @@ const LandingPage: React.FC = () => {
           },
         }}
       />
-      <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-gray-800">
+      <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-indigo-100/40 text-gray-800 relative overflow-hidden">
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 opacity-[0.02]" style={{
+          backgroundImage: `radial-gradient(circle at 25px 25px, #6366f1 2px, transparent 0)`,
+          backgroundSize: '50px 50px'
+        }}></div>
         {/* Hero Section */}
         <div className="text-center my-16 px-4 max-w-4xl mx-auto">
           {/* Professional Gradient Title */}
-          <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800">
+          <h1 className="text-4xl md:text-6xl font-bold mb-8 pb-2 leading-snug tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 relative">
+            <span className="absolute inset-0 text-gray-800 opacity-10">The Truly Free Resume Builder</span>
             The Truly Free Resume Builder
           </h1>
           <p className="text-xl md:text-2xl max-w-3xl mx-auto text-gray-800 mb-4 leading-relaxed">
@@ -157,35 +163,36 @@ const LandingPage: React.FC = () => {
           </div>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
             <button
-              className="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 ease-out"
+              className="group inline-flex items-center justify-center bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 ease-out active:scale-[0.98] relative overflow-hidden"
               onClick={() => navigate("/templates")}
             >
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out"></div>
               Start Building Now
-              <ArrowRightIcon className="w-5 h-5 ml-2" />
+              <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
             </button>
             <button
-              className="inline-flex items-center justify-center bg-white/80 backdrop-blur-sm text-gray-700 py-4 px-8 rounded-xl text-lg font-semibold shadow-md hover:shadow-lg hover:bg-white transition-all duration-300 ease-out"
+              className="group inline-flex items-center justify-center bg-white/90 backdrop-blur-md border border-white/50 text-gray-700 py-4 px-8 rounded-xl text-lg font-semibold shadow-md hover:shadow-xl hover:bg-white/95 hover:border-purple-200/50 transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98]"
               onClick={() => navigate("/templates")}
             >
               View Templates
-              <EyeIcon className="w-5 h-5 ml-2" />
+              <EyeIcon className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform duration-200" />
             </button>
           </div>
         </div>
 
         {/* Stats Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-16 my-16 px-4">
-          <div className="text-center bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-            <h3 className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">
+          <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
+            <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-blue-500 group-hover:to-purple-500 transition-all duration-300">
               <CountUp end={totalUsers} duration={3} separator="," />+
             </h3>
-            <p className="text-gray-600 font-medium">Resumes Created</p>
+            <p className="text-gray-600 font-medium tracking-wide">Resumes Created</p>
           </div>
-          <div className="text-center bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-            <h3 className="text-4xl md:text-5xl font-bold text-indigo-600 mb-2">
+          <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-xl hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
+            <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-indigo-500 group-hover:to-purple-500 transition-all duration-300">
               99%
             </h3>
-            <p className="text-gray-600 font-medium">ATS Compatible</p>
+            <p className="text-gray-600 font-medium tracking-wide">ATS Compatible</p>
           </div>
         </div>
 
@@ -224,19 +231,24 @@ const LandingPage: React.FC = () => {
             {features.map((item, index) => (
               <div
                 key={index}
-                className="group p-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
+                className="group p-8 bg-white/80 backdrop-blur-xl border border-white/40 rounded-3xl shadow-xl hover:shadow-2xl hover:shadow-purple-500/5 transition-all duration-500 transform hover:-translate-y-3 hover:scale-[1.02] relative overflow-hidden"
               >
-                <div className="flex items-center justify-center mb-6">
-                  <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 group-hover:from-blue-100 group-hover:to-indigo-100 transition-all duration-300">
-                    {item.icon}
+                {/* Subtle gradient overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-purple-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center justify-center mb-6">
+                    <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 group-hover:from-blue-100/90 group-hover:to-purple-100/90 group-hover:scale-110 transition-all duration-300 shadow-md group-hover:shadow-lg">
+                      {item.icon}
+                    </div>
                   </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-4 transition-all duration-300 group-hover:text-purple-700 group-hover:scale-105">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed transition-colors duration-300 group-hover:text-gray-700">
+                    {item.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-4 transition-colors duration-300 group-hover:text-blue-600">
-                  {item.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed transition-colors duration-300 group-hover:text-gray-700">
-                  {item.description}
-                </p>
               </div>
             ))}
           </div>
@@ -256,7 +268,7 @@ const LandingPage: React.FC = () => {
               return (
                 <div
                   key={index}
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+                  className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.01] group"
                 >
                   <button
                     onClick={() => handleFAQToggle(index)}
@@ -288,21 +300,31 @@ const LandingPage: React.FC = () => {
 
         {/* Final CTA Section */}
         <div className="container mx-auto max-w-4xl my-20 px-4 text-center">
-          <div className="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-3xl shadow-2xl p-12 text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-              Ready to Land Your Dream Job?
-            </h2>
-            <p className="text-xl mb-8 text-blue-50 max-w-2xl mx-auto">
-              Join thousands of job seekers who've successfully created
-              professional resumes with our free builder.
-            </p>
-            <button
-              className="inline-flex items-center justify-center bg-white text-blue-600 py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 ease-out hover:scale-105"
-              onClick={() => navigate("/templates")}
-            >
-              Start Building Your Resume
-              <ArrowRightIcon className="w-5 h-5 ml-2" />
-            </button>
+          <div className="relative bg-gradient-to-br from-blue-700 via-purple-700 to-indigo-800 rounded-3xl shadow-2xl p-12 text-white overflow-hidden">
+            {/* Enhanced background pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+              <div className="absolute top-0 -right-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+              <div className="absolute -bottom-8 left-20 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+            </div>
+            
+            <div className="relative z-10">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white tracking-tight">
+                Ready to Land Your Dream Job?
+              </h2>
+              <p className="text-xl mb-8 text-purple-100 max-w-2xl mx-auto leading-relaxed">
+                Join thousands of job seekers who've successfully created
+                professional resumes with our free builder.
+              </p>
+              <button
+                className="group inline-flex items-center justify-center bg-white text-purple-700 py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 ease-out active:scale-95 relative overflow-hidden"
+                onClick={() => navigate("/templates")}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-purple-100/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out"></div>
+                Start Building Your Resume
+                <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
