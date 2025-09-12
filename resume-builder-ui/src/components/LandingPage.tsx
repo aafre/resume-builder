@@ -107,8 +107,8 @@ const LandingPage: React.FC = () => {
   return (
     <>
       <SEOHead
-        title="EasyFreeResume: The Easiest Free Resume Builder (No Sign-Ups)"
-        description="Build a professional resume in minutes with our completely free, no sign-up required online tool. Simple, clean templates that make your application stand out."
+        title="The Actually Free Resume Builder (No Sign-Ups or Paywalls) | EasyFreeResume"
+        description="The only 100% free resume builder. Create and download unlimited ATS-friendly resumes in minutes. No sign-up, no credit card, no hidden fees. Get started now."
         structuredData={{
           "@context": "https://schema.org",
           "@type": "WebApplication",
@@ -135,7 +135,7 @@ const LandingPage: React.FC = () => {
         <div className="text-center my-16 px-4 max-w-4xl mx-auto">
           {/* Professional Gradient Title */}
           <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800">
-            Create a Professional Resume in Minutes
+            The Truly Free Resume Builder
           </h1>
           <p className="text-xl md:text-2xl max-w-3xl mx-auto text-gray-800 mb-4 leading-relaxed">
             Create ATS-optimized resumes that get you noticed by hiring
@@ -215,7 +215,7 @@ const LandingPage: React.FC = () => {
         {/* Why Job Seekers Choose Us */}
         <div className="container mx-auto max-w-6xl my-20 px-4 text-center">
           <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
-            Why Thousands of Job Seekers Trust EasyFreeResume
+            Why Job Seekers Choose Our Free Resume Builder
           </h2>
           <p className="text-lg text-gray-600 mb-16 max-w-2xl mx-auto">
             Trusted by job seekers worldwide to create resumes that stand out
@@ -248,7 +248,7 @@ const LandingPage: React.FC = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-lg text-gray-600 mb-12 text-center max-w-2xl mx-auto">
-            Everything you need to know about building your resume
+            Everything you need to know about building your free resume
           </p>
           <div className="space-y-4">
             {faqs.map((faq, index) => {

@@ -23,7 +23,7 @@ export default function ResumeVsCvDifference() {
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
           "Should I send a resume or a CV?" This is a common question that can
           trip up even experienced job seekers. While often used
-          interchangeably, a **resume** and a **CV (Curriculum Vitae)** are
+          interchangeably, a <strong>resume</strong> and a <strong>CV (Curriculum Vitae)</strong> are
           distinct documents with different purposes, lengths, and content.
           Knowing which one to use for a particular application is crucial for
           your job search success.
@@ -44,7 +44,7 @@ export default function ResumeVsCvDifference() {
           What is a Resume?
         </h2>
         <p className="text-lg leading-relaxed text-gray-700">
-          A **resume** is a concise, usually one-page (sometimes two, for more
+          A <strong>resume</strong> is a concise, usually one-page (sometimes two, for more
           experienced professionals) summary of your skills, experience, and
           education, tailored specifically for the job you're applying for. Its
           primary goal is to provide a snapshot of your most relevant
@@ -87,7 +87,7 @@ export default function ResumeVsCvDifference() {
           When to Use a Resume:
         </h3>
         <p className="text-lg leading-relaxed text-gray-700 mb-6">
-          You'll use a resume for most **private sector jobs** in the United
+          You'll use a resume for most <strong>private sector jobs</strong> in the United
           States and Canada. This includes roles in:
         </p>
         <ul className="list-disc pl-6 space-y-2 text-gray-700">
@@ -107,7 +107,7 @@ export default function ResumeVsCvDifference() {
           What is a CV (Curriculum Vitae)?
         </h2>
         <p className="text-lg leading-relaxed text-gray-700">
-          A **CV (Curriculum Vitae)**, Latin for "course of life," is a
+          A <strong>CV (Curriculum Vitae)</strong>, Latin for "course of life," is a
           detailed, comprehensive document that outlines your entire academic
           and professional history. Unlike a resume, a CV is typically longer,
           more extensive, and doesn't usually change much from one application
@@ -255,16 +255,16 @@ export default function ResumeVsCvDifference() {
         </h2>
         <ul className="list-disc pl-6 space-y-3 text-lg leading-relaxed text-gray-700">
           <li>
-            Always **read the job description carefully** to determine if a
+            Always <strong>read the job description carefully</strong> to determine if a
             "resume," "CV," or "application" is requested.
           </li>
           <li>
-            For most jobs in the US and Canada, you'll need a **concise,
-            tailored resume**.
+            For most jobs in the US and Canada, you'll need a <strong>concise,
+            tailored resume</strong>.
           </li>
           <li>
             For academic, research, medical roles, or international
-            applications, prepare a **comprehensive CV**.
+            applications, prepare a <strong>comprehensive CV</strong>.
           </li>
           <li>
             Even when asked for a CV internationally, if it's not an academic
@@ -278,8 +278,8 @@ export default function ResumeVsCvDifference() {
           <h3 className="text-2xl font-bold mb-4">💡 Actionable Advice:</h3>
           <p className="text-lg mb-4">
             If you're unsure, it's safer to have both a resume and a CV
-            prepared. Your **resume** should be a dynamic document that you
-            adapt for every job. Your **CV** can be a more static, running
+            prepared. Your <strong>resume</strong> should be a dynamic document that you
+            adapt for every job. Your <strong>CV</strong> can be a more static, running
             record of your entire professional and academic life.
           </p>
           <p className="text-lg">
