@@ -626,7 +626,7 @@ export default function ResumeActionVerbs() {
               </ol>
             </div>
             <div>
-              <ol start="11" className="space-y-1">
+              <ol start={11} className="space-y-1">
                 <li>11. Implemented</li>
                 <li>12. Improved</li>
                 <li>13. Increased</li>
@@ -640,7 +640,7 @@ export default function ResumeActionVerbs() {
               </ol>
             </div>
             <div>
-              <ol start="21" className="space-y-1">
+              <ol start={21} className="space-y-1">
                 <li>21. Partnered</li>
                 <li>22. Pioneered</li>
                 <li>23. Planned</li>
@@ -654,7 +654,7 @@ export default function ResumeActionVerbs() {
               </ol>
             </div>
             <div>
-              <ol start="31" className="space-y-1">
+              <ol start={31} className="space-y-1">
                 <li>31. Exceeded</li>
                 <li>32. Facilitated</li>
                 <li>33. Transformed</li>
@@ -668,7 +668,7 @@ export default function ResumeActionVerbs() {
               </ol>
             </div>
             <div>
-              <ol start="41" className="space-y-1">
+              <ol start={41} className="space-y-1">
                 <li>41. Innovated</li>
                 <li>42. Strategized</li>
                 <li>43. Cultivated</li>
