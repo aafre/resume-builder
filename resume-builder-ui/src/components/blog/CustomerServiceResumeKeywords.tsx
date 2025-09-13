@@ -5,8 +5,8 @@ export default function CustomerServiceResumeKeywords() {
     <BlogLayout
       title="Top Keywords for Customer Service Resumes (with Examples)"
       description="Elevate your customer service resume by including the keywords recruiters are searching for, from CRM platforms to conflict resolution skills."
-      publishDate="2025-10-08"
-      readTime="8 min"
+      publishDate="2025-08-05"
+      readTime="9 min"
       keywords={[
         "customer service resume",
         "customer support keywords",

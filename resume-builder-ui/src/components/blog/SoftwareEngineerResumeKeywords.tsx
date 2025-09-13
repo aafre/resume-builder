@@ -5,7 +5,7 @@ export default function SoftwareEngineerResumeKeywords() {
     <BlogLayout
       title="50+ Essential Keywords for a Software Engineer Resume"
       description="From programming languages to agile methodologies, these are the must-have keywords that will get your software engineering resume noticed by top tech companies."
-      publishDate="2025-10-05"
+      publishDate="2025-08-10"
       readTime="9 min"
       keywords={[
         "software engineer resume keywords",

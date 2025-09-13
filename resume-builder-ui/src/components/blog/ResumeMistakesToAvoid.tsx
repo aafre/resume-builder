@@ -8,6 +8,7 @@ export default function ResumeMistakesToAvoid() {
       publishDate="2025-07-25"
       readTime="7 min"
       keywords={['resume mistakes', 'job application tips', 'resume writing', 'career advice', 'job search']}
+      ctaType="resume"
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">

@@ -293,7 +293,7 @@ function AppContent() {
             }
           />
           <Route
-            path="/blog/easy-free-resume-free-blog"
+            path="/blog/how-why-easyfreeresume-completely-free"
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <EasyFreeResumeFreeBlog />
