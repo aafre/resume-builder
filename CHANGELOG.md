@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1] - 2025-09-13
+
+### 🐛 Bug Fixes
+
+- Blog readTimes, broken urls and content ([#110](https://github.com/aafre/resume-builder/pull/110))
+
 ## [0.3.0] - 2025-09-12
 
 ### 🚀 Features
