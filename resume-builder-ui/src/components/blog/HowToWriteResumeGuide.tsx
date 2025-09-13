@@ -5,8 +5,8 @@ export default function HowToWriteResumeGuide() {
     <BlogLayout
       title="How to Write a Resume in 2025: The Complete Step-by-Step Guide"
       description="From a blank page to a finished, professional resume, this guide covers every section, formatting rule, and writing tip you need to know."
-      publishDate="2025-09-22"
-      readTime="28 min"
+      publishDate="2025-08-25"
+      readTime="8 min"
       keywords={[
         "how to write a resume",
         "resume writing guide",
@@ -15,6 +15,7 @@ export default function HowToWriteResumeGuide() {
         "resume tips",
         "career advice",
       ]}
+      ctaType="resume"
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">

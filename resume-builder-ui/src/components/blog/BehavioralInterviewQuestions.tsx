@@ -5,8 +5,8 @@ export default function BehavioralInterviewQuestions() {
     <BlogLayout
       title="15+ Behavioral Interview Questions (and How to Answer with the STAR Method)"
       description="Prepare for tough behavioral questions by mastering the STAR method with these common examples and answer frameworks."
-      publishDate="2025-09-18"
-      readTime="10 min"
+      publishDate="2025-09-02"
+      readTime="6 min"
       keywords={[
         "behavioral interview questions",
         "STAR method",
@@ -15,6 +15,7 @@ export default function BehavioralInterviewQuestions() {
         "job interview preparation",
         "interview answers",
       ]}
+      ctaType="interview"
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">

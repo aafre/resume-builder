@@ -5,7 +5,7 @@ export default function HowToListSkills() {
     <BlogLayout
       title="How to List Skills on a Resume: A Step-by-Step Guide (100+ Examples)"
       description="Master the art of creating a powerful skills section. Learn what to include, how to format it, and get inspired with over 100 examples for any industry."
-      publishDate="2025-10-20"
+      publishDate="2025-07-23"
       readTime="12 min"
       keywords={[
         "how to list skills on resume",

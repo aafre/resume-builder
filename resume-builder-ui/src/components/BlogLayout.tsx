@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from './SEOHead';
+import BlogCTA from './BlogCTA';
 
 interface BlogLayoutProps {
   children: ReactNode;
@@ -10,6 +11,7 @@ interface BlogLayoutProps {
   readTime: string;
   keywords: string[];
   showBreadcrumbs?: boolean;
+  ctaType?: 'resume' | 'interview' | 'general';
 }
 
 export default function BlogLayout({ 
@@ -19,7 +21,8 @@ export default function BlogLayout({
   publishDate, 
   readTime, 
   keywords,
-  showBreadcrumbs = true 
+  showBreadcrumbs = true,
+  ctaType = 'general'
 }: BlogLayoutProps) {
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
   
@@ -121,18 +124,7 @@ export default function BlogLayout({
           </div>
         </div>
 
-        <footer className="mt-12 p-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200">
-          <div className="text-center">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Ready to Create Your Resume?</h3>
-            <p className="text-gray-600 mb-4">Put these tips into action with our free resume builder</p>
-            <Link 
-              to="/templates" 
-              className="inline-block bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
-            >
-              Start Building Your Resume
-            </Link>
-          </div>
-        </footer>
+        <BlogCTA type={ctaType} />
 
         <nav className="mt-8 flex justify-between items-center">
           <Link 

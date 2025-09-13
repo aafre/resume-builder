@@ -5,8 +5,8 @@ export default function ZetyVsEasyFreeResume() {
     <BlogLayout
       title="Zety vs. EasyFreeResume: Why Pay for a Resume in 2025?"
       description="A direct comparison between the popular paid resume builder Zety and our completely free alternative. See the features and decide for yourself if a paid builder is worth it."
-      publishDate="2025-10-15"
-      readTime="10 min"
+      publishDate="2025-07-28"
+      readTime="9 min"
       keywords={[
         "zety vs easyfreeresume",
         "zety alternative",

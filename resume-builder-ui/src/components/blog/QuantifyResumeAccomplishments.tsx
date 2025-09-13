@@ -1,22 +1,15 @@
-import { Link } from 'react-router-dom';
 import BlogLayout from '../BlogLayout';
-import SEOHead from '../SEOHead';
 
 const QuantifyResumeAccomplishments = () => {
   return (
-    <>
-      <SEOHead 
-        title="How to Quantify Resume Accomplishments with Numbers (15 Examples)"
-        description="Learn how to quantify your resume accomplishments with specific numbers and metrics. Get 15 real examples of quantified achievements that land interviews."
-        keywords="quantify resume accomplishments, resume metrics, resume numbers, quantified achievements, resume results, ATS resume optimization"
-      />
-      <BlogLayout 
-        title="How to Quantify Resume Accomplishments with Numbers (15 Examples)"
-        description="Learn how to quantify your resume accomplishments with specific numbers and metrics. Get 15 real examples of quantified achievements that land interviews."
-        publishDate="2025-01-12"
-        readTime="14 minutes"
-        keywords={["quantify resume accomplishments", "resume metrics", "resume numbers", "quantified achievements", "resume results", "ATS resume optimization"]}
-      >
+    <BlogLayout 
+      title="How to Quantify Resume Accomplishments with Numbers (15 Examples)"
+      description="Learn how to quantify your resume accomplishments with specific numbers and metrics. Get 15 real examples of quantified achievements that land interviews."
+      publishDate="2025-07-16"
+      readTime="7 min"
+      keywords={["quantify resume accomplishments", "resume metrics", "resume numbers", "quantified achievements", "resume results", "ATS resume optimization"]}
+      ctaType="resume"
+    >
         <h1>How to Quantify Resume Accomplishments with Numbers (15 Examples)</h1>
         
         <div className="read-time">
@@ -286,9 +279,6 @@ const QuantifyResumeAccomplishments = () => {
           <li><strong>Wrong Metrics:</strong> Choose metrics that matter to the role you're applying for</li>
         </ul>
 
-        <div className="info-box bg-blue-50">
-          <p><strong>🎯 Ready to Build Your Quantified Resume?</strong> Use our <Link to="/editor" className="text-blue-600 hover:underline">free resume builder</Link> to create a professional resume that showcases your quantified accomplishments. Our ATS-optimized templates ensure your metrics get noticed by hiring managers.</p>
-        </div>
 
         <h2>Industry-Specific Quantification Tips</h2>
 
@@ -363,25 +353,7 @@ const QuantifyResumeAccomplishments = () => {
           Remember, numbers alone don't tell the whole story. The most effective quantified accomplishments combine specific metrics with context about the challenge you faced and the methods you used to achieve results. This approach proves not just what you accomplished, but how you think and work.
         </p>
 
-        <div className="cta-section">
-          <h3>Ready to Create Your Quantified Resume?</h3>
-          <p>Build a professional resume that showcases your measurable impact. Our templates are optimized for ATS systems and designed to highlight your quantified accomplishments effectively.</p>
-          <Link to="/editor" className="cta-button">
-            Create My Resume - Free
-          </Link>
-        </div>
-
-        <div className="related-posts">
-          <h3>Related Articles</h3>
-          <ul>
-            <li><Link to="/blog/resume-action-verbs">200+ Powerful Resume Action Verbs by Category</Link></li>
-            <li><Link to="/blog/how-to-write-resume-guide">Complete Guide to Writing a Resume That Gets Interviews</Link></li>
-            <li><Link to="/blog/job-interview-guide">Complete Job Interview Preparation Guide</Link></li>
-            <li><Link to="/blog/resume-keywords-guide">How to Use Resume Keywords (ATS Optimization Guide)</Link></li>
-          </ul>
-        </div>
-      </BlogLayout>
-    </>
+    </BlogLayout>
   );
 };
 

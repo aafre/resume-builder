@@ -5,8 +5,8 @@ export default function EasyFreeResumeFreeBlog() {
     <BlogLayout
       title="How (and Why) is EasyFreeResume Completely Free?"
       description="No paywalls, no hidden fees, no premium upgrades. We break down why we built a truly free resume builder and how we are committed to keeping it that way."
-      publishDate="2025-10-12"
-      readTime="6 min"
+      publishDate="2025-08-01"
+      readTime="8 min"
       keywords={[
         "actually free resume builder",
         "free resume builder reddit",
