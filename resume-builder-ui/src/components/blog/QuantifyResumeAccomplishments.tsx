@@ -341,7 +341,7 @@ const QuantifyResumeAccomplishments = () => {
         </ul>
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <p className="text-green-700"><strong className="text-green-800">🚀 Practice Your Interview Skills:</strong> Want to practice discussing your quantified accomplishments? Try <a href="https://prepai.in" target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline">PrepAI's interview coach</a> - it analyzes your resume and provides personalized practice questions based on your specific achievements, with real-time feedback to help you articulate your impact confidently.</p>
+          <p className="text-green-700"><strong className="text-green-800">🚀 Practice Your Interview Skills:</strong> Want to practice discussing your quantified accomplishments? Try <a href="https://prepai.co.uk" target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline">PrepAI's interview coach</a> - it analyzes your resume and provides personalized practice questions based on your specific achievements, with real-time feedback to help you articulate your impact confidently.</p>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Next Steps: Putting It All Together</h2>
