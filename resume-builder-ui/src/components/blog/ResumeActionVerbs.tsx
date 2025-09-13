@@ -5,7 +5,7 @@ export default function ResumeActionVerbs() {
     <BlogLayout
       title="Action Verbs for Resumes: 200+ Words to Boost Your Impact"
       description="Replace boring words with powerful action verbs that grab recruiters' attention and showcase your accomplishments."
-      publishDate="2025-09-25"
+      publishDate="2025-08-20"
       readTime="9 min"
       keywords={[
         "resume action verbs",

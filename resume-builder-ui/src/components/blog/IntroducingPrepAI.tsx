@@ -5,8 +5,8 @@ export default function IntroducingPrepAI() {
     <BlogLayout
       title="Don't Just Prepare, PrepAI: Introducing Your AI Interview Coach"
       description="Move beyond standard interview advice. Discover how PrepAI, our new AI-powered tool, provides instant, personalized feedback to help you ace your next interview."
-      publishDate="2025-09-20"
-      readTime="8 min"
+      publishDate="2025-08-30"
+      readTime="6 min"
       keywords={[
         "PrepAI",
         "AI interview coach",
@@ -15,6 +15,7 @@ export default function IntroducingPrepAI() {
         "AI feedback",
         "interview preparation tool",
       ]}
+      ctaType="interview"
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">

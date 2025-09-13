@@ -1,254 +1,563 @@
-import BlogLayout from '../BlogLayout';
+import { Link } from "react-router-dom";
+import BlogLayout from "../BlogLayout";
 
 export default function ResumeNoExperience() {
   return (
     <BlogLayout
-      title="How to Write a Resume with No Experience (Entry-Level Guide)"
-      description="Land your first job with a compelling resume that showcases your potential, even without professional experience."
+      title="Resume with No Experience: Real Examples + Free Template"
+      description="How to write an ATS-friendly, confidence-boosting resume when you're just starting out. Includes copy-paste examples and free template."
       publishDate="2025-07-20"
-      readTime="8 min"
-      keywords={['entry level resume', 'no experience resume', 'first job resume', 'new graduate resume', 'student resume']}
+      readTime="10–14 min"
+      keywords={[
+        "entry level resume",
+        "no experience resume",
+        "first job resume",
+        "new graduate resume",
+        "student resume",
+        "ATS resume tips",
+      ]}
+      ctaType="resume"
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
-          Starting your career without professional experience can feel overwhelming, but everyone begins somewhere. The key is showcasing your potential, transferable skills, and unique value proposition. This comprehensive guide will help you create a compelling resume that opens doors to your first professional opportunity.
+          Starting your career without "official" experience can feel
+          intimidating – but employers hire for potential as much as for
+          history. If you show the right skills, projects, and results, you can
+          win interviews even with a blank work history.
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-          <h3 className="text-lg font-bold text-green-800 mb-2">💪 Confidence Boost</h3>
-          <p className="text-green-700">
-            Remember: Every successful professional started with zero experience. What matters is how you present your skills, education, and potential to contribute value from day one.
+        <p className="text-lg leading-relaxed text-gray-700">
+          This guide gives you copy-paste examples, role-specific keywords, and
+          a free ATS-friendly template you can use with{" "}
+          <Link
+            to="/templates"
+            className="text-blue-600 hover:underline font-semibold"
+          >
+            EasyFreeResume
+          </Link>{" "}
+          to generate a polished resume in minutes.
+        </p>
+
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+          <h3 className="text-lg font-bold text-blue-800 mb-2">Key Insight</h3>
+          <p className="text-blue-700">
+            <strong>You do have experience</strong> – it's just not always paid.
+            Use projects, coursework, internships, part-time work, volunteering,
+            clubs, and self-initiated learning to prove you can create value.
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Reframe Your Mindset: You Have More Experience Than You Think</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
-          "No experience" often means "no traditional full-time work experience." However, you likely have valuable experiences through education, internships, volunteer work, part-time jobs, projects, and personal endeavors that demonstrate your capabilities.
+        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+          The Best Resume Format When You Have No Experience
+        </h2>
+
+        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+          Use a <strong>Hybrid (Combination) format</strong> – not purely
+          functional. A hybrid resume puts skills & projects near the top while
+          still showing experience chronologically (part-time, internships,
+          volunteering). It's ATS-friendly and recruiter-friendly.
         </p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h4 className="font-bold text-blue-800 mb-3">🎓 Educational Experience</h4>
-            <ul className="list-disc pl-6 space-y-1 text-blue-700 text-sm">
-              <li>Class projects</li>
-              <li>Research work</li>
-              <li>Group collaborations</li>
-              <li>Presentations</li>
-              <li>Laboratory work</li>
-              <li>Thesis/capstone projects</li>
-            </ul>
-          </div>
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h4 className="font-bold text-purple-800 mb-3">🤝 Volunteer Experience</h4>
-            <ul className="list-disc pl-6 space-y-1 text-purple-700 text-sm">
-              <li>Non-profit work</li>
-              <li>Community organizing</li>
-              <li>Event planning</li>
-              <li>Fundraising activities</li>
-              <li>Mentoring/tutoring</li>
-              <li>Religious organizations</li>
-            </ul>
-          </div>
-          <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
-            <h4 className="font-bold text-orange-800 mb-3">💼 Other Experience</h4>
-            <ul className="list-disc pl-6 space-y-1 text-orange-700 text-sm">
-              <li>Part-time jobs</li>
-              <li>Freelance work</li>
-              <li>Personal projects</li>
-              <li>Online courses</li>
-              <li>Internships</li>
-              <li>Side businesses</li>
-            </ul>
-          </div>
-        </div>
-
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Entry-Level Resume Structure</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
-          For entry-level candidates, resume structure should emphasize education, skills, and potential rather than traditional work chronology.
-        </p>
-
-        <div className="bg-gray-50 border-l-4 border-blue-500 p-6 my-6">
-          <h4 className="font-bold text-gray-900 mb-3">📋 Recommended Resume Order:</h4>
+        <div className="bg-gray-50 border-l-4 border-blue-500 p-6">
+          <h4 className="font-bold text-gray-900 mb-3">Recommended order:</h4>
           <ol className="list-decimal pl-6 space-y-2 text-gray-700">
-            <li><strong>Contact Information</strong> - Professional header with essentials</li>
-            <li><strong>Professional Summary/Objective</strong> - Your value proposition</li>
-            <li><strong>Education</strong> - Detailed academic background (move this up!)</li>
-            <li><strong>Relevant Projects</strong> - Academic, personal, or volunteer projects</li>
-            <li><strong>Skills</strong> - Technical and soft skills</li>
-            <li><strong>Experience</strong> - Any work experience (part-time, volunteer, internships)</li>
-            <li><strong>Additional Sections</strong> - Certifications, languages, awards</li>
+            <li>
+              <strong>Contact info</strong>
+            </li>
+            <li>
+              <strong>Professional Summary</strong> (tailored to the role)
+            </li>
+            <li>
+              <strong>Skills</strong> (grouped by category)
+            </li>
+            <li>
+              <strong>Projects</strong> (academic, personal, volunteer)
+            </li>
+            <li>
+              <strong>Education</strong> (relevant coursework, honors)
+            </li>
+            <li>
+              <strong>Experience</strong> (part-time, internships, volunteering)
+            </li>
+            <li>
+              <strong>Certifications / Awards / Languages</strong>
+            </li>
           </ol>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Crafting a Powerful Professional Summary</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
-          Your professional summary is crucial when you lack extensive work history. It should communicate your career goals, key strengths, and value you'll bring to an employer.
-        </p>
+        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+          Make It ATS-Friendly (So You Get Seen)
+        </h2>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Professional Summary Formula</h3>
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <div className="text-blue-700 space-y-3">
-            <p><strong>1. Your Identity:</strong> Recent graduate, student, or career changer</p>
-            <p><strong>2. Your Field/Goal:</strong> Area of interest or target role</p>
-            <p><strong>3. Key Strengths:</strong> 2-3 relevant skills or qualities</p>
-            <p><strong>4. Value Proposition:</strong> What you bring to employers</p>
+        <div className="grid md:grid-cols-2 gap-6 my-8">
+          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
+            <h4 className="font-bold text-green-800 mb-3">
+              ✅ ATS Best Practices
+            </h4>
+            <ul className="list-disc pl-6 space-y-1 text-green-700 text-sm">
+              <li>
+                Use standard headings: Summary, Skills, Projects, Education,
+                Experience
+              </li>
+              <li>
+                Keep formatting simple: no tables, text boxes, images, or icons
+              </li>
+              <li>Fonts: system fonts (Arial, Calibri, Times, Georgia)</li>
+              <li>File type: PDF (unless job post requests DOCX)</li>
+              <li>Keywords: mirror the job description's phrasing</li>
+              <li>Dates & locations: consistent format</li>
+            </ul>
+          </div>
+          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
+            <h4 className="font-bold text-yellow-800 mb-3">💡 Pro Tips</h4>
+            <ul className="list-disc pl-6 space-y-1 text-yellow-700 text-sm">
+              <li>Use keywords naturally throughout sections</li>
+              <li>Include both acronyms and full terms</li>
+              <li>Match job posting's exact phrasing</li>
+              <li>Add relevant coursework for skills</li>
+              <li>Quantify results wherever possible</li>
+            </ul>
           </div>
         </div>
 
-        <div className="grid md:grid-cols-1 gap-6 my-8">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">✅ Strong Entry-Level Examples:</h4>
-            <div className="space-y-4 text-green-700">
-              <div className="bg-white p-4 rounded-lg">
-                <p className="font-medium text-gray-800 mb-2">Marketing Graduate:</p>
-                <p className="italic text-sm">
-                  "Recent Marketing graduate with strong analytical skills and creative problem-solving abilities. Experienced in digital marketing through academic projects and internship work, including social media management and content creation. Eager to apply data-driven marketing strategies to help companies grow their online presence and customer engagement."
-                </p>
-              </div>
-              <div className="bg-white p-4 rounded-lg">
-                <p className="font-medium text-gray-800 mb-2">Computer Science Student:</p>
-                <p className="italic text-sm">
-                  "Motivated Computer Science student with hands-on experience in Python, Java, and web development through academic projects and freelance work. Strong foundation in software development lifecycle and agile methodologies. Seeking to contribute technical skills and fresh perspective to innovative software development team."
-                </p>
-              </div>
+        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+          Professional Summary Examples (Copy-Paste)
+        </h2>
+
+        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+          Use 2–3 sentences: who you are, target role, 2–3 strengths, and the
+          value you'll bring.
+        </p>
+
+        <div className="space-y-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-gray-900 mb-3">
+              General Entry-Level (no degree required)
+            </h4>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="italic text-gray-800">
+                "Motivated entry-level candidate seeking a [Target Role]. Known
+                for fast learning, clear communication, and reliability.
+                Completed hands-on projects in [Skill/Tool] and contributed to
+                team goals through volunteering and part-time work."
+              </p>
             </div>
           </div>
-        </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Maximizing Your Education Section</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
-          When you're entry-level, your education section should be detailed and prominent. Include relevant coursework, projects, achievements, and academic honors.
-        </p>
-
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-yellow-800 mb-3">🎓 Education Section Best Practices:</h4>
-          <ul className="list-disc pl-6 space-y-2 text-yellow-700">
-            <li><strong>Include GPA if 3.5 or higher</strong> - Shows academic excellence</li>
-            <li><strong>List relevant coursework</strong> - Especially for career-specific skills</li>
-            <li><strong>Highlight academic projects</strong> - Demonstrate practical application</li>
-            <li><strong>Mention honors/awards</strong> - Dean's list, scholarships, recognition</li>
-            <li><strong>Include study abroad</strong> - Shows adaptability and cultural awareness</li>
-            <li><strong>Note leadership roles</strong> - Student government, club officer positions</li>
-          </ul>
-        </div>
-
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">✅ Detailed Education Example:</h4>
-          <div className="text-green-700 bg-white p-4 rounded-lg font-mono text-sm">
-            <p className="font-bold text-gray-800">Bachelor of Science in Marketing</p>
-            <p>University of California, Los Angeles | September 2020 - May 2024</p>
-            <p>GPA: 3.7/4.0 | Dean's List: Fall 2022, Spring 2023</p>
-            <p className="mt-2"><strong>Relevant Coursework:</strong> Digital Marketing, Consumer Behavior, Market Research, Data Analytics, Brand Management</p>
-            <p className="mt-2"><strong>Senior Capstone Project:</strong> Developed comprehensive digital marketing strategy for local startup, resulting in 40% increase in social media engagement</p>
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-gray-900 mb-3">
+              Student / New Graduate (Marketing)
+            </h4>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="italic text-gray-800">
+                "Recent Marketing graduate with coursework in SEO, social media,
+                and analytics. Built a campaign project that grew engagement by
+                38% for a local charity. Eager to apply data-driven creative
+                skills in an entry-level marketing role."
+              </p>
+            </div>
           </div>
-        </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Showcasing Projects Effectively</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
-          Projects are your opportunity to demonstrate practical skills and real-world application of your knowledge. Treat them with the same importance as work experience.
-        </p>
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-gray-900 mb-3">
+              Computer Science Student / Internship
+            </h4>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="italic text-gray-800">
+                "CS student with projects in Python and JavaScript, including a
+                full-stack app using React/Node and a data-analysis notebook in
+                Pandas. Comfortable with Git, REST APIs, and agile teamwork.
+                Looking for a software internship to ship real features."
+              </p>
+            </div>
+          </div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Project Description Framework</h3>
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">📊 Project Formula:</h4>
-          <p className="text-purple-700 font-medium text-lg mb-3">
-            Project Name + Brief Description + Tools/Skills Used + Quantifiable Results
-          </p>
-          <div className="space-y-3 text-purple-700">
-            <div className="bg-white p-4 rounded-lg">
-              <p className="font-medium text-gray-800 mb-2">Example:</p>
-              <p className="italic text-sm">
-                <strong>E-commerce Website Development:</strong> Built fully functional online store using React and Node.js for class project. Implemented user authentication, payment processing, and inventory management. <strong>Result:</strong> Received A+ grade and recognition as top project in class of 30 students.
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-gray-900 mb-3">
+              Customer Service / Retail
+            </h4>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="italic text-gray-800">
+                "People-first problem solver with 1+ year of part-time service
+                experience. Maintained 95% positive feedback, resolved issues
+                quickly, and handled cash and inventory accurately. Ready to
+                deliver memorable customer experiences."
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-gray-900 mb-3">
+              Finance / Business Analyst (Graduate)
+            </h4>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="italic text-gray-800">
+                "Business graduate with strong Excel skills (VLOOKUP,
+                PivotTables), coursework in financial analysis and forecasting,
+                and a capstone on pricing strategy. Seeking an analyst role to
+                turn data into clear business recommendations."
               </p>
             </div>
           </div>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Types of Projects to Include</h3>
-        <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">💻 Technical Projects</h4>
-            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
-              <li>Software applications</li>
-              <li>Website development</li>
-              <li>Data analysis projects</li>
-              <li>Mobile app creation</li>
-              <li>Database design</li>
-              <li>API integrations</li>
-            </ul>
+        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+          Bullet Formula (So Your Points Stand Out)
+        </h2>
+
+        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-purple-800 mb-3">Formula:</h4>
+          <p className="text-purple-700 font-medium text-lg mb-4">
+            Action verb + task + tools/skills + outcome (with a number)
+          </p>
+
+          <h5 className="font-bold text-purple-800 mb-3">
+            Examples (adapt to your context):
+          </h5>
+          <div className="space-y-3 text-purple-700">
+            <div className="bg-white p-3 rounded-lg text-sm">
+              • Built a React/Node web app for course project, implementing auth
+              & CRUD; deployed on Render; used Git/GitHub for collaboration.
+            </div>
+            <div className="bg-white p-3 rounded-lg text-sm">
+              • Analyzed survey data in Excel (PivotTables, charts) to identify
+              3 customer pain points; presented findings to class panel.
+            </div>
+            <div className="bg-white p-3 rounded-lg text-sm">
+              • Led a 5-person team in society event planning; negotiated £400
+              in sponsorship; increased attendance by 42%.
+            </div>
+            <div className="bg-white p-3 rounded-lg text-sm">
+              • Tutored GCSE math for 6 students; improved average scores by
+              +1.5 grades in 8 weeks.
+            </div>
+            <div className="bg-white p-3 rounded-lg text-sm">
+              • Resolved 20–30 customer queries per shift; maintained 95%
+              satisfaction and processed cash/card payments accurately.
+            </div>
           </div>
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">📈 Business Projects</h4>
-            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
-              <li>Market research studies</li>
-              <li>Business plan development</li>
-              <li>Marketing campaigns</li>
-              <li>Financial analysis</li>
-              <li>Process improvement</li>
-              <li>Case study solutions</li>
-            </ul>
-          </div>
+
+          <p className="text-purple-700 mt-4 font-medium">
+            Avoid vague verbs ("helped", "worked on"). Use measurable outcomes
+            wherever possible.
+          </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Building a Strong Skills Section</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
-          Your skills section should balance technical competencies with soft skills that demonstrate your ability to contribute to a team and organization.
+        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+          Projects: Your Fastest Path to Credibility
+        </h2>
+
+        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+          Show 2–4 relevant projects with results and tools.
         </p>
 
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-blue-800 mb-3">🎯 Skills Section Strategy:</h4>
-          <div className="grid md:grid-cols-3 gap-4 text-blue-700">
-            <div>
-              <p className="font-medium mb-2">Technical Skills</p>
-              <ul className="text-sm space-y-1">
-                <li>Software proficiency</li>
-                <li>Programming languages</li>
-                <li>Tools and platforms</li>
-                <li>Industry-specific skills</li>
-              </ul>
-            </div>
-            <div>
-              <p className="font-medium mb-2">Soft Skills</p>
-              <ul className="text-sm space-y-1">
-                <li>Communication</li>
-                <li>Leadership potential</li>
-                <li>Problem-solving</li>
-                <li>Team collaboration</li>
-              </ul>
-            </div>
-            <div>
-              <p className="font-medium mb-2">Language/Other</p>
-              <ul className="text-sm space-y-1">
-                <li>Foreign languages</li>
-                <li>Certifications</li>
-                <li>Relevant hobbies</li>
-                <li>Professional interests</li>
-              </ul>
-            </div>
+          <h4 className="font-bold text-blue-800 mb-3">Template:</h4>
+          <div className="text-blue-700 space-y-2">
+            <p>
+              <strong>Project Name</strong> – 1-line value statement
+            </p>
+            <p>Used [tools] to [do what]; outcome [metric/impact]</p>
+            <p>
+              Role: [lead/contributor] · Team: [solo/size] · Link
+              (GitHub/portfolio) if public
+            </p>
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Leveraging Non-Traditional Experience</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
-          Part-time jobs, volunteer work, and internships can demonstrate valuable workplace skills when presented strategically.
+        <div className="space-y-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-gray-900 mb-3">
+              Local Charity Social Campaign – Increased engagement by 38% in 4
+              weeks
+            </h4>
+            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
+              <li>
+                Designed content calendar, wrote posts, and tracked analytics in
+                Meta Business Suite
+              </li>
+              <li>
+                Built a simple UTM tracker in Sheets; reported weekly insights
+                to the coordinator
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-gray-900 mb-3">
+              Campus Food Finder (React/Node) – Deployed MVP used by 80+
+              students
+            </h4>
+            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
+              <li>
+                Implemented JWT auth, MongoDB CRUD, and mobile-responsive UI;
+                GitHub link available
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-gray-900 mb-3">
+              Retail Stock Optimization (Excel) – Reduced out-of-stock items by
+              18%
+            </h4>
+            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
+              <li>
+                Built a forecast with seasonality; created dashboard for the
+                shift lead
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+          Skills That Win Entry-Level Interviews
+        </h2>
+
+        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+          Group skills so they're easy to scan.
         </p>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Translating Any Job into Relevant Experience</h3>
-        <div className="grid md:grid-cols-1 gap-6 my-8">
-          <div className="bg-gray-50 border-l-4 border-green-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Example: Retail Job → Professional Skills</h4>
-            <div className="space-y-3 text-gray-700">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <p className="font-medium text-red-700 mb-2">❌ Basic Description:</p>
-                  <p className="italic text-sm bg-white p-3 rounded">
-                    "Worked as cashier at retail store. Helped customers and processed transactions."
+        <div className="grid md:grid-cols-2 gap-6 my-8">
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-gray-900 mb-3">Technical / Tools</h4>
+            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
+              <li>Excel (PivotTables, LOOKUP), Google Sheets, PowerPoint</li>
+              <li>Python, JavaScript, SQL (beginner–intermediate)</li>
+              <li>Canva, Figma, Google Analytics, Meta Ads (basic)</li>
+              <li>CRM basics (HubSpot/Salesforce), POS systems</li>
+            </ul>
+          </div>
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-gray-900 mb-3">Transferable</h4>
+            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
+              <li>Communication, teamwork, customer service</li>
+              <li>Problem-solving, organization, time management</li>
+              <li>Attention to detail, initiative, adaptability</li>
+              <li>Reliability, fast learning, collaboration</li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+          Role-Specific Keywords (Use Naturally)
+        </h2>
+
+        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+          Mirror the job post's language. Don't stuff – weave into Summary,
+          Projects, Experience, and Skills.
+        </p>
+
+        <div className="space-y-4">
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+            <h4 className="font-bold text-blue-900 mb-2">
+              Marketing Assistant Keywords
+            </h4>
+            <p className="text-blue-800 text-sm">
+              SEO, social media, content calendar, Canva, Google Analytics,
+              email campaigns, CTR, engagement, A/B testing, CMS (WordPress)
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-6">
+            <h4 className="font-bold text-purple-900 mb-2">
+              Software / Data Intern Keywords
+            </h4>
+            <p className="text-purple-800 text-sm">
+              Python, JavaScript, React, Node, SQL, APIs, Git, unit tests, data
+              cleaning, Pandas, Jira, Agile/Scrum
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6">
+            <h4 className="font-bold text-green-900 mb-2">
+              Customer Service / Retail Keywords
+            </h4>
+            <p className="text-green-800 text-sm">
+              POS, cash handling, returns, merchandising, inventory, upselling,
+              complaints resolution, CRM, shift lead
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-xl p-6">
+            <h4 className="font-bold text-orange-900 mb-2">
+              Admin / Ops Assistant Keywords
+            </h4>
+            <p className="text-orange-800 text-sm">
+              Google Workspace / Microsoft 365, scheduling, calendar management,
+              data entry, documentation, spreadsheets, vendor coordination
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-r from-gray-50 to-slate-50 border border-gray-200 rounded-xl p-6">
+            <h4 className="font-bold text-gray-900 mb-2">
+              Finance / Analyst Intern Keywords
+            </h4>
+            <p className="text-gray-800 text-sm">
+              Excel (PivotTables, charts), financial analysis, variance,
+              budgeting, SQL (basic), Power BI/Tableau (basic), forecasting
+            </p>
+          </div>
+        </div>
+
+        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+          Two Complete Examples (Ready to Adapt)
+        </h2>
+
+        <div className="space-y-8">
+          <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-lg">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">
+              Example 1 – Marketing Graduate (No Full-Time Experience)
+            </h3>
+            <div className="bg-gray-50 p-6 rounded-lg font-mono text-sm space-y-3">
+              <div className="text-center">
+                <p className="font-bold text-lg text-gray-900">Ava Patel</p>
+                <p className="text-gray-700">
+                  London, UK · ava.patel@email · 07xxx · linkedin.com/in/ava ·
+                  portfolio.link
+                </p>
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">SUMMARY</p>
+                <p className="text-gray-800">
+                  Marketing graduate targeting entry-level digital roles.
+                  Strengths in content, SEO basics, and analytics. Led a class
+                  campaign that raised engagement by 38% for a local charity.
+                  Organized, creative, and data-aware.
+                </p>
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">SKILLS</p>
+                <p className="text-gray-800">
+                  <strong>Tools:</strong> Google Analytics (GA4), Search
+                  Console, Canva, Meta Business Suite, Sheets, Slides
+                </p>
+                <p className="text-gray-800">
+                  <strong>Transferable:</strong> Copywriting, research,
+                  collaboration, time management
+                </p>
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">PROJECTS</p>
+                <div className="space-y-2">
+                  <p className="text-gray-800">
+                    <strong>Local Charity Social Campaign</strong> – +38%
+                    engagement in 4 weeks (Feb–Mar 2025)
+                  </p>
+                  <p className="text-gray-700">
+                    • Built a content calendar, wrote posts, and coordinated
+                    with 2 volunteers; tracked KPIs in GA/Meta
+                  </p>
+                  <p className="text-gray-700">
+                    • Created a simple UTM tracker in Sheets; weekly reporting
+                    to the coordinator
                   </p>
                 </div>
-                <div>
-                  <p className="font-medium text-green-700 mb-2">✅ Professional Translation:</p>
-                  <p className="italic text-sm bg-white p-3 rounded">
-                    "Customer Service Associate: Provided exceptional customer service to 100+ daily customers, resolved product inquiries, and processed transactions with 99.8% accuracy. Collaborated with team of 15 to achieve monthly sales targets and maintain store presentation standards."
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">EDUCATION</p>
+                <p className="text-gray-800">
+                  BA Marketing, University of Westminster (2021–2025) · GPA 3.6
+                </p>
+                <p className="text-gray-700">
+                  Coursework: Digital Marketing, Consumer Behavior, Market
+                  Research, Analytics
+                </p>
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">EXPERIENCE</p>
+                <div className="space-y-2">
+                  <p className="text-gray-800">
+                    <strong>Volunteer Coordinator</strong> – Community Market,
+                    London (Sep 2024–Mar 2025)
+                  </p>
+                  <p className="text-gray-700">
+                    • Scheduled 15 volunteers; standardized brief; reduced late
+                    start incidents by 25%
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-lg">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">
+              Example 2 – Computer Science Student (Internship-Ready)
+            </h3>
+            <div className="bg-gray-50 p-6 rounded-lg font-mono text-sm space-y-3">
+              <div className="text-center">
+                <p className="font-bold text-lg text-gray-900">Liam Chen</p>
+                <p className="text-gray-700">
+                  Manchester, UK · liamc@email · 07xxx · linkedin.com/in/liamc ·
+                  github.com/liamc
+                </p>
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">SUMMARY</p>
+                <p className="text-gray-800">
+                  CS student seeking software internship. Built a full-stack
+                  React/Node app and a Python data project; comfortable with
+                  Git, REST APIs, and unit tests. Curious, methodical, and
+                  collaborative.
+                </p>
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">SKILLS</p>
+                <p className="text-gray-800">
+                  <strong>Tools:</strong> JavaScript, React, Node, Express,
+                  Python, Pandas, SQL (SQLite), Git/GitHub, Jest
+                </p>
+                <p className="text-gray-800">
+                  <strong>Transferable:</strong> Problem-solving, communication,
+                  version control discipline
+                </p>
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">PROJECTS</p>
+                <div className="space-y-2">
+                  <p className="text-gray-800">
+                    <strong>Campus Food Finder (React/Node)</strong> – MVP used
+                    by 80+ students (Jan–Apr 2025)
+                  </p>
+                  <p className="text-gray-700">
+                    • Implemented auth, favorites, and search; REST API with
+                    Express; MongoDB persistence
+                  </p>
+                  <p className="text-gray-700">
+                    • Wrote unit tests with Jest; deployed preview on Render;
+                    repo on GitHub
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">EDUCATION</p>
+                <p className="text-gray-800">
+                  BSc Computer Science, University of Manchester (2023–2026)
+                </p>
+                <p className="text-gray-700">
+                  Coursework: Data Structures, Web Dev, Databases, Algorithms
+                </p>
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">EXPERIENCE</p>
+                <div className="space-y-2">
+                  <p className="text-gray-800">
+                    <strong>IT Support Volunteer</strong> – Local Community
+                    Centre (Jun–Aug 2024)
+                  </p>
+                  <p className="text-gray-700">
+                    • Resolved basic tech issues (Wi-Fi, printer drivers);
+                    documented fixes in shared Google Doc
                   </p>
                 </div>
               </div>
@@ -256,123 +565,86 @@ export default function ResumeNoExperience() {
           </div>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Volunteer Work as Professional Experience</h3>
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">🤝 Volunteer Experience Framework:</h4>
-          <p className="text-green-700 mb-3">
-            Treat volunteer work with the same respect as paid positions. Focus on:
-          </p>
-          <ul className="list-disc pl-6 space-y-2 text-green-700">
-            <li><strong>Leadership roles:</strong> Event coordination, team management, project leadership</li>
-            <li><strong>Skill development:</strong> Fundraising, marketing, training, mentoring</li>
-            <li><strong>Measurable impact:</strong> Funds raised, people served, events organized</li>
-            <li><strong>Professional growth:</strong> Skills gained, relationships built, responsibilities handled</li>
-          </ul>
-        </div>
+        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+          Common Mistakes (and the Fix)
+        </h2>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Additional Sections That Add Value</h2>
-
-        <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">🏆 Awards & Achievements</h4>
-            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
-              <li>Academic honors</li>
-              <li>Scholarships received</li>
-              <li>Competition winnings</li>
-              <li>Recognition awards</li>
-              <li>Published work</li>
-              <li>Speaking engagements</li>
-            </ul>
-          </div>
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">📜 Certifications & Training</h4>
-            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
-              <li>Professional certifications</li>
-              <li>Online course completions</li>
-              <li>Industry training programs</li>
-              <li>Technical skill certifications</li>
-              <li>Safety training</li>
-              <li>Leadership development</li>
-            </ul>
-          </div>
-        </div>
-
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Common Entry-Level Resume Mistakes</h2>
-
-        <div className="space-y-6">
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">❌ Mistake: Apologizing for lack of experience</h4>
-            <p className="text-gray-700 mb-2">
-              <strong>Example:</strong> "Although I don't have much experience..."
-            </p>
-            <p className="text-green-700">
-              <strong>Better:</strong> Focus on enthusiasm, potential, and relevant skills you do possess.
+        <div className="space-y-4">
+          <div className="bg-red-50 border-l-4 border-red-500 p-4">
+            <h4 className="font-bold text-gray-900 mb-1">
+              ❌ Apologizing for no experience
+            </h4>
+            <p className="text-green-700 text-sm">
+              → Replace with proof of potential (projects, results, learning)
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">❌ Mistake: Including irrelevant personal information</h4>
-            <p className="text-gray-700 mb-2">
-              <strong>Example:</strong> High school activities when you're a college graduate
-            </p>
-            <p className="text-green-700">
-              <strong>Better:</strong> Focus on recent, relevant, and professional experiences.
+          <div className="bg-red-50 border-l-4 border-red-500 p-4">
+            <h4 className="font-bold text-gray-900 mb-1">
+              ❌ Generic objectives
+            </h4>
+            <p className="text-green-700 text-sm">
+              → Use a Summary that states value, skills, and target role
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">❌ Mistake: Generic objective statements</h4>
-            <p className="text-gray-700 mb-2">
-              <strong>Example:</strong> "Seeking a challenging position where I can grow"
+          <div className="bg-red-50 border-l-4 border-red-500 p-4">
+            <h4 className="font-bold text-gray-900 mb-1">❌ Wall of text</h4>
+            <p className="text-green-700 text-sm">
+              → Short bullets with numbers
             </p>
-            <p className="text-green-700">
-              <strong>Better:</strong> Specific value proposition tied to target role and company.
+          </div>
+
+          <div className="bg-red-50 border-l-4 border-red-500 p-4">
+            <h4 className="font-bold text-gray-900 mb-1">❌ Irrelevant info</h4>
+            <p className="text-green-700 text-sm">
+              → Prioritize relevant projects/skills to the job post
             </p>
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-8 my-12">
-          <h3 className="text-2xl font-bold mb-4">🎯 Your Entry-Level Resume Action Plan</h3>
-          <ol className="list-decimal pl-6 space-y-3 text-lg">
-            <li>Inventory all your experiences (academic, volunteer, part-time, projects)</li>
-            <li>Create a compelling professional summary that highlights your potential</li>
-            <li>Detail your education section with relevant coursework and projects</li>
-            <li>Translate all experiences into professional, results-focused descriptions</li>
-            <li>Research target companies and roles to customize your keyword usage</li>
-            <li>Seek feedback from career counselors, mentors, or industry professionals</li>
-          </ol>
-        </div>
+        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+          FAQ (Quick Answers)
+        </h2>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Entry-Level Job Search Strategy</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
-          Your resume is just one piece of your job search puzzle. Combine it with networking, skill development, and strategic application approaches.
-        </p>
+        <div className="space-y-4">
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h4 className="font-bold text-gray-900 mb-2">
+              Should I use a resume objective or summary with no experience?
+            </h4>
+            <p className="text-gray-700 text-sm">
+              Use a summary that states your target role, 2–3 strengths, and 1
+              proof point. Objectives are often vague.
+            </p>
+          </div>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">🌟 Beyond the Resume:</h4>
-          <ul className="list-disc pl-6 space-y-2 text-purple-700">
-            <li><strong>Network actively:</strong> Leverage school alumni, professors, and industry connections</li>
-            <li><strong>Build online presence:</strong> Professional LinkedIn profile, portfolio website</li>
-            <li><strong>Continue learning:</strong> Online courses, certifications, industry knowledge</li>
-            <li><strong>Apply strategically:</strong> Quality over quantity, customize each application</li>
-            <li><strong>Practice interviewing:</strong> Prepare stories that demonstrate your potential</li>
-          </ul>
-        </div>
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h4 className="font-bold text-gray-900 mb-2">
+              How long should my resume be?
+            </h4>
+            <p className="text-gray-700 text-sm">
+              One page is ideal for entry-level candidates.
+            </p>
+          </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Final Thoughts: Confidence is Key</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
-          Remember that every industry leader, CEO, and successful professional started their career with "no experience." What separates successful entry-level candidates is not their extensive background, but their ability to articulate their potential, demonstrate their learning ability, and show genuine enthusiasm for their chosen field.
-        </p>
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h4 className="font-bold text-gray-900 mb-2">
+              Should I include GPA?
+            </h4>
+            <p className="text-gray-700 text-sm">
+              Include if ≥ 3.5/4.0 (or equivalent). Otherwise, skip it.
+            </p>
+          </div>
 
-        <p className="text-lg leading-relaxed text-gray-700 mt-6">
-          Your resume should tell the story of someone ready to contribute, learn, and grow. Focus on your strengths, be authentic about your goals, and present yourself as the motivated, capable professional you're becoming.
-        </p>
-
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-8">
-          <h4 className="font-bold text-yellow-800 mb-3">💫 Remember</h4>
-          <p className="text-yellow-700">
-            Employers hiring entry-level candidates are looking for potential, not perfection. They want to see evidence of your ability to learn, contribute, and grow within their organization. Your resume should demonstrate these qualities through every section and description.
-          </p>
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h4 className="font-bold text-gray-900 mb-2">
+              What if I truly have zero to list?
+            </h4>
+            <p className="text-gray-700 text-sm">
+              Create two quick projects aligned to the role (e.g., simple
+              website, data analysis, community event). Show outcome and tools.
+            </p>
+          </div>
         </div>
       </div>
     </BlogLayout>

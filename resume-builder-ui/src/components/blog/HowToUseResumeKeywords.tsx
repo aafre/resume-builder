@@ -5,8 +5,8 @@ export default function HowToUseResumeKeywords() {
     <BlogLayout
       title="How to Use Resume Keywords to Beat the ATS (The Ultimate 2025 Guide)"
       description="A deep dive into finding and using the right keywords to ensure your resume gets past applicant tracking systems and into human hands. Your master guide to ATS optimization."
-      publishDate="2025-10-01"
-      readTime="18 min"
+      publishDate="2025-08-15"
+      readTime="11 min"
       keywords={[
         "resume keywords",
         "ats optimization",

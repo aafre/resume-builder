@@ -5,8 +5,8 @@ export default function JobInterviewGuide() {
     <BlogLayout
       title="The Ultimate Guide to Nailing Your Next Job Interview"
       description="A comprehensive guide covering everything from pre-interview research and common questions to post-interview follow-up etiquette."
-      publishDate="2025-09-15"
-      readTime="22 min"
+      publishDate="2025-09-05"
+      readTime="7 min"
       keywords={[
         "job interview guide",
         "interview preparation",
@@ -15,6 +15,7 @@ export default function JobInterviewGuide() {
         "how to ace an interview",
         "interview follow-up",
       ]}
+      ctaType="interview"
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
@@ -250,51 +251,109 @@ export default function JobInterviewGuide() {
         <hr className="border-gray-300 my-12" />
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
-          Part 3: The Follow-Up - Leaving a Lasting Impression
+          Part 3: The Follow-Up – Leaving a Lasting Impression
         </h2>
 
         <p className="text-lg leading-relaxed text-gray-700">
-          Your work isn't done when you leave the interview. A professional
-          follow-up can solidify your position as a top candidate.
+          Your interview doesn't end the moment you step out of the room (or
+          leave the call). How you close the conversation – and what you do if
+          the employer follows up – can leave a lasting impression.
         </p>
 
         <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
-          Send a Thank-You Note
+          1. Thank Them in the Moment
         </h3>
 
         <p className="text-lg leading-relaxed text-gray-700">
-          Send a personalized thank-you email to each person you interviewed
-          with within 24 hours.
+          At the end of the interview, always thank your interviewers for their
+          time. A simple and genuine:
         </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-green-800 mb-3">Structure:</h4>
-          <ol className="list-decimal pl-6 space-y-2 text-green-700">
-            <li>Thank them for their time.</li>
-            <li>Briefly reiterate your interest in the role.</li>
-            <li>
-              Mention something specific you discussed that resonated with you.
-            </li>
-            <li>
-              Subtly remind them of a key qualification you bring to the role.
-            </li>
-          </ol>
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
+          <p className="text-blue-800 font-medium italic">
+            "Thanks for taking the time to meet with me today. I really enjoyed
+            our conversation and learning more about the role and team."
+          </p>
+          <p className="text-blue-700 mt-3">
+            <strong>That's usually enough</strong> – no need for elaborate
+            post-interview emails.
+          </p>
         </div>
 
         <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
-          Be Patient and Professional
+          2. Respond Professionally if They Reach Out
         </h3>
 
         <p className="text-lg leading-relaxed text-gray-700">
-          The hiring process can take time. It's okay to send a brief, polite
-          check-in email if you haven't heard back by the timeline they
-          provided, but avoid being pushy.
+          If the recruiter or hiring manager follows up by email:
         </p>
 
+        <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
+          <ul className="list-disc pl-6 space-y-2 text-green-700">
+            <li>
+              <strong>Reply promptly.</strong>
+            </li>
+            <li>
+              <strong>Keep your tone professional and positive.</strong>
+            </li>
+            <li>
+              <strong>
+                If appropriate, you can briefly re-express enthusiasm for the
+                role in your response.
+              </strong>
+            </li>
+          </ul>
+        </div>
+
+        <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
+          3. Keep Asking Questions Until the End
+        </h3>
+
+        <p className="text-lg leading-relaxed text-gray-700">
+          One of the best ways to stand out is to ask thoughtful questions
+          during the interview, especially toward the close when they say, "Do
+          you have any questions for us?"
+        </p>
+
+        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-purple-800 mb-3">Examples:</h4>
+          <ul className="list-disc pl-6 space-y-2 text-purple-700">
+            <li>"What are the next steps in the hiring process?"</li>
+            <li>
+              "What skills or qualities do you think would help someone thrive
+              in this role?"
+            </li>
+            <li>
+              "How does this role contribute to the company's long-term goals?"
+            </li>
+          </ul>
+        </div>
+
+        <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
+          4. Stay Patient and Balanced
+        </h3>
+
+        <p className="text-lg leading-relaxed text-gray-700">
+          Hiring processes often take longer than expected. If they gave you a
+          timeline and it passes, it's fine to check in once with the recruiter.
+          Otherwise, avoid chasing – and keep applying for other opportunities
+          in parallel.
+        </p>
+
+        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">
+          <p className="text-yellow-800 font-medium">
+            <strong>💡 Reality Check:</strong> The best candidates don't put all
+            their eggs in one basket. Continue interviewing elsewhere while you
+            wait. This keeps you sharp and gives you options – which actually
+            makes you more attractive to employers.
+          </p>
+        </div>
+
         <p className="text-lg leading-relaxed text-gray-700 mt-8">
-          By following these steps, you can walk into any interview with
-          confidence, ready to showcase your skills and land your dream job.
-          Good luck!
+          Remember: interviews are conversations, not performances. The
+          companies that are right for you will appreciate authenticity over
+          perfection. Focus on being prepared, professional, and genuinely
+          curious about the role and company.
         </p>
       </div>
     </BlogLayout>
