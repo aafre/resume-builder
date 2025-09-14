@@ -38,20 +38,20 @@ COPY --chown=appuser:appuser . .
 RUN rm -rf /app/resume-builder-ui
 COPY --from=react-build --chown=appuser:appuser /app/react/dist/ /app/static/
 
-# Create fontconfig cache directory for non-root user
-RUN mkdir -p /app/.cache/fontconfig && \
-    chown -R appuser:appuser /app/.cache
+# Create HOME directory for appuser and set proper permissions
+RUN mkdir -p /home/appuser && \
+    chown -R appuser:appuser /home/appuser && \
+    chown -R appuser:appuser /app
 
-# Set proper permissions for the app directory
-RUN chown -R appuser:appuser /app
+# Set environment variables for cache directories and HOME
+ENV HOME=/home/appuser
+ENV XDG_CACHE_HOME=/tmp/.cache
+ENV FONTCONFIG_CACHE=/tmp/.cache/fontconfig
 
 # Security: Set production environment variables
 ENV FLASK_ENV=production
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-
-# Set fontconfig cache environment variable
-ENV FONTCONFIG_CACHE=/app/.cache/fontconfig
 
 # Add security labels
 LABEL security.non-root=true
