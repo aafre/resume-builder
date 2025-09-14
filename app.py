@@ -751,6 +751,272 @@ def generate_resume():
             )
 
 
+@app.route("/api/preview/img", methods=["POST"])
+def preview_resume_image():
+    """
+    Generate a resume preview image from the uploaded YAML and optional icons.
+    This endpoint reuses the resume generation logic and converts the PDF to PNG.
+    """
+    with tempfile.TemporaryDirectory() as temp_dir:
+        try:
+            # Paths for YAML and output
+            temp_dir_path = Path(temp_dir)
+            yaml_path = temp_dir_path / "input.yaml"
+            timestamp = datetime.now().strftime("%Y%m%d_%H_%M_%S")
+            pdf_path = temp_dir_path / f"Resume_{timestamp}.pdf"
+            png_path = temp_dir_path / f"Resume_{timestamp}.png"
+
+            # Validate and save YAML file
+            yaml_file = request.files.get("yaml_file")
+            if not yaml_file or yaml_file.filename == "":
+                raise ValueError("No YAML file uploaded")
+
+            yaml_file.save(yaml_path)
+
+            # Parse YAML to extract icon references
+            with open(yaml_path, 'r') as f:
+                yaml_data = yaml.safe_load(f)
+
+            # Get session ID for icon isolation
+            session_id = request.form.get("session_id")
+            if not session_id:
+                raise ValueError("No session ID provided")
+            
+            # Create session-specific icon directory
+            session_icons_dir = Path("/tmp") / "sessions" / session_id / "icons"
+            session_icons_dir.mkdir(parents=True, exist_ok=True)
+
+            # Copy default icons referenced in YAML to session directory
+            def extract_icons_from_yaml(data):
+                icons = set()
+                if isinstance(data, dict):
+                    for key, value in data.items():
+                        if key == "icon" and isinstance(value, str):
+                            # Frontend now sends clean filenames, but handle both cases
+                            clean_icon_name = value.replace('/icons/', '') if value.startswith('/icons/') else value
+                            icons.add(clean_icon_name)
+                        else:
+                            icons.update(extract_icons_from_yaml(value))
+                elif isinstance(data, list):
+                    for item in data:
+                        icons.update(extract_icons_from_yaml(item))
+                return icons
+
+            # Select the template and determine if it uses icons
+            template = request.form.get("template", "modern")
+            uses_icons = template != "modern-no-icons"  # Skip icons for no-icons variant
+            
+            if uses_icons:
+                # Copy base contact icons that are hardcoded in templates
+                base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
+                for icon_name in base_contact_icons:
+                    default_icon_path = ICONS_DIR / icon_name
+                    if default_icon_path.exists():
+                        session_icon_path = session_icons_dir / icon_name
+                        shutil.copy2(default_icon_path, session_icon_path)
+                        logging.debug(f"Copied base contact icon: {icon_name} to session directory")
+                    else:
+                        logging.warning(f"Base contact icon not found: {icon_name} at {default_icon_path}")
+            else:
+                logging.debug("Skipping base contact icons for no-icons template variant")
+
+            # Copy additional icons referenced in YAML content (only for icon-supporting templates)
+            if uses_icons:
+                referenced_icons = extract_icons_from_yaml(yaml_data)
+                logging.debug(f"Found {len(referenced_icons)} referenced icons: {referenced_icons}")
+                base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
+                for icon_name in referenced_icons:
+                    # Skip if already copied as base contact icon
+                    if icon_name in base_contact_icons:
+                        continue
+                        
+                    default_icon_path = ICONS_DIR / icon_name
+                    if default_icon_path.exists():
+                        session_icon_path = session_icons_dir / icon_name
+                        shutil.copy2(default_icon_path, session_icon_path)
+                        logging.debug(f"Copied default icon: {icon_name} to session directory")
+                    else:
+                        logging.warning(f"Default icon not found: {icon_name} at {default_icon_path}")
+            else:
+                logging.debug("Skipping referenced icons for no-icons template variant")
+
+            # Handle icon files if provided - save to session directory (only for icon-supporting templates)
+            if uses_icons:
+                icon_files = request.files.getlist("icons")
+                for icon_file in icon_files:
+                    if icon_file.filename == "":
+                        continue
+
+                    # Validate icon file type
+                    allowed_extensions = {"png", "jpg", "jpeg", "svg"}
+                    if (
+                        "." not in icon_file.filename
+                        or icon_file.filename.rsplit(".", 1)[1].lower()
+                        not in allowed_extensions
+                    ):
+                        raise ValueError(f"Invalid icon file type: {icon_file.filename}")
+
+                    # Save icon to the session-specific icons directory
+                    icon_path = session_icons_dir / icon_file.filename
+                    icon_file.save(icon_path)
+            else:
+                logging.debug("Skipping user uploaded icons for no-icons template variant")
+            
+            # Map template IDs to actual template directories
+            # Modern templates (both with/without icons) use HTML/CSS generation, Classic templates use LaTeX
+            template_mapping = {
+                "modern-with-icons": "modern",     # HTML template - icons will be copied above
+                "modern-no-icons": "modern",       # HTML template - no icons copied above
+                "modern": "modern",                 # Default HTML template
+                "classic": "classic",               # LaTeX template (generic)
+                "classic-alex-rivera": "classic",   # LaTeX template (data analytics)
+                "classic-jane-doe": "classic",      # LaTeX template (marketing)
+                "minimal": "minimal"                # Future template
+            }
+            
+            if template not in template_mapping:
+                raise ValueError(
+                    f"Invalid template: {template}. Available templates: {', '.join(template_mapping.keys())}"
+                )
+            
+            # Use the mapped template directory
+            actual_template = template_mapping[template]
+            
+            # Generate PDF using the same logic as generate_resume
+            if actual_template == "classic":
+                # LaTeX path: Use XeLaTeX compilation for classic templates
+                # Check if xelatex is available, fallback to modern template if not
+                try:
+                    subprocess.run(["xelatex", "--version"], capture_output=True, check=True)
+                    logging.info(f"Using direct LaTeX generation for template: {actual_template}")
+                    generate_latex_pdf(yaml_data, str(session_icons_dir), str(pdf_path), actual_template)
+                except (subprocess.CalledProcessError, FileNotFoundError):
+                    logging.warning("LaTeX not available, falling back to modern template for preview")
+                    # Fallback to modern template for preview when LaTeX is not available
+                    actual_template = "modern"
+                    # Continue with HTML generation below
+            else:
+                # HTML path: Use process pool for fast PDF generation with Qt isolation
+                logging.info(f"Using process pool HTML generation for template: {actual_template}")
+                
+                if PDF_PROCESS_POOL is None:
+                    # Fallback to subprocess if pool not available
+                    logging.warning("Process pool not available, falling back to subprocess")
+                    cmd = [
+                        "python",
+                        "resume_generator.py",
+                        "--template",
+                        actual_template,
+                        "--input",
+                        str(yaml_path),
+                        "--output",
+                        str(pdf_path),
+                        "--session-icons-dir",
+                        str(session_icons_dir),
+                        "--session-id",
+                        session_id,
+                    ]
+
+                    result = subprocess.run(
+                        cmd,
+                        capture_output=True,
+                        text=True,
+                        cwd=str(PROJECT_ROOT)
+                    )
+
+                    if result.returncode != 0:
+                        logging.error(f"Subprocess error: {result.stderr}")
+                        raise RuntimeError("Failed to generate the resume")
+                else:
+                    # Use process pool for faster execution
+                    logging.debug("Submitting PDF generation task to process pool")
+                    future = PDF_PROCESS_POOL.submit(
+                        pdf_generation_worker,
+                        actual_template,
+                        yaml_path,
+                        pdf_path,
+                        session_icons_dir,
+                        session_id
+                    )
+                    
+                    # Wait for result with timeout
+                    try:
+                        result = future.result(timeout=60)  # 60 second timeout
+                        
+                        if not result["success"]:
+                            logging.error(f"Process pool worker failed: {result['error']}")
+                            raise RuntimeError(f"Failed to generate the resume: {result['error']}")
+                        
+                        logging.info("Process pool PDF generation completed successfully")
+                    except Exception as e:
+                        logging.error(f"Process pool execution failed: {e}")
+                        raise RuntimeError(f"Failed to generate the resume: {str(e)}")
+
+            if not pdf_path.exists():
+                logging.error(f"Expected PDF file at: {pdf_path}")
+                raise FileNotFoundError("The generated resume PDF was not found")
+
+            # Convert PDF to PNG using PyMuPDF
+            try:
+                import fitz  # PyMuPDF
+                
+                # Open the PDF
+                pdf_document = fitz.open(str(pdf_path))
+                
+                # Get the first page
+                page = pdf_document[0]
+                
+                # Set zoom factor for better quality (2x for 300 DPI equivalent)
+                mat = fitz.Matrix(2.0, 2.0)
+                
+                # Render page to image
+                pix = page.get_pixmap(matrix=mat, alpha=False)
+                
+                # Save as PNG
+                pix.save(str(png_path))
+                
+                # Close the document
+                pdf_document.close()
+                
+                logging.info(f"Successfully converted PDF to PNG: {png_path}")
+                
+            except ImportError:
+                logging.error("PyMuPDF (fitz) not available for PDF to image conversion")
+                raise RuntimeError("PDF to image conversion not available")
+            except Exception as e:
+                logging.error(f"Error converting PDF to PNG: {e}")
+                raise RuntimeError(f"Failed to convert PDF to image: {str(e)}")
+
+            # Clean up session directory after successful image generation
+            try:
+                session_dir = Path("/tmp") / "sessions" / session_id
+                if session_dir.exists():
+                    shutil.rmtree(session_dir)
+                    logging.debug(f"Cleaned up session directory: {session_dir}")
+            except Exception as cleanup_error:
+                logging.warning(f"Failed to cleanup session directory: {cleanup_error}")
+
+            # Send the generated PNG image
+            return send_file(
+                png_path,
+                mimetype="image/png",
+                download_name=png_path.name,
+            )
+
+        except ValueError as ve:
+            logging.warning("Preview validation error: %s", ve)
+            return jsonify({"success": False, "error": str(ve)}), 400
+        except FileNotFoundError as fnfe:
+            logging.error("Preview file error: %s", fnfe)
+            return jsonify({"success": False, "error": str(fnfe)}), 500
+        except Exception as e:
+            logging.error("Preview unexpected error: %s", e)
+            return (
+                jsonify({"success": False, "error": "An unexpected error occurred during preview generation"}),
+                500,
+            )
+
+
 @app.route("/download/<filename>")
 def download_file(filename):
     """
