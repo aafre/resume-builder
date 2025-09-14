@@ -38,8 +38,15 @@ COPY --chown=appuser:appuser . .
 RUN rm -rf /app/resume-builder-ui
 COPY --from=react-build --chown=appuser:appuser /app/react/dist/ /app/static/
 
-# Set proper permissions for the app directory
-RUN chown -R appuser:appuser /app
+# Create HOME directory for appuser and set proper permissions
+RUN mkdir -p /home/appuser && \
+    chown -R appuser:appuser /home/appuser && \
+    chown -R appuser:appuser /app
+
+# Set environment variables for cache directories and HOME
+ENV HOME=/home/appuser
+ENV XDG_CACHE_HOME=/tmp/.cache
+ENV FONTCONFIG_CACHE=/tmp/.cache/fontconfig
 
 # Security: Set production environment variables
 ENV FLASK_ENV=production

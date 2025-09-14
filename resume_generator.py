@@ -2,8 +2,25 @@ import pdfkit
 import argparse
 import yaml
 import uuid
+import logging
+import shutil
+import subprocess
+import os
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
+
+# Configure logging for the subprocess
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s [GENERATOR] %(levelname)s: %(message)s")
+
+# Check wkhtmltopdf binary availability once per run
+wkhtmltopdf_binary = shutil.which("wkhtmltopdf") or "/usr/bin/wkhtmltopdf"
+try:
+    version_output = subprocess.check_output([wkhtmltopdf_binary, "-V"], text=True).strip()
+    logging.debug(f"wkhtmltopdf binary: {wkhtmltopdf_binary}")
+    logging.debug(f"wkhtmltopdf version: {version_output}")
+except Exception as e:
+    logging.warning(f"wkhtmltopdf version check failed: {e}")
+    logging.warning(f"Attempted binary path: {wkhtmltopdf_binary}")
 
 
 def load_resume_data(yaml_file_path):
@@ -84,7 +101,7 @@ def generate_pdf(
             if not isinstance(content, list):
                 raise ValueError(f"Invalid content for dynamic-column-list: {content}")
             section["num_cols"] = calculate_columns(len(content))
-            print(
+            logging.debug(
                 f"Calculated {section['num_cols']} columns for section '{section.get('name')}'"
             )
 
@@ -109,7 +126,7 @@ def generate_pdf(
     )
 
     # Render HTML with data
-    print("Rendering HTML with data...")
+    logging.info(f"Rendering HTML template for: {template_name}")
 
     template = env.get_template("base.html")
     html_content = template.render(
@@ -133,27 +150,45 @@ def generate_pdf(
 
     with open(temp_html_file, "w") as html_file:
         html_file.write(html_content)
-    print("HTML written to temporary file:", temp_html_file)
+    logging.info(f"HTML written to temporary file: {temp_html_file}")
+
+    # Enhanced debug breadcrumbs
+    logging.debug(f"Working directory: {os.getcwd()}")
+    logging.debug(f"HTML file: {temp_html_file}")
+    logging.debug(f"CSS path: {css_file}")
+    logging.debug(f"Icon base path: {icon_base_path}")
+    logging.debug(f"Output path: {output_file}")
 
     # Convert the HTML file to PDF with the enable-local-file-access option
-    options = {"enable-local-file-access": ""}
+    options = {
+        "enable-local-file-access": "",
+        "load-error-handling": "abort",  # fail fast on missing assets
+        "quiet": ""                      # keep stderr tidy
+    }
 
-    print("Converting HTML file to PDF...")
+    logging.info(f"Converting HTML file to PDF using wkhtmltopdf")
+    logging.debug(f"pdfkit options: {options}")
     try:
         pdfkit.from_file(temp_html_file.as_posix(), output_file, options=options)
-        print("PDF generated successfully at", output_file)
+        logging.info(f"PDF generated successfully at: {output_file}")
     except Exception as e:
-        print("Error generating PDF:", e)
+        logging.error(f"pdfkit failed to generate PDF: {str(e)}")
+        logging.error(f"Template: {template_name}")
+        logging.error(f"Input HTML file: {temp_html_file}")
+        logging.error(f"Output path: {output_file}")
+        logging.error(f"pdfkit options: {options}")
+        # Re-raise the exception to make the subprocess fail
+        raise
 
     # Clean up temporary HTML file
     try:
         temp_html_file.unlink()  # Remove temp file
-        print(f"Temporary HTML file cleaned up: {temp_html_file}")
+        logging.debug(f"Temporary HTML file cleaned up: {temp_html_file}")
     except FileNotFoundError:
         # File already removed, no issue
-        pass
+        logging.debug(f"Temporary HTML file already removed: {temp_html_file}")
     except Exception as e:
-        print(f"Warning: Could not remove temporary file {temp_html_file}: {e}")
+        logging.warning(f"Could not remove temporary file {temp_html_file}: {e}")
 
 
 def get_social_media_handle(url):
