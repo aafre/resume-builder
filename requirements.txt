@@ -8,3 +8,4 @@ flask-talisman
 gunicorn
 pytest
 fastapi[standard]
+PyMuPDF

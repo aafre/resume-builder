@@ -1,4 +1,4 @@
-import { FaFilePdf, FaPlus } from "react-icons/fa";
+import { FaFilePdf, FaPlus, FaEye } from "react-icons/fa";
 import {
   MdFileDownload,
   MdFileUpload,
@@ -10,6 +10,7 @@ interface EditorToolbarProps {
   // Button handlers
   onAddSection: () => void;
   onGenerateResume: () => void;
+  onPreviewResume: () => void;
   onExportYAML: () => void;
   onImportYAML: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onToggleHelp: () => void;
@@ -31,6 +32,7 @@ interface EditorToolbarProps {
 export default function EditorToolbar({
   onAddSection,
   onGenerateResume,
+  onPreviewResume,
   onExportYAML,
   onImportYAML,
   onToggleHelp,
@@ -97,6 +99,16 @@ export default function EditorToolbar({
         <span className="sm:hidden">
           {generating ? "Creating..." : "Download"}
         </span>
+      </button>
+
+      {/* Preview Resume Button */}
+      <button
+        onClick={onPreviewResume}
+        className={`bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-full border border-blue-500/20 hover:border-blue-400/40 font-semibold text-sm sm:text-lg flex items-center gap-2 sm:gap-3 ${buttonClasses}`}
+      >
+        <FaEye className="text-lg sm:text-xl" />
+        <span className="hidden sm:inline">Preview Resume</span>
+        <span className="sm:hidden">Preview</span>
       </button>
 
       {/* More Options Menu */}
