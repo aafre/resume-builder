@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.4] - 2025-09-17
+
+### 🐛 Bug Fixes
+
+- Make linkedin optional ([#114](https://github.com/aafre/resume-builder/pull/114))
+
 ## [0.3.3] - 2025-09-14
 
 ### 🐛 Bug Fixes
