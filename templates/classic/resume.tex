@@ -80,7 +80,7 @@
         \faMapMarker* \enspace \VAR{contact_info.location} \enspace $\cdot$ \enspace
         \faPhone* \enspace \VAR{contact_info.phone} \enspace $\cdot$ \enspace
         \faEnvelope \enspace \href{mailto:\VAR{contact_info.email}}{\VAR{contact_info.email}} \enspace $\cdot$ \enspace
-        \faLinkedin \enspace \href{\VAR{contact_info.linkedin}}{\VAR{contact_info.linkedin_handle}}%
+        \BLOCK{if contact_info.linkedin and contact_info.linkedin.strip()}\faLinkedin \enspace \href{\VAR{contact_info.linkedin}}{\VAR{contact_info.linkedin_display or contact_info.linkedin_handle}}\BLOCK{endif}%
     }
 \end{center}
 \vspace{0.4em}
