@@ -142,22 +142,40 @@ def _prepare_latex_data(data):
     contact_info = prepared_data.get("contact_info", {})
     if contact_info:
         linkedin_url = contact_info.get("linkedin", "")
-        if (
-            linkedin_url
-            and not linkedin_url.startswith("http://")
-            and not linkedin_url.startswith("https://")
-        ):
-            contact_info["linkedin"] = (
-                "https://" + linkedin_url
-            )  # Prepend https if missing
-            logger.debug(
-                f"Prepended https:// to LinkedIn URL: {contact_info['linkedin']}"
-            )
+        
+        # Only process LinkedIn if URL is provided
+        if linkedin_url and linkedin_url.strip():
+            if not linkedin_url.startswith("http://") and not linkedin_url.startswith("https://"):
+                contact_info["linkedin"] = "https://" + linkedin_url
+                linkedin_url = contact_info["linkedin"]  # Update local variable
+                logger.debug(f"Prepended https:// to LinkedIn URL: {contact_info['linkedin']}")
 
-        contact_info["linkedin_handle"] = _get_social_media_handle(
-            contact_info.get("linkedin", "")
-        )
-        logger.debug(f"Derived LinkedIn handle: {contact_info['linkedin_handle']}")
+            contact_info["linkedin_handle"] = _get_social_media_handle(linkedin_url)
+            logger.debug(f"Derived LinkedIn handle: {contact_info['linkedin_handle']}")
+            
+            # Generate linkedin_display if not already provided
+            if not contact_info.get("linkedin_display"):
+                # Import the function from the same module if it exists, or use simple fallback
+                try:
+                    from app import generate_linkedin_display_text
+                    contact_info["linkedin_display"] = generate_linkedin_display_text(
+                        linkedin_url, contact_info.get("name", "")
+                    )
+                except ImportError:
+                    # Simple fallback if import fails
+                    handle = contact_info["linkedin_handle"]
+                    if handle and len(handle) > 3 and not any(char.isdigit() for char in handle[-4:]):
+                        # Clean handle - format nicely
+                        contact_info["linkedin_display"] = ' '.join(part.capitalize() for part in handle.replace('-', ' ').split())
+                    else:
+                        # Use contact name or fallback
+                        contact_info["linkedin_display"] = contact_info.get("name", "LinkedIn Profile")
+                logger.debug(f"Generated LinkedIn display text: {contact_info['linkedin_display']}")
+        else:
+            # Clear LinkedIn fields if URL is empty
+            contact_info["linkedin_handle"] = ""
+            contact_info["linkedin_display"] = ""
+            logger.debug("LinkedIn URL empty - cleared LinkedIn fields")
 
     prepared_data["contact_info"] = contact_info  # Update contact_info in prepared_data
 
@@ -555,7 +573,7 @@ if __name__ == "__main__":
         \faMapMarker \hspace{2pt} \VAR{contact_info.location} \textbullet\ 
         \faPhone \hspace{2pt} \VAR{contact_info.phone} \textbullet\ 
         \faEnvelope \hspace{2pt} \href{mailto:\VAR{contact_info.email}}{\VAR{contact_info.email}} \textbullet\ 
-        \faLinkedin \hspace{2pt} \href{\VAR{contact_info.linkedin}}{\VAR{contact_info.linkedin_handle}}%
+        \BLOCK{if contact_info.linkedin and contact_info.linkedin.strip()}\faLinkedin \hspace{2pt} \href{\VAR{contact_info.linkedin}}{\VAR{contact_info.linkedin_display or contact_info.linkedin_handle}}\BLOCK{endif}%
     }
 \end{center}
 \vspace{0.2em}
