@@ -1,3 +1,4 @@
+import re
 import pdfkit
 import argparse
 import yaml
@@ -115,15 +116,27 @@ def generate_pdf(
     # Social media handle extraction
     linkedin_url = contact_info.get("linkedin", "")
 
-    if linkedin_url and not linkedin_url.startswith("https://"):
-        linkedin_url = "https://" + linkedin_url
+    # Only process LinkedIn if URL is provided
+    if linkedin_url and linkedin_url.strip():
+        if not linkedin_url.startswith("https://"):
+            linkedin_url = "https://" + linkedin_url
 
-    if "linkedin" not in linkedin_url:
-        raise ValueError("Invalid LinkedIn URL provided")
-
-    contact_info["linkedin_handle"] = (
-        get_social_media_handle(linkedin_url) if linkedin_url else linkedin_url
-    )
+        if "linkedin" not in linkedin_url.lower():
+            raise ValueError("Invalid LinkedIn URL provided")
+            
+        contact_info["linkedin_handle"] = get_social_media_handle(linkedin_url)
+        
+        # Generate linkedin_display if not already provided
+        if not contact_info.get("linkedin_display"):
+            contact_info["linkedin_display"] = generate_linkedin_display_text(
+                linkedin_url, contact_info.get("name", "")
+            )
+            logging.info(f"Generated LinkedIn display text: {contact_info['linkedin_display']}")
+    else:
+        # Clear LinkedIn fields if URL is empty
+        contact_info["linkedin_handle"] = ""
+        contact_info["linkedin_display"] = ""
+        logging.info("LinkedIn URL empty - cleared LinkedIn fields")
 
     # Render HTML with data
     logging.info(f"Rendering HTML template for: {template_name}")
@@ -206,6 +219,67 @@ def get_social_media_handle(url):
         url = url.rstrip("/")
         return url.split("/")[-1]
     return ""
+
+
+def generate_linkedin_display_text(linkedin_url, contact_name=None):
+    """
+    Generates smart display text for a LinkedIn profile with quality analysis.
+
+    Args:
+        linkedin_url (str): The full LinkedIn URL.
+        contact_name (str): The user's full name for fallback generation.
+    
+    Returns:
+        str: A clean, professional display text for the resume.
+        
+    Examples:
+        - "linkedin.com/in/john-fitzgerald-doe" -> "John Fitzgerald Doe"
+        - "linkedin.com/in/jane-doe-a1b2c3d4" with name "Jane Doe" -> "Jane Doe"
+        - "linkedin.com/in/badhandle12345" without a name -> "LinkedIn Profile"
+    """
+    # First, validate that this is actually a LinkedIn URL
+    if not linkedin_url or "linkedin" not in linkedin_url.lower():
+        return "LinkedIn Profile"
+    
+    raw_handle = get_social_media_handle(linkedin_url)
+    
+    # If there's no handle, we can't do much.
+    if not raw_handle:
+        return "LinkedIn Profile"
+
+    # --- Nested helper function for analysis ---
+    def is_clean_handle(handle):
+        """Determines if a LinkedIn handle is clean and professional."""
+        # Rule 1: Too long
+        if len(handle) > 50:
+            return False
+            
+        # Rule 2: Too many hyphens
+        if handle.count('-') > 3:
+            return False
+            
+        # Rule 3: Long sequences of numbers (e.g., ...1998)
+        if re.search(r'\d{4,}', handle):
+            return False
+            
+        # Rule 4: Common random suffixes (e.g., ...-a1b2c3d4)
+        if re.search(r'-[a-z0-9]{8,}', handle.lower()):
+            return False
+
+        return True
+
+    # --- Main logic ---
+    if is_clean_handle(raw_handle):
+        # Format the clean handle into a readable name
+        parts = raw_handle.replace('_', '-').split('-')
+        return ' '.join(part.capitalize() for part in parts if part)
+    else:
+        # If the handle is messy, use the contact name if available
+        if contact_name:
+            return contact_name.strip()
+        
+        # Final fallback if handle is messy and no name is provided
+        return "LinkedIn Profile"
 
 
 # NOTE: This file now serves as CLI-only tool for development/testing
