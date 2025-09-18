@@ -255,7 +255,7 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
             return False
             
         # Rule 2: Too many hyphens
-        if handle.count('-') > 3:
+        if handle.count('-') > 1:
             return False
             
         # Rule 3: Long sequences of numbers (e.g., ...1998)

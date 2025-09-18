@@ -203,7 +203,7 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
             return False
             
         # Rule 2: Too many hyphens
-        if handle.count('-') > 3:
+        if handle.count('-') > 1:
             return False
             
         # Rule 3: Long sequences of numbers (e.g., ...1998)
@@ -706,25 +706,21 @@ def generate_resume():
             template = request.form.get("template", "modern")
             uses_icons = template != "modern-no-icons"  # Skip icons for no-icons variant
             
-            if uses_icons:
-                # Copy base contact icons that are hardcoded in templates
-                base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
-                for icon_name in base_contact_icons:
-                    default_icon_path = ICONS_DIR / icon_name
-                    if default_icon_path.exists():
-                        session_icon_path = session_icons_dir / icon_name
-                        shutil.copy2(default_icon_path, session_icon_path)
-                        logging.debug(f"Copied base contact icon: {icon_name} to session directory")
-                    else:
-                        logging.warning(f"Base contact icon not found: {icon_name} at {default_icon_path}")
-            else:
-                logging.debug("Skipping base contact icons for no-icons template variant")
+            # Always copy base contact icons that are hardcoded in templates
+            base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
+            for icon_name in base_contact_icons:
+                default_icon_path = ICONS_DIR / icon_name
+                if default_icon_path.exists():
+                    session_icon_path = session_icons_dir / icon_name
+                    shutil.copy2(default_icon_path, session_icon_path)
+                    logging.debug(f"Copied base contact icon: {icon_name} to session directory")
+                else:
+                    logging.warning(f"Base contact icon not found: {icon_name} at {default_icon_path}")
 
             # Copy additional icons referenced in YAML content (only for icon-supporting templates)
             if uses_icons:
                 referenced_icons = extract_icons_from_yaml(yaml_data)
                 logging.debug(f"Found {len(referenced_icons)} referenced icons: {referenced_icons}")
-                base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
                 for icon_name in referenced_icons:
                     # Skip if already copied as base contact icon
                     if icon_name in base_contact_icons:
