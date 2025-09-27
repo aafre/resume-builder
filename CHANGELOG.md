@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2025-09-27
+
+### 🚀 Features
+
+- Implement clear template feature to reset content but retain structure ([#117](https://github.com/aafre/resume-builder/pull/117))
+
 ## [0.3.5] - 2025-09-18
 
 ### 🐛 Bug Fixes
