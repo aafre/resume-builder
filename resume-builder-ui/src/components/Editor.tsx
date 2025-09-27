@@ -849,6 +849,40 @@ const Editor: React.FC = () => {
     // Keep the current template data (already loaded)
   };
 
+  const handleLoadEmptyTemplate = async () => {
+    if (!originalTemplateData) return;
+
+    setLoadingSave(true);
+    try {
+      // Reset contact info
+      setContactInfo({
+        name: "",
+        location: "",
+        email: "",
+        phone: "",
+        linkedin: "",
+        linkedin_display: "",
+      });
+
+      // Reset sections by preserving structure but emptying content
+      const emptySections = originalTemplateData.sections.map((section) => ({
+        ...section,
+        content: Array.isArray(section.content) ? [] : "",
+      }));
+
+      setSections(emptySections);
+      iconRegistry.clearRegistry();
+      clearAutoSave();
+
+      toast.success("Template cleared successfully!");
+    } catch (error) {
+      console.error("Error clearing template:", error);
+      toast.error("Failed to clear template");
+    } finally {
+      setLoadingSave(false);
+    }
+  };
+
   // Close advanced menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -1328,6 +1362,7 @@ const Editor: React.FC = () => {
               onExportYAML={handleExportYAML}
               onImportYAML={handleImportYAML}
               onToggleHelp={toggleHelpModal}
+              onLoadEmptyTemplate={handleLoadEmptyTemplate}
               loadingAddSection={loadingAddSection}
               generating={generating}
               loadingSave={loadingSave}
