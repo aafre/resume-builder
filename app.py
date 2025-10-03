@@ -352,6 +352,131 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
     return max_columns  # Default to max columns if all checks pass
 
 
+def get_template_mapping():
+    """
+    Central function to get template mapping configuration.
+    This eliminates duplication of template mapping logic across routes.
+    
+    Returns:
+        dict: Template mapping from template IDs to actual template directories
+    """
+    return {
+        "modern-with-icons": "modern",     # HTML template - icons will be copied above
+        "modern-no-icons": "modern",       # HTML template - no icons copied above
+        "modern": "modern",                 # Default HTML template
+        "classic": "classic",               # LaTeX template (generic)
+        "classic-alex-rivera": "classic",   # LaTeX template (data analytics)
+        "classic-jane-doe": "classic",      # LaTeX template (marketing)
+        "minimal": "minimal"                # Future template
+    }
+
+
+def generate_pdf_with_template(yaml_path, template, session_id, output_path, session_icons_dir):
+    """
+    Central function to generate PDF using the appropriate method based on template type.
+    This consolidates the PDF generation logic used by both generate_resume and 
+    preview_resume_image routes to avoid duplication.
+    
+    Args:
+        yaml_path (Path): Path to the YAML file containing resume data
+        template (str): The template ID to use
+        session_id (str): Session ID for icon isolation
+        output_path (Path): Path where the PDF should be saved
+        session_icons_dir (Path): Directory containing session-specific icons
+        
+    Returns:
+        str: Path to the generated PDF file
+        
+    Raises:
+        ValueError: If template is invalid
+        RuntimeError: If PDF generation fails
+        FileNotFoundError: If generated PDF is not found
+    """
+    # Get template mapping
+    template_mapping = get_template_mapping()
+    
+    if template not in template_mapping:
+        raise ValueError(
+            f"Invalid template: {template}. Available templates: {', '.join(template_mapping.keys())}"
+        )
+    
+    # Use the mapped template directory
+    actual_template = template_mapping[template]
+    
+    # Generate PDF using the appropriate method
+    if actual_template == "classic":
+        # LaTeX path: Use XeLaTeX compilation for classic templates
+        # Load YAML data for LaTeX generation
+        with open(yaml_path, 'r') as f:
+            yaml_data = yaml.safe_load(f)
+        logging.info(f"Using direct LaTeX generation for template: {actual_template}")
+        generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
+    else:
+        # HTML path: Use process pool for fast PDF generation with Qt isolation
+        # This approach prevents Qt threading conflicts while providing ~10x performance
+        # improvement over subprocess due to pre-warmed worker processes
+        logging.info(f"Using process pool HTML generation for template: {actual_template}")
+        
+        if PDF_PROCESS_POOL is None:
+            # Fallback to subprocess if pool not available
+            logging.warning("Process pool not available, falling back to subprocess")
+            cmd = [
+                "python",
+                "resume_generator.py",
+                "--template",
+                actual_template,
+                "--input",
+                str(yaml_path),
+                "--output",
+                str(output_path),
+                "--session-icons-dir",
+                str(session_icons_dir),
+                "--session-id",
+                session_id,
+            ]
+
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                cwd=str(PROJECT_ROOT)
+            )
+
+            if result.returncode != 0:
+                logging.error(f"Subprocess error: {result.stderr}")
+                raise RuntimeError("Failed to generate the resume")
+        else:
+            # Use process pool for faster execution
+            logging.debug("Submitting PDF generation task to process pool")
+            future = PDF_PROCESS_POOL.submit(
+                pdf_generation_worker,
+                actual_template,
+                yaml_path,
+                output_path,
+                session_icons_dir,
+                session_id
+            )
+            
+            # Wait for result with timeout
+            try:
+                result = future.result(timeout=60)  # 60 second timeout
+                
+                if not result["success"]:
+                    logging.error(f"Process pool worker failed: {result['error']}")
+                    raise RuntimeError(f"Failed to generate the resume: {result['error']}")
+                
+                logging.info("Process pool PDF generation completed successfully")
+            except Exception as e:
+                logging.error(f"Process pool execution failed: {e}")
+                raise RuntimeError(f"Failed to generate the resume: {str(e)}")
+
+    if not output_path.exists():
+        logging.error(f"Expected PDF file at: {output_path}")
+        raise FileNotFoundError("The generated resume PDF was not found")
+    
+    return str(output_path)
+
+
 
 app = Flask(__name__, static_folder="static", static_url_path="/")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
@@ -632,93 +757,8 @@ def generate_resume():
             else:
                 logging.debug("Skipping user uploaded icons for no-icons template variant")
             
-            # Map template IDs to actual template directories
-            # Modern templates (both with/without icons) use HTML/CSS generation, Classic templates use LaTeX
-            template_mapping = {
-                "modern-with-icons": "modern",     # HTML template - icons will be copied above
-                "modern-no-icons": "modern",       # HTML template - no icons copied above
-                "modern": "modern",                 # Default HTML template
-                "classic": "classic",               # LaTeX template (generic)
-                "classic-alex-rivera": "classic",   # LaTeX template (data analytics)
-                "classic-jane-doe": "classic",      # LaTeX template (marketing)
-                "minimal": "minimal"                # Future template
-            }
-            
-            if template not in template_mapping:
-                raise ValueError(
-                    f"Invalid template: {template}. Available templates: {', '.join(template_mapping.keys())}"
-                )
-            
-            # Use the mapped template directory
-            actual_template = template_mapping[template]
-            
-            # Use subprocess for PDF generation to avoid Qt state issues
-            if actual_template == "classic":
-                # LaTeX path: Use XeLaTeX compilation for classic templates
-                logging.info(f"Using direct LaTeX generation for template: {actual_template}")
-                generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
-            else:
-                # HTML path: Use process pool for fast PDF generation with Qt isolation
-                # This approach prevents Qt threading conflicts while providing ~10x performance
-                # improvement over subprocess due to pre-warmed worker processes
-                logging.info(f"Using process pool HTML generation for template: {actual_template}")
-                
-                if PDF_PROCESS_POOL is None:
-                    # Fallback to subprocess if pool not available
-                    logging.warning("Process pool not available, falling back to subprocess")
-                    cmd = [
-                        "python",
-                        "resume_generator.py",
-                        "--template",
-                        actual_template,
-                        "--input",
-                        str(yaml_path),
-                        "--output",
-                        str(output_path),
-                        "--session-icons-dir",
-                        str(session_icons_dir),
-                        "--session-id",
-                        session_id,
-                    ]
-
-                    result = subprocess.run(
-                        cmd,
-                        capture_output=True,
-                        text=True,
-                        cwd=str(PROJECT_ROOT)
-                    )
-
-                    if result.returncode != 0:
-                        logging.error(f"Subprocess error: {result.stderr}")
-                        raise RuntimeError("Failed to generate the resume")
-                else:
-                    # Use process pool for faster execution
-                    logging.debug("Submitting PDF generation task to process pool")
-                    future = PDF_PROCESS_POOL.submit(
-                        pdf_generation_worker,
-                        actual_template,
-                        yaml_path,
-                        output_path,
-                        session_icons_dir,
-                        session_id
-                    )
-                    
-                    # Wait for result with timeout
-                    try:
-                        result = future.result(timeout=60)  # 60 second timeout
-                        
-                        if not result["success"]:
-                            logging.error(f"Process pool worker failed: {result['error']}")
-                            raise RuntimeError(f"Failed to generate the resume: {result['error']}")
-                        
-                        logging.info("Process pool PDF generation completed successfully")
-                    except Exception as e:
-                        logging.error(f"Process pool execution failed: {e}")
-                        raise RuntimeError(f"Failed to generate the resume: {str(e)}")
-
-            if not output_path.exists():
-                logging.error(f"Expected output file at: {output_path}")
-                raise FileNotFoundError("The generated resume file was not found")
+            # Generate PDF using the central function
+            generate_pdf_with_template(yaml_path, template, session_id, output_path, session_icons_dir)
 
             # Clean up session directory after successful PDF generation
             try:
@@ -862,99 +902,17 @@ def preview_resume_image():
             else:
                 logging.debug("Skipping user uploaded icons for no-icons template variant")
             
-            # Map template IDs to actual template directories
-            # Modern templates (both with/without icons) use HTML/CSS generation, Classic templates use LaTeX
-            template_mapping = {
-                "modern-with-icons": "modern",     # HTML template - icons will be copied above
-                "modern-no-icons": "modern",       # HTML template - no icons copied above
-                "modern": "modern",                 # Default HTML template
-                "classic": "classic",               # LaTeX template (generic)
-                "classic-alex-rivera": "classic",   # LaTeX template (data analytics)
-                "classic-jane-doe": "classic",      # LaTeX template (marketing)
-                "minimal": "minimal"                # Future template
-            }
-            
-            if template not in template_mapping:
-                raise ValueError(
-                    f"Invalid template: {template}. Available templates: {', '.join(template_mapping.keys())}"
-                )
-            
-            # Use the mapped template directory
-            actual_template = template_mapping[template]
-            
-            # Generate PDF using the same logic as generate_resume
-            if actual_template == "classic":
-                # LaTeX path: Use XeLaTeX compilation for classic templates
-                # Check if xelatex is available, fallback to modern template if not
-                try:
-                    subprocess.run(["xelatex", "--version"], capture_output=True, check=True)
-                    logging.info(f"Using direct LaTeX generation for template: {actual_template}")
-                    generate_latex_pdf(yaml_data, str(session_icons_dir), str(pdf_path), actual_template)
-                except (subprocess.CalledProcessError, FileNotFoundError):
+            # Generate PDF using the central function
+            # For preview, we'll try classic first, but fallback to modern if LaTeX is not available
+            try:
+                generate_pdf_with_template(yaml_path, template, session_id, pdf_path, session_icons_dir)
+            except (subprocess.CalledProcessError, FileNotFoundError) as e:
+                if template.startswith("classic"):
                     logging.warning("LaTeX not available, falling back to modern template for preview")
                     # Fallback to modern template for preview when LaTeX is not available
-                    actual_template = "modern"
-                    # Continue with HTML generation below
-            else:
-                # HTML path: Use process pool for fast PDF generation with Qt isolation
-                logging.info(f"Using process pool HTML generation for template: {actual_template}")
-                
-                if PDF_PROCESS_POOL is None:
-                    # Fallback to subprocess if pool not available
-                    logging.warning("Process pool not available, falling back to subprocess")
-                    cmd = [
-                        "python",
-                        "resume_generator.py",
-                        "--template",
-                        actual_template,
-                        "--input",
-                        str(yaml_path),
-                        "--output",
-                        str(pdf_path),
-                        "--session-icons-dir",
-                        str(session_icons_dir),
-                        "--session-id",
-                        session_id,
-                    ]
-
-                    result = subprocess.run(
-                        cmd,
-                        capture_output=True,
-                        text=True,
-                        cwd=str(PROJECT_ROOT)
-                    )
-
-                    if result.returncode != 0:
-                        logging.error(f"Subprocess error: {result.stderr}")
-                        raise RuntimeError("Failed to generate the resume")
+                    generate_pdf_with_template(yaml_path, "modern-with-icons", session_id, pdf_path, session_icons_dir)
                 else:
-                    # Use process pool for faster execution
-                    logging.debug("Submitting PDF generation task to process pool")
-                    future = PDF_PROCESS_POOL.submit(
-                        pdf_generation_worker,
-                        actual_template,
-                        yaml_path,
-                        pdf_path,
-                        session_icons_dir,
-                        session_id
-                    )
-                    
-                    # Wait for result with timeout
-                    try:
-                        result = future.result(timeout=60)  # 60 second timeout
-                        
-                        if not result["success"]:
-                            logging.error(f"Process pool worker failed: {result['error']}")
-                            raise RuntimeError(f"Failed to generate the resume: {result['error']}")
-                        
-                        logging.info("Process pool PDF generation completed successfully")
-                    except Exception as e:
-                        logging.error(f"Process pool execution failed: {e}")
-                        raise RuntimeError(f"Failed to generate the resume: {str(e)}")
-
-            if not pdf_path.exists():
-                logging.error(f"Expected PDF file at: {pdf_path}")
-                raise FileNotFoundError("The generated resume PDF was not found")
+                    raise e
 
             # Convert PDF to PNG using PyMuPDF
             try:

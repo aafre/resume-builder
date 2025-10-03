@@ -487,7 +487,7 @@ const Editor: React.FC = () => {
       const formData = new FormData();
       const yamlBlob = new Blob([yamlData], { type: "application/x-yaml" });
       formData.append("yaml_file", yamlBlob, "resume.yaml");
-      formData.append("template", templateId || "modern-no-icons");
+      formData.append("template", templateId || "");
 
       // Add session ID for session-based icon isolation
       const sessionId = getSessionId();
@@ -1357,7 +1357,7 @@ const Editor: React.FC = () => {
       <ResumePreview
         contactInfo={contactInfo}
         sections={sections}
-        templateId={templateId || "modern-no-icons"}
+        templateId={templateId}
         iconRegistry={iconRegistry}
         isOpen={showPreview}
         onClose={handleClosePreview}
