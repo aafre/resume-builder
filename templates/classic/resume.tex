@@ -80,7 +80,7 @@
         \faMapMarker* \enspace \VAR{contact_info.location} \enspace $\cdot$ \enspace
         \faPhone* \enspace \VAR{contact_info.phone} \enspace $\cdot$ \enspace
         \faEnvelope \enspace \href{mailto:\VAR{contact_info.email}}{\VAR{contact_info.email}} \enspace $\cdot$ \enspace
-        \faLinkedin \enspace \href{\VAR{contact_info.linkedin}}{\VAR{contact_info.linkedin_handle}}%
+        \BLOCK{if contact_info.linkedin and contact_info.linkedin.strip()}\faLinkedin \enspace \href{\VAR{contact_info.linkedin}}{\VAR{contact_info.linkedin_display or contact_info.linkedin_handle}}\BLOCK{endif}%
     }
 \end{center}
 \vspace{0.4em}
@@ -101,11 +101,13 @@
         \small{\VAR{section.content}}\vspace{0.5em}
 
     \BLOCK{elif section_type == "bulleted-list"}
-        \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
-            \BLOCK{for item in section.content}
-                \rbullet{\VAR{item}}
-            \BLOCK{endfor}
-        \end{itemize}\vspace{0.5em}
+        \BLOCK{if section.content and section.content|length > 0}
+            \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
+                \BLOCK{for item in section.content}
+                    \rbullet{\VAR{item}}
+                \BLOCK{endfor}
+            \end{itemize}\vspace{0.5em}
+        \BLOCK{endif}
 
     \BLOCK{elif section_type == "inline-list"}
         \rhorizontalbullets{\VAR{" \\textbullet\\ ".join(section.content)}}
@@ -134,25 +136,29 @@
         \par\vspace{0.5em}
 
     \BLOCK{elif section_type == "icon-list"}
-        \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
-            \BLOCK{for item in section.content}
-                \BLOCK{if item is mapping}
-                    \rbullet{\VAR{item.certification} (\VAR{item.issuer}, \VAR{item.date})}
-                \BLOCK{else}
-                    \rbullet{\VAR{item}}
-                \BLOCK{endif}
-            \BLOCK{endfor}
-        \end{itemize}\vspace{0.5em}
+        \BLOCK{if section.content and section.content|length > 0}
+            \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
+                \BLOCK{for item in section.content}
+                    \BLOCK{if item is mapping}
+                        \rbullet{\VAR{item.certification} (\VAR{item.issuer}, \VAR{item.date})}
+                    \BLOCK{else}
+                        \rbullet{\VAR{item}}
+                    \BLOCK{endif}
+                \BLOCK{endfor}
+            \end{itemize}\vspace{0.5em}
+        \BLOCK{endif}
 
     \BLOCK{elif section_type == "experience" or section.name|lower == "experience"}
         \BLOCK{for job in section.content}
             \rjobtitle{\VAR{job.title}}
             \rcompanydate{\textit{\VAR{job.company}}}{\VAR{job.dates}}
-            \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.15em,parsep=0pt,topsep=0.1em]
-                \BLOCK{for bullet in job.description}
-                    \rbullet{\VAR{bullet}}
-                \BLOCK{endfor}
-            \end{itemize}
+            \BLOCK{if job.description and job.description|length > 0}
+                \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.15em,parsep=0pt,topsep=0.1em]
+                    \BLOCK{for bullet in job.description}
+                        \rbullet{\VAR{bullet}}
+                    \BLOCK{endfor}
+                \end{itemize}
+            \BLOCK{endif}
             \BLOCK{if not loop.last}\vspace{0.4em}\BLOCK{endif}
         \BLOCK{endfor}
         \vspace{0.5em}

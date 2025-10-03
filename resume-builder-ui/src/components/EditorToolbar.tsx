@@ -4,6 +4,7 @@ import {
   MdFileUpload,
   MdHelpOutline,
   MdMoreVert,
+  MdRefresh,
 } from "react-icons/md";
 
 interface EditorToolbarProps {
@@ -14,6 +15,7 @@ interface EditorToolbarProps {
   onExportYAML: () => void;
   onImportYAML: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onToggleHelp: () => void;
+  onLoadEmptyTemplate: () => void;
 
   // Loading states
   loadingAddSection: boolean;
@@ -36,6 +38,7 @@ export default function EditorToolbar({
   onExportYAML,
   onImportYAML,
   onToggleHelp,
+  onLoadEmptyTemplate,
   loadingAddSection,
   generating,
   loadingSave,
@@ -206,6 +209,30 @@ export default function EditorToolbar({
                   <div className="font-medium">Help & Tips</div>
                   <div className="text-xs text-gray-500">
                     How to save your work
+                  </div>
+                </div>
+              </button>
+              <button
+                onClick={() => {
+                  onLoadEmptyTemplate();
+                  setShowAdvancedMenu(false);
+                }}
+                disabled={loadingSave}
+                className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-orange-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
+                  loadingSave
+                    ? "bg-orange-50 cursor-not-allowed animate-pulse"
+                    : ""
+                }`}
+              >
+                {loadingSave ? (
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-orange-600 border-t-transparent"></div>
+                ) : (
+                  <MdRefresh className="text-orange-600" />
+                )}
+                <div>
+                  <div className="font-medium">Clear Template</div>
+                  <div className="text-xs text-gray-500">
+                    Start with empty sections
                   </div>
                 </div>
               </button>

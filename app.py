@@ -20,7 +20,6 @@ from pathlib import Path
 import uuid
 import re
 import copy
-import pdfkit
 from jinja2 import Environment, FileSystemLoader
 from concurrent.futures import ProcessPoolExecutor
 import atexit
@@ -86,14 +85,31 @@ def pdf_generation_worker(template_name, yaml_path, output_path, session_icons_d
         )
         
         if result.returncode != 0:
+            # Enhanced error logging for subprocess failures
+            logging.error(f"Worker subprocess failed with return code {result.returncode}")
+            logging.error(f"Command executed: {' '.join(cmd)}")
+            logging.error(f"Subprocess stdout: {result.stdout}")
+            logging.error(f"Subprocess stderr: {result.stderr}")
+            logging.error(f"Working directory: {project_root}")
+            logging.error(f"Template: {template_name}, Session: {session_id}")
             error_msg = f"Worker subprocess failed: {result.stderr}"
-            logging.error(error_msg)
             return {"success": False, "error": error_msg}
         
-        # Verify PDF was created
-        if not Path(output_path).exists():
+        # Verify PDF was created and has content
+        pdf_path = Path(output_path)
+        if not pdf_path.exists() or pdf_path.stat().st_size == 0:
+            # Enhanced error logging for missing or empty PDF
+            if not pdf_path.exists():
+                logging.error("PDF file was not created by worker subprocess")
+            else:
+                logging.error("PDF file was created but is empty (0 bytes)")
+            logging.error(f"Expected PDF at: {output_path}")
+            logging.error(f"Command executed: {' '.join(cmd)}")
+            logging.error(f"Subprocess stdout: {result.stdout}")
+            logging.error(f"Subprocess stderr: {result.stderr}")
+            logging.error(f"Working directory: {project_root}")
+            logging.error(f"Template: {template_name}, Session: {session_id}")
             error_msg = "PDF file was not created by worker subprocess"
-            logging.error(error_msg)
             return {"success": False, "error": error_msg}
         
         logging.info("Worker PDF generation completed successfully")
@@ -151,6 +167,67 @@ def get_social_media_handle(url):
         url = url.rstrip("/")
         return url.split("/")[-1]
     return ""
+
+
+def generate_linkedin_display_text(linkedin_url, contact_name=None):
+    """
+    Generates smart display text for a LinkedIn profile with quality analysis.
+
+    Args:
+        linkedin_url (str): The full LinkedIn URL.
+        contact_name (str): The user's full name for fallback generation.
+    
+    Returns:
+        str: A clean, professional display text for the resume.
+        
+    Examples:
+        - "linkedin.com/in/john-fitzgerald-doe" -> "John Fitzgerald Doe"
+        - "linkedin.com/in/jane-doe-a1b2c3d4" with name "Jane Doe" -> "Jane Doe"
+        - "linkedin.com/in/badhandle12345" without a name -> "LinkedIn Profile"
+    """
+    # First, validate that this is actually a LinkedIn URL
+    if not linkedin_url or "linkedin" not in linkedin_url.lower():
+        return "LinkedIn Profile"
+    
+    raw_handle = get_social_media_handle(linkedin_url)
+    
+    # If there's no handle, we can't do much.
+    if not raw_handle:
+        return "LinkedIn Profile"
+
+    # --- Nested helper function for analysis ---
+    def is_clean_handle(handle):
+        """Determines if a LinkedIn handle is clean and professional."""
+        # Rule 1: Too long
+        if len(handle) > 50:
+            return False
+            
+        # Rule 2: Too many hyphens
+        if handle.count('-') > 1:
+            return False
+            
+        # Rule 3: Long sequences of numbers (e.g., ...1998)
+        if re.search(r'\d{4,}', handle):
+            return False
+            
+        # Rule 4: Common random suffixes (e.g., ...-a1b2c3d4)
+        if re.search(r'-[a-z0-9]{8,}', handle.lower()):
+            return False
+
+        return True
+
+    # --- Main logic ---
+    if is_clean_handle(raw_handle):
+        # Format the clean handle into a readable name
+        parts = raw_handle.replace('_', '-').split('-')
+        return ' '.join(part.capitalize() for part in parts if part)
+    else:
+        # If the handle is messy, use the contact name if available
+        if contact_name:
+            return contact_name.strip()
+        
+        # Final fallback if handle is messy and no name is provided
+        return "LinkedIn Profile"
 
 
 def _escape_latex(text):
@@ -212,10 +289,23 @@ def _prepare_latex_data(data):
             contact_info["linkedin"] = "https://" + linkedin_url
             logging.info(f"Prepended https:// to LinkedIn URL: {contact_info['linkedin']}")
 
-        contact_info["linkedin_handle"] = get_social_media_handle(
-            contact_info.get("linkedin", "")
-        )
-        logging.info(f"Derived LinkedIn handle: {contact_info['linkedin_handle']}")
+        # Only process LinkedIn if URL is provided
+        if linkedin_url and linkedin_url.strip():
+            contact_info["linkedin_handle"] = get_social_media_handle(linkedin_url)
+            logging.info(f"Derived LinkedIn handle: {contact_info['linkedin_handle']}")
+            
+            # Generate linkedin_display if not already provided
+            if not contact_info.get("linkedin_display"):
+                contact_info["linkedin_display"] = generate_linkedin_display_text(
+                    linkedin_url,
+                    contact_info.get("name", "")
+                )
+                logging.info(f"Generated LinkedIn display text: {contact_info['linkedin_display']}")
+        else:
+            # Clear LinkedIn fields if URL is empty
+            contact_info["linkedin_handle"] = ""
+            contact_info["linkedin_display"] = ""
+            logging.info("LinkedIn URL empty - cleared LinkedIn fields")
 
     prepared_data["contact_info"] = contact_info
     return prepared_data
@@ -226,6 +316,9 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
     Generate PDF from YAML data using LaTeX template and XeLaTeX compilation.
     Used for classic templates that require LaTeX formatting.
     """
+    # Generate session ID for tracking this request
+    session_id = str(uuid.uuid4())
+    
     logging.info(f"Starting LaTeX PDF generation for template: {template_name}")
     
     try:
@@ -254,8 +347,7 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
         template = latex_env.get_template("resume.tex")
         latex_content = template.render(**prepared_data)
         
-        # Create unique temporary file for LaTeX
-        session_id = str(uuid.uuid4())
+        # Create unique temporary file for LaTeX using existing session_id
         temp_dir = Path(tempfile.gettempdir())
         temp_tex_file = temp_dir / f"resume_{session_id}.tex"
         temp_pdf_file = temp_dir / f"resume_{session_id}.pdf"
@@ -283,16 +375,22 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
             cwd=str(temp_dir)
         )
         
-        if result.returncode != 0:
-            logging.error(f"LaTeX compilation failed with return code {result.returncode}")
-            logging.error(f"LaTeX stdout: {result.stdout}")
-            logging.error(f"LaTeX stderr: {result.stderr}")
-            raise Exception(f"LaTeX compilation failed: {result.stderr}")
-        
-        # Check if PDF was generated
+        # Check if PDF was generated successfully (primary success indicator)
         if not temp_pdf_file.exists():
             logging.error("PDF file was not generated by LaTeX compilation")
+            logging.error(f"LaTeX return code: {result.returncode}")
+            logging.error(f"LaTeX stdout: {result.stdout}")
+            logging.error(f"LaTeX stderr: {result.stderr}")
             raise Exception("PDF file was not generated")
+        
+        # Log warnings if present but don't fail if PDF exists
+        if result.stderr:
+            logging.warning(f"LaTeX compilation warnings: {result.stderr}")
+        
+        # Only fail on non-zero return code if PDF wasn't generated
+        if result.returncode != 0:
+            logging.warning(f"LaTeX compilation completed with warnings (return code {result.returncode})")
+            logging.warning(f"LaTeX stdout: {result.stdout}")
         
         # Copy the generated PDF to the output location
         shutil.copy2(temp_pdf_file, output_path)
@@ -310,7 +408,10 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
         return str(output_path)
         
     except Exception as e:
-        logging.error(f"LaTeX PDF generation failed: {str(e)}")
+        # Complete error context for debugging - ONLY on actual errors
+        logging.error(f"LaTeX PDF generation failed for template '{template_name}', Session: {session_id}")
+        logging.error(f"Error: {str(e)}")
+        logging.error(f"YAML data for reproduction: {yaml_data}")
         raise e
 
 
@@ -648,6 +749,35 @@ def download_template(template_id):
         return jsonify({"success": False, "error": "Failed to download template"}), 500
 
 
+@app.route("/api/generate-linkedin-display", methods=["POST"])
+def generate_linkedin_display():
+    """
+    Generate smart display text for LinkedIn URL.
+    """
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"success": False, "error": "No data provided"}), 400
+        
+        linkedin_url = data.get("linkedin_url", "").strip()
+        contact_name = data.get("contact_name", "").strip()
+        
+        if not linkedin_url:
+            return jsonify({"success": False, "error": "LinkedIn URL is required"}), 400
+        
+        # Generate smart display text
+        display_text = generate_linkedin_display_text(linkedin_url, contact_name)
+        
+        return jsonify({
+            "success": True,
+            "display_text": display_text
+        })
+        
+    except Exception as e:
+        logging.error(f"Error generating LinkedIn display text: {e}")
+        return jsonify({"success": False, "error": "Failed to generate display text"}), 500
+
+
 @app.route("/api/generate", methods=["POST"])
 def generate_resume():
     """
@@ -701,25 +831,21 @@ def generate_resume():
             template = request.form.get("template", "modern")
             uses_icons = template != "modern-no-icons"  # Skip icons for no-icons variant
             
-            if uses_icons:
-                # Copy base contact icons that are hardcoded in templates
-                base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
-                for icon_name in base_contact_icons:
-                    default_icon_path = ICONS_DIR / icon_name
-                    if default_icon_path.exists():
-                        session_icon_path = session_icons_dir / icon_name
-                        shutil.copy2(default_icon_path, session_icon_path)
-                        logging.debug(f"Copied base contact icon: {icon_name} to session directory")
-                    else:
-                        logging.warning(f"Base contact icon not found: {icon_name} at {default_icon_path}")
-            else:
-                logging.debug("Skipping base contact icons for no-icons template variant")
+            # Always copy base contact icons that are hardcoded in templates
+            base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
+            for icon_name in base_contact_icons:
+                default_icon_path = ICONS_DIR / icon_name
+                if default_icon_path.exists():
+                    session_icon_path = session_icons_dir / icon_name
+                    shutil.copy2(default_icon_path, session_icon_path)
+                    logging.debug(f"Copied base contact icon: {icon_name} to session directory")
+                else:
+                    logging.warning(f"Base contact icon not found: {icon_name} at {default_icon_path}")
 
             # Copy additional icons referenced in YAML content (only for icon-supporting templates)
             if uses_icons:
                 referenced_icons = extract_icons_from_yaml(yaml_data)
                 logging.debug(f"Found {len(referenced_icons)} referenced icons: {referenced_icons}")
-                base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
                 for icon_name in referenced_icons:
                     # Skip if already copied as base contact icon
                     if icon_name in base_contact_icons:
@@ -756,9 +882,7 @@ def generate_resume():
                     icon_file.save(icon_path)
             else:
                 logging.debug("Skipping user uploaded icons for no-icons template variant")
-            
-            # Generate PDF using the central function
-            generate_pdf_with_template(yaml_path, template, session_id, output_path, session_icons_dir)
+           
 
             # Clean up session directory after successful PDF generation
             try:

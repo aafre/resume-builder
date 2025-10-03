@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2025-09-27
+
+### 🚀 Features
+
+- Implement clear template feature to reset content but retain structure ([#117](https://github.com/aafre/resume-builder/pull/117))
+
+## [0.3.5] - 2025-09-18
+
+### 🐛 Bug Fixes
+
+- Make linkedin optional ([#115](https://github.com/aafre/resume-builder/pull/115))
+
+## [0.3.4] - 2025-09-17
+
+### 🐛 Bug Fixes
+
+- Make linkedin optional ([#114](https://github.com/aafre/resume-builder/pull/114))
+
+## [0.3.3] - 2025-09-14
+
+### 🐛 Bug Fixes
+
+- Font cache issue & empty list in tex - also add debug logging for modern template errors  ([#112](https://github.com/aafre/resume-builder/pull/112))
+
 ## [0.3.2] - 2025-09-13
 
 ### 🐛 Bug Fixes

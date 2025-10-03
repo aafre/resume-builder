@@ -1,9 +1,27 @@
+import re
 import pdfkit
 import argparse
 import yaml
 import uuid
+import logging
+import shutil
+import subprocess
+import os
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
+
+# Configure logging for the subprocess
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s [GENERATOR] %(levelname)s: %(message)s")
+
+# Check wkhtmltopdf binary availability once per run
+wkhtmltopdf_binary = shutil.which("wkhtmltopdf") or "/usr/bin/wkhtmltopdf"
+try:
+    version_output = subprocess.check_output([wkhtmltopdf_binary, "-V"], text=True).strip()
+    logging.debug(f"wkhtmltopdf binary: {wkhtmltopdf_binary}")
+    logging.debug(f"wkhtmltopdf version: {version_output}")
+except Exception as e:
+    logging.warning(f"wkhtmltopdf version check failed: {e}")
+    logging.warning(f"Attempted binary path: {wkhtmltopdf_binary}")
 
 
 def load_resume_data(yaml_file_path):
@@ -84,7 +102,7 @@ def generate_pdf(
             if not isinstance(content, list):
                 raise ValueError(f"Invalid content for dynamic-column-list: {content}")
             section["num_cols"] = calculate_columns(len(content))
-            print(
+            logging.debug(
                 f"Calculated {section['num_cols']} columns for section '{section.get('name')}'"
             )
 
@@ -98,18 +116,30 @@ def generate_pdf(
     # Social media handle extraction
     linkedin_url = contact_info.get("linkedin", "")
 
-    if linkedin_url and not linkedin_url.startswith("https://"):
-        linkedin_url = "https://" + linkedin_url
+    # Only process LinkedIn if URL is provided
+    if linkedin_url and linkedin_url.strip():
+        if not linkedin_url.startswith("https://"):
+            linkedin_url = "https://" + linkedin_url
 
-    if "linkedin" not in linkedin_url:
-        raise ValueError("Invalid LinkedIn URL provided")
-
-    contact_info["linkedin_handle"] = (
-        get_social_media_handle(linkedin_url) if linkedin_url else linkedin_url
-    )
+        if "linkedin" not in linkedin_url.lower():
+            raise ValueError("Invalid LinkedIn URL provided")
+            
+        contact_info["linkedin_handle"] = get_social_media_handle(linkedin_url)
+        
+        # Generate linkedin_display if not already provided
+        if not contact_info.get("linkedin_display"):
+            contact_info["linkedin_display"] = generate_linkedin_display_text(
+                linkedin_url, contact_info.get("name", "")
+            )
+            logging.info(f"Generated LinkedIn display text: {contact_info['linkedin_display']}")
+    else:
+        # Clear LinkedIn fields if URL is empty
+        contact_info["linkedin_handle"] = ""
+        contact_info["linkedin_display"] = ""
+        logging.info("LinkedIn URL empty - cleared LinkedIn fields")
 
     # Render HTML with data
-    print("Rendering HTML with data...")
+    logging.info(f"Rendering HTML template for: {template_name}")
 
     template = env.get_template("base.html")
     html_content = template.render(
@@ -133,27 +163,45 @@ def generate_pdf(
 
     with open(temp_html_file, "w") as html_file:
         html_file.write(html_content)
-    print("HTML written to temporary file:", temp_html_file)
+    logging.info(f"HTML written to temporary file: {temp_html_file}")
+
+    # Enhanced debug breadcrumbs
+    logging.debug(f"Working directory: {os.getcwd()}")
+    logging.debug(f"HTML file: {temp_html_file}")
+    logging.debug(f"CSS path: {css_file}")
+    logging.debug(f"Icon base path: {icon_base_path}")
+    logging.debug(f"Output path: {output_file}")
 
     # Convert the HTML file to PDF with the enable-local-file-access option
-    options = {"enable-local-file-access": ""}
+    options = {
+        "enable-local-file-access": "",
+        "load-error-handling": "abort",  # fail fast on missing assets
+        "quiet": ""                      # keep stderr tidy
+    }
 
-    print("Converting HTML file to PDF...")
+    logging.info(f"Converting HTML file to PDF using wkhtmltopdf")
+    logging.debug(f"pdfkit options: {options}")
     try:
         pdfkit.from_file(temp_html_file.as_posix(), output_file, options=options)
-        print("PDF generated successfully at", output_file)
+        logging.info(f"PDF generated successfully at: {output_file}")
     except Exception as e:
-        print("Error generating PDF:", e)
+        logging.error(f"pdfkit failed to generate PDF: {str(e)}")
+        logging.error(f"Template: {template_name}")
+        logging.error(f"Input HTML file: {temp_html_file}")
+        logging.error(f"Output path: {output_file}")
+        logging.error(f"pdfkit options: {options}")
+        # Re-raise the exception to make the subprocess fail
+        raise
 
     # Clean up temporary HTML file
     try:
         temp_html_file.unlink()  # Remove temp file
-        print(f"Temporary HTML file cleaned up: {temp_html_file}")
+        logging.debug(f"Temporary HTML file cleaned up: {temp_html_file}")
     except FileNotFoundError:
         # File already removed, no issue
-        pass
+        logging.debug(f"Temporary HTML file already removed: {temp_html_file}")
     except Exception as e:
-        print(f"Warning: Could not remove temporary file {temp_html_file}: {e}")
+        logging.warning(f"Could not remove temporary file {temp_html_file}: {e}")
 
 
 def get_social_media_handle(url):
@@ -171,6 +219,67 @@ def get_social_media_handle(url):
         url = url.rstrip("/")
         return url.split("/")[-1]
     return ""
+
+
+def generate_linkedin_display_text(linkedin_url, contact_name=None):
+    """
+    Generates smart display text for a LinkedIn profile with quality analysis.
+
+    Args:
+        linkedin_url (str): The full LinkedIn URL.
+        contact_name (str): The user's full name for fallback generation.
+    
+    Returns:
+        str: A clean, professional display text for the resume.
+        
+    Examples:
+        - "linkedin.com/in/john-fitzgerald-doe" -> "John Fitzgerald Doe"
+        - "linkedin.com/in/jane-doe-a1b2c3d4" with name "Jane Doe" -> "Jane Doe"
+        - "linkedin.com/in/badhandle12345" without a name -> "LinkedIn Profile"
+    """
+    # First, validate that this is actually a LinkedIn URL
+    if not linkedin_url or "linkedin" not in linkedin_url.lower():
+        return "LinkedIn Profile"
+    
+    raw_handle = get_social_media_handle(linkedin_url)
+    
+    # If there's no handle, we can't do much.
+    if not raw_handle:
+        return "LinkedIn Profile"
+
+    # --- Nested helper function for analysis ---
+    def is_clean_handle(handle):
+        """Determines if a LinkedIn handle is clean and professional."""
+        # Rule 1: Too long
+        if len(handle) > 50:
+            return False
+            
+        # Rule 2: Too many hyphens
+        if handle.count('-') > 1:
+            return False
+            
+        # Rule 3: Long sequences of numbers (e.g., ...1998)
+        if re.search(r'\d{4,}', handle):
+            return False
+            
+        # Rule 4: Common random suffixes (e.g., ...-a1b2c3d4)
+        if re.search(r'-[a-z0-9]{8,}', handle.lower()):
+            return False
+
+        return True
+
+    # --- Main logic ---
+    if is_clean_handle(raw_handle):
+        # Format the clean handle into a readable name
+        parts = raw_handle.replace('_', '-').split('-')
+        return ' '.join(part.capitalize() for part in parts if part)
+    else:
+        # If the handle is messy, use the contact name if available
+        if contact_name:
+            return contact_name.strip()
+        
+        # Final fallback if handle is messy and no name is provided
+        return "LinkedIn Profile"
 
 
 # NOTE: This file now serves as CLI-only tool for development/testing

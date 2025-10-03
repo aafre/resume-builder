@@ -39,10 +39,12 @@
             <span>
                 <img src="{{ icon_path }}/phone.png" alt="Phone Icon" class="icon"> {{ contact_info.phone }}
             </span>
+            {% if contact_info.linkedin and contact_info.linkedin.strip() %}
             <span>
                 <img src="{{ icon_path }}/linkedin.png" alt="LinkedIn Icon" class="icon">
-                <a href="{{ contact_info.linkedin }}">{{ contact_info.linkedin_handle }}</a>
+                <a href="{{ contact_info.linkedin }}">{{ contact_info.linkedin_display or contact_info.linkedin_handle }}</a>
             </span>
+            {% endif %}
         </div>
     </div>
     <hr class="divider">
