@@ -21,6 +21,7 @@ import IconListSection from "./IconListSection";
 import SectionTypeModal from "./SectionTypeModal";
 import EditorToolbar from "./EditorToolbar";
 import DragHandle from "./DragHandle";
+import ResumePreview from "./ResumePreview";
 import { useEditorContext } from "../contexts/EditorContext";
 import { MdFileDownload, MdHelpOutline } from "react-icons/md";
 import {
@@ -122,6 +123,7 @@ const Editor: React.FC = () => {
   const [loadingSave, setLoadingSave] = useState(false);
   const [loadingLoad, setLoadingLoad] = useState(false);
   const [loadingAddSection, setLoadingAddSection] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [draggedSection, setDraggedSection] = useState<Section | null>(null);
 
@@ -497,7 +499,7 @@ const Editor: React.FC = () => {
       const formData = new FormData();
       const yamlBlob = new Blob([yamlData], { type: "application/x-yaml" });
       formData.append("yaml_file", yamlBlob, "resume.yaml");
-      formData.append("template", templateId || "modern-no-icons");
+      formData.append("template", templateId || "");
 
       // Add session ID for session-based icon isolation
       const sessionId = getSessionId();
@@ -540,6 +542,14 @@ const Editor: React.FC = () => {
   };
 
   const toggleHelpModal = () => setShowHelpModal(!showHelpModal);
+
+  const handlePreviewResume = () => {
+    setShowPreview(true);
+  };
+
+  const handleClosePreview = () => {
+    setShowPreview(false);
+  };
 
   const handleAddNewSectionClick = async () => {
     setLoadingAddSection(true);
@@ -1359,6 +1369,7 @@ const Editor: React.FC = () => {
             <EditorToolbar
               onAddSection={handleAddNewSectionClick}
               onGenerateResume={handleGenerateResume}
+              onPreviewResume={handlePreviewResume}
               onExportYAML={handleExportYAML}
               onImportYAML={handleImportYAML}
               onToggleHelp={toggleHelpModal}
@@ -1638,6 +1649,16 @@ const Editor: React.FC = () => {
           supportsIcons={supportsIcons}
         />
       )}
+
+      {/* Resume Preview Modal */}
+      <ResumePreview
+        contactInfo={contactInfo}
+        sections={sections}
+        templateId={templateId}
+        iconRegistry={iconRegistry}
+        isOpen={showPreview}
+        onClose={handleClosePreview}
+      />
     </div>
   );
 };
