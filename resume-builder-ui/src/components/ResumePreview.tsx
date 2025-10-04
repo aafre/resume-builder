@@ -114,7 +114,7 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
       const formData = new FormData();
       const yamlBlob = new Blob([yamlData], { type: 'application/x-yaml' });
       formData.append('yaml_file', yamlBlob, 'resume.yaml');
-      formData.append('template', templateId || 'modern-no-icons');
+      formData.append('template', templateId || '');
 
       // Add session ID for session-based icon isolation
       const sessionId = getSessionId();

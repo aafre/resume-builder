@@ -882,7 +882,8 @@ def generate_resume():
                     icon_file.save(icon_path)
             else:
                 logging.debug("Skipping user uploaded icons for no-icons template variant")
-           
+            # Generate PDF using the central function
+            generate_pdf_with_template(yaml_path, template, session_id, output_path, session_icons_dir)
 
             # Clean up session directory after successful PDF generation
             try:
