@@ -798,10 +798,6 @@ def generate_resume():
 
             yaml_file.save(yaml_path)
 
-            # Parse YAML to extract icon references
-            with open(yaml_path, 'r') as f:
-                yaml_data = yaml.safe_load(f)
-
             # Get session ID for icon isolation
             session_id = request.form.get("session_id")
             if not session_id:
@@ -810,78 +806,15 @@ def generate_resume():
             # Create session-specific icon directory
             session_icons_dir = Path("/tmp") / "sessions" / session_id / "icons"
             session_icons_dir.mkdir(parents=True, exist_ok=True)
-
-            # Copy default icons referenced in YAML to session directory
-            def extract_icons_from_yaml(data):
-                icons = set()
-                if isinstance(data, dict):
-                    for key, value in data.items():
-                        if key == "icon" and isinstance(value, str):
-                            # Frontend now sends clean filenames, but handle both cases
-                            clean_icon_name = value.replace('/icons/', '') if value.startswith('/icons/') else value
-                            icons.add(clean_icon_name)
-                        else:
-                            icons.update(extract_icons_from_yaml(value))
-                elif isinstance(data, list):
-                    for item in data:
-                        icons.update(extract_icons_from_yaml(item))
-                return icons
-
+            
             # Select the template and determine if it uses icons
             template = request.form.get("template", "modern")
-            uses_icons = template != "modern-no-icons"  # Skip icons for no-icons variant
-            
-            # Always copy base contact icons that are hardcoded in templates
-            base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
-            for icon_name in base_contact_icons:
-                default_icon_path = ICONS_DIR / icon_name
-                if default_icon_path.exists():
-                    session_icon_path = session_icons_dir / icon_name
-                    shutil.copy2(default_icon_path, session_icon_path)
-                    logging.debug(f"Copied base contact icon: {icon_name} to session directory")
-                else:
-                    logging.warning(f"Base contact icon not found: {icon_name} at {default_icon_path}")
 
-            # Copy additional icons referenced in YAML content (only for icon-supporting templates)
-            if uses_icons:
-                referenced_icons = extract_icons_from_yaml(yaml_data)
-                logging.debug(f"Found {len(referenced_icons)} referenced icons: {referenced_icons}")
-                for icon_name in referenced_icons:
-                    # Skip if already copied as base contact icon
-                    if icon_name in base_contact_icons:
-                        continue
-                        
-                    default_icon_path = ICONS_DIR / icon_name
-                    if default_icon_path.exists():
-                        session_icon_path = session_icons_dir / icon_name
-                        shutil.copy2(default_icon_path, session_icon_path)
-                        logging.debug(f"Copied default icon: {icon_name} to session directory")
-                    else:
-                        logging.warning(f"Default icon not found: {icon_name} at {default_icon_path}")
-            else:
-                logging.debug("Skipping referenced icons for no-icons template variant")
-
-            # Handle icon files if provided - save to session directory (only for icon-supporting templates)
-            if uses_icons:
-                icon_files = request.files.getlist("icons")
-                for icon_file in icon_files:
-                    if icon_file.filename == "":
-                        continue
-
-                    # Validate icon file type
-                    allowed_extensions = {"png", "jpg", "jpeg", "svg"}
-                    if (
-                        "." not in icon_file.filename
-                        or icon_file.filename.rsplit(".", 1)[1].lower()
-                        not in allowed_extensions
-                    ):
-                        raise ValueError(f"Invalid icon file type: {icon_file.filename}")
-
-                    # Save icon to the session-specific icons directory
-                    icon_path = session_icons_dir / icon_file.filename
-                    icon_file.save(icon_path)
-            else:
-                logging.debug("Skipping user uploaded icons for no-icons template variant")
+            # Prepare icons (base + referenced + uploads) into session dir
+            try:
+                prepare_session_icons(yaml_path, session_icons_dir, template)
+            except Exception as icon_err:
+                logging.warning(f"Icon preparation warning: {icon_err}")
             # Generate PDF using the central function
             generate_pdf_with_template(yaml_path, template, session_id, output_path, session_icons_dir)
 
@@ -938,10 +871,6 @@ def preview_resume_image():
 
             yaml_file.save(yaml_path)
 
-            # Parse YAML to extract icon references
-            with open(yaml_path, 'r') as f:
-                yaml_data = yaml.safe_load(f)
-
             # Get session ID for icon isolation
             session_id = request.form.get("session_id")
             if not session_id:
@@ -950,82 +879,15 @@ def preview_resume_image():
             # Create session-specific icon directory
             session_icons_dir = Path("/tmp") / "sessions" / session_id / "icons"
             session_icons_dir.mkdir(parents=True, exist_ok=True)
-
-            # Copy default icons referenced in YAML to session directory
-            def extract_icons_from_yaml(data):
-                icons = set()
-                if isinstance(data, dict):
-                    for key, value in data.items():
-                        if key == "icon" and isinstance(value, str):
-                            # Frontend now sends clean filenames, but handle both cases
-                            clean_icon_name = value.replace('/icons/', '') if value.startswith('/icons/') else value
-                            icons.add(clean_icon_name)
-                        else:
-                            icons.update(extract_icons_from_yaml(value))
-                elif isinstance(data, list):
-                    for item in data:
-                        icons.update(extract_icons_from_yaml(item))
-                return icons
-
+            
             # Select the template and determine if it uses icons
             template = request.form.get("template", "modern")
-            uses_icons = template != "modern-no-icons"  # Skip icons for no-icons variant
-            
-            if uses_icons:
-                # Copy base contact icons that are hardcoded in templates
-                base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
-                for icon_name in base_contact_icons:
-                    default_icon_path = ICONS_DIR / icon_name
-                    if default_icon_path.exists():
-                        session_icon_path = session_icons_dir / icon_name
-                        shutil.copy2(default_icon_path, session_icon_path)
-                        logging.debug(f"Copied base contact icon: {icon_name} to session directory")
-                    else:
-                        logging.warning(f"Base contact icon not found: {icon_name} at {default_icon_path}")
-            else:
-                logging.debug("Skipping base contact icons for no-icons template variant")
 
-            # Copy additional icons referenced in YAML content (only for icon-supporting templates)
-            if uses_icons:
-                referenced_icons = extract_icons_from_yaml(yaml_data)
-                logging.debug(f"Found {len(referenced_icons)} referenced icons: {referenced_icons}")
-                base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
-                for icon_name in referenced_icons:
-                    # Skip if already copied as base contact icon
-                    if icon_name in base_contact_icons:
-                        continue
-                        
-                    default_icon_path = ICONS_DIR / icon_name
-                    if default_icon_path.exists():
-                        session_icon_path = session_icons_dir / icon_name
-                        shutil.copy2(default_icon_path, session_icon_path)
-                        logging.debug(f"Copied default icon: {icon_name} to session directory")
-                    else:
-                        logging.warning(f"Default icon not found: {icon_name} at {default_icon_path}")
-            else:
-                logging.debug("Skipping referenced icons for no-icons template variant")
-
-            # Handle icon files if provided - save to session directory (only for icon-supporting templates)
-            if uses_icons:
-                icon_files = request.files.getlist("icons")
-                for icon_file in icon_files:
-                    if icon_file.filename == "":
-                        continue
-
-                    # Validate icon file type
-                    allowed_extensions = {"png", "jpg", "jpeg", "svg"}
-                    if (
-                        "." not in icon_file.filename
-                        or icon_file.filename.rsplit(".", 1)[1].lower()
-                        not in allowed_extensions
-                    ):
-                        raise ValueError(f"Invalid icon file type: {icon_file.filename}")
-
-                    # Save icon to the session-specific icons directory
-                    icon_path = session_icons_dir / icon_file.filename
-                    icon_file.save(icon_path)
-            else:
-                logging.debug("Skipping user uploaded icons for no-icons template variant")
+            # Prepare icons (base + referenced + uploads) into session dir
+            try:
+                prepare_session_icons(yaml_path, session_icons_dir, template)
+            except Exception as icon_err:
+                logging.warning(f"Icon preparation warning: {icon_err}")
             
             # Generate PDF using the central function
             # For preview, we'll try classic first, but fallback to modern if LaTeX is not available
