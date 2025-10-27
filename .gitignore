@@ -192,10 +192,3 @@ dist-ssr
 *.sw?
 
 coverage/
-blogs_to_add/1. Nail job interview.md
-blogs_to_add/2.Behavioral Interview Questions (Cluster Content).md
-blogs_to_add/3. Introducing PrepAI (Cross-Promotion)
-blogs_to_add/more-blogs.md
-blogs_to_add/resume_no_exp.md
-blogs_to_add/update_resume_keywords_blog.md
-.claude/settings.local.json
