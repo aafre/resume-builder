@@ -8,6 +8,7 @@ from flask import (
     jsonify,
     url_for,
     send_from_directory,
+    redirect,
 )
 
 
@@ -478,6 +479,31 @@ TEMPLATE_FILE_MAP = {
     "classic-alex-rivera": PROJECT_ROOT / "samples" / "classic" / "alex_rivera_data.yml",
     "classic-jane-doe": PROJECT_ROOT / "samples" / "classic" / "jane_doe.yml",
 }
+
+
+# 301 Redirects for SEO consolidation
+@app.route("/ats-friendly-resume-templates-free")
+def redirect_ats_templates_free():
+    """Redirect old ATS template URL to hub"""
+    return redirect("/ats-resume-templates", code=301)
+
+
+@app.route("/free-ats-friendly-resume-template")
+def redirect_free_ats_template():
+    """Redirect old ATS template URL to specific template"""
+    return redirect("/templates/ats-friendly", code=301)
+
+
+@app.route("/best-resume-builder-reddit")
+def redirect_reddit_builder():
+    """Redirect old Reddit URL to new canonical URL"""
+    return redirect("/best-free-resume-builder-reddit", code=301)
+
+
+@app.route("/blog/customer-service-resume-keywords")
+def redirect_customer_service_keywords():
+    """Redirect blog version to root SEO page"""
+    return redirect("/resume-keywords/customer-service", code=301)
 
 
 @app.route("/", defaults={"path": ""})

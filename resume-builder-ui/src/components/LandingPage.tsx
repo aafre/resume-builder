@@ -107,28 +107,29 @@ const LandingPage: React.FC = () => {
   return (
     <>
       <SEOHead
-        title="The Actually Free Resume Builder (No Sign-Ups or Paywalls) | EasyFreeResume"
-        description="The only 100% free resume builder. Create and download unlimited ATS-friendly resumes in minutes. No sign-up, no credit card, no hidden fees. Get started now."
-        structuredData={{
-          "@context": "https://schema.org",
-          "@type": "WebApplication",
-          name: "EasyFreeResume",
-          description:
-            "Free professional resume builder with ATS-optimized templates",
-          url: "https://easyfreeresume.com",
-          applicationCategory: "BusinessApplication",
-          operatingSystem: "All",
-          offers: {
-            "@type": "Offer",
-            price: "0",
-            priceCurrency: "USD",
+        title="EasyFreeResume — 100% Free, No Sign-Ups, ATS-Friendly Resume Builder"
+        description="Build a free, ATS-friendly resume online. No sign-ups. No paywalls. Export in DOCX and PDF."
+        structuredData={[
+          {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "EasyFreeResume",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "USD",
+            },
+            url: "https://easyfreeresume.com",
           },
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.8",
-            reviewCount: "1247",
+          {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "EasyFreeResume",
+            url: "https://easyfreeresume.com",
           },
-        }}
+        ]}
       />
       <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-indigo-100/40 text-gray-800 relative overflow-hidden">
         {/* Subtle background pattern */}
@@ -190,7 +191,7 @@ const LandingPage: React.FC = () => {
           </div>
           <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-xl hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
             <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-indigo-500 group-hover:to-purple-500 transition-all duration-300">
-              99%
+              100%
             </h3>
             <p className="text-gray-600 font-medium tracking-wide">ATS Compatible</p>
           </div>
@@ -251,6 +252,92 @@ const LandingPage: React.FC = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Helpful Resources Section */}
+        <div className="container mx-auto max-w-6xl my-20 px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-12 text-center">
+            Everything You Need to Succeed
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <a
+              href="/actual-free-resume-builder"
+              className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
+            >
+              <div className="text-4xl mb-4">🎁</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                Actual Free Resume Builder
+              </h3>
+              <p className="text-gray-600">
+                Learn why our builder is truly free - no paywalls, no watermarks, no hidden fees.
+              </p>
+            </a>
+
+            <a
+              href="/free-resume-builder-no-sign-up"
+              className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
+            >
+              <div className="text-4xl mb-4">⚡</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                No Sign Up Required
+              </h3>
+              <p className="text-gray-600">
+                Start building immediately. No registration, no account, just instant access to all features.
+              </p>
+            </a>
+
+            <a
+              href="/ats-resume-templates"
+              className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
+            >
+              <div className="text-4xl mb-4">📄</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                ATS-Friendly Templates
+              </h3>
+              <p className="text-gray-600">
+                Download professional templates designed to pass Applicant Tracking Systems.
+              </p>
+            </a>
+
+            <a
+              href="/resume-keywords"
+              className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
+            >
+              <div className="text-4xl mb-4">🎯</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                Resume Keywords Guide
+              </h3>
+              <p className="text-gray-600">
+                Industry-specific keywords that help your resume pass ATS and impress recruiters.
+              </p>
+            </a>
+
+            <a
+              href="/resume-keywords/customer-service"
+              className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
+            >
+              <div className="text-4xl mb-4">🎧</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                Customer Service Keywords
+              </h3>
+              <p className="text-gray-600">
+                Essential keywords for customer service roles including CRM platforms and soft skills.
+              </p>
+            </a>
+
+            <a
+              href="/best-free-resume-builder-reddit"
+              className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
+            >
+              <div className="text-4xl mb-4">💬</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                Reddit Recommended
+              </h3>
+              <p className="text-gray-600">
+                See why Reddit users consistently recommend our builder over paid alternatives.
+              </p>
+            </a>
           </div>
         </div>
 

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import BlogLayout from "../BlogLayout";
 
 export default function ResumeNoExperience() {
@@ -28,13 +27,13 @@ export default function ResumeNoExperience() {
 
         <p className="text-lg leading-relaxed text-gray-700">
           This guide gives you copy-paste examples, role-specific keywords, and
-          a free ATS-friendly template you can use with{" "}
-          <Link
-            to="/templates"
+          a free ATS-friendly template you can use with our{" "}
+          <a
+            href="/actual-free-resume-builder"
             className="text-blue-600 hover:underline font-semibold"
           >
-            EasyFreeResume
-          </Link>{" "}
+            actual free resume builder
+          </a>{" "}
           to generate a polished resume in minutes.
         </p>
 
