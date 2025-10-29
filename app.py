@@ -944,3 +944,76 @@ def internal_server_error(e):
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
+
+    # ✅ Length validation configuration
+RECOMMENDED_LENGTHS = {
+    'by_name': {
+        'Summary': 1000,
+        'Professional Profile': 1000,
+    },
+    'by_type': {
+        'text': 1500,
+        'bulleted-list': 250,
+        'inline-list': 50,
+        'experience.description': 1200,
+    }
+}
+
+# ✅ Helper function to validate section lengths
+def validate_section_lengths(data, config):
+    warnings = []
+
+    for section in data.get("sections", []):
+        name = section.get("name", "")
+        section_type = section.get("type", "")
+        content = section.get("content", "")
+
+        # ✅ Priority 1: Name override
+        max_length = config["by_name"].get(name, None)
+
+        # ✅ Priority 2: Fallback to type rule
+        if max_length is None:
+            max_length = config["by_type"].get(section_type, None)
+
+        # ✅ Text section
+        if section_type == "text" and isinstance(content, str):
+            if max_length and len(content) > max_length:
+                warnings.append({
+                    "section": name,
+                    "type": "text",
+                    "limit": max_length,
+                    "actual": len(content),
+                    "message": f"Section '{name}' exceeds recommended text length"
+                })
+
+        # ✅ Bulleted list
+        if section_type == "bulleted-list" and isinstance(content, list):
+            for i, bullet in enumerate(content):
+                if max_length and len(bullet) > max_length:
+                    warnings.append({
+                        "section": name,
+                        "item": i + 1,
+                        "type": "bullet",
+                        "limit": max_length,
+                        "actual": len(bullet),
+                        "message": f"Bullet #{i+1} in '{name}' is too long"
+                    })
+
+        # ✅ Experience → Description rule
+        if section_type == "experience" and isinstance(content, list):
+            for i, item in enumerate(content):
+                desc = item.get("description", "")
+                exp_rule = config["by_type"].get("experience.description", None)
+                if exp_rule and len(desc) > exp_rule:
+                    warnings.append({
+                        "section": name,
+                        "item": i + 1,
+                        "type": "experience.description",
+                        "limit": exp_rule,
+                        "actual": len(desc),
+                        "message": f"Description in experience #{i+1} is too long"
+                    })
+
+    return warnings
+
