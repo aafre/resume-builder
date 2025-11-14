@@ -14,6 +14,8 @@ import { useIconRegistry } from "../hooks/useIconRegistry";
 import yaml from "js-yaml";
 import { PortableYAMLData } from "../types/iconTypes";
 import { extractReferencedIconFilenames } from "../utils/iconExtractor";
+import { isExperienceSection, isEducationSection } from "../utils/sectionTypeChecker";
+import { migrateLegacySections } from "../utils/sectionMigration";
 import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
 import GenericSection from "./GenericSection";
@@ -162,8 +164,10 @@ const Editor: React.FC = () => {
           sections: Section[];
         };
         setContactInfo(parsedYaml.contact_info);
+        // Migrate legacy sections (auto-add type property for backwards compatibility)
+        const migratedSections = migrateLegacySections(parsedYaml.sections);
         // Process sections to clean up icon paths when loading template
-        const processedSections = processSections(parsedYaml.sections);
+        const processedSections = processSections(migratedSections);
         setSections(processedSections);
         setSupportsIcons(supportsIcons);
 
@@ -237,7 +241,7 @@ const Editor: React.FC = () => {
         };
       }
 
-      if (["Experience", "Education"].includes(section.name)) {
+      if (isExperienceSection(section) || isEducationSection(section)) {
         const updatedContent = Array.isArray(section.content)
           ? section.content.map((item: any) => {
               // Remove iconFile and iconBase64 for export, keep only clean icon filename
@@ -330,6 +334,8 @@ const Editor: React.FC = () => {
     // Check for duplicates - generate a unique name if needed
     const getUniqueDefaultName = (baseType: string) => {
       const typeNameMap: { [key: string]: string } = {
+        experience: "New Experience Section",
+        education: "New Education Section",
         text: "New Text Section",
         "bulleted-list": "New Bulleted List Section",
         "inline-list": "New Inline List Section",
@@ -358,7 +364,29 @@ const Editor: React.FC = () => {
     const defaultName = getUniqueDefaultName(type);
 
     let defaultContent;
-    if (
+    if (type === "experience") {
+      // Default content for Experience sections
+      defaultContent = [
+        {
+          company: "",
+          title: "",
+          dates: "",
+          description: [""],
+          icon: null,
+        },
+      ];
+    } else if (type === "education") {
+      // Default content for Education sections
+      defaultContent = [
+        {
+          degree: "",
+          school: "",
+          year: "",
+          field_of_study: "",
+          icon: null,
+        },
+      ];
+    } else if (
       [
         "bulleted-list",
         "inline-list",
@@ -463,8 +491,10 @@ const Editor: React.FC = () => {
           await iconRegistry.importIconsFromYAML(parsedYaml.__icons__);
         }
 
+        // Migrate legacy sections (auto-add type property for backwards compatibility)
+        const migratedSections = migrateLegacySections(parsedYaml.sections);
         // Process sections to clean up icon paths when importing YAML
-        const processedSections = processSections(parsedYaml.sections);
+        const processedSections = processSections(migratedSections);
         setSections(processedSections);
 
         toast.success("Resume loaded successfully!");
@@ -724,7 +754,7 @@ const Editor: React.FC = () => {
     // Compare sections (excluding iconFile objects as they're not part of original data)
     const currentSectionsForComparison = sections.map((section) => {
       if (
-        ["Experience", "Education"].includes(section.name) &&
+        (isExperienceSection(section) || isEducationSection(section)) &&
         Array.isArray(section.content)
       ) {
         return {
@@ -1179,7 +1209,7 @@ const Editor: React.FC = () => {
             strategy={verticalListSortingStrategy}
           >
             {sections.map((section, index) => {
-              if (section.name === "Experience") {
+              if (isExperienceSection(section)) {
                 return (
                   <DragHandle
                     key={index}
@@ -1190,6 +1220,7 @@ const Editor: React.FC = () => {
                       ref={index === sections.length - 1 ? newSectionRef : null}
                     >
                       <ExperienceSection
+                        sectionName={section.name}
                         experiences={section.content}
                         onUpdate={(updatedExperiences) =>
                           handleUpdateSection(index, {
@@ -1197,13 +1228,20 @@ const Editor: React.FC = () => {
                             content: updatedExperiences,
                           })
                         }
+                        onTitleEdit={() => handleTitleEdit(index)}
+                        onTitleSave={handleTitleSave}
+                        onTitleCancel={handleTitleCancel}
+                        onDelete={() => handleDeleteSection(index)}
+                        isEditingTitle={editingTitleIndex === index}
+                        temporaryTitle={temporaryTitle}
+                        setTemporaryTitle={setTemporaryTitle}
                         supportsIcons={supportsIcons}
                         iconRegistry={iconRegistry}
                       />
                     </div>
                   </DragHandle>
                 );
-              } else if (section.name === "Education") {
+              } else if (isEducationSection(section)) {
                 return (
                   <DragHandle
                     key={index}
@@ -1214,6 +1252,7 @@ const Editor: React.FC = () => {
                       ref={index === sections.length - 1 ? newSectionRef : null}
                     >
                       <EducationSection
+                        sectionName={section.name}
                         education={section.content}
                         onUpdate={(updatedEducation) =>
                           handleUpdateSection(index, {
@@ -1221,6 +1260,13 @@ const Editor: React.FC = () => {
                             content: updatedEducation,
                           })
                         }
+                        onTitleEdit={() => handleTitleEdit(index)}
+                        onTitleSave={handleTitleSave}
+                        onTitleCancel={handleTitleCancel}
+                        onDelete={() => handleDeleteSection(index)}
+                        isEditingTitle={editingTitleIndex === index}
+                        temporaryTitle={temporaryTitle}
+                        setTemporaryTitle={setTemporaryTitle}
                         supportsIcons={supportsIcons}
                         iconRegistry={iconRegistry}
                       />
@@ -1293,15 +1339,31 @@ const Editor: React.FC = () => {
               <div className="drag-overlay">
                 {draggedSection.name === "Experience" ? (
                   <ExperienceSection
+                    sectionName={draggedSection.name}
                     experiences={draggedSection.content}
                     onUpdate={() => {}}
+                    onTitleEdit={() => {}}
+                    onTitleSave={() => {}}
+                    onTitleCancel={() => {}}
+                    onDelete={() => {}}
+                    isEditingTitle={false}
+                    temporaryTitle=""
+                    setTemporaryTitle={() => {}}
                     supportsIcons={supportsIcons}
                     iconRegistry={iconRegistry}
                   />
                 ) : draggedSection.name === "Education" ? (
                   <EducationSection
+                    sectionName={draggedSection.name}
                     education={draggedSection.content}
                     onUpdate={() => {}}
+                    onTitleEdit={() => {}}
+                    onTitleSave={() => {}}
+                    onTitleCancel={() => {}}
+                    onDelete={() => {}}
+                    isEditingTitle={false}
+                    temporaryTitle=""
+                    setTemporaryTitle={() => {}}
                     supportsIcons={supportsIcons}
                     iconRegistry={iconRegistry}
                   />

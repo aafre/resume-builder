@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import IconManager from "./IconManager";
+import { MarkdownHint } from "./MarkdownLinkPreview";
+import { RichTextInput } from "./RichTextInput";
 
 interface Certification {
   certification: string;
@@ -178,21 +180,18 @@ const IconListSection: React.FC<IconListSectionProps> = ({
 
                 {/* Form Fields */}
                 <div>
+                  <MarkdownHint className="mb-2" />
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-gray-700 font-medium mb-1">
                         Certification
                       </label>
-                      <input
-                        type="text"
+                      <RichTextInput
                         value={item.certification}
-                        onChange={(e) =>
-                          handleUpdateItem(
-                            index,
-                            "certification",
-                            e.target.value
-                          )
+                        onChange={(value) =>
+                          handleUpdateItem(index, "certification", value)
                         }
+                        placeholder="e.g., AWS Certified Solutions Architect"
                         className="w-full border border-gray-300 rounded-lg p-2"
                       />
                     </div>
@@ -200,12 +199,10 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                       <label className="block text-gray-700 font-medium mb-1">
                         Issuer
                       </label>
-                      <input
-                        type="text"
+                      <RichTextInput
                         value={item.issuer}
-                        onChange={(e) =>
-                          handleUpdateItem(index, "issuer", e.target.value)
-                        }
+                        onChange={(value) => handleUpdateItem(index, "issuer", value)}
+                        placeholder="e.g., Amazon Web Services"
                         className="w-full border border-gray-300 rounded-lg p-2"
                       />
                     </div>
@@ -213,12 +210,10 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                       <label className="block text-gray-700 font-medium mb-1">
                         Date
                       </label>
-                      <input
-                        type="text"
+                      <RichTextInput
                         value={item.date}
-                        onChange={(e) =>
-                          handleUpdateItem(index, "date", e.target.value)
-                        }
+                        onChange={(value) => handleUpdateItem(index, "date", value)}
+                        placeholder="e.g., 2024"
                         className="w-full border border-gray-300 rounded-lg p-2"
                       />
                     </div>

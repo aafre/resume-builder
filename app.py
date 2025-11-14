@@ -258,6 +258,90 @@ def _escape_latex(text):
     return escaped_text
 
 
+def normalize_sections(data):
+    """
+    Add type attributes to sections for backward compatibility.
+
+    Converts old name-based format to new type-based format:
+    - Sections named "Experience" (case-insensitive) get type="experience"
+    - Sections named "Education" (case-insensitive) get type="education"
+
+    This allows old YAML files to work without modification while supporting
+    multiple experience/education sections with custom names.
+    """
+    if "sections" not in data:
+        return data
+
+    for section in data["sections"]:
+        # Skip if section already has a type attribute
+        if "type" in section and section["type"]:
+            continue
+
+        # Check section name and add appropriate type
+        section_name_lower = section.get("name", "").lower()
+
+        if section_name_lower == "experience":
+            section["type"] = "experience"
+            logging.debug(f"Normalized section '{section.get('name')}' to type='experience'")
+        elif section_name_lower == "education":
+            section["type"] = "education"
+            logging.debug(f"Normalized section '{section.get('name')}' to type='education'")
+
+    return data
+
+
+def convert_markdown_links_to_html(text):
+    """
+    Convert Markdown-style links [text](url) to HTML <a> tags.
+
+    Args:
+        text: String that may contain markdown links
+
+    Returns:
+        String with markdown links converted to HTML anchor tags
+
+    Example:
+        "Visit [Google](https://google.com)" -> "Visit <a href=\"https://google.com\">Google</a>"
+    """
+    if not text or not isinstance(text, str):
+        return text
+
+    # Regex to match [text](url) pattern
+    import re
+    pattern = r'\[([^\]]+)\]\(([^\)]+)\)'
+
+    # Replace with HTML anchor tag
+    html_text = re.sub(pattern, r'<a href="\2">\1</a>', text)
+
+    return html_text
+
+
+def convert_markdown_links_to_latex(text):
+    """
+    Convert Markdown-style links [text](url) to LaTeX \\href{url}{text} commands.
+
+    Args:
+        text: String that may contain markdown links
+
+    Returns:
+        String with markdown links converted to LaTeX href commands
+
+    Example:
+        "Visit [Google](https://google.com)" -> "Visit \\href{https://google.com}{Google}"
+    """
+    if not text or not isinstance(text, str):
+        return text
+
+    # Regex to match [text](url) pattern
+    import re
+    pattern = r'\[([^\]]+)\]\(([^\)]+)\)'
+
+    # Replace with LaTeX href command
+    latex_text = re.sub(pattern, r'\\href{\2}{\1}', text)
+
+    return latex_text
+
+
 def _prepare_latex_data(data):
     """Recursively applies LaTeX escaping to all string values in the data dictionary."""
     logging.info("Preparing data for LaTeX rendering, applying escaping and deriving fields.")
@@ -319,10 +403,13 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
     """
     # Generate session ID for tracking this request
     session_id = str(uuid.uuid4())
-    
+
     logging.info(f"Starting LaTeX PDF generation for template: {template_name}")
-    
+
     try:
+        # Normalize sections for backward compatibility
+        yaml_data = normalize_sections(yaml_data)
+
         # Load and prepare data
         prepared_data = _prepare_latex_data(yaml_data)
         
@@ -343,7 +430,10 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
             trim_blocks=True,
             autoescape=False
         )
-        
+
+        # Register custom filter for markdown links
+        latex_env.filters['markdown_links'] = convert_markdown_links_to_latex
+
         # Render the LaTeX template
         template = latex_env.get_template("resume.tex")
         latex_content = template.render(**prepared_data)
@@ -702,6 +792,9 @@ def generate_resume():
             # Parse YAML to extract icon references
             with open(yaml_path, 'r') as f:
                 yaml_data = yaml.safe_load(f)
+
+            # Normalize sections for backward compatibility
+            yaml_data = normalize_sections(yaml_data)
 
             # Get session ID for icon isolation
             session_id = request.form.get("session_id")

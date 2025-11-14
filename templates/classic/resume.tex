@@ -98,13 +98,13 @@
     \section*{\VAR{section.name}}
 
     \BLOCK{if section_type == "text"}
-        \small{\VAR{section.content}}\vspace{0.5em}
+        \small{\VAR{section.content | markdown_links}}\vspace{0.5em}
 
     \BLOCK{elif section_type == "bulleted-list"}
         \BLOCK{if section.content and section.content|length > 0}
             \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
                 \BLOCK{for item in section.content}
-                    \rbullet{\VAR{item}}
+                    \rbullet{\VAR{item | markdown_links}}
                 \BLOCK{endfor}
             \end{itemize}\vspace{0.5em}
         \BLOCK{endif}
@@ -148,14 +148,14 @@
             \end{itemize}\vspace{0.5em}
         \BLOCK{endif}
 
-    \BLOCK{elif section_type == "experience" or section.name|lower == "experience"}
+    \BLOCK{elif section_type == "experience"}
         \BLOCK{for job in section.content}
-            \rjobtitle{\VAR{job.title}}
-            \rcompanydate{\textit{\VAR{job.company}}}{\VAR{job.dates}}
+            \rjobtitle{\VAR{job.title | markdown_links}}
+            \rcompanydate{\textit{\VAR{job.company | markdown_links}}}{\VAR{job.dates}}
             \BLOCK{if job.description and job.description|length > 0}
                 \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.15em,parsep=0pt,topsep=0.1em]
                     \BLOCK{for bullet in job.description}
-                        \rbullet{\VAR{bullet}}
+                        \rbullet{\VAR{bullet | markdown_links}}
                     \BLOCK{endfor}
                 \end{itemize}
             \BLOCK{endif}
@@ -163,7 +163,7 @@
         \BLOCK{endfor}
         \vspace{0.5em}
 
-    \BLOCK{elif section_type == "education" or section.name|lower == "education"}
+    \BLOCK{elif section_type == "education"}
         \BLOCK{for edu in section.content}
             \needspace{2\baselineskip}
             \reducationentry{\VAR{edu.degree}}{\VAR{edu.school}}{\VAR{edu.year}}

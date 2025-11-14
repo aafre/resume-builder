@@ -2,7 +2,7 @@
     <h2 class="section-heading">{{ section.name }}</h2>
     <ul class="inline-list">
         {% for item in section.content %}
-            <li>{{ item }}</li>
+            <li>{{ item | markdown_links | safe }}</li>
         {% endfor %}
     </ul>
 </div>

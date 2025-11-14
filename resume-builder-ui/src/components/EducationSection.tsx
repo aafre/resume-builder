@@ -1,4 +1,7 @@
 import IconManager from "./IconManager";
+import { SectionHeader } from "./SectionHeader";
+import { MarkdownHint } from "./MarkdownLinkPreview";
+import { RichTextInput } from "./RichTextInput";
 
 interface EducationItem {
   degree: string;
@@ -18,15 +21,31 @@ interface IconRegistryMethods {
 }
 
 interface EducationSectionProps {
+  sectionName: string; // NEW: Custom section title
   education: EducationItem[];
   onUpdate: (updatedEducation: EducationItem[]) => void;
+  onTitleEdit: () => void; // NEW: Callback when edit mode is activated
+  onTitleSave: () => void; // NEW: Callback when title is saved
+  onTitleCancel: () => void; // NEW: Callback when title edit is cancelled
+  onDelete: () => void; // NEW: Callback when section is deleted
+  isEditingTitle: boolean; // NEW: Whether title is being edited
+  temporaryTitle: string; // NEW: Temporary title during editing
+  setTemporaryTitle: (title: string) => void; // NEW: Update temporary title
   supportsIcons?: boolean;
   iconRegistry?: IconRegistryMethods;
 }
 
 const EducationSection: React.FC<EducationSectionProps> = ({
+  sectionName,
   education,
   onUpdate,
+  onTitleEdit,
+  onTitleSave,
+  onTitleCancel,
+  onDelete,
+  isEditingTitle,
+  temporaryTitle,
+  setTemporaryTitle,
   supportsIcons = false,
   iconRegistry,
 }) => {
@@ -74,9 +93,18 @@ const EducationSection: React.FC<EducationSectionProps> = ({
 
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
-      <div className="flex items-center gap-3 mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Education</h2>
-      </div>
+      <SectionHeader
+        title={sectionName}
+        isEditing={isEditingTitle}
+        temporaryTitle={temporaryTitle}
+        onTitleEdit={onTitleEdit}
+        onTitleSave={onTitleSave}
+        onTitleCancel={onTitleCancel}
+        onTitleChange={setTemporaryTitle}
+        onDelete={onDelete}
+        showHint={sectionName.startsWith("New ")}
+      />
+      <MarkdownHint className="mb-4" />
       {education.map((item, index) => (
         <div
           key={index}
@@ -110,12 +138,10 @@ const EducationSection: React.FC<EducationSectionProps> = ({
                 <label className="block text-gray-700 font-medium mb-1">
                   Degree
                 </label>
-                <input
-                  type="text"
+                <RichTextInput
                   value={item.degree}
-                  onChange={(e) =>
-                    handleUpdateItem(index, "degree", e.target.value)
-                  }
+                  onChange={(value) => handleUpdateItem(index, "degree", value)}
+                  placeholder="e.g., Bachelor of Science"
                   className="w-full border border-gray-300 rounded-lg p-2"
                 />
               </div>
@@ -123,12 +149,10 @@ const EducationSection: React.FC<EducationSectionProps> = ({
                 <label className="block text-gray-700 font-medium mb-1">
                   School
                 </label>
-                <input
-                  type="text"
+                <RichTextInput
                   value={item.school}
-                  onChange={(e) =>
-                    handleUpdateItem(index, "school", e.target.value)
-                  }
+                  onChange={(value) => handleUpdateItem(index, "school", value)}
+                  placeholder="e.g., University Name"
                   className="w-full border border-gray-300 rounded-lg p-2"
                 />
               </div>
@@ -149,12 +173,10 @@ const EducationSection: React.FC<EducationSectionProps> = ({
                 <label className="block text-gray-700 font-medium mb-1">
                   Field of Study
                 </label>
-                <input
-                  type="text"
+                <RichTextInput
                   value={item.field_of_study || ""}
-                  onChange={(e) =>
-                    handleUpdateItem(index, "field_of_study", e.target.value)
-                  }
+                  onChange={(value) => handleUpdateItem(index, "field_of_study", value)}
+                  placeholder="e.g., Computer Science"
                   className="w-full border border-gray-300 rounded-lg p-2"
                 />
               </div>

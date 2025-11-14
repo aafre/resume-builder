@@ -65,6 +65,7 @@ export interface IconListItem {
 
 // Experience section.
 export interface ExperienceSection extends SectionBase {
+  type?: "experience"; // Optional for backwards compatibility
   content: ExperienceItem[];
 }
 
@@ -78,6 +79,7 @@ export interface ExperienceItem {
 
 // Education section.
 export interface EducationSection extends SectionBase {
+  type?: "education"; // Optional for backwards compatibility
   content: EducationItem[];
 }
 

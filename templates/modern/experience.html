@@ -1,5 +1,5 @@
 <div class="section">
-    <h2 class="section-heading">Experience</h2>
+    <h2 class="section-heading">{{ section.name }}</h2>
     {% for job in section.content %}
         <div class="experience-item">
             <div class="company-header">
@@ -8,15 +8,15 @@
                         <img src="{{ icon_path }}/{{ job.icon }}" alt="Company Icon" class="company-icon">
                     {% endif %}
                     <div class="text-container">
-                        <span class="company-name">{{ job.company }}</span>
-                        <p class="position-name">{{ job.title }}</p>
+                        <span class="company-name">{{ job.company | markdown_links | safe }}</span>
+                        <p class="position-name">{{ job.title | markdown_links | safe }}</p>
                         <p class="tenure">{{ job.dates }}</p>
                     </div>
                 </div>
             </div>
             <ul>
                 {% for bullet in job.description %}
-                    <li>{{ bullet }}</li>
+                    <li>{{ bullet | markdown_links | safe }}</li>
                 {% endfor %}
             </ul>
         </div>

@@ -35,6 +35,63 @@ def load_resume_data(yaml_file_path):
     return data
 
 
+def normalize_sections(data):
+    """
+    Add type attributes to sections for backward compatibility.
+
+    Converts old name-based format to new type-based format:
+    - Sections named "Experience" (case-insensitive) get type="experience"
+    - Sections named "Education" (case-insensitive) get type="education"
+
+    This allows old YAML files to work without modification while supporting
+    multiple experience/education sections with custom names.
+    """
+    if "sections" not in data:
+        return data
+
+    for section in data["sections"]:
+        # Skip if section already has a type attribute
+        if "type" in section and section["type"]:
+            continue
+
+        # Check section name and add appropriate type
+        section_name_lower = section.get("name", "").lower()
+
+        if section_name_lower == "experience":
+            section["type"] = "experience"
+            logging.debug(f"Normalized section '{section.get('name')}' to type='experience'")
+        elif section_name_lower == "education":
+            section["type"] = "education"
+            logging.debug(f"Normalized section '{section.get('name')}' to type='education'")
+
+    return data
+
+
+def convert_markdown_links_to_html(text):
+    """
+    Convert Markdown-style links [text](url) to HTML <a> tags.
+
+    Args:
+        text: String that may contain markdown links
+
+    Returns:
+        String with markdown links converted to HTML anchor tags
+
+    Example:
+        "Visit [Google](https://google.com)" -> "Visit <a href=\"https://google.com\">Google</a>"
+    """
+    if not text or not isinstance(text, str):
+        return text
+
+    # Regex to match [text](url) pattern
+    pattern = r'\[([^\]]+)\]\(([^\)]+)\)'
+
+    # Replace with HTML anchor tag
+    html_text = re.sub(pattern, r'<a href="\2">\1</a>', text)
+
+    return html_text
+
+
 def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
     """
     Dynamically calculate the number of columns and ensure minimum items per column.
@@ -93,6 +150,9 @@ def generate_pdf(
 
     # Set up Jinja2 environment
     env = Environment(loader=FileSystemLoader(template_dir))
+
+    # Register custom filter for markdown links
+    env.filters['markdown_links'] = convert_markdown_links_to_html
 
     # Process sections and dynamically calculate column count for dynamic-column-list
     sections = data.get("sections", [])
@@ -326,6 +386,8 @@ if __name__ == "__main__":
 
     try:
         resume_data = load_resume_data(args.input)
+        # Normalize sections for backward compatibility
+        resume_data = normalize_sections(resume_data)
         generate_pdf(
             args.template,
             resume_data,
