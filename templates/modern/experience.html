@@ -8,15 +8,15 @@
                         <img src="{{ icon_path }}/{{ job.icon }}" alt="Company Icon" class="company-icon">
                     {% endif %}
                     <div class="text-container">
-                        <span class="company-name">{{ job.company | markdown_links | safe }}</span>
-                        <p class="position-name">{{ job.title | markdown_links | safe }}</p>
-                        <p class="tenure">{{ job.dates }}</p>
+                        <span class="company-name">{{ job.company | markdown_links | markdown_formatting | safe }}</span>
+                        <p class="position-name">{{ job.title | markdown_links | markdown_formatting | safe }}</p>
+                        <p class="tenure">{{ job.dates | markdown_links | markdown_formatting | safe }}</p>
                     </div>
                 </div>
             </div>
             <ul>
                 {% for bullet in job.description %}
-                    <li>{{ bullet | markdown_links | safe }}</li>
+                    <li>{{ bullet | markdown_links | markdown_formatting | safe }}</li>
                 {% endfor %}
             </ul>
         </div>

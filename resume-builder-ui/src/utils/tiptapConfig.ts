@@ -9,15 +9,23 @@ import { Text } from '@tiptap/extension-text';
 import { Document } from '@tiptap/extension-document';
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { HardBreak } from '@tiptap/extension-hard-break';
+import { Bold } from '@tiptap/extension-bold';
+import { Italic } from '@tiptap/extension-italic';
+import { Underline } from '@tiptap/extension-underline';
+import { Strike } from '@tiptap/extension-strike';
 
 /**
  * Get TipTap extensions for single-line input (no line breaks)
  */
-export const getSingleLineExtensions = (placeholder: string = '', onLinkShortcut?: () => void) => {
+export const getSingleLineExtensions = (placeholder: string = '') => {
   return [
     Document,
     Paragraph,
     Text,
+    Bold,
+    Italic,
+    Underline,
+    Strike,
     Link.configure({
       openOnClick: false, // We handle click ourselves for double-click edit
       HTMLAttributes: {
@@ -27,20 +35,12 @@ export const getSingleLineExtensions = (placeholder: string = '', onLinkShortcut
     Placeholder.configure({
       placeholder,
     }),
-    // Keyboard shortcuts extension
+    // Prevent Enter key for single-line input
     Extension.create({
       name: 'customShortcuts',
       addKeyboardShortcuts() {
         return {
-          Enter: () => true, // Prevent Enter key for single-line
-          'Mod-k': () => {
-            // Ctrl+K (Windows/Linux) or Cmd+K (Mac) for links
-            if (onLinkShortcut) {
-              onLinkShortcut();
-              return true;
-            }
-            return false;
-          },
+          Enter: () => true,
         };
       },
     }),
@@ -50,12 +50,16 @@ export const getSingleLineExtensions = (placeholder: string = '', onLinkShortcut
 /**
  * Get TipTap extensions for multi-line input (allows line breaks)
  */
-export const getMultiLineExtensions = (placeholder: string = '', onLinkShortcut?: () => void) => {
+export const getMultiLineExtensions = (placeholder: string = '') => {
   return [
     Document,
     Paragraph,
     Text,
     HardBreak,
+    Bold,
+    Italic,
+    Underline,
+    Strike,
     Link.configure({
       openOnClick: false,
       HTMLAttributes: {
@@ -65,37 +69,37 @@ export const getMultiLineExtensions = (placeholder: string = '', onLinkShortcut?
     Placeholder.configure({
       placeholder,
     }),
-    // Keyboard shortcuts extension
-    Extension.create({
-      name: 'customShortcuts',
-      addKeyboardShortcuts() {
-        return {
-          'Mod-k': () => {
-            // Ctrl+K (Windows/Linux) or Cmd+K (Mac) for links
-            if (onLinkShortcut) {
-              onLinkShortcut();
-              return true;
-            }
-            return false;
-          },
-        };
-      },
-    }),
   ];
 };
 
 /**
  * Convert markdown text to HTML for TipTap
- * Simple converter that handles [text](url) syntax
+ * Handles links, bold, italic, underline, and strikethrough
  */
 export const markdownToHtml = (markdown: string): string => {
   if (!markdown) return '';
 
+  let html = markdown;
+
   // Convert markdown links to HTML
-  const html = markdown.replace(
+  html = html.replace(
     /\[([^\]]+)\]\(([^\)]+)\)/g,
     '<a href="$2">$1</a>'
   );
+
+  // Convert bold (** or __) - must come before italic
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
+
+  // Convert italic (* or _) - after bold
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  html = html.replace(/_(.+?)_/g, '<em>$1</em>');
+
+  // Convert strikethrough (~~)
+  html = html.replace(/~~(.+?)~~/g, '<s>$1</s>');
+
+  // Convert underline (++) - custom syntax
+  html = html.replace(/\+\+(.+?)\+\+/g, '<u>$1</u>');
 
   // Convert line breaks to <br> for multi-line
   return html.replace(/\n/g, '<br>');
@@ -103,7 +107,7 @@ export const markdownToHtml = (markdown: string): string => {
 
 /**
  * Convert TipTap HTML to markdown
- * Extracts links and converts them back to [text](url) format
+ * Handles links, bold, italic, underline, and strikethrough
  */
 export const htmlToMarkdown = (html: string): string => {
   if (!html) return '';
@@ -116,6 +120,21 @@ export const htmlToMarkdown = (html: string): string => {
     /<a href="([^"]+)">([^<]+)<\/a>/g,
     '[$2]($1)'
   );
+
+  // Convert bold (<strong> or <b>) to markdown
+  markdown = markdown.replace(/<strong>([^<]+)<\/strong>/g, '**$1**');
+  markdown = markdown.replace(/<b>([^<]+)<\/b>/g, '**$1**');
+
+  // Convert italic (<em> or <i>) to markdown
+  markdown = markdown.replace(/<em>([^<]+)<\/em>/g, '*$1*');
+  markdown = markdown.replace(/<i>([^<]+)<\/i>/g, '*$1*');
+
+  // Convert strikethrough (<s> or <del>)
+  markdown = markdown.replace(/<s>([^<]+)<\/s>/g, '~~$1~~');
+  markdown = markdown.replace(/<del>([^<]+)<\/del>/g, '~~$1~~');
+
+  // Convert underline (<u>) - custom syntax
+  markdown = markdown.replace(/<u>([^<]+)<\/u>/g, '++$1++');
 
   // Convert <br> to newlines
   markdown = markdown.replace(/<br\s*\/?>/g, '\n');

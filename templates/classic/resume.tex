@@ -34,6 +34,8 @@
     citecolor=black
 }
 
+\usepackage[normalem]{ulem}  % For strikethrough support (normalem prevents underlining emphasis)
+
 \usepackage{fontawesome5}
 
 % --- Custom Commands for Resume Elements ---
@@ -98,19 +100,23 @@
     \section*{\VAR{section.name}}
 
     \BLOCK{if section_type == "text"}
-        \small{\VAR{section.content | markdown_links}}\vspace{0.5em}
+        \small{\VAR{section.content | markdown_links | markdown_formatting}}\vspace{0.5em}
 
     \BLOCK{elif section_type == "bulleted-list"}
         \BLOCK{if section.content and section.content|length > 0}
             \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
                 \BLOCK{for item in section.content}
-                    \rbullet{\VAR{item | markdown_links}}
+                    \rbullet{\VAR{item | markdown_links | markdown_formatting}}
                 \BLOCK{endfor}
             \end{itemize}\vspace{0.5em}
         \BLOCK{endif}
 
     \BLOCK{elif section_type == "inline-list"}
-        \rhorizontalbullets{\VAR{" \\textbullet\\ ".join(section.content)}}
+        \BLOCK{set formatted_items = []}
+        \BLOCK{for item in section.content}
+            \BLOCK{set _ = formatted_items.append(item | markdown_links | markdown_formatting)}
+        \BLOCK{endfor}
+        \rhorizontalbullets{\VAR{" \\textbullet\\ ".join(formatted_items)}}
 
     \BLOCK{elif section_type == "dynamic-column-list"}
         \BLOCK{set items = section.content}
@@ -124,7 +130,7 @@
                 \BLOCK{for col in range(num_cols)}
                     \BLOCK{set item_index = row * num_cols + col}
                     \BLOCK{if item_index < items|length}
-                        \BLOCK{set _ = row_items.append(items[item_index])}
+                        \BLOCK{set _ = row_items.append(items[item_index] | markdown_links | markdown_formatting)}
                     \BLOCK{else}
                         \BLOCK{set _ = row_items.append('')}
                     \BLOCK{endif}
@@ -140,9 +146,9 @@
             \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
                 \BLOCK{for item in section.content}
                     \BLOCK{if item is mapping}
-                        \rbullet{\VAR{item.certification} (\VAR{item.issuer}, \VAR{item.date})}
+                        \rbullet{\VAR{item.certification | markdown_links | markdown_formatting} (\VAR{item.issuer | markdown_links | markdown_formatting}, \VAR{item.date | markdown_links | markdown_formatting})}
                     \BLOCK{else}
-                        \rbullet{\VAR{item}}
+                        \rbullet{\VAR{item | markdown_links | markdown_formatting}}
                     \BLOCK{endif}
                 \BLOCK{endfor}
             \end{itemize}\vspace{0.5em}
@@ -150,12 +156,12 @@
 
     \BLOCK{elif section_type == "experience"}
         \BLOCK{for job in section.content}
-            \rjobtitle{\VAR{job.title | markdown_links}}
-            \rcompanydate{\textit{\VAR{job.company | markdown_links}}}{\VAR{job.dates}}
+            \rjobtitle{\VAR{job.title | markdown_links | markdown_formatting}}
+            \rcompanydate{\textit{\VAR{job.company | markdown_links | markdown_formatting}}}{\VAR{job.dates | markdown_links | markdown_formatting}}
             \BLOCK{if job.description and job.description|length > 0}
                 \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.15em,parsep=0pt,topsep=0.1em]
                     \BLOCK{for bullet in job.description}
-                        \rbullet{\VAR{bullet | markdown_links}}
+                        \rbullet{\VAR{bullet | markdown_links | markdown_formatting}}
                     \BLOCK{endfor}
                 \end{itemize}
             \BLOCK{endif}
@@ -166,7 +172,7 @@
     \BLOCK{elif section_type == "education"}
         \BLOCK{for edu in section.content}
             \needspace{2\baselineskip}
-            \reducationentry{\VAR{edu.degree}}{\VAR{edu.school}}{\VAR{edu.year}}
+            \reducationentry{\VAR{edu.degree | markdown_links | markdown_formatting}}{\VAR{edu.school | markdown_links | markdown_formatting}}{\VAR{edu.year | markdown_links | markdown_formatting}}
             \BLOCK{if not loop.last}\vspace{0.4em}\BLOCK{endif}
         \BLOCK{endfor}
         \vspace{0.5em}

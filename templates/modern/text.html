@@ -1,5 +1,5 @@
 <!-- type: text -->
 <div class="section">
     <h2 class="section-heading">{{ section.name }}</h2>
-    <p class="text-content">{{ section.content | markdown_links | safe }}</p>
+    <p class="text-content">{{ section.content | markdown_links | markdown_formatting | safe }}</p>
 </div>

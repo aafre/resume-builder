@@ -129,15 +129,24 @@ footer {
   top: 5rem !important; /* Space below header */
   right: 1rem !important; /* Proper right spacing */
   left: auto !important; /* Override default left positioning */
-  z-index: 9999;
+  z-index: 10000; /* Above navigation drawer (9999) */
 }
 
+/* Mobile: Full-width centered toasts */
 @media (max-width: 640px) {
   .custom-toast-container {
     max-width: calc(100vw - 2rem);
-    top: 4rem !important; /* Smaller top margin on mobile */
+    top: calc(4rem + env(safe-area-inset-top)) !important; /* Account for notches */
     right: 1rem !important;
-    left: 1rem !important; /* Center on mobile */
+    left: 1rem !important; /* Full-width minus margins */
+  }
+}
+
+/* Desktop with sidebar: Shift toasts right to avoid overlap */
+@media (min-width: 1024px) {
+  .custom-toast-container {
+    right: 1rem !important; /* Keep in main content area (sidebar shifts content) */
+    left: auto !important;
   }
 }
 

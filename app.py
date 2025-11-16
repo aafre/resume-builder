@@ -342,6 +342,98 @@ def convert_markdown_links_to_latex(text):
     return latex_text
 
 
+def convert_markdown_formatting_to_html(text):
+    """
+    Convert Markdown-style formatting to HTML tags.
+
+    Supports:
+    - Bold: **text** or __text__ → <strong>text</strong>
+    - Italic: *text* or _text_ → <em>text</em>
+    - Strikethrough: ~~text~~ → <s>text</s>
+    - Underline: ++text++ → <u>text</u> (custom syntax, not standard markdown)
+
+    Args:
+        text: String that may contain markdown formatting
+
+    Returns:
+        String with markdown formatting converted to HTML tags
+
+    Example:
+        "This is **bold** and *italic*" -> "This is <strong>bold</strong> and <em>italic</em>"
+    """
+    if not text or not isinstance(text, str):
+        return text
+
+    import re
+
+    # Process in specific order to avoid conflicts
+    # 1. Bold with ** (must come before single *)
+    text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
+
+    # 2. Bold with __ (must come before single _)
+    text = re.sub(r'__(.+?)__', r'<strong>\1</strong>', text)
+
+    # 3. Italic with * (after ** is processed)
+    text = re.sub(r'\*(.+?)\*', r'<em>\1</em>', text)
+
+    # 4. Italic with _ (after __ is processed)
+    text = re.sub(r'_(.+?)_', r'<em>\1</em>', text)
+
+    # 5. Strikethrough with ~~
+    text = re.sub(r'~~(.+?)~~', r'<s>\1</s>', text)
+
+    # 6. Underline with ++ (custom syntax)
+    text = re.sub(r'\+\+(.+?)\+\+', r'<u>\1</u>', text)
+
+    return text
+
+
+def convert_markdown_formatting_to_latex(text):
+    """
+    Convert Markdown-style formatting to LaTeX commands.
+
+    Supports:
+    - Bold: **text** or __text__ → \\textbf{text}
+    - Italic: *text* or _text_ → \\textit{text}
+    - Strikethrough: ~~text~~ → \\sout{text}
+    - Underline: ++text++ → \\underline{text} (custom syntax, not standard markdown)
+
+    Args:
+        text: String that may contain markdown formatting
+
+    Returns:
+        String with markdown formatting converted to LaTeX commands
+
+    Example:
+        "This is **bold** and *italic*" -> "This is \\textbf{bold} and \\textit{italic}"
+    """
+    if not text or not isinstance(text, str):
+        return text
+
+    import re
+
+    # Process in specific order to avoid conflicts
+    # 1. Bold with ** (must come before single *)
+    text = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\1}', text)
+
+    # 2. Bold with __ (must come before single _)
+    text = re.sub(r'__(.+?)__', r'\\textbf{\1}', text)
+
+    # 3. Italic with * (after ** is processed)
+    text = re.sub(r'\*(.+?)\*', r'\\textit{\1}', text)
+
+    # 4. Italic with _ (after __ is processed)
+    text = re.sub(r'_(.+?)_', r'\\textit{\1}', text)
+
+    # 5. Strikethrough with ~~
+    text = re.sub(r'~~(.+?)~~', r'\\sout{\1}', text)
+
+    # 6. Underline with ++ (custom syntax)
+    text = re.sub(r'\+\+(.+?)\+\+', r'\\underline{\1}', text)
+
+    return text
+
+
 def _prepare_latex_data(data):
     """Recursively applies LaTeX escaping to all string values in the data dictionary."""
     logging.info("Preparing data for LaTeX rendering, applying escaping and deriving fields.")
@@ -431,8 +523,9 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
             autoescape=False
         )
 
-        # Register custom filter for markdown links
+        # Register custom filters for markdown links and formatting
         latex_env.filters['markdown_links'] = convert_markdown_links_to_latex
+        latex_env.filters['markdown_formatting'] = convert_markdown_formatting_to_latex
 
         # Render the LaTeX template
         template = latex_env.get_template("resume.tex")

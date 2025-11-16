@@ -26,24 +26,39 @@ export const useEditorContext = () => {
 
 interface EditorProviderProps {
   children: ReactNode;
+  // Auto-save state can be injected from useAutoSave hook
+  lastSaved?: Date | null;
+  isSaving?: boolean;
+  saveError?: boolean;
 }
 
-export const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
+export const EditorProvider: React.FC<EditorProviderProps> = ({
+  children,
+  lastSaved: externalLastSaved,
+  isSaving: externalIsSaving,
+  saveError: externalSaveError,
+}) => {
   const [isAtBottom, setIsAtBottom] = useState(false);
-  const [lastSaved, setLastSaved] = useState<Date | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
-  const [saveError, setSaveError] = useState(false);
+
+  // Use external values if provided, otherwise use internal state (for backwards compatibility)
+  const [internalLastSaved, setInternalLastSaved] = useState<Date | null>(null);
+  const [internalIsSaving, setInternalIsSaving] = useState(false);
+  const [internalSaveError, setInternalSaveError] = useState(false);
+
+  const lastSaved = externalLastSaved !== undefined ? externalLastSaved : internalLastSaved;
+  const isSaving = externalIsSaving !== undefined ? externalIsSaving : internalIsSaving;
+  const saveError = externalSaveError !== undefined ? externalSaveError : internalSaveError;
 
   return (
     <EditorContext.Provider value={{
       isAtBottom,
       setIsAtBottom,
       lastSaved,
-      setLastSaved,
+      setLastSaved: setInternalLastSaved,
       isSaving,
-      setIsSaving,
+      setIsSaving: setInternalIsSaving,
       saveError,
-      setSaveError,
+      setSaveError: setInternalSaveError,
     }}>
       {children}
     </EditorContext.Provider>

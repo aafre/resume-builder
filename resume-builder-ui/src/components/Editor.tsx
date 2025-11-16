@@ -11,17 +11,24 @@ import { ToastContainer, toast } from "react-toastify";
 import { fetchTemplate, generateResume } from "../services/templates";
 import { getSessionId } from "../utils/session";
 import { useIconRegistry } from "../hooks/useIconRegistry";
+import { useAutoSave } from "../hooks/useAutoSave";
 import yaml from "js-yaml";
 import { PortableYAMLData } from "../types/iconTypes";
 import { extractReferencedIconFilenames } from "../utils/iconExtractor";
 import { isExperienceSection, isEducationSection } from "../utils/sectionTypeChecker";
 import { migrateLegacySections } from "../utils/sectionMigration";
+import ContactInfoSection from "./ContactInfoSection";
+import FormattingHelp from "./FormattingHelp";
 import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
 import GenericSection from "./GenericSection";
 import IconListSection from "./IconListSection";
 import SectionTypeModal from "./SectionTypeModal";
 import EditorToolbar from "./EditorToolbar";
+import MobileActionBar from "./MobileActionBar";
+import MobileNavigationDrawer from "./MobileNavigationDrawer";
+import SectionNavigator from "./SectionNavigator";
+import ResponsiveConfirmDialog from "./ResponsiveConfirmDialog";
 import DragHandle from "./DragHandle";
 import { useEditorContext } from "../contexts/EditorContext";
 import { MdFileDownload, MdHelpOutline } from "react-icons/md";
@@ -81,24 +88,43 @@ const Editor: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const templateId = queryParams.get("template");
 
-  // Get context for footer integration and auto-save
+  // Get context for footer integration
   const {
     isAtBottom: contextIsAtBottom,
     setIsAtBottom: setContextIsAtBottom,
-    setLastSaved,
-    isSaving,
-    setIsSaving,
-    setSaveError,
   } = useEditorContext();
+
+  // TODO: useResponsive() will be added when implementing navigation drawer
 
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [sections, setSections] = useState<Section[]>([]);
   const [supportsIcons, setSupportsIcons] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loadingError, setLoadingError] = useState<string | null>(null);
+  const [originalTemplateData, setOriginalTemplateData] = useState<{
+    contactInfo: ContactInfo;
+    sections: Section[];
+  } | null>(null);
 
   // Central icon registry for all uploaded icons
   const iconRegistry = useIconRegistry();
+
+  // Auto-save hook - handles localStorage persistence
+  const {
+    saving: isSaving,
+    lastSaved,
+    error: saveError,
+    saveManually: _saveManually, // Available for future use (auto-save is primary)
+    clearSave: clearAutoSave,
+    loadSaved: _loadSaved, // Available for future use
+    recoveredData: autoSaveRecoveredData,
+  } = useAutoSave({
+    contactInfo,
+    sections,
+    originalTemplateData,
+    templateId,
+    iconRegistry,
+  });
   const [generating, setGenerating] = useState(false);
   const [editingTitleIndex, setEditingTitleIndex] = useState<number | null>(
     null
@@ -106,20 +132,33 @@ const Editor: React.FC = () => {
   const [temporaryTitle, setTemporaryTitle] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
   const newSectionRef = useRef<HTMLDivElement | null>(null);
+  const contactInfoRef = useRef<HTMLDivElement | null>(null);
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
   const [showWelcomeTour, setShowWelcomeTour] = useState(false);
   const [showRecoveryModal, setShowRecoveryModal] = useState(false);
-  const [recoveredData, setRecoveredData] = useState<{
-    timestamp: any;
-    contactInfo: ContactInfo;
-    sections: Section[];
-  } | null>(null);
-  const [originalTemplateData, setOriginalTemplateData] = useState<{
-    contactInfo: ContactInfo;
-    sections: Section[];
-  } | null>(null);
+  const [hasHandledRecovery, setHasHandledRecovery] = useState(false);
   const [loadingRecover, setLoadingRecover] = useState(false);
+
+  // Confirmation dialog state
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<{
+    type: 'section' | 'entry';
+    sectionIndex: number;
+    entryIndex?: number;
+    sectionName?: string;
+  } | null>(null);
+
+  // Start Fresh confirmation
+  const [showStartFreshConfirm, setShowStartFreshConfirm] = useState(false);
+
+  // Navigation drawer state
+  const [showNavigationDrawer, setShowNavigationDrawer] = useState(false);
+  const [activeSectionIndex, setActiveSectionIndex] = useState<number>(-1); // -1 for contact info
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
   const [loadingStartFresh, setLoadingStartFresh] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
   const [loadingLoad, setLoadingLoad] = useState(false);
@@ -176,21 +215,6 @@ const Editor: React.FC = () => {
           contactInfo: parsedYaml.contact_info,
           sections: processedSections,
         });
-
-        // Check for auto-saved data after template loads
-        setTimeout(async () => {
-          const savedData = await loadFromLocalStorage();
-          if (savedData) {
-            const timeDiff =
-              new Date().getTime() - savedData.timestamp.getTime();
-
-            // Only show recovery if saved within last 7 days
-            if (timeDiff < 7 * 24 * 60 * 60 * 1000) {
-              setRecoveredData(savedData);
-              setShowRecoveryModal(true);
-            }
-          }
-        }, 500);
       } catch (error) {
         console.error("Error fetching template:", error);
         setLoadingError(
@@ -204,6 +228,13 @@ const Editor: React.FC = () => {
 
     loadTemplate();
   }, [templateId]);
+
+  // Show recovery modal when auto-saved data is detected (only once)
+  useEffect(() => {
+    if (autoSaveRecoveredData && originalTemplateData && !hasHandledRecovery) {
+      setShowRecoveryModal(true);
+    }
+  }, [autoSaveRecoveredData, originalTemplateData, hasHandledRecovery]);
 
   // Check if user should see welcome tour
   useEffect(() => {
@@ -292,9 +323,104 @@ const Editor: React.FC = () => {
   };
 
   const handleDeleteSection = (index: number) => {
-    const updatedSections = sections.filter((_, i) => i !== index);
-    setSections(updatedSections);
+    // Show confirmation dialog instead of deleting immediately
+    setDeleteTarget({
+      type: 'section',
+      sectionIndex: index,
+      sectionName: sections[index]?.name,
+    });
+    setShowDeleteConfirm(true);
   };
+
+  const handleDeleteEntry = (sectionIndex: number, entryIndex: number) => {
+    // Show confirmation dialog for entry deletion
+    setDeleteTarget({
+      type: 'entry',
+      sectionIndex,
+      entryIndex,
+      sectionName: sections[sectionIndex]?.name,
+    });
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = () => {
+    if (!deleteTarget) return;
+
+    if (deleteTarget.type === 'section') {
+      // Delete entire section
+      const updatedSections = sections.filter((_, i) => i !== deleteTarget.sectionIndex);
+      setSections(updatedSections);
+      toast.success(`Section "${deleteTarget.sectionName}" deleted`);
+    } else if (deleteTarget.type === 'entry' && deleteTarget.entryIndex !== undefined) {
+      // Delete entry from section
+      const updatedSections = [...sections];
+      const section = updatedSections[deleteTarget.sectionIndex];
+
+      if (Array.isArray(section.content)) {
+        const updatedContent = section.content.filter((_, i) => i !== deleteTarget.entryIndex);
+        updatedSections[deleteTarget.sectionIndex] = {
+          ...section,
+          content: updatedContent,
+        };
+        setSections(updatedSections);
+        toast.success(`Entry deleted from "${section.name}"`);
+      }
+    }
+
+    // Reset state
+    setDeleteTarget(null);
+    setShowDeleteConfirm(false);
+  };
+
+  const handleScrollToSection = (index: number) => {
+    setActiveSectionIndex(index);
+
+    // Scroll to contact info (-1) or section (0+)
+    const targetRef = index === -1 ? contactInfoRef.current : sectionRefs.current[index];
+
+    if (targetRef) {
+      const yOffset = -100; // Offset for fixed headers
+      const y = targetRef.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
+  // Update active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      // Get viewport middle point
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+
+      // Check contact info first
+      if (contactInfoRef.current) {
+        const rect = contactInfoRef.current.getBoundingClientRect();
+        const top = rect.top + window.scrollY;
+        if (scrollPosition >= top && scrollPosition < top + rect.height) {
+          setActiveSectionIndex(-1);
+          return;
+        }
+      }
+
+      // Check each section
+      for (let i = 0; i < sectionRefs.current.length; i++) {
+        const ref = sectionRefs.current[i];
+        if (ref) {
+          const rect = ref.getBoundingClientRect();
+          const top = rect.top + window.scrollY;
+          if (scrollPosition >= top && scrollPosition < top + rect.height) {
+            setActiveSectionIndex(i);
+            return;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [sections.length]);
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
@@ -737,131 +863,18 @@ const Editor: React.FC = () => {
     }
   };
 
-  // Auto-save localStorage functions
-  const getAutoSaveKey = () => `resume-builder-${templateId}-autosave`;
-
-  const hasDataChanged = (): boolean => {
-    if (!originalTemplateData) return false;
-
-    // Compare contact info
-    if (
-      JSON.stringify(contactInfo) !==
-      JSON.stringify(originalTemplateData.contactInfo)
-    ) {
-      return true;
-    }
-
-    // Compare sections (excluding iconFile objects as they're not part of original data)
-    const currentSectionsForComparison = sections.map((section) => {
-      if (
-        (isExperienceSection(section) || isEducationSection(section)) &&
-        Array.isArray(section.content)
-      ) {
-        return {
-          ...section,
-          content: section.content.map((item: any) => {
-            const { iconFile, iconBase64, ...rest } = item;
-            return rest;
-          }),
-        };
-      } else if (
-        section.type === "icon-list" &&
-        Array.isArray(section.content)
-      ) {
-        return {
-          ...section,
-          content: section.content.map((item: any) => {
-            const { iconFile, iconBase64, ...rest } = item;
-            return rest;
-          }),
-        };
-      }
-      return section;
-    });
-
-    return (
-      JSON.stringify(currentSectionsForComparison) !==
-      JSON.stringify(originalTemplateData.sections)
-    );
-  };
-
-  const saveToLocalStorage = async () => {
-    try {
-      // Only save if data has changed from original template
-      if (!hasDataChanged()) {
-        return;
-      }
-
-      // Export icon registry data for storage
-      const iconRegistryData = await iconRegistry.exportForStorage();
-
-      const data = {
-        contactInfo,
-        sections,
-        iconRegistry: iconRegistryData,
-        timestamp: new Date().toISOString(),
-      };
-
-      // Store as JSON (basic obfuscation can be added later if needed)
-      localStorage.setItem(getAutoSaveKey(), JSON.stringify(data));
-      const savedTime = new Date();
-      setLastSaved(savedTime);
-      setSaveError(false); // Clear any previous errors
-    } catch (error) {
-      console.error("Failed to auto-save to localStorage:", error);
-      setSaveError(true);
-      // Auto-retry after 5 seconds
-      setTimeout(() => {
-        if (contactInfo && sections.length > 0) {
-          saveToLocalStorage();
-        }
-      }, 5000);
-    }
-  };
-
-  const loadFromLocalStorage = async () => {
-    try {
-      const saved = localStorage.getItem(getAutoSaveKey());
-      if (saved) {
-        // Parse JSON data
-        const decodedData = JSON.parse(saved);
-
-        // Import icon registry data if it exists
-        if (decodedData.iconRegistry) {
-          await iconRegistry.importFromStorage(decodedData.iconRegistry);
-        }
-
-        return {
-          contactInfo: decodedData.contactInfo,
-          sections: decodedData.sections,
-          timestamp: new Date(decodedData.timestamp),
-        };
-      }
-    } catch (error) {
-      console.error("Failed to load from localStorage:", error);
-    }
-    return null;
-  };
-
-  const clearAutoSave = () => {
-    try {
-      localStorage.removeItem(getAutoSaveKey());
-      setLastSaved(null);
-    } catch (error) {
-      console.error("Failed to clear auto-save:", error);
-    }
-  };
 
   const handleRecoverData = async () => {
-    if (recoveredData) {
+    if (autoSaveRecoveredData) {
       setLoadingRecover(true);
 
       // Longer delay for noticeable feedback
       await new Promise((resolve) => setTimeout(resolve, 1200));
 
-      setContactInfo(recoveredData.contactInfo);
-      setSections(recoveredData.sections);
+      setContactInfo(autoSaveRecoveredData.contactInfo);
+      setSections(autoSaveRecoveredData.sections);
       setShowRecoveryModal(false);
+      setHasHandledRecovery(true); // Prevent modal from showing again
       setLoadingRecover(false);
       toast.success("Previous work restored successfully");
     }
@@ -875,13 +888,20 @@ const Editor: React.FC = () => {
 
     clearAutoSave();
     setShowRecoveryModal(false);
+    setHasHandledRecovery(true); // Prevent modal from showing again
     setLoadingStartFresh(false);
     // Keep the current template data (already loaded)
   };
 
-  const handleLoadEmptyTemplate = async () => {
+  const handleLoadEmptyTemplate = () => {
+    // Show confirmation dialog before clearing
+    setShowStartFreshConfirm(true);
+  };
+
+  const confirmStartFresh = async () => {
     if (!originalTemplateData) return;
 
+    setShowStartFreshConfirm(false);
     setLoadingSave(true);
     try {
       // Reset contact info
@@ -930,65 +950,6 @@ const Editor: React.FC = () => {
     };
   }, [showAdvancedMenu]);
 
-  // Debounced auto-save effect
-  useEffect(() => {
-    if (!contactInfo && sections.length === 0) return; // Don't save empty state
-    if (!originalTemplateData) return; // Don't save until template is loaded
-
-    const timer = setTimeout(async () => {
-      setIsSaving(true);
-      await saveToLocalStorage();
-      setIsSaving(false);
-    }, 2000); // Save 2 seconds after user stops editing
-
-    return () => clearTimeout(timer);
-  }, [
-    contactInfo,
-    sections,
-    templateId,
-    originalTemplateData,
-    setIsSaving,
-    setLastSaved,
-    setSaveError,
-  ]);
-
-  // Periodic auto-save backup
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      if (
-        (contactInfo || sections.length > 0) &&
-        originalTemplateData &&
-        !isSaving
-      ) {
-        setIsSaving(true);
-        await saveToLocalStorage();
-        setIsSaving(false);
-      }
-    }, 30000); // Save every 30 seconds
-
-    return () => clearInterval(interval);
-  }, [
-    contactInfo,
-    sections,
-    templateId,
-    originalTemplateData,
-    isSaving,
-    setIsSaving,
-    setLastSaved,
-    setSaveError,
-  ]);
-
-  // Save before page unload
-  useEffect(() => {
-    const handleBeforeUnload = async () => {
-      if ((contactInfo || sections.length > 0) && originalTemplateData) {
-        await saveToLocalStorage();
-      }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [contactInfo, sections, templateId, originalTemplateData]);
 
   // Simple scroll detection for footer visibility
   const handleScroll = useCallback(() => {
@@ -1060,140 +1021,26 @@ const Editor: React.FC = () => {
         toastClassName="custom-toast"
       />
 
-      {/* Main Content Container */}
-      <div className="container mx-auto px-4 pt-8 pb-72 sm:pb-56 lg:pb-44">
-        {/* Contact Information Card */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">
-              Contact Information
-            </h2>
+      {/* Main Content Container - Dynamic padding based on sidebar state */}
+      <div className={`container mx-auto px-4 pt-8 pb-72 sm:pb-56 lg:pb-20 lg:pl-8 lg:ml-0 lg:mr-0 lg:max-w-none transition-all duration-300 ${
+        isSidebarCollapsed ? 'lg:pr-24' : 'lg:pr-80'
+      }`}>
+        {/* Contact Information Section */}
+        {contactInfo && (
+          <div ref={contactInfoRef}>
+            <ContactInfoSection
+              contactInfo={contactInfo}
+              onUpdate={setContactInfo}
+              linkedinUrlError={linkedinUrlError}
+              onLinkedInUrlChange={handleLinkedInUrlChange}
+              onLinkedInDisplayChange={handleLinkedInDisplayChange}
+              isLinkedInTextAutoGenerated={isLinkedInTextAutoGenerated}
+            />
           </div>
-          <p className="text-gray-600 mb-6">
-            Start by filling out your basic contact information
-          </p>
-          {contactInfo && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Name Field */}
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  value={contactInfo.name || ""}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, name: e.target.value })
-                  }
-                  className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  placeholder="Enter your name"
-                />
-              </div>
+        )}
 
-              {/* Location Field */}
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Location
-                </label>
-                <input
-                  type="text"
-                  value={contactInfo.location || ""}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, location: e.target.value })
-                  }
-                  className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  placeholder="Enter your location"
-                />
-              </div>
-
-              {/* Email Field */}
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={contactInfo.email || ""}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, email: e.target.value })
-                  }
-                  className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  placeholder="Enter your email"
-                />
-              </div>
-
-              {/* Phone Field */}
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Phone
-                </label>
-                <input
-                  type="tel"
-                  value={contactInfo.phone || ""}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, phone: e.target.value })
-                  }
-                  className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  placeholder="Enter your phone"
-                />
-              </div>
-
-              {/* LinkedIn URL Field */}
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  LinkedIn URL
-                </label>
-                <input
-                  type="url"
-                  value={contactInfo.linkedin || ""}
-                  onChange={(e) => handleLinkedInUrlChange(e.target.value)}
-                  className={`w-full border rounded-xl p-3 focus:ring-2 focus:border-blue-500 transition-all duration-200 ${
-                    linkedinUrlError
-                      ? "border-red-300 focus:ring-red-500 bg-red-50"
-                      : "border-gray-300 focus:ring-blue-500"
-                  }`}
-                  placeholder="Enter your LinkedIn URL (e.g., linkedin.com/in/yourname)"
-                />
-                {linkedinUrlError && (
-                  <p className="text-red-500 text-sm mt-1 flex items-center">
-                    <span className="mr-1">⚠️</span>
-                    {linkedinUrlError}
-                  </p>
-                )}
-              </div>
-
-              {/* LinkedIn Display Text Field with Magic Wand */}
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  LinkedIn Display Text
-                  <span className="text-gray-500 text-sm font-normal ml-2">
-                    (How it appears on your resume)
-                  </span>
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={contactInfo.linkedin_display || ""}
-                    onChange={(e) => handleLinkedInDisplayChange(e.target.value)}
-                    className="w-full border border-gray-300 rounded-xl p-3 pr-10 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                    placeholder="e.g., John Doe, LinkedIn Profile, or LinkedIn"
-                  />
-                  {isLinkedInTextAutoGenerated && (
-                    <span 
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 transition-opacity duration-200"
-                      title="Auto-generated suggestion"
-                    >
-                      🪄
-                    </span>
-                  )}
-                </div>
-                <p className="text-gray-500 text-xs mt-1">
-                  We'll suggest professional text, but you can customize it however you like
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
+        {/* Global Formatting Help - Replaces repeated tips */}
+        <FormattingHelp />
 
         {/* Resume Sections with Drag and Drop */}
         <DndContext
@@ -1217,7 +1064,12 @@ const Editor: React.FC = () => {
                     disabled={false}
                   >
                     <div
-                      ref={index === sections.length - 1 ? newSectionRef : null}
+                      ref={(el) => {
+                        sectionRefs.current[index] = el;
+                        if (index === sections.length - 1) {
+                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                        }
+                      }}
                     >
                       <ExperienceSection
                         sectionName={section.name}
@@ -1232,6 +1084,7 @@ const Editor: React.FC = () => {
                         onTitleSave={handleTitleSave}
                         onTitleCancel={handleTitleCancel}
                         onDelete={() => handleDeleteSection(index)}
+                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
                         isEditingTitle={editingTitleIndex === index}
                         temporaryTitle={temporaryTitle}
                         setTemporaryTitle={setTemporaryTitle}
@@ -1249,7 +1102,12 @@ const Editor: React.FC = () => {
                     disabled={false}
                   >
                     <div
-                      ref={index === sections.length - 1 ? newSectionRef : null}
+                      ref={(el) => {
+                        sectionRefs.current[index] = el;
+                        if (index === sections.length - 1) {
+                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                        }
+                      }}
                     >
                       <EducationSection
                         sectionName={section.name}
@@ -1264,6 +1122,7 @@ const Editor: React.FC = () => {
                         onTitleSave={handleTitleSave}
                         onTitleCancel={handleTitleCancel}
                         onDelete={() => handleDeleteSection(index)}
+                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
                         isEditingTitle={editingTitleIndex === index}
                         temporaryTitle={temporaryTitle}
                         setTemporaryTitle={setTemporaryTitle}
@@ -1281,7 +1140,12 @@ const Editor: React.FC = () => {
                     disabled={false}
                   >
                     <div
-                      ref={index === sections.length - 1 ? newSectionRef : null}
+                      ref={(el) => {
+                        sectionRefs.current[index] = el;
+                        if (index === sections.length - 1) {
+                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                        }
+                      }}
                     >
                       <IconListSection
                         data={section.content}
@@ -1292,6 +1156,7 @@ const Editor: React.FC = () => {
                           })
                         }
                         onDelete={() => handleDeleteSection(index)}
+                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
                         sectionName={section.name}
                         onEditTitle={() => handleTitleEdit(index)}
                         onSaveTitle={handleTitleSave}
@@ -1312,7 +1177,12 @@ const Editor: React.FC = () => {
                     disabled={false}
                   >
                     <div
-                      ref={index === sections.length - 1 ? newSectionRef : null}
+                      ref={(el) => {
+                        sectionRefs.current[index] = el;
+                        if (index === sections.length - 1) {
+                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                        }
+                      }}
                     >
                       <GenericSection
                         section={section}
@@ -1323,6 +1193,7 @@ const Editor: React.FC = () => {
                         onSaveTitle={handleTitleSave}
                         onCancelTitle={handleTitleCancel}
                         onDelete={() => handleDeleteSection(index)}
+                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
                         isEditing={editingTitleIndex === index}
                         temporaryTitle={temporaryTitle}
                         setTemporaryTitle={setTemporaryTitle}
@@ -1408,13 +1279,11 @@ const Editor: React.FC = () => {
           </div>
         )}
 
-        {/* Docked Bottom Toolbar - Always visible, positioned above footer when footer shows */}
+        {/* Desktop Toolbar - Now hidden on desktop (actions moved to sidebar), shown on tablet only */}
         <div
-          className={`fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 
-            left-0 right-0 border-t border-gray-200/60 lg:left-auto lg:right-6 lg:border-t-0 lg:border lg:border-gray-200/60 lg:rounded-2xl lg:w-auto lg:max-w-none ${
-              contextIsAtBottom
-                ? "bottom-56 sm:bottom-40 lg:bottom-24"
-                : "bottom-0 lg:bottom-6"
+          className={`hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300
+            left-auto right-6 border border-gray-200/60 rounded-2xl w-auto max-w-none ${
+              contextIsAtBottom ? "bottom-24" : "bottom-6"
             }`}
         >
           <div className="flex items-center justify-center gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
@@ -1435,6 +1304,58 @@ const Editor: React.FC = () => {
             />
           </div>
         </div>
+
+        {/* Mobile Action Bar - Only shown on mobile/tablet */}
+        <MobileActionBar
+          onNavigationClick={() => setShowNavigationDrawer(true)}
+          onDownloadClick={handleGenerateResume}
+          isSaving={isSaving}
+          isGenerating={generating}
+          lastSaved={lastSaved}
+          saveError={saveError}
+        />
+
+        {/* Mobile Navigation Drawer */}
+        <MobileNavigationDrawer
+          isOpen={showNavigationDrawer}
+          onClose={() => setShowNavigationDrawer(false)}
+          sections={sections}
+          onSectionClick={handleScrollToSection}
+          activeSectionIndex={activeSectionIndex}
+          onAddSection={handleAddNewSectionClick}
+          onExportYAML={handleExportYAML}
+          onImportYAML={() => fileInputRef.current?.click()}
+          onStartFresh={handleLoadEmptyTemplate}
+          onHelp={toggleHelpModal}
+          loadingSave={loadingSave}
+          loadingLoad={loadingLoad}
+        />
+
+        {/* Desktop Section Navigator Sidebar */}
+        <SectionNavigator
+          sections={sections}
+          onSectionClick={handleScrollToSection}
+          activeSectionIndex={activeSectionIndex}
+          onAddSection={handleAddNewSectionClick}
+          onDownloadResume={handleGenerateResume}
+          onExportYAML={handleExportYAML}
+          onImportYAML={() => fileInputRef.current?.click()}
+          onStartFresh={handleLoadEmptyTemplate}
+          onHelp={toggleHelpModal}
+          isGenerating={generating}
+          loadingSave={loadingSave}
+          loadingLoad={loadingLoad}
+          onCollapseChange={setIsSidebarCollapsed}
+        />
+
+        {/* Hidden file input for both mobile and desktop */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".yaml,.yml"
+          className="hidden"
+          onChange={handleImportYAML}
+        />
 
         {/* Elegant Separator - Between toolbar and footer (mobile/tablet only) */}
         {contextIsAtBottom && (
@@ -1501,7 +1422,7 @@ const Editor: React.FC = () => {
       )}
 
       {/* Recovery Modal */}
-      {showRecoveryModal && recoveredData && (
+      {showRecoveryModal && autoSaveRecoveredData && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
           <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl max-w-lg w-full border border-gray-200">
             <div className="p-8">
@@ -1556,12 +1477,12 @@ const Editor: React.FC = () => {
                     <div className="text-blue-700 text-sm space-y-1 leading-relaxed">
                       <p>
                         Last worked on:{" "}
-                        {recoveredData.timestamp.toLocaleDateString()} at{" "}
-                        {recoveredData.timestamp.toLocaleTimeString()}
+                        {autoSaveRecoveredData.timestamp.toLocaleDateString()} at{" "}
+                        {autoSaveRecoveredData.timestamp.toLocaleTimeString()}
                       </p>
                       <p>
-                        Contains: Contact info + {recoveredData.sections.length}{" "}
-                        section{recoveredData.sections.length !== 1 ? "s" : ""}
+                        Contains: Contact info + {autoSaveRecoveredData.sections.length}{" "}
+                        section{autoSaveRecoveredData.sections.length !== 1 ? "s" : ""}
                       </p>
                     </div>
                   </div>
@@ -1700,6 +1621,38 @@ const Editor: React.FC = () => {
           supportsIcons={supportsIcons}
         />
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <ResponsiveConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => {
+          setShowDeleteConfirm(false);
+          setDeleteTarget(null);
+        }}
+        onConfirm={confirmDelete}
+        title={deleteTarget?.type === 'section' ? "Delete Section?" : "Delete Entry?"}
+        message={
+          deleteTarget?.type === 'section'
+            ? `Are you sure you want to delete the "${deleteTarget.sectionName}" section? This will remove all content in this section and cannot be undone.`
+            : "Are you sure you want to delete this entry? This action cannot be undone."
+        }
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDestructive={true}
+      />
+
+      {/* Start Fresh Confirmation Dialog */}
+      <ResponsiveConfirmDialog
+        isOpen={showStartFreshConfirm}
+        onClose={() => setShowStartFreshConfirm(false)}
+        onConfirm={confirmStartFresh}
+        title="Clear Template?"
+        message="Are you sure you want to clear all content and start fresh? This will remove all your work and reset the template to empty. This action cannot be undone."
+        confirmText="Clear All"
+        cancelText="Cancel"
+        isDestructive={true}
+        isLoading={loadingSave}
+      />
     </div>
   );
 };

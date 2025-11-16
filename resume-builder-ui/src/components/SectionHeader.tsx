@@ -1,6 +1,7 @@
 // src/components/SectionHeader.tsx
 
 import React, { useState } from "react";
+import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import { EditableTitle } from "./EditableTitle";
 
 /**
@@ -29,6 +30,10 @@ export interface SectionHeaderProps {
   showDeleteConfirm?: boolean;
   /** Callback to set delete confirmation state */
   setShowDeleteConfirm?: (show: boolean) => void;
+  /** Whether the section is collapsed */
+  isCollapsed?: boolean;
+  /** Callback when collapse is toggled */
+  onToggleCollapse?: () => void;
 }
 
 /**
@@ -65,6 +70,8 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   showHint = false,
   showDeleteConfirm: externalShowDeleteConfirm,
   setShowDeleteConfirm: externalSetShowDeleteConfirm,
+  isCollapsed = false,
+  onToggleCollapse,
 }) => {
   // Internal delete confirmation state (if not provided externally)
   const [internalShowDeleteConfirm, setInternalShowDeleteConfirm] = useState(false);
@@ -88,16 +95,34 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 
   return (
     <div className="flex items-center justify-between mb-4">
-      <EditableTitle
-        title={title}
-        isEditing={isEditing}
-        temporaryTitle={temporaryTitle}
-        onEdit={onTitleEdit}
-        onSave={onTitleSave}
-        onCancel={onTitleCancel}
-        onTitleChange={onTitleChange}
-        showHint={showHint}
-      />
+      <div className="flex items-center gap-2 flex-1">
+        {/* Collapse/Expand Button */}
+        {onToggleCollapse && (
+          <button
+            onClick={onToggleCollapse}
+            className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            aria-label={isCollapsed ? "Expand section" : "Collapse section"}
+            title={isCollapsed ? "Expand section" : "Collapse section"}
+          >
+            {isCollapsed ? (
+              <MdExpandMore className="text-2xl" />
+            ) : (
+              <MdExpandLess className="text-2xl" />
+            )}
+          </button>
+        )}
+
+        <EditableTitle
+          title={title}
+          isEditing={isEditing}
+          temporaryTitle={temporaryTitle}
+          onEdit={onTitleEdit}
+          onSave={onTitleSave}
+          onCancel={onTitleCancel}
+          onTitleChange={onTitleChange}
+          showHint={showHint}
+        />
+      </div>
 
       <div className="flex items-center gap-2">
         {showDeleteConfirm ? (
