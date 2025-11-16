@@ -12,6 +12,7 @@ import { fetchTemplate, generateResume } from "../services/templates";
 import { getSessionId } from "../utils/session";
 import { useIconRegistry } from "../hooks/useIconRegistry";
 import { useAutoSave } from "../hooks/useAutoSave";
+import { usePreview } from "../hooks/usePreview";
 import yaml from "js-yaml";
 import { PortableYAMLData } from "../types/iconTypes";
 import { extractReferencedIconFilenames } from "../utils/iconExtractor";
@@ -30,6 +31,7 @@ import MobileNavigationDrawer from "./MobileNavigationDrawer";
 import SectionNavigator from "./SectionNavigator";
 import ResponsiveConfirmDialog from "./ResponsiveConfirmDialog";
 import DragHandle from "./DragHandle";
+import PreviewModal from "./PreviewModal";
 import { useEditorContext } from "../contexts/EditorContext";
 import { MdFileDownload, MdHelpOutline } from "react-icons/md";
 import {
@@ -110,6 +112,57 @@ const Editor: React.FC = () => {
   // Central icon registry for all uploaded icons
   const iconRegistry = useIconRegistry();
 
+  // Process sections to clean up icon paths for export/preview
+  const processSections = useCallback((sections: Section[]) => {
+    return sections.map((section) => {
+      // Handle icon-list sections (Certifications, Awards, etc.)
+      if (section.type === "icon-list") {
+        const updatedContent = section.content.map((item: any) => {
+          // Remove iconFile and iconBase64 for export, keep only clean icon filename
+          const { iconFile, iconBase64, ...cleanItem } = item;
+          return {
+            certification: cleanItem.certification || "",
+            issuer: cleanItem.issuer || "",
+            date: cleanItem.date || "",
+            icon: cleanItem.icon
+              ? cleanItem.icon.startsWith("/icons/")
+                ? cleanItem.icon.replace("/icons/", "")
+                : cleanItem.icon
+              : null,
+          };
+        });
+        return {
+          ...section,
+          content: updatedContent,
+        };
+      }
+
+      if (isExperienceSection(section) || isEducationSection(section)) {
+        const updatedContent = Array.isArray(section.content)
+          ? section.content.map((item: any) => {
+              // Remove iconFile and iconBase64 for export, keep only clean icon filename
+              const { iconFile, iconBase64, ...rest } = item;
+              return {
+                ...rest,
+                icon: rest.icon
+                  ? rest.icon.startsWith("/icons/")
+                    ? rest.icon.replace("/icons/", "")
+                    : rest.icon
+                  : null,
+              };
+            })
+          : section.content;
+
+        return {
+          ...section,
+          content: updatedContent,
+        };
+      }
+
+      return section;
+    });
+  }, []);
+
   // Auto-save hook - handles localStorage persistence
   const {
     saving: isSaving,
@@ -126,7 +179,24 @@ const Editor: React.FC = () => {
     templateId,
     iconRegistry,
   });
+
+  // Preview hook - handles PDF preview generation and caching
+  const {
+    previewUrl,
+    isGenerating: isGeneratingPreview,
+    error: previewError,
+    isStale: previewIsStale,
+    generatePreview,
+  } = usePreview({
+    contactInfo,
+    sections,
+    templateId,
+    iconRegistry,
+    processSections,
+  });
+
   const [generating, setGenerating] = useState(false);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [editingTitleIndex, setEditingTitleIndex] = useState<number | null>(
     null
   );
@@ -254,56 +324,6 @@ const Editor: React.FC = () => {
       return () => clearTimeout(timer);
     }
   }, []);
-
-  const processSections = (sections: Section[]) => {
-    return sections.map((section) => {
-      // Handle icon-list sections (Certifications, Awards, etc.)
-      if (section.type === "icon-list") {
-        const updatedContent = section.content.map((item: any) => {
-          // Remove iconFile and iconBase64 for export, keep only clean icon filename
-          const { iconFile, iconBase64, ...cleanItem } = item;
-          return {
-            certification: cleanItem.certification || "",
-            issuer: cleanItem.issuer || "",
-            date: cleanItem.date || "",
-            icon: cleanItem.icon
-              ? cleanItem.icon.startsWith("/icons/")
-                ? cleanItem.icon.replace("/icons/", "")
-                : cleanItem.icon
-              : null,
-          };
-        });
-        return {
-          ...section,
-          content: updatedContent,
-        };
-      }
-
-      if (isExperienceSection(section) || isEducationSection(section)) {
-        const updatedContent = Array.isArray(section.content)
-          ? section.content.map((item: any) => {
-              // Remove iconFile and iconBase64 for export, keep only clean icon filename
-              const { iconFile, iconBase64, ...rest } = item;
-              return {
-                ...rest,
-                icon: rest.icon
-                  ? rest.icon.startsWith("/icons/")
-                    ? rest.icon.replace("/icons/", "")
-                    : rest.icon
-                  : null,
-              };
-            })
-          : section.content;
-
-        return {
-          ...section,
-          content: updatedContent,
-        };
-      }
-
-      return section;
-    });
-  };
 
   const handleUpdateSection = (index: number, updatedSection: Section) => {
     const updatedSections = [...sections];
@@ -704,6 +724,23 @@ const Editor: React.FC = () => {
 
   const toggleHelpModal = () => setShowHelpModal(!showHelpModal);
 
+  // Preview handlers
+  const handleOpenPreview = async () => {
+    // If no preview exists or it's stale, generate it first
+    if (!previewUrl || previewIsStale) {
+      await generatePreview();
+    }
+    setShowPreviewModal(true);
+  };
+
+  const handleClosePreview = () => {
+    setShowPreviewModal(false);
+  };
+
+  const handleRefreshPreview = async () => {
+    await generatePreview();
+  };
+
   const handleAddNewSectionClick = async () => {
     setLoadingAddSection(true);
 
@@ -957,6 +994,19 @@ const Editor: React.FC = () => {
     };
   }, [showAdvancedMenu]);
 
+  // Keyboard shortcuts for preview (Ctrl+Shift+P / Cmd+Shift+P)
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Ctrl+Shift+P or Cmd+Shift+P to open preview
+      if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'P') {
+        event.preventDefault();
+        handleOpenPreview();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleOpenPreview]);
 
   // Simple scroll detection for footer visibility
   const handleScroll = useCallback(() => {
@@ -1315,9 +1365,12 @@ const Editor: React.FC = () => {
         {/* Mobile Action Bar - Only shown on mobile/tablet */}
         <MobileActionBar
           onNavigationClick={() => setShowNavigationDrawer(true)}
+          onPreviewClick={handleOpenPreview}
           onDownloadClick={handleGenerateResume}
           isSaving={isSaving}
           isGenerating={generating}
+          isGeneratingPreview={isGeneratingPreview}
+          previewIsStale={previewIsStale}
           lastSaved={lastSaved}
           saveError={saveError}
         />
@@ -1345,11 +1398,14 @@ const Editor: React.FC = () => {
           activeSectionIndex={activeSectionIndex}
           onAddSection={handleAddNewSectionClick}
           onDownloadResume={handleGenerateResume}
+          onPreviewResume={handleOpenPreview}
           onExportYAML={handleExportYAML}
           onImportYAML={() => fileInputRef.current?.click()}
           onStartFresh={handleLoadEmptyTemplate}
           onHelp={toggleHelpModal}
           isGenerating={generating}
+          isGeneratingPreview={isGeneratingPreview}
+          previewIsStale={previewIsStale}
           loadingSave={loadingSave}
           loadingLoad={loadingLoad}
           onCollapseChange={setIsSidebarCollapsed}
@@ -1659,6 +1715,18 @@ const Editor: React.FC = () => {
         cancelText="Cancel"
         isDestructive={true}
         isLoading={loadingSave}
+      />
+
+      {/* PDF Preview Modal */}
+      <PreviewModal
+        isOpen={showPreviewModal}
+        onClose={handleClosePreview}
+        previewUrl={previewUrl}
+        isGenerating={isGeneratingPreview}
+        isStale={previewIsStale}
+        error={previewError}
+        onRefresh={handleRefreshPreview}
+        onDownload={handleGenerateResume}
       />
     </div>
   );

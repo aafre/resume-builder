@@ -16,6 +16,14 @@ interface EditorContextType {
   // Sidebar state
   isSidebarCollapsed: boolean;
   setIsSidebarCollapsed: (value: boolean) => void;
+
+  // Preview state
+  previewIsStale: boolean;
+  setPreviewIsStale: (value: boolean) => void;
+  previewLastGenerated: Date | null;
+  setPreviewLastGenerated: (value: Date | null) => void;
+  previewIsGenerating: boolean;
+  setPreviewIsGenerating: (value: boolean) => void;
 }
 
 const EditorContext = createContext<EditorContextType | undefined>(undefined);
@@ -34,6 +42,10 @@ interface EditorProviderProps {
   lastSaved?: Date | null;
   isSaving?: boolean;
   saveError?: boolean;
+  // Preview state can be injected from usePreview hook
+  previewIsStale?: boolean;
+  previewLastGenerated?: Date | null;
+  previewIsGenerating?: boolean;
 }
 
 export const EditorProvider: React.FC<EditorProviderProps> = ({
@@ -41,6 +53,9 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({
   lastSaved: externalLastSaved,
   isSaving: externalIsSaving,
   saveError: externalSaveError,
+  previewIsStale: externalPreviewIsStale,
+  previewLastGenerated: externalPreviewLastGenerated,
+  previewIsGenerating: externalPreviewIsGenerating,
 }) => {
   const [isAtBottom, setIsAtBottom] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -54,6 +69,15 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({
   const isSaving = externalIsSaving !== undefined ? externalIsSaving : internalIsSaving;
   const saveError = externalSaveError !== undefined ? externalSaveError : internalSaveError;
 
+  // Preview state (external or internal)
+  const [internalPreviewIsStale, setInternalPreviewIsStale] = useState(false);
+  const [internalPreviewLastGenerated, setInternalPreviewLastGenerated] = useState<Date | null>(null);
+  const [internalPreviewIsGenerating, setInternalPreviewIsGenerating] = useState(false);
+
+  const previewIsStale = externalPreviewIsStale !== undefined ? externalPreviewIsStale : internalPreviewIsStale;
+  const previewLastGenerated = externalPreviewLastGenerated !== undefined ? externalPreviewLastGenerated : internalPreviewLastGenerated;
+  const previewIsGenerating = externalPreviewIsGenerating !== undefined ? externalPreviewIsGenerating : internalPreviewIsGenerating;
+
   return (
     <EditorContext.Provider value={{
       isAtBottom,
@@ -66,6 +90,12 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({
       setSaveError: setInternalSaveError,
       isSidebarCollapsed,
       setIsSidebarCollapsed,
+      previewIsStale,
+      setPreviewIsStale: setInternalPreviewIsStale,
+      previewLastGenerated,
+      setPreviewLastGenerated: setInternalPreviewLastGenerated,
+      previewIsGenerating,
+      setPreviewIsGenerating: setInternalPreviewIsGenerating,
     }}>
       {children}
     </EditorContext.Provider>

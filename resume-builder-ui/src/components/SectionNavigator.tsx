@@ -21,6 +21,7 @@ import {
   MdVolunteerActivism,
   MdEmojiEvents,
   MdDescription,
+  MdVisibility,
 } from "react-icons/md";
 
 interface Section {
@@ -34,11 +35,14 @@ interface SectionNavigatorProps {
   activeSectionIndex?: number;
   onAddSection: () => void;
   onDownloadResume: () => void;
+  onPreviewResume?: () => void;
   onExportYAML: () => void;
   onImportYAML: () => void;
   onStartFresh: () => void;
   onHelp: () => void;
   isGenerating?: boolean;
+  isGeneratingPreview?: boolean;
+  previewIsStale?: boolean;
   loadingSave?: boolean;
   loadingLoad?: boolean;
   onCollapseChange?: (isCollapsed: boolean) => void;
@@ -58,11 +62,14 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   activeSectionIndex,
   onAddSection,
   onDownloadResume,
+  onPreviewResume,
   onExportYAML,
   onImportYAML,
   onStartFresh,
   onHelp,
   isGenerating,
+  isGeneratingPreview,
+  previewIsStale,
   loadingSave,
   loadingLoad,
   onCollapseChange,
@@ -365,6 +372,36 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             <h3 className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-3 px-1">
               Actions
             </h3>
+          )}
+
+          {/* Primary Action: Preview PDF */}
+          {onPreviewResume && (
+            <button
+              onClick={onPreviewResume}
+              disabled={isGeneratingPreview}
+              className={`w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-blue-500 hover:to-indigo-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative ${
+                isCollapsed
+                  ? "flex-col gap-1 py-2.5 px-1 mb-2"
+                  : "flex-row gap-2 px-4 py-2.5 mb-2.5"
+              }`}
+            >
+              {/* Staleness indicator badge */}
+              {previewIsStale && !isGeneratingPreview && (
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full border-2 border-white animate-pulse"></span>
+              )}
+              <MdVisibility className={isCollapsed ? "text-lg" : "text-base"} />
+              <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
+                {isGeneratingPreview
+                  ? isCollapsed
+                    ? "..."
+                    : "Loading..."
+                  : isCollapsed
+                  ? "Preview"
+                  : previewIsStale
+                  ? "Refresh Preview"
+                  : "Preview PDF"}
+              </span>
+            </button>
           )}
 
           {/* Primary Action: Download Resume */}
