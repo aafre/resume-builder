@@ -50,7 +50,7 @@ export const MarkdownHint: React.FC<MarkdownHintProps> = ({
 
   return (
     <div className={`text-xs text-gray-500 mt-1 ${className}`}>
-      💡 Tip: Select text to see formatting options. Click 🔗 to add links, or type markdown syntax directly.
+      💡 Tip: Select text to see formatting options.
     </div>
   );
 };
