@@ -51,53 +51,6 @@ const FormattingHelp: React.FC = () => {
               </li>
             </ul>
           </div>
-
-          {/* Markdown Formatting */}
-          <div>
-            <h4 className="font-semibold text-blue-900 mb-2">✍️ Markdown Shortcuts (Optional)</h4>
-            <p className="text-blue-800 mb-2 text-xs">Type these patterns directly for faster formatting:</p>
-            <ul className="space-y-1 text-blue-800 font-mono text-xs">
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-0.5">•</span>
-                <span><strong>**bold**</strong> or <strong>__bold__</strong> → <strong>bold text</strong></span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-0.5">•</span>
-                <span><strong>*italic*</strong> or <strong>_italic_</strong> → <em>italic text</em></span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-0.5">•</span>
-                <span><strong>++underline++</strong> → <u>underline text</u></span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-0.5">•</span>
-                <span><strong>~~strikethrough~~</strong> → <s>strikethrough</s></span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-0.5">•</span>
-                <span><strong>[link text](url)</strong> → clickable hyperlink</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Pro Tips */}
-          <div>
-            <h4 className="font-semibold text-blue-900 mb-2">💡 Pro Tips</h4>
-            <ul className="space-y-1.5 text-blue-800">
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-0.5">•</span>
-                <span><strong>Mobile & Desktop:</strong> The formatting menu works on all devices - just select text!</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-0.5">•</span>
-                <span><strong>Links in PDF:</strong> All hyperlinks open in new tabs when clicked</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-0.5">•</span>
-                <span><strong>Best practices:</strong> Use bullet points for achievements, keep descriptions concise (3-5 per role)</span>
-              </li>
-            </ul>
-          </div>
         </div>
       )}
     </div>
