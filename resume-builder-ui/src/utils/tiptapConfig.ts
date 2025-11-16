@@ -115,9 +115,10 @@ export const htmlToMarkdown = (html: string): string => {
   // Remove paragraph tags
   let markdown = html.replace(/<p>/g, '').replace(/<\/p>/g, '\n');
 
-  // Convert HTML links to markdown
+  // Convert HTML links to markdown - handle complex anchor tags with multiple attributes
+  // Matches <a ...href="url"...>text</a> regardless of other attributes or their order
   markdown = markdown.replace(
-    /<a href="([^"]+)">([^<]+)<\/a>/g,
+    /<a\s+[^>]*href="([^"]+)"[^>]*>([^<]+)<\/a>/g,
     '[$2]($1)'
   );
 

@@ -92,6 +92,7 @@ const Editor: React.FC = () => {
   const {
     isAtBottom: contextIsAtBottom,
     setIsAtBottom: setContextIsAtBottom,
+    setIsSidebarCollapsed: setContextIsSidebarCollapsed,
   } = useEditorContext();
 
   // TODO: useResponsive() will be added when implementing navigation drawer
@@ -157,7 +158,13 @@ const Editor: React.FC = () => {
   // Navigation drawer state
   const [showNavigationDrawer, setShowNavigationDrawer] = useState(false);
   const [activeSectionIndex, setActiveSectionIndex] = useState<number>(-1); // -1 for contact info
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsedLocal] = useState(false);
+
+  // Sync sidebar state with context for footer awareness
+  const setIsSidebarCollapsed = (collapsed: boolean) => {
+    setIsSidebarCollapsedLocal(collapsed);
+    setContextIsSidebarCollapsed(collapsed);
+  };
 
   const [loadingStartFresh, setLoadingStartFresh] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
@@ -1022,8 +1029,8 @@ const Editor: React.FC = () => {
       />
 
       {/* Main Content Container - Dynamic padding based on sidebar state */}
-      <div className={`container mx-auto px-4 pt-8 pb-72 sm:pb-56 lg:pb-20 lg:pl-8 lg:ml-0 lg:mr-0 lg:max-w-none transition-all duration-300 ${
-        isSidebarCollapsed ? 'lg:pr-24' : 'lg:pr-80'
+      <div className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-72 sm:pb-56 lg:pb-12 max-w-4xl lg:max-w-none transition-all duration-300 ${
+        isSidebarCollapsed ? 'lg:mr-[88px]' : 'lg:mr-[296px]'
       }`}>
         {/* Contact Information Section */}
         {contactInfo && (

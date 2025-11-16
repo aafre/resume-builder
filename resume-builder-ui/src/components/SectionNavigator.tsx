@@ -1,5 +1,27 @@
-import React, { useState } from "react";
-import { MdDragIndicator, MdAdd, MdFileDownload, MdFileUpload, MdRefresh, MdHelpOutline, MdChevronLeft, MdChevronRight, MdCircle } from "react-icons/md";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  MdAdd,
+  MdFileDownload,
+  MdFileUpload,
+  MdRefresh,
+  MdHelpOutline,
+  MdPerson,
+  MdWork,
+  MdSchool,
+  MdStar,
+  MdList,
+  MdMenu,
+  MdFormatListBulleted,
+  MdViewColumn,
+  MdTextFields,
+  MdBadge,
+  MdCode,
+  MdBuild,
+  MdLanguage,
+  MdVolunteerActivism,
+  MdEmojiEvents,
+  MdDescription,
+} from "react-icons/md";
 
 interface Section {
   name: string;
@@ -22,10 +44,13 @@ interface SectionNavigatorProps {
   onCollapseChange?: (isCollapsed: boolean) => void;
 }
 
+const STORAGE_KEY = "resume-builder-sidebar-collapsed";
+
 /**
- * Desktop sidebar navigator - smart collapsible panel on the right
- * Expanded: Full text + icons
- * Collapsed: Icon-only with tooltips
+ * YouTube-style collapsible sidebar navigator
+ * Positioned below the header, full height minus header
+ * Expanded: Full labels with icons
+ * Collapsed: Icons with short labels (like YouTube sidebar)
  */
 const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   sections,
@@ -42,7 +67,83 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   loadingLoad,
   onCollapseChange,
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  // Load initial state from localStorage
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved === "true";
+  });
+
+  // Track header and footer heights dynamically
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const [footerHeight, setFooterHeight] = useState(0);
+  const sidebarRef = useRef<HTMLElement>(null);
+
+  // Calculate header and footer heights on mount and resize
+  useEffect(() => {
+    const calculateHeights = () => {
+      // Find the header element
+      const header = document.querySelector("header");
+      const devBanner = document.querySelector('[class*="bg-red-600"]');
+      const footer = document.querySelector("footer.fixed");
+
+      let totalHeaderHeight = 0;
+
+      if (devBanner && devBanner instanceof HTMLElement) {
+        totalHeaderHeight += devBanner.offsetHeight;
+      }
+
+      if (header && header instanceof HTMLElement) {
+        totalHeaderHeight += header.offsetHeight;
+      }
+
+      // Get footer height (only when visible/at bottom)
+      let footerH = 0;
+      if (footer && footer instanceof HTMLElement) {
+        footerH = footer.offsetHeight;
+      }
+
+      // Fallback to reasonable defaults if elements not found
+      setHeaderHeight(totalHeaderHeight || 72);
+      setFooterHeight(footerH || 60); // Default footer height
+    };
+
+    calculateHeights();
+
+    // Recalculate on resize
+    window.addEventListener("resize", calculateHeights);
+
+    // Also observe for DOM changes (e.g., banner visibility, footer visibility)
+    const observer = new MutationObserver(calculateHeights);
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    return () => {
+      window.removeEventListener("resize", calculateHeights);
+      observer.disconnect();
+    };
+  }, []);
+
+  // Notify parent of initial state
+  useEffect(() => {
+    onCollapseChange?.(isCollapsed);
+  }, []);
+
+  // Persist preference to localStorage
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, String(isCollapsed));
+  }, [isCollapsed]);
+
+  // Keyboard shortcut: Ctrl+\ to toggle sidebar
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === "\\") {
+        e.preventDefault();
+        handleToggle();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isCollapsed]);
 
   const handleToggle = () => {
     const newState = !isCollapsed;
@@ -50,306 +151,387 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
     onCollapseChange?.(newState);
   };
 
+  // Get icon for section based on type or name
+  const getSectionIcon = (section: Section) => {
+    const type = section.type?.toLowerCase() || "";
+    const name = section.name.toLowerCase();
+
+    // First check by section type (most accurate)
+    if (type === "experience") {
+      return <MdWork className="text-base" />;
+    }
+    if (type === "education") {
+      return <MdSchool className="text-base" />;
+    }
+    if (type === "bulleted-list") {
+      return <MdFormatListBulleted className="text-base" />;
+    }
+    if (type === "inline-list") {
+      return <MdList className="text-base" />;
+    }
+    if (type === "dynamic-column-list") {
+      return <MdViewColumn className="text-base" />;
+    }
+    if (type === "icon-list") {
+      return <MdBadge className="text-base" />;
+    }
+    if (type === "text") {
+      return <MdTextFields className="text-base" />;
+    }
+
+    // Then check by section name for additional context
+    if (name.includes("experience") || name.includes("work") || name.includes("employment")) {
+      return <MdWork className="text-base" />;
+    }
+    if (name.includes("education") || name.includes("school") || name.includes("academic")) {
+      return <MdSchool className="text-base" />;
+    }
+    if (name.includes("certification") || name.includes("certificate")) {
+      return <MdBadge className="text-base" />;
+    }
+    if (name.includes("award") || name.includes("honor") || name.includes("achievement")) {
+      return <MdEmojiEvents className="text-base" />;
+    }
+    if (name.includes("skill") || name.includes("technical") || name.includes("competenc")) {
+      return <MdBuild className="text-base" />;
+    }
+    if (name.includes("project") || name.includes("portfolio")) {
+      return <MdCode className="text-base" />;
+    }
+    if (name.includes("language")) {
+      return <MdLanguage className="text-base" />;
+    }
+    if (name.includes("volunteer") || name.includes("community")) {
+      return <MdVolunteerActivism className="text-base" />;
+    }
+    if (name.includes("summary") || name.includes("objective") || name.includes("profile") || name.includes("statement")) {
+      return <MdDescription className="text-base" />;
+    }
+    if (name.includes("personal") || name.includes("interest") || name.includes("hobby")) {
+      return <MdStar className="text-base" />;
+    }
+
+    // Default fallback
+    return <MdList className="text-base" />;
+  };
+
+  // Get short label for collapsed state
+  const getShortLabel = (section: Section): string => {
+    const name = section.name.toLowerCase();
+
+    // Check more specific patterns first, then broader ones
+    if (name.includes("contact")) return "Contact";
+    if (name.includes("professional summary") || name.includes("summary") || name.includes("objective")) return "Summary";
+    if (name.includes("professional qual") || name.includes("qualification")) return "Quals";
+    if (name.includes("key skill") || name.includes("skill") || name.includes("technical")) return "Skills";
+    if (name.includes("experience") || name.includes("work") || name.includes("employment")) return "Work";
+    if (name.includes("education") || name.includes("school") || name.includes("academic")) return "Edu";
+    if (name.includes("certification") || name.includes("certificate")) return "Certs";
+    if (name.includes("personal") || name.includes("interest") || name.includes("hobby")) return "Personal";
+    if (name.includes("project") || name.includes("portfolio")) return "Projects";
+    if (name.includes("award") || name.includes("honor")) return "Awards";
+    if (name.includes("language")) return "Lang";
+    if (name.includes("volunteer")) return "Volunteer";
+
+    // Truncate to first word or first 8 chars
+    const firstWord = section.name.split(" ")[0];
+    return firstWord.length > 8 ? firstWord.substring(0, 7) + "." : firstWord;
+  };
+
   return (
-    <>
-      {/* Smart Collapsible Sidebar - Clear of header (top-20) and footer (bottom-20) */}
-      <nav
-        className={`hidden lg:flex flex-col fixed right-0 top-20 bottom-20 bg-gradient-to-b from-white to-gray-50 border-l border-gray-200 shadow-2xl overflow-x-hidden overflow-y-auto z-40 transition-all duration-300 ease-in-out ${
-          isCollapsed ? 'w-16' : 'w-72'
-        }`}
-        aria-label="Section navigation and actions"
-      >
-        {/* Sections Navigation - Scrollable */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden">
-          {isCollapsed ? (
-            // COLLAPSED: Dots with tooltips
-            <div className="py-6 space-y-3 px-2">
-              {/* Contact Info Dot */}
-              <div className="group relative flex justify-center">
-                <button
-                  onClick={() => onSectionClick(-1)}
-                  className={`p-2 rounded-full transition-all ${
-                    activeSectionIndex === -1
-                      ? 'bg-blue-600 text-white shadow-lg'
-                      : 'text-gray-400 hover:text-blue-600 hover:bg-blue-50'
-                  }`}
-                  aria-label="Contact Information"
-                >
-                  <MdCircle className="text-xs" />
-                </button>
-                {/* Tooltip - positioned to the left */}
-                <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-2 bg-gray-900 text-white text-xs font-medium rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible pointer-events-none transition-all whitespace-nowrap shadow-xl z-[100]">
-                  Contact Information
-                  {/* Arrow */}
-                  <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[6px] border-l-gray-900"></div>
-                </div>
-              </div>
+    <nav
+      ref={sidebarRef}
+      className={`hidden lg:flex flex-col fixed right-0 bg-white/95 backdrop-blur-sm border-l border-gray-200/80 shadow-xl overflow-hidden z-[45] transition-all duration-300 ease-in-out ${
+        isCollapsed ? "w-[72px]" : "w-[280px]"
+      }`}
+      style={{
+        top: `${headerHeight}px`,
+        bottom: `${footerHeight}px`
+      }}
+      aria-label="Section navigation and actions"
+    >
+      {/* Toggle Button - Top of sidebar with subtle border */}
+      <div className="flex items-center justify-between px-3 py-3 border-b border-gray-200/60 bg-gray-50/50">
+        {!isCollapsed && (
+          <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            Navigator
+          </span>
+        )}
+        <button
+          onClick={handleToggle}
+          className={`p-2 hover:bg-white rounded-lg transition-all text-gray-500 hover:text-gray-800 hover:shadow-sm ${
+            isCollapsed ? "mx-auto" : ""
+          }`}
+          aria-label={isCollapsed ? "Expand sidebar (Ctrl+\\)" : "Collapse sidebar (Ctrl+\\)"}
+          title={isCollapsed ? "Expand (Ctrl+\\)" : "Collapse (Ctrl+\\)"}
+        >
+          <MdMenu className="text-lg" />
+        </button>
+      </div>
 
-              {/* Section Dots */}
-              {sections.map((section, index) => (
-                <div key={index} className="group relative flex justify-center">
-                  <button
-                    onClick={() => onSectionClick(index)}
-                    className={`p-2 rounded-full transition-all ${
-                      activeSectionIndex === index
-                        ? 'bg-blue-600 text-white shadow-lg'
-                        : 'text-gray-400 hover:text-blue-600 hover:bg-blue-50'
-                    }`}
-                    aria-label={section.name}
-                  >
-                    <MdCircle className="text-xs" />
-                  </button>
-                  {/* Tooltip - positioned to the left */}
-                  <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-2 bg-gray-900 text-white text-xs font-medium rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible pointer-events-none transition-all whitespace-nowrap shadow-xl z-[100]">
-                    {section.name}
-                    {/* Arrow */}
-                    <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[6px] border-l-gray-900"></div>
-                  </div>
-                </div>
-              ))}
+      {/* Sections Navigation - Scrollable */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+        <div className={`${isCollapsed ? "py-3 px-1.5" : "p-3"}`}>
+          {!isCollapsed && (
+            <h2 className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">
+              Sections
+            </h2>
+          )}
+
+          {/* Contact Info */}
+          <button
+            onClick={() => onSectionClick(-1)}
+            className={`w-full flex items-center transition-all rounded-lg group ${
+              isCollapsed
+                ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-blue-50/80"
+                : "flex-row gap-3 px-3 py-2.5 hover:bg-gray-100/80"
+            } ${
+              activeSectionIndex === -1
+                ? isCollapsed
+                  ? "bg-blue-50 text-blue-700"
+                  : "bg-blue-50/80 border-l-[3px] border-blue-600 text-blue-800 font-medium"
+                : "text-gray-700 hover:text-gray-900"
+            }`}
+          >
+            <div
+              className={`flex items-center justify-center ${
+                isCollapsed ? "w-7 h-7" : "w-6 h-6"
+              } rounded-md ${
+                activeSectionIndex === -1
+                  ? "bg-blue-100 text-blue-600"
+                  : "bg-gray-100/80 text-gray-500 group-hover:bg-gray-200/80 group-hover:text-gray-700"
+              }`}
+            >
+              <MdPerson className="text-base" />
             </div>
-          ) : (
-            // EXPANDED: Full section list
-            <div className="p-2">
-              {/* Header */}
-              <div className="px-2 py-3 border-b border-gray-200 mb-2">
-                <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-2">
-                  <MdDragIndicator className="text-gray-400" />
-                  Sections
-                </h2>
-              </div>
+            <span
+              className={`${
+                isCollapsed
+                  ? "text-[11px] font-medium text-center leading-tight"
+                  : "text-[13px] flex-1 text-left"
+              }`}
+            >
+              {isCollapsed ? "Contact" : "Contact Information"}
+            </span>
+          </button>
 
-              {/* Contact Info */}
-              <button
-                onClick={() => onSectionClick(-1)}
-                className={`w-full text-left px-3 py-2.5 rounded-lg transition-all flex items-center gap-3 group ${
-                  activeSectionIndex === -1
-                    ? 'bg-blue-50 border-l-4 border-blue-600 text-blue-900 font-semibold'
-                    : 'hover:bg-gray-100 text-gray-700'
+          {/* Dynamic Sections */}
+          {sections.map((section, index) => (
+            <button
+              key={index}
+              onClick={() => onSectionClick(index)}
+              className={`w-full flex items-center transition-all rounded-lg group ${
+                isCollapsed
+                  ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-blue-50/80 mt-1"
+                  : "flex-row gap-3 px-3 py-2.5 hover:bg-gray-100/80 mt-0.5"
+              } ${
+                activeSectionIndex === index
+                  ? isCollapsed
+                    ? "bg-blue-50 text-blue-700"
+                    : "bg-blue-50/80 border-l-[3px] border-blue-600 text-blue-800 font-medium"
+                  : "text-gray-700 hover:text-gray-900"
+              }`}
+            >
+              <div
+                className={`flex items-center justify-center ${
+                  isCollapsed ? "w-7 h-7" : "w-6 h-6"
+                } rounded-md ${
+                  activeSectionIndex === index
+                    ? "bg-blue-100 text-blue-600"
+                    : "bg-gray-100/80 text-gray-500 group-hover:bg-gray-200/80 group-hover:text-gray-700"
                 }`}
               >
-                <span
-                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                    activeSectionIndex === -1
-                      ? 'bg-blue-100 text-blue-600'
-                      : 'bg-gray-100 text-gray-600 group-hover:bg-gray-200'
-                  }`}
-                >
-                  i
-                </span>
-                <span className="flex-1 text-sm">Contact Information</span>
-              </button>
-
-              {/* Dynamic Sections */}
-              {sections.map((section, index) => (
-                <button
-                  key={index}
-                  onClick={() => onSectionClick(index)}
-                  className={`w-full text-left px-3 py-2.5 rounded-lg transition-all flex items-center gap-3 mt-1 group ${
-                    activeSectionIndex === index
-                      ? 'bg-blue-50 border-l-4 border-blue-600 text-blue-900 font-semibold'
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  <span
-                    className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                      activeSectionIndex === index
-                        ? 'bg-blue-100 text-blue-600'
-                        : 'bg-gray-100 text-gray-600 group-hover:bg-gray-200'
-                    }`}
-                  >
-                    {index + 1}
-                  </span>
-                  <span className="flex-1 text-sm truncate" title={section.name}>
-                    {section.name}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Actions Section - Fixed at bottom */}
-        <div className="border-t border-gray-200 bg-white">
-          {isCollapsed ? (
-            // COLLAPSED: Icon-only buttons
-            <div className="py-3 space-y-2">
-              {/* Add Section */}
-              <div className="group relative flex justify-center">
-                <button
-                  onClick={onAddSection}
-                  className="p-3 text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
-                  aria-label="Add Section"
-                >
-                  <MdAdd className="text-2xl" />
-                </button>
-                <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-2 bg-gray-900 text-white text-xs font-medium rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible pointer-events-none transition-all whitespace-nowrap shadow-xl z-[100]">
-                  Add Section
-                  <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[6px] border-l-gray-900"></div>
-                </div>
+                {getSectionIcon(section)}
               </div>
-
-              {/* Save My Work */}
-              <div className="group relative flex justify-center">
-                <button
-                  onClick={onExportYAML}
-                  disabled={loadingSave}
-                  className="p-3 text-blue-600 hover:bg-blue-50 rounded-lg transition-all disabled:opacity-50"
-                  aria-label="Save My Work"
-                >
-                  <MdFileDownload className="text-xl" />
-                </button>
-                <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-2 bg-gray-900 text-white text-xs font-medium rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible pointer-events-none transition-all whitespace-nowrap shadow-xl z-[100]">
-                  {loadingSave ? 'Saving...' : 'Save My Work'}
-                  <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[6px] border-l-gray-900"></div>
-                </div>
-              </div>
-
-              {/* Load My Work */}
-              <div className="group relative flex justify-center">
-                <button
-                  onClick={onImportYAML}
-                  disabled={loadingLoad}
-                  className="p-3 text-green-600 hover:bg-green-50 rounded-lg transition-all disabled:opacity-50"
-                  aria-label="Load My Work"
-                >
-                  <MdFileUpload className="text-xl" />
-                </button>
-                <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-2 bg-gray-900 text-white text-xs font-medium rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible pointer-events-none transition-all whitespace-nowrap shadow-xl z-[100]">
-                  {loadingLoad ? 'Loading...' : 'Load My Work'}
-                  <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[6px] border-l-gray-900"></div>
-                </div>
-              </div>
-
-              {/* Start Fresh */}
-              <div className="group relative flex justify-center">
-                <button
-                  onClick={onStartFresh}
-                  className="p-3 text-orange-600 hover:bg-orange-50 rounded-lg transition-all"
-                  aria-label="Start Fresh"
-                >
-                  <MdRefresh className="text-xl" />
-                </button>
-                <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-2 bg-gray-900 text-white text-xs font-medium rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible pointer-events-none transition-all whitespace-nowrap shadow-xl z-[100]">
-                  Start Fresh
-                  <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[6px] border-l-gray-900"></div>
-                </div>
-              </div>
-
-              {/* Help */}
-              <div className="group relative flex justify-center">
-                <button
-                  onClick={onHelp}
-                  className="p-3 text-purple-600 hover:bg-purple-50 rounded-lg transition-all"
-                  aria-label="Help & Tips"
-                >
-                  <MdHelpOutline className="text-xl" />
-                </button>
-                <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-2 bg-gray-900 text-white text-xs font-medium rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible pointer-events-none transition-all whitespace-nowrap shadow-xl z-[100]">
-                  Help & Tips
-                  <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[6px] border-l-gray-900"></div>
-                </div>
-              </div>
-
-              {/* Download Resume - Bottom */}
-              <div className="pt-2 border-t border-gray-200 mt-2 group relative flex justify-center">
-                <button
-                  onClick={onDownloadResume}
-                  disabled={isGenerating}
-                  className="p-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
-                  aria-label="Download Resume"
-                >
-                  <MdFileDownload className="text-2xl" />
-                </button>
-                <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-2 bg-gray-900 text-white text-xs font-medium rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible pointer-events-none transition-all whitespace-nowrap shadow-xl z-[100]">
-                  {isGenerating ? 'Generating...' : 'Download Resume'}
-                  <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[6px] border-l-gray-900"></div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            // EXPANDED: Full action buttons
-            <div className="p-3">
-              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 px-2">
-                Actions
-              </h3>
-
-              {/* Download Resume Button - Primary */}
-              <button
-                onClick={onDownloadResume}
-                disabled={isGenerating}
-                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 mb-3 disabled:opacity-50 disabled:cursor-not-allowed"
+              <span
+                className={`${
+                  isCollapsed
+                    ? "text-[11px] font-medium text-center leading-tight"
+                    : "text-[13px] flex-1 truncate text-left"
+                }`}
+                title={section.name}
               >
-                <MdFileDownload className="text-xl" />
-                {isGenerating ? 'Generating...' : 'Download Resume'}
-              </button>
-
-              {/* Add Section */}
-              <button
-                onClick={onAddSection}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2.5 rounded-lg font-medium shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 mb-3"
-              >
-                <MdAdd className="text-xl" />
-                Add Section
-              </button>
-
-              {/* Quick Actions */}
-              <div className="space-y-1">
-                <button
-                  onClick={onExportYAML}
-                  disabled={loadingSave}
-                  className="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-700 transition-all flex items-center gap-3 text-sm disabled:opacity-50"
-                >
-                  <MdFileDownload className="text-lg text-blue-600" />
-                  {loadingSave ? 'Saving...' : 'Save My Work'}
-                </button>
-
-                <button
-                  onClick={onImportYAML}
-                  disabled={loadingLoad}
-                  className="w-full text-left px-3 py-2 rounded-lg hover:bg-green-50 text-gray-700 hover:text-green-700 transition-all flex items-center gap-3 text-sm disabled:opacity-50"
-                >
-                  <MdFileUpload className="text-lg text-green-600" />
-                  {loadingLoad ? 'Loading...' : 'Load My Work'}
-                </button>
-
-                <button
-                  onClick={onStartFresh}
-                  className="w-full text-left px-3 py-2 rounded-lg hover:bg-orange-50 text-gray-700 hover:text-orange-700 transition-all flex items-center gap-3 text-sm"
-                >
-                  <MdRefresh className="text-lg text-orange-600" />
-                  Start Fresh
-                </button>
-
-                <button
-                  onClick={onHelp}
-                  className="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-50 text-gray-700 hover:text-purple-700 transition-all flex items-center gap-3 text-sm"
-                >
-                  <MdHelpOutline className="text-lg text-purple-600" />
-                  Help & Tips
-                </button>
-              </div>
-            </div>
-          )}
+                {isCollapsed ? getShortLabel(section) : section.name}
+              </span>
+            </button>
+          ))}
         </div>
-      </nav>
+      </div>
 
-      {/* Toggle Button - Integrated into sidebar */}
-      <button
-        onClick={handleToggle}
-        className={`hidden lg:flex fixed top-1/2 -translate-y-1/2 z-[60] bg-white hover:bg-blue-50 border border-gray-300 text-gray-600 hover:text-blue-600 p-2 shadow-lg hover:shadow-xl transition-all items-center justify-center group ${
-          isCollapsed ? 'right-16 rounded-l-lg' : 'right-72 rounded-l-lg'
-        }`}
-        aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-      >
-        {isCollapsed ? (
-          <MdChevronLeft className="text-xl transition-transform group-hover:scale-110" />
-        ) : (
-          <MdChevronRight className="text-xl transition-transform group-hover:scale-110" />
-        )}
-      </button>
-    </>
+      {/* Actions Section - Fixed at bottom */}
+      <div className="border-t border-gray-200/60 bg-gradient-to-t from-gray-50/80 to-white">
+        <div className={`${isCollapsed ? "py-3 px-2" : "p-4"}`}>
+          {!isCollapsed && (
+            <h3 className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-3 px-1">
+              Actions
+            </h3>
+          )}
+
+          {/* Primary Action: Download Resume */}
+          <button
+            onClick={onDownloadResume}
+            disabled={isGenerating}
+            className={`w-full flex items-center justify-center bg-gradient-to-r from-emerald-600 to-green-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-emerald-500 hover:to-green-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${
+              isCollapsed
+                ? "flex-col gap-1 py-2.5 px-1"
+                : "flex-row gap-2 px-4 py-2.5 mb-2.5"
+            }`}
+          >
+            <MdFileDownload className={isCollapsed ? "text-lg" : "text-base"} />
+            <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
+              {isGenerating
+                ? isCollapsed
+                  ? "..."
+                  : "Generating..."
+                : isCollapsed
+                ? "Download"
+                : "Download Resume"}
+            </span>
+          </button>
+
+          {/* Secondary Action: Add Section */}
+          <button
+            onClick={onAddSection}
+            className={`w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg shadow-sm hover:shadow-md hover:from-blue-500 hover:to-indigo-500 transition-all active:scale-[0.98] ${
+              isCollapsed
+                ? "flex-col gap-1 py-2 px-1 mt-2"
+                : "flex-row gap-2 px-4 py-2 mb-3"
+            }`}
+          >
+            <MdAdd className={isCollapsed ? "text-base" : "text-base"} />
+            <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
+              {isCollapsed ? "Add" : "Add Section"}
+            </span>
+          </button>
+
+          {/* Utility Actions */}
+          <div className={`${isCollapsed ? "space-y-0.5 mt-2" : "space-y-0.5"}`}>
+            {/* Save My Work */}
+            <button
+              onClick={onExportYAML}
+              disabled={loadingSave}
+              className={`w-full flex items-center transition-all rounded-md disabled:opacity-50 ${
+                isCollapsed
+                  ? "flex-col gap-1 py-2 px-1 hover:bg-blue-50/80"
+                  : "flex-row gap-3 px-3 py-2 hover:bg-blue-50/80 text-gray-700 hover:text-blue-700"
+              }`}
+            >
+              <MdFileDownload
+                className={`text-blue-600 ${isCollapsed ? "text-base" : "text-base"}`}
+              />
+              <span
+                className={`${
+                  isCollapsed
+                    ? "text-[10px] text-gray-600 leading-tight font-medium"
+                    : "text-[13px]"
+                }`}
+              >
+                {loadingSave
+                  ? isCollapsed
+                    ? "..."
+                    : "Saving..."
+                  : isCollapsed
+                  ? "Save"
+                  : "Save My Work"}
+              </span>
+            </button>
+
+            {/* Load My Work */}
+            <button
+              onClick={onImportYAML}
+              disabled={loadingLoad}
+              className={`w-full flex items-center transition-all rounded-md disabled:opacity-50 ${
+                isCollapsed
+                  ? "flex-col gap-1 py-2 px-1 hover:bg-green-50/80"
+                  : "flex-row gap-3 px-3 py-2 hover:bg-green-50/80 text-gray-700 hover:text-green-700"
+              }`}
+            >
+              <MdFileUpload
+                className={`text-green-600 ${isCollapsed ? "text-base" : "text-base"}`}
+              />
+              <span
+                className={`${
+                  isCollapsed
+                    ? "text-[10px] text-gray-600 leading-tight font-medium"
+                    : "text-[13px]"
+                }`}
+              >
+                {loadingLoad
+                  ? isCollapsed
+                    ? "..."
+                    : "Loading..."
+                  : isCollapsed
+                  ? "Load"
+                  : "Load My Work"}
+              </span>
+            </button>
+
+            {/* Start Fresh */}
+            <button
+              onClick={onStartFresh}
+              className={`w-full flex items-center transition-all rounded-md ${
+                isCollapsed
+                  ? "flex-col gap-1 py-2 px-1 hover:bg-orange-50/80"
+                  : "flex-row gap-3 px-3 py-2 hover:bg-orange-50/80 text-gray-700 hover:text-orange-700"
+              }`}
+            >
+              <MdRefresh
+                className={`text-orange-600 ${isCollapsed ? "text-base" : "text-base"}`}
+              />
+              <span
+                className={`${
+                  isCollapsed
+                    ? "text-[10px] text-gray-600 leading-tight font-medium"
+                    : "text-[13px]"
+                }`}
+              >
+                {isCollapsed ? "Clear" : "Start Fresh"}
+              </span>
+            </button>
+
+            {/* Help */}
+            <button
+              onClick={onHelp}
+              className={`w-full flex items-center transition-all rounded-md ${
+                isCollapsed
+                  ? "flex-col gap-1 py-2 px-1 hover:bg-purple-50/80"
+                  : "flex-row gap-3 px-3 py-2 hover:bg-purple-50/80 text-gray-700 hover:text-purple-700"
+              }`}
+            >
+              <MdHelpOutline
+                className={`text-purple-600 ${isCollapsed ? "text-base" : "text-base"}`}
+              />
+              <span
+                className={`${
+                  isCollapsed
+                    ? "text-[10px] text-gray-600 leading-tight font-medium"
+                    : "text-[13px]"
+                }`}
+              >
+                {isCollapsed ? "Help" : "Help & Tips"}
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Keyboard shortcut hint */}
+      {!isCollapsed && (
+        <div className="px-4 py-2.5 bg-gray-100/50 border-t border-gray-200/40">
+          <p className="text-[10px] text-gray-500 text-center">
+            Press{" "}
+            <kbd className="px-1.5 py-0.5 bg-white rounded text-[9px] font-mono border border-gray-300 shadow-sm">
+              Ctrl
+            </kbd>{" "}
+            +{" "}
+            <kbd className="px-1.5 py-0.5 bg-white rounded text-[9px] font-mono border border-gray-300 shadow-sm">
+              \
+            </kbd>{" "}
+            to toggle
+          </p>
+        </div>
+      )}
+    </nav>
   );
 };
 

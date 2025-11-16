@@ -4,7 +4,7 @@ interface EditorContextType {
   // Scroll state
   isAtBottom: boolean;
   setIsAtBottom: (value: boolean) => void;
-  
+
   // Auto-save state
   lastSaved: Date | null;
   setLastSaved: (value: Date | null) => void;
@@ -12,6 +12,10 @@ interface EditorContextType {
   setIsSaving: (value: boolean) => void;
   saveError: boolean;
   setSaveError: (value: boolean) => void;
+
+  // Sidebar state
+  isSidebarCollapsed: boolean;
+  setIsSidebarCollapsed: (value: boolean) => void;
 }
 
 const EditorContext = createContext<EditorContextType | undefined>(undefined);
@@ -39,6 +43,7 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({
   saveError: externalSaveError,
 }) => {
   const [isAtBottom, setIsAtBottom] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   // Use external values if provided, otherwise use internal state (for backwards compatibility)
   const [internalLastSaved, setInternalLastSaved] = useState<Date | null>(null);
@@ -59,6 +64,8 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({
       setIsSaving: setInternalIsSaving,
       saveError,
       setSaveError: setInternalSaveError,
+      isSidebarCollapsed,
+      setIsSidebarCollapsed,
     }}>
       {children}
     </EditorContext.Provider>
