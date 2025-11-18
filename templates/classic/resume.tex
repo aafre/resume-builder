@@ -81,8 +81,29 @@
     \normalsize{%
         \faMapMarker* \enspace \VAR{contact_info.location} \enspace $\cdot$ \enspace
         \faPhone* \enspace \VAR{contact_info.phone} \enspace $\cdot$ \enspace
-        \faEnvelope \enspace \href{mailto:\VAR{contact_info.email}}{\VAR{contact_info.email}} \enspace $\cdot$ \enspace
-        \BLOCK{if contact_info.linkedin and contact_info.linkedin.strip()}\faLinkedin \enspace \href{\VAR{contact_info.linkedin}}{\VAR{contact_info.linkedin_display or contact_info.linkedin_handle}}\BLOCK{endif}%
+        \faEnvelope \enspace \href{mailto:\VAR{contact_info.email}}{\VAR{contact_info.email}}%
+        \BLOCK{if contact_info.social_links}%
+            \BLOCK{for social_link in contact_info.social_links}%
+                \BLOCK{if social_link.url and social_link.url.strip() and social_link.platform}%
+                    \enspace $\cdot$ \enspace
+                    \BLOCK{if social_link.platform == 'linkedin'}\faLinkedin%
+                    \BLOCK{elif social_link.platform == 'github'}\faGithub%
+                    \BLOCK{elif social_link.platform == 'twitter'}\faTwitter%
+                    \BLOCK{elif social_link.platform == 'website'}\faGlobe%
+                    \BLOCK{elif social_link.platform == 'stackoverflow'}\faStackOverflow%
+                    \BLOCK{elif social_link.platform == 'medium'}\faMedium%
+                    \BLOCK{elif social_link.platform == 'youtube'}\faYoutube%
+                    \BLOCK{elif social_link.platform == 'behance'}\faBehance%
+                    \BLOCK{elif social_link.platform == 'dribbble'}\faDribbble%
+                    \BLOCK{elif social_link.platform == 'pinterest'}\faPinterest%
+                    \BLOCK{else}\faLink%
+                    \BLOCK{endif}%
+                    \enspace \href{\VAR{social_link.url}}{\VAR{social_link.display_text or social_link.handle or social_link.platform}}%
+                \BLOCK{endif}%
+            \BLOCK{endfor}%
+        \BLOCK{elif contact_info.linkedin and contact_info.linkedin.strip()}%
+            \enspace $\cdot$ \enspace \faLinkedin \enspace \href{\VAR{contact_info.linkedin}}{\VAR{contact_info.linkedin_display or contact_info.linkedin_handle}}%
+        \BLOCK{endif}%
     }
 \end{center}
 \vspace{0.4em}

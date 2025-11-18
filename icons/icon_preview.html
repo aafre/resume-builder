@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Icons Preview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        .icons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .icon-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid #e9ecef;
+        }
+        .icon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+        .icon-card img {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            object-fit: contain;
+        }
+        .icon-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .icon-size {
+            font-size: 12px;
+            color: #999;
+        }
+        .checkmark {
+            color: #28a745;
+            font-size: 20px;
+            margin-left: 8px;
+        }
+        .stats {
+            background: #f0f4ff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Social Media Icons</h1>
+        <p class="subtitle">All icons are 512x512 PNG format - Ready for production!</p>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value">10</div>
+                <div class="stat-label">Total Icons</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">512×512</div>
+                <div class="stat-label">Dimensions</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">PNG</div>
+                <div class="stat-label">Format</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Complete</div>
+            </div>
+        </div>
+
+        <div class="icons-grid">
+            <div class="icon-card">
+                <img src="linkedin.png" alt="LinkedIn">
+                <div class="icon-name">LinkedIn <span class="checkmark">✓</span></div>
+                <div class="icon-size">Professional networking</div>
+            </div>
+
+            <div class="icon-card">
+                <img src="github.png" alt="GitHub">
+                <div class="icon-name">GitHub <span class="checkmark">✓</span></div>
+                <div class="icon-size">Developer portfolios</div>
+            </div>
+
+            <div class="icon-card">
+                <img src="twitter.png" alt="Twitter/X">
+                <div class="icon-name">Twitter/X <span class="checkmark">✓</span></div>
+                <div class="icon-size">Social media</div>
+            </div>
+
+            <div class="icon-card">
+                <img src="website.png" alt="Website">
+                <div class="icon-name">Website <span class="checkmark">✓</span></div>
+                <div class="icon-size">Personal portfolio</div>
+            </div>
+
+            <div class="icon-card">
+                <img src="stackoverflow.png" alt="Stack Overflow">
+                <div class="icon-name">Stack Overflow <span class="checkmark">✓</span></div>
+                <div class="icon-size">Developer Q&A</div>
+            </div>
+
+            <div class="icon-card">
+                <img src="medium.png" alt="Medium">
+                <div class="icon-name">Medium <span class="checkmark">✓</span></div>
+                <div class="icon-size">Writing platform</div>
+            </div>
+
+            <div class="icon-card">
+                <img src="youtube.png" alt="YouTube">
+                <div class="icon-name">YouTube <span class="checkmark">✓</span></div>
+                <div class="icon-size">Video content</div>
+            </div>
+
+            <div class="icon-card">
+                <img src="behance.png" alt="Behance">
+                <div class="icon-name">Behance <span class="checkmark">✓</span></div>
+                <div class="icon-size">Design portfolio</div>
+            </div>
+
+            <div class="icon-card">
+                <img src="dribbble.png" alt="Dribbble">
+                <div class="icon-name">Dribbble <span class="checkmark">✓</span></div>
+                <div class="icon-size">Design showcase</div>
+            </div>
+
+            <div class="icon-card">
+                <img src="pinterest.png" alt="Pinterest">
+                <div class="icon-name">Pinterest <span class="checkmark">✓</span></div>
+                <div class="icon-size">Visual content</div>
+            </div>
+        </div>
+
+        <p style="text-align: center; margin-top: 40px; color: #999; font-size: 14px;">
+            Icons sourced from Simple Icons (simpleicons.org) - Free for use with attribution
+        </p>
+    </div>
+</body>
+</html>

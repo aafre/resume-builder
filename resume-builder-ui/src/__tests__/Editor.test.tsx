@@ -14,7 +14,19 @@ const sampleTemplate = {
     location: "London, UK",
     email: "john.doe@example.com",
     phone: "+44 7000000000",
-    linkedin: "https://linkedin.com/in/johndoe",
+    linkedin: "https://linkedin.com/in/johndoe", // Deprecated but kept for backward compatibility
+    social_links: [
+      {
+        platform: "linkedin",
+        url: "https://linkedin.com/in/johndoe",
+        display_text: "John Doe",
+      },
+      {
+        platform: "github",
+        url: "https://github.com/johndoe",
+        display_text: "johndoe",
+      },
+    ],
   },
   sections: [
     {
@@ -82,11 +94,12 @@ describe("Editor Component", () => {
 
     // Wait for the template to load and for contact info to appear.
     await waitFor(() => {
-      expect(screen.getByDisplayValue("John Doe")).toBeInTheDocument();
+      // Use getLabelText to be more specific about which "John Doe" we're looking for
+      expect(screen.getByLabelText(/full name/i)).toHaveValue("John Doe");
     });
 
     // Verify that a section with the Summary is rendered.
-    expect(screen.getByDisplayValue("This is a summary.")).toBeInTheDocument();
+    expect(screen.getByText("This is a summary.")).toBeInTheDocument();
   });
 
   it("renders the Add Section button correctly", async () => {
@@ -102,7 +115,7 @@ describe("Editor Component", () => {
 
     // Wait for the template to load.
     await waitFor(() => {
-      expect(screen.getByDisplayValue("John Doe")).toBeInTheDocument();
+      expect(screen.getByLabelText(/full name/i)).toHaveValue("John Doe");
     });
 
     // Find the "+" button (Add Section button) and verify it exists

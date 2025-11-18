@@ -1,12 +1,21 @@
 // src/types.ts
 
+// Social media link for contact info.
+export interface SocialLink {
+  platform: string; // e.g., "linkedin", "github", "twitter", "website"
+  url: string;
+  display_text?: string; // Optional custom display text
+}
+
 // Contact information section.
 export interface ContactInfo {
   name: string;
   location: string;
   email: string;
   phone: string;
-  linkedin: string;
+  linkedin?: string; // Deprecated: kept for backward compatibility
+  linkedin_display?: string; // Deprecated: kept for backward compatibility
+  social_links?: SocialLink[]; // New: array of social media links
 }
 
 // The overall resume template object.

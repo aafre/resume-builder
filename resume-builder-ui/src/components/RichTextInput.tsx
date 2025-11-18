@@ -39,6 +39,7 @@ export const RichTextInput: React.FC<RichTextInputProps> = ({
     editorProps: {
       attributes: {
         class: 'focus:outline-none',
+        role: 'textbox',
       },
     },
   });

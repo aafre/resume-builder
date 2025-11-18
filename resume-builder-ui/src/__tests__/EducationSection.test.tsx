@@ -3,7 +3,6 @@ import { describe, it, expect, vi } from "vitest";
 import EducationSection from "../components/EducationSection";
 
 // --- Mock the IconManager Component ---
-// We include the value prop as a data attribute to test its value.
 vi.mock("../components/IconManager", () => {
   return {
     default: (props: { value: string; onChange: any; registerIcon: any; getIconFile: any; removeIcon: any }) => {
@@ -13,6 +12,45 @@ vi.mock("../components/IconManager", () => {
         </div>
       );
     },
+  };
+});
+
+// --- Mock RichTextInput to return a simple input for testing ---
+vi.mock("../components/RichTextInput", () => {
+  return {
+    RichTextInput: (props: { value: string; onChange: (value: string) => void; placeholder?: string; className?: string }) => {
+      return (
+        <input
+          type="text"
+          value={props.value}
+          onChange={(e) => props.onChange(e.target.value)}
+          placeholder={props.placeholder}
+          className={props.className}
+          data-testid="rich-text-input"
+        />
+      );
+    },
+  };
+});
+
+// --- Mock SectionHeader to avoid complexity ---
+vi.mock("../components/SectionHeader", () => {
+  return {
+    SectionHeader: (props: { title: string; onDelete: () => void }) => {
+      return (
+        <div data-testid="section-header">
+          <h2>{props.title}</h2>
+          <button onClick={props.onDelete}>Remove</button>
+        </div>
+      );
+    },
+  };
+});
+
+// --- Mock MarkdownHint ---
+vi.mock("../components/MarkdownLinkPreview", () => {
+  return {
+    MarkdownHint: () => <div data-testid="markdown-hint">Markdown Hint</div>,
   };
 });
 
@@ -34,16 +72,26 @@ const mockEducation = [
   },
 ];
 
+// Helper to create default props
+const createDefaultProps = (overrides = {}) => ({
+  sectionName: "Education",
+  education: mockEducation,
+  onUpdate: vi.fn(),
+  onTitleEdit: vi.fn(),
+  onTitleSave: vi.fn(),
+  onTitleCancel: vi.fn(),
+  onDelete: vi.fn(),
+  isEditingTitle: false,
+  temporaryTitle: "Education",
+  setTemporaryTitle: vi.fn(),
+  supportsIcons: false,
+  ...overrides,
+});
+
 describe("EducationSection", { timeout: 5000 }, () => {
   it("renders education entries with correct values", () => {
-    const onUpdateMock = vi.fn();
-    render(
-      <EducationSection
-        education={mockEducation}
-        onUpdate={onUpdateMock}
-        supportsIcons={false}
-      />
-    );
+    const props = createDefaultProps();
+    render(<EducationSection {...props} />);
 
     expect(screen.getByText("Entry 1")).toBeInTheDocument();
     expect(screen.getByText("Entry 2")).toBeInTheDocument();
@@ -68,13 +116,8 @@ describe("EducationSection", { timeout: 5000 }, () => {
 
   it("calls onUpdate when an input value is changed", () => {
     const onUpdateMock = vi.fn();
-    render(
-      <EducationSection
-        education={mockEducation}
-        onUpdate={onUpdateMock}
-        supportsIcons={false}
-      />
-    );
+    const props = createDefaultProps({ onUpdate: onUpdateMock });
+    render(<EducationSection {...props} />);
 
     const degreeInput = screen.getByDisplayValue("MSc in Computer Science");
     fireEvent.change(degreeInput, {
@@ -89,16 +132,12 @@ describe("EducationSection", { timeout: 5000 }, () => {
 
   it("removes an education entry when the Remove button is clicked", () => {
     const onUpdateMock = vi.fn();
-    render(
-      <EducationSection
-        education={mockEducation}
-        onUpdate={onUpdateMock}
-        supportsIcons={false}
-      />
-    );
+    const props = createDefaultProps({ onUpdate: onUpdateMock });
+    render(<EducationSection {...props} />);
 
-    const removeButtons = screen.getAllByText("Remove");
-    fireEvent.click(removeButtons[0]);
+    // Get all delete buttons (the trash icon)
+    const deleteButtons = screen.getAllByTitle("Delete this entry");
+    fireEvent.click(deleteButtons[0]);
 
     expect(onUpdateMock).toHaveBeenCalledTimes(1);
     const updatedEducation = onUpdateMock.mock.calls[0][0];
@@ -108,13 +147,8 @@ describe("EducationSection", { timeout: 5000 }, () => {
 
   it("adds a new education entry when the Add Entry button is clicked", () => {
     const onUpdateMock = vi.fn();
-    render(
-      <EducationSection
-        education={mockEducation}
-        onUpdate={onUpdateMock}
-        supportsIcons={false}
-      />
-    );
+    const props = createDefaultProps({ onUpdate: onUpdateMock });
+    render(<EducationSection {...props} />);
 
     const addButton = screen.getByText("Add Entry");
     fireEvent.click(addButton);
@@ -132,36 +166,30 @@ describe("EducationSection", { timeout: 5000 }, () => {
     expect(newEntry.iconFile).toBe(null);
   });
 
-  it("renders the IconUpload component when supportsIcons is true", () => {
-    const onUpdateMock = vi.fn();
+  it("renders the IconManager component when supportsIcons is true", () => {
     const mockIconRegistry = {
       registerIcon: vi.fn(),
       getIconFile: vi.fn(),
       removeIcon: vi.fn(),
     };
-    render(
-      <EducationSection
-        education={mockEducation}
-        onUpdate={onUpdateMock}
-        supportsIcons={true}
-        iconRegistry={mockIconRegistry}
-      />
-    );
+    const props = createDefaultProps({
+      supportsIcons: true,
+      iconRegistry: mockIconRegistry,
+    });
+    render(<EducationSection {...props} />);
 
     const iconManagerElements = screen.getAllByTestId("icon-manager");
     expect(iconManagerElements).toHaveLength(mockEducation.length);
   });
 
-  it("renders IconUpload with broken icon path as-is", () => {
-    const onUpdateMock = vi.fn();
-    // Simulate an education item with a broken icon path.
+  it("renders IconManager with broken icon path as-is", () => {
     const educationWithBrokenIcon = [
       {
         degree: "MSc in Computer Science",
         school: "University of Oxford",
         year: "2021",
         field_of_study: "Artificial Intelligence",
-        icon: "non-existent.png", // This is the broken icon path.
+        icon: "non-existent.png",
       },
     ];
 
@@ -171,18 +199,39 @@ describe("EducationSection", { timeout: 5000 }, () => {
       removeIcon: vi.fn(),
     };
 
-    render(
-      <EducationSection
-        education={educationWithBrokenIcon}
-        onUpdate={onUpdateMock}
-        supportsIcons={true}
-        iconRegistry={mockIconRegistry}
-      />
-    );
+    const props = createDefaultProps({
+      education: educationWithBrokenIcon,
+      supportsIcons: true,
+      iconRegistry: mockIconRegistry,
+    });
 
-    // The current behavior is that the component passes the icon path as-is to IconManager
-    // IconManager will handle the broken image display
+    render(<EducationSection {...props} />);
+
     const iconManagerElement = screen.getByTestId("icon-manager");
     expect(iconManagerElement).toHaveAttribute("data-value", "non-existent.png");
+  });
+
+  it("calls onDeleteEntry when provided instead of deleting directly", () => {
+    const onUpdateMock = vi.fn();
+    const onDeleteEntryMock = vi.fn();
+    const props = createDefaultProps({
+      onUpdate: onUpdateMock,
+      onDeleteEntry: onDeleteEntryMock,
+    });
+    render(<EducationSection {...props} />);
+
+    const deleteButtons = screen.getAllByTitle("Delete this entry");
+    fireEvent.click(deleteButtons[0]);
+
+    // Should call onDeleteEntry for confirmation, not onUpdate
+    expect(onDeleteEntryMock).toHaveBeenCalledWith(0);
+    expect(onUpdateMock).not.toHaveBeenCalled();
+  });
+
+  it("renders section header with correct title", () => {
+    const props = createDefaultProps({ sectionName: "Academic Background" });
+    render(<EducationSection {...props} />);
+
+    expect(screen.getByText("Academic Background")).toBeInTheDocument();
   });
 });

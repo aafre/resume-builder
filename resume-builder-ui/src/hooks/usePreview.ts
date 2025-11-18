@@ -56,9 +56,6 @@ export function usePreview({
   const [lastGenerated, setLastGenerated] = useState<Date | null>(null);
   const [lastContentHash, setLastContentHash] = useState<string>('');
 
-  // Track content changes to detect staleness
-  const currentContentHash = useRef<string>('');
-
   // Cache management
   const cacheTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const previousUrlRef = useRef<string | null>(null);
@@ -76,13 +73,11 @@ export function usePreview({
     return hash.toString(36);
   }, [contactInfo, sections]);
 
-  // Update content hash when data changes
-  useEffect(() => {
-    currentContentHash.current = generateContentHash();
-  }, [generateContentHash]);
+  // Compute current hash directly (not as state to avoid async issues)
+  const currentContentHash = generateContentHash();
 
   // Check if preview is stale (content changed since last generation)
-  const isStale = lastContentHash !== '' && currentContentHash.current !== lastContentHash;
+  const isStale = lastContentHash !== '' && currentContentHash !== lastContentHash;
 
   // Cleanup blob URL on unmount
   useEffect(() => {
@@ -150,7 +145,7 @@ export function usePreview({
       const newUrl = URL.createObjectURL(pdfBlob);
       setPreviewUrl(newUrl);
       setLastGenerated(new Date());
-      setLastContentHash(currentContentHash.current);
+      setLastContentHash(currentContentHash);
 
       // Reset cache timeout
       if (cacheTimeoutRef.current) {

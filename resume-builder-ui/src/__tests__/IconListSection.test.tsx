@@ -2,6 +2,42 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import IconListSection from "../components/IconListSection";
 
+// --- Mock RichTextInput to return a simple input for testing ---
+vi.mock("../components/RichTextInput", () => {
+  return {
+    RichTextInput: (props: { value: string; onChange: (value: string) => void; placeholder?: string; className?: string }) => {
+      return (
+        <input
+          type="text"
+          value={props.value}
+          onChange={(e) => props.onChange(e.target.value)}
+          placeholder={props.placeholder}
+          className={props.className}
+          data-testid="rich-text-input"
+        />
+      );
+    },
+  };
+});
+
+// --- Mock MarkdownHint ---
+vi.mock("../components/MarkdownLinkPreview", () => {
+  return {
+    MarkdownHint: () => <div data-testid="markdown-hint">Markdown Hint</div>,
+  };
+});
+
+// --- Mock IconManager ---
+vi.mock("../components/IconManager", () => {
+  return {
+    default: (props: { value: string; onChange: any }) => (
+      <div data-testid="icon-manager" data-value={props.value}>
+        IconManager
+      </div>
+    ),
+  };
+});
+
 // Base mock data for certifications.
 const baseCertifications = [
   {
@@ -110,5 +146,37 @@ describe("IconListSection", { timeout: 5000 }, () => {
     expect(newCertification.issuer).toBe("");
     expect(newCertification.date).toBe("");
     expect(newCertification.icon).toBe(null);
+  });
+
+  it("renders with custom section name when provided", () => {
+    const onUpdateMock = vi.fn();
+    render(
+      <IconListSection
+        data={getMockCertifications()}
+        onUpdate={onUpdateMock}
+        sectionName="Licenses & Awards"
+      />
+    );
+
+    expect(screen.getByText("Licenses & Awards")).toBeInTheDocument();
+  });
+
+  it("calls onDeleteEntry when provided instead of deleting directly", () => {
+    const onUpdateMock = vi.fn();
+    const onDeleteEntryMock = vi.fn();
+    render(
+      <IconListSection
+        data={getMockCertifications()}
+        onUpdate={onUpdateMock}
+        onDeleteEntry={onDeleteEntryMock}
+      />
+    );
+
+    const removeButtons = screen.getAllByTitle("Remove Certification");
+    fireEvent.click(removeButtons[0]);
+
+    // Should call onDeleteEntry for confirmation, not onUpdate
+    expect(onDeleteEntryMock).toHaveBeenCalledWith(0);
+    expect(onUpdateMock).not.toHaveBeenCalled();
   });
 });

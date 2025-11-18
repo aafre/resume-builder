@@ -1,0 +1,27 @@
+# Test file for backward compatibility
+# This uses the OLD linkedin field format (pre-social_links)
+# The backend should auto-migrate this to social_links array
+
+template: modern
+font: Arial
+
+contact_info:
+  name: Test User (Old Format)
+  location: "Test City, USA"
+  email: test@example.com
+  phone: +1 (555) 000-0000
+  linkedin: linkedin.com/in/test-user
+  linkedin_display: Test User
+
+sections:
+  - name: Summary
+    type: text
+    content: "This resume uses the old 'linkedin' field format to test backward compatibility. The system should automatically migrate it to the new 'social_links' array format without breaking."
+
+  - name: Skills
+    type: inline-list
+    content:
+      - Backward Compatibility
+      - Data Migration
+      - Legacy Support
+      - Testing

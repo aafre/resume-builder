@@ -41,6 +41,7 @@ export const RichTextArea: React.FC<RichTextAreaProps> = ({
     editorProps: {
       attributes: {
         class: 'focus:outline-none prose prose-sm max-w-none',
+        role: 'textbox',
       },
     },
   });
