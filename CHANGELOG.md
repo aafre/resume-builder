@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.1] - 2025-11-19
+
+### 🐛 Bug Fixes
+
+- Preview for small screens and add tour guide, minor polish to ui ux for mobile ([#124](https://github.com/aafre/resume-builder/pull/124))
+
 ## [0.5.0] - 2025-11-19
 
 ### 🚀 Features
