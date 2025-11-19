@@ -22,7 +22,9 @@ import {
   MdEmojiEvents,
   MdDescription,
   MdVisibility,
+  MdSupport,
 } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 interface Section {
   name: string;
@@ -548,6 +550,31 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                 {isCollapsed ? "Help" : "Help & Tips"}
               </span>
             </button>
+          </div>
+
+          {/* Support Section - Separate from other actions */}
+          <div className={`border-t border-gray-200/60 ${isCollapsed ? "pt-2 px-2" : "pt-3 px-4"}`}>
+            <Link
+              to="/contact"
+              className={`w-full flex items-center transition-all rounded-md ${
+                isCollapsed
+                  ? "flex-col gap-1 py-2 px-1 hover:bg-teal-50/80"
+                  : "flex-row gap-3 px-3 py-2 hover:bg-teal-50/80 text-gray-700 hover:text-teal-700"
+              }`}
+            >
+              <MdSupport
+                className={`text-teal-600 ${isCollapsed ? "text-base" : "text-base"}`}
+              />
+              <span
+                className={`${
+                  isCollapsed
+                    ? "text-[10px] text-gray-600 leading-tight font-medium"
+                    : "text-[13px]"
+                }`}
+              >
+                {isCollapsed ? "Support" : "Contact Support"}
+              </span>
+            </Link>
           </div>
         </div>
       </div>
