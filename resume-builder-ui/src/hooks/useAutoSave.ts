@@ -32,6 +32,7 @@ interface UseAutoSaveReturn {
   lastSaved: Date | null;
   error: boolean;
   saveManually: () => Promise<void>;
+  triggerImmediateSave: () => Promise<void>;
   clearSave: () => void;
   loadSaved: () => Promise<RecoveredData | null>;
   recoveredData: RecoveredData | null;
@@ -278,11 +279,22 @@ export const useAutoSave = ({
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [contactInfo, sections, originalTemplateData, saveToLocalStorage]);
 
+  // Trigger immediate save (bypassing debounce)
+  const triggerImmediateSave = useCallback(async () => {
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+    setSaving(true);
+    await saveToLocalStorage();
+    setSaving(false);
+  }, [saveToLocalStorage]);
+
   return {
     saving,
     lastSaved,
     error,
     saveManually,
+    triggerImmediateSave,
     clearSave: clearAutoSave,
     loadSaved: loadFromLocalStorage,
     recoveredData,
