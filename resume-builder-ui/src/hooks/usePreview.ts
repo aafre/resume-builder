@@ -3,21 +3,7 @@ import { generatePreviewPdf } from '../services/templates';
 import { getSessionId } from '../utils/session';
 import { extractReferencedIconFilenames } from '../utils/iconExtractor';
 import yaml from 'js-yaml';
-
-interface Section {
-  name: string;
-  type?: string;
-  content: unknown;
-}
-
-interface ContactInfo {
-  name: string;
-  location: string;
-  email: string;
-  phone: string;
-  linkedin: string;
-  linkedin_display?: string;
-}
+import { ContactInfo, Section } from '../types';
 
 interface IconRegistry {
   getIconFile: (filename: string) => File | null;

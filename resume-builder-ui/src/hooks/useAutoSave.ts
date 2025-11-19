@@ -1,19 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-
-interface ContactInfo {
-  name: string;
-  location: string;
-  email: string;
-  phone: string;
-  linkedin: string;
-  linkedin_display?: string;
-}
-
-interface Section {
-  name: string;
-  type?: string;
-  content: any;
-}
+import { ContactInfo, Section } from "../types";
 
 interface AutoSaveData {
   contactInfo: ContactInfo | null;
