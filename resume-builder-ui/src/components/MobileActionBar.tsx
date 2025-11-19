@@ -73,17 +73,17 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
         </div>
       )}
 
-      {/* Main action buttons - 3 buttons with even spacing */}
-      <div className="flex items-center justify-around px-4 py-2 safe-area-inset-bottom">
+      {/* Main action buttons - Grid layout for consistent spacing */}
+      <div className="grid grid-cols-3 gap-3 px-4 py-3 safe-area-inset-bottom">
         {/* Navigation Button */}
         <button
           onClick={onNavigationClick}
           disabled={isGenerating || isGeneratingPreview}
-          className="flex flex-col items-center justify-center min-w-[72px] min-h-[48px] px-3 py-2 rounded-lg transition-colors disabled:opacity-50 hover:bg-gray-100 active:bg-gray-200"
+          className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 rounded-xl transition-all disabled:opacity-50 hover:bg-gray-100 active:bg-gray-200 active:scale-[0.98] border border-gray-200"
           aria-label="Open navigation menu"
           style={{ WebkitTapHighlightColor: "transparent" }}
         >
-          <MdMenu className="text-2xl text-gray-700 mb-1" aria-hidden="true" />
+          <MdMenu className="text-2xl text-gray-700 mb-1.5" aria-hidden="true" />
           <span className="text-xs text-gray-600 font-medium">Menu</span>
         </button>
 
@@ -92,23 +92,23 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
           <button
             onClick={onPreviewClick}
             disabled={isGeneratingPreview || isGenerating}
-            className="flex flex-col items-center justify-center min-w-[88px] min-h-[48px] px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg shadow-md transition-all hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed relative"
+            className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl shadow-lg transition-all hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed relative"
             aria-label="Preview resume PDF"
             style={{ WebkitTapHighlightColor: "transparent" }}
           >
             {/* Staleness indicator */}
             {previewIsStale && !isGeneratingPreview && (
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full border-2 border-white animate-pulse"></span>
+              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-amber-400 rounded-full border-2 border-white animate-pulse shadow-sm"></span>
             )}
             {isGeneratingPreview ? (
               <>
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mb-1"></div>
-                <span className="text-xs font-medium">Loading...</span>
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mb-1.5"></div>
+                <span className="text-xs font-semibold">Loading...</span>
               </>
             ) : (
               <>
-                <MdVisibility className="text-2xl mb-1" aria-hidden="true" />
-                <span className="text-xs font-medium">Preview</span>
+                <MdVisibility className="text-2xl mb-1.5" aria-hidden="true" />
+                <span className="text-xs font-semibold">Preview</span>
               </>
             )}
           </button>
@@ -118,19 +118,19 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
         <button
           onClick={onDownloadClick}
           disabled={isGenerating || isGeneratingPreview}
-          className="flex flex-col items-center justify-center min-w-[88px] min-h-[48px] px-4 py-2 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-lg shadow-md transition-all hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-xl shadow-lg transition-all hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Download resume as PDF"
           style={{ WebkitTapHighlightColor: "transparent" }}
         >
           {isGenerating ? (
             <>
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mb-1"></div>
-              <span className="text-xs font-medium">Creating...</span>
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mb-1.5"></div>
+              <span className="text-xs font-semibold">Creating...</span>
             </>
           ) : (
             <>
-              <MdFileDownload className="text-2xl mb-1" aria-hidden="true" />
-              <span className="text-xs font-medium">Download</span>
+              <MdFileDownload className="text-2xl mb-1.5" aria-hidden="true" />
+              <span className="text-xs font-semibold">Download</span>
             </>
           )}
         </button>
