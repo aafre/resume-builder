@@ -7,8 +7,10 @@ import {
   MdFileDownload,
   MdFileUpload,
   MdRefresh,
-  MdHelpOutline
+  MdHelpOutline,
+  MdSupport
 } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 interface Section {
   name: string;
@@ -229,6 +231,19 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                 </button>
               </div>
             )}
+          </div>
+
+          {/* Support Link - Separate Section */}
+          <div className="mt-2 pt-2 border-t border-gray-200">
+            <Link
+              to="/contact"
+              onClick={onClose}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-teal-500 to-cyan-600 text-white rounded-lg font-medium shadow-md hover:shadow-lg active:scale-95 transition-all min-h-[48px]"
+              style={{ WebkitTapHighlightColor: "transparent" }}
+            >
+              <MdSupport className="text-xl" />
+              <span>Contact Support</span>
+            </Link>
           </div>
         </div>
       </div>

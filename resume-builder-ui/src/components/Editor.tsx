@@ -212,6 +212,7 @@ const Editor: React.FC = () => {
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
   const [showWelcomeTour, setShowWelcomeTour] = useState(false);
+  const [tourStep, setTourStep] = useState(0); // Track current tour step (0-3)
   const [showRecoveryModal, setShowRecoveryModal] = useState(false);
   const [hasHandledRecovery, setHasHandledRecovery] = useState(false);
   const [loadingRecover, setLoadingRecover] = useState(false);
@@ -756,9 +757,26 @@ const Editor: React.FC = () => {
 
   const handleTourComplete = (dontShowAgain: boolean = false) => {
     setShowWelcomeTour(false);
+    setTourStep(0); // Reset tour step for next time
     if (dontShowAgain) {
       localStorage.setItem("resume-builder-tour-seen", "true");
     }
+  };
+
+  const handleTourNext = () => {
+    if (tourStep < 3) {
+      setTourStep(tourStep + 1);
+    }
+  };
+
+  const handleTourPrevious = () => {
+    if (tourStep > 0) {
+      setTourStep(tourStep - 1);
+    }
+  };
+
+  const handleTourSkip = () => {
+    handleTourComplete(true);
   };
 
   // Validate LinkedIn URL (without storing error state - just return boolean)
@@ -1674,67 +1692,244 @@ const Editor: React.FC = () => {
         </div>
       )}
 
-      {/* Welcome Modal - Clean & Simple */}
+      {/* Welcome Tour Modal - Multi-Step Carousel */}
       {showWelcomeTour && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
-          <div className="bg-white rounded-xl shadow-xl max-w-lg w-full border border-gray-200">
-            <div className="p-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                Quick heads up
-              </h2>
+          <div className="bg-white rounded-xl shadow-xl max-w-lg w-full border border-gray-200 relative">
+            {/* Skip Button */}
+            <button
+              onClick={handleTourSkip}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors text-sm font-medium"
+            >
+              Skip Tour
+            </button>
 
-              <div className="space-y-6 mb-8">
-                <div className="flex gap-4">
-                  <div className="text-green-600 text-xl">✅</div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">
-                      Auto-saved
-                    </h3>
-                    <p className="text-gray-600 text-sm">
-                      As you make edits, your work is automatically saved
-                    </p>
-                  </div>
-                </div>
+            <div className="p-8 pt-10">
+              {/* Step 1: Auto-save & Data Privacy */}
+              {tourStep === 0 && (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                    Welcome to Editor
+                  </h2>
+                  <div className="space-y-6 mb-8">
+                    <div className="flex gap-4">
+                      <div className="text-green-600 text-xl">✅</div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 mb-1">
+                          Auto-saved
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          As you make edits, your work is automatically saved every 2 seconds
+                        </p>
+                      </div>
+                    </div>
 
-                <div className="flex gap-4">
-                  <div className="text-amber-600 text-xl">⚠️</div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">
-                      Only on this device
-                    </h3>
-                    <p className="text-gray-600 text-sm">
-                      To use it elsewhere: tap ⋮ → "Save My Work"
-                    </p>
-                  </div>
-                </div>
+                    <div className="flex gap-4">
+                      <div className="text-amber-600 text-xl">⚠️</div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 mb-1">
+                          Only on this device
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          To use it elsewhere: tap ⋮ → "Save My Work"
+                        </p>
+                      </div>
+                    </div>
 
-                <div className="flex gap-4">
-                  <div className="text-blue-600 text-xl">🛡️</div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">
-                      Your data stays yours
-                    </h3>
-                    <p className="text-gray-600 text-sm">
-                      We don't store or send your resume anywhere. You're always
-                      in control.
-                    </p>
+                    <div className="flex gap-4">
+                      <div className="text-blue-600 text-xl">🛡️</div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 mb-1">
+                          Your data stays yours
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          We don't store or send your resume anywhere. You're always in control.
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </>
+              )}
+
+              {/* Step 2: Section Navigator */}
+              {tourStep === 1 && (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                    Navigate with Ease
+                  </h2>
+                  <div className="space-y-6 mb-8">
+                    <div className="flex gap-4">
+                      <div className="text-blue-600 text-xl">📱</div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 mb-1">
+                          Mobile: Bottom Navigation
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          Tap the navigation button to access sections, save/load, and actions
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <div className="text-purple-600 text-xl">💻</div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 mb-1">
+                          Desktop: Right Sidebar
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          Collapsible sidebar with section navigation - press Ctrl+\ to toggle
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <div className="text-indigo-600 text-xl">🎯</div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 mb-1">
+                          Quick Jump
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          Click any section name to instantly scroll to it
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Step 3: Rich Text Formatting */}
+              {tourStep === 2 && (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                    Format Like a Pro
+                  </h2>
+                  <div className="space-y-6 mb-8">
+                    <div className="flex gap-4">
+                      <div className="text-indigo-600 text-xl">✨</div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 mb-1">
+                          Bubble Menu
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          Select any text to see formatting options: bold, italic, underline, and links
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <div className="text-rose-600 text-xl">🔗</div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 mb-1">
+                          Add Hyperlinks
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          Link to your portfolio, GitHub, LinkedIn, or any online resource
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <div className="text-emerald-600 text-xl">🎨</div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 mb-1">
+                          Professional Styling
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          All formatting is preserved in your final PDF resume
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Step 4: Preview & Download */}
+              {tourStep === 3 && (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                    Preview & Export
+                  </h2>
+                  <div className="space-y-6 mb-8">
+                    <div className="flex gap-4">
+                      <div className="text-blue-600 text-xl">👁️</div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 mb-1">
+                          Live Preview
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          Click "Preview PDF" to see exactly how your resume will look
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <div className="text-green-600 text-xl">📥</div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 mb-1">
+                          Download Resume
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          Generate and download your professional PDF resume anytime
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <div className="text-amber-600 text-xl">💾</div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 mb-1">
+                          Save Your Work
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          Export as YAML to save your progress or switch devices
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Step Indicators */}
+              <div className="flex justify-center gap-2 mb-6">
+                {[0, 1, 2, 3].map((step) => (
+                  <button
+                    key={step}
+                    onClick={() => setTourStep(step)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      tourStep === step
+                        ? "bg-blue-600 w-8"
+                        : "bg-gray-300 hover:bg-gray-400"
+                    }`}
+                    aria-label={`Go to step ${step + 1}`}
+                  />
+                ))}
               </div>
 
-              <div className="space-y-3">
-                <button
-                  onClick={() => handleTourComplete(true)}
-                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                >
-                  Got it, don't show again
-                </button>
-                <button
-                  onClick={() => handleTourComplete(false)}
-                  className="w-full text-gray-600 py-2 px-6 rounded-lg hover:text-gray-800 transition-colors"
-                >
-                  Show next time
-                </button>
+              {/* Navigation Buttons */}
+              <div className="flex gap-3">
+                {tourStep > 0 && (
+                  <button
+                    onClick={handleTourPrevious}
+                    className="flex-1 border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                  >
+                    Previous
+                  </button>
+                )}
+                {tourStep < 3 ? (
+                  <button
+                    onClick={handleTourNext}
+                    className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                  >
+                    Next
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleTourComplete(true)}
+                    className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-medium hover:from-blue-500 hover:to-indigo-500 transition-colors"
+                  >
+                    Get Started
+                  </button>
+                )}
               </div>
             </div>
           </div>
