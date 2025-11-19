@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.2] - 2025-11-19
+
+### 🐛 Bug Fixes
+
+- Auto-save not honouring  ([#125](https://github.com/aafre/resume-builder/pull/125))
+
 ## [0.5.1] - 2025-11-19
 
 ### 🐛 Bug Fixes
