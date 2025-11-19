@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import IconManager from "./IconManager";
+import { MarkdownHint } from "./MarkdownLinkPreview";
+import { RichTextInput } from "./RichTextInput";
 
 interface Certification {
   certification: string;
@@ -21,6 +24,7 @@ interface IconListSectionProps {
   data: Certification[];
   onUpdate: (updatedData: Certification[]) => void;
   onDelete?: () => void;
+  onDeleteEntry?: (index: number) => void; // NEW: Callback when entry delete is requested (triggers confirmation)
   sectionName?: string;
   onEditTitle?: () => void;
   onSaveTitle?: () => void;
@@ -35,6 +39,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
   data,
   onUpdate,
   onDelete,
+  onDeleteEntry,
   sectionName = "Certifications",
   onEditTitle,
   onSaveTitle,
@@ -45,6 +50,14 @@ const IconListSection: React.FC<IconListSectionProps> = ({
   iconRegistry,
 }) => {
   const [showHint, setShowHint] = useState(true);
+
+  // Collapse state - default to collapsed on mobile, expanded on desktop
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 1024; // lg breakpoint
+    }
+    return false;
+  });
 
   useEffect(() => {
     if (sectionName.startsWith("New ")) {
@@ -57,6 +70,22 @@ const IconListSection: React.FC<IconListSectionProps> = ({
       setShowHint(false);
     }
   }, [sectionName]);
+
+  // Update collapse state on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024 && isCollapsed) {
+        setIsCollapsed(false); // Auto-expand on desktop
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isCollapsed]);
+
+  const handleToggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
   const handleUpdateItem = (
     index: number,
     field: keyof Certification,
@@ -93,60 +122,82 @@ const IconListSection: React.FC<IconListSectionProps> = ({
   };
 
   const handleRemoveItem = (index: number) => {
-    const updatedData = data.filter((_, i) => i !== index);
-    onUpdate(updatedData);
+    if (onDeleteEntry) {
+      // Trigger confirmation dialog
+      onDeleteEntry(index);
+    } else {
+      // Fallback: direct delete (backward compatibility)
+      const updatedData = data.filter((_, i) => i !== index);
+      onUpdate(updatedData);
+    }
   };
 
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
       <div className="flex justify-between items-center mb-4">
-        {isEditing ? (
-          <div className="flex items-center gap-2">
-            <input
-              type="text"
-              value={temporaryTitle}
-              onChange={(e) => setTemporaryTitle?.(e.target.value)}
-              className="border border-gray-300 rounded-lg p-2 w-full text-xl font-semibold"
-              autoFocus
-            />
-            <button
-              onClick={onSaveTitle}
-              className="text-green-600 hover:text-green-800"
-              title="Save Title"
-            >
-              ✅
-            </button>
-            <button
-              onClick={onCancelTitle}
-              className="text-red-600 hover:text-red-800"
-              title="Cancel"
-            >
-              ✕
-            </button>
-          </div>
-        ) : (
-          <h2
-            className={`text-xl font-semibold ${
-              sectionName.startsWith("New ") ? "text-gray-500 italic" : ""
-            }`}
+        <div className="flex items-center gap-2 flex-1">
+          {/* Collapse/Expand Button */}
+          <button
+            onClick={handleToggleCollapse}
+            className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            aria-label={isCollapsed ? "Expand section" : "Collapse section"}
+            title={isCollapsed ? "Expand section" : "Collapse section"}
           >
-            {sectionName}
-            {onEditTitle && (
+            {isCollapsed ? (
+              <MdExpandMore className="text-2xl" />
+            ) : (
+              <MdExpandLess className="text-2xl" />
+            )}
+          </button>
+
+          {isEditing ? (
+            <div className="flex items-center gap-2 flex-1">
+              <input
+                type="text"
+                value={temporaryTitle}
+                onChange={(e) => setTemporaryTitle?.(e.target.value)}
+                className="border border-gray-300 rounded-lg p-2 w-full text-xl font-semibold"
+                autoFocus
+              />
               <button
-                onClick={onEditTitle}
-                className="ml-2 text-gray-500 hover:text-gray-700"
-                title="Edit Title"
+                onClick={onSaveTitle}
+                className="text-green-600 hover:text-green-800"
+                title="Save Title"
               >
-                ✏️
+                ✅
               </button>
-            )}
-            {sectionName.startsWith("New ") && showHint && (
-              <span className="ml-2 text-sm text-blue-500 font-normal">
-                (Click ✏️ to rename)
-              </span>
-            )}
-          </h2>
-        )}
+              <button
+                onClick={onCancelTitle}
+                className="text-red-600 hover:text-red-800"
+                title="Cancel"
+              >
+                ✕
+              </button>
+            </div>
+          ) : (
+            <h2
+              className={`text-xl font-semibold ${
+                sectionName.startsWith("New ") ? "text-gray-500 italic" : ""
+              }`}
+            >
+              {sectionName}
+              {onEditTitle && (
+                <button
+                  onClick={onEditTitle}
+                  className="ml-2 text-gray-500 hover:text-gray-700"
+                  title="Edit Title"
+                >
+                  ✏️
+                </button>
+              )}
+              {sectionName.startsWith("New ") && showHint && (
+                <span className="ml-2 text-sm text-blue-500 font-normal">
+                  (Click ✏️ to rename)
+                </span>
+              )}
+            </h2>
+          )}
+        </div>
         {onDelete && (
           <button
             onClick={onDelete}
@@ -156,7 +207,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
           </button>
         )}
       </div>
-      {data.length > 0
+      {!isCollapsed && data.length > 0
         ? data.map((item, index) => (
             <div
               key={index}
@@ -178,21 +229,18 @@ const IconListSection: React.FC<IconListSectionProps> = ({
 
                 {/* Form Fields */}
                 <div>
+                  <MarkdownHint className="mb-2" />
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-gray-700 font-medium mb-1">
                         Certification
                       </label>
-                      <input
-                        type="text"
+                      <RichTextInput
                         value={item.certification}
-                        onChange={(e) =>
-                          handleUpdateItem(
-                            index,
-                            "certification",
-                            e.target.value
-                          )
+                        onChange={(value) =>
+                          handleUpdateItem(index, "certification", value)
                         }
+                        placeholder="e.g., AWS Certified Solutions Architect"
                         className="w-full border border-gray-300 rounded-lg p-2"
                       />
                     </div>
@@ -200,12 +248,10 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                       <label className="block text-gray-700 font-medium mb-1">
                         Issuer
                       </label>
-                      <input
-                        type="text"
+                      <RichTextInput
                         value={item.issuer}
-                        onChange={(e) =>
-                          handleUpdateItem(index, "issuer", e.target.value)
-                        }
+                        onChange={(value) => handleUpdateItem(index, "issuer", value)}
+                        placeholder="e.g., Amazon Web Services"
                         className="w-full border border-gray-300 rounded-lg p-2"
                       />
                     </div>
@@ -213,12 +259,10 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                       <label className="block text-gray-700 font-medium mb-1">
                         Date
                       </label>
-                      <input
-                        type="text"
+                      <RichTextInput
                         value={item.date}
-                        onChange={(e) =>
-                          handleUpdateItem(index, "date", e.target.value)
-                        }
+                        onChange={(value) => handleUpdateItem(index, "date", value)}
+                        placeholder="e.g., 2024"
                         className="w-full border border-gray-300 rounded-lg p-2"
                       />
                     </div>
@@ -237,12 +281,14 @@ const IconListSection: React.FC<IconListSectionProps> = ({
             </div>
           ))
         : null}
-      <button
-        onClick={handleAddItem}
-        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
-      >
-        Add Item
-      </button>
+      {!isCollapsed && (
+        <button
+          onClick={handleAddItem}
+          className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
+        >
+          Add Item
+        </button>
+      )}
     </div>
   );
 };

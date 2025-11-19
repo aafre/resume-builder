@@ -1,0 +1,55 @@
+# Test file for multi-platform social links
+# Demonstrates the NEW social_links array format with multiple platforms
+
+template: modern
+font: Arial
+
+contact_info:
+  name: Multi-Platform User
+  location: "San Francisco, CA"
+  email: multiplatform@example.com
+  phone: +1 (555) 999-8888
+  social_links:
+    - platform: linkedin
+      url: linkedin.com/in/multi-platform-user
+      display_text: Multi-Platform User
+    - platform: github
+      url: github.com/multiplatform
+      display_text: multiplatform
+    - platform: twitter
+      url: twitter.com/multiplatformdev
+      display_text: "@multiplatformdev"
+    - platform: website
+      url: multiplatform.dev
+      display_text: multiplatform.dev
+    - platform: stackoverflow
+      url: stackoverflow.com/users/123456/multiplatform
+      display_text: multiplatform
+    - platform: medium
+      url: medium.com/@multiplatform
+      display_text: "@multiplatform"
+
+sections:
+  - name: Summary
+    type: text
+    content: "This resume demonstrates the new multi-platform social links feature. It includes LinkedIn, GitHub, Twitter/X, personal website, Stack Overflow, and Medium profiles all rendered with appropriate icons."
+
+  - name: Technical Skills
+    type: bulleted-list
+    content:
+      - "Full-stack development with React, Node.js, and Python"
+      - "Cloud platforms: AWS, Google Cloud, Azure"
+      - "DevOps: Docker, Kubernetes, CI/CD pipelines"
+      - "Active open-source contributor on GitHub"
+      - "Technical writing on Medium with 10K+ followers"
+      - "Stack Overflow reputation: 5000+"
+
+  - name: Online Presence
+    type: dynamic-column-list
+    content:
+      - "GitHub: 50+ repositories"
+      - "Medium: 100+ articles"
+      - "Twitter: 5K followers"
+      - "Stack Overflow: Top 10% this year"
+      - "Personal Blog: 50K monthly views"
+      - "LinkedIn: 2K+ connections"

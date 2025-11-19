@@ -24,18 +24,27 @@ export default function CustomerServiceResumeKeywords() {
         </p>
 
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-blue-800 mb-3">🔗 Part of Our Series</h3>
-          <p className="text-blue-700">
-            This article is part of our series on resume keywords. For a
-            complete overview, read our pillar guide:{" "}
-            <a
-              href="/blog/how-to-use-resume-keywords-to-beat-ats"
-              className="text-blue-600 hover:text-blue-800 underline font-medium"
-            >
-              How to Use Resume Keywords to Beat the ATS
-            </a>
-            .
+          <h3 className="font-bold text-blue-800 mb-3">🔗 Part of Our Keywords Series</h3>
+          <p className="text-blue-700 mb-3">
+            This article is part of our resume keywords series. For more resources:
           </p>
+          <ul className="space-y-2 text-blue-700">
+            <li>
+              • <a href="/resume-keywords" className="text-blue-600 hover:text-blue-800 underline font-medium">
+                Resume Keywords Hub
+              </a> - Browse all industries
+            </li>
+            <li>
+              • <a href="/resume-keywords/customer-service" className="text-blue-600 hover:text-blue-800 underline font-medium">
+                Customer Service Keywords (Full Guide)
+              </a> - Updated version with examples
+            </li>
+            <li>
+              • <a href="/actual-free-resume-builder" className="text-blue-600 hover:text-blue-800 underline font-medium">
+                Build Your Resume
+              </a> - Use these keywords in your resume
+            </li>
+          </ul>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">

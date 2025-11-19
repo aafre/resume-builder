@@ -1,4 +1,9 @@
+import React, { useState, useEffect } from "react";
 import IconManager from "./IconManager";
+import { SectionHeader } from "./SectionHeader";
+import { MarkdownHint } from "./MarkdownLinkPreview";
+import { RichTextInput } from "./RichTextInput";
+import { MdDelete } from "react-icons/md";
 
 interface ExperienceItem {
   company: string;
@@ -18,18 +23,60 @@ interface IconRegistryMethods {
 }
 
 interface ExperienceSectionProps {
+  sectionName: string; // NEW: Custom section title
   experiences: ExperienceItem[];
   onUpdate: (updatedExperiences: ExperienceItem[]) => void;
+  onTitleEdit: () => void; // NEW: Callback when edit mode is activated
+  onTitleSave: () => void; // NEW: Callback when title is saved
+  onTitleCancel: () => void; // NEW: Callback when title edit is cancelled
+  onDelete: () => void; // NEW: Callback when section is deleted
+  onDeleteEntry?: (index: number) => void; // NEW: Callback when entry delete is requested (triggers confirmation)
+  isEditingTitle: boolean; // NEW: Whether title is being edited
+  temporaryTitle: string; // NEW: Temporary title during editing
+  setTemporaryTitle: (title: string) => void; // NEW: Update temporary title
   supportsIcons?: boolean;
   iconRegistry?: IconRegistryMethods;
 }
 
 const ExperienceSection: React.FC<ExperienceSectionProps> = ({
+  sectionName,
   experiences,
   onUpdate,
+  onTitleEdit,
+  onTitleSave,
+  onTitleCancel,
+  onDelete,
+  onDeleteEntry,
+  isEditingTitle,
+  temporaryTitle,
+  setTemporaryTitle,
   supportsIcons = false,
   iconRegistry,
 }) => {
+  // Collapse state - default to collapsed on mobile, expanded on desktop
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 1024; // lg breakpoint
+    }
+    return false;
+  });
+
+  // Update collapse state on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024 && isCollapsed) {
+        setIsCollapsed(false); // Auto-expand on desktop
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isCollapsed]);
+
+  const handleToggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   const handleUpdateField = (
     index: number,
     field: keyof ExperienceItem,
@@ -58,10 +105,20 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
 
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
-      <div className="flex items-center gap-3 mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Experience</h2>
-      </div>
-      {experiences.map((experience, index) => (
+      <SectionHeader
+        title={sectionName}
+        isEditing={isEditingTitle}
+        temporaryTitle={temporaryTitle}
+        onTitleEdit={onTitleEdit}
+        onTitleSave={onTitleSave}
+        onTitleCancel={onTitleCancel}
+        onTitleChange={setTemporaryTitle}
+        onDelete={onDelete}
+        showHint={sectionName.startsWith("New ")}
+        isCollapsed={isCollapsed}
+        onToggleCollapse={handleToggleCollapse}
+      />
+      {!isCollapsed && experiences.map((experience, index) => (
         <div
           key={index}
           className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md"
@@ -70,13 +127,21 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
             <h3 className="text-lg font-medium">Experience #{index + 1}</h3>
             <button
               onClick={() => {
-                const updatedExperiences = [...experiences];
-                updatedExperiences.splice(index, 1);
-                onUpdate(updatedExperiences);
+                if (onDeleteEntry) {
+                  // Trigger confirmation dialog
+                  onDeleteEntry(index);
+                } else {
+                  // Fallback: direct delete (backward compatibility)
+                  const updatedExperiences = [...experiences];
+                  updatedExperiences.splice(index, 1);
+                  onUpdate(updatedExperiences);
+                }
               }}
-              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              aria-label="Delete experience entry"
+              title="Delete this experience"
             >
-              Remove
+              <MdDelete className="text-xl" />
             </button>
           </div>
 
@@ -100,28 +165,22 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                 <label className="block text-gray-700 font-medium mb-1">
                   Company
                 </label>
-                <input
-                  type="text"
+                <RichTextInput
                   value={experience.company}
-                  onChange={(e) =>
-                    handleUpdateField(index, "company", e.target.value)
-                  }
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  onChange={(value) => handleUpdateField(index, "company", value)}
                   placeholder="Enter company name"
+                  className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
                 />
               </div>
               <div>
                 <label className="block text-gray-700 font-medium mb-1">
                   Title
                 </label>
-                <input
-                  type="text"
+                <RichTextInput
                   value={experience.title}
-                  onChange={(e) =>
-                    handleUpdateField(index, "title", e.target.value)
-                  }
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  onChange={(value) => handleUpdateField(index, "title", value)}
                   placeholder="Enter job title"
+                  className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
                 />
               </div>
               <div>
@@ -142,24 +201,25 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
 
             {/* Full Width Description Section */}
             <div className="w-full">
-              <label className="block text-gray-700 font-medium mb-3">
+              <label className="block text-gray-700 font-medium mb-1">
                 Job Description & Achievements
               </label>
-              <div className="space-y-3">
+              <MarkdownHint />
+              <div className="space-y-3 mt-2">
                 {experience.description.map((desc, descIndex) => (
-                  <div key={descIndex} className="flex items-center gap-3">
-                    <input
-                      type="text"
-                      value={desc}
-                      onChange={(e) => {
-                        const updatedExperiences = [...experiences];
-                        updatedExperiences[index].description[descIndex] =
-                          e.target.value;
-                        onUpdate(updatedExperiences);
-                      }}
-                      className="flex-1 border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                      placeholder="Describe your responsibilities, achievements, or key projects..."
-                    />
+                  <div key={descIndex} className="flex items-start gap-3">
+                    <div className="flex-1">
+                      <RichTextInput
+                        value={desc}
+                        onChange={(value) => {
+                          const updatedExperiences = [...experiences];
+                          updatedExperiences[index].description[descIndex] = value;
+                          onUpdate(updatedExperiences);
+                        }}
+                        placeholder="Describe your responsibilities, achievements, or key projects..."
+                        className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
+                      />
+                    </div>
                     <button
                       onClick={() => {
                         const updatedExperiences = [...experiences];
@@ -169,7 +229,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                         );
                         onUpdate(updatedExperiences);
                       }}
-                      className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors"
+                      className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
                       title="Remove description point"
                     >
                       ✕
@@ -191,23 +251,25 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
           </div>
         </div>
       ))}
-      <button
-        onClick={() => {
-          const newExperience: ExperienceItem = {
-            company: "",
-            title: "",
-            dates: "",
-            description: [],
-            icon: null,
-            iconFile: null,
-            iconBase64: null,
-          };
-          onUpdate([...experiences, newExperience]);
-        }}
-        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
-      >
-        Add Experience
-      </button>
+      {!isCollapsed && (
+        <button
+          onClick={() => {
+            const newExperience: ExperienceItem = {
+              company: "",
+              title: "",
+              dates: "",
+              description: [],
+              icon: null,
+              iconFile: null,
+              iconBase64: null,
+            };
+            onUpdate([...experiences, newExperience]);
+          }}
+          className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
+        >
+          Add Experience
+        </button>
+      )}
     </div>
   );
 };

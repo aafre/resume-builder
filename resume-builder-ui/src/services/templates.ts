@@ -65,3 +65,57 @@ export async function generateResume(formData: FormData) {
   }
 }
 
+/**
+ * Generate a PDF preview for display in modal (returns blob only, no download).
+ * Uses the same endpoint as generateResume but returns only the blob for preview purposes.
+ * @param {FormData} formData - The FormData containing YAML, template ID, and icons.
+ * @returns {Promise<Blob>} The PDF blob for preview display.
+ */
+export async function generatePreviewPdf(formData: FormData): Promise<Blob> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/generate`, {
+      method: "POST",
+      body: formData,
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      let errorMessage = "Failed to generate preview";
+      try {
+        const errorResponse = await response.json();
+        errorMessage = errorResponse.error || errorMessage;
+      } catch {
+        // Response might not be JSON
+      }
+      throw new Error(errorMessage);
+    }
+
+    const contentType = response.headers.get("content-type");
+
+    if (contentType && contentType.includes("application/pdf")) {
+      return await response.blob();
+    } else {
+      let errorMessage = "Unexpected response: Expected a PDF file";
+      try {
+        const errorResponse = await response.json();
+        errorMessage = errorResponse.error || errorMessage;
+      } catch {
+        // Response might not be JSON
+      }
+      throw new Error(errorMessage);
+    }
+  } catch (error) {
+    clearTimeout(timeoutId);
+
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error("Preview generation timed out. Please try again.");
+    }
+    throw error;
+  }
+}
+

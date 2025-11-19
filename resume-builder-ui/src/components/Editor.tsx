@@ -11,16 +11,29 @@ import { ToastContainer, toast } from "react-toastify";
 import { fetchTemplate, generateResume } from "../services/templates";
 import { getSessionId } from "../utils/session";
 import { useIconRegistry } from "../hooks/useIconRegistry";
+import { useAutoSave } from "../hooks/useAutoSave";
+import { usePreview } from "../hooks/usePreview";
 import yaml from "js-yaml";
 import { PortableYAMLData } from "../types/iconTypes";
 import { extractReferencedIconFilenames } from "../utils/iconExtractor";
+import { isExperienceSection, isEducationSection } from "../utils/sectionTypeChecker";
+import { migrateLegacySections } from "../utils/sectionMigration";
+import ContactInfoSection from "./ContactInfoSection";
+import FormattingHelp from "./FormattingHelp";
+import { validatePlatformUrl, generateDisplayText } from "../constants/socialPlatforms";
+import { SocialLink } from "../types";
 import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
 import GenericSection from "./GenericSection";
 import IconListSection from "./IconListSection";
 import SectionTypeModal from "./SectionTypeModal";
 import EditorToolbar from "./EditorToolbar";
+import MobileActionBar from "./MobileActionBar";
+import MobileNavigationDrawer from "./MobileNavigationDrawer";
+import SectionNavigator from "./SectionNavigator";
+import ResponsiveConfirmDialog from "./ResponsiveConfirmDialog";
 import DragHandle from "./DragHandle";
+import PreviewModal from "./PreviewModal";
 import { useEditorContext } from "../contexts/EditorContext";
 import { MdFileDownload, MdHelpOutline } from "react-icons/md";
 import {
@@ -70,8 +83,9 @@ interface ContactInfo {
   location: string;
   email: string;
   phone: string;
-  linkedin: string;
-  linkedin_display?: string;
+  linkedin?: string; // Deprecated but kept for backward compatibility
+  linkedin_display?: string; // Deprecated but kept for backward compatibility
+  social_links?: SocialLink[];
 }
 
 const Editor: React.FC = () => {
@@ -79,45 +93,152 @@ const Editor: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const templateId = queryParams.get("template");
 
-  // Get context for footer integration and auto-save
+  // Get context for footer integration
   const {
     isAtBottom: contextIsAtBottom,
     setIsAtBottom: setContextIsAtBottom,
-    setLastSaved,
-    isSaving,
-    setIsSaving,
-    setSaveError,
+    setIsSidebarCollapsed: setContextIsSidebarCollapsed,
   } = useEditorContext();
+
+  // TODO: useResponsive() will be added when implementing navigation drawer
 
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [sections, setSections] = useState<Section[]>([]);
   const [supportsIcons, setSupportsIcons] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loadingError, setLoadingError] = useState<string | null>(null);
+  const [originalTemplateData, setOriginalTemplateData] = useState<{
+    contactInfo: ContactInfo;
+    sections: Section[];
+  } | null>(null);
 
   // Central icon registry for all uploaded icons
   const iconRegistry = useIconRegistry();
+
+  // Process sections to clean up icon paths for export/preview
+  const processSections = useCallback((sections: Section[]) => {
+    return sections.map((section) => {
+      // Handle icon-list sections (Certifications, Awards, etc.)
+      if (section.type === "icon-list") {
+        const updatedContent = section.content.map((item: any) => {
+          // Remove iconFile and iconBase64 for export, keep only clean icon filename
+          const { iconFile, iconBase64, ...cleanItem } = item;
+          return {
+            certification: cleanItem.certification || "",
+            issuer: cleanItem.issuer || "",
+            date: cleanItem.date || "",
+            icon: cleanItem.icon
+              ? cleanItem.icon.startsWith("/icons/")
+                ? cleanItem.icon.replace("/icons/", "")
+                : cleanItem.icon
+              : null,
+          };
+        });
+        return {
+          ...section,
+          content: updatedContent,
+        };
+      }
+
+      if (isExperienceSection(section) || isEducationSection(section)) {
+        const updatedContent = Array.isArray(section.content)
+          ? section.content.map((item: any) => {
+              // Remove iconFile and iconBase64 for export, keep only clean icon filename
+              const { iconFile, iconBase64, ...rest } = item;
+              return {
+                ...rest,
+                icon: rest.icon
+                  ? rest.icon.startsWith("/icons/")
+                    ? rest.icon.replace("/icons/", "")
+                    : rest.icon
+                  : null,
+              };
+            })
+          : section.content;
+
+        return {
+          ...section,
+          content: updatedContent,
+        };
+      }
+
+      return section;
+    });
+  }, []);
+
+  // Auto-save hook - handles localStorage persistence
+  const {
+    saving: isSaving,
+    lastSaved,
+    error: saveError,
+    saveManually: _saveManually, // Available for future use (auto-save is primary)
+    clearSave: clearAutoSave,
+    loadSaved: _loadSaved, // Available for future use
+    recoveredData: autoSaveRecoveredData,
+  } = useAutoSave({
+    contactInfo,
+    sections,
+    originalTemplateData,
+    templateId,
+    iconRegistry,
+  });
+
+  // Preview hook - handles PDF preview generation and caching
+  const {
+    previewUrl,
+    isGenerating: isGeneratingPreview,
+    error: previewError,
+    isStale: previewIsStale,
+    generatePreview,
+  } = usePreview({
+    contactInfo,
+    sections,
+    templateId,
+    iconRegistry,
+    processSections,
+  });
+
   const [generating, setGenerating] = useState(false);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [editingTitleIndex, setEditingTitleIndex] = useState<number | null>(
     null
   );
   const [temporaryTitle, setTemporaryTitle] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
   const newSectionRef = useRef<HTMLDivElement | null>(null);
+  const contactInfoRef = useRef<HTMLDivElement | null>(null);
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
   const [showWelcomeTour, setShowWelcomeTour] = useState(false);
   const [showRecoveryModal, setShowRecoveryModal] = useState(false);
-  const [recoveredData, setRecoveredData] = useState<{
-    timestamp: any;
-    contactInfo: ContactInfo;
-    sections: Section[];
-  } | null>(null);
-  const [originalTemplateData, setOriginalTemplateData] = useState<{
-    contactInfo: ContactInfo;
-    sections: Section[];
-  } | null>(null);
+  const [hasHandledRecovery, setHasHandledRecovery] = useState(false);
   const [loadingRecover, setLoadingRecover] = useState(false);
+
+  // Confirmation dialog state
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<{
+    type: 'section' | 'entry';
+    sectionIndex: number;
+    entryIndex?: number;
+    sectionName?: string;
+  } | null>(null);
+
+  // Start Fresh confirmation
+  const [showStartFreshConfirm, setShowStartFreshConfirm] = useState(false);
+
+  // Navigation drawer state
+  const [showNavigationDrawer, setShowNavigationDrawer] = useState(false);
+  const [activeSectionIndex, setActiveSectionIndex] = useState<number>(-1); // -1 for contact info
+  const [isSidebarCollapsed, setIsSidebarCollapsedLocal] = useState(false);
+
+  // Sync sidebar state with context for footer awareness
+  const setIsSidebarCollapsed = (collapsed: boolean) => {
+    setIsSidebarCollapsedLocal(collapsed);
+    setContextIsSidebarCollapsed(collapsed);
+  };
+
   const [loadingStartFresh, setLoadingStartFresh] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
   const [loadingLoad, setLoadingLoad] = useState(false);
@@ -125,10 +246,10 @@ const Editor: React.FC = () => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [draggedSection, setDraggedSection] = useState<Section | null>(null);
 
-  // LinkedIn display text state management
-  const [lastLinkedInSuggestion, setLastLinkedInSuggestion] = useState("");
-  const [isLinkedInTextAutoGenerated, setIsLinkedInTextAutoGenerated] = useState(false);
-  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  // Social links state management
+  const [socialLinkErrors, setSocialLinkErrors] = useState<Record<number, string>>({});
+  const [autoGeneratedIndexes, setAutoGeneratedIndexes] = useState<Set<number>>(new Set());
+  const socialLinkDebounceRefs = useRef<Record<number, NodeJS.Timeout>>({});
 
   // Simple scroll detection for footer visibility
   const lastScrollY = useRef(0);
@@ -162,8 +283,10 @@ const Editor: React.FC = () => {
           sections: Section[];
         };
         setContactInfo(parsedYaml.contact_info);
+        // Migrate legacy sections (auto-add type property for backwards compatibility)
+        const migratedSections = migrateLegacySections(parsedYaml.sections);
         // Process sections to clean up icon paths when loading template
-        const processedSections = processSections(parsedYaml.sections);
+        const processedSections = processSections(migratedSections);
         setSections(processedSections);
         setSupportsIcons(supportsIcons);
 
@@ -172,21 +295,6 @@ const Editor: React.FC = () => {
           contactInfo: parsedYaml.contact_info,
           sections: processedSections,
         });
-
-        // Check for auto-saved data after template loads
-        setTimeout(async () => {
-          const savedData = await loadFromLocalStorage();
-          if (savedData) {
-            const timeDiff =
-              new Date().getTime() - savedData.timestamp.getTime();
-
-            // Only show recovery if saved within last 7 days
-            if (timeDiff < 7 * 24 * 60 * 60 * 1000) {
-              setRecoveredData(savedData);
-              setShowRecoveryModal(true);
-            }
-          }
-        }, 500);
       } catch (error) {
         console.error("Error fetching template:", error);
         setLoadingError(
@@ -201,6 +309,13 @@ const Editor: React.FC = () => {
     loadTemplate();
   }, [templateId]);
 
+  // Show recovery modal when auto-saved data is detected (only once)
+  useEffect(() => {
+    if (autoSaveRecoveredData && originalTemplateData && !hasHandledRecovery) {
+      setShowRecoveryModal(true);
+    }
+  }, [autoSaveRecoveredData, originalTemplateData, hasHandledRecovery]);
+
   // Check if user should see welcome tour
   useEffect(() => {
     const hasSeenTour = localStorage.getItem("resume-builder-tour-seen");
@@ -212,56 +327,6 @@ const Editor: React.FC = () => {
       return () => clearTimeout(timer);
     }
   }, []);
-
-  const processSections = (sections: Section[]) => {
-    return sections.map((section) => {
-      // Handle icon-list sections (Certifications, Awards, etc.)
-      if (section.type === "icon-list") {
-        const updatedContent = section.content.map((item: any) => {
-          // Remove iconFile and iconBase64 for export, keep only clean icon filename
-          const { iconFile, iconBase64, ...cleanItem } = item;
-          return {
-            certification: cleanItem.certification || "",
-            issuer: cleanItem.issuer || "",
-            date: cleanItem.date || "",
-            icon: cleanItem.icon
-              ? cleanItem.icon.startsWith("/icons/")
-                ? cleanItem.icon.replace("/icons/", "")
-                : cleanItem.icon
-              : null,
-          };
-        });
-        return {
-          ...section,
-          content: updatedContent,
-        };
-      }
-
-      if (["Experience", "Education"].includes(section.name)) {
-        const updatedContent = Array.isArray(section.content)
-          ? section.content.map((item: any) => {
-              // Remove iconFile and iconBase64 for export, keep only clean icon filename
-              const { iconFile, iconBase64, ...rest } = item;
-              return {
-                ...rest,
-                icon: rest.icon
-                  ? rest.icon.startsWith("/icons/")
-                    ? rest.icon.replace("/icons/", "")
-                    : rest.icon
-                  : null,
-              };
-            })
-          : section.content;
-
-        return {
-          ...section,
-          content: updatedContent,
-        };
-      }
-
-      return section;
-    });
-  };
 
   const handleUpdateSection = (index: number, updatedSection: Section) => {
     const updatedSections = [...sections];
@@ -288,9 +353,104 @@ const Editor: React.FC = () => {
   };
 
   const handleDeleteSection = (index: number) => {
-    const updatedSections = sections.filter((_, i) => i !== index);
-    setSections(updatedSections);
+    // Show confirmation dialog instead of deleting immediately
+    setDeleteTarget({
+      type: 'section',
+      sectionIndex: index,
+      sectionName: sections[index]?.name,
+    });
+    setShowDeleteConfirm(true);
   };
+
+  const handleDeleteEntry = (sectionIndex: number, entryIndex: number) => {
+    // Show confirmation dialog for entry deletion
+    setDeleteTarget({
+      type: 'entry',
+      sectionIndex,
+      entryIndex,
+      sectionName: sections[sectionIndex]?.name,
+    });
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = () => {
+    if (!deleteTarget) return;
+
+    if (deleteTarget.type === 'section') {
+      // Delete entire section
+      const updatedSections = sections.filter((_, i) => i !== deleteTarget.sectionIndex);
+      setSections(updatedSections);
+      toast.success(`Section "${deleteTarget.sectionName}" deleted`);
+    } else if (deleteTarget.type === 'entry' && deleteTarget.entryIndex !== undefined) {
+      // Delete entry from section
+      const updatedSections = [...sections];
+      const section = updatedSections[deleteTarget.sectionIndex];
+
+      if (Array.isArray(section.content)) {
+        const updatedContent = section.content.filter((_, i) => i !== deleteTarget.entryIndex);
+        updatedSections[deleteTarget.sectionIndex] = {
+          ...section,
+          content: updatedContent,
+        };
+        setSections(updatedSections);
+        toast.success(`Entry deleted from "${section.name}"`);
+      }
+    }
+
+    // Reset state
+    setDeleteTarget(null);
+    setShowDeleteConfirm(false);
+  };
+
+  const handleScrollToSection = (index: number) => {
+    setActiveSectionIndex(index);
+
+    // Scroll to contact info (-1) or section (0+)
+    const targetRef = index === -1 ? contactInfoRef.current : sectionRefs.current[index];
+
+    if (targetRef) {
+      const yOffset = -100; // Offset for fixed headers
+      const y = targetRef.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
+  // Update active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      // Get viewport middle point
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+
+      // Check contact info first
+      if (contactInfoRef.current) {
+        const rect = contactInfoRef.current.getBoundingClientRect();
+        const top = rect.top + window.scrollY;
+        if (scrollPosition >= top && scrollPosition < top + rect.height) {
+          setActiveSectionIndex(-1);
+          return;
+        }
+      }
+
+      // Check each section
+      for (let i = 0; i < sectionRefs.current.length; i++) {
+        const ref = sectionRefs.current[i];
+        if (ref) {
+          const rect = ref.getBoundingClientRect();
+          const top = rect.top + window.scrollY;
+          if (scrollPosition >= top && scrollPosition < top + rect.height) {
+            setActiveSectionIndex(i);
+            return;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [sections.length]);
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
@@ -330,6 +490,8 @@ const Editor: React.FC = () => {
     // Check for duplicates - generate a unique name if needed
     const getUniqueDefaultName = (baseType: string) => {
       const typeNameMap: { [key: string]: string } = {
+        experience: "New Experience Section",
+        education: "New Education Section",
         text: "New Text Section",
         "bulleted-list": "New Bulleted List Section",
         "inline-list": "New Inline List Section",
@@ -358,7 +520,29 @@ const Editor: React.FC = () => {
     const defaultName = getUniqueDefaultName(type);
 
     let defaultContent;
-    if (
+    if (type === "experience") {
+      // Default content for Experience sections
+      defaultContent = [
+        {
+          company: "",
+          title: "",
+          dates: "",
+          description: [""],
+          icon: null,
+        },
+      ];
+    } else if (type === "education") {
+      // Default content for Education sections
+      defaultContent = [
+        {
+          degree: "",
+          school: "",
+          year: "",
+          field_of_study: "",
+          icon: null,
+        },
+      ];
+    } else if (
       [
         "bulleted-list",
         "inline-list",
@@ -463,8 +647,10 @@ const Editor: React.FC = () => {
           await iconRegistry.importIconsFromYAML(parsedYaml.__icons__);
         }
 
+        // Migrate legacy sections (auto-add type property for backwards compatibility)
+        const migratedSections = migrateLegacySections(parsedYaml.sections);
         // Process sections to clean up icon paths when importing YAML
-        const processedSections = processSections(parsedYaml.sections);
+        const processedSections = processSections(migratedSections);
         setSections(processedSections);
 
         toast.success("Resume loaded successfully!");
@@ -541,6 +727,23 @@ const Editor: React.FC = () => {
 
   const toggleHelpModal = () => setShowHelpModal(!showHelpModal);
 
+  // Preview handlers
+  const handleOpenPreview = async () => {
+    // If no preview exists or it's stale, generate it first
+    if (!previewUrl || previewIsStale) {
+      await generatePreview();
+    }
+    setShowPreviewModal(true);
+  };
+
+  const handleClosePreview = () => {
+    setShowPreviewModal(false);
+  };
+
+  const handleRefreshPreview = async () => {
+    await generatePreview();
+  };
+
   const handleAddNewSectionClick = async () => {
     setLoadingAddSection(true);
 
@@ -558,280 +761,227 @@ const Editor: React.FC = () => {
     }
   };
 
-  // Debounced LinkedIn display text generation
-  const generateLinkedInDisplayText = useCallback(async (linkedinUrl: string) => {
-    if (!linkedinUrl || !contactInfo) return;
-
-    try {
-      const response = await fetch("/api/generate-linkedin-display", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          linkedin_url: linkedinUrl,
-          contact_name: contactInfo.name,
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const suggestedText = data.display_text;
-
-        // Always refresh display text when LinkedIn URL changes
-        setContactInfo(prevContactInfo => {
-          if (!prevContactInfo) return null;
-          return {
-            ...prevContactInfo,
-            linkedin_display: suggestedText,
-          };
-        });
-        setLastLinkedInSuggestion(suggestedText);
-        setIsLinkedInTextAutoGenerated(true);
-      }
-    } catch (error) {
-      console.error("Error generating LinkedIn display text:", error);
-    }
-  }, [contactInfo, lastLinkedInSuggestion]);
-
-  // Debounced version of LinkedIn display generation
-  const debouncedGenerateLinkedInDisplay = useCallback((linkedinUrl: string) => {
-    // Clear existing timeout
-    if (debounceTimeoutRef.current) {
-      clearTimeout(debounceTimeoutRef.current);
-    }
-
-    // Set new timeout for 500ms debounce
-    debounceTimeoutRef.current = setTimeout(() => {
-      generateLinkedInDisplayText(linkedinUrl);
-    }, 500);
-  }, [generateLinkedInDisplayText]);
-
-  // LinkedIn URL validation state
-  const [linkedinUrlError, setLinkedinUrlError] = useState("");
-
-  // Validate LinkedIn URL
+  // Validate LinkedIn URL (without storing error state - just return boolean)
   const validateLinkedInUrl = (url: string): boolean => {
     if (!url.trim()) {
-      setLinkedinUrlError("");
       return true; // Empty is valid (optional field)
     }
-    
+
     const urlLower = url.toLowerCase().trim();
-    
+
     // Optimized LinkedIn URL regex that handles:
     // - Any subdomain (country codes, www, mobile, etc.)
     // - Personal profiles (/in/, /pub/, /public-profile/in/, /public-profile/pub/)
     // - Username length validation (3-100 characters)
     // - Optional trailing slash
     const linkedinProfilePattern = /^(https?:\/\/)?([\w\d]+\.)?linkedin\.com\/(?:public-profile\/)?(in|pub)\/[\w-]{3,100}\/?$/;
-    
-    // Smart Error Messages
-    if (urlLower.includes("linkedin.com") && (urlLower.endsWith("linkedin.com") || urlLower.endsWith("linkedin.com/"))) {
-      setLinkedinUrlError("Please enter a complete LinkedIn profile URL (e.g., linkedin.com/in/yourname)");
-      return false;
-    }
-    
-    if (urlLower.includes("linkedin") && !urlLower.includes("linkedin.com")) {
-      setLinkedinUrlError("Please enter a valid LinkedIn.com profile URL");
-      return false;
-    }
-    
-    // Final validation with robust regex
-    if (!linkedinProfilePattern.test(urlLower)) {
-      setLinkedinUrlError("Please enter a valid LinkedIn profile URL");
-      return false;
-    }
-    
-    setLinkedinUrlError("");
-    return true;
+
+    return linkedinProfilePattern.test(urlLower);
   };
 
-  // Handle LinkedIn URL changes
-  const handleLinkedInUrlChange = (newUrl: string) => {
+  // Social Links Handlers
+  const handleAddSocialLink = () => {
     setContactInfo(prevContactInfo => {
       if (!prevContactInfo) return null;
+
+      const currentLinks = prevContactInfo.social_links || [];
       return {
         ...prevContactInfo,
-        linkedin: newUrl,
+        social_links: [
+          ...currentLinks,
+          { platform: "", url: "", display_text: "" }
+        ]
       };
     });
-    
-    // If URL is empty, clear the display text
-    if (!newUrl.trim()) {
-      setContactInfo(prevContactInfo => {
-        if (!prevContactInfo) return null;
-        return {
-          ...prevContactInfo,
-          linkedin_display: "",
-        };
-      });
-      setIsLinkedInTextAutoGenerated(false);
-      return;
-    }
-    
-    // Validate the URL
-    const isValid = validateLinkedInUrl(newUrl);
-    
-    // Only trigger auto-generation if there's a valid LinkedIn URL
-    if (isValid) {
-      debouncedGenerateLinkedInDisplay(newUrl.trim());
-    } else {
-      // Clear display text if URL is invalid
-      setContactInfo(prevContactInfo => {
-        if (!prevContactInfo) return null;
-        return {
-          ...prevContactInfo,
-          linkedin_display: "",
-        };
-      });
-      setIsLinkedInTextAutoGenerated(false);
-    }
   };
 
-  // No longer need to show required field error on load since LinkedIn is optional
-
-  // Handle LinkedIn display text changes
-  const handleLinkedInDisplayChange = (newDisplayText: string) => {
+  const handleRemoveSocialLink = (index: number) => {
     setContactInfo(prevContactInfo => {
       if (!prevContactInfo) return null;
+
+      const currentLinks = prevContactInfo.social_links || [];
+      const updatedLinks = currentLinks.filter((_, i) => i !== index);
+
       return {
         ...prevContactInfo,
-        linkedin_display: newDisplayText,
+        social_links: updatedLinks
       };
     });
-    
-    // If user is typing, it's no longer auto-generated
-    if (newDisplayText !== lastLinkedInSuggestion) {
-      setIsLinkedInTextAutoGenerated(false);
+
+    // Clear error for this index
+    setSocialLinkErrors(prev => {
+      const updated = { ...prev };
+      delete updated[index];
+      return updated;
+    });
+
+    // Remove from auto-generated indexes
+    setAutoGeneratedIndexes(prev => {
+      const updated = new Set(prev);
+      updated.delete(index);
+      return updated;
+    });
+
+    // Clear any pending debounce for this index
+    if (socialLinkDebounceRefs.current[index]) {
+      clearTimeout(socialLinkDebounceRefs.current[index]);
+      delete socialLinkDebounceRefs.current[index];
     }
   };
 
-  // Auto-save localStorage functions
-  const getAutoSaveKey = () => `resume-builder-${templateId}-autosave`;
+  const handleSocialLinkChange = (index: number, field: keyof SocialLink, value: string) => {
+    setContactInfo(prevContactInfo => {
+      if (!prevContactInfo) return null;
 
-  const hasDataChanged = (): boolean => {
-    if (!originalTemplateData) return false;
+      const currentLinks = prevContactInfo.social_links || [];
+      const updatedLinks = [...currentLinks];
 
-    // Compare contact info
-    if (
-      JSON.stringify(contactInfo) !==
-      JSON.stringify(originalTemplateData.contactInfo)
-    ) {
-      return true;
-    }
-
-    // Compare sections (excluding iconFile objects as they're not part of original data)
-    const currentSectionsForComparison = sections.map((section) => {
-      if (
-        ["Experience", "Education"].includes(section.name) &&
-        Array.isArray(section.content)
-      ) {
-        return {
-          ...section,
-          content: section.content.map((item: any) => {
-            const { iconFile, iconBase64, ...rest } = item;
-            return rest;
-          }),
-        };
-      } else if (
-        section.type === "icon-list" &&
-        Array.isArray(section.content)
-      ) {
-        return {
-          ...section,
-          content: section.content.map((item: any) => {
-            const { iconFile, iconBase64, ...rest } = item;
-            return rest;
-          }),
-        };
+      if (!updatedLinks[index]) {
+        updatedLinks[index] = { platform: "", url: "", display_text: "" };
       }
-      return section;
+
+      updatedLinks[index] = {
+        ...updatedLinks[index],
+        [field]: value
+      };
+
+      return {
+        ...prevContactInfo,
+        social_links: updatedLinks
+      };
     });
 
-    return (
-      JSON.stringify(currentSectionsForComparison) !==
-      JSON.stringify(originalTemplateData.sections)
-    );
-  };
+    // Handle validation and auto-generation based on field
+    if (field === "url") {
+      const link = contactInfo?.social_links?.[index];
+      const platform = link?.platform || "";
 
-  const saveToLocalStorage = async () => {
-    try {
-      // Only save if data has changed from original template
-      if (!hasDataChanged()) {
+      if (!value.trim()) {
+        // Clear error if URL is empty
+        setSocialLinkErrors(prev => {
+          const updated = { ...prev };
+          delete updated[index];
+          return updated;
+        });
+
+        // Clear display text if URL is empty
+        setContactInfo(prevContactInfo => {
+          if (!prevContactInfo) return null;
+          const currentLinks = prevContactInfo.social_links || [];
+          const updatedLinks = [...currentLinks];
+          if (updatedLinks[index]) {
+            updatedLinks[index] = { ...updatedLinks[index], display_text: "" };
+          }
+          return { ...prevContactInfo, social_links: updatedLinks };
+        });
+
+        setAutoGeneratedIndexes(prev => {
+          const updated = new Set(prev);
+          updated.delete(index);
+          return updated;
+        });
         return;
       }
 
-      // Export icon registry data for storage
-      const iconRegistryData = await iconRegistry.exportForStorage();
+      // Validate URL for the platform
+      if (platform) {
+        const validation = validatePlatformUrl(platform, value);
 
-      const data = {
-        contactInfo,
-        sections,
-        iconRegistry: iconRegistryData,
-        timestamp: new Date().toISOString(),
-      };
+        if (!validation.valid && validation.error) {
+          setSocialLinkErrors(prev => ({
+            ...prev,
+            [index]: validation.error || ""
+          }));
+        } else {
+          setSocialLinkErrors(prev => {
+            const updated = { ...prev };
+            delete updated[index];
+            return updated;
+          });
 
-      // Store as JSON (basic obfuscation can be added later if needed)
-      localStorage.setItem(getAutoSaveKey(), JSON.stringify(data));
-      const savedTime = new Date();
-      setLastSaved(savedTime);
-      setSaveError(false); // Clear any previous errors
-    } catch (error) {
-      console.error("Failed to auto-save to localStorage:", error);
-      setSaveError(true);
-      // Auto-retry after 5 seconds
-      setTimeout(() => {
-        if (contactInfo && sections.length > 0) {
-          saveToLocalStorage();
+          // Auto-generate display text if URL is valid
+          debouncedGenerateSocialDisplayText(index, platform, value);
         }
-      }, 5000);
+      }
+    } else if (field === "platform") {
+      // Re-validate URL when platform changes
+      const link = contactInfo?.social_links?.[index];
+      const url = link?.url || "";
+
+      if (url && value) {
+        const validation = validatePlatformUrl(value, url);
+
+        if (!validation.valid && validation.error) {
+          setSocialLinkErrors(prev => ({
+            ...prev,
+            [index]: validation.error || ""
+          }));
+        } else {
+          setSocialLinkErrors(prev => {
+            const updated = { ...prev };
+            delete updated[index];
+            return updated;
+          });
+
+          // Auto-generate display text for new platform
+          debouncedGenerateSocialDisplayText(index, value, url);
+        }
+      }
+    } else if (field === "display_text") {
+      // User is manually editing, remove auto-generated flag
+      setAutoGeneratedIndexes(prev => {
+        const updated = new Set(prev);
+        updated.delete(index);
+        return updated;
+      });
     }
   };
 
-  const loadFromLocalStorage = async () => {
-    try {
-      const saved = localStorage.getItem(getAutoSaveKey());
-      if (saved) {
-        // Parse JSON data
-        const decodedData = JSON.parse(saved);
+  const debouncedGenerateSocialDisplayText = (index: number, platform: string, url: string) => {
+    // Clear existing timeout for this index
+    if (socialLinkDebounceRefs.current[index]) {
+      clearTimeout(socialLinkDebounceRefs.current[index]);
+    }
 
-        // Import icon registry data if it exists
-        if (decodedData.iconRegistry) {
-          await iconRegistry.importFromStorage(decodedData.iconRegistry);
+    // Set new timeout for 500ms debounce
+    socialLinkDebounceRefs.current[index] = setTimeout(() => {
+      const displayText = generateDisplayText(platform, url, contactInfo?.name);
+
+      setContactInfo(prevContactInfo => {
+        if (!prevContactInfo) return null;
+
+        const currentLinks = prevContactInfo.social_links || [];
+        const updatedLinks = [...currentLinks];
+
+        if (updatedLinks[index]) {
+          updatedLinks[index] = {
+            ...updatedLinks[index],
+            display_text: displayText
+          };
         }
 
         return {
-          contactInfo: decodedData.contactInfo,
-          sections: decodedData.sections,
-          timestamp: new Date(decodedData.timestamp),
+          ...prevContactInfo,
+          social_links: updatedLinks
         };
-      }
-    } catch (error) {
-      console.error("Failed to load from localStorage:", error);
-    }
-    return null;
-  };
+      });
 
-  const clearAutoSave = () => {
-    try {
-      localStorage.removeItem(getAutoSaveKey());
-      setLastSaved(null);
-    } catch (error) {
-      console.error("Failed to clear auto-save:", error);
-    }
+      // Mark this index as auto-generated
+      setAutoGeneratedIndexes(prev => new Set(prev).add(index));
+    }, 500);
   };
 
   const handleRecoverData = async () => {
-    if (recoveredData) {
+    if (autoSaveRecoveredData) {
       setLoadingRecover(true);
 
       // Longer delay for noticeable feedback
       await new Promise((resolve) => setTimeout(resolve, 1200));
 
-      setContactInfo(recoveredData.contactInfo);
-      setSections(recoveredData.sections);
+      setContactInfo(autoSaveRecoveredData.contactInfo);
+      setSections(autoSaveRecoveredData.sections);
       setShowRecoveryModal(false);
+      setHasHandledRecovery(true); // Prevent modal from showing again
       setLoadingRecover(false);
       toast.success("Previous work restored successfully");
     }
@@ -845,13 +995,20 @@ const Editor: React.FC = () => {
 
     clearAutoSave();
     setShowRecoveryModal(false);
+    setHasHandledRecovery(true); // Prevent modal from showing again
     setLoadingStartFresh(false);
     // Keep the current template data (already loaded)
   };
 
-  const handleLoadEmptyTemplate = async () => {
+  const handleLoadEmptyTemplate = () => {
+    // Show confirmation dialog before clearing
+    setShowStartFreshConfirm(true);
+  };
+
+  const confirmStartFresh = async () => {
     if (!originalTemplateData) return;
 
+    setShowStartFreshConfirm(false);
     setLoadingSave(true);
     try {
       // Reset contact info
@@ -900,65 +1057,19 @@ const Editor: React.FC = () => {
     };
   }, [showAdvancedMenu]);
 
-  // Debounced auto-save effect
+  // Keyboard shortcuts for preview (Ctrl+Shift+P / Cmd+Shift+P)
   useEffect(() => {
-    if (!contactInfo && sections.length === 0) return; // Don't save empty state
-    if (!originalTemplateData) return; // Don't save until template is loaded
-
-    const timer = setTimeout(async () => {
-      setIsSaving(true);
-      await saveToLocalStorage();
-      setIsSaving(false);
-    }, 2000); // Save 2 seconds after user stops editing
-
-    return () => clearTimeout(timer);
-  }, [
-    contactInfo,
-    sections,
-    templateId,
-    originalTemplateData,
-    setIsSaving,
-    setLastSaved,
-    setSaveError,
-  ]);
-
-  // Periodic auto-save backup
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      if (
-        (contactInfo || sections.length > 0) &&
-        originalTemplateData &&
-        !isSaving
-      ) {
-        setIsSaving(true);
-        await saveToLocalStorage();
-        setIsSaving(false);
-      }
-    }, 30000); // Save every 30 seconds
-
-    return () => clearInterval(interval);
-  }, [
-    contactInfo,
-    sections,
-    templateId,
-    originalTemplateData,
-    isSaving,
-    setIsSaving,
-    setLastSaved,
-    setSaveError,
-  ]);
-
-  // Save before page unload
-  useEffect(() => {
-    const handleBeforeUnload = async () => {
-      if ((contactInfo || sections.length > 0) && originalTemplateData) {
-        await saveToLocalStorage();
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Ctrl+Shift+P or Cmd+Shift+P to open preview
+      if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'P') {
+        event.preventDefault();
+        handleOpenPreview();
       }
     };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [contactInfo, sections, templateId, originalTemplateData]);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleOpenPreview]);
 
   // Simple scroll detection for footer visibility
   const handleScroll = useCallback(() => {
@@ -1030,140 +1141,27 @@ const Editor: React.FC = () => {
         toastClassName="custom-toast"
       />
 
-      {/* Main Content Container */}
-      <div className="container mx-auto px-4 pt-8 pb-72 sm:pb-56 lg:pb-44">
-        {/* Contact Information Card */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">
-              Contact Information
-            </h2>
+      {/* Main Content Container - Dynamic padding based on sidebar state */}
+      <div className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-72 sm:pb-56 lg:pb-12 max-w-4xl lg:max-w-none transition-all duration-300 ${
+        isSidebarCollapsed ? 'lg:mr-[88px]' : 'lg:mr-[296px]'
+      }`}>
+        {/* Contact Information Section */}
+        {contactInfo && (
+          <div ref={contactInfoRef}>
+            <ContactInfoSection
+              contactInfo={contactInfo}
+              onUpdate={setContactInfo}
+              socialLinkErrors={socialLinkErrors}
+              onSocialLinkChange={handleSocialLinkChange}
+              onAddSocialLink={handleAddSocialLink}
+              onRemoveSocialLink={handleRemoveSocialLink}
+              autoGeneratedIndexes={autoGeneratedIndexes}
+            />
           </div>
-          <p className="text-gray-600 mb-6">
-            Start by filling out your basic contact information
-          </p>
-          {contactInfo && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Name Field */}
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  value={contactInfo.name || ""}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, name: e.target.value })
-                  }
-                  className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  placeholder="Enter your name"
-                />
-              </div>
+        )}
 
-              {/* Location Field */}
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Location
-                </label>
-                <input
-                  type="text"
-                  value={contactInfo.location || ""}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, location: e.target.value })
-                  }
-                  className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  placeholder="Enter your location"
-                />
-              </div>
-
-              {/* Email Field */}
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={contactInfo.email || ""}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, email: e.target.value })
-                  }
-                  className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  placeholder="Enter your email"
-                />
-              </div>
-
-              {/* Phone Field */}
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Phone
-                </label>
-                <input
-                  type="tel"
-                  value={contactInfo.phone || ""}
-                  onChange={(e) =>
-                    setContactInfo({ ...contactInfo, phone: e.target.value })
-                  }
-                  className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  placeholder="Enter your phone"
-                />
-              </div>
-
-              {/* LinkedIn URL Field */}
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  LinkedIn URL
-                </label>
-                <input
-                  type="url"
-                  value={contactInfo.linkedin || ""}
-                  onChange={(e) => handleLinkedInUrlChange(e.target.value)}
-                  className={`w-full border rounded-xl p-3 focus:ring-2 focus:border-blue-500 transition-all duration-200 ${
-                    linkedinUrlError
-                      ? "border-red-300 focus:ring-red-500 bg-red-50"
-                      : "border-gray-300 focus:ring-blue-500"
-                  }`}
-                  placeholder="Enter your LinkedIn URL (e.g., linkedin.com/in/yourname)"
-                />
-                {linkedinUrlError && (
-                  <p className="text-red-500 text-sm mt-1 flex items-center">
-                    <span className="mr-1">⚠️</span>
-                    {linkedinUrlError}
-                  </p>
-                )}
-              </div>
-
-              {/* LinkedIn Display Text Field with Magic Wand */}
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  LinkedIn Display Text
-                  <span className="text-gray-500 text-sm font-normal ml-2">
-                    (How it appears on your resume)
-                  </span>
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={contactInfo.linkedin_display || ""}
-                    onChange={(e) => handleLinkedInDisplayChange(e.target.value)}
-                    className="w-full border border-gray-300 rounded-xl p-3 pr-10 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                    placeholder="e.g., John Doe, LinkedIn Profile, or LinkedIn"
-                  />
-                  {isLinkedInTextAutoGenerated && (
-                    <span 
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 transition-opacity duration-200"
-                      title="Auto-generated suggestion"
-                    >
-                      🪄
-                    </span>
-                  )}
-                </div>
-                <p className="text-gray-500 text-xs mt-1">
-                  We'll suggest professional text, but you can customize it however you like
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
+        {/* Global Formatting Help - Replaces repeated tips */}
+        <FormattingHelp />
 
         {/* Resume Sections with Drag and Drop */}
         <DndContext
@@ -1179,7 +1177,7 @@ const Editor: React.FC = () => {
             strategy={verticalListSortingStrategy}
           >
             {sections.map((section, index) => {
-              if (section.name === "Experience") {
+              if (isExperienceSection(section)) {
                 return (
                   <DragHandle
                     key={index}
@@ -1187,9 +1185,15 @@ const Editor: React.FC = () => {
                     disabled={false}
                   >
                     <div
-                      ref={index === sections.length - 1 ? newSectionRef : null}
+                      ref={(el) => {
+                        sectionRefs.current[index] = el;
+                        if (index === sections.length - 1) {
+                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                        }
+                      }}
                     >
                       <ExperienceSection
+                        sectionName={section.name}
                         experiences={section.content}
                         onUpdate={(updatedExperiences) =>
                           handleUpdateSection(index, {
@@ -1197,13 +1201,21 @@ const Editor: React.FC = () => {
                             content: updatedExperiences,
                           })
                         }
+                        onTitleEdit={() => handleTitleEdit(index)}
+                        onTitleSave={handleTitleSave}
+                        onTitleCancel={handleTitleCancel}
+                        onDelete={() => handleDeleteSection(index)}
+                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
+                        isEditingTitle={editingTitleIndex === index}
+                        temporaryTitle={temporaryTitle}
+                        setTemporaryTitle={setTemporaryTitle}
                         supportsIcons={supportsIcons}
                         iconRegistry={iconRegistry}
                       />
                     </div>
                   </DragHandle>
                 );
-              } else if (section.name === "Education") {
+              } else if (isEducationSection(section)) {
                 return (
                   <DragHandle
                     key={index}
@@ -1211,9 +1223,15 @@ const Editor: React.FC = () => {
                     disabled={false}
                   >
                     <div
-                      ref={index === sections.length - 1 ? newSectionRef : null}
+                      ref={(el) => {
+                        sectionRefs.current[index] = el;
+                        if (index === sections.length - 1) {
+                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                        }
+                      }}
                     >
                       <EducationSection
+                        sectionName={section.name}
                         education={section.content}
                         onUpdate={(updatedEducation) =>
                           handleUpdateSection(index, {
@@ -1221,6 +1239,14 @@ const Editor: React.FC = () => {
                             content: updatedEducation,
                           })
                         }
+                        onTitleEdit={() => handleTitleEdit(index)}
+                        onTitleSave={handleTitleSave}
+                        onTitleCancel={handleTitleCancel}
+                        onDelete={() => handleDeleteSection(index)}
+                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
+                        isEditingTitle={editingTitleIndex === index}
+                        temporaryTitle={temporaryTitle}
+                        setTemporaryTitle={setTemporaryTitle}
                         supportsIcons={supportsIcons}
                         iconRegistry={iconRegistry}
                       />
@@ -1235,7 +1261,12 @@ const Editor: React.FC = () => {
                     disabled={false}
                   >
                     <div
-                      ref={index === sections.length - 1 ? newSectionRef : null}
+                      ref={(el) => {
+                        sectionRefs.current[index] = el;
+                        if (index === sections.length - 1) {
+                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                        }
+                      }}
                     >
                       <IconListSection
                         data={section.content}
@@ -1246,6 +1277,7 @@ const Editor: React.FC = () => {
                           })
                         }
                         onDelete={() => handleDeleteSection(index)}
+                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
                         sectionName={section.name}
                         onEditTitle={() => handleTitleEdit(index)}
                         onSaveTitle={handleTitleSave}
@@ -1266,7 +1298,12 @@ const Editor: React.FC = () => {
                     disabled={false}
                   >
                     <div
-                      ref={index === sections.length - 1 ? newSectionRef : null}
+                      ref={(el) => {
+                        sectionRefs.current[index] = el;
+                        if (index === sections.length - 1) {
+                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                        }
+                      }}
                     >
                       <GenericSection
                         section={section}
@@ -1277,6 +1314,7 @@ const Editor: React.FC = () => {
                         onSaveTitle={handleTitleSave}
                         onCancelTitle={handleTitleCancel}
                         onDelete={() => handleDeleteSection(index)}
+                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
                         isEditing={editingTitleIndex === index}
                         temporaryTitle={temporaryTitle}
                         setTemporaryTitle={setTemporaryTitle}
@@ -1293,15 +1331,31 @@ const Editor: React.FC = () => {
               <div className="drag-overlay">
                 {draggedSection.name === "Experience" ? (
                   <ExperienceSection
+                    sectionName={draggedSection.name}
                     experiences={draggedSection.content}
                     onUpdate={() => {}}
+                    onTitleEdit={() => {}}
+                    onTitleSave={() => {}}
+                    onTitleCancel={() => {}}
+                    onDelete={() => {}}
+                    isEditingTitle={false}
+                    temporaryTitle=""
+                    setTemporaryTitle={() => {}}
                     supportsIcons={supportsIcons}
                     iconRegistry={iconRegistry}
                   />
                 ) : draggedSection.name === "Education" ? (
                   <EducationSection
+                    sectionName={draggedSection.name}
                     education={draggedSection.content}
                     onUpdate={() => {}}
+                    onTitleEdit={() => {}}
+                    onTitleSave={() => {}}
+                    onTitleCancel={() => {}}
+                    onDelete={() => {}}
+                    isEditingTitle={false}
+                    temporaryTitle=""
+                    setTemporaryTitle={() => {}}
                     supportsIcons={supportsIcons}
                     iconRegistry={iconRegistry}
                   />
@@ -1346,13 +1400,11 @@ const Editor: React.FC = () => {
           </div>
         )}
 
-        {/* Docked Bottom Toolbar - Always visible, positioned above footer when footer shows */}
+        {/* Desktop Toolbar - Now hidden on desktop (actions moved to sidebar), shown on tablet only */}
         <div
-          className={`fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 
-            left-0 right-0 border-t border-gray-200/60 lg:left-auto lg:right-6 lg:border-t-0 lg:border lg:border-gray-200/60 lg:rounded-2xl lg:w-auto lg:max-w-none ${
-              contextIsAtBottom
-                ? "bottom-56 sm:bottom-40 lg:bottom-24"
-                : "bottom-0 lg:bottom-6"
+          className={`hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300
+            left-auto right-6 border border-gray-200/60 rounded-2xl w-auto max-w-none ${
+              contextIsAtBottom ? "bottom-24" : "bottom-6"
             }`}
         >
           <div className="flex items-center justify-center gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
@@ -1373,6 +1425,64 @@ const Editor: React.FC = () => {
             />
           </div>
         </div>
+
+        {/* Mobile Action Bar - Only shown on mobile/tablet */}
+        <MobileActionBar
+          onNavigationClick={() => setShowNavigationDrawer(true)}
+          onPreviewClick={handleOpenPreview}
+          onDownloadClick={handleGenerateResume}
+          isSaving={isSaving}
+          isGenerating={generating}
+          isGeneratingPreview={isGeneratingPreview}
+          previewIsStale={previewIsStale}
+          lastSaved={lastSaved}
+          saveError={saveError}
+        />
+
+        {/* Mobile Navigation Drawer */}
+        <MobileNavigationDrawer
+          isOpen={showNavigationDrawer}
+          onClose={() => setShowNavigationDrawer(false)}
+          sections={sections}
+          onSectionClick={handleScrollToSection}
+          activeSectionIndex={activeSectionIndex}
+          onAddSection={handleAddNewSectionClick}
+          onExportYAML={handleExportYAML}
+          onImportYAML={() => fileInputRef.current?.click()}
+          onStartFresh={handleLoadEmptyTemplate}
+          onHelp={toggleHelpModal}
+          loadingSave={loadingSave}
+          loadingLoad={loadingLoad}
+        />
+
+        {/* Desktop Section Navigator Sidebar */}
+        <SectionNavigator
+          sections={sections}
+          onSectionClick={handleScrollToSection}
+          activeSectionIndex={activeSectionIndex}
+          onAddSection={handleAddNewSectionClick}
+          onDownloadResume={handleGenerateResume}
+          onPreviewResume={handleOpenPreview}
+          onExportYAML={handleExportYAML}
+          onImportYAML={() => fileInputRef.current?.click()}
+          onStartFresh={handleLoadEmptyTemplate}
+          onHelp={toggleHelpModal}
+          isGenerating={generating}
+          isGeneratingPreview={isGeneratingPreview}
+          previewIsStale={previewIsStale}
+          loadingSave={loadingSave}
+          loadingLoad={loadingLoad}
+          onCollapseChange={setIsSidebarCollapsed}
+        />
+
+        {/* Hidden file input for both mobile and desktop */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".yaml,.yml"
+          className="hidden"
+          onChange={handleImportYAML}
+        />
 
         {/* Elegant Separator - Between toolbar and footer (mobile/tablet only) */}
         {contextIsAtBottom && (
@@ -1439,7 +1549,7 @@ const Editor: React.FC = () => {
       )}
 
       {/* Recovery Modal */}
-      {showRecoveryModal && recoveredData && (
+      {showRecoveryModal && autoSaveRecoveredData && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
           <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl max-w-lg w-full border border-gray-200">
             <div className="p-8">
@@ -1494,12 +1604,12 @@ const Editor: React.FC = () => {
                     <div className="text-blue-700 text-sm space-y-1 leading-relaxed">
                       <p>
                         Last worked on:{" "}
-                        {recoveredData.timestamp.toLocaleDateString()} at{" "}
-                        {recoveredData.timestamp.toLocaleTimeString()}
+                        {autoSaveRecoveredData.timestamp.toLocaleDateString()} at{" "}
+                        {autoSaveRecoveredData.timestamp.toLocaleTimeString()}
                       </p>
                       <p>
-                        Contains: Contact info + {recoveredData.sections.length}{" "}
-                        section{recoveredData.sections.length !== 1 ? "s" : ""}
+                        Contains: Contact info + {autoSaveRecoveredData.sections.length}{" "}
+                        section{autoSaveRecoveredData.sections.length !== 1 ? "s" : ""}
                       </p>
                     </div>
                   </div>
@@ -1638,6 +1748,50 @@ const Editor: React.FC = () => {
           supportsIcons={supportsIcons}
         />
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <ResponsiveConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => {
+          setShowDeleteConfirm(false);
+          setDeleteTarget(null);
+        }}
+        onConfirm={confirmDelete}
+        title={deleteTarget?.type === 'section' ? "Delete Section?" : "Delete Entry?"}
+        message={
+          deleteTarget?.type === 'section'
+            ? `Are you sure you want to delete the "${deleteTarget.sectionName}" section? This will remove all content in this section and cannot be undone.`
+            : "Are you sure you want to delete this entry? This action cannot be undone."
+        }
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDestructive={true}
+      />
+
+      {/* Start Fresh Confirmation Dialog */}
+      <ResponsiveConfirmDialog
+        isOpen={showStartFreshConfirm}
+        onClose={() => setShowStartFreshConfirm(false)}
+        onConfirm={confirmStartFresh}
+        title="Clear Template?"
+        message="Are you sure you want to clear all content and start fresh? This will remove all your work and reset the template to empty. This action cannot be undone."
+        confirmText="Clear All"
+        cancelText="Cancel"
+        isDestructive={true}
+        isLoading={loadingSave}
+      />
+
+      {/* PDF Preview Modal */}
+      <PreviewModal
+        isOpen={showPreviewModal}
+        onClose={handleClosePreview}
+        previewUrl={previewUrl}
+        isGenerating={isGeneratingPreview}
+        isStale={previewIsStale}
+        error={previewError}
+        onRefresh={handleRefreshPreview}
+        onDownload={handleGenerateResume}
+      />
     </div>
   );
 };

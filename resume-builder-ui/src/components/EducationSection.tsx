@@ -1,4 +1,9 @@
+import React, { useState, useEffect } from "react";
 import IconManager from "./IconManager";
+import { SectionHeader } from "./SectionHeader";
+import { MarkdownHint } from "./MarkdownLinkPreview";
+import { RichTextInput } from "./RichTextInput";
+import { MdDelete } from "react-icons/md";
 
 interface EducationItem {
   degree: string;
@@ -18,18 +23,60 @@ interface IconRegistryMethods {
 }
 
 interface EducationSectionProps {
+  sectionName: string; // NEW: Custom section title
   education: EducationItem[];
   onUpdate: (updatedEducation: EducationItem[]) => void;
+  onTitleEdit: () => void; // NEW: Callback when edit mode is activated
+  onTitleSave: () => void; // NEW: Callback when title is saved
+  onTitleCancel: () => void; // NEW: Callback when title edit is cancelled
+  onDelete: () => void; // NEW: Callback when section is deleted
+  onDeleteEntry?: (index: number) => void; // NEW: Callback when entry delete is requested (triggers confirmation)
+  isEditingTitle: boolean; // NEW: Whether title is being edited
+  temporaryTitle: string; // NEW: Temporary title during editing
+  setTemporaryTitle: (title: string) => void; // NEW: Update temporary title
   supportsIcons?: boolean;
   iconRegistry?: IconRegistryMethods;
 }
 
 const EducationSection: React.FC<EducationSectionProps> = ({
+  sectionName,
   education,
   onUpdate,
+  onTitleEdit,
+  onTitleSave,
+  onTitleCancel,
+  onDelete,
+  onDeleteEntry,
+  isEditingTitle,
+  temporaryTitle,
+  setTemporaryTitle,
   supportsIcons = false,
   iconRegistry,
 }) => {
+  // Collapse state - default to collapsed on mobile, expanded on desktop
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 1024; // lg breakpoint
+    }
+    return false;
+  });
+
+  // Update collapse state on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024 && isCollapsed) {
+        setIsCollapsed(false); // Auto-expand on desktop
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isCollapsed]);
+
+  const handleToggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   const handleUpdateItem = (
     index: number,
     key: keyof EducationItem,
@@ -54,9 +101,15 @@ const EducationSection: React.FC<EducationSectionProps> = ({
   };
 
   const handleRemoveItem = (index: number) => {
-    const updatedEducation = [...education];
-    updatedEducation.splice(index, 1);
-    onUpdate(updatedEducation);
+    if (onDeleteEntry) {
+      // Trigger confirmation dialog
+      onDeleteEntry(index);
+    } else {
+      // Fallback: direct delete (backward compatibility)
+      const updatedEducation = [...education];
+      updatedEducation.splice(index, 1);
+      onUpdate(updatedEducation);
+    }
   };
 
   // Handle icon changes from IconManager
@@ -74,10 +127,21 @@ const EducationSection: React.FC<EducationSectionProps> = ({
 
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
-      <div className="flex items-center gap-3 mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Education</h2>
-      </div>
-      {education.map((item, index) => (
+      <SectionHeader
+        title={sectionName}
+        isEditing={isEditingTitle}
+        temporaryTitle={temporaryTitle}
+        onTitleEdit={onTitleEdit}
+        onTitleSave={onTitleSave}
+        onTitleCancel={onTitleCancel}
+        onTitleChange={setTemporaryTitle}
+        onDelete={onDelete}
+        showHint={sectionName.startsWith("New ")}
+        isCollapsed={isCollapsed}
+        onToggleCollapse={handleToggleCollapse}
+      />
+      {!isCollapsed && <MarkdownHint className="mb-4" />}
+      {!isCollapsed && education.map((item, index) => (
         <div
           key={index}
           className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md"
@@ -86,9 +150,11 @@ const EducationSection: React.FC<EducationSectionProps> = ({
             <h3 className="text-lg font-semibold">Entry {index + 1}</h3>
             <button
               onClick={() => handleRemoveItem(index)}
-              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              aria-label="Delete education entry"
+              title="Delete this entry"
             >
-              Remove
+              <MdDelete className="text-xl" />
             </button>
           </div>
           <div className="mt-4">
@@ -110,12 +176,10 @@ const EducationSection: React.FC<EducationSectionProps> = ({
                 <label className="block text-gray-700 font-medium mb-1">
                   Degree
                 </label>
-                <input
-                  type="text"
+                <RichTextInput
                   value={item.degree}
-                  onChange={(e) =>
-                    handleUpdateItem(index, "degree", e.target.value)
-                  }
+                  onChange={(value) => handleUpdateItem(index, "degree", value)}
+                  placeholder="e.g., Bachelor of Science"
                   className="w-full border border-gray-300 rounded-lg p-2"
                 />
               </div>
@@ -123,12 +187,10 @@ const EducationSection: React.FC<EducationSectionProps> = ({
                 <label className="block text-gray-700 font-medium mb-1">
                   School
                 </label>
-                <input
-                  type="text"
+                <RichTextInput
                   value={item.school}
-                  onChange={(e) =>
-                    handleUpdateItem(index, "school", e.target.value)
-                  }
+                  onChange={(value) => handleUpdateItem(index, "school", value)}
+                  placeholder="e.g., University Name"
                   className="w-full border border-gray-300 rounded-lg p-2"
                 />
               </div>
@@ -149,12 +211,10 @@ const EducationSection: React.FC<EducationSectionProps> = ({
                 <label className="block text-gray-700 font-medium mb-1">
                   Field of Study
                 </label>
-                <input
-                  type="text"
+                <RichTextInput
                   value={item.field_of_study || ""}
-                  onChange={(e) =>
-                    handleUpdateItem(index, "field_of_study", e.target.value)
-                  }
+                  onChange={(value) => handleUpdateItem(index, "field_of_study", value)}
+                  placeholder="e.g., Computer Science"
                   className="w-full border border-gray-300 rounded-lg p-2"
                 />
               </div>
@@ -162,12 +222,14 @@ const EducationSection: React.FC<EducationSectionProps> = ({
           </div>
         </div>
       ))}
-      <button
-        onClick={handleAddItem}
-        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 mt-4"
-      >
-        Add Entry
-      </button>
+      {!isCollapsed && (
+        <button
+          onClick={handleAddItem}
+          className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 mt-4"
+        >
+          Add Entry
+        </button>
+      )}
     </div>
   );
 };

@@ -129,15 +129,24 @@ footer {
   top: 5rem !important; /* Space below header */
   right: 1rem !important; /* Proper right spacing */
   left: auto !important; /* Override default left positioning */
-  z-index: 9999;
+  z-index: 10000; /* Above navigation drawer (9999) */
 }
 
+/* Mobile: Full-width centered toasts */
 @media (max-width: 640px) {
   .custom-toast-container {
     max-width: calc(100vw - 2rem);
-    top: 4rem !important; /* Smaller top margin on mobile */
+    top: calc(4rem + env(safe-area-inset-top)) !important; /* Account for notches */
     right: 1rem !important;
-    left: 1rem !important; /* Center on mobile */
+    left: 1rem !important; /* Full-width minus margins */
+  }
+}
+
+/* Desktop with sidebar: Shift toasts right to avoid overlap */
+@media (min-width: 1024px) {
+  .custom-toast-container {
+    right: 1rem !important; /* Keep in main content area (sidebar shifts content) */
+    left: auto !important;
   }
 }
 
@@ -287,5 +296,37 @@ footer {
     opacity: 1;
     transform: scaleY(1);
   }
+}
+
+/* Shimmer animation for dev banner */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Custom scrollbar for sidebar */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.7);
 }
 
