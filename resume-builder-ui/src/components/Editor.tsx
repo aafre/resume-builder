@@ -172,6 +172,7 @@ const Editor: React.FC = () => {
     lastSaved,
     error: saveError,
     saveManually: _saveManually, // Available for future use (auto-save is primary)
+    triggerImmediateSave,
     clearSave: clearAutoSave,
     loadSaved: _loadSaved, // Available for future use
     recoveredData: autoSaveRecoveredData,
@@ -653,6 +654,23 @@ const Editor: React.FC = () => {
         // Process sections to clean up icon paths when importing YAML
         const processedSections = processSections(migratedSections);
         setSections(processedSections);
+
+        // CRITICAL FIX: Update originalTemplateData to reflect the imported YAML
+        // This ensures hasDataChanged() returns false for the imported baseline
+        setOriginalTemplateData({
+          contactInfo: parsedYaml.contact_info,
+          sections: processedSections,
+        });
+
+        // Clear any existing autosave to prevent conflicts
+        clearAutoSave();
+
+        // Mark recovery as handled to prevent modal from showing
+        setHasHandledRecovery(true);
+
+        // Trigger immediate save to persist the imported data
+        // This ensures data is saved even if user reloads immediately
+        await triggerImmediateSave();
 
         toast.success("Resume loaded successfully!");
       } catch (error) {
