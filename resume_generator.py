@@ -218,30 +218,64 @@ def generate_pdf(
     if not contact_info:
         raise ValueError("No contact information provided")
 
-    # Social media handle extraction
-    linkedin_url = contact_info.get("linkedin", "")
+    # Migrate old LinkedIn format to new social_links array (backward compatibility)
+    contact_info = migrate_linkedin_to_social_links(contact_info)
 
-    # Only process LinkedIn if URL is provided
-    if linkedin_url and linkedin_url.strip():
-        if not linkedin_url.startswith("https://"):
-            linkedin_url = "https://" + linkedin_url
+    # Process social_links array
+    social_links = contact_info.get("social_links", [])
+    if social_links:
+        for link in social_links:
+            platform = link.get("platform", "")
+            url = link.get("url", "")
 
-        if "linkedin" not in linkedin_url.lower():
-            raise ValueError("Invalid LinkedIn URL provided")
-            
-        contact_info["linkedin_handle"] = get_social_media_handle(linkedin_url)
-        
-        # Generate linkedin_display if not already provided
-        if not contact_info.get("linkedin_display"):
-            contact_info["linkedin_display"] = generate_linkedin_display_text(
-                linkedin_url, contact_info.get("name", "")
-            )
-            logging.info(f"Generated LinkedIn display text: {contact_info['linkedin_display']}")
+            if not url or not url.strip():
+                continue
+
+            # Add https:// if not present
+            if not url.startswith("https://") and not url.startswith("http://"):
+                url = "https://" + url
+                link["url"] = url
+
+            # Extract handle for display
+            link["handle"] = get_social_media_handle(url, platform)
+
+            # Generate display_text if not provided
+            if not link.get("display_text") or not link.get("display_text").strip():
+                if platform == "linkedin":
+                    link["display_text"] = generate_linkedin_display_text(
+                        url, contact_info.get("name", "")
+                    )
+                elif platform == "github":
+                    link["display_text"] = link["handle"]
+                elif platform == "twitter":
+                    link["display_text"] = link["handle"]
+                elif platform == "website":
+                    # Extract domain from URL
+                    try:
+                        from urllib.parse import urlparse
+                        parsed = urlparse(url)
+                        link["display_text"] = parsed.hostname.replace('www.', '') if parsed.hostname else "Website"
+                    except:
+                        link["display_text"] = "Website"
+                else:
+                    # Default: use handle or platform name
+                    link["display_text"] = link["handle"] or platform.capitalize()
+
+                logging.info(f"Generated {platform} display text: {link['display_text']}")
+
+    # Store processed social_links back in contact_info
+    contact_info["social_links"] = social_links
+
+    # Maintain backward compatibility: keep linkedin fields for old templates
+    linkedin_link = next((link for link in social_links if link.get("platform") == "linkedin"), None)
+    if linkedin_link:
+        contact_info["linkedin"] = linkedin_link.get("url", "")
+        contact_info["linkedin_handle"] = linkedin_link.get("handle", "")
+        contact_info["linkedin_display"] = linkedin_link.get("display_text", "")
     else:
-        # Clear LinkedIn fields if URL is empty
+        contact_info["linkedin"] = ""
         contact_info["linkedin_handle"] = ""
         contact_info["linkedin_display"] = ""
-        logging.info("LinkedIn URL empty - cleared LinkedIn fields")
 
     # Render HTML with data
     logging.info(f"Rendering HTML template for: {template_name}")
@@ -309,21 +343,72 @@ def generate_pdf(
         logging.warning(f"Could not remove temporary file {temp_html_file}: {e}")
 
 
-def get_social_media_handle(url):
+def get_social_media_handle(url, platform="linkedin"):
     """
     Extract social media handle from URL.
 
     Args:
         url (str): The social media URL.
+        platform (str): The platform type (linkedin, github, twitter, etc.)
 
     Returns:
         str: The social media handle.
     """
-    if url:
-        # Remove any trailing slashes
-        url = url.rstrip("/")
-        return url.split("/")[-1]
-    return ""
+    if not url:
+        return ""
+
+    # Remove any trailing slashes
+    url = url.rstrip("/")
+
+    # Platform-specific handle extraction
+    if platform == "stackoverflow":
+        # Extract username from stackoverflow.com/users/123456/username
+        match = re.search(r'/users/\d+/([\w\-]+)', url)
+        return match.group(1) if match else url.split("/")[-1]
+
+    elif platform == "medium":
+        # Extract @username from medium.com/@username
+        handle = url.split("/")[-1]
+        return handle if handle.startswith('@') else f"@{handle}"
+
+    elif platform == "twitter":
+        # Extract @username from twitter.com/username or x.com/username
+        handle = url.split("/")[-1]
+        return f"@{handle}"
+
+    # Default: return last part of URL
+    return url.split("/")[-1]
+
+
+def migrate_linkedin_to_social_links(contact_info):
+    """
+    Migrate old 'linkedin' field to new 'social_links' array format.
+
+    Args:
+        contact_info (dict): Contact information dictionary
+
+    Returns:
+        dict: Updated contact_info with social_links array
+    """
+    # If already has social_links, no migration needed
+    if contact_info.get("social_links"):
+        return contact_info
+
+    # Check if old linkedin field exists
+    linkedin_url = contact_info.get("linkedin", "")
+    if linkedin_url and linkedin_url.strip():
+        # Create social_links array with migrated LinkedIn
+        contact_info["social_links"] = [{
+            "platform": "linkedin",
+            "url": linkedin_url,
+            "display_text": contact_info.get("linkedin_display", "")
+        }]
+        logging.info("Migrated old 'linkedin' field to 'social_links' array")
+    else:
+        # Initialize empty social_links array
+        contact_info["social_links"] = []
+
+    return contact_info
 
 
 def generate_linkedin_display_text(linkedin_url, contact_name=None):
