@@ -18,6 +18,15 @@ import { EditorProvider, useEditorContext } from "./contexts/EditorContext";
 const TemplateCarousel = lazy(() => import("./components/TemplateCarousel"));
 const Editor = lazy(() => import("./components/Editor"));
 
+// SEO landing pages - lazy loaded
+const ActualFreeResumeBuilder = lazy(() => import("./components/seo/ActualFreeResumeBuilder"));
+const FreeResumeBuilderNoSignUp = lazy(() => import("./components/seo/FreeResumeBuilderNoSignUp"));
+const TemplatesHub = lazy(() => import("./components/seo/TemplatesHub"));
+const AtsFriendlyTemplate = lazy(() => import("./components/seo/AtsFriendlyTemplate"));
+const ResumeKeywordsHub = lazy(() => import("./components/seo/ResumeKeywordsHub"));
+const CustomerServiceKeywords = lazy(() => import("./components/seo/CustomerServiceKeywords"));
+const BestFreeResumeBuilderReddit = lazy(() => import("./components/seo/BestFreeResumeBuilderReddit"));
+
 // Static pages - lazy loaded
 const AboutUs = lazy(() => import("./components/AboutUs"));
 const Contact = lazy(() => import("./components/Contact"));
@@ -110,18 +119,76 @@ function AppContent() {
         <Routes>
           {/* Critical route - no lazy loading */}
           <Route path="/" element={<LandingPage />} />
-          
-          {/* High-priority routes with appropriate loading states */}
-          <Route 
-            path="/templates" 
+
+          {/* SEO Landing Pages */}
+          <Route
+            path="/actual-free-resume-builder"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ActualFreeResumeBuilder />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-resume-builder-no-sign-up"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <FreeResumeBuilderNoSignUp />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/templates"
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <TemplateCarousel />
               </Suspense>
             }
           />
-          <Route 
-            path="/editor" 
+          <Route
+            path="/ats-resume-templates"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <TemplatesHub />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/templates/ats-friendly"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <AtsFriendlyTemplate />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/resume-keywords"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ResumeKeywordsHub />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/resume-keywords/customer-service"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <CustomerServiceKeywords />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/best-free-resume-builder-reddit"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <BestFreeResumeBuilderReddit />
+              </Suspense>
+            }
+          />
+
+          {/* High-priority routes with appropriate loading states */}
+          <Route
+            path="/editor"
             element={
               <Suspense fallback={<EditorLoadingSkeleton />}>
                 <Editor />

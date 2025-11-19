@@ -7,6 +7,11 @@ Sitemap: https://easyfreeresume.com/sitemap.xml
 # Allow all well-behaved bots
 Allow: /blog/
 Allow: /templates/
+Allow: /ats-resume-templates/
+Allow: /resume-keywords/
+Allow: /actual-free-resume-builder/
+Allow: /free-resume-builder-no-sign-up/
+Allow: /best-free-resume-builder-reddit/
 Allow: /about/
 Allow: /contact/
 Allow: /privacy-policy/

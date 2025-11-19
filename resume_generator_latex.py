@@ -11,6 +11,75 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+def convert_markdown_links_to_latex(text):
+    """
+    Convert Markdown-style links [text](url) to LaTeX \\href{url}{text} commands.
+
+    Args:
+        text: String that may contain markdown links
+
+    Returns:
+        String with markdown links converted to LaTeX href commands
+
+    Example:
+        "Visit [Google](https://google.com)" -> "Visit \\href{https://google.com}{Google}"
+    """
+    if not text or not isinstance(text, str):
+        return text
+
+    # Regex to match [text](url) pattern
+    pattern = r'\[([^\]]+)\]\(([^\)]+)\)'
+
+    # Replace with LaTeX href command
+    latex_text = re.sub(pattern, r'\\href{\2}{\1}', text)
+
+    return latex_text
+
+
+def convert_markdown_formatting_to_latex(text):
+    """
+    Convert Markdown-style formatting to LaTeX commands.
+
+    Supports:
+    - Bold: **text** or __text__ → \\textbf{text}
+    - Italic: *text* or _text_ → \\textit{text}
+    - Strikethrough: ~~text~~ → \\sout{text}
+    - Underline: ++text++ → \\underline{text} (custom syntax, not standard markdown)
+
+    Args:
+        text: String that may contain markdown formatting
+
+    Returns:
+        String with markdown formatting converted to LaTeX commands
+
+    Example:
+        "This is **bold** and *italic*" -> "This is \\textbf{bold} and \\textit{italic}"
+    """
+    if not text or not isinstance(text, str):
+        return text
+
+    # Process in specific order to avoid conflicts
+    # 1. Bold with ** (must come before single *)
+    text = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\1}', text)
+
+    # 2. Bold with __ (must come before single _)
+    text = re.sub(r'__(.+?)__', r'\\textbf{\1}', text)
+
+    # 3. Italic with * (after ** is processed)
+    text = re.sub(r'\*(.+?)\*', r'\\textit{\1}', text)
+
+    # 4. Italic with _ (after __ is processed)
+    text = re.sub(r'_(.+?)_', r'\\textit{\1}', text)
+
+    # 5. Strikethrough with ~~
+    text = re.sub(r'~~(.+?)~~', r'\\sout{\1}', text)
+
+    # 6. Underline with ++ (custom syntax)
+    text = re.sub(r'\+\+(.+?)\+\+', r'\\underline{\1}', text)
+
+    return text
+
+
 def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
     """
     DEPRECATED: This function is no longer used. The LaTeX template now uses fixed-width 
@@ -59,6 +128,13 @@ def _escape_latex(text):
 
     # Define a mapping for LaTeX special characters
     # Order matters for some replacements (e.g., '\' before '&')
+    # NOTE: We intentionally DO NOT escape certain characters used in markdown syntax:
+    # - ~ (tilde) is used for strikethrough: ~~text~~
+    # - * (asterisk) is used for bold/italic: **text** or *text*
+    # - + (plus) is used for underline: ++text++
+    # These will be converted to LaTeX commands by the markdown filters.
+    # The _ (underscore) IS escaped because it's a LaTeX special character and
+    # underscores are common in emails/URLs. Use *text* for italic instead of _text_.
     latex_special_chars = {
         "\\": r"\textbackslash{}",  # Backslash must be escaped first
         "&": r"\&",
@@ -68,7 +144,7 @@ def _escape_latex(text):
         "_": r"\_",
         "{": r"\{",
         "}": r"\}",
-        "~": r"\textasciitilde{}",
+        # "~": r"\textasciitilde{}",  # NOT escaped - used for markdown strikethrough ~~text~~
         "^": r"\textasciicircum{}",
         "<": r"\textless{}",
         ">": r"\textgreater{}",
@@ -242,7 +318,12 @@ def generate_latex_pdf(template_name: str, data: dict, output_file: Path):
         line_statement_prefix="%%",
         autoescape=False,
     )
-    logger.debug("Jinja2 environment configured with LaTeX-compatible delimiters.")
+
+    # Register custom Jinja2 filters for markdown to LaTeX conversion
+    env.filters['markdown_links'] = convert_markdown_links_to_latex
+    env.filters['markdown_formatting'] = convert_markdown_formatting_to_latex
+
+    logger.debug("Jinja2 environment configured with LaTeX-compatible delimiters and custom filters.")
 
     # Load the main LaTeX template file
     try:

@@ -8,6 +8,7 @@ from flask import (
     jsonify,
     url_for,
     send_from_directory,
+    redirect,
 )
 
 
@@ -161,12 +162,72 @@ def cleanup_pdf_pool():
 
 # Resume Generation Helper Functions
 # These functions support both HTML and LaTeX template generation
-def get_social_media_handle(url):
-    """Extract social media handle from URL."""
-    if url:
-        url = url.rstrip("/")
-        return url.split("/")[-1]
-    return ""
+def get_social_media_handle(url, platform="linkedin"):
+    """
+    Extract social media handle from URL.
+
+    Args:
+        url (str): The social media URL.
+        platform (str): The platform type (linkedin, github, twitter, etc.)
+
+    Returns:
+        str: The social media handle.
+    """
+    if not url:
+        return ""
+
+    # Remove any trailing slashes
+    url = url.rstrip("/")
+
+    # Platform-specific handle extraction
+    if platform == "stackoverflow":
+        # Extract username from stackoverflow.com/users/123456/username
+        match = re.search(r'/users/\d+/([\w\-]+)', url)
+        return match.group(1) if match else url.split("/")[-1]
+
+    elif platform == "medium":
+        # Extract @username from medium.com/@username
+        handle = url.split("/")[-1]
+        return handle if handle.startswith('@') else f"@{handle}"
+
+    elif platform == "twitter":
+        # Extract @username from twitter.com/username or x.com/username
+        handle = url.split("/")[-1]
+        return f"@{handle}"
+
+    # Default: return last part of URL
+    return url.split("/")[-1]
+
+
+def migrate_linkedin_to_social_links(contact_info):
+    """
+    Migrate old 'linkedin' field to new 'social_links' array format.
+
+    Args:
+        contact_info (dict): Contact information dictionary
+
+    Returns:
+        dict: Updated contact_info with social_links array
+    """
+    # If already has social_links, no migration needed
+    if contact_info.get("social_links"):
+        return contact_info
+
+    # Check if old linkedin field exists
+    linkedin_url = contact_info.get("linkedin", "")
+    if linkedin_url and linkedin_url.strip():
+        # Create social_links array with migrated LinkedIn
+        contact_info["social_links"] = [{
+            "platform": "linkedin",
+            "url": linkedin_url,
+            "display_text": contact_info.get("linkedin_display", "")
+        }]
+        app.logger.info("Migrated old 'linkedin' field to 'social_links' array")
+    else:
+        # Initialize empty social_links array
+        contact_info["social_links"] = []
+
+    return contact_info
 
 
 def generate_linkedin_display_text(linkedin_url, contact_name=None):
@@ -257,6 +318,182 @@ def _escape_latex(text):
     return escaped_text
 
 
+def normalize_sections(data):
+    """
+    Add type attributes to sections for backward compatibility.
+
+    Converts old name-based format to new type-based format:
+    - Sections named "Experience" (case-insensitive) get type="experience"
+    - Sections named "Education" (case-insensitive) get type="education"
+
+    This allows old YAML files to work without modification while supporting
+    multiple experience/education sections with custom names.
+    """
+    if "sections" not in data:
+        return data
+
+    for section in data["sections"]:
+        # Skip if section already has a type attribute
+        if "type" in section and section["type"]:
+            continue
+
+        # Check section name and add appropriate type
+        section_name_lower = section.get("name", "").lower()
+
+        if section_name_lower == "experience":
+            section["type"] = "experience"
+            logging.debug(f"Normalized section '{section.get('name')}' to type='experience'")
+        elif section_name_lower == "education":
+            section["type"] = "education"
+            logging.debug(f"Normalized section '{section.get('name')}' to type='education'")
+
+    return data
+
+
+def convert_markdown_links_to_html(text):
+    """
+    Convert Markdown-style links [text](url) to HTML <a> tags.
+
+    Args:
+        text: String that may contain markdown links
+
+    Returns:
+        String with markdown links converted to HTML anchor tags
+
+    Example:
+        "Visit [Google](https://google.com)" -> "Visit <a href=\"https://google.com\">Google</a>"
+    """
+    if not text or not isinstance(text, str):
+        return text
+
+    # Regex to match [text](url) pattern
+    import re
+    pattern = r'\[([^\]]+)\]\(([^\)]+)\)'
+
+    # Replace with HTML anchor tag
+    html_text = re.sub(pattern, r'<a href="\2">\1</a>', text)
+
+    return html_text
+
+
+def convert_markdown_links_to_latex(text):
+    """
+    Convert Markdown-style links [text](url) to LaTeX \\href{url}{text} commands.
+
+    Args:
+        text: String that may contain markdown links
+
+    Returns:
+        String with markdown links converted to LaTeX href commands
+
+    Example:
+        "Visit [Google](https://google.com)" -> "Visit \\href{https://google.com}{Google}"
+    """
+    if not text or not isinstance(text, str):
+        return text
+
+    # Regex to match [text](url) pattern
+    import re
+    pattern = r'\[([^\]]+)\]\(([^\)]+)\)'
+
+    # Replace with LaTeX href command
+    latex_text = re.sub(pattern, r'\\href{\2}{\1}', text)
+
+    return latex_text
+
+
+def convert_markdown_formatting_to_html(text):
+    """
+    Convert Markdown-style formatting to HTML tags.
+
+    Supports:
+    - Bold: **text** or __text__ → <strong>text</strong>
+    - Italic: *text* or _text_ → <em>text</em>
+    - Strikethrough: ~~text~~ → <s>text</s>
+    - Underline: ++text++ → <u>text</u> (custom syntax, not standard markdown)
+
+    Args:
+        text: String that may contain markdown formatting
+
+    Returns:
+        String with markdown formatting converted to HTML tags
+
+    Example:
+        "This is **bold** and *italic*" -> "This is <strong>bold</strong> and <em>italic</em>"
+    """
+    if not text or not isinstance(text, str):
+        return text
+
+    import re
+
+    # Process in specific order to avoid conflicts
+    # 1. Bold with ** (must come before single *)
+    text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
+
+    # 2. Bold with __ (must come before single _)
+    text = re.sub(r'__(.+?)__', r'<strong>\1</strong>', text)
+
+    # 3. Italic with * (after ** is processed)
+    text = re.sub(r'\*(.+?)\*', r'<em>\1</em>', text)
+
+    # 4. Italic with _ (after __ is processed)
+    text = re.sub(r'_(.+?)_', r'<em>\1</em>', text)
+
+    # 5. Strikethrough with ~~
+    text = re.sub(r'~~(.+?)~~', r'<s>\1</s>', text)
+
+    # 6. Underline with ++ (custom syntax)
+    text = re.sub(r'\+\+(.+?)\+\+', r'<u>\1</u>', text)
+
+    return text
+
+
+def convert_markdown_formatting_to_latex(text):
+    """
+    Convert Markdown-style formatting to LaTeX commands.
+
+    Supports:
+    - Bold: **text** or __text__ → \\textbf{text}
+    - Italic: *text* or _text_ → \\textit{text}
+    - Strikethrough: ~~text~~ → \\sout{text}
+    - Underline: ++text++ → \\underline{text} (custom syntax, not standard markdown)
+
+    Args:
+        text: String that may contain markdown formatting
+
+    Returns:
+        String with markdown formatting converted to LaTeX commands
+
+    Example:
+        "This is **bold** and *italic*" -> "This is \\textbf{bold} and \\textit{italic}"
+    """
+    if not text or not isinstance(text, str):
+        return text
+
+    import re
+
+    # Process in specific order to avoid conflicts
+    # 1. Bold with ** (must come before single *)
+    text = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\1}', text)
+
+    # 2. Bold with __ (must come before single _)
+    text = re.sub(r'__(.+?)__', r'\\textbf{\1}', text)
+
+    # 3. Italic with * (after ** is processed)
+    text = re.sub(r'\*(.+?)\*', r'\\textit{\1}', text)
+
+    # 4. Italic with _ (after __ is processed)
+    text = re.sub(r'_(.+?)_', r'\\textit{\1}', text)
+
+    # 5. Strikethrough with ~~
+    text = re.sub(r'~~(.+?)~~', r'\\sout{\1}', text)
+
+    # 6. Underline with ++ (custom syntax)
+    text = re.sub(r'\+\+(.+?)\+\+', r'\\underline{\1}', text)
+
+    return text
+
+
 def _prepare_latex_data(data):
     """Recursively applies LaTeX escaping to all string values in the data dictionary."""
     logging.info("Preparing data for LaTeX rendering, applying escaping and deriving fields.")
@@ -277,35 +514,67 @@ def _prepare_latex_data(data):
 
     prepared_data = apply_escaping_recursive(prepared_data)
 
-    # Derive linkedin_handle and ensure LinkedIn URL has protocol
+    # Process contact info and social links
     contact_info = prepared_data.get("contact_info", {})
     if contact_info:
-        linkedin_url = contact_info.get("linkedin", "")
-        if (
-            linkedin_url
-            and not linkedin_url.startswith("http://")
-            and not linkedin_url.startswith("https://")
-        ):
-            contact_info["linkedin"] = "https://" + linkedin_url
-            logging.info(f"Prepended https:// to LinkedIn URL: {contact_info['linkedin']}")
+        # Migrate old LinkedIn format to new social_links array (backward compatibility)
+        contact_info = migrate_linkedin_to_social_links(contact_info)
 
-        # Only process LinkedIn if URL is provided
-        if linkedin_url and linkedin_url.strip():
-            contact_info["linkedin_handle"] = get_social_media_handle(linkedin_url)
-            logging.info(f"Derived LinkedIn handle: {contact_info['linkedin_handle']}")
-            
-            # Generate linkedin_display if not already provided
-            if not contact_info.get("linkedin_display"):
-                contact_info["linkedin_display"] = generate_linkedin_display_text(
-                    linkedin_url,
-                    contact_info.get("name", "")
-                )
-                logging.info(f"Generated LinkedIn display text: {contact_info['linkedin_display']}")
+        # Process social_links array
+        social_links = contact_info.get("social_links", [])
+        if social_links:
+            for link in social_links:
+                platform = link.get("platform", "")
+                url = link.get("url", "")
+
+                if not url or not url.strip():
+                    continue
+
+                # Add https:// if not present
+                if not url.startswith("https://") and not url.startswith("http://"):
+                    url = "https://" + url
+                    link["url"] = url
+
+                # Extract handle for display
+                link["handle"] = get_social_media_handle(url, platform)
+
+                # Generate display_text if not provided
+                if not link.get("display_text") or not link.get("display_text").strip():
+                    if platform == "linkedin":
+                        link["display_text"] = generate_linkedin_display_text(
+                            url, contact_info.get("name", "")
+                        )
+                    elif platform == "github":
+                        link["display_text"] = link["handle"]
+                    elif platform == "twitter":
+                        link["display_text"] = link["handle"]
+                    elif platform == "website":
+                        # Extract domain from URL
+                        try:
+                            from urllib.parse import urlparse
+                            parsed = urlparse(url)
+                            link["display_text"] = parsed.hostname.replace('www.', '') if parsed.hostname else "Website"
+                        except:
+                            link["display_text"] = "Website"
+                    else:
+                        # Default: use handle or platform name
+                        link["display_text"] = link["handle"] or platform.capitalize()
+
+                    logging.info(f"Generated {platform} display text: {link['display_text']}")
+
+        # Store processed social_links back in contact_info
+        contact_info["social_links"] = social_links
+
+        # Maintain backward compatibility: keep linkedin fields for old templates
+        linkedin_link = next((link for link in social_links if link.get("platform") == "linkedin"), None)
+        if linkedin_link:
+            contact_info["linkedin"] = linkedin_link.get("url", "")
+            contact_info["linkedin_handle"] = linkedin_link.get("handle", "")
+            contact_info["linkedin_display"] = linkedin_link.get("display_text", "")
         else:
-            # Clear LinkedIn fields if URL is empty
+            contact_info["linkedin"] = ""
             contact_info["linkedin_handle"] = ""
             contact_info["linkedin_display"] = ""
-            logging.info("LinkedIn URL empty - cleared LinkedIn fields")
 
     prepared_data["contact_info"] = contact_info
     return prepared_data
@@ -318,10 +587,13 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
     """
     # Generate session ID for tracking this request
     session_id = str(uuid.uuid4())
-    
+
     logging.info(f"Starting LaTeX PDF generation for template: {template_name}")
-    
+
     try:
+        # Normalize sections for backward compatibility
+        yaml_data = normalize_sections(yaml_data)
+
         # Load and prepare data
         prepared_data = _prepare_latex_data(yaml_data)
         
@@ -342,7 +614,11 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
             trim_blocks=True,
             autoescape=False
         )
-        
+
+        # Register custom filters for markdown links and formatting
+        latex_env.filters['markdown_links'] = convert_markdown_links_to_latex
+        latex_env.filters['markdown_formatting'] = convert_markdown_formatting_to_latex
+
         # Render the LaTeX template
         template = latex_env.get_template("resume.tex")
         latex_content = template.render(**prepared_data)
@@ -478,6 +754,31 @@ TEMPLATE_FILE_MAP = {
     "classic-alex-rivera": PROJECT_ROOT / "samples" / "classic" / "alex_rivera_data.yml",
     "classic-jane-doe": PROJECT_ROOT / "samples" / "classic" / "jane_doe.yml",
 }
+
+
+# 301 Redirects for SEO consolidation
+@app.route("/ats-friendly-resume-templates-free")
+def redirect_ats_templates_free():
+    """Redirect old ATS template URL to hub"""
+    return redirect("/ats-resume-templates", code=301)
+
+
+@app.route("/free-ats-friendly-resume-template")
+def redirect_free_ats_template():
+    """Redirect old ATS template URL to specific template"""
+    return redirect("/templates/ats-friendly", code=301)
+
+
+@app.route("/best-resume-builder-reddit")
+def redirect_reddit_builder():
+    """Redirect old Reddit URL to new canonical URL"""
+    return redirect("/best-free-resume-builder-reddit", code=301)
+
+
+@app.route("/blog/customer-service-resume-keywords")
+def redirect_customer_service_keywords():
+    """Redirect blog version to root SEO page"""
+    return redirect("/resume-keywords/customer-service", code=301)
 
 
 @app.route("/", defaults={"path": ""})
@@ -677,6 +978,9 @@ def generate_resume():
             with open(yaml_path, 'r') as f:
                 yaml_data = yaml.safe_load(f)
 
+            # Normalize sections for backward compatibility
+            yaml_data = normalize_sections(yaml_data)
+
             # Get session ID for icon isolation
             session_id = request.form.get("session_id")
             if not session_id:
@@ -707,7 +1011,12 @@ def generate_resume():
             uses_icons = template != "modern-no-icons"  # Skip icons for no-icons variant
             
             # Always copy base contact icons that are hardcoded in templates
-            base_contact_icons = ["location.png", "email.png", "phone.png", "linkedin.png"]
+            # Include all social platform icons for new social_links feature
+            base_contact_icons = [
+                "location.png", "email.png", "phone.png", "linkedin.png",
+                "github.png", "twitter.png", "website.png", "pinterest.png",
+                "medium.png", "youtube.png", "stackoverflow.png", "behance.png", "dribbble.png"
+            ]
             for icon_name in base_contact_icons:
                 default_icon_path = ICONS_DIR / icon_name
                 if default_icon_path.exists():

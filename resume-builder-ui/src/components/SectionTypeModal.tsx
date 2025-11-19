@@ -11,6 +11,22 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
 }) => {
   const allSectionTypes = [
     {
+      type: "experience",
+      title: "Experience Section",
+      description:
+        "Structured format for work experience, projects, or any timeline-based entries with company, title, dates, and achievements.",
+      useFor:
+        "Work Experience, Independent Projects, Volunteer Work, Research Experience, Teaching Experience, Consulting Projects",
+    },
+    {
+      type: "education",
+      title: "Education Section",
+      description:
+        "Structured format for academic qualifications with degree, institution, year, and field of study.",
+      useFor:
+        "Education, Certifications, Professional Training, Online Courses, Academic Background, Qualifications",
+    },
+    {
       type: "text",
       title: "Text Section",
       description: "A simple text block for single-paragraph sections.",

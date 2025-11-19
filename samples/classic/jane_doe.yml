@@ -5,7 +5,19 @@ contact_info:
   location: "San Francisco, CA"
   email: jane.doe@email.com
   phone: +1 (555) 123-4567
-  linkedin: https://linkedin.com/in/jane-doe-marketing
+  social_links:
+    - platform: linkedin
+      url: https://linkedin.com/in/jane-doe-marketing
+      display_text: Jane Doe
+    - platform: twitter
+      url: twitter.com/janedoemarketing
+      display_text: "@janedoemarketing"
+    - platform: medium
+      url: medium.com/@janedoe
+      display_text: "@janedoe"
+    - platform: website
+      url: janedoe.marketing
+      display_text: janedoe.marketing
 
 sections:
   - name: Professional Summary

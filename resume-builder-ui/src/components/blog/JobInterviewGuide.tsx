@@ -25,6 +25,20 @@ export default function JobInterviewGuide() {
           to impress your interviewers and land the offer.
         </p>
 
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
+          <h3 className="font-bold text-blue-800 mb-3">📝 Need a resume first?</h3>
+          <p className="text-blue-700">
+            Check out our{" "}
+            <a
+              href="/best-free-resume-builder-reddit"
+              className="text-blue-600 hover:text-blue-800 underline font-medium"
+            >
+              best free resume builder
+            </a>{" "}
+            - consistently recommended by Reddit users for being truly free, ATS-friendly, and easy to use.
+          </p>
+        </div>
+
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
           Part 1: The Foundation - Pre-Interview Preparation
         </h2>

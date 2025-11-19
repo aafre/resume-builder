@@ -142,6 +142,30 @@ export default function ResumeKeywordsGuide() {
           </ul>
         </div>
 
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-blue-800 mb-3">🔗 Explore More Keywords</h3>
+          <p className="text-blue-700 mb-4">
+            Looking for industry-specific keywords? Check out our comprehensive keyword guides:
+          </p>
+          <ul className="space-y-2 text-blue-700">
+            <li>
+              • <a href="/resume-keywords/customer-service" className="text-blue-600 hover:text-blue-800 underline font-medium">
+                Customer Service Resume Keywords
+              </a> - CRM platforms, soft skills, and metrics
+            </li>
+            <li>
+              • <a href="/resume-keywords" className="text-blue-600 hover:text-blue-800 underline font-medium">
+                Resume Keywords Hub
+              </a> - Browse all industries
+            </li>
+            <li>
+              • <a href="/ats-resume-templates" className="text-blue-600 hover:text-blue-800 underline font-medium">
+                ATS-Friendly Templates
+              </a> - Use keywords with optimized templates
+            </li>
+          </ul>
+        </div>
+
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
           Top Resume Keywords by Industry (2025 Edition)
         </h2>

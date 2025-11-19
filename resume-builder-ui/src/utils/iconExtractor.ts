@@ -3,6 +3,7 @@
  */
 
 import { IconReference } from '../types/iconTypes';
+import { isExperienceSection, isEducationSection } from './sectionTypeChecker';
 
 interface Section {
   name: string;
@@ -19,8 +20,8 @@ export const extractReferencedIconFilenames = (sections: Section[]): string[] =>
   const referencedIcons = new Set<string>();
 
   sections.forEach((section) => {
-    // Handle Experience and Education sections
-    if (['Experience', 'Education'].includes(section.name) && Array.isArray(section.content)) {
+    // Handle Experience and Education sections using type-based detection
+    if ((isExperienceSection(section) || isEducationSection(section)) && Array.isArray(section.content)) {
       section.content.forEach((item: any) => {
         if (item.icon && typeof item.icon === 'string' && item.icon.trim() !== '') {
           referencedIcons.add(item.icon);
@@ -50,8 +51,8 @@ export const extractDetailedIconReferences = (sections: Section[]): IconReferenc
   const references: IconReference[] = [];
 
   sections.forEach((section, _) => {
-    // Handle Experience and Education sections
-    if (['Experience', 'Education'].includes(section.name) && Array.isArray(section.content)) {
+    // Handle Experience and Education sections using type-based detection
+    if ((isExperienceSection(section) || isEducationSection(section)) && Array.isArray(section.content)) {
       section.content.forEach((item: any, itemIndex: number) => {
         if (item.icon && typeof item.icon === 'string' && item.icon.trim() !== '') {
           references.push({

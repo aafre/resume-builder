@@ -39,7 +39,17 @@
             <span>
                 <img src="{{ icon_path }}/phone.png" alt="Phone Icon" class="icon"> {{ contact_info.phone }}
             </span>
-            {% if contact_info.linkedin and contact_info.linkedin.strip() %}
+            {% if contact_info.social_links %}
+                {% for social_link in contact_info.social_links %}
+                    {% if social_link.url and social_link.url.strip() and social_link.platform %}
+                    <span>
+                        <img src="{{ icon_path }}/{{ social_link.platform }}.png" alt="{{ social_link.platform | capitalize }} Icon" class="icon">
+                        <a href="{{ social_link.url }}">{{ social_link.display_text or social_link.handle or social_link.platform | capitalize }}</a>
+                    </span>
+                    {% endif %}
+                {% endfor %}
+            {% elif contact_info.linkedin and contact_info.linkedin.strip() %}
+            {# Backward compatibility for old linkedin field #}
             <span>
                 <img src="{{ icon_path }}/linkedin.png" alt="LinkedIn Icon" class="icon">
                 <a href="{{ contact_info.linkedin }}">{{ contact_info.linkedin_display or contact_info.linkedin_handle }}</a>
@@ -61,9 +71,9 @@
             {% include 'icon-list.html' %}
         {% elif section.type == "dynamic-column-list" %}
             {% include 'dynamic-column-list.html' %}
-        {% elif section.name == "Experience" %}
+        {% elif section.type == "experience" or section.name == "Experience" %}
             {% include 'experience.html' %}
-        {% elif section.name == "Education" %}
+        {% elif section.type == "education" or section.name == "Education" %}
             {% include 'education.html' %}
         {% endif %}
     {% endfor %}

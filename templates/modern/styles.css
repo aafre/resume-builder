@@ -5,6 +5,16 @@ body {
     color: black;
 }
 
+/* Link Styling - Make all links black */
+a {
+    color: black;
+    text-decoration: underline;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 /* Header Styling */
 .header {
     text-align: left;

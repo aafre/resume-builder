@@ -2,6 +2,46 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import GenericSection from "../components/GenericSection";
 
+// --- Mock RichTextArea to return a simple textarea for testing ---
+vi.mock("../components/RichTextArea", () => {
+  return {
+    RichTextArea: (props: { value: string; onChange: (value: string) => void; placeholder?: string }) => {
+      return (
+        <textarea
+          value={props.value}
+          onChange={(e) => props.onChange(e.target.value)}
+          placeholder={props.placeholder}
+          data-testid="rich-text-area"
+        />
+      );
+    },
+  };
+});
+
+// --- Mock RichTextInput to return a simple input for testing ---
+vi.mock("../components/RichTextInput", () => {
+  return {
+    RichTextInput: (props: { value: string; onChange: (value: string) => void; placeholder?: string }) => {
+      return (
+        <input
+          type="text"
+          value={props.value}
+          onChange={(e) => props.onChange(e.target.value)}
+          placeholder={props.placeholder}
+          data-testid="rich-text-input"
+        />
+      );
+    },
+  };
+});
+
+// --- Mock MarkdownHint ---
+vi.mock("../components/MarkdownLinkPreview", () => {
+  return {
+    MarkdownHint: () => <div data-testid="markdown-hint">Markdown Hint</div>,
+  };
+});
+
 // Sample section data for testing.
 const textSection = {
   name: "Summary",
@@ -41,8 +81,8 @@ describe("GenericSection (Text Type)", () => {
     // In non-editing mode, the title is rendered as text with an edit button.
     expect(screen.getByText("Summary")).toBeInTheDocument();
     expect(screen.getByTitle("Edit Title")).toBeInTheDocument();
-    // For a text section, a textarea should be rendered.
-    const textarea = screen.getByRole("textbox", { name: "" }); // the textarea doesn't have a visible label
+    // For a text section, a textarea should be rendered (via RichTextArea mock).
+    const textarea = screen.getByRole("textbox");
     expect(textarea.tagName).toBe("TEXTAREA");
     expect(textarea).toHaveValue("This is a text section content.");
   });
@@ -68,7 +108,7 @@ describe("GenericSection (Text Type)", () => {
         setTemporaryTitle={setTemporaryTitleMock}
       />
     );
-    const textarea = screen.getByRole("textbox", { name: "" });
+    const textarea = screen.getByRole("textbox");
     fireEvent.change(textarea, { target: { value: "Updated text content" } });
     expect(onUpdateMock).toHaveBeenCalledTimes(1);
     const updatedSection = onUpdateMock.mock.calls[0][0];
@@ -218,13 +258,10 @@ describe("GenericSection Title Editing", () => {
       />
     );
 
-    // We want the title editing input, not the textarea.
-    // Get all elements with role "textbox" and then filter for those that are INPUT elements.
-    const textboxes = screen.getAllByRole("textbox");
-    const inputElements = textboxes.filter((el) => el.tagName === "INPUT");
-    expect(inputElements.length).toBeGreaterThan(0);
-    // Assert that one of these has the expected value.
-    expect(inputElements[0]).toHaveValue("Editing Title");
+    // Get the title editing input (should be type="text" for title editing)
+    const titleInput = screen.getByDisplayValue("Editing Title");
+    expect(titleInput).toBeInTheDocument();
+    expect(titleInput.tagName).toBe("INPUT");
 
     // The Save and Cancel buttons should be present.
     expect(screen.getByTitle("Save Title")).toBeInTheDocument();
