@@ -115,7 +115,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
           )}
 
           {/* PDF Viewer Area */}
-          <div className="flex-1 overflow-hidden bg-gray-100 relative">
+          <div className="flex-1 overflow-auto bg-gray-100 relative" style={{ WebkitOverflowScrolling: 'touch' }}>
             {/* Loading Overlay */}
             {isGenerating && (
               <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center z-10">
@@ -150,7 +150,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
             {/* PDF Iframe */}
             {previewUrl && !error && (
               <div
-                className="w-full h-full overflow-auto p-4 lg:p-6"
+                className="w-full h-full p-4 lg:p-6"
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
@@ -197,18 +197,19 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
           </div>
 
           {/* Footer Actions */}
-          <div className="p-4 lg:p-6 border-t border-gray-200 bg-gray-50 flex-shrink-0">
+          <div className="border-t border-gray-200 bg-white flex-shrink-0">
             {/* Action Buttons */}
-            <div className="flex gap-3 w-full lg:w-auto lg:justify-end">
+            <div className="p-4 lg:p-6 grid grid-cols-2 gap-3 lg:flex lg:justify-end">
               <button
                 onClick={onRefresh}
                 disabled={isGenerating}
-                className="flex-1 lg:flex-none flex items-center justify-center gap-2 px-4 lg:px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex items-center justify-center gap-2 px-4 lg:px-6 py-3.5 bg-white border-2 border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98] min-h-[52px]"
+                style={{ WebkitTapHighlightColor: "transparent" }}
               >
                 {isGenerating ? (
                   <div className="animate-spin rounded-full h-5 w-5 border-2 border-gray-600 border-t-transparent"></div>
                 ) : (
-                  <MdRefresh className="text-lg" />
+                  <MdRefresh className="text-xl" />
                 )}
                 <span className="hidden sm:inline">{isStale ? 'Refresh Preview' : 'Regenerate'}</span>
                 <span className="sm:hidden">Refresh</span>
@@ -216,12 +217,15 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
               <button
                 onClick={onDownload}
                 disabled={isGenerating || !previewUrl}
-                className="flex-1 lg:flex-none flex items-center justify-center gap-2 px-4 lg:px-6 py-3 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-lg font-medium hover:from-emerald-500 hover:to-green-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg transition-all"
+                className="flex items-center justify-center gap-2 px-4 lg:px-6 py-3.5 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-xl font-semibold hover:from-emerald-500 hover:to-green-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transition-all active:scale-[0.98] min-h-[52px]"
+                style={{ WebkitTapHighlightColor: "transparent" }}
               >
-                <MdFileDownload className="text-lg" />
+                <MdFileDownload className="text-xl" />
                 <span>Download</span>
               </button>
             </div>
+            {/* Safe area padding for devices with notches/home indicators */}
+            <div style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }} />
           </div>
         </div>
       </div>
