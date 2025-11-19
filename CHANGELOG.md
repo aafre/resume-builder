@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.0] - 2025-11-19
+
+### 🚀 Features
+
+- Add rich text formatting on ui, resume preview, updated UI/UX on Editor  ([#122](https://github.com/aafre/resume-builder/pull/122))
+
 ## [0.4.0] - 2025-09-27
 
 ### 🚀 Features
