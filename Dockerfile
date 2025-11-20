@@ -22,7 +22,7 @@ RUN apt-get update && \
         texlive-xetex \
         texlive-fonts-recommended \
         texlive-latex-recommended \
-        texlive-latex-extra \
+        texlive-plain-generic \
         texlive-fonts-extra \
         fontconfig \
         curl \
