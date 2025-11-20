@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.4] - 2025-11-20
+
+### 🐛 Bug Fixes
+
+- Add tex plain generic dependency for latex templates ([#127](https://github.com/aafre/resume-builder/pull/127))
+
 ## [0.5.3] - 2025-11-20
 
 ### 🐛 Bug Fixes
