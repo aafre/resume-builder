@@ -19,6 +19,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@heroicons/react": "^2.2.0",
+    "@supabase/supabase-js": "^2.89.0",
     "@tiptap/extension-bold": "^3.10.7",
     "@tiptap/extension-bubble-menu": "^3.10.7",
     "@tiptap/extension-hard-break": "^3.10.7",
