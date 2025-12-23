@@ -192,3 +192,14 @@ dist-ssr
 *.sw?
 
 coverage/
+blogs_to_add/
+.claude/settings.local.json
+resume-builder-ui/test-files/
+new-resume.yml
+redo-frontend-editor.md
+test_backend_api.py
+EasyFreeResume - v2 .md
+test-api.ps1
+test-links.yml
+test-multiple-experience.yml
+output/
