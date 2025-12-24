@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import CountUp from "react-countup";
 import SEOHead from "./SEOHead";
 import CompanyMarquee from "./CompanyMarquee";
+import { useAuth } from "../contexts/AuthContext";
 import {
   ArrowRightIcon,
   EyeIcon,
@@ -13,10 +14,76 @@ import {
   LockClosedIcon,
   GiftIcon,
   ChevronDownIcon,
+  DocumentTextIcon,
 } from "@heroicons/react/24/solid";
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { isAuthenticated, isAnonymous, session } = useAuth();
+  const [checking, setChecking] = useState(true);
+
+  // Smart redirect logic for returning users
+  useEffect(() => {
+    // Handle legacy URL redirects (old bookmark format)
+    const resumeIdFromUrl = searchParams.get("resumeId");
+    const templateId = searchParams.get("template");
+
+    if (resumeIdFromUrl) {
+      // Old bookmark: /?resumeId=123 → redirect to /editor/123
+      navigate(`/editor/${resumeIdFromUrl}`, { replace: true });
+      return;
+    }
+
+    if (templateId) {
+      // Old bookmark: /?template=modern → This now should go through template selection
+      // But we'll redirect to templates page for user to select
+      navigate(`/templates`, { replace: true });
+      return;
+    }
+
+    // Smart redirect for authenticated users
+    async function handleSmartRedirect() {
+      if (isAuthenticated && !isAnonymous && session) {
+        try {
+          setChecking(true);
+          // Check if user has resumes
+          const response = await fetch('/api/resumes?limit=1', {
+            headers: {
+              'Authorization': `Bearer ${session.access_token}`
+            }
+          });
+
+          if (!response.ok) {
+            // If auth fails, stay on landing page
+            setChecking(false);
+            return;
+          }
+
+          const data = await response.json();
+          const totalCount = data.total_count || 0;
+
+          if (totalCount > 0) {
+            // Returning user with resumes → redirect to dashboard
+            navigate('/my-resumes', { replace: true });
+            return; // Don't set checking to false, we're navigating away
+          }
+
+          setChecking(false);
+          // else: Authenticated user with no resumes → stay on landing page
+        } catch (error) {
+          console.error('Failed to check resumes:', error);
+          setChecking(false);
+          // On error, stay on landing page
+        }
+      } else {
+        setChecking(false);
+      }
+      // Anonymous users → stay on landing page
+    }
+
+    handleSmartRedirect();
+  }, [isAuthenticated, isAnonymous, session, navigate, searchParams]);
 
   // Calculate growing user count starting above 50k
   const calculateUsersServed = (): number => {
@@ -104,6 +171,15 @@ const LandingPage: React.FC = () => {
     setOpenFAQIndex(openFAQIndex === index ? null : index);
   };
 
+  // Show minimal loading during check
+  if (checking) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
   return (
     <>
       <SEOHead
@@ -140,23 +216,23 @@ const LandingPage: React.FC = () => {
         {/* Hero Section */}
         <div className="text-center my-16 px-4 max-w-4xl mx-auto">
           {/* Professional Gradient Title */}
-          <h1 className="text-4xl md:text-6xl font-bold mb-8 pb-2 leading-snug tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 relative">
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-8 pb-2 leading-snug tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 relative">
             <span className="absolute inset-0 text-gray-800 opacity-10">The Truly Free Resume Builder</span>
             The Truly Free Resume Builder
           </h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto text-gray-800 mb-4 leading-relaxed">
+          <p className="text-xl md:text-2xl max-w-3xl mx-auto text-gray-800 mb-4 leading-loose">
             Create ATS-optimized resumes that get you noticed by hiring
             managers.
           </p>
           <div className="flex items-center justify-center gap-4 mb-10">
-            <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-              <LockClosedIcon className="w-4 h-4 text-green-600 mr-2" />
+            <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm hover:shadow-md hover:bg-white/70 transition-all duration-300">
+              <LockClosedIcon className="w-5 h-5 text-green-600 mr-2" />
               <span className="text-sm font-medium text-gray-700">
                 100% Free
               </span>
             </div>
-            <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-              <ClockIcon className="w-4 h-4 text-blue-600 mr-2" />
+            <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm hover:shadow-md hover:bg-white/70 transition-all duration-300">
+              <ClockIcon className="w-5 h-5 text-blue-600 mr-2" />
               <span className="text-sm font-medium text-gray-700">
                 No Sign-up
               </span>
@@ -183,13 +259,15 @@ const LandingPage: React.FC = () => {
 
         {/* Stats Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-16 my-16 px-4">
-          <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
+          <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
+            <DocumentTextIcon className="w-10 h-10 text-blue-500 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
             <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-blue-500 group-hover:to-purple-500 transition-all duration-300">
               <CountUp end={totalUsers} duration={3} separator="," />+
             </h3>
             <p className="text-gray-600 font-medium tracking-wide">Resumes Created</p>
           </div>
-          <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-xl hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
+          <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
+            <CheckBadgeIcon className="w-10 h-10 text-indigo-500 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
             <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-indigo-500 group-hover:to-purple-500 transition-all duration-300">
               100%
             </h3>
@@ -239,7 +317,7 @@ const LandingPage: React.FC = () => {
                 
                 <div className="relative z-10">
                   <div className="flex items-center justify-center mb-6">
-                    <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 group-hover:from-blue-100/90 group-hover:to-purple-100/90 group-hover:scale-110 transition-all duration-300 shadow-md group-hover:shadow-lg">
+                    <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 group-hover:from-blue-100/90 group-hover:to-purple-100/90 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-md group-hover:shadow-lg">
                       {item.icon}
                     </div>
                   </div>
