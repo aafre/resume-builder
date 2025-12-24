@@ -328,7 +328,10 @@ export default function MyResumes() {
 
   const handlePreview = async (id: string) => {
     try {
-      setPreviewingId(id);
+      setPreviewResumeId(id);
+      setIsGeneratingPreview(true);
+      setPreviewError(null);
+      setShowPreviewModal(true); // Open modal immediately to show loading
 
       if (!supabase) {
         throw new Error('Supabase not configured');
@@ -351,30 +354,52 @@ export default function MyResumes() {
 
         // Special handling for missing icons error
         if (result.missing_icons && result.missing_icons.length > 0) {
-          toast.error(
+          const errorMsg =
             `Cannot generate PDF: Missing ${result.missing_icons.length} icon(s)\n\n` +
             `Missing: ${result.missing_icons.join(', ')}\n\n` +
-            `Please edit this resume to upload the missing icons or remove them.`,
-            { duration: 8000 }
-          );
+            `Please edit this resume to upload the missing icons or remove them.`;
+          setPreviewError(errorMsg);
+          toast.error(errorMsg, { duration: 8000 });
           return;
         }
 
         throw new Error(result.error || 'Failed to generate PDF');
       }
 
-      // Open preview in new tab
+      // Create blob URL for modal instead of opening new tab
       const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      window.open(url, '_blank');
 
-      // Clean up after a delay
-      setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+      // Clean up previous preview URL if exists
+      if (previewUrl) {
+        window.URL.revokeObjectURL(previewUrl);
+      }
+
+      const url = window.URL.createObjectURL(blob);
+      setPreviewUrl(url);
     } catch (err) {
       console.error('Error previewing resume:', err);
-      toast.error('Failed to preview resume');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to preview resume';
+      setPreviewError(errorMessage);
+      toast.error(errorMessage);
     } finally {
-      setPreviewingId(null);
+      setIsGeneratingPreview(false);
+    }
+  };
+
+  const handleClosePreview = () => {
+    setShowPreviewModal(false);
+  };
+
+  const handleRefreshPreview = async () => {
+    if (previewResumeId) {
+      setPreviewError(null);
+      await handlePreview(previewResumeId);
+    }
+  };
+
+  const handleDownloadFromPreview = async () => {
+    if (previewResumeId) {
+      await handleDownload(previewResumeId);
     }
   };
 
