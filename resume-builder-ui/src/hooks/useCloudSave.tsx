@@ -222,11 +222,26 @@ export function useCloudSave({
       return;
     }
 
+    // Calculate icon metadata for robust change detection
+    // Include size to detect icon replacements with same filename
+    const iconMetadata = Object.entries(icons).reduce((acc, [filename, iconData]) => {
+      let size = 0;
+      if (iconData instanceof File) {
+        size = iconData.size;
+      } else if (typeof iconData === 'string') {
+        // Estimate size from base64 string
+        const base64Data = iconData.split(',')[1] || iconData;
+        size = Math.ceil((base64Data.length * 3) / 4);
+      }
+      acc[filename] = size;
+      return acc;
+    }, {} as Record<string, number>);
+
     // Serialize current data for comparison
     const currentData = JSON.stringify({
       contact_info: resumeData.contact_info,
       sections: resumeData.sections,
-      icons: Object.keys(icons)
+      iconMetadata  // Use metadata (filename + size) instead of just filenames
     });
 
     // Skip if data hasn't changed
