@@ -2,6 +2,9 @@ import React, { useEffect, useState, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchTemplates } from "../services/templates";
 import { ArrowRightIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
+import { useAuth } from "../contexts/AuthContext";
+import toast from "react-hot-toast";
+import TemplateStartModal from "./TemplateStartModal";
 
 // Lazy-loaded error components
 const NotFound = lazy(() => import("./NotFound"));
@@ -28,7 +31,11 @@ const TemplateCarousel: React.FC = () => {
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [creating, setCreating] = useState(false);
+  const [showStartModal, setShowStartModal] = useState(false);
+  const [selectedTemplateForModal, setSelectedTemplateForModal] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { session } = useAuth();
 
   // Fetch templates on component mount
   useEffect(() => {
@@ -54,9 +61,101 @@ const TemplateCarousel: React.FC = () => {
     setSelectedTemplate(template);
   };
 
-  // Navigate to editor with the selected template
+  // Show modal when user clicks "Use Template"
   const handleUseTemplate = (templateId: string) => {
-    navigate(`/editor?template=${templateId}`);
+    if (!session) {
+      toast.error("Please sign in to create a resume");
+      return;
+    }
+
+    setSelectedTemplateForModal(templateId);
+    setShowStartModal(true);
+  };
+
+  // Handle "Empty Structure" selection
+  const handleModalSelectEmpty = async () => {
+    if (!selectedTemplateForModal || !session) return;
+
+    try {
+      setCreating(true);
+      setShowStartModal(false);
+
+      // Create resume with empty structure (template sections but no content)
+      const response = await fetch("/api/resumes/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          template_id: selectedTemplateForModal,
+          load_example: false  // Empty structure
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (data.error_code === "RESUME_LIMIT_REACHED") {
+          toast.error("Resume limit reached (5/5). Please delete a resume to create a new one.");
+          navigate("/my-resumes");
+          return;
+        }
+        throw new Error(data.error || "Failed to create resume");
+      }
+
+      // Navigate to editor
+      toast.success("Resume created! Starting editor...");
+      navigate(`/editor/${data.resume_id}`);
+    } catch (err) {
+      console.error("Error creating resume:", err);
+      toast.error("Failed to create resume. Please try again.");
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  // Handle "Example Data" selection
+  const handleModalSelectExample = async () => {
+    if (!selectedTemplateForModal || !session) return;
+
+    try {
+      setCreating(true);
+      setShowStartModal(false);
+
+      // Create resume with example data from template
+      const response = await fetch("/api/resumes/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          template_id: selectedTemplateForModal,
+          load_example: true  // Load example data
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (data.error_code === "RESUME_LIMIT_REACHED") {
+          toast.error("Resume limit reached (5/5). Please delete a resume to create a new one.");
+          navigate("/my-resumes");
+          return;
+        }
+        throw new Error(data.error || "Failed to create resume");
+      }
+
+      // Navigate to editor
+      toast.success("Resume created! Starting editor...");
+      navigate(`/editor/${data.resume_id}`);
+    } catch (err) {
+      console.error("Error creating resume:", err);
+      toast.error("Failed to create resume. Please try again.");
+    } finally {
+      setCreating(false);
+    }
   };
 
   // Loading state
@@ -164,14 +263,24 @@ const TemplateCarousel: React.FC = () => {
                       {isSelected ? (
                         <>
                           <button
-                            className="flex-1 inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+                            className="flex-1 inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleUseTemplate(template.id);
                             }}
+                            disabled={creating}
                           >
-                            Start Building Resume
-                            <ArrowRightIcon className="w-5 h-5 ml-2" />
+                            {creating ? (
+                              <>
+                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                                Creating...
+                              </>
+                            ) : (
+                              <>
+                                Start Building Resume
+                                <ArrowRightIcon className="w-5 h-5 ml-2" />
+                              </>
+                            )}
                           </button>
                         </>
                       ) : (
@@ -187,6 +296,19 @@ const TemplateCarousel: React.FC = () => {
           })}
         </div>
       </div>
+
+      {/* Template Start Modal */}
+      <TemplateStartModal
+        isOpen={showStartModal}
+        onClose={() => setShowStartModal(false)}
+        onSelectEmpty={handleModalSelectEmpty}
+        onSelectExample={handleModalSelectExample}
+        templateName={
+          selectedTemplateForModal
+            ? templates.find(t => t.id === selectedTemplateForModal)?.name || ''
+            : ''
+        }
+      />
     </div>
   );
 };
