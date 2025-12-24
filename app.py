@@ -2146,6 +2146,183 @@ def duplicate_resume(resume_id):
         return jsonify({"success": False, "error": "Failed to duplicate resume"}), 500
 
 
+@app.route("/api/migrate-anonymous-resumes", methods=["POST"])
+@require_auth
+def migrate_anonymous_resumes():
+    """
+    Migrate all resumes from an anonymous user to the authenticated user.
+    Called when a user signs in after creating resumes anonymously.
+
+    Request body:
+        {
+            "old_user_id": "uuid-of-anonymous-user"
+        }
+
+    Returns:
+        {
+            "migrated_count": int,
+            "total_count": int,
+            "exceeds_limit": bool,
+            "message": str
+        }
+    """
+    try:
+        new_user_id = request.user_id  # Authenticated user from JWT
+        old_user_id = request.json.get('old_user_id')
+
+        # Validation
+        if not old_user_id:
+            return jsonify({"error": "old_user_id is required"}), 400
+
+        if old_user_id == new_user_id:
+            return jsonify({
+                "migrated_count": 0,
+                "total_count": 0,
+                "exceeds_limit": False,
+                "message": "Same user, no migration needed"
+            }), 200
+
+        # Security: Verify old user was anonymous
+        try:
+            old_user_response = supabase.auth.admin.get_user_by_id(old_user_id)
+            old_user = old_user_response.user
+
+            # Check if user is anonymous
+            is_anonymous = old_user.app_metadata.get('provider') == 'anonymous'
+            if not is_anonymous:
+                logging.warning(f"Attempted migration from non-anonymous user: {old_user_id}")
+                return jsonify({"error": "Can only migrate from anonymous users"}), 403
+
+        except Exception as auth_error:
+            logging.error(f"Failed to verify anonymous user: {auth_error}")
+            return jsonify({"error": "Failed to verify user"}), 400
+
+        # Get resume counts
+        old_resumes_response = supabase.table('resumes') \
+            .select('id', count='exact') \
+            .eq('user_id', old_user_id) \
+            .is_('deleted_at', 'null') \
+            .execute()
+
+        new_resumes_response = supabase.table('resumes') \
+            .select('id', count='exact') \
+            .eq('user_id', new_user_id) \
+            .is_('deleted_at', 'null') \
+            .execute()
+
+        old_count = old_resumes_response.count or 0
+        new_count = new_resumes_response.count or 0
+        total_count = old_count + new_count
+        exceeds_limit = total_count > 5
+
+        # Early return if no resumes to migrate (idempotency)
+        if old_count == 0:
+            return jsonify({
+                "migrated_count": 0,
+                "total_count": new_count,
+                "exceeds_limit": False,
+                "message": "No resumes to migrate"
+            }), 200
+
+        logging.info(f"Starting migration: {old_count} resumes from {old_user_id} to {new_user_id} (total: {total_count})")
+
+        # Get all resume IDs being migrated (for icon migration)
+        old_resume_ids = [r['id'] for r in old_resumes_response.data]
+
+        # Step 1: Update resume ownership
+        supabase.table('resumes') \
+            .update({'user_id': new_user_id}) \
+            .eq('user_id', old_user_id) \
+            .is_('deleted_at', 'null') \
+            .execute()
+
+        logging.info(f"Updated {old_count} resume records")
+
+        # Step 2: Migrate icons (storage files + database records)
+        icons_response = supabase.table('resume_icons') \
+            .select('*') \
+            .in_('resume_id', old_resume_ids) \
+            .execute()
+
+        icons_to_migrate = icons_response.data
+        migrated_icons = 0
+        failed_icons = 0
+
+        for icon in icons_to_migrate:
+            try:
+                old_path = icon['storage_path']
+                resume_id = icon['resume_id']
+                filename = icon['filename']
+
+                # New storage path with new user_id
+                new_path = f"{new_user_id}/{resume_id}/{filename}"
+
+                # Download from old path
+                file_data = supabase.storage.from_('resume-icons').download(old_path)
+
+                # Upload to new path
+                supabase.storage.from_('resume-icons').upload(
+                    new_path,
+                    file_data,
+                    file_options={"content-type": icon.get('mime_type', 'image/png'), "upsert": "true"}
+                )
+
+                # Get new public URL
+                new_url = supabase.storage.from_('resume-icons').get_public_url(new_path)
+
+                # Update icon record
+                supabase.table('resume_icons') \
+                    .update({
+                        'user_id': new_user_id,
+                        'storage_path': new_path,
+                        'storage_url': new_url
+                    }) \
+                    .eq('id', icon['id']) \
+                    .execute()
+
+                # Delete old file from storage
+                try:
+                    supabase.storage.from_('resume-icons').remove([old_path])
+                except Exception as delete_error:
+                    logging.warning(f"Failed to delete old icon file {old_path}: {delete_error}")
+                    # Non-critical error, continue
+
+                migrated_icons += 1
+
+            except Exception as icon_error:
+                logging.error(f"Failed to migrate icon {icon.get('filename', 'unknown')}: {icon_error}")
+                failed_icons += 1
+                # Continue with other icons
+
+        logging.info(f"Migrated {migrated_icons} icons, {failed_icons} failed")
+
+        # Step 3: Update user preferences
+        # Delete old user's preferences
+        try:
+            supabase.table('user_preferences') \
+                .delete() \
+                .eq('user_id', old_user_id) \
+                .execute()
+        except Exception as pref_error:
+            logging.warning(f"Failed to delete old preferences: {pref_error}")
+
+        # Update new user's preferences if needed
+        # (The frontend will handle setting last_edited_resume_id on next save)
+
+        logging.info(f"Migration complete: {old_count} resumes migrated to {new_user_id}")
+
+        return jsonify({
+            "migrated_count": old_count,
+            "total_count": total_count,
+            "exceeds_limit": exceeds_limit,
+            "message": f"Successfully migrated {old_count} resume(s)"
+        }), 200
+
+    except Exception as e:
+        logging.error(f"Error migrating anonymous resumes: {e}")
+        return jsonify({"error": "Failed to migrate resumes"}), 500
+
+
 @app.route("/api/resumes/<resume_id>", methods=["PATCH"])
 @require_auth
 def update_resume_partial(resume_id):
