@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, useRef, ReactNode } from 'react';
 import { supabase } from '../lib/supabase';
 import { toast } from 'react-hot-toast';
 import type { User, Session } from '@supabase/supabase-js';
@@ -34,6 +34,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [hasMigrated, setHasMigrated] = useState(false);
+  const migrationAttempted = useRef(false);
 
   // Helper function to check if there's unsaved work in localStorage
   const checkForUnsavedWork = () => {
@@ -244,11 +245,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
           // Only attempt migration if there's a valid old anonymous user ID
           if (oldAnonUserId) {
+            // Skip if migration was already attempted (prevents duplicate calls)
+            if (migrationAttempted.current) {
+              return;
+            }
+
             // Skip if same user (already signed in, just refreshing)
             if (oldAnonUserId === session.user.id) {
               // Clean up - user was already signed in
               localStorage.removeItem('anonymous-user-id');
             } else {
+              // Mark migration as attempted before calling API
+              migrationAttempted.current = true;
+
               // Attempt migration and always clean up localStorage after
               await migrateAnonResumes(session, oldAnonUserId);
 
@@ -338,6 +347,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     // Clear stored anonymous user ID (migration already happened)
     localStorage.removeItem('anonymous-user-id');
+
+    // Reset migration attempted flag for next sign-in
+    migrationAttempted.current = false;
 
     // Immediately create new anonymous session
     const { error } = await supabase.auth.signInAnonymously();
