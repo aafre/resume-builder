@@ -1,6 +1,6 @@
 import { ResumeListItem } from '../types';
 import { useState } from 'react';
-import { Download, Eye } from 'lucide-react';
+import { Download, Eye, RefreshCw } from 'lucide-react';
 import { KebabMenu } from './KebabMenu';
 
 interface ResumeCardProps {
@@ -11,6 +11,7 @@ interface ResumeCardProps {
   onPreview: (id: string) => void;
   onDuplicate: (id: string) => void;
   onRename: (id: string, newTitle: string) => Promise<void>;
+  onRefreshThumbnail?: (id: string) => void;
 }
 
 export function ResumeCard({
@@ -20,11 +21,27 @@ export function ResumeCard({
   onDownload,
   onPreview,
   onDuplicate,
-  onRename
+  onRename,
+  onRefreshThumbnail
 }: ResumeCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(resume.title);
   const [isSaving, setIsSaving] = useState(false);
+
+  // Check if thumbnail is stale (updated after last PDF generation)
+  const isThumbnailStale = () => {
+    if (!resume.pdf_generated_at) {
+      // If no PDF was ever generated but resume exists, consider stale
+      return true;
+    }
+
+    const updatedAt = new Date(resume.updated_at);
+    const pdfGeneratedAt = new Date(resume.pdf_generated_at);
+
+    return updatedAt > pdfGeneratedAt;
+  };
+
+  const thumbnailStale = isThumbnailStale();
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -88,14 +105,37 @@ export function ResumeCard({
         <img
           src={resume.thumbnail_url || getTemplatePreview(resume.template_id)}
           alt={resume.title}
-          className="w-full h-full object-cover object-top"
+          className={`w-full h-full object-cover object-top transition-all duration-200 ${
+            thumbnailStale ? 'blur-sm grayscale' : ''
+          }`}
         />
 
-        {/* Preview hover overlay */}
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2">
-          <Eye className="w-8 h-8 text-white" />
-          <span className="text-white font-medium text-lg">Preview</span>
-        </div>
+        {/* Stale thumbnail overlay */}
+        {thumbnailStale && onRefreshThumbnail && (
+          <div className="absolute inset-0 bg-amber-500/20 backdrop-blur-[1px] flex flex-col items-center justify-center gap-2 pointer-events-none">
+            <div className="bg-amber-500 text-white px-3 py-1.5 rounded-full text-sm font-medium shadow-md flex items-center gap-2">
+              <RefreshCw className="w-4 h-4" />
+              Thumbnail needs update
+            </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onRefreshThumbnail(resume.id);
+              }}
+              className="bg-white text-amber-600 px-4 py-2 rounded-lg text-sm font-medium shadow-lg hover:bg-amber-50 transition-colors pointer-events-auto"
+            >
+              Refresh Now
+            </button>
+          </div>
+        )}
+
+        {/* Preview hover overlay (only show if not stale) */}
+        {!thumbnailStale && (
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2">
+            <Eye className="w-8 h-8 text-white" />
+            <span className="text-white font-medium text-lg">Preview</span>
+          </div>
+        )}
       </div>
 
       {/* Content */}
