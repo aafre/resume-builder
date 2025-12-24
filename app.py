@@ -2357,6 +2357,175 @@ def generate_pdf_for_saved_resume(resume_id):
             return jsonify({"success": False, "error": "Failed to generate PDF"}), 500
 
 
+@app.route("/api/resumes/<resume_id>/thumbnail", methods=["POST"])
+@require_auth
+def generate_thumbnail_for_resume(resume_id):
+    """
+    Generate thumbnail on-demand for a saved resume.
+
+    This endpoint generates a PDF and extracts a thumbnail without returning the PDF.
+    Designed to be called asynchronously when the user navigates away from the editor.
+
+    Returns:
+        {
+            "success": true,
+            "thumbnail_url": "https://...",
+            "pdf_generated_at": "2025-12-24T..."
+        }
+    """
+    with tempfile.TemporaryDirectory() as temp_dir:
+        try:
+            user_id = request.user_id
+            temp_dir_path = Path(temp_dir)
+
+            # Load resume data
+            result = supabase.table('resumes') \
+                .select('*') \
+                .eq('id', resume_id) \
+                .eq('user_id', user_id) \
+                .is_('deleted_at', 'null') \
+                .execute()
+
+            if not result.data:
+                return jsonify({"success": False, "error": "Resume not found"}), 404
+
+            resume = result.data[0]
+
+            # Load icons
+            icons_result = supabase.table('resume_icons') \
+                .select('filename, storage_path') \
+                .eq('resume_id', resume_id) \
+                .execute()
+
+            # Create session directory for icons
+            session_id = str(uuid.uuid4())
+            session_icons_dir = temp_dir_path / "icons"
+            session_icons_dir.mkdir(parents=True, exist_ok=True)
+
+            # Download icons from storage
+            failed_icons = []
+            for icon in icons_result.data:
+                icon_path = session_icons_dir / icon['filename']
+                success = download_icon_from_storage(icon['storage_path'], str(icon_path))
+                if not success:
+                    failed_icons.append(icon['filename'])
+                    logging.error(f"Failed to download icon: {icon['filename']} from {icon['storage_path']}")
+
+            # Fail fast if any icons missing
+            if failed_icons:
+                error_msg = (
+                    f"Unable to load {len(failed_icons)} icon(s) from cloud storage: {', '.join(failed_icons)}. "
+                    f"Icons may not have been properly saved when the resume was created."
+                )
+                logging.error(f"Thumbnail generation failed: {error_msg}")
+                return jsonify({"success": False, "error": error_msg}), 500
+
+            # Prepare YAML data
+            yaml_data = {
+                'template': resume.get('template_id'),
+                'contact_info': resume.get('contact_info', {}),
+                'sections': resume.get('sections', [])
+            }
+
+            # Normalize sections
+            yaml_data = normalize_sections(yaml_data)
+
+            # Write YAML to temp file
+            yaml_path = temp_dir_path / "resume.yaml"
+            with open(yaml_path, 'w') as f:
+                yaml.dump(yaml_data, f)
+
+            # Generate PDF
+            timestamp = datetime.now().strftime("%Y%m%d_%H_%M_%S")
+            output_path = temp_dir_path / f"Resume_{timestamp}.pdf"
+
+            template_id = resume.get('template_id', 'modern')
+
+            # Map template IDs to actual templates
+            template_mapping = {
+                "modern-with-icons": "modern",
+                "modern-no-icons": "modern",
+                "modern": "modern",
+                "classic": "classic",
+                "classic-alex-rivera": "classic",
+                "classic-jane-doe": "classic"
+            }
+
+            actual_template = template_mapping.get(template_id, "modern")
+
+            # Generate PDF using appropriate method
+            if actual_template == "classic":
+                generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
+            else:
+                # Use process pool or subprocess
+                if PDF_PROCESS_POOL is None:
+                    cmd = [
+                        "python",
+                        "resume_generator.py",
+                        "--template",
+                        actual_template,
+                        "--input",
+                        str(yaml_path),
+                        "--output",
+                        str(output_path),
+                        "--session-icons-dir",
+                        str(session_icons_dir),
+                        "--session-id",
+                        session_id,
+                    ]
+
+                    result = subprocess.run(cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT))
+
+                    if result.returncode != 0:
+                        logging.error(f"PDF generation error: {result.stderr}")
+                        raise RuntimeError("Failed to generate PDF")
+                else:
+                    future = PDF_PROCESS_POOL.submit(
+                        pdf_generation_worker,
+                        actual_template,
+                        yaml_path,
+                        output_path,
+                        session_icons_dir,
+                        session_id
+                    )
+
+                    result = future.result(timeout=60)
+
+                    if not result["success"]:
+                        raise RuntimeError(f"Failed to generate PDF: {result['error']}")
+
+            if not output_path.exists():
+                raise FileNotFoundError("PDF file was not generated")
+
+            # Generate thumbnail from PDF
+            thumbnail_url = generate_thumbnail_from_pdf(str(output_path), user_id, resume_id)
+
+            if not thumbnail_url:
+                return jsonify({"success": False, "error": "Failed to generate thumbnail"}), 500
+
+            # Update resume with thumbnail URL and timestamp
+            current_time = datetime.now(timezone.utc).isoformat()
+            supabase.table('resumes') \
+                .update({
+                    'thumbnail_url': thumbnail_url,
+                    'pdf_generated_at': 'now()'
+                }) \
+                .eq('id', resume_id) \
+                .execute()
+
+            logging.info(f"Thumbnail generated successfully for resume {resume_id}")
+
+            return jsonify({
+                "success": True,
+                "thumbnail_url": thumbnail_url,
+                "pdf_generated_at": current_time
+            }), 200
+
+        except Exception as e:
+            logging.error(f"Error generating thumbnail for resume {resume_id}: {e}")
+            return jsonify({"success": False, "error": str(e)}), 500
+
+
 # User Preferences API Endpoints
 
 @app.route("/api/user/preferences", methods=["GET"])
