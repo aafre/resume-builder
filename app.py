@@ -1,6 +1,8 @@
 import yaml
 import tempfile
 import shutil
+import hashlib
+import json
 from flask import (
     Flask,
     request,
@@ -20,12 +22,19 @@ from datetime import datetime
 from pathlib import Path
 import uuid
 import re
+import base64
 import copy
 from jinja2 import Environment, FileSystemLoader
 from concurrent.futures import ProcessPoolExecutor
 import atexit
+from functools import wraps
 
 from flask_cors import CORS
+from supabase import create_client, Client
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Configure logging based on environment variable
 # Set DEBUG_LOGGING=true to enable detailed debug logs for troubleshooting
@@ -729,6 +738,207 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
     return max_columns  # Default to max columns if all checks pass
 
 
+# Supabase Storage Helper Functions
+def upload_icon_to_storage(user_id, resume_id, filename, file_data, mime_type="image/png"):
+    """
+    Upload icon file to Supabase Storage.
+
+    Args:
+        user_id (str): UUID of the user
+        resume_id (str): UUID of the resume
+        filename (str): Original filename
+        file_data (bytes): File content
+        mime_type (str): MIME type of the file
+
+    Returns:
+        tuple: (storage_path, storage_url)
+
+    Raises:
+        Exception: If upload fails
+    """
+    if supabase is None:
+        raise Exception("Supabase client not initialized")
+
+    # Generate unique path: {user_id}/{resume_id}/{filename}
+    storage_path = f"{user_id}/{resume_id}/{filename}"
+
+    try:
+        # Upload to 'resume-icons' bucket
+        supabase.storage.from_('resume-icons').upload(
+            storage_path,
+            file_data,
+            file_options={"content-type": mime_type, "upsert": "true"}
+        )
+
+        # Get public URL
+        storage_url = supabase.storage.from_('resume-icons').get_public_url(storage_path)
+
+        logging.debug(f"Uploaded icon to storage: {storage_path}")
+        return storage_path, storage_url
+
+    except Exception as e:
+        logging.error(f"Failed to upload icon to storage: {e}")
+        raise
+
+
+def check_resume_limit(user_id):
+    """
+    Check if user has reached the 5-resume limit.
+
+    Args:
+        user_id (str): UUID of the user
+
+    Returns:
+        tuple: (can_create: bool, current_count: int)
+    """
+    if supabase is None:
+        raise Exception("Supabase client not initialized")
+
+    try:
+        # Query resumes table for non-deleted resumes
+        result = supabase.table('resumes') \
+            .select('id', count='exact') \
+            .eq('user_id', user_id) \
+            .is_('deleted_at', 'null') \
+            .execute()
+
+        current_count = result.count if hasattr(result, 'count') else len(result.data)
+        can_create = current_count < 5
+
+        logging.debug(f"User {user_id} has {current_count}/5 resumes")
+        return can_create, current_count
+
+    except Exception as e:
+        logging.error(f"Failed to check resume limit: {e}")
+        raise
+
+
+def download_icon_from_storage(storage_path, dest_path):
+    """
+    Download icon file from Supabase Storage to local filesystem.
+
+    Args:
+        storage_path (str): Path in storage bucket
+        dest_path (str): Local filesystem destination path
+
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    if supabase is None:
+        raise Exception("Supabase client not initialized")
+
+    try:
+        # Download file from storage
+        file_data = supabase.storage.from_('resume-icons').download(storage_path)
+
+        # Write to destination
+        with open(dest_path, 'wb') as f:
+            f.write(file_data)
+
+        logging.debug(f"Downloaded icon from storage: {storage_path} -> {dest_path}")
+        return True
+
+    except Exception as e:
+        logging.error(f"Failed to download icon from storage: {e}")
+        return False
+
+
+def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
+    """
+    Convert first page of PDF to PNG thumbnail and upload to Supabase.
+
+    Args:
+        pdf_path (str): Path to the generated PDF file
+        user_id (str): UUID of the user
+        resume_id (str): UUID of the resume
+
+    Returns:
+        str: Public URL of the uploaded thumbnail, or None if generation fails
+    """
+    if supabase is None:
+        logging.warning("Supabase client not initialized - skipping thumbnail generation")
+        return None
+
+    try:
+        from pdf2image import convert_from_path
+        from PIL import Image
+        import tempfile
+
+        # Convert first page of PDF to image at 150 DPI
+        logging.debug(f"Converting PDF to thumbnail: {pdf_path}")
+        images = convert_from_path(
+            pdf_path,
+            first_page=1,
+            last_page=1,
+            dpi=150
+        )
+
+        if not images:
+            logging.error("No images generated from PDF")
+            return None
+
+        # Get the first (and only) page
+        page_image = images[0]
+
+        # Resize to thumbnail size (width=400px, maintain aspect ratio)
+        # A4 aspect ratio is approximately 1:1.414
+        target_width = 400
+        aspect_ratio = page_image.height / page_image.width
+        target_height = int(target_width * aspect_ratio)
+
+        thumbnail = page_image.resize((target_width, target_height), Image.Resampling.LANCZOS)
+
+        # Save to temporary file
+        with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp_file:
+            thumbnail.save(tmp_file.name, 'PNG', optimize=True, quality=85)
+            tmp_path = tmp_file.name
+
+        try:
+            # Read the thumbnail data
+            with open(tmp_path, 'rb') as f:
+                thumbnail_data = f.read()
+
+            # Upload to Supabase Storage: resume-thumbnails/{user_id}/{resume_id}/thumbnail.png
+            storage_path = f"{user_id}/{resume_id}/thumbnail.png"
+
+            logging.debug(f"Uploading thumbnail to storage: {storage_path}")
+            supabase.storage.from_('resume-thumbnails').upload(
+                storage_path,
+                thumbnail_data,
+                file_options={"content-type": "image/png", "upsert": "true"}
+            )
+
+            # Get public URL
+            thumbnail_url = supabase.storage.from_('resume-thumbnails').get_public_url(storage_path)
+
+            logging.info(f"Successfully generated and uploaded thumbnail: {storage_path}")
+            return thumbnail_url
+
+        finally:
+            # Clean up temporary file
+            if os.path.exists(tmp_path):
+                os.unlink(tmp_path)
+
+    except ImportError as e:
+        logging.error(f"Missing dependencies for thumbnail generation: {e}")
+        logging.error("Install with: pip install pdf2image Pillow")
+        return None
+    except Exception as e:
+        logging.error(f"Failed to generate thumbnail from PDF: {e}")
+        logging.error(f"PDF path: {pdf_path}")
+        return None
+
+
+# Initialize Supabase client
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")  # Use service key for admin operations
+
+if not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
+    logging.warning("Supabase credentials not found. Resume storage features will be disabled.")
+    supabase: Client = None
+else:
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+    logging.info("Supabase client initialized successfully")
 
 app = Flask(__name__, static_folder="static", static_url_path="/")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
@@ -754,6 +964,42 @@ TEMPLATE_FILE_MAP = {
     "classic-alex-rivera": PROJECT_ROOT / "samples" / "classic" / "alex_rivera_data.yml",
     "classic-jane-doe": PROJECT_ROOT / "samples" / "classic" / "jane_doe.yml",
 }
+
+
+# Authentication Middleware
+def require_auth(f):
+    """
+    Decorator to require authentication and extract user_id from Supabase JWT.
+
+    Usage:
+        @app.route('/api/protected-endpoint')
+        @require_auth
+        def protected_endpoint():
+            user_id = request.user_id
+            user = request.user
+            ...
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if supabase is None:
+            return jsonify({"success": False, "error": "Resume storage not configured"}), 503
+
+        auth_header = request.headers.get('Authorization')
+        if not auth_header or not auth_header.startswith('Bearer '):
+            return jsonify({"success": False, "error": "Unauthorized - Missing or invalid Authorization header"}), 401
+
+        token = auth_header.replace('Bearer ', '')
+        try:
+            # Verify JWT and extract user
+            user_response = supabase.auth.get_user(token)
+            request.user_id = user_response.user.id
+            request.user = user_response.user
+            return f(*args, **kwargs)
+        except Exception as e:
+            logging.error(f"Auth error: {e}")
+            return jsonify({"success": False, "error": "Invalid or expired token"}), 401
+
+    return decorated_function
 
 
 # 301 Redirects for SEO consolidation
@@ -1008,7 +1254,7 @@ def generate_resume():
 
             # Select the template and determine if it uses icons
             template = request.form.get("template", "modern")
-            uses_icons = template != "modern-no-icons"  # Skip icons for no-icons variant
+            uses_icons = template == "modern-with-icons"  # Only modern-with-icons template needs icons
             
             # Always copy base contact icons that are hardcoded in templates
             # Include all social platform icons for new social_links feature
@@ -1230,6 +1476,924 @@ def serve_templates(filename):
     except Exception as e:
         logging.error(f"Error serving template image {filename}: {e}")
         return jsonify({"success": False, "error": "Image not found"}), 404
+
+
+# Resume Storage API Endpoints
+
+@app.route("/api/resumes/create", methods=["POST"])
+@require_auth
+def create_resume():
+    """
+    Create a new resume row in the database initialized with template data.
+    Returns resume_id immediately so user can navigate to editor.
+
+    Request JSON:
+        {
+            "template_id": "modern-with-icons",  // optional, defaults to modern-with-icons
+            "load_example": true  // optional, if true loads example data, if false loads empty structure
+        }
+
+    Response:
+        {
+            "success": true,
+            "resume_id": "uuid",
+            "template_id": "modern-with-icons"
+        }
+    """
+    try:
+        data = request.get_json() or {}
+        user_id = request.user_id
+        template_id = data.get('template_id', 'modern-with-icons')
+        load_example = data.get('load_example', True)  # Default to example data
+
+        # Check 5-resume limit
+        can_create, current_count = check_resume_limit(user_id)
+        if not can_create:
+            return jsonify({
+                "success": False,
+                "error": f"Resume limit reached ({current_count}/5)",
+                "error_code": "RESUME_LIMIT_REACHED"
+            }), 403
+
+        # Load template YAML data
+        template_file = TEMPLATE_FILE_MAP.get(template_id)
+        if not template_file:
+            return jsonify({"success": False, "error": "Template not found"}), 404
+
+        template_path = TEMPLATES_DIR / template_file
+        if not template_path.exists():
+            return jsonify({"success": False, "error": "Template not found"}), 404
+
+        with open(template_path, "r") as file:
+            template_data = yaml.safe_load(file)
+
+        # Initialize resume with template data
+        contact_info = template_data.get('contact_info', {})
+        sections = template_data.get('sections', [])
+
+        # If load_example is False, clear the content but keep the structure
+        if not load_example:
+            # Clear contact info fields but keep the structure
+            contact_info = {
+                'name': '',
+                'location': '',
+                'email': '',
+                'phone': '',
+                'social_links': []
+            }
+
+            # Clear section content but keep section names and types
+            sections = [
+                {
+                    'name': section.get('name', ''),
+                    'type': section.get('type', 'text'),
+                    'content': [] if isinstance(section.get('content'), list) else ''
+                }
+                for section in sections
+            ]
+
+        # Create resume row with template data
+        new_resume = {
+            'user_id': user_id,
+            'title': 'Untitled Resume',
+            'template_id': template_id,
+            'contact_info': contact_info,
+            'sections': sections,
+            'json_hash': None,  # No hash yet (no data)
+            'created_at': 'now()',
+            'updated_at': 'now()',
+            'last_accessed_at': 'now()'
+        }
+
+        # Insert resume and get generated ID
+        result = supabase.table('resumes').insert(new_resume).execute()
+        resume_id = result.data[0]['id']
+
+        # Update user preferences to track last edited resume
+        supabase.table('user_preferences').upsert({
+            'user_id': user_id,
+            'last_edited_resume_id': resume_id
+        }).execute()
+
+        logging.info(f"Created resume: {resume_id} for user {user_id} (load_example={load_example})")
+
+        return jsonify({
+            "success": True,
+            "resume_id": resume_id,
+            "template_id": template_id
+        }), 201
+
+    except Exception as e:
+        logging.error(f"Error creating resume: {e}")
+        return jsonify({"success": False, "error": "Failed to create resume"}), 500
+
+
+@app.route("/api/resumes", methods=["POST"])
+@require_auth
+def save_resume():
+    """
+    Save or update a resume for the authenticated user.
+
+    Request JSON:
+        {
+            "id": "uuid" | null,  // null for new resume, uuid for update
+            "title": "Software Engineer Resume",
+            "template_id": "modern-with-icons",
+            "contact_info": {...},
+            "sections": [...],
+            "icons": [
+                {"filename": "google.png", "data": "base64..."},
+                ...
+            ]
+        }
+
+    Response:
+        {
+            "success": true,
+            "resume_id": "uuid",
+            "message": "Resume saved successfully"
+        }
+    """
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"success": False, "error": "No data provided"}), 400
+
+        user_id = request.user_id
+        resume_id = data.get('id')
+        title = data.get('title', 'Untitled Resume')
+        template_id = data.get('template_id')
+        contact_info = data.get('contact_info', {})
+        sections = data.get('sections', [])
+        icons = data.get('icons', [])
+
+        # Validate required fields
+        if not template_id:
+            return jsonify({"success": False, "error": "template_id is required"}), 400
+
+        # Calculate hash of JSON representation (for smart diffing)
+        json_repr = json.dumps({
+            'contact_info': contact_info,
+            'sections': sections
+        }, sort_keys=True)
+        new_hash = hashlib.sha256(json_repr.encode('utf-8')).hexdigest()
+
+        # Check if this is an update or new resume
+        is_update = resume_id is not None
+
+        if is_update:
+            # Verify resume belongs to user and get current hash
+            existing = supabase.table('resumes').select('id, json_hash').eq('id', resume_id).eq('user_id', user_id).is_('deleted_at', 'null').execute()
+            if not existing.data:
+                return jsonify({"success": False, "error": "Resume not found or unauthorized"}), 404
+
+            # Smart diffing: skip if hash hasn't changed
+            current_hash = existing.data[0].get('json_hash')
+            if current_hash == new_hash:
+                logging.debug(f"No changes detected for resume {resume_id}, skipping save")
+                # Update user preferences even if no content change
+                supabase.table('user_preferences').upsert({
+                    'user_id': user_id,
+                    'last_edited_resume_id': resume_id
+                }).execute()
+                return jsonify({
+                    "success": True,
+                    "message": "No changes detected",
+                    "skipped": True,
+                    "resume_id": resume_id
+                }), 200
+        else:
+            # Check 5-resume limit for new resumes
+            can_create, current_count = check_resume_limit(user_id)
+            if not can_create:
+                return jsonify({
+                    "success": False,
+                    "error": f"Resume limit reached ({current_count}/5)",
+                    "error_code": "RESUME_LIMIT_REACHED"
+                }), 403
+
+            # Generate new resume ID
+            resume_id = str(uuid.uuid4())
+
+        # Prepare resume data
+        resume_data = {
+            'id': resume_id,
+            'user_id': user_id,
+            'title': title,
+            'template_id': template_id,
+            'contact_info': contact_info,
+            'sections': sections,
+            'json_hash': new_hash,  # Store hash for future diffing
+            'updated_at': 'now()',
+            'last_accessed_at': 'now()'
+        }
+
+        if not is_update:
+            resume_data['created_at'] = 'now()'
+
+        # Upload icons to storage and prepare icon records
+        icon_records = []
+        for icon in icons:
+            filename = icon.get('filename')
+            data_b64 = icon.get('data')
+
+            if not filename or not data_b64:
+                continue
+
+            try:
+                # Decode base64 data
+                file_data = base64.b64decode(data_b64.split(',')[1] if ',' in data_b64 else data_b64)
+
+                # Detect MIME type from filename extension
+                extension = filename.rsplit('.', 1)[-1].lower()
+                mime_type = {
+                    'png': 'image/png',
+                    'jpg': 'image/jpeg',
+                    'jpeg': 'image/jpeg',
+                    'svg': 'image/svg+xml'
+                }.get(extension, 'image/png')
+
+                # Upload to storage
+                storage_path, storage_url = upload_icon_to_storage(
+                    user_id, resume_id, filename, file_data, mime_type
+                )
+
+                # Prepare icon record
+                icon_records.append({
+                    'id': str(uuid.uuid4()),
+                    'resume_id': resume_id,
+                    'user_id': user_id,
+                    'filename': filename,
+                    'storage_path': storage_path,
+                    'storage_url': storage_url,
+                    'mime_type': mime_type,
+                    'file_size': len(file_data),
+                    'created_at': 'now()'
+                })
+
+            except Exception as icon_error:
+                logging.error(f"Failed to upload icon {filename}: {icon_error}")
+                # Continue with other icons, don't fail entire save
+
+        # Save resume to database (upsert)
+        supabase.table('resumes').upsert(resume_data).execute()
+
+        # Delete old icons for this resume
+        if is_update:
+            supabase.table('resume_icons').delete().eq('resume_id', resume_id).execute()
+
+        # Insert new icon records
+        if icon_records:
+            supabase.table('resume_icons').insert(icon_records).execute()
+
+        # Update user preferences to track last edited resume
+        supabase.table('user_preferences').upsert({
+            'user_id': user_id,
+            'last_edited_resume_id': resume_id
+        }).execute()
+
+        logging.info(f"Resume {'updated' if is_update else 'created'} successfully: {resume_id}")
+
+        return jsonify({
+            "success": True,
+            "resume_id": resume_id,
+            "message": f"Resume {'updated' if is_update else 'saved'} successfully"
+        }), 200
+
+    except Exception as e:
+        logging.error(f"Error saving resume: {e}")
+        return jsonify({"success": False, "error": "Failed to save resume"}), 500
+
+
+@app.route("/api/resumes", methods=["GET"])
+@require_auth
+def list_resumes():
+    """
+    List all resumes for the authenticated user.
+
+    Query Parameters:
+        limit (int): Number of resumes to return (default: 20, max: 50)
+        offset (int): Number of resumes to skip (default: 0)
+
+    Response:
+        {
+            "success": true,
+            "resumes": [
+                {
+                    "id": "uuid",
+                    "title": "Software Engineer Resume",
+                    "template_id": "modern-with-icons",
+                    "created_at": "2025-01-15T10:30:00Z",
+                    "updated_at": "2025-01-20T14:22:00Z",
+                    "last_accessed_at": "2025-01-20T14:22:00Z",
+                    "icon_count": 3
+                }
+            ],
+            "total_count": 3,
+            "limit": 20
+        }
+    """
+    try:
+        user_id = request.user_id
+
+        # Get pagination parameters
+        limit = min(int(request.args.get('limit', 20)), 50)  # Max 50
+        offset = int(request.args.get('offset', 0))
+
+        # Query resumes with pagination
+        result = supabase.table('resumes') \
+            .select('id, title, template_id, created_at, updated_at, last_accessed_at, pdf_url, pdf_generated_at, thumbnail_url') \
+            .eq('user_id', user_id) \
+            .is_('deleted_at', 'null') \
+            .order('updated_at', desc=True) \
+            .range(offset, offset + limit - 1) \
+            .execute()
+
+        resumes = result.data
+
+        # Get total count
+        count_result = supabase.table('resumes') \
+            .select('id', count='exact') \
+            .eq('user_id', user_id) \
+            .is_('deleted_at', 'null') \
+            .execute()
+
+        total_count = count_result.count if hasattr(count_result, 'count') else len(count_result.data)
+
+        return jsonify({
+            "success": True,
+            "resumes": resumes,
+            "total_count": total_count,
+            "limit": limit
+        }), 200
+
+    except Exception as e:
+        logging.error(f"Error listing resumes: {e}")
+        return jsonify({"success": False, "error": "Failed to list resumes"}), 500
+
+
+@app.route("/api/resumes/<resume_id>", methods=["GET"])
+@require_auth
+def load_resume(resume_id):
+    """
+    Load a specific resume for the authenticated user.
+
+    Response:
+        {
+            "success": true,
+            "resume": {
+                "id": "uuid",
+                "title": "Software Engineer Resume",
+                "template_id": "modern-with-icons",
+                "contact_info": {...},
+                "sections": [...],
+                "icons": [
+                    {
+                        "filename": "google.png",
+                        "storage_url": "https://..."
+                    }
+                ],
+                "updated_at": "2025-01-20T14:22:00Z"
+            }
+        }
+    """
+    try:
+        user_id = request.user_id
+
+        # Query resume
+        result = supabase.table('resumes') \
+            .select('*') \
+            .eq('id', resume_id) \
+            .eq('user_id', user_id) \
+            .is_('deleted_at', 'null') \
+            .execute()
+
+        if not result.data:
+            return jsonify({"success": False, "error": "Resume not found"}), 404
+
+        resume = result.data[0]
+
+        # Fetch associated icons
+        icons_result = supabase.table('resume_icons') \
+            .select('filename, storage_url, storage_path') \
+            .eq('resume_id', resume_id) \
+            .execute()
+
+        resume['icons'] = icons_result.data
+
+        # Update last_accessed_at (non-blocking - don't fail if this fails)
+        try:
+            supabase.table('resumes') \
+                .update({'last_accessed_at': datetime.now().isoformat()}) \
+                .eq('id', resume_id) \
+                .execute()
+        except Exception as timestamp_error:
+            logging.warning(f"Failed to update last_accessed_at for resume {resume_id}: {timestamp_error}")
+            # Continue anyway - this is not critical
+
+        return jsonify({
+            "success": True,
+            "resume": resume
+        }), 200
+
+    except Exception as e:
+        logging.error(f"Error loading resume: {e}", exc_info=True)
+        return jsonify({"success": False, "error": f"Failed to load resume: {str(e)}"}), 500
+
+
+@app.route("/api/resumes/<resume_id>", methods=["DELETE"])
+@require_auth
+def delete_resume(resume_id):
+    """
+    Soft delete a resume for the authenticated user.
+
+    Response:
+        {
+            "success": true,
+            "message": "Resume deleted successfully"
+        }
+    """
+    try:
+        user_id = request.user_id
+
+        # Verify resume belongs to user
+        result = supabase.table('resumes') \
+            .select('id') \
+            .eq('id', resume_id) \
+            .eq('user_id', user_id) \
+            .is_('deleted_at', 'null') \
+            .execute()
+
+        if not result.data:
+            return jsonify({"success": False, "error": "Resume not found"}), 404
+
+        # Soft delete (set deleted_at timestamp)
+        supabase.table('resumes') \
+            .update({'deleted_at': 'now()'}) \
+            .eq('id', resume_id) \
+            .execute()
+
+        logging.info(f"Resume deleted successfully: {resume_id}")
+
+        return jsonify({
+            "success": True,
+            "message": "Resume deleted successfully"
+        }), 200
+
+    except Exception as e:
+        logging.error(f"Error deleting resume: {e}")
+        return jsonify({"success": False, "error": "Failed to delete resume"}), 500
+
+
+@app.route("/api/resumes/<resume_id>/duplicate", methods=["POST"])
+@require_auth
+def duplicate_resume(resume_id):
+    """
+    Duplicate a resume with a new title.
+
+    Request body:
+        {
+            "new_title": "Copy of My Resume"
+        }
+
+    Response:
+        {
+            "success": true,
+            "resume_id": "new-uuid",
+            "message": "Resume duplicated successfully"
+        }
+    """
+    try:
+        user_id = request.user_id
+        data = request.get_json()
+        new_title = data.get('new_title', '').strip()
+
+        if not new_title:
+            return jsonify({"success": False, "error": "New title is required"}), 400
+
+        # Check 5-resume limit before duplicating
+        can_create, current_count = check_resume_limit(user_id)
+        if not can_create:
+            return jsonify({
+                "success": False,
+                "error": "You have reached the maximum limit of 5 resumes",
+                "error_code": "RESUME_LIMIT_REACHED"
+            }), 400
+
+        # Verify source resume belongs to user
+        source_result = supabase.table('resumes') \
+            .select('*') \
+            .eq('id', resume_id) \
+            .eq('user_id', user_id) \
+            .is_('deleted_at', 'null') \
+            .execute()
+
+        if not source_result.data:
+            return jsonify({"success": False, "error": "Source resume not found"}), 404
+
+        source_resume = source_result.data[0]
+
+        # Generate new UUID for duplicate
+        new_resume_id = str(uuid.uuid4())
+
+        # Create new resume with same data but new ID and title
+        new_resume_data = {
+            'id': new_resume_id,
+            'user_id': user_id,
+            'title': new_title,
+            'template_id': source_resume['template_id'],
+            'contact_info': source_resume['contact_info'],
+            'sections': source_resume['sections'],
+            'json_hash': source_resume.get('json_hash'),
+            'created_at': 'now()',
+            'updated_at': 'now()',
+            'last_accessed_at': 'now()'
+        }
+
+        # Insert new resume
+        supabase.table('resumes').insert(new_resume_data).execute()
+
+        # Fetch source icons
+        source_icons_result = supabase.table('resume_icons') \
+            .select('filename, storage_path, mime_type, file_size') \
+            .eq('resume_id', resume_id) \
+            .execute()
+
+        # Copy icons from source to new resume
+        new_icon_records = []
+        for source_icon in source_icons_result.data:
+            try:
+                # Download icon from source storage path
+                source_path = source_icon['storage_path']
+                icon_data = supabase.storage.from_('resume-icons').download(source_path)
+
+                # Upload to new storage path
+                new_storage_path = f"{user_id}/{new_resume_id}/{source_icon['filename']}"
+                supabase.storage.from_('resume-icons').upload(
+                    new_storage_path,
+                    icon_data,
+                    file_options={"content-type": source_icon.get('mime_type', 'image/png'), "upsert": "true"}
+                )
+
+                # Get public URL for new icon
+                new_storage_url = supabase.storage.from_('resume-icons').get_public_url(new_storage_path)
+
+                # Prepare new icon record
+                new_icon_records.append({
+                    'id': str(uuid.uuid4()),
+                    'resume_id': new_resume_id,
+                    'user_id': user_id,
+                    'filename': source_icon['filename'],
+                    'storage_path': new_storage_path,
+                    'storage_url': new_storage_url,
+                    'mime_type': source_icon.get('mime_type', 'image/png'),
+                    'file_size': source_icon.get('file_size', 0),
+                    'created_at': 'now()'
+                })
+
+            except Exception as icon_error:
+                logging.error(f"Failed to copy icon {source_icon['filename']}: {icon_error}")
+                # Continue with other icons
+
+        # Insert new icon records
+        if new_icon_records:
+            supabase.table('resume_icons').insert(new_icon_records).execute()
+
+        logging.info(f"Resume duplicated successfully: {resume_id} -> {new_resume_id}")
+
+        return jsonify({
+            "success": True,
+            "resume_id": new_resume_id,
+            "message": "Resume duplicated successfully"
+        }), 200
+
+    except Exception as e:
+        logging.error(f"Error duplicating resume: {e}")
+        return jsonify({"success": False, "error": "Failed to duplicate resume"}), 500
+
+
+@app.route("/api/resumes/<resume_id>", methods=["PATCH"])
+@require_auth
+def update_resume_partial(resume_id):
+    """
+    Partially update a resume (currently supports title only).
+
+    Request body:
+        {
+            "title": "New Resume Title"
+        }
+
+    Response:
+        {
+            "success": true,
+            "title": "New Resume Title"
+        }
+    """
+    try:
+        user_id = request.user_id
+        data = request.get_json()
+        new_title = data.get('title', '').strip()
+
+        if not new_title:
+            return jsonify({"success": False, "error": "Title cannot be empty"}), 400
+
+        if len(new_title) > 200:
+            return jsonify({"success": False, "error": "Title too long (max 200 characters)"}), 400
+
+        # Verify resume belongs to user
+        result = supabase.table('resumes') \
+            .select('id') \
+            .eq('id', resume_id) \
+            .eq('user_id', user_id) \
+            .is_('deleted_at', 'null') \
+            .execute()
+
+        if not result.data:
+            return jsonify({"success": False, "error": "Resume not found"}), 404
+
+        # Update title
+        supabase.table('resumes') \
+            .update({
+                'title': new_title,
+                'updated_at': 'now()'
+            }) \
+            .eq('id', resume_id) \
+            .execute()
+
+        logging.info(f"Resume title updated: {resume_id} -> {new_title}")
+
+        return jsonify({
+            "success": True,
+            "title": new_title
+        }), 200
+
+    except Exception as e:
+        logging.error(f"Error updating resume title: {e}")
+        return jsonify({"success": False, "error": "Failed to update resume title"}), 500
+
+
+@app.route("/api/resumes/<resume_id>/pdf", methods=["POST"])
+@require_auth
+def generate_pdf_for_saved_resume(resume_id):
+    """
+    Generate PDF on-demand for a saved resume.
+
+    Returns: PDF blob (same as /api/generate)
+    """
+    with tempfile.TemporaryDirectory() as temp_dir:
+        try:
+            user_id = request.user_id
+            temp_dir_path = Path(temp_dir)
+
+            # Load resume data
+            result = supabase.table('resumes') \
+                .select('*') \
+                .eq('id', resume_id) \
+                .eq('user_id', user_id) \
+                .is_('deleted_at', 'null') \
+                .execute()
+
+            if not result.data:
+                return jsonify({"success": False, "error": "Resume not found"}), 404
+
+            resume = result.data[0]
+
+            # Load icons
+            icons_result = supabase.table('resume_icons') \
+                .select('filename, storage_path') \
+                .eq('resume_id', resume_id) \
+                .execute()
+
+            # Create session directory for icons
+            session_id = str(uuid.uuid4())
+            session_icons_dir = temp_dir_path / "icons"
+            session_icons_dir.mkdir(parents=True, exist_ok=True)
+
+            # Download icons from storage
+            failed_icons = []
+            for icon in icons_result.data:
+                icon_path = session_icons_dir / icon['filename']
+                success = download_icon_from_storage(icon['storage_path'], str(icon_path))
+                if not success:
+                    failed_icons.append(icon['filename'])
+                    logging.error(f"Failed to download icon: {icon['filename']} from {icon['storage_path']}")
+
+            # Fail fast if any icons missing
+            if failed_icons:
+                error_msg = (
+                    f"Unable to load {len(failed_icons)} icon(s) from cloud storage: {', '.join(failed_icons)}. "
+                    f"Icons may not have been properly saved when the resume was created. "
+                    f"Please edit the resume and re-upload the missing icons."
+                )
+                logging.error(f"Preview generation failed: {error_msg}")
+                return jsonify({"success": False, "error": error_msg}), 500
+
+            # Prepare YAML data
+            yaml_data = {
+                'template': resume.get('template_id'),
+                'contact_info': resume.get('contact_info', {}),
+                'sections': resume.get('sections', [])
+            }
+
+            # Normalize sections
+            yaml_data = normalize_sections(yaml_data)
+
+            # Write YAML to temp file
+            yaml_path = temp_dir_path / "resume.yaml"
+            with open(yaml_path, 'w') as f:
+                yaml.dump(yaml_data, f)
+
+            # Generate PDF
+            timestamp = datetime.now().strftime("%Y%m%d_%H_%M_%S")
+            output_path = temp_dir_path / f"Resume_{timestamp}.pdf"
+
+            template_id = resume.get('template_id', 'modern')
+
+            # Map template IDs to actual templates
+            template_mapping = {
+                "modern-with-icons": "modern",
+                "modern-no-icons": "modern",
+                "modern": "modern",
+                "classic": "classic",
+                "classic-alex-rivera": "classic",
+                "classic-jane-doe": "classic"
+            }
+
+            actual_template = template_mapping.get(template_id, "modern")
+
+            # Generate PDF using appropriate method
+            if actual_template == "classic":
+                generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
+            else:
+                # Use process pool or subprocess
+                if PDF_PROCESS_POOL is None:
+                    cmd = [
+                        "python",
+                        "resume_generator.py",
+                        "--template",
+                        actual_template,
+                        "--input",
+                        str(yaml_path),
+                        "--output",
+                        str(output_path),
+                        "--session-icons-dir",
+                        str(session_icons_dir),
+                        "--session-id",
+                        session_id,
+                    ]
+
+                    result = subprocess.run(cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT))
+
+                    if result.returncode != 0:
+                        logging.error(f"PDF generation error: {result.stderr}")
+                        raise RuntimeError("Failed to generate PDF")
+                else:
+                    future = PDF_PROCESS_POOL.submit(
+                        pdf_generation_worker,
+                        actual_template,
+                        yaml_path,
+                        output_path,
+                        session_icons_dir,
+                        session_id
+                    )
+
+                    result = future.result(timeout=60)
+
+                    if not result["success"]:
+                        raise RuntimeError(f"Failed to generate PDF: {result['error']}")
+
+            if not output_path.exists():
+                raise FileNotFoundError("PDF file was not generated")
+
+            # Generate thumbnail from PDF (piggyback strategy)
+            try:
+                thumbnail_url = generate_thumbnail_from_pdf(str(output_path), user_id, resume_id)
+                if thumbnail_url:
+                    # Update resume with thumbnail URL
+                    supabase.table('resumes') \
+                        .update({
+                            'thumbnail_url': thumbnail_url,
+                            'pdf_generated_at': 'now()'
+                        }) \
+                        .eq('id', resume_id) \
+                        .execute()
+                    logging.info(f"Thumbnail generated and saved for resume {resume_id}")
+                else:
+                    logging.warning(f"Thumbnail generation failed for resume {resume_id}, but continuing with PDF")
+            except Exception as thumb_error:
+                # Don't fail PDF generation if thumbnail fails
+                logging.error(f"Error during thumbnail generation: {thumb_error}")
+
+            # Return PDF
+            return send_file(
+                output_path,
+                as_attachment=True,
+                mimetype="application/pdf",
+                download_name=f"{resume.get('title', 'Resume')}_{timestamp}.pdf"
+            )
+
+        except Exception as e:
+            logging.error(f"Error generating PDF for saved resume: {e}")
+            return jsonify({"success": False, "error": "Failed to generate PDF"}), 500
+
+
+# User Preferences API Endpoints
+
+@app.route("/api/user/preferences", methods=["GET"])
+@require_auth
+def get_user_preferences():
+    """
+    Get user preferences including last_edited_resume_id.
+
+    Response:
+        {
+            "success": true,
+            "preferences": {
+                "user_id": "uuid",
+                "last_edited_resume_id": "uuid" | null,
+                "preferences": {...}
+            }
+        }
+    """
+    try:
+        user_id = request.user_id
+
+        # Query user preferences
+        result = supabase.table('user_preferences') \
+            .select('*') \
+            .eq('user_id', user_id) \
+            .execute()
+
+        if result.data:
+            return jsonify({
+                "success": True,
+                "preferences": result.data[0]
+            }), 200
+        else:
+            # Create default preferences if not exists
+            default_prefs = {
+                'user_id': user_id,
+                'last_edited_resume_id': None,
+                'preferences': {}
+            }
+
+            supabase.table('user_preferences').insert(default_prefs).execute()
+
+            return jsonify({
+                "success": True,
+                "preferences": default_prefs
+            }), 200
+
+    except Exception as e:
+        logging.error(f"Error getting user preferences: {e}")
+        return jsonify({"success": False, "error": "Failed to get preferences"}), 500
+
+
+@app.route("/api/user/preferences", methods=["POST"])
+@require_auth
+def update_user_preferences():
+    """
+    Update user preferences (e.g., last_edited_resume_id).
+
+    Request JSON:
+        {
+            "last_edited_resume_id": "uuid",
+            "preferences": {...}  // optional
+        }
+
+    Response:
+        {
+            "success": true,
+            "message": "Preferences updated"
+        }
+    """
+    try:
+        user_id = request.user_id
+        data = request.get_json()
+
+        if not data:
+            return jsonify({"success": False, "error": "No data provided"}), 400
+
+        # Prepare update data
+        prefs_data = {
+            'user_id': user_id,
+            'last_edited_resume_id': data.get('last_edited_resume_id'),
+            'preferences': data.get('preferences', {})
+        }
+
+        # Upsert preferences
+        supabase.table('user_preferences').upsert(prefs_data).execute()
+
+        logging.info(f"Updated preferences for user {user_id}")
+
+        return jsonify({
+            "success": True,
+            "message": "Preferences updated"
+        }), 200
+
+    except Exception as e:
+        logging.error(f"Error updating user preferences: {e}")
+        return jsonify({"success": False, "error": "Failed to update preferences"}), 500
 
 
 @app.errorhandler(404)
