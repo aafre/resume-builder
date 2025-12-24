@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { generateThumbnail } from '../services/templates';
+import { supabase } from '../lib/supabase';
 
 interface UseThumbnailRefreshOptions {
   onThumbnailUpdated?: (resumeId: string, pdf_generated_at: string, thumbnail_url: string) => void;
@@ -73,6 +74,18 @@ export function useThumbnailRefresh({
 
     const now = Date.now();
 
+    // Get auth session for polling requests
+    if (!supabase) {
+      console.error('Supabase not configured - cannot poll for thumbnail updates');
+      return;
+    }
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      console.error('No active session - cannot poll for thumbnail updates');
+      return;
+    }
+
     const checks = Array.from(generatingIds).map(async (resumeId) => {
       // Check timeout
       const startTime = startTimesRef.current.get(resumeId);
@@ -81,8 +94,12 @@ export function useThumbnailRefresh({
       }
 
       try {
-        // Fetch resume to check if thumbnail updated
-        const response = await fetch(`/api/resumes/${resumeId}`);
+        // Fetch resume to check if thumbnail updated (with auth)
+        const response = await fetch(`/api/resumes/${resumeId}`, {
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`
+          }
+        });
 
         if (!response.ok) {
           return { resumeId, error: true };
