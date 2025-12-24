@@ -1703,9 +1703,20 @@ def save_resume():
             return jsonify({"success": False, "error": "template_id is required"}), 400
 
         # Calculate hash of JSON representation (for smart diffing)
+        # Include icon metadata to detect icon-only changes
+        icon_metadata = [
+            {
+                'filename': icon['filename'],
+                'size': len(base64.b64decode(icon['data'].split(',')[1] if ',' in icon['data'] else icon['data']))
+            }
+            for icon in icons
+            if icon.get('filename') and icon.get('data')
+        ]
+
         json_repr = json.dumps({
             'contact_info': contact_info,
-            'sections': sections
+            'sections': sections,
+            'icon_metadata': sorted(icon_metadata, key=lambda x: x['filename'])  # Sort for consistency
         }, sort_keys=True)
         new_hash = hashlib.sha256(json_repr.encode('utf-8')).hexdigest()
 
@@ -1762,8 +1773,18 @@ def save_resume():
         if not is_update:
             resume_data['created_at'] = 'now()'
 
-        # Upload icons to storage and prepare icon records
-        icon_records = []
+        # Smart icon diffing: upload only changed icons
+        # Fetch existing icons if updating
+        existing_icons = {}
+        if is_update:
+            existing_result = supabase.table('resume_icons').select('filename, file_size, storage_path, storage_url, mime_type').eq('resume_id', resume_id).execute()
+            existing_icons = {icon['filename']: icon for icon in existing_result.data}
+
+        # Identify which icons need uploading
+        icons_to_upload = []
+        icons_to_keep = []
+        icons_to_delete = []
+
         for icon in icons:
             filename = icon.get('filename')
             data_b64 = icon.get('data')
@@ -1772,9 +1793,43 @@ def save_resume():
                 continue
 
             try:
-                # Decode base64 data
+                # Decode to get actual size
                 file_data = base64.b64decode(data_b64.split(',')[1] if ',' in data_b64 else data_b64)
+                new_size = len(file_data)
 
+                # Check if icon exists and hasn't changed (size match = content match proxy)
+                if filename in existing_icons:
+                    existing_icon = existing_icons[filename]
+                    if existing_icon['file_size'] == new_size:
+                        # Icon unchanged, reuse existing record
+                        icons_to_keep.append(existing_icon)
+                        logging.debug(f"Reusing existing icon: {filename}")
+                        continue
+
+                # Icon is new or changed, needs upload
+                icons_to_upload.append({
+                    'filename': filename,
+                    'data': file_data,
+                    'size': new_size
+                })
+
+            except Exception as decode_error:
+                logging.error(f"Failed to decode icon {filename}: {decode_error}")
+                continue
+
+        # Identify icons to delete (existed before but not in new set)
+        new_icon_filenames = {icon['filename'] for icon in icons if icon.get('filename')}
+        for filename in existing_icons:
+            if filename not in new_icon_filenames:
+                icons_to_delete.append(filename)
+
+        # Upload only changed/new icons
+        icon_records = []
+        for icon_data in icons_to_upload:
+            filename = icon_data['filename']
+            file_data = icon_data['data']
+
+            try:
                 # Detect MIME type from filename extension
                 extension = filename.rsplit('.', 1)[-1].lower()
                 mime_type = {
@@ -1789,7 +1844,6 @@ def save_resume():
                     user_id, resume_id, filename, file_data, mime_type
                 )
 
-                # Prepare icon record
                 icon_records.append({
                     'id': str(uuid.uuid4()),
                     'resume_id': resume_id,
@@ -1798,24 +1852,48 @@ def save_resume():
                     'storage_path': storage_path,
                     'storage_url': storage_url,
                     'mime_type': mime_type,
-                    'file_size': len(file_data),
+                    'file_size': icon_data['size'],
                     'created_at': 'now()'
                 })
+                logging.info(f"Uploaded new/changed icon: {filename}")
 
-            except Exception as icon_error:
-                logging.error(f"Failed to upload icon {filename}: {icon_error}")
+            except Exception as upload_error:
+                logging.error(f"Failed to upload icon {filename}: {upload_error}")
                 # Continue with other icons, don't fail entire save
+
+        # Combine new uploads with unchanged icons
+        all_icon_records = icon_records + [
+            {
+                'id': str(uuid.uuid4()),
+                'resume_id': resume_id,
+                'user_id': user_id,
+                'filename': icon['filename'],
+                'storage_path': icon['storage_path'],
+                'storage_url': icon['storage_url'],
+                'mime_type': icon['mime_type'],
+                'file_size': icon['file_size'],
+                'created_at': 'now()'
+            }
+            for icon in icons_to_keep
+        ]
 
         # Save resume to database (upsert)
         supabase.table('resumes').upsert(resume_data).execute()
 
-        # Delete old icons for this resume
+        # Delete removed icons
+        if icons_to_delete and is_update:
+            for filename in icons_to_delete:
+                supabase.table('resume_icons').delete().eq('resume_id', resume_id).eq('filename', filename).execute()
+                logging.info(f"Deleted removed icon: {filename}")
+
+        # Replace all icon records with new set
         if is_update:
             supabase.table('resume_icons').delete().eq('resume_id', resume_id).execute()
 
-        # Insert new icon records
-        if icon_records:
-            supabase.table('resume_icons').insert(icon_records).execute()
+        if all_icon_records:
+            supabase.table('resume_icons').insert(all_icon_records).execute()
+
+        logging.info(f"Icon summary - Uploaded: {len(icon_records)}, Kept: {len(icons_to_keep)}, Deleted: {len(icons_to_delete)}")
 
         # Update user preferences to track last edited resume
         supabase.table('user_preferences').upsert({
