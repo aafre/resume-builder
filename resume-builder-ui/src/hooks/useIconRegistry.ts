@@ -62,8 +62,19 @@ export const useIconRegistry = (): UseIconRegistryReturn => {
 
   // Register a new icon file
   const registerIcon = useCallback((file: File): string => {
+    // Validate file size (50KB limit matches database constraint)
+    const MAX_ICON_SIZE_BYTES = 50 * 1024; // 50KB
+
+    if (file.size > MAX_ICON_SIZE_BYTES) {
+      const sizeKB = Math.round(file.size / 1024);
+      const maxKB = Math.round(MAX_ICON_SIZE_BYTES / 1024);
+      throw new Error(
+        `Icon "${file.name}" is too large (${sizeKB} KB). Maximum allowed size is ${maxKB} KB. Please compress the image or use a smaller file.`
+      );
+    }
+
     const filename = generateUniqueFilename(file);
-    
+
     const entry: IconRegistryEntry = {
       file,
       filename,
