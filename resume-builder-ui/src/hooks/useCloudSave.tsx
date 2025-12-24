@@ -26,7 +26,7 @@ interface UseCloudSaveReturn {
   resumeId: string | null;
 }
 
-const DEBOUNCE_DELAY = 5000; // 5 seconds
+const DEBOUNCE_DELAY = 800; // 800ms - Google Docs-like speed
 
 export function useCloudSave({
   resumeId,
