@@ -2272,6 +2272,69 @@ def generate_pdf_for_saved_resume(resume_id):
             # Normalize sections
             yaml_data = normalize_sections(yaml_data)
 
+            # Icon validation and copying for icon-supporting templates
+            template_id = resume.get('template_id', 'modern')
+            uses_icons = template_id == "modern-with-icons"
+
+            if uses_icons:
+                # Always copy base contact icons that are hardcoded in templates
+                base_contact_icons = [
+                    "location.png", "email.png", "phone.png", "linkedin.png",
+                    "github.png", "twitter.png", "website.png", "pinterest.png",
+                    "medium.png", "youtube.png", "stackoverflow.png", "behance.png", "dribbble.png"
+                ]
+
+                for icon_name in base_contact_icons:
+                    default_icon_path = ICONS_DIR / icon_name
+                    if default_icon_path.exists():
+                        session_icon_path = session_icons_dir / icon_name
+                        shutil.copy2(default_icon_path, session_icon_path)
+                        logging.debug(f"Copied base contact icon: {icon_name}")
+                    else:
+                        logging.warning(f"Base contact icon not found: {icon_name}")
+
+                # Extract content icons (from Experience, Education, Certifications, etc.)
+                referenced_icons = extract_icons_from_yaml(yaml_data)
+                logging.debug(f"Found {len(referenced_icons)} referenced icons in resume data")
+
+                # Validate and copy default icons
+                missing_icons = []
+                for icon_name in referenced_icons:
+                    # Skip if already copied as base contact icon
+                    if icon_name in base_contact_icons:
+                        continue
+
+                    # Check if user uploaded this icon (already downloaded from storage above)
+                    user_icon_path = session_icons_dir / icon_name
+                    if user_icon_path.exists():
+                        logging.debug(f"Icon already in session: {icon_name} (user-uploaded)")
+                        continue
+
+                    # Try to copy from default icons directory
+                    default_icon_path = ICONS_DIR / icon_name
+                    if default_icon_path.exists():
+                        session_icon_path = session_icons_dir / icon_name
+                        shutil.copy2(default_icon_path, session_icon_path)
+                        logging.debug(f"Copied default icon: {icon_name}")
+                    else:
+                        # Icon not found in storage or /icons/ directory
+                        missing_icons.append(icon_name)
+                        logging.error(f"Icon not found: {icon_name} (not in storage or /icons/)")
+
+                # Return error if any icons are missing
+                if missing_icons:
+                    error_msg = (
+                        f"Missing {len(missing_icons)} icon(s) required for PDF generation: {', '.join(missing_icons)}. "
+                        f"These icons were referenced in your resume but are not available. "
+                        f"Please edit this resume to either upload the missing icons or remove them from your sections."
+                    )
+                    logging.error(f"PDF generation blocked: {error_msg}")
+                    return jsonify({
+                        "success": False,
+                        "error": error_msg,
+                        "missing_icons": missing_icons
+                    }), 400
+
             # Write YAML to temp file
             yaml_path = temp_dir_path / "resume.yaml"
             with open(yaml_path, 'w') as f:
@@ -2443,6 +2506,69 @@ def generate_thumbnail_for_resume(resume_id):
 
             # Normalize sections
             yaml_data = normalize_sections(yaml_data)
+
+            # Icon validation and copying for icon-supporting templates
+            template_id = resume.get('template_id', 'modern')
+            uses_icons = template_id == "modern-with-icons"
+
+            if uses_icons:
+                # Always copy base contact icons that are hardcoded in templates
+                base_contact_icons = [
+                    "location.png", "email.png", "phone.png", "linkedin.png",
+                    "github.png", "twitter.png", "website.png", "pinterest.png",
+                    "medium.png", "youtube.png", "stackoverflow.png", "behance.png", "dribbble.png"
+                ]
+
+                for icon_name in base_contact_icons:
+                    default_icon_path = ICONS_DIR / icon_name
+                    if default_icon_path.exists():
+                        session_icon_path = session_icons_dir / icon_name
+                        shutil.copy2(default_icon_path, session_icon_path)
+                        logging.debug(f"Copied base contact icon: {icon_name}")
+                    else:
+                        logging.warning(f"Base contact icon not found: {icon_name}")
+
+                # Extract content icons (from Experience, Education, Certifications, etc.)
+                referenced_icons = extract_icons_from_yaml(yaml_data)
+                logging.debug(f"Found {len(referenced_icons)} referenced icons in resume data")
+
+                # Validate and copy default icons
+                missing_icons = []
+                for icon_name in referenced_icons:
+                    # Skip if already copied as base contact icon
+                    if icon_name in base_contact_icons:
+                        continue
+
+                    # Check if user uploaded this icon (already downloaded from storage above)
+                    user_icon_path = session_icons_dir / icon_name
+                    if user_icon_path.exists():
+                        logging.debug(f"Icon already in session: {icon_name} (user-uploaded)")
+                        continue
+
+                    # Try to copy from default icons directory
+                    default_icon_path = ICONS_DIR / icon_name
+                    if default_icon_path.exists():
+                        session_icon_path = session_icons_dir / icon_name
+                        shutil.copy2(default_icon_path, session_icon_path)
+                        logging.debug(f"Copied default icon: {icon_name}")
+                    else:
+                        # Icon not found in storage or /icons/ directory
+                        missing_icons.append(icon_name)
+                        logging.error(f"Icon not found: {icon_name} (not in storage or /icons/)")
+
+                # Return error if any icons are missing
+                if missing_icons:
+                    error_msg = (
+                        f"Missing {len(missing_icons)} icon(s) required for PDF generation: {', '.join(missing_icons)}. "
+                        f"These icons were referenced in your resume but are not available. "
+                        f"Please edit this resume to either upload the missing icons or remove them from your sections."
+                    )
+                    logging.error(f"PDF generation blocked: {error_msg}")
+                    return jsonify({
+                        "success": False,
+                        "error": error_msg,
+                        "missing_icons": missing_icons
+                    }), 400
 
             # Write YAML to temp file
             yaml_path = temp_dir_path / "resume.yaml"
