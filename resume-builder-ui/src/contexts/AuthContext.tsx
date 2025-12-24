@@ -129,12 +129,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         })
       });
 
-      const result = await response.json();
-
       if (!response.ok) {
-        throw new Error(result.error || 'Failed to migrate resumes');
+        const result = await response.json();
+
+        // Handle 403 silently - this means the old user ID was not anonymous (stale ID)
+        if (response.status === 403) {
+          console.log('Skipping migration: old user ID is not anonymous (likely stale)');
+          localStorage.removeItem('anonymous-user-id'); // Clean up stale ID
+          return false;
+        }
+
+        // Show error for other failures (500, network errors, etc.)
+        console.error('Failed to migrate anonymous resumes:', result.error);
+        toast.error('Failed to migrate your resumes');
+        return false;
       }
 
+      const result = await response.json();
       console.log('Resume migration successful:', result);
 
       // Show success toast with appropriate message
@@ -152,6 +163,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       return true;
     } catch (error) {
+      // Catch network errors, JSON parsing errors, etc.
       console.error('Resume migration failed:', error);
       toast.error('Failed to migrate your resumes');
       return false;
