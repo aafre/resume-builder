@@ -1,0 +1,285 @@
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { supabase } from '../lib/supabase';
+import { toast } from 'react-hot-toast';
+import type { User, Session } from '@supabase/supabase-js';
+
+interface AuthContextType {
+  user: User | null;
+  session: Session | null;
+  loading: boolean;
+  isAuthenticated: boolean;
+  isAnonymous: boolean;
+  signInWithGoogle: () => Promise<void>;
+  signInWithLinkedIn: () => Promise<void>;
+  signInWithEmail: (email: string) => Promise<void>;
+  signOut: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within AuthProvider');
+  }
+  return context;
+};
+
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [hasMigrated, setHasMigrated] = useState(false);
+
+  // Helper function to check if there's unsaved work in localStorage
+  const checkForUnsavedWork = () => {
+    try {
+      const autoSaveData = localStorage.getItem('resume-autosave');
+      if (!autoSaveData) return null;
+
+      const parsed = JSON.parse(autoSaveData);
+
+      // Check if there's meaningful content (not just empty data)
+      const hasContactInfo = parsed.contactInfo && Object.keys(parsed.contactInfo).some(key =>
+        parsed.contactInfo[key] && String(parsed.contactInfo[key]).trim() !== ''
+      );
+      const hasSections = parsed.sections && parsed.sections.length > 0;
+      const hasIcons = parsed.iconRegistry && Object.keys(parsed.iconRegistry).length > 0;
+
+      if (hasContactInfo || hasSections || hasIcons) {
+        return parsed;
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Error checking localStorage:', error);
+      return null;
+    }
+  };
+
+  // Helper function to migrate localStorage data to cloud
+  const migrateToCloud = async (session: Session, data: any) => {
+    try {
+      console.log('Migrating localStorage data to cloud...');
+
+      // Prepare icons for upload (convert base64 to proper format if needed)
+      const icons = [];
+      if (data.iconRegistry) {
+        for (const [filename, fileData] of Object.entries(data.iconRegistry)) {
+          if (fileData) {
+            icons.push({
+              filename,
+              data: fileData // Assuming it's already in the right format
+            });
+          }
+        }
+      }
+
+      const response = await fetch('/api/resumes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify({
+          id: null, // Create new resume
+          title: data.contactInfo?.name || 'Untitled Resume',
+          template_id: data.templateId || 'modern-with-icons',
+          contact_info: data.contactInfo || {},
+          sections: data.sections || [],
+          icons: icons
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to migrate resume');
+      }
+
+      console.log('Migration successful:', result.resume_id);
+      toast.success('Your resume has been saved to your account!');
+
+      // Don't clear localStorage - let the editor handle that
+      return true;
+    } catch (error) {
+      console.error('Migration failed:', error);
+      toast.error('Failed to save your resume to the cloud');
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    // If Supabase is not configured, skip auth
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
+    let isInitializing = false;
+
+    // Initialize auth state
+    const initializeAuth = async () => {
+      // Prevent duplicate initialization (React Strict Mode in dev)
+      if (isInitializing) return;
+      isInitializing = true;
+
+      try {
+        // Check for existing session
+        const { data: { session: existingSession } } = await supabase!.auth.getSession();
+
+        if (existingSession) {
+          // User has existing session (anonymous or authenticated)
+          setSession(existingSession);
+          setUser(existingSession.user);
+          console.log('Existing session restored:', existingSession.user.id);
+        } else {
+          // No session - create anonymous session automatically
+          console.log('No session found, signing in anonymously...');
+          const { data, error } = await supabase!.auth.signInAnonymously();
+
+          if (error) {
+            console.error('Anonymous sign-in error:', error);
+          } else if (data.session && data.user) {
+            setSession(data.session);
+            setUser(data.user);
+            console.log('Anonymous session created:', data.user.id);
+          }
+        }
+      } catch (error) {
+        console.error('Auth initialization error:', error);
+      } finally {
+        setLoading(false);
+        isInitializing = false;
+      }
+    };
+
+    initializeAuth();
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log('Auth state changed:', event, session?.user?.id);
+        setSession(session);
+        setUser(session?.user ?? null);
+        setLoading(false);
+
+        // Trigger migration when user signs in (from anonymous to authenticated)
+        if (event === 'SIGNED_IN' && session?.user && !session.user.is_anonymous) {
+          // Show welcome toast on successful sign-in (only once per session)
+          const hasShownToast = sessionStorage.getItem('login-toast-shown');
+          if (!hasShownToast) {
+            toast.success('Signed in successfully');
+            sessionStorage.setItem('login-toast-shown', 'true');
+          }
+
+          // Check if there's unsaved work in localStorage (only if not migrated yet)
+          if (!hasMigrated) {
+            const unsavedData = checkForUnsavedWork();
+
+            if (unsavedData) {
+              // Trigger migration
+              const migrated = await migrateToCloud(session, unsavedData);
+              if (migrated) {
+                setHasMigrated(true);
+              }
+            }
+          }
+        }
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const signInWithGoogle = async () => {
+    if (!supabase) throw new Error('Supabase not configured');
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.href, // Stay on current page
+      },
+    });
+
+    if (error) throw error;
+  };
+
+  const signInWithLinkedIn = async () => {
+    if (!supabase) throw new Error('Supabase not configured');
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'linkedin_oidc',
+      options: {
+        redirectTo: window.location.href, // Stay on current page
+      },
+    });
+
+    if (error) throw error;
+  };
+
+  const signInWithEmail = async (email: string) => {
+    if (!supabase) throw new Error('Supabase not configured');
+
+    console.log('🔵 Attempting to send magic link to:', email);
+
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: window.location.href, // Stay on current page
+      },
+    });
+
+    console.log('🔵 Magic link response:', { data, error });
+
+    if (error) {
+      console.error('❌ Magic link error:', error);
+      throw error;
+    }
+
+    console.log('✅ Magic link sent successfully');
+  };
+
+  const signOut = async () => {
+    if (!supabase) return;
+
+    // Sign out current user
+    await supabase.auth.signOut();
+
+    // Reset toast flag so user sees welcome message on next sign-in
+    sessionStorage.removeItem('login-toast-shown');
+
+    // Immediately create new anonymous session
+    const { error } = await supabase.auth.signInAnonymously();
+
+    if (error) {
+      console.error('Error creating new anonymous session:', error);
+    } else {
+      console.log('New anonymous session created after sign-out');
+    }
+  };
+
+  // Compute derived auth state
+  const isAnonymous = user?.is_anonymous ?? false;
+  const isAuthenticated = !!user && !isAnonymous;
+
+  const value: AuthContextType = {
+    user,
+    session,
+    loading,
+    isAuthenticated,
+    isAnonymous,
+    signInWithGoogle,
+    signInWithLinkedIn,
+    signInWithEmail,
+    signOut,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
