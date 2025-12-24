@@ -344,12 +344,8 @@ const Editor: React.FC = () => {
       return saveStatus !== 'error';
     }
 
-    // If already saved with no pending changes, proceed
-    if (saveStatus === 'saved') {
-      return true;
-    }
-
-    // Trigger immediate save
+    // Always trigger save before action to ensure latest data is persisted
+    // Backend handles deduplication via hash comparison, so redundant saves are cheap
     try {
       console.log(`Saving before ${actionName}...`);
       const result = await saveNow();
