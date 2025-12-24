@@ -87,10 +87,10 @@ export function ResumeCard({
 
   return (
     <div
-      className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200 overflow-hidden group"
+      className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200 group"
     >
       {/* Thumbnail */}
-      <div className="relative bg-gray-100 h-48 overflow-hidden cursor-pointer" onClick={() => onPreview(resume.id)}>
+      <div className="relative bg-gray-100 h-48 overflow-hidden cursor-pointer rounded-t-lg" onClick={() => onPreview(resume.id)}>
         {/* Always show thumbnail - never hide it */}
         <img
           src={resume.thumbnail_url || getTemplatePreview(resume.template_id)}
