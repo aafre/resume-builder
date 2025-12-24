@@ -183,55 +183,257 @@ Success. No rows returned
    - ✅ **Secure email change**: ON (recommended)
    - ✅ **Enable email OTP**: OFF (we use magic links, not OTPs)
 
-4. **Customize Email Templates** (optional but recommended):
-   - Go to **Authentication → Email Templates**
-   - Customize "Magic Link" template with your branding
+4. **Customize Email Templates** - See Part 4.5 below for detailed instructions
 
-### 4.4 Enable OAuth Providers (Optional)
+### 4.4 Enable OAuth Providers (Google & LinkedIn)
 
-#### Google OAuth
+**IMPORTANT:** Full detailed OAuth setup instructions are available in `docs/OAUTH_SETUP_GUIDE.md`
 
-**Reference:** [Supabase Google OAuth Docs](https://supabase.com/docs/guides/auth/social-login/auth-google)
+This section provides a quick setup overview. For step-by-step instructions with screenshots and troubleshooting, see the dedicated OAuth guide.
 
-1. **Create Google OAuth Credentials:**
-   - Go to [Google Cloud Console](https://console.cloud.google.com/)
-   - Create new project or select existing
-   - Enable **Google+ API**
-   - Go to **Credentials** → **Create Credentials** → **OAuth 2.0 Client ID**
-   - Application type: **Web application**
-   - **Authorized redirect URIs**: Add `https://xxxxxxxxxxxxx.supabase.co/auth/v1/callback`
-   - Save and copy **Client ID** and **Client Secret**
+#### Quick Setup Summary
 
-2. **Configure in Supabase:**
-   - Go to **Authentication → Providers**
-   - Click **Google**
+**Prerequisites:**
+- Supabase project URL: `https://YOUR-PROJECT-REF.supabase.co`
+- Callback URL: `https://YOUR-PROJECT-REF.supabase.co/auth/v1/callback`
+
+#### Google OAuth (Quick Steps)
+
+1. **Google Cloud Console:**
+   - Create project at [Google Cloud Console](https://console.cloud.google.com/)
+   - Enable Google+ API
+   - Configure OAuth consent screen (External, add app name, logo, privacy policy)
+   - Create OAuth 2.0 Client ID (Web application)
+   - Add redirect URI: `https://YOUR-PROJECT-REF.supabase.co/auth/v1/callback`
+   - Copy Client ID and Client Secret
+
+2. **Supabase Dashboard:**
+   - Go to **Authentication → Providers → Google**
    - Toggle **Enable Sign in with Google**: ON
-   - Paste **Client ID** (Google OAuth)
-   - Paste **Client Secret** (Google OAuth)
-   - **Authorized Client IDs**: Leave empty unless using mobile
+   - Paste Client ID and Client Secret
    - Click **Save**
 
-#### LinkedIn OAuth
+3. **Testing:**
+   - Site URL must be set to `http://localhost:5173` for dev
+   - Add test users in Google OAuth consent screen if app is in "Testing" mode
+   - Publish app to allow any Google user to sign in
 
-**Reference:** [Supabase LinkedIn OAuth Docs](https://supabase.com/docs/guides/auth/social-login/auth-linkedin)
+**Detailed guide:** See `docs/OAUTH_SETUP_GUIDE.md` → Part 1
 
-1. **Create LinkedIn App:**
-   - Go to [LinkedIn Developers](https://www.linkedin.com/developers/apps)
-   - Click **"Create app"**
-   - Fill in app details (name, logo, privacy policy URL)
-   - Under **Auth** tab:
-     - **Authorized redirect URLs**: Add `https://xxxxxxxxxxxxx.supabase.co/auth/v1/callback`
-   - Under **Products** tab:
-     - Request access to **"Sign In with LinkedIn using OpenID Connect"**
-   - Copy **Client ID** and **Client Secret** from **Auth** tab
+#### LinkedIn OAuth (Quick Steps)
 
-2. **Configure in Supabase:**
-   - Go to **Authentication → Providers**
-   - Click **LinkedIn (OIDC)**
+1. **LinkedIn Developer Portal:**
+   - Create app at [LinkedIn Developers](https://www.linkedin.com/developers/apps)
+   - Fill in app details (requires LinkedIn Page)
+   - Add redirect URL: `https://YOUR-PROJECT-REF.supabase.co/auth/v1/callback`
+   - Request access to **"Sign In with LinkedIn using OpenID Connect"** product
+   - Copy Client ID and Client Secret from Auth tab
+
+2. **Supabase Dashboard:**
+   - Go to **Authentication → Providers → LinkedIn (OIDC)**
    - Toggle **Enable Sign in with LinkedIn**: ON
-   - Paste **Client ID** (LinkedIn OAuth)
-   - Paste **Client Secret** (LinkedIn OAuth)
+   - Paste Client ID and Client Secret
    - Click **Save**
+
+3. **Testing:**
+   - Product approval is usually instant
+   - Test with your LinkedIn account
+   - App can stay in development mode for testing
+
+**Detailed guide:** See `docs/OAUTH_SETUP_GUIDE.md` → Part 2
+
+#### Common Issues & Solutions
+
+**Google:**
+- ❌ `redirect_uri_mismatch`: Check callback URL matches exactly
+- ❌ `access_denied`: Add yourself as test user or publish app
+- ❌ "This app is not verified": Expected for unpublished apps, users can still proceed
+
+**LinkedIn:**
+- ❌ `Product not approved`: Wait for approval (usually instant, max 48 hours)
+- ❌ `redirect_uri_mismatch`: Verify callback URL in Auth tab
+- ❌ `unauthorized_client`: Re-check Client ID and Secret
+
+**General:**
+- ❌ Popup blocked: Allow popups for your domain
+- ❌ Session not persisting: Check cookies enabled, verify HTTPS in production
+
+**Full troubleshooting guide:** See `docs/OAUTH_SETUP_GUIDE.md` → Part 6
+
+### 4.5 Customize Email Templates (IMPORTANT for Branding!)
+
+Email templates are how your users will first interact with your brand via email. Professional, branded emails improve trust and conversion rates.
+
+**Templates Location in Repository**: `email-templates/`
+
+#### Step 1: Access Email Templates in Supabase
+
+1. Go to **Authentication → Email Templates** in Supabase Dashboard
+2. You'll see 4 default templates:
+   - **Confirm signup** - Sent when user creates an account
+   - **Magic Link** - Sent for passwordless login
+   - **Change Email Address** - Sent when user changes email
+   - **Reset Password** - Sent when user requests password reset
+
+#### Step 2: Customize Magic Link Template
+
+This is the most important template as it's used for passwordless authentication.
+
+1. Click on **"Magic Link"** template
+2. **Subject line**: Change to:
+   ```
+   Sign in to EasyFreeResume
+   ```
+
+3. **Message Body (HTML)**:
+   - Open `email-templates/magic-link.html` in your code editor
+   - Copy the entire HTML content
+   - Paste into the "Message Body" field in Supabase
+   - Click **"Save"**
+
+4. **Test the email**:
+   - Click **"Send test email"** button
+   - Enter your email address
+   - Check your inbox to verify branding looks correct
+
+#### Step 3: Customize Confirm Signup Template
+
+1. Click on **"Confirm signup"** template
+2. **Subject line**: Change to:
+   ```
+   Welcome to EasyFreeResume - Confirm your email
+   ```
+
+3. **Message Body (HTML)**:
+   - Open `email-templates/confirm-signup.html`
+   - Copy entire content
+   - Paste into Supabase
+   - Click **"Save"**
+
+4. **Test the email** (same process as above)
+
+#### Step 4: Customize Reset Password Template
+
+1. Click on **"Reset Password"** template
+2. **Subject line**: Change to:
+   ```
+   Reset your EasyFreeResume password
+   ```
+
+3. **Message Body (HTML)**:
+   - Open `email-templates/reset-password.html`
+   - Copy entire content
+   - Paste into Supabase
+   - Click **"Save"**
+
+4. **Test the email**
+
+#### Step 5: Customize Change Email Template
+
+1. Click on **"Change Email Address"** template
+2. **Subject line**: Change to:
+   ```
+   Confirm your new email - EasyFreeResume
+   ```
+
+3. **Message Body (HTML)**:
+   - Open `email-templates/change-email.html`
+   - Copy entire content
+   - Paste into Supabase
+   - Click **"Save"**
+
+4. **Test the email**
+
+#### Email Template Variables
+
+Supabase automatically replaces these variables in your templates:
+
+- `{{ .ConfirmationURL }}` - The unique action link (magic link, confirmation, reset, etc.)
+- `{{ .Email }}` - User's email address
+- `{{ .Token }}` - Raw token (rarely used)
+- `{{ .SiteURL }}` - Your application's site URL
+
+**Always use** `{{ .ConfirmationURL }}` for action buttons in your templates.
+
+#### Design Specifications
+
+All email templates follow the EasyFreeResume brand guidelines:
+
+- **Color Scheme**: Blue (#2563eb) → Purple (#9333ea) → Indigo (#4f46e5) gradient
+- **Responsive**: Works on mobile and desktop email clients
+- **Tested on**: Gmail, Outlook, Apple Mail, Yahoo Mail
+- **Max width**: 600px (standard for email compatibility)
+- **Accessibility**: High contrast, semantic HTML, screen reader friendly
+
+#### Troubleshooting Email Issues
+
+**Issue: Emails going to spam**
+
+1. Configure SPF/DKIM/DMARC records (see Part 6.5 below for custom domain setup)
+2. Use Supabase's default sending domain until you configure custom domain
+3. Ask test recipients to mark as "Not Spam"
+
+**Issue: Links not working**
+
+1. Verify **Site URL** is set correctly in **Authentication → URL Configuration**
+2. Ensure **Redirect URLs** include the target pages
+3. Check that `{{ .ConfirmationURL }}` variable is used correctly
+
+**Issue: Template styling broken**
+
+1. Some email clients (especially Outlook) strip CSS
+2. All templates use inline styles as fallback
+3. Test in multiple email clients before deploying
+
+**Issue: Variables not being replaced**
+
+1. Ensure you're using the correct syntax: `{{ .ConfirmationURL }}` (note the dot and capitalization)
+2. Supabase processes templates server-side, so variables won't show in preview
+3. Send a test email to see actual output
+
+#### Email Sending Limits
+
+**Supabase Free Tier:**
+- Unlimited emails via Supabase's default sending service
+- Daily sending limits apply (check Supabase docs for current limits)
+
+**For High Volume (Production):**
+- Consider configuring custom SMTP provider (SendGrid, Mailgun, AWS SES)
+- Go to **Project Settings → Auth → SMTP Settings** to configure
+
+#### Optional: Custom SMTP Configuration
+
+For production apps with high email volume or custom domain requirements:
+
+1. Go to **Project Settings → Auth → SMTP Settings**
+2. Enable **Custom SMTP**
+3. Configure with your provider (SendGrid example):
+   ```
+   Host: smtp.sendgrid.net
+   Port: 587
+   Username: apikey
+   Password: YOUR_SENDGRID_API_KEY
+   Sender email: noreply@easyfreeresume.com
+   Sender name: EasyFreeResume
+   ```
+4. Click **Save**
+5. Send test email to verify configuration
+
+**Recommended SMTP Providers:**
+- **SendGrid**: Free tier includes 100 emails/day
+- **Mailgun**: Free tier includes 5,000 emails/month
+- **AWS SES**: $0.10 per 1,000 emails (requires AWS account)
+- **Postmark**: $1.50 per 1,000 emails (excellent deliverability)
+
+#### Monitoring Email Delivery
+
+To track email deliverability:
+
+1. Check Supabase logs: **Project Settings → Logs → Auth Logs**
+2. Filter for email events: `email_sent`, `email_failed`
+3. For custom SMTP: Use provider's dashboard for detailed analytics
+
+**For more details**, see `email-templates/README.md` in the repository.
 
 ---
 
@@ -564,23 +766,46 @@ console.log('Upload result:', data, error)
 
 Use this before going live:
 
+**Database & Storage:**
 - [ ] SQL migration script executed successfully
-- [ ] Anonymous auth enabled
-- [ ] Email provider configured
-- [ ] OAuth providers configured (if using)
-- [ ] Site URL set to production domain
-- [ ] Redirect URLs include production URLs
 - [ ] Storage buckets created with policies
 - [ ] RLS policies verified
+- [ ] Database backups enabled
+
+**Authentication:**
+- [ ] Anonymous auth enabled
+- [ ] Email provider configured
+- [ ] **Email templates customized and tested** (Magic Link, Confirm Signup, Reset Password, Change Email)
+- [ ] **Google OAuth configured** (see `docs/OAUTH_SETUP_GUIDE.md`)
+  - [ ] Google Cloud Console OAuth client created
+  - [ ] Callback URL added to Google OAuth client
+  - [ ] Client ID and Secret configured in Supabase
+  - [ ] OAuth consent screen configured
+  - [ ] App published (or test users added)
+- [ ] **LinkedIn OAuth configured** (see `docs/OAUTH_SETUP_GUIDE.md`)
+  - [ ] LinkedIn app created
+  - [ ] "Sign In with LinkedIn using OpenID Connect" product approved
+  - [ ] Callback URL added to LinkedIn app
+  - [ ] Client ID and Secret configured in Supabase
+- [ ] Site URL set to production domain
+- [ ] Redirect URLs include production URLs
+
+**Security & Configuration:**
 - [ ] Environment variables set in Cloud Run
 - [ ] CORS restricted to production domains
 - [ ] Rate limiting configured
-- [ ] Database backups enabled
 - [ ] Monitoring/alerting set up
+
+**Testing:**
 - [ ] Test anonymous sign-in works
+- [ ] **Test Google OAuth sign-in works**
+- [ ] **Test LinkedIn OAuth sign-in works**
+- [ ] Test magic link email received and works
 - [ ] Test resume creation works
 - [ ] Test file upload works
 - [ ] Test PDF generation works
+- [ ] Verify user profile shows correct name/email from OAuth providers
+- [ ] Test sign-out and re-authentication
 
 ---
 
