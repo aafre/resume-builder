@@ -193,7 +193,7 @@ dist-ssr
 
 coverage/
 blogs_to_add/
-.claude/settings.local.json
+.claude/
 resume-builder-ui/test-files/
 new-resume.yml
 redo-frontend-editor.md
@@ -203,3 +203,6 @@ test-api.ps1
 test-links.yml
 test-multiple-experience.yml
 output/
+nul
+resume-*.yaml
+resume-*.yml
