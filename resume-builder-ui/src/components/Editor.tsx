@@ -490,7 +490,8 @@ const Editor: React.FC = () => {
             const iconResponse = await fetch(icon.storage_url);
             const blob = await iconResponse.blob();
             const file = new File([blob], icon.filename, { type: blob.type });
-            iconRegistry.registerIcon(file);
+            // Use registerIconWithFilename to preserve original filename from storage
+            iconRegistry.registerIconWithFilename(file, icon.filename);
           } catch (iconError) {
             console.error(`Failed to load icon ${icon.filename}:`, iconError);
           }
