@@ -1543,11 +1543,15 @@ def create_resume():
             }
 
             # Clear section content but keep section names and types
+            # Determine correct empty content type based on section type
+            list_types = {'bulleted-list', 'inline-list', 'dynamic-column-list',
+                         'icon-list', 'experience', 'education'}
+
             sections = [
                 {
                     'name': section.get('name', ''),
                     'type': section.get('type', 'text'),
-                    'content': [] if isinstance(section.get('content'), list) else ''
+                    'content': [] if section.get('type', 'text') in list_types else ''
                 }
                 for section in sections
             ]
