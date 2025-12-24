@@ -1,6 +1,6 @@
 import { ResumeListItem } from '../types';
 import { useState } from 'react';
-import { Download, Copy, Trash2 } from 'lucide-react';
+import { Download, Copy, Trash2, Eye } from 'lucide-react';
 
 interface ResumeCardProps {
   resume: ResumeListItem;
@@ -21,7 +21,6 @@ export function ResumeCard({
   onDuplicate,
   onRename
 }: ResumeCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(resume.title);
   const [isSaving, setIsSaving] = useState(false);
@@ -82,11 +81,9 @@ export function ResumeCard({
   return (
     <div
       className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200 overflow-hidden group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       {/* Thumbnail */}
-      <div className="relative bg-gray-100 h-48 overflow-hidden cursor-pointer" onClick={() => onEdit(resume.id)}>
+      <div className="relative bg-gray-100 h-48 overflow-hidden cursor-pointer" onClick={() => onPreview(resume.id)}>
         <img
           src={resume.thumbnail_url || getTemplatePreview(resume.template_id)}
           alt={resume.title}
@@ -98,29 +95,11 @@ export function ResumeCard({
           {getTemplateName(resume.template_id)}
         </span>
 
-        {/* Hover overlay */}
-        {isHovered && (
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center gap-2">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onPreview(resume.id);
-              }}
-              className="bg-white text-gray-800 px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors"
-            >
-              Preview
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onDownload(resume.id);
-              }}
-              className="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-            >
-              Download
-            </button>
-          </div>
-        )}
+        {/* Preview hover overlay */}
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2">
+          <Eye className="w-8 h-8 text-white" />
+          <span className="text-white font-medium text-lg">Preview</span>
+        </div>
       </div>
 
       {/* Content */}
