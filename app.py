@@ -28,6 +28,8 @@ from jinja2 import Environment, FileSystemLoader
 from concurrent.futures import ProcessPoolExecutor
 import atexit
 from functools import wraps
+import time
+from typing import Callable, Any
 
 from flask_cors import CORS
 from supabase import create_client, Client
@@ -44,6 +46,57 @@ log_level = logging.DEBUG if DEBUG_LOGGING else logging.INFO
 logging.basicConfig(
     level=log_level, format="%(asctime)s [%(levelname)s] %(message)s"
 )
+
+
+def retry_on_connection_error(max_retries=3, backoff_factor=0.5):
+    """
+    Retry decorator for handling transient Supabase connection errors.
+
+    Args:
+        max_retries: Maximum number of retry attempts (default: 3)
+        backoff_factor: Exponential backoff multiplier (0.5s, 1s, 2s, ...)
+
+    Returns:
+        Decorated function with retry logic
+
+    Example:
+        @retry_on_connection_error(max_retries=3, backoff_factor=0.5)
+        def some_database_operation():
+            return supabase.table('users').select('*').execute()
+    """
+    def decorator(func: Callable) -> Callable:
+        @wraps(func)
+        def wrapper(*args, **kwargs) -> Any:
+            last_exception = None
+            for attempt in range(max_retries + 1):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    last_exception = e
+                    error_msg = str(e).lower()
+
+                    # Only retry on connection-related errors
+                    is_retryable = any([
+                        'server disconnected' in error_msg,
+                        'connection' in error_msg,
+                        'timeout' in error_msg,
+                        'reset' in error_msg
+                    ])
+
+                    if not is_retryable or attempt == max_retries:
+                        raise
+
+                    wait_time = backoff_factor * (2 ** attempt)
+                    logging.warning(
+                        f"Retry {attempt + 1}/{max_retries} for {func.__name__} "
+                        f"after {wait_time}s due to: {e}"
+                    )
+                    time.sleep(wait_time)
+
+            raise last_exception
+
+        return wrapper
+    return decorator
 
 
 def pdf_generation_worker(template_name, yaml_path, output_path, session_icons_dir, session_id):
@@ -1125,9 +1178,9 @@ def get_template_data(template_id):
         with open(template_path, "r") as file:
             yaml_content = yaml.safe_load(file)
 
-        # Determine icon support based on template type, not YAML content
-        # Classic templates (LaTeX) don't support icons, Modern templates (HTML) do
-        supports_icons = not template_id.startswith("classic")
+        # Determine icon support based on template ID
+        # Only 'modern-with-icons' template supports icons
+        supports_icons = template_id == "modern-with-icons"
 
         # Return the YAML content and supportsIcons flag
         return jsonify(
@@ -1771,6 +1824,7 @@ def save_resume():
 
 @app.route("/api/resumes", methods=["GET"])
 @require_auth
+@retry_on_connection_error(max_retries=3, backoff_factor=0.5)
 def list_resumes():
     """
     List all resumes for the authenticated user.
@@ -1804,9 +1858,10 @@ def list_resumes():
         limit = min(int(request.args.get('limit', 20)), 50)  # Max 50
         offset = int(request.args.get('offset', 0))
 
-        # Query resumes with pagination
+        # Query resumes with pagination and count in a single request
+        # This eliminates connection gap that caused "Server disconnected" errors with large result sets
         result = supabase.table('resumes') \
-            .select('id, title, template_id, created_at, updated_at, last_accessed_at, pdf_url, pdf_generated_at, thumbnail_url') \
+            .select('id, title, template_id, created_at, updated_at, last_accessed_at, pdf_url, pdf_generated_at, thumbnail_url', count='exact') \
             .eq('user_id', user_id) \
             .is_('deleted_at', 'null') \
             .order('updated_at', desc=True) \
@@ -1814,15 +1869,7 @@ def list_resumes():
             .execute()
 
         resumes = result.data
-
-        # Get total count
-        count_result = supabase.table('resumes') \
-            .select('id', count='exact') \
-            .eq('user_id', user_id) \
-            .is_('deleted_at', 'null') \
-            .execute()
-
-        total_count = count_result.count if hasattr(count_result, 'count') else len(count_result.data)
+        total_count = result.count if hasattr(result, 'count') else len(result.data)
 
         return jsonify({
             "success": True,
@@ -1832,8 +1879,17 @@ def list_resumes():
         }), 200
 
     except Exception as e:
-        logging.error(f"Error listing resumes: {e}")
-        return jsonify({"success": False, "error": "Failed to list resumes"}), 500
+        logging.error(f"Error listing resumes: {e}", exc_info=True)
+        error_msg = "Failed to list resumes"
+
+        # Provide more specific error message for common issues
+        error_str = str(e).lower()
+        if "server disconnected" in error_str or "connection" in error_str:
+            error_msg = "Connection to database failed. Please try again."
+        elif "timeout" in error_str:
+            error_msg = "Request timed out. Please try again."
+
+        return jsonify({"success": False, "error": error_msg}), 500
 
 
 @app.route("/api/resumes/<resume_id>", methods=["GET"])
