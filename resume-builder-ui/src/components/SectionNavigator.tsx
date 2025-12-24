@@ -25,6 +25,7 @@ import {
   MdSupport,
 } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { SaveStatusIndicator } from "./SaveStatusIndicator";
 
 interface Section {
   name: string;
@@ -48,6 +49,9 @@ interface SectionNavigatorProps {
   loadingSave?: boolean;
   loadingLoad?: boolean;
   onCollapseChange?: (isCollapsed: boolean) => void;
+  saveStatus?: 'saved' | 'saving' | 'error';
+  lastSaved?: Date | null;
+  isAnonymous?: boolean;
 }
 
 const STORAGE_KEY = "resume-builder-sidebar-collapsed";
@@ -75,6 +79,9 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   loadingSave,
   loadingLoad,
   onCollapseChange,
+  saveStatus,
+  lastSaved,
+  isAnonymous,
 }) => {
   // Load initial state from localStorage
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -277,6 +284,36 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           <MdMenu className="text-lg" />
         </button>
       </div>
+
+      {/* Save Status Indicator - Only for authenticated users */}
+      {!isAnonymous && saveStatus && (
+        <div className={`border-b border-gray-200/60 ${isCollapsed ? 'px-2 py-2' : 'px-4 py-3'} bg-gray-50/30`}>
+          {isCollapsed ? (
+            <div className="flex flex-col items-center gap-1">
+              {saveStatus === 'saved' && (
+                <>
+                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                  <span className="text-[9px] text-gray-500">Saved</span>
+                </>
+              )}
+              {saveStatus === 'saving' && (
+                <>
+                  <div className="animate-spin rounded-full h-2.5 w-2.5 border-b border-blue-600"></div>
+                  <span className="text-[9px] text-gray-500">...</span>
+                </>
+              )}
+              {saveStatus === 'error' && (
+                <>
+                  <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                  <span className="text-[9px] text-gray-500">Error</span>
+                </>
+              )}
+            </div>
+          ) : (
+            <SaveStatusIndicator status={saveStatus} lastSaved={lastSaved} />
+          )}
+        </div>
+      )}
 
       {/* Sections Navigation - Scrollable */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
