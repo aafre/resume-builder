@@ -6,13 +6,17 @@ import React, {
   lazy,
   Suspense,
 } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { fetchTemplate, generateResume } from "../services/templates";
 import { getSessionId } from "../utils/session";
 import { useIconRegistry } from "../hooks/useIconRegistry";
-import { useAutoSave } from "../hooks/useAutoSave";
 import { usePreview } from "../hooks/usePreview";
+import { useCloudSave } from "../hooks/useCloudSave";
+import { useAuth } from "../contexts/AuthContext";
+import { SaveStatusIndicator } from "./SaveStatusIndicator";
+import { StorageLimitModal } from "./StorageLimitModal";
+import { supabase } from "../lib/supabase";
 import yaml from "js-yaml";
 import { PortableYAMLData } from "../types/iconTypes";
 import { extractReferencedIconFilenames } from "../utils/iconExtractor";
@@ -72,6 +76,26 @@ const LoadingSpinner = () => (
   </div>
 );
 
+// Default icons provided by the system (served from /icons/ directory)
+const DEFAULT_ICONS = new Set([
+  'company_google.png',
+  'company_amazon.png',
+  'company_apple.png',
+  'location.png',
+  'email.png',
+  'phone.png',
+  'linkedin.png',
+  'github.png',
+  'twitter.png',
+  'website.png',
+  'pinterest.png',
+  'medium.png',
+  'youtube.png',
+  'stackoverflow.png',
+  'behance.png',
+  'dribbble.png',
+]);
+
 interface Section {
   name: string;
   type?: string;
@@ -89,9 +113,7 @@ interface ContactInfo {
 }
 
 const Editor: React.FC = () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const templateId = queryParams.get("template");
+  const { resumeId: resumeIdFromUrl } = useParams<{ resumeId: string }>();
 
   // Get context for footer integration
   const {
@@ -104,6 +126,7 @@ const Editor: React.FC = () => {
 
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [sections, setSections] = useState<Section[]>([]);
+  const [templateId, setTemplateId] = useState<string | null>(null);
   const [supportsIcons, setSupportsIcons] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loadingError, setLoadingError] = useState<string | null>(null);
@@ -114,6 +137,12 @@ const Editor: React.FC = () => {
 
   // Central icon registry for all uploaded icons
   const iconRegistry = useIconRegistry();
+
+  // Auth state - used by cloud save
+  const { isAnonymous } = useAuth();
+  const [showStorageLimitModal, setShowStorageLimitModal] = useState(false);
+  const [cloudResumeId, setCloudResumeId] = useState<string | null>(resumeIdFromUrl || null);
+  const [isLoadingFromUrl, setIsLoadingFromUrl] = useState<boolean>(!!resumeIdFromUrl);
 
   // Process sections to clean up icon paths for export/preview
   const processSections = useCallback((sections: Section[]) => {
@@ -166,24 +195,6 @@ const Editor: React.FC = () => {
     });
   }, []);
 
-  // Auto-save hook - handles localStorage persistence
-  const {
-    saving: isSaving,
-    lastSaved,
-    error: saveError,
-    saveManually: _saveManually, // Available for future use (auto-save is primary)
-    triggerImmediateSave,
-    clearSave: clearAutoSave,
-    loadSaved: _loadSaved, // Available for future use
-    recoveredData: autoSaveRecoveredData,
-  } = useAutoSave({
-    contactInfo,
-    sections,
-    originalTemplateData,
-    templateId,
-    iconRegistry,
-  });
-
   // Preview hook - handles PDF preview generation and caching
   const {
     previewUrl,
@@ -198,6 +209,51 @@ const Editor: React.FC = () => {
     iconRegistry,
     processSections,
   });
+
+  // Cloud save hook - handles saving to Supabase for authenticated users
+  // Convert iconRegistry to plain object for cloud save
+  const iconsForCloudSave = React.useMemo(() => {
+    const filenames = iconRegistry.getRegisteredFilenames();
+    const iconsObj: { [filename: string]: File } = {};
+    filenames.forEach(filename => {
+      const file = iconRegistry.getIconFile(filename);
+      if (file) {
+        iconsObj[filename] = file;
+      }
+    });
+    return iconsObj;
+  }, [iconRegistry.getRegisteredFilenames().join(',')]);
+
+  const {
+    saveStatus,
+    lastSaved: cloudLastSaved,
+    saveNow, // Used before critical actions
+    resumeId: savedResumeId
+  } = useCloudSave({
+    resumeId: cloudResumeId,
+    resumeData: contactInfo && templateId ? {
+      contact_info: contactInfo,
+      sections: sections,
+      template_id: templateId
+    } : { contact_info: {} as any, sections: [], template_id: '' },
+    icons: iconsForCloudSave,
+    enabled: !!templateId && !!contactInfo && !isLoadingFromUrl  // Wait for both to be loaded from database and resume loading to complete
+  });
+
+  // Update cloud resume ID when it's set from cloud save
+  useEffect(() => {
+    if (savedResumeId && savedResumeId !== cloudResumeId) {
+      setCloudResumeId(savedResumeId);
+    }
+  }, [savedResumeId, cloudResumeId]);
+
+  // Handle storage limit errors
+  useEffect(() => {
+    if (saveStatus === 'error') {
+      // Check if it might be a storage limit error
+      setShowStorageLimitModal(true);
+    }
+  }, [saveStatus]);
 
   const [generating, setGenerating] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
@@ -214,9 +270,6 @@ const Editor: React.FC = () => {
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
   const [showWelcomeTour, setShowWelcomeTour] = useState(false);
   const [tourStep, setTourStep] = useState(0); // Track current tour step (0-3)
-  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
-  const [hasHandledRecovery, setHasHandledRecovery] = useState(false);
-  const [loadingRecover, setLoadingRecover] = useState(false);
 
   // Confirmation dialog state
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -241,7 +294,6 @@ const Editor: React.FC = () => {
     setContextIsSidebarCollapsed(collapsed);
   };
 
-  const [loadingStartFresh, setLoadingStartFresh] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
   const [loadingLoad, setLoadingLoad] = useState(false);
   const [loadingAddSection, setLoadingAddSection] = useState(false);
@@ -268,9 +320,75 @@ const Editor: React.FC = () => {
     })
   );
 
+  /**
+   * Saves pending changes before critical actions (Preview, Download, etc.)
+   * Returns true if action can proceed, false if save failed
+   */
+  const saveBeforeAction = useCallback(async (actionName: string): Promise<boolean> => {
+    // Skip save for anonymous users or if no data exists
+    if (isAnonymous || !contactInfo || !templateId) {
+      return true;
+    }
+
+    // If already saving, wait for completion
+    if (saveStatus === 'saving') {
+      console.log(`Waiting for in-progress save before ${actionName}...`);
+      // Wait up to 10 seconds
+      const timeout = 10000;
+      const start = Date.now();
+      while (saveStatus === 'saving' && Date.now() - start < timeout) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+      return saveStatus !== 'error';
+    }
+
+    // If already saved with no pending changes, proceed
+    if (saveStatus === 'saved') {
+      return true;
+    }
+
+    // Trigger immediate save
+    try {
+      console.log(`Saving before ${actionName}...`);
+      const result = await saveNow();
+
+      if (result === null && saveStatus === 'error') {
+        toast.error(`Failed to save changes before ${actionName}. Please try again.`);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error(`Save failed before ${actionName}:`, error);
+
+      // Handle storage limit error
+      if (error instanceof Error && error.message === 'RESUME_LIMIT_REACHED') {
+        setShowStorageLimitModal(true);
+        return false;
+      }
+
+      toast.error(`Failed to save changes before ${actionName}. Please try again.`);
+      return false;
+    }
+  }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow]);
+
   useEffect(() => {
     if (!templateId) {
       console.error("Template ID is undefined.");
+      return;
+    }
+
+    // Skip template loading if we're loading a saved resume from URL
+    // The resume data will be loaded from the database instead
+    if (resumeIdFromUrl || isLoadingFromUrl) {
+      console.log("Skipping template load - loading saved resume from database");
+      return;
+    }
+
+    // Skip template loading if editor already has data (e.g., from YAML import)
+    // This prevents overwriting imported data with default template
+    if (contactInfo && sections.length > 0) {
+      console.log("Skipping template load - editor already has data");
       return;
     }
 
@@ -309,14 +427,71 @@ const Editor: React.FC = () => {
     };
 
     loadTemplate();
-  }, [templateId]);
+  }, [templateId, resumeIdFromUrl, isLoadingFromUrl]);
 
-  // Show recovery modal when auto-saved data is detected (only once)
+  // Load saved resume from cloud when resumeId is in URL
   useEffect(() => {
-    if (autoSaveRecoveredData && originalTemplateData && !hasHandledRecovery) {
-      setShowRecoveryModal(true);
-    }
-  }, [autoSaveRecoveredData, originalTemplateData, hasHandledRecovery]);
+    if (!resumeIdFromUrl || !supabase) return;
+
+    const loadResumeFromCloud = async () => {
+      try {
+        setLoading(true);
+
+        const { data: { session } } = await supabase!.auth.getSession();
+        if (!session) {
+          toast.error('Please sign in to load saved resumes');
+          return;
+        }
+
+        const response = await fetch(`/api/resumes/${resumeIdFromUrl}`, {
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`
+          }
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          console.error('Backend error loading resume:', error);
+          throw new Error(error.error || 'Failed to load resume');
+        }
+
+        const { resume } = await response.json();
+
+        // Populate editor state from database (JSONB)
+        setContactInfo(resume.contact_info);
+        setSections(resume.sections);
+        setTemplateId(resume.template_id); // Get template ID from database
+        setCloudResumeId(resume.id);
+
+        // Set supportsIcons flag based on template
+        setSupportsIcons(resume.template_id === 'modern-with-icons');
+
+        // Load icons from storage URLs and register them
+        iconRegistry.clearRegistry(); // Clear existing icons first
+        for (const icon of resume.icons || []) {
+          try {
+            const iconResponse = await fetch(icon.storage_url);
+            const blob = await iconResponse.blob();
+            const file = new File([blob], icon.filename, { type: blob.type });
+            iconRegistry.registerIcon(file);
+          } catch (iconError) {
+            console.error(`Failed to load icon ${icon.filename}:`, iconError);
+          }
+        }
+
+        toast.success('Resume loaded successfully');
+        setIsLoadingFromUrl(false);
+      } catch (error) {
+        console.error('Failed to load resume:', error);
+        toast.error(error instanceof Error ? error.message : 'Failed to load resume');
+        setIsLoadingFromUrl(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadResumeFromCloud();
+  }, [resumeIdFromUrl]);
 
   // Check if user should see welcome tour
   useEffect(() => {
@@ -571,6 +746,10 @@ const Editor: React.FC = () => {
   };
 
   const handleExportYAML = async () => {
+    // Save first to ensure export has latest changes
+    const canProceed = await saveBeforeAction('export YAML');
+    if (!canProceed) return;
+
     try {
       setLoadingSave(true);
       // Longer delay for noticeable feedback on file operations
@@ -624,9 +803,24 @@ const Editor: React.FC = () => {
     }
   };
 
-  const handleImportYAML = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImportYAML = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+
+    // Save current work before importing (if authenticated and has content)
+    if (!isAnonymous && contactInfo && sections.length > 0) {
+      const shouldSave = window.confirm(
+        'Save current resume before importing? Click OK to save, Cancel to discard.'
+      );
+
+      if (shouldSave) {
+        const canProceed = await saveBeforeAction('import YAML');
+        if (!canProceed) {
+          event.target.value = ''; // Reset file input
+          return;
+        }
+      }
+    }
 
     setLoadingLoad(true);
 
@@ -653,6 +847,19 @@ const Editor: React.FC = () => {
         const migratedSections = migrateLegacySections(parsedYaml.sections);
         // Process sections to clean up icon paths when importing YAML
         const processedSections = processSections(migratedSections);
+
+        // Validate imported icons against template compatibility
+        if (!supportsIcons) {
+          const referencedIcons = extractReferencedIconFilenames(processedSections);
+          if (referencedIcons.length > 0) {
+            toast.warning(
+              `This template doesn't support icons. ${referencedIcons.length} icon(s) ` +
+              `were found in the imported file and will be ignored.`,
+              { autoClose: 8000 }
+            );
+          }
+        }
+
         setSections(processedSections);
 
         // CRITICAL FIX: Update originalTemplateData to reflect the imported YAML
@@ -662,15 +869,8 @@ const Editor: React.FC = () => {
           sections: processedSections,
         });
 
-        // Clear any existing autosave to prevent conflicts
-        clearAutoSave();
-
-        // Mark recovery as handled to prevent modal from showing
-        setHasHandledRecovery(true);
-
-        // Trigger immediate save to persist the imported data
-        // This ensures data is saved even if user reloads immediately
-        await triggerImmediateSave();
+        // Enable auto-save after YAML import completes
+        setIsLoadingFromUrl(false);
 
         toast.success("Resume loaded successfully!");
       } catch (error) {
@@ -685,10 +885,23 @@ const Editor: React.FC = () => {
 
   const handleGenerateResume = async () => {
     try {
+      // Save first to ensure PDF has latest changes
+      const canProceed = await saveBeforeAction('download PDF');
+      if (!canProceed) return;
+
       // Validate LinkedIn URL only if provided (block invalid, allow empty)
       if (contactInfo?.linkedin && !validateLinkedInUrl(contactInfo.linkedin)) {
         toast.error("Please enter a valid LinkedIn URL or leave it empty");
         return;
+      }
+
+      // Validate icon availability for icon-supporting templates
+      if (supportsIcons) {
+        const { valid, missingIcons } = validateIconAvailability();
+        if (!valid) {
+          showMissingIconsDialog(missingIcons, isLoadingFromUrl);
+          return;
+        }
       }
 
       setGenerating(true);
@@ -708,12 +921,15 @@ const Editor: React.FC = () => {
       const sessionId = getSessionId();
       formData.append("session_id", sessionId);
 
-      // Use centralized IconRegistry to get icon files for PDF generation
-      const referencedIcons = extractReferencedIconFilenames(sections);
-      for (const iconFilename of referencedIcons) {
-        const iconFile = iconRegistry.getIconFile(iconFilename);
-        if (iconFile) {
-          formData.append("icons", iconFile, iconFilename);
+      // Only add icons if template supports them (validation already confirmed all icons exist)
+      if (supportsIcons) {
+        const referencedIcons = extractReferencedIconFilenames(sections);
+        for (const iconFilename of referencedIcons) {
+          const iconFile = iconRegistry.getIconFile(iconFilename);
+          if (iconFile) {
+            formData.append("icons", iconFile, iconFilename);
+          }
+          // No need for else - validation already caught missing icons
         }
       }
 
@@ -748,6 +964,19 @@ const Editor: React.FC = () => {
 
   // Preview handlers
   const handleOpenPreview = async () => {
+    // Save first to ensure database has latest changes
+    const canProceed = await saveBeforeAction('preview');
+    if (!canProceed) return;
+
+    // Validate icon availability for icon-supporting templates
+    if (supportsIcons) {
+      const { valid, missingIcons } = validateIconAvailability();
+      if (!valid) {
+        showMissingIconsDialog(missingIcons, isLoadingFromUrl);
+        return;
+      }
+    }
+
     // If no preview exists or it's stale, generate it first
     if (!previewUrl || previewIsStale) {
       await generatePreview();
@@ -760,6 +989,19 @@ const Editor: React.FC = () => {
   };
 
   const handleRefreshPreview = async () => {
+    // Save first to ensure database has latest changes
+    const canProceed = await saveBeforeAction('refresh preview');
+    if (!canProceed) return;
+
+    // Validate icon availability for icon-supporting templates
+    if (supportsIcons) {
+      const { valid, missingIcons } = validateIconAvailability();
+      if (!valid) {
+        showMissingIconsDialog(missingIcons, isLoadingFromUrl);
+        return;
+      }
+    }
+
     await generatePreview();
   };
 
@@ -1007,34 +1249,98 @@ const Editor: React.FC = () => {
     }, 500);
   };
 
-  const handleRecoverData = async () => {
-    if (autoSaveRecoveredData) {
-      setLoadingRecover(true);
-
-      // Longer delay for noticeable feedback
-      await new Promise((resolve) => setTimeout(resolve, 1200));
-
-      setContactInfo(autoSaveRecoveredData.contactInfo);
-      setSections(autoSaveRecoveredData.sections);
-      setShowRecoveryModal(false);
-      setHasHandledRecovery(true); // Prevent modal from showing again
-      setLoadingRecover(false);
-      toast.success("Previous work restored successfully");
+  /**
+   * Validates that all referenced icons are uploaded to the registry or available as default icons.
+   * Returns { valid: boolean, missingIcons: string[] }
+   */
+  const validateIconAvailability = useCallback((): {
+    valid: boolean;
+    missingIcons: string[];
+  } => {
+    // Skip validation if template doesn't support icons
+    if (!supportsIcons) {
+      return { valid: true, missingIcons: [] };
     }
-  };
 
-  const handleStartFresh = async () => {
-    setLoadingStartFresh(true);
+    const referencedIcons = extractReferencedIconFilenames(sections);
+    const missingIcons: string[] = [];
 
-    // Longer delay for noticeable feedback
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    for (const iconFilename of referencedIcons) {
+      // Check 1: User-uploaded icons in registry
+      const iconFile = iconRegistry.getIconFile(iconFilename);
+      if (iconFile) {
+        continue; // Found in registry
+      }
 
-    clearAutoSave();
-    setShowRecoveryModal(false);
-    setHasHandledRecovery(true); // Prevent modal from showing again
-    setLoadingStartFresh(false);
-    // Keep the current template data (already loaded)
-  };
+      // Check 2: Default/system icons (served from /icons/ directory)
+      if (DEFAULT_ICONS.has(iconFilename)) {
+        continue; // Found as default icon
+      }
+
+      // Icon not found in either location
+      missingIcons.push(iconFilename);
+    }
+
+    return {
+      valid: missingIcons.length === 0,
+      missingIcons
+    };
+  }, [sections, iconRegistry, supportsIcons]);
+
+  /**
+   * Shows detailed information about missing icons to help user locate them
+   */
+  const showMissingIconsDialog = useCallback((missingIcons: string[], isFromCloudLoad: boolean = false) => {
+    if (isFromCloudLoad) {
+      // Special message for cloud load failures
+      toast.error(
+        `⚠️ Unable to load ${missingIcons.length} icon(s) from cloud storage\n\n` +
+        `This can happen if:\n` +
+        `• Icons failed to upload when resume was last saved\n` +
+        `• Temporary storage connectivity issue\n\n` +
+        `To fix:\n` +
+        `1. Re-upload the missing icons using the icon picker\n` +
+        `2. Save your resume\n` +
+        `3. Icons will then be available on next edit\n\n` +
+        `Missing icons:\n${missingIcons.map(icon => `• ${icon}`).join('\n')}`,
+        {
+          autoClose: 15000,
+          style: { whiteSpace: 'pre-line', maxWidth: '600px' }
+        }
+      );
+    } else {
+      // Original detailed error for regular missing icons
+      const iconLocations = missingIcons.map(icon => {
+        // Find where this icon is referenced
+        const locations: string[] = [];
+
+        sections.forEach((section) => {
+          if (isExperienceSection(section) || isEducationSection(section)) {
+            const items = section.content as any[];
+            items.forEach((item, itemIdx) => {
+              if (item.icon === icon) {
+                locations.push(`${section.name} → Entry ${itemIdx + 1}`);
+              }
+            });
+          } else if (section.type === 'icon-list') {
+            const items = section.content as any[];
+            items.forEach((item, itemIdx) => {
+              if (item.icon === icon) {
+                locations.push(`${section.name} → Item ${itemIdx + 1}`);
+              }
+            });
+          }
+        });
+
+        return `• ${icon}${locations.length > 0 ? ' (used in: ' + locations.join(', ') + ')' : ''}`;
+      }).join('\n');
+
+      toast.error(
+        `Missing Icons (${missingIcons.length}):\n${iconLocations}\n\nPlease upload these icons or remove them from your sections.`,
+        { autoClose: 12000, style: { whiteSpace: 'pre-line' } }
+      );
+    }
+  }, [sections]);
 
   const handleLoadEmptyTemplate = () => {
     // Show confirmation dialog before clearing
@@ -1043,6 +1349,15 @@ const Editor: React.FC = () => {
 
   const confirmStartFresh = async () => {
     if (!originalTemplateData) return;
+
+    // Save current work before clearing (if authenticated and has content)
+    if (!isAnonymous && contactInfo && sections.length > 0) {
+      const canProceed = await saveBeforeAction('start fresh');
+      if (!canProceed) {
+        setShowStartFreshConfirm(false);
+        return;
+      }
+    }
 
     setShowStartFreshConfirm(false);
     setLoadingSave(true);
@@ -1065,7 +1380,6 @@ const Editor: React.FC = () => {
 
       setSections(emptySections);
       iconRegistry.clearRegistry();
-      clearAutoSave();
 
       toast.success("Template cleared successfully!");
     } catch (error) {
@@ -1131,11 +1445,49 @@ const Editor: React.FC = () => {
     return () => window.removeEventListener("scroll", throttledHandleScroll);
   }, [handleScroll]);
 
-  if (!templateId) {
+  // Warn user if closing browser/tab with unsaved changes
+  useEffect(() => {
+    if (isAnonymous || !contactInfo || !templateId) return;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      // Only warn if save is pending or failed
+      if (saveStatus === 'saving' || saveStatus === 'error') {
+        e.preventDefault();
+        e.returnValue = ''; // Chrome requires returnValue to be set
+        return ''; // For older browsers
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isAnonymous, contactInfo, templateId, saveStatus]);
+
+  // Save on component unmount (navigating within app)
+  useEffect(() => {
+    return () => {
+      // Only save if authenticated and has content
+      if (!isAnonymous && contactInfo && templateId && saveStatus !== 'saving') {
+        saveNow().catch(error => {
+          console.error('Failed to save on unmount:', error);
+        });
+      }
+    };
+  }, []); // Empty deps - only run on unmount
+
+  // Show loading state first (handles initial load and resume loading from URL)
+  if (loading) {
     return (
-      <Suspense fallback={<LoadingSpinner />}>
-        <NotFound />
-      </Suspense>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+        <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-xl text-gray-600">
+            Loading your resume builder...
+          </p>
+        </div>
+      </div>
     );
   }
 
@@ -1148,16 +1500,12 @@ const Editor: React.FC = () => {
     );
   }
 
-  if (loading) {
+  // Only show 404 if no templateId AND we're not loading from a URL resumeId
+  if (!templateId && !resumeIdFromUrl) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
-        <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-xl text-gray-600">
-            Loading your resume builder...
-          </p>
-        </div>
-      </div>
+      <Suspense fallback={<LoadingSpinner />}>
+        <NotFound />
+      </Suspense>
     );
   }
 
@@ -1443,7 +1791,7 @@ const Editor: React.FC = () => {
               contextIsAtBottom ? "bottom-24" : "bottom-6"
             }`}
         >
-          <div className="flex items-center justify-center gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
+          <div className="flex items-center justify-between gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
             <EditorToolbar
               onAddSection={handleAddNewSectionClick}
               onGenerateResume={handleGenerateResume}
@@ -1467,12 +1815,12 @@ const Editor: React.FC = () => {
           onNavigationClick={() => setShowNavigationDrawer(true)}
           onPreviewClick={handleOpenPreview}
           onDownloadClick={handleGenerateResume}
-          isSaving={isSaving}
+          isSaving={saveStatus === 'saving'}
           isGenerating={generating}
           isGeneratingPreview={isGeneratingPreview}
           previewIsStale={previewIsStale}
-          lastSaved={lastSaved}
-          saveError={saveError}
+          lastSaved={cloudLastSaved}
+          saveError={saveStatus === 'error' ? 'Save failed' : null}
         />
 
         {/* Mobile Navigation Drawer */}
@@ -1509,6 +1857,9 @@ const Editor: React.FC = () => {
           loadingSave={loadingSave}
           loadingLoad={loadingLoad}
           onCollapseChange={setIsSidebarCollapsed}
+          saveStatus={saveStatus}
+          lastSaved={cloudLastSaved}
+          isAnonymous={isAnonymous}
         />
 
         {/* Hidden file input for both mobile and desktop */}
@@ -1579,132 +1930,6 @@ const Editor: React.FC = () => {
               >
                 Got It, Thanks!
               </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Recovery Modal */}
-      {showRecoveryModal && autoSaveRecoveredData && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl max-w-lg w-full border border-gray-200">
-            <div className="p-8">
-              <div className="text-center mb-8">
-                <div className="w-20 h-20 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-blue-100">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center">
-                    <svg
-                      className="w-6 h-6 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-3">
-                  Continue Your Resume
-                </h2>
-                <p className="text-gray-600 leading-relaxed">
-                  We found work you were doing earlier. You can pick up exactly
-                  where you left off.
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 mb-8">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <svg
-                      className="w-5 h-5 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-blue-800 mb-2">
-                      Your Previous Session
-                    </h3>
-                    <div className="text-blue-700 text-sm space-y-1 leading-relaxed">
-                      <p>
-                        Last worked on:{" "}
-                        {autoSaveRecoveredData.timestamp.toLocaleDateString()} at{" "}
-                        {autoSaveRecoveredData.timestamp.toLocaleTimeString()}
-                      </p>
-                      <p>
-                        Contains: Contact info + {autoSaveRecoveredData.sections.length}{" "}
-                        section{autoSaveRecoveredData.sections.length !== 1 ? "s" : ""}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <button
-                  onClick={handleRecoverData}
-                  disabled={loadingRecover || loadingStartFresh}
-                  className={`w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 ${
-                    loadingRecover
-                      ? "opacity-75 cursor-not-allowed scale-95"
-                      : ""
-                  }`}
-                >
-                  {loadingRecover ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                      Restoring Work...
-                    </>
-                  ) : (
-                    <>
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      Continue Previous Work
-                    </>
-                  )}
-                </button>
-                <button
-                  onClick={handleStartFresh}
-                  disabled={loadingRecover || loadingStartFresh}
-                  className={`w-full bg-white/80 backdrop-blur-sm text-gray-700 py-4 px-6 rounded-xl font-medium border border-gray-200 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center gap-2 ${
-                    loadingStartFresh
-                      ? "opacity-75 cursor-not-allowed scale-95"
-                      : ""
-                  }`}
-                >
-                  {loadingStartFresh ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-600"></div>
-                      Starting Fresh...
-                    </>
-                  ) : (
-                    "Start With Clean Template"
-                  )}
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -2004,6 +2229,12 @@ const Editor: React.FC = () => {
         error={previewError}
         onRefresh={handleRefreshPreview}
         onDownload={handleGenerateResume}
+      />
+
+      {/* Storage Limit Modal - shown when user hits 5-resume limit */}
+      <StorageLimitModal
+        isOpen={showStorageLimitModal}
+        onClose={() => setShowStorageLimitModal(false)}
       />
     </div>
   );
