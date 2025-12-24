@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import { fetchTemplate, generateResume } from "../services/templates";
+import { fetchTemplate, generateResume, generateThumbnail } from "../services/templates";
 import { getSessionId } from "../utils/session";
 import { useIconRegistry } from "../hooks/useIconRegistry";
 import { usePreview } from "../hooks/usePreview";
@@ -1470,12 +1470,20 @@ const Editor: React.FC = () => {
         try {
           await saveNow();
           console.log('Saved on unmount');
+
+          // Trigger thumbnail generation after save completes
+          // Use savedResumeId if available, otherwise cloudResumeId
+          const resumeId = savedResumeId || cloudResumeId;
+          if (resumeId) {
+            console.log('Triggering thumbnail generation for resume:', resumeId);
+            generateThumbnail(resumeId); // Fire-and-forget
+          }
         } catch (error) {
           console.error('Failed to save on unmount:', error);
         }
       }
     };
-  }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow]);
+  }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow, savedResumeId, cloudResumeId]);
 
   // Save on component unmount (navigating within app)
   useEffect(() => {
