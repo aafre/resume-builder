@@ -91,29 +91,6 @@ export default function Header() {
 
           {/* Right Side Content */}
           <div className="flex items-center gap-3 sm:gap-4">
-            {/* Navigation Menu (hidden on mobile and editor page) */}
-            {location.pathname !== "/editor" && (
-              <nav className="hidden md:flex items-center gap-2">
-                <Link
-                  to="/blog"
-                  className="text-gray-700 hover:text-gray-900 hover:bg-white/60 backdrop-blur-sm transition-all duration-300 font-medium text-sm px-4 py-2 rounded-xl hover:shadow-md"
-                >
-                  Blog
-                </Link>
-                <Link
-                  to="/about"
-                  className="text-gray-700 hover:text-gray-900 hover:bg-white/60 backdrop-blur-sm transition-all duration-300 font-medium text-sm px-4 py-2 rounded-xl hover:shadow-md"
-                >
-                  About
-                </Link>
-                <Link
-                  to="/contact"
-                  className="text-gray-700 hover:text-gray-900 hover:bg-white/60 backdrop-blur-sm transition-all duration-300 font-medium text-sm px-4 py-2 rounded-xl hover:shadow-md"
-                >
-                  Contact
-                </Link>
-              </nav>
-            )}
 
             {/* Auto-Save Indicator (only on editor page) */}
             {isEditorPage && editorContext && (
