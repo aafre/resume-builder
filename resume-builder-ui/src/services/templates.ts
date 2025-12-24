@@ -1,3 +1,5 @@
+import { supabase } from '../lib/supabase';
+
 const API_BASE_URL = "/api";
 const API_URL = `${API_BASE_URL}/templates`;
 
@@ -120,33 +122,56 @@ export async function generatePreviewPdf(formData: FormData): Promise<Blob> {
 }
 
 /**
- * Generate thumbnail for a saved resume asynchronously.
- * This triggers PDF generation on the backend and extracts a thumbnail image.
- * Designed to be called when navigating away from the editor (fire-and-forget).
+ * Generate thumbnail for a saved resume.
+ * Returns structured response with success status and thumbnail data.
  *
  * @param {string} resumeId - The ID of the resume to generate a thumbnail for.
- * @returns {Promise<void>} Resolves when the request is sent (doesn't wait for completion).
+ * @returns {Promise<{success: boolean, thumbnail_url?: string, pdf_generated_at?: string, error?: string}>}
  */
-export async function generateThumbnail(resumeId: string): Promise<void> {
+export async function generateThumbnail(resumeId: string): Promise<{
+  success: boolean;
+  thumbnail_url?: string;
+  pdf_generated_at?: string;
+  error?: string;
+}> {
   try {
+    if (!supabase) {
+      return { success: false, error: 'Supabase not configured' };
+    }
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      return { success: false, error: 'Not authenticated' };
+    }
+
     const response = await fetch(`${API_BASE_URL}/resumes/${resumeId}/thumbnail`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${session.access_token}`
       },
     });
 
-    // Fire-and-forget: we don't throw errors, just log them
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ error: "Unknown error" }));
-      console.error(`Thumbnail generation failed for resume ${resumeId}:`, errorData.error);
-    } else {
-      const result = await response.json();
-      console.log(`Thumbnail generation queued for resume ${resumeId}:`, result);
+      return {
+        success: false,
+        error: errorData.error || `HTTP ${response.status}`
+      };
     }
+
+    const result = await response.json();
+    return {
+      success: true,
+      thumbnail_url: result.thumbnail_url,
+      pdf_generated_at: result.pdf_generated_at
+    };
   } catch (error) {
-    // Silently fail - thumbnail generation is not critical
-    console.error(`Error calling thumbnail generation for resume ${resumeId}:`, error);
+    console.error(`Thumbnail generation error for resume ${resumeId}:`, error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error"
+    };
   }
 }
 
