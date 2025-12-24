@@ -76,10 +76,9 @@ const LoadingSpinner = () => (
 );
 
 // Default icons provided by the system (served from /icons/ directory)
+// Complete list of all icons in /icons/ directory (27 icons total)
 const DEFAULT_ICONS = new Set([
-  'company_google.png',
-  'company_amazon.png',
-  'company_apple.png',
+  // Contact icons (13)
   'location.png',
   'email.png',
   'phone.png',
@@ -93,6 +92,26 @@ const DEFAULT_ICONS = new Set([
   'stackoverflow.png',
   'behance.png',
   'dribbble.png',
+
+  // Company icons (4)
+  'company.png',
+  'company_google.png',
+  'company_amazon.png',
+  'company_apple.png',
+
+  // School/Education icons (4)
+  'school.png',
+  'school_harvard.png',
+  'school_oxford.png',
+  'school_berkeley.svg',
+
+  // Certification icons (6)
+  'certification_aws.png',
+  'certification_azure.png',
+  'certification_k8s.png',
+  'certification_google.png',
+  'certification_devops.png',
+  'certification_scrum.png',
 ]);
 
 interface Section {
