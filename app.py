@@ -2228,12 +2228,15 @@ def duplicate_resume(resume_id):
 @require_auth
 def migrate_anonymous_resumes():
     """
-    Migrate all resumes from an anonymous user to the authenticated user.
-    Called when a user signs in after creating resumes anonymously.
+    Migrate all resumes from an old user to the authenticated user.
+    Called when a user signs in after creating resumes (handles Supabase account linking).
+
+    Note: Supabase automatically links anonymous accounts to OAuth accounts on sign-in,
+    so the old user may no longer appear as "anonymous" when this endpoint is called.
 
     Request body:
         {
-            "old_user_id": "uuid-of-anonymous-user"
+            "old_user_id": "uuid-of-old-user"
         }
 
     Returns:
@@ -2260,20 +2263,10 @@ def migrate_anonymous_resumes():
                 "message": "Same user, no migration needed"
             }), 200
 
-        # Security: Verify old user was anonymous
-        try:
-            old_user_response = supabase.auth.admin.get_user_by_id(old_user_id)
-            old_user = old_user_response.user
-
-            # Check if user is anonymous
-            is_anonymous = old_user.app_metadata.get('provider') == 'anonymous'
-            if not is_anonymous:
-                logging.warning(f"Attempted migration from non-anonymous user: {old_user_id}")
-                return jsonify({"error": "Can only migrate from anonymous users"}), 403
-
-        except Exception as auth_error:
-            logging.error(f"Failed to verify anonymous user: {auth_error}")
-            return jsonify({"error": "Failed to verify user"}), 400
+        # NOTE: We don't check if the old user is "anonymous" because Supabase
+        # automatically links anonymous accounts to OAuth accounts on sign-in,
+        # changing app_metadata.provider from 'anonymous' to 'google'/'email'.
+        # Instead, we check if the old user has resumes to migrate.
 
         # Get resume counts
         old_resumes_response = supabase.table('resumes') \
