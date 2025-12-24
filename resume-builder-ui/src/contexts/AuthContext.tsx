@@ -113,6 +113,51 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  // Helper function to migrate anonymous user's cloud resumes to authenticated account
+  const migrateAnonResumes = async (session: Session, oldUserId: string) => {
+    try {
+      console.log('Migrating anonymous resumes to authenticated account...');
+
+      const response = await fetch('/api/migrate-anonymous-resumes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify({
+          old_user_id: oldUserId
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to migrate resumes');
+      }
+
+      console.log('Resume migration successful:', result);
+
+      // Show success toast with appropriate message
+      if (result.migrated_count > 0) {
+        if (result.exceeds_limit) {
+          toast.success(
+            `Your ${result.migrated_count} resume(s) have been migrated. ` +
+            `You now have ${result.total_count}/5 resumes - please delete some before creating new ones.`,
+            { duration: 7000 }
+          );
+        } else {
+          toast.success(`Your ${result.migrated_count} resume(s) have been migrated successfully!`);
+        }
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Resume migration failed:', error);
+      toast.error('Failed to migrate your resumes');
+      return false;
+    }
+  };
+
   useEffect(() => {
     // If Supabase is not configured, skip auth
     if (!supabase) {
@@ -168,6 +213,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(session?.user ?? null);
         setLoading(false);
 
+        // Store anonymous user_id for migration later
+        if (session?.user?.is_anonymous) {
+          localStorage.setItem('anonymous-user-id', session.user.id);
+        }
+
         // Trigger migration when user signs in (from anonymous to authenticated)
         if (event === 'SIGNED_IN' && session?.user && !session.user.is_anonymous) {
           // Show welcome toast on successful sign-in (only once per session)
@@ -175,6 +225,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           if (!hasShownToast) {
             toast.success('Signed in successfully');
             sessionStorage.setItem('login-toast-shown', 'true');
+          }
+
+          // Migrate anonymous user's cloud resumes to authenticated account
+          const oldAnonUserId = localStorage.getItem('anonymous-user-id');
+          if (oldAnonUserId && oldAnonUserId !== session.user.id) {
+            await migrateAnonResumes(session, oldAnonUserId);
+            localStorage.removeItem('anonymous-user-id');
           }
 
           // Check if there's unsaved work in localStorage (only if not migrated yet)
@@ -254,6 +311,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     // Reset toast flag so user sees welcome message on next sign-in
     sessionStorage.removeItem('login-toast-shown');
+
+    // Clear stored anonymous user ID (migration already happened)
+    localStorage.removeItem('anonymous-user-id');
 
     // Immediately create new anonymous session
     const { error } = await supabase.auth.signInAnonymously();
