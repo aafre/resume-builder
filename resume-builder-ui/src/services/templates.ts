@@ -119,3 +119,34 @@ export async function generatePreviewPdf(formData: FormData): Promise<Blob> {
   }
 }
 
+/**
+ * Generate thumbnail for a saved resume asynchronously.
+ * This triggers PDF generation on the backend and extracts a thumbnail image.
+ * Designed to be called when navigating away from the editor (fire-and-forget).
+ *
+ * @param {string} resumeId - The ID of the resume to generate a thumbnail for.
+ * @returns {Promise<void>} Resolves when the request is sent (doesn't wait for completion).
+ */
+export async function generateThumbnail(resumeId: string): Promise<void> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/resumes/${resumeId}/thumbnail`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    // Fire-and-forget: we don't throw errors, just log them
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: "Unknown error" }));
+      console.error(`Thumbnail generation failed for resume ${resumeId}:`, errorData.error);
+    } else {
+      const result = await response.json();
+      console.log(`Thumbnail generation queued for resume ${resumeId}:`, result);
+    }
+  } catch (error) {
+    // Silently fail - thumbnail generation is not critical
+    console.error(`Error calling thumbnail generation for resume ${resumeId}:`, error);
+  }
+}
+
