@@ -91,3 +91,16 @@ The YAML resume format supports these section types:
 ### File Structure Notes
 - app.py is the Flask app that serves the React frontend and handles API requests
 - Templates use Jinja2 with custom functions like calculate_columns() for dynamic layouts
+
+
+# Repo workflow
+
+## Git commit style
+- Make **small, atomic commits** (one logical change per commit).
+- After each completed subtask: run relevant tests, stage only related files, commit.
+- If changes touch multiple concerns, **split into multiple commits** (do not bundle).
+
+## Commit message format
+- Use: <type>(<scope>): <imperative summary>
+- Types: feat, fix, refactor, perf, test, docs, chore
+- Summary: present tense, <= ~72 chars.
