@@ -14,6 +14,8 @@ interface IconRegistry {
 interface UseIconRegistryReturn {
   // Register a new icon file and get the generated filename
   registerIcon: (file: File) => string;
+  // Register an icon with a specific filename (for loading from storage)
+  registerIconWithFilename: (file: File, filename: string) => void;
   // Get file object by filename
   getIconFile: (filename: string) => File | null;
   // Remove icon from registry
@@ -89,6 +91,22 @@ export const useIconRegistry = (): UseIconRegistryReturn => {
     usedFilenames.current.add(filename);
     return filename;
   }, [generateUniqueFilename]);
+
+  // Register an icon with a specific filename (for loading from storage)
+  const registerIconWithFilename = useCallback((file: File, filename: string): void => {
+    const entry: IconRegistryEntry = {
+      file,
+      filename,
+      uploadedAt: new Date(),
+    };
+
+    setRegistry(prev => ({
+      ...prev,
+      [filename]: entry,
+    }));
+
+    usedFilenames.current.add(filename);
+  }, []);
 
   // Get file object by filename
   const getIconFile = useCallback((filename: string): File | null => {
@@ -215,6 +233,7 @@ export const useIconRegistry = (): UseIconRegistryReturn => {
 
   return {
     registerIcon,
+    registerIconWithFilename,
     getIconFile,
     removeIcon,
     clearRegistry,
