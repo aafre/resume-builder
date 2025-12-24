@@ -791,6 +791,36 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
     return max_columns  # Default to max columns if all checks pass
 
 
+def extract_icons_from_yaml(data):
+    """
+    Recursively extract all icon filenames referenced in YAML data.
+
+    Args:
+        data: YAML data structure (dict or list) to extract icon references from
+
+    Returns:
+        set: Set of unique icon filenames referenced in the data
+
+    Example:
+        >>> data = {"sections": [{"content": [{"icon": "company_google.png"}]}]}
+        >>> extract_icons_from_yaml(data)
+        {'company_google.png'}
+    """
+    icons = set()
+    if isinstance(data, dict):
+        for key, value in data.items():
+            if key == "icon" and isinstance(value, str):
+                # Frontend now sends clean filenames, but handle both cases
+                clean_icon_name = value.replace('/icons/', '') if value.startswith('/icons/') else value
+                icons.add(clean_icon_name)
+            else:
+                icons.update(extract_icons_from_yaml(value))
+    elif isinstance(data, list):
+        for item in data:
+            icons.update(extract_icons_from_yaml(item))
+    return icons
+
+
 # Supabase Storage Helper Functions
 def upload_icon_to_storage(user_id, resume_id, filename, file_data, mime_type="image/png"):
     """
@@ -1288,22 +1318,6 @@ def generate_resume():
             # Create session-specific icon directory
             session_icons_dir = Path("/tmp") / "sessions" / session_id / "icons"
             session_icons_dir.mkdir(parents=True, exist_ok=True)
-
-            # Copy default icons referenced in YAML to session directory
-            def extract_icons_from_yaml(data):
-                icons = set()
-                if isinstance(data, dict):
-                    for key, value in data.items():
-                        if key == "icon" and isinstance(value, str):
-                            # Frontend now sends clean filenames, but handle both cases
-                            clean_icon_name = value.replace('/icons/', '') if value.startswith('/icons/') else value
-                            icons.add(clean_icon_name)
-                        else:
-                            icons.update(extract_icons_from_yaml(value))
-                elif isinstance(data, list):
-                    for item in data:
-                        icons.update(extract_icons_from_yaml(item))
-                return icons
 
             # Select the template and determine if it uses icons
             template = request.form.get("template", "modern")
