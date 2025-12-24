@@ -241,9 +241,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
           // Migrate anonymous user's cloud resumes to authenticated account
           const oldAnonUserId = localStorage.getItem('anonymous-user-id');
-          if (oldAnonUserId && oldAnonUserId !== session.user.id) {
-            await migrateAnonResumes(session, oldAnonUserId);
-            localStorage.removeItem('anonymous-user-id');
+
+          // Only attempt migration if there's a valid old anonymous user ID
+          if (oldAnonUserId) {
+            // Skip if same user (already signed in, just refreshing)
+            if (oldAnonUserId === session.user.id) {
+              // Clean up - user was already signed in
+              localStorage.removeItem('anonymous-user-id');
+            } else {
+              // Attempt migration and always clean up localStorage after
+              await migrateAnonResumes(session, oldAnonUserId);
+
+              // Always remove the anonymous user ID after migration attempt
+              // (either it succeeded, or it was stale/invalid)
+              localStorage.removeItem('anonymous-user-id');
+            }
           }
 
           // Check if there's unsaved work in localStorage (only if not migrated yet)
