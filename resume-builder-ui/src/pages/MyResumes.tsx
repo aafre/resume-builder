@@ -408,7 +408,7 @@ export default function MyResumes() {
             isAtLimit={resumes.length >= 5}
             resumeCount={resumes.length}
             onCreateNew={handleCreateNew}
-            onUpgrade={() => toast.info('Pricing coming soon!')}
+            onUpgrade={() => toast('Pricing coming soon!')}
           />
 
           {/* Existing resume cards */}
