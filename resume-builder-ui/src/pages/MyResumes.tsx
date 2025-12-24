@@ -19,7 +19,6 @@ export default function MyResumes() {
   const [resumeToDelete, setResumeToDelete] = useState<ResumeListItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
-  const [previewingId, setPreviewingId] = useState<string | null>(null);
   const [duplicateModalOpen, setDuplicateModalOpen] = useState(false);
   const [resumeToDuplicate, setResumeToDuplicate] = useState<ResumeListItem | null>(null);
   const [isDuplicating, setIsDuplicating] = useState(false);
@@ -494,13 +493,25 @@ export default function MyResumes() {
         isDuplicating={isDuplicating}
       />
 
-      {/* Loading Overlays */}
-      {(downloadingId || previewingId) && (
+      {/* PDF Preview Modal */}
+      <PreviewModal
+        isOpen={showPreviewModal}
+        onClose={handleClosePreview}
+        previewUrl={previewUrl}
+        isGenerating={isGeneratingPreview}
+        isStale={false}
+        error={previewError}
+        onRefresh={handleRefreshPreview}
+        onDownload={handleDownloadFromPreview}
+      />
+
+      {/* Loading Overlays - only show for download now */}
+      {downloadingId && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-sm mx-4">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
             <p className="text-center text-gray-700">
-              {downloadingId ? 'Generating PDF...' : 'Opening preview...'}
+              Generating PDF...
             </p>
           </div>
         </div>
