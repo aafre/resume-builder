@@ -307,6 +307,9 @@ const Editor: React.FC = () => {
   // Simple scroll detection for footer visibility
   const lastScrollY = useRef(0);
 
+  // Store save function for unmount to avoid stale closure
+  const saveOnUnmountRef = useRef<(() => Promise<void>) | null>(null);
+
   // Drag and drop sensors
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -372,22 +375,20 @@ const Editor: React.FC = () => {
   }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow]);
 
   useEffect(() => {
-    if (!templateId) {
-      console.error("Template ID is undefined.");
-      return;
-    }
-
     // Skip template loading if we're loading a saved resume from URL
     // The resume data will be loaded from the database instead
     if (resumeIdFromUrl || isLoadingFromUrl) {
-      console.log("Skipping template load - loading saved resume from database");
+      return;
+    }
+
+    // Skip if no template ID is set yet
+    if (!templateId) {
       return;
     }
 
     // Skip template loading if editor already has data (e.g., from YAML import)
     // This prevents overwriting imported data with default template
     if (contactInfo && sections.length > 0) {
-      console.log("Skipping template load - editor already has data");
       return;
     }
 
@@ -463,7 +464,9 @@ const Editor: React.FC = () => {
         setCloudResumeId(resume.id);
 
         // Set supportsIcons flag based on template
-        setSupportsIcons(resume.template_id === 'modern-with-icons');
+        // Only 'modern-with-icons' template supports icons
+        const templateSupportsIcons = resume.template_id === 'modern-with-icons';
+        setSupportsIcons(templateSupportsIcons);
 
         // Load icons from storage URLs and register them
         iconRegistry.clearRegistry(); // Clear existing icons first
@@ -1464,17 +1467,29 @@ const Editor: React.FC = () => {
     };
   }, [isAnonymous, contactInfo, templateId, saveStatus]);
 
+  // Update save function ref with current values (fixes stale closure bug)
+  useEffect(() => {
+    saveOnUnmountRef.current = async () => {
+      if (!isAnonymous && contactInfo && templateId && saveStatus !== 'saving') {
+        try {
+          await saveNow();
+          console.log('Saved on unmount');
+        } catch (error) {
+          console.error('Failed to save on unmount:', error);
+        }
+      }
+    };
+  }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow]);
+
   // Save on component unmount (navigating within app)
   useEffect(() => {
     return () => {
-      // Only save if authenticated and has content
-      if (!isAnonymous && contactInfo && templateId && saveStatus !== 'saving') {
-        saveNow().catch(error => {
-          console.error('Failed to save on unmount:', error);
-        });
+      // Fire-and-forget save using ref to avoid stale closure
+      if (saveOnUnmountRef.current) {
+        saveOnUnmountRef.current();
       }
     };
-  }, []); // Empty deps - only run on unmount
+  }, []); // Empty deps is safe here since we're using ref
 
   // Show loading state first (handles initial load and resume loading from URL)
   if (loading) {
