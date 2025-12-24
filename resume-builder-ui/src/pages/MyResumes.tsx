@@ -276,6 +276,18 @@ export default function MyResumes() {
 
       if (!response.ok) {
         const result = await response.json();
+
+        // Special handling for missing icons error
+        if (result.missing_icons && result.missing_icons.length > 0) {
+          toast.error(
+            `Cannot generate PDF: Missing ${result.missing_icons.length} icon(s)\n\n` +
+            `Missing: ${result.missing_icons.join(', ')}\n\n` +
+            `Please edit this resume to upload the missing icons or remove them.`,
+            { duration: 8000 }
+          );
+          return;
+        }
+
         throw new Error(result.error || 'Failed to generate PDF');
       }
 
@@ -321,6 +333,18 @@ export default function MyResumes() {
 
       if (!response.ok) {
         const result = await response.json();
+
+        // Special handling for missing icons error
+        if (result.missing_icons && result.missing_icons.length > 0) {
+          toast.error(
+            `Cannot generate PDF: Missing ${result.missing_icons.length} icon(s)\n\n` +
+            `Missing: ${result.missing_icons.join(', ')}\n\n` +
+            `Please edit this resume to upload the missing icons or remove them.`,
+            { duration: 8000 }
+          );
+          return;
+        }
+
         throw new Error(result.error || 'Failed to generate PDF');
       }
 
