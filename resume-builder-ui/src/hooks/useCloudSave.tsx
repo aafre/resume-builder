@@ -256,10 +256,8 @@ export function useCloudSave({
       clearTimeout(debounceTimerRef.current);
     }
 
-    // Show "Saving..." status immediately for optimistic UI feedback
-    setSaveStatus('saving');
-
     // Set new debounce timer
+    // Note: saveToCloud() will set status to 'saving' when it actually starts (after debounce)
     debounceTimerRef.current = setTimeout(() => {
       console.log('Debounced cloud save triggered');
       saveToCloud().catch(error => {
