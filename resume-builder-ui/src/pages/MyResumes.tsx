@@ -7,7 +7,7 @@ import { DeleteResumeModal } from '../components/DeleteResumeModal';
 import { DuplicateResumeModal } from '../components/DuplicateResumeModal';
 import { supabase } from '../lib/supabase';
 import { toast } from 'react-hot-toast';
-import { generateThumbnail } from '../services/templates';
+import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
 
 export default function MyResumes() {
   const navigate = useNavigate();
@@ -22,6 +22,23 @@ export default function MyResumes() {
   const [duplicateModalOpen, setDuplicateModalOpen] = useState(false);
   const [resumeToDuplicate, setResumeToDuplicate] = useState<ResumeListItem | null>(null);
   const [isDuplicating, setIsDuplicating] = useState(false);
+
+  // Thumbnail refresh hook - manages auto-triggering and polling
+  const {
+    generatingIds,
+    failedIds,
+    triggerRefresh,
+    retryFailed
+  } = useThumbnailRefresh({
+    onThumbnailUpdated: (resumeId, pdf_generated_at, thumbnail_url) => {
+      // Update specific resume in state when thumbnail completes
+      setResumes(prev => prev.map(r =>
+        r.id === resumeId
+          ? { ...r, pdf_generated_at, thumbnail_url }
+          : r
+      ));
+    }
+  });
 
   useEffect(() => {
     fetchResumes();
@@ -56,6 +73,28 @@ export default function MyResumes() {
       }
 
       setResumes(result.resumes || []);
+
+      // Auto-trigger thumbnail generation for stale resumes
+      const staleResumes = (result.resumes || []).filter(resume => {
+        // Skip if already generating or failed
+        if (generatingIds.has(resume.id) || failedIds.has(resume.id)) {
+          return false;
+        }
+
+        // Never had thumbnail
+        if (!resume.pdf_generated_at) return true;
+
+        // Updated after last thumbnail generation
+        const updatedAt = new Date(resume.updated_at);
+        const pdfGeneratedAt = new Date(resume.pdf_generated_at);
+        return updatedAt > pdfGeneratedAt;
+      });
+
+      // Trigger all stale resumes in parallel
+      staleResumes.forEach(resume => {
+        triggerRefresh(resume.id);
+      });
+
     } catch (err) {
       console.error('Error fetching resumes:', err);
       setError(err instanceof Error ? err.message : 'Failed to load resumes');
@@ -211,22 +250,8 @@ export default function MyResumes() {
   };
 
   const handleRefreshThumbnail = async (id: string) => {
-    try {
-      toast.loading('Refreshing thumbnail...', { id: 'thumbnail-refresh' });
-
-      // Call the fire-and-forget endpoint
-      await generateThumbnail(id);
-
-      toast.success('Thumbnail refresh started! It will update in a moment.', { id: 'thumbnail-refresh' });
-
-      // Refresh the resume list after a short delay to get updated thumbnail
-      setTimeout(() => {
-        fetchResumes();
-      }, 3000);
-    } catch (err) {
-      console.error('Error refreshing thumbnail:', err);
-      toast.error('Failed to refresh thumbnail', { id: 'thumbnail-refresh' });
-    }
+    // Simple retry - hook handles all the logic
+    await retryFailed(id);
   };
 
   const handleDownload = async (id: string) => {
@@ -373,6 +398,8 @@ export default function MyResumes() {
               onDuplicate={handleDuplicate}
               onRename={handleRename}
               onRefreshThumbnail={handleRefreshThumbnail}
+              isGenerating={generatingIds.has(resume.id)}
+              hasFailed={failedIds.has(resume.id)}
             />
           ))}
         </div>
