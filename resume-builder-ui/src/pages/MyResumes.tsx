@@ -7,6 +7,7 @@ import { DeleteResumeModal } from '../components/DeleteResumeModal';
 import { DuplicateResumeModal } from '../components/DuplicateResumeModal';
 import { supabase } from '../lib/supabase';
 import { toast } from 'react-hot-toast';
+import { generateThumbnail } from '../services/templates';
 
 export default function MyResumes() {
   const navigate = useNavigate();
@@ -209,6 +210,25 @@ export default function MyResumes() {
     }
   };
 
+  const handleRefreshThumbnail = async (id: string) => {
+    try {
+      toast.loading('Refreshing thumbnail...', { id: 'thumbnail-refresh' });
+
+      // Call the fire-and-forget endpoint
+      await generateThumbnail(id);
+
+      toast.success('Thumbnail refresh started! It will update in a moment.', { id: 'thumbnail-refresh' });
+
+      // Refresh the resume list after a short delay to get updated thumbnail
+      setTimeout(() => {
+        fetchResumes();
+      }, 3000);
+    } catch (err) {
+      console.error('Error refreshing thumbnail:', err);
+      toast.error('Failed to refresh thumbnail', { id: 'thumbnail-refresh' });
+    }
+  };
+
   const handleDownload = async (id: string) => {
     try {
       setDownloadingId(id);
@@ -352,6 +372,7 @@ export default function MyResumes() {
               onPreview={handlePreview}
               onDuplicate={handleDuplicate}
               onRename={handleRename}
+              onRefreshThumbnail={handleRefreshThumbnail}
             />
           ))}
         </div>
