@@ -31,6 +31,8 @@ export default function Header() {
         return "Select Your Template";
       case "/editor":
         return "Resume Editor";
+      case "/my-resumes":
+        return "My Resumes";
       default:
         return "";
     }
