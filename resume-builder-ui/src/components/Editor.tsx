@@ -14,7 +14,6 @@ import { useIconRegistry } from "../hooks/useIconRegistry";
 import { usePreview } from "../hooks/usePreview";
 import { useCloudSave } from "../hooks/useCloudSave";
 import { useAuth } from "../contexts/AuthContext";
-import { SaveStatusIndicator } from "./SaveStatusIndicator";
 import { StorageLimitModal } from "./StorageLimitModal";
 import { supabase } from "../lib/supabase";
 import yaml from "js-yaml";
