@@ -5,6 +5,7 @@ import { ResumeCard } from '../components/ResumeCard';
 import { GhostCard } from '../components/GhostCard';
 import { DeleteResumeModal } from '../components/DeleteResumeModal';
 import { DuplicateResumeModal } from '../components/DuplicateResumeModal';
+import PreviewModal from '../components/PreviewModal';
 import { supabase } from '../lib/supabase';
 import { toast } from 'react-hot-toast';
 import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
@@ -22,6 +23,11 @@ export default function MyResumes() {
   const [duplicateModalOpen, setDuplicateModalOpen] = useState(false);
   const [resumeToDuplicate, setResumeToDuplicate] = useState<ResumeListItem | null>(null);
   const [isDuplicating, setIsDuplicating] = useState(false);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewResumeId, setPreviewResumeId] = useState<string | null>(null);
+  const [previewError, setPreviewError] = useState<string | null>(null);
+  const [isGeneratingPreview, setIsGeneratingPreview] = useState(false);
 
   // Thumbnail refresh hook - manages auto-triggering and polling
   const {
@@ -43,6 +49,15 @@ export default function MyResumes() {
   useEffect(() => {
     fetchResumes();
   }, []);
+
+  // Cleanup preview URL on unmount
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        window.URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   const fetchResumes = async () => {
     try {
