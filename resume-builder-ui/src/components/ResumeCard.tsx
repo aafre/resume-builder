@@ -1,6 +1,7 @@
 import { ResumeListItem } from '../types';
 import { useState } from 'react';
-import { Download, Copy, Trash2, Eye } from 'lucide-react';
+import { Download, Eye } from 'lucide-react';
+import { KebabMenu } from './KebabMenu';
 
 interface ResumeCardProps {
   resume: ResumeListItem;
@@ -142,15 +143,15 @@ export function ResumeCard({
         </div>
 
         {/* Actions */}
-        <div className="flex gap-2 pt-3 border-t border-gray-200">
+        <div className="flex gap-2 items-center">
           <button
             onClick={(e) => {
               e.stopPropagation();
               onEdit(resume.id);
             }}
-            className="flex-1 bg-blue-600 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+            className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
           >
-            Edit
+            Edit Resume
           </button>
 
           <button
@@ -164,27 +165,13 @@ export function ResumeCard({
             <Download className="w-5 h-5" />
           </button>
 
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onDuplicate(resume.id);
-            }}
-            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-            title="Duplicate"
-          >
-            <Copy className="w-5 h-5" />
-          </button>
-
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete(resume.id);
-            }}
-            className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-            title="Delete"
-          >
-            <Trash2 className="w-5 h-5" />
-          </button>
+          <KebabMenu
+            resumeId={resume.id}
+            resumeTitle={resume.title}
+            onRename={() => setIsEditing(true)}
+            onDuplicate={onDuplicate}
+            onDelete={onDelete}
+          />
         </div>
       </div>
     </div>
