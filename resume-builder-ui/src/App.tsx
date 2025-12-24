@@ -5,6 +5,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import { Toaster } from "react-hot-toast";
 
 // Critical components - loaded immediately
 import Header from "./components/Header";
@@ -13,10 +14,12 @@ import LandingPage from "./components/LandingPage";
 import EnvironmentBanner from "./components/EnvironmentBanner";
 import ScrollToTop from "./components/ScrollToTop";
 import { EditorProvider, useEditorContext } from "./contexts/EditorContext";
+import { AuthProvider } from "./contexts/AuthContext";
 
 // Lazy-loaded route components
 const TemplateCarousel = lazy(() => import("./components/TemplateCarousel"));
 const Editor = lazy(() => import("./components/Editor"));
+const MyResumes = lazy(() => import("./pages/MyResumes"));
 
 // SEO landing pages - lazy loaded
 const ActualFreeResumeBuilder = lazy(() => import("./components/seo/ActualFreeResumeBuilder"));
@@ -98,7 +101,7 @@ const EditorLoadingSkeleton = () => (
 
 function AppContent() {
   const location = useLocation();
-  const isEditorPage = location.pathname === "/editor";
+  const isEditorPage = location.pathname.startsWith("/editor");
 
   return (
   <>
@@ -188,10 +191,18 @@ function AppContent() {
 
           {/* High-priority routes with appropriate loading states */}
           <Route
-            path="/editor"
+            path="/editor/:resumeId"
             element={
               <Suspense fallback={<EditorLoadingSkeleton />}>
                 <Editor />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/my-resumes"
+            element={
+              <Suspense fallback={<EditorLoadingSkeleton />}>
+                <MyResumes />
               </Suspense>
             }
           />
@@ -480,9 +491,35 @@ function FooterWithContext({ isEditorPage }: { isEditorPage: boolean }) {
 export default function App() {
   return (
     <Router>
-      <EditorProvider>
-        <AppContent />
-      </EditorProvider>
+      <AuthProvider>
+        <EditorProvider>
+          <AppContent />
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: '#363636',
+                color: '#fff',
+              },
+              success: {
+                duration: 3000,
+                iconTheme: {
+                  primary: '#10b981',
+                  secondary: '#fff',
+                },
+              },
+              error: {
+                duration: 5000,
+                iconTheme: {
+                  primary: '#ef4444',
+                  secondary: '#fff',
+                },
+              },
+            }}
+          />
+        </EditorProvider>
+      </AuthProvider>
     </Router>
   );
 }
