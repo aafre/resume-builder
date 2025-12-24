@@ -90,11 +90,6 @@ export function ResumeCard({
           className="w-full h-full object-cover object-top"
         />
 
-        {/* Template Badge */}
-        <span className="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
-          {getTemplateName(resume.template_id)}
-        </span>
-
         {/* Preview hover overlay */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2">
           <Eye className="w-8 h-8 text-white" />
@@ -121,11 +116,11 @@ export function ResumeCard({
             autoFocus
             disabled={isSaving}
             maxLength={200}
-            className="font-semibold text-lg text-gray-900 w-full bg-white border-2 border-blue-500 rounded px-2 py-1 focus:outline-none disabled:opacity-50"
+            className="font-bold text-xl text-gray-900 w-full bg-white border-2 border-blue-500 rounded px-2 py-1 focus:outline-none disabled:opacity-50 mb-2"
           />
         ) : (
           <h3
-            className="font-semibold text-lg text-gray-900 truncate mb-1 cursor-text hover:bg-gray-50 rounded px-2 py-1 -mx-2 transition"
+            className="font-bold text-xl text-gray-900 truncate mb-2 cursor-text hover:bg-gray-50 rounded px-2 py-1 -mx-2 transition"
             onClick={(e) => {
               e.stopPropagation();
               setIsEditing(true);
@@ -136,9 +131,15 @@ export function ResumeCard({
           </h3>
         )}
 
-        <p className="text-sm text-gray-500 mb-3">
-          Updated {formatDate(resume.updated_at)}
-        </p>
+        {/* Metadata row */}
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+            {getTemplateName(resume.template_id)}
+          </span>
+          <span className="text-xs text-gray-500">
+            • Updated {formatDate(resume.updated_at)}
+          </span>
+        </div>
 
         {/* Actions */}
         <div className="flex gap-2 pt-3 border-t border-gray-200">
