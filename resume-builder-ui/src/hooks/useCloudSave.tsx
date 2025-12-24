@@ -75,11 +75,11 @@ export function useCloudSave({
         throw new Error('No active session');
       }
 
-      // Validate icon sizes and convert to base64
+      // Validate icon sizes and convert to base64 (parallel for performance)
       const MAX_ICON_SIZE = 50 * 1024; // 50KB (matches database constraint)
-      const iconsArray: Array<{ filename: string; data: string }> = [];
 
-      for (const [filename, iconData] of Object.entries(icons)) {
+      // Start all conversions in parallel using Promise.all()
+      const iconPromises = Object.entries(icons).map(async ([filename, iconData]) => {
         // Get file size
         let fileSize = 0;
         if (iconData instanceof File) {
@@ -97,15 +97,21 @@ export function useCloudSave({
           console.warn(`Skipping oversized icon: ${filename} (${sizeKB}KB exceeds 50KB limit)`);
           // Note: We skip silently here since validation should have happened in registerIcon
           // This is a safety net for edge cases
-          continue;
+          return null; // Return null for oversized icons
         }
 
-        // Convert to base64 and add to array
-        iconsArray.push({
+        // Convert to base64 (runs in parallel for all icons)
+        return {
           filename,
           data: await iconToBase64(iconData)
-        });
-      }
+        };
+      });
+
+      // Wait for all conversions to complete
+      const iconResults = await Promise.all(iconPromises);
+
+      // Filter out null results (oversized icons)
+      const iconsArray = iconResults.filter(result => result !== null) as Array<{ filename: string; data: string }>;
 
       // Generate smart title
       const generateTitle = (): string => {
