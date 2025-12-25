@@ -11,9 +11,6 @@ interface ResumeCardProps {
   onPreview: (id: string) => void;
   onDuplicate: (id: string) => void;
   onRename: (id: string, newTitle: string) => Promise<void>;
-  onRefreshThumbnail?: (id: string) => void;
-  isGenerating?: boolean;
-  hasFailed?: boolean;
 }
 
 export function ResumeCard({
@@ -23,10 +20,7 @@ export function ResumeCard({
   onDownload,
   onPreview,
   onDuplicate,
-  onRename,
-  onRefreshThumbnail,
-  isGenerating = false,
-  hasFailed = false
+  onRename
 }: ResumeCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(resume.title);
@@ -98,40 +92,11 @@ export function ResumeCard({
           className="w-full h-full object-cover object-top"
         />
 
-        {/* Generating Spinner Overlay - Subtle */}
-        {isGenerating && (
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] flex items-center justify-center">
-            <div className="flex flex-col items-center gap-2">
-              <div className="animate-spin rounded-full h-10 w-10 border-4 border-white border-t-transparent"></div>
-              <span className="text-white text-sm font-medium">Updating...</span>
-            </div>
-          </div>
-        )}
-
-        {/* Error Badge - Top Right Corner */}
-        {hasFailed && !isGenerating && (
-          <div className="absolute top-2 right-2">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onRefreshThumbnail?.(resume.id);
-              }}
-              className="bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg transition-colors"
-              title="Thumbnail update failed. Click to retry."
-              aria-label="Retry thumbnail generation"
-            >
-              <span className="text-lg font-bold">!</span>
-            </button>
-          </div>
-        )}
-
-        {/* Preview Hover - Only when not generating/failed */}
-        {!isGenerating && !hasFailed && (
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2">
-            <Eye className="w-8 h-8 text-white" />
-            <span className="text-white font-medium text-lg">Preview</span>
-          </div>
-        )}
+        {/* Preview Hover - Always available for complete transparency */}
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2">
+          <Eye className="w-8 h-8 text-white" />
+          <span className="text-white font-medium text-lg">Preview</span>
+        </div>
       </div>
 
       {/* Content */}

@@ -28,12 +28,10 @@ export default function MyResumes() {
   const [previewError, setPreviewError] = useState<string | null>(null);
   const [isGeneratingPreview, setIsGeneratingPreview] = useState(false);
 
-  // Thumbnail refresh hook - manages auto-triggering and polling
+  // Thumbnail refresh hook - manages auto-triggering and silent retries
   const {
     generatingIds,
-    failedIds,
-    triggerRefresh,
-    retryFailed
+    triggerRefresh
   } = useThumbnailRefresh({
     onThumbnailUpdated: (resumeId, pdf_generated_at, thumbnail_url) => {
       // Update specific resume in state when thumbnail completes
@@ -90,8 +88,8 @@ export default function MyResumes() {
 
       // Auto-trigger thumbnail generation for stale resumes
       const staleResumes = (result.resumes || []).filter(resume => {
-        // Skip if already generating or failed
-        if (generatingIds.has(resume.id) || failedIds.has(resume.id)) {
+        // Skip if already generating
+        if (generatingIds.has(resume.id)) {
           return false;
         }
 
@@ -261,11 +259,6 @@ export default function MyResumes() {
       toast.error('Failed to rename resume');
       throw err; // Re-throw so ResumeCard can revert
     }
-  };
-
-  const handleRefreshThumbnail = async (id: string) => {
-    // Simple retry - hook handles all the logic
-    await retryFailed(id);
   };
 
   const handleDownload = async (id: string) => {
@@ -461,9 +454,6 @@ export default function MyResumes() {
               onPreview={handlePreview}
               onDuplicate={handleDuplicate}
               onRename={handleRename}
-              onRefreshThumbnail={handleRefreshThumbnail}
-              isGenerating={generatingIds.has(resume.id)}
-              hasFailed={failedIds.has(resume.id)}
             />
           ))}
         </div>
