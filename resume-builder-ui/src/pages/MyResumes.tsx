@@ -63,16 +63,23 @@ export default function MyResumes() {
   const fetchResumes = async () => {
     console.log('[MyResumes] fetchResumes called');
     try {
+      console.log('[MyResumes] Setting loading to true');
       setLoading(true);
+      console.log('[MyResumes] Setting error to null');
       setError(null);
 
+      console.log('[MyResumes] Checking supabase');
       if (!supabase) {
+        console.log('[MyResumes] Supabase not configured');
         setError('Supabase not configured');
         return;
       }
 
+      console.log('[MyResumes] Getting auth session');
       const { data: { session } } = await supabase.auth.getSession();
+      console.log('[MyResumes] Session retrieved:', !!session);
       if (!session) {
+        console.log('[MyResumes] No session, returning');
         setError('Not authenticated');
         return;
       }
