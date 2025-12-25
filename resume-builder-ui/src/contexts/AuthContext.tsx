@@ -241,6 +241,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         return;
       }
       isInitializingRef.current = true;
+      listenerHandledInitRef.current = false; // Reset flag
 
       const AUTH_TIMEOUT_MS = 10000; // 10 seconds
       let sessionRecovered = false;
@@ -320,10 +321,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           toast.error('Authentication failed. Please refresh the page.');
         }
       } finally {
-        // Always stop loading state, even if session creation is in flight
-        setLoading(false);
+        // Only set loading to false if listener hasn't already done it
+        if (!listenerHandledInitRef.current) {
+          setLoading(false);
+        }
         isInitializingRef.current = false;
-        console.log('Auth initialization complete (UI ready, session may still be loading)');
+        console.log('Auth initialization complete (UI ready)');
       }
     };
 
