@@ -156,12 +156,13 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
           </button>
         </div>
 
-        {/* Cancel Button */}
+        {/* Continue Button */}
         <button
-          className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-4 py-3 rounded-lg transition-colors"
-          onClick={onClose}
+          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold px-6 py-3 rounded-lg transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-400"
+          onClick={handleContinue}
+          disabled={!selectedOption}
         >
-          Cancel
+          {selectedOption ? 'Start Building' : 'Select an option to continue'}
         </button>
       </div>
     </div>
