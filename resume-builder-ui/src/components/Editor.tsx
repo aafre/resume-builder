@@ -157,7 +157,7 @@ const Editor: React.FC = () => {
   const iconRegistry = useIconRegistry();
 
   // Auth state - used by cloud save
-  const { isAnonymous } = useAuth();
+  const { isAnonymous, session, loading: authLoading } = useAuth();
   const [showStorageLimitModal, setShowStorageLimitModal] = useState(false);
   const [cloudResumeId, setCloudResumeId] = useState<string | null>(resumeIdFromUrl || null);
   const [isLoadingFromUrl, setIsLoadingFromUrl] = useState<boolean>(!!resumeIdFromUrl);
@@ -446,13 +446,16 @@ const Editor: React.FC = () => {
 
   // Load saved resume from cloud when resumeId is in URL
   useEffect(() => {
+    // Wait for auth to be ready
+    if (authLoading) return;
+
     if (!resumeIdFromUrl || !supabase) return;
 
     const loadResumeFromCloud = async () => {
       try {
         setLoading(true);
 
-        const { data: { session } } = await supabase!.auth.getSession();
+        // Use session from AuthContext instead of calling getSession()
         if (!session) {
           toast.error('Please sign in to load saved resumes');
           return;
@@ -509,7 +512,7 @@ const Editor: React.FC = () => {
     };
 
     loadResumeFromCloud();
-  }, [resumeIdFromUrl]);
+  }, [resumeIdFromUrl, authLoading, session]);
 
   // Check if user should see welcome tour
   useEffect(() => {
