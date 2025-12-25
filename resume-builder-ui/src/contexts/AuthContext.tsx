@@ -359,25 +359,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setSigningOut(true);
 
-      // Sign out current user
-      const { error: signOutError } = await supabase.auth.signOut();
-
-      if (signOutError) {
-        console.error('Sign out error:', signOutError);
-        toast.error('Failed to sign out');
-        return;
-      }
-
       // Reset toast flag and migration state
       sessionStorage.removeItem('login-toast-shown');
       localStorage.removeItem('anonymous-user-id');
       migrationAttempted.current = false;
 
-      // Show success toast BEFORE creating anonymous session
+      // Show success toast
       toast.success('Signed out successfully');
 
-      // Small delay to let state settle before creating anonymous session
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // Sign out current user (don't await - can hang in some Supabase versions)
+      // The auth state listener will handle state updates
+      supabase.auth.signOut().catch((error) => {
+        console.error('Sign out error:', error);
+      });
+
+      // Small delay to let sign out process
+      await new Promise(resolve => setTimeout(resolve, 300));
 
       // Create new anonymous session
       const { error: anonError } = await supabase.auth.signInAnonymously();
