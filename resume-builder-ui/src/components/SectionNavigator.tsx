@@ -23,6 +23,7 @@ import {
   MdDescription,
   MdVisibility,
   MdSupport,
+  MdCloudUpload,
 } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { SaveStatusIndicator } from "./SaveStatusIndicator";
@@ -52,6 +53,8 @@ interface SectionNavigatorProps {
   saveStatus?: 'saved' | 'saving' | 'error';
   lastSaved?: Date | null;
   isAnonymous?: boolean;
+  isAuthenticated?: boolean;
+  onSignInClick?: () => void;
 }
 
 const STORAGE_KEY = "resume-builder-sidebar-collapsed";
@@ -82,6 +85,8 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   saveStatus,
   lastSaved,
   isAnonymous,
+  isAuthenticated,
+  onSignInClick,
 }) => {
   // Load initial state from localStorage
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -165,6 +170,18 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
     const newState = !isCollapsed;
     setIsCollapsed(newState);
     onCollapseChange?.(newState);
+  };
+
+  // Handle Start Fresh with safety confirmation for authenticated users
+  const handleStartFresh = () => {
+    if (isAuthenticated) {
+      const confirmed = window.confirm(
+        "Are you sure you want to clear all your current work? This cannot be undone.\n\n" +
+        "Your previously saved resumes in 'My Resumes' will not be affected."
+      );
+      if (!confirmed) return;
+    }
+    onStartFresh();
   };
 
   // Get icon for section based on type or name
@@ -484,7 +501,39 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
 
           {/* Utility Actions */}
           <div className={`${isCollapsed ? "space-y-0.5 mt-2" : "space-y-0.5"}`}>
-            {/* Save My Work */}
+            {/* Save to Cloud - PRIMARY CTA for anonymous users */}
+            {isAnonymous && onSignInClick && (
+              <>
+                <button
+                  onClick={onSignInClick}
+                  className={`w-full flex items-center transition-all rounded-lg shadow-sm hover:shadow-md ${
+                    isCollapsed
+                      ? "flex-col gap-1 py-2.5 px-1 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500"
+                      : "flex-row gap-3 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500"
+                  } text-white font-semibold`}
+                >
+                  <MdCloudUpload
+                    className={isCollapsed ? "text-base" : "text-lg"}
+                  />
+                  <span
+                    className={`${
+                      isCollapsed
+                        ? "text-[10px] leading-tight"
+                        : "text-[13px]"
+                    }`}
+                  >
+                    {isCollapsed ? "Cloud" : "Save to Cloud"}
+                  </span>
+                </button>
+                {!isCollapsed && (
+                  <p className="text-xs text-gray-500 px-3 pb-2">
+                    Free & Permanent Storage
+                  </p>
+                )}
+              </>
+            )}
+
+            {/* Backup to File (authenticated) / Save My Work (anonymous) */}
             <button
               id="tour-backup-button"
               onClick={onExportYAML}
@@ -498,24 +547,31 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               <MdFileDownload
                 className={`text-blue-600 ${isCollapsed ? "text-base" : "text-base"}`}
               />
-              <span
-                className={`${
-                  isCollapsed
-                    ? "text-[10px] text-gray-600 leading-tight font-medium"
-                    : "text-[13px]"
-                }`}
-              >
-                {loadingSave
-                  ? isCollapsed
-                    ? "..."
-                    : "Saving..."
-                  : isCollapsed
-                  ? "Save"
-                  : "Save My Work"}
-              </span>
+              <div className={`flex flex-col ${isCollapsed ? "items-center" : "items-start flex-1"}`}>
+                <span
+                  className={`${
+                    isCollapsed
+                      ? "text-[10px] text-gray-600 leading-tight font-medium"
+                      : "text-[13px]"
+                  }`}
+                >
+                  {loadingSave
+                    ? isCollapsed
+                      ? "..."
+                      : "Saving..."
+                    : isCollapsed
+                    ? (isAuthenticated ? "Backup" : "Save")
+                    : (isAuthenticated ? "Backup to File" : "Save My Work")}
+                </span>
+                {isAnonymous && !isCollapsed && (
+                  <span className="text-xs text-amber-600 leading-tight">
+                    Your only local save
+                  </span>
+                )}
+              </div>
             </button>
 
-            {/* Load My Work */}
+            {/* Import from File (authenticated) / Load My Work (anonymous) */}
             <button
               onClick={onImportYAML}
               disabled={loadingLoad}
@@ -541,13 +597,13 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                     : "Loading..."
                   : isCollapsed
                   ? "Load"
-                  : "Load My Work"}
+                  : (isAuthenticated ? "Import from File" : "Load My Work")}
               </span>
             </button>
 
-            {/* Start Fresh */}
+            {/* Start Fresh - KEEP LABEL AS-IS (not renamed) */}
             <button
-              onClick={onStartFresh}
+              onClick={handleStartFresh}
               className={`w-full flex items-center transition-all rounded-md ${
                 isCollapsed
                   ? "flex-col gap-1 py-2 px-1 hover:bg-orange-50/80"
