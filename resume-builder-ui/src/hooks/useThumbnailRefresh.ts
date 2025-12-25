@@ -23,7 +23,6 @@ interface RetryState {
 export function useThumbnailRefresh({
   onThumbnailUpdated
 }: UseThumbnailRefreshOptions): UseThumbnailRefreshReturn {
-  console.log('[useThumbnailRefresh] Hook called');
   const [generatingIds, setGeneratingIds] = useState<Set<string>>(new Set());
 
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -33,10 +32,13 @@ export function useThumbnailRefresh({
   const retryStateRef = useRef<Map<string, RetryState>>(new Map());
   const onThumbnailUpdatedRef = useRef(onThumbnailUpdated);
 
-  // Update ref during render (not in effect) to avoid triggering re-renders
-  onThumbnailUpdatedRef.current = onThumbnailUpdated;
+  // Update ref when callback changes (stable pattern)
+  useEffect(() => {
+    onThumbnailUpdatedRef.current = onThumbnailUpdated;
+  }, [onThumbnailUpdated]);
 
-  const scheduleRetry = useCallback((resumeId: string) => {
+  // Schedule retry - defined as ref to avoid recreation
+  const scheduleRetryRef = useRef((resumeId: string) => {
     const retryState = retryStateRef.current.get(resumeId) || { count: 0, nextRetryTime: null };
 
     // Max 3 retry attempts per session
@@ -55,7 +57,7 @@ export function useThumbnailRefresh({
     });
 
     console.log(`[Thumbnail] Scheduling retry ${retryState.count + 1}/3 for ${resumeId} in ${delay / 1000}s`);
-  }, []);
+  });
 
   const triggerRefresh = useCallback(async (resumeId: string) => {
     // Check if already generating using state setter pattern
@@ -90,7 +92,7 @@ export function useThumbnailRefresh({
           return next;
         });
         startTimesRef.current.delete(resumeId);
-        scheduleRetry(resumeId);
+        scheduleRetryRef.current(resumeId);
       } else {
         // Permanent error - give up silently
         console.error(`[Thumbnail] Permanent error for ${resumeId}:`, result.error);
@@ -111,12 +113,12 @@ export function useThumbnailRefresh({
         return next;
       });
       startTimesRef.current.delete(resumeId);
-      scheduleRetry(resumeId);
+      scheduleRetryRef.current(resumeId);
     }
-  }, [scheduleRetry]);
+  }, []); // No dependencies - uses refs for everything
 
+  // Polling function - stable, no dependencies
   const checkThumbnailUpdates = useCallback(async () => {
-    console.log('[useThumbnailRefresh] checkThumbnailUpdates called');
     const now = Date.now();
 
     if (!supabase) {
@@ -130,11 +132,11 @@ export function useThumbnailRefresh({
       return;
     }
 
-    // Get current generating IDs directly from state without dependency
+    // Get current generating IDs directly from state
     let currentGeneratingIds: string[] = [];
     setGeneratingIds(prev => {
       currentGeneratingIds = Array.from(prev);
-      return prev;
+      return prev; // Don't modify state
     });
 
     if (currentGeneratingIds.length === 0) return;
@@ -212,17 +214,15 @@ export function useThumbnailRefresh({
           });
           startTimesRef.current.delete(resumeId);
           resumeTimestampsRef.current.delete(resumeId);
-          scheduleRetry(resumeId);
+          scheduleRetryRef.current(resumeId);
         }
       }
     });
-  }, [scheduleRetry]);
+  }, []); // No dependencies - uses refs
 
-  // Polling effect
+  // Polling effect - only depends on generatingIds.size
   useEffect(() => {
-    console.log('[useThumbnailRefresh] Polling effect running, generatingIds.size:', generatingIds.size);
     if (generatingIds.size === 0) {
-      console.log('[useThumbnailRefresh] No generating IDs, clearing interval');
       if (pollIntervalRef.current) {
         clearInterval(pollIntervalRef.current);
         pollIntervalRef.current = null;
@@ -230,63 +230,51 @@ export function useThumbnailRefresh({
       return;
     }
 
+    // Start polling if not already active
     if (!pollIntervalRef.current) {
-      console.log('[useThumbnailRefresh] Starting polling interval');
-      pollIntervalRef.current = setInterval(() => {
-        checkThumbnailUpdates();
-      }, POLL_INTERVAL);
+      pollIntervalRef.current = setInterval(checkThumbnailUpdates, POLL_INTERVAL);
     }
 
     return () => {
-      console.log('[useThumbnailRefresh] Cleaning up polling interval');
       if (pollIntervalRef.current) {
         clearInterval(pollIntervalRef.current);
         pollIntervalRef.current = null;
       }
     };
-  }, [generatingIds.size, checkThumbnailUpdates]);
+  }, [generatingIds.size]); // Only depend on size, not the function
 
-  // Retry scheduler effect - check for pending retries
-  // TEMPORARILY DISABLED to debug loading issue
-  // useEffect(() => {
-  //   // Check every 5 seconds if any retries are due
-  //   retryIntervalRef.current = setInterval(() => {
-  //     // Early exit if no retries pending
-  //     if (retryStateRef.current.size === 0) return;
+  // Retry scheduler effect - runs independently
+  useEffect(() => {
+    retryIntervalRef.current = setInterval(() => {
+      if (retryStateRef.current.size === 0) return;
 
-  //     const now = Date.now();
-  //     retryStateRef.current.forEach((state, resumeId) => {
-  //       if (state.nextRetryTime && now >= state.nextRetryTime) {
-  //         console.log(`[Thumbnail] Executing scheduled retry for ${resumeId}`);
-  //         // Clear nextRetryTime to prevent duplicate retries
-  //         retryStateRef.current.set(resumeId, { ...state, nextRetryTime: null });
-  //         triggerRefresh(resumeId);
-  //       }
-  //     });
-  //   }, 5000);
+      const now = Date.now();
+      retryStateRef.current.forEach((state, resumeId) => {
+        if (state.nextRetryTime && now >= state.nextRetryTime) {
+          console.log(`[Thumbnail] Executing scheduled retry for ${resumeId}`);
+          // Clear nextRetryTime to prevent duplicate retries
+          retryStateRef.current.set(resumeId, { ...state, nextRetryTime: null });
+          triggerRefresh(resumeId);
+        }
+      });
+    }, 5000);
 
-  //   return () => {
-  //     if (retryIntervalRef.current) {
-  //       clearInterval(retryIntervalRef.current);
-  //       retryIntervalRef.current = null;
-  //     }
-  //   };
-  // }, [triggerRefresh]);
+    return () => {
+      if (retryIntervalRef.current) {
+        clearInterval(retryIntervalRef.current);
+      }
+    };
+  }, [triggerRefresh]);
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      // Clear all intervals
       if (pollIntervalRef.current) {
         clearInterval(pollIntervalRef.current);
-        pollIntervalRef.current = null;
       }
       if (retryIntervalRef.current) {
         clearInterval(retryIntervalRef.current);
-        retryIntervalRef.current = null;
       }
-
-      // Clear all refs
       startTimesRef.current.clear();
       resumeTimestampsRef.current.clear();
       retryStateRef.current.clear();
