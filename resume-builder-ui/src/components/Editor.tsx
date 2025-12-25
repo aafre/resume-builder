@@ -1010,42 +1010,12 @@ const Editor: React.FC = () => {
 
       toast.success("Resume downloaded successfully!");
 
-      // Show download toast for anonymous users (first time only)
+      // Show celebration modal for anonymous users (first time only)
       if (isAnonymous && !hasShownDownloadToast) {
         markDownloadToastShown();
 
         setTimeout(() => {
-          toast.info(
-            <div>
-              <strong>Great resume!</strong>
-              <p style={{ marginTop: '4px', marginBottom: '8px', fontSize: '14px' }}>
-                Want to save it for future edits?
-              </p>
-              <button
-                onClick={() => {
-                  setShowAuthModal(true);
-                  toast.dismiss();
-                }}
-                style={{
-                  marginTop: '4px',
-                  padding: '6px 12px',
-                  backgroundColor: '#3b82f6',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontSize: '13px',
-                  fontWeight: '500'
-                }}
-              >
-                Create Free Account →
-              </button>
-            </div>,
-            {
-              autoClose: 8000,
-              position: 'bottom-center'
-            }
-          );
+          setShowDownloadCelebration(true);
         }, 500);
       } else if (!isAnonymous) {
         // Original message for authenticated users
