@@ -5,6 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 import AutoSaveIndicator from "./AutoSaveIndicator";
 import UserMenu from "./UserMenu";
 import AuthModal from "./AuthModal";
+import { MdFolder, MdViewModule } from "react-icons/md";
 import logo from "/android-chrome-192x192.png";
 
 export default function Header() {
@@ -77,8 +78,34 @@ export default function Header() {
             </span>
           </div>
 
-          {/* Dynamic Page Title - Centered (Desktop) */}
-          {getPageTitle() && (
+          {/* Navigation Buttons - Centered (Desktop, Authenticated Only) */}
+          {isAuthenticated && (
+            <nav className="hidden lg:flex items-center gap-2 absolute left-1/2 transform -translate-x-1/2">
+              <Link
+                to="/my-resumes"
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+                  location.pathname === '/my-resumes'
+                    ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white shadow-md'
+                    : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700'
+                }`}
+              >
+                My Resumes
+              </Link>
+              <Link
+                to="/templates"
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+                  location.pathname === '/templates'
+                    ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white shadow-md'
+                    : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700'
+                }`}
+              >
+                Templates
+              </Link>
+            </nav>
+          )}
+
+          {/* Dynamic Page Title - Centered (Desktop, Non-Authenticated) */}
+          {!isAuthenticated && getPageTitle() && (
             <div className="hidden lg:flex flex-col items-center absolute left-1/2 transform -translate-x-1/2">
               <h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent tracking-tight">
                 {getPageTitle()}
