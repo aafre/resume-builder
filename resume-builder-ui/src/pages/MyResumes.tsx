@@ -11,7 +11,6 @@ import { toast } from 'react-hot-toast';
 import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
 
 export default function MyResumes() {
-  console.log('[MyResumes] Render');
   const navigate = useNavigate();
   const [resumes, setResumes] = useState<ResumeListItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -49,7 +48,7 @@ export default function MyResumes() {
 
   useEffect(() => {
     fetchResumes();
-  }, []);
+  }, [fetchResumes]);
 
   // Cleanup preview URL on unmount
   useEffect(() => {
@@ -60,57 +59,38 @@ export default function MyResumes() {
     };
   }, [previewUrl]);
 
-  const fetchResumes = async () => {
-    console.log('[MyResumes] fetchResumes called');
+  const fetchResumes = useCallback(async () => {
     try {
-      console.log('[MyResumes] Setting loading to true');
       setLoading(true);
-      console.log('[MyResumes] Setting error to null');
       setError(null);
 
-      console.log('[MyResumes] Checking supabase');
       if (!supabase) {
-        console.log('[MyResumes] Supabase not configured');
         setError('Supabase not configured');
         return;
       }
 
-      console.log('[MyResumes] Getting auth session');
       const { data: { session } } = await supabase.auth.getSession();
-      console.log('[MyResumes] Session retrieved:', !!session);
       if (!session) {
-        console.log('[MyResumes] No session, returning');
         setError('Not authenticated');
         return;
       }
 
-      console.log('[MyResumes] About to fetch API');
       const response = await fetch('/api/resumes?limit=50', {
         headers: {
           'Authorization': `Bearer ${session.access_token}`
         }
       });
 
-      console.log('[MyResumes] API response received:', response.ok);
       const result = await response.json();
-      console.log('[MyResumes] JSON parsed, resumes count:', result.resumes?.length);
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to fetch resumes');
       }
 
-      console.log('[MyResumes] Setting resumes state');
       setResumes(result.resumes || []);
-      console.log('[MyResumes] Resumes state set');
 
       // Auto-trigger thumbnail generation for stale resumes
-      console.log('[MyResumes] Checking for stale resumes');
       const staleResumes = (result.resumes || []).filter(resume => {
-        // Skip if already generating
-        if (generatingIds.has(resume.id)) {
-          return false;
-        }
-
         // Never had thumbnail
         if (!resume.pdf_generated_at) return true;
 
@@ -120,23 +100,19 @@ export default function MyResumes() {
         return updatedAt > pdfGeneratedAt;
       });
 
-      console.log('[MyResumes] Stale resumes found:', staleResumes.length);
       // Trigger all stale resumes in parallel
       staleResumes.forEach(resume => {
-        console.log('[MyResumes] Triggering refresh for:', resume.id);
         triggerRefresh(resume.id);
       });
-      console.log('[MyResumes] All triggerRefresh calls initiated');
 
     } catch (err) {
       console.error('Error fetching resumes:', err);
       setError(err instanceof Error ? err.message : 'Failed to load resumes');
       toast.error('Failed to load resumes');
     } finally {
-      console.log('[MyResumes] Setting loading to false');
       setLoading(false);
     }
-  };
+  }, [triggerRefresh]); // Only depends on triggerRefresh which is stable
 
   const handleEdit = (id: string) => {
     navigate(`/editor/${id}`);
