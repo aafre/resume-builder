@@ -3,10 +3,12 @@ import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { MdLogout, MdFolder, MdExpandMore } from 'react-icons/md';
 import { useUserAvatar } from '../hooks/useUserAvatar';
+import { useQueryClient } from '@tanstack/react-query';
 
 const UserMenu: React.FC = () => {
-  const { user, signOut, isAnonymous } = useAuth();
+  const { user, signOut, isAnonymous, signingOut } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -24,11 +26,18 @@ const UserMenu: React.FC = () => {
 
   const handleSignOut = async () => {
     try {
+      setIsOpen(false); // Close menu immediately for better UX
+
       await signOut();
-      setIsOpen(false);
-      navigate('/');
+
+      // Invalidate all queries to clear stale data
+      queryClient.clear();
+
+      // Navigate to home
+      navigate('/', { replace: true });
     } catch (error) {
       console.error('Sign out error:', error);
+      // Error toast already shown in AuthContext
     }
   };
 
@@ -98,10 +107,20 @@ const UserMenu: React.FC = () => {
           <div className="border-t border-gray-100/50 mt-1 pt-1">
             <button
               onClick={handleSignOut}
-              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50/70 rounded-lg mx-2 my-1 transition-all duration-200"
+              disabled={signingOut}
+              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50/70 rounded-lg mx-2 my-1 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <MdLogout size={18} />
-              <span>{isAnonymous ? 'Start Fresh' : 'Sign Out'}</span>
+              {signingOut ? (
+                <>
+                  <div className="w-[18px] h-[18px] border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+                  <span>Signing out...</span>
+                </>
+              ) : (
+                <>
+                  <MdLogout size={18} />
+                  <span>{isAnonymous ? 'Start Fresh' : 'Sign Out'}</span>
+                </>
+              )}
             </button>
           </div>
         </div>
