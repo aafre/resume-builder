@@ -317,6 +317,10 @@ const Editor: React.FC = () => {
   // Start Fresh confirmation
   const [showStartFreshConfirm, setShowStartFreshConfirm] = useState(false);
 
+  // Import YAML confirmation
+  const [showImportConfirm, setShowImportConfirm] = useState(false);
+  const [pendingImportFile, setPendingImportFile] = useState<File | null>(null);
+
   // Navigation drawer state
   const [showNavigationDrawer, setShowNavigationDrawer] = useState(false);
   const [activeSectionIndex, setActiveSectionIndex] = useState<number>(-1); // -1 for contact info
@@ -872,12 +876,25 @@ const Editor: React.FC = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    // Store file and show confirmation dialog
+    setPendingImportFile(file);
+    setShowImportConfirm(true);
+
+    // Reset file input so the same file can be selected again
+    event.target.value = '';
+  };
+
+  const confirmImportYAML = async () => {
+    if (!pendingImportFile) return;
+
+    setShowImportConfirm(false);
+
     // Save current work before importing (if authenticated and has content)
     // Auto-save will handle preserving the current resume
     if (!isAnonymous && contactInfo && sections.length > 0) {
       const canProceed = await saveBeforeAction('import YAML');
       if (!canProceed) {
-        event.target.value = ''; // Reset file input
+        setPendingImportFile(null);
         return;
       }
     }
@@ -938,9 +955,10 @@ const Editor: React.FC = () => {
         toast.error("Invalid file format. Please upload a valid resume file.");
       } finally {
         setLoadingLoad(false);
+        setPendingImportFile(null);
       }
     };
-    reader.readAsText(file);
+    reader.readAsText(pendingImportFile);
   };
 
   const handleGenerateResume = async () => {
@@ -2038,6 +2056,22 @@ const Editor: React.FC = () => {
         cancelText="Cancel"
         isDestructive={true}
         isLoading={loadingSave}
+      />
+
+      {/* Import YAML Confirmation Dialog */}
+      <ResponsiveConfirmDialog
+        isOpen={showImportConfirm}
+        onClose={() => {
+          setShowImportConfirm(false);
+          setPendingImportFile(null);
+        }}
+        onConfirm={confirmImportYAML}
+        title="Import Resume File?"
+        message="Are you sure you want to import this resume file?\n\nThis will replace all your current work with the content from the imported file. Your current resume will be permanently lost.\n\nIf you want to keep your current resume, please download or save it first before importing."
+        confirmText="Import File"
+        cancelText="Cancel"
+        isDestructive={true}
+        isLoading={loadingLoad}
       />
 
       {/* PDF Preview Modal */}
