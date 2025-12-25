@@ -3,6 +3,42 @@ import { supabase } from '../lib/supabase';
 import { toast } from 'react-hot-toast';
 import type { User, Session } from '@supabase/supabase-js';
 
+/**
+ * Wraps a promise with a timeout. Rejects if promise doesn't resolve within timeoutMs.
+ */
+const withTimeout = <T,>(promise: Promise<T>, timeoutMs: number, operationName: string): Promise<T> => {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(`${operationName} timed out after ${timeoutMs}ms`)), timeoutMs)
+    )
+  ]);
+};
+
+/**
+ * Clears potentially corrupted Supabase auth data from localStorage.
+ */
+const clearSupabaseAuthStorage = () => {
+  try {
+    const keys = Object.keys(localStorage);
+    const supabaseKeys = keys.filter(key =>
+      key.startsWith('sb-') ||
+      key.includes('supabase') ||
+      key === 'supabase.auth.token'
+    );
+
+    supabaseKeys.forEach(key => {
+      console.log('Clearing corrupted auth key:', key);
+      localStorage.removeItem(key);
+    });
+
+    return supabaseKeys.length > 0;
+  } catch (error) {
+    console.error('Error clearing localStorage:', error);
+    return false;
+  }
+};
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
