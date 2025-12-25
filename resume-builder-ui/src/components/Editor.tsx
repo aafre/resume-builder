@@ -873,17 +873,12 @@ const Editor: React.FC = () => {
     if (!file) return;
 
     // Save current work before importing (if authenticated and has content)
+    // Auto-save will handle preserving the current resume
     if (!isAnonymous && contactInfo && sections.length > 0) {
-      const shouldSave = window.confirm(
-        'Save current resume before importing? Click OK to save, Cancel to discard.'
-      );
-
-      if (shouldSave) {
-        const canProceed = await saveBeforeAction('import YAML');
-        if (!canProceed) {
-          event.target.value = ''; // Reset file input
-          return;
-        }
+      const canProceed = await saveBeforeAction('import YAML');
+      if (!canProceed) {
+        event.target.value = ''; // Reset file input
+        return;
       }
     }
 
