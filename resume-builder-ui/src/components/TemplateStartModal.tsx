@@ -115,13 +115,10 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
               </div>
               <div className="flex-1">
                 <h3 className="font-bold text-lg sm:text-xl mb-2 text-gray-900">
-                  Start with Empty Structure
+                  Start from Scratch
                 </h3>
-                <p className="text-sm text-gray-600 mb-2">
-                  Clean template with placeholders. Start from scratch with your own content.
-                </p>
-                <p className="text-xs text-gray-500 italic">
-                  Perfect for building your resume step-by-step.
+                <p className="text-sm text-gray-600">
+                  • Clean slate • Full control
                 </p>
               </div>
             </div>
@@ -149,13 +146,10 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
               </div>
               <div className="flex-1">
                 <h3 className="font-bold text-lg sm:text-xl mb-2 text-gray-900">
-                  Load Example Data
+                  Use Example Content
                 </h3>
-                <p className="text-sm text-gray-600 mb-2">
-                  See the template filled with sample content. Great for understanding formatting.
-                </p>
-                <p className="text-xs text-gray-500 italic">
-                  Explore how the template looks with real data.
+                <p className="text-sm text-gray-600">
+                  • Pre-written text • Layout preview
                 </p>
               </div>
             </div>
