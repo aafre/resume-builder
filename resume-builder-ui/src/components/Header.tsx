@@ -5,7 +5,6 @@ import { useAuth } from "../contexts/AuthContext";
 import AutoSaveIndicator from "./AutoSaveIndicator";
 import UserMenu from "./UserMenu";
 import AuthModal from "./AuthModal";
-import { MdFolder, MdViewModule } from "react-icons/md";
 import logo from "/android-chrome-192x192.png";
 
 export default function Header() {
