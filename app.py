@@ -99,6 +99,64 @@ def retry_on_connection_error(max_retries=3, backoff_factor=0.5):
     return decorator
 
 
+def classify_thumbnail_error(error):
+    """
+    Classify thumbnail generation errors as retryable or permanent.
+
+    Args:
+        error: Exception object
+
+    Returns:
+        dict: {
+            "retryable": bool,
+            "error_type": str,  # "network", "dependency", "data", "storage", "unknown"
+            "user_message": str  # Only if not retryable
+        }
+    """
+    error_msg = str(error).lower()
+    error_type = type(error).__name__
+
+    # Missing dependencies - permanent
+    if isinstance(error, (ImportError, ModuleNotFoundError)):
+        return {
+            "retryable": False,
+            "error_type": "dependency",
+            "user_message": "Server configuration error. Please contact support."
+        }
+
+    # Connection/network errors - retryable
+    transient_keywords = ['server disconnected', 'connection', 'timeout', 'reset', 'network']
+    if any(keyword in error_msg for keyword in transient_keywords):
+        return {
+            "retryable": True,
+            "error_type": "network",
+            "user_message": None
+        }
+
+    # Storage errors - retryable (may be transient auth token)
+    if 'storage' in error_msg or 'bucket' in error_msg:
+        return {
+            "retryable": True,
+            "error_type": "storage",
+            "user_message": None
+        }
+
+    # Data validation errors - permanent
+    if 'invalid' in error_msg or 'corrupted' in error_msg or 'missing' in error_msg:
+        return {
+            "retryable": False,
+            "error_type": "data",
+            "user_message": "Resume data issue. Please edit the resume."
+        }
+
+    # Default: assume retryable
+    return {
+        "retryable": True,
+        "error_type": "unknown",
+        "user_message": None
+    }
+
+
 def pdf_generation_worker(template_name, yaml_path, output_path, session_icons_dir, session_id):
     """
     Worker function for process pool PDF generation.
@@ -896,34 +954,43 @@ def check_resume_limit(user_id):
         raise
 
 
-def download_icon_from_storage(storage_path, dest_path):
+def download_icon_from_storage(storage_path, dest_path, max_retries=2):
     """
-    Download icon file from Supabase Storage to local filesystem.
+    Download icon file from Supabase Storage to local filesystem with retries.
 
     Args:
         storage_path (str): Path in storage bucket
         dest_path (str): Local filesystem destination path
+        max_retries (int): Number of retry attempts (default: 2)
 
     Returns:
         bool: True if successful, False otherwise
     """
     if supabase is None:
-        raise Exception("Supabase client not initialized")
-
-    try:
-        # Download file from storage
-        file_data = supabase.storage.from_('resume-icons').download(storage_path)
-
-        # Write to destination
-        with open(dest_path, 'wb') as f:
-            f.write(file_data)
-
-        logging.debug(f"Downloaded icon from storage: {storage_path} -> {dest_path}")
-        return True
-
-    except Exception as e:
-        logging.error(f"Failed to download icon from storage: {e}")
+        logging.error("Supabase client not initialized")
         return False
+
+    for attempt in range(max_retries + 1):
+        try:
+            # Download file from storage
+            file_data = supabase.storage.from_('resume-icons').download(storage_path)
+
+            # Write to destination
+            with open(dest_path, 'wb') as f:
+                f.write(file_data)
+
+            logging.debug(f"Downloaded icon from storage: {storage_path} -> {dest_path}")
+            return True
+        except Exception as e:
+            if attempt < max_retries:
+                wait_time = 0.5 * (2 ** attempt)  # Exponential backoff: 0.5s, 1s
+                logging.warning(f"Icon download attempt {attempt + 1} failed for {storage_path}, retrying in {wait_time}s: {e}")
+                time.sleep(wait_time)
+            else:
+                logging.error(f"Failed to download icon {storage_path} after {max_retries + 1} attempts: {e}")
+                return False
+
+    return False
 
 
 def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
@@ -2684,6 +2751,7 @@ def generate_pdf_for_saved_resume(resume_id):
 
 @app.route("/api/resumes/<resume_id>/thumbnail", methods=["POST"])
 @require_auth
+@retry_on_connection_error(max_retries=3, backoff_factor=0.5)
 def generate_thumbnail_for_resume(resume_id):
     """
     Generate thumbnail on-demand for a saved resume.
@@ -2736,14 +2804,15 @@ def generate_thumbnail_for_resume(resume_id):
                     failed_icons.append(icon['filename'])
                     logging.error(f"Failed to download icon: {icon['filename']} from {icon['storage_path']}")
 
-            # Fail fast if any icons missing
+            # Log warning if any icons failed, but continue with graceful degradation
             if failed_icons:
-                error_msg = (
+                warning_msg = (
                     f"Unable to load {len(failed_icons)} icon(s) from cloud storage: {', '.join(failed_icons)}. "
-                    f"Icons may not have been properly saved when the resume was created."
+                    f"Continuing with available icons. PDF will be generated with missing icons."
                 )
-                logging.error(f"Thumbnail generation failed: {error_msg}")
-                return jsonify({"success": False, "error": error_msg}), 500
+                logging.warning(f"Thumbnail generation degraded: {warning_msg}")
+                # Continue execution - don't fail fast
+                # Icons will be missing from PDF, but thumbnail will still generate
 
             # Prepare YAML data
             yaml_data = {
@@ -2910,8 +2979,28 @@ def generate_thumbnail_for_resume(resume_id):
             }), 200
 
         except Exception as e:
-            logging.error(f"Error generating thumbnail for resume {resume_id}: {e}")
-            return jsonify({"success": False, "error": str(e)}), 500
+            error_classification = classify_thumbnail_error(e)
+            logging.error(
+                f"Error generating thumbnail for resume {resume_id}: {e} "
+                f"(retryable={error_classification['retryable']}, type={error_classification['error_type']})"
+            )
+
+            if error_classification['retryable']:
+                # Return success with null thumbnail - frontend will retry
+                return jsonify({
+                    "success": True,
+                    "thumbnail_url": None,
+                    "pdf_generated_at": None,
+                    "retryable": True,
+                    "error_type": error_classification['error_type']
+                }), 200
+            else:
+                # Permanent error - return error but don't expect retry
+                return jsonify({
+                    "success": False,
+                    "error": error_classification.get('user_message', str(e)),
+                    "retryable": False
+                }), 500
 
 
 # User Preferences API Endpoints
