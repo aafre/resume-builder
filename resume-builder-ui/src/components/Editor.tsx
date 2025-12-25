@@ -43,6 +43,7 @@ import { useEditorContext } from "../contexts/EditorContext";
 import ContextAwareTour from "./ContextAwareTour";
 import TabbedHelpModal from "./TabbedHelpModal";
 import AuthModal from "./AuthModal";
+import DownloadCelebrationModal from "./DownloadCelebrationModal";
 import useTourPersistence from "../hooks/useTourPersistence";
 import { MdFileDownload, MdHelpOutline } from "react-icons/md";
 import {
@@ -537,6 +538,8 @@ const Editor: React.FC = () => {
   });
 
   const [showAuthModalFromTour, setShowAuthModalFromTour] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false); // Bug fix: Was referenced but not defined
+  const [showDownloadCelebration, setShowDownloadCelebration] = useState(false);
 
   useEffect(() => {
     if (shouldShowTour) {
