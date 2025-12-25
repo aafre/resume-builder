@@ -14,6 +14,7 @@ import { useIconRegistry } from "../hooks/useIconRegistry";
 import { usePreview } from "../hooks/usePreview";
 import { useCloudSave } from "../hooks/useCloudSave";
 import { useAuth } from "../contexts/AuthContext";
+import { useConversion } from "../contexts/ConversionContext";
 import { StorageLimitModal } from "./StorageLimitModal";
 import { supabase } from "../lib/supabase";
 import yaml from "js-yaml";
@@ -162,6 +163,11 @@ const Editor: React.FC = () => {
 
   // Auth state - used by cloud save
   const { isAnonymous, session, loading: authLoading } = useAuth();
+  const isAuthenticated = !!session && !isAnonymous;
+
+  // Conversion nudges
+  const { hasShownDownloadToast, markDownloadToastShown } = useConversion();
+
   const [showStorageLimitModal, setShowStorageLimitModal] = useState(false);
   const [cloudResumeId, setCloudResumeId] = useState<string | null>(resumeIdFromUrl || null);
   const [isLoadingFromUrl, setIsLoadingFromUrl] = useState<boolean>(!!resumeIdFromUrl);
@@ -978,11 +984,51 @@ const Editor: React.FC = () => {
 
       toast.success("Resume downloaded successfully!");
 
-      setTimeout(() => {
-        toast.info(
-          "Need to continue on another device? Save your work via the ⋮ menu"
-        );
-      }, 2000);
+      // Show download toast for anonymous users (first time only)
+      if (isAnonymous && !hasShownDownloadToast) {
+        markDownloadToastShown();
+
+        setTimeout(() => {
+          toast.info(
+            <div>
+              <strong>Great resume!</strong>
+              <p style={{ marginTop: '4px', marginBottom: '8px', fontSize: '14px' }}>
+                Want to save it for future edits?
+              </p>
+              <button
+                onClick={() => {
+                  setShowAuthModal(true);
+                  toast.dismiss();
+                }}
+                style={{
+                  marginTop: '4px',
+                  padding: '6px 12px',
+                  backgroundColor: '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                  fontWeight: '500'
+                }}
+              >
+                Create Free Account →
+              </button>
+            </div>,
+            {
+              autoClose: 8000,
+              position: 'bottom-center'
+            }
+          );
+        }, 500);
+      } else if (!isAnonymous) {
+        // Original message for authenticated users
+        setTimeout(() => {
+          toast.info(
+            "Need to continue on another device? Save your work via the ⋮ menu"
+          );
+        }, 2000);
+      }
     } catch (error) {
       console.error("Error generating resume:", error);
       const errorMessage =
