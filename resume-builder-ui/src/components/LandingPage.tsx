@@ -4,6 +4,7 @@ import CountUp from "react-countup";
 import SEOHead from "./SEOHead";
 import CompanyMarquee from "./CompanyMarquee";
 import { useAuth } from "../contexts/AuthContext";
+import { useResumes } from "../hooks/useResumes";
 import {
   ArrowRightIcon,
   EyeIcon,
@@ -21,6 +22,10 @@ const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { isAuthenticated, isAnonymous } = useAuth();
+  const { data: resumes = [] } = useResumes();
+
+  // Check if user has resumes
+  const hasResumes = isAuthenticated && !isAnonymous && resumes.length > 0;
 
   // Handle legacy URL redirects only
   useEffect(() => {
@@ -190,10 +195,10 @@ const LandingPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
             <button
               className="group inline-flex items-center justify-center bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 ease-out active:scale-[0.98] relative overflow-hidden"
-              onClick={() => navigate(isAuthenticated && !isAnonymous ? "/my-resumes" : "/templates")}
+              onClick={() => navigate(hasResumes ? "/my-resumes" : "/templates")}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out"></div>
-              {isAuthenticated && !isAnonymous ? "My Resumes" : "Start Building Now"}
+              {hasResumes ? "My Resumes" : "Start Building Now"}
               <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
             </button>
             <button
@@ -432,10 +437,10 @@ const LandingPage: React.FC = () => {
               </p>
               <button
                 className="group inline-flex items-center justify-center bg-white text-purple-700 py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 ease-out active:scale-95 relative overflow-hidden"
-                onClick={() => navigate(isAuthenticated && !isAnonymous ? "/my-resumes" : "/templates")}
+                onClick={() => navigate(hasResumes ? "/my-resumes" : "/templates")}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-purple-100/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out"></div>
-                {isAuthenticated && !isAnonymous ? "Go to My Resumes" : "Start Building Your Resume"}
+                {hasResumes ? "Go to My Resumes" : "Start Building Your Resume"}
                 <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
             </div>
