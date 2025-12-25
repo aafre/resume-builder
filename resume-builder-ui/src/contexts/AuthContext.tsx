@@ -227,33 +227,80 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (isInitializing) return;
       isInitializing = true;
 
+      const AUTH_TIMEOUT_MS = 10000; // 10 seconds
+      let sessionRecovered = false;
+
       try {
-        // Check for existing session
-        const { data: { session: existingSession } } = await supabase!.auth.getSession();
+        console.log('Initializing auth...');
 
-        if (existingSession) {
-          // User has existing session (anonymous or authenticated)
-          setSession(existingSession);
-          setUser(existingSession.user);
-          console.log('Existing session restored:', existingSession.user.id);
-        } else {
-          // No session - create anonymous session automatically
-          console.log('No session found, signing in anonymously...');
-          const { data, error } = await supabase!.auth.signInAnonymously();
+        // STEP 1: Try to restore existing session with timeout
+        try {
+          const { data: { session: existingSession } } = await withTimeout(
+            supabase!.auth.getSession(),
+            AUTH_TIMEOUT_MS,
+            'getSession'
+          );
 
-          if (error) {
-            console.error('Anonymous sign-in error:', error);
-          } else if (data.session && data.user) {
-            setSession(data.session);
-            setUser(data.user);
-            console.log('Anonymous session created:', data.user.id);
+          if (existingSession) {
+            // Session exists and is valid
+            sessionRecovered = true;
+            setSession(existingSession);
+            setUser(existingSession.user);
+            console.log('✅ Existing session restored:', existingSession.user.id);
+            return;
+          } else {
+            console.log('No existing session found, will create anonymous session');
+          }
+        } catch (sessionError) {
+          // Session recovery failed (timeout, network error, or corrupted data)
+          console.error('⚠️ Session recovery failed:', sessionError);
+
+          const wasTimeout = sessionError instanceof Error && sessionError.message.includes('timed out');
+
+          if (wasTimeout) {
+            console.log('Session recovery timed out - likely corrupted localStorage');
+            toast.error('Authentication timed out. Starting fresh session...', { duration: 5000 });
+          }
+
+          // Clear potentially corrupted auth data
+          const clearedKeys = clearSupabaseAuthStorage();
+          if (clearedKeys) {
+            console.log('Cleared corrupted auth storage');
           }
         }
+
+        // STEP 2: Create fresh anonymous session (fallback)
+        console.log('Creating fresh anonymous session...');
+
+        // Use non-blocking pattern (like signOut fix) - don't await
+        // Let auth state listener handle the session update
+        supabase!.auth.signInAnonymously().then(({ data, error }) => {
+          if (error) {
+            console.error('❌ Anonymous sign-in error:', error);
+            toast.error('Failed to create session. Please refresh the page.');
+          } else if (data.session && data.user) {
+            console.log('✅ Anonymous session created:', data.user.id);
+          }
+        }).catch((error) => {
+          console.error('❌ Anonymous sign-in failed:', error);
+          toast.error('Failed to create session. Please refresh the page.');
+        });
+
+        // Small delay to let anonymous sign-in start processing
+        await new Promise(resolve => setTimeout(resolve, 300));
+
       } catch (error) {
-        console.error('Auth initialization error:', error);
+        // Catch-all for unexpected errors
+        console.error('❌ Unexpected auth initialization error:', error);
+
+        if (!sessionRecovered) {
+          toast.error('Authentication failed. Please refresh the page.');
+        }
       } finally {
+        // Always stop loading state, even if session creation is in flight
         setLoading(false);
         isInitializing = false;
+        console.log('Auth initialization complete (UI ready, session may still be loading)');
       }
     };
 
