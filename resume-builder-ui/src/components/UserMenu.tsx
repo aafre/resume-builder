@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { MdLogout, MdFolder, MdExpandMore } from 'react-icons/md';
+import { useUserAvatar } from '../hooks/useUserAvatar';
 
 const UserMenu: React.FC = () => {
   const { user, signOut, isAnonymous } = useAuth();
@@ -42,7 +43,7 @@ const UserMenu: React.FC = () => {
   const displayName = isAnonymous
     ? 'Guest'
     : user.user_metadata?.full_name || user.email?.split('@')[0] || 'User';
-  const avatarUrl = user.user_metadata?.avatar_url;
+  const { avatarUrl, hasError, handleError } = useUserAvatar(user);
 
   return (
     <div className="relative" ref={menuRef}>
@@ -51,11 +52,14 @@ const UserMenu: React.FC = () => {
         className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/60 backdrop-blur-sm hover:shadow-md transition-all duration-300"
         aria-label="User menu"
       >
-        {avatarUrl ? (
+        {avatarUrl && !hasError ? (
           <img
             src={avatarUrl}
             alt={displayName}
             className="w-8 h-8 rounded-full object-cover ring-2 ring-purple-100"
+            onError={handleError}
+            referrerPolicy="no-referrer"
+            crossOrigin="anonymous"
           />
         ) : (
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 flex items-center justify-center shadow-md">
