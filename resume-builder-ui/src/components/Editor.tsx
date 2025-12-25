@@ -255,7 +255,8 @@ const Editor: React.FC = () => {
       template_id: templateId
     } : { contact_info: {} as any, sections: [], template_id: '' },
     icons: iconsForCloudSave,
-    enabled: !!templateId && !!contactInfo && !isLoadingFromUrl  // Wait for both to be loaded from database and resume loading to complete
+    enabled: !!templateId && !!contactInfo && !isLoadingFromUrl && !authLoading,  // Wait for auth and data to be ready
+    session: session  // Pass session from AuthContext
   });
 
   // Update cloud resume ID when it's set from cloud save
