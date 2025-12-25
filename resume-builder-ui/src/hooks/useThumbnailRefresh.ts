@@ -243,30 +243,31 @@ export function useThumbnailRefresh({
   }, [generatingIds.size, checkThumbnailUpdates]);
 
   // Retry scheduler effect - check for pending retries
-  useEffect(() => {
-    // Check every 5 seconds if any retries are due
-    retryIntervalRef.current = setInterval(() => {
-      // Early exit if no retries pending
-      if (retryStateRef.current.size === 0) return;
+  // TEMPORARILY DISABLED to debug loading issue
+  // useEffect(() => {
+  //   // Check every 5 seconds if any retries are due
+  //   retryIntervalRef.current = setInterval(() => {
+  //     // Early exit if no retries pending
+  //     if (retryStateRef.current.size === 0) return;
 
-      const now = Date.now();
-      retryStateRef.current.forEach((state, resumeId) => {
-        if (state.nextRetryTime && now >= state.nextRetryTime) {
-          console.log(`[Thumbnail] Executing scheduled retry for ${resumeId}`);
-          // Clear nextRetryTime to prevent duplicate retries
-          retryStateRef.current.set(resumeId, { ...state, nextRetryTime: null });
-          triggerRefresh(resumeId);
-        }
-      });
-    }, 5000);
+  //     const now = Date.now();
+  //     retryStateRef.current.forEach((state, resumeId) => {
+  //       if (state.nextRetryTime && now >= state.nextRetryTime) {
+  //         console.log(`[Thumbnail] Executing scheduled retry for ${resumeId}`);
+  //         // Clear nextRetryTime to prevent duplicate retries
+  //         retryStateRef.current.set(resumeId, { ...state, nextRetryTime: null });
+  //         triggerRefresh(resumeId);
+  //       }
+  //     });
+  //   }, 5000);
 
-    return () => {
-      if (retryIntervalRef.current) {
-        clearInterval(retryIntervalRef.current);
-        retryIntervalRef.current = null;
-      }
-    };
-  }, [triggerRefresh]);
+  //   return () => {
+  //     if (retryIntervalRef.current) {
+  //       clearInterval(retryIntervalRef.current);
+  //       retryIntervalRef.current = null;
+  //     }
+  //   };
+  // }, [triggerRefresh]);
 
   // Cleanup on unmount
   useEffect(() => {
