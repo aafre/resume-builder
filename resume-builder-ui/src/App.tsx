@@ -15,6 +15,8 @@ import EnvironmentBanner from "./components/EnvironmentBanner";
 import ScrollToTop from "./components/ScrollToTop";
 import { EditorProvider, useEditorContext } from "./contexts/EditorContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 // Lazy-loaded route components
 const TemplateCarousel = lazy(() => import("./components/TemplateCarousel"));
@@ -65,6 +67,17 @@ const QuantifyResumeAccomplishments = lazy(() => import("./components/blog/Quant
 // Error pages - lazy loaded
 const NotFound = lazy(() => import("./components/NotFound"));
 const ErrorPage = lazy(() => import("./components/ErrorPage"));
+
+// Create TanStack Query client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      retry: 2,
+      refetchOnWindowFocus: true,
+    },
+  },
+});
 
 // Loading components for different contexts
 const LoadingSpinner = () => (
@@ -492,33 +505,36 @@ export default function App() {
   return (
     <Router>
       <AuthProvider>
-        <EditorProvider>
-          <AppContent />
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              duration: 4000,
-              style: {
-                background: '#363636',
-                color: '#fff',
-              },
-              success: {
-                duration: 3000,
-                iconTheme: {
-                  primary: '#10b981',
-                  secondary: '#fff',
+        <QueryClientProvider client={queryClient}>
+          <EditorProvider>
+            <AppContent />
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  background: '#363636',
+                  color: '#fff',
                 },
-              },
-              error: {
-                duration: 5000,
-                iconTheme: {
-                  primary: '#ef4444',
-                  secondary: '#fff',
+                success: {
+                  duration: 3000,
+                  iconTheme: {
+                    primary: '#10b981',
+                    secondary: '#fff',
+                  },
                 },
-              },
-            }}
-          />
-        </EditorProvider>
+                error: {
+                  duration: 5000,
+                  iconTheme: {
+                    primary: '#ef4444',
+                    secondary: '#fff',
+                  },
+                },
+              }}
+            />
+          </EditorProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
       </AuthProvider>
     </Router>
   );
