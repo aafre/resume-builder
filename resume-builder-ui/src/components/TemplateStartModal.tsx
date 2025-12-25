@@ -66,9 +66,18 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
     >
       <div
         ref={modalRef}
-        className="bg-white p-6 sm:p-8 rounded-lg max-w-3xl w-full shadow-2xl"
+        className="bg-white p-6 sm:p-8 rounded-lg max-w-3xl w-full shadow-2xl relative"
         tabIndex={-1}
       >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100"
+          aria-label="Close modal"
+        >
+          <MdClose className="text-2xl" />
+        </button>
+
         <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-gray-900">
           How would you like to start?
         </h2>
@@ -84,10 +93,17 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
             className="group relative p-5 sm:p-6 border-2 border-green-300 rounded-xl hover:border-green-500 hover:shadow-lg transition-all duration-200 text-left bg-gradient-to-br from-green-50 to-white hover:scale-[1.02]"
           >
             {/* Recommended Badge */}
-            <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-green-500 text-white text-[10px] sm:text-xs font-semibold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full flex items-center gap-0.5 sm:gap-1">
+            <div className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-green-500 text-white text-[10px] sm:text-xs font-semibold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full flex items-center gap-0.5 sm:gap-1">
               <MdCheckCircle className="text-xs" />
               Recommended
             </div>
+
+            {/* Selection Indicator */}
+            {selectedOption === 'empty' && (
+              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-green-600 text-white p-1.5 rounded-full shadow-md">
+                <MdCheckCircle className="text-xl" />
+              </div>
+            )}
 
             <div className="flex items-start gap-4">
               <div className="p-3 bg-green-100 rounded-lg group-hover:bg-green-200 transition-colors">
@@ -112,6 +128,13 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
             onClick={onSelectExample}
             className="group relative p-5 sm:p-6 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition-all duration-200 text-left hover:scale-[1.02]"
           >
+            {/* Selection Indicator */}
+            {selectedOption === 'example' && (
+              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-green-600 text-white p-1.5 rounded-full shadow-md">
+                <MdCheckCircle className="text-xl" />
+              </div>
+            )}
+
             <div className="flex items-start gap-4">
               <div className="p-3 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
                 <MdPreview className="text-3xl text-blue-600" />
