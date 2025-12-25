@@ -118,11 +118,12 @@ export default function MyResumes() {
     }
   }, [triggerRefresh]); // Only depends on triggerRefresh which is stable
 
-  // Fetch resumes on mount
+  // Fetch resumes on mount - run only once
   useEffect(() => {
     console.log('[MyResumes useEffect] Calling fetchResumes');
     fetchResumes();
-  }, [fetchResumes]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty deps = run only on mount, ignore fetchResumes changes
 
   // Cleanup preview URL on unmount
   useEffect(() => {
