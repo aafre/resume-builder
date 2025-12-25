@@ -6,6 +6,7 @@ import React, {
   lazy,
   Suspense,
 } from "react";
+import ReactDOM from "react-dom";
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { fetchTemplate, generateResume, generateThumbnail } from "../services/templates";
@@ -166,7 +167,7 @@ const Editor: React.FC = () => {
   const isAuthenticated = !!session && !isAnonymous;
 
   // Conversion nudges
-  const { hasShownDownloadToast, markDownloadToastShown } = useConversion();
+  const { hasShownDownloadToast, markDownloadToastShown, hasShownIdleNudge, markIdleNudgeShown } = useConversion();
 
   const [showStorageLimitModal, setShowStorageLimitModal] = useState(false);
   const [cloudResumeId, setCloudResumeId] = useState<string | null>(resumeIdFromUrl || null);
@@ -298,6 +299,10 @@ const Editor: React.FC = () => {
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
   const [showWelcomeTour, setShowWelcomeTour] = useState(false);
+
+  // Idle nudge state
+  const [showIdleTooltip, setShowIdleTooltip] = useState(false);
+  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Confirmation dialog state
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -543,6 +548,24 @@ const Editor: React.FC = () => {
     setShowWelcomeTour(false);
     await markTourComplete();
   };
+
+  // Idle nudge: Show tooltip after 5 minutes for anonymous users (one-time ever)
+  useEffect(() => {
+    if (isAnonymous && !hasShownIdleNudge && !authLoading) {
+      // Start 5-minute timer
+      idleTimerRef.current = setTimeout(() => {
+        setShowIdleTooltip(true);
+        markIdleNudgeShown();
+
+        // Auto-dismiss after 10 seconds
+        setTimeout(() => setShowIdleTooltip(false), 10000);
+      }, 5 * 60 * 1000); // 5 minutes
+
+      return () => {
+        if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      };
+    }
+  }, [isAnonymous, hasShownIdleNudge, authLoading, markIdleNudgeShown]);
 
   const handleUpdateSection = (index: number, updatedSection: Section) => {
     const updatedSections = [...sections];
@@ -2046,6 +2069,32 @@ const Editor: React.FC = () => {
         isOpen={showStorageLimitModal}
         onClose={() => setShowStorageLimitModal(false)}
       />
+
+      {/* Idle Nudge Tooltip - Portal to body, positioned near sign-in button */}
+      {showIdleTooltip && ReactDOM.createPortal(
+        <div className="fixed top-20 right-6 z-[70] bg-blue-600 text-white text-sm px-4 py-3 rounded-lg shadow-xl animate-bounce">
+          <div className="flex items-center gap-2">
+            <span>💡</span>
+            <span>Don't forget to save your progress permanently</span>
+            <button
+              onClick={() => setShowIdleTooltip(false)}
+              className="ml-2 hover:opacity-75 text-white"
+            >
+              ✕
+            </button>
+          </div>
+          {/* Arrow pointing down to sign-in button */}
+          <div
+            className="absolute -bottom-2 right-8 w-0 h-0"
+            style={{
+              borderLeft: '8px solid transparent',
+              borderRight: '8px solid transparent',
+              borderTop: '8px solid #2563eb'
+            }}
+          />
+        </div>,
+        document.body
+      )}
     </div>
   );
 };
