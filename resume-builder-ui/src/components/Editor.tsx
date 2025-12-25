@@ -38,6 +38,10 @@ import ResponsiveConfirmDialog from "./ResponsiveConfirmDialog";
 import DragHandle from "./DragHandle";
 import PreviewModal from "./PreviewModal";
 import { useEditorContext } from "../contexts/EditorContext";
+import ContextAwareTour from "./ContextAwareTour";
+import TabbedHelpModal from "./TabbedHelpModal";
+import AuthModal from "./AuthModal";
+import useTourPersistence from "../hooks/useTourPersistence";
 import { MdFileDownload, MdHelpOutline } from "react-icons/md";
 import {
   DndContext,
@@ -288,7 +292,6 @@ const Editor: React.FC = () => {
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
   const [showWelcomeTour, setShowWelcomeTour] = useState(false);
-  const [tourStep, setTourStep] = useState(0); // Track current tour step (0-3)
 
   // Confirmation dialog state
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -515,17 +518,25 @@ const Editor: React.FC = () => {
     loadResumeFromCloud();
   }, [resumeIdFromUrl, authLoading, session]);
 
-  // Check if user should see welcome tour
+  // Tour persistence using custom hook
+  const { shouldShowTour, markTourComplete } = useTourPersistence({
+    isAuthenticated,
+    session,
+    authLoading
+  });
+
+  const [showAuthModalFromTour, setShowAuthModalFromTour] = useState(false);
+
   useEffect(() => {
-    const hasSeenTour = localStorage.getItem("resume-builder-tour-seen");
-    if (!hasSeenTour) {
-      // Show tour after a brief delay to let page load
-      const timer = setTimeout(() => {
-        setShowWelcomeTour(true);
-      }, 1500);
-      return () => clearTimeout(timer);
+    if (shouldShowTour) {
+      setTimeout(() => setShowWelcomeTour(true), 1500);
     }
-  }, []);
+  }, [shouldShowTour]);
+
+  const handleTourComplete = async () => {
+    setShowWelcomeTour(false);
+    await markTourComplete();
+  };
 
   const handleUpdateSection = (index: number, updatedSection: Section) => {
     const updatedSections = [...sections];
@@ -1035,30 +1046,6 @@ const Editor: React.FC = () => {
 
     setShowModal(true);
     setLoadingAddSection(false);
-  };
-
-  const handleTourComplete = (dontShowAgain: boolean = false) => {
-    setShowWelcomeTour(false);
-    setTourStep(0); // Reset tour step for next time
-    if (dontShowAgain) {
-      localStorage.setItem("resume-builder-tour-seen", "true");
-    }
-  };
-
-  const handleTourNext = () => {
-    if (tourStep < 3) {
-      setTourStep(tourStep + 1);
-    }
-  };
-
-  const handleTourPrevious = () => {
-    if (tourStep > 0) {
-      setTourStep(tourStep - 1);
-    }
-  };
-
-  const handleTourSkip = () => {
-    handleTourComplete(true);
   };
 
   // Validate LinkedIn URL (without storing error state - just return boolean)
@@ -1923,303 +1910,36 @@ const Editor: React.FC = () => {
         )}
       </div>
 
-      {/* Help Modal - Improved */}
-      {showHelpModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-md w-full border border-gray-200">
-            <div className="p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                <MdHelpOutline className="text-blue-600" />
-                Save Your Work
-              </h2>
-              <p className="text-gray-700 mb-6 leading-relaxed">
-                We don't require accounts, so your resume isn't automatically
-                saved. Here's how to keep your work safe:
-              </p>
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 p-4 rounded-xl mb-6">
-                <h3 className="text-blue-800 font-semibold mb-3 flex items-center gap-2">
-                  <MdFileDownload className="text-blue-600" />
-                  💾 Two Easy Steps:
-                </h3>
-                <div className="space-y-3 text-gray-700">
-                  <div className="flex gap-3">
-                    <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
-                      1
-                    </span>
-                    <div>
-                      <strong>Save My Work:</strong> Downloads a file you can
-                      reopen later
-                    </div>
-                  </div>
-                  <div className="flex gap-3">
-                    <span className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
-                      2
-                    </span>
-                    <div>
-                      <strong>Load Previous Work:</strong> Upload that file to
-                      continue editing
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-600 text-sm mb-6">
-                Think of it like saving a document - you can pick up exactly
-                where you left off!
-              </p>
-              <button
-                onClick={toggleHelpModal}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
-              >
-                Got It, Thanks!
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Context-Aware Tour - New 5-Step Tour with Auth Branching */}
+      <ContextAwareTour
+        isOpen={showWelcomeTour}
+        onClose={handleTourComplete}
+        isAnonymous={isAnonymous}
+        isAuthenticated={isAuthenticated}
+        onSignInClick={() => setShowAuthModalFromTour(true)}
+        onTourComplete={handleTourComplete}
+      />
 
-      {/* Welcome Tour Modal - Multi-Step Carousel */}
-      {showWelcomeTour && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
-          <div className="bg-white rounded-xl shadow-xl max-w-lg w-full border border-gray-200 relative">
-            {/* Skip Button */}
-            <button
-              onClick={handleTourSkip}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors text-sm font-medium"
-            >
-              Skip Tour
-            </button>
+      {/* Auth Modal triggered from tour */}
+      <AuthModal
+        isOpen={showAuthModalFromTour}
+        onClose={() => setShowAuthModalFromTour(false)}
+        onSuccess={() => {
+          setShowAuthModalFromTour(false);
+          toast.success('Welcome! Your resume will now be saved to the cloud.');
+        }}
+      />
 
-            <div className="p-8 pt-10">
-              {/* Step 1: Auto-save & Data Privacy */}
-              {tourStep === 0 && (
-                <>
-                  <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                    Welcome to Editor
-                  </h2>
-                  <div className="space-y-6 mb-8">
-                    <div className="flex gap-4">
-                      <div className="text-green-600 text-xl">✅</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Auto-saved
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          As you make edits, your work is automatically saved every 2 seconds
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-amber-600 text-xl">⚠️</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Only on this device
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          To use it elsewhere: tap ⋮ → "Save My Work"
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-blue-600 text-xl">🛡️</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Your data stays yours
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          We don't store or send your resume anywhere. You're always in control.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* Step 2: Section Navigator */}
-              {tourStep === 1 && (
-                <>
-                  <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                    Navigate with Ease
-                  </h2>
-                  <div className="space-y-6 mb-8">
-                    <div className="flex gap-4">
-                      <div className="text-blue-600 text-xl">📱</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Mobile: Bottom Navigation
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Tap the navigation button to access sections, save/load, and actions
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-purple-600 text-xl">💻</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Desktop: Right Sidebar
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Collapsible sidebar with section navigation - press Ctrl+\ to toggle
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-indigo-600 text-xl">🎯</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Quick Jump
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Click any section name to instantly scroll to it
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* Step 3: Rich Text Formatting */}
-              {tourStep === 2 && (
-                <>
-                  <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                    Format Like a Pro
-                  </h2>
-                  <div className="space-y-6 mb-8">
-                    <div className="flex gap-4">
-                      <div className="text-indigo-600 text-xl">✨</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Bubble Menu
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Select any text to see formatting options: bold, italic, underline, and links
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-rose-600 text-xl">🔗</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Add Hyperlinks
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Link to your portfolio, GitHub, LinkedIn, or any online resource
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-emerald-600 text-xl">🎨</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Professional Styling
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          All formatting is preserved in your final PDF resume
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* Step 4: Preview & Download */}
-              {tourStep === 3 && (
-                <>
-                  <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                    Preview & Export
-                  </h2>
-                  <div className="space-y-6 mb-8">
-                    <div className="flex gap-4">
-                      <div className="text-blue-600 text-xl">👁️</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Live Preview
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Click "Preview PDF" to see exactly how your resume will look
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-green-600 text-xl">📥</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Download Resume
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Generate and download your professional PDF resume anytime
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-amber-600 text-xl">💾</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Save Your Work
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Export as YAML to save your progress or switch devices
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* Step Indicators */}
-              <div className="flex justify-center gap-2 mb-6">
-                {[0, 1, 2, 3].map((step) => (
-                  <button
-                    key={step}
-                    onClick={() => setTourStep(step)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      tourStep === step
-                        ? "bg-blue-600 w-8"
-                        : "bg-gray-300 hover:bg-gray-400"
-                    }`}
-                    aria-label={`Go to step ${step + 1}`}
-                  />
-                ))}
-              </div>
-
-              {/* Navigation Buttons */}
-              <div className="flex gap-3">
-                {tourStep > 0 && (
-                  <button
-                    onClick={handleTourPrevious}
-                    className="flex-1 border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 transition-colors"
-                  >
-                    Previous
-                  </button>
-                )}
-                {tourStep < 3 ? (
-                  <button
-                    onClick={handleTourNext}
-                    className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                  >
-                    Next
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => handleTourComplete(true)}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-medium hover:from-blue-500 hover:to-indigo-500 transition-colors"
-                  >
-                    Get Started
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Tabbed Help Modal - Replaces old help modal */}
+      <TabbedHelpModal
+        isOpen={showHelpModal}
+        onClose={() => setShowHelpModal(false)}
+        isAnonymous={isAnonymous}
+        onSignInClick={() => {
+          setShowHelpModal(false);
+          setShowAuthModal(true);
+        }}
+      />
 
       {showModal && (
         <SectionTypeModal
