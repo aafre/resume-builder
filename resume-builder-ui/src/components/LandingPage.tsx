@@ -20,10 +20,9 @@ import {
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { isAuthenticated, isAnonymous, session } = useAuth();
-  const [checking, setChecking] = useState(true);
+  const { isAuthenticated, isAnonymous } = useAuth();
 
-  // Smart redirect logic for returning users
+  // Handle legacy URL redirects only
   useEffect(() => {
     // Handle legacy URL redirects (old bookmark format)
     const resumeIdFromUrl = searchParams.get("resumeId");
@@ -36,54 +35,13 @@ const LandingPage: React.FC = () => {
     }
 
     if (templateId) {
-      // Old bookmark: /?template=modern → This now should go through template selection
-      // But we'll redirect to templates page for user to select
+      // Old bookmark: /?template=modern → redirect to templates page
       navigate(`/templates`, { replace: true });
       return;
     }
 
-    // Smart redirect for authenticated users
-    async function handleSmartRedirect() {
-      if (isAuthenticated && !isAnonymous && session) {
-        try {
-          setChecking(true);
-          // Check if user has resumes
-          const response = await fetch('/api/resumes?limit=1', {
-            headers: {
-              'Authorization': `Bearer ${session.access_token}`
-            }
-          });
-
-          if (!response.ok) {
-            // If auth fails, stay on landing page
-            setChecking(false);
-            return;
-          }
-
-          const data = await response.json();
-          const totalCount = data.total_count || 0;
-
-          if (totalCount > 0) {
-            // Returning user with resumes → redirect to dashboard
-            navigate('/my-resumes', { replace: true });
-            return; // Don't set checking to false, we're navigating away
-          }
-
-          setChecking(false);
-          // else: Authenticated user with no resumes → stay on landing page
-        } catch (error) {
-          console.error('Failed to check resumes:', error);
-          setChecking(false);
-          // On error, stay on landing page
-        }
-      } else {
-        setChecking(false);
-      }
-      // Anonymous users → stay on landing page
-    }
-
-    handleSmartRedirect();
-  }, [isAuthenticated, isAnonymous, session, navigate, searchParams]);
+    // No auto-redirect for authenticated users - let them see landing page
+  }, [searchParams, navigate]);
 
   // Calculate growing user count starting above 50k
   const calculateUsersServed = (): number => {
@@ -170,15 +128,6 @@ const LandingPage: React.FC = () => {
   const handleFAQToggle = (index: number) => {
     setOpenFAQIndex(openFAQIndex === index ? null : index);
   };
-
-  // Show minimal loading during check
-  if (checking) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
 
   return (
     <>
