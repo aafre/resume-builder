@@ -11,6 +11,7 @@ import { toast } from 'react-hot-toast';
 import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
 
 export default function MyResumes() {
+  console.log('[MyResumes] Render');
   const navigate = useNavigate();
   const [resumes, setResumes] = useState<ResumeListItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,6 +61,7 @@ export default function MyResumes() {
   }, [previewUrl]);
 
   const fetchResumes = async () => {
+    console.log('[MyResumes] fetchResumes called');
     try {
       setLoading(true);
       setError(null);
@@ -115,6 +117,7 @@ export default function MyResumes() {
       setError(err instanceof Error ? err.message : 'Failed to load resumes');
       toast.error('Failed to load resumes');
     } finally {
+      console.log('[MyResumes] Setting loading to false');
       setLoading(false);
     }
   };
