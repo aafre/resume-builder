@@ -89,8 +89,12 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
           {/* Option A: Empty Structure (Recommended) */}
           <button
-            onClick={onSelectEmpty}
-            className="group relative p-5 sm:p-6 border-2 border-green-300 rounded-xl hover:border-green-500 hover:shadow-lg transition-all duration-200 text-left bg-gradient-to-br from-green-50 to-white hover:scale-[1.02]"
+            onClick={() => setSelectedOption('empty')}
+            className={`group relative p-5 sm:p-6 border-2 rounded-xl transition-all duration-200 text-left bg-gradient-to-br from-green-50 to-white ${
+              selectedOption === 'empty'
+                ? 'border-green-400 shadow-[0_0_20px_rgba(34,197,94,0.3)] scale-[1.02]'
+                : 'border-green-300 hover:border-green-500 hover:shadow-lg hover:scale-[1.02]'
+            }`}
           >
             {/* Recommended Badge */}
             <div className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-green-500 text-white text-[10px] sm:text-xs font-semibold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full flex items-center gap-0.5 sm:gap-1">
@@ -125,8 +129,12 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
 
           {/* Option B: Example Data */}
           <button
-            onClick={onSelectExample}
-            className="group relative p-5 sm:p-6 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition-all duration-200 text-left hover:scale-[1.02]"
+            onClick={() => setSelectedOption('example')}
+            className={`group relative p-5 sm:p-6 border-2 rounded-xl transition-all duration-200 text-left bg-white ${
+              selectedOption === 'example'
+                ? 'border-blue-400 shadow-lg scale-[1.02]'
+                : 'border-gray-200 hover:border-blue-400 hover:shadow-lg hover:scale-[1.02]'
+            }`}
           >
             {/* Selection Indicator */}
             {selectedOption === 'example' && (
