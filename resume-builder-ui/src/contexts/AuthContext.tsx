@@ -354,27 +354,45 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const signOut = async () => {
-    if (!supabase) return;
+    if (!supabase || signingOut) return; // Prevent double-clicks
 
-    // Sign out current user
-    await supabase.auth.signOut();
+    try {
+      setSigningOut(true);
 
-    // Reset toast flag so user sees welcome message on next sign-in
-    sessionStorage.removeItem('login-toast-shown');
+      // Sign out current user
+      const { error: signOutError } = await supabase.auth.signOut();
 
-    // Clear stored anonymous user ID (migration already happened)
-    localStorage.removeItem('anonymous-user-id');
+      if (signOutError) {
+        console.error('Sign out error:', signOutError);
+        toast.error('Failed to sign out');
+        return;
+      }
 
-    // Reset migration attempted flag for next sign-in
-    migrationAttempted.current = false;
+      // Reset toast flag and migration state
+      sessionStorage.removeItem('login-toast-shown');
+      localStorage.removeItem('anonymous-user-id');
+      migrationAttempted.current = false;
 
-    // Immediately create new anonymous session
-    const { error } = await supabase.auth.signInAnonymously();
+      // Show success toast BEFORE creating anonymous session
+      toast.success('Signed out successfully');
 
-    if (error) {
-      console.error('Error creating new anonymous session:', error);
-    } else {
-      console.log('New anonymous session created after sign-out');
+      // Small delay to let state settle before creating anonymous session
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      // Create new anonymous session
+      const { error: anonError } = await supabase.auth.signInAnonymously();
+
+      if (anonError) {
+        console.error('Error creating new anonymous session:', anonError);
+        toast.error('Failed to create new session. Please refresh the page.');
+      } else {
+        console.log('New anonymous session created after sign-out');
+      }
+    } catch (error) {
+      console.error('Unexpected error during sign out:', error);
+      toast.error('Sign out failed. Please try again.');
+    } finally {
+      setSigningOut(false);
     }
   };
 
