@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { MdDescription, MdPerson, MdCheckCircle } from "react-icons/md";
+import { MdEditNote, MdPreview, MdCheckCircle, MdClose } from "react-icons/md";
 
 interface TemplateStartModalProps {
   isOpen: boolean;
@@ -91,7 +91,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
 
             <div className="flex items-start gap-4">
               <div className="p-3 bg-green-100 rounded-lg group-hover:bg-green-200 transition-colors">
-                <MdDescription className="text-3xl text-green-600" />
+                <MdEditNote className="text-3xl text-green-600" />
               </div>
               <div className="flex-1">
                 <h3 className="font-bold text-lg sm:text-xl mb-2 text-gray-900">
@@ -114,7 +114,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
           >
             <div className="flex items-start gap-4">
               <div className="p-3 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
-                <MdPerson className="text-3xl text-blue-600" />
+                <MdPreview className="text-3xl text-blue-600" />
               </div>
               <div className="flex-1">
                 <h3 className="font-bold text-lg sm:text-xl mb-2 text-gray-900">
