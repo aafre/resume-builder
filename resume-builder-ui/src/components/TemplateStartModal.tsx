@@ -114,7 +114,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
               </div>
             )}
 
-            <div className="flex items-start gap-4">
+            <div className="flex items-start gap-4 mt-6 sm:mt-7">
               <div className="p-3 bg-green-100 rounded-lg group-hover:bg-green-200 transition-colors">
                 <MdEditNote className="text-3xl text-green-600" />
               </div>
