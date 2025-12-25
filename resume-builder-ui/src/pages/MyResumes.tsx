@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ResumeListItem } from '../types';
 import { ResumeCard } from '../components/ResumeCard';
@@ -28,19 +28,22 @@ export default function MyResumes() {
   const [previewError, setPreviewError] = useState<string | null>(null);
   const [isGeneratingPreview, setIsGeneratingPreview] = useState(false);
 
+  // Memoize callback to prevent unnecessary re-renders in useThumbnailRefresh
+  const onThumbnailUpdated = useCallback((resumeId: string, pdf_generated_at: string, thumbnail_url: string) => {
+    // Update specific resume in state when thumbnail completes
+    setResumes(prev => prev.map(r =>
+      r.id === resumeId
+        ? { ...r, pdf_generated_at, thumbnail_url }
+        : r
+    ));
+  }, []);
+
   // Thumbnail refresh hook - manages auto-triggering and silent retries
   const {
     generatingIds,
     triggerRefresh
   } = useThumbnailRefresh({
-    onThumbnailUpdated: (resumeId, pdf_generated_at, thumbnail_url) => {
-      // Update specific resume in state when thumbnail completes
-      setResumes(prev => prev.map(r =>
-        r.id === resumeId
-          ? { ...r, pdf_generated_at, thumbnail_url }
-          : r
-      ));
-    }
+    onThumbnailUpdated
   });
 
   useEffect(() => {
