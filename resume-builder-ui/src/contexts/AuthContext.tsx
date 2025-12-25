@@ -7,6 +7,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  signingOut: boolean;
   isAuthenticated: boolean;
   isAnonymous: boolean;
   signInWithGoogle: () => Promise<void>;
@@ -36,6 +37,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [signingOut, setSigningOut] = useState(false);
   const [hasMigrated, setHasMigrated] = useState(false);
   const migrationAttempted = useRef(false);
 
@@ -384,6 +386,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     user,
     session,
     loading,
+    signingOut,
     isAuthenticated,
     isAnonymous,
     signInWithGoogle,
