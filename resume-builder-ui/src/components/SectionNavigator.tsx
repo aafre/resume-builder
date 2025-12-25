@@ -172,15 +172,8 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
     onCollapseChange?.(newState);
   };
 
-  // Handle Start Fresh with safety confirmation for authenticated users
+  // Handle Start Fresh - confirmation dialog is handled by parent (Editor.tsx)
   const handleStartFresh = () => {
-    if (isAuthenticated) {
-      const confirmed = window.confirm(
-        "Are you sure you want to clear all your current work? This cannot be undone.\n\n" +
-        "Your previously saved resumes in 'My Resumes' will not be affected."
-      );
-      if (!confirmed) return;
-    }
     onStartFresh();
   };
 
