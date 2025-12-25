@@ -2037,8 +2037,8 @@ const Editor: React.FC = () => {
         isOpen={showStartFreshConfirm}
         onClose={() => setShowStartFreshConfirm(false)}
         onConfirm={confirmStartFresh}
-        title="Clear Template?"
-        message="Are you sure you want to clear all content and start fresh? This will remove all your work and reset the template to empty. This action cannot be undone."
+        title="Clear All Content?"
+        message="Are you sure you want to clear all content and start fresh?\n\nThis will permanently delete all your current work and reset the template to empty. This action cannot be undone.\n\nIf you want to keep this resume and create a new one, please download or save it first before starting fresh."
         confirmText="Clear All"
         cancelText="Cancel"
         isDestructive={true}
