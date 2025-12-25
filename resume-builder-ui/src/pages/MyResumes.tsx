@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ResumeListItem } from '../types';
 import { ResumeCard } from '../components/ResumeCard';
@@ -10,11 +10,7 @@ import { supabase } from '../lib/supabase';
 import { toast } from 'react-hot-toast';
 import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
 
-let renderCount = 0;
-
 export default function MyResumes() {
-  renderCount++;
-  console.log('[MyResumes] Component render #' + renderCount);
   const navigate = useNavigate();
   const [resumes, setResumes] = useState<ResumeListItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,43 +47,34 @@ export default function MyResumes() {
   });
 
   const fetchResumes = useCallback(async () => {
-    console.log('[fetchResumes] START');
     try {
-      console.log('[fetchResumes] Setting loading=true');
       setLoading(true);
       setError(null);
 
       if (!supabase) {
-        console.log('[fetchResumes] No supabase');
         setError('Supabase not configured');
         return;
       }
 
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        console.log('[fetchResumes] No session');
         setError('Not authenticated');
         return;
       }
 
-      console.log('[fetchResumes] About to fetch from API');
       const response = await fetch('/api/resumes?limit=50', {
         headers: {
           'Authorization': `Bearer ${session.access_token}`
         }
       });
 
-      console.log('[fetchResumes] Response received, status:', response.status);
       const result = await response.json();
-      console.log('[fetchResumes] JSON parsed, resumes:', result.resumes?.length);
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to fetch resumes');
       }
 
-      console.log('[fetchResumes] Setting resumes state');
       setResumes(result.resumes || []);
-      console.log('[fetchResumes] Resumes state set');
 
       // Auto-trigger thumbnail generation for stale resumes
       const staleResumes = (result.resumes || []).filter(resume => {
@@ -100,30 +87,25 @@ export default function MyResumes() {
         return updatedAt > pdfGeneratedAt;
       });
 
-      console.log('[fetchResumes] Stale resumes:', staleResumes.length);
       // Trigger all stale resumes in parallel
       staleResumes.forEach(resume => {
-        console.log('[fetchResumes] Triggering refresh for:', resume.id);
         triggerRefresh(resume.id);
       });
-      console.log('[fetchResumes] All triggers initiated');
 
     } catch (err) {
-      console.error('[fetchResumes] ERROR:', err);
+      console.error('Error fetching resumes:', err);
       setError(err instanceof Error ? err.message : 'Failed to load resumes');
       toast.error('Failed to load resumes');
     } finally {
-      console.log('[fetchResumes] FINALLY - setting loading=false');
       setLoading(false);
     }
-  }, [triggerRefresh]); // Only depends on triggerRefresh which is stable
+  }, [triggerRefresh]);
 
-  // Fetch resumes on mount - run only once
+  // Fetch resumes on mount - run only once to avoid infinite loop
   useEffect(() => {
-    console.log('[MyResumes useEffect] Calling fetchResumes');
     fetchResumes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty deps = run only on mount, ignore fetchResumes changes
+  }, []); // Empty deps = run only on mount
 
   // Cleanup preview URL on unmount
   useEffect(() => {

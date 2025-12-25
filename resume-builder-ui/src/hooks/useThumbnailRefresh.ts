@@ -23,7 +23,6 @@ interface RetryState {
 export function useThumbnailRefresh({
   onThumbnailUpdated
 }: UseThumbnailRefreshOptions): UseThumbnailRefreshReturn {
-  console.log('[useThumbnailRefresh] Hook render');
   const [generatingIds, setGeneratingIds] = useState<Set<string>>(new Set());
 
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -61,7 +60,6 @@ export function useThumbnailRefresh({
   });
 
   const triggerRefresh = useCallback(async (resumeId: string) => {
-    console.log('[triggerRefresh] Called for:', resumeId);
     // Check if already generating using state setter pattern
     let shouldProceed = false;
     setGeneratingIds(prev => {
