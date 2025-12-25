@@ -240,6 +240,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             sessionStorage.setItem('login-toast-shown', 'true');
           }
 
+          // Refresh user metadata to ensure avatar_url is populated from OAuth provider
+          try {
+            const { data: { user: refreshedUser }, error } = await supabase!.auth.getUser();
+            if (!error && refreshedUser) {
+              setUser(refreshedUser);
+              console.log('User metadata refreshed after OAuth sign-in');
+            }
+          } catch (error) {
+            console.error('Failed to refresh user metadata:', error);
+            // Non-critical error - continue with existing metadata
+          }
+
           // Migrate anonymous user's cloud resumes to authenticated account
           const oldAnonUserId = localStorage.getItem('anonymous-user-id');
 
