@@ -261,6 +261,26 @@ export function useThumbnailRefresh({
     };
   }, [triggerRefresh]);
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      // Clear all intervals
+      if (pollIntervalRef.current) {
+        clearInterval(pollIntervalRef.current);
+        pollIntervalRef.current = null;
+      }
+      if (retryIntervalRef.current) {
+        clearInterval(retryIntervalRef.current);
+        retryIntervalRef.current = null;
+      }
+
+      // Clear all refs
+      startTimesRef.current.clear();
+      resumeTimestampsRef.current.clear();
+      retryStateRef.current.clear();
+    };
+  }, []);
+
   return {
     generatingIds,
     triggerRefresh
