@@ -17,6 +17,7 @@ interface UseCloudSaveOptions {
   resumeData: ResumeData;
   icons: IconRegistry;
   enabled: boolean; // Only save if user is authenticated
+  session: any | null; // Session from AuthContext
 }
 
 interface UseCloudSaveReturn {
@@ -32,7 +33,8 @@ export function useCloudSave({
   resumeId,
   resumeData,
   icons,
-  enabled
+  enabled,
+  session
 }: UseCloudSaveOptions): UseCloudSaveReturn {
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('saved');
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
@@ -65,12 +67,7 @@ export function useCloudSave({
     try {
       setSaveStatus('saving');
 
-      // Get auth session
-      if (!supabase) {
-        throw new Error('Supabase not configured');
-      }
-
-      const { data: { session } } = await supabase.auth.getSession();
+      // Use session from AuthContext instead of calling getSession()
       if (!session) {
         throw new Error('No active session');
       }
@@ -203,7 +200,7 @@ export function useCloudSave({
 
       return null;
     }
-  }, [enabled, currentResumeId, resumeData, icons]);
+  }, [enabled, currentResumeId, resumeData, icons, session]);
 
   // Manual save function (bypasses debounce)
   const saveNow = useCallback(async (): Promise<string | null> => {
