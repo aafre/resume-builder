@@ -294,24 +294,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
 
         // STEP 2: Create fresh anonymous session (fallback)
-        console.log('Creating fresh anonymous session...');
+        // Only if listener didn't already handle initialization
+        if (!listenerHandledInitRef.current && !sessionRef.current) {
+          console.log('Creating fresh anonymous session...');
 
-        // Use non-blocking pattern (like signOut fix) - don't await
-        // Let auth state listener handle the session update
-        supabase!.auth.signInAnonymously().then(({ data, error }) => {
-          if (error) {
-            console.error('❌ Anonymous sign-in error:', error);
+          // Use non-blocking pattern (like signOut fix) - don't await
+          // Let auth state listener handle the session update
+          supabase!.auth.signInAnonymously().then(({ data, error }) => {
+            if (error) {
+              console.error('❌ Anonymous sign-in error:', error);
+              toast.error('Failed to create session. Please refresh the page.');
+            } else if (data.session && data.user) {
+              console.log('✅ Anonymous session created:', data.user.id);
+            }
+          }).catch((error) => {
+            console.error('❌ Anonymous sign-in failed:', error);
             toast.error('Failed to create session. Please refresh the page.');
-          } else if (data.session && data.user) {
-            console.log('✅ Anonymous session created:', data.user.id);
-          }
-        }).catch((error) => {
-          console.error('❌ Anonymous sign-in failed:', error);
-          toast.error('Failed to create session. Please refresh the page.');
-        });
+          });
 
-        // Small delay to let anonymous sign-in start processing
-        await new Promise(resolve => setTimeout(resolve, 300));
+          // Small delay to let anonymous sign-in start processing
+          await new Promise(resolve => setTimeout(resolve, 300));
+        } else {
+          console.log('Skipping anonymous session creation - listener already handled init');
+        }
 
       } catch (error) {
         // Catch-all for unexpected errors
