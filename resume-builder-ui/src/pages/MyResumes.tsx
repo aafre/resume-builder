@@ -7,6 +7,7 @@ import { GhostCard } from '../components/GhostCard';
 import { DeleteResumeModal } from '../components/DeleteResumeModal';
 import { DuplicateResumeModal } from '../components/DuplicateResumeModal';
 import PreviewModal from '../components/PreviewModal';
+import SignInRequiredGate from '../components/SignInRequiredGate';
 import { supabase } from '../lib/supabase';
 import { toast } from 'react-hot-toast';
 import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
@@ -16,7 +17,7 @@ import { useAuth } from '../contexts/AuthContext';
 export default function MyResumes() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { session, loading: authLoading } = useAuth();
+  const { session, loading: authLoading, isAnonymous } = useAuth();
   const { data: resumes = [], isLoading, isError, error, refetch } = useResumes();
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -345,6 +346,11 @@ export default function MyResumes() {
         </div>
       </div>
     );
+  }
+
+  // Show gate for anonymous users
+  if (!authLoading && isAnonymous) {
+    return <SignInRequiredGate />;
   }
 
   if (isError) {
