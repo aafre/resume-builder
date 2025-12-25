@@ -46,19 +46,6 @@ export default function MyResumes() {
     onThumbnailUpdated
   });
 
-  useEffect(() => {
-    fetchResumes();
-  }, [fetchResumes]);
-
-  // Cleanup preview URL on unmount
-  useEffect(() => {
-    return () => {
-      if (previewUrl) {
-        window.URL.revokeObjectURL(previewUrl);
-      }
-    };
-  }, [previewUrl]);
-
   const fetchResumes = useCallback(async () => {
     try {
       setLoading(true);
@@ -113,6 +100,20 @@ export default function MyResumes() {
       setLoading(false);
     }
   }, [triggerRefresh]); // Only depends on triggerRefresh which is stable
+
+  // Fetch resumes on mount
+  useEffect(() => {
+    fetchResumes();
+  }, [fetchResumes]);
+
+  // Cleanup preview URL on unmount
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        window.URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   const handleEdit = (id: string) => {
     navigate(`/editor/${id}`);
