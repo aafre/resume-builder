@@ -83,6 +83,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Track initialization state in a ref to prevent duplicate init in React Strict Mode
   const isInitializingRef = useRef(false);
 
+  // Track if listener has already handled initialization (to avoid waiting for timeout)
+  const listenerHandledInitRef = useRef(false);
+
   // Update ref whenever session changes
   useEffect(() => {
     sessionRef.current = session;
