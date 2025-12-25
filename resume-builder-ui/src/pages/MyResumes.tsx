@@ -47,19 +47,17 @@ export default function MyResumes() {
   });
 
   const fetchResumes = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
+    setLoading(true);
+    setError(null);
 
+    try {
       if (!supabase) {
-        setError('Supabase not configured');
-        return;
+        throw new Error('Supabase not configured');
       }
 
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        setError('Not authenticated');
-        return;
+        throw new Error('Not authenticated');
       }
 
       const response = await fetch('/api/resumes?limit=50', {
@@ -95,9 +93,14 @@ export default function MyResumes() {
     } catch (err) {
       console.error('Error fetching resumes:', err);
       setError(err instanceof Error ? err.message : 'Failed to load resumes');
-      toast.error('Failed to load resumes');
+      // Don't show toast for auth/config errors - they're expected during initialization
+      if (err instanceof Error &&
+          err.message !== 'Not authenticated' &&
+          err.message !== 'Supabase not configured') {
+        toast.error('Failed to load resumes');
+      }
     } finally {
-      setLoading(false);
+      setLoading(false);  // Always reached now - no early returns!
     }
   }, [triggerRefresh]);
 
