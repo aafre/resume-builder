@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { ResumeListItem } from '../types';
 import { ResumeCard } from '../components/ResumeCard';
 import { GhostCard } from '../components/GhostCard';
@@ -9,12 +10,15 @@ import PreviewModal from '../components/PreviewModal';
 import { supabase } from '../lib/supabase';
 import { toast } from 'react-hot-toast';
 import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
+import { useResumes } from '../hooks/useResumes';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function MyResumes() {
   const navigate = useNavigate();
-  const [resumes, setResumes] = useState<ResumeListItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const { session, loading: authLoading } = useAuth();
+  const { data: resumes = [], isLoading, isError, error, refetch } = useResumes();
+
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [resumeToDelete, setResumeToDelete] = useState<ResumeListItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -30,13 +34,16 @@ export default function MyResumes() {
 
   // Memoize callback to prevent unnecessary re-renders in useThumbnailRefresh
   const onThumbnailUpdated = useCallback((resumeId: string, pdf_generated_at: string, thumbnail_url: string) => {
-    // Update specific resume in state when thumbnail completes
-    setResumes(prev => prev.map(r =>
-      r.id === resumeId
-        ? { ...r, pdf_generated_at, thumbnail_url }
-        : r
-    ));
-  }, []);
+    // Update cache optimistically when thumbnail completes
+    queryClient.setQueryData<ResumeListItem[]>(
+      ['resumes', session?.user?.id],
+      (old) => old?.map(r =>
+        r.id === resumeId
+          ? { ...r, pdf_generated_at, thumbnail_url }
+          : r
+      ) || []
+    );
+  }, [queryClient, session?.user?.id]);
 
   // Thumbnail refresh hook - manages auto-triggering and silent retries
   const {
@@ -46,69 +53,25 @@ export default function MyResumes() {
     onThumbnailUpdated
   });
 
-  const fetchResumes = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      if (!supabase) {
-        throw new Error('Supabase not configured');
-      }
-
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('Not authenticated');
-      }
-
-      const response = await fetch('/api/resumes?limit=50', {
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`
-        }
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to fetch resumes');
-      }
-
-      setResumes(result.resumes || []);
-
-      // Auto-trigger thumbnail generation for stale resumes
-      const staleResumes = (result.resumes || []).filter(resume => {
-        // Never had thumbnail
-        if (!resume.pdf_generated_at) return true;
-
-        // Updated after last thumbnail generation
-        const updatedAt = new Date(resume.updated_at);
-        const pdfGeneratedAt = new Date(resume.pdf_generated_at);
-        return updatedAt > pdfGeneratedAt;
-      });
-
-      // Trigger all stale resumes in parallel
-      staleResumes.forEach(resume => {
-        triggerRefresh(resume.id);
-      });
-
-    } catch (err) {
-      console.error('Error fetching resumes:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load resumes');
-      // Don't show toast for auth/config errors - they're expected during initialization
-      if (err instanceof Error &&
-          err.message !== 'Not authenticated' &&
-          err.message !== 'Supabase not configured') {
-        toast.error('Failed to load resumes');
-      }
-    } finally {
-      setLoading(false);  // Always reached now - no early returns!
-    }
-  }, [triggerRefresh]);
-
-  // Fetch resumes on mount - run only once to avoid infinite loop
+  // Auto-trigger thumbnail generation for stale resumes when data loads
   useEffect(() => {
-    fetchResumes();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty deps = run only on mount
+    if (!resumes.length) return;
+
+    const staleResumes = resumes.filter(resume => {
+      // Never had thumbnail
+      if (!resume.pdf_generated_at) return true;
+
+      // Updated after last thumbnail generation
+      const updatedAt = new Date(resume.updated_at);
+      const pdfGeneratedAt = new Date(resume.pdf_generated_at);
+      return updatedAt > pdfGeneratedAt;
+    });
+
+    // Trigger all stale resumes in parallel
+    staleResumes.forEach(resume => {
+      triggerRefresh(resume.id);
+    });
+  }, [resumes, triggerRefresh]);
 
   // Cleanup preview URL on unmount
   useEffect(() => {
@@ -160,7 +123,7 @@ export default function MyResumes() {
       }
 
       toast.success('Resume deleted successfully');
-      setResumes(resumes.filter(r => r.id !== resumeToDelete.id));
+      refetch(); // Refetch to update the list
       setDeleteModalOpen(false);
       setResumeToDelete(null);
     } catch (err) {
@@ -214,7 +177,7 @@ export default function MyResumes() {
       }
 
       toast.success('Resume duplicated successfully');
-      fetchResumes(); // Refresh list
+      refetch(); // Refetch to update the list
       setDuplicateModalOpen(false);
       setResumeToDuplicate(null);
     } catch (err) {
@@ -251,10 +214,13 @@ export default function MyResumes() {
         throw new Error(result.error || 'Failed to rename resume');
       }
 
-      // Optimistic update
-      setResumes(resumes.map(r =>
-        r.id === id ? { ...r, title: newTitle } : r
-      ));
+      // Optimistic update in query cache
+      queryClient.setQueryData<ResumeListItem[]>(
+        ['resumes', session?.user?.id],
+        (old) => old?.map(r =>
+          r.id === id ? { ...r, title: newTitle } : r
+        ) || []
+      );
 
       toast.success('Resume renamed');
     } catch (err) {
@@ -402,18 +368,20 @@ export default function MyResumes() {
     navigate('/templates');
   };
 
-  if (loading) {
+  if (authLoading || isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your resumes...</p>
+          <p className="text-gray-600">
+            {authLoading ? 'Initializing...' : 'Loading your resumes...'}
+          </p>
         </div>
       </div>
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center max-w-md">
@@ -421,9 +389,9 @@ export default function MyResumes() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Resumes</h2>
-          <p className="text-gray-600 mb-4">{error}</p>
+          <p className="text-gray-600 mb-4">{error?.message || 'Failed to load resumes'}</p>
           <button
-            onClick={fetchResumes}
+            onClick={() => refetch()}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
             Try Again
