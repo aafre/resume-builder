@@ -77,6 +77,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [hasMigrated, setHasMigrated] = useState(false);
   const migrationAttempted = useRef(false);
 
+  // Track current session in a ref for access in async callbacks
+  const sessionRef = useRef<Session | null>(null);
+
+  // Track initialization state in a ref to prevent duplicate init in React Strict Mode
+  const isInitializingRef = useRef(false);
+
+  // Update ref whenever session changes
+  useEffect(() => {
+    sessionRef.current = session;
+  }, [session]);
+
   // Helper function to check if there's unsaved work in localStorage
   const checkForUnsavedWork = () => {
     try {
@@ -219,13 +230,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return;
     }
 
-    let isInitializing = false;
-
     // Initialize auth state
     const initializeAuth = async () => {
       // Prevent duplicate initialization (React Strict Mode in dev)
-      if (isInitializing) return;
-      isInitializing = true;
+      if (isInitializingRef.current) {
+        console.log('Auth already initializing, skipping duplicate call');
+        return;
+      }
+      isInitializingRef.current = true;
 
       const AUTH_TIMEOUT_MS = 10000; // 10 seconds
       let sessionRecovered = false;
@@ -254,6 +266,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         } catch (sessionError) {
           // Session recovery failed (timeout, network error, or corrupted data)
           console.error('⚠️ Session recovery failed:', sessionError);
+
+          // IMPORTANT: Check if session was restored by auth listener during the timeout
+          // This prevents clearing valid sessions that were restored while we were waiting
+          if (sessionRef.current) {
+            console.log('✅ Session was restored by auth listener, skipping cleanup');
+            sessionRecovered = true;
+            return;
+          }
 
           const wasTimeout = sessionError instanceof Error && sessionError.message.includes('timed out');
 
@@ -299,7 +319,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } finally {
         // Always stop loading state, even if session creation is in flight
         setLoading(false);
-        isInitializing = false;
+        isInitializingRef.current = false;
         console.log('Auth initialization complete (UI ready, session may still be loading)');
       }
     };
