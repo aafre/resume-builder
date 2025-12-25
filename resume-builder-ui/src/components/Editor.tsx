@@ -2050,9 +2050,9 @@ const Editor: React.FC = () => {
         isOpen={showStartFreshConfirm}
         onClose={() => setShowStartFreshConfirm(false)}
         onConfirm={confirmStartFresh}
-        title="Clear All Content?"
-        message="Are you sure you want to clear all content and start fresh?\n\nThis will permanently delete all your current work and reset the template to empty. This action cannot be undone.\n\nIf you want to keep this resume and create a new one, please download or save it first before starting fresh."
-        confirmText="Clear All"
+        title="Start Fresh?"
+        message="Starting fresh will permanently delete all your current work. This action cannot be undone. If you want to keep this resume, download or save it first."
+        confirmText="Start Fresh"
         cancelText="Cancel"
         isDestructive={true}
         isLoading={loadingSave}
@@ -2066,10 +2066,10 @@ const Editor: React.FC = () => {
           setPendingImportFile(null);
         }}
         onConfirm={confirmImportYAML}
-        title="Import Resume File?"
-        message="Are you sure you want to import this resume file?\n\nThis will replace all your current work with the content from the imported file. Your current resume will be permanently lost.\n\nIf you want to keep your current resume, please download or save it first before importing."
-        confirmText="Import File"
-        cancelText="Cancel"
+        title="Confirm Import?"
+        message="Importing this will override your existing content."
+        confirmText="Confirm Import"
+        cancelText="Cancel Import"
         isDestructive={true}
         isLoading={loadingLoad}
       />
