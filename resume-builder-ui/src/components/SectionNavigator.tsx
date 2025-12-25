@@ -317,7 +317,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
 
       {/* Sections Navigation - Scrollable */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-        <div className={`${isCollapsed ? "py-3 px-1.5" : "p-3"}`}>
+        <div className={`${isCollapsed ? "py-3 px-1.5" : "p-3"}`} id="tour-section-navigator">
           {!isCollapsed && (
             <h2 className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">
               Sections
@@ -416,6 +416,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           {/* Primary Action: Preview PDF */}
           {onPreviewResume && (
             <button
+              id="tour-preview-button"
               onClick={onPreviewResume}
               disabled={isGeneratingPreview}
               className={`w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-blue-500 hover:to-indigo-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative ${
@@ -445,6 +446,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
 
           {/* Primary Action: Download Resume */}
           <button
+            id="tour-download-button"
             onClick={onDownloadResume}
             disabled={isGenerating}
             className={`w-full flex items-center justify-center bg-gradient-to-r from-emerald-600 to-green-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-emerald-500 hover:to-green-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${
@@ -484,6 +486,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           <div className={`${isCollapsed ? "space-y-0.5 mt-2" : "space-y-0.5"}`}>
             {/* Save My Work */}
             <button
+              id="tour-backup-button"
               onClick={onExportYAML}
               disabled={loadingSave}
               className={`w-full flex items-center transition-all rounded-md disabled:opacity-50 ${
