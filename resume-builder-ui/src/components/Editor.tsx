@@ -1974,6 +1974,26 @@ const Editor: React.FC = () => {
         }}
       />
 
+      {/* Auth Modal triggered from download and other actions */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={() => {
+          setShowAuthModal(false);
+          toast.success('Welcome! Your resume will now be saved to the cloud.');
+        }}
+      />
+
+      {/* Download Celebration Modal - shown after first download for anonymous users */}
+      <DownloadCelebrationModal
+        isOpen={showDownloadCelebration}
+        onClose={() => setShowDownloadCelebration(false)}
+        onSignUp={() => {
+          setShowDownloadCelebration(false);
+          setShowAuthModal(true);
+        }}
+      />
+
       {/* Tabbed Help Modal - Replaces old help modal */}
       <TabbedHelpModal
         isOpen={showHelpModal}
