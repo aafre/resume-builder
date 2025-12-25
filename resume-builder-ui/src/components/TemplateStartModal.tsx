@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MdDescription, MdPerson, MdCheckCircle } from "react-icons/md";
 
 interface TemplateStartModalProps {
@@ -16,11 +16,45 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
   onSelectExample,
   templateName,
 }) => {
+  const [selectedOption, setSelectedOption] = useState<'empty' | 'example' | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Reset selection when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setSelectedOption(null);
+    }
+  }, [isOpen]);
+
+  // Auto-focus modal on open
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      modalRef.current.focus();
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
+
+  const handleContinue = () => {
+    if (selectedOption === 'empty') {
+      onSelectEmpty();
+    } else if (selectedOption === 'example') {
+      onSelectExample();
+    }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape") {
       onClose();
+    } else if (e.key === "Enter" && selectedOption) {
+      handleContinue();
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      // Toggle between options with arrow keys
+      setSelectedOption(current => {
+        if (current === 'empty') return 'example';
+        if (current === 'example') return 'empty';
+        return 'empty'; // Default to first option
+      });
     }
   };
 
@@ -30,7 +64,11 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
       onKeyDown={handleKeyDown}
       tabIndex={-1}
     >
-      <div className="bg-white p-6 sm:p-8 rounded-lg max-w-3xl w-full shadow-2xl">
+      <div
+        ref={modalRef}
+        className="bg-white p-6 sm:p-8 rounded-lg max-w-3xl w-full shadow-2xl"
+        tabIndex={-1}
+      >
         <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-gray-900">
           How would you like to start?
         </h2>
