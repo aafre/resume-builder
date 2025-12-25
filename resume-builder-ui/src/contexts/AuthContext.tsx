@@ -336,6 +336,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setSession(session);
         setUser(session?.user ?? null);
 
+        // If we're still initializing and listener got a valid session,
+        // immediately unblock the UI - don't wait for getSession() timeout
+        if (isInitializingRef.current && session) {
+          console.log('🚀 Listener restored session during init, unblocking UI immediately');
+          listenerHandledInitRef.current = true;
+          setLoading(false);
+        }
+
         // Store anonymous user_id for migration later
         if (session?.user?.is_anonymous) {
           localStorage.setItem('anonymous-user-id', session.user.id);
