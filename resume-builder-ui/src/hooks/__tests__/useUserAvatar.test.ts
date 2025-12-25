@@ -121,7 +121,7 @@ describe('useUserAvatar', () => {
 
     it('should reset hasError when user changes', () => {
       const user1 = createMockUser('https://example.com/avatar1.jpg');
-      const user2 = createMockUser('https://example.com/avatar2.jpg');
+      const user2 = { ...createMockUser('https://example.com/avatar2.jpg'), id: 'different-user-id' };
 
       const { result, rerender } = renderHook(
         ({ user }) => useUserAvatar(user),
@@ -216,7 +216,7 @@ describe('useUserAvatar', () => {
 
     it('should reset retry count when user changes', () => {
       const user1 = createMockUser('https://example.com/avatar1.jpg');
-      const user2 = createMockUser('https://example.com/avatar2.jpg');
+      const user2 = { ...createMockUser('https://example.com/avatar2.jpg'), id: 'different-user-id' };
 
       const { result, rerender } = renderHook(
         ({ user }) => useUserAvatar(user),
