@@ -77,21 +77,27 @@ export default function MyResumes() {
         return;
       }
 
+      console.log('[MyResumes] About to fetch API');
       const response = await fetch('/api/resumes?limit=50', {
         headers: {
           'Authorization': `Bearer ${session.access_token}`
         }
       });
 
+      console.log('[MyResumes] API response received:', response.ok);
       const result = await response.json();
+      console.log('[MyResumes] JSON parsed, resumes count:', result.resumes?.length);
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to fetch resumes');
       }
 
+      console.log('[MyResumes] Setting resumes state');
       setResumes(result.resumes || []);
+      console.log('[MyResumes] Resumes state set');
 
       // Auto-trigger thumbnail generation for stale resumes
+      console.log('[MyResumes] Checking for stale resumes');
       const staleResumes = (result.resumes || []).filter(resume => {
         // Skip if already generating
         if (generatingIds.has(resume.id)) {
@@ -107,10 +113,13 @@ export default function MyResumes() {
         return updatedAt > pdfGeneratedAt;
       });
 
+      console.log('[MyResumes] Stale resumes found:', staleResumes.length);
       // Trigger all stale resumes in parallel
       staleResumes.forEach(resume => {
+        console.log('[MyResumes] Triggering refresh for:', resume.id);
         triggerRefresh(resume.id);
       });
+      console.log('[MyResumes] All triggerRefresh calls initiated');
 
     } catch (err) {
       console.error('Error fetching resumes:', err);
