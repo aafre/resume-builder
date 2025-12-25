@@ -61,6 +61,9 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="template-start-title"
       onKeyDown={handleKeyDown}
       tabIndex={-1}
     >
@@ -78,7 +81,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
           <MdClose className="text-2xl" />
         </button>
 
-        <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-gray-900">
+        <h2 id="template-start-title" className="text-2xl sm:text-3xl font-bold mb-2 text-gray-900">
           How would you like to start?
         </h2>
         <p className="text-sm sm:text-base text-gray-600 mb-6">
@@ -95,6 +98,8 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                 ? 'border-green-400 shadow-[0_0_20px_rgba(34,197,94,0.3)] scale-[1.02]'
                 : 'border-green-300 hover:border-green-500 hover:shadow-lg hover:scale-[1.02]'
             }`}
+            aria-pressed={selectedOption === 'empty'}
+            aria-label="Start from scratch with empty structure"
           >
             {/* Recommended Badge */}
             <div className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-green-500 text-white text-[10px] sm:text-xs font-semibold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full flex items-center gap-0.5 sm:gap-1">
@@ -132,6 +137,8 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                 ? 'border-blue-400 shadow-lg scale-[1.02]'
                 : 'border-gray-200 hover:border-blue-400 hover:shadow-lg hover:scale-[1.02]'
             }`}
+            aria-pressed={selectedOption === 'example'}
+            aria-label="Use example content to see template preview"
           >
             {/* Selection Indicator */}
             {selectedOption === 'example' && (
