@@ -1889,6 +1889,8 @@ const Editor: React.FC = () => {
           saveStatus={saveStatus}
           lastSaved={cloudLastSaved}
           isAnonymous={isAnonymous}
+          isAuthenticated={isAuthenticated}
+          onSignInClick={() => setShowAuthModal(true)}
         />
 
         {/* Hidden file input for both mobile and desktop */}
