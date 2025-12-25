@@ -30,6 +30,12 @@ export function useThumbnailRefresh({
   const startTimesRef = useRef<Map<string, number>>(new Map());
   const resumeTimestampsRef = useRef<Map<string, string>>(new Map());
   const retryStateRef = useRef<Map<string, RetryState>>(new Map());
+  const onThumbnailUpdatedRef = useRef(onThumbnailUpdated);
+
+  // Update callback ref on every render to avoid stale closures
+  useEffect(() => {
+    onThumbnailUpdatedRef.current = onThumbnailUpdated;
+  });
 
   const scheduleRetry = useCallback((resumeId: string) => {
     const retryState = retryStateRef.current.get(resumeId) || { count: 0, nextRetryTime: null };
@@ -53,14 +59,19 @@ export function useThumbnailRefresh({
   }, []);
 
   const triggerRefresh = useCallback(async (resumeId: string) => {
-    // Check if already generating
-    if (generatingIds.has(resumeId)) {
-      console.log(`[Thumbnail] Already generating for ${resumeId}, skipping`);
-      return;
-    }
+    // Check if already generating using state setter pattern
+    let shouldProceed = false;
+    setGeneratingIds(prev => {
+      if (prev.has(resumeId)) {
+        console.log(`[Thumbnail] Already generating for ${resumeId}, skipping`);
+        return prev;
+      }
+      shouldProceed = true;
+      return new Set(prev).add(resumeId);
+    });
 
-    // Add to generating set
-    setGeneratingIds(prev => new Set(prev).add(resumeId));
+    if (!shouldProceed) return;
+
     startTimesRef.current.set(resumeId, Date.now());
 
     try {
@@ -103,7 +114,7 @@ export function useThumbnailRefresh({
       startTimesRef.current.delete(resumeId);
       scheduleRetry(resumeId);
     }
-  }, [generatingIds, scheduleRetry]);
+  }, [scheduleRetry]);
 
   const checkThumbnailUpdates = useCallback(async () => {
     if (generatingIds.size === 0) return;
@@ -183,7 +194,7 @@ export function useThumbnailRefresh({
           retryStateRef.current.delete(resumeId);
 
           if (pdf_generated_at && thumbnail_url) {
-            onThumbnailUpdated?.(resumeId, pdf_generated_at, thumbnail_url);
+            onThumbnailUpdatedRef.current?.(resumeId, pdf_generated_at, thumbnail_url);
           }
         } else if (timedOut || error) {
           // Timeout/error - schedule retry instead of failing
@@ -198,7 +209,7 @@ export function useThumbnailRefresh({
         }
       }
     });
-  }, [generatingIds, onThumbnailUpdated, scheduleRetry]);
+  }, [generatingIds, scheduleRetry]);
 
   // Polling effect
   useEffect(() => {
@@ -224,10 +235,13 @@ export function useThumbnailRefresh({
     };
   }, [generatingIds.size, checkThumbnailUpdates]);
 
-  // Retry scheduler effect
+  // Retry scheduler effect - check for pending retries
   useEffect(() => {
     // Check every 5 seconds if any retries are due
     retryIntervalRef.current = setInterval(() => {
+      // Early exit if no retries pending
+      if (retryStateRef.current.size === 0) return;
+
       const now = Date.now();
       retryStateRef.current.forEach((state, resumeId) => {
         if (state.nextRetryTime && now >= state.nextRetryTime) {
@@ -242,6 +256,7 @@ export function useThumbnailRefresh({
     return () => {
       if (retryIntervalRef.current) {
         clearInterval(retryIntervalRef.current);
+        retryIntervalRef.current = null;
       }
     };
   }, [triggerRefresh]);
