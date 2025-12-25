@@ -95,19 +95,10 @@ export default function MyResumes() {
   };
 
   const confirmDelete = async () => {
-    if (!resumeToDelete) return;
+    if (!resumeToDelete || !session) return;
 
     try {
       setIsDeleting(true);
-
-      if (!supabase) {
-        throw new Error('Supabase not configured');
-      }
-
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('Not authenticated');
-      }
 
       const response = await fetch(`/api/resumes/${resumeToDelete.id}`, {
         method: 'DELETE',
@@ -143,19 +134,10 @@ export default function MyResumes() {
   };
 
   const confirmDuplicate = async (newTitle: string) => {
-    if (!resumeToDuplicate) return;
+    if (!resumeToDuplicate || !session) return;
 
     try {
       setIsDuplicating(true);
-
-      if (!supabase) {
-        throw new Error('Supabase not configured');
-      }
-
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('Not authenticated');
-      }
 
       const response = await fetch(`/api/resumes/${resumeToDuplicate.id}/duplicate`, {
         method: 'POST',
@@ -189,16 +171,9 @@ export default function MyResumes() {
   };
 
   const handleRename = async (id: string, newTitle: string) => {
+    if (!session) return;
+
     try {
-      if (!supabase) {
-        throw new Error('Supabase not configured');
-      }
-
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('Not authenticated');
-      }
-
       const response = await fetch(`/api/resumes/${id}`, {
         method: 'PATCH',
         headers: {
@@ -231,17 +206,10 @@ export default function MyResumes() {
   };
 
   const handleDownload = async (id: string) => {
+    if (!session) return;
+
     try {
       setDownloadingId(id);
-
-      if (!supabase) {
-        throw new Error('Supabase not configured');
-      }
-
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('Not authenticated');
-      }
 
       const response = await fetch(`/api/resumes/${id}/pdf`, {
         method: 'POST',
@@ -288,20 +256,13 @@ export default function MyResumes() {
   };
 
   const handlePreview = async (id: string) => {
+    if (!session) return;
+
     try {
       setPreviewResumeId(id);
       setIsGeneratingPreview(true);
       setPreviewError(null);
       setShowPreviewModal(true); // Open modal immediately to show loading
-
-      if (!supabase) {
-        throw new Error('Supabase not configured');
-      }
-
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('Not authenticated');
-      }
 
       const response = await fetch(`/api/resumes/${id}/pdf`, {
         method: 'POST',
