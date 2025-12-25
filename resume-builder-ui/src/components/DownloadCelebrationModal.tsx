@@ -71,8 +71,8 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
       }
     };
 
-    modal.addEventListener("keydown", handleTab as any);
-    return () => modal.removeEventListener("keydown", handleTab as any);
+    modal.addEventListener("keydown", handleTab);
+    return () => modal.removeEventListener("keydown", handleTab);
   }, [isOpen]);
 
   if (!isOpen) return null;
