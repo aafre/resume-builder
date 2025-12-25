@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { MdLogout, MdFolder, MdExpandMore } from 'react-icons/md';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { MdLogout, MdFolder, MdExpandMore, MdViewModule } from 'react-icons/md';
 import { useUserAvatar } from '../hooks/useUserAvatar';
 import { useQueryClient } from '@tanstack/react-query';
 
 const UserMenu: React.FC = () => {
   const { user, signOut, isAnonymous, signingOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -84,6 +85,36 @@ const UserMenu: React.FC = () => {
       {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute right-0 mt-3 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl shadow-purple-500/10 border border-white/50 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+          {/* Navigation Links - Mobile Only */}
+          {!isAnonymous && (
+            <div className="lg:hidden border-b border-gray-100/50 pb-2">
+              <Link
+                to="/my-resumes"
+                onClick={() => setIsOpen(false)}
+                className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg mx-2 my-1 transition-all duration-200 ${
+                  location.pathname === '/my-resumes'
+                    ? 'bg-purple-50 text-purple-700 font-semibold'
+                    : 'text-gray-700 hover:bg-purple-50/50'
+                }`}
+              >
+                <MdFolder size={18} className={location.pathname === '/my-resumes' ? 'text-purple-600' : 'text-gray-500'} />
+                <span>My Resumes</span>
+              </Link>
+              <Link
+                to="/templates"
+                onClick={() => setIsOpen(false)}
+                className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg mx-2 my-1 transition-all duration-200 ${
+                  location.pathname === '/templates'
+                    ? 'bg-purple-50 text-purple-700 font-semibold'
+                    : 'text-gray-700 hover:bg-purple-50/50'
+                }`}
+              >
+                <MdViewModule size={18} className={location.pathname === '/templates' ? 'text-purple-600' : 'text-gray-500'} />
+                <span>Templates</span>
+              </Link>
+            </div>
+          )}
+
           <div className="px-4 py-3 border-b border-gray-100/50">
             <p className="text-sm font-semibold text-gray-900">{displayName}</p>
             {!isAnonymous && user.email && (
