@@ -82,6 +82,7 @@ export default function Header() {
             <nav className="hidden lg:flex items-center gap-2 absolute left-1/2 transform -translate-x-1/2">
               <Link
                 to="/my-resumes"
+                id="tour-my-resumes-link"
                 className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
                   location.pathname === '/my-resumes'
                     ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white shadow-md'
@@ -138,6 +139,7 @@ export default function Header() {
                   <UserMenu />
                 ) : (
                   <button
+                    id="tour-sign-in-button"
                     onClick={() => setShowAuthModal(true)}
                     className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-purple-500/20 hover:scale-[1.02] transition-all duration-300 shadow-md"
                   >
