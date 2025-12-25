@@ -204,11 +204,11 @@ describe('UserMenu', () => {
   });
 
   describe('Error Handling', () => {
-    it('should show fallback when hasError is true', () => {
-      const { useUserAvatar } = require('../hooks/useUserAvatar');
+    it('should show fallback when hasError is true', async () => {
+      const { useUserAvatar: mockUseUserAvatar } = await import('../hooks/useUserAvatar');
 
       // Mock the hook to return hasError: true
-      useUserAvatar.mockReturnValueOnce({
+      vi.mocked(mockUseUserAvatar).mockReturnValueOnce({
         avatarUrl: 'https://example.com/avatar.jpg?t=123-0',
         hasError: true,
         handleError: vi.fn(),
