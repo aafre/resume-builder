@@ -33,11 +33,11 @@ export function useThumbnailRefresh({
   const retryStateRef = useRef<Map<string, RetryState>>(new Map());
   const onThumbnailUpdatedRef = useRef(onThumbnailUpdated);
 
-  // Update callback ref on every render to avoid stale closures
+  // Update callback ref when it changes
   useEffect(() => {
     console.log('[useThumbnailRefresh] Updating onThumbnailUpdated ref');
     onThumbnailUpdatedRef.current = onThumbnailUpdated;
-  });
+  }, [onThumbnailUpdated]);
 
   const scheduleRetry = useCallback((resumeId: string) => {
     const retryState = retryStateRef.current.get(resumeId) || { count: 0, nextRetryTime: null };
