@@ -312,7 +312,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.log('Auth state changed:', event, session?.user?.id);
         setSession(session);
         setUser(session?.user ?? null);
-        setLoading(false);
 
         // Store anonymous user_id for migration later
         if (session?.user?.is_anonymous) {
