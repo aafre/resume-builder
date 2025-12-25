@@ -117,8 +117,6 @@ export function useThumbnailRefresh({
   }, [scheduleRetry]);
 
   const checkThumbnailUpdates = useCallback(async () => {
-    if (generatingIds.size === 0) return;
-
     const now = Date.now();
 
     if (!supabase) {
@@ -132,7 +130,16 @@ export function useThumbnailRefresh({
       return;
     }
 
-    const checks = Array.from(generatingIds).map(async (resumeId) => {
+    // Get current generating IDs directly from state without dependency
+    let currentGeneratingIds: string[] = [];
+    setGeneratingIds(prev => {
+      currentGeneratingIds = Array.from(prev);
+      return prev;
+    });
+
+    if (currentGeneratingIds.length === 0) return;
+
+    const checks = currentGeneratingIds.map(async (resumeId) => {
       // Check timeout
       const startTime = startTimesRef.current.get(resumeId);
       if (startTime && (now - startTime) > GENERATION_TIMEOUT) {
@@ -209,7 +216,7 @@ export function useThumbnailRefresh({
         }
       }
     });
-  }, [generatingIds, scheduleRetry]);
+  }, [scheduleRetry]);
 
   // Polling effect
   useEffect(() => {
