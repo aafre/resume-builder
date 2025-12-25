@@ -23,6 +23,7 @@ interface RetryState {
 export function useThumbnailRefresh({
   onThumbnailUpdated
 }: UseThumbnailRefreshOptions): UseThumbnailRefreshReturn {
+  console.log('[useThumbnailRefresh] Hook called');
   const [generatingIds, setGeneratingIds] = useState<Set<string>>(new Set());
 
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -34,6 +35,7 @@ export function useThumbnailRefresh({
 
   // Update callback ref on every render to avoid stale closures
   useEffect(() => {
+    console.log('[useThumbnailRefresh] Updating onThumbnailUpdated ref');
     onThumbnailUpdatedRef.current = onThumbnailUpdated;
   });
 
@@ -117,6 +119,7 @@ export function useThumbnailRefresh({
   }, [scheduleRetry]);
 
   const checkThumbnailUpdates = useCallback(async () => {
+    console.log('[useThumbnailRefresh] checkThumbnailUpdates called');
     const now = Date.now();
 
     if (!supabase) {
@@ -220,7 +223,9 @@ export function useThumbnailRefresh({
 
   // Polling effect
   useEffect(() => {
+    console.log('[useThumbnailRefresh] Polling effect running, generatingIds.size:', generatingIds.size);
     if (generatingIds.size === 0) {
+      console.log('[useThumbnailRefresh] No generating IDs, clearing interval');
       if (pollIntervalRef.current) {
         clearInterval(pollIntervalRef.current);
         pollIntervalRef.current = null;
@@ -229,12 +234,14 @@ export function useThumbnailRefresh({
     }
 
     if (!pollIntervalRef.current) {
+      console.log('[useThumbnailRefresh] Starting polling interval');
       pollIntervalRef.current = setInterval(() => {
         checkThumbnailUpdates();
       }, POLL_INTERVAL);
     }
 
     return () => {
+      console.log('[useThumbnailRefresh] Cleaning up polling interval');
       if (pollIntervalRef.current) {
         clearInterval(pollIntervalRef.current);
         pollIntervalRef.current = null;
