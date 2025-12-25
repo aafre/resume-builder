@@ -8,81 +8,116 @@ interface UseThumbnailRefreshOptions {
 
 interface UseThumbnailRefreshReturn {
   generatingIds: Set<string>;
-  failedIds: Set<string>;
   triggerRefresh: (resumeId: string) => Promise<void>;
-  retryFailed: (resumeId: string) => Promise<void>;
 }
 
 const POLL_INTERVAL = 2000; // 2 seconds
 const GENERATION_TIMEOUT = 60000; // 60 seconds
+const RETRY_DELAYS = [30000, 120000, 600000]; // 30s, 2min, 10min
+
+interface RetryState {
+  count: number;
+  nextRetryTime: number | null;
+}
 
 export function useThumbnailRefresh({
   onThumbnailUpdated
 }: UseThumbnailRefreshOptions): UseThumbnailRefreshReturn {
   const [generatingIds, setGeneratingIds] = useState<Set<string>>(new Set());
-  const [failedIds, setFailedIds] = useState<Set<string>>(new Set());
 
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const retryIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const startTimesRef = useRef<Map<string, number>>(new Map());
   const resumeTimestampsRef = useRef<Map<string, string>>(new Map());
+  const retryStateRef = useRef<Map<string, RetryState>>(new Map());
 
-  const triggerRefresh = useCallback(async (resumeId: string) => {
-    // Add to generating set
-    setGeneratingIds(prev => new Set(prev).add(resumeId));
+  const scheduleRetry = useCallback((resumeId: string) => {
+    const retryState = retryStateRef.current.get(resumeId) || { count: 0, nextRetryTime: null };
 
-    // Remove from failed set if retrying
-    setFailedIds(prev => {
-      const next = new Set(prev);
-      next.delete(resumeId);
-      return next;
+    // Max 3 retry attempts per session
+    if (retryState.count >= 3) {
+      console.log(`[Thumbnail] Max retries reached for ${resumeId}, giving up silently`);
+      retryStateRef.current.delete(resumeId);
+      return;
+    }
+
+    const delay = RETRY_DELAYS[retryState.count] || RETRY_DELAYS[RETRY_DELAYS.length - 1];
+    const nextRetryTime = Date.now() + delay;
+
+    retryStateRef.current.set(resumeId, {
+      count: retryState.count + 1,
+      nextRetryTime
     });
 
-    // Record start time for timeout tracking
+    console.log(`[Thumbnail] Scheduling retry ${retryState.count + 1}/3 for ${resumeId} in ${delay / 1000}s`);
+  }, []);
+
+  const triggerRefresh = useCallback(async (resumeId: string) => {
+    // Check if already generating
+    if (generatingIds.has(resumeId)) {
+      console.log(`[Thumbnail] Already generating for ${resumeId}, skipping`);
+      return;
+    }
+
+    // Add to generating set
+    setGeneratingIds(prev => new Set(prev).add(resumeId));
     startTimesRef.current.set(resumeId, Date.now());
 
     try {
-      // Call the thumbnail generation endpoint
       const result = await generateThumbnail(resumeId);
 
       if (result.success && result.pdf_generated_at) {
-        // Store initial timestamp for polling comparison
+        // Store timestamp for polling comparison
         resumeTimestampsRef.current.set(resumeId, result.pdf_generated_at);
+        // Clear retry state on success
+        retryStateRef.current.delete(resumeId);
+      } else if (result.retryable) {
+        // Backend says error is retryable - schedule retry
+        console.log(`[Thumbnail] Generation retryable for ${resumeId}, scheduling retry`);
+        setGeneratingIds(prev => {
+          const next = new Set(prev);
+          next.delete(resumeId);
+          return next;
+        });
+        startTimesRef.current.delete(resumeId);
+        scheduleRetry(resumeId);
       } else {
-        throw new Error(result.error || 'Thumbnail generation failed');
+        // Permanent error - give up silently
+        console.error(`[Thumbnail] Permanent error for ${resumeId}:`, result.error);
+        setGeneratingIds(prev => {
+          const next = new Set(prev);
+          next.delete(resumeId);
+          return next;
+        });
+        startTimesRef.current.delete(resumeId);
+        retryStateRef.current.delete(resumeId);
       }
     } catch (error) {
-      console.error(`Failed to trigger thumbnail for ${resumeId}:`, error);
-
-      // Remove from generating, add to failed
+      console.error(`[Thumbnail] Failed to trigger for ${resumeId}:`, error);
+      // Network error - schedule retry
       setGeneratingIds(prev => {
         const next = new Set(prev);
         next.delete(resumeId);
         return next;
       });
-      setFailedIds(prev => new Set(prev).add(resumeId));
       startTimesRef.current.delete(resumeId);
+      scheduleRetry(resumeId);
     }
-  }, []);
-
-  const retryFailed = useCallback(async (resumeId: string) => {
-    // Same as triggerRefresh but specifically for failed resumes
-    await triggerRefresh(resumeId);
-  }, [triggerRefresh]);
+  }, [generatingIds, scheduleRetry]);
 
   const checkThumbnailUpdates = useCallback(async () => {
     if (generatingIds.size === 0) return;
 
     const now = Date.now();
 
-    // Get auth session for polling requests
     if (!supabase) {
-      console.error('Supabase not configured - cannot poll for thumbnail updates');
+      console.error('[Thumbnail] Supabase not configured - cannot poll for updates');
       return;
     }
 
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
-      console.error('No active session - cannot poll for thumbnail updates');
+      console.error('[Thumbnail] No active session - cannot poll for updates');
       return;
     }
 
@@ -90,11 +125,11 @@ export function useThumbnailRefresh({
       // Check timeout
       const startTime = startTimesRef.current.get(resumeId);
       if (startTime && (now - startTime) > GENERATION_TIMEOUT) {
+        console.log(`[Thumbnail] Generation timeout for ${resumeId}, scheduling retry`);
         return { resumeId, timedOut: true };
       }
 
       try {
-        // Fetch resume to check if thumbnail updated (with auth)
         const response = await fetch(`/api/resumes/${resumeId}`, {
           headers: {
             'Authorization': `Bearer ${session.access_token}`
@@ -124,7 +159,7 @@ export function useThumbnailRefresh({
 
         return { resumeId };
       } catch (error) {
-        console.error(`Polling error for ${resumeId}:`, error);
+        console.error(`[Thumbnail] Polling error for ${resumeId}:`, error);
         return { resumeId, error: true };
       }
     });
@@ -136,7 +171,8 @@ export function useThumbnailRefresh({
         const { resumeId, updated, timedOut, error, pdf_generated_at, thumbnail_url } = result.value;
 
         if (updated) {
-          // Success - remove from generating, notify parent
+          // Success - remove from generating
+          console.log(`[Thumbnail] Successfully updated ${resumeId}`);
           setGeneratingIds(prev => {
             const next = new Set(prev);
             next.delete(resumeId);
@@ -144,29 +180,29 @@ export function useThumbnailRefresh({
           });
           startTimesRef.current.delete(resumeId);
           resumeTimestampsRef.current.delete(resumeId);
+          retryStateRef.current.delete(resumeId);
 
           if (pdf_generated_at && thumbnail_url) {
             onThumbnailUpdated?.(resumeId, pdf_generated_at, thumbnail_url);
           }
         } else if (timedOut || error) {
-          // Failure - mark as failed
+          // Timeout/error - schedule retry instead of failing
           setGeneratingIds(prev => {
             const next = new Set(prev);
             next.delete(resumeId);
             return next;
           });
-          setFailedIds(prev => new Set(prev).add(resumeId));
           startTimesRef.current.delete(resumeId);
           resumeTimestampsRef.current.delete(resumeId);
+          scheduleRetry(resumeId);
         }
       }
     });
-  }, [generatingIds, onThumbnailUpdated]);
+  }, [generatingIds, onThumbnailUpdated, scheduleRetry]);
 
   // Polling effect
   useEffect(() => {
     if (generatingIds.size === 0) {
-      // No resumes generating, clear interval
       if (pollIntervalRef.current) {
         clearInterval(pollIntervalRef.current);
         pollIntervalRef.current = null;
@@ -174,14 +210,12 @@ export function useThumbnailRefresh({
       return;
     }
 
-    // Start polling if not already active
     if (!pollIntervalRef.current) {
       pollIntervalRef.current = setInterval(() => {
         checkThumbnailUpdates();
       }, POLL_INTERVAL);
     }
 
-    // Cleanup on unmount
     return () => {
       if (pollIntervalRef.current) {
         clearInterval(pollIntervalRef.current);
@@ -190,10 +224,30 @@ export function useThumbnailRefresh({
     };
   }, [generatingIds.size, checkThumbnailUpdates]);
 
+  // Retry scheduler effect
+  useEffect(() => {
+    // Check every 5 seconds if any retries are due
+    retryIntervalRef.current = setInterval(() => {
+      const now = Date.now();
+      retryStateRef.current.forEach((state, resumeId) => {
+        if (state.nextRetryTime && now >= state.nextRetryTime) {
+          console.log(`[Thumbnail] Executing scheduled retry for ${resumeId}`);
+          // Clear nextRetryTime to prevent duplicate retries
+          retryStateRef.current.set(resumeId, { ...state, nextRetryTime: null });
+          triggerRefresh(resumeId);
+        }
+      });
+    }, 5000);
+
+    return () => {
+      if (retryIntervalRef.current) {
+        clearInterval(retryIntervalRef.current);
+      }
+    };
+  }, [triggerRefresh]);
+
   return {
     generatingIds,
-    failedIds,
-    triggerRefresh,
-    retryFailed
+    triggerRefresh
   };
 }

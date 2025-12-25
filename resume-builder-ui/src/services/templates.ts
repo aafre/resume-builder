@@ -126,22 +126,24 @@ export async function generatePreviewPdf(formData: FormData): Promise<Blob> {
  * Returns structured response with success status and thumbnail data.
  *
  * @param {string} resumeId - The ID of the resume to generate a thumbnail for.
- * @returns {Promise<{success: boolean, thumbnail_url?: string, pdf_generated_at?: string, error?: string}>}
+ * @returns {Promise<{success: boolean, thumbnail_url?: string | null, pdf_generated_at?: string | null, error?: string, retryable?: boolean, error_type?: string}>}
  */
 export async function generateThumbnail(resumeId: string): Promise<{
   success: boolean;
-  thumbnail_url?: string;
-  pdf_generated_at?: string;
+  thumbnail_url?: string | null;
+  pdf_generated_at?: string | null;
   error?: string;
+  retryable?: boolean;
+  error_type?: string;
 }> {
   try {
     if (!supabase) {
-      return { success: false, error: 'Supabase not configured' };
+      return { success: false, error: 'Supabase not configured', retryable: false };
     }
 
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
-      return { success: false, error: 'Not authenticated' };
+      return { success: false, error: 'Not authenticated', retryable: false };
     }
 
     const response = await fetch(`${API_BASE_URL}/resumes/${resumeId}/thumbnail`, {
@@ -153,24 +155,28 @@ export async function generateThumbnail(resumeId: string): Promise<{
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: "Unknown error" }));
+      const errorData = await response.json().catch(() => ({ error: "Unknown error", retryable: false }));
       return {
         success: false,
-        error: errorData.error || `HTTP ${response.status}`
+        error: errorData.error || `HTTP ${response.status}`,
+        retryable: errorData.retryable || false
       };
     }
 
     const result = await response.json();
     return {
-      success: true,
+      success: result.success !== false, // Backend may return success:true with null thumbnail
       thumbnail_url: result.thumbnail_url,
-      pdf_generated_at: result.pdf_generated_at
+      pdf_generated_at: result.pdf_generated_at,
+      retryable: result.retryable || false,
+      error_type: result.error_type
     };
   } catch (error) {
     console.error(`Thumbnail generation error for resume ${resumeId}:`, error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Unknown error"
+      error: error instanceof Error ? error.message : "Unknown error",
+      retryable: true  // Network errors are retryable
     };
   }
 }
