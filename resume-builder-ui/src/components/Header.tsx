@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useEditorContext } from "../contexts/EditorContext";
 import { useAuth } from "../contexts/AuthContext";
 import AutoSaveIndicator from "./AutoSaveIndicator";
+import AnonymousWarningBadge from "./AnonymousWarningBadge";
 import UserMenu from "./UserMenu";
 import AuthModal from "./AuthModal";
 import logo from "/android-chrome-192x192.png";
@@ -10,7 +11,7 @@ import logo from "/android-chrome-192x192.png";
 export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { isAuthenticated, isAnonymous, loading: authLoading } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   // Safely get editor context (might not be available)
@@ -121,14 +122,19 @@ export default function Header() {
           {/* Right Side Content */}
           <div className="flex items-center gap-3 sm:gap-4">
 
-            {/* Auto-Save Indicator (only on editor page) */}
+            {/* Auto-Save Indicator (authenticated) or Warning Badge (anonymous) - only on editor page */}
             {isEditorPage && editorContext && (
               <div className="flex items-center">
-                <AutoSaveIndicator
-                  lastSaved={editorContext.lastSaved}
-                  isSaving={editorContext.isSaving}
-                  hasError={editorContext.saveError}
-                />
+                {isAuthenticated && (
+                  <AutoSaveIndicator
+                    lastSaved={editorContext.lastSaved}
+                    isSaving={editorContext.isSaving}
+                    hasError={editorContext.saveError}
+                  />
+                )}
+                {isAnonymous && (
+                  <AnonymousWarningBadge onSignInClick={() => setShowAuthModal(true)} />
+                )}
               </div>
             )}
 
