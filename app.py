@@ -2591,24 +2591,25 @@ def generate_pdf_for_saved_resume(resume_id):
             template_id = resume.get('template_id', 'modern')
             uses_icons = template_id == "modern-with-icons"
 
+            # Always copy base contact icons that are hardcoded in templates
+            # These are required for all modern template variants (with and without content icons)
+            base_contact_icons = [
+                "location.png", "email.png", "phone.png", "linkedin.png",
+                "github.png", "twitter.png", "website.png", "pinterest.png",
+                "medium.png", "youtube.png", "stackoverflow.png", "behance.png", "dribbble.png"
+            ]
+
+            for icon_name in base_contact_icons:
+                default_icon_path = ICONS_DIR / icon_name
+                if default_icon_path.exists():
+                    session_icon_path = session_icons_dir / icon_name
+                    shutil.copy2(default_icon_path, session_icon_path)
+                    logging.debug(f"Copied base contact icon: {icon_name}")
+                else:
+                    logging.warning(f"Base contact icon not found: {icon_name}")
+
+            # Extract content icons (from Experience, Education, Certifications, etc.) only for icon-supporting templates
             if uses_icons:
-                # Always copy base contact icons that are hardcoded in templates
-                base_contact_icons = [
-                    "location.png", "email.png", "phone.png", "linkedin.png",
-                    "github.png", "twitter.png", "website.png", "pinterest.png",
-                    "medium.png", "youtube.png", "stackoverflow.png", "behance.png", "dribbble.png"
-                ]
-
-                for icon_name in base_contact_icons:
-                    default_icon_path = ICONS_DIR / icon_name
-                    if default_icon_path.exists():
-                        session_icon_path = session_icons_dir / icon_name
-                        shutil.copy2(default_icon_path, session_icon_path)
-                        logging.debug(f"Copied base contact icon: {icon_name}")
-                    else:
-                        logging.warning(f"Base contact icon not found: {icon_name}")
-
-                # Extract content icons (from Experience, Education, Certifications, etc.)
                 referenced_icons = extract_icons_from_yaml(yaml_data)
                 logging.debug(f"Found {len(referenced_icons)} referenced icons in resume data")
 
