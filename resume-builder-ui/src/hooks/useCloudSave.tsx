@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { ContactInfo, Section, SaveStatus } from '../types';
-import { supabase } from '../lib/supabase';
+import { apiClient, ApiError } from '../lib/api-client';
 
 interface ResumeData {
   contact_info: ContactInfo;
@@ -158,25 +158,9 @@ export function useCloudSave({
         return null;
       }
 
-      // Save to backend
-      const response = await fetch('/api/resumes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify(payload)
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        // Check for specific error codes
-        if (result.error_code === 'RESUME_LIMIT_REACHED') {
-          throw new Error('RESUME_LIMIT_REACHED');
-        }
-        throw new Error(result.error || 'Failed to save resume');
-      }
+      // Save to backend using centralized API client
+      // (handles auth automatically, 401/403 interceptor, and error handling)
+      const result = await apiClient.post('/api/resumes', payload);
 
       // Update resume ID if this was a new resume
       if (!currentResumeId && result.resume_id) {
@@ -194,10 +178,12 @@ export function useCloudSave({
       setSaveStatus('error');
 
       // Re-throw RESUME_LIMIT_REACHED errors for handling in UI
-      if (error instanceof Error && error.message === 'RESUME_LIMIT_REACHED') {
-        throw error;
+      if (error instanceof ApiError && error.data?.error_code === 'RESUME_LIMIT_REACHED') {
+        throw new Error('RESUME_LIMIT_REACHED');
       }
 
+      // AuthError (401/403) is already handled by apiClient (sign-out + toast)
+      // Just return null for other errors
       return null;
     }
   }, [enabled, currentResumeId, resumeData, icons, session]);
