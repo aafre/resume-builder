@@ -50,25 +50,19 @@ export function GhostCard({ isAtLimit, resumeCount, onCreateNew, onUpgrade }: Gh
         </div>
 
         <h3 className="text-xl font-bold text-gray-900 mb-2 text-center">
-          Unlock Unlimited Resumes
+          Resume Limit Reached
         </h3>
 
         <p className="text-sm text-gray-600 mb-4 text-center">
-          Upgrade to create more than 5 resumes
+          You can create up to 5 resumes per profile
         </p>
 
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onUpgrade();
-          }}
-          className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
-        >
-          View Plans
-        </button>
+        <p className="text-sm text-gray-700 font-medium text-center">
+          Delete a resume to create a new one
+        </p>
 
         <p className="text-xs text-gray-500 mt-3">
-          Premium features coming soon
+          Maximum 5 resumes per profile
         </p>
       </div>
     );
