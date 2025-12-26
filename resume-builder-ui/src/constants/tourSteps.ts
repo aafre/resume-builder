@@ -62,15 +62,15 @@ export const TOUR_STEPS: TourStep[] = [
       authenticated: {
         simpleContent: {
           icon: '☁️',
-          description: 'Your resume automatically saves to the cloud every few seconds. Edit from any device, anytime.'
+          description: 'Your resume automatically saves to the cloud every few seconds. Access your resume from the My Resumes dashboard anytime.'
         }
       },
       anonymous: {
         simpleContent: {
           icon: '⚠️',
-          description: 'Your work is stored in your browser only. Clear your cache and it\'s gone. Sign up for free cloud storage to keep your resume safe.'
+          description: 'Your work is not saved. Clear your cache or use a different device and it\'s gone. Sign In for free to keep your resume safe.'
         }
-      }
+      },
     },
     badge: {
       text: 'Free cloud backup available',
@@ -122,13 +122,13 @@ export const TOUR_STEPS: TourStep[] = [
       authenticated: {
         simpleContent: {
           icon: '🧭',
-          description: 'Use the sidebar to jump between sections, reorder them by dragging, or add new sections. Press Ctrl+\\ to toggle the sidebar.'
+          description: 'Use the Menu to add new sections, view and jump between sections. Reorder them by dragging on the Editor page.'
         }
       },
       anonymous: {
         simpleContent: {
           icon: '🧭',
-          description: 'Use the sidebar to jump between sections, reorder them by dragging, or add new sections. Your changes save locally in your browser.'
+          description: 'Use the Menu to add new sections, view and jump between sections. Reorder them by dragging on the Editor page.'
         }
       }
     }
@@ -147,13 +147,13 @@ export const TOUR_STEPS: TourStep[] = [
       authenticated: {
         simpleContent: {
           icon: '✨',
-          description: 'Select any text to reveal formatting options. Make text bold, italic, underlined, or add hyperlinks to your portfolio or LinkedIn.'
+          description: 'Select any text to reveal formatting options. Make text bold, italic, underlined, or add hyperlinks anywhere.'
         }
       },
       anonymous: {
         simpleContent: {
           icon: '✨',
-          description: 'Select any text to reveal formatting options. Make text bold, italic, underlined, or add hyperlinks to your portfolio or LinkedIn.'
+          description: 'Select any text to reveal formatting options. Make text bold, italic, underlined, or add hyperlinks anywhere.'
         }
       }
     }
@@ -178,7 +178,7 @@ export const TOUR_STEPS: TourStep[] = [
       anonymous: {
         simpleContent: {
           icon: '📥',
-          description: 'Ready to apply? Click Download Resume to export a professional PDF. Remember to backup your work first - it\'s only saved in your browser.'
+          description: 'Ready to apply? Click Download Resume to export a professional PDF. Please Login to save your resume for future edits.'
         }
       }
     }
