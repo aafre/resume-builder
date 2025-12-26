@@ -566,7 +566,7 @@ const Editor: React.FC = () => {
 
         // Auto-dismiss after 10 seconds
         setTimeout(() => setShowIdleTooltip(false), 10000);
-      }, 5 * 60 * 1000); // 5 minutes
+      }, 10 * 1000); // TEMP: 10 seconds for testing (change back to 5 * 60 * 1000)
 
       return () => {
         if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
@@ -2105,13 +2105,13 @@ const Editor: React.FC = () => {
               ✕
             </button>
           </div>
-          {/* Arrow pointing down to sign-in button */}
+          {/* Arrow pointing up to sign-in button */}
           <div
-            className="absolute -bottom-2 right-8 w-0 h-0"
+            className="absolute -top-2 right-8 w-0 h-0"
             style={{
               borderLeft: '8px solid transparent',
               borderRight: '8px solid transparent',
-              borderTop: '8px solid #2563eb'
+              borderBottom: '8px solid #2563eb'
             }}
           />
         </div>,
