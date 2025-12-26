@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import ReactDOM from "react-dom";
 import { useParams } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { fetchTemplate, generateResume, generateThumbnail } from "../services/templates";
 import { getSessionId } from "../utils/session";
 import { useIconRegistry } from "../hooks/useIconRegistry";
@@ -1585,20 +1585,6 @@ const Editor: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      <ToastContainer
-        position="top-right"
-        autoClose={4000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        className="custom-toast-container"
-        toastClassName="custom-toast"
-      />
-
       {/* Main Content Container - Dynamic padding based on sidebar state */}
       <div className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-72 sm:pb-56 lg:pb-12 max-w-4xl lg:max-w-none transition-all duration-300 ${
         isSidebarCollapsed ? 'lg:mr-[88px]' : 'lg:mr-[296px]'
