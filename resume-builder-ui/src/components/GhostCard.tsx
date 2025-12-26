@@ -1,4 +1,4 @@
-import { PlusCircle, Crown, AlertCircle } from 'lucide-react';
+import { PlusCircle, Ban, AlertCircle } from 'lucide-react';
 
 interface GhostCardProps {
   isAtLimit: boolean;
@@ -39,14 +39,13 @@ export function GhostCard({ isAtLimit, resumeCount, onCreateNew, onUpgrade }: Gh
       );
     }
 
-    // At exactly 5 resumes - show upgrade prompt
+    // At exactly 5 resumes - show limit reached message
     return (
       <div
-        onClick={onUpgrade}
-        className="h-full min-h-[320px] bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 border-2 border-amber-500 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:shadow-xl hover:border-amber-600 transition-all duration-200 group"
+        className="h-full min-h-[320px] bg-gradient-to-br from-gray-50 via-slate-50 to-gray-50 border-2 border-gray-400 rounded-lg p-6 flex flex-col items-center justify-center"
       >
-        <div className="bg-amber-100 rounded-full p-4 mb-4 group-hover:scale-110 transition-transform duration-200">
-          <Crown className="w-12 h-12 text-amber-600" />
+        <div className="bg-gray-100 rounded-full p-4 mb-4">
+          <Ban className="w-12 h-12 text-gray-600" />
         </div>
 
         <h3 className="text-xl font-bold text-gray-900 mb-2 text-center">
