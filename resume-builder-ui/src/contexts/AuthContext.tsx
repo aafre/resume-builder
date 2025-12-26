@@ -227,10 +227,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
           // Prepare icons for upload
           const icons = [];
-          if (data.iconRegistry) {
-            for (const [filename, fileData] of Object.entries(data.iconRegistry)) {
-              if (fileData) {
-                icons.push({ filename, data: fileData });
+          if (data.iconRegistry?.icons) {
+            for (const [filename, iconItem] of Object.entries(data.iconRegistry.icons)) {
+              if (iconItem && iconItem.data) {
+                icons.push({ filename, data: iconItem.data });
               }
             }
           }
