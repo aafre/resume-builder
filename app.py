@@ -1091,7 +1091,16 @@ else:
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
     logging.info("Supabase client initialized successfully")
 
-app = Flask(__name__, static_folder="static", static_url_path="/")
+# Development mode: Don't serve React from root to avoid route conflicts
+# Production mode: Serve React build from root (static_url_path="/")
+FLASK_ENV = os.getenv('FLASK_ENV', 'development')
+if FLASK_ENV == 'production':
+    # Production: Flask serves React static files from root
+    app = Flask(__name__, static_folder="static", static_url_path="/")
+else:
+    # Development: Vite dev server handles React, Flask only handles API
+    app = Flask(__name__, static_folder="static", static_url_path="/static")
+
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 # CORS configuration: Restrict origins for security
