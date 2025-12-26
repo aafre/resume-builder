@@ -44,7 +44,7 @@ import ContextAwareTour from "./ContextAwareTour";
 import TabbedHelpModal from "./TabbedHelpModal";
 import AuthModal from "./AuthModal";
 import DownloadCelebrationModal from "./DownloadCelebrationModal";
-import useTourPersistence from "../hooks/useTourPersistence";
+import usePreferencePersistence from "../hooks/usePreferencePersistence";
 import { MdFileDownload, MdHelpOutline } from "react-icons/md";
 import {
   DndContext,
@@ -529,12 +529,17 @@ const Editor: React.FC = () => {
     loadResumeFromCloud();
   }, [resumeIdFromUrl, authLoading, session]);
 
-  // Tour persistence using custom hook
-  const { shouldShowTour, markTourComplete } = useTourPersistence({
-    isAuthenticated,
+  // Tour persistence using unified preferences hook
+  const { preferences, setPreference, isLoading: prefsLoading } = usePreferencePersistence({
     session,
     authLoading
   });
+
+  const shouldShowTour = !preferences.tour_completed && !prefsLoading;
+
+  const markTourComplete = useCallback(async () => {
+    await setPreference('tour_completed', true);
+  }, [setPreference]);
 
   const [showAuthModalFromTour, setShowAuthModalFromTour] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false); // Bug fix: Was referenced but not defined
