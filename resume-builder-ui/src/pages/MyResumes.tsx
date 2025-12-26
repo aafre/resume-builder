@@ -9,6 +9,7 @@ import { DuplicateResumeModal } from '../components/DuplicateResumeModal';
 import PreviewModal from '../components/PreviewModal';
 import SignInRequiredGate from '../components/SignInRequiredGate';
 import { supabase } from '../lib/supabase';
+import { apiClient, ApiError } from '../lib/api-client';
 import { toast } from 'react-hot-toast';
 import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
 import { useResumes } from '../hooks/useResumes';
@@ -101,18 +102,8 @@ export default function MyResumes() {
     try {
       setIsDeleting(true);
 
-      const response = await fetch(`/api/resumes/${resumeToDelete.id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`
-        }
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to delete resume');
-      }
+      // Use centralized API client (handles auth, 401/403 interceptor)
+      await apiClient.delete(`/api/resumes/${resumeToDelete.id}`);
 
       toast.success('Resume deleted successfully');
       refetch(); // Refetch to update the list
@@ -140,24 +131,10 @@ export default function MyResumes() {
     try {
       setIsDuplicating(true);
 
-      const response = await fetch(`/api/resumes/${resumeToDuplicate.id}/duplicate`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify({ new_title: newTitle })
+      // Use centralized API client (handles auth, 401/403 interceptor)
+      await apiClient.post(`/api/resumes/${resumeToDuplicate.id}/duplicate`, {
+        new_title: newTitle
       });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        if (result.error_code === 'RESUME_LIMIT_REACHED') {
-          toast.error('You have reached the 5 resume limit. Delete a resume to continue.');
-          return;
-        }
-        throw new Error(result.error || 'Failed to duplicate resume');
-      }
 
       toast.success('Resume duplicated successfully');
       refetch(); // Refetch to update the list
@@ -165,6 +142,13 @@ export default function MyResumes() {
       setResumeToDuplicate(null);
     } catch (err) {
       console.error('Error duplicating resume:', err);
+
+      // Check for resume limit error
+      if (err instanceof ApiError && err.data?.error_code === 'RESUME_LIMIT_REACHED') {
+        toast.error('You have reached the 5 resume limit. Delete a resume to continue.');
+        return;
+      }
+
       toast.error('Failed to duplicate resume');
     } finally {
       setIsDuplicating(false);
@@ -175,20 +159,8 @@ export default function MyResumes() {
     if (!session) return;
 
     try {
-      const response = await fetch(`/api/resumes/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify({ title: newTitle })
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to rename resume');
-      }
+      // Use centralized API client (handles auth, 401/403 interceptor)
+      await apiClient.patch(`/api/resumes/${id}`, { title: newTitle });
 
       // Optimistic update in query cache
       queryClient.setQueryData<ResumeListItem[]>(

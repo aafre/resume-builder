@@ -189,6 +189,30 @@ class ApiClient {
   }
 
   /**
+   * Perform PATCH request
+   */
+  async patch<T = any>(url: string, data: any, options: RequestOptions = {}): Promise<T> {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    };
+
+    if (!options.skipAuth) {
+      const authHeaders = await this.getAuthHeaders();
+      Object.assign(headers, authHeaders);
+    }
+
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify(data),
+      signal: options.signal,
+    });
+
+    return this.handleResponse(response);
+  }
+
+  /**
    * Perform DELETE request
    */
   async delete<T = any>(url: string, options: RequestOptions = {}): Promise<T> {
