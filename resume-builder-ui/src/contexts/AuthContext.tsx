@@ -157,54 +157,142 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  // Helper function to migrate localStorage data to cloud
-  const migrateToCloud = async (session: Session, data: any) => {
+  // Schema validation helper for resume data
+  const validateResumeData = (data: any): boolean => {
     try {
-      console.log('Migrating localStorage data to cloud...');
-
-      // Prepare icons for upload (convert base64 to proper format if needed)
-      const icons = [];
-      if (data.iconRegistry) {
-        for (const [filename, fileData] of Object.entries(data.iconRegistry)) {
-          if (fileData) {
-            icons.push({
-              filename,
-              data: fileData // Assuming it's already in the right format
-            });
-          }
+      // Validate contactInfo structure
+      if (data.contactInfo) {
+        const validKeys = ['name', 'email', 'phone', 'location', 'linkedin', 'linkedin_display', 'social_links'];
+        const hasValidStructure = Object.keys(data.contactInfo).every(key =>
+          validKeys.includes(key)
+        );
+        if (!hasValidStructure) {
+          console.warn('Invalid contactInfo structure');
+          return false;
         }
       }
 
-      const response = await fetch('/api/resumes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify({
-          id: null, // Create new resume
-          title: data.contactInfo?.name || 'Untitled Resume',
-          template_id: data.templateId || 'modern-with-icons',
-          contact_info: data.contactInfo || {},
-          sections: data.sections || [],
-          icons: icons
-        })
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to migrate resume');
+      // Validate sections array
+      if (!Array.isArray(data.sections)) {
+        console.warn('Sections is not an array');
+        return false;
       }
 
-      console.log('Migration successful:', result.resume_id);
-      toast.success('Your resume has been saved to your account!');
+      // Validate each section has required fields
+      for (const section of data.sections) {
+        if (!section.name || typeof section.name !== 'string') {
+          console.warn('Section missing name');
+          return false;
+        }
+        if (!section.content) {
+          console.warn('Section missing content');
+          return false;
+        }
+      }
 
-      // Don't clear localStorage - let the editor handle that
       return true;
     } catch (error) {
-      console.error('Migration failed:', error);
-      toast.error('Failed to save your resume to the cloud');
+      console.error('Validation error:', error);
+      return false;
+    }
+  };
+
+  // Helper function to migrate multiple legacy resumes to cloud
+  const migrateAllLegacyResumes = async (session: Session, legacyResumes: FoundLegacyResume[]) => {
+    try {
+      console.log(`🚀 Migrating ${legacyResumes.length} legacy resumes to cloud...`);
+
+      const RESUME_LIMIT = 5;
+      const resumesToMigrate = legacyResumes.slice(0, RESUME_LIMIT);
+      const skippedCount = Math.max(0, legacyResumes.length - RESUME_LIMIT);
+
+      let successCount = 0;
+      let failedCount = 0;
+
+      for (const legacyResume of resumesToMigrate) {
+        try {
+          const { data } = legacyResume;
+
+          // Validate data structure before uploading
+          if (!validateResumeData(data)) {
+            console.error('Invalid data structure, skipping:', legacyResume.key);
+            failedCount++;
+            continue;
+          }
+
+          // Extract template ID from localStorage key
+          // e.g., "resume-builder-modern-with-icons-autosave" → "modern-with-icons"
+          const templateMatch = legacyResume.key.match(/^resume-builder-(.*)-autosave$/);
+          const templateId = templateMatch ? templateMatch[1] : (data.templateId || 'modern-with-icons');
+
+          // Prepare icons for upload
+          const icons = [];
+          if (data.iconRegistry) {
+            for (const [filename, fileData] of Object.entries(data.iconRegistry)) {
+              if (fileData) {
+                icons.push({ filename, data: fileData });
+              }
+            }
+          }
+
+          // Upload to cloud
+          const response = await fetch('/api/resumes', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({
+              id: null, // Create new
+              title: data.contactInfo?.name || 'Untitled Resume',
+              template_id: templateId,
+              contact_info: data.contactInfo || {},
+              sections: data.sections || [],
+              icons: icons
+            })
+          });
+
+          const result = await response.json();
+          if (!response.ok) {
+            throw new Error(result.error || 'Failed to migrate resume');
+          }
+
+          console.log('✅ Migrated resume:', result.resume_id, 'from key:', legacyResume.key);
+          successCount++;
+
+          // Clean up this specific legacy key after successful migration
+          localStorage.removeItem(legacyResume.key);
+
+        } catch (migrateError) {
+          console.error('❌ Failed to migrate resume from', legacyResume.key, migrateError);
+          failedCount++;
+          // Continue with other resumes
+        }
+      }
+
+      // Show appropriate toast based on results
+      if (successCount > 0) {
+        if (successCount === 1) {
+          toast.success('Your resume has been saved to your account!');
+        } else {
+          toast.success(`${successCount} resumes have been saved to your account!`);
+        }
+      }
+
+      if (skippedCount > 0) {
+        toast.info(`We migrated your ${RESUME_LIMIT} most recent resumes. ${skippedCount} older drafts were not migrated.`, {
+          duration: 7000
+        });
+      }
+
+      if (failedCount > 0 && successCount === 0) {
+        toast.error('Failed to migrate your resumes. Please contact support.');
+      }
+
+      return successCount > 0;
+    } catch (error) {
+      console.error('❌ Migration process failed:', error);
+      toast.error('Failed to migrate your resumes. Please try again.');
       return false;
     }
   };
