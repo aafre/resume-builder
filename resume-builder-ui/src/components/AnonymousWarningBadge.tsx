@@ -1,43 +1,42 @@
 import { Popover, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
-import { Sparkles } from 'lucide-react';
+import { CloudOff } from 'lucide-react';
 
 interface AnonymousWarningBadgeProps {
   onSignInClick: () => void;
 }
 
 /**
- * AnonymousWarningBadge - Premium gradient badge for anonymous users
+ * AnonymousWarningBadge - Warning status badge for anonymous users
  *
  * Features:
- * - Brand gradient (blue-purple-indigo) with glass morphism
- * - Click to reveal popover with upgrade message + CTA
- * - Responsive: "Local" on mobile, "Local Only" on desktop
+ * - Amber/yellow warning status indicator (not a premium feature)
+ * - CloudOff icon to signal unsaved/disconnected state
+ * - Click to reveal popover with cloud save upgrade message
+ * - Responsive: "Unsaved" on mobile and desktop
  * - Headless UI Popover for accessibility (Escape key, focus management)
- * - Positive, benefit-based messaging (upgrade prompt vs warning)
+ * - Creates psychological tension: "My work is unsaved - I should fix this"
  */
 export default function AnonymousWarningBadge({ onSignInClick }: AnonymousWarningBadgeProps) {
   return (
     <Popover className="relative">
       {({ open }) => (
         <>
-          {/* Badge Button */}
+          {/* Warning Status Badge */}
           <Popover.Button
             className="
-              relative overflow-hidden
               flex items-center gap-2 px-3 py-1.5 rounded-full
-              bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700
-              text-white font-medium text-xs
-              shadow-md shadow-purple-500/20
-              hover:shadow-lg hover:shadow-purple-500/30 hover:scale-[1.02]
-              transition-all duration-300
-              focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2
+              bg-amber-50 border border-amber-300
+              text-amber-800 font-medium text-xs
+              hover:bg-amber-100 hover:border-amber-400
+              transition-all duration-200
+              focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2
             "
-            aria-label="Storage information"
+            aria-label="Storage warning - your work is not saved to cloud"
           >
-            <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
-            <span className="sm:hidden">Local</span>
-            <span className="hidden sm:inline">Local Only</span>
+            <CloudOff className="w-3.5 h-3.5 text-amber-600" aria-hidden="true" />
+            <span className="sm:hidden">Unsaved</span>
+            <span className="hidden sm:inline">Unsaved</span>
           </Popover.Button>
 
           {/* Popover Panel */}
@@ -55,21 +54,21 @@ export default function AnonymousWarningBadge({ onSignInClick }: AnonymousWarnin
                 absolute top-full right-0 mt-2 w-72
                 bg-white/95 backdrop-blur-xl
                 rounded-2xl
-                shadow-xl shadow-purple-500/10
-                border border-white/50
+                shadow-xl shadow-amber-500/10
+                border border-amber-200/50
                 p-4
                 z-[60]
               "
             >
               {/* Header */}
               <h3 className="text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-purple-600" aria-hidden="true" />
-                Upgrade to Cloud Storage
+                <CloudOff className="w-4 h-4 text-amber-600" aria-hidden="true" />
+                Save to Cloud Storage
               </h3>
 
               {/* Body */}
               <p className="text-xs text-gray-600 mb-3 leading-relaxed">
-                Your resume is saved locally on this device. Create a free account to save securely in the cloud and access from anywhere.
+                Your resume is only saved on this device. Create a free account to save securely in the cloud and never lose your work.
               </p>
 
               {/* CTA Button */}
@@ -91,7 +90,7 @@ export default function AnonymousWarningBadge({ onSignInClick }: AnonymousWarnin
 
               {/* Footer Text */}
               <p className="text-xs text-gray-500 mt-2 text-center">
-                Never lose your work again
+                Access from anywhere, anytime
               </p>
             </Popover.Panel>
           </Transition>
