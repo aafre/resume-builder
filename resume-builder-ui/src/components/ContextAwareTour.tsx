@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { MdClose } from 'react-icons/md';
 import { TOUR_STEPS } from '../constants/tourSteps';
 
@@ -12,13 +12,14 @@ interface ContextAwareTourProps {
 }
 
 /**
- * ContextAwareTour - 5-step onboarding tour with auth-aware content
+ * ContextAwareTour - 4-5 step onboarding tour with auth-aware content
  *
  * Features:
  * - Step content branches based on isAnonymous flag
- * - Step 4 is critical: completely different for auth vs anonymous
+ * - Conditional step visibility (Step 2 auth-only)
+ * - Anonymous users see 4 steps, authenticated users see 5 steps
  * - Highlights target elements (via DOM IDs) when specified
- * - CTA button in Step 4 (anonymous only) triggers sign-in
+ * - CTA button in Step 1 (anonymous only) triggers sign-in
  * - Z-index 9999 to sit above all other elements
  */
 export default function ContextAwareTour({
@@ -31,6 +32,16 @@ export default function ContextAwareTour({
 }: ContextAwareTourProps) {
   const [currentStep, setCurrentStep] = useState(0);
 
+  // Filter steps based on auth state
+  const filteredSteps = useMemo(() => {
+    return TOUR_STEPS.filter(step => {
+      if (!step.visibleFor || step.visibleFor === 'all') return true;
+      if (step.visibleFor === 'authenticated') return isAuthenticated;
+      if (step.visibleFor === 'anonymous') return isAnonymous;
+      return true;
+    });
+  }, [isAuthenticated, isAnonymous]);
+
   // Reset to first step when tour opens
   useEffect(() => {
     if (isOpen) {
@@ -40,9 +51,9 @@ export default function ContextAwareTour({
 
   if (!isOpen) return null;
 
-  const step = TOUR_STEPS[currentStep];
+  const step = filteredSteps[currentStep];
   const isFirstStep = currentStep === 0;
-  const isLastStep = currentStep === TOUR_STEPS.length - 1;
+  const isLastStep = currentStep === filteredSteps.length - 1;
 
   // Get auth-specific content
   const title = isAnonymous ? step.title.anonymous : step.title.authenticated;
@@ -123,21 +134,34 @@ export default function ContextAwareTour({
               </div>
             )}
 
-            {/* Content Items */}
+            {/* Content - supports both simple and multi-item formats */}
             <div className="space-y-5 mb-6 mt-6">
-              {content.items.map((item, index) => (
-                <div key={index} className="flex gap-4">
-                  <div className="text-2xl flex-shrink-0">{item.icon}</div>
+              {content.simpleContent ? (
+                // Simple single-message format
+                <div className="flex gap-4">
+                  <div className="text-3xl flex-shrink-0">{content.simpleContent.icon}</div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800 mb-1">
-                      {item.heading}
-                    </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      {item.description}
+                    <p className="text-gray-700 text-base leading-relaxed">
+                      {content.simpleContent.description}
                     </p>
                   </div>
                 </div>
-              ))}
+              ) : content.items ? (
+                // Legacy multi-item format (backward compatible)
+                content.items.map((item, index) => (
+                  <div key={index} className="flex gap-4">
+                    <div className="text-2xl flex-shrink-0">{item.icon}</div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-gray-800 mb-1">
+                        {item.heading}
+                      </h3>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : null}
             </div>
 
             {/* CTA Button (Step 4 anonymous only) */}
@@ -150,9 +174,9 @@ export default function ContextAwareTour({
               </button>
             )}
 
-            {/* Step Indicators */}
+            {/* Step Indicators - dynamic count based on filtered steps */}
             <div className="flex items-center justify-center gap-2 mb-6">
-              {TOUR_STEPS.map((_, index) => (
+              {filteredSteps.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentStep(index)}
@@ -161,7 +185,7 @@ export default function ContextAwareTour({
                       ? 'bg-blue-600 w-8 h-2'
                       : 'bg-gray-300 hover:bg-gray-400 w-2 h-2'
                   }`}
-                  aria-label={`Go to step ${index + 1}`}
+                  aria-label={`Go to step ${index + 1} of ${filteredSteps.length}`}
                 />
               ))}
             </div>
