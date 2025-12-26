@@ -235,8 +235,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const icons = [];
           if (data.iconRegistry?.icons) {
             for (const [filename, iconItem] of Object.entries(data.iconRegistry.icons)) {
-              if (iconItem && iconItem.data) {
-                icons.push({ filename, data: iconItem.data });
+              if (iconItem && typeof iconItem === 'object' && 'data' in iconItem) {
+                icons.push({ filename, data: (iconItem as any).data });
               }
             }
           }
@@ -286,8 +286,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
 
       if (skippedCount > 0) {
-        toast.info(`We migrated your ${RESUME_LIMIT} most recent resumes. ${skippedCount} older drafts were not migrated.`, {
-          duration: 7000
+        toast(`We migrated your ${RESUME_LIMIT} most recent resumes. ${skippedCount} older drafts were not migrated.`, {
+          duration: 7000,
+          icon: 'ℹ️'
         });
       }
 

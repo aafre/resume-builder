@@ -8,7 +8,6 @@ import { DeleteResumeModal } from '../components/DeleteResumeModal';
 import { DuplicateResumeModal } from '../components/DuplicateResumeModal';
 import PreviewModal from '../components/PreviewModal';
 import SignInRequiredGate from '../components/SignInRequiredGate';
-import { supabase } from '../lib/supabase';
 import { apiClient, ApiError } from '../lib/api-client';
 import { toast } from 'react-hot-toast';
 import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
@@ -49,7 +48,7 @@ export default function MyResumes() {
 
   // Thumbnail refresh hook - manages auto-triggering and silent retries
   const {
-    generatingIds,
+    generatingIds: _generatingIds,
     triggerRefresh
   } = useThumbnailRefresh({
     onThumbnailUpdated

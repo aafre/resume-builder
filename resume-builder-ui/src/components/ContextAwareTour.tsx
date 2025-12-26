@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from 'react';
-import { MdClose } from 'react-icons/md';
 import { TOUR_STEPS } from '../constants/tourSteps';
 
 interface ContextAwareTourProps {

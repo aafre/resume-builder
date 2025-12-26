@@ -11,7 +11,7 @@ interface KebabMenuProps {
 
 export function KebabMenu({
   resumeId,
-  resumeTitle,
+  resumeTitle: _resumeTitle,
   onRename,
   onDuplicate,
   onDelete

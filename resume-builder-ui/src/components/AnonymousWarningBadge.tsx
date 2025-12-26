@@ -20,7 +20,7 @@ interface AnonymousWarningBadgeProps {
 export default function AnonymousWarningBadge({ onSignInClick }: AnonymousWarningBadgeProps) {
   return (
     <Popover className="relative">
-      {({ open }) => (
+      {({ open: _open }) => (
         <>
           {/* Warning Status Badge */}
           <Popover.Button
