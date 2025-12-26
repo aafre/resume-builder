@@ -206,3 +206,6 @@ output/
 nul
 resume-*.yaml
 resume-*.yml
+
+# Frontend build output (served by Flask)
+static/
