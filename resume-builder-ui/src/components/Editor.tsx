@@ -558,18 +558,15 @@ const Editor: React.FC = () => {
 
   // Idle nudge: Show tooltip after 5 minutes for anonymous users (one-time ever)
   useEffect(() => {
-    console.log('Idle nudge check:', { isAnonymous, hasShownIdleNudge, authLoading });
     if (isAnonymous && !hasShownIdleNudge && !authLoading) {
-      console.log('Starting idle nudge timer (10 seconds)...');
       // Start 5-minute timer
       idleTimerRef.current = setTimeout(() => {
-        console.log('Showing idle nudge now!');
         setShowIdleTooltip(true);
         markIdleNudgeShown();
 
         // Auto-dismiss after 10 seconds
         setTimeout(() => setShowIdleTooltip(false), 10000);
-      }, 10 * 1000); // TEMP: 10 seconds for testing (change back to 5 * 60 * 1000)
+      }, 5 * 60 * 1000); // 5 minutes
 
       return () => {
         if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
@@ -2108,15 +2105,6 @@ const Editor: React.FC = () => {
               ✕
             </button>
           </div>
-          {/* Arrow pointing up to sign-in button */}
-          <div
-            className="absolute -top-2 right-8 w-0 h-0"
-            style={{
-              borderLeft: '8px solid transparent',
-              borderRight: '8px solid transparent',
-              borderBottom: '8px solid #2563eb'
-            }}
-          />
         </div>,
         document.body
       )}
