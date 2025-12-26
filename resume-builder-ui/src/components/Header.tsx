@@ -15,7 +15,7 @@ export default function Header() {
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   // Safely get editor context (might not be available)
-  const isEditorPage = location.pathname === "/editor";
+  const isEditorPage = location.pathname.startsWith("/editor");
   let editorContext = null;
 
   try {
