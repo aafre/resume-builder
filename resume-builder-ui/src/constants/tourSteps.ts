@@ -3,7 +3,13 @@
  *
  * Defines the 5-step onboarding tour with auth-aware content branching.
  * Each step has separate content for authenticated and anonymous users.
+ * Now supports conditional visibility and simplified single-message format.
  */
+
+export interface TourStepSimpleContent {
+  icon: string;
+  description: string;
+}
 
 export interface TourStepItem {
   icon: string;
@@ -12,7 +18,8 @@ export interface TourStepItem {
 }
 
 export interface TourStepContent {
-  items: TourStepItem[];
+  items?: TourStepItem[];           // Legacy multi-item format (optional)
+  simpleContent?: TourStepSimpleContent;  // Simple single-message format
 }
 
 export interface TourStepBadge {
@@ -24,6 +31,7 @@ export interface TourStepBadge {
 export interface TourStep {
   id: string;
   targetElementId: string | null; // DOM ID to highlight, null = center modal
+  visibleFor?: 'all' | 'authenticated' | 'anonymous';  // Controls step visibility based on auth state
   title: {
     authenticated: string;
     anonymous: string;
