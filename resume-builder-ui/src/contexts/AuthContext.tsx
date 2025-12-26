@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, useRef, ReactNode } from 'react';
 import { supabase } from '../lib/supabase';
+import { apiClient } from '../lib/api-client';
 import { toast } from 'react-hot-toast';
 import type { User, Session } from '@supabase/supabase-js';
 
@@ -482,6 +483,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.log('Auth state changed:', event, session?.user?.id);
         setSession(session);
         setUser(session?.user ?? null);
+
+        // Cache session in API client to avoid slow getSession() calls after hard refresh
+        apiClient.setSession(session);
 
         // If we're still initializing and listener got a valid session,
         // immediately unblock the UI - don't wait for getSession() timeout
