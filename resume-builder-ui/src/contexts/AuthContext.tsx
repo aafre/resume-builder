@@ -376,7 +376,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       isInitializingRef.current = true;
       listenerHandledInitRef.current = false; // Reset flag
 
-      const AUTH_TIMEOUT_MS = 10000; // 10 seconds
+      const AUTH_TIMEOUT_MS = 30000; // 30 seconds (increased from 10s to handle slow connections)
       let sessionRecovered = false;
 
       try {
@@ -414,15 +414,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
           const wasTimeout = sessionError instanceof Error && sessionError.message.includes('timed out');
 
+          // FIXED: Don't assume timeout means corrupted data
+          // Timeout could be due to slow network connection, especially after hard refresh (Ctrl+F5)
+          // Only clear localStorage if there's actual corruption (JSON parse errors)
           if (wasTimeout) {
-            console.log('Session recovery timed out - likely corrupted localStorage');
-            toast.error('Authentication timed out. Starting fresh session...', { duration: 5000 });
-          }
-
-          // Clear potentially corrupted auth data
-          const clearedKeys = clearSupabaseAuthStorage();
-          if (clearedKeys) {
-            console.log('Cleared corrupted auth storage');
+            console.log('⚠️ Session recovery timed out - network may be slow, trusting auth listener to restore session');
+            // Don't clear localStorage or show error toast - let auth listener handle it
+            // The session might still be valid, just slow to load
+          } else {
+            // Non-timeout error (likely JSON parse error or corrupted data)
+            console.error('❌ Session recovery failed with non-timeout error - clearing corrupted auth data');
+            const clearedKeys = clearSupabaseAuthStorage();
+            if (clearedKeys) {
+              console.log('Cleared corrupted auth storage');
+              toast.error('Session data was corrupted. Starting fresh...', { duration: 5000 });
+            }
           }
         }
 
