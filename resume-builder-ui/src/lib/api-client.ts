@@ -30,6 +30,7 @@ interface RequestOptions {
   headers?: Record<string, string>;
   signal?: AbortSignal;
   skipAuth?: boolean; // Skip Authorization header (for public endpoints)
+  session?: any; // Pass session directly to avoid slow getSession() calls
 }
 
 /**
@@ -45,19 +46,47 @@ interface RequestOptions {
  * Usage:
  * ```typescript
  * import { apiClient } from './lib/api-client';
+ * import { useAuth } from './contexts/AuthContext';
  *
- * // GET request
+ * const { session } = useAuth();
+ *
+ * // Pass session to avoid slow getSession() calls after hard refresh
+ * const resumes = await apiClient.get('/api/resumes', { session });
+ *
+ * // Or use setSession() to cache session globally
+ * apiClient.setSession(session);
  * const resumes = await apiClient.get('/api/resumes');
- *
- * // POST request
- * const result = await apiClient.post('/api/resumes', { title: 'My Resume', ... });
- *
- * // DELETE request
- * await apiClient.delete(`/api/resumes/${resumeId}`);
  * ```
  */
 class ApiClient {
-  private async getAuthHeaders(): Promise<Record<string, string>> {
+  private cachedSession: any = null;
+
+  /**
+   * Set the current session to avoid calling getSession() on every request.
+   * This prevents 30s hangs after hard refresh (Ctrl+F5).
+   *
+   * Call this from AuthContext whenever session changes.
+   */
+  setSession(session: any) {
+    this.cachedSession = session;
+  }
+
+  private async getAuthHeaders(providedSession?: any): Promise<Record<string, string>> {
+    // Use provided session first (from request options)
+    if (providedSession) {
+      return {
+        'Authorization': `Bearer ${providedSession.access_token}`
+      };
+    }
+
+    // Use cached session second (set by setSession())
+    if (this.cachedSession) {
+      return {
+        'Authorization': `Bearer ${this.cachedSession.access_token}`
+      };
+    }
+
+    // Fallback to getSession() (slow after hard refresh)
     if (!supabase) {
       throw new Error('Supabase client not initialized');
     }
@@ -127,7 +156,7 @@ class ApiClient {
     };
 
     if (!options.skipAuth) {
-      const authHeaders = await this.getAuthHeaders();
+      const authHeaders = await this.getAuthHeaders(options.session);
       Object.assign(headers, authHeaders);
     }
 
@@ -150,7 +179,7 @@ class ApiClient {
     };
 
     if (!options.skipAuth) {
-      const authHeaders = await this.getAuthHeaders();
+      const authHeaders = await this.getAuthHeaders(options.session);
       Object.assign(headers, authHeaders);
     }
 
@@ -174,7 +203,7 @@ class ApiClient {
     };
 
     if (!options.skipAuth) {
-      const authHeaders = await this.getAuthHeaders();
+      const authHeaders = await this.getAuthHeaders(options.session);
       Object.assign(headers, authHeaders);
     }
 
@@ -198,7 +227,7 @@ class ApiClient {
     };
 
     if (!options.skipAuth) {
-      const authHeaders = await this.getAuthHeaders();
+      const authHeaders = await this.getAuthHeaders(options.session);
       Object.assign(headers, authHeaders);
     }
 
@@ -222,7 +251,7 @@ class ApiClient {
     };
 
     if (!options.skipAuth) {
-      const authHeaders = await this.getAuthHeaders();
+      const authHeaders = await this.getAuthHeaders(options.session);
       Object.assign(headers, authHeaders);
     }
 
@@ -246,7 +275,7 @@ class ApiClient {
     };
 
     if (!options.skipAuth) {
-      const authHeaders = await this.getAuthHeaders();
+      const authHeaders = await this.getAuthHeaders(options.session);
       Object.assign(headers, authHeaders);
     }
 
