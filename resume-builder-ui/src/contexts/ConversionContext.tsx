@@ -15,29 +15,28 @@ const ConversionContext = createContext<ConversionContextType | undefined>(undef
 
 interface ConversionProviderProps {
   children: ReactNode;
+  idleNudgeShown: boolean;
+  setIdleNudgeShown: (value: boolean) => Promise<void>;
 }
 
 /**
- * ConversionProvider manages state for conversion nudges (download toast, idle tooltip)
+ * ConversionProvider manages state for conversion nudges (download modal, idle tooltip)
  *
  * Features:
- * - Session-based tracking for download toast (resets on page reload)
- * - Persistent tracking for idle nudge (localStorage, one-time ever)
+ * - Session-based tracking for download modal (resets on page reload)
+ * - Persistent tracking for idle nudge (database, one-time ever, syncs across devices)
  * - Nudge overlap prevention (only one active nudge at a time)
  */
-export function ConversionProvider({ children }: ConversionProviderProps) {
+export function ConversionProvider({
+  children,
+  idleNudgeShown,
+  setIdleNudgeShown
+}: ConversionProviderProps) {
   // Session-based: resets on page reload
   const [hasShownDownloadToast, setHasShownDownloadToast] = useState(false);
 
-  // Persistent: stored in localStorage, persists across sessions
-  const [hasShownIdleNudge, setHasShownIdleNudge] = useState(() => {
-    try {
-      return localStorage.getItem('idle-nudge-shown') === 'true';
-    } catch (error) {
-      console.warn('Failed to read idle-nudge-shown from localStorage:', error);
-      return false;
-    }
-  });
+  // Persistent: managed by parent via usePreferencePersistence hook
+  const hasShownIdleNudge = idleNudgeShown;
 
   // Track which nudge is currently active to prevent overlaps
   const [activeNudge, setActiveNudge] = useState<string | null>(null);
@@ -50,16 +49,11 @@ export function ConversionProvider({ children }: ConversionProviderProps) {
   }, []);
 
   /**
-   * Mark idle nudge as shown (persistent via localStorage)
+   * Mark idle nudge as shown (persistent via database)
    */
-  const markIdleNudgeShown = useCallback(() => {
-    setHasShownIdleNudge(true);
-    try {
-      localStorage.setItem('idle-nudge-shown', 'true');
-    } catch (error) {
-      console.warn('Failed to save idle-nudge-shown to localStorage:', error);
-    }
-  }, []);
+  const markIdleNudgeShown = useCallback(async () => {
+    await setIdleNudgeShown(true);
+  }, [setIdleNudgeShown]);
 
   /**
    * Attempt to show a nudge. Returns true if allowed, false if blocked.
