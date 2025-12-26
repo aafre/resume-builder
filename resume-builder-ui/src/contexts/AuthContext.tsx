@@ -46,6 +46,9 @@ interface AuthContextType {
   signingOut: boolean;
   isAuthenticated: boolean;
   isAnonymous: boolean;
+  hasMigrated: boolean;
+  migrationInProgress: boolean;
+  migratedResumeCount: number;
   signInWithGoogle: () => Promise<void>;
   signInWithLinkedIn: () => Promise<void>;
   signInWithEmail: (email: string) => Promise<void>;
