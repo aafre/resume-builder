@@ -124,7 +124,7 @@ export default function Header() {
 
             {/* Auto-Save Indicator (authenticated) or Warning Badge (anonymous) - only on editor page */}
             {isEditorPage && editorContext && (
-              <div className="flex items-center">
+              <div id="header-auth-status" className="flex items-center">
                 {isAuthenticated && (
                   <AutoSaveIndicator
                     lastSaved={editorContext.lastSaved}
