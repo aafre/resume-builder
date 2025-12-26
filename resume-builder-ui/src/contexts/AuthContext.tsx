@@ -91,29 +91,69 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     sessionRef.current = session;
   }, [session]);
 
-  // Helper function to check if there's unsaved work in localStorage
-  const checkForUnsavedWork = () => {
+  // TypeScript interfaces for legacy resume migration
+  interface LegacyResumeData {
+    contactInfo: any;
+    sections: any[];
+    iconRegistry?: any;
+    timestamp: string;
+    templateId?: string;
+  }
+
+  interface FoundLegacyResume {
+    key: string;
+    data: LegacyResumeData;
+    parsedTimestamp: Date;
+  }
+
+  // Helper function to find all legacy localStorage keys from main branch
+  // Main branch used pattern: resume-builder-{templateId}-autosave
+  const findAllLegacyResumes = (): FoundLegacyResume[] => {
     try {
-      const autoSaveData = localStorage.getItem('resume-autosave');
-      if (!autoSaveData) return null;
-
-      const parsed = JSON.parse(autoSaveData);
-
-      // Check if there's meaningful content (not just empty data)
-      const hasContactInfo = parsed.contactInfo && Object.keys(parsed.contactInfo).some(key =>
-        parsed.contactInfo[key] && String(parsed.contactInfo[key]).trim() !== ''
+      const allKeys = Object.keys(localStorage);
+      const legacyKeys = allKeys.filter(key =>
+        key.match(/^resume-builder-.*-autosave$/)
       );
-      const hasSections = parsed.sections && parsed.sections.length > 0;
-      const hasIcons = parsed.iconRegistry && Object.keys(parsed.iconRegistry).length > 0;
 
-      if (hasContactInfo || hasSections || hasIcons) {
-        return parsed;
+      console.log('🔍 Found legacy localStorage keys:', legacyKeys);
+
+      const foundResumes: FoundLegacyResume[] = [];
+
+      for (const key of legacyKeys) {
+        try {
+          const dataStr = localStorage.getItem(key);
+          if (!dataStr) continue;
+
+          const parsed: LegacyResumeData = JSON.parse(dataStr);
+
+          // Validate that it has meaningful content
+          const hasContactInfo = parsed.contactInfo && Object.keys(parsed.contactInfo)
+            .some(k => parsed.contactInfo[k] && String(parsed.contactInfo[k]).trim() !== '');
+          const hasSections = parsed.sections && parsed.sections.length > 0;
+          const hasIcons = parsed.iconRegistry && Object.keys(parsed.iconRegistry).length > 0;
+
+          if (hasContactInfo || hasSections || hasIcons) {
+            foundResumes.push({
+              key,
+              data: parsed,
+              parsedTimestamp: new Date(parsed.timestamp)
+            });
+          }
+        } catch (parseError) {
+          console.error(`Failed to parse legacy key ${key}:`, parseError);
+          // Skip corrupted entries
+        }
       }
 
-      return null;
+      // Sort by timestamp descending (most recent first)
+      foundResumes.sort((a, b) =>
+        b.parsedTimestamp.getTime() - a.parsedTimestamp.getTime()
+      );
+
+      return foundResumes;
     } catch (error) {
-      console.error('Error checking localStorage:', error);
-      return null;
+      console.error('Error finding legacy resumes:', error);
+      return [];
     }
   };
 
