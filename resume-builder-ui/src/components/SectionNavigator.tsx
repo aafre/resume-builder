@@ -320,7 +320,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               )}
             </div>
           ) : (
-            <SaveStatusIndicator status={saveStatus} lastSaved={lastSaved} />
+            <SaveStatusIndicator status={saveStatus} lastSaved={lastSaved ?? null} />
           )}
         </div>
       )}

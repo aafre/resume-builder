@@ -46,7 +46,6 @@ import TabbedHelpModal from "./TabbedHelpModal";
 import AuthModal from "./AuthModal";
 import DownloadCelebrationModal from "./DownloadCelebrationModal";
 import usePreferencePersistence from "../hooks/usePreferencePersistence";
-import { MdFileDownload, MdHelpOutline } from "react-icons/md";
 import {
   DndContext,
   closestCenter,
@@ -376,7 +375,9 @@ const Editor: React.FC = () => {
       while (saveStatus === 'saving' && Date.now() - start < timeout) {
         await new Promise(resolve => setTimeout(resolve, 100));
       }
-      return saveStatus !== 'error';
+      // After waiting, check if save completed successfully (not in error state)
+      // Use type assertion since saveStatus may have changed during the loop
+      return (saveStatus as string) !== 'error';
     }
 
     // Always trigger save before action to ensure latest data is persisted
@@ -919,10 +920,10 @@ const Editor: React.FC = () => {
         if (!supportsIcons) {
           const referencedIcons = extractReferencedIconFilenames(processedSections);
           if (referencedIcons.length > 0) {
-            toast.warning(
+            toast(
               `This template doesn't support icons. ${referencedIcons.length} icon(s) ` +
               `were found in the imported file and will be ignored.`,
-              { autoClose: 8000 }
+              { duration: 8000, icon: '⚠️' }
             );
           }
         }
@@ -1023,8 +1024,9 @@ const Editor: React.FC = () => {
       } else if (!isAnonymous) {
         // Original message for authenticated users
         setTimeout(() => {
-          toast.info(
-            "Need to continue on another device? Save your work via the ⋮ menu"
+          toast(
+            "Need to continue on another device? Save your work via the ⋮ menu",
+            { icon: 'ℹ️' }
           );
         }, 2000);
       }
@@ -1358,7 +1360,7 @@ const Editor: React.FC = () => {
         `3. Icons will then be available on next edit\n\n` +
         `Missing icons:\n${missingIcons.map(icon => `• ${icon}`).join('\n')}`,
         {
-          autoClose: 15000,
+          duration: 15000,
           style: { whiteSpace: 'pre-line', maxWidth: '600px' }
         }
       );
@@ -1391,7 +1393,7 @@ const Editor: React.FC = () => {
 
       toast.error(
         `Missing Icons (${missingIcons.length}):\n${iconLocations}\n\nPlease upload these icons or remove them from your sections.`,
-        { autoClose: 12000, style: { whiteSpace: 'pre-line' } }
+        { duration: 12000, style: { whiteSpace: 'pre-line' } }
       );
     }
   }, [sections]);
@@ -1880,7 +1882,7 @@ const Editor: React.FC = () => {
           isGeneratingPreview={isGeneratingPreview}
           previewIsStale={previewIsStale}
           lastSaved={cloudLastSaved}
-          saveError={saveStatus === 'error' ? 'Save failed' : null}
+          saveError={saveStatus === 'error'}
         />
 
         {/* Mobile Navigation Drawer */}

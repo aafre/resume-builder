@@ -59,6 +59,11 @@ export default function usePreferencePersistence({
         return;
       }
 
+      if (!supabase) {
+        setIsLoading(false);
+        return;
+      }
+
       setIsLoading(true);
 
       try {
@@ -79,7 +84,7 @@ export default function usePreferencePersistence({
             tour_completed: data.tour_completed || false,
             idle_nudge_shown: data.idle_nudge_shown || false
           });
-        } else {
+        } else if (supabase) {
           // New user - create preferences row with defaults
           const { error: upsertError } = await supabase
             .from('user_preferences')
@@ -128,6 +133,11 @@ export default function usePreferencePersistence({
   const setPreference = useCallback(async (key: PreferenceKey, value: boolean) => {
     if (!session) {
       console.warn(`Cannot set preference ${key}: no session`);
+      return;
+    }
+
+    if (!supabase) {
+      console.warn('Supabase not initialized');
       return;
     }
 

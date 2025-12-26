@@ -119,7 +119,7 @@ export function useCloudSave({
         if (experienceSection && Array.isArray(experienceSection.content) &&
             experienceSection.content.length > 0) {
           const firstJob = experienceSection.content[0];
-          if (firstJob.title) {
+          if (typeof firstJob === 'object' && firstJob !== null && 'title' in firstJob && firstJob.title) {
             return firstJob.title; // e.g., "Senior Product Manager"
           }
         }
