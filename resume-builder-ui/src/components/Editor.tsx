@@ -18,6 +18,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useConversion } from "../contexts/ConversionContext";
 import { StorageLimitModal } from "./StorageLimitModal";
 import { supabase } from "../lib/supabase";
+import { apiClient } from "../lib/api-client";
 import yaml from "js-yaml";
 import { PortableYAMLData } from "../types/iconTypes";
 import { extractReferencedIconFilenames } from "../utils/iconExtractor";
@@ -476,19 +477,8 @@ const Editor: React.FC = () => {
           return;
         }
 
-        const response = await fetch(`/api/resumes/${resumeIdFromUrl}`, {
-          headers: {
-            'Authorization': `Bearer ${session.access_token}`
-          }
-        });
-
-        if (!response.ok) {
-          const error = await response.json();
-          console.error('Backend error loading resume:', error);
-          throw new Error(error.error || 'Failed to load resume');
-        }
-
-        const { resume } = await response.json();
+        // Use centralized API client (handles auth, 401/403 interceptor)
+        const { resume } = await apiClient.get(`/api/resumes/${resumeIdFromUrl}`);
 
         // Populate editor state from database (JSONB)
         setContactInfo(resume.contact_info);
