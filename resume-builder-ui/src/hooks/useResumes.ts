@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../lib/supabase';
+import { apiClient } from '../lib/api-client';
 import { ResumeListItem } from '../types';
 
 /**
@@ -20,21 +20,12 @@ export function useResumes() {
   return useQuery({
     queryKey: ['resumes', session?.user?.id],
     queryFn: async (): Promise<ResumeListItem[]> => {
-      if (!supabase || !session) {
+      if (!session) {
         throw new Error('Not authenticated');
       }
 
-      const response = await fetch('/api/resumes?limit=50', {
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`
-        }
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to fetch resumes');
-      }
+      // Use centralized API client (handles auth, 401/403 interceptor)
+      const result = await apiClient.get('/api/resumes?limit=50');
 
       return result.resumes || [];
     },
