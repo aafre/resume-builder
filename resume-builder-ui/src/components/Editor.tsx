@@ -278,13 +278,8 @@ const Editor: React.FC = () => {
     }
   }, [savedResumeId, cloudResumeId]);
 
-  // Handle storage limit errors
-  useEffect(() => {
-    if (saveStatus === 'error') {
-      // Check if it might be a storage limit error
-      setShowStorageLimitModal(true);
-    }
-  }, [saveStatus]);
+  // Note: Storage limit errors are handled in saveBeforeAction() via RESUME_LIMIT_REACHED
+  // No need for blanket error handling here that shows modal for all errors
 
   const [generating, setGenerating] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
