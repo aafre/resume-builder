@@ -500,9 +500,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           if (legacyResumes.length > 0) {
             console.log(`📦 Found ${legacyResumes.length} legacy resumes to migrate`);
 
+            // Show migration UI
+            setMigrationInProgress(true);
+
             const migrated = await migrateAllLegacyResumes(session, legacyResumes);
             if (migrated) {
               setHasMigrated(true);
+              setMigratedResumeCount(legacyResumes.length);
+              setMigrationInProgress(false);
+
+              // Redirect to my-resumes after short delay to show success toast
+              setTimeout(() => {
+                window.location.href = '/my-resumes';
+              }, 1500);
+            } else {
+              setMigrationInProgress(false);
             }
           }
         }
