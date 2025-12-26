@@ -558,9 +558,12 @@ const Editor: React.FC = () => {
 
   // Idle nudge: Show tooltip after 5 minutes for anonymous users (one-time ever)
   useEffect(() => {
+    console.log('Idle nudge check:', { isAnonymous, hasShownIdleNudge, authLoading });
     if (isAnonymous && !hasShownIdleNudge && !authLoading) {
+      console.log('Starting idle nudge timer (10 seconds)...');
       // Start 5-minute timer
       idleTimerRef.current = setTimeout(() => {
+        console.log('Showing idle nudge now!');
         setShowIdleTooltip(true);
         markIdleNudgeShown();
 
