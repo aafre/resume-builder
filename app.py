@@ -1092,7 +1092,23 @@ else:
 
 app = Flask(__name__, static_folder="static", static_url_path="/")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
-CORS(app, resources={r"/*": {"origins": "*"}})
+
+# CORS configuration: Restrict origins for security
+# Flask serves React static files from same container, so same-origin by default
+# But we still configure CORS for dev environments and explicit domain control
+ALLOWED_ORIGINS = os.getenv(
+    'ALLOWED_ORIGINS',
+    'http://localhost:3000,http://localhost:5000,http://localhost:5173'
+).split(',')
+
+CORS(app, resources={
+    r"/api/*": {
+        "origins": ALLOWED_ORIGINS,
+        "methods": ["GET", "POST", "PUT", "PATCH", "DELETE"],
+        "allow_headers": ["Content-Type", "Authorization"],
+        "supports_credentials": True
+    }
+})
 
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB
 
