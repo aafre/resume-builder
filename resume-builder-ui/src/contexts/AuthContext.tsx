@@ -78,6 +78,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [signingOut, setSigningOut] = useState(false);
   const [hasMigrated, setHasMigrated] = useState(false);
+  const [migrationInProgress, setMigrationInProgress] = useState(false);
+  const [migratedResumeCount, setMigratedResumeCount] = useState(0);
   const migrationAttempted = useRef(false);
 
   // Track current session in a ref for access in async callbacks
