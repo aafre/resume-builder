@@ -2051,7 +2051,7 @@ const Editor: React.FC = () => {
         onClose={() => setShowStartFreshConfirm(false)}
         onConfirm={confirmStartFresh}
         title="Start Fresh?"
-        message="Starting fresh will permanently delete all your current work. This action cannot be undone. If you want to keep this resume, download or save it first."
+        message="Starting fresh will permanently delete all your current work. This action cannot be undone. Are you sure you want to continue?"
         confirmText="Start Fresh"
         cancelText="Cancel"
         isDestructive={true}
