@@ -485,6 +485,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           localStorage.setItem('anonymous-user-id', session.user.id);
         }
 
+        // IMPORTANT: Migrate localStorage data for BOTH anonymous and authenticated users
+        // This handles the upgrade scenario where old app (main branch) used localStorage
+        if (session && !hasMigrated && !migrationAttempted.current) {
+          migrationAttempted.current = true;
+
+          const legacyResumes = findAllLegacyResumes();
+
+          if (legacyResumes.length > 0) {
+            console.log(`📦 Found ${legacyResumes.length} legacy resumes to migrate`);
+
+            const migrated = await migrateAllLegacyResumes(session, legacyResumes);
+            if (migrated) {
+              setHasMigrated(true);
+            }
+          }
+        }
+
         // Trigger migration when user signs in (from anonymous to authenticated)
         if (event === 'SIGNED_IN' && session?.user && !session.user.is_anonymous) {
           // Show welcome toast on successful sign-in (only once per session)
@@ -509,41 +526,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           // Migrate anonymous user's cloud resumes to authenticated account
           const oldAnonUserId = localStorage.getItem('anonymous-user-id');
 
-          // Only attempt migration if there's a valid old anonymous user ID
-          if (oldAnonUserId) {
-            // Skip if migration was already attempted (prevents duplicate calls)
-            if (migrationAttempted.current) {
-              return;
-            }
+          if (oldAnonUserId && oldAnonUserId !== session.user.id) {
+            console.log('👤 Migrating anonymous cloud resumes to authenticated account...');
 
-            // Skip if same user (already signed in, just refreshing)
-            if (oldAnonUserId === session.user.id) {
-              // Clean up - user was already signed in
-              localStorage.removeItem('anonymous-user-id');
-            } else {
-              // Mark migration as attempted before calling API
-              migrationAttempted.current = true;
-
-              // Attempt migration and always clean up localStorage after
-              await migrateAnonResumes(session, oldAnonUserId);
-
-              // Always remove the anonymous user ID after migration attempt
-              // (either it succeeded, or it was stale/invalid)
-              localStorage.removeItem('anonymous-user-id');
-            }
-          }
-
-          // Check if there's unsaved work in localStorage (only if not migrated yet)
-          if (!hasMigrated) {
-            const unsavedData = checkForUnsavedWork();
-
-            if (unsavedData) {
-              // Trigger migration
-              const migrated = await migrateToCloud(session, unsavedData);
-              if (migrated) {
-                setHasMigrated(true);
-              }
-            }
+            await migrateAnonResumes(session, oldAnonUserId);
+            localStorage.removeItem('anonymous-user-id');
           }
         }
       }
