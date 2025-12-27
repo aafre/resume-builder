@@ -15,7 +15,7 @@ export function createTestQueryClient() {
     defaultOptions: {
       queries: {
         retry: false, // Disable retries in tests
-        cacheTime: 0, // Don't cache data between tests
+        gcTime: 0, // Don't cache data between tests (renamed from cacheTime in React Query v5)
         staleTime: 0,
       },
       mutations: {
