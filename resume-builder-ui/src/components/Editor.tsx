@@ -541,6 +541,9 @@ const Editor: React.FC = () => {
   const [showAuthModal, setShowAuthModal] = useState(false); // Bug fix: Was referenced but not defined
   const [showDownloadCelebration, setShowDownloadCelebration] = useState(false);
 
+  // Track if we've already launched tour after sign-in to prevent infinite loop
+  const hasLaunchedTourAfterSignIn = useRef(false);
+
   useEffect(() => {
     if (shouldShowTour) {
       setTimeout(() => setShowWelcomeTour(true), 1500);
@@ -554,6 +557,7 @@ const Editor: React.FC = () => {
     // 2. Migration has completed
     // 3. Auth modal from tour was just closed
     // 4. Tour is not already showing
+    // 5. Haven't already launched tour after this sign-in (prevents infinite loop)
 
     if (
       !isAnonymous &&
@@ -561,7 +565,8 @@ const Editor: React.FC = () => {
       !anonMigrationInProgress &&
       !authLoading &&
       showAuthModalFromTour === false &&
-      !showWelcomeTour
+      !showWelcomeTour &&
+      !hasLaunchedTourAfterSignIn.current
     ) {
       console.log('🎯 Migration complete, re-launching tour');
 
@@ -571,6 +576,7 @@ const Editor: React.FC = () => {
         toast.success('✓ Cloud saving enabled! Your resume is now safe.', {
           duration: 4000,
         });
+        hasLaunchedTourAfterSignIn.current = true; // Mark as launched to prevent loop
       }, 150);
 
       return () => clearTimeout(timer);
@@ -580,6 +586,7 @@ const Editor: React.FC = () => {
   const handleTourComplete = async () => {
     setShowWelcomeTour(false);
     await markTourComplete();
+    hasLaunchedTourAfterSignIn.current = false; // Reset for future sign-ins
   };
 
   // Idle nudge: Show tooltip after 5 minutes for anonymous users (one-time ever)
@@ -1986,7 +1993,10 @@ const Editor: React.FC = () => {
         onClose={handleTourComplete}
         isAnonymous={isAnonymous}
         isAuthenticated={isAuthenticated}
-        onSignInClick={() => setShowAuthModalFromTour(true)}
+        onSignInClick={() => {
+          hasLaunchedTourAfterSignIn.current = false; // Reset before sign-in
+          setShowAuthModalFromTour(true);
+        }}
         onTourComplete={handleTourComplete}
       />
 
