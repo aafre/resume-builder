@@ -577,11 +577,9 @@ const Editor: React.FC = () => {
       // Small delay to let UI settle after migration
       const timer = setTimeout(() => {
         setShowWelcomeTour(true);
-        toast.success('✓ Cloud saving enabled! Your resume is now safe.', {
-          duration: 4000,
-        });
+        // No toast needed - tour showing "Cloud Saving Active" is sufficient
         hasLaunchedTourAfterSignIn.current = true; // Mark as launched to prevent loop
-        setIsSigningInFromTour(false); // Reset flag after tour toast shows
+        setIsSigningInFromTour(false); // Reset flag
       }, 150);
 
       return () => clearTimeout(timer);
