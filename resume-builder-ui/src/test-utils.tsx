@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthContext } from './contexts/AuthContext';
 import { EditorProvider } from './contexts/EditorContext';
+import { ConversionProvider } from './contexts/ConversionContext';
 import type { User, Session } from '@supabase/supabase-js';
 
 /**
@@ -132,12 +133,20 @@ export function renderWithProviders(
   }: RenderWithProvidersOptions = {}
 ) {
   function Wrapper({ children }: { children: ReactNode }) {
+    // Mock conversion provider functions
+    const mockSetIdleNudgeShown = async () => {};
+
     let content = (
       <MemoryRouter initialEntries={[initialRoute]}>
         <AuthContext.Provider value={authContext}>
-          <QueryClientProvider client={queryClient}>
-            {children}
-          </QueryClientProvider>
+          <ConversionProvider
+            idleNudgeShown={false}
+            setIdleNudgeShown={mockSetIdleNudgeShown}
+          >
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </ConversionProvider>
         </AuthContext.Provider>
       </MemoryRouter>
     );
@@ -147,11 +156,16 @@ export function renderWithProviders(
       content = (
         <MemoryRouter initialEntries={[initialRoute]}>
           <AuthContext.Provider value={authContext}>
-            <QueryClientProvider client={queryClient}>
-              <EditorProvider>
-                {children}
-              </EditorProvider>
-            </QueryClientProvider>
+            <ConversionProvider
+              idleNudgeShown={false}
+              setIdleNudgeShown={mockSetIdleNudgeShown}
+            >
+              <QueryClientProvider client={queryClient}>
+                <EditorProvider>
+                  {children}
+                </EditorProvider>
+              </QueryClientProvider>
+            </ConversionProvider>
           </AuthContext.Provider>
         </MemoryRouter>
       );
