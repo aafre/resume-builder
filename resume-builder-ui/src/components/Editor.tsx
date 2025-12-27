@@ -510,7 +510,10 @@ const Editor: React.FC = () => {
           }
         }
 
-        toast.success('Resume loaded successfully');
+        // Only show toast if NOT loading after migration from tour sign-in
+        if (!isSigningInFromTour) {
+          toast.success('Resume loaded successfully');
+        }
         setIsLoadingFromUrl(false);
         setHasLoadedFromUrl(true); // Mark as loaded to prevent re-runs
       } catch (error) {
@@ -540,6 +543,7 @@ const Editor: React.FC = () => {
   const [showAuthModalFromTour, setShowAuthModalFromTour] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false); // Bug fix: Was referenced but not defined
   const [showDownloadCelebration, setShowDownloadCelebration] = useState(false);
+  const [isSigningInFromTour, setIsSigningInFromTour] = useState(false);
 
   // Track if we've already launched tour after sign-in to prevent infinite loop
   const hasLaunchedTourAfterSignIn = useRef(false);
@@ -577,6 +581,7 @@ const Editor: React.FC = () => {
           duration: 4000,
         });
         hasLaunchedTourAfterSignIn.current = true; // Mark as launched to prevent loop
+        setIsSigningInFromTour(false); // Reset flag after tour toast shows
       }, 150);
 
       return () => clearTimeout(timer);
@@ -2006,6 +2011,7 @@ const Editor: React.FC = () => {
         onClose={() => setShowAuthModalFromTour(false)}
         onSuccess={() => {
           setShowAuthModalFromTour(false);
+          setIsSigningInFromTour(true); // Flag to suppress automatic toasts
           // Tour will auto-relaunch via useEffect watching migration state
         }}
       />
