@@ -1203,8 +1203,8 @@ def redirect_customer_service_keywords():
     return redirect("/resume-keywords/customer-service", code=301)
 
 
-@app.route("/", defaults={"path": ""})
-@app.route("/<path:path>")
+@app.route("/", defaults={"path": ""}, methods=["GET"])
+@app.route("/<path:path>", methods=["GET"])
 def serve(path):
     """
     Serve the React app from the static folder. If a specific file is requested
