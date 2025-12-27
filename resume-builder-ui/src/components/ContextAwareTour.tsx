@@ -86,7 +86,7 @@ export default function ContextAwareTour({
 
   const handleCTAClick = () => {
     onSignInClick();
-    // Don't close tour - let user complete sign-in then continue if needed
+    onClose(); // Close tour to give auth modal full focus
   };
 
   return (
