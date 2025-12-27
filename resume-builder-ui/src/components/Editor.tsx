@@ -164,7 +164,7 @@ const Editor: React.FC = () => {
   const iconRegistry = useIconRegistry();
 
   // Auth state - used by cloud save
-  const { isAnonymous, session, loading: authLoading } = useAuth();
+  const { isAnonymous, session, loading: authLoading, anonMigrationInProgress } = useAuth();
   const isAuthenticated = !!session && !isAnonymous;
 
   // Conversion nudges
@@ -464,8 +464,8 @@ const Editor: React.FC = () => {
 
   // Load saved resume from cloud when resumeId is in URL
   useEffect(() => {
-    // Wait for auth to be ready
-    if (authLoading) return;
+    // Wait for auth to be ready AND migration to complete
+    if (authLoading || anonMigrationInProgress) return;
 
     if (!resumeIdFromUrl || !supabase) return;
 
@@ -546,6 +546,36 @@ const Editor: React.FC = () => {
       setTimeout(() => setShowWelcomeTour(true), 1500);
     }
   }, [shouldShowTour]);
+
+  // Re-launch tour after successful sign-in and migration completion
+  useEffect(() => {
+    // Only proceed if:
+    // 1. User is authenticated (not anonymous anymore)
+    // 2. Migration has completed
+    // 3. Auth modal from tour was just closed
+    // 4. Tour is not already showing
+
+    if (
+      !isAnonymous &&
+      session &&
+      !anonMigrationInProgress &&
+      !authLoading &&
+      showAuthModalFromTour === false &&
+      !showWelcomeTour
+    ) {
+      console.log('🎯 Migration complete, re-launching tour');
+
+      // Small delay to let UI settle after migration
+      const timer = setTimeout(() => {
+        setShowWelcomeTour(true);
+        toast.success('✓ Cloud saving enabled! Your resume is now safe.', {
+          duration: 4000,
+        });
+      }, 150);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isAnonymous, session, anonMigrationInProgress, authLoading, showAuthModalFromTour, showWelcomeTour]);
 
   const handleTourComplete = async () => {
     setShowWelcomeTour(false);
@@ -1966,14 +1996,7 @@ const Editor: React.FC = () => {
         onClose={() => setShowAuthModalFromTour(false)}
         onSuccess={() => {
           setShowAuthModalFromTour(false);
-
-          // Brief delay to let auth state propagate from AuthContext
-          setTimeout(() => {
-            setShowWelcomeTour(true); // Re-launch tour
-            toast.success('✓ Cloud saving enabled! Your resume is now safe.', {
-              duration: 4000,
-            });
-          }, 300);
+          // Tour will auto-relaunch via useEffect watching migration state
         }}
       />
 
