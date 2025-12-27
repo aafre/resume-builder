@@ -1966,7 +1966,14 @@ const Editor: React.FC = () => {
         onClose={() => setShowAuthModalFromTour(false)}
         onSuccess={() => {
           setShowAuthModalFromTour(false);
-          toast.success('Welcome! Your resume will now be saved to the cloud.');
+
+          // Brief delay to let auth state propagate from AuthContext
+          setTimeout(() => {
+            setShowWelcomeTour(true); // Re-launch tour
+            toast.success('✓ Cloud saving enabled! Your resume is now safe.', {
+              duration: 4000,
+            });
+          }, 300);
         }}
       />
 
