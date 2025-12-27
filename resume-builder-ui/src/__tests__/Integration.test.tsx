@@ -230,8 +230,10 @@ describe("Integration Tests", () => {
       const downloadButton = screen.getByText(/Download My Resume/i);
       fireEvent.click(downloadButton);
 
-      // Should handle the error gracefully
-      expect(templateService.generateResume).toHaveBeenCalledTimes(1);
+      // Should handle the error gracefully - wait for async call
+      await waitFor(() => {
+        expect(templateService.generateResume).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });
