@@ -214,6 +214,14 @@ function AppContent() {
             }
           />
           <Route
+            path="/editor"
+            element={
+              <Suspense fallback={<EditorLoadingSkeleton />}>
+                <Editor />
+              </Suspense>
+            }
+          />
+          <Route
             path="/my-resumes"
             element={
               <Suspense fallback={<EditorLoadingSkeleton />}>
