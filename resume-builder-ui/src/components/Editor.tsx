@@ -173,6 +173,7 @@ const Editor: React.FC = () => {
   const [showStorageLimitModal, setShowStorageLimitModal] = useState(false);
   const [cloudResumeId, setCloudResumeId] = useState<string | null>(resumeIdFromUrl || null);
   const [isLoadingFromUrl, setIsLoadingFromUrl] = useState<boolean>(!!resumeIdFromUrl);
+  const [hasLoadedFromUrl, setHasLoadedFromUrl] = useState<boolean>(false);
 
   // Process sections to clean up icon paths for export/preview
   const processSections = useCallback((sections: Section[]) => {
@@ -468,6 +469,9 @@ const Editor: React.FC = () => {
 
     if (!resumeIdFromUrl || !supabase) return;
 
+    // Prevent loading multiple times
+    if (hasLoadedFromUrl) return;
+
     const loadResumeFromCloud = async () => {
       try {
         setLoading(true);
@@ -508,6 +512,7 @@ const Editor: React.FC = () => {
 
         toast.success('Resume loaded successfully');
         setIsLoadingFromUrl(false);
+        setHasLoadedFromUrl(true); // Mark as loaded to prevent re-runs
       } catch (error) {
         console.error('Failed to load resume:', error);
         toast.error(error instanceof Error ? error.message : 'Failed to load resume');
@@ -518,7 +523,7 @@ const Editor: React.FC = () => {
     };
 
     loadResumeFromCloud();
-  }, [resumeIdFromUrl, authLoading, session]);
+  }, [resumeIdFromUrl, authLoading, session, hasLoadedFromUrl]);
 
   // Tour persistence using unified preferences hook
   const { preferences, setPreference, isLoading: prefsLoading } = usePreferencePersistence({
