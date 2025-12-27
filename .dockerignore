@@ -1,61 +1,131 @@
-# Ignore local environment and secrets
+# ============================================
+# Environment and Secrets
+# ============================================
 .env*
 *.key
 *.pem
 *.crt
 *.p12
 
-# Ignore version control
+# ============================================
+# Version Control
+# ============================================
 .git/
 .gitignore
+.github/
 
-# Ignore runtime artifacts
+# ============================================
+# Python Development
+# ============================================
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache and artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# ============================================
+# Node.js / JavaScript
+# ============================================
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+build/
+*.tsbuildinfo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# ============================================
+# Test Files (Specific Patterns)
+# ============================================
+# Test directories
+**/__tests__/
+**/tests/
+**/test/
+test-files/
+
+# Test files
+*.test.ts
+*.test.tsx
+*.test.js
+*.test.jsx
+*.spec.ts
+*.spec.tsx
+*.spec.js
+*.spec.jsx
+test-utils.tsx
+setupTests.ts
+vitest.config.ts
+
+# ============================================
+# IDE and Editor Files
+# ============================================
+.vscode/
+.devcontainer/
+.idea/
+.claude/
+*.swp
+*.swo
+
+# ============================================
+# Documentation
+# ============================================
+*.md
+README*
+LICENSE
+CHANGELOG*
+CLAUDE.md
+announcement-bar.md
+
+# ============================================
+# Build and Runtime Artifacts
+# ============================================
 *.pdf
 *.log
 *.tmp
 output/
 temp/
 
-# Ignore IDE/Editor configuration and cache
-.vscode/
-.devcontainer/
-.idea/
-*.swp
-*.swo
-
-# Ignore Python cache files and directories
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.pytest_cache/
-
-# Ignore node_modules and npm artifacts
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Ignore documentation and development files
-*.md
-README*
-LICENSE
-CHANGELOG*
-
-# Ignore test files
-tests/
-test/
-*.test.*
-*test*
-coverage/
-
-# Ignore Docker files (prevent copying other Dockerfiles)
+# ============================================
+# Docker Files
+# ============================================
 Dockerfile*
 docker-compose*
+.dockerignore
 
-# Ignore OS files
+# ============================================
+# Configuration Files
+# ============================================
+.mcp.json
+
+# ============================================
+# OS Files
+# ============================================
 .DS_Store
 Thumbs.db
+desktop.ini
 
-.zip 
+# ============================================
+# Compressed Files
+# ============================================
+*.zip
+*.tar.gz
+*.rar 
 
