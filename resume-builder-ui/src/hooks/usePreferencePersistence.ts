@@ -71,10 +71,10 @@ export default function usePreferencePersistence({
           .from('user_preferences')
           .select('tour_completed, idle_nudge_shown')
           .eq('user_id', session.user.id)
-          .single();
+          .maybeSingle();
 
-        if (error && error.code !== 'PGRST116') {
-          // PGRST116 = no rows found (expected for new users)
+        if (error) {
+          // Log any errors (maybeSingle doesn't throw for missing rows)
           console.warn('Failed to fetch preferences from database:', error);
         }
 
