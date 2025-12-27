@@ -49,6 +49,7 @@ interface AuthContextType {
   isAnonymous: boolean;
   hasMigrated: boolean;
   migrationInProgress: boolean;
+  anonMigrationInProgress: boolean;
   migratedResumeCount: number;
   signInWithGoogle: () => Promise<void>;
   signInWithLinkedIn: () => Promise<void>;
@@ -80,6 +81,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [signingOut, setSigningOut] = useState(false);
   const [hasMigrated, setHasMigrated] = useState(false);
   const [migrationInProgress, setMigrationInProgress] = useState(false);
+  const [anonMigrationInProgress, setAnonMigrationInProgress] = useState(false);
   const [migratedResumeCount, setMigratedResumeCount] = useState(0);
   const migrationAttempted = useRef(false);
 
@@ -557,8 +559,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           if (oldAnonUserId && oldAnonUserId !== session.user.id) {
             console.log('👤 Migrating anonymous cloud resumes to authenticated account...');
 
-            await migrateAnonResumes(session, oldAnonUserId);
-            localStorage.removeItem('anonymous-user-id');
+            try {
+              setAnonMigrationInProgress(true);
+              await migrateAnonResumes(session, oldAnonUserId);
+              localStorage.removeItem('anonymous-user-id');
+            } catch (error) {
+              console.error('Migration failed:', error);
+            } finally {
+              setAnonMigrationInProgress(false);
+              console.log('✅ Anonymous migration complete, UI can proceed');
+            }
+          } else {
+            // No migration needed - ensure flag is false
+            setAnonMigrationInProgress(false);
           }
         }
       }
@@ -670,6 +683,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isAnonymous,
     hasMigrated,
     migrationInProgress,
+    anonMigrationInProgress,
     migratedResumeCount,
     signInWithGoogle,
     signInWithLinkedIn,
