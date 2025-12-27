@@ -547,6 +547,8 @@ const Editor: React.FC = () => {
 
   // Track if we've already launched tour after sign-in to prevent infinite loop
   const hasLaunchedTourAfterSignIn = useRef(false);
+  // Track if we just signed in from tour (to distinguish from regular page load)
+  const justSignedInFromTour = useRef(false);
 
   useEffect(() => {
     if (shouldShowTour) {
@@ -557,18 +559,21 @@ const Editor: React.FC = () => {
   // Re-launch tour after successful sign-in and migration completion
   useEffect(() => {
     // Only proceed if:
-    // 1. User is authenticated (not anonymous anymore)
-    // 2. Migration has completed
-    // 3. Auth modal from tour was just closed
+    // 1. User just signed in from tour (not a regular page load)
+    // 2. User is authenticated (not anonymous anymore)
+    // 3. Migration has completed
     // 4. Tour is not already showing
     // 5. Haven't already launched tour after this sign-in (prevents infinite loop)
+    // 6. User hasn't completed tour yet (prevents re-launch on page reload)
 
     if (
+      justSignedInFromTour.current &&
       !isAnonymous &&
       session &&
       !anonMigrationInProgress &&
       !authLoading &&
-      showAuthModalFromTour === false &&
+      !prefsLoading &&
+      !preferences.tour_completed &&
       !showWelcomeTour &&
       !hasLaunchedTourAfterSignIn.current
     ) {
@@ -579,12 +584,13 @@ const Editor: React.FC = () => {
         setShowWelcomeTour(true);
         // No toast needed - tour showing "Cloud Saving Active" is sufficient
         hasLaunchedTourAfterSignIn.current = true; // Mark as launched to prevent loop
-        setIsSigningInFromTour(false); // Reset flag
+        justSignedInFromTour.current = false; // Reset the flag
+        setIsSigningInFromTour(false); // Reset signing-in flag
       }, 150);
 
       return () => clearTimeout(timer);
     }
-  }, [isAnonymous, session, anonMigrationInProgress, authLoading, showAuthModalFromTour, showWelcomeTour]);
+  }, [isAnonymous, session, anonMigrationInProgress, authLoading, prefsLoading, preferences.tour_completed, showWelcomeTour]);
 
   const handleTourComplete = async () => {
     setShowWelcomeTour(false);
@@ -1998,6 +2004,7 @@ const Editor: React.FC = () => {
         isAuthenticated={isAuthenticated}
         onSignInClick={() => {
           hasLaunchedTourAfterSignIn.current = false; // Reset before sign-in
+          justSignedInFromTour.current = false; // Start fresh
           setShowAuthModalFromTour(true);
         }}
         onTourComplete={handleTourComplete}
@@ -2010,6 +2017,7 @@ const Editor: React.FC = () => {
         onSuccess={() => {
           setShowAuthModalFromTour(false);
           setIsSigningInFromTour(true); // Flag to suppress automatic toasts
+          justSignedInFromTour.current = true; // Mark that we just signed in from tour
           // Tour will auto-relaunch via useEffect watching migration state
         }}
       />
