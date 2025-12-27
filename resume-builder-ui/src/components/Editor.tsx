@@ -523,7 +523,7 @@ const Editor: React.FC = () => {
     };
 
     loadResumeFromCloud();
-  }, [resumeIdFromUrl, authLoading, session, hasLoadedFromUrl]);
+  }, [resumeIdFromUrl, authLoading, anonMigrationInProgress, session, hasLoadedFromUrl]);
 
   // Tour persistence using unified preferences hook
   const { preferences, setPreference, isLoading: prefsLoading } = usePreferencePersistence({
