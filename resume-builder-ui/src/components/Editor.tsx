@@ -531,7 +531,23 @@ const Editor: React.FC = () => {
         setHasLoadedFromUrl(true); // Mark as loaded to prevent re-runs
       } catch (error) {
         console.error('Failed to load resume:', error);
-        toast.error(error instanceof Error ? error.message : 'Failed to load resume');
+
+        // Check if we can recover from template or have fallback data
+        // This happens when:
+        // 1. User logs in via OAuth, redirects back to /editor/{oldResumeId}
+        // 2. Old resume ID doesn't exist in database (auto-save hadn't triggered yet)
+        // 3. But Editor can recover by loading template data
+        const hasTemplateParam = searchParams.get('template');
+        const hasEditorState = contactInfo && sections.length > 0;
+        const canRecover = templateId || hasTemplateParam || hasEditorState;
+
+        if (!canRecover) {
+          // Only show toast if we can't recover - this is a true error
+          toast.error(error instanceof Error ? error.message : 'Failed to load resume');
+        } else {
+          console.log('Resume not found in database, will recover from template or existing editor state');
+        }
+
         setIsLoadingFromUrl(false);
       } finally {
         setLoading(false);
