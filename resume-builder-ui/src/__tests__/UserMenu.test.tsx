@@ -1,8 +1,7 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { MemoryRouter } from 'react-router-dom';
 import UserMenu from '../components/UserMenu';
-import { AuthContext } from '../contexts/AuthContext';
+import { renderWithProviders, createMockUser, createMockAuthContext, createMockAnonymousAuthContext } from '../test-utils';
 import type { User } from '@supabase/supabase-js';
 
 // Mock the useUserAvatar hook
@@ -28,31 +27,6 @@ vi.mock('../hooks/useUserAvatar', () => ({
 describe('UserMenu', () => {
   const mockSignOut = vi.fn();
 
-  const createMockUser = (overrides?: Partial<User>): User => ({
-    id: 'test-user-id',
-    aud: 'authenticated',
-    role: 'authenticated',
-    email: 'test@example.com',
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-01T00:00:00Z',
-    user_metadata: {
-      full_name: 'Test User',
-      avatar_url: 'https://example.com/avatar.jpg',
-    },
-    app_metadata: {},
-    ...overrides,
-  } as User);
-
-  const renderWithAuth = (authContextValue: any) => {
-    return render(
-      <MemoryRouter>
-        <AuthContext.Provider value={authContextValue}>
-          <UserMenu />
-        </AuthContext.Provider>
-      </MemoryRouter>
-    );
-  };
-
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -65,16 +39,11 @@ describe('UserMenu', () => {
         user_metadata: {},
       };
 
-      renderWithAuth({
-        user: anonymousUser,
-        signOut: mockSignOut,
-        isAnonymous: true,
-        session: null,
-        loading: false,
-        isAuthenticated: false,
-        signInWithGoogle: vi.fn(),
-        signInWithLinkedIn: vi.fn(),
-        signInWithEmail: vi.fn(),
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAnonymousAuthContext({
+          user: anonymousUser,
+          signOut: mockSignOut,
+        }),
       });
 
       // Should show "G" for Guest
@@ -96,16 +65,12 @@ describe('UserMenu', () => {
         },
       };
 
-      renderWithAuth({
-        user: userWithoutAvatar,
-        signOut: mockSignOut,
-        isAnonymous: false,
-        session: { user: userWithoutAvatar },
-        loading: false,
-        isAuthenticated: true,
-        signInWithGoogle: vi.fn(),
-        signInWithLinkedIn: vi.fn(),
-        signInWithEmail: vi.fn(),
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAuthContext({
+          user: userWithoutAvatar,
+          session: { user: userWithoutAvatar },
+          signOut: mockSignOut,
+        }),
       });
 
       // Should show "J" for John
@@ -124,16 +89,12 @@ describe('UserMenu', () => {
         user_metadata: {},
       };
 
-      renderWithAuth({
-        user: userWithEmail,
-        signOut: mockSignOut,
-        isAnonymous: false,
-        session: { user: userWithEmail },
-        loading: false,
-        isAuthenticated: true,
-        signInWithGoogle: vi.fn(),
-        signInWithLinkedIn: vi.fn(),
-        signInWithEmail: vi.fn(),
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAuthContext({
+          user: userWithEmail,
+          session: { user: userWithEmail },
+          signOut: mockSignOut,
+        }),
       });
 
       // Should show "S" for sarah (from email)
@@ -144,18 +105,19 @@ describe('UserMenu', () => {
 
   describe('Authenticated Users With Avatar', () => {
     it('should render img tag with correct src and attributes', () => {
-      const user = createMockUser();
+      const user = createMockUser({
+        user_metadata: {
+          full_name: 'Test User',
+          avatar_url: 'https://example.com/avatar.jpg'
+        }
+      });
 
-      renderWithAuth({
-        user,
-        signOut: mockSignOut,
-        isAnonymous: false,
-        session: { user },
-        loading: false,
-        isAuthenticated: true,
-        signInWithGoogle: vi.fn(),
-        signInWithLinkedIn: vi.fn(),
-        signInWithEmail: vi.fn(),
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAuthContext({
+          user,
+          session: { user },
+          signOut: mockSignOut,
+        }),
       });
 
       const img = screen.getByRole('img', { name: 'Test User' });
@@ -165,18 +127,19 @@ describe('UserMenu', () => {
     });
 
     it('should have referrerPolicy="no-referrer" attribute', () => {
-      const user = createMockUser();
+      const user = createMockUser({
+        user_metadata: {
+          full_name: 'Test User',
+          avatar_url: 'https://example.com/avatar.jpg'
+        }
+      });
 
-      renderWithAuth({
-        user,
-        signOut: mockSignOut,
-        isAnonymous: false,
-        session: { user },
-        loading: false,
-        isAuthenticated: true,
-        signInWithGoogle: vi.fn(),
-        signInWithLinkedIn: vi.fn(),
-        signInWithEmail: vi.fn(),
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAuthContext({
+          user,
+          session: { user },
+          signOut: mockSignOut,
+        }),
       });
 
       const img = screen.getByRole('img');
@@ -184,18 +147,19 @@ describe('UserMenu', () => {
     });
 
     it('should have crossOrigin="anonymous" attribute', () => {
-      const user = createMockUser();
+      const user = createMockUser({
+        user_metadata: {
+          full_name: 'Test User',
+          avatar_url: 'https://example.com/avatar.jpg'
+        }
+      });
 
-      renderWithAuth({
-        user,
-        signOut: mockSignOut,
-        isAnonymous: false,
-        session: { user },
-        loading: false,
-        isAuthenticated: true,
-        signInWithGoogle: vi.fn(),
-        signInWithLinkedIn: vi.fn(),
-        signInWithEmail: vi.fn(),
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAuthContext({
+          user,
+          session: { user },
+          signOut: mockSignOut,
+        }),
       });
 
       const img = screen.getByRole('img');
@@ -215,18 +179,19 @@ describe('UserMenu', () => {
         retry: vi.fn(),
       });
 
-      const user = createMockUser();
+      const user = createMockUser({
+        user_metadata: {
+          full_name: 'Test User',
+          avatar_url: 'https://example.com/avatar.jpg'
+        }
+      });
 
-      renderWithAuth({
-        user,
-        signOut: mockSignOut,
-        isAnonymous: false,
-        session: { user },
-        loading: false,
-        isAuthenticated: true,
-        signInWithGoogle: vi.fn(),
-        signInWithLinkedIn: vi.fn(),
-        signInWithEmail: vi.fn(),
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAuthContext({
+          user,
+          session: { user },
+          signOut: mockSignOut,
+        }),
       });
 
       // Should show fallback (initial) instead of image
@@ -239,16 +204,12 @@ describe('UserMenu', () => {
     it('should open dropdown menu when clicked', async () => {
       const user = createMockUser();
 
-      renderWithAuth({
-        user,
-        signOut: mockSignOut,
-        isAnonymous: false,
-        session: { user },
-        loading: false,
-        isAuthenticated: true,
-        signInWithGoogle: vi.fn(),
-        signInWithLinkedIn: vi.fn(),
-        signInWithEmail: vi.fn(),
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAuthContext({
+          user,
+          session: { user },
+          signOut: mockSignOut,
+        }),
       });
 
       // Find and click the user menu button
@@ -265,16 +226,12 @@ describe('UserMenu', () => {
     it('should call signOut when Sign Out is clicked', async () => {
       const user = createMockUser();
 
-      renderWithAuth({
-        user,
-        signOut: mockSignOut,
-        isAnonymous: false,
-        session: { user },
-        loading: false,
-        isAuthenticated: true,
-        signInWithGoogle: vi.fn(),
-        signInWithLinkedIn: vi.fn(),
-        signInWithEmail: vi.fn(),
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAuthContext({
+          user,
+          session: { user },
+          signOut: mockSignOut,
+        }),
       });
 
       // Open menu
@@ -295,16 +252,11 @@ describe('UserMenu', () => {
         user_metadata: {},
       };
 
-      renderWithAuth({
-        user: anonymousUser,
-        signOut: mockSignOut,
-        isAnonymous: true,
-        session: null,
-        loading: false,
-        isAuthenticated: false,
-        signInWithGoogle: vi.fn(),
-        signInWithLinkedIn: vi.fn(),
-        signInWithEmail: vi.fn(),
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAnonymousAuthContext({
+          user: anonymousUser,
+          signOut: mockSignOut,
+        }),
       });
 
       // Open menu
@@ -325,16 +277,11 @@ describe('UserMenu', () => {
         user_metadata: {},
       };
 
-      renderWithAuth({
-        user: anonymousUser,
-        signOut: mockSignOut,
-        isAnonymous: true,
-        session: null,
-        loading: false,
-        isAuthenticated: false,
-        signInWithGoogle: vi.fn(),
-        signInWithLinkedIn: vi.fn(),
-        signInWithEmail: vi.fn(),
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAnonymousAuthContext({
+          user: anonymousUser,
+          signOut: mockSignOut,
+        }),
       });
 
       // Open menu
@@ -357,16 +304,12 @@ describe('UserMenu', () => {
         },
       };
 
-      renderWithAuth({
-        user,
-        signOut: mockSignOut,
-        isAnonymous: false,
-        session: { user },
-        loading: false,
-        isAuthenticated: true,
-        signInWithGoogle: vi.fn(),
-        signInWithLinkedIn: vi.fn(),
-        signInWithEmail: vi.fn(),
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAuthContext({
+          user,
+          session: { user },
+          signOut: mockSignOut,
+        }),
       });
 
       expect(screen.getByText('Jane Smith')).toBeInTheDocument();
@@ -380,16 +323,12 @@ describe('UserMenu', () => {
         user_metadata: {},
       };
 
-      renderWithAuth({
-        user,
-        signOut: mockSignOut,
-        isAnonymous: false,
-        session: { user },
-        loading: false,
-        isAuthenticated: true,
-        signInWithGoogle: vi.fn(),
-        signInWithLinkedIn: vi.fn(),
-        signInWithEmail: vi.fn(),
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAuthContext({
+          user,
+          session: { user },
+          signOut: mockSignOut,
+        }),
       });
 
       expect(screen.getByText('bob.jones')).toBeInTheDocument();
@@ -403,16 +342,12 @@ describe('UserMenu', () => {
         user_metadata: {},
       };
 
-      renderWithAuth({
-        user,
-        signOut: mockSignOut,
-        isAnonymous: false,
-        session: { user },
-        loading: false,
-        isAuthenticated: true,
-        signInWithGoogle: vi.fn(),
-        signInWithLinkedIn: vi.fn(),
-        signInWithEmail: vi.fn(),
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAuthContext({
+          user,
+          session: { user },
+          signOut: mockSignOut,
+        }),
       });
 
       expect(screen.getByText('User')).toBeInTheDocument();
