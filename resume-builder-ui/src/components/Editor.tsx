@@ -7,7 +7,7 @@ import React, {
   Suspense,
 } from "react";
 import ReactDOM from "react-dom";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { fetchTemplate, generateResume, generateThumbnail } from "../services/templates";
 import { getSessionId } from "../utils/session";
@@ -139,6 +139,7 @@ interface ContactInfo {
 
 const Editor: React.FC = () => {
   const { resumeId: resumeIdFromUrl } = useParams<{ resumeId: string }>();
+  const [searchParams] = useSearchParams();
 
   // Get context for footer integration
   const {
@@ -406,6 +407,18 @@ const Editor: React.FC = () => {
       return false;
     }
   }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow]);
+
+  // Extract template ID from query parameters (e.g., /editor?template=1)
+  useEffect(() => {
+    const templateParam = searchParams.get('template');
+    // Only set templateId if:
+    // - templateParam exists in URL
+    // - templateId is not already set (avoid overwriting)
+    // - resumeIdFromUrl is not set (resume ID takes precedence)
+    if (templateParam && !templateId && !resumeIdFromUrl) {
+      setTemplateId(templateParam);
+    }
+  }, [searchParams, templateId, resumeIdFromUrl]);
 
   useEffect(() => {
     // Skip template loading if we're loading a saved resume from URL
