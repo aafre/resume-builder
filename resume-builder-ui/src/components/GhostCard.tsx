@@ -7,7 +7,7 @@ interface GhostCardProps {
   onUpgrade: () => void;
 }
 
-export function GhostCard({ isAtLimit, resumeCount, onCreateNew, onUpgrade }: GhostCardProps) {
+export function GhostCard({ isAtLimit, resumeCount, onCreateNew }: GhostCardProps) {
   const isOverLimit = resumeCount > 5;
 
   if (isAtLimit) {
