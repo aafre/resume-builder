@@ -341,7 +341,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const result = await response.json();
       console.log('Resume migration successful:', result);
 
-      // Show success toast with appropriate message
+      // Show toast only for important warnings (exceeds limit)
       if (result.migrated_count > 0) {
         if (result.exceeds_limit) {
           toast.success(
@@ -350,7 +350,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             { duration: 7000 }
           );
         } else {
-          toast.success(`Your ${result.migrated_count} resume(s) have been migrated successfully!`);
+          // Silent success - tour toast will handle confirmation
+          console.log(`✅ ${result.migrated_count} resume(s) migrated successfully`);
         }
       }
 
