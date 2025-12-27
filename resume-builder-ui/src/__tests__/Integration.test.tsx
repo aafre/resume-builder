@@ -1,9 +1,9 @@
 /// <reference types="vitest" />
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { screen, waitFor, fireEvent } from "@testing-library/react";
+import { Route, Routes } from "react-router-dom";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import Editor from "../components/Editor";
-import { EditorProvider } from "../contexts/EditorContext";
+import { renderWithProviders } from "../test-utils";
 import * as templateService from "../services/templates";
 import yaml from "js-yaml";
 
@@ -57,14 +57,14 @@ describe("Integration Tests", () => {
   });
 
   it("completes a full resume editing workflow", async () => {
-    render(
-      <EditorProvider>
-        <MemoryRouter initialEntries={["/editor?template=1"]}>
-          <Routes>
-            <Route path="/editor" element={<Editor />} />
-          </Routes>
-        </MemoryRouter>
-      </EditorProvider>
+    renderWithProviders(
+      <Routes>
+        <Route path="/editor" element={<Editor />} />
+      </Routes>,
+      {
+        withEditorProvider: true,
+        initialRoute: "/editor?template=1",
+      }
     );
 
     // Wait for template to load
@@ -87,14 +87,14 @@ describe("Integration Tests", () => {
   });
 
   it("handles section removal workflow", async () => {
-    render(
-      <EditorProvider>
-        <MemoryRouter initialEntries={["/editor?template=1"]}>
-          <Routes>
-            <Route path="/editor" element={<Editor />} />
-          </Routes>
-        </MemoryRouter>
-      </EditorProvider>
+    renderWithProviders(
+      <Routes>
+        <Route path="/editor" element={<Editor />} />
+      </Routes>,
+      {
+        withEditorProvider: true,
+        initialRoute: "/editor?template=1",
+      }
     );
 
     // Wait for template to load
@@ -118,14 +118,14 @@ describe("Integration Tests", () => {
   });
 
   it("can find and click add section button", async () => {
-    render(
-      <EditorProvider>
-        <MemoryRouter initialEntries={["/editor?template=1"]}>
-          <Routes>
-            <Route path="/editor" element={<Editor />} />
-          </Routes>
-        </MemoryRouter>
-      </EditorProvider>
+    renderWithProviders(
+      <Routes>
+        <Route path="/editor" element={<Editor />} />
+      </Routes>,
+      {
+        withEditorProvider: true,
+        initialRoute: "/editor?template=1",
+      }
     );
 
     // Wait for template to load
@@ -151,14 +151,14 @@ describe("Integration Tests", () => {
   });
 
   it("handles PDF generation workflow", async () => {
-    render(
-      <EditorProvider>
-        <MemoryRouter initialEntries={["/editor?template=1"]}>
-          <Routes>
-            <Route path="/editor" element={<Editor />} />
-          </Routes>
-        </MemoryRouter>
-      </EditorProvider>
+    renderWithProviders(
+      <Routes>
+        <Route path="/editor" element={<Editor />} />
+      </Routes>,
+      {
+        withEditorProvider: true,
+        initialRoute: "/editor?template=1",
+      }
     );
 
     // Wait for template to load
@@ -188,14 +188,14 @@ describe("Integration Tests", () => {
         new Error("Failed to load template")
       );
 
-      render(
-        <EditorProvider>
-          <MemoryRouter initialEntries={["/editor?template=1"]}>
-            <Routes>
-              <Route path="/editor" element={<Editor />} />
-            </Routes>
-          </MemoryRouter>
-        </EditorProvider>
+      renderWithProviders(
+        <Routes>
+          <Route path="/editor" element={<Editor />} />
+        </Routes>,
+        {
+          withEditorProvider: true,
+          initialRoute: "/editor?template=1",
+        }
       );
 
       // Should show loading initially
@@ -211,14 +211,14 @@ describe("Integration Tests", () => {
         new Error("PDF generation failed")
       );
 
-      render(
-        <EditorProvider>
-          <MemoryRouter initialEntries={["/editor?template=1"]}>
-            <Routes>
-              <Route path="/editor" element={<Editor />} />
-            </Routes>
-          </MemoryRouter>
-        </EditorProvider>
+      renderWithProviders(
+        <Routes>
+          <Route path="/editor" element={<Editor />} />
+        </Routes>,
+        {
+          withEditorProvider: true,
+          initialRoute: "/editor?template=1",
+        }
       );
 
       // Wait for template to load
