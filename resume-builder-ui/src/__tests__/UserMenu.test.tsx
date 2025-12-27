@@ -218,7 +218,9 @@ describe('UserMenu', () => {
 
       // Dropdown should be visible
       await waitFor(() => {
-        expect(screen.getByText('My Resumes')).toBeInTheDocument();
+        // Use getAllByText since "My Resumes" appears in both mobile and desktop menu sections
+        const myResumesElements = screen.getAllByText('My Resumes');
+        expect(myResumesElements.length).toBeGreaterThan(0);
         expect(screen.getByText('Sign Out')).toBeInTheDocument();
       });
     });
