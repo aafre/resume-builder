@@ -78,7 +78,7 @@ export const TOUR_STEPS: TourStep[] = [
       showForAnonymousOnly: true
     },
     ctaButton: {
-      text: 'Enable Free Cloud Saving',
+      text: 'Sign In to Save',
       action: 'sign-in',
       showForAnonymousOnly: true
     }
