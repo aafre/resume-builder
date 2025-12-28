@@ -402,14 +402,16 @@ const LandingPage: React.FC = () => {
                       }`}
                     />
                   </button>
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ${
-                      isOpen ? "max-h-48 pb-6" : "max-h-0"
-                    }`}
-                  >
-                    <p className="text-gray-600 px-6 leading-relaxed">
-                      {faq.answer}
-                    </p>
+                  <div style={{ contain: 'layout' }}>
+                    <div
+                      className={`overflow-hidden transition-all duration-300 ${
+                        isOpen ? "max-h-48 pb-6" : "max-h-0"
+                      }`}
+                    >
+                      <p className="text-gray-600 px-6 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
                   </div>
                 </div>
               );
