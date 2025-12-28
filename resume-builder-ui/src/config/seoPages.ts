@@ -677,12 +677,17 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       {
         question: 'How do I identify fake "free" resume builders?',
         answer:
-          'Red flags: requiring credit card for "free trial," adding watermarks on free plans, locking templates behind paywall, charging to remove branding. Actually free means no catches.',
+          'Red flags: requiring credit card for "free trial," adding watermarks on free plans, locking templates behind paywall, charging to remove branding. Actually free means no catches. We offer both guest mode (no signup) and free cloud accounts with auto-save and multi-resume management - all at $0.',
       },
       {
         question: 'Is DOCX or PDF better for ATS?',
         answer:
           'DOCX is safest for ATS. Use PDF only when job posting specifically requests it. Modern ATS handle both, but DOCX parsing is more reliable.',
+      },
+      {
+        question: 'Can I save multiple resume versions for different jobs?',
+        answer:
+          'Yes. Create a free account to unlock the My Resumes dashboard where you can save up to 5 different resume versions. Perfect for tailoring your resume to different industries or job types.',
       },
       {
         question: 'Can I import my existing resume?',
