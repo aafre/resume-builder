@@ -1,12 +1,13 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchTemplates } from "../services/templates";
-import { ArrowRightIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
+import { ArrowRightIcon, CheckCircleIcon, DocumentArrowUpIcon } from "@heroicons/react/24/solid";
 import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
 import TemplateStartModal from "./TemplateStartModal";
 import ResumeRecoveryModal from "./ResumeRecoveryModal";
 import AuthModal from "./AuthModal";
+import { UploadResumeModal } from "./UploadResumeModal";
 
 // Lazy-loaded error components
 const NotFound = lazy(() => import("./NotFound"));
@@ -42,6 +43,7 @@ const TemplateCarousel: React.FC = () => {
   const [existingResumeId, setExistingResumeId] = useState<string | null>(null);
   const [existingResumeTitle, setExistingResumeTitle] = useState<string>('');
   const [processingRecoveryRedirect, setProcessingRecoveryRedirect] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
   const navigate = useNavigate();
   const { session, isAnonymous, isAuthenticated, anonMigrationInProgress } = useAuth();
 
@@ -243,6 +245,19 @@ const TemplateCarousel: React.FC = () => {
     setShowStartModal(true);
   };
 
+  // Handle AI resume import success
+  const handleResumeImported = (yamlString: string, confidence: number, warnings: string[]) => {
+    // Store in localStorage for Editor to pick up
+    localStorage.setItem('imported_resume_yaml', yamlString);
+    localStorage.setItem('imported_resume_warnings', JSON.stringify(warnings));
+    localStorage.setItem('imported_resume_confidence', confidence.toString());
+
+    // Navigate to editor with flag
+    navigate('/editor?imported=true');
+
+    setShowUploadModal(false);
+  };
+
   // Check for recovery intent early on mount to prevent template page flash
   useEffect(() => {
     const recoveryIntent = localStorage.getItem('resume-recovery-intent');
@@ -348,9 +363,20 @@ const TemplateCarousel: React.FC = () => {
         <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800 mb-6">
           Choose Your Perfect Template
         </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
           Select a professional template that matches your style and industry
         </p>
+
+        {/* Upload Resume Button */}
+        <div className="flex justify-center">
+          <button
+            onClick={() => setShowUploadModal(true)}
+            className="btn-primary px-8 py-4 text-lg flex items-center gap-3"
+          >
+            <DocumentArrowUpIcon className="w-6 h-6" />
+            Upload Existing Resume
+          </button>
+        </div>
       </div>
 
       {/* Templates Grid */}
@@ -488,6 +514,13 @@ const TemplateCarousel: React.FC = () => {
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
         onSuccess={handleAuthSuccess}
+      />
+
+      {/* Upload Resume Modal */}
+      <UploadResumeModal
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+        onSuccess={handleResumeImported}
       />
     </div>
   );
