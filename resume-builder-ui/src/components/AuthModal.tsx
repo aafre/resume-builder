@@ -72,7 +72,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 px-6 py-4 flex items-center justify-between flex-shrink-0">
+        <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 px-6 py-4 flex items-center justify-between flex-shrink-0 rounded-t-2xl">
           <h2 className="text-2xl font-bold text-white">Save Your Resume to the Cloud</h2>
           <button
             onClick={onClose}
