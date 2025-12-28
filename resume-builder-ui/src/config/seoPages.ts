@@ -210,11 +210,16 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       {
         question: 'Is anything limited for guests?',
         answer:
-          'Only cloud save and email alerts require an account. All templates, exports, and editing features work without signup.',
+          'Guest users have full access to all templates, PDF/DOCX downloads, and editing features. Creating a free account adds Cloud Auto-Save, My Resumes Dashboard (manage up to 5 resumes), and automatic resume recovery across devices.',
       },
       {
         question: 'Will you email me?',
         answer: 'No. No account means no emails. We cannot send you anything because we do not have your information.',
+      },
+      {
+        question: 'What happens to my resume if I sign in later?',
+        answer:
+          'When you sign in for the first time, our migration system automatically transfers any resumes you created as a guest to your secure cloud account. You will see a success message confirming the transfer.',
       },
       {
         question: 'Can I come back to an unsaved resume?',
