@@ -78,8 +78,9 @@ export default function AnnouncementBar() {
         background: 'linear-gradient(to right, rgb(59, 130, 246), rgb(147, 51, 234), rgb(99, 102, 241))'
       }} />
 
-      <div style={{ maxWidth: '1800px', margin: '0 auto', padding: '10px 16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+      <div style={{ maxWidth: '1800px', margin: '0 auto', padding: '10px 12px' }}>
+        {/* Desktop: Single row with all elements */}
+        <div className="hidden sm:flex items-center justify-between gap-3">
           {/* Left: Icon + Message */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, minWidth: 0 }}>
             {activeAnnouncement.icon && (
@@ -163,6 +164,62 @@ export default function AnnouncementBar() {
               <XMarkIcon style={{ width: '16px', height: '16px', color: 'white' }} aria-hidden="true" />
             </button>
           </div>
+        </div>
+
+        {/* Mobile: Compact center-aligned with just icon + CTA button */}
+        <div className="flex sm:hidden items-center justify-center gap-2">
+          {activeAnnouncement.icon && (
+            <span style={{ fontSize: '20px', flexShrink: 0 }} aria-hidden="true">
+              {activeAnnouncement.icon}
+            </span>
+          )}
+          <span style={{
+            fontSize: '13px',
+            color: 'white',
+            fontWeight: 600
+          }}>
+            New: Save to cloud!
+          </span>
+          {activeAnnouncement.primaryCta && (
+            <button
+              onClick={handlePrimaryCta}
+              style={{
+                padding: '5px 12px',
+                fontSize: '12px',
+                fontWeight: 700,
+                background: 'white',
+                color: 'rgb(147, 51, 234)',
+                borderRadius: '6px',
+                border: 'none',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}
+              aria-label={activeAnnouncement.primaryCta.text}
+            >
+              {activeAnnouncement.primaryCta.text}
+            </button>
+          )}
+          {/* Mobile close button */}
+          <button
+            onClick={handleDismiss}
+            style={{
+              padding: '4px',
+              borderRadius: '4px',
+              background: 'rgba(255,255,255,0.2)',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              marginLeft: 'auto'
+            }}
+            aria-label="Dismiss"
+            disabled={isDismissing}
+          >
+            <XMarkIcon style={{ width: '14px', height: '14px', color: 'white' }} aria-hidden="true" />
+          </button>
         </div>
       </div>
     </div>
