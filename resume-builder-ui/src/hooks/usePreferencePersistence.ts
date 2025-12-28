@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import type { Session } from '@supabase/supabase-js';
 
-type PreferenceKey = 'tour_completed' | 'idle_nudge_shown';
+type PreferenceKey = 'tour_completed' | 'idle_nudge_shown' | 'announcement_dismissals';
 
 interface UsePreferencePersistenceProps {
   session: Session | null;
@@ -12,11 +12,13 @@ interface UsePreferencePersistenceProps {
 interface PreferenceState {
   tour_completed: boolean;
   idle_nudge_shown: boolean;
+  announcement_dismissals: string[];
 }
 
 interface UsePreferencePersistenceReturn {
   preferences: PreferenceState;
   setPreference: (key: PreferenceKey, value: boolean) => Promise<void>;
+  addDismissedAnnouncement: (announcementId: string) => Promise<void>;
   isLoading: boolean;
 }
 
@@ -46,7 +48,8 @@ export default function usePreferencePersistence({
 }: UsePreferencePersistenceProps): UsePreferencePersistenceReturn {
   const [preferences, setPreferences] = useState<PreferenceState>({
     tour_completed: false,
-    idle_nudge_shown: false
+    idle_nudge_shown: false,
+    announcement_dismissals: []
   });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -69,7 +72,7 @@ export default function usePreferencePersistence({
       try {
         const { data, error } = await supabase
           .from('user_preferences')
-          .select('tour_completed, idle_nudge_shown')
+          .select('tour_completed, idle_nudge_shown, announcement_dismissals')
           .eq('user_id', session.user.id)
           .maybeSingle();
 
@@ -82,7 +85,8 @@ export default function usePreferencePersistence({
           // User has preferences in database
           setPreferences({
             tour_completed: data.tour_completed || false,
-            idle_nudge_shown: data.idle_nudge_shown || false
+            idle_nudge_shown: data.idle_nudge_shown || false,
+            announcement_dismissals: data.announcement_dismissals || []
           });
         } else if (supabase) {
           // New user - create preferences row with defaults
@@ -92,6 +96,7 @@ export default function usePreferencePersistence({
               user_id: session.user.id,
               tour_completed: false,
               idle_nudge_shown: false,
+              announcement_dismissals: [],
               updated_at: new Date().toISOString()
             }, {
               onConflict: 'user_id'
@@ -104,7 +109,8 @@ export default function usePreferencePersistence({
           // Set default preferences in state
           setPreferences({
             tour_completed: false,
-            idle_nudge_shown: false
+            idle_nudge_shown: false,
+            announcement_dismissals: []
           });
         }
       } catch (error) {
@@ -112,7 +118,8 @@ export default function usePreferencePersistence({
         // Fail gracefully with defaults
         setPreferences({
           tour_completed: false,
-          idle_nudge_shown: false
+          idle_nudge_shown: false,
+          announcement_dismissals: []
         });
       } finally {
         setIsLoading(false);
@@ -168,5 +175,58 @@ export default function usePreferencePersistence({
     }
   }, [session]);
 
-  return { preferences, setPreference, isLoading };
+  /**
+   * Add an announcement ID to the dismissed announcements list
+   *
+   * @param announcementId - The unique ID of the announcement to dismiss
+   */
+  const addDismissedAnnouncement = useCallback(async (announcementId: string) => {
+    if (!session?.user?.id) {
+      console.warn('Cannot dismiss announcement: no session');
+      return;
+    }
+
+    if (!supabase) {
+      console.warn('Supabase not initialized');
+      return;
+    }
+
+    // Update local state immediately for responsive UI
+    setPreferences(prev => ({
+      ...prev,
+      announcement_dismissals: [...prev.announcement_dismissals, announcementId]
+    }));
+
+    // Update database
+    try {
+      const newDismissals = [...preferences.announcement_dismissals, announcementId];
+      const { error } = await supabase
+        .from('user_preferences')
+        .upsert({
+          user_id: session.user.id,
+          announcement_dismissals: newDismissals,
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'user_id'
+        });
+
+      if (error) {
+        console.warn('Failed to save dismissed announcement:', error);
+        // Revert local state on error
+        setPreferences(prev => ({
+          ...prev,
+          announcement_dismissals: prev.announcement_dismissals.filter(id => id !== announcementId)
+        }));
+      }
+    } catch (error) {
+      console.warn('Failed to save dismissed announcement:', error);
+      // Revert local state on error
+      setPreferences(prev => ({
+        ...prev,
+        announcement_dismissals: prev.announcement_dismissals.filter(id => id !== announcementId)
+      }));
+    }
+  }, [session, preferences.announcement_dismissals]);
+
+  return { preferences, setPreference, addDismissedAnnouncement, isLoading };
 }
