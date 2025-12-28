@@ -12,6 +12,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import LandingPage from "./components/LandingPage";
 import EnvironmentBanner from "./components/EnvironmentBanner";
+import AnnouncementBar from "./components/AnnouncementBar";
 import ScrollToTop from "./components/ScrollToTop";
 import { EditorProvider, useEditorContext } from "./contexts/EditorContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
@@ -123,6 +124,7 @@ function AppContent() {
    <ScrollToTop/>
     <div className="flex flex-col min-h-screen bg-gray-50">
       <EnvironmentBanner />
+      <AnnouncementBar />
       {/* Header */}
       <header className="bg-white shadow-md sticky top-0 z-50">
         <Header />
