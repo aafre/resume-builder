@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../contexts/AuthContext';
 import usePreferencePersistence from '../hooks/usePreferencePersistence';
@@ -124,8 +124,10 @@ export default function AnnouncementBar() {
 
             {/* Secondary CTA Link */}
             {activeAnnouncement.secondaryCta && (
-              <Link
-                to={activeAnnouncement.secondaryCta.url}
+              <a
+                href={activeAnnouncement.secondaryCta.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
                   fontSize: '13px',
                   fontWeight: 700,
@@ -136,7 +138,7 @@ export default function AnnouncementBar() {
                 aria-label={activeAnnouncement.secondaryCta.text}
               >
                 {activeAnnouncement.secondaryCta.text}
-              </Link>
+              </a>
             )}
           </div>
 
