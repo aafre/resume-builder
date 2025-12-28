@@ -280,11 +280,17 @@ const TemplateCarousel: React.FC = () => {
             // SAFE: resume_id stays the same during migration
             // Backend only updates user_id field (app.py:2479-2483)
             navigate(`/editor/${resumeId}`);
+          } else {
+            // Intent is stale or invalid, clear loader flag
+            setProcessingRecoveryRedirect(false);
           }
         } catch (error) {
           console.error('Failed to parse recovery intent:', error);
           setProcessingRecoveryRedirect(false); // Clear loader on error
         }
+      } else {
+        // No recovery intent found, clear loader flag
+        setProcessingRecoveryRedirect(false);
       }
     }
   }, [isAuthenticated, isAnonymous, anonMigrationInProgress, navigate]);
