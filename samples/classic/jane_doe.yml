@@ -65,6 +65,7 @@ sections:
       - "Slack"
 
   - name: Experience
+    type: experience
     content:
       - company: "Digital Solutions Agency"
         title: "Digital Marketing Specialist"
@@ -84,6 +85,7 @@ sections:
           - "Coordinated email marketing campaigns with 25% open rates and 8% click-through rates"
 
   - name: Education
+    type: education
     content:
       - degree: "Bachelor of Arts in Marketing"
         school: "University of California, Berkeley"
