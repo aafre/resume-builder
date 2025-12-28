@@ -509,6 +509,27 @@ const Editor: React.FC = () => {
         const templateSupportsIcons = resume.template_id === 'modern-with-icons';
         setSupportsIcons(templateSupportsIcons);
 
+        // Load template structure for originalTemplateData (needed for "Start Fresh")
+        try {
+          const { yaml: templateYaml } = await fetchTemplate(resume.template_id);
+          const templateData = yaml.load(templateYaml) as {
+            contact_info: ContactInfo;
+            sections: Section[];
+          };
+
+          // Migrate and process template sections
+          const migratedTemplateSections = migrateLegacySections(templateData.sections);
+          const processedTemplateSections = processSections(migratedTemplateSections);
+
+          setOriginalTemplateData({
+            contactInfo: templateData.contact_info,
+            sections: processedTemplateSections,
+          });
+        } catch (templateError) {
+          console.error('Failed to load template structure for Start Fresh:', templateError);
+          // Non-critical: Start Fresh will still fail gracefully if originalTemplateData is null
+        }
+
         // Load icons from storage URLs and register them
         iconRegistry.clearRegistry(); // Clear existing icons first
         for (const icon of resume.icons || []) {
@@ -549,6 +570,7 @@ const Editor: React.FC = () => {
         }
 
         setIsLoadingFromUrl(false);
+        // Don't set hasLoadedFromUrl on error - allow retry after migration completes
       } finally {
         setLoading(false);
       }
