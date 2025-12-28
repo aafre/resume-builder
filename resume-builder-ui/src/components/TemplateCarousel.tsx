@@ -41,6 +41,7 @@ const TemplateCarousel: React.FC = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [existingResumeId, setExistingResumeId] = useState<string | null>(null);
   const [existingResumeTitle, setExistingResumeTitle] = useState<string>('');
+  const [processingRecoveryRedirect, setProcessingRecoveryRedirect] = useState(false);
   const navigate = useNavigate();
   const { session, isAnonymous, isAuthenticated, anonMigrationInProgress } = useAuth();
 
@@ -242,6 +243,24 @@ const TemplateCarousel: React.FC = () => {
     setShowStartModal(true);
   };
 
+  // Check for recovery intent early on mount to prevent template page flash
+  useEffect(() => {
+    const recoveryIntent = localStorage.getItem('resume-recovery-intent');
+    if (recoveryIntent) {
+      try {
+        const { timestamp } = JSON.parse(recoveryIntent);
+        const isRecent = Date.now() - timestamp < 10 * 60 * 1000;
+
+        // If recovery intent is fresh and user is authenticated/migrating, show loader
+        if (isRecent && (isAuthenticated || anonMigrationInProgress)) {
+          setProcessingRecoveryRedirect(true);
+        }
+      } catch (error) {
+        console.error('Failed to parse recovery intent:', error);
+      }
+    }
+  }, [isAuthenticated, anonMigrationInProgress]);
+
   // Handle post-auth navigation to resume from recovery intent
   useEffect(() => {
     // Only proceed if authenticated AND migration is complete
@@ -256,6 +275,7 @@ const TemplateCarousel: React.FC = () => {
 
           if (action === 'continue' && resumeId && isRecent) {
             localStorage.removeItem('resume-recovery-intent');
+            setProcessingRecoveryRedirect(true); // Keep loader visible during navigation
 
             // SAFE: resume_id stays the same during migration
             // Backend only updates user_id field (app.py:2479-2483)
@@ -263,12 +283,27 @@ const TemplateCarousel: React.FC = () => {
           }
         } catch (error) {
           console.error('Failed to parse recovery intent:', error);
+          setProcessingRecoveryRedirect(false); // Clear loader on error
         }
       }
     }
   }, [isAuthenticated, isAnonymous, anonMigrationInProgress, navigate]);
 
-  // Loading state
+  // Show loader if processing recovery redirect (prevents template page flash after sign-in)
+  if (processingRecoveryRedirect || (anonMigrationInProgress && localStorage.getItem('resume-recovery-intent'))) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-xl text-gray-600">
+            Redirecting to your resume...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Loading state for template fetch
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
