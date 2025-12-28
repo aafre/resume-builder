@@ -166,41 +166,69 @@ export default function AnnouncementBar() {
           </div>
         </div>
 
-        {/* Mobile: Compact center-aligned with just icon + CTA button */}
-        <div className="flex sm:hidden items-center justify-center gap-2">
-          {activeAnnouncement.icon && (
-            <span style={{ fontSize: '20px', flexShrink: 0 }} aria-hidden="true">
-              {activeAnnouncement.icon}
-            </span>
-          )}
-          <span style={{
-            fontSize: '13px',
-            color: 'white',
-            fontWeight: 600
+        {/* Mobile: Ticker animation with CTA buttons */}
+        <div className="flex sm:hidden items-center gap-2 relative">
+          {/* Fixed left side: Icon + CTA button */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            flexShrink: 0,
+            zIndex: 2
           }}>
-            New: Save to cloud!
-          </span>
-          {activeAnnouncement.primaryCta && (
-            <button
-              onClick={handlePrimaryCta}
-              style={{
-                padding: '5px 12px',
+            {activeAnnouncement.icon && (
+              <span style={{ fontSize: '18px' }} aria-hidden="true">
+                {activeAnnouncement.icon}
+              </span>
+            )}
+            {activeAnnouncement.primaryCta && (
+              <button
+                onClick={handlePrimaryCta}
+                style={{
+                  padding: '5px 10px',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  background: 'white',
+                  color: 'rgb(147, 51, 234)',
+                  borderRadius: '6px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                }}
+                aria-label={activeAnnouncement.primaryCta.text}
+              >
+                {activeAnnouncement.primaryCta.text}
+              </button>
+            )}
+          </div>
+
+          {/* Ticker container (scrolling text) */}
+          <div style={{
+            flex: 1,
+            overflow: 'hidden',
+            position: 'relative',
+            height: '20px',
+            maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)'
+          }}>
+            <div style={{
+              display: 'inline-block',
+              whiteSpace: 'nowrap',
+              animation: 'ticker 12s linear infinite',
+              paddingLeft: '100%'
+            }}>
+              <span style={{
                 fontSize: '12px',
-                fontWeight: 700,
-                background: 'white',
-                color: 'rgb(147, 51, 234)',
-                borderRadius: '6px',
-                border: 'none',
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-              }}
-              aria-label={activeAnnouncement.primaryCta.text}
-            >
-              {activeAnnouncement.primaryCta.text}
-            </button>
-          )}
-          {/* Mobile close button */}
+                color: 'white',
+                fontWeight: 600
+              }}>
+                🎉 New: Create a free account to save your resumes to the cloud • Free forever • No credit card required •
+              </span>
+            </div>
+          </div>
+
+          {/* Fixed right side: Close button */}
           <button
             onClick={handleDismiss}
             style={{
@@ -213,7 +241,7 @@ export default function AnnouncementBar() {
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
-              marginLeft: 'auto'
+              zIndex: 2
             }}
             aria-label="Dismiss"
             disabled={isDismissing}
@@ -221,6 +249,18 @@ export default function AnnouncementBar() {
             <XMarkIcon style={{ width: '14px', height: '14px', color: 'white' }} aria-hidden="true" />
           </button>
         </div>
+
+        {/* Ticker animation keyframes */}
+        <style>{`
+          @keyframes ticker {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-100%);
+            }
+          }
+        `}</style>
       </div>
     </div>
   );
