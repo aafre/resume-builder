@@ -1528,6 +1528,7 @@ const Editor: React.FC = () => {
         phone: "",
         linkedin: "",
         linkedin_display: "",
+        social_links: [],
       });
 
       // Reset sections by preserving structure but emptying content
