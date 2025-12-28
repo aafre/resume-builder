@@ -74,35 +74,39 @@ export default function AnnouncementBar() {
 
   if (!shouldShow || !activeAnnouncement) return null;
 
-  // Variant-specific styling (glass morphism + gradients)
+  // Variant-specific styling (more visible, less subtle)
   const variantStyles = {
     info: {
-      bg: 'bg-blue-50/95 backdrop-blur-xl',
-      border: 'border-blue-200/50',
+      bg: 'bg-blue-100',
+      border: 'border-blue-300',
       text: 'text-blue-900',
       accent: 'bg-gradient-to-r from-blue-500 to-blue-600',
-      buttonHover: 'hover:bg-blue-100',
+      buttonBg: 'bg-blue-600 text-white hover:bg-blue-700',
+      buttonHover: 'hover:bg-blue-200',
     },
     feature: {
-      bg: 'bg-purple-50/95 backdrop-blur-xl',
-      border: 'border-purple-200/50',
+      bg: 'bg-gradient-to-r from-purple-100 via-blue-50 to-indigo-100',
+      border: 'border-purple-300',
       text: 'text-purple-900',
       accent: 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700',
-      buttonHover: 'hover:bg-purple-100',
+      buttonBg: 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white hover:shadow-lg',
+      buttonHover: 'hover:bg-purple-200',
     },
     success: {
-      bg: 'bg-green-50/95 backdrop-blur-xl',
-      border: 'border-green-200/50',
+      bg: 'bg-green-100',
+      border: 'border-green-300',
       text: 'text-green-900',
       accent: 'bg-gradient-to-r from-green-500 to-green-600',
-      buttonHover: 'hover:bg-green-100',
+      buttonBg: 'bg-green-600 text-white hover:bg-green-700',
+      buttonHover: 'hover:bg-green-200',
     },
     warning: {
-      bg: 'bg-amber-50/95 backdrop-blur-xl',
-      border: 'border-amber-200/50',
+      bg: 'bg-amber-100',
+      border: 'border-amber-300',
       text: 'text-amber-900',
       accent: 'bg-gradient-to-r from-amber-500 to-amber-600',
-      buttonHover: 'hover:bg-amber-100',
+      buttonBg: 'bg-amber-600 text-white hover:bg-amber-700',
+      buttonHover: 'hover:bg-amber-200',
     },
   };
 
@@ -120,15 +124,15 @@ export default function AnnouncementBar() {
       leaveTo="max-h-0 opacity-0 -translate-y-full"
     >
       <div
-        className={`relative overflow-hidden ${styles.bg} border-b ${styles.border} shadow-sm z-40`}
+        className={`relative overflow-hidden ${styles.bg} border-b-2 ${styles.border} shadow-md z-[60]`}
         role="region"
         aria-label="Announcement banner"
         aria-live="polite"
       >
-        {/* Gradient accent line at bottom (matching Header pattern) */}
-        <div className={`absolute bottom-0 left-0 right-0 h-[2px] ${styles.accent}`} />
+        {/* Gradient accent line at top for visual prominence */}
+        <div className={`absolute top-0 left-0 right-0 h-1 ${styles.accent}`} />
 
-        <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3">
+        <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5">
           <div className="flex items-center justify-between gap-3 sm:gap-4">
             {/* Left: Icon + Message */}
             <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -137,7 +141,7 @@ export default function AnnouncementBar() {
                   {activeAnnouncement.icon}
                 </span>
               )}
-              <p className={`text-xs sm:text-sm ${styles.text} font-medium truncate`}>
+              <p className={`text-xs sm:text-sm ${styles.text} font-semibold truncate`}>
                 {activeAnnouncement.message}
               </p>
             </div>
@@ -150,13 +154,13 @@ export default function AnnouncementBar() {
                   onClick={handlePrimaryCta}
                   className={`
                     px-3 py-1.5 sm:px-4 sm:py-2
-                    text-xs sm:text-sm font-semibold
-                    ${styles.text}
-                    ${styles.buttonHover}
-                    rounded-lg border ${styles.border}
-                    transition-colors duration-200
+                    text-xs sm:text-sm font-bold
+                    ${styles.buttonBg}
+                    rounded-lg shadow-sm
+                    transition-all duration-200
                     focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2
                     whitespace-nowrap
+                    hover:scale-105
                   `}
                   aria-label={activeAnnouncement.primaryCta.text}
                 >
@@ -169,12 +173,13 @@ export default function AnnouncementBar() {
                 <Link
                   to={activeAnnouncement.secondaryCta.url}
                   className={`
-                    text-xs sm:text-sm font-semibold
+                    text-xs sm:text-sm font-bold
                     ${styles.text}
                     underline hover:no-underline
                     transition-all duration-200
                     focus:outline-none focus:ring-2 focus:ring-purple-500 focus:rounded
                     whitespace-nowrap
+                    hover:opacity-70
                   `}
                   aria-label={activeAnnouncement.secondaryCta.text}
                 >
