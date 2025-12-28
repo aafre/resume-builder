@@ -78,11 +78,11 @@ export default function AnnouncementBar() {
         background: 'linear-gradient(to right, rgb(59, 130, 246), rgb(147, 51, 234), rgb(99, 102, 241))'
       }} />
 
-      <div style={{ maxWidth: '1800px', margin: '0 auto', padding: '10px 12px' }}>
-        {/* Desktop: Single row with all elements */}
-        <div className="hidden sm:flex items-center justify-between gap-3">
-          {/* Left: Icon + Message */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, minWidth: 0 }}>
+      <div style={{ maxWidth: '1800px', margin: '0 auto', padding: '10px 12px', position: 'relative' }}>
+        {/* Desktop: Centered layout */}
+        <div className="hidden sm:flex items-center justify-center gap-3">
+          {/* Center: Icon + Message + CTAs */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             {activeAnnouncement.icon && (
               <span style={{ fontSize: '18px', flexShrink: 0 }} aria-hidden="true">
                 {activeAnnouncement.icon}
@@ -92,16 +92,11 @@ export default function AnnouncementBar() {
               fontSize: '14px',
               color: 'white',
               fontWeight: 600,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
               whiteSpace: 'nowrap'
             }}>
               {activeAnnouncement.message}
             </p>
-          </div>
 
-          {/* Right: CTAs + Close */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
             {/* Primary CTA Button */}
             {activeAnnouncement.primaryCta && (
               <button
@@ -143,27 +138,30 @@ export default function AnnouncementBar() {
                 {activeAnnouncement.secondaryCta.text}
               </Link>
             )}
-
-            {/* Close Button */}
-            <button
-              onClick={handleDismiss}
-              style={{
-                padding: '6px',
-                borderRadius: '6px',
-                background: 'rgba(255,255,255,0.2)',
-                border: 'none',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
-              }}
-              aria-label={`Dismiss announcement: ${activeAnnouncement.message}`}
-              disabled={isDismissing}
-            >
-              <XMarkIcon style={{ width: '16px', height: '16px', color: 'white' }} aria-hidden="true" />
-            </button>
           </div>
+
+          {/* Close Button - Absolute positioned to right */}
+          <button
+            onClick={handleDismiss}
+            style={{
+              position: 'absolute',
+              right: '12px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              padding: '6px',
+              borderRadius: '6px',
+              background: 'rgba(255,255,255,0.2)',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+            aria-label={`Dismiss announcement: ${activeAnnouncement.message}`}
+            disabled={isDismissing}
+          >
+            <XMarkIcon style={{ width: '16px', height: '16px', color: 'white' }} aria-hidden="true" />
+          </button>
         </div>
 
         {/* Mobile: Ticker animation with CTA buttons */}
