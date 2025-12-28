@@ -530,6 +530,9 @@ function AppWithProviders() {
           <AppContent />
           <Toaster
             position="top-right"
+            containerStyle={{
+              zIndex: 10001,
+            }}
             toastOptions={{
               duration: 4000,
               style: {
