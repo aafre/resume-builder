@@ -1722,6 +1722,7 @@ def serve_templates(filename):
 
 @app.route("/api/resumes/create", methods=["POST"])
 @require_auth
+@retry_on_connection_error(max_retries=3, backoff_factor=0.5)
 def create_resume():
     """
     Create a new resume row in the database initialized with template data.
@@ -1834,6 +1835,7 @@ def create_resume():
 
 @app.route("/api/resumes", methods=["POST"])
 @require_auth
+@retry_on_connection_error(max_retries=3, backoff_factor=0.5)
 def save_resume():
     """
     Save or update a resume for the authenticated user.
