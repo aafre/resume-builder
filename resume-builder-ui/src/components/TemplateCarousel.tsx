@@ -5,6 +5,8 @@ import { ArrowRightIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
 import TemplateStartModal from "./TemplateStartModal";
+import ResumeRecoveryModal from "./ResumeRecoveryModal";
+import AuthModal from "./AuthModal";
 
 // Lazy-loaded error components
 const NotFound = lazy(() => import("./NotFound"));
@@ -34,8 +36,13 @@ const TemplateCarousel: React.FC = () => {
   const [creating, setCreating] = useState(false);
   const [showStartModal, setShowStartModal] = useState(false);
   const [selectedTemplateForModal, setSelectedTemplateForModal] = useState<string | null>(null);
+  const [checkingExistingResume, setCheckingExistingResume] = useState(false);
+  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [existingResumeId, setExistingResumeId] = useState<string | null>(null);
+  const [existingResumeTitle, setExistingResumeTitle] = useState<string>('');
   const navigate = useNavigate();
-  const { session } = useAuth();
+  const { session, isAnonymous, isAuthenticated, anonMigrationInProgress } = useAuth();
 
   // Fetch templates on component mount
   useEffect(() => {
@@ -62,14 +69,55 @@ const TemplateCarousel: React.FC = () => {
   };
 
   // Show modal when user clicks "Use Template"
-  const handleUseTemplate = (templateId: string) => {
+  const handleUseTemplate = async (templateId: string) => {
     if (!session) {
       toast.error("Please sign in to create a resume");
       return;
     }
 
-    setSelectedTemplateForModal(templateId);
-    setShowStartModal(true);
+    try {
+      setCheckingExistingResume(true);
+
+      // Fetch user's resumes to check if they already have one for this template
+      const response = await fetch('/api/resumes?limit=50', {
+        headers: { 'Authorization': `Bearer ${session.access_token}` }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch resumes');
+      }
+
+      const data = await response.json();
+      const resumes = data.resumes || [];
+
+      // Filter by template_id to find matching resumes
+      const matchingResumes = resumes.filter(
+        (resume: any) => resume.template_id === templateId
+      );
+
+      if (matchingResumes.length > 0) {
+        // Get most recent resume (sort by updated_at DESC)
+        const mostRecent = matchingResumes.sort(
+          (a: any, b: any) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+        )[0];
+
+        setExistingResumeId(mostRecent.id);
+        setExistingResumeTitle(mostRecent.title);
+        setSelectedTemplateForModal(templateId);
+        setShowRecoveryModal(true);
+      } else {
+        // No existing resume - show template start modal
+        setSelectedTemplateForModal(templateId);
+        setShowStartModal(true);
+      }
+    } catch (error) {
+      console.error('Error checking existing resumes:', error);
+      // Fallback to template start modal on error
+      setSelectedTemplateForModal(templateId);
+      setShowStartModal(true);
+    } finally {
+      setCheckingExistingResume(false);
+    }
   };
 
   // Handle "Empty Structure" selection
@@ -157,6 +205,68 @@ const TemplateCarousel: React.FC = () => {
       setCreating(false);
     }
   };
+
+  // Handle "Continue as Guest" / "Continue Editing" from recovery modal
+  const handleContinueAsGuest = () => {
+    setShowRecoveryModal(false);
+    if (existingResumeId) {
+      navigate(`/editor/${existingResumeId}`);
+    }
+  };
+
+  // Handle "Sign In to Secure & Continue" from recovery modal
+  const handleSignInToContinue = () => {
+    // Store resume_id in localStorage for post-auth navigation
+    if (existingResumeId) {
+      localStorage.setItem('resume-recovery-intent', JSON.stringify({
+        resumeId: existingResumeId,
+        action: 'continue',
+        timestamp: Date.now()
+      }));
+    }
+
+    setShowRecoveryModal(false);
+    setShowAuthModal(true);
+  };
+
+  // Handle successful authentication from AuthModal
+  const handleAuthSuccess = () => {
+    setShowAuthModal(false);
+    // Post-auth navigation is handled by useEffect below
+  };
+
+  // Handle "Create New Resume" from recovery modal (authenticated users only)
+  const handleCreateNewFromRecovery = () => {
+    setShowRecoveryModal(false);
+    // Show TemplateStartModal to let them choose empty/example
+    setShowStartModal(true);
+  };
+
+  // Handle post-auth navigation to resume from recovery intent
+  useEffect(() => {
+    // Only proceed if authenticated AND migration is complete
+    if (isAuthenticated && !isAnonymous && !anonMigrationInProgress) {
+      const recoveryIntent = localStorage.getItem('resume-recovery-intent');
+      if (recoveryIntent) {
+        try {
+          const { resumeId, action, timestamp } = JSON.parse(recoveryIntent);
+
+          // Check if intent is fresh (within 10 minutes)
+          const isRecent = Date.now() - timestamp < 10 * 60 * 1000;
+
+          if (action === 'continue' && resumeId && isRecent) {
+            localStorage.removeItem('resume-recovery-intent');
+
+            // SAFE: resume_id stays the same during migration
+            // Backend only updates user_id field (app.py:2479-2483)
+            navigate(`/editor/${resumeId}`);
+          }
+        } catch (error) {
+          console.error('Failed to parse recovery intent:', error);
+        }
+      }
+    }
+  }, [isAuthenticated, isAnonymous, anonMigrationInProgress, navigate]);
 
   // Loading state
   if (loading) {
@@ -268,9 +378,14 @@ const TemplateCarousel: React.FC = () => {
                               e.stopPropagation();
                               handleUseTemplate(template.id);
                             }}
-                            disabled={creating}
+                            disabled={creating || checkingExistingResume}
                           >
-                            {creating ? (
+                            {checkingExistingResume ? (
+                              <>
+                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                                Checking...
+                              </>
+                            ) : creating ? (
                               <>
                                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                                 Creating...
@@ -308,6 +423,30 @@ const TemplateCarousel: React.FC = () => {
             ? templates.find(t => t.id === selectedTemplateForModal)?.name || ''
             : ''
         }
+      />
+
+      {/* Resume Recovery Modal */}
+      <ResumeRecoveryModal
+        isOpen={showRecoveryModal}
+        onClose={() => setShowRecoveryModal(false)}
+        resumeId={existingResumeId || ''}
+        resumeTitle={existingResumeTitle}
+        templateName={
+          selectedTemplateForModal
+            ? templates.find(t => t.id === selectedTemplateForModal)?.name || ''
+            : ''
+        }
+        isAnonymous={isAnonymous}
+        onContinueAsGuest={handleContinueAsGuest}
+        onSignInToContinue={handleSignInToContinue}
+        onCreateNew={handleCreateNewFromRecovery}
+      />
+
+      {/* Auth Modal (triggered from recovery modal) */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={handleAuthSuccess}
       />
     </div>
   );
