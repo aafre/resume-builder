@@ -48,7 +48,7 @@ export default function CompanyMarquee({
   const totalWidth = duplicatedCompanies.length * itemWidth;
 
   return (
-    <div className={`relative overflow-hidden py-4 ${className}`}>
+    <div className={`relative overflow-hidden h-24 ${className}`}>
       {/* Gradient overlays for fade effect */}
       <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white via-white/90 to-transparent z-10 pointer-events-none" />
@@ -71,7 +71,10 @@ export default function CompanyMarquee({
               src={company.logo}
               alt={company.alt}
               className="max-w-28 max-h-10 object-contain transition-all duration-300 opacity-80 group-hover:opacity-100 group-hover:scale-105"
+              style={{ aspectRatio: '16/9' }}
               loading="lazy"
+              width="112"
+              height="40"
               onError={(e) => {
                 // Fallback to text if image fails to load
                 const target = e.target as HTMLImageElement;
