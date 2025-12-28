@@ -1,5 +1,4 @@
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { useState } from "react";
 import { useEditorContext } from "../contexts/EditorContext";
 import { useAuth } from "../contexts/AuthContext";
 import AutoSaveIndicator from "./AutoSaveIndicator";
@@ -11,8 +10,7 @@ import logo from "/android-chrome-192x192.png";
 export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { isAuthenticated, isAnonymous, loading: authLoading } = useAuth();
-  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { isAuthenticated, isAnonymous, loading: authLoading, showAuthModal, hideAuthModal, authModalOpen } = useAuth();
 
   // Safely get editor context (might not be available)
   const isEditorPage = location.pathname.startsWith("/editor");
@@ -135,7 +133,7 @@ export default function Header() {
                   />
                 )}
                 {isAnonymous && (
-                  <AnonymousWarningBadge onSignInClick={() => setShowAuthModal(true)} />
+                  <AnonymousWarningBadge onSignInClick={showAuthModal} />
                 )}
               </div>
             )}
@@ -148,7 +146,7 @@ export default function Header() {
                 ) : (
                   <button
                     id="tour-sign-in-button"
-                    onClick={() => setShowAuthModal(true)}
+                    onClick={showAuthModal}
                     className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-purple-500/20 hover:scale-[1.02] transition-all duration-300 shadow-md"
                   >
                     <span>Sign In</span>
@@ -189,9 +187,9 @@ export default function Header() {
 
       {/* Auth Modal */}
       <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        onSuccess={() => setShowAuthModal(false)}
+        isOpen={authModalOpen}
+        onClose={hideAuthModal}
+        onSuccess={hideAuthModal}
       />
     </header>
   );
