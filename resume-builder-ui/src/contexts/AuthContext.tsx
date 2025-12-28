@@ -40,6 +40,15 @@ const clearSupabaseAuthStorage = () => {
   }
 };
 
+/**
+ * Checks if the current URL contains auth tokens from magic link or OAuth callback.
+ * These tokens indicate an authentication flow is in progress.
+ */
+const hasAuthTokensInUrl = (): boolean => {
+  const hash = window.location.hash;
+  return hash.includes('access_token') || hash.includes('refresh_token') || hash.includes('code');
+};
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
@@ -51,6 +60,9 @@ interface AuthContextType {
   migrationInProgress: boolean;
   anonMigrationInProgress: boolean;
   migratedResumeCount: number;
+  showAuthModal: () => void;
+  hideAuthModal: () => void;
+  authModalOpen: boolean;
   signInWithGoogle: () => Promise<void>;
   signInWithLinkedIn: () => Promise<void>;
   signInWithEmail: (email: string) => Promise<void>;
@@ -83,6 +95,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [migrationInProgress, setMigrationInProgress] = useState(false);
   const [anonMigrationInProgress, setAnonMigrationInProgress] = useState(false);
   const [migratedResumeCount, setMigratedResumeCount] = useState(0);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const migrationAttempted = useRef(false);
 
   // Track current session in a ref for access in async callbacks
@@ -440,24 +453,33 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // STEP 2: Create fresh anonymous session (fallback)
         // Only if listener didn't already handle initialization
         if (!listenerHandledInitRef.current && !sessionRef.current) {
-          console.log('Creating fresh anonymous session...');
+          // Check if URL contains auth tokens from magic link or OAuth callback
+          const hasAuthTokens = hasAuthTokensInUrl();
 
-          // Use non-blocking pattern (like signOut fix) - don't await
-          // Let auth state listener handle the session update
-          supabase!.auth.signInAnonymously().then(({ data, error }) => {
-            if (error) {
-              console.error('❌ Anonymous sign-in error:', error);
+          if (hasAuthTokens) {
+            console.log('⏳ Auth tokens detected in URL - waiting for Supabase to process callback...');
+            // Don't create anonymous session - let the auth callback complete
+            // The onAuthStateChange listener will handle the session
+          } else {
+            console.log('Creating fresh anonymous session...');
+
+            // Use non-blocking pattern (like signOut fix) - don't await
+            // Let auth state listener handle the session update
+            supabase!.auth.signInAnonymously().then(({ data, error }) => {
+              if (error) {
+                console.error('❌ Anonymous sign-in error:', error);
+                toast.error('Failed to create session. Please refresh the page.');
+              } else if (data.session && data.user) {
+                console.log('✅ Anonymous session created:', data.user.id);
+              }
+            }).catch((error) => {
+              console.error('❌ Anonymous sign-in failed:', error);
               toast.error('Failed to create session. Please refresh the page.');
-            } else if (data.session && data.user) {
-              console.log('✅ Anonymous session created:', data.user.id);
-            }
-          }).catch((error) => {
-            console.error('❌ Anonymous sign-in failed:', error);
-            toast.error('Failed to create session. Please refresh the page.');
-          });
+            });
 
-          // Small delay to let anonymous sign-in start processing
-          await new Promise(resolve => setTimeout(resolve, 300));
+            // Small delay to let anonymous sign-in start processing
+            await new Promise(resolve => setTimeout(resolve, 300));
+          }
         } else {
           console.log('Skipping anonymous session creation - listener already handled init');
         }
@@ -485,6 +507,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('Auth state changed:', event, session?.user?.id);
+        console.log('  → Is Anonymous:', session?.user?.is_anonymous);
+        console.log('  → Current URL hash:', window.location.hash.substring(0, 50) + '...');
         setSession(session);
         setUser(session?.user ?? null);
 
@@ -535,6 +559,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         // Trigger migration when user signs in (from anonymous to authenticated)
         if (event === 'SIGNED_IN' && session?.user && !session.user.is_anonymous) {
+          // Check if migration is needed FIRST, before any other operations
+          const oldAnonUserId = localStorage.getItem('anonymous-user-id');
+          const needsMigration = oldAnonUserId && oldAnonUserId !== session.user.id;
+
+          // Set migration flag IMMEDIATELY to prevent race conditions
+          // This blocks Editor from loading resume with wrong user_id
+          if (needsMigration) {
+            setAnonMigrationInProgress(true);
+            console.log('👤 Starting migration process - blocking UI loads...');
+          }
+
           // Show welcome toast on successful sign-in (only once per session)
           const hasShownToast = sessionStorage.getItem('login-toast-shown');
           if (!hasShownToast) {
@@ -555,13 +590,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           }
 
           // Migrate anonymous user's cloud resumes to authenticated account
-          const oldAnonUserId = localStorage.getItem('anonymous-user-id');
-
-          if (oldAnonUserId && oldAnonUserId !== session.user.id) {
+          if (needsMigration) {
             console.log('👤 Migrating anonymous cloud resumes to authenticated account...');
 
             try {
-              setAnonMigrationInProgress(true);
               await migrateAnonResumes(session, oldAnonUserId);
               localStorage.removeItem('anonymous-user-id');
             } catch (error) {
@@ -582,6 +614,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       subscription.unsubscribe();
     };
   }, []);
+
+  const showAuthModal = () => {
+    setAuthModalOpen(true);
+  };
+
+  const hideAuthModal = () => {
+    setAuthModalOpen(false);
+  };
 
   const signInWithGoogle = async () => {
     if (!supabase) throw new Error('Supabase not configured');
@@ -686,6 +726,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     migrationInProgress,
     anonMigrationInProgress,
     migratedResumeCount,
+    showAuthModal,
+    hideAuthModal,
+    authModalOpen,
     signInWithGoogle,
     signInWithLinkedIn,
     signInWithEmail,
