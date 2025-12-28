@@ -33,6 +33,7 @@ sections:
       - "Time Series Analysis"
 
   - name: Experience
+    type: experience
     content:
       - company: "DataDriven Solutions"
         title: "Senior Data Analyst"
@@ -59,6 +60,7 @@ sections:
           - "Developed automated data pipelines that reduced processing time from hours to minutes"
 
   - name: Education
+    type: education
     content:
       - degree: "Master of Science in Data Science"
         school: "University of Texas at Austin"
