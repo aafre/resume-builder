@@ -91,7 +91,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       {
         question: 'Do I need an account?',
         answer:
-          'No. You can edit and export without signup. We do not require email addresses or personal information.',
+          'No. You can build and download resumes as a guest without signup. Creating a free account unlocks Cloud Storage for saving multiple resumes and accessing them from any device.',
       },
       {
         question: 'Will it pass ATS?',
@@ -112,6 +112,11 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         question: 'Can I customize fonts and spacing?',
         answer:
           'Yes. Stay within ATS-safe fonts (Arial, Calibri, Times New Roman) for best results with automated systems.',
+      },
+      {
+        question: 'How many resumes can I save to the cloud?',
+        answer:
+          'With a free account, you can save up to 5 resume versions in cloud storage. This lets you tailor different resumes for different job types while accessing them from any device.',
       },
     ],
   },
