@@ -109,7 +109,7 @@ const LandingPage: React.FC = () => {
     {
       question: "Is this resume builder really free?",
       answer:
-        "Yes, completely free with no hidden fees or premium upgrades. Create and download unlimited resumes at no cost.",
+        "Yes, 100% free. There are no paywalls for downloading PDFs and no hidden subscriptions. Even our premium features like Cloud Auto-Save and the Multi-Resume Dashboard are completely free for registered users.",
     },
     {
       question: "Are the templates ATS-friendly?",
@@ -119,12 +119,27 @@ const LandingPage: React.FC = () => {
     {
       question: "Do I need to sign up or create an account?",
       answer:
-        "No registration required! You can start building your resume immediately and download it without providing any personal information.",
+        "No! You can build and download your resume instantly as a guest without signing up. However, creating a free account unlocks Cloud Storage, allowing you to save your work securely, access it from any device, and manage multiple resume versions.",
     },
     {
       question: "What format will my resume be downloaded in?",
       answer:
         "Your resume is generated as a high-quality PDF that's perfect for email applications and printing. The PDF maintains professional formatting across all devices.",
+    },
+    {
+      question: "How do I save my resume to edit it later?",
+      answer:
+        "We automatically save your progress as you type. As a guest, data is stored in your browser. For permanent safekeeping, simply sign in to sync your resume to the secure cloud. You can then log in from your phone or laptop anytime to continue editing.",
+    },
+    {
+      question: "Can I create specific resumes for different jobs?",
+      answer:
+        "Yes! With a free account, you can create and manage up to 5 different resume versions in your Dashboard. This is perfect for tailoring your CV to specific job applications (e.g., one for Customer Service, one for Admin).",
+    },
+    {
+      question: "I started a resume but didn't sign in. Did I lose my work?",
+      answer:
+        "Likely not! Our smart recovery system attempts to find your previous session when you return to the site. If we find unsaved work, we will prompt you to restore it. We recommend signing in to ensure you never lose your progress.",
     },
   ];
 
