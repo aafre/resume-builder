@@ -109,20 +109,22 @@
     <!-- AdSense Configuration - Non-blocking -->
     <script>
       // This script will ensure all ads open in a new tab.
-      (function () {
-        // Wait for AdSense to load before modifying
-        if (window.adsbygoogle) {
-          var push = window.adsbygoogle.push;
-          window.adsbygoogle.push = function (args) {
+      window.adsbygoogle = window.adsbygoogle || [];
+
+      // Wait for DOM and AdSense to load
+      window.addEventListener('load', function() {
+        if (window.adsbygoogle && window.adsbygoogle.push) {
+          var originalPush = window.adsbygoogle.push;
+          window.adsbygoogle.push = function(args) {
             if (typeof args === "object" && args.google_ad_client) {
               args.google_ad_host_config = {
                 adTarget: "_blank",
               };
             }
-            return push.apply(this, arguments);
+            return originalPush.apply(this, arguments);
           };
         }
-      })();
+      });
     </script>
   </body>
 </html>
