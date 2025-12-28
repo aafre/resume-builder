@@ -75,6 +75,7 @@ export function getActiveAnnouncement(
       if (a.expiresAt && a.expiresAt < now) return false;
 
       // Check route matching
+      if (!a.showOn) return false;
       if (a.showOn === 'all') return true;
       if (a.showOn === 'landing') return pathname === '/';
       if (typeof a.showOn === 'string') {
