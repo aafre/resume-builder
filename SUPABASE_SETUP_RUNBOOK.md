@@ -521,6 +521,54 @@ Supabase handles CORS automatically, but verify:
    https://www.your-production-domain.com
    ```
 
+### 6.5 Enable Leaked Password Protection (IMPORTANT!)
+
+**Security Feature:** Prevent users from using compromised passwords by checking against the HaveIBeenPwned database.
+
+**This CANNOT be enabled via SQL** - it must be configured in the Supabase Dashboard.
+
+#### Steps to Enable:
+
+1. Go to **Authentication → Policies** in Supabase Dashboard
+2. Scroll down to **"Password Policies"** section
+3. Find **"Leaked Password Protection"**
+4. Toggle to **ON** (enabled/green)
+
+#### What This Does:
+
+- When users create accounts or change passwords, Supabase checks against [HaveIBeenPwned.org](https://haveibeenpwned.com/)
+- If password appears in known breach databases, user is prompted to choose a different password
+- Uses k-Anonymity protocol - never sends actual password to external service
+- Adds zero latency to authentication flow
+
+#### Verification:
+
+1. Refresh the page
+2. Password Policies section should show "Leaked Password Protection: Enabled"
+
+#### Testing:
+
+1. Try signing up with a known weak password (e.g., "password123")
+2. Should receive error: "Password appears in a data breach. Please choose a different password."
+
+#### Production Checklist:
+
+- [ ] Leaked Password Protection enabled in Dashboard
+- [ ] Tested with known compromised password (should reject)
+- [ ] Tested with secure password (should accept)
+
+#### Troubleshooting:
+
+- **If toggle is disabled/greyed out:** Ensure you're on a paid plan (Free tier may have limitations)
+- **If feature doesn't work after enabling:** Clear browser cache and test with incognito window
+- **For high-volume applications:** This check happens server-side and won't impact performance
+
+#### Security Impact:
+
+- **HIGH**: Prevents account takeover from credential stuffing attacks
+- **Recommended for:** ALL production applications with user authentication
+- **Compliance:** Helps meet security requirements for SOC2, ISO 27001, etc.
+
 ---
 
 ## ✅ Part 7: Verification & Testing
