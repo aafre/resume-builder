@@ -56,7 +56,7 @@ export default function Header() {
       <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700" />
 
       <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-[72px]">
+        <div className="flex items-center justify-between h-16 sm:h-[72px] transition-all duration-200">
           {/* Logo and Home Navigation */}
           <div
             className="group flex items-center cursor-pointer transition-all duration-200 relative flex-shrink-0"
@@ -71,6 +71,8 @@ export default function Header() {
                 src={logo}
                 alt="EasyFreeResume Logo"
                 className="w-9 h-9 sm:w-10 sm:h-10 group-hover:scale-110 transition-transform duration-200 drop-shadow-sm"
+                width="36"
+                height="36"
               />
             </div>
             <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent ml-2.5 group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-indigo-600 transition-all duration-300 tracking-tight">
