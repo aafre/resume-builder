@@ -101,7 +101,6 @@ OUTPUT SCHEMA:
       ]
     }
   ],
-  "template": "modern",
   "font": "Arial",
 
   // Metadata (include in response for validation)
@@ -111,133 +110,67 @@ OUTPUT SCHEMA:
 
 PARSING RULES:
 
-0. CRITICAL: CONTENT-AWARE SECTION TYPE CLASSIFICATION
-
-   ANALYZE list content shape BEFORE choosing type:
-
-   A. LONG ITEMS (sentences, 50+ characters, multiple words with context)
-      Example: "Proficient in Python for data analysis with 5+ years experience"
-      Example: "Led cross-functional team of 10 engineers to deliver product on time"
-      → Use "bulleted-list" (looks professional, readable, no wrapping issues)
-
-   B. MEDIUM ITEMS (phrases, 10-50 characters, 2-5 words)
-      Example: "Python", "JavaScript", "AWS Cloud Architecture", "Team Leadership"
-      → Use "dynamic-column-list" (grid layout looks clean, efficient use of space)
-
-   C. SHORT ITEMS (single words, <10 characters, 1-2 words)
-      Example: "English", "Spanish", "Reading", "Hiking", "Running"
-      → Use "inline-list" (comma-separated looks natural, saves space)
-
-   D. STRUCTURED ENTRIES (with dates, organizations, titles)
-      Example: Company + Title + Dates + Description
-      Example: Degree + School + Year
-      Example: Certification + Issuer + Date
-      → Use "experience" / "education" / "icon-list" (timeline/table layout)
-
-   DEFAULT SECTION TYPE PREFERENCES (based on common section names):
-   - Skills/Technologies/Technical Skills → "dynamic-column-list"
-   - Experience/Work History → "experience"
-   - Education/Academic Background → "education"
-   - Achievements/Qualifications/Responsibilities → "bulleted-list"
-   - Languages/Hobbies/Interests → "inline-list"
-   - Certifications/Awards/Licenses → "icon-list"
-
-   CRITICAL OVERRIDE RULE:
-   If content shape MISMATCHES the default preference, ALWAYS choose based on content shape.
-
-   Examples of CORRECT overrides:
-   - Section: "Skills"
-     Content: ["Proficient in Python for data analysis with 5 years of hands-on experience"]
-     Default: dynamic-column-list
-     Override: bulleted-list ← CORRECT (content is long sentences)
-
-   - Section: "Achievements"
-     Content: ["Python", "Leadership", "Communication", "Problem-solving"]
-     Default: bulleted-list
-     Override: dynamic-column-list ← CORRECT (content is short keywords)
-
-   - Section: "Languages"
-     Content: ["Fluent in English with native-level proficiency", "Spanish (conversational)"]
-     Default: inline-list
-     Override: bulleted-list ← CORRECT (content has detail/context)
-
 1. REQUIRED FIELDS:
    - contact_info (name, location, email, phone) is MANDATORY
    - sections array is MANDATORY
    - If email/phone not found: use "email@example.com" / "+1-000-000-0000" and add warning
 
-2. SECTION CLASSIFICATION (CONTENT-AWARE):
+2. CRITICAL: CONTENT-AWARE SECTION TYPE CLASSIFICATION
+   
+   You MUST analyze the "shape" of the content (length, word count) BEFORE choosing a section type.
+   Do not blindly rely on the section name.
 
-   STEP 1: Analyze content shape (item length, structure)
-   STEP 2: Choose type based on shape FIRST, name SECOND
+   A. LONG ITEMS (sentences, 50+ chars, multiple words)
+      Example: "Proficient in Python for data analysis with 5+ years experience"
+      -> Use "bulleted-list" (Readable, allows wrapping)
 
-   Guidelines:
-   - Summary/Objective/Profile → ALWAYS "text" (paragraph format)
-   - Experience/Work History → ALWAYS "experience" (timeline format)
-   - Education/Academic Background → ALWAYS "education" (degree format)
+   B. MEDIUM/SHORT ITEMS (keywords, <50 chars, 1-3 words)
+      Example: "Python", "JavaScript", "AWS Architecture"
+      -> Use "dynamic-column-list" (Grid layout, efficient)
 
-   - Skills/Technologies → ANALYZE CONTENT:
-     • Short keywords (Python, React, AWS)? → "dynamic-column-list"
-     • Full sentences (Proficient in...)? → "bulleted-list"
+   C. VERY SHORT ITEMS (single words)
+      Example: "English", "Spanish", "Hiking"
+      -> Use "inline-list" (Comma-separated)
 
-   - Certifications/Awards → ANALYZE CONTENT:
-     • Structured (Name | Issuer | Date)? → "icon-list"
-     • Simple list (AWS Certified, Google Cloud)? → "bulleted-list" or "dynamic-column-list"
+   D. STRUCTURED ENTRIES (dates, titles, locations)
+      -> Use "experience", "education", or "icon-list"
 
-   - Achievements/Qualifications → ANALYZE CONTENT:
-     • Long descriptions (Led team of...)? → "bulleted-list"
-     • Short phrases (Team Leadership, Problem Solving)? → "dynamic-column-list"
+   DEFAULT PREFERENCES (Override ONLY if content shape mismatches):
+   - Skills/Technologies -> "dynamic-column-list"
+   - Achievements/Qualifications -> "bulleted-list"
+   - Languages/Interests -> "inline-list"
+   - Experience -> "experience"
+   - Education -> "education"
 
-   - Languages/Interests → ANALYZE CONTENT:
-     • Single words only (English, Spanish, Reading)? → "inline-list"
-     • Has details (English - native, Spanish - fluent)? → "bulleted-list"
+   *OVERRIDE EXAMPLE*: If a "Skills" section contains long sentences, FORCE "bulleted-list" instead of "dynamic-column-list".
 
 3. DATE FORMATTING:
-   - Experience dates: "Jan 2020 – Dec 2022" or "Jan 2020 – Present"
+   - Standardize to: "Jan 2020 – Dec 2022" or "Jan 2020 – Present"
    - Education year: "2018" or "2018-2022"
    - Certifications: "2020" or "Jan 2020"
 
 4. SOCIAL LINKS:
    - Extract LinkedIn, GitHub, personal websites, portfolios
-   - Platform detection:
-     - "linkedin.com" → platform: "linkedin"
-     - "github.com" → platform: "github"
-     - Personal domain → platform: "website"
+   - Platform detection: "linkedin.com" -> "linkedin", "github.com" -> "github"
    - Clean URLs: remove "https://", "www.", keep core URL
-   - Example: "linkedin.com/in/johndoe" not "https://www.linkedin.com/in/johndoe"
 
 5. TEXT CLEANING:
-   - Remove excessive formatting artifacts (e.g., "===", "***", "___")
-   - Preserve bullet point content, but remove bullet symbols (•, -, *, →)
-   - Normalize whitespace (single spaces, no excessive line breaks)
-   - Preserve markdown-style links like [text](url)
+   - Remove excessive formatting artifacts (e.g., "===", "***")
+   - Preserve bullet point content, but remove bullet symbols (•, -, *)
+   - Normalize whitespace
 
-6. EDGE CASES:
-   - Multi-column resumes: linearize content logically (top-to-bottom, left-to-right)
-   - Tables: extract as structured data where possible
-   - Images/logos: ignore, note in warnings if important info in image
-   - Headers/footers: extract relevant info, ignore decorative elements
-
-7. ICON FIELDS:
+6. ICON FIELDS:
    - ALWAYS set icon: null for all items
-   - Icons will be added by user later in the editor
+   - Icons are handled by the frontend design system
    - Never try to guess icon filenames
 
-8. CONFIDENCE SCORING:
-   - 0.95+ = All required fields found, clear structure, no missing info
-   - 0.80-0.95 = Minor missing info (e.g., phone number, some dates)
+7. CONFIDENCE SCORING:
+   - 0.95+ = All required fields found, clear structure
+   - 0.80-0.95 = Minor missing info (e.g., phone number)
    - 0.60-0.80 = Multiple missing fields or unclear structure
-   - <0.60 = Major parsing issues OR NOT A RESUME, manual review recommended
+   - <0.60 = Major parsing issues OR NOT A RESUME
 
-9. WARNINGS:
-   - Add warning if email/phone not found
-   - Add warning if dates are unclear or missing
-   - Add warning if section types are ambiguous
-   - Add warning if content was in images/tables
-   - Add warning if content length varies widely within a section (mixed short/long items)
-     Example: "Skills section has mixed content lengths - consider reviewing formatting"
-
-10. RETURN FORMAT:
+8. RETURN FORMAT:
     - ALWAYS return valid JSON
     - Include confidence and warnings fields
     - If parsing fails completely, return minimal structure with low confidence
@@ -245,59 +178,38 @@ PARSING RULES:
 CLASSIFICATION EXAMPLES - LEARN FROM THESE:
 
 Example 1: Skills Section with Keywords
-Input: "Skills: Python, JavaScript, React, AWS, Docker, Kubernetes, Git, CI/CD"
-Analysis: All items are 1-3 words, <20 characters, no sentences
-Decision: "dynamic-column-list" ✓
-Output: Will render in 3-4 column grid, looks clean
+Input: "Skills: Python, JavaScript, React, AWS, Docker"
+Analysis: Short items (<20 chars).
+Decision: "dynamic-column-list"
 
-Example 2: Skills Section with Descriptions
+Example 2: Skills Section with Sentences
 Input: "Skills:
-- Proficient in Python programming with 5 years of experience in data analysis
-- Strong background in AWS cloud architecture and DevOps practices
-- Experienced in leading cross-functional teams of 5-10 engineers"
-Analysis: All items are full sentences, 50+ characters each
-Decision: "bulleted-list" ✓
-Output: Will render as vertical list with bullets, readable
+- Proficient in Python programming with 5 years of experience
+- Strong background in AWS cloud architecture"
+Analysis: Long sentences (50+ chars).
+Decision: "bulleted-list"
 
-Example 3: Languages Section (Short)
-Input: "Languages: English, Spanish, French, German"
-Analysis: All items are single words, <10 characters
-Decision: "inline-list" ✓
-Output: Will render as "English, Spanish, French, German" - natural
-
-Example 4: Certifications with Details
-Input: "Certifications:
-- AWS Certified Solutions Architect | Amazon Web Services | 2023
-- Google Cloud Professional | Google | 2022"
-Analysis: Structured format with Name | Issuer | Date
-Decision: "icon-list" ✓
-Output: Will render in table-like format with icon placeholders
-
-Example 5: Mixed-Length Items (Choose Dominant Pattern)
-Input: "Skills: Python, JavaScript, AWS, Extensive experience with Kubernetes orchestration"
-Analysis: Mostly short (3 items), but 1 long item exists
-Decision: "dynamic-column-list" (majority rule) OR split into 2 sections
-Alternative: Suggest splitting into "Technical Skills" + "Experience Highlights"
-Warning: Add "Mixed content lengths detected in Skills section"
+Example 3: Languages
+Input: "Languages: English, Spanish, French"
+Analysis: Single words.
+Decision: "inline-list"
 
 EXAMPLE INPUT:
 "John Doe
 San Francisco, CA | john@example.com | (555) 123-4567
-linkedin.com/in/johndoe
 
 SUMMARY
-Experienced software engineer with 8+ years building scalable web applications.
+Experienced software engineer.
 
 EXPERIENCE
 Senior Software Engineer | Google | Jan 2020 – Present
-- Led team of 5 engineers to build new feature
-- Improved system performance by 40%
+- Led team of 5 engineers
 
 EDUCATION
 BS Computer Science | Stanford University | 2015
 
 SKILLS
-Python, JavaScript, React, AWS, Docker"
+Python, JavaScript, React"
 
 EXAMPLE OUTPUT:
 {
@@ -306,19 +218,13 @@ EXAMPLE OUTPUT:
     "location": "San Francisco, CA",
     "email": "john@example.com",
     "phone": "(555) 123-4567",
-    "social_links": [
-      {
-        "platform": "linkedin",
-        "url": "linkedin.com/in/johndoe",
-        "display_text": "John Doe"
-      }
-    ]
+    "social_links": []
   },
   "sections": [
     {
       "name": "Summary",
       "type": "text",
-      "content": "Experienced software engineer with 8+ years building scalable web applications."
+      "content": "Experienced software engineer."
     },
     {
       "name": "Experience",
@@ -328,10 +234,7 @@ EXAMPLE OUTPUT:
           "company": "Google",
           "title": "Senior Software Engineer",
           "dates": "Jan 2020 – Present",
-          "description": [
-            "Led team of 5 engineers to build new feature",
-            "Improved system performance by 40%"
-          ],
+          "description": ["Led team of 5 engineers"],
           "icon": null
         }
       ]
@@ -351,10 +254,9 @@ EXAMPLE OUTPUT:
     {
       "name": "Key Skills",
       "type": "dynamic-column-list",
-      "content": ["Python", "JavaScript", "React", "AWS", "Docker"]
+      "content": ["Python", "JavaScript", "React"]
     }
   ],
-  "template": "modern",
   "font": "Arial",
   "confidence": 0.95,
   "warnings": []
