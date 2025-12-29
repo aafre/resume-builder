@@ -56,11 +56,12 @@ const UserMenu: React.FC = () => {
   const { avatarUrl, hasError, handleError } = useUserAvatar(user);
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div className="relative" ref={menuRef} data-testid="user-menu">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/60 backdrop-blur-sm hover:shadow-md transition-all duration-300"
         aria-label="User menu"
+        data-testid="user-menu-button"
       >
         {avatarUrl && !hasError ? (
           <img
@@ -140,6 +141,7 @@ const UserMenu: React.FC = () => {
               onClick={handleSignOut}
               disabled={signingOut}
               className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50/70 rounded-lg mx-2 my-1 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              data-testid="sign-out-button"
             >
               {signingOut ? (
                 <>
