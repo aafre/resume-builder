@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 interface ParseResponse {
@@ -19,11 +19,31 @@ interface ParseResponse {
   };
 }
 
+// Progress stages with corresponding messages
+const PROGRESS_STAGES = [
+  { threshold: 0, message: 'Preparing upload...' },
+  { threshold: 20, message: 'Extracting text from file...' },
+  { threshold: 50, message: 'Analyzing resume structure...' },
+  { threshold: 75, message: 'Identifying sections and details...' },
+  { threshold: 90, message: 'Finalizing your resume...' },
+];
+
 export function useResumeParser() {
   const { session } = useAuth();
   const [parsing, setParsing] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [progressMessage, setProgressMessage] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Cleanup interval on unmount
+  useEffect(() => {
+    return () => {
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
+    };
+  }, []);
 
   const validateFile = (file: File): string | null => {
     const maxSize = 10 * 1024 * 1024; // 10MB
@@ -43,19 +63,55 @@ export function useResumeParser() {
     return null;
   };
 
+  // Animate progress smoothly from one value to another
+  const animateProgress = (fromProgress: number, toProgress: number, duration: number) => {
+    const startTime = Date.now();
+    const progressDiff = toProgress - fromProgress;
+
+    // Clear any existing interval
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+    }
+
+    progressIntervalRef.current = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const progressPercent = Math.min(elapsed / duration, 1);
+      const currentProgress = fromProgress + (progressDiff * progressPercent);
+
+      setProgress(Math.round(currentProgress));
+
+      // Update message based on current progress
+      const currentStage = [...PROGRESS_STAGES]
+        .reverse()
+        .find(stage => currentProgress >= stage.threshold);
+      if (currentStage) {
+        setProgressMessage(currentStage.message);
+      }
+
+      // Clear interval when animation completes
+      if (progressPercent >= 1) {
+        clearInterval(progressIntervalRef.current!);
+        progressIntervalRef.current = null;
+      }
+    }, 50); // Update every 50ms for smooth animation (20 FPS)
+  };
+
   const parseResume = async (file: File): Promise<ParseResponse> => {
     setParsing(true);
-    setProgress(10);
+    setProgress(0);
+    setProgressMessage('Preparing upload...');
     setError(null);
 
     try {
-      // Validate file
+      // Stage 1: File validation (0% → 20% over 200ms)
+      animateProgress(0, 20, 200);
       const validationError = validateFile(file);
       if (validationError) {
         throw new Error(validationError);
       }
 
-      setProgress(20);
+      // Stage 2: File upload + extraction (20% → 50% over 400ms)
+      animateProgress(20, 50, 400);
 
       // Check authentication
       if (!session) {
@@ -66,7 +122,8 @@ export function useResumeParser() {
       const formData = new FormData();
       formData.append('file', file);
 
-      setProgress(40);
+      // Stage 3: AI analysis (50% → 75% over 500ms)
+      animateProgress(50, 75, 500);
 
       // Call Edge Function
       const response = await fetch(
@@ -80,7 +137,8 @@ export function useResumeParser() {
         }
       );
 
-      setProgress(80);
+      // Stage 4: Structuring data (75% → 90% over 300ms)
+      animateProgress(75, 90, 300);
 
       const data = await response.json();
 
@@ -88,15 +146,23 @@ export function useResumeParser() {
         throw new Error(data.error || 'Failed to parse resume');
       }
 
-      setProgress(100);
+      // Stage 5: Complete (90% → 100% over 100ms)
+      animateProgress(90, 100, 100);
       return data;
     } catch (err) {
+      // Clear interval on error
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
       setError(errorMessage);
       throw err;
     } finally {
       setParsing(false);
-      setTimeout(() => setProgress(0), 500);
+      setTimeout(() => {
+        setProgress(0);
+        setProgressMessage('');
+      }, 500);
     }
   };
 
@@ -106,6 +172,7 @@ export function useResumeParser() {
     parseResume,
     parsing,
     progress,
+    progressMessage,
     error,
     clearError,
   };
