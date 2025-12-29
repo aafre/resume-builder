@@ -4,6 +4,7 @@
  */
 
 import mammoth from 'npm:mammoth@1.6.0';
+import { Buffer } from 'node:buffer';
 
 /**
  * Extract text content from DOCX file
@@ -15,9 +16,12 @@ export async function extractTextFromDOCX(
   fileBuffer: ArrayBuffer
 ): Promise<string> {
   try {
+    // Convert ArrayBuffer to Node.js Buffer for mammoth
+    const buffer = Buffer.from(fileBuffer);
+
     // Extract raw text using mammoth
     const result = await mammoth.extractRawText({
-      arrayBuffer: fileBuffer,
+      buffer: buffer,
     });
 
     let text = result.value;
