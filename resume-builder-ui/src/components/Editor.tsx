@@ -415,17 +415,26 @@ const Editor: React.FC = () => {
     }
   }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow]);
 
-  // Extract template ID from query parameters (e.g., /editor?template=1)
+  // DEPRECATED: Block old ?template=X pattern (no longer supported)
+  // Users must create resume via /api/resumes/create, then navigate to /editor/{uuid}
   useEffect(() => {
     const templateParam = searchParams.get('template');
-    // Only set templateId if:
-    // - templateParam exists in URL
-    // - templateId is not already set (avoid overwriting)
-    // - resumeIdFromUrl is not set (resume ID takes precedence)
-    if (templateParam && !templateId && !resumeIdFromUrl) {
+    const importedParam = searchParams.get('imported');
+
+    // Exception: Allow ?template=X&imported=true for AI import flow only
+    if (templateParam && importedParam === 'true') {
       setTemplateId(templateParam);
+      return;
     }
-  }, [searchParams, templateId, resumeIdFromUrl]);
+
+    // Block deprecated ?template=X pattern (without imported flag)
+    if (templateParam && !resumeIdFromUrl) {
+      console.error('Deprecated URL pattern detected:', window.location.href);
+      setLoadingError('Invalid URL: Please create a resume from the templates page');
+      setLoading(false);
+      return;
+    }
+  }, [searchParams, resumeIdFromUrl]);
 
   useEffect(() => {
     // Skip template loading if we're loading a saved resume from URL
