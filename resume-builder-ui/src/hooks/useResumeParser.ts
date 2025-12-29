@@ -63,40 +63,44 @@ export function useResumeParser() {
     return null;
   };
 
-  // Animate progress smoothly from one value to another
-  const animateProgress = (fromProgress: number, toProgress: number, duration: number): Promise<void> => {
-    return new Promise((resolve) => {
-      const startTime = Date.now();
-      const progressDiff = toProgress - fromProgress;
+  // Start continuous progress animation that runs until stopped
+  const startProgressAnimation = (maxProgress: number = 90) => {
+    const startTime = Date.now();
+    const totalDuration = 1200; // Animate to maxProgress over 1200ms
 
-      // Clear any existing interval
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current);
+    // Clear any existing interval
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+    }
+
+    progressIntervalRef.current = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const progressPercent = Math.min(elapsed / totalDuration, 1);
+      const currentProgress = Math.round(progressPercent * maxProgress);
+
+      setProgress(currentProgress);
+
+      // Update message based on current progress
+      const currentStage = [...PROGRESS_STAGES]
+        .reverse()
+        .find(stage => currentProgress >= stage.threshold);
+      if (currentStage) {
+        setProgressMessage(currentStage.message);
       }
 
-      progressIntervalRef.current = setInterval(() => {
-        const elapsed = Date.now() - startTime;
-        const progressPercent = Math.min(elapsed / duration, 1);
-        const currentProgress = fromProgress + (progressDiff * progressPercent);
+      // Stop at maxProgress
+      if (progressPercent >= 1) {
+        clearInterval(progressIntervalRef.current!);
+        progressIntervalRef.current = null;
+      }
+    }, 100); // Update every 100ms for smooth visual feedback
+  };
 
-        setProgress(Math.round(currentProgress));
-
-        // Update message based on current progress
-        const currentStage = [...PROGRESS_STAGES]
-          .reverse()
-          .find(stage => currentProgress >= stage.threshold);
-        if (currentStage) {
-          setProgressMessage(currentStage.message);
-        }
-
-        // Clear interval when animation completes
-        if (progressPercent >= 1) {
-          clearInterval(progressIntervalRef.current!);
-          progressIntervalRef.current = null;
-          resolve(); // Resolve the promise when animation completes
-        }
-      }, 50); // Update every 50ms for smooth animation (20 FPS)
-    });
+  const stopProgressAnimation = () => {
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+      progressIntervalRef.current = null;
+    }
   };
 
   const parseResume = async (file: File): Promise<ParseResponse> => {
@@ -106,30 +110,26 @@ export function useResumeParser() {
     setError(null);
 
     try {
-      // Stage 1: File validation (0% → 20% over 200ms)
-      const validationPromise = animateProgress(0, 20, 200);
+      // Validate file first
       const validationError = validateFile(file);
       if (validationError) {
         throw new Error(validationError);
       }
-      await validationPromise;
 
       // Check authentication
       if (!session) {
         throw new Error('Please sign in to upload a resume');
       }
 
+      // Start continuous progress animation (0% → 90% over 1200ms)
+      startProgressAnimation(90);
+
       // Create FormData
       const formData = new FormData();
       formData.append('file', file);
 
-      // Stage 2: File upload + extraction (20% → 50% over 400ms)
-      await animateProgress(20, 50, 400);
-
-      // Stage 3: AI analysis (50% → 75% over 500ms)
-      // Start animation and API call in parallel
-      const analysisAnimation = animateProgress(50, 75, 500);
-      const responsePromise = fetch(
+      // Call Edge Function (runs in parallel with progress animation)
+      const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/parse-resume`,
         {
           method: 'POST',
@@ -140,28 +140,21 @@ export function useResumeParser() {
         }
       );
 
-      // Wait for both animation and API call
-      await analysisAnimation;
-      const response = await responsePromise;
-
-      // Stage 4: Structuring data (75% → 90% over 300ms)
-      const structuringAnimation = animateProgress(75, 90, 300);
       const data = await response.json();
 
       if (!response.ok || !data.success) {
         throw new Error(data.error || 'Failed to parse resume');
       }
 
-      await structuringAnimation;
+      // Stop animation and jump to 100%
+      stopProgressAnimation();
+      setProgress(100);
+      setProgressMessage('Finalizing your resume...');
 
-      // Stage 5: Complete (90% → 100% over 100ms)
-      await animateProgress(90, 100, 100);
       return data;
     } catch (err) {
-      // Clear interval on error
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current);
-      }
+      // Stop animation on error
+      stopProgressAnimation();
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
       setError(errorMessage);
       throw err;
