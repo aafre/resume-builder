@@ -30,10 +30,12 @@ This Supabase Edge Function converts PDF/DOCX resume files into structured YAML 
    - Get key from: https://platform.openai.com/api-keys
    - Should start with `sk-`
 
-3. **Supabase Project**:
+3. **Supabase Project Keys**:
    - URL: `https://mgetvioaymkvafczmhwo.supabase.co`
-   - Anon Key: (from Supabase dashboard)
-   - Service Role Key: (from Supabase dashboard)
+   - Anon Key: (Dashboard > Settings > API > `anon` / `public`)
+   - **Service Role Key**: (Dashboard > Settings > API > `service_role`)
+     - ⚠️ **Required for global cache deduplication**
+     - Never expose to frontend - server-side only
 
 ---
 
@@ -64,15 +66,31 @@ supabase db ls
 
 ### 2. Set Environment Variables
 
-Set the OpenAI API key as a secret:
+Set the required secrets:
 
 ```bash
 # Set OpenAI API key
 supabase secrets set OPENAI_API_KEY=sk-your-api-key-here
 
-# Verify secrets
+# Set Supabase Service Role Key (for global cache access)
+# Get this from: Supabase Dashboard > Settings > API > service_role key
+supabase secrets set SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...your-service-role-key
+
+# Verify secrets are set
 supabase secrets list
 ```
+
+**Expected output:**
+```
+OPENAI_API_KEY
+SUPABASE_SERVICE_ROLE_KEY
+```
+
+**⚠️ Security Note:**
+- The service role key bypasses Row Level Security (RLS)
+- It's used ONLY for global cache deduplication (read/write to `parsed_resumes` table)
+- Never expose this key to the frontend - it's only used in the Edge Function server-side
+- The function still requires user JWT authentication before allowing any operations
 
 ### 3. Deploy Edge Function
 
@@ -182,18 +200,38 @@ User uploads PDF/DOCX
        ↓
 Edge Function: /parse-resume
        ↓
-1. Authenticate user (JWT)
+1. Authenticate user (JWT with anon key client)
 2. Calculate file hash (SHA-256)
-3. Check cache (DB) → Return if cached
+3. Check global cache (service role client) → Return if cached
 4. Validate file (type, size, magic numbers)
 5. Extract text (PDF/DOCX)
 6. Guard rail: Is this a resume?
 7. Call OpenAI gpt-4o-mini
 8. Validate schema
 9. Convert to YAML
-10. Cache in DB (30-day TTL)
+10. Cache in DB globally (service role client, 30-day TTL)
 11. Return YAML
 ```
+
+### Security Model: Dual-Client Architecture
+
+The function uses **two separate Supabase clients** for security:
+
+1. **User Client** (`anon key` + JWT):
+   - Used for: Authentication only (step 1)
+   - Respects: Row Level Security (RLS)
+   - Access: User can only see their own data
+
+2. **Admin Client** (`service_role key`):
+   - Used for: Cache operations only (steps 3, 10)
+   - Bypasses: RLS for global deduplication
+   - Access: Can read/write all cached resumes
+
+**Why this approach?**
+- ✅ **User privacy**: End users cannot query other users' PII via RLS
+- ✅ **Cost efficiency**: Same resume uploaded by different users = cache hit
+- ✅ **Security**: Service role key never exposed to frontend
+- ✅ **Deduplication**: Hash-based cache works globally across all users
 
 ---
 
@@ -309,29 +347,45 @@ supabase functions logs parse-resume --limit 10
 
 ## Security
 
-- ✅ JWT authentication required
-- ✅ File size limit (10MB)
-- ✅ File type validation (magic numbers)
-- ✅ Resume keyword detection (guard rail)
-- ✅ Prompt injection prevention
-- ✅ Text truncation (50K chars max)
-- ✅ Schema validation
-- ✅ RLS policies (user can only access own parses)
-- ✅ Cache expiry (30 days)
+- ✅ **JWT authentication required** - Users must be authenticated
+- ✅ **File size limit (10MB)** - Prevents abuse
+- ✅ **File type validation (magic numbers)** - Prevents malicious files
+- ✅ **Resume keyword detection (guard rail)** - Rejects non-resume files
+- ✅ **Prompt injection prevention** - Text sanitization
+- ✅ **Text truncation (50K chars max)** - Cost control
+- ✅ **Schema validation** - Ensures output quality
+- ✅ **RLS policies** - Users cannot query other users' PII directly
+- ✅ **Dual-client architecture** - Service role used only for cache (trusted code)
+- ✅ **Cache expiry (30 days)** - Auto-cleanup of old data
+
+### PII Protection Model
+
+**The Problem:**
+- The `parsed_resumes` table contains full resume text and contact info (PII)
+- If we allowed `SELECT USING (true)` in RLS, any user could query other users' data
+
+**The Solution:**
+- **RLS Policy**: Restrictive - users can only SELECT their own records
+- **Service Role**: Function uses service role key to bypass RLS for cache operations
+- **Trust Boundary**: Service role key is server-side only, never exposed to frontend
+- **Result**: Global cache deduplication without compromising user privacy
 
 ---
 
 ## Cost Optimization
 
-**Caching Strategy:**
+**Global Caching Strategy:**
 - File hash (SHA-256) used as cache key
-- Same file uploaded by different users = cache hit
+- Same file uploaded by **any user** = cache hit (via service role)
 - 30-day TTL = balance between cost savings and freshness
+- Service role enables global deduplication while maintaining RLS privacy
 
 **Expected Savings:**
 - Without cache: 2,000 parses/month × $0.005 = $10/month
 - With 60% cache hit: 800 parses/month × $0.005 = $4/month
 - **Savings: 60% ($6/month)**
+
+**Note:** Global cache (vs user-scoped) increases hit rate significantly since popular resumes (e.g., from career services) get reused across users.
 
 ---
 

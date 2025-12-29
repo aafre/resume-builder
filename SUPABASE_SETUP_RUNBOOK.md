@@ -1,6 +1,6 @@
 # Supabase Setup Runbook - Resume Builder
-**Version:** 1.0
-**Last Updated:** 2025-12-22
+**Version:** 1.1
+**Last Updated:** 2025-12-29
 **Supabase Version:** Latest (2025)
 
 ## 📋 Prerequisites
@@ -838,6 +838,14 @@ Use this before going live:
 - [ ] Site URL set to production domain
 - [ ] Redirect URLs include production URLs
 
+**Edge Functions:**
+- [ ] Database migration for `parsed_resumes` table executed
+- [ ] Edge Function secrets configured:
+  - [ ] `OPENAI_API_KEY` set (for AI resume parsing)
+  - [ ] `SUPABASE_SERVICE_ROLE_KEY` set (for global cache deduplication)
+- [ ] `parse-resume` function deployed and tested
+- [ ] Function logs verified for errors
+
 **Security & Configuration:**
 - [ ] Environment variables set in Cloud Run
 - [ ] CORS restricted to production domains
@@ -852,11 +860,16 @@ Use this before going live:
 - [ ] Test resume creation works
 - [ ] Test file upload works
 - [ ] Test PDF generation works
+- [ ] **Test resume parser (Edge Function)**:
+  - [ ] Upload PDF resume → successfully parsed to YAML
+  - [ ] Upload DOCX resume → successfully parsed to YAML
+  - [ ] Upload same file twice → second upload uses cache (check logs)
+  - [ ] Upload non-resume file → rejected with error
 - [ ] Verify user profile shows correct name/email from OAuth providers
 - [ ] Test sign-out and re-authentication
 
 ---
 
-**Last Updated:** 2025-12-22
+**Last Updated:** 2025-12-29
 **Maintained By:** Engineering Team
 **Questions?** Check Supabase Discord or GitHub Issues

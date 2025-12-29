@@ -18,6 +18,7 @@ This directory contains comprehensive setup and configuration guides for the Res
 | Document | Location | Purpose |
 |----------|----------|---------|
 | **[SUPABASE_SETUP_RUNBOOK.md](../SUPABASE_SETUP_RUNBOOK.md)** | Root directory | Complete Supabase project setup from scratch |
+| **[Parse Resume Function README](../supabase/functions/parse-resume/README.md)** | supabase/functions/parse-resume/ | AI resume parser Edge Function deployment guide |
 
 ### Project Documentation
 
@@ -132,6 +133,9 @@ This directory contains comprehensive setup and configuration guides for the Res
 **"I need to configure email templates"**
 → `SUPABASE_SETUP_RUNBOOK.md` → Part 4.5: Customize Email Templates
 
+**"I need to deploy the resume parser"**
+→ `supabase/functions/parse-resume/README.md`
+
 **"What does this codebase do?"**
 → `../CLAUDE.md`
 
@@ -157,6 +161,11 @@ This directory contains comprehensive setup and configuration guides for the Res
 - [ ] Production domain configured in Supabase
 - [ ] OAuth apps updated for production URLs
 - [ ] Email templates customized and tested
+- [ ] **Edge Functions deployed** (see `supabase/functions/parse-resume/README.md`)
+  - [ ] `parsed_resumes` table migration executed
+  - [ ] `OPENAI_API_KEY` secret set
+  - [ ] `SUPABASE_SERVICE_ROLE_KEY` secret set
+  - [ ] `parse-resume` function deployed
 - [ ] CORS restricted to production domain
 - [ ] Environment variables set in deployment environment
 - [ ] HTTPS enabled
@@ -181,6 +190,7 @@ This directory contains comprehensive setup and configuration guides for the Res
 | OAUTH_QUICK_START.md | 1.0 | 2025-12-23 | 2026-03-23 |
 | OAUTH_SETUP_GUIDE.md | 1.0 | 2025-12-23 | 2026-03-23 |
 | SUPABASE_SETUP_RUNBOOK.md | 1.0 | 2025-12-22 | 2026-01-22 |
+| parse-resume/README.md | 1.1 | 2025-12-29 | 2026-03-29 |
 
 ---
 
@@ -208,4 +218,4 @@ When updating documentation:
 
 ---
 
-**Last Updated:** 2025-12-23
+**Last Updated:** 2025-12-29
