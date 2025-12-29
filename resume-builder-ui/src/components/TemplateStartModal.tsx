@@ -26,7 +26,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
   const modalRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { parseResume, parsing, progress, error } = useResumeParser();
+  const { parseResume, parsing, progress, error, clearError } = useResumeParser();
 
   // Reset state when modal closes
   useEffect(() => {
@@ -34,8 +34,9 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
       setSelectedOption(null);
       setIsDragging(false);
       setParseResult(null);
+      clearError();
     }
-  }, [isOpen]);
+  }, [isOpen, clearError]);
 
   // Auto-focus modal on open
   useEffect(() => {
@@ -263,6 +264,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                 </div>
                 <button
                   onClick={() => {
+                    clearError();
                     setParseResult(null);
                     fileInputRef.current?.click();
                   }}
