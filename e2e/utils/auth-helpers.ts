@@ -80,28 +80,24 @@ export async function signInDirectly(page: Page): Promise<void> {
   // Inject session into browser storage
   await page.goto('/');
 
-  await page.evaluate(
-    ({ session }) => {
-      // Set session in localStorage (Supabase stores auth state here)
-      const key = `sb-${new URL(session.user.user_metadata.supabase_url || location.origin).hostname.split('.')[0]}-auth-token`;
+  // Extract project ref from Supabase URL (e.g., "mgetvioaymkvafczmhwo")
+  const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
+  const storageKey = `sb-${projectRef}-auth-token`;
 
+  await page.evaluate(
+    ({ storageKey, session }) => {
+      // Set session in localStorage (Supabase v2 format)
       localStorage.setItem(
-        key,
-        JSON.stringify({
-          access_token: session.access_token,
-          refresh_token: session.refresh_token,
-          expires_at: session.expires_at,
-          expires_in: session.expires_in,
-          token_type: session.token_type,
-          user: session.user,
-        })
+        storageKey,
+        JSON.stringify(session)
       );
     },
-    { session: data.session }
+    { storageKey, session: data.session }
   );
 
   // Reload to apply session
   await page.reload();
+  await page.waitForLoadState('networkidle');
 
   // Verify user menu appears
   await expect(page.locator('[data-testid="user-menu"]')).toBeVisible({ timeout: 5000 });
