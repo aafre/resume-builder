@@ -26,7 +26,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
   const modalRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { parseResume, parsing, progress, error, clearError } = useResumeParser();
+  const { parseResume, parsing, progress, progressMessage, error, clearError } = useResumeParser();
 
   // Reset state when modal closes
   useEffect(() => {
@@ -213,7 +213,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                   />
                 </div>
                 <p className="text-center text-xs text-gray-500 mt-2">
-                  {progress < 40 ? 'Extracting text...' : progress < 80 ? 'Analyzing content...' : 'Almost done...'}
+                  {progressMessage || 'Processing...'}
                 </p>
               </div>
             )}
