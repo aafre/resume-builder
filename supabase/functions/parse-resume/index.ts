@@ -215,7 +215,7 @@ serve(async (req: Request) => {
         JSON.stringify({
           success: false,
           error:
-            'File does not appear to be a resume. Please upload a valid resume (PDF/DOCX) containing work experience, education, or skills sections.',
+            'We analyzed your file but couldn\'t find standard resume sections (like Experience, Education, or Skills). Please ensure you are uploading a valid resume.',
         }),
         {
           status: 400,
