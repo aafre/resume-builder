@@ -77,7 +77,12 @@ serve(async (req: Request) => {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
 
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    // Create client with user's JWT to respect RLS policies
+    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      global: {
+        headers: { Authorization: authHeader }
+      }
+    });
 
     const {
       data: { user },
