@@ -217,52 +217,28 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
               </div>
             )}
 
-            {/* State D: Result - Success/Warning */}
+            {/* State D: Result - Success & Review */}
             {parseResult && !parsing && (
-              <div className={`border-2 rounded-lg p-6 ${
-                parseResult.confidence >= 0.9
-                  ? 'border-green-200 bg-green-50'
-                  : 'border-yellow-200 bg-yellow-50'
-              }`}>
+              <div className="border-2 border-green-200 bg-green-50 rounded-lg p-6">
                 <div className="flex items-start gap-3 mb-4">
-                  {parseResult.confidence >= 0.9 ? (
-                    <CheckCircleIcon className="w-8 h-8 text-green-600 flex-shrink-0" />
-                  ) : (
-                    <ExclamationTriangleIcon className="w-8 h-8 text-yellow-600 flex-shrink-0" />
-                  )}
+                  <CheckCircleIcon className="w-8 h-8 text-green-600 flex-shrink-0" />
                   <div className="flex-1">
-                    <h4 className={`font-semibold text-sm mb-1 ${
-                      parseResult.confidence >= 0.9 ? 'text-green-900' : 'text-yellow-900'
-                    }`}>
-                      {parseResult.confidence >= 0.9 ? 'Success! Loading Editor...' : 'We captured most details'}
+                    <h4 className="font-semibold text-sm mb-1 text-green-900">
+                      {parseResult.confidence >= 0.9 ? 'Import Successful!' : 'Import Successful'}
                     </h4>
-                    <p className={`text-xs ${
-                      parseResult.confidence >= 0.9 ? 'text-green-700' : 'text-yellow-700'
-                    }`}>
+                    <p className="text-xs text-green-700">
                       {parseResult.confidence >= 0.9
-                        ? 'Your resume was parsed successfully. Redirecting...'
-                        : 'Please review your information carefully.'}
+                        ? 'Loading your resume...'
+                        : 'Please review your details carefully before continuing.'}
                     </p>
                   </div>
                 </div>
 
-                {parseResult.warnings.length > 0 && (
-                  <div className="mb-4">
-                    <p className="text-xs font-semibold text-gray-700 mb-2">Warnings:</p>
-                    <ul className="text-xs space-y-1">
-                      {parseResult.warnings.map((warning: string, idx: number) => (
-                        <li key={idx} className="text-yellow-700">• {warning}</li>
-                      ))}
-                    </ul>
+                {parseResult.cached && (
+                  <div className="flex items-center gap-1 text-xs text-gray-600 mb-4">
+                    <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Previously imported</span>
                   </div>
                 )}
-
-                <div className="flex items-center justify-between text-xs text-gray-600 mb-4">
-                  <span>AI Confidence: {(parseResult.confidence * 100).toFixed(0)}%</span>
-                  {parseResult.cached && (
-                    <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Cached</span>
-                  )}
-                </div>
 
                 {parseResult.confidence < 0.9 && (
                   <button
