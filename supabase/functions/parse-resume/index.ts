@@ -76,8 +76,9 @@ serve(async (req: Request) => {
     const token = authHeader.replace('Bearer ', '');
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
-    // Create client with user's JWT to respect RLS policies
+    // Create client with user's JWT for authentication
     const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       global: {
         headers: { Authorization: authHeader }
@@ -102,6 +103,9 @@ serve(async (req: Request) => {
     const userId = user.id;
     console.log('Authenticated user:', userId);
 
+    // Create admin client for cache operations (bypasses RLS for global deduplication)
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+
     // === 2. Parse multipart form data ===
     const formData = await req.formData();
     const file = formData.get('file') as File;
@@ -123,8 +127,8 @@ serve(async (req: Request) => {
     const fileHash = await calculateSHA256(fileBuffer);
     console.log('File hash:', fileHash);
 
-    // === 4. Check cache (by hash) ===
-    const { data: cached } = await supabase
+    // === 4. Check cache (by hash) - using admin client for global deduplication ===
+    const { data: cached } = await supabaseAdmin
       .from('parsed_resumes')
       .select('parsed_yaml, confidence_score, warnings, created_at')
       .eq('file_hash', fileHash)
@@ -295,8 +299,8 @@ serve(async (req: Request) => {
       );
     }
 
-    // === 12. Cache result ===
-    const { error: cacheError } = await supabase.from('parsed_resumes').insert({
+    // === 12. Cache result - using admin client for global cache ===
+    const { error: cacheError } = await supabaseAdmin.from('parsed_resumes').insert({
       user_id: userId,
       file_hash: fileHash,
       file_name: file.name,
@@ -311,7 +315,13 @@ serve(async (req: Request) => {
     });
 
     if (cacheError) {
-      console.error('Cache insert failed (non-fatal):', cacheError);
+      // Handle race condition: another request might have cached it while we were parsing
+      if (cacheError.code === '23505') {
+        console.log('Cache insert race condition - another request cached this file concurrently');
+        // Non-fatal: the cache entry exists, which is what we wanted
+      } else {
+        console.error('Cache insert failed (non-fatal):', cacheError);
+      }
       // Continue anyway - caching failure shouldn't block response
     } else {
       console.log('Result cached successfully');
