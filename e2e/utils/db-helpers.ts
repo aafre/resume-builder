@@ -198,3 +198,63 @@ export async function deleteResume(resumeId: string): Promise<void> {
 
   console.log(`✅ Deleted resume: ${resumeId}`);
 }
+
+/**
+ * Create a resume from template via API (proper flow)
+ *
+ * @param page - Playwright page object
+ * @param templateId - Template ID (e.g., 'classic-alex-rivera')
+ * @param loadExample - Whether to load example data (default: true)
+ * @returns Resume ID
+ */
+export async function createResumeFromTemplate(
+  page: any,
+  templateId: string = 'classic-alex-rivera',
+  loadExample: boolean = true
+): Promise<string> {
+  // Get session token from localStorage (Supabase v2 format)
+  const supabaseUrl = process.env.VITE_SUPABASE_URL!;
+  const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
+  const storageKey = `sb-${projectRef}-auth-token`;
+
+  const sessionToken = await page.evaluate((key) => {
+    try {
+      const sessionData = localStorage.getItem(key);
+      if (sessionData) {
+        const session = JSON.parse(sessionData);
+        return session.access_token || null;
+      }
+    } catch (error) {
+      console.error('Failed to get session from localStorage:', error);
+    }
+    return null;
+  }, storageKey);
+
+  if (!sessionToken) {
+    throw new Error('No session token found - user must be signed in');
+  }
+
+  // Create resume via API
+  const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:5173';
+  const response = await page.request.post(`${baseURL}/api/resumes/create`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${sessionToken}`,
+    },
+    data: {
+      template_id: templateId,
+      load_example: loadExample,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok()) {
+    throw new Error(`Failed to create resume: ${data.error || response.statusText()}`);
+  }
+
+  const resumeId = data.resume_id;
+  console.log(`✅ Created resume from template "${templateId}": ${resumeId}`);
+
+  return resumeId;
+}

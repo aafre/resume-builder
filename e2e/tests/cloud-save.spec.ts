@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { signInDirectly } from '../utils/auth-helpers';
-import { cleanupTestResumes } from '../utils/db-helpers';
+import { cleanupTestResumes, createResumeFromTemplate } from '../utils/db-helpers';
 
 /**
  * Cloud Save E2E Tests
@@ -22,20 +22,27 @@ test.describe('Cloud Save & Database Persistence', () => {
   });
 
   test('should persist data after full page reload (database save)', async ({ page }) => {
-    // Navigate to editor with template
-    await page.goto('/editor?template=classic-alex-rivera');
+    // Create resume from template using proper flow
+    const resumeId = await createResumeFromTemplate(page, 'classic-alex-rivera', true);
+
+    // Navigate to editor with resume ID (NOT template query param)
+    await page.goto(`/editor/${resumeId}`);
     await page.waitForLoadState('networkidle');
+
+    // Wait longer for editor to load (may take time with data fetch)
+    await page.waitForTimeout(2000);
 
     // Close tour modal if present
     const skipTourButton = page.locator('button').filter({ hasText: /skip tour/i }).first();
-    if (await skipTourButton.isVisible({ timeout: 2000 })) {
+    const hasTour = await skipTourButton.isVisible({ timeout: 3000 }).catch(() => false);
+    if (hasTour) {
       await skipTourButton.click();
       await page.waitForTimeout(500);
     }
 
     // Wait for editor to load
     const nameInput = page.getByPlaceholder('Enter your name');
-    await expect(nameInput).toBeVisible({ timeout: 10000 });
+    await expect(nameInput).toBeVisible({ timeout: 15000 });
 
     // Type unique data into the name field
     const uniqueName = `Test User ${Date.now()}`;
@@ -75,16 +82,13 @@ test.describe('Cloud Save & Database Persistence', () => {
     // Additional wait to ensure database write completed
     await page.waitForTimeout(1000);
 
-    // Check the URL - it should have a resume ID after save
+    // Verify URL contains resume ID (not template)
     const urlBeforeReload = page.url();
     console.log(`URL before reload: ${urlBeforeReload}`);
 
-    // Check if URL has resume ID or still has template param
-    if (urlBeforeReload.includes('template=')) {
-      console.log('⚠️  URL still contains template parameter - resume may not have been saved with proper ID');
-    } else if (urlBeforeReload.includes('resume=')) {
-      console.log('✅ URL contains resume ID - data should persist');
-    }
+    expect(urlBeforeReload).toContain(`/editor/${resumeId}`);
+    expect(urlBeforeReload).not.toContain('template=');
+    console.log('✅ URL correctly uses resume ID path parameter');
 
     // Perform FULL page reload (not soft navigation)
     await page.reload({ waitUntil: 'networkidle' });
@@ -105,8 +109,11 @@ test.describe('Cloud Save & Database Persistence', () => {
   });
 
   test('should show save status indicator transitions', async ({ page }) => {
+    // Create resume from template
+    const resumeId = await createResumeFromTemplate(page, 'classic-alex-rivera', true);
+
     // Navigate to editor
-    await page.goto('/editor?template=classic-alex-rivera');
+    await page.goto(`/editor/${resumeId}`);
     await page.waitForLoadState('networkidle');
 
     // Close tour modal
@@ -144,7 +151,10 @@ test.describe('Cloud Save & Database Persistence', () => {
   });
 
   test('should auto-save multiple field edits', async ({ page }) => {
-    await page.goto('/editor?template=classic-alex-rivera');
+    // Create resume from template
+    const resumeId = await createResumeFromTemplate(page, 'classic-alex-rivera', true);
+
+    await page.goto(`/editor/${resumeId}`);
     await page.waitForLoadState('networkidle');
 
     // Close tour modal
@@ -202,5 +212,44 @@ test.describe('Cloud Save & Database Persistence', () => {
     expect(reloadedEmail).toBe(uniqueEmail);
 
     console.log('✅ Multiple field edits persisted after reload');
+  });
+
+  test('should handle deprecated template URL pattern gracefully', async ({ page }) => {
+    // Try accessing editor with old ?template=X pattern (NO LONGER SUPPORTED)
+    await page.goto('/editor?template=classic-alex-rivera');
+    await page.waitForLoadState('networkidle');
+
+    // Wait a moment for any redirects or error handling
+    await page.waitForTimeout(2000);
+
+    const currentURL = page.url();
+    console.log(`Current URL after navigating to deprecated pattern: ${currentURL}`);
+
+    // The app should either:
+    // 1. Redirect to home page or templates page
+    // 2. Show an error message
+    // 3. Redirect to a proper /editor/<uuid> after creating a resume
+
+    const isOnEditor = currentURL.includes('/editor/');
+    const isOnHome = currentURL === 'http://localhost:5173/' || currentURL.endsWith('/');
+    const isOnTemplates = currentURL.includes('/templates');
+
+    if (isOnEditor) {
+      // App created a resume and redirected - verify it's using UUID pattern
+      const hasUUID = /\/editor\/[0-9a-f-]{36}/.test(currentURL);
+      expect(hasUUID).toBeTruthy();
+      expect(currentURL).not.toContain('template=');
+      console.log('✅ App created resume and redirected to proper UUID pattern');
+    } else if (isOnHome || isOnTemplates) {
+      console.log('✅ App redirected away from deprecated pattern');
+    } else {
+      // Check for error message on the page
+      const errorMessage = await page.locator('text=/error|not found|invalid/i').first().isVisible({ timeout: 3000 }).catch(() => false);
+      if (errorMessage) {
+        console.log('✅ App shows error message for deprecated pattern');
+      } else {
+        throw new Error(`Unexpected behavior: URL is "${currentURL}" and no error shown for deprecated ?template=X pattern`);
+      }
+    }
   });
 });
