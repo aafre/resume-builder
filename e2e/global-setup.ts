@@ -45,24 +45,48 @@ export default async function globalSetup() {
   });
 
   try {
-    // Check if test user already exists
-    const { data: existingUsers } = await supabase.auth.admin.listUsers();
-
-    const existingUser = existingUsers?.users?.find(
-      (user) => user.email === testUserEmail
-    );
-
     let userId: string;
 
-    if (existingUser) {
+    // Try to sign in first to check if user exists
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+      email: testUserEmail,
+      password: testUserPassword,
+    });
+
+    if (signInData?.user) {
+      // User exists and credentials are correct
       console.log(`✅ Test user already exists: ${testUserEmail}`);
-      userId = existingUser.id;
+      userId = signInData.user.id;
+    } else if (signInError?.message?.includes('Invalid login credentials')) {
+      // User exists but wrong password - need to update password
+      console.log(`⚠️  Test user exists but password mismatch - updating password`);
+
+      // Get user by email using pagination
+      let page = 1;
+      let found = false;
+      while (!found && page < 10) { // Max 10 pages (500 users)
+        const { data: usersData } = await supabase.auth.admin.listUsers({ page, perPage: 50 });
+        const existingUser = usersData?.users?.find(u => u.email === testUserEmail);
+
+        if (existingUser) {
+          userId = existingUser.id;
+          // Update password
+          await supabase.auth.admin.updateUserById(userId, { password: testUserPassword });
+          console.log(`✅ Updated password for test user`);
+          found = true;
+        }
+        page++;
+      }
+
+      if (!found) {
+        throw new Error('User exists but could not be found in user list');
+      }
     } else {
-      // Create new test user
+      // User doesn't exist - create new
       const { data, error } = await supabase.auth.admin.createUser({
         email: testUserEmail,
         password: testUserPassword,
-        email_confirm: true, // Auto-confirm email
+        email_confirm: true,
         user_metadata: {
           name: 'E2E Test User',
         },
