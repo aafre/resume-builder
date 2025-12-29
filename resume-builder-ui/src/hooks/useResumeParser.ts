@@ -63,10 +63,11 @@ export function useResumeParser() {
     return null;
   };
 
-  // Start continuous progress animation that runs until stopped
+  // Start continuous progress animation with asymptotic slowdown
+  // Progress quickly at first, then slows down as it approaches maxProgress
+  // This ensures we never reach 100% before the API completes, even for slow requests
   const startProgressAnimation = (maxProgress: number = 90) => {
     const startTime = Date.now();
-    const totalDuration = 1200; // Animate to maxProgress over 1200ms
 
     // Clear any existing interval
     if (progressIntervalRef.current) {
@@ -75,7 +76,11 @@ export function useResumeParser() {
 
     progressIntervalRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime;
-      const progressPercent = Math.min(elapsed / totalDuration, 1);
+
+      // Asymptotic formula: progress = maxProgress * (1 - e^(-elapsed/8000))
+      // This approaches maxProgress but never quite reaches it
+      // Gets to ~63% of maxProgress in 8 seconds, ~86% in 16 seconds, ~95% in 24 seconds
+      const progressPercent = 1 - Math.exp(-elapsed / 8000);
       const currentProgress = Math.round(progressPercent * maxProgress);
 
       setProgress(currentProgress);
@@ -88,12 +93,8 @@ export function useResumeParser() {
         setProgressMessage(currentStage.message);
       }
 
-      // Stop at maxProgress
-      if (progressPercent >= 1) {
-        clearInterval(progressIntervalRef.current!);
-        progressIntervalRef.current = null;
-      }
-    }, 100); // Update every 100ms for smooth visual feedback
+      // Never auto-stop - only stops when stopProgressAnimation is called
+    }, 150); // Update every 150ms for smooth visual feedback
   };
 
   const stopProgressAnimation = () => {
