@@ -19,28 +19,26 @@ test.describe('Comprehensive Authentication Flow', () => {
     await cleanupTestResumes();
   });
 
-  test.skip('should allow anonymous user to access editor with template parameter', async ({ page }) => {
-    // SKIPPED: Editor shows 5XX error - likely requires Flask backend or API endpoint
-    // TODO: Investigate which API call is failing and mock it or fix the requirement
+  test('should allow anonymous user to access editor with template parameter', async ({ page }) => {
     // ============================================
     // STEP 1: Navigate to Editor with Template
     // ============================================
-    await page.goto('/editor?template=1');
+    await page.goto('/editor?template=classic-alex-rivera');
 
     // Wait for editor to load
-    await page.waitForLoadState('domcontentloaded');
-    await page.waitForTimeout(2000); // Give editor time to initialize
+    await page.waitForLoadState('networkidle');
 
     // ============================================
     // STEP 2: Verify Editor Loads for Anonymous User
     // ============================================
-    const nameInput = page.locator('input[name="name"]');
+    const nameInput = page.getByPlaceholder('Enter your name');
     await expect(nameInput).toBeVisible({ timeout: 15000 });
 
     // ============================================
     // STEP 3: Make Changes as Anonymous User
     // ============================================
     const uniqueName = `Anon User ${Date.now()}`;
+    await nameInput.clear();
     await nameInput.fill(uniqueName);
 
     // Verify change persisted
@@ -79,31 +77,19 @@ test.describe('Comprehensive Authentication Flow', () => {
     console.log('✅ Template selection works');
   });
 
-  test.skip('should preserve anonymous user edits in localStorage', async ({ page }) => {
-    // Navigate to templates page
-    await page.goto('/templates');
+  test.skip('should preserve anonymous user edits in localStorage after reload', async ({ page }) => {
+    // SKIPPED: Template parameter on reload resets data to template defaults
+    // localStorage persistence works during session but not across reloads with template parameter
+    // Navigate directly to editor with template
+    await page.goto('/editor?template=classic-alex-rivera');
     await page.waitForLoadState('networkidle');
 
-    // Select first template
-    const templateGrid = page.locator('div.grid.grid-cols-1');
-    await expect(templateGrid).toBeVisible({ timeout: 10000 });
-
-    const firstTemplate = templateGrid.locator('div.cursor-pointer').first();
-    await firstTemplate.click();
-    await page.waitForTimeout(500);
-
-    // Click action button to go to editor
-    const actionButton = page.locator('button').filter({ hasText: /start building|select.*template|use.*template/i }).first();
-    await actionButton.click();
-
-    // Wait for editor to load
-    await expect(page).toHaveURL(/\/editor/i, { timeout: 10000 });
-
-    const nameInput = page.locator('input[name="name"]');
+    const nameInput = page.getByPlaceholder('Enter your name');
     await expect(nameInput).toBeVisible({ timeout: 10000 });
 
     // Make a change
     const uniqueName = `Anon User ${Date.now()}`;
+    await nameInput.clear();
     await nameInput.fill(uniqueName);
 
     // Wait for auto-save (localStorage)
@@ -111,18 +97,17 @@ test.describe('Comprehensive Authentication Flow', () => {
 
     // Reload page
     await page.reload();
+    await page.waitForLoadState('networkidle');
     await expect(nameInput).toBeVisible({ timeout: 10000 });
 
     // Verify data persisted in localStorage
     const persistedValue = await nameInput.inputValue();
 
-    // Note: This might not work if the template system resets state
-    // The test documents expected behavior
     console.log(`Persisted value: "${persistedValue}"`);
     console.log(`Expected value: "${uniqueName}"`);
 
-    // We're testing that SOME value persists (might be template default)
-    expect(persistedValue.length).toBeGreaterThan(0);
+    // Verify the value persisted (exact match)
+    expect(persistedValue).toBe(uniqueName);
 
     console.log('✅ LocalStorage persistence tested');
   });
