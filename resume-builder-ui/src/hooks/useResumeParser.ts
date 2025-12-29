@@ -64,36 +64,39 @@ export function useResumeParser() {
   };
 
   // Animate progress smoothly from one value to another
-  const animateProgress = (fromProgress: number, toProgress: number, duration: number) => {
-    const startTime = Date.now();
-    const progressDiff = toProgress - fromProgress;
+  const animateProgress = (fromProgress: number, toProgress: number, duration: number): Promise<void> => {
+    return new Promise((resolve) => {
+      const startTime = Date.now();
+      const progressDiff = toProgress - fromProgress;
 
-    // Clear any existing interval
-    if (progressIntervalRef.current) {
-      clearInterval(progressIntervalRef.current);
-    }
-
-    progressIntervalRef.current = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const progressPercent = Math.min(elapsed / duration, 1);
-      const currentProgress = fromProgress + (progressDiff * progressPercent);
-
-      setProgress(Math.round(currentProgress));
-
-      // Update message based on current progress
-      const currentStage = [...PROGRESS_STAGES]
-        .reverse()
-        .find(stage => currentProgress >= stage.threshold);
-      if (currentStage) {
-        setProgressMessage(currentStage.message);
+      // Clear any existing interval
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
       }
 
-      // Clear interval when animation completes
-      if (progressPercent >= 1) {
-        clearInterval(progressIntervalRef.current!);
-        progressIntervalRef.current = null;
-      }
-    }, 50); // Update every 50ms for smooth animation (20 FPS)
+      progressIntervalRef.current = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        const progressPercent = Math.min(elapsed / duration, 1);
+        const currentProgress = fromProgress + (progressDiff * progressPercent);
+
+        setProgress(Math.round(currentProgress));
+
+        // Update message based on current progress
+        const currentStage = [...PROGRESS_STAGES]
+          .reverse()
+          .find(stage => currentProgress >= stage.threshold);
+        if (currentStage) {
+          setProgressMessage(currentStage.message);
+        }
+
+        // Clear interval when animation completes
+        if (progressPercent >= 1) {
+          clearInterval(progressIntervalRef.current!);
+          progressIntervalRef.current = null;
+          resolve(); // Resolve the promise when animation completes
+        }
+      }, 50); // Update every 50ms for smooth animation (20 FPS)
+    });
   };
 
   const parseResume = async (file: File): Promise<ParseResponse> => {
@@ -104,14 +107,12 @@ export function useResumeParser() {
 
     try {
       // Stage 1: File validation (0% → 20% over 200ms)
-      animateProgress(0, 20, 200);
+      const validationPromise = animateProgress(0, 20, 200);
       const validationError = validateFile(file);
       if (validationError) {
         throw new Error(validationError);
       }
-
-      // Stage 2: File upload + extraction (20% → 50% over 400ms)
-      animateProgress(20, 50, 400);
+      await validationPromise;
 
       // Check authentication
       if (!session) {
@@ -122,11 +123,13 @@ export function useResumeParser() {
       const formData = new FormData();
       formData.append('file', file);
 
-      // Stage 3: AI analysis (50% → 75% over 500ms)
-      animateProgress(50, 75, 500);
+      // Stage 2: File upload + extraction (20% → 50% over 400ms)
+      await animateProgress(20, 50, 400);
 
-      // Call Edge Function
-      const response = await fetch(
+      // Stage 3: AI analysis (50% → 75% over 500ms)
+      // Start animation and API call in parallel
+      const analysisAnimation = animateProgress(50, 75, 500);
+      const responsePromise = fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/parse-resume`,
         {
           method: 'POST',
@@ -137,17 +140,22 @@ export function useResumeParser() {
         }
       );
 
-      // Stage 4: Structuring data (75% → 90% over 300ms)
-      animateProgress(75, 90, 300);
+      // Wait for both animation and API call
+      await analysisAnimation;
+      const response = await responsePromise;
 
+      // Stage 4: Structuring data (75% → 90% over 300ms)
+      const structuringAnimation = animateProgress(75, 90, 300);
       const data = await response.json();
 
       if (!response.ok || !data.success) {
         throw new Error(data.error || 'Failed to parse resume');
       }
 
+      await structuringAnimation;
+
       // Stage 5: Complete (90% → 100% over 100ms)
-      animateProgress(90, 100, 100);
+      await animateProgress(90, 100, 100);
       return data;
     } catch (err) {
       // Clear interval on error
