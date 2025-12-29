@@ -1769,41 +1769,17 @@ const Editor: React.FC = () => {
       <div className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-72 sm:pb-56 lg:pb-12 max-w-4xl lg:max-w-none transition-all duration-300 ${
         isSidebarCollapsed ? 'lg:mr-[88px]' : 'lg:mr-[296px]'
       }`}>
-        {/* AI Import Warning Banner */}
+        {/* Imported Resume Review Banner */}
         {showAIWarning && (
-          <div className={`mb-4 p-4 rounded-lg border-2 flex items-start gap-3 ${
-            aiConfidence >= 0.9
-              ? 'bg-green-50 border-green-200'
-              : 'bg-yellow-50 border-yellow-200'
-          }`}>
-            <AlertCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
-              aiConfidence >= 0.9 ? 'text-green-600' : 'text-yellow-600'
-            }`} />
+          <div className="mb-4 p-4 rounded-lg border-2 bg-blue-50 border-blue-200 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-blue-600" />
             <div className="flex-1">
-              <h3 className={`font-semibold text-sm ${
-                aiConfidence >= 0.9 ? 'text-green-900' : 'text-yellow-900'
-              }`}>
-                AI-Imported Resume - Please Review All Details
+              <h3 className="font-semibold text-sm text-blue-900">
+                Imported Resume - Please Review
               </h3>
-              <p className={`text-xs mt-1 ${
-                aiConfidence >= 0.9 ? 'text-green-700' : 'text-yellow-700'
-              }`}>
-                This resume was AI-generated and may contain inaccuracies. Please carefully review all information.
+              <p className="text-xs mt-1 text-blue-700">
+                Please review all information for accuracy and completeness.
               </p>
-
-              {aiWarnings.length > 0 && (
-                <ul className="mt-2 text-xs space-y-1">
-                  {aiWarnings.map((warning, idx) => (
-                    <li key={idx} className={aiConfidence >= 0.9 ? 'text-green-700' : 'text-yellow-700'}>
-                      • {warning}
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              <div className="text-xs mt-2 text-gray-500">
-                AI Confidence: {(aiConfidence * 100).toFixed(0)}%
-              </div>
             </div>
             <button
               onClick={() => setShowAIWarning(false)}
