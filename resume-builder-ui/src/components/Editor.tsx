@@ -593,9 +593,12 @@ const Editor: React.FC = () => {
       const yamlString = localStorage.getItem('imported_resume_yaml');
       const warningsStr = localStorage.getItem('imported_resume_warnings');
       const confidenceStr = localStorage.getItem('imported_resume_confidence');
+      const importedTemplateIdFromStorage = localStorage.getItem('imported_template_id');
 
       if (yamlString) {
         try {
+          setLoading(true);
+
           // Parse YAML
           const parsedYaml = yaml.load(yamlString) as PortableYAMLData;
 
@@ -612,8 +615,8 @@ const Editor: React.FC = () => {
           const processedSections = processSections(migratedSections);
           setSections(processedSections);
 
-          // Set template ID if present (fallback to modern)
-          const importedTemplateId = parsedYaml.template || 'modern';
+          // Set template ID from localStorage (user-selected) or YAML (fallback)
+          const importedTemplateId = importedTemplateIdFromStorage || parsedYaml.template || 'modern';
           setTemplateId(importedTemplateId);
           setSupportsIcons(importedTemplateId === 'modern-with-icons');
 
@@ -632,15 +635,21 @@ const Editor: React.FC = () => {
           localStorage.removeItem('imported_resume_yaml');
           localStorage.removeItem('imported_resume_warnings');
           localStorage.removeItem('imported_resume_confidence');
+          localStorage.removeItem('imported_template_id');
 
           // Remove query param
           navigate(window.location.pathname, { replace: true });
 
           toast.success('Resume imported successfully!');
+          setLoading(false);
         } catch (err) {
           console.error('Failed to import AI resume:', err);
           toast.error('Failed to import resume. Please try again.');
+          setLoading(false);
         }
+      } else {
+        // No YAML found, just remove the query param
+        navigate(window.location.pathname, { replace: true });
       }
     }
   }, [searchParams, navigate, iconRegistry, processSections]);
