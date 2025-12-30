@@ -8,6 +8,12 @@ dotenv.config({ path: path.resolve(__dirname, '../.env.test') });
 /**
  * Playwright Global Setup
  *
+ * CHANGES FOR LOCAL SUPABASE + MAGIC LINK AUTH:
+ * - Uses local Supabase URL/keys from .env.test
+ * - Creates test user WITHOUT password (magic link only)
+ * - Skips email confirmation (local config: enable_confirmations = false)
+ * - Validates that we're using local Supabase (not DEV)
+ *
  * Runs once before all tests.
  * Creates dedicated test user for E2E tests and stores user ID in env.
  *
@@ -15,25 +21,36 @@ dotenv.config({ path: path.resolve(__dirname, '../.env.test') });
  * and use admin APIs.
  */
 export default async function globalSetup() {
-  console.log('\n🔧 Playwright Global Setup: Creating test user...\n');
+  console.log('\n🔧 Playwright Global Setup: Configuring local Supabase...\n');
 
   // Validate environment variables
   const supabaseUrl = process.env.VITE_SUPABASE_URL;
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const testUserEmail = process.env.TEST_USER_EMAIL;
-  const testUserPassword = process.env.TEST_USER_PASSWORD;
 
   if (!supabaseUrl || !supabaseServiceKey) {
     throw new Error(
       'Missing Supabase configuration. Please fill in .env.test file.\n' +
-      'Required: VITE_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY'
+      'Required: VITE_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY\n' +
+      'Run: supabase status | grep "key"'
     );
   }
 
-  if (!testUserEmail || !testUserPassword) {
+  if (!testUserEmail) {
     throw new Error(
-      'Missing test user credentials. Please fill in TEST_USER_EMAIL and TEST_USER_PASSWORD in .env.test'
+      'Missing TEST_USER_EMAIL in .env.test\n' +
+      'Use: e2e-test@example.com (local Inbucket address)'
     );
+  }
+
+  // Verify we're using local Supabase (not DEV)
+  if (!supabaseUrl.includes('127.0.0.1') && !supabaseUrl.includes('localhost')) {
+    console.warn('\n⚠️  WARNING: Not using local Supabase!');
+    console.warn(`⚠️  Current URL: ${supabaseUrl}`);
+    console.warn('⚠️  Expected: http://127.0.0.1:54321\n');
+    console.warn('⚠️  You may hit rate limits on DEV environment.\n');
+  } else {
+    console.log(`✅ Using local Supabase: ${supabaseUrl}`);
   }
 
   // Create Supabase admin client (bypasses RLS)
@@ -47,49 +64,27 @@ export default async function globalSetup() {
   try {
     let userId: string;
 
-    // Try to sign in first to check if user exists
-    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-      email: testUserEmail,
-      password: testUserPassword,
-    });
+    // Check if test user already exists
+    console.log(`🔍 Checking for existing user: ${testUserEmail}`);
 
-    if (signInData?.user) {
-      // User exists and credentials are correct
+    const { data: usersData } = await supabase.auth.admin.listUsers();
+    const existingUser = usersData?.users?.find(u => u.email === testUserEmail);
+
+    if (existingUser) {
+      userId = existingUser.id;
       console.log(`✅ Test user already exists: ${testUserEmail}`);
-      userId = signInData.user.id;
-    } else if (signInError?.message?.includes('Invalid login credentials')) {
-      // User exists but wrong password - need to update password
-      console.log(`⚠️  Test user exists but password mismatch - updating password`);
-
-      // Get user by email using pagination
-      let page = 1;
-      let found = false;
-      while (!found && page < 10) { // Max 10 pages (500 users)
-        const { data: usersData } = await supabase.auth.admin.listUsers({ page, perPage: 50 });
-        const existingUser = usersData?.users?.find(u => u.email === testUserEmail);
-
-        if (existingUser) {
-          userId = existingUser.id;
-          // Update password
-          await supabase.auth.admin.updateUserById(userId, { password: testUserPassword });
-          console.log(`✅ Updated password for test user`);
-          found = true;
-        }
-        page++;
-      }
-
-      if (!found) {
-        throw new Error('User exists but could not be found in user list');
-      }
+      console.log(`   User ID: ${userId}`);
     } else {
-      // User doesn't exist - create new
+      // Create new user (NO PASSWORD - magic link only)
+      console.log(`ℹ️  Creating new test user: ${testUserEmail}`);
+
       const { data, error } = await supabase.auth.admin.createUser({
         email: testUserEmail,
-        password: testUserPassword,
-        email_confirm: true,
+        email_confirm: true, // Auto-confirm (local config allows this)
         user_metadata: {
           name: 'E2E Test User',
         },
+        // NO password field - force magic link auth
       });
 
       if (error) {
@@ -101,14 +96,16 @@ export default async function globalSetup() {
       }
 
       userId = data.user.id;
-      console.log(`✅ Test user created: ${testUserEmail} (ID: ${userId})`);
+      console.log(`✅ Test user created: ${testUserEmail}`);
+      console.log(`   User ID: ${userId}`);
+      console.log(`   Auth method: Magic link only (no password)`);
     }
 
     // Store user ID in environment for tests to use
     process.env.TEST_USER_ID = userId;
 
     // Clean up any existing test data for this user
-    console.log('🧹 Cleaning up existing test data...');
+    console.log('\n🧹 Cleaning up existing test data...');
 
     await supabase
       .from('resumes')
@@ -120,11 +117,22 @@ export default async function globalSetup() {
       .delete()
       .eq('user_id', userId);
 
+    await supabase
+      .from('user_preferences')
+      .delete()
+      .eq('user_id', userId);
+
     console.log('✅ Test data cleanup complete\n');
-    console.log('🚀 Ready to run E2E tests!\n');
+    console.log('🚀 Ready to run E2E tests against local Supabase!');
+    console.log(`   Supabase API: ${supabaseUrl}`);
+    console.log(`   Inbucket (emails): http://127.0.0.1:54324\n`);
 
   } catch (error) {
     console.error('\n❌ Global setup failed:', error);
+    console.error('\nTroubleshooting:');
+    console.error('  1. Is local Supabase running? Run: supabase status');
+    console.error('  2. Are migrations applied? Run: supabase db push');
+    console.error('  3. Are .env.test keys correct? Check: supabase status | grep key\n');
     throw error;
   }
 }
