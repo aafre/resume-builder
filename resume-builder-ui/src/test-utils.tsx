@@ -34,7 +34,7 @@ export function createTestQueryClient() {
  * Default mock user for tests
  */
 export const createMockUser = (overrides?: Partial<User>): User => ({
-  id: 'test-user-id',
+  id: '00000000-0000-0000-0000-000000000000', // Valid UUID format for tests
   aud: 'authenticated',
   role: 'authenticated',
   email: 'test@example.com',

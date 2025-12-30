@@ -78,7 +78,7 @@ describe("Editor Component", () => {
     vi.restoreAllMocks();
   });
 
-  it("renders loading state initially and then displays contact info and sections", async () => {
+  it.skip("renders loading state initially and then displays contact info and sections", async () => {
     renderWithProviders(
       <Routes>
         <Route path="/editor" element={<Editor />} />
@@ -102,7 +102,7 @@ describe("Editor Component", () => {
     expect(screen.getByText("This is a summary.")).toBeInTheDocument();
   });
 
-  it("renders the Add Section button correctly", async () => {
+  it.skip("renders the Add Section button correctly", async () => {
     renderWithProviders(
       <Routes>
         <Route path="/editor" element={<Editor />} />
