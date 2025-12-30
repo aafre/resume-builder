@@ -10,11 +10,11 @@
         },
         {
           "name": "sb-mgetvioaymkvafczmhwo-auth-token",
-          "value": "{\"access_token\":\"eyJhbGciOiJIUzI1NiIsImtpZCI6IkJRaW5JaVhqaDIzTC83TloiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL21nZXR2aW9heW1rdmFmY3ptaHdvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIwMDJhMjk5My01MWI5LTQ5YTgtYjdkNS0zYWNhNjcwNmZlMGEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzY3MTA2NTI4LCJpYXQiOjE3NjcxMDI5MjgsImVtYWlsIjoiIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnt9LCJ1c2VyX21ldGFkYXRhIjp7fSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJhbm9ueW1vdXMiLCJ0aW1lc3RhbXAiOjE3NjcxMDI5Mjh9XSwic2Vzc2lvbl9pZCI6IjgyZDI0NTRkLWU0ZDctNDNkMy1hZmY5LTc1OWViMjkzZTU2MyIsImlzX2Fub255bW91cyI6dHJ1ZX0.TL2kEO3Kkz6otRxklFi5VBw1n0BLgrFuamp0T7BI5ng\",\"token_type\":\"bearer\",\"expires_in\":3600,\"expires_at\":1767106528,\"refresh_token\":\"sixjlzi4qcdy\",\"user\":{\"id\":\"002a2993-51b9-49a8-b7d5-3aca6706fe0a\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"\",\"phone\":\"\",\"last_sign_in_at\":\"2025-12-30T13:55:28.542805524Z\",\"app_metadata\":{},\"user_metadata\":{},\"identities\":[],\"created_at\":\"2025-12-30T13:55:28.522793Z\",\"updated_at\":\"2025-12-30T13:55:28.557846Z\",\"is_anonymous\":true}}"
+          "value": "{\"access_token\":\"eyJhbGciOiJIUzI1NiIsImtpZCI6IkJRaW5JaVhqaDIzTC83TloiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL21nZXR2aW9heW1rdmFmY3ptaHdvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI2YWY0YWI1YS0zMDliLTQ3ZTgtOGVhYi04NzBkMzYxZTI2NDkiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzY3MTExMjQ3LCJpYXQiOjE3NjcxMDc2NDcsImVtYWlsIjoiIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnt9LCJ1c2VyX21ldGFkYXRhIjp7fSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJhbm9ueW1vdXMiLCJ0aW1lc3RhbXAiOjE3NjcxMDc2NDd9XSwic2Vzc2lvbl9pZCI6IjQwNjAzNGFjLWVkNWYtNDk3ZS05ZDI2LTFiNGMxYTQzYjVlYyIsImlzX2Fub255bW91cyI6dHJ1ZX0.uLYpui_Fk6HL_0_-9dZ7nurlh4t33MAWN9WR_syI69A\",\"token_type\":\"bearer\",\"expires_in\":3600,\"expires_at\":1767111247,\"refresh_token\":\"dwyiv7w2bh3s\",\"user\":{\"id\":\"6af4ab5a-309b-47e8-8eab-870d361e2649\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"\",\"phone\":\"\",\"last_sign_in_at\":\"2025-12-30T15:14:06.989983061Z\",\"app_metadata\":{},\"user_metadata\":{},\"identities\":[],\"created_at\":\"2025-12-30T15:14:06.889599Z\",\"updated_at\":\"2025-12-30T15:14:07.041257Z\",\"is_anonymous\":true}}"
         },
         {
           "name": "anonymous-user-id",
-          "value": "002a2993-51b9-49a8-b7d5-3aca6706fe0a"
+          "value": "6af4ab5a-309b-47e8-8eab-870d361e2649"
         }
       ]
     }

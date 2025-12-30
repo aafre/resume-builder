@@ -215,3 +215,4 @@ resume-*.yml
 
 # Frontend build output (served by Flask)
 static/storage/
+.env.local

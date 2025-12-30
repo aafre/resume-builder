@@ -212,23 +212,26 @@ export async function createResumeFromTemplate(
   templateId: string = 'classic-alex-rivera',
   loadExample: boolean = true
 ): Promise<string> {
-  // Get session token from localStorage (Supabase v2 format)
-  const supabaseUrl = process.env.VITE_SUPABASE_URL!;
-  const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
-  const storageKey = `sb-${projectRef}-auth-token`;
-
-  const sessionToken = await page.evaluate((key) => {
+  // Get session token from localStorage - search for any Supabase auth token
+  // This works with both local (sb-localhost-auth-token) and remote (sb-{projectRef}-auth-token)
+  const sessionToken = await page.evaluate(() => {
     try {
-      const sessionData = localStorage.getItem(key);
-      if (sessionData) {
-        const session = JSON.parse(sessionData);
-        return session.access_token || null;
+      // Find all localStorage keys that match Supabase auth token pattern
+      const storageKeys = Object.keys(localStorage);
+      const authKey = storageKeys.find(k => k.startsWith('sb-') && k.endsWith('-auth-token'));
+
+      if (authKey) {
+        const sessionData = localStorage.getItem(authKey);
+        if (sessionData) {
+          const session = JSON.parse(sessionData);
+          return session.access_token || null;
+        }
       }
     } catch (error) {
       console.error('Failed to get session from localStorage:', error);
     }
     return null;
-  }, storageKey);
+  });
 
   if (!sessionToken) {
     throw new Error('No session token found - user must be signed in');

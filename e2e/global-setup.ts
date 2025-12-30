@@ -44,13 +44,20 @@ export default async function globalSetup() {
   }
 
   // Verify we're using local Supabase (not DEV)
-  if (!supabaseUrl.includes('127.0.0.1') && !supabaseUrl.includes('localhost')) {
+  if (!supabaseUrl.includes('localhost')) {
     console.warn('\n⚠️  WARNING: Not using local Supabase!');
     console.warn(`⚠️  Current URL: ${supabaseUrl}`);
-    console.warn('⚠️  Expected: http://127.0.0.1:54321\n');
+    console.warn('⚠️  Expected: http://localhost:54321\n');
     console.warn('⚠️  You may hit rate limits on DEV environment.\n');
   } else {
     console.log(`✅ Using local Supabase: ${supabaseUrl}`);
+
+    // Ensure consistency: all URLs must use 'localhost' (not 127.0.0.1)
+    if (supabaseUrl.includes('127.0.0.1')) {
+      console.warn('\n⚠️  WARNING: Supabase URL uses 127.0.0.1 instead of localhost');
+      console.warn('⚠️  This will cause cookie/localStorage mismatches!');
+      console.warn('⚠️  Update VITE_SUPABASE_URL to http://localhost:54321 in .env.test\n');
+    }
   }
 
   // Create Supabase admin client (bypasses RLS)
@@ -241,7 +248,7 @@ export default async function globalSetup() {
 
     console.log('\n🚀 Ready to run E2E tests!');
     console.log(`   Supabase API: ${supabaseUrl}`);
-    console.log(`   Mailpit (emails): http://127.0.0.1:54324`);
+    console.log(`   Mailpit (emails): http://localhost:54324`);
     console.log(`   Anon state: storage/anon.json`);
     console.log(`   User state: storage/user.json\n`);
 
