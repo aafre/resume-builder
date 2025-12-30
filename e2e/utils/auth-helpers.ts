@@ -1,11 +1,13 @@
 import { Page, expect } from '@playwright/test';
 import { createClient } from '@supabase/supabase-js';
+import { waitForEmail, getEmailContent, extractMagicLink } from './inbucket-helpers';
 
 /**
  * Auth Helper Utilities for E2E Tests
  *
  * Provides functions to:
- * - Sign in as test user
+ * - Sign in with magic link (real user flow)
+ * - Sign in directly (legacy, for backward compatibility)
  * - Sign out
  * - Check authentication state
  * - Mock OAuth flows
@@ -51,7 +53,123 @@ export async function signInAsTestUser(page: Page): Promise<void> {
 }
 
 /**
+ * Sign in using magic link authentication
+ *
+ * Follows the real user flow:
+ * 1. Open AuthModal and request magic link
+ * 2. Poll Inbucket for email
+ * 3. Extract magic link from email
+ * 4. Navigate to magic link (creates session)
+ * 5. Verify authenticated
+ *
+ * @param page - Playwright Page object
+ * @param email - Email address to sign in with (defaults to TEST_USER_EMAIL)
+ * @returns Promise that resolves when user is signed in
+ *
+ * @example
+ * await signInWithMagicLink(page);
+ * // or with custom email:
+ * await signInWithMagicLink(page, 'custom-test@example.com');
+ */
+export async function signInWithMagicLink(
+  page: Page,
+  email?: string
+): Promise<void> {
+  const testEmail = email || process.env.TEST_USER_EMAIL!;
+
+  if (!testEmail) {
+    throw new Error('Email required. Pass email parameter or set TEST_USER_EMAIL in .env.test');
+  }
+
+  console.log(`🔵 Signing in with magic link: ${testEmail}`);
+
+  // Step 1: Navigate to home and open AuthModal
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+
+  const signInButton = page.locator('button:has-text("Sign In")').first();
+  await expect(signInButton).toBeVisible({ timeout: 5000 });
+  await signInButton.click();
+
+  // Wait for auth modal to appear
+  const authModal = page.locator('[data-testid="auth-modal"]')
+    .or(page.locator('text=/sign in/i').locator('..').locator('..')); // Fallback selector
+
+  await expect(authModal).toBeVisible({ timeout: 5000 });
+  console.log('✅ Auth modal opened');
+
+  // Step 2: Fill in email and request magic link
+  const emailInput = page.locator('input[type="email"]');
+  await expect(emailInput).toBeVisible({ timeout: 5000 });
+  await emailInput.fill(testEmail);
+
+  // Find and click "Send Magic Link" button
+  // Different possible button texts: "Send Magic Link", "Send Link", "Continue with Email"
+  const sendButton = page.locator('button:has-text("Send Magic Link")')
+    .or(page.locator('button:has-text("Send Link")'))
+    .or(page.locator('button:has-text("Continue with Email")'))
+    .or(page.locator('button[type="submit"]')); // Fallback to submit button
+
+  await sendButton.click();
+  console.log('✅ Magic link requested');
+
+  // Step 3: Wait for success message
+  try {
+    await expect(
+      page.locator('text=/magic link sent|check your email|email sent/i')
+    ).toBeVisible({ timeout: 5000 });
+    console.log('✅ Success message displayed');
+  } catch (error) {
+    console.warn('⚠️  Success message not found (continuing anyway)');
+  }
+
+  // Step 4: Poll Inbucket for email (max 30 seconds)
+  console.log('📧 Polling Inbucket for email...');
+  const emailMessage = await waitForEmail(testEmail, {
+    timeout: 30000,
+    pollInterval: 500,
+    subjectContains: 'Confirm your signup',
+  });
+
+  // Step 5: Extract magic link from email
+  const emailContent = await getEmailContent(testEmail, emailMessage.id);
+  const magicLink = extractMagicLink(emailContent.html);
+
+  if (!magicLink) {
+    throw new Error(
+      'Failed to extract magic link from email.\n' +
+      'Check Inbucket UI: http://127.0.0.1:54324\n' +
+      `Mailbox: ${testEmail.split('@')[0]}`
+    );
+  }
+
+  console.log(`🔗 Magic link extracted: ${magicLink.substring(0, 60)}...`);
+
+  // Step 6: Navigate to magic link (triggers OAuth callback)
+  await page.goto(magicLink);
+  console.log('✅ Navigated to magic link');
+
+  // Step 7: Wait for redirect to home page
+  try {
+    await page.waitForURL('http://localhost:5173/', { timeout: 10000 });
+  } catch (error) {
+    // URL might already be at home page, or redirect might be to a different URL
+    console.warn('⚠️  Redirect timeout (continuing with session verification)');
+  }
+
+  await page.waitForLoadState('networkidle');
+
+  // Step 8: Verify authentication successful
+  await expect(page.locator('[data-testid="user-menu"]')).toBeVisible({ timeout: 15000 });
+
+  console.log(`✅ Signed in successfully via magic link: ${testEmail}\n`);
+}
+
+/**
  * Sign in using Supabase client directly (bypasses UI)
+ *
+ * @deprecated Use signInWithMagicLink() instead for real user flow testing.
+ * This function is kept for backward compatibility during migration.
  *
  * Faster than UI-based login, useful for setup in beforeEach hooks.
  *
@@ -59,54 +177,12 @@ export async function signInAsTestUser(page: Page): Promise<void> {
  * @returns Promise that resolves when session is injected
  */
 export async function signInDirectly(page: Page): Promise<void> {
-  const supabaseUrl = process.env.VITE_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY!;
-  const testEmail = process.env.TEST_USER_EMAIL!;
-  const testPassword = process.env.TEST_USER_PASSWORD!;
+  console.warn('\n⚠️  DEPRECATED: signInDirectly() uses password auth which does not exist in production UI.');
+  console.warn('⚠️  Please update your test to use signInWithMagicLink() instead.');
+  console.warn('⚠️  Falling back to magic link authentication...\n');
 
-  // Create Supabase client
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-  // Sign in to get session
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: testEmail,
-    password: testPassword,
-  });
-
-  if (error || !data.session) {
-    throw new Error(`Failed to sign in: ${error?.message || 'No session returned'}`);
-  }
-
-  // Inject session into browser storage
-  await page.goto('/');
-  await page.waitForLoadState('networkidle');
-
-  // Extract project ref from Supabase URL (e.g., "mgetvioaymkvafczmhwo")
-  const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
-  const storageKey = `sb-${projectRef}-auth-token`;
-
-  await page.evaluate(
-    ({ storageKey, session }) => {
-      // Set session in localStorage (Supabase v2 format)
-      localStorage.setItem(
-        storageKey,
-        JSON.stringify(session)
-      );
-    },
-    { storageKey, session: data.session }
-  );
-
-  // Reload to apply session
-  await page.reload();
-  await page.waitForLoadState('networkidle');
-
-  // Wait a bit for auth state to be recognized
-  await page.waitForTimeout(1000);
-
-  // Verify user menu appears
-  await expect(page.locator('[data-testid="user-menu"]')).toBeVisible({ timeout: 10000 });
-
-  console.log(`✅ Signed in directly: ${testEmail}`);
+  // Fall back to magic link flow (the real user flow)
+  await signInWithMagicLink(page);
 }
 
 /**
