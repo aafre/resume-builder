@@ -49,6 +49,20 @@ const hasAuthTokensInUrl = (): boolean => {
   return hash.includes('access_token') || hash.includes('refresh_token') || hash.includes('code');
 };
 
+/**
+ * Checks if a session is expired or will expire soon (within 60 seconds).
+ * Returns true if session should be refreshed.
+ */
+const isSessionExpired = (session: Session | null): boolean => {
+  if (!session?.expires_at) return true;
+
+  const expiresAt = session.expires_at * 1000; // Convert to milliseconds
+  const now = Date.now();
+  const bufferMs = 60 * 1000; // 60 second buffer
+
+  return expiresAt <= (now + bufferMs);
+};
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
@@ -409,12 +423,38 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           );
 
           if (existingSession) {
-            // Session exists and is valid
-            sessionRecovered = true;
-            setSession(existingSession);
-            setUser(existingSession.user);
-            console.log('✅ Existing session restored:', existingSession.user.id);
-            return;
+            // Check if session is expired or close to expiring
+            if (isSessionExpired(existingSession)) {
+              console.log('⚠️ Session expired or expiring soon, attempting refresh...');
+
+              try {
+                // Try to refresh the session
+                const { data: { session: refreshedSession }, error: refreshError } = await supabase!.auth.refreshSession();
+
+                if (refreshError || !refreshedSession) {
+                  console.log('❌ Session refresh failed:', refreshError?.message || 'No session returned');
+                  // Clear expired session and create new anonymous session below
+                  clearSupabaseAuthStorage();
+                } else {
+                  // Successfully refreshed
+                  sessionRecovered = true;
+                  setSession(refreshedSession);
+                  setUser(refreshedSession.user);
+                  console.log('✅ Session refreshed successfully:', refreshedSession.user.id);
+                  return;
+                }
+              } catch (refreshError) {
+                console.error('❌ Session refresh error:', refreshError);
+                clearSupabaseAuthStorage();
+              }
+            } else {
+              // Session is valid and not expired
+              sessionRecovered = true;
+              setSession(existingSession);
+              setUser(existingSession.user);
+              console.log('✅ Existing session restored:', existingSession.user.id);
+              return;
+            }
           } else {
             console.log('No existing session found, will create anonymous session');
           }
