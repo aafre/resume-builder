@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { cleanupTestResumes, createResumeFromTemplate } from '../utils/db-helpers';
-import { injectSession } from '../utils/auth-helpers';
 
 /**
  * Editor E2E Tests
@@ -11,7 +10,12 @@ import { injectSession } from '../utils/auth-helpers';
  * 3. Add section items
  * 4. Section reordering
  * 5. Preview PDF
+ *
+ * Uses storageState for fast authentication (no repeated logins).
  */
+
+// Use authenticated storageState for all tests in this suite
+test.use({ storageState: 'storage/user.json' });
 
 test.describe('Resume Editor', () => {
   test.afterEach(async () => {
@@ -19,8 +23,7 @@ test.describe('Resume Editor', () => {
   });
 
   test.beforeEach(async ({ page }) => {
-    // Sign in first
-    await injectSession(page);
+    // No login needed - storageState already has auth!
 
     // Create a resume from template (proper flow)
     const resumeId = await createResumeFromTemplate(page, 'classic-alex-rivera', true);

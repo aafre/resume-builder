@@ -7,7 +7,7 @@ import {
   navigateToMyResumes,
   getResumeIdFromURL,
 } from '../utils/navigation-helpers';
-import { signInWithMagicLink } from '../utils/auth-helpers';
+import { loginViaAdminMagicLink } from '../utils/admin-auth-helpers';
 import { cleanupTestResumes } from '../utils/db-helpers';
 
 /**
@@ -16,11 +16,18 @@ import { cleanupTestResumes } from '../utils/db-helpers';
  * This test simulates a complete brand new user journey:
  * 1. Anonymous: Build a resume from empty template
  * 2. Edit: Make a change to trigger data creation
- * 3. Migration: Sign in via Magic Link (real flow)
+ * 3. Migration: Sign in via Admin Magic Link (fast, deterministic)
  * 4. Verify: Confirm data persists after login (migration worked)
  *
  * This validates the critical anonymous → authenticated migration flow.
+ *
+ * Uses:
+ * - storageState/anon.json: Start as anonymous user
+ * - loginViaAdminMagicLink(): Upgrade to authenticated (matches production auth)
  */
+
+// Start with anonymous storageState
+test.use({ storageState: 'storage/anon.json' });
 
 const TEMPLATES = [
   'classic-alex-rivera',
@@ -87,19 +94,19 @@ test.describe('Comprehensive Flow: Empty Structure (Anonymous → Authenticated)
     console.log(`✅ Step 3 complete: Name field set to "${testName}"\n`);
 
     // ========================================
-    // STEP 4: MIGRATION - Sign In with Magic Link
+    // STEP 4: MIGRATION - Sign In with Admin Magic Link
     // ========================================
-    console.log('📍 STEP 4: Signing in with magic link (triggering migration)...');
+    console.log('📍 STEP 4: Signing in with admin magic link (triggering migration)...');
     console.log('   This tests the REAL user authentication flow!');
+    console.log('   (Using Admin generateLink - fast, no email polling)');
 
-    // Use a unique email for this test to avoid conflicts
-    const testEmail = `anon-migration-${Date.now()}@example.com`;
+    const testEmail = process.env.TEST_USER_EMAIL || 'e2e-test@example.com';
 
-    await signInWithMagicLink(page, testEmail);
+    await loginViaAdminMagicLink(page, testEmail);
 
     // Verify we're now authenticated
     await expect(userMenu).toBeVisible({ timeout: 5000 });
-    console.log('✅ Step 4 complete: User authenticated via magic link\n');
+    console.log('✅ Step 4 complete: User authenticated via admin magic link\n');
 
     // ========================================
     // STEP 5: VERIFY - Data Persisted After Migration

@@ -122,6 +122,15 @@ export function useResumeParser() {
         throw new Error('Please sign in to upload a resume');
       }
 
+      // Debug: Log session info
+      console.log('🔍 Session Debug:', {
+        user_id: session.user?.id,
+        is_anonymous: session.user?.is_anonymous,
+        expires_at: session.expires_at,
+        token_preview: session.access_token?.substring(0, 50) + '...',
+        supabase_url: import.meta.env.VITE_SUPABASE_URL,
+      });
+
       // Start continuous progress animation (0% → 90% over 1200ms)
       startProgressAnimation(90);
 
@@ -142,6 +151,15 @@ export function useResumeParser() {
       );
 
       const data = await response.json();
+
+      // Debug: Log response
+      if (!response.ok) {
+        console.error('❌ Edge function error:', {
+          status: response.status,
+          statusText: response.statusText,
+          data,
+        });
+      }
 
       if (!response.ok || !data.success) {
         throw new Error(data.error || 'Failed to parse resume');

@@ -234,9 +234,9 @@ export async function createResumeFromTemplate(
     throw new Error('No session token found - user must be signed in');
   }
 
-  // Create resume via API
-  const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:5173';
-  const response = await page.request.post(`${baseURL}/api/resumes/create`, {
+  // Create resume via API (Flask backend on port 5000)
+  const flaskURL = process.env.FLASK_API_URL || 'http://localhost:5000';
+  const response = await page.request.post(`${flaskURL}/api/resumes/create`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${sessionToken}`,
