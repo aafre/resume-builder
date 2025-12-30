@@ -212,29 +212,52 @@ export async function createResumeFromTemplate(
   templateId: string = 'classic-alex-rivera',
   loadExample: boolean = true
 ): Promise<string> {
-  // Get session token from localStorage - search for any Supabase auth token
-  // This works with both local (sb-localhost-auth-token) and remote (sb-{projectRef}-auth-token)
-  const sessionToken = await page.evaluate(() => {
-    try {
-      // Find all localStorage keys that match Supabase auth token pattern
-      const storageKeys = Object.keys(localStorage);
-      const authKey = storageKeys.find(k => k.startsWith('sb-') && k.endsWith('-auth-token'));
+  // Get session token from localStorage for the correct Supabase instance
+  // Compute the expected storage key based on VITE_SUPABASE_URL
+  const supabaseUrl = process.env.VITE_SUPABASE_URL!;
 
-      if (authKey) {
-        const sessionData = localStorage.getItem(authKey);
-        if (sessionData) {
-          const session = JSON.parse(sessionData);
-          return session.access_token || null;
-        }
+  if (!supabaseUrl) {
+    throw new Error('VITE_SUPABASE_URL not configured in environment');
+  }
+
+  // Compute storage key the same way Supabase client does
+  // For localhost:54321 → "sb-localhost-auth-token"
+  // For xxx.supabase.co → "sb-xxx-auth-token"
+  const urlObj = new URL(supabaseUrl);
+  const projectRef = urlObj.hostname.split('.')[0];
+  const expectedStorageKey = `sb-${projectRef}-auth-token`;
+
+  console.log(`🔍 Looking for Supabase token: ${expectedStorageKey}`);
+
+  const sessionToken = await page.evaluate((storageKey) => {
+    try {
+      const sessionData = localStorage.getItem(storageKey);
+      if (sessionData) {
+        const session = JSON.parse(sessionData);
+        return session.access_token || null;
       }
     } catch (error) {
-      console.error('Failed to get session from localStorage:', error);
+      console.error(`Failed to get session from localStorage (key: ${storageKey}):`, error);
     }
     return null;
-  });
+  }, expectedStorageKey);
 
   if (!sessionToken) {
-    throw new Error('No session token found - user must be signed in');
+    // Enhanced error message with debugging info
+    const availableKeys = await page.evaluate(() => {
+      return Object.keys(localStorage).filter(k => k.includes('sb-'));
+    });
+
+    throw new Error(
+      `No session token found for Supabase instance!\n` +
+      `Expected key: ${expectedStorageKey}\n` +
+      `Supabase URL: ${supabaseUrl}\n` +
+      `Available Supabase keys in localStorage: ${availableKeys.join(', ') || 'none'}\n` +
+      `\nPossible causes:\n` +
+      `  1. User not signed in\n` +
+      `  2. Frontend app connected to different Supabase instance\n` +
+      `  3. VITE_SUPABASE_URL mismatch between test env and frontend`
+    );
   }
 
   // Create resume via API (Flask backend on port 5000)
