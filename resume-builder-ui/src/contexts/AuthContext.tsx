@@ -433,8 +433,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
                 if (refreshError || !refreshedSession) {
                   console.log('❌ Session refresh failed:', refreshError?.message || 'No session returned');
-                  // Clear expired session and create new anonymous session below
+
+                  // Properly sign out to clear server-side session (non-blocking to avoid hangs)
+                  supabase!.auth.signOut().catch(err => console.error('SignOut error during cleanup:', err));
+
+                  // Clear client-side session data
                   clearSupabaseAuthStorage();
+
+                  // Fall through to create new anonymous session below
                 } else {
                   // Successfully refreshed
                   sessionRecovered = true;
@@ -445,7 +451,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 }
               } catch (refreshError) {
                 console.error('❌ Session refresh error:', refreshError);
+
+                // Properly sign out to clear server-side session (non-blocking to avoid hangs)
+                supabase!.auth.signOut().catch(err => console.error('SignOut error during cleanup:', err));
+
+                // Clear client-side session data
                 clearSupabaseAuthStorage();
+
+                // Fall through to create new anonymous session below
               }
             } else {
               // Session is valid and not expired
