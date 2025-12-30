@@ -75,16 +75,18 @@ export default async function globalSetup() {
       console.log(`✅ Test user already exists: ${testUserEmail}`);
       console.log(`   User ID: ${userId}`);
     } else {
-      // Create new user (NO PASSWORD - magic link only)
+      // Create new user
+      // NOTE: We create with a password for FAST test automation (injectSession),
+      // but production UI only shows magic link. Best of both worlds!
       console.log(`ℹ️  Creating new test user: ${testUserEmail}`);
 
       const { data, error } = await supabase.auth.admin.createUser({
         email: testUserEmail,
         email_confirm: true, // Auto-confirm (local config allows this)
+        password: 'test-password-for-automation-only', // For fast session injection in tests
         user_metadata: {
           name: 'E2E Test User',
         },
-        // NO password field - force magic link auth
       });
 
       if (error) {
@@ -98,7 +100,7 @@ export default async function globalSetup() {
       userId = data.user.id;
       console.log(`✅ Test user created: ${testUserEmail}`);
       console.log(`   User ID: ${userId}`);
-      console.log(`   Auth method: Magic link only (no password)`);
+      console.log(`   Auth methods: Magic link (UI) + Password (test automation)`);
     }
 
     // Store user ID in environment for tests to use

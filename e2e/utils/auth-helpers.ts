@@ -14,42 +14,94 @@ import { waitForEmail, getEmailContent, extractMagicLink } from './inbucket-help
  */
 
 /**
- * Sign in as the test user using email/password
+ * Inject session directly into browser (FAST - bypasses UI)
+ *
+ * This is the RECOMMENDED approach for feature tests that don't need
+ * to test the authentication flow itself. It's ~10x faster than magic link.
+ *
+ * Use this for:
+ * - Editor tests
+ * - My Resumes tests
+ * - PDF preview tests
+ * - Any test that needs authentication but doesn't test auth flow
+ *
+ * Don't use this for:
+ * - Auth flow tests
+ * - Migration tests (anon → authenticated)
+ * - Comprehensive flow tests that test entire user journey
  *
  * @param page - Playwright Page object
- * @returns Promise that resolves when user is signed in
+ * @param email - Optional email (defaults to TEST_USER_EMAIL)
+ * @returns Promise that resolves when session is injected (~2 seconds)
+ *
+ * @example
+ * // In beforeEach:
+ * await injectSession(page);
+ * // User is now authenticated instantly!
  */
-export async function signInAsTestUser(page: Page): Promise<void> {
-  const testEmail = process.env.TEST_USER_EMAIL!;
-  const testPassword = process.env.TEST_USER_PASSWORD!;
+export async function injectSession(page: Page, email?: string): Promise<void> {
+  const supabaseUrl = process.env.VITE_SUPABASE_URL!;
+  const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY!;
+  const testEmail = email || process.env.TEST_USER_EMAIL!;
+  const testPassword = 'test-password-for-automation-only'; // Set in global-setup
 
-  if (!testEmail || !testPassword) {
-    throw new Error('TEST_USER_EMAIL and TEST_USER_PASSWORD must be set in .env.test');
+  console.log(`⚡ Fast auth: Injecting session for ${testEmail}...`);
+
+  // Create Supabase client
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+  // Sign in with password (password exists for test automation only, not in UI)
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: testEmail,
+    password: testPassword,
+  });
+
+  if (error || !data.session) {
+    throw new Error(
+      `Failed to inject session: ${error?.message || 'No session returned'}\n` +
+      `This usually means the test user doesn't exist or password is wrong.\n` +
+      `Run global-setup again or check .env.test configuration.`
+    );
   }
 
-  // Navigate to landing page
+  // Inject session into browser localStorage
   await page.goto('/');
+  await page.waitForLoadState('networkidle');
 
-  // Click "Sign In" button to open auth modal
-  await page.click('button:has-text("Sign In")');
+  // Extract project ref from URL
+  const url = new URL(supabaseUrl);
+  const projectRef = url.hostname.split('.')[0] || 'local';
+  const storageKey = `sb-${projectRef}-auth-token`;
 
-  // Wait for auth modal to appear
-  await expect(page.locator('[data-testid="auth-modal"]')).toBeVisible({ timeout: 5000 });
+  await page.evaluate(
+    ({ storageKey, session }) => {
+      localStorage.setItem(storageKey, JSON.stringify(session));
+    },
+    { storageKey, session: data.session }
+  );
 
-  // Fill in email and password (if using email/password auth)
-  // NOTE: This assumes AuthModal has email/password option
-  // If using magic link only, you'll need to modify this
+  // Reload to apply session
+  await page.reload();
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(500);
 
-  await page.fill('input[type="email"]', testEmail);
-  await page.fill('input[type="password"]', testPassword);
+  // Verify authenticated
+  await expect(page.locator('[data-testid="user-menu"]')).toBeVisible({ timeout: 5000 });
 
-  // Click sign in button
-  await page.click('button[type="submit"]');
+  console.log(`✅ Session injected: ${testEmail} (~2s)\n`);
+}
 
-  // Wait for user menu to appear (indicates successful sign-in)
-  await expect(page.locator('[data-testid="user-menu"]')).toBeVisible({ timeout: 10000 });
+/**
+ * Sign in as the test user using email/password
+ *
+ * @deprecated This function assumes password auth exists in the UI, which it doesn't.
+ * Use `signInWithMagicLink()` for auth flow tests or `injectSession()` for fast feature tests.
+ */
+export async function signInAsTestUser(page: Page): Promise<void> {
+  console.warn('⚠️  DEPRECATED: signInAsTestUser() assumes password UI which does not exist.');
+  console.warn('⚠️  Use injectSession() for fast auth or signInWithMagicLink() for real flow.\n');
 
-  console.log(`✅ Signed in as test user: ${testEmail}`);
+  await injectSession(page);
 }
 
 /**
