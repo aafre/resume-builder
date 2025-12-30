@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { injectSession } from '../utils/auth-helpers';
-import { cleanupTestResumes, createResumeFromTemplate } from '../utils/db-helpers';
+import { cleanupTestResumes } from '../utils/db-helpers';
+import { createResumeViaUI, navigateToMyResumes } from '../utils/navigation-helpers';
 
 /**
  * My Resumes Dashboard E2E Tests
@@ -12,23 +12,28 @@ import { cleanupTestResumes, createResumeFromTemplate } from '../utils/db-helper
  * 4. Edit resume (navigate to editor)
  */
 
+// Use authenticated storageState for all tests in this suite
+test.use({ storageState: 'storage/user.json' });
+
 test.describe('My Resumes Dashboard (CRUD)', () => {
   test.afterEach(async () => {
     await cleanupTestResumes();
   });
 
   test.beforeEach(async ({ page }) => {
-    // Sign in (required for My Resumes page)
-    await injectSession(page);
+    // No login needed - storageState already has auth!
+
+    // Navigate to home to initialize auth state
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
   });
 
   test('should list all saved resumes', async ({ page }) => {
-    // Create a resume using the proper API flow
-    await createResumeFromTemplate(page, 'classic-alex-rivera', true);
+    // Create resume via UI flow
+    await createResumeViaUI(page, 'classic-alex-rivera', 'example');
 
     // Navigate to My Resumes
-    await page.goto('/my-resumes');
-    await page.waitForLoadState('networkidle');
+    await navigateToMyResumes(page);
 
     // Wait for resumes to load
     await page.waitForTimeout(2000);
@@ -58,12 +63,11 @@ test.describe('My Resumes Dashboard (CRUD)', () => {
   });
 
   test('should duplicate a resume', async ({ page }) => {
-    // Create a resume using proper API flow
-    await createResumeFromTemplate(page, 'classic-alex-rivera', true);
+    // Create resume via UI flow
+    await createResumeViaUI(page, 'classic-alex-rivera', 'example');
 
     // Go to My Resumes
-    await page.goto('/my-resumes');
-    await page.waitForLoadState('networkidle');
+    await navigateToMyResumes(page);
     await page.waitForTimeout(2000);
 
     // Find duplicate button (various possible labels)
@@ -101,12 +105,11 @@ test.describe('My Resumes Dashboard (CRUD)', () => {
   });
 
   test('should delete a resume with confirmation', async ({ page }) => {
-    // Create a resume using proper API flow
-    await createResumeFromTemplate(page, 'classic-alex-rivera', true);
+    // Create resume via UI flow
+    await createResumeViaUI(page, 'classic-alex-rivera', 'example');
 
     // Go to My Resumes
-    await page.goto('/my-resumes');
-    await page.waitForLoadState('networkidle');
+    await navigateToMyResumes(page);
     await page.waitForTimeout(2000);
 
     // Find delete button (trash icon or delete text)
@@ -165,12 +168,11 @@ test.describe('My Resumes Dashboard (CRUD)', () => {
   });
 
   test('should navigate to editor when clicking edit', async ({ page }) => {
-    // Create a resume using proper API flow
-    await createResumeFromTemplate(page, 'classic-alex-rivera', true);
+    // Create resume via UI flow
+    await createResumeViaUI(page, 'classic-alex-rivera', 'example');
 
     // Go to My Resumes
-    await page.goto('/my-resumes');
-    await page.waitForLoadState('networkidle');
+    await navigateToMyResumes(page);
     await page.waitForTimeout(2000);
 
     // Find edit button or click on resume card

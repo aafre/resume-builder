@@ -147,7 +147,13 @@ enabled = true
 # in emails.
 site_url = "http://localhost:5173"
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
-additional_redirect_urls = ["http://127.0.0.1:5173", "http://localhost:5173"]
+# IMPORTANT: Must include full callback path, not just origins
+additional_redirect_urls = [
+  "http://localhost:5173/auth/callback",
+  "http://127.0.0.1:5173/auth/callback",
+  "http://localhost:5173",
+  "http://127.0.0.1:5173"
+]
 # How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 (1 week).
 jwt_expiry = 3600
 # JWT issuer URL. If not set, defaults to the local API URL (http://127.0.0.1:<port>/auth/v1).
@@ -310,6 +316,19 @@ url = ""
 skip_nonce_check = false
 # If enabled, it will allow the user to successfully authenticate when the provider does not return an email address.
 email_optional = false
+
+[auth.external.google]
+enabled = true
+client_id = "env(GOOGLE_CLIENT_ID)"
+secret = "env(GOOGLE_CLIENT_SECRET)"
+# For local development, you may need to skip nonce check
+skip_nonce_check = false
+
+[auth.external.linkedin_oidc]
+enabled = true
+client_id = "env(LINKEDIN_CLIENT_ID)"
+secret = "env(LINKEDIN_CLIENT_SECRET)"
+skip_nonce_check = false
 
 # Allow Solana wallet holders to sign in to your project via the Sign in with Solana (SIWS, EIP-4361) standard.
 # You can configure "web3" rate limit in the [auth.rate_limit] section and set up [auth.captcha] if self-hosting.

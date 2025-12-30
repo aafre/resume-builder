@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { cleanupTestResumes, createResumeFromTemplate } from '../utils/db-helpers';
-import { injectSession } from '../utils/auth-helpers';
+import { cleanupTestResumes } from '../utils/db-helpers';
+import { createResumeViaUI } from '../utils/navigation-helpers';
 
 /**
  * PDF Preview E2E Tests
@@ -11,30 +11,25 @@ import { injectSession } from '../utils/auth-helpers';
  * 3. Close modal
  */
 
+// Use authenticated storageState for all tests in this suite
+test.use({ storageState: 'storage/user.json' });
+
 test.describe('PDF Preview Modal', () => {
   test.afterEach(async () => {
     await cleanupTestResumes();
   });
 
   test.beforeEach(async ({ page }) => {
-    // Sign in first
-    await injectSession(page);
+    // No login needed - storageState already has auth!
 
-    // Create a resume from template (proper flow)
-    const resumeId = await createResumeFromTemplate(page, 'classic-alex-rivera', true);
-
-    // Navigate to editor with resume UUID
-    await page.goto(`/editor/${resumeId}`);
+    // Navigate to home to initialize auth state
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    // Close tour modal if present
-    const skipTourButton = page.locator('button').filter({ hasText: /skip tour/i }).first();
-    if (await skipTourButton.isVisible({ timeout: 2000 })) {
-      await skipTourButton.click();
-      await page.waitForTimeout(500);
-    }
+    // Create resume via UI flow (Templates → Select → Modal → Editor)
+    await createResumeViaUI(page, 'classic-alex-rivera', 'example');
 
-    // Wait for editor to load
+    // Editor is now loaded, wait for name input to be visible
     const nameInput = page.getByPlaceholder('Enter your name');
     await expect(nameInput).toBeVisible({ timeout: 10000 });
   });

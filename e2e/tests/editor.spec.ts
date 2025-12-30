@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { cleanupTestResumes, createResumeFromTemplate } from '../utils/db-helpers';
+import { cleanupTestResumes } from '../utils/db-helpers';
+import { createResumeViaUI } from '../utils/navigation-helpers';
 
 /**
  * Editor E2E Tests
@@ -24,20 +25,15 @@ test.describe('Resume Editor', () => {
 
   test.beforeEach(async ({ page }) => {
     // No login needed - storageState already has auth!
-    // But we need to navigate to a page first to load the storageState into localStorage
 
     // Navigate to home page to initialize auth state
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    // Create a resume from template (proper flow)
-    const resumeId = await createResumeFromTemplate(page, 'classic-alex-rivera', true);
+    // Create resume via UI flow (Templates → Select → Modal → Editor)
+    await createResumeViaUI(page, 'classic-alex-rivera', 'example');
 
-    // Navigate to editor with resume UUID
-    await page.goto(`/editor/${resumeId}`);
-    await page.waitForLoadState('networkidle');
-
-    // Wait for editor to load
+    // Editor is now loaded, wait for name input to be visible
     const nameInput = page.getByPlaceholder('Enter your name');
     await expect(nameInput).toBeVisible({ timeout: 15000 });
   });

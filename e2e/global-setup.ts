@@ -82,29 +82,64 @@ export default async function globalSetup() {
       console.log(`✅ Test user already exists: ${testUserEmail}`);
       console.log(`   User ID: ${userId}`);
     } else {
-      // Create new user WITHOUT password (magic link only)
+      // Create new user WITH password for backward compatibility with injectSession()
       console.log(`ℹ️  Creating new test user: ${testUserEmail}`);
 
-      const { data, error } = await supabase.auth.admin.createUser({
+      const { data, error} = await supabase.auth.admin.createUser({
         email: testUserEmail,
         email_confirm: true, // Auto-confirm (no email verification needed)
+        password: 'test-password-for-automation-only', // For injectSession() backward compat
         user_metadata: {
           name: 'E2E Test User',
         },
       });
 
-      if (error) {
+      // Handle "already exists" error (race condition or listUsers failed to find it)
+      if (error && error.message.includes('already been registered')) {
+        console.log(`⚠️  User already exists (detected during creation), retrying listUsers with pagination...`);
+
+        // Retry with full pagination - listUsers may not return all users by default
+        let foundUser = null;
+        let page = 1;
+        const perPage = 100;
+
+        while (!foundUser && page <= 10) { // Max 10 pages = 1000 users
+          const { data: pageData } = await supabase.auth.admin.listUsers({
+            page,
+            perPage
+          });
+
+          if (pageData?.users) {
+            foundUser = pageData.users.find(u => u.email === testUserEmail);
+            if (foundUser) {
+              break;
+            }
+          }
+
+          page++;
+        }
+
+        if (!foundUser) {
+          throw new Error(
+            `User exists but could not be found after searching ${page} pages: ${testUserEmail}\n` +
+            `This may indicate a Supabase issue. Try deleting the user manually:\n` +
+            `docker exec supabase_db_resume-builder psql -U postgres -d postgres -c "DELETE FROM auth.users WHERE email = '${testUserEmail}';"`
+          );
+        }
+
+        userId = foundUser.id;
+        console.log(`✅ Found existing user (page ${page}): ${testUserEmail}`);
+        console.log(`   User ID: ${userId}`);
+      } else if (error) {
         throw new Error(`Failed to create test user: ${error.message}`);
-      }
-
-      if (!data.user) {
+      } else if (!data?.user) {
         throw new Error('Test user creation returned no user data');
+      } else {
+        userId = data.user.id;
+        console.log(`✅ Test user created: ${testUserEmail}`);
+        console.log(`   User ID: ${userId}`);
+        console.log(`   Auth method: Magic link (via admin generateLink)`);
       }
-
-      userId = data.user.id;
-      console.log(`✅ Test user created: ${testUserEmail}`);
-      console.log(`   User ID: ${userId}`);
-      console.log(`   Auth method: Magic link (via admin generateLink)`);
     }
 
     // Store user ID in environment for tests to use
@@ -237,6 +272,30 @@ export default async function globalSetup() {
           console.log(`✅ User menu visible: ${selector}`);
           break;
         }
+      }
+
+      // Mark tour as completed BEFORE saving storageState
+      // This ensures all tests using this storageState won't see the tour modal
+      console.log('🎯 Marking tour as completed for test user...');
+      const now = new Date().toISOString();
+      const { data: prefsData, error: prefsError } = await supabase
+        .from('user_preferences')
+        .upsert({
+          user_id: userId,
+          tour_completed: true,
+          created_at: now,
+          updated_at: now,
+        }, {
+          onConflict: 'user_id'  // Specify which column to use for conflict detection
+        })
+        .select();  // Return the inserted/updated row
+
+      if (prefsError) {
+        console.error('⚠️  Failed to set tour_completed:', prefsError);
+        // Don't throw - tour will just appear in tests (handled by individual test beforeEach)
+      } else {
+        console.log('✅ Tour marked as completed');
+        console.log(`   Preference record: ${JSON.stringify(prefsData)}`);
       }
 
       const userStatePath = path.join(storageDir, 'user.json');

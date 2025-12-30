@@ -59,34 +59,99 @@ export async function selectTemplate(
   // Wait for templates grid to load
   await page.waitForLoadState('networkidle');
 
-  // Try to find template card by data attribute or fallback to first card
-  let templateCard = page.locator(`[data-template-id="${templateId}"]`);
+  // Wait for at least one template card to be visible
+  const firstCard = page.locator('.group.cursor-pointer').first();
+  await expect(firstCard).toBeVisible({ timeout: 15000 });
 
-  // If not found by data attribute, try by template name or use first card
-  const cardCount = await templateCard.count();
+  // Give templates a moment to finish rendering
+  await page.waitForTimeout(500);
+
+  // Find the template card - try multiple strategies
+  // Strategy 1: Look for the card containing the template name
+  const templateNameMap: Record<string, string> = {
+    'classic-alex-rivera': 'Alex Rivera',
+    'modern-jane-smith': 'Jane Smith',
+    'professional-john-doe': 'John Doe',
+    'creative-sarah-johnson': 'Sarah Johnson'
+  };
+
+  const expectedName = templateNameMap[templateId] || templateId;
+  let templateCard = page.locator('.group.cursor-pointer').filter({ hasText: expectedName });
+
+  let cardCount = await templateCard.count();
+
+  // Strategy 2: If not found by name, use first card
   if (cardCount === 0) {
-    console.warn(`⚠️  Template card not found by ID: ${templateId}, using first card`);
-    templateCard = page.locator('div.cursor-pointer').first()
-      .or(page.locator('[class*="template-card"]').first());
+    console.warn(`⚠️  Template card not found by name: ${expectedName}, using first card`);
+    templateCard = page.locator('.group.cursor-pointer').first();
+    cardCount = await templateCard.count();
   }
 
-  await expect(templateCard).toBeVisible({ timeout: 10000 });
+  if (cardCount === 0) {
+    throw new Error('No template cards found on page');
+  }
+
+  // Click the card to select it
   await templateCard.click();
+  console.log('✅ Template card clicked, waiting for "Start Building Resume" button...');
 
-  // Wait for selection state to update and button to change
-  // The button changes from "Select This Template" to "Start Building Resume"
-  await page.waitForTimeout(1000);
+  // Debug: Check what buttons are on the page
+  await page.waitForTimeout(2000); // Give React time to re-render
+  const allButtons = await page.locator('button').allTextContents();
+  console.log(`🔍 All buttons on page: ${JSON.stringify(allButtons.slice(0, 10))}`);
 
-  // Now click "Start Building Resume" button (appears after selection)
-  const startButton = page.locator('button:has-text("Start Building Resume")');
+  // Wait for the button to change from "Select This Template" to "Start Building Resume"
+  // Use a more robust selector that waits for the button to appear
+  const startButton = page.locator('button').filter({ hasText: /Start Building Resume/i });
 
-  await expect(startButton).toBeVisible({ timeout: 10000 });
-  await startButton.click();
+  // Check if button exists
+  const buttonCount = await startButton.count();
+  console.log(`🔍 "Start Building Resume" button count: ${buttonCount}`);
 
-  // Wait for TemplateStartModal to appear
-  await page.waitForTimeout(1000); // Modal animation
+  // Wait for button with longer timeout (React needs time to re-render)
+  await expect(startButton).toBeVisible({ timeout: 15000 });
+  console.log('✅ "Start Building Resume" button is visible');
 
-  console.log(`✅ Selected template: ${templateId}`);
+  // Click the "Start Building Resume" button
+  // React re-renders this button frequently (loading states), causing "detached from DOM" errors
+  // Use dispatchEvent approach instead of regular click
+  await startButton.evaluate((btn: HTMLElement) => {
+    btn.click();
+  });
+
+  console.log(`✅ Clicked "Start Building Resume", waiting for modal or navigation...`);
+
+  // Wait for either modal to appear OR navigation to occur
+  // The button triggers an API call to check for existing resumes, which may:
+  // 1. Show TemplateStartModal (no existing resumes)
+  // 2. Show ResumeRecoveryModal (existing resume found)
+  // 3. Navigate away (API error)
+  const modalOrNav = Promise.race([
+    // Wait for template start modal
+    page.waitForSelector('[data-testid="template-start-modal"], [role="dialog"]', { timeout: 15000 })
+      .then(() => 'modal'),
+    // Wait for navigation away from templates page
+    page.waitForURL(url => !url.pathname.includes('/templates'), { timeout: 15000 })
+      .then(() => 'navigation'),
+    // Timeout fallback
+    page.waitForTimeout(15000).then(() => 'timeout')
+  ]);
+
+  const result = await modalOrNav;
+
+  if (result === 'navigation') {
+    const currentUrl = page.url();
+    throw new Error(
+      `After clicking "Start Building Resume", page navigated to: ${currentUrl}\n` +
+      `Expected: Modal to appear\n` +
+      `This usually means the API call to check existing resumes failed.\n` +
+      `Check if Flask backend is running on port 5000.`
+    );
+  } else if (result === 'timeout') {
+    throw new Error('Timeout waiting for modal or navigation after clicking "Start Building Resume"');
+  }
+
+  console.log(`✅ Modal appeared after clicking "Start Building Resume"`);
 }
 
 /**
@@ -433,4 +498,68 @@ export async function getResumeIdFromURL(page: Page): Promise<string> {
   }
 
   return match[1];
+}
+
+/**
+ * Complete flow: Create resume via UI (no API shortcuts)
+ *
+ * Follows the real user flow: Templates → Select → Modal → Editor
+ * This is the PRIMARY helper for creating resumes in E2E tests.
+ *
+ * @param page - Playwright Page object
+ * @param templateId - Template ID (e.g., 'classic-alex-rivera')
+ * @param option - Modal option: 'empty', 'example', or 'import'
+ * @param importFilePath - Required if option is 'import'
+ * @returns Resume ID (UUID) extracted from editor URL
+ *
+ * @example
+ * // Empty resume
+ * const resumeId = await createResumeViaUI(page, 'classic-alex-rivera', 'empty');
+ *
+ * @example
+ * // With example data
+ * const resumeId = await createResumeViaUI(page, 'modern-jane-smith', 'example');
+ *
+ * @example
+ * // Import from PDF
+ * const filePath = path.resolve(__dirname, '../fixtures/sample-resume.pdf');
+ * const resumeId = await createResumeViaUI(page, 'classic-alex-rivera', 'import', filePath);
+ */
+export async function createResumeViaUI(
+  page: Page,
+  templateId: string = 'classic-alex-rivera',
+  option: 'empty' | 'example' | 'import' = 'empty',
+  importFilePath?: string
+): Promise<string> {
+  console.log(`🔹 Creating resume via UI flow: ${templateId} (${option})...`);
+
+  // 1. Navigate to templates page
+  await navigateToTemplates(page);
+
+  // 2. Select template
+  await selectTemplate(page, templateId);
+
+  // 3. Choose modal option based on parameter
+  if (option === 'empty') {
+    await selectModalOptionEmpty(page);
+  } else if (option === 'example') {
+    await selectModalOptionExample(page);
+  } else if (option === 'import') {
+    if (!importFilePath) {
+      throw new Error('importFilePath is required when option is "import"');
+    }
+    await selectModalOptionImport(page, importFilePath);
+  } else {
+    throw new Error(`Invalid option: ${option}. Must be 'empty', 'example', or 'import'`);
+  }
+
+  // 4. Wait for editor to finish loading
+  await page.waitForLoadState('networkidle');
+
+  // 5. Extract resume ID from URL
+  const resumeId = await getResumeIdFromURL(page);
+
+  console.log(`✅ Resume created via UI: ${resumeId}`);
+
+  return resumeId;
 }
