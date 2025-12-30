@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { signInDirectly } from '../utils/auth-helpers';
-import { cleanupTestResumes } from '../utils/db-helpers';
+import { injectSession } from '../utils/auth-helpers';
+import { cleanupTestResumes, createResumeFromTemplate } from '../utils/db-helpers';
 
 /**
  * My Resumes Dashboard E2E Tests
@@ -19,30 +19,12 @@ test.describe('My Resumes Dashboard (CRUD)', () => {
 
   test.beforeEach(async ({ page }) => {
     // Sign in (required for My Resumes page)
-    await signInDirectly(page);
+    await injectSession(page);
   });
 
   test('should list all saved resumes', async ({ page }) => {
-    // First, create a resume by visiting editor
-    await page.goto('/editor?template=classic-alex-rivera');
-    await page.waitForLoadState('networkidle');
-
-    // Close tour modal
-    const skipTourButton = page.locator('button').filter({ hasText: /skip tour/i }).first();
-    if (await skipTourButton.isVisible({ timeout: 2000 })) {
-      await skipTourButton.click();
-      await page.waitForTimeout(500);
-    }
-
-    const nameInput = page.getByPlaceholder('Enter your name');
-    await expect(nameInput).toBeVisible({ timeout: 10000 });
-
-    // Make a change to trigger save
-    await nameInput.clear();
-    await nameInput.fill('Test User for List');
-
-    // Wait for auto-save
-    await page.waitForTimeout(5000);
+    // Create a resume using the proper API flow
+    await createResumeFromTemplate(page, 'classic-alex-rivera', true);
 
     // Navigate to My Resumes
     await page.goto('/my-resumes');
@@ -76,23 +58,8 @@ test.describe('My Resumes Dashboard (CRUD)', () => {
   });
 
   test('should duplicate a resume', async ({ page }) => {
-    // Create a resume first
-    await page.goto('/editor?template=classic-alex-rivera');
-    await page.waitForLoadState('networkidle');
-
-    // Close tour modal
-    const skipTourButton = page.locator('button').filter({ hasText: /skip tour/i }).first();
-    if (await skipTourButton.isVisible({ timeout: 2000 })) {
-      await skipTourButton.click();
-      await page.waitForTimeout(500);
-    }
-
-    const nameInput = page.getByPlaceholder('Enter your name');
-    await nameInput.clear();
-    await nameInput.fill('Original Resume');
-
-    // Wait for save
-    await page.waitForTimeout(5000);
+    // Create a resume using proper API flow
+    await createResumeFromTemplate(page, 'classic-alex-rivera', true);
 
     // Go to My Resumes
     await page.goto('/my-resumes');
@@ -134,23 +101,8 @@ test.describe('My Resumes Dashboard (CRUD)', () => {
   });
 
   test('should delete a resume with confirmation', async ({ page }) => {
-    // Create a resume first
-    await page.goto('/editor?template=classic-alex-rivera');
-    await page.waitForLoadState('networkidle');
-
-    // Close tour modal
-    const skipTourButton = page.locator('button').filter({ hasText: /skip tour/i }).first();
-    if (await skipTourButton.isVisible({ timeout: 2000 })) {
-      await skipTourButton.click();
-      await page.waitForTimeout(500);
-    }
-
-    const nameInput = page.getByPlaceholder('Enter your name');
-    await nameInput.clear();
-    await nameInput.fill('Resume to Delete');
-
-    // Wait for save
-    await page.waitForTimeout(5000);
+    // Create a resume using proper API flow
+    await createResumeFromTemplate(page, 'classic-alex-rivera', true);
 
     // Go to My Resumes
     await page.goto('/my-resumes');
@@ -213,23 +165,8 @@ test.describe('My Resumes Dashboard (CRUD)', () => {
   });
 
   test('should navigate to editor when clicking edit', async ({ page }) => {
-    // Create a resume first
-    await page.goto('/editor?template=classic-alex-rivera');
-    await page.waitForLoadState('networkidle');
-
-    // Close tour modal
-    const skipTourButton = page.locator('button').filter({ hasText: /skip tour/i }).first();
-    if (await skipTourButton.isVisible({ timeout: 2000 })) {
-      await skipTourButton.click();
-      await page.waitForTimeout(500);
-    }
-
-    const nameInput = page.getByPlaceholder('Enter your name');
-    await nameInput.clear();
-    await nameInput.fill('Resume to Edit');
-
-    // Wait for save
-    await page.waitForTimeout(5000);
+    // Create a resume using proper API flow
+    await createResumeFromTemplate(page, 'classic-alex-rivera', true);
 
     // Go to My Resumes
     await page.goto('/my-resumes');

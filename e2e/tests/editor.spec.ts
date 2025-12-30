@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { cleanupTestResumes } from '../utils/db-helpers';
+import { cleanupTestResumes, createResumeFromTemplate } from '../utils/db-helpers';
+import { injectSession } from '../utils/auth-helpers';
 
 /**
  * Editor E2E Tests
@@ -18,8 +19,14 @@ test.describe('Resume Editor', () => {
   });
 
   test.beforeEach(async ({ page }) => {
-    // Navigate to editor with template
-    await page.goto('/editor?template=classic-alex-rivera');
+    // Sign in first
+    await injectSession(page);
+
+    // Create a resume from template (proper flow)
+    const resumeId = await createResumeFromTemplate(page, 'classic-alex-rivera', true);
+
+    // Navigate to editor with resume UUID
+    await page.goto(`/editor/${resumeId}`);
     await page.waitForLoadState('networkidle');
 
     // Wait for editor to load

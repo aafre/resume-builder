@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { cleanupTestResumes } from '../utils/db-helpers';
-import { signInDirectly } from '../utils/auth-helpers';
+import { injectSession } from '../utils/auth-helpers';
 import path from 'path';
 
 /**
@@ -20,7 +20,7 @@ test.describe('AI Resume Parser', () => {
 
   test('should successfully upload and parse PDF resume', async ({ page }) => {
     // Sign in first (authenticated users can use TemplateStartModal)
-    await signInDirectly(page);
+    await injectSession(page);
 
     // Navigate to templates page
     await page.goto('/templates');
@@ -125,7 +125,7 @@ test.describe('AI Resume Parser', () => {
 
   test('should reject invalid file types', async ({ page }) => {
     // Sign in first
-    await signInDirectly(page);
+    await injectSession(page);
 
     await page.goto('/templates');
     await page.waitForLoadState('networkidle');
@@ -186,7 +186,7 @@ test.describe('AI Resume Parser', () => {
 
   test('should use cached results for duplicate uploads', async ({ page }) => {
     // Sign in first
-    await signInDirectly(page);
+    await injectSession(page);
 
     // Navigate to templates page
     await page.goto('/templates');
@@ -239,7 +239,7 @@ test.describe('AI Resume Parser', () => {
 
   test('should show loading state during parsing', async ({ page }) => {
     // Sign in first
-    await signInDirectly(page);
+    await injectSession(page);
 
     // Navigate to templates page
     await page.goto('/templates');

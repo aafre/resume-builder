@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { signInDirectly } from '../utils/auth-helpers';
+import { injectSession } from '../utils/auth-helpers';
 import { cleanupTestResumes, createResumeFromTemplate } from '../utils/db-helpers';
 
 /**
@@ -18,7 +18,7 @@ test.describe('Cloud Save & Database Persistence', () => {
 
   test.beforeEach(async ({ page }) => {
     // Sign in (required for cloud save)
-    await signInDirectly(page);
+    await injectSession(page);
   });
 
   test('should persist data after full page reload (database save)', async ({ page }) => {
