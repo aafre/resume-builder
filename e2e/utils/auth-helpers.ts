@@ -144,10 +144,12 @@ export async function signInWithMagicLink(
   await signInButton.click();
 
   // Wait for auth modal to appear
+  // Use specific modal/dialog selectors only
   const authModal = page.locator('[data-testid="auth-modal"]')
-    .or(page.locator('text=/sign in/i').locator('..').locator('..')); // Fallback selector
+    .or(page.locator('[role="dialog"]'))
+    .or(page.locator('.fixed.inset-0').filter({ hasText: /continue with google|magic link/i }));
 
-  await expect(authModal).toBeVisible({ timeout: 5000 });
+  await expect(authModal.first()).toBeVisible({ timeout: 5000 });
   console.log('✅ Auth modal opened');
 
   // Step 2: Fill in email and request magic link
