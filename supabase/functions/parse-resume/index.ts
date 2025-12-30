@@ -75,32 +75,20 @@ serve(async (req: Request) => {
 
     const token = authHeader.replace('Bearer ', '');
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
-    // Debug logging
-    console.log('🔍 Auth Debug:');
-    console.log('  - Supabase URL:', supabaseUrl);
-    console.log('  - Anon Key (first 20 chars):', supabaseAnonKey?.substring(0, 20));
-    console.log('  - Token (first 20 chars):', token.substring(0, 20));
+    // Create admin client for both auth validation and cache operations
+    // Service role can verify any JWT and bypass RLS
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Create client with user's JWT for authentication
-    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-      global: {
-        headers: { Authorization: authHeader }
-      }
-    });
-
+    // Verify the user's JWT using service role client
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser();
-
-    if (authError) {
-      console.error('❌ getUser() error:', authError);
-    }
+    } = await supabaseAdmin.auth.getUser(token);
 
     if (authError || !user) {
+      console.error('❌ Auth failed:', authError?.message || 'No user');
       return new Response(
         JSON.stringify({ success: false, error: 'Invalid or expired token' }),
         {
@@ -111,10 +99,7 @@ serve(async (req: Request) => {
     }
 
     const userId = user.id;
-    console.log('Authenticated user:', userId);
-
-    // Create admin client for cache operations (bypasses RLS for global deduplication)
-    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+    console.log('✅ Authenticated user:', userId);
 
     // === 2. Parse multipart form data ===
     const formData = await req.formData();
