@@ -560,6 +560,13 @@ const Editor: React.FC = () => {
           }
         }
 
+        // Check if resume has AI import metadata and show warning banner
+        if (resume.ai_import_warnings || resume.ai_import_confidence) {
+          setShowAIWarning(true);
+          setAIWarnings(resume.ai_import_warnings || []);
+          setAIConfidence(resume.ai_import_confidence || 0);
+        }
+
         // Only show toast if NOT loading after migration from tour sign-in
         if (!isSigningInFromTour) {
           toast.success('Resume loaded successfully');
