@@ -485,22 +485,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
           const wasTimeout = sessionError instanceof Error && sessionError.message.includes('timed out');
 
-          // FIXED: Don't assume timeout means corrupted data
-          // Timeout could be due to slow network connection, especially after hard refresh (Ctrl+F5)
-          // Only clear localStorage if there's actual corruption (JSON parse errors)
           if (wasTimeout) {
             console.log('⚠️ Session recovery timed out - network may be slow, trusting auth listener to restore session');
-            // Don't clear localStorage or show error toast - let auth listener handle it
+            // Don't clear localStorage or show error - let auth listener handle recovery
             // The session might still be valid, just slow to load
           } else {
-            // Non-timeout error (likely JSON parse error or corrupted data)
-            console.error('❌ Session recovery failed with non-timeout error - clearing corrupted auth data');
-            const clearedKeys = clearSupabaseAuthStorage();
-            if (clearedKeys) {
-              console.log('Cleared corrupted auth storage');
-              toast.error('Session data was corrupted. Starting fresh...', { duration: 5000 });
-            }
+            // Non-timeout error (network glitch, fetch error, etc.)
+            console.error('⚠️ Session recovery failed with non-timeout error - network issue or corrupted data');
+            // DO NOT automatically clear storage here - could be temporary network glitch
+            // Let onAuthStateChange listener and anonymous session creation handle recovery
+            // Supabase's getSession() returns null for corrupted data rather than throwing
+            // If it throws, it's usually a network/client issue, not corruption
           }
+
+          // Fall through to create fresh anonymous session below
+          // This handles both timeout and non-timeout errors gracefully
         }
 
         // STEP 2: Create fresh anonymous session (fallback)
