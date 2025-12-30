@@ -1872,6 +1872,8 @@ def save_resume():
         contact_info = data.get('contact_info', {})
         sections = data.get('sections', [])
         icons = data.get('icons', [])
+        ai_import_warnings = data.get('ai_import_warnings')  # Optional JSONB array
+        ai_import_confidence = data.get('ai_import_confidence')  # Optional decimal
 
         # Validate required fields
         if not template_id:
@@ -1944,6 +1946,12 @@ def save_resume():
             'updated_at': 'now()',
             'last_accessed_at': 'now()'
         }
+
+        # Add AI import metadata if provided
+        if ai_import_warnings is not None:
+            resume_data['ai_import_warnings'] = ai_import_warnings
+        if ai_import_confidence is not None:
+            resume_data['ai_import_confidence'] = ai_import_confidence
 
         if not is_update:
             resume_data['created_at'] = 'now()'
