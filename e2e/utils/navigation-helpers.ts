@@ -79,16 +79,15 @@ export async function selectTemplate(
   await expect(templateCard).toBeVisible({ timeout: 10000 });
   await templateCard.click();
 
-  // Wait a bit for selection state
-  await page.waitForTimeout(500);
+  // Wait for selection state to update and button to change
+  // The button changes from "Select This Template" to "Start Building Resume"
+  await page.waitForTimeout(1000);
 
-  // Click "Start Building Resume" button
-  const startButton = page.locator('button:has-text("Start Building Resume")')
-    .or(page.locator('button:has-text("Use This Template")'))
-    .or(page.locator('button:has-text("Select Template")'));
+  // Now click "Start Building Resume" button (appears after selection)
+  const startButton = page.locator('button:has-text("Start Building Resume")');
 
-  await expect(startButton.first()).toBeVisible({ timeout: 10000 });
-  await startButton.first().click();
+  await expect(startButton).toBeVisible({ timeout: 10000 });
+  await startButton.click();
 
   // Wait for TemplateStartModal to appear
   await page.waitForTimeout(1000); // Modal animation
