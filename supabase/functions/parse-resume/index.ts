@@ -78,6 +78,12 @@ serve(async (req: Request) => {
     const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
+    // Debug logging
+    console.log('🔍 Auth Debug:');
+    console.log('  - Supabase URL:', supabaseUrl);
+    console.log('  - Anon Key (first 20 chars):', supabaseAnonKey?.substring(0, 20));
+    console.log('  - Token (first 20 chars):', token.substring(0, 20));
+
     // Create client with user's JWT for authentication
     const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       global: {
@@ -89,6 +95,10 @@ serve(async (req: Request) => {
       data: { user },
       error: authError,
     } = await supabase.auth.getUser();
+
+    if (authError) {
+      console.error('❌ getUser() error:', authError);
+    }
 
     if (authError || !user) {
       return new Response(
