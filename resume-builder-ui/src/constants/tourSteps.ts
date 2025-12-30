@@ -56,25 +56,25 @@ export const TOUR_STEPS: TourStep[] = [
     visibleFor: 'all',
     title: {
       authenticated: 'Cloud Saving Active',
-      anonymous: 'Your Work is Unsaved'
+      anonymous: 'Your work is unsaved'
     },
     content: {
       authenticated: {
         simpleContent: {
           icon: '☁️',
-          description: 'Your resume automatically saves to the cloud every few seconds. Access your resume from the My Resumes dashboard anytime.'
+          description: 'Your resume automatically saves to the cloud as you work. Access your resume from the My Resumes page anytime.',          
         }
       },
       anonymous: {
         simpleContent: {
           icon: '⚠️',
-          description: 'Your work is not saved. Clear your cache or use a different device and it\'s gone. Sign In for free to keep your resume safe.'
+          description: 'Sign In to keep your resume safe with free cloud backup and access it from any device. Your work is only saved locally in this browser until you sign in.'
         }
       },
     },
     badge: {
       text: 'Free cloud backup available',
-      type: 'warning',
+      type: 'info',
       showForAnonymousOnly: true
     },
     ctaButton: {

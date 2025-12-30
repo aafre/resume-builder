@@ -210,7 +210,7 @@ serve(async (req: Request) => {
         JSON.stringify({
           success: false,
           error:
-            'We analyzed your file but couldn\'t find standard resume sections (like Experience, Education, or Skills). Please ensure you are uploading a valid resume.',
+            'We analyzed your file and it does not look like a resume. Please ensure you are uploading a valid resume.',
         }),
         {
           status: 400,
