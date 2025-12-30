@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:5173",
+      "localStorage": [
+        {
+          "name": "google_auto_fc_cmp_setting",
+          "value": "[1]"
+        }
+      ]
+    }
+  ]
+}

@@ -163,8 +163,74 @@ export default async function globalSetup() {
       // Login via admin magic link (no email polling!)
       await loginViaAdminMagicLink(page, testUserEmail);
 
-      // Wait for authenticated state to stabilize
-      await page.waitForSelector('[data-testid="user-menu"]', { timeout: 15000 });
+      // Wait for auth callback to process (URL has access_token)
+      console.log(`   Waiting for auth callback to process...`);
+
+      // The app should redirect from /auth/callback to / after processing token
+      // Wait up to 10 seconds for redirect
+      try {
+        await page.waitForURL((url) => !url.pathname.includes('/auth/callback'), { timeout: 10000 });
+        console.log(`✅ Redirected from /auth/callback to: ${page.url()}`);
+      } catch {
+        console.log(`⚠️  Still on callback URL, manually navigating to home...`);
+        await page.goto(baseURL);
+        await page.waitForLoadState('networkidle');
+      }
+
+      // Wait for Supabase session to be persisted to localStorage
+      console.log(`   Current URL after auth: ${page.url()}`);
+      console.log(`   Waiting for Supabase session to persist to localStorage...`);
+
+      // Poll localStorage for auth token (Supabase takes time to persist)
+      const sessionPersisted = await page.waitForFunction(
+        () => {
+          const storageKeys = Object.keys(localStorage);
+          const authKeys = storageKeys.filter(k => k.includes('sb-') && k.includes('auth-token'));
+          if (authKeys.length > 0) {
+            // Found auth key, check if it has a session
+            try {
+              const sessionData = localStorage.getItem(authKeys[0]);
+              if (sessionData) {
+                const session = JSON.parse(sessionData);
+                return !!session.access_token;
+              }
+            } catch {
+              return false;
+            }
+          }
+          return false;
+        },
+        { timeout: 15000 }
+      ).catch(() => false);
+
+      if (sessionPersisted) {
+        console.log('✅ Supabase session persisted to localStorage');
+      } else {
+        console.warn('⚠️  Session not found in localStorage after 15s - saving anyway');
+
+        // Take screenshot for debugging
+        const screenshotPath = path.join(storageDir, 'auth-debug.png');
+        await page.screenshot({ path: screenshotPath });
+        console.warn(`   Screenshot saved: ${screenshotPath}`);
+
+        // Log localStorage contents
+        const localStorageKeys = await page.evaluate(() => Object.keys(localStorage));
+        console.warn(`   localStorage keys: ${localStorageKeys.join(', ')}`);
+      }
+
+      // Also check for user menu (optional validation)
+      const userMenuSelectors = [
+        '[data-testid="user-menu"]',
+        'button[aria-label*="account" i]',
+        '[class*="user-menu"]'
+      ];
+
+      for (const selector of userMenuSelectors) {
+        if (await page.locator(selector).isVisible({ timeout: 2000 }).catch(() => false)) {
+          console.log(`✅ User menu visible: ${selector}`);
+          break;
+        }
+      }
 
       const userStatePath = path.join(storageDir, 'user.json');
       await context.storageState({ path: userStatePath });

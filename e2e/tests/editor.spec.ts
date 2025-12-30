@@ -24,6 +24,11 @@ test.describe('Resume Editor', () => {
 
   test.beforeEach(async ({ page }) => {
     // No login needed - storageState already has auth!
+    // But we need to navigate to a page first to load the storageState into localStorage
+
+    // Navigate to home page to initialize auth state
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
 
     // Create a resume from template (proper flow)
     const resumeId = await createResumeFromTemplate(page, 'classic-alex-rivera', true);
