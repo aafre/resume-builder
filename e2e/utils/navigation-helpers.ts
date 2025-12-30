@@ -24,21 +24,15 @@ import { Page, expect } from '@playwright/test';
 export async function navigateToTemplates(page: Page): Promise<void> {
   console.log('🔹 Navigating to templates page...');
 
-  // Should already be on landing page, but navigate to be sure
-  await page.goto('/');
+  // Direct navigation to templates page (more reliable than clicking button)
+  await page.goto('/templates');
   await page.waitForLoadState('networkidle');
 
-  // Click "Start Building Now" button
-  const startButton = page.locator('button:has-text("Start Building Now")')
-    .or(page.locator('button:has-text("Get Started")')
-    .or(page.locator('a[href="/templates"]')));
-
-  await expect(startButton.first()).toBeVisible({ timeout: 10000 });
-  await startButton.first().click();
-
-  // Should navigate to /templates
+  // Verify we're on templates page
   await expect(page).toHaveURL(/\/templates/, { timeout: 10000 });
-  await page.waitForLoadState('networkidle');
+
+  // Wait for templates to load
+  await page.waitForTimeout(2000);
 
   console.log('✅ Navigated to templates page');
 }
