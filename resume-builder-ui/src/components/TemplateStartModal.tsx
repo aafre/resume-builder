@@ -287,7 +287,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
             </p>
 
             <div className="space-y-3 mb-4">
-              {/* Option A: Empty Structure (Recommended) */}
+              {/* Option A: Empty Structure */}
               <button
                 onClick={() => setSelectedOption('empty')}
                 className={`group relative w-full p-4 border-2 rounded-lg transition-all duration-200 text-left ${
@@ -297,13 +297,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                 }`}
                 aria-pressed={selectedOption === 'empty'}
               >
-                {/* Recommended Badge */}
-                <div className="absolute top-2 right-2 bg-green-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
-                  <MdCheckCircle className="text-xs" />
-                  Recommended
-                </div>
-
-                <div className="flex items-start gap-3 mt-2">
+                <div className="flex items-start gap-3">
                   <div className="p-2 bg-green-100 rounded-lg">
                     <MdEditNote className="text-2xl text-green-600" />
                   </div>
