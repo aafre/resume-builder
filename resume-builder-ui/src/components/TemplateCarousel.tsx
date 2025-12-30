@@ -4,6 +4,7 @@ import { fetchTemplates } from "../services/templates";
 import { ArrowRightIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
+import yaml from "js-yaml";
 import TemplateStartModal from "./TemplateStartModal";
 import ResumeRecoveryModal from "./ResumeRecoveryModal";
 import AuthModal from "./AuthModal";
@@ -244,17 +245,97 @@ const TemplateCarousel: React.FC = () => {
   };
 
   // Handle AI resume import from TemplateStartModal
-  const handleModalSelectImport = (yamlString: string, confidence: number, warnings: string[]) => {
-    // Store in localStorage for Editor to pick up
-    localStorage.setItem('imported_resume_yaml', yamlString);
-    localStorage.setItem('imported_resume_warnings', JSON.stringify(warnings));
-    localStorage.setItem('imported_resume_confidence', confidence.toString());
-    localStorage.setItem('imported_template_id', selectedTemplateForModal || 'modern');
+  const handleModalSelectImport = async (yamlString: string, confidence: number, warnings: string[]) => {
+    if (!session) {
+      toast.error("Please sign in to import a resume");
+      return;
+    }
 
-    // Navigate to editor with template and imported flag
-    navigate(`/editor?template=${selectedTemplateForModal || 'modern'}&imported=true`);
+    try {
+      setCreating(true);
+      setShowStartModal(false);
 
-    setShowStartModal(false);
+      // Parse YAML to extract contact_info and sections
+      const parsedYaml = yaml.load(yamlString) as {
+        contact_info: any;
+        sections: any[];
+        __icons__?: Record<string, string>;
+      };
+
+      // Prepare icons array for upload (if present in YAML)
+      const iconsArray = [];
+      if (parsedYaml.__icons__) {
+        for (const [filename, data] of Object.entries(parsedYaml.__icons__)) {
+          iconsArray.push({ filename, data });
+        }
+      }
+
+      // Generate smart title (same logic as useCloudSave)
+      const generateTitle = (): string => {
+        // Priority 1: First job title from Experience section
+        const experienceSection = parsedYaml.sections.find(
+          s => s.type === 'experience'
+        );
+        if (experienceSection && Array.isArray(experienceSection.content) &&
+            experienceSection.content.length > 0) {
+          const firstJob = experienceSection.content[0];
+          if (typeof firstJob === 'object' && firstJob !== null && 'title' in firstJob && firstJob.title) {
+            return firstJob.title; // e.g., "Senior Product Manager"
+          }
+        }
+
+        // Priority 2: Name + Template
+        if (parsedYaml.contact_info?.name) {
+          const templateName = (selectedTemplateForModal || 'modern')
+            .split('-')
+            .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+            .join(' ');
+          return `${parsedYaml.contact_info.name} - ${templateName}`;
+        }
+
+        // Priority 3: Fallback
+        return 'Imported Resume';
+      };
+
+      // Create resume in database immediately
+      const response = await fetch("/api/resumes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          id: null, // Create new resume
+          title: generateTitle(),
+          template_id: selectedTemplateForModal || 'modern',
+          contact_info: parsedYaml.contact_info,
+          sections: parsedYaml.sections,
+          icons: iconsArray,
+          ai_import_warnings: warnings,
+          ai_import_confidence: confidence
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (data.error_code === "RESUME_LIMIT_REACHED") {
+          toast.error("Resume limit reached (5/5). Please delete a resume to create a new one.");
+          navigate("/my-resumes");
+          return;
+        }
+        throw new Error(data.error || "Failed to create resume");
+      }
+
+      // Navigate to editor with resume_id (standard flow)
+      toast.success("Resume imported successfully! Loading editor...");
+      navigate(`/editor/${data.resume_id}`);
+    } catch (err) {
+      console.error("Error importing resume:", err);
+      toast.error("Failed to import resume. Please try again.");
+    } finally {
+      setCreating(false);
+    }
   };
 
   // Check for recovery intent early on mount to prevent template page flash
