@@ -2480,17 +2480,28 @@ def migrate_anonymous_resumes():
 
         logging.info(f"Starting migration: {old_count} resumes from {old_user_id} to {new_user_id} (total: {total_count})")
 
-        # Get all resume IDs being migrated (for icon migration)
-        old_resume_ids = [r['id'] for r in old_resumes_response.data]
-
-        # Step 1: Update resume ownership
-        supabase.table('resumes') \
-            .update({'user_id': new_user_id}) \
+        # Get all resumes being migrated with their updated_at timestamps
+        resumes_to_migrate = supabase.table('resumes') \
+            .select('id, updated_at') \
             .eq('user_id', old_user_id) \
             .is_('deleted_at', 'null') \
             .execute()
 
-        logging.info(f"Updated {old_count} resume records")
+        old_resume_ids = [r['id'] for r in resumes_to_migrate.data]
+        resume_timestamps = {r['id']: r['updated_at'] for r in resumes_to_migrate.data}
+
+        # Step 1: Update resume ownership while preserving updated_at timestamps
+        # We update each resume individually to preserve its original updated_at
+        for resume_id, original_timestamp in resume_timestamps.items():
+            supabase.table('resumes') \
+                .update({
+                    'user_id': new_user_id,
+                    'updated_at': original_timestamp  # Preserve original timestamp
+                }) \
+                .eq('id', resume_id) \
+                .execute()
+
+        logging.info(f"Updated {old_count} resume records while preserving timestamps")
 
         # Step 2: Migrate icons (storage files + database records)
         icons_response = supabase.table('resume_icons') \
