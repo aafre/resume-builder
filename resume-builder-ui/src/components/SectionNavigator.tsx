@@ -499,7 +499,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               <>
                 <button
                   onClick={onSignInClick}
-                  className={`w-full flex items-center transition-all rounded-lg shadow-sm hover:shadow-md ${
+                  className={`w-full flex items-center justify-center transition-all rounded-lg shadow-sm hover:shadow-md ${
                     isCollapsed
                       ? "flex-col gap-1 py-2.5 px-1 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500"
                       : "flex-row gap-3 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500"
@@ -519,8 +519,8 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                   </span>
                 </button>
                 {!isCollapsed && (
-                  <p className="text-xs text-gray-500 px-3 pb-2">
-                    Free & Permanent Storage
+                  <p className="text-xs text-gray-500 px-3 pb-2 text-center">
+                    Never Lose Your Work
                   </p>
                 )}
               </>
