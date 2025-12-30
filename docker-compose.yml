@@ -21,9 +21,11 @@ services:
     ports:
       - "5000:5000"
 
-    # Load environment variables from .env file
+    # Load environment variables from .env files
+    # .env.local (if exists) overrides .env for local development
     env_file:
       - .env
+      - .env.local
 
     # Health check
     healthcheck:

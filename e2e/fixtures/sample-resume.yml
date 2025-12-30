@@ -1,0 +1,70 @@
+contact_info:
+  name: E2E Test User
+  location: San Francisco, CA
+  email: e2e-test@example.com
+  phone: "+1-555-0100"
+  social_links:
+    - platform: linkedin
+      url: https://linkedin.com/in/e2etest
+      display_text: E2E Test
+    - platform: github
+      url: https://github.com/e2etest
+      display_text: e2etest
+
+sections:
+  - name: Summary
+    type: text
+    content: >
+      Experienced software engineer specializing in test automation and quality assurance.
+      Passionate about building robust testing frameworks and improving software reliability.
+
+  - name: Experience
+    type: experience
+    content:
+      - company: Test Company Inc
+        title: Senior QA Engineer
+        dates: 2020 - Present
+        description:
+          - Implemented end-to-end testing framework using Playwright and Cypress
+          - Reduced test execution time by 50% through parallel testing strategies
+          - Mentored team of 5 junior engineers on testing best practices
+          - Integrated automated tests into CI/CD pipeline (GitHub Actions)
+        icon: company_google.png
+
+      - company: Previous Software Corp
+        title: QA Engineer
+        dates: 2018 - 2020
+        description:
+          - Developed automated test suites for web and mobile applications
+          - Collaborated with developers to improve code quality and coverage
+          - Identified and reported 100+ bugs across multiple product releases
+
+  - name: Education
+    type: education
+    content:
+      - degree: Bachelor of Science in Computer Science
+        school: Test University
+        year: "2018"
+        field: Computer Science
+
+  - name: Skills
+    type: bulleted-list
+    content:
+      - JavaScript/TypeScript (React, Node.js)
+      - Python (Django, Flask, pytest)
+      - Test Automation (Playwright, Cypress, Selenium)
+      - CI/CD (GitHub Actions, Jenkins, CircleCI)
+      - Database (PostgreSQL, MongoDB)
+
+  - name: Certifications
+    type: icon-list
+    content:
+      - certification: AWS Certified Developer - Associate
+        issuer: Amazon Web Services
+        date: "2023"
+        icon: cert_aws.png
+
+      - certification: Google Cloud Professional Cloud Architect
+        issuer: Google Cloud
+        date: "2022"
+        icon: cert_gcp.png

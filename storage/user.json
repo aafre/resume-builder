@@ -1,0 +1,18 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:5173",
+      "localStorage": [
+        {
+          "name": "google_auto_fc_cmp_setting",
+          "value": "[1]"
+        },
+        {
+          "name": "sb-localhost-auth-token",
+          "value": "{\"access_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjU0MzIxL2F1dGgvdjEiLCJzdWIiOiI4MGU3Zjg2NC1lMjdhLTQwYzUtOTc3Ni03YjA2ZGM5OTYzYmUiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzY3MTE4MDgzLCJpYXQiOjE3NjcxMTQ0ODMsImVtYWlsIjoiZTJlLXRlc3RAZXhhbXBsZS5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiRTJFIFRlc3QgVXNlciJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6Im90cCIsInRpbWVzdGFtcCI6MTc2NzExNDQ4M31dLCJzZXNzaW9uX2lkIjoiOWU5ZTQ0N2QtNzY2OC00MTVhLWE4MTItOTJmNjFlZWU5YjE5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.PL1WCEFLdc3fr5RFOKf28hsSBNGLmInsUYjNxioDTB0\",\"expires_in\":3600,\"expires_at\":1767118083,\"refresh_token\":\"wfgfiofwz3hp\",\"token_type\":\"bearer\",\"user\":{\"id\":\"80e7f864-e27a-40c5-9776-7b06dc9963be\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"e2e-test@example.com\",\"email_confirmed_at\":\"2025-12-30T16:29:27.434622Z\",\"phone\":\"\",\"confirmed_at\":\"2025-12-30T16:29:27.434622Z\",\"recovery_sent_at\":\"2025-12-30T17:08:03.355032Z\",\"last_sign_in_at\":\"2025-12-30T17:08:03.381134Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email_verified\":true,\"name\":\"E2E Test User\"},\"identities\":[{\"identity_id\":\"71b7443c-4d49-4c75-bde3-16283ba20e48\",\"id\":\"80e7f864-e27a-40c5-9776-7b06dc9963be\",\"user_id\":\"80e7f864-e27a-40c5-9776-7b06dc9963be\",\"identity_data\":{\"email\":\"e2e-test@example.com\",\"email_verified\":false,\"phone_verified\":false,\"sub\":\"80e7f864-e27a-40c5-9776-7b06dc9963be\"},\"provider\":\"email\",\"last_sign_in_at\":\"2025-12-30T16:29:27.432367Z\",\"created_at\":\"2025-12-30T16:29:27.432391Z\",\"updated_at\":\"2025-12-30T16:29:27.432391Z\",\"email\":\"e2e-test@example.com\"}],\"created_at\":\"2025-12-30T16:29:27.430921Z\",\"updated_at\":\"2025-12-30T17:08:03.382654Z\",\"is_anonymous\":false}}"
+        }
+      ]
+    }
+  ]
+}

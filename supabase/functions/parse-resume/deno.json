@@ -1,0 +1,16 @@
+{
+  "imports": {
+    "openai": "npm:openai@4.20.1",
+    "pdf-parse": "npm:pdf-parse@1.1.1",
+    "mammoth": "npm:mammoth@1.6.0",
+    "yaml": "npm:yaml@2.3.4",
+    "@supabase/supabase-js": "npm:@supabase/supabase-js@2.38.0"
+  },
+  "tasks": {
+    "serve": "deno run --allow-net --allow-read --allow-env index.ts"
+  },
+  "compilerOptions": {
+    "lib": ["deno.window", "dom"],
+    "strict": true
+  }
+}

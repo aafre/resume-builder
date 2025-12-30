@@ -49,6 +49,20 @@ const hasAuthTokensInUrl = (): boolean => {
   return hash.includes('access_token') || hash.includes('refresh_token') || hash.includes('code');
 };
 
+/**
+ * Checks if a session is expired or will expire soon (within 60 seconds).
+ * Returns true if session should be refreshed.
+ */
+const isSessionExpired = (session: Session | null): boolean => {
+  if (!session?.expires_at) return true;
+
+  const expiresAt = session.expires_at * 1000; // Convert to milliseconds
+  const now = Date.now();
+  const bufferMs = 60 * 1000; // 60 second buffer
+
+  return expiresAt <= (now + bufferMs);
+};
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
@@ -409,12 +423,51 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           );
 
           if (existingSession) {
-            // Session exists and is valid
-            sessionRecovered = true;
-            setSession(existingSession);
-            setUser(existingSession.user);
-            console.log('✅ Existing session restored:', existingSession.user.id);
-            return;
+            // Check if session is expired or close to expiring
+            if (isSessionExpired(existingSession)) {
+              console.log('⚠️ Session expired or expiring soon, attempting refresh...');
+
+              try {
+                // Try to refresh the session
+                const { data: { session: refreshedSession }, error: refreshError } = await supabase!.auth.refreshSession();
+
+                if (refreshError || !refreshedSession) {
+                  console.log('❌ Session refresh failed:', refreshError?.message || 'No session returned');
+
+                  // Properly sign out to clear server-side session (non-blocking to avoid hangs)
+                  supabase!.auth.signOut().catch(err => console.error('SignOut error during cleanup:', err));
+
+                  // Clear client-side session data
+                  clearSupabaseAuthStorage();
+
+                  // Fall through to create new anonymous session below
+                } else {
+                  // Successfully refreshed
+                  sessionRecovered = true;
+                  setSession(refreshedSession);
+                  setUser(refreshedSession.user);
+                  console.log('✅ Session refreshed successfully:', refreshedSession.user.id);
+                  return;
+                }
+              } catch (refreshError) {
+                console.error('❌ Session refresh error:', refreshError);
+
+                // Properly sign out to clear server-side session (non-blocking to avoid hangs)
+                supabase!.auth.signOut().catch(err => console.error('SignOut error during cleanup:', err));
+
+                // Clear client-side session data
+                clearSupabaseAuthStorage();
+
+                // Fall through to create new anonymous session below
+              }
+            } else {
+              // Session is valid and not expired
+              sessionRecovered = true;
+              setSession(existingSession);
+              setUser(existingSession.user);
+              console.log('✅ Existing session restored:', existingSession.user.id);
+              return;
+            }
           } else {
             console.log('No existing session found, will create anonymous session');
           }
@@ -432,22 +485,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
           const wasTimeout = sessionError instanceof Error && sessionError.message.includes('timed out');
 
-          // FIXED: Don't assume timeout means corrupted data
-          // Timeout could be due to slow network connection, especially after hard refresh (Ctrl+F5)
-          // Only clear localStorage if there's actual corruption (JSON parse errors)
           if (wasTimeout) {
             console.log('⚠️ Session recovery timed out - network may be slow, trusting auth listener to restore session');
-            // Don't clear localStorage or show error toast - let auth listener handle it
+            // Don't clear localStorage or show error - let auth listener handle recovery
             // The session might still be valid, just slow to load
           } else {
-            // Non-timeout error (likely JSON parse error or corrupted data)
-            console.error('❌ Session recovery failed with non-timeout error - clearing corrupted auth data');
-            const clearedKeys = clearSupabaseAuthStorage();
-            if (clearedKeys) {
-              console.log('Cleared corrupted auth storage');
-              toast.error('Session data was corrupted. Starting fresh...', { duration: 5000 });
-            }
+            // Non-timeout error (network glitch, fetch error, etc.)
+            console.error('⚠️ Session recovery failed with non-timeout error - network issue or corrupted data');
+            // DO NOT automatically clear storage here - could be temporary network glitch
+            // Let onAuthStateChange listener and anonymous session creation handle recovery
+            // Supabase's getSession() returns null for corrupted data rather than throwing
+            // If it throws, it's usually a network/client issue, not corruption
           }
+
+          // Fall through to create fresh anonymous session below
+          // This handles both timeout and non-timeout errors gracefully
         }
 
         // STEP 2: Create fresh anonymous session (fallback)

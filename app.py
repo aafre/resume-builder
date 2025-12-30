@@ -1872,6 +1872,8 @@ def save_resume():
         contact_info = data.get('contact_info', {})
         sections = data.get('sections', [])
         icons = data.get('icons', [])
+        ai_import_warnings = data.get('ai_import_warnings')  # Optional JSONB array
+        ai_import_confidence = data.get('ai_import_confidence')  # Optional decimal
 
         # Validate required fields
         if not template_id:
@@ -1944,6 +1946,12 @@ def save_resume():
             'updated_at': 'now()',
             'last_accessed_at': 'now()'
         }
+
+        # Add AI import metadata if provided
+        if ai_import_warnings is not None:
+            resume_data['ai_import_warnings'] = ai_import_warnings
+        if ai_import_confidence is not None:
+            resume_data['ai_import_confidence'] = ai_import_confidence
 
         if not is_update:
             resume_data['created_at'] = 'now()'
@@ -2208,12 +2216,15 @@ def load_resume(resume_id):
 
         resume['icons'] = icons_result.data
 
-        # Update last_accessed_at (non-blocking - don't fail if this fails)
+        # Update last_accessed_at while preserving updated_at (non-blocking - don't fail if this fails)
         try:
-            supabase.table('resumes') \
-                .update({'last_accessed_at': datetime.now().isoformat()}) \
-                .eq('id', resume_id) \
-                .execute()
+            # Preserve updated_at when only updating last_accessed_at
+            current_updated_at = resume.get('updated_at')
+            update_data = {'last_accessed_at': datetime.now().isoformat()}
+            if current_updated_at:
+                update_data['updated_at'] = current_updated_at  # Preserve original timestamp
+
+            supabase.table('resumes').update(update_data).eq('id', resume_id).execute()
         except Exception as timestamp_error:
             logging.warning(f"Failed to update last_accessed_at for resume {resume_id}: {timestamp_error}")
             # Continue anyway - this is not critical
@@ -2472,17 +2483,28 @@ def migrate_anonymous_resumes():
 
         logging.info(f"Starting migration: {old_count} resumes from {old_user_id} to {new_user_id} (total: {total_count})")
 
-        # Get all resume IDs being migrated (for icon migration)
-        old_resume_ids = [r['id'] for r in old_resumes_response.data]
-
-        # Step 1: Update resume ownership
-        supabase.table('resumes') \
-            .update({'user_id': new_user_id}) \
+        # Get all resumes being migrated with their updated_at timestamps
+        resumes_to_migrate = supabase.table('resumes') \
+            .select('id, updated_at') \
             .eq('user_id', old_user_id) \
             .is_('deleted_at', 'null') \
             .execute()
 
-        logging.info(f"Updated {old_count} resume records")
+        old_resume_ids = [r['id'] for r in resumes_to_migrate.data]
+        resume_timestamps = {r['id']: r['updated_at'] for r in resumes_to_migrate.data}
+
+        # Step 1: Update resume ownership while preserving updated_at timestamps
+        # We update each resume individually to preserve its original updated_at
+        for resume_id, original_timestamp in resume_timestamps.items():
+            supabase.table('resumes') \
+                .update({
+                    'user_id': new_user_id,
+                    'updated_at': original_timestamp  # Preserve original timestamp
+                }) \
+                .eq('id', resume_id) \
+                .execute()
+
+        logging.info(f"Updated {old_count} resume records while preserving timestamps")
 
         # Step 2: Migrate icons (storage files + database records)
         icons_response = supabase.table('resume_icons') \
@@ -2830,14 +2852,19 @@ def generate_pdf_for_saved_resume(resume_id):
             try:
                 thumbnail_url = generate_thumbnail_from_pdf(str(output_path), user_id, resume_id)
                 if thumbnail_url:
+                    # Fetch current updated_at to preserve it (avoid triggering timestamp update for metadata-only change)
+                    current_resume = supabase.table('resumes').select('updated_at').eq('id', resume_id).execute()
+                    current_updated_at = current_resume.data[0]['updated_at'] if current_resume.data else None
+
                     # Update resume with thumbnail URL
-                    supabase.table('resumes') \
-                        .update({
-                            'thumbnail_url': thumbnail_url,
-                            'pdf_generated_at': 'now()'
-                        }) \
-                        .eq('id', resume_id) \
-                        .execute()
+                    update_data = {
+                        'thumbnail_url': thumbnail_url,
+                        'pdf_generated_at': 'now()'
+                    }
+                    if current_updated_at:
+                        update_data['updated_at'] = current_updated_at  # Preserve original timestamp
+
+                    supabase.table('resumes').update(update_data).eq('id', resume_id).execute()
                     logging.info(f"Thumbnail generated and saved for resume {resume_id}")
                 else:
                     logging.warning(f"Thumbnail generation failed for resume {resume_id}, but continuing with PDF")
@@ -3070,15 +3097,20 @@ def generate_thumbnail_for_resume(resume_id):
             if not thumbnail_url:
                 return jsonify({"success": False, "error": "Failed to generate thumbnail"}), 500
 
+            # Fetch current updated_at to preserve it (avoid triggering timestamp update for metadata-only change)
+            current_resume = supabase.table('resumes').select('updated_at').eq('id', resume_id).execute()
+            current_updated_at = current_resume.data[0]['updated_at'] if current_resume.data else None
+
             # Update resume with thumbnail URL and timestamp
             current_time = datetime.now(timezone.utc).isoformat()
-            supabase.table('resumes') \
-                .update({
-                    'thumbnail_url': thumbnail_url,
-                    'pdf_generated_at': 'now()'
-                }) \
-                .eq('id', resume_id) \
-                .execute()
+            update_data = {
+                'thumbnail_url': thumbnail_url,
+                'pdf_generated_at': 'now()'
+            }
+            if current_updated_at:
+                update_data['updated_at'] = current_updated_at  # Preserve original timestamp
+
+            supabase.table('resumes').update(update_data).eq('id', resume_id).execute()
 
             logging.info(f"Thumbnail generated successfully for resume {resume_id}")
 
