@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2025-12-31
+
+### 🐛 Bug Fixes
+
+- **ui:** Responsive sign in button shows on smaller screens
+- **resume-parser:** Replace strict data validation with data sanitization & disable icon-list section in ai response
+
+### Ui
+
+- **preview:** Fix mobile scrolling
+
 ## [1.0.2] - 2025-12-31
 
 ### 🐛 Bug Fixes
