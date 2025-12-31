@@ -2,7 +2,7 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FileText } from "lucide-react";
 import { useEditorContext } from "../contexts/EditorContext";
 import { useAuth } from "../contexts/AuthContext";
-import { useResumes } from "../hooks/useResumes";
+import { useResumeCount } from "../hooks/useResumeCount";
 import AutoSaveIndicator from "./AutoSaveIndicator";
 import AnonymousWarningBadge from "./AnonymousWarningBadge";
 import UserMenu from "./UserMenu";
@@ -14,9 +14,8 @@ export default function Header() {
   const navigate = useNavigate();
   const { isAuthenticated, isAnonymous, loading: authLoading, showAuthModal, hideAuthModal, authModalOpen } = useAuth();
 
-  // Get resume count for mobile badge
-  const { data: resumes = [] } = useResumes();
-  const resumeCount = resumes.length;
+  // Get resume count for mobile badge (lightweight count-only query)
+  const { data: resumeCount = 0 } = useResumeCount();
 
   // Safely get editor context (might not be available)
   const isEditorPage = location.pathname.startsWith("/editor");
