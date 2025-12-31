@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2025-12-31
+
+### 🐛 Bug Fixes
+
+- **auth:** Restore original OAuth redirect behavior
+
 ## [1.0.1] - 2025-12-31
 
 ### 📚 Documentation
