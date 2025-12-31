@@ -4,10 +4,12 @@ FROM node:25 AS react-build
 # These get embedded into the JavaScript bundle during build
 ARG VITE_SUPABASE_URL
 ARG VITE_SUPABASE_PUBLISHABLE_KEY
+ARG VITE_APP_URL
 
 # Set as environment variables for Vite build process
 ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
 ENV VITE_SUPABASE_PUBLISHABLE_KEY=$VITE_SUPABASE_PUBLISHABLE_KEY
+ENV VITE_APP_URL=$VITE_APP_URL
 
 WORKDIR /app/react
 COPY resume-builder-ui/package*.json ./

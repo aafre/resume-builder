@@ -1108,7 +1108,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 # But we still configure CORS for dev environments and explicit domain control
 ALLOWED_ORIGINS = os.getenv(
     'ALLOWED_ORIGINS',
-    'http://localhost:3000,http://localhost:5000,http://localhost:5173'
+    'http://localhost:3000,http://localhost:5000,http://localhost:5173,https://easyfreeresume.com'
 ).split(',')
 
 CORS(app, resources={

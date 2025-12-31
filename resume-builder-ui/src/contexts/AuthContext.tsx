@@ -681,7 +681,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.href, // Stay on current page
+        redirectTo: `${import.meta.env.VITE_APP_URL}/auth/callback`,
       },
     });
 
@@ -694,7 +694,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'linkedin_oidc',
       options: {
-        redirectTo: window.location.href, // Stay on current page
+        redirectTo: `${import.meta.env.VITE_APP_URL}/auth/callback`,
       },
     });
 

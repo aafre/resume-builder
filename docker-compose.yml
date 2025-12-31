@@ -7,6 +7,7 @@ services:
         # Build-time arguments for React (embedded into JS bundle)
         VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
         VITE_SUPABASE_PUBLISHABLE_KEY: ${VITE_SUPABASE_PUBLISHABLE_KEY}
+        VITE_APP_URL: ${VITE_APP_URL}
 
     # Runtime environment variables for Flask backend
     environment:

@@ -47,6 +47,9 @@ jobs:
           service: ${{ secrets.GCP_CLOUD_RUN_SERVICE }}
           image: ${{ env.GCP_IMAGE }}:${{ github.event.inputs.version }}
           region: "europe-west2"
+          env_vars: |
+            SUPABASE_URL=${{ secrets.SUPABASE_URL }}
+            SUPABASE_SECRET_KEY=${{ secrets.SUPABASE_SECRET_KEY }}
           flags: |
             --cpu=1
             --memory=1Gi
