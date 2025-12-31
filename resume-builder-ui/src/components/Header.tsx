@@ -128,6 +128,29 @@ export default function Header() {
           {/* Right Side Content */}
           <div className="flex items-center gap-3 sm:gap-4">
 
+            {/* Mobile Icon Navigation - Authenticated Only */}
+            {isAuthenticated && (
+              <div className="lg:hidden flex items-center gap-3">
+                {/* My Resumes Icon with Badge */}
+                <Link
+                  to="/my-resumes"
+                  className="relative p-2 rounded-lg hover:bg-purple-50/50 transition-all duration-200"
+                  aria-label={`My Resumes${resumeCount > 0 ? ` (${resumeCount})` : ''}`}
+                >
+                  <div className="relative">
+                    <FileText className="w-6 h-6 text-gray-700" />
+                    {resumeCount > 0 && (
+                      <div className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-red-500 rounded-full flex items-center justify-center ring-2 ring-white">
+                        <span className="text-white text-[10px] font-bold px-1">
+                          {resumeCount > 99 ? '99+' : resumeCount}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              </div>
+            )}
+
             {/* Auto-Save Indicator (authenticated) or Warning Badge (anonymous) - only on editor page */}
             {isEditorPage && editorContext && (
               <div id="header-auth-status" className="flex items-center">
