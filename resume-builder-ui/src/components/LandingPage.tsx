@@ -4,7 +4,7 @@ import CountUp from "react-countup";
 import SEOHead from "./SEOHead";
 import CompanyMarquee from "./CompanyMarquee";
 import { useAuth } from "../contexts/AuthContext";
-import { useResumes } from "../hooks/useResumes";
+import { useResumeCount } from "../hooks/useResumeCount";
 import {
   ArrowRightIcon,
   EyeIcon,
@@ -22,10 +22,10 @@ const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { isAuthenticated, isAnonymous } = useAuth();
-  const { data: resumes = [] } = useResumes();
+  const { data: resumeCount = 0 } = useResumeCount();
 
   // Check if user has resumes
-  const hasResumes = isAuthenticated && !isAnonymous && resumes.length > 0;
+  const hasResumes = isAuthenticated && !isAnonymous && resumeCount > 0;
 
   // Handle legacy URL redirects only
   useEffect(() => {
@@ -48,21 +48,32 @@ const LandingPage: React.FC = () => {
     // No auto-redirect for authenticated users - let them see landing page
   }, [searchParams, navigate]);
 
-  // Calculate growing user count starting above 50k
   const calculateUsersServed = (): number => {
-    // Site launched on Jan 1, 2019 - start with base above 50k
     const launchDate = new Date("2019-01-01T00:00:00Z");
     const now = new Date();
+
+    // 1. Calculate the base (Linear growth of 28/day up to now)
     const msPerDay = 24 * 60 * 60 * 1000;
-    const daysSinceLaunch = Math.floor(
-      (now.getTime() - launchDate.getTime()) / msPerDay
-    );
-    const baseCount = 52000; 
-    const dailyUsers = 28; 
-    return baseCount + daysSinceLaunch * dailyUsers;
+    const daysSinceLaunch = Math.floor((now.getTime() - launchDate.getTime()) / msPerDay);
+    const originalBase = 52000 + (daysSinceLaunch * 28);
+
+    // 2. Add the "Pulse" (Extra daily growth for the visual effect)
+    const secondsInToday = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
+    const extraGrowthToday = (secondsInToday / 86400) * 432;
+
+    return Math.floor(originalBase + extraGrowthToday);
   };
 
-  const totalUsers = calculateUsersServed();
+  const [totalUsers, setTotalUsers] = useState<number>(calculateUsersServed());
+
+  // Timer: Updates the number every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTotalUsers(calculateUsersServed());
+    }, 5000); // Update every 5 seconds
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
 
   // Features data
   const features = [

@@ -2167,6 +2167,55 @@ def list_resumes():
         return jsonify({"success": False, "error": error_msg}), 500
 
 
+@app.route("/api/resumes/count", methods=["GET"])
+@require_auth
+@retry_on_connection_error(max_retries=3, backoff_factor=0.5)
+def get_resume_count():
+    """
+    Get total count of resumes for the authenticated user.
+
+    Lightweight endpoint that returns only the count, not full resume objects.
+    Used for UI badges and limit checks.
+
+    Response:
+        {
+            "success": true,
+            "count": 3
+        }
+    """
+    try:
+        user_id = request.user_id
+
+        # Count-only query using Supabase's count feature
+        result = supabase.table('resumes') \
+            .select('id', count='exact') \
+            .eq('user_id', user_id) \
+            .is_('deleted_at', 'null') \
+            .execute()
+
+        count = result.count if hasattr(result, 'count') else len(result.data)
+
+        logging.debug(f"Resume count for user {user_id}: {count}")
+
+        return jsonify({
+            "success": True,
+            "count": count
+        }), 200
+
+    except Exception as e:
+        logging.error(f"Error getting resume count: {e}", exc_info=True)
+        error_msg = "Failed to get resume count"
+
+        # Specific error messages for common issues
+        error_str = str(e).lower()
+        if "server disconnected" in error_str or "connection" in error_str:
+            error_msg = "Connection to database failed. Please try again."
+        elif "timeout" in error_str:
+            error_msg = "Request timed out. Please try again."
+
+        return jsonify({"success": False, "error": error_msg}), 500
+
+
 @app.route("/api/resumes/<resume_id>", methods=["GET"])
 @require_auth
 def load_resume(resume_id):
