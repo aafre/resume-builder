@@ -14,6 +14,10 @@ export default function Header() {
   const navigate = useNavigate();
   const { isAuthenticated, isAnonymous, loading: authLoading, showAuthModal, hideAuthModal, authModalOpen } = useAuth();
 
+  // Get resume count for mobile badge
+  const { data: resumes = [] } = useResumes();
+  const resumeCount = resumes.length;
+
   // Safely get editor context (might not be available)
   const isEditorPage = location.pathname.startsWith("/editor");
   let editorContext = null;
