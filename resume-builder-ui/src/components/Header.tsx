@@ -1,6 +1,8 @@
 import { useLocation, useNavigate, Link } from "react-router-dom";
+import { FileText } from "lucide-react";
 import { useEditorContext } from "../contexts/EditorContext";
 import { useAuth } from "../contexts/AuthContext";
+import { useResumes } from "../hooks/useResumes";
 import AutoSaveIndicator from "./AutoSaveIndicator";
 import AnonymousWarningBadge from "./AnonymousWarningBadge";
 import UserMenu from "./UserMenu";
