@@ -81,6 +81,10 @@ serve(async (req: Request) => {
     // No need to manually set this secret - it's always available
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
+    // DEBUG: Log key format (first 20 chars only for security)
+    console.log('🔑 Service key format:', supabaseServiceKey.substring(0, 20) + '...');
+    console.log('🔑 Token being verified (first 50 chars):', token.substring(0, 50) + '...');
+
     // Create admin client for both auth validation and cache operations
     // Service role key automatically available in edge function environment
     const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
