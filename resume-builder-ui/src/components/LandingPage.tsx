@@ -122,6 +122,26 @@ const LandingPage: React.FC = () => {
         "No! You can build and download your resume instantly as a guest without signing up. However, creating a free account unlocks Cloud Storage, allowing you to save your work securely, access it from any device, and manage multiple resume versions.",
     },
     {
+      question: "Can I import my existing resume (PDF or DOCX)?",
+      answer:
+        "Yes! If you have an existing resume in PDF or Word format, you can upload it and our AI will automatically extract your information and populate the editor. This saves you time re-typing everything. After import, you can review and edit any details before downloading.",
+    },
+    {
+      question: "How accurate is the AI resume import feature?",
+      answer:
+        "Our AI typically achieves 85-95% accuracy when importing resumes. After uploading, you'll see a confidence score and any warnings about potentially inaccurate information. We strongly recommend reviewing all imported details carefully before finalizing your resume, especially contact information, dates, and job descriptions.",
+    },
+    {
+      question: "What file formats can I import?",
+      answer:
+        "You can upload PDF (.pdf) or Microsoft Word (.docx) files up to 10MB in size. The file must be a resume or CV - other document types will be rejected. For best results, use clearly formatted resumes with standard sections like work experience, education, and skills.",
+    },
+    {
+      question: "Is my uploaded resume data secure and private?",
+      answer:
+        "Absolutely. Uploaded files are processed securely and temporarily to extract your information. We don't permanently store your uploaded resume files on our servers. The extracted data is saved only if you're signed in, and it's stored securely in your private cloud account that only you can access.",
+    },
+    {
       question: "What format will my resume be downloaded in?",
       answer:
         "Your resume is generated as a high-quality PDF that's perfect for email applications and printing. The PDF maintains professional formatting across all devices.",
