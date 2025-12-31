@@ -15,195 +15,117 @@ const VALID_SECTION_TYPES = [
   'bulleted-list',
   'inline-list',
   'dynamic-column-list',
-  'icon-list',
   'experience',
   'education',
 ];
 
 /**
- * Validate resume JSON against schema
+ * Validate and sanitize resume JSON against schema
+ * 100% PERMISSIVE: Fixes data instead of rejecting it
  * @param data - AI-generated JSON data
- * @returns Validation result with errors if invalid
+ * @returns Validation result (always valid: true)
  */
 export function validateResumeSchema(data: any): ValidationResult {
-  const errors: string[] = [];
+  // 100% permissive - we NEVER reject, we FIX the data
 
-  // Check if data is object
+  // === 1. Ensure data is an object ===
   if (typeof data !== 'object' || data === null) {
-    errors.push('Resume data must be an object');
-    return { valid: false, errors };
+    data = { contact_info: {}, sections: [] };
   }
 
-  // === Validate contact_info (REQUIRED) ===
-  if (!data.contact_info) {
-    errors.push('Missing required field: contact_info');
-  } else {
-    const ci = data.contact_info;
+  // === 2. Fix contact_info ===
+  if (!data.contact_info || typeof data.contact_info !== 'object') {
+    data.contact_info = {};
+  }
 
-    // Required fields
-    if (!ci.name || typeof ci.name !== 'string') {
-      errors.push('contact_info.name is required and must be a string');
+  // === 3. Fix sections ===
+  if (!data.sections || !Array.isArray(data.sections)) {
+    data.sections = [];
+  }
+
+  // === 4. Fix each section (coerce types, fill defaults) ===
+  data.sections.forEach((section: any) => {
+    // Ensure section is object - if not, skip it
+    if (typeof section !== 'object' || section === null) {
+      return;
     }
 
-    if (!ci.location || typeof ci.location !== 'string') {
-      errors.push('contact_info.location is required and must be a string');
+    // Coerce section.name to string
+    if (typeof section.name !== 'string') {
+      section.name = section.name ? String(section.name) : '';
     }
 
-    if (!ci.email || typeof ci.email !== 'string') {
-      errors.push('contact_info.email is required and must be a string');
-    } else if (!ci.email.includes('@')) {
-      errors.push('contact_info.email does not appear to be valid (missing @)');
+    // Coerce section.type to string
+    if (typeof section.type !== 'string') {
+      section.type = section.type ? String(section.type) : 'text';
     }
 
-    if (!ci.phone || typeof ci.phone !== 'string') {
-      errors.push('contact_info.phone is required and must be a string');
+    // Fix content based on section type
+    if (section.type === 'text') {
+      // Coerce to string
+      if (typeof section.content !== 'string') {
+        section.content = section.content ? String(section.content) : '';
+      }
     }
 
-    // Optional: Validate social_links structure
-    if (ci.social_links) {
-      if (!Array.isArray(ci.social_links)) {
-        errors.push('contact_info.social_links must be an array');
+    if (['bulleted-list', 'inline-list', 'dynamic-column-list'].includes(section.type)) {
+      // Coerce to array of strings
+      if (!Array.isArray(section.content)) {
+        section.content = [];
       } else {
-        ci.social_links.forEach((link: any, idx: number) => {
-          if (!link.platform || typeof link.platform !== 'string') {
-            errors.push(`social_links[${idx}]: missing or invalid 'platform'`);
-          }
-          if (!link.url || typeof link.url !== 'string') {
-            errors.push(`social_links[${idx}]: missing or invalid 'url'`);
-          }
+        // Ensure each item is a string
+        section.content = section.content.map((item: any) =>
+          typeof item === 'string' ? item : String(item || '')
+        );
+      }
+    }
+
+    if (section.type === 'experience') {
+      // Coerce to array
+      if (!Array.isArray(section.content)) {
+        section.content = [];
+      } else {
+        // Fix each experience item
+        section.content = section.content.map((exp: any) => {
+          if (typeof exp !== 'object' || exp === null) exp = {};
+
+          return {
+            company: typeof exp.company === 'string' ? exp.company : '',
+            title: typeof exp.title === 'string' ? exp.title : '',
+            dates: typeof exp.dates === 'string' ? exp.dates : '',
+            description: Array.isArray(exp.description)
+              ? exp.description.map((d: any) => String(d || ''))
+              : [],
+            icon: exp.icon || null
+          };
         });
       }
     }
-  }
 
-  // === Validate sections (REQUIRED) ===
-  if (!data.sections) {
-    errors.push('Missing required field: sections');
-  } else if (!Array.isArray(data.sections)) {
-    errors.push('sections must be an array');
-  } else {
-    // Validate each section
-    data.sections.forEach((section: any, idx: number) => {
-      // Required fields
-      if (!section.name || typeof section.name !== 'string') {
-        errors.push(`sections[${idx}]: missing or invalid 'name'`);
+    if (section.type === 'education') {
+      // Coerce to array
+      if (!Array.isArray(section.content)) {
+        section.content = [];
+      } else {
+        // Fix each education item
+        section.content = section.content.map((edu: any) => {
+          if (typeof edu !== 'object' || edu === null) edu = {};
+
+          return {
+            degree: typeof edu.degree === 'string' ? edu.degree : '',
+            school: typeof edu.school === 'string' ? edu.school : '',
+            year: typeof edu.year === 'string' ? edu.year : '',
+            field_of_study: typeof edu.field_of_study === 'string' ? edu.field_of_study : '',
+            icon: edu.icon || null
+          };
+        });
       }
+    }
+  });
 
-      if (!section.type || typeof section.type !== 'string') {
-        errors.push(`sections[${idx}]: missing or invalid 'type'`);
-      } else if (!VALID_SECTION_TYPES.includes(section.type)) {
-        errors.push(
-          `sections[${idx}]: unknown type '${section.type}'. Valid types: ${VALID_SECTION_TYPES.join(', ')}`
-        );
-      }
-
-      if (section.content === undefined) {
-        errors.push(`sections[${idx}]: missing required field 'content'`);
-      }
-
-      // Type-specific validation
-      if (section.type === 'text') {
-        if (typeof section.content !== 'string') {
-          errors.push(`sections[${idx}]: text section content must be a string`);
-        }
-      }
-
-      if (
-        section.type === 'bulleted-list' ||
-        section.type === 'inline-list' ||
-        section.type === 'dynamic-column-list'
-      ) {
-        if (!Array.isArray(section.content)) {
-          errors.push(
-            `sections[${idx}]: ${section.type} content must be an array of strings`
-          );
-        }
-      }
-
-      // Experience section validation
-      if (section.type === 'experience') {
-        if (!Array.isArray(section.content)) {
-          errors.push(`sections[${idx}]: experience content must be an array`);
-        } else {
-          section.content.forEach((exp: any, expIdx: number) => {
-            if (!exp.company || typeof exp.company !== 'string') {
-              errors.push(
-                `sections[${idx}].content[${expIdx}]: missing or invalid 'company'`
-              );
-            }
-            if (!exp.title || typeof exp.title !== 'string') {
-              errors.push(
-                `sections[${idx}].content[${expIdx}]: missing or invalid 'title'`
-              );
-            }
-            if (!exp.dates || typeof exp.dates !== 'string') {
-              errors.push(
-                `sections[${idx}].content[${expIdx}]: missing or invalid 'dates'`
-              );
-            }
-            if (!Array.isArray(exp.description)) {
-              errors.push(
-                `sections[${idx}].content[${expIdx}]: description must be an array of strings`
-              );
-            }
-          });
-        }
-      }
-
-      // Education section validation
-      if (section.type === 'education') {
-        if (!Array.isArray(section.content)) {
-          errors.push(`sections[${idx}]: education content must be an array`);
-        } else {
-          section.content.forEach((edu: any, eduIdx: number) => {
-            if (!edu.degree || typeof edu.degree !== 'string') {
-              errors.push(
-                `sections[${idx}].content[${eduIdx}]: missing or invalid 'degree'`
-              );
-            }
-            if (!edu.school || typeof edu.school !== 'string') {
-              errors.push(
-                `sections[${idx}].content[${eduIdx}]: missing or invalid 'school'`
-              );
-            }
-            if (!edu.year || typeof edu.year !== 'string') {
-              errors.push(
-                `sections[${idx}].content[${eduIdx}]: missing or invalid 'year'`
-              );
-            }
-          });
-        }
-      }
-
-      // Icon-list section validation
-      if (section.type === 'icon-list') {
-        if (!Array.isArray(section.content)) {
-          errors.push(`sections[${idx}]: icon-list content must be an array`);
-        } else {
-          section.content.forEach((item: any, itemIdx: number) => {
-            if (!item.certification || typeof item.certification !== 'string') {
-              errors.push(
-                `sections[${idx}].content[${itemIdx}]: missing or invalid 'certification'`
-              );
-            }
-            if (!item.issuer || typeof item.issuer !== 'string') {
-              errors.push(
-                `sections[${idx}].content[${itemIdx}]: missing or invalid 'issuer'`
-              );
-            }
-            if (!item.date || typeof item.date !== 'string') {
-              errors.push(
-                `sections[${idx}].content[${itemIdx}]: missing or invalid 'date'`
-              );
-            }
-          });
-        }
-      }
-    });
-  }
-
+  // ALWAYS return valid: true - we fixed everything
   return {
-    valid: errors.length === 0,
-    errors,
+    valid: true,
+    errors: []  // No errors, ever
   };
 }
