@@ -176,7 +176,7 @@ export default function Header() {
                   <button
                     id="tour-sign-in-button"
                     onClick={showAuthModal}
-                    className="flex items-center gap-2 py-2.5 px-5 sm:py-3 sm:px-6 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-purple-500/20 hover:scale-[1.02] transition-all duration-300 shadow-md text-sm"
+                    className="flex items-center gap-2 font-semibold text-sm transition-all duration-300 text-purple-600 hover:text-purple-700 hover:underline lg:py-2.5 lg:px-5 lg:bg-gradient-to-r lg:from-blue-600 lg:via-purple-600 lg:to-indigo-700 lg:text-white lg:rounded-xl lg:shadow-md lg:hover:shadow-xl lg:hover:shadow-purple-500/20 lg:hover:scale-[1.02]"
                   >
                     <span>Sign In</span>
                   </button>
