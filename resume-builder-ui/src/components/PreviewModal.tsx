@@ -150,7 +150,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
             {/* PDF Iframe */}
             {previewUrl && !error && (
               <div
-                className="w-full h-full p-4 lg:p-6"
+                className="w-full p-4 lg:p-6"
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
@@ -162,10 +162,11 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                   key={iframeKey}
                   src={`${previewUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
                   title="Resume PDF Preview"
-                  className="bg-white shadow-lg rounded-lg w-full h-full"
+                  className="bg-white shadow-lg rounded-lg w-full"
                   style={{
                     maxWidth: '900px', // Slightly wider for better readability
-                    minHeight: '500px',
+                    minHeight: '150vh', // Ensure enough height for scrolling on mobile
+                    height: '150vh',
                     border: 'none',
                   }}
                 />
