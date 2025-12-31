@@ -27,7 +27,8 @@ OUTPUT SCHEMA:
     ]
   },
   "sections": [
-    // Section types: text, bulleted-list, inline-list, dynamic-column-list, experience, education, icon-list
+    // Section types: text, bulleted-list, inline-list, dynamic-column-list, experience, education
+    // NOTE: DO NOT use icon-list - use bulleted-list for certifications instead
 
     // Type 1: Text section (Summary, Objective)
     {
@@ -85,21 +86,15 @@ OUTPUT SCHEMA:
           "icon": null
         }
       ]
-    },
-
-    // Type 7: Icon list (Certifications)
-    {
-      "name": "Certifications",
-      "type": "icon-list",
-      "content": [
-        {
-          "certification": "Certification Name",
-          "issuer": "Issuing Organization",
-          "date": "YYYY",
-          "icon": null
-        }
-      ]
     }
+
+    // NOTE: For certifications, use "bulleted-list" or "dynamic-column-list"
+    // Example:
+    // {
+    //   "name": "Certifications",
+    //   "type": "bulleted-list",
+    //   "content": ["AWS Certified Solutions Architect (2023)", "PMP Certification (2022)"]
+    // }
   ],
   "font": "Arial",
   "confidence": 0.95,
@@ -134,7 +129,7 @@ PARSING RULES:
       -> Use "inline-list"
 
    E. STRUCTURED ENTRIES (Dates, Titles)
-      -> Use "experience", "education", or "icon-list"
+      -> Use "experience" or "education"
 
    DEFAULT PREFERENCES (Override if content shape mismatches):
    - Skills (Phrases/Sentences) -> "bulleted-list"  <-- IMPORTANT
@@ -142,13 +137,19 @@ PARSING RULES:
    - Skills (Moderate Count Keywords) -> "dynamic-column-list"
    - Achievements -> "bulleted-list"
    - Languages -> "inline-list"
+   - Certifications -> "bulleted-list"
    - Experience -> "experience"
    - Education -> "education"
 
-3. REQUIRED FIELDS:
-   - contact_info (name, location, email, phone) is MANDATORY
-   - sections array is MANDATORY
-   - If email/phone not found: use placeholders and add warning
+3. FIELD EXTRACTION:
+   - Extract ALL available fields from the resume
+   - If a field is not found in the resume, use empty string "" (not null, not "N/A")
+   - contact_info: Extract name, location, email, phone if available
+   - If email/phone not found: use "" and add warning
+   - For education: Extract degree, school, year, field_of_study if available
+   - For certifications: Use bulleted-list format with "Name (Year)" or "Name - Issuer (Year)"
+   - For experience: Extract company, title, dates, description if available
+   - GOAL: Import as much data as possible, even if incomplete
 
 4. DATE FORMATTING:
    - Standardize to: "Jan 2020 – Dec 2022" or "Jan 2020 – Present"
@@ -164,7 +165,13 @@ PARSING RULES:
 7. ICON FIELDS:
    - ALWAYS set icon: null.
 
-8. RETURN FORMAT:
+8. INCOMPLETE DATA HANDLING:
+   - ALWAYS include entries even if they have missing fields
+   - Example: Certification without issuer → {"certification": "AWS Certified", "issuer": "", "date": ""}
+   - Example: Education without year → {"degree": "BS Computer Science", "school": "MIT", "year": ""}
+   - DO NOT skip or filter out incomplete entries
+
+9. RETURN FORMAT:
     - ALWAYS return valid JSON with confidence score.
 
 CLASSIFICATION EXAMPLES:

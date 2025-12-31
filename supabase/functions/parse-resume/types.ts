@@ -12,10 +12,10 @@ export interface SocialLink {
 
 // Contact information section
 export interface ContactInfo {
-  name: string;
-  location: string;
-  email: string;
-  phone: string;
+  name?: string;
+  location?: string;
+  email?: string;
+  phone?: string;
   linkedin?: string; // Deprecated: kept for backward compatibility
   linkedin_display?: string; // Deprecated: kept for backward compatibility
   social_links?: SocialLink[]; // New: array of social media links
@@ -69,10 +69,10 @@ export interface IconListSection extends SectionBase {
 }
 
 export interface IconListItem {
-  certification: string;
-  issuer: string;
-  date: string;
-  icon: string;
+  certification?: string;
+  issuer?: string;
+  date?: string;
+  icon?: string;
 }
 
 // Experience section
@@ -82,10 +82,10 @@ export interface ExperienceSection extends SectionBase {
 }
 
 export interface ExperienceItem {
-  company: string;
-  title: string;
-  dates: string;
-  description: string[];
+  company?: string;
+  title?: string;
+  dates?: string;
+  description?: string[];
   icon?: string;
 }
 
@@ -96,9 +96,9 @@ export interface EducationSection extends SectionBase {
 }
 
 export interface EducationItem {
-  degree: string;
-  school: string;
-  year: string;
+  degree?: string;
+  school?: string;
+  year?: string;
   field_of_study?: string;
   icon?: string;
 }
