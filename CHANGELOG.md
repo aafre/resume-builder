@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2025-12-31
+
+### 🚀 Features
+
+- **header:** Add FileText icon and useResumes hook imports
+- **header:** Add resume count calculation from useResumes hook
+- **header:** Add mobile icon navigation with resume count badge
+- **header:** Make Sign In button responsive with text link on mobile
+- **api:** Add lightweight /api/resumes/count endpoint
+- **hooks:** Add useResumeCount hook for lightweight count queries
+- **cache:** Add count cache invalidation to MyResumes operations
+- **header:** Add resume count badge to desktop navigation
+
+### 🐛 Bug Fixes
+
+- **header:** Hide logo text on small screens to prevent overflow
+
+### ⚡ Performance
+
+- **header:** Use useResumeCount instead of useResumes
+- **landing:** Use useResumeCount instead of useResumes
+
 ## [1.0.3] - 2025-12-31
 
 ### 🐛 Bug Fixes
