@@ -19,7 +19,7 @@ interface ResumeCountResponse {
  * - Request deduplication
  * - Automatic refetch on window focus
  * - Built-in loading and error states
- * - Cache management with 2-minute stale time
+ * - Stale-while-revalidate caching (always fetches fresh data in background)
  * - Separate query key from useResumes() to prevent cache conflicts
  */
 export function useResumeCount() {
@@ -38,7 +38,7 @@ export function useResumeCount() {
       return result.count ?? 0;
     },
     enabled: !authLoading && !!session, // Only run when auth is ready
-    staleTime: 2 * 60 * 1000, // 2 minutes (same as useResumes)
+    staleTime: 0, // Always consider data stale, refetch in background (matches useResumes)
     retry: (failureCount, error) => {
       // Don't retry auth errors - they won't resolve with retries
       if (error instanceof Error && error.message === 'Not authenticated') {
