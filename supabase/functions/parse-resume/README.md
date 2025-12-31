@@ -69,27 +69,32 @@ supabase db ls
 Set the required secrets:
 
 ```bash
-# Set OpenAI API key
+# Set OpenAI API key (required - not auto-injected)
 supabase secrets set OPENAI_API_KEY=sk-your-api-key-here
 
-# Set Supabase Service Role Key (for global cache access)
-# Get this from: Supabase Dashboard > Settings > API > service_role key
-supabase secrets set SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...your-service-role-key
-
-# Verify secrets are set
+# Verify secrets
 supabase secrets list
 ```
 
 **Expected output:**
 ```
 OPENAI_API_KEY
-SUPABASE_SERVICE_ROLE_KEY
 ```
 
+**Note**: `SUPABASE_SERVICE_ROLE_KEY` is **automatically available** in Edge Functions and won't appear in the secrets list. Supabase auto-injects this along with:
+- `SUPABASE_URL` - Your project URL
+- `SUPABASE_ANON_KEY` - Your anon/public key
+- `SUPABASE_DB_URL` - Direct database connection
+
+No manual configuration needed for these! 🎉
+
 **⚠️ Security Note:**
-- The service role key bypasses Row Level Security (RLS)
-- It's used ONLY for global cache deduplication (read/write to `parsed_resumes` table)
-- Never expose this key to the frontend - it's only used in the Edge Function server-side
+- `SUPABASE_SERVICE_ROLE_KEY` is auto-injected by Supabase with admin privileges
+- It bypasses Row Level Security (RLS)
+- Used ONLY for:
+  - Verifying user JWTs (line 88)
+  - Global cache operations on `parsed_resumes` table
+- Never exposed to frontend - exists only in edge function server environment
 - The function still requires user JWT authentication before allowing any operations
 
 ### 3. Deploy Edge Function

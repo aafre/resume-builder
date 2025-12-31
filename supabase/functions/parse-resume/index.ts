@@ -75,13 +75,17 @@ serve(async (req: Request) => {
 
     const token = authHeader.replace('Bearer ', '');
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+
+    // Supabase automatically injects SUPABASE_SERVICE_ROLE_KEY into edge function runtime
+    // This is the service_role key from Dashboard → Settings → API
+    // No need to manually set this secret - it's always available
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
     // Create admin client for both auth validation and cache operations
-    // Service role can verify any JWT and bypass RLS
+    // Service role key automatically available in edge function environment
     const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Verify the user's JWT using service role client
+    // Verify the user's JWT using admin client
     const {
       data: { user },
       error: authError,
