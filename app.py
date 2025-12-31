@@ -1082,13 +1082,13 @@ def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
 
 # Initialize Supabase client
 SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")  # Use service key for admin operations
+SUPABASE_SECRET_KEY = os.getenv("SUPABASE_SECRET_KEY")  # Use secret key for admin operations
 
-if not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
+if not SUPABASE_URL or not SUPABASE_SECRET_KEY:
     logging.warning("Supabase credentials not found. Resume storage features will be disabled.")
     supabase: Client = None
 else:
-    supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_SECRET_KEY)
     logging.info("Supabase client initialized successfully")
 
 # Development mode: Don't serve React from root to avoid route conflicts

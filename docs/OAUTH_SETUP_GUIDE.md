@@ -392,7 +392,7 @@ Create `.env.production` in `resume-builder-ui/`:
 ```bash
 # Supabase Configuration (Frontend - Production)
 VITE_SUPABASE_URL=https://mgetvioaymkvafczmhwo.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGc...  # Same as development
+VITE_SUPABASE_PUBLISHABLE_KEY=eyJhbGc...  # Same as development
 ```
 
 **In CI/CD Pipeline** (e.g., GitHub Actions):
@@ -401,7 +401,7 @@ VITE_SUPABASE_ANON_KEY=eyJhbGc...  # Same as development
 - name: Build Frontend
   env:
     VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-    VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+    VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
   run: |
     cd resume-builder-ui
     npm run build

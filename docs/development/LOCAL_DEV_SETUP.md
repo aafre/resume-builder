@@ -13,8 +13,8 @@ supabase status
 cp .env.local.example .env.local
 
 # 4. Update .env.local with keys from step 2
-# - VITE_SUPABASE_ANON_KEY (from "anon key" in status)
-# - SUPABASE_SERVICE_ROLE_KEY (from "service_role key" in status)
+# - VITE_SUPABASE_PUBLISHABLE_KEY (from "anon key" in status)
+# - SUPABASE_SECRET_KEY (from "service_role key" in status)
 
 # 5. Start frontend (picks up .env.local automatically)
 npm run dev
@@ -55,15 +55,14 @@ E2E TESTS (Playwright):
 ```bash
 # Browser can access localhost directly
 VITE_SUPABASE_URL=http://localhost:54321
-VITE_SUPABASE_ANON_KEY=sb_publishable_...
+VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
 ```
 
 ### Backend (Flask in Docker) - Container Context
 ```bash
 # Docker container uses host.docker.internal to reach host machine
 SUPABASE_URL=http://host.docker.internal:54321
-SUPABASE_SERVICE_ROLE_KEY=sb_secret_...
-SUPABASE_SERVICE_KEY=sb_secret_...  # Alias for compatibility
+SUPABASE_SECRET_KEY=sb_secret_...
 ```
 
 **Why the difference?**
@@ -185,30 +184,29 @@ mv .env.local.bak .env.local
 ```bash
 # Frontend
 VITE_SUPABASE_URL=http://localhost:54321
-VITE_SUPABASE_ANON_KEY=sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
+VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
 
 # Backend (Docker)
 SUPABASE_URL=http://host.docker.internal:54321
-SUPABASE_SERVICE_ROLE_KEY=sb_secret_N7UND0UgjKTVK-Uodkm0Hg_xSvEMPvz
-SUPABASE_SERVICE_KEY=sb_secret_N7UND0UgjKTVK-Uodkm0Hg_xSvEMPvz
+SUPABASE_SECRET_KEY=sb_secret_N7UND0UgjKTVK-Uodkm0Hg_xSvEMPvz
 ```
 
 ### .env (DEV Baseline - Tracked)
 ```bash
 # Frontend
 VITE_SUPABASE_URL=https://mgetvioaymkvafczmhwo.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGci...
+VITE_SUPABASE_PUBLISHABLE_KEY=eyJhbGci...
 
 # Backend
 SUPABASE_URL=https://mgetvioaymkvafczmhwo.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGci...
+SUPABASE_SECRET_KEY=eyJhbGci...
 ```
 
 ### .env.test (E2E Tests - Tracked)
 ```bash
 VITE_SUPABASE_URL=http://localhost:54321
-VITE_SUPABASE_ANON_KEY=sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
-SUPABASE_SERVICE_ROLE_KEY=sb_secret_N7UND0UgjKTVK-Uodkm0Hg_xSvEMPvz
+VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
+SUPABASE_SECRET_KEY=sb_secret_N7UND0UgjKTVK-Uodkm0Hg_xSvEMPvz
 
 PLAYWRIGHT_BASE_URL=http://localhost:5173
 FLASK_API_URL=http://localhost:5000

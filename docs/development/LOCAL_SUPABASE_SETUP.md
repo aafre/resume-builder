@@ -60,8 +60,8 @@ Update `.env.test` with the output from `supabase start`:
 ```bash
 # Local Supabase (from `supabase start` output)
 VITE_SUPABASE_URL=http://localhost:54321
-VITE_SUPABASE_ANON_KEY=<paste anon key here>
-SUPABASE_SERVICE_ROLE_KEY=<paste service_role key here>
+VITE_SUPABASE_PUBLISHABLE_KEY=<paste anon key here>
+SUPABASE_SECRET_KEY=<paste service_role key here>
 
 # Test user (will be created by global setup)
 TEST_USER_EMAIL=e2e-test@easyfreeresume.com

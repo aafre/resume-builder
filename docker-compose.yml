@@ -8,13 +8,12 @@ services:
       args:
         # Build-time arguments for React (embedded into JS bundle)
         VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
-        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
+        VITE_SUPABASE_PUBLISHABLE_KEY: ${VITE_SUPABASE_PUBLISHABLE_KEY}
 
     # Runtime environment variables for Flask backend
     environment:
       - SUPABASE_URL=${SUPABASE_URL}
-      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
-      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - SUPABASE_SECRET_KEY=${SUPABASE_SECRET_KEY}
       - DEBUG_LOGGING=${DEBUG_LOGGING:-false}
       - SUPABASE_DB_PASSWORD=${SUPABASE_DB_PASSWORD}
 

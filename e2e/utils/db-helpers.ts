@@ -14,13 +14,13 @@ import { createClient } from '@supabase/supabase-js';
  */
 function getSupabaseAdmin() {
   const supabaseUrl = process.env.VITE_SUPABASE_URL!;
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  const supabaseSecretKey = process.env.SUPABASE_SECRET_KEY!;
 
-  if (!supabaseUrl || !supabaseServiceKey) {
+  if (!supabaseUrl || !supabaseSecretKey) {
     throw new Error('Supabase credentials not found in environment');
   }
 
-  return createClient(supabaseUrl, supabaseServiceKey, {
+  return createClient(supabaseUrl, supabaseSecretKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,

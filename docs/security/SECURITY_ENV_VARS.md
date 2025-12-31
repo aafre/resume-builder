@@ -13,7 +13,7 @@ This document verifies that no secrets are exposed in the frontend build.
 ```javascript
 // src/lib/supabase.ts
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 ```
 
 ### Why This Is Safe
@@ -23,7 +23,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
    - Used by frontend to connect to Supabase
    - No sensitive data
 
-2. **VITE_SUPABASE_ANON_KEY** (starts with `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`)
+2. **VITE_SUPABASE_PUBLISHABLE_KEY** (starts with `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`)
    - ✅ **Safe to expose** - This is the "anon/public" key
    - **Designed** to be used in browsers
    - **Protected by Row Level Security (RLS)**
@@ -40,7 +40,7 @@ Vite **only** exposes variables with `VITE_` prefix to the browser:
 import.meta.env.VITE_SUPABASE_URL
 
 // ❌ NOT EXPOSED - no VITE_ prefix (even if in .env)
-import.meta.env.SUPABASE_SERVICE_KEY  // Returns undefined in browser
+import.meta.env.SUPABASE_SECRET_KEY  // Returns undefined in browser
 ```
 
 **Verification:**
@@ -59,7 +59,7 @@ grep -r "SUPABASE_SERVICE" resume-builder-ui/dist/
 ```python
 # app.py
 SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")  # ⚠️ SECRET!
+SUPABASE_SECRET_KEY = os.getenv("SUPABASE_SECRET_KEY")  # ⚠️ SECRET!
 ```
 
 ### Why Backend Needs Service Key
@@ -83,7 +83,7 @@ The service key is used for:
 ```dockerfile
 # These get embedded into JavaScript bundle
 ARG VITE_SUPABASE_URL
-ARG VITE_SUPABASE_ANON_KEY
+ARG VITE_SUPABASE_PUBLISHABLE_KEY
 ```
 
 **Security Check:**
@@ -95,7 +95,7 @@ ARG VITE_SUPABASE_ANON_KEY
 
 ```bash
 # These are set at container runtime, NEVER in build
-docker run -e SUPABASE_SERVICE_KEY="secret-key-here"
+docker run -e SUPABASE_SECRET_KEY="secret-key-here"
 ```
 
 **Security Check:**
@@ -141,7 +141,7 @@ docker run --rm resume-test cat /app/static/*.js | grep -i "service"
 ```bash
 # Start container
 docker run -d --name resume-test \
-  -e SUPABASE_SERVICE_KEY="test-secret" \
+  -e SUPABASE_SECRET_KEY="test-secret" \
   resume-test
 
 # Check ENV vars (from inside container)
@@ -158,7 +158,7 @@ curl http://localhost:5000/static/index.html | grep -i "service"
 ### Anon/Public Key (Frontend)
 
 ```
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIs...
+VITE_SUPABASE_PUBLISHABLE_KEY=eyJhbGciOiJIUzI1NiIs...
 ```
 
 **Permissions (Limited by RLS):**
@@ -172,7 +172,7 @@ VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIs...
 ### Service Role Key (Backend ONLY)
 
 ```
-SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIs...
+SUPABASE_SECRET_KEY=eyJhbGciOiJIUzI1NiIs...
 ```
 
 **Permissions (Admin - Bypasses RLS):**
@@ -215,27 +215,27 @@ SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIs...
 ### ❌ Don't Do This:
 ```dockerfile
 # BAD - Exposes secret in build arg!
-ARG SUPABASE_SERVICE_KEY
-ENV VITE_API_KEY=$SUPABASE_SERVICE_KEY
+ARG SUPABASE_SECRET_KEY
+ENV VITE_API_KEY=$SUPABASE_SECRET_KEY
 ```
 
 ### ✅ We Do This Instead:
 ```dockerfile
 # GOOD - Secrets only in runtime
-ARG VITE_SUPABASE_ANON_KEY  # Safe public key
+ARG VITE_SUPABASE_PUBLISHABLE_KEY  # Safe public key
 # Service key passed at runtime only
 ```
 
 ### ❌ Don't Do This:
 ```javascript
 // BAD - Trying to use secret in frontend
-const serviceKey = import.meta.env.SUPABASE_SERVICE_KEY
+const serviceKey = import.meta.env.SUPABASE_SECRET_KEY
 ```
 
 ### ✅ We Do This Instead:
 ```javascript
 // GOOD - Only public key
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
 ```
 
 ## How to Verify Security Yourself

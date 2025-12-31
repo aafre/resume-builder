@@ -25,13 +25,13 @@ export default async function globalSetup() {
 
   // Validate environment variables
   const supabaseUrl = process.env.VITE_SUPABASE_URL;
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseSecretKey = process.env.SUPABASE_SECRET_KEY;
   const testUserEmail = process.env.TEST_USER_EMAIL;
 
-  if (!supabaseUrl || !supabaseServiceKey) {
+  if (!supabaseUrl || !supabaseSecretKey) {
     throw new Error(
       'Missing Supabase configuration. Please fill in .env.test file.\n' +
-      'Required: VITE_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY\n' +
+      'Required: VITE_SUPABASE_URL, SUPABASE_SECRET_KEY\n' +
       'Run: supabase status | grep "key"'
     );
   }
@@ -61,7 +61,7 @@ export default async function globalSetup() {
   }
 
   // Create Supabase admin client (bypasses RLS)
-  const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+  const supabase = createClient(supabaseUrl, supabaseSecretKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,

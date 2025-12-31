@@ -54,12 +54,12 @@ SUPABASE_URL=https://xxxxxxxxxxxxx.supabase.co
 SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4eHh4eHh4eHh4eHh4eCIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNjk...
 
 # service_role key (NEVER expose in frontend, backend only!)
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4eHh4eHh4eHh4eHh4eCIsInJvbGUiOiJzZXJ2aWNlX3JvbGUiLCJpYXQiOjE2OT...
+SUPABASE_SECRET_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4eHh4eHh4eHh4eHh4eCIsInJvbGUiOiJzZXJ2aWNlX3JvbGUiLCJpYXQiOjE2OT...
 ```
 
 ⚠️ **SECURITY WARNING:**
 - `SUPABASE_ANON_KEY` = Safe to use in frontend (Row-Level Security protects data)
-- `SUPABASE_SERVICE_ROLE_KEY` = **NEVER** expose in frontend, server-side only!
+- `SUPABASE_SECRET_KEY` = **NEVER** expose in frontend, server-side only!
 
 ### 2.2 Create Environment Files
 
@@ -68,7 +68,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhY
 ```bash
 # Supabase Configuration
 SUPABASE_URL=https://xxxxxxxxxxxxx.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...  # Use service_role key here
+SUPABASE_SECRET_KEY=eyJhbGc...  # Use service_role key here
 DEBUG_LOGGING=false
 
 # Database direct connection (optional, for migrations)
@@ -80,7 +80,7 @@ SUPABASE_DB_PASSWORD=your-db-password-from-step-1.1
 ```bash
 # Supabase Configuration (Frontend)
 VITE_SUPABASE_URL=https://xxxxxxxxxxxxx.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGc...  # Use anon key here (NOT service_role!)
+VITE_SUPABASE_PUBLISHABLE_KEY=eyJhbGc...  # Use anon key here (NOT service_role!)
 ```
 
 **Update `.gitignore`** to ensure secrets aren't committed:
@@ -628,7 +628,7 @@ SELECT * FROM public.resumes WHERE user_id = auth.uid();
 ```bash
 gcloud run services update resume-builder-api \
   --set-env-vars="SUPABASE_URL=https://xxxxxxxxxxxxx.supabase.co" \
-  --set-env-vars="SUPABASE_SERVICE_ROLE_KEY=eyJhbGc..." \
+  --set-env-vars="SUPABASE_SECRET_KEY=eyJhbGc..." \
   --set-env-vars="DEBUG_LOGGING=false"
 ```
 
@@ -640,7 +640,7 @@ In your CI/CD pipeline (GitHub Actions, etc.):
 - name: Build Frontend
   env:
     VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-    VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+    VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
   run: |
     cd resume-builder-ui
     npm run build
@@ -842,7 +842,7 @@ Use this before going live:
 - [ ] Database migration for `parsed_resumes` table executed
 - [ ] Edge Function secrets configured:
   - [ ] `OPENAI_API_KEY` set (for AI resume parsing)
-  - [ ] `SUPABASE_SERVICE_ROLE_KEY` set (for global cache deduplication)
+  - [ ] `SUPABASE_SECRET_KEY` set (for global cache deduplication)
 - [ ] `parse-resume` function deployed and tested
 - [ ] Function logs verified for errors
 

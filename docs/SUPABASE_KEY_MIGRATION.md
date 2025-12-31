@@ -135,7 +135,7 @@ supabase secrets list
 
 **Auto-Injected Variables** (no need to set):
 - `SUPABASE_URL` - Your project URL
-- `SUPABASE_SERVICE_ROLE_KEY` - Admin key (bypasses RLS)
+- `SUPABASE_SERVICE_ROLE_KEY` - Admin/secret key (bypasses RLS)
 - `SUPABASE_ANON_KEY` - Public key (respects RLS)
 - `SUPABASE_DB_URL` - Direct database connection
 
