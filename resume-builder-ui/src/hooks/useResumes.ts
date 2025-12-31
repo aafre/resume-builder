@@ -12,7 +12,7 @@ import { ResumeListItem } from '../types';
  * - Request deduplication (solves React StrictMode double-fetch)
  * - Automatic refetch on window focus
  * - Built-in loading and error states
- * - Cache management with 2-minute stale time
+ * - Stale-while-revalidate caching (always fetches fresh data in background)
  */
 export function useResumes() {
   const { session, loading: authLoading } = useAuth();
@@ -30,7 +30,7 @@ export function useResumes() {
       return result.resumes || [];
     },
     enabled: !authLoading && !!session, // Only run when auth is ready
-    staleTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: 0, // Always consider data stale, refetch in background
     retry: (failureCount, error) => {
       // Don't retry auth errors - they won't resolve with retries
       if (error instanceof Error && error.message === 'Not authenticated') {
