@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2025-12-31
+
+### 📚 Documentation
+
+- **landing:** Add FAQs about PDF/DOCX import feature
+
 ## [1.0.0] - 2025-12-31
 
 ### 🚀 Features
