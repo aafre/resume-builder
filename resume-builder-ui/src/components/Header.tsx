@@ -78,7 +78,7 @@ export default function Header() {
                 height="36"
               />
             </div>
-            <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent ml-2.5 group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-indigo-600 transition-all duration-300 tracking-tight">
+            <span className="hidden sm:inline text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent ml-2.5 group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-indigo-600 transition-all duration-300 tracking-tight">
               EasyFreeResume
             </span>
           </div>
