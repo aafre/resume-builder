@@ -2,12 +2,6 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.1] - 2025-12-31
-
-### 🐛 Bug Fixes
-
-- **release:** Configure git-cliff to detect breaking changes for major version bumps
-
 ## [0.6.0] - 2025-12-31
 
 ### 🚀 Features
@@ -224,6 +218,7 @@ All notable changes to this project will be documented in this file.
 - **edge-function:** Revert to use auto-injected SUPABASE_SERVICE_ROLE_KEY
 - **edge-function:** Correct SUPABASE_SERVICE_ROLE_KEY variable name
 - **db:** Update migration and docker compose
+- **release:** Configure git-cliff to detect breaking changes for major version bumps
 
 ### 🚜 Refactor
 
@@ -310,6 +305,7 @@ All notable changes to this project will be documented in this file.
 - **tourGuide:** Update messaging
 - **ui:** Update package
 - **test:** Remove obsolete useAutoSave test file
+- Trigger v1.0.0 release with fixed git-cliff configuration
 
 ### Debug
 
