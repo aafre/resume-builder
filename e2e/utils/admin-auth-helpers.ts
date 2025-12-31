@@ -29,20 +29,20 @@ import { createClient } from '@supabase/supabase-js';
  */
 export async function loginViaAdminMagicLink(page: Page, email: string): Promise<void> {
   const supabaseUrl = process.env.VITE_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const secretKey = process.env.SUPABASE_SECRET_KEY;
   const redirectTo = process.env.E2E_REDIRECT_URL || 'http://localhost:5173/auth/callback';
 
-  if (!supabaseUrl || !serviceRoleKey) {
+  if (!supabaseUrl || !secretKey) {
     throw new Error(
       'Missing Supabase credentials:\n' +
       '  VITE_SUPABASE_URL: ' + (supabaseUrl ? 'set' : 'MISSING') + '\n' +
-      '  SUPABASE_SERVICE_ROLE_KEY: ' + (serviceRoleKey ? 'set' : 'MISSING')
+      '  SUPABASE_SECRET_KEY: ' + (secretKey ? 'set' : 'MISSING')
     );
   }
 
   console.log(`🔐 Logging in via Admin magic link: ${email}`);
 
-  const admin = createClient(supabaseUrl, serviceRoleKey, {
+  const admin = createClient(supabaseUrl, secretKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 

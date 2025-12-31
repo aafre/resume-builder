@@ -3,11 +3,13 @@ FROM node:25 AS react-build
 # Build-time arguments for Vite (frontend environment variables)
 # These get embedded into the JavaScript bundle during build
 ARG VITE_SUPABASE_URL
-ARG VITE_SUPABASE_ANON_KEY
+ARG VITE_SUPABASE_PUBLISHABLE_KEY
+ARG VITE_APP_URL
 
 # Set as environment variables for Vite build process
 ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
-ENV VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
+ENV VITE_SUPABASE_PUBLISHABLE_KEY=$VITE_SUPABASE_PUBLISHABLE_KEY
+ENV VITE_APP_URL=$VITE_APP_URL
 
 WORKDIR /app/react
 COPY resume-builder-ui/package*.json ./
@@ -68,10 +70,10 @@ ENV PYTHONUNBUFFERED=1
 
 # Backend runtime environment variables (set via docker run -e or docker-compose)
 # These are NOT set here - provide them at container runtime
-# Example: docker run -e SUPABASE_URL=https://... -e SUPABASE_SERVICE_KEY=...
+# Example: docker run -e SUPABASE_URL=https://... -e SUPABASE_SECRET_KEY=sb_secret_...
 # Required variables:
 #   - SUPABASE_URL
-#   - SUPABASE_SERVICE_KEY (or SUPABASE_SERVICE_ROLE_KEY)
+#   - SUPABASE_SECRET_KEY (format: sb_secret_...)
 # Optional variables:
 #   - DEBUG_LOGGING
 #   - SUPABASE_DB_PASSWORD

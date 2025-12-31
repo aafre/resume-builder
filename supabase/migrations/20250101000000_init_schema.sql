@@ -1,8 +1,8 @@
 -- ==============================================================================
 -- 1. SETUP & EXTENSIONS
 -- ==============================================================================
--- Enable UUID generation
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- Enable UUID generation (pgcrypto is pre-enabled in Supabase)
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- ==============================================================================
 -- 2. CREATE TABLES
@@ -10,7 +10,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Table: Resumes
 CREATE TABLE IF NOT EXISTS public.resumes (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
     title VARCHAR(255) NOT NULL DEFAULT 'Untitled Resume',
     template_id VARCHAR(50) NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS public.resumes (
 
 -- Table: Resume Icons (Metadata for uploaded files)
 CREATE TABLE IF NOT EXISTS public.resume_icons (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     resume_id UUID NOT NULL REFERENCES public.resumes(id) ON DELETE CASCADE,
     user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
 

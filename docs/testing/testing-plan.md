@@ -150,8 +150,8 @@
      ```bash
      # Supabase Test Project (create separate from production)
      VITE_SUPABASE_URL=https://test-project.supabase.co
-     VITE_SUPABASE_ANON_KEY=<test-anon-key>
-     SUPABASE_SERVICE_ROLE_KEY=<test-service-role-key>
+     VITE_SUPABASE_PUBLISHABLE_KEY=<test-anon-key>
+     SUPABASE_SECRET_KEY=<test-service-role-key>
 
      # Test User
      TEST_USER_EMAIL=e2e-test@example.com
@@ -228,7 +228,7 @@
      export default async function globalSetup() {
        const supabase = createClient(
          process.env.VITE_SUPABASE_URL!,
-         process.env.SUPABASE_SERVICE_ROLE_KEY!
+         process.env.SUPABASE_SECRET_KEY!
        );
 
        // Create dedicated test user
@@ -247,7 +247,7 @@
      export async function cleanupTestResumes(userId: string) {
        const supabase = createClient(
          process.env.VITE_SUPABASE_URL!,
-         process.env.SUPABASE_SERVICE_ROLE_KEY!
+         process.env.SUPABASE_SECRET_KEY!
        );
 
        await supabase.from('resumes').delete().eq('user_id', userId);
@@ -450,13 +450,13 @@
              run: python app.py &
              env:
                SUPABASE_URL: ${{ secrets.TEST_SUPABASE_URL }}
-               SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.TEST_SUPABASE_SERVICE_KEY }}
+               SUPABASE_SECRET_KEY: ${{ secrets.TEST_SUPABASE_SECRET_KEY }}
 
            - name: Run Playwright tests
              run: npx playwright test
              env:
                VITE_SUPABASE_URL: ${{ secrets.TEST_SUPABASE_URL }}
-               VITE_SUPABASE_ANON_KEY: ${{ secrets.TEST_SUPABASE_ANON_KEY }}
+               VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.TEST_SUPABASE_PUBLISHABLE_KEY }}
                TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
                TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
                OPENAI_API_KEY: mock
@@ -471,8 +471,8 @@
 
      **Required GitHub Secrets:**
      - `TEST_SUPABASE_URL` - Test project URL
-     - `TEST_SUPABASE_ANON_KEY` - Test anon key
-     - `TEST_SUPABASE_SERVICE_KEY` - Test service role key
+     - `TEST_SUPABASE_PUBLISHABLE_KEY` - Test publishable key
+     - `TEST_SUPABASE_SECRET_KEY` - Test secret key
      - `TEST_USER_EMAIL` - Test user email
      - `TEST_USER_PASSWORD` - Test user password
 

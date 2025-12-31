@@ -13,9 +13,9 @@ This document provides a comprehensive testing plan for the database-first resum
 ### Environment Setup
 - [ ] Verify `.env` file contains:
   - `SUPABASE_URL` - Your Supabase project URL
-  - `SUPABASE_SERVICE_KEY` - Service role key (for backend)
+  - `SUPABASE_SECRET_KEY` - Service role key (for backend)
   - `VITE_SUPABASE_URL` - Your Supabase project URL (for frontend)
-  - `VITE_SUPABASE_ANON_KEY` - Anon key (for frontend)
+  - `VITE_SUPABASE_PUBLISHABLE_KEY` - Anon key (for frontend)
 
 ### Database Verification
 - [ ] Confirm `resumes` table exists with updated schema:

@@ -25,12 +25,12 @@ Edit `.env` and fill in your Supabase credentials:
 ```bash
 # Backend (Flask) - Runtime variables
 SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_KEY=your-service-role-key-here
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
+SUPABASE_SECRET_KEY=your-service-role-key-here
+SUPABASE_SECRET_KEY=your-service-role-key-here
 
 # Frontend (Vite) - Build-time variables (embedded into JS bundle)
 VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-public-key-here
+VITE_SUPABASE_PUBLISHABLE_KEY=your-anon-public-key-here
 
 # Optional
 DEBUG_LOGGING=false
@@ -53,7 +53,7 @@ You must explicitly pass frontend variables as build arguments:
 ```bash
 docker build \
   --build-arg VITE_SUPABASE_URL="https://your-project.supabase.co" \
-  --build-arg VITE_SUPABASE_ANON_KEY="your-anon-key-here" \
+  --build-arg VITE_SUPABASE_PUBLISHABLE_KEY="your-anon-key-here" \
   -t easyfreeresume-app:latest \
   .
 ```
@@ -85,7 +85,7 @@ docker-compose down
 docker run -d \
   -p 5000:5000 \
   -e SUPABASE_URL="https://your-project.supabase.co" \
-  -e SUPABASE_SERVICE_KEY="your-service-key-here" \
+  -e SUPABASE_SECRET_KEY="your-service-key-here" \
   -e DEBUG_LOGGING="false" \
   --name resume-builder \
   easyfreeresume-app:latest
@@ -117,7 +117,7 @@ These are embedded into the React build during `docker build`:
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `VITE_SUPABASE_URL` | Yes | Supabase project URL |
-| `VITE_SUPABASE_ANON_KEY` | Yes | Supabase anon/public key (safe for browser) |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Yes | Supabase anon/public key (safe for browser) |
 
 **How they work:**
 - Passed via `--build-arg` during Docker build
@@ -131,8 +131,8 @@ These are provided when starting the container:
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `SUPABASE_URL` | Yes | Supabase project URL |
-| `SUPABASE_SERVICE_KEY` | Yes | Service role key (bypasses RLS) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Yes | Alias for service key |
+| `SUPABASE_SECRET_KEY` | Yes | Service role key (bypasses RLS) |
+| `SUPABASE_SECRET_KEY` | Yes | Alias for service key |
 | `DEBUG_LOGGING` | No | Enable debug logs (default: false) |
 | `SUPABASE_DB_PASSWORD` | No | Direct database password |
 
@@ -160,7 +160,7 @@ These are provided when starting the container:
 # Build with production values
 docker build \
   --build-arg VITE_SUPABASE_URL="${PROD_SUPABASE_URL}" \
-  --build-arg VITE_SUPABASE_ANON_KEY="${PROD_ANON_KEY}" \
+  --build-arg VITE_SUPABASE_PUBLISHABLE_KEY="${PROD_ANON_KEY}" \
   -t easyfreeresume-app:v1.0.0 \
   .
 
@@ -168,7 +168,7 @@ docker build \
 docker run -d \
   -p 80:5000 \
   -e SUPABASE_URL="${PROD_SUPABASE_URL}" \
-  -e SUPABASE_SERVICE_KEY="${PROD_SERVICE_KEY}" \
+  -e SUPABASE_SECRET_KEY="${PROD_SERVICE_KEY}" \
   -e DEBUG_LOGGING="false" \
   --restart unless-stopped \
   --name resume-builder-prod \
@@ -201,7 +201,7 @@ docker run -d \
 **Cause:** Build args not passed during build
 **Fix:** Rebuild with `--build-arg` flags or use docker-compose
 
-### Backend fails with "No SUPABASE_SERVICE_KEY"
+### Backend fails with "No SUPABASE_SECRET_KEY"
 
 **Cause:** Runtime environment variables not provided
 **Fix:** Add `-e` flags or `--env-file .env` to `docker run`
@@ -232,7 +232,7 @@ docker exec resume-builder env | grep SUPABASE
   run: |
     docker build \
       --build-arg VITE_SUPABASE_URL="${{ secrets.VITE_SUPABASE_URL }}" \
-      --build-arg VITE_SUPABASE_ANON_KEY="${{ secrets.VITE_SUPABASE_ANON_KEY }}" \
+      --build-arg VITE_SUPABASE_PUBLISHABLE_KEY="${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}" \
       -t myregistry/resume-builder:${{ github.sha }} \
       .
 ```

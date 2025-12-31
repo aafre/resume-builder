@@ -20,9 +20,9 @@ cp .env.example .env
 Required values in `.env`:
 ```bash
 SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_KEY=your-service-role-key-here
+SUPABASE_SECRET_KEY=your-service-role-key-here
 VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key-here
+VITE_SUPABASE_PUBLISHABLE_KEY=your-anon-key-here
 ```
 
 ### 2. Build and Run
@@ -60,7 +60,7 @@ docker-compose ps
 **Frontend shows "undefined" for Supabase:**
 - Rebuild: `docker-compose build` (frontend vars are baked into build)
 
-**Backend fails with "No SUPABASE_SERVICE_KEY":**
+**Backend fails with "No SUPABASE_SECRET_KEY":**
 - Check `.env` file exists and has correct values
 - Restart: `docker-compose restart`
 

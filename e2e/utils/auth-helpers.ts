@@ -41,14 +41,14 @@ import { waitForEmail, getEmailContent, extractMagicLink } from './inbucket-help
  */
 export async function injectSession(page: Page, email?: string): Promise<void> {
   const supabaseUrl = process.env.VITE_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY!;
+  const supabasePublishableKey = process.env.VITE_SUPABASE_PUBLISHABLE_KEY!;
   const testEmail = email || process.env.TEST_USER_EMAIL!;
   const testPassword = 'test-password-for-automation-only'; // Set in global-setup
 
   console.log(`⚡ Fast auth: Injecting session for ${testEmail}...`);
 
   // Create Supabase client
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  const supabase = createClient(supabaseUrl, supabasePublishableKey);
 
   // Sign in with password (password exists for test automation only, not in UI)
   const { data, error } = await supabase.auth.signInWithPassword({
