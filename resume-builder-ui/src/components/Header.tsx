@@ -89,13 +89,18 @@ export default function Header() {
               <Link
                 to="/my-resumes"
                 id="tour-my-resumes-link"
-                className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+                className={`relative px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
                   location.pathname === '/my-resumes'
                     ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white shadow-md'
                     : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700'
                 }`}
               >
                 My Resumes
+                {resumeCount > 0 && (
+                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-red-500 rounded-full flex items-center justify-center ring-2 ring-white text-white text-[10px] font-bold px-1">
+                    {resumeCount > 99 ? '99+' : resumeCount}
+                  </span>
+                )}
               </Link>
               <Link
                 to="/templates"
