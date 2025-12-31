@@ -106,6 +106,12 @@ export default function MyResumes() {
 
       toast.success('Resume deleted successfully');
       refetch(); // Refetch to update the list
+
+      // Invalidate count cache to update header badge
+      queryClient.invalidateQueries({
+        queryKey: ['resume-count', session?.user?.id]
+      });
+
       setDeleteModalOpen(false);
       setResumeToDelete(null);
     } catch (err) {
@@ -137,6 +143,12 @@ export default function MyResumes() {
 
       toast.success('Resume duplicated successfully');
       refetch(); // Refetch to update the list
+
+      // Invalidate count cache to update header badge
+      queryClient.invalidateQueries({
+        queryKey: ['resume-count', session?.user?.id]
+      });
+
       setDuplicateModalOpen(false);
       setResumeToDuplicate(null);
     } catch (err) {
