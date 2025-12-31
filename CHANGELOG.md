@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2025-12-31
+
+### 🚀 Features
+
+- V2 release with OAuth, cloud storage, and resume import [**BREAKING**]
+
 ## [0.6.0] - 2025-12-31
 
 ### 🚀 Features
@@ -106,6 +112,7 @@ All notable changes to this project will be documented in this file.
 - **ui:** Add news ticker animation for mobile announcement bar
 - **resume-parser:** Allow users to import their existing resumes (pdf / docx) ([#130](https://github.com/aafre/resume-builder/pull/130))
 - **auth:** Configure OAuth to use custom domain for authentication
+- V2 release with OAuth, cloud storage, and resume import [**BREAKING**]
 
 ### 🐛 Bug Fixes
 
