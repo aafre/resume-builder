@@ -8,3 +8,8 @@ flask-talisman
 gunicorn
 pytest
 fastapi[standard]
+supabase
+pyjwt
+python-dotenv
+pdf2image
+Pillow

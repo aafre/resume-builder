@@ -109,7 +109,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
           <div className="flex-1 overflow-y-auto p-6">
             <p
               id="dialog-description"
-              className="text-gray-700 leading-relaxed"
+              className="text-gray-700 leading-relaxed whitespace-pre-line"
             >
               {message}
             </p>

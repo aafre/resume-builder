@@ -42,6 +42,7 @@ sections:
       - "Agile Methodologies"
 
   - name: Experience
+    type: experience
     content:
       - company: "Lorem Ipsum Corp"
         title: "Senior Software Engineer"
@@ -68,6 +69,7 @@ sections:
           - "Advised clients on cloud adoption strategies, focusing on scalability and security."
 
   - name: Education
+    type: education
     content:
       - degree: "MSc in Computer Science"
         school: "University of Oxford"

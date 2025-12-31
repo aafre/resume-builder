@@ -45,6 +45,7 @@ sections:
 
 
   - name: Experience
+    type: experience
     content:
       - company: "Lorem Ipsum Corp"
         title: "Senior Software Engineer"
@@ -74,6 +75,7 @@ sections:
         icon: "company_amazon.png"
 
   - name: Education
+    type: education
     content:
       - degree: "MSc in Computer Science"
         school: "University of Oxford"

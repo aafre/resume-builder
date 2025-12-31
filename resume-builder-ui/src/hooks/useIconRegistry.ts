@@ -14,6 +14,8 @@ interface IconRegistry {
 interface UseIconRegistryReturn {
   // Register a new icon file and get the generated filename
   registerIcon: (file: File) => string;
+  // Register an icon with a specific filename (for loading from storage)
+  registerIconWithFilename: (file: File, filename: string) => void;
   // Get file object by filename
   getIconFile: (filename: string) => File | null;
   // Remove icon from registry
@@ -62,8 +64,19 @@ export const useIconRegistry = (): UseIconRegistryReturn => {
 
   // Register a new icon file
   const registerIcon = useCallback((file: File): string => {
+    // Validate file size (50KB limit matches database constraint)
+    const MAX_ICON_SIZE_BYTES = 50 * 1024; // 50KB
+
+    if (file.size > MAX_ICON_SIZE_BYTES) {
+      const sizeKB = Math.round(file.size / 1024);
+      const maxKB = Math.round(MAX_ICON_SIZE_BYTES / 1024);
+      throw new Error(
+        `Icon "${file.name}" is too large (${sizeKB} KB). Maximum allowed size is ${maxKB} KB. Please compress the image or use a smaller file.`
+      );
+    }
+
     const filename = generateUniqueFilename(file);
-    
+
     const entry: IconRegistryEntry = {
       file,
       filename,
@@ -78,6 +91,22 @@ export const useIconRegistry = (): UseIconRegistryReturn => {
     usedFilenames.current.add(filename);
     return filename;
   }, [generateUniqueFilename]);
+
+  // Register an icon with a specific filename (for loading from storage)
+  const registerIconWithFilename = useCallback((file: File, filename: string): void => {
+    const entry: IconRegistryEntry = {
+      file,
+      filename,
+      uploadedAt: new Date(),
+    };
+
+    setRegistry(prev => ({
+      ...prev,
+      [filename]: entry,
+    }));
+
+    usedFilenames.current.add(filename);
+  }, []);
 
   // Get file object by filename
   const getIconFile = useCallback((filename: string): File | null => {
@@ -204,6 +233,7 @@ export const useIconRegistry = (): UseIconRegistryReturn => {
 
   return {
     registerIcon,
+    registerIconWithFilename,
     getIconFile,
     removeIcon,
     clearRegistry,

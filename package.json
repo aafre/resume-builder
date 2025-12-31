@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@supabase/supabase-js": "^2.89.0",
+    "@types/js-yaml": "^4.0.9",
+    "dotenv": "^17.2.3",
+    "js-yaml": "^4.1.1",
+    "supabase": "^2.70.5"
+  }
+}

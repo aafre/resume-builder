@@ -1,9 +1,22 @@
-FROM node:24 AS react-build
+FROM node:25 AS react-build
+
+# Build-time arguments for Vite (frontend environment variables)
+# These get embedded into the JavaScript bundle during build
+ARG VITE_SUPABASE_URL
+ARG VITE_SUPABASE_PUBLISHABLE_KEY
+ARG VITE_APP_URL
+
+# Set as environment variables for Vite build process
+ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
+ENV VITE_SUPABASE_PUBLISHABLE_KEY=$VITE_SUPABASE_PUBLISHABLE_KEY
+ENV VITE_APP_URL=$VITE_APP_URL
 
 WORKDIR /app/react
 COPY resume-builder-ui/package*.json ./
 RUN npm ci
 COPY resume-builder-ui/ ./
+
+# Build React app with embedded environment variables
 RUN npm run build
 
 
@@ -26,6 +39,7 @@ RUN apt-get update && \
         texlive-fonts-extra \
         fontconfig \
         curl \
+        poppler-utils \
         && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
@@ -54,9 +68,19 @@ ENV FLASK_ENV=production
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
+# Backend runtime environment variables (set via docker run -e or docker-compose)
+# These are NOT set here - provide them at container runtime
+# Example: docker run -e SUPABASE_URL=https://... -e SUPABASE_SECRET_KEY=sb_secret_...
+# Required variables:
+#   - SUPABASE_URL
+#   - SUPABASE_SECRET_KEY (format: sb_secret_...)
+# Optional variables:
+#   - DEBUG_LOGGING
+#   - SUPABASE_DB_PASSWORD
+
 # Add security labels
 LABEL security.non-root=true
-LABEL version="1.0"
+LABEL version="2.0"
 LABEL description="EasyFreeResume - A free, open-source resume builder"
 
 # Switch to non-root user

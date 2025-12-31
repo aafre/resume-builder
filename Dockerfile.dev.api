@@ -4,9 +4,10 @@ FROM python:3.11-slim-bullseye
 # Set the working directory
 WORKDIR /app
 
-# Install wkhtmltopdf and other dependencies
+# Install wkhtmltopdf, poppler-utils (for pdf2image), and other dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wkhtmltopdf \
+    poppler-utils \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy only the requirements and install dependencies

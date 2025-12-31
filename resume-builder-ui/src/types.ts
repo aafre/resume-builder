@@ -115,3 +115,40 @@ export type Section =
   | ExperienceSection
   | EducationSection
   | GenericSection;
+
+// --- Resume Storage Types ---
+
+// Resume list item (for My Resumes page)
+export interface ResumeListItem {
+  id: string;
+  title: string;
+  template_id: string;
+  created_at: string;
+  updated_at: string;
+  last_accessed_at: string;
+  pdf_url?: string | null;
+  pdf_generated_at?: string | null;
+  thumbnail_url?: string | null;
+}
+
+// Saved resume with full data
+export interface SavedResume {
+  id: string;
+  title: string;
+  template_id: string;
+  contact_info: ContactInfo;
+  sections: Section[];
+  icons: SavedIcon[];
+  created_at: string;
+  updated_at: string;
+}
+
+// Icon stored in Supabase
+export interface SavedIcon {
+  filename: string;
+  storage_url: string;
+  storage_path?: string;
+}
+
+// Cloud save status
+export type SaveStatus = 'saved' | 'saving' | 'error';

@@ -107,7 +107,9 @@ const IconManager: React.FC<IconManagerProps> = ({
       // Notify parent component
       onChange(generatedFilename, file);
     } catch (error) {
-      setError("Failed to upload icon. Please try again.");
+      // Display specific error message from validation
+      const errorMessage = error instanceof Error ? error.message : "Failed to upload icon. Please try again.";
+      setError(errorMessage);
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }

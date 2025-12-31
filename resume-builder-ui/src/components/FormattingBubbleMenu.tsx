@@ -91,6 +91,7 @@ export const FormattingBubbleMenu: React.FC<FormattingBubbleMenuProps> = ({ edit
           placement: 'top',
           offset: 8,
         }}
+        id="tour-bubble-menu"
         className="bubble-menu bg-white rounded-lg shadow-lg border border-gray-200 p-1 flex items-center gap-0.5 z-50"
       >
         {/* Bold Button */}

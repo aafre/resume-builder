@@ -5,18 +5,26 @@ import {
   useLocation,
 } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import { Toaster } from "react-hot-toast";
 
 // Critical components - loaded immediately
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import LandingPage from "./components/LandingPage";
 import EnvironmentBanner from "./components/EnvironmentBanner";
+import AnnouncementBar from "./components/AnnouncementBar";
 import ScrollToTop from "./components/ScrollToTop";
 import { EditorProvider, useEditorContext } from "./contexts/EditorContext";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { ConversionProvider } from "./contexts/ConversionContext";
+import usePreferencePersistence from "./hooks/usePreferencePersistence";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 // Lazy-loaded route components
 const TemplateCarousel = lazy(() => import("./components/TemplateCarousel"));
 const Editor = lazy(() => import("./components/Editor"));
+const MyResumes = lazy(() => import("./pages/MyResumes"));
 
 // SEO landing pages - lazy loaded
 const ActualFreeResumeBuilder = lazy(() => import("./components/seo/ActualFreeResumeBuilder"));
@@ -63,6 +71,17 @@ const QuantifyResumeAccomplishments = lazy(() => import("./components/blog/Quant
 const NotFound = lazy(() => import("./components/NotFound"));
 const ErrorPage = lazy(() => import("./components/ErrorPage"));
 
+// Create TanStack Query client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      retry: 2,
+      refetchOnWindowFocus: true,
+    },
+  },
+});
+
 // Loading components for different contexts
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-[200px]">
@@ -98,13 +117,14 @@ const EditorLoadingSkeleton = () => (
 
 function AppContent() {
   const location = useLocation();
-  const isEditorPage = location.pathname === "/editor";
+  const isEditorPage = location.pathname.startsWith("/editor");
 
   return (
   <>
    <ScrollToTop/>
     <div className="flex flex-col min-h-screen bg-gray-50">
       <EnvironmentBanner />
+      <AnnouncementBar />
       {/* Header */}
       <header className="bg-white shadow-md sticky top-0 z-50">
         <Header />
@@ -188,10 +208,26 @@ function AppContent() {
 
           {/* High-priority routes with appropriate loading states */}
           <Route
+            path="/editor/:resumeId"
+            element={
+              <Suspense fallback={<EditorLoadingSkeleton />}>
+                <Editor />
+              </Suspense>
+            }
+          />
+          <Route
             path="/editor"
             element={
               <Suspense fallback={<EditorLoadingSkeleton />}>
                 <Editor />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/my-resumes"
+            element={
+              <Suspense fallback={<EditorLoadingSkeleton />}>
+                <MyResumes />
               </Suspense>
             }
           />
@@ -477,12 +513,63 @@ function FooterWithContext({ isEditorPage }: { isEditorPage: boolean }) {
   );
 }
 
+// Wrapper component to access auth context and provide preferences to ConversionProvider
+function AppWithProviders() {
+  const { session, loading: authLoading } = useAuth();
+
+  const { preferences, setPreference } = usePreferencePersistence({
+    session,
+    authLoading
+  });
+
+  return (
+    <ConversionProvider
+      idleNudgeShown={preferences.idle_nudge_shown}
+      setIdleNudgeShown={(value) => setPreference('idle_nudge_shown', value)}
+    >
+      <QueryClientProvider client={queryClient}>
+        <EditorProvider>
+          <AppContent />
+          <Toaster
+            position="top-right"
+            containerStyle={{
+              zIndex: 10001,
+            }}
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: '#363636',
+                color: '#fff',
+              },
+              success: {
+                duration: 3000,
+                iconTheme: {
+                  primary: '#10b981',
+                  secondary: '#fff',
+                },
+              },
+              error: {
+                duration: 5000,
+                iconTheme: {
+                  primary: '#ef4444',
+                  secondary: '#fff',
+                },
+              },
+            }}
+          />
+        </EditorProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </ConversionProvider>
+  );
+}
+
 export default function App() {
   return (
     <Router>
-      <EditorProvider>
-        <AppContent />
-      </EditorProvider>
+      <AuthProvider>
+        <AppWithProviders />
+      </AuthProvider>
     </Router>
   );
 }

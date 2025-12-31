@@ -91,7 +91,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       {
         question: 'Do I need an account?',
         answer:
-          'No. You can edit and export without signup. We do not require email addresses or personal information.',
+          'No. You can build and download resumes as a guest without signup. Creating a free account unlocks Cloud Storage for saving multiple resumes and accessing them from any device.',
       },
       {
         question: 'Will it pass ATS?',
@@ -112,6 +112,11 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         question: 'Can I customize fonts and spacing?',
         answer:
           'Yes. Stay within ATS-safe fonts (Arial, Calibri, Times New Roman) for best results with automated systems.',
+      },
+      {
+        question: 'How many resumes can I save to the cloud?',
+        answer:
+          'With a free account, you can save up to 5 resume versions in cloud storage. This lets you tailor different resumes for different job types while accessing them from any device.',
       },
     ],
   },
@@ -205,11 +210,16 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       {
         question: 'Is anything limited for guests?',
         answer:
-          'Only cloud save and email alerts require an account. All templates, exports, and editing features work without signup.',
+          'Guest users have full access to all templates, PDF/DOCX downloads, and editing features. Creating a free account adds Cloud Auto-Save, My Resumes Dashboard (manage up to 5 resumes), and automatic resume recovery across devices.',
       },
       {
         question: 'Will you email me?',
         answer: 'No. No account means no emails. We cannot send you anything because we do not have your information.',
+      },
+      {
+        question: 'What happens to my resume if I sign in later?',
+        answer:
+          'When you sign in for the first time, our migration system automatically transfers any resumes you created as a guest to your secure cloud account. You will see a success message confirming the transfer.',
       },
       {
         question: 'Can I come back to an unsaved resume?',
@@ -667,12 +677,17 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       {
         question: 'How do I identify fake "free" resume builders?',
         answer:
-          'Red flags: requiring credit card for "free trial," adding watermarks on free plans, locking templates behind paywall, charging to remove branding. Actually free means no catches.',
+          'Red flags: requiring credit card for "free trial," adding watermarks on free plans, locking templates behind paywall, charging to remove branding. Actually free means no catches. We offer both guest mode (no signup) and free cloud accounts with auto-save and multi-resume management - all at $0.',
       },
       {
         question: 'Is DOCX or PDF better for ATS?',
         answer:
           'DOCX is safest for ATS. Use PDF only when job posting specifically requests it. Modern ATS handle both, but DOCX parsing is more reliable.',
+      },
+      {
+        question: 'Can I save multiple resume versions for different jobs?',
+        answer:
+          'Yes. Create a free account to unlock the My Resumes dashboard where you can save up to 5 different resume versions. Perfect for tailoring your resume to different industries or job types.',
       },
       {
         question: 'Can I import my existing resume?',

@@ -51,6 +51,11 @@ coverage.xml
 .pytest_cache/
 cover/
 
+# Playwright E2E test results
+playwright-report/
+test-results/
+.playwright/
+
 # Translations
 *.mo
 *.pot
@@ -123,6 +128,7 @@ celerybeat.pid
 
 # Environments
 .env
+.env.test
 .venv
 env/
 venv/
@@ -192,3 +198,21 @@ dist-ssr
 *.sw?
 
 coverage/
+blogs_to_add/
+.claude/
+resume-builder-ui/test-files/
+new-resume.yml
+redo-frontend-editor.md
+test_backend_api.py
+EasyFreeResume - v2 .md
+test-api.ps1
+test-links.yml
+test-multiple-experience.yml
+output/
+nul
+resume-*.yaml
+resume-*.yml
+
+# Frontend build output (served by Flask)
+static/
+.env.local

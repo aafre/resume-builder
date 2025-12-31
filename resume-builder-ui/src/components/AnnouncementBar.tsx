@@ -1,0 +1,267 @@
+import { useState, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { useAuth } from '../contexts/AuthContext';
+import usePreferencePersistence from '../hooks/usePreferencePersistence';
+import { getActiveAnnouncement } from '../config/announcements';
+
+/**
+ * AnnouncementBar - Reusable notification banner for app-wide announcements
+ *
+ * Features:
+ * - Shows contextually based on current route
+ * - Persists dismissals to Supabase database
+ * - Supports multiple CTA types (sign-in button, learn more link)
+ * - Smooth slide-down/up animations
+ * - Fully accessible (ARIA, keyboard navigation)
+ * - Responsive design
+ */
+export default function AnnouncementBar() {
+  const location = useLocation();
+  const { session, loading: authLoading, showAuthModal } = useAuth();
+  const { preferences, addDismissedAnnouncement, isLoading } = usePreferencePersistence({
+    session,
+    authLoading,
+  });
+
+  const [isDismissing, setIsDismissing] = useState(false);
+
+  // Get active announcement for current route
+  const activeAnnouncement = useMemo(
+    () => getActiveAnnouncement(location.pathname, preferences.announcement_dismissals),
+    [location.pathname, preferences.announcement_dismissals]
+  );
+
+  // Should show: has announcement, not loading, not currently authenticated
+  const shouldShow = !isLoading && !!activeAnnouncement && !session?.user?.email;
+
+  // Dismiss handler with optimistic UI and database persistence
+  const handleDismiss = async () => {
+    if (isDismissing || !activeAnnouncement) return;
+    setIsDismissing(true);
+    await addDismissedAnnouncement(activeAnnouncement.id);
+    setIsDismissing(false);
+  };
+
+  // Primary CTA handler (Sign In or Link navigation)
+  const handlePrimaryCta = () => {
+    if (!activeAnnouncement?.primaryCta) return;
+
+    if (activeAnnouncement.primaryCta.action === 'sign-in') {
+      showAuthModal();
+    } else if (activeAnnouncement.primaryCta.url) {
+      window.location.href = activeAnnouncement.primaryCta.url;
+    }
+  };
+
+  if (!shouldShow || !activeAnnouncement) return null;
+
+  return (
+    <div
+      style={{
+        background: 'linear-gradient(to right, rgb(147, 51, 234), rgb(59, 130, 246))',
+        borderBottom: '1px solid rgba(147, 51, 234, 0.3)',
+        position: 'relative',
+        zIndex: 60
+      }}
+      role="region"
+      aria-label="Announcement banner"
+      aria-live="polite"
+    >
+      {/* Gradient accent line at top */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '3px',
+        background: 'linear-gradient(to right, rgb(59, 130, 246), rgb(147, 51, 234), rgb(99, 102, 241))'
+      }} />
+
+      <div style={{ maxWidth: '1800px', margin: '0 auto', padding: '10px 12px', position: 'relative' }}>
+        {/* Desktop: Centered layout */}
+        <div className="hidden sm:flex items-center justify-center gap-3">
+          {/* Center: Icon + Message + CTAs */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {activeAnnouncement.icon && (
+              <span style={{ fontSize: '18px', flexShrink: 0 }} aria-hidden="true">
+                {activeAnnouncement.icon}
+              </span>
+            )}
+            <p style={{
+              fontSize: '14px',
+              color: 'white',
+              fontWeight: 600,
+              whiteSpace: 'nowrap'
+            }}>
+              {activeAnnouncement.message}
+            </p>
+
+            {/* Primary CTA Button */}
+            {activeAnnouncement.primaryCta && (
+              <button
+                onClick={handlePrimaryCta}
+                style={{
+                  padding: '6px 16px',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  background: 'white',
+                  color: 'rgb(147, 51, 234)',
+                  borderRadius: '8px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                  transition: 'transform 0.2s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                aria-label={activeAnnouncement.primaryCta.text}
+              >
+                {activeAnnouncement.primaryCta.text}
+              </button>
+            )}
+
+            {/* Secondary CTA Link */}
+            {activeAnnouncement.secondaryCta && (
+              <a
+                href={activeAnnouncement.secondaryCta.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  color: 'white',
+                  textDecoration: 'underline',
+                  whiteSpace: 'nowrap'
+                }}
+                aria-label={activeAnnouncement.secondaryCta.text}
+              >
+                {activeAnnouncement.secondaryCta.text}
+              </a>
+            )}
+          </div>
+
+          {/* Close Button - Absolute positioned to right */}
+          <button
+            onClick={handleDismiss}
+            style={{
+              position: 'absolute',
+              right: '12px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              padding: '6px',
+              borderRadius: '6px',
+              background: 'rgba(255,255,255,0.2)',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+            aria-label={`Dismiss announcement: ${activeAnnouncement.message}`}
+            disabled={isDismissing}
+          >
+            <XMarkIcon style={{ width: '16px', height: '16px', color: 'white' }} aria-hidden="true" />
+          </button>
+        </div>
+
+        {/* Mobile: Ticker animation with CTA buttons */}
+        <div className="flex sm:hidden items-center gap-2 relative">
+          {/* Fixed left side: Icon + CTA button */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            flexShrink: 0,
+            zIndex: 2
+          }}>
+            {activeAnnouncement.icon && (
+              <span style={{ fontSize: '18px' }} aria-hidden="true">
+                {activeAnnouncement.icon}
+              </span>
+            )}
+            {activeAnnouncement.primaryCta && (
+              <button
+                onClick={handlePrimaryCta}
+                style={{
+                  padding: '5px 10px',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  background: 'white',
+                  color: 'rgb(147, 51, 234)',
+                  borderRadius: '6px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                }}
+                aria-label={activeAnnouncement.primaryCta.text}
+              >
+                {activeAnnouncement.primaryCta.text}
+              </button>
+            )}
+          </div>
+
+          {/* Ticker container (scrolling text) */}
+          <div style={{
+            flex: 1,
+            overflow: 'hidden',
+            position: 'relative',
+            height: '20px',
+            maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)'
+          }}>
+            <div style={{
+              display: 'inline-block',
+              whiteSpace: 'nowrap',
+              animation: 'ticker 12s linear infinite',
+              paddingLeft: '100%'
+            }}>
+              <span style={{
+                fontSize: '12px',
+                color: 'white',
+                fontWeight: 600
+              }}>
+                🎉 New: Create a free account to save your resumes to the cloud • Free forever • No credit card required •
+              </span>
+            </div>
+          </div>
+
+          {/* Fixed right side: Close button */}
+          <button
+            onClick={handleDismiss}
+            style={{
+              padding: '4px',
+              borderRadius: '4px',
+              background: 'rgba(255,255,255,0.2)',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              zIndex: 2
+            }}
+            aria-label="Dismiss"
+            disabled={isDismissing}
+          >
+            <XMarkIcon style={{ width: '14px', height: '14px', color: 'white' }} aria-hidden="true" />
+          </button>
+        </div>
+
+        {/* Ticker animation keyframes */}
+        <style>{`
+          @keyframes ticker {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-100%);
+            }
+          }
+        `}</style>
+      </div>
+    </div>
+  );
+}

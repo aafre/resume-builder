@@ -6,13 +6,20 @@ import React, {
   lazy,
   Suspense,
 } from "react";
-import { useLocation } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import { fetchTemplate, generateResume } from "../services/templates";
+import ReactDOM from "react-dom";
+import { useParams, useSearchParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { AlertCircle, X } from "lucide-react";
+import { fetchTemplate, generateResume, generateThumbnail } from "../services/templates";
 import { getSessionId } from "../utils/session";
 import { useIconRegistry } from "../hooks/useIconRegistry";
-import { useAutoSave } from "../hooks/useAutoSave";
 import { usePreview } from "../hooks/usePreview";
+import { useCloudSave } from "../hooks/useCloudSave";
+import { useAuth } from "../contexts/AuthContext";
+import { useConversion } from "../contexts/ConversionContext";
+import { StorageLimitModal } from "./StorageLimitModal";
+import { supabase } from "../lib/supabase";
+import { apiClient } from "../lib/api-client";
 import yaml from "js-yaml";
 import { PortableYAMLData } from "../types/iconTypes";
 import { extractReferencedIconFilenames } from "../utils/iconExtractor";
@@ -35,7 +42,11 @@ import ResponsiveConfirmDialog from "./ResponsiveConfirmDialog";
 import DragHandle from "./DragHandle";
 import PreviewModal from "./PreviewModal";
 import { useEditorContext } from "../contexts/EditorContext";
-import { MdFileDownload, MdHelpOutline } from "react-icons/md";
+import ContextAwareTour from "./ContextAwareTour";
+import TabbedHelpModal from "./TabbedHelpModal";
+import AuthModal from "./AuthModal";
+import DownloadCelebrationModal from "./DownloadCelebrationModal";
+import usePreferencePersistence from "../hooks/usePreferencePersistence";
 import {
   DndContext,
   closestCenter,
@@ -72,6 +83,45 @@ const LoadingSpinner = () => (
   </div>
 );
 
+// Default icons provided by the system (served from /icons/ directory)
+// Complete list of all icons in /icons/ directory (27 icons total)
+const DEFAULT_ICONS = new Set([
+  // Contact icons (13)
+  'location.png',
+  'email.png',
+  'phone.png',
+  'linkedin.png',
+  'github.png',
+  'twitter.png',
+  'website.png',
+  'pinterest.png',
+  'medium.png',
+  'youtube.png',
+  'stackoverflow.png',
+  'behance.png',
+  'dribbble.png',
+
+  // Company icons (4)
+  'company.png',
+  'company_google.png',
+  'company_amazon.png',
+  'company_apple.png',
+
+  // School/Education icons (4)
+  'school.png',
+  'school_harvard.png',
+  'school_oxford.png',
+  'school_berkeley.svg',
+
+  // Certification icons (6)
+  'certification_aws.png',
+  'certification_azure.png',
+  'certification_k8s.png',
+  'certification_google.png',
+  'certification_devops.png',
+  'certification_scrum.png',
+]);
+
 interface Section {
   name: string;
   type?: string;
@@ -89,9 +139,8 @@ interface ContactInfo {
 }
 
 const Editor: React.FC = () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const templateId = queryParams.get("template");
+  const { resumeId: resumeIdFromUrl } = useParams<{ resumeId: string }>();
+  const [searchParams] = useSearchParams();
 
   // Get context for footer integration
   const {
@@ -104,6 +153,7 @@ const Editor: React.FC = () => {
 
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [sections, setSections] = useState<Section[]>([]);
+  const [templateId, setTemplateId] = useState<string | null>(null);
   const [supportsIcons, setSupportsIcons] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loadingError, setLoadingError] = useState<string | null>(null);
@@ -114,6 +164,18 @@ const Editor: React.FC = () => {
 
   // Central icon registry for all uploaded icons
   const iconRegistry = useIconRegistry();
+
+  // Auth state - used by cloud save
+  const { isAnonymous, session, loading: authLoading, anonMigrationInProgress } = useAuth();
+  const isAuthenticated = !!session && !isAnonymous;
+
+  // Conversion nudges
+  const { hasShownDownloadToast, markDownloadToastShown, hasShownIdleNudge, markIdleNudgeShown } = useConversion();
+
+  const [showStorageLimitModal, setShowStorageLimitModal] = useState(false);
+  const [cloudResumeId, setCloudResumeId] = useState<string | null>(resumeIdFromUrl || null);
+  const [isLoadingFromUrl, setIsLoadingFromUrl] = useState<boolean>(!!resumeIdFromUrl);
+  const [hasLoadedFromUrl, setHasLoadedFromUrl] = useState<boolean>(false);
 
   // Process sections to clean up icon paths for export/preview
   const processSections = useCallback((sections: Section[]) => {
@@ -166,24 +228,6 @@ const Editor: React.FC = () => {
     });
   }, []);
 
-  // Auto-save hook - handles localStorage persistence
-  const {
-    saving: isSaving,
-    lastSaved,
-    error: saveError,
-    saveManually: _saveManually, // Available for future use (auto-save is primary)
-    triggerImmediateSave,
-    clearSave: clearAutoSave,
-    loadSaved: _loadSaved, // Available for future use
-    recoveredData: autoSaveRecoveredData,
-  } = useAutoSave({
-    contactInfo,
-    sections,
-    originalTemplateData,
-    templateId,
-    iconRegistry,
-  });
-
   // Preview hook - handles PDF preview generation and caching
   const {
     previewUrl,
@@ -199,6 +243,47 @@ const Editor: React.FC = () => {
     processSections,
   });
 
+  // Cloud save hook - handles saving to Supabase for authenticated users
+  // Convert iconRegistry to plain object for cloud save
+  const iconsForCloudSave = React.useMemo(() => {
+    const filenames = iconRegistry.getRegisteredFilenames();
+    const iconsObj: { [filename: string]: File } = {};
+    filenames.forEach(filename => {
+      const file = iconRegistry.getIconFile(filename);
+      if (file) {
+        iconsObj[filename] = file;
+      }
+    });
+    return iconsObj;
+  }, [iconRegistry.getRegisteredFilenames().join(',')]);
+
+  const {
+    saveStatus,
+    lastSaved: cloudLastSaved,
+    saveNow, // Used before critical actions
+    resumeId: savedResumeId
+  } = useCloudSave({
+    resumeId: cloudResumeId,
+    resumeData: contactInfo && templateId ? {
+      contact_info: contactInfo,
+      sections: sections,
+      template_id: templateId
+    } : { contact_info: {} as any, sections: [], template_id: '' },
+    icons: iconsForCloudSave,
+    enabled: !!templateId && !!contactInfo && !isLoadingFromUrl && !authLoading,  // Wait for auth and data to be ready
+    session: session  // Pass session from AuthContext
+  });
+
+  // Update cloud resume ID when it's set from cloud save
+  useEffect(() => {
+    if (savedResumeId && savedResumeId !== cloudResumeId) {
+      setCloudResumeId(savedResumeId);
+    }
+  }, [savedResumeId, cloudResumeId]);
+
+  // Note: Storage limit errors are handled in saveBeforeAction() via RESUME_LIMIT_REACHED
+  // No need for blanket error handling here that shows modal for all errors
+
   const [generating, setGenerating] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [editingTitleIndex, setEditingTitleIndex] = useState<number | null>(
@@ -213,10 +298,10 @@ const Editor: React.FC = () => {
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
   const [showWelcomeTour, setShowWelcomeTour] = useState(false);
-  const [tourStep, setTourStep] = useState(0); // Track current tour step (0-3)
-  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
-  const [hasHandledRecovery, setHasHandledRecovery] = useState(false);
-  const [loadingRecover, setLoadingRecover] = useState(false);
+
+  // Idle nudge state
+  const [showIdleTooltip, setShowIdleTooltip] = useState(false);
+  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Confirmation dialog state
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -230,6 +315,10 @@ const Editor: React.FC = () => {
   // Start Fresh confirmation
   const [showStartFreshConfirm, setShowStartFreshConfirm] = useState(false);
 
+  // Import YAML confirmation
+  const [showImportConfirm, setShowImportConfirm] = useState(false);
+  const [pendingImportFile, setPendingImportFile] = useState<File | null>(null);
+
   // Navigation drawer state
   const [showNavigationDrawer, setShowNavigationDrawer] = useState(false);
   const [activeSectionIndex, setActiveSectionIndex] = useState<number>(-1); // -1 for contact info
@@ -241,7 +330,6 @@ const Editor: React.FC = () => {
     setContextIsSidebarCollapsed(collapsed);
   };
 
-  const [loadingStartFresh, setLoadingStartFresh] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
   const [loadingLoad, setLoadingLoad] = useState(false);
   const [loadingAddSection, setLoadingAddSection] = useState(false);
@@ -253,8 +341,16 @@ const Editor: React.FC = () => {
   const [autoGeneratedIndexes, setAutoGeneratedIndexes] = useState<Set<number>>(new Set());
   const socialLinkDebounceRefs = useRef<Record<number, NodeJS.Timeout>>({});
 
+  // AI import warning state (feature in progress)
+  const [showAIWarning, setShowAIWarning] = useState(false);
+  const [_aiWarnings, setAIWarnings] = useState<string[]>([]);
+  const [_aiConfidence, setAIConfidence] = useState(0);
+
   // Simple scroll detection for footer visibility
   const lastScrollY = useRef(0);
+
+  // Store save function for unmount to avoid stale closure
+  const saveOnUnmountRef = useRef<(() => Promise<void>) | null>(null);
 
   // Drag and drop sensors
   const sensors = useSensors(
@@ -268,9 +364,92 @@ const Editor: React.FC = () => {
     })
   );
 
+  /**
+   * Saves pending changes before critical actions (Preview, Download, etc.)
+   * Returns true if action can proceed, false if save failed
+   */
+  const saveBeforeAction = useCallback(async (actionName: string): Promise<boolean> => {
+    // Skip save for anonymous users or if no data exists
+    if (isAnonymous || !contactInfo || !templateId) {
+      return true;
+    }
+
+    // If already saving, wait for completion
+    if (saveStatus === 'saving') {
+      console.log(`Waiting for in-progress save before ${actionName}...`);
+      // Wait up to 10 seconds
+      const timeout = 10000;
+      const start = Date.now();
+      while (saveStatus === 'saving' && Date.now() - start < timeout) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+      // After waiting, check if save completed successfully (not in error state)
+      // Use type assertion since saveStatus may have changed during the loop
+      return (saveStatus as string) !== 'error';
+    }
+
+    // Always trigger save before action to ensure latest data is persisted
+    // Backend handles deduplication via hash comparison, so redundant saves are cheap
+    try {
+      console.log(`Saving before ${actionName}...`);
+      const result = await saveNow();
+
+      if (result === null && saveStatus === 'error') {
+        toast.error(`Failed to save changes before ${actionName}. Please try again.`);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error(`Save failed before ${actionName}:`, error);
+
+      // Handle storage limit error
+      if (error instanceof Error && error.message === 'RESUME_LIMIT_REACHED') {
+        setShowStorageLimitModal(true);
+        return false;
+      }
+
+      toast.error(`Failed to save changes before ${actionName}. Please try again.`);
+      return false;
+    }
+  }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow]);
+
+  // DEPRECATED: Block old ?template=X pattern (no longer supported)
+  // Users must create resume via /api/resumes/create, then navigate to /editor/{uuid}
   useEffect(() => {
+    const templateParam = searchParams.get('template');
+    const importedParam = searchParams.get('imported');
+
+    // Exception: Allow ?template=X&imported=true for AI import flow only
+    if (templateParam && importedParam === 'true') {
+      setTemplateId(templateParam);
+      return;
+    }
+
+    // Block deprecated ?template=X pattern (without imported flag)
+    if (templateParam && !resumeIdFromUrl) {
+      console.error('Deprecated URL pattern detected:', window.location.href);
+      setLoadingError('Invalid URL: Please create a resume from the templates page');
+      setLoading(false);
+      return;
+    }
+  }, [searchParams, resumeIdFromUrl]);
+
+  useEffect(() => {
+    // Skip template loading if we're loading a saved resume from URL
+    // The resume data will be loaded from the database instead
+    if (resumeIdFromUrl || isLoadingFromUrl) {
+      return;
+    }
+
+    // Skip if no template ID is set yet
     if (!templateId) {
-      console.error("Template ID is undefined.");
+      return;
+    }
+
+    // Skip template loading if editor already has data (e.g., from YAML import)
+    // This prevents overwriting imported data with default template
+    if (contactInfo && sections.length > 0) {
       return;
     }
 
@@ -309,26 +488,206 @@ const Editor: React.FC = () => {
     };
 
     loadTemplate();
-  }, [templateId]);
+  }, [templateId, resumeIdFromUrl, isLoadingFromUrl]);
 
-  // Show recovery modal when auto-saved data is detected (only once)
+  // Load saved resume from cloud when resumeId is in URL
   useEffect(() => {
-    if (autoSaveRecoveredData && originalTemplateData && !hasHandledRecovery) {
-      setShowRecoveryModal(true);
+    // Wait for auth to be ready AND migration to complete
+    if (authLoading || anonMigrationInProgress) return;
+
+    if (!resumeIdFromUrl || !supabase) return;
+
+    // Prevent loading multiple times
+    if (hasLoadedFromUrl) return;
+
+    const loadResumeFromCloud = async () => {
+      try {
+        setLoading(true);
+
+        // Use session from AuthContext instead of calling getSession()
+        if (!session) {
+          toast.error('Please sign in to load saved resumes');
+          return;
+        }
+
+        // Use centralized API client (handles auth, 401/403 interceptor)
+        const { resume } = await apiClient.get(`/api/resumes/${resumeIdFromUrl}`);
+
+        // Populate editor state from database (JSONB)
+        setContactInfo(resume.contact_info);
+        setSections(resume.sections);
+        setTemplateId(resume.template_id); // Get template ID from database
+        setCloudResumeId(resume.id);
+
+        // Set supportsIcons flag based on template
+        // Only 'modern-with-icons' template supports icons
+        const templateSupportsIcons = resume.template_id === 'modern-with-icons';
+        setSupportsIcons(templateSupportsIcons);
+
+        // Load template structure for originalTemplateData (needed for "Start Fresh")
+        try {
+          const { yaml: templateYaml } = await fetchTemplate(resume.template_id);
+          const templateData = yaml.load(templateYaml) as {
+            contact_info: ContactInfo;
+            sections: Section[];
+          };
+
+          // Migrate and process template sections
+          const migratedTemplateSections = migrateLegacySections(templateData.sections);
+          const processedTemplateSections = processSections(migratedTemplateSections);
+
+          setOriginalTemplateData({
+            contactInfo: templateData.contact_info,
+            sections: processedTemplateSections,
+          });
+        } catch (templateError) {
+          console.error('Failed to load template structure for Start Fresh:', templateError);
+          // Non-critical: Start Fresh will still fail gracefully if originalTemplateData is null
+        }
+
+        // Load icons from storage URLs and register them
+        iconRegistry.clearRegistry(); // Clear existing icons first
+        for (const icon of resume.icons || []) {
+          try {
+            const iconResponse = await fetch(icon.storage_url);
+            const blob = await iconResponse.blob();
+            const file = new File([blob], icon.filename, { type: blob.type });
+            // Use registerIconWithFilename to preserve original filename from storage
+            iconRegistry.registerIconWithFilename(file, icon.filename);
+          } catch (iconError) {
+            console.error(`Failed to load icon ${icon.filename}:`, iconError);
+          }
+        }
+
+        // Check if resume has AI import metadata and show warning banner
+        if (resume.ai_import_warnings || resume.ai_import_confidence) {
+          setShowAIWarning(true);
+          setAIWarnings(resume.ai_import_warnings || []);
+          setAIConfidence(resume.ai_import_confidence || 0);
+        }
+
+        // Only show toast if NOT loading after migration from tour sign-in
+        if (!isSigningInFromTour) {
+          toast.success('Resume loaded successfully');
+        }
+        setIsLoadingFromUrl(false);
+        setHasLoadedFromUrl(true); // Mark as loaded to prevent re-runs
+      } catch (error) {
+        console.error('Failed to load resume:', error);
+
+        // Check if we can recover from template or have fallback data
+        // This happens when:
+        // 1. User logs in via OAuth, redirects back to /editor/{oldResumeId}
+        // 2. Old resume ID doesn't exist in database (auto-save hadn't triggered yet)
+        // 3. But Editor can recover by loading template data
+        const hasTemplateParam = searchParams.get('template');
+        const hasEditorState = contactInfo && sections.length > 0;
+        const canRecover = templateId || hasTemplateParam || hasEditorState;
+
+        if (!canRecover) {
+          // Only show toast if we can't recover - this is a true error
+          toast.error(error instanceof Error ? error.message : 'Failed to load resume');
+        } else {
+          console.log('Resume not found in database, will recover from template or existing editor state');
+        }
+
+        setIsLoadingFromUrl(false);
+        // Don't set hasLoadedFromUrl on error - allow retry after migration completes
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadResumeFromCloud();
+  }, [resumeIdFromUrl, authLoading, anonMigrationInProgress, session, hasLoadedFromUrl]);
+
+  // Tour persistence using unified preferences hook
+  const { preferences, setPreference, isLoading: prefsLoading } = usePreferencePersistence({
+    session,
+    authLoading
+  });
+
+  const shouldShowTour = !preferences.tour_completed && !prefsLoading;
+
+  const markTourComplete = useCallback(async () => {
+    await setPreference('tour_completed', true);
+  }, [setPreference]);
+
+  const [showAuthModalFromTour, setShowAuthModalFromTour] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false); // Bug fix: Was referenced but not defined
+  const [showDownloadCelebration, setShowDownloadCelebration] = useState(false);
+  const [isSigningInFromTour, setIsSigningInFromTour] = useState(false);
+
+  // Track if we've already launched tour after sign-in to prevent infinite loop
+  const hasLaunchedTourAfterSignIn = useRef(false);
+  // Track if we just signed in from tour (to distinguish from regular page load)
+  const justSignedInFromTour = useRef(false);
+
+  useEffect(() => {
+    if (shouldShowTour) {
+      setTimeout(() => setShowWelcomeTour(true), 1500);
     }
-  }, [autoSaveRecoveredData, originalTemplateData, hasHandledRecovery]);
+  }, [shouldShowTour]);
 
-  // Check if user should see welcome tour
+  // Re-launch tour after successful sign-in and migration completion
   useEffect(() => {
-    const hasSeenTour = localStorage.getItem("resume-builder-tour-seen");
-    if (!hasSeenTour) {
-      // Show tour after a brief delay to let page load
+    // Only proceed if:
+    // 1. User just signed in from tour (not a regular page load)
+    // 2. User is authenticated (not anonymous anymore)
+    // 3. Migration has completed
+    // 4. Tour is not already showing
+    // 5. Haven't already launched tour after this sign-in (prevents infinite loop)
+    // 6. User hasn't completed tour yet (prevents re-launch on page reload)
+
+    if (
+      justSignedInFromTour.current &&
+      !isAnonymous &&
+      session &&
+      !anonMigrationInProgress &&
+      !authLoading &&
+      !prefsLoading &&
+      !preferences.tour_completed &&
+      !showWelcomeTour &&
+      !hasLaunchedTourAfterSignIn.current
+    ) {
+      console.log('🎯 Migration complete, re-launching tour');
+
+      // Small delay to let UI settle after migration
       const timer = setTimeout(() => {
         setShowWelcomeTour(true);
-      }, 1500);
+        // No toast needed - tour showing "Cloud Saving Active" is sufficient
+        hasLaunchedTourAfterSignIn.current = true; // Mark as launched to prevent loop
+        justSignedInFromTour.current = false; // Reset the flag
+        setIsSigningInFromTour(false); // Reset signing-in flag
+      }, 150);
+
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [isAnonymous, session, anonMigrationInProgress, authLoading, prefsLoading, preferences.tour_completed, showWelcomeTour]);
+
+  const handleTourComplete = async () => {
+    setShowWelcomeTour(false);
+    await markTourComplete();
+    hasLaunchedTourAfterSignIn.current = false; // Reset for future sign-ins
+  };
+
+  // Idle nudge: Show tooltip after 5 minutes for anonymous users (one-time ever)
+  useEffect(() => {
+    if (isAnonymous && !hasShownIdleNudge && !authLoading) {
+      // Start 5-minute timer
+      idleTimerRef.current = setTimeout(() => {
+        setShowIdleTooltip(true);
+        markIdleNudgeShown();
+
+        // Auto-dismiss after 10 seconds
+        setTimeout(() => setShowIdleTooltip(false), 10000);
+      }, 5 * 60 * 1000); // 5 minutes
+
+      return () => {
+        if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      };
+    }
+  }, [isAnonymous, hasShownIdleNudge, authLoading, markIdleNudgeShown]);
 
   const handleUpdateSection = (index: number, updatedSection: Section) => {
     const updatedSections = [...sections];
@@ -571,6 +930,10 @@ const Editor: React.FC = () => {
   };
 
   const handleExportYAML = async () => {
+    // Save first to ensure export has latest changes
+    const canProceed = await saveBeforeAction('export YAML');
+    if (!canProceed) return;
+
     try {
       setLoadingSave(true);
       // Longer delay for noticeable feedback on file operations
@@ -624,9 +987,32 @@ const Editor: React.FC = () => {
     }
   };
 
-  const handleImportYAML = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImportYAML = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+
+    // Store file and show confirmation dialog
+    setPendingImportFile(file);
+    setShowImportConfirm(true);
+
+    // Reset file input so the same file can be selected again
+    event.target.value = '';
+  };
+
+  const confirmImportYAML = async () => {
+    if (!pendingImportFile) return;
+
+    setShowImportConfirm(false);
+
+    // Save current work before importing (if authenticated and has content)
+    // Auto-save will handle preserving the current resume
+    if (!isAnonymous && contactInfo && sections.length > 0) {
+      const canProceed = await saveBeforeAction('import YAML');
+      if (!canProceed) {
+        setPendingImportFile(null);
+        return;
+      }
+    }
 
     setLoadingLoad(true);
 
@@ -653,6 +1039,19 @@ const Editor: React.FC = () => {
         const migratedSections = migrateLegacySections(parsedYaml.sections);
         // Process sections to clean up icon paths when importing YAML
         const processedSections = processSections(migratedSections);
+
+        // Validate imported icons against template compatibility
+        if (!supportsIcons) {
+          const referencedIcons = extractReferencedIconFilenames(processedSections);
+          if (referencedIcons.length > 0) {
+            toast(
+              `This template doesn't support icons. ${referencedIcons.length} icon(s) ` +
+              `were found in the imported file and will be ignored.`,
+              { duration: 8000, icon: '⚠️' }
+            );
+          }
+        }
+
         setSections(processedSections);
 
         // CRITICAL FIX: Update originalTemplateData to reflect the imported YAML
@@ -662,15 +1061,8 @@ const Editor: React.FC = () => {
           sections: processedSections,
         });
 
-        // Clear any existing autosave to prevent conflicts
-        clearAutoSave();
-
-        // Mark recovery as handled to prevent modal from showing
-        setHasHandledRecovery(true);
-
-        // Trigger immediate save to persist the imported data
-        // This ensures data is saved even if user reloads immediately
-        await triggerImmediateSave();
+        // Enable auto-save after YAML import completes
+        setIsLoadingFromUrl(false);
 
         toast.success("Resume loaded successfully!");
       } catch (error) {
@@ -678,17 +1070,31 @@ const Editor: React.FC = () => {
         toast.error("Invalid file format. Please upload a valid resume file.");
       } finally {
         setLoadingLoad(false);
+        setPendingImportFile(null);
       }
     };
-    reader.readAsText(file);
+    reader.readAsText(pendingImportFile);
   };
 
   const handleGenerateResume = async () => {
     try {
+      // Save first to ensure PDF has latest changes
+      const canProceed = await saveBeforeAction('download PDF');
+      if (!canProceed) return;
+
       // Validate LinkedIn URL only if provided (block invalid, allow empty)
       if (contactInfo?.linkedin && !validateLinkedInUrl(contactInfo.linkedin)) {
         toast.error("Please enter a valid LinkedIn URL or leave it empty");
         return;
+      }
+
+      // Validate icon availability for icon-supporting templates
+      if (supportsIcons) {
+        const { valid, missingIcons } = validateIconAvailability();
+        if (!valid) {
+          showMissingIconsDialog(missingIcons, isLoadingFromUrl);
+          return;
+        }
       }
 
       setGenerating(true);
@@ -708,12 +1114,15 @@ const Editor: React.FC = () => {
       const sessionId = getSessionId();
       formData.append("session_id", sessionId);
 
-      // Use centralized IconRegistry to get icon files for PDF generation
-      const referencedIcons = extractReferencedIconFilenames(sections);
-      for (const iconFilename of referencedIcons) {
-        const iconFile = iconRegistry.getIconFile(iconFilename);
-        if (iconFile) {
-          formData.append("icons", iconFile, iconFilename);
+      // Only add icons if template supports them (validation already confirmed all icons exist)
+      if (supportsIcons) {
+        const referencedIcons = extractReferencedIconFilenames(sections);
+        for (const iconFilename of referencedIcons) {
+          const iconFile = iconRegistry.getIconFile(iconFilename);
+          if (iconFile) {
+            formData.append("icons", iconFile, iconFilename);
+          }
+          // No need for else - validation already caught missing icons
         }
       }
 
@@ -729,11 +1138,22 @@ const Editor: React.FC = () => {
 
       toast.success("Resume downloaded successfully!");
 
-      setTimeout(() => {
-        toast.info(
-          "Need to continue on another device? Save your work via the ⋮ menu"
-        );
-      }, 2000);
+      // Show celebration modal for anonymous users (first time only)
+      if (isAnonymous && !hasShownDownloadToast) {
+        markDownloadToastShown();
+
+        setTimeout(() => {
+          setShowDownloadCelebration(true);
+        }, 500);
+      } else if (!isAnonymous) {
+        // Original message for authenticated users
+        setTimeout(() => {
+          toast(
+            "Need to continue on another device? Save your work via the ⋮ menu",
+            { icon: 'ℹ️' }
+          );
+        }, 2000);
+      }
     } catch (error) {
       console.error("Error generating resume:", error);
       const errorMessage =
@@ -748,6 +1168,19 @@ const Editor: React.FC = () => {
 
   // Preview handlers
   const handleOpenPreview = async () => {
+    // Save first to ensure database has latest changes
+    const canProceed = await saveBeforeAction('preview');
+    if (!canProceed) return;
+
+    // Validate icon availability for icon-supporting templates
+    if (supportsIcons) {
+      const { valid, missingIcons } = validateIconAvailability();
+      if (!valid) {
+        showMissingIconsDialog(missingIcons, isLoadingFromUrl);
+        return;
+      }
+    }
+
     // If no preview exists or it's stale, generate it first
     if (!previewUrl || previewIsStale) {
       await generatePreview();
@@ -760,6 +1193,19 @@ const Editor: React.FC = () => {
   };
 
   const handleRefreshPreview = async () => {
+    // Save first to ensure database has latest changes
+    const canProceed = await saveBeforeAction('refresh preview');
+    if (!canProceed) return;
+
+    // Validate icon availability for icon-supporting templates
+    if (supportsIcons) {
+      const { valid, missingIcons } = validateIconAvailability();
+      if (!valid) {
+        showMissingIconsDialog(missingIcons, isLoadingFromUrl);
+        return;
+      }
+    }
+
     await generatePreview();
   };
 
@@ -771,30 +1217,6 @@ const Editor: React.FC = () => {
 
     setShowModal(true);
     setLoadingAddSection(false);
-  };
-
-  const handleTourComplete = (dontShowAgain: boolean = false) => {
-    setShowWelcomeTour(false);
-    setTourStep(0); // Reset tour step for next time
-    if (dontShowAgain) {
-      localStorage.setItem("resume-builder-tour-seen", "true");
-    }
-  };
-
-  const handleTourNext = () => {
-    if (tourStep < 3) {
-      setTourStep(tourStep + 1);
-    }
-  };
-
-  const handleTourPrevious = () => {
-    if (tourStep > 0) {
-      setTourStep(tourStep - 1);
-    }
-  };
-
-  const handleTourSkip = () => {
-    handleTourComplete(true);
   };
 
   // Validate LinkedIn URL (without storing error state - just return boolean)
@@ -1007,34 +1429,98 @@ const Editor: React.FC = () => {
     }, 500);
   };
 
-  const handleRecoverData = async () => {
-    if (autoSaveRecoveredData) {
-      setLoadingRecover(true);
-
-      // Longer delay for noticeable feedback
-      await new Promise((resolve) => setTimeout(resolve, 1200));
-
-      setContactInfo(autoSaveRecoveredData.contactInfo);
-      setSections(autoSaveRecoveredData.sections);
-      setShowRecoveryModal(false);
-      setHasHandledRecovery(true); // Prevent modal from showing again
-      setLoadingRecover(false);
-      toast.success("Previous work restored successfully");
+  /**
+   * Validates that all referenced icons are uploaded to the registry or available as default icons.
+   * Returns { valid: boolean, missingIcons: string[] }
+   */
+  const validateIconAvailability = useCallback((): {
+    valid: boolean;
+    missingIcons: string[];
+  } => {
+    // Skip validation if template doesn't support icons
+    if (!supportsIcons) {
+      return { valid: true, missingIcons: [] };
     }
-  };
 
-  const handleStartFresh = async () => {
-    setLoadingStartFresh(true);
+    const referencedIcons = extractReferencedIconFilenames(sections);
+    const missingIcons: string[] = [];
 
-    // Longer delay for noticeable feedback
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    for (const iconFilename of referencedIcons) {
+      // Check 1: User-uploaded icons in registry
+      const iconFile = iconRegistry.getIconFile(iconFilename);
+      if (iconFile) {
+        continue; // Found in registry
+      }
 
-    clearAutoSave();
-    setShowRecoveryModal(false);
-    setHasHandledRecovery(true); // Prevent modal from showing again
-    setLoadingStartFresh(false);
-    // Keep the current template data (already loaded)
-  };
+      // Check 2: Default/system icons (served from /icons/ directory)
+      if (DEFAULT_ICONS.has(iconFilename)) {
+        continue; // Found as default icon
+      }
+
+      // Icon not found in either location
+      missingIcons.push(iconFilename);
+    }
+
+    return {
+      valid: missingIcons.length === 0,
+      missingIcons
+    };
+  }, [sections, iconRegistry, supportsIcons]);
+
+  /**
+   * Shows detailed information about missing icons to help user locate them
+   */
+  const showMissingIconsDialog = useCallback((missingIcons: string[], isFromCloudLoad: boolean = false) => {
+    if (isFromCloudLoad) {
+      // Special message for cloud load failures
+      toast.error(
+        `⚠️ Unable to load ${missingIcons.length} icon(s) from cloud storage\n\n` +
+        `This can happen if:\n` +
+        `• Icons failed to upload when resume was last saved\n` +
+        `• Temporary storage connectivity issue\n\n` +
+        `To fix:\n` +
+        `1. Re-upload the missing icons using the icon picker\n` +
+        `2. Save your resume\n` +
+        `3. Icons will then be available on next edit\n\n` +
+        `Missing icons:\n${missingIcons.map(icon => `• ${icon}`).join('\n')}`,
+        {
+          duration: 15000,
+          style: { whiteSpace: 'pre-line', maxWidth: '600px' }
+        }
+      );
+    } else {
+      // Original detailed error for regular missing icons
+      const iconLocations = missingIcons.map(icon => {
+        // Find where this icon is referenced
+        const locations: string[] = [];
+
+        sections.forEach((section) => {
+          if (isExperienceSection(section) || isEducationSection(section)) {
+            const items = section.content as any[];
+            items.forEach((item, itemIdx) => {
+              if (item.icon === icon) {
+                locations.push(`${section.name} → Entry ${itemIdx + 1}`);
+              }
+            });
+          } else if (section.type === 'icon-list') {
+            const items = section.content as any[];
+            items.forEach((item, itemIdx) => {
+              if (item.icon === icon) {
+                locations.push(`${section.name} → Item ${itemIdx + 1}`);
+              }
+            });
+          }
+        });
+
+        return `• ${icon}${locations.length > 0 ? ' (used in: ' + locations.join(', ') + ')' : ''}`;
+      }).join('\n');
+
+      toast.error(
+        `Missing Icons (${missingIcons.length}):\n${iconLocations}\n\nPlease upload these icons or remove them from your sections.`,
+        { duration: 12000, style: { whiteSpace: 'pre-line' } }
+      );
+    }
+  }, [sections]);
 
   const handleLoadEmptyTemplate = () => {
     // Show confirmation dialog before clearing
@@ -1043,6 +1529,15 @@ const Editor: React.FC = () => {
 
   const confirmStartFresh = async () => {
     if (!originalTemplateData) return;
+
+    // Save current work before clearing (if authenticated and has content)
+    if (!isAnonymous && contactInfo && sections.length > 0) {
+      const canProceed = await saveBeforeAction('start fresh');
+      if (!canProceed) {
+        setShowStartFreshConfirm(false);
+        return;
+      }
+    }
 
     setShowStartFreshConfirm(false);
     setLoadingSave(true);
@@ -1055,6 +1550,7 @@ const Editor: React.FC = () => {
         phone: "",
         linkedin: "",
         linkedin_display: "",
+        social_links: [],
       });
 
       // Reset sections by preserving structure but emptying content
@@ -1065,7 +1561,6 @@ const Editor: React.FC = () => {
 
       setSections(emptySections);
       iconRegistry.clearRegistry();
-      clearAutoSave();
 
       toast.success("Template cleared successfully!");
     } catch (error) {
@@ -1131,23 +1626,59 @@ const Editor: React.FC = () => {
     return () => window.removeEventListener("scroll", throttledHandleScroll);
   }, [handleScroll]);
 
-  if (!templateId) {
-    return (
-      <Suspense fallback={<LoadingSpinner />}>
-        <NotFound />
-      </Suspense>
-    );
-  }
+  // Warn user if closing browser/tab with unsaved changes
+  useEffect(() => {
+    if (isAnonymous || !contactInfo || !templateId) return;
 
-  // Show error page if template loading failed
-  if (loadingError) {
-    return (
-      <Suspense fallback={<LoadingSpinner />}>
-        <ErrorPage />
-      </Suspense>
-    );
-  }
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      // Only warn if save is pending or failed
+      if (saveStatus === 'saving' || saveStatus === 'error') {
+        e.preventDefault();
+        e.returnValue = ''; // Chrome requires returnValue to be set
+        return ''; // For older browsers
+      }
+    };
 
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isAnonymous, contactInfo, templateId, saveStatus]);
+
+  // Update save function ref with current values (fixes stale closure bug)
+  useEffect(() => {
+    saveOnUnmountRef.current = async () => {
+      if (!isAnonymous && contactInfo && templateId && saveStatus !== 'saving') {
+        try {
+          await saveNow();
+          console.log('Saved on unmount');
+
+          // Trigger thumbnail generation after save completes
+          // Use savedResumeId if available, otherwise cloudResumeId
+          const resumeId = savedResumeId || cloudResumeId;
+          if (resumeId) {
+            console.log('Triggering thumbnail generation for resume:', resumeId);
+            generateThumbnail(resumeId); // Fire-and-forget
+          }
+        } catch (error) {
+          console.error('Failed to save on unmount:', error);
+        }
+      }
+    };
+  }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow, savedResumeId, cloudResumeId]);
+
+  // Save on component unmount (navigating within app)
+  useEffect(() => {
+    return () => {
+      // Fire-and-forget save using ref to avoid stale closure
+      if (saveOnUnmountRef.current) {
+        saveOnUnmountRef.current();
+      }
+    };
+  }, []); // Empty deps is safe here since we're using ref
+
+  // Show loading state first (handles initial load and resume loading from URL)
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
@@ -1161,26 +1692,51 @@ const Editor: React.FC = () => {
     );
   }
 
+  // Show error page if template loading failed
+  if (loadingError) {
+    return (
+      <Suspense fallback={<LoadingSpinner />}>
+        <ErrorPage />
+      </Suspense>
+    );
+  }
+
+  // Only show 404 if no templateId AND we're not loading from a URL resumeId
+  if (!templateId && !resumeIdFromUrl) {
+    return (
+      <Suspense fallback={<LoadingSpinner />}>
+        <NotFound />
+      </Suspense>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      <ToastContainer
-        position="top-right"
-        autoClose={4000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        className="custom-toast-container"
-        toastClassName="custom-toast"
-      />
-
       {/* Main Content Container - Dynamic padding based on sidebar state */}
       <div className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-72 sm:pb-56 lg:pb-12 max-w-4xl lg:max-w-none transition-all duration-300 ${
         isSidebarCollapsed ? 'lg:mr-[88px]' : 'lg:mr-[296px]'
       }`}>
+        {/* Imported Resume Review Banner */}
+        {showAIWarning && (
+          <div className="mb-4 p-4 rounded-lg border-2 bg-blue-50 border-blue-200 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-blue-600" />
+            <div className="flex-1">
+              <h3 className="font-semibold text-sm text-blue-900">
+                Imported Resume - Please Review
+              </h3>
+              <p className="text-xs mt-1 text-blue-700">
+                Please review all information for accuracy and completeness.
+              </p>
+            </div>
+            <button
+              onClick={() => setShowAIWarning(false)}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
         {/* Contact Information Section */}
         {contactInfo && (
           <div ref={contactInfoRef}>
@@ -1443,7 +1999,7 @@ const Editor: React.FC = () => {
               contextIsAtBottom ? "bottom-24" : "bottom-6"
             }`}
         >
-          <div className="flex items-center justify-center gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
+          <div className="flex items-center justify-between gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
             <EditorToolbar
               onAddSection={handleAddNewSectionClick}
               onGenerateResume={handleGenerateResume}
@@ -1467,12 +2023,12 @@ const Editor: React.FC = () => {
           onNavigationClick={() => setShowNavigationDrawer(true)}
           onPreviewClick={handleOpenPreview}
           onDownloadClick={handleGenerateResume}
-          isSaving={isSaving}
+          isSaving={saveStatus === 'saving'}
           isGenerating={generating}
           isGeneratingPreview={isGeneratingPreview}
           previewIsStale={previewIsStale}
-          lastSaved={lastSaved}
-          saveError={saveError}
+          lastSaved={cloudLastSaved}
+          saveError={saveStatus === 'error'}
         />
 
         {/* Mobile Navigation Drawer */}
@@ -1509,6 +2065,11 @@ const Editor: React.FC = () => {
           loadingSave={loadingSave}
           loadingLoad={loadingLoad}
           onCollapseChange={setIsSidebarCollapsed}
+          saveStatus={saveStatus}
+          lastSaved={cloudLastSaved}
+          isAnonymous={isAnonymous}
+          isAuthenticated={isAuthenticated}
+          onSignInClick={() => setShowAuthModal(true)}
         />
 
         {/* Hidden file input for both mobile and desktop */}
@@ -1530,429 +2091,62 @@ const Editor: React.FC = () => {
         )}
       </div>
 
-      {/* Help Modal - Improved */}
-      {showHelpModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl max-w-md w-full border border-gray-200">
-            <div className="p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                <MdHelpOutline className="text-blue-600" />
-                Save Your Work
-              </h2>
-              <p className="text-gray-700 mb-6 leading-relaxed">
-                We don't require accounts, so your resume isn't automatically
-                saved. Here's how to keep your work safe:
-              </p>
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 p-4 rounded-xl mb-6">
-                <h3 className="text-blue-800 font-semibold mb-3 flex items-center gap-2">
-                  <MdFileDownload className="text-blue-600" />
-                  💾 Two Easy Steps:
-                </h3>
-                <div className="space-y-3 text-gray-700">
-                  <div className="flex gap-3">
-                    <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
-                      1
-                    </span>
-                    <div>
-                      <strong>Save My Work:</strong> Downloads a file you can
-                      reopen later
-                    </div>
-                  </div>
-                  <div className="flex gap-3">
-                    <span className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
-                      2
-                    </span>
-                    <div>
-                      <strong>Load Previous Work:</strong> Upload that file to
-                      continue editing
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-600 text-sm mb-6">
-                Think of it like saving a document - you can pick up exactly
-                where you left off!
-              </p>
-              <button
-                onClick={toggleHelpModal}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
-              >
-                Got It, Thanks!
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Context-Aware Tour - New 5-Step Tour with Auth Branching */}
+      <ContextAwareTour
+        isOpen={showWelcomeTour}
+        onClose={handleTourComplete}
+        isAnonymous={isAnonymous}
+        isAuthenticated={isAuthenticated}
+        onSignInClick={() => {
+          hasLaunchedTourAfterSignIn.current = false; // Reset before sign-in
+          justSignedInFromTour.current = false; // Start fresh
+          setShowAuthModalFromTour(true);
+        }}
+        onTourComplete={handleTourComplete}
+      />
 
-      {/* Recovery Modal */}
-      {showRecoveryModal && autoSaveRecoveredData && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl max-w-lg w-full border border-gray-200">
-            <div className="p-8">
-              <div className="text-center mb-8">
-                <div className="w-20 h-20 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-blue-100">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center">
-                    <svg
-                      className="w-6 h-6 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-3">
-                  Continue Your Resume
-                </h2>
-                <p className="text-gray-600 leading-relaxed">
-                  We found work you were doing earlier. You can pick up exactly
-                  where you left off.
-                </p>
-              </div>
+      {/* Auth Modal triggered from tour */}
+      <AuthModal
+        isOpen={showAuthModalFromTour}
+        onClose={() => setShowAuthModalFromTour(false)}
+        onSuccess={() => {
+          setShowAuthModalFromTour(false);
+          setIsSigningInFromTour(true); // Flag to suppress automatic toasts
+          justSignedInFromTour.current = true; // Mark that we just signed in from tour
+          // Tour will auto-relaunch via useEffect watching migration state
+        }}
+      />
 
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 mb-8">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <svg
-                      className="w-5 h-5 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-blue-800 mb-2">
-                      Your Previous Session
-                    </h3>
-                    <div className="text-blue-700 text-sm space-y-1 leading-relaxed">
-                      <p>
-                        Last worked on:{" "}
-                        {autoSaveRecoveredData.timestamp.toLocaleDateString()} at{" "}
-                        {autoSaveRecoveredData.timestamp.toLocaleTimeString()}
-                      </p>
-                      <p>
-                        Contains: Contact info + {autoSaveRecoveredData.sections.length}{" "}
-                        section{autoSaveRecoveredData.sections.length !== 1 ? "s" : ""}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {/* Auth Modal triggered from download and other actions */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={() => {
+          setShowAuthModal(false);
+          toast.success('Welcome! Your resume will now be saved to the cloud.');
+        }}
+      />
 
-              <div className="space-y-4">
-                <button
-                  onClick={handleRecoverData}
-                  disabled={loadingRecover || loadingStartFresh}
-                  className={`w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 ${
-                    loadingRecover
-                      ? "opacity-75 cursor-not-allowed scale-95"
-                      : ""
-                  }`}
-                >
-                  {loadingRecover ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                      Restoring Work...
-                    </>
-                  ) : (
-                    <>
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      Continue Previous Work
-                    </>
-                  )}
-                </button>
-                <button
-                  onClick={handleStartFresh}
-                  disabled={loadingRecover || loadingStartFresh}
-                  className={`w-full bg-white/80 backdrop-blur-sm text-gray-700 py-4 px-6 rounded-xl font-medium border border-gray-200 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center gap-2 ${
-                    loadingStartFresh
-                      ? "opacity-75 cursor-not-allowed scale-95"
-                      : ""
-                  }`}
-                >
-                  {loadingStartFresh ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-600"></div>
-                      Starting Fresh...
-                    </>
-                  ) : (
-                    "Start With Clean Template"
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Download Celebration Modal - shown after first download for anonymous users */}
+      <DownloadCelebrationModal
+        isOpen={showDownloadCelebration}
+        onClose={() => setShowDownloadCelebration(false)}
+        onSignUp={() => {
+          setShowDownloadCelebration(false);
+          setShowAuthModal(true);
+        }}
+      />
 
-      {/* Welcome Tour Modal - Multi-Step Carousel */}
-      {showWelcomeTour && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[10000] p-4">
-          <div className="bg-white rounded-xl shadow-xl max-w-lg w-full border border-gray-200 relative">
-            {/* Skip Button */}
-            <button
-              onClick={handleTourSkip}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors text-sm font-medium"
-            >
-              Skip Tour
-            </button>
-
-            <div className="p-8 pt-10">
-              {/* Step 1: Auto-save & Data Privacy */}
-              {tourStep === 0 && (
-                <>
-                  <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                    Welcome to Editor
-                  </h2>
-                  <div className="space-y-6 mb-8">
-                    <div className="flex gap-4">
-                      <div className="text-green-600 text-xl">✅</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Auto-saved
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          As you make edits, your work is automatically saved every 2 seconds
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-amber-600 text-xl">⚠️</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Only on this device
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          To use it elsewhere: tap ⋮ → "Save My Work"
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-blue-600 text-xl">🛡️</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Your data stays yours
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          We don't store or send your resume anywhere. You're always in control.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* Step 2: Section Navigator */}
-              {tourStep === 1 && (
-                <>
-                  <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                    Navigate with Ease
-                  </h2>
-                  <div className="space-y-6 mb-8">
-                    <div className="flex gap-4">
-                      <div className="text-blue-600 text-xl">📱</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Mobile: Bottom Navigation
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Tap the navigation button to access sections, save/load, and actions
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-purple-600 text-xl">💻</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Desktop: Right Sidebar
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Collapsible sidebar with section navigation - press Ctrl+\ to toggle
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-indigo-600 text-xl">🎯</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Quick Jump
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Click any section name to instantly scroll to it
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* Step 3: Rich Text Formatting */}
-              {tourStep === 2 && (
-                <>
-                  <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                    Format Like a Pro
-                  </h2>
-                  <div className="space-y-6 mb-8">
-                    <div className="flex gap-4">
-                      <div className="text-indigo-600 text-xl">✨</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Bubble Menu
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Select any text to see formatting options: bold, italic, underline, and links
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-rose-600 text-xl">🔗</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Add Hyperlinks
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Link to your portfolio, GitHub, LinkedIn, or any online resource
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-emerald-600 text-xl">🎨</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Professional Styling
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          All formatting is preserved in your final PDF resume
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* Step 4: Preview & Download */}
-              {tourStep === 3 && (
-                <>
-                  <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                    Preview & Export
-                  </h2>
-                  <div className="space-y-6 mb-8">
-                    <div className="flex gap-4">
-                      <div className="text-blue-600 text-xl">👁️</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Live Preview
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Click "Preview PDF" to see exactly how your resume will look
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-green-600 text-xl">📥</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Download Resume
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Generate and download your professional PDF resume anytime
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="text-amber-600 text-xl">💾</div>
-                      <div>
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          Save Your Work
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          Export as YAML to save your progress or switch devices
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* Step Indicators */}
-              <div className="flex justify-center gap-2 mb-6">
-                {[0, 1, 2, 3].map((step) => (
-                  <button
-                    key={step}
-                    onClick={() => setTourStep(step)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      tourStep === step
-                        ? "bg-blue-600 w-8"
-                        : "bg-gray-300 hover:bg-gray-400"
-                    }`}
-                    aria-label={`Go to step ${step + 1}`}
-                  />
-                ))}
-              </div>
-
-              {/* Navigation Buttons */}
-              <div className="flex gap-3">
-                {tourStep > 0 && (
-                  <button
-                    onClick={handleTourPrevious}
-                    className="flex-1 border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 transition-colors"
-                  >
-                    Previous
-                  </button>
-                )}
-                {tourStep < 3 ? (
-                  <button
-                    onClick={handleTourNext}
-                    className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                  >
-                    Next
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => handleTourComplete(true)}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-medium hover:from-blue-500 hover:to-indigo-500 transition-colors"
-                  >
-                    Get Started
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Tabbed Help Modal - Replaces old help modal */}
+      <TabbedHelpModal
+        isOpen={showHelpModal}
+        onClose={() => setShowHelpModal(false)}
+        isAnonymous={isAnonymous}
+        onSignInClick={() => {
+          setShowHelpModal(false);
+          setShowAuthModal(true);
+        }}
+      />
 
       {showModal && (
         <SectionTypeModal
@@ -1986,12 +2180,28 @@ const Editor: React.FC = () => {
         isOpen={showStartFreshConfirm}
         onClose={() => setShowStartFreshConfirm(false)}
         onConfirm={confirmStartFresh}
-        title="Clear Template?"
-        message="Are you sure you want to clear all content and start fresh? This will remove all your work and reset the template to empty. This action cannot be undone."
-        confirmText="Clear All"
+        title="Start Fresh?"
+        message="Starting fresh will permanently delete all your current work. This action cannot be undone. Are you sure you want to continue?"
+        confirmText="Start Fresh"
         cancelText="Cancel"
         isDestructive={true}
         isLoading={loadingSave}
+      />
+
+      {/* Import YAML Confirmation Dialog */}
+      <ResponsiveConfirmDialog
+        isOpen={showImportConfirm}
+        onClose={() => {
+          setShowImportConfirm(false);
+          setPendingImportFile(null);
+        }}
+        onConfirm={confirmImportYAML}
+        title="Confirm Import?"
+        message="Importing this will override your existing content."
+        confirmText="Confirm Import"
+        cancelText="Cancel Import"
+        isDestructive={true}
+        isLoading={loadingLoad}
       />
 
       {/* PDF Preview Modal */}
@@ -2005,6 +2215,29 @@ const Editor: React.FC = () => {
         onRefresh={handleRefreshPreview}
         onDownload={handleGenerateResume}
       />
+
+      {/* Storage Limit Modal - shown when user hits 5-resume limit */}
+      <StorageLimitModal
+        isOpen={showStorageLimitModal}
+        onClose={() => setShowStorageLimitModal(false)}
+      />
+
+      {/* Idle Nudge Tooltip - Portal to body, positioned near sign-in button */}
+      {showIdleTooltip && ReactDOM.createPortal(
+        <div className="fixed top-20 right-6 z-[70] bg-blue-600 text-white text-sm px-4 py-3 rounded-lg shadow-xl animate-bounce">
+          <div className="flex items-center gap-2">
+            <span>💡</span>
+            <span>Don't forget to save your progress permanently</span>
+            <button
+              onClick={() => setShowIdleTooltip(false)}
+              className="ml-2 hover:opacity-75 text-white"
+            >
+              ✕
+            </button>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 };

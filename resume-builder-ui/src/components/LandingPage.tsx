@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import CountUp from "react-countup";
 import SEOHead from "./SEOHead";
 import CompanyMarquee from "./CompanyMarquee";
+import { useAuth } from "../contexts/AuthContext";
+import { useResumes } from "../hooks/useResumes";
 import {
   ArrowRightIcon,
   EyeIcon,
@@ -13,10 +15,38 @@ import {
   LockClosedIcon,
   GiftIcon,
   ChevronDownIcon,
+  DocumentTextIcon,
 } from "@heroicons/react/24/solid";
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { isAuthenticated, isAnonymous } = useAuth();
+  const { data: resumes = [] } = useResumes();
+
+  // Check if user has resumes
+  const hasResumes = isAuthenticated && !isAnonymous && resumes.length > 0;
+
+  // Handle legacy URL redirects only
+  useEffect(() => {
+    // Handle legacy URL redirects (old bookmark format)
+    const resumeIdFromUrl = searchParams.get("resumeId");
+    const templateId = searchParams.get("template");
+
+    if (resumeIdFromUrl) {
+      // Old bookmark: /?resumeId=123 → redirect to /editor/123
+      navigate(`/editor/${resumeIdFromUrl}`, { replace: true });
+      return;
+    }
+
+    if (templateId) {
+      // Old bookmark: /?template=modern → redirect to templates page
+      navigate(`/templates`, { replace: true });
+      return;
+    }
+
+    // No auto-redirect for authenticated users - let them see landing page
+  }, [searchParams, navigate]);
 
   // Calculate growing user count starting above 50k
   const calculateUsersServed = (): number => {
@@ -79,7 +109,7 @@ const LandingPage: React.FC = () => {
     {
       question: "Is this resume builder really free?",
       answer:
-        "Yes, completely free with no hidden fees or premium upgrades. Create and download unlimited resumes at no cost.",
+        "Yes, 100% free. There are no paywalls for downloading PDFs and no hidden subscriptions. Even our premium features like Cloud Auto-Save and the Multi-Resume Dashboard are completely free for registered users.",
     },
     {
       question: "Are the templates ATS-friendly?",
@@ -89,12 +119,27 @@ const LandingPage: React.FC = () => {
     {
       question: "Do I need to sign up or create an account?",
       answer:
-        "No registration required! You can start building your resume immediately and download it without providing any personal information.",
+        "No! You can build and download your resume instantly as a guest without signing up. However, creating a free account unlocks Cloud Storage, allowing you to save your work securely, access it from any device, and manage multiple resume versions.",
     },
     {
       question: "What format will my resume be downloaded in?",
       answer:
         "Your resume is generated as a high-quality PDF that's perfect for email applications and printing. The PDF maintains professional formatting across all devices.",
+    },
+    {
+      question: "How do I save my resume to edit it later?",
+      answer:
+        "We automatically save your progress as you type. As a guest, data is stored in your browser. For permanent safekeeping, simply sign in to sync your resume to the secure cloud. You can then log in from your phone or laptop anytime to continue editing.",
+    },
+    {
+      question: "Can I create specific resumes for different jobs?",
+      answer:
+        "Yes! With a free account, you can create and manage up to 5 different resume versions in your Dashboard. This is perfect for tailoring your CV to specific job applications (e.g., one for Customer Service, one for Admin).",
+    },
+    {
+      question: "I started a resume but didn't sign in. Did I lose my work?",
+      answer:
+        "Likely not! Our smart recovery system attempts to find your previous session when you return to the site. If we find unsaved work, we will prompt you to restore it. We recommend signing in to ensure you never lose your progress.",
     },
   ];
 
@@ -140,23 +185,23 @@ const LandingPage: React.FC = () => {
         {/* Hero Section */}
         <div className="text-center my-16 px-4 max-w-4xl mx-auto">
           {/* Professional Gradient Title */}
-          <h1 className="text-4xl md:text-6xl font-bold mb-8 pb-2 leading-snug tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 relative">
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-8 pb-2 leading-snug tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 relative">
             <span className="absolute inset-0 text-gray-800 opacity-10">The Truly Free Resume Builder</span>
             The Truly Free Resume Builder
           </h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto text-gray-800 mb-4 leading-relaxed">
+          <p className="text-xl md:text-2xl max-w-3xl mx-auto text-gray-800 mb-4 leading-loose">
             Create ATS-optimized resumes that get you noticed by hiring
             managers.
           </p>
           <div className="flex items-center justify-center gap-4 mb-10">
-            <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-              <LockClosedIcon className="w-4 h-4 text-green-600 mr-2" />
+            <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm hover:shadow-md hover:bg-white/70 transition-all duration-300">
+              <LockClosedIcon className="w-5 h-5 text-green-600 mr-2" />
               <span className="text-sm font-medium text-gray-700">
                 100% Free
               </span>
             </div>
-            <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-              <ClockIcon className="w-4 h-4 text-blue-600 mr-2" />
+            <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm hover:shadow-md hover:bg-white/70 transition-all duration-300">
+              <ClockIcon className="w-5 h-5 text-blue-600 mr-2" />
               <span className="text-sm font-medium text-gray-700">
                 No Sign-up
               </span>
@@ -165,10 +210,10 @@ const LandingPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
             <button
               className="group inline-flex items-center justify-center bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 ease-out active:scale-[0.98] relative overflow-hidden"
-              onClick={() => navigate("/templates")}
+              onClick={() => navigate(hasResumes ? "/my-resumes" : "/templates")}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out"></div>
-              Start Building Now
+              {hasResumes ? "My Resumes" : "Start Building Now"}
               <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
             </button>
             <button
@@ -183,13 +228,17 @@ const LandingPage: React.FC = () => {
 
         {/* Stats Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-16 my-16 px-4">
-          <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
+          <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
+            <DocumentTextIcon className="w-10 h-10 text-blue-500 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
             <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-blue-500 group-hover:to-purple-500 transition-all duration-300">
-              <CountUp end={totalUsers} duration={3} separator="," />+
+              <span className="inline-block min-w-[180px] text-center">
+                <CountUp end={totalUsers} duration={3} separator="," />+
+              </span>
             </h3>
             <p className="text-gray-600 font-medium tracking-wide">Resumes Created</p>
           </div>
-          <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-xl hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
+          <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
+            <CheckBadgeIcon className="w-10 h-10 text-indigo-500 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
             <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-indigo-500 group-hover:to-purple-500 transition-all duration-300">
               100%
             </h3>
@@ -239,7 +288,7 @@ const LandingPage: React.FC = () => {
                 
                 <div className="relative z-10">
                   <div className="flex items-center justify-center mb-6">
-                    <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 group-hover:from-blue-100/90 group-hover:to-purple-100/90 group-hover:scale-110 transition-all duration-300 shadow-md group-hover:shadow-lg">
+                    <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 group-hover:from-blue-100/90 group-hover:to-purple-100/90 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-md group-hover:shadow-lg">
                       {item.icon}
                     </div>
                   </div>
@@ -370,14 +419,16 @@ const LandingPage: React.FC = () => {
                       }`}
                     />
                   </button>
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ${
-                      isOpen ? "max-h-48 pb-6" : "max-h-0"
-                    }`}
-                  >
-                    <p className="text-gray-600 px-6 leading-relaxed">
-                      {faq.answer}
-                    </p>
+                  <div style={{ contain: 'layout' }}>
+                    <div
+                      className={`overflow-hidden transition-all duration-300 ${
+                        isOpen ? "max-h-48 pb-6" : "max-h-0"
+                      }`}
+                    >
+                      <p className="text-gray-600 px-6 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
                   </div>
                 </div>
               );
@@ -405,10 +456,10 @@ const LandingPage: React.FC = () => {
               </p>
               <button
                 className="group inline-flex items-center justify-center bg-white text-purple-700 py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 ease-out active:scale-95 relative overflow-hidden"
-                onClick={() => navigate("/templates")}
+                onClick={() => navigate(hasResumes ? "/my-resumes" : "/templates")}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-purple-100/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out"></div>
-                Start Building Your Resume
+                {hasResumes ? "Go to My Resumes" : "Start Building Your Resume"}
                 <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
             </div>
