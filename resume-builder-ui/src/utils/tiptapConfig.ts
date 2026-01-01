@@ -112,8 +112,11 @@ export const markdownToHtml = (markdown: string): string => {
 export const htmlToMarkdown = (html: string): string => {
   if (!html) return '';
 
-  // Remove paragraph tags
+  // Remove paragraph tags and convert <br> to newlines first
+  // This must happen before the main conversion loop so that [^<>]* pattern
+  // can match content spanning multiple lines
   let markdown = html.replace(/<p>/g, '').replace(/<\/p>/g, '\n');
+  markdown = markdown.replace(/<br\s*\/?>/g, '\n');
 
   // Process HTML tags iteratively from innermost to outermost
   // This handles nested tags like <strong><em>text</em></strong>
@@ -148,9 +151,6 @@ export const htmlToMarkdown = (html: string): string => {
     // Convert underline (<u>) - custom syntax
     markdown = markdown.replace(/<u>([^<>]*)<\/u>/g, '++$1++');
   }
-
-  // Convert <br> to newlines
-  markdown = markdown.replace(/<br\s*\/?>/g, '\n');
 
   // Clean up extra whitespace
   markdown = markdown.trim();
