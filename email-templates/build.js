@@ -17,13 +17,9 @@ const SRC_DIR = path.join(__dirname, 'src');
 const DIST_DIR = __dirname;
 
 // Templates to build
-// Add templates here as you migrate them to src/
 const templates = [
-  'magic-link.html'
-  // 'confirm-signup.html',
-  // 'reset-password.html',
-  // 'change-email.html',
-  // 'base-template.html'
+  'magic-link.html',
+  'confirm-signup.html'
 ];
 
 // Juice options for optimal email compatibility

@@ -14,7 +14,7 @@ All templates follow the EasyFreeResume design language:
 
 ## Available Templates
 
-### 1. `magic-link.html`
+### 1. `magic-link.html` ⚡
 **Purpose**: Passwordless authentication (Magic Link sign-in)
 
 **Supabase Variable**: `{{ .ConfirmationURL }}`
@@ -26,10 +26,11 @@ All templates follow the EasyFreeResume design language:
 - 1-hour expiration notice
 - Security warning
 - Alternative link option
+- **Built with automated CSS inlining**
 
 ---
 
-### 2. `confirm-signup.html`
+### 2. `confirm-signup.html` ⚡
 **Purpose**: Email confirmation after account creation
 
 **Supabase Variable**: `{{ .ConfirmationURL }}`
@@ -41,35 +42,7 @@ All templates follow the EasyFreeResume design language:
 - Feature highlights box
 - 24-hour expiration notice
 - Onboarding tone
-
----
-
-### 3. `reset-password.html`
-**Purpose**: Password reset flow
-
-**Supabase Variable**: `{{ .ConfirmationURL }}`
-
-**Used for**: Password recovery
-
-**Key Features**:
-- Security-focused messaging
-- Clear instructions
-- 1-hour expiration
-- Warning about phishing
-
----
-
-### 4. `change-email.html`
-**Purpose**: Email address change confirmation
-
-**Supabase Variable**: `{{ .ConfirmationURL }}`
-
-**Used for**: Verifying new email when user changes it
-
-**Key Features**:
-- Confirmation focus
-- Security notice
-- Contact support prompt
+- **Built with automated CSS inlining**
 
 ---
 
@@ -261,11 +234,10 @@ cat magic-link.html  # This has inlined CSS
 - ✅ **Email client compatible**: Automatic `-webkit-`, `-ms-`, `mso-` prefixes
 
 **Migration Status:**
-- ✅ `magic-link.html` - Migrated to build process
-- ⏳ `confirm-signup.html` - Manual inline styles (to be migrated)
-- ⏳ `reset-password.html` - Manual inline styles (to be migrated)
-- ⏳ `change-email.html` - Manual inline styles (to be migrated)
-- ⏳ `base-template.html` - Reference template (to be migrated)
+- ✅ `magic-link.html` - Using automated build process
+- ✅ `confirm-signup.html` - Using automated build process
+
+**Note:** Only magic-link and confirm-signup templates are actively used and maintained with the build process.
 
 ### 6. Testing Checklist
 
