@@ -3,11 +3,39 @@
  * Provides utility functions for accessing programmatic SEO job data
  */
 
-export { JOBS_DATABASE } from './jobsData';
+// Re-export types
 export type { JobKeywordsData, ToolCategory } from './types';
 
-import { JOBS_DATABASE } from './jobsData';
+// Import all job data from individual files
+import { softwareEngineer } from './jobs/software-engineer';
+import { dataScientist } from './jobs/data-scientist';
+import { productManager } from './jobs/product-manager';
+import { frontendDeveloper } from './jobs/frontend-developer';
+import { backendDeveloper } from './jobs/backend-developer';
+import { fullStackDeveloper } from './jobs/full-stack-developer';
+import { devopsEngineer } from './jobs/devops-engineer';
+import { dataAnalyst } from './jobs/data-analyst';
+import { uxDesigner } from './jobs/ux-designer';
+import { projectManager } from './jobs/project-manager';
 import type { JobKeywordsData } from './types';
+
+/**
+ * Complete jobs database
+ * Aggregates all individual job entries into a single array
+ * Add new jobs by importing above and adding to this array
+ */
+export const JOBS_DATABASE: JobKeywordsData[] = [
+  softwareEngineer,
+  dataScientist,
+  productManager,
+  frontendDeveloper,
+  backendDeveloper,
+  fullStackDeveloper,
+  devopsEngineer,
+  dataAnalyst,
+  uxDesigner,
+  projectManager,
+];
 
 /**
  * Get job data by URL slug

@@ -216,3 +216,4 @@ resume-*.yml
 # Frontend build output (served by Flask)
 static/
 .env.local
+SEO-plan.md
