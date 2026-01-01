@@ -97,7 +97,7 @@ export default function Header() {
               >
                 My Resumes
                 {resumeCount > 0 && (
-                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-red-500 rounded-full flex items-center justify-center ring-2 ring-white text-white text-[10px] font-bold px-1">
+                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-amber-500 rounded-full flex items-center justify-center ring-2 ring-white text-white text-[10px] font-bold px-1">
                     {resumeCount > 99 ? '99+' : resumeCount}
                   </span>
                 )}
@@ -144,7 +144,7 @@ export default function Header() {
                   <div className="relative">
                     <FileText className="w-6 h-6 text-gray-700" />
                     {resumeCount > 0 && (
-                      <div className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-red-500 rounded-full flex items-center justify-center ring-2 ring-white">
+                      <div className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-amber-500 rounded-full flex items-center justify-center ring-2 ring-white">
                         <span className="text-white text-[10px] font-bold px-1">
                           {resumeCount > 99 ? '99+' : resumeCount}
                         </span>
