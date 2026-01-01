@@ -63,7 +63,6 @@ const HowToWriteResumeGuide = lazy(() => import("./components/blog/HowToWriteRes
 const ResumeActionVerbs = lazy(() => import("./components/blog/ResumeActionVerbs"));
 const HowToUseResumeKeywords = lazy(() => import("./components/blog/HowToUseResumeKeywords"));
 const SoftwareEngineerResumeKeywords = lazy(() => import("./components/blog/SoftwareEngineerResumeKeywords"));
-const CustomerServiceResumeKeywords = lazy(() => import("./components/blog/CustomerServiceResumeKeywords"));
 const EasyFreeResumeFreeBlog = lazy(() => import("./components/blog/EasyFreeResumeFreeBlog"));
 const ZetyVsEasyFreeResume = lazy(() => import("./components/blog/ZetyVsEasyFreeResume"));
 const HowToListSkills = lazy(() => import("./components/blog/HowToListSkills"));
