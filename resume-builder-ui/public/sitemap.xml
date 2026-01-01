@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- High Priority Landing Pages (1.0) -->
+  <!-- Static Pages -->
   <url>
     <loc>https://easyfreeresume.com/</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <priority>1</priority>
   </url>
-
-  <!-- New SEO Landing Pages (0.9) -->
   <url>
     <loc>https://easyfreeresume.com/actual-free-resume-builder</loc>
     <lastmod>2025-10-26</lastmod>
@@ -28,8 +26,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-
-  <!-- Core App Pages (0.8) -->
   <url>
     <loc>https://easyfreeresume.com/templates</loc>
     <lastmod>2025-10-26</lastmod>
@@ -42,8 +38,6 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- Hub Pages (0.8) -->
   <url>
     <loc>https://easyfreeresume.com/ats-resume-templates</loc>
     <lastmod>2025-10-26</lastmod>
@@ -56,39 +50,30 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- Template Pages (0.7) -->
   <url>
     <loc>https://easyfreeresume.com/templates/ats-friendly</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
-  <!-- Keywords Pages (0.7) -->
   <url>
     <loc>https://easyfreeresume.com/resume-keywords/customer-service</loc>
     <lastmod>2026-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
-  <!-- Blog Hub (0.6) -->
   <url>
     <loc>https://easyfreeresume.com/blog</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
-
-  <!-- Blog Posts (0.5) -->
   <url>
     <loc>https://easyfreeresume.com/blog/resume-keywords-guide</loc>
     <lastmod>2025-07-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-  <!-- Removed: /blog/customer-service-resume-keywords - redirects to /resume-keywords/customer-service to fix keyword cannibalization -->
   <url>
     <loc>https://easyfreeresume.com/blog/resume-no-experience</loc>
     <lastmod>2025-07-20</lastmod>
@@ -215,8 +200,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-
-  <!-- Static Pages (0.3) -->
   <url>
     <loc>https://easyfreeresume.com/about</loc>
     <lastmod>2025-10-26</lastmod>
@@ -240,6 +223,68 @@
     <lastmod>2026-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+
+  <!-- Programmatic SEO - Job Keywords Pages -->
+  <url>
+    <loc>https://easyfreeresume.com/resume-keywords/software-engineer</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://easyfreeresume.com/resume-keywords/data-scientist</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://easyfreeresume.com/resume-keywords/product-manager</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://easyfreeresume.com/resume-keywords/frontend-developer</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://easyfreeresume.com/resume-keywords/backend-developer</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://easyfreeresume.com/resume-keywords/full-stack-developer</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://easyfreeresume.com/resume-keywords/devops-engineer</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://easyfreeresume.com/resume-keywords/data-analyst</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://easyfreeresume.com/resume-keywords/ux-designer</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://easyfreeresume.com/resume-keywords/project-manager</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
 
 </urlset>
