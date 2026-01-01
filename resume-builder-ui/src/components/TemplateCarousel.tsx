@@ -1,5 +1,6 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { fetchTemplates } from "../services/templates";
 import { ArrowRightIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 import { useAuth } from "../contexts/AuthContext";
@@ -44,7 +45,17 @@ const TemplateCarousel: React.FC = () => {
   const [existingResumeTitle, setExistingResumeTitle] = useState<string>('');
   const [processingRecoveryRedirect, setProcessingRecoveryRedirect] = useState(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { session, isAnonymous, isAuthenticated, anonMigrationInProgress } = useAuth();
+
+  // Helper function to invalidate resume caches
+  const invalidateResumeCaches = async () => {
+    // Invalidate both caches to ensure fresh data when user returns to /my-resumes
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['resumes'] }),
+      queryClient.invalidateQueries({ queryKey: ['resume-count'] })
+    ]);
+  };
 
   // Fetch templates on component mount
   useEffect(() => {
@@ -157,6 +168,9 @@ const TemplateCarousel: React.FC = () => {
       // Navigate to editor
       toast.success("Resume created! Starting editor...");
       navigate(`/editor/${data.resume_id}`);
+
+      // Invalidate cache to ensure fresh data when user returns to /my-resumes
+      await invalidateResumeCaches();
     } catch (err) {
       console.error("Error creating resume:", err);
       toast.error("Failed to create resume. Please try again.");
@@ -200,6 +214,9 @@ const TemplateCarousel: React.FC = () => {
       // Navigate to editor
       toast.success("Resume created! Starting editor...");
       navigate(`/editor/${data.resume_id}`);
+
+      // Invalidate cache to ensure fresh data when user returns to /my-resumes
+      await invalidateResumeCaches();
     } catch (err) {
       console.error("Error creating resume:", err);
       toast.error("Failed to create resume. Please try again.");
@@ -330,6 +347,9 @@ const TemplateCarousel: React.FC = () => {
       // Navigate to editor with resume_id (standard flow)
       toast.success("Resume imported successfully! Loading editor...");
       navigate(`/editor/${data.resume_id}`);
+
+      // Invalidate cache to ensure fresh data when user returns to /my-resumes
+      await invalidateResumeCaches();
     } catch (err) {
       console.error("Error importing resume:", err);
       toast.error("Failed to import resume. Please try again.");
