@@ -112,33 +112,45 @@ export const markdownToHtml = (markdown: string): string => {
 export const htmlToMarkdown = (html: string): string => {
   if (!html) return '';
 
-  // Remove paragraph tags
+  // Remove paragraph tags and convert <br> to newlines first
+  // This must happen before the main conversion loop so that [^<>]* pattern
+  // can match content spanning multiple lines
   let markdown = html.replace(/<p>/g, '').replace(/<\/p>/g, '\n');
-
-  // Convert HTML links to markdown - handle complex anchor tags with multiple attributes
-  // Matches <a ...href="url"...>text</a> regardless of other attributes or their order
-  markdown = markdown.replace(
-    /<a\s+[^>]*href="([^"]+)"[^>]*>([^<]+)<\/a>/g,
-    '[$2]($1)'
-  );
-
-  // Convert bold (<strong> or <b>) to markdown
-  markdown = markdown.replace(/<strong>([^<]+)<\/strong>/g, '**$1**');
-  markdown = markdown.replace(/<b>([^<]+)<\/b>/g, '**$1**');
-
-  // Convert italic (<em> or <i>) to markdown
-  markdown = markdown.replace(/<em>([^<]+)<\/em>/g, '*$1*');
-  markdown = markdown.replace(/<i>([^<]+)<\/i>/g, '*$1*');
-
-  // Convert strikethrough (<s> or <del>)
-  markdown = markdown.replace(/<s>([^<]+)<\/s>/g, '~~$1~~');
-  markdown = markdown.replace(/<del>([^<]+)<\/del>/g, '~~$1~~');
-
-  // Convert underline (<u>) - custom syntax
-  markdown = markdown.replace(/<u>([^<]+)<\/u>/g, '++$1++');
-
-  // Convert <br> to newlines
   markdown = markdown.replace(/<br\s*\/?>/g, '\n');
+
+  // Process HTML tags iteratively from innermost to outermost
+  // This handles nested tags like <strong><em>text</em></strong>
+  let prevMarkdown = '';
+  let iterations = 0;
+  const MAX_ITERATIONS = 10; // Safety limit for deeply nested tags
+
+  while (prevMarkdown !== markdown && iterations < MAX_ITERATIONS) {
+    prevMarkdown = markdown;
+    iterations++;
+
+    // Convert HTML links to markdown - handle complex anchor tags with multiple attributes
+    // Use [^<>]* to match only innermost links (no nested tags in link text)
+    markdown = markdown.replace(
+      /<a\s+[^>]*href="([^"]+)"[^>]*>([^<>]*)<\/a>/g,
+      '[$2]($1)'
+    );
+
+    // Convert bold (<strong> or <b>) to markdown
+    // Use [^<>]* to match only innermost bold tags
+    markdown = markdown.replace(/<strong>([^<>]*)<\/strong>/g, '**$1**');
+    markdown = markdown.replace(/<b>([^<>]*)<\/b>/g, '**$1**');
+
+    // Convert italic (<em> or <i>) to markdown
+    markdown = markdown.replace(/<em>([^<>]*)<\/em>/g, '*$1*');
+    markdown = markdown.replace(/<i>([^<>]*)<\/i>/g, '*$1*');
+
+    // Convert strikethrough (<s> or <del>)
+    markdown = markdown.replace(/<s>([^<>]*)<\/s>/g, '~~$1~~');
+    markdown = markdown.replace(/<del>([^<>]*)<\/del>/g, '~~$1~~');
+
+    // Convert underline (<u>) - custom syntax
+    markdown = markdown.replace(/<u>([^<>]*)<\/u>/g, '++$1++');
+  }
 
   // Clean up extra whitespace
   markdown = markdown.trim();
