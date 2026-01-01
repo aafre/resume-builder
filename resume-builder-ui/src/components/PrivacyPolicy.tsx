@@ -3,32 +3,74 @@ const PrivacyPolicy = () => {
     <div className="container mx-auto my-10 px-4 sm:px-6 md:px-8">
       <h1 className="text-3xl font-bold text-center mb-6">Privacy Policy</h1>
       <p className="text-center text-gray-500 mb-6">
-        Last Updated: 20 December 2024
+        Last Updated: 1 January 2026
       </p>
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <p>
           At <strong>EasyFreeResume.com</strong>, your privacy is important to
           us. This Privacy Policy explains how we handle and protect your data.
         </p>
-        <h4 className="font-semibold mt-4">1. Information We Handle</h4>
+
+        <h4 className="font-semibold mt-4">1. Two Usage Modes</h4>
         <p>
-          We do not store any personal or uploaded information permanently. All
-          data (e.g., YAML files, icons, and resumes) is processed transiently
-          and deleted immediately after the resume is generated.
+          <strong>Guest Mode (No Account):</strong> When you use our service without creating an account,
+          all resume data is processed locally in your browser. We do not store, access, or have any
+          record of your resume content, personal information, or uploaded files. Your data stays entirely
+          on your device.
         </p>
-        <h4 className="font-semibold mt-4">2. Transient Data Processing</h4>
+        <p className="mt-2">
+          <strong>Cloud Account (Optional):</strong> If you choose to create a free account, we store
+          your resume data securely in our database (Supabase) so you can access your resumes from any device.
+          We collect only: email address (for authentication), resume content you choose to save, and account
+          metadata (creation date, last login).
+        </p>
+
+        <h4 className="font-semibold mt-4">2. PDF Generation Processing</h4>
         <p>
-          Once you upload your details and click "Generate Resume," the data is
-          used temporarily to create the resume. After the response is sent, all
-          information is removed from our systems automatically.
+          When you generate a PDF resume, your data is sent to our server temporarily to create the document.
+          For guest users, this data is processed in memory and immediately discarded after the PDF is returned
+          to you (typically within seconds). No copies are retained. For account users, the PDF generation
+          uses your saved resume data but does not create additional permanent storage.
         </p>
-        <h4 className="font-semibold mt-4">3. No Tracking or Sharing</h4>
+
+        <h4 className="font-semibold mt-4">3. Data Storage and Security</h4>
         <p>
-          We do not use cookies or trackers, nor do we sell, share, or store
-          your data with third parties. Your interaction with our service is
-          private and secure.
+          <strong>Guest Users:</strong> Zero server-side storage. Your resume data exists only in your browser's
+          local storage until you clear it or close the tab.
         </p>
-        <h4 className="font-semibold mt-4">4. Contact Us</h4>
+        <p className="mt-2">
+          <strong>Account Users:</strong> Your data is encrypted at rest and in transit. We use Supabase's
+          secure infrastructure with industry-standard security practices. You can delete your account and all
+          associated data at any time from your account settings.
+        </p>
+
+        <h4 className="font-semibold mt-4">4. Third-Party Services</h4>
+        <p>
+          We use Supabase for authentication and database services (account users only). We use analytics tools
+          to understand aggregate usage patterns (page views, feature usage) but do not track individual resume
+          content or personally identifiable information beyond what's required for account functionality.
+        </p>
+
+        <h4 className="font-semibold mt-4">5. Data Sharing and Sale</h4>
+        <p>
+          We do not sell, rent, or share your personal information or resume content with third parties for
+          marketing purposes. We will never monetize your career data. Your information is yours alone.
+        </p>
+
+        <h4 className="font-semibold mt-4">6. Your Rights</h4>
+        <p>
+          You have the right to: access your data, request data deletion, export your data (YAML format),
+          opt out of analytics cookies, and close your account at any time. For guest users, simply clearing
+          your browser data removes all traces of your resume.
+        </p>
+
+        <h4 className="font-semibold mt-4">7. Changes to This Policy</h4>
+        <p>
+          We may update this policy to reflect new features or legal requirements. Significant changes will be
+          announced on our homepage. Continued use after changes constitutes acceptance.
+        </p>
+
+        <h4 className="font-semibold mt-4">8. Contact Us</h4>
         <p>
           If you have questions about this policy, please reach out to us via
           Github by creating an issue{" "}
