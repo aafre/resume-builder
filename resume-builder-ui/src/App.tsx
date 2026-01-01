@@ -34,6 +34,7 @@ const TemplatesHub = lazy(() => import("./components/seo/TemplatesHub"));
 const AtsFriendlyTemplate = lazy(() => import("./components/seo/AtsFriendlyTemplate"));
 const ResumeKeywordsHub = lazy(() => import("./components/seo/ResumeKeywordsHub"));
 const CustomerServiceKeywords = lazy(() => import("./components/seo/CustomerServiceKeywords"));
+const JobKeywordsPage = lazy(() => import("./components/seo/JobKeywordsPage"));
 const BestFreeResumeBuilderReddit = lazy(() => import("./components/seo/BestFreeResumeBuilderReddit"));
 
 // Static pages - lazy loaded
@@ -195,6 +196,15 @@ function AppContent() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <CustomerServiceKeywords />
+              </Suspense>
+            }
+          />
+          {/* Dynamic route for programmatic SEO job keywords pages */}
+          <Route
+            path="/resume-keywords/:jobSlug"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <JobKeywordsPage />
               </Suspense>
             }
           />
