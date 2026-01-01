@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2026-01-01
+
+### 🐛 Bug Fixes
+
+- **editor:** Handle nested HTML tags in htmlToMarkdown conversion
+- **editor:** Move br tag conversion before nested tag processing
+- **latex:** Don't escape markdown syntax characters before filter
+- **latex:** Use raw string for docstring with LaTeX backslashes
+
+### 🧪 Testing
+
+- **editor:** Add comprehensive unit tests for markdown conversion
+- **editor:** Fix malformed HTML assertion in bidirectional test
+
 ## [1.3.0] - 2026-01-01
 
 ### 🚀 Features
