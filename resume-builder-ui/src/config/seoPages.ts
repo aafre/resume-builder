@@ -124,11 +124,12 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /free-resume-builder-no-sign-up
   noSignUp: {
     seo: {
-      title: 'Free Resume Builder - No Sign Up Required',
+      title: 'Free Resume Builder (No Sign Up) - Instant PDF Download',
       description:
-        'Create and download your resume in minutes. No registration, no account, no hassle. Start building immediately with our free resume builder.',
+        'Build your resume instantly and download PDF immediately. No sign up, no account, no email required. Professional ATS-friendly resumes in minutes.',
       keywords: [
         'free resume builder no sign up',
+        'instant pdf download',
         'no registration resume builder',
         'anonymous resume builder',
         'instant resume builder',
@@ -137,10 +138,10 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       canonicalUrl: '/free-resume-builder-no-sign-up',
     },
     hero: {
-      h1: 'Free Resume Builder No Sign Up',
-      subtitle: 'Start creating your professional resume right now. No forms, no passwords, no waiting.',
+      h1: 'Build Your Resume in Minutes - No Account Required',
+      subtitle: 'Instant PDF download. No sign up, no passwords, no waiting. Start now.',
       description:
-        'Skip the signup hassle. Our resume builder works instantly in your browser. Create, customize, and download your resume without creating an account or providing any personal information.',
+        'Create a professional, ATS-friendly resume and download your PDF instantly. No account creation, no email verification, no personal information required. Your resume, ready in minutes.',
       primaryCTA: {
         text: 'Build Resume Now',
         href: '/templates',
