@@ -25,7 +25,47 @@ const PrivacyPolicy = () => {
           metadata (creation date, last login).
         </p>
 
-        <h4 className="font-semibold mt-4">2. PDF Generation Processing</h4>
+        <h4 className="font-semibold mt-4">2. Google User Data</h4>
+        <p>
+          When you choose to create an account using Google Sign-In, we access and store specific information
+          from your Google account to provide authentication and personalization services.
+        </p>
+        <p className="mt-2">
+          <strong>Data Accessed from Google:</strong> We access the following information from your Google account:
+        </p>
+        <ul className="list-disc ml-6 mt-2">
+          <li><strong>Email Address:</strong> Used for account identification and authentication</li>
+          <li><strong>Full Name:</strong> Used for personalizing your account experience</li>
+          <li><strong>Profile Picture:</strong> Optionally displayed in your account dashboard</li>
+        </ul>
+        <p className="mt-2">
+          <strong>How We Use Google Data:</strong> This information is used strictly for:
+        </p>
+        <ul className="list-disc ml-6 mt-2">
+          <li>Authentication (logging you into your account)</li>
+          <li>Account creation (setting up your user profile)</li>
+          <li>Personalization (displaying your name and avatar in the dashboard)</li>
+        </ul>
+        <p className="mt-2">
+          <strong>What We Do NOT Do:</strong> We do not use your Google data for advertisements, marketing
+          campaigns, or selling to third parties. Your Google information is used solely for the purposes
+          stated above.
+        </p>
+        <p className="mt-2">
+          <strong>Google API Services Compliance:</strong> EasyFreeResume's use and transfer to any other app
+          of information received from Google APIs will adhere to the{" "}
+          <a
+            href="https://developers.google.com/terms/api-services-user-data-policy"
+            className="text-blue-500 underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Google API Services User Data Policy
+          </a>
+          , including the Limited Use requirements.
+        </p>
+
+        <h4 className="font-semibold mt-4">3. PDF Generation Processing</h4>
         <p>
           When you generate a PDF resume, your data is sent to our server temporarily to create the document.
           For guest users, this data is processed in memory and immediately discarded after the PDF is returned
@@ -33,7 +73,7 @@ const PrivacyPolicy = () => {
           uses your saved resume data but does not create additional permanent storage.
         </p>
 
-        <h4 className="font-semibold mt-4">3. Data Storage and Security</h4>
+        <h4 className="font-semibold mt-4">4. Data Storage and Security</h4>
         <p>
           <strong>Guest Users:</strong> Zero server-side storage. Your resume data exists only in your browser's
           local storage until you clear it or close the tab.
@@ -44,33 +84,33 @@ const PrivacyPolicy = () => {
           associated data at any time from your account settings.
         </p>
 
-        <h4 className="font-semibold mt-4">4. Third-Party Services</h4>
+        <h4 className="font-semibold mt-4">5. Third-Party Services</h4>
         <p>
           We use Supabase for authentication and database services (account users only). We use analytics tools
           to understand aggregate usage patterns (page views, feature usage) but do not track individual resume
           content or personally identifiable information beyond what's required for account functionality.
         </p>
 
-        <h4 className="font-semibold mt-4">5. Data Sharing and Sale</h4>
+        <h4 className="font-semibold mt-4">6. Data Sharing and Sale</h4>
         <p>
           We do not sell, rent, or share your personal information or resume content with third parties for
           marketing purposes. We will never monetize your career data. Your information is yours alone.
         </p>
 
-        <h4 className="font-semibold mt-4">6. Your Rights</h4>
+        <h4 className="font-semibold mt-4">7. Your Rights</h4>
         <p>
           You have the right to: access your data, request data deletion, export your data (YAML format),
           opt out of analytics cookies, and close your account at any time. For guest users, simply clearing
           your browser data removes all traces of your resume.
         </p>
 
-        <h4 className="font-semibold mt-4">7. Changes to This Policy</h4>
+        <h4 className="font-semibold mt-4">8. Changes to This Policy</h4>
         <p>
           We may update this policy to reflect new features or legal requirements. Significant changes will be
           announced on our homepage. Continued use after changes constitutes acceptance.
         </p>
 
-        <h4 className="font-semibold mt-4">8. Contact Us</h4>
+        <h4 className="font-semibold mt-4">9. Contact Us</h4>
         <p>
           If you have questions about this policy, please reach out to us via
           Github by creating an issue{" "}
