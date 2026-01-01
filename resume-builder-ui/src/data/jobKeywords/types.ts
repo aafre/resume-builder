@@ -31,6 +31,12 @@ export interface JobKeywordsData {
   // Optional: Detailed tool breakdown by category
   tools?: ToolCategory[];
 
+  // Before/After example showing keyword integration
+  example: {
+    before: string; // Generic, un-optimized resume bullet
+    after: string;  // Keyword-optimized bullet with specific skills
+  };
+
   // Optional: Custom FAQs (overrides auto-generated)
   customFaqs?: FAQConfig[];
 }

@@ -81,4 +81,9 @@ export const fullStackDeveloper: JobKeywordsData = {
       items: ['Webpack', 'Vite', 'Postman', 'Jira', 'VS Code'],
     },
   ],
+
+  example: {
+    before: 'Built full stack web applications using modern technologies.',
+    after: 'Engineered end-to-end web applications using React and Node.js with PostgreSQL, implementing RESTful APIs and deploying on AWS with Docker, serving 100K+ monthly users with 99.7% uptime and reducing page load time by 50%.',
+  },
 };

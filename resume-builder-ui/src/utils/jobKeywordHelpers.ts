@@ -50,26 +50,6 @@ export function generateJobFAQs(job: JobKeywordsData): FAQConfig[] {
 }
 
 /**
- * Format a before/after resume example showing keyword integration
- * @param job - JobKeywordsData object
- * @returns Object with before and after example bullets
- */
-export function generateBeforeAfterExample(job: JobKeywordsData): {
-  before: string;
-  after: string;
-} {
-  const skill1 = job.keywords.technical[0] || 'technical skills';
-  const skill2 = job.keywords.technical[1] || 'tools';
-  const process = job.keywords.processes?.[0] || 'best practices';
-  const metric = job.keywords.metrics?.[0] || 'improved efficiency by 25%';
-
-  return {
-    before: `Worked on software projects and helped the team deliver features on time.`,
-    after: `Developed scalable applications using ${skill1} and ${skill2}, implementing ${process} to ${metric}.`,
-  };
-}
-
-/**
  * Count total keywords for a job
  * @param job - JobKeywordsData object
  * @returns Total keyword count across all categories

@@ -77,4 +77,9 @@ export const uxDesigner: JobKeywordsData = {
       items: ['Google Analytics', 'Mixpanel', 'Amplitude', 'FullStory'],
     },
   ],
+
+  example: {
+    before: 'Designed user interfaces and conducted user testing for products.',
+    after: 'Led user research and usability testing with 50+ participants, designing high-fidelity prototypes in Figma and implementing WCAG 2.1 accessibility standards, resulting in a 40% increase in user engagement and 85% customer satisfaction score.',
+  },
 };

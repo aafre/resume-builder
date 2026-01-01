@@ -80,4 +80,9 @@ export const frontendDeveloper: JobKeywordsData = {
       items: ['Git', 'GitHub', 'GitLab'],
     },
   ],
+
+  example: {
+    before: 'Built website features and fixed bugs for users.',
+    after: 'Developed responsive React components using TypeScript and Tailwind CSS, implementing Web Accessibility (WCAG 2.1) standards and optimizing performance to achieve 95+ Lighthouse scores, reducing page load time by 60%.',
+  },
 };

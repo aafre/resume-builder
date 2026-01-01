@@ -82,4 +82,9 @@ export const dataScientist: JobKeywordsData = {
       items: [...COLLABORATION_TOOLS.communication.slice(0, 3), 'GitHub'],
     },
   ],
+
+  example: {
+    before: 'Analyzed data to help the business make better decisions.',
+    after: 'Built predictive models using Python and TensorFlow to forecast customer churn, achieving 92% accuracy and enabling targeted retention campaigns that reduced churn by 18%.',
+  },
 };

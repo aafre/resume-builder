@@ -12,7 +12,7 @@ import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { getJobBySlug } from '../../data/jobKeywords';
-import { generateJobFAQs, generateBeforeAfterExample, getTotalKeywordCount } from '../../utils/jobKeywordHelpers';
+import { generateJobFAQs, getTotalKeywordCount } from '../../utils/jobKeywordHelpers';
 import type { BreadcrumbConfig, HeroConfig } from '../../types/seo';
 
 export default function JobKeywordsPage() {
@@ -29,8 +29,8 @@ export default function JobKeywordsPage() {
   // Generate FAQs (use custom if provided, otherwise auto-generate)
   const faqs = jobData.customFaqs || generateJobFAQs(jobData);
 
-  // Generate before/after example
-  const example = generateBeforeAfterExample(jobData);
+  // Get before/after example from job data
+  const example = jobData.example;
 
   // Total keyword count
   const totalKeywords = getTotalKeywordCount(jobData);

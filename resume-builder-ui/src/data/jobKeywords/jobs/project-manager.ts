@@ -75,4 +75,9 @@ export const projectManager: JobKeywordsData = {
       items: ['Jira', 'Azure DevOps', 'VersionOne', 'Rally'],
     },
   ],
+
+  example: {
+    before: 'Managed multiple projects and coordinated with cross-functional teams.',
+    after: 'Managed 5 concurrent Agile projects worth $3.2M using Jira and Microsoft Project, coordinating cross-functional teams of 20+ members across engineering, design, and marketing, delivering all projects on time and 12% under budget while maintaining 92% stakeholder satisfaction.',
+  },
 };

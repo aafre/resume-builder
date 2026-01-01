@@ -89,4 +89,9 @@ export const softwareEngineer: JobKeywordsData = {
       items: ['Git', 'GitHub', 'Jira', 'Confluence', 'VS Code', 'IntelliJ'],
     },
   ],
+
+  example: {
+    before: 'Worked on software projects and helped the team deliver features on time.',
+    after: 'Developed scalable microservices using Python and React, implementing CI/CD pipelines with Docker and Kubernetes, reducing deployment time by 40% and increasing system reliability to 99.9% uptime.',
+  },
 };

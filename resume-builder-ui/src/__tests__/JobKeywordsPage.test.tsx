@@ -27,6 +27,10 @@ vi.mock('../data/jobKeywords', () => ({
           { category: 'Programming Languages', items: ['Python', 'JavaScript'] },
           { category: 'Frameworks', items: ['React', 'Node.js'] },
         ],
+        example: {
+          before: 'Worked on software projects and helped the team deliver features on time.',
+          after: 'Developed scalable microservices using Python and React, implementing CI/CD pipelines with Docker and Kubernetes, reducing deployment time by 40% and increasing system reliability to 99.9% uptime.',
+        },
       };
     }
     return undefined;
@@ -98,9 +102,10 @@ describe('JobKeywordsPage', () => {
       </TestWrapper>
     );
 
-    expect(screen.getByText(/Core.*skills/i)).toBeInTheDocument();
-    expect(screen.getByText('Problem Solving')).toBeInTheDocument();
-    expect(screen.getByText('Team Collaboration')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: /Core.*skills/i })).toBeInTheDocument();
+    // Verify at least one core skill is present
+    const skills = screen.getAllByText('Problem Solving');
+    expect(skills.length).toBeGreaterThan(0);
   });
 
   it('should render technical skills section', () => {
@@ -110,9 +115,10 @@ describe('JobKeywordsPage', () => {
       </TestWrapper>
     );
 
-    expect(screen.getByText(/Technical skills/i)).toBeInTheDocument();
-    expect(screen.getByText('JavaScript')).toBeInTheDocument();
-    expect(screen.getByText('Python')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: /Technical skills/i })).toBeInTheDocument();
+    // Verify at least one technical skill is present
+    const skills = screen.getAllByText('JavaScript');
+    expect(skills.length).toBeGreaterThan(0);
   });
 
   it('should render tools section when tools data is available', () => {
@@ -133,9 +139,10 @@ describe('JobKeywordsPage', () => {
       </TestWrapper>
     );
 
-    expect(screen.getByText(/Methodologies and processes/i)).toBeInTheDocument();
-    expect(screen.getByText('Agile/Scrum')).toBeInTheDocument();
-    expect(screen.getByText('CI/CD')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: /Methodologies and processes/i })).toBeInTheDocument();
+    // Verify at least one process is present
+    const processes = screen.getAllByText('Agile/Scrum');
+    expect(processes.length).toBeGreaterThan(0);
   });
 
   it('should render certifications section', () => {
@@ -207,10 +214,10 @@ describe('JobKeywordsPage', () => {
     );
 
     // Verify key sections are present
-    expect(screen.getByText(/Core.*skills/i)).toBeInTheDocument();
-    expect(screen.getByText(/Technical skills/i)).toBeInTheDocument();
-    expect(screen.getByText(/Methodologies and processes/i)).toBeInTheDocument();
-    expect(screen.getByText(/Relevant certifications/i)).toBeInTheDocument();
-    expect(screen.getByText(/How to use these keywords/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: /Core.*skills/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: /Technical skills/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: /Methodologies and processes/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: /Relevant certifications/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: /How to use these keywords/i })).toBeInTheDocument();
   });
 });

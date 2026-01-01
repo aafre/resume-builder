@@ -78,4 +78,9 @@ export const productManager: JobKeywordsData = {
       items: [...COLLABORATION_TOOLS.communication, 'Notion', 'Confluence'],
     },
   ],
+
+  example: {
+    before: 'Managed product features and worked with engineering teams.',
+    after: 'Led cross-functional teams using Agile/Scrum to launch 3 major features, conducting A/B tests and user research to increase Monthly Active Users by 35% and improve retention rate from 68% to 82%.',
+  },
 };

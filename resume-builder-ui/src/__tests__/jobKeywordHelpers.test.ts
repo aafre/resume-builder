@@ -2,7 +2,6 @@
 import { describe, it, expect } from 'vitest';
 import {
   generateJobFAQs,
-  generateBeforeAfterExample,
   getTotalKeywordCount,
   getCategoryKeywordCount,
 } from '../utils/jobKeywordHelpers';
@@ -58,44 +57,6 @@ describe('jobKeywordHelpers', () => {
       // Should still have certification FAQ but with generic answer
       const certFaq = faqs.find(faq => faq.question.includes('certification'));
       expect(certFaq).toBeDefined();
-    });
-  });
-
-  describe('generateBeforeAfterExample', () => {
-    it('should return before and after examples', () => {
-      const example = generateBeforeAfterExample(softwareEngineer);
-
-      expect(example).toHaveProperty('before');
-      expect(example).toHaveProperty('after');
-      expect(example.before).toBeTruthy();
-      expect(example.after).toBeTruthy();
-    });
-
-    it('should include job-specific technical skills in after example', () => {
-      const example = generateBeforeAfterExample(softwareEngineer);
-
-      // Should mention at least one technical skill
-      const hasTechSkill = softwareEngineer.keywords.technical.some(skill =>
-        example.after.includes(skill)
-      );
-      expect(hasTechSkill).toBe(true);
-    });
-
-    it('should include processes in after example if available', () => {
-      const example = generateBeforeAfterExample(softwareEngineer);
-
-      // Should mention at least one process
-      const hasProcess = softwareEngineer.keywords.processes?.some(process =>
-        example.after.includes(process)
-      );
-      expect(hasProcess).toBe(true);
-    });
-
-    it('should be different for different jobs', () => {
-      const sweExample = generateBeforeAfterExample(softwareEngineer);
-      const dsExample = generateBeforeAfterExample(dataScientist);
-
-      expect(sweExample.after).not.toBe(dsExample.after);
     });
   });
 

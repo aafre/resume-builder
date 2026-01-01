@@ -88,4 +88,9 @@ export const devopsEngineer: JobKeywordsData = {
       items: ['Bash', 'Python', 'PowerShell', 'Go'],
     },
   ],
+
+  example: {
+    before: 'Managed cloud infrastructure and automated deployment processes.',
+    after: 'Automated infrastructure provisioning using Terraform and Kubernetes on AWS, implementing CI/CD pipelines with Jenkins and monitoring with Prometheus/Grafana, reducing deployment time by 70% and achieving 99.95% system uptime while cutting infrastructure costs by 35%.',
+  },
 };

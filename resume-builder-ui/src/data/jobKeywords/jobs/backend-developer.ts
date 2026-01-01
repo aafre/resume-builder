@@ -82,4 +82,9 @@ export const backendDeveloper: JobKeywordsData = {
       items: ['Git', 'Postman', 'Swagger', 'Redis', 'RabbitMQ'],
     },
   ],
+
+  example: {
+    before: 'Developed APIs and worked on server-side code.',
+    after: 'Architected RESTful APIs using Node.js and PostgreSQL, implementing microservices with Docker and AWS Lambda to handle 50K+ requests/day with 99.95% uptime, reducing response time by 45%.',
+  },
 };

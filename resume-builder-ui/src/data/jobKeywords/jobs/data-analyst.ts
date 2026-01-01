@@ -82,4 +82,9 @@ export const dataAnalyst: JobKeywordsData = {
       items: [...COLLABORATION_TOOLS.communication.slice(0, 3), 'Google Sheets'],
     },
   ],
+
+  example: {
+    before: 'Analyzed business data and created reports for stakeholders.',
+    after: 'Analyzed customer behavior data using SQL and Python (Pandas), building interactive Tableau dashboards to track KPIs and identify revenue opportunities, leading to a 22% increase in conversion rate and $1.2M in additional annual revenue.',
+  },
 };
