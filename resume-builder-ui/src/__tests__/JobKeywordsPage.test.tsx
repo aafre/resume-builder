@@ -187,10 +187,10 @@ describe('JobKeywordsPage', () => {
       </TestWrapper>
     );
 
-    // Find any link to the editor (CTA)
+    // Find any link to templates (CTA)
     const ctaLinks = screen.getAllByRole('link');
-    const editorLink = ctaLinks.find(link => link.getAttribute('href') === '/editor');
-    expect(editorLink).toBeInTheDocument();
+    const templatesLink = ctaLinks.find(link => link.getAttribute('href') === '/templates');
+    expect(templatesLink).toBeInTheDocument();
   });
 
   it('should render breadcrumbs', () => {
