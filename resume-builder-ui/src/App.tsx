@@ -2,6 +2,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Navigate,
   useLocation,
 } from "react-router-dom";
 import { lazy, Suspense } from "react";
@@ -33,6 +34,7 @@ const TemplatesHub = lazy(() => import("./components/seo/TemplatesHub"));
 const AtsFriendlyTemplate = lazy(() => import("./components/seo/AtsFriendlyTemplate"));
 const ResumeKeywordsHub = lazy(() => import("./components/seo/ResumeKeywordsHub"));
 const CustomerServiceKeywords = lazy(() => import("./components/seo/CustomerServiceKeywords"));
+const JobKeywordsPage = lazy(() => import("./components/seo/JobKeywordsPage"));
 const BestFreeResumeBuilderReddit = lazy(() => import("./components/seo/BestFreeResumeBuilderReddit"));
 
 // Static pages - lazy loaded
@@ -61,7 +63,6 @@ const HowToWriteResumeGuide = lazy(() => import("./components/blog/HowToWriteRes
 const ResumeActionVerbs = lazy(() => import("./components/blog/ResumeActionVerbs"));
 const HowToUseResumeKeywords = lazy(() => import("./components/blog/HowToUseResumeKeywords"));
 const SoftwareEngineerResumeKeywords = lazy(() => import("./components/blog/SoftwareEngineerResumeKeywords"));
-const CustomerServiceResumeKeywords = lazy(() => import("./components/blog/CustomerServiceResumeKeywords"));
 const EasyFreeResumeFreeBlog = lazy(() => import("./components/blog/EasyFreeResumeFreeBlog"));
 const ZetyVsEasyFreeResume = lazy(() => import("./components/blog/ZetyVsEasyFreeResume"));
 const HowToListSkills = lazy(() => import("./components/blog/HowToListSkills"));
@@ -194,6 +195,15 @@ function AppContent() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <CustomerServiceKeywords />
+              </Suspense>
+            }
+          />
+          {/* Dynamic route for programmatic SEO job keywords pages */}
+          <Route
+            path="/resume-keywords/:jobSlug"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <JobKeywordsPage />
               </Suspense>
             }
           />
@@ -387,13 +397,10 @@ function AppContent() {
               </Suspense>
             }
           />
+          {/* 301 redirect - consolidate to SEO landing page to fix keyword cannibalization */}
           <Route
             path="/blog/customer-service-resume-keywords"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <CustomerServiceResumeKeywords />
-              </Suspense>
-            }
+            element={<Navigate to="/resume-keywords/customer-service" replace />}
           />
           <Route
             path="/blog/how-why-easyfreeresume-completely-free"

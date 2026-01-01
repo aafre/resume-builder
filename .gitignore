@@ -216,3 +216,7 @@ resume-*.yml
 # Frontend build output (served by Flask)
 static/
 .env.local
+SEO-plan.md
+
+# Generated files (build artifacts)
+resume-builder-ui/public/sitemap.xml

@@ -135,9 +135,9 @@ export default function AboutUs() {
                   Privacy Protected
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Your personal information and career data belong to you. We
-                  don't store, sell, or share your information. You're always in
-                  complete control.
+                  Your career data belongs to you. Use guest mode for complete privacy
+                  (no data stored), or create a free account to securely save up to 5 resumes.
+                  We never sell or share your information. You're always in complete control.
                 </p>
               </div>
 

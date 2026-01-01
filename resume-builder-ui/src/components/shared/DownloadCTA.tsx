@@ -18,7 +18,7 @@ export default function DownloadCTA({
   title = 'Ready to Create Your Resume?',
   description = 'Get started now with our free resume builder. No sign-up required.',
   primaryText = 'Start Building',
-  primaryHref = '/editor',
+  primaryHref = '/templates',
   className = '',
 }: DownloadCTAProps) {
   return (

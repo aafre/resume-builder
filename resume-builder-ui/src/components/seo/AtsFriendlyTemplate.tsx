@@ -120,6 +120,7 @@ export default function AtsFriendlyTemplate() {
       <DownloadCTA
         title="Get the ATS-Friendly Template"
         description="Start using our most popular template to create your professional resume."
+        primaryHref="/templates"
       />
     </SEOPageLayout>
   );

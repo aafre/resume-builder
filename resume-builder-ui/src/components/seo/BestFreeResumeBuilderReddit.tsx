@@ -134,6 +134,7 @@ export default function BestFreeResumeBuilderReddit() {
       <DownloadCTA
         title="See Why Reddit Recommends Us"
         description="Join thousands of job seekers who trust our actually free resume builder."
+        primaryHref="/templates"
       />
     </SEOPageLayout>
   );

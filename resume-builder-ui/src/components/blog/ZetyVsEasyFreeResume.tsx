@@ -3,15 +3,18 @@ import BlogLayout from "../BlogLayout";
 export default function ZetyVsEasyFreeResume() {
   return (
     <BlogLayout
-      title="Zety vs. EasyFreeResume: Why Pay for a Resume in 2025?"
-      description="A direct comparison between the popular paid resume builder Zety and our completely free alternative. See the features and decide for yourself if a paid builder is worth it."
+      title="Zety Pricing 2025: Why Pay? Use This 100% Free Alternative Instead"
+      description="Looking for Zety pricing? Don't get locked into a $5.95-$17.95/month subscription. EasyFreeResume offers the same ATS templates for $0. No hidden fees, no watermarks."
       publishDate="2025-07-28"
       readTime="9 min"
       keywords={[
-        "zety vs easyfreeresume",
-        "zety alternative",
-        "free resume builder vs paid",
+        "zety pricing",
         "is zety free",
+        "zety cost",
+        "zety pricing 2025",
+        "zety alternative free",
+        "zety vs easyfreeresume",
+        "free resume builder vs paid",
         "best resume builder reddit",
       ]}
     >

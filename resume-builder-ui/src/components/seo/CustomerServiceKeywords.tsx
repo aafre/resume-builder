@@ -200,6 +200,7 @@ export default function CustomerServiceKeywords() {
       <DownloadCTA
         title="Ready to Build Your Customer Service Resume?"
         description="Use these keywords with our professional templates to showcase your expertise."
+        primaryHref="/templates"
       />
     </SEOPageLayout>
   );
