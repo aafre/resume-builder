@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-01-01
+
+### 🚀 Features
+
+- **email-templates:** Add automated CSS inlining build process
+- **email-templates:** Complete migration to automated build process
+
+### 🐛 Bug Fixes
+
+- **email-templates:** Improve button responsiveness and update copyright
+- **email-templates:** Correct box-shadow placement on buttons
+
+### 🚜 Refactor
+
+- **email-templates:** Remove unused .button class styles
+
 ## [1.2.0] - 2026-01-01
 
 ### 🚀 Features
