@@ -7,24 +7,17 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { JOBS_DATABASE } from '../src/data/jobKeywords/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Job slugs for programmatic SEO pages
-// TODO: Auto-import from jobsData.ts once we have 50+ jobs
-const JOBS = [
-  { slug: 'software-engineer', priority: 0.9, lastmod: '2026-01-01' },
-  { slug: 'data-scientist', priority: 0.9, lastmod: '2026-01-01' },
-  { slug: 'product-manager', priority: 0.9, lastmod: '2026-01-01' },
-  { slug: 'frontend-developer', priority: 0.85, lastmod: '2026-01-01' },
-  { slug: 'backend-developer', priority: 0.85, lastmod: '2026-01-01' },
-  { slug: 'full-stack-developer', priority: 0.9, lastmod: '2026-01-01' },
-  { slug: 'devops-engineer', priority: 0.85, lastmod: '2026-01-01' },
-  { slug: 'data-analyst', priority: 0.85, lastmod: '2026-01-01' },
-  { slug: 'ux-designer', priority: 0.8, lastmod: '2026-01-01' },
-  { slug: 'project-manager', priority: 0.85, lastmod: '2026-01-01' },
-];
+// Job data imported from single source of truth
+const JOBS = JOBS_DATABASE.map(job => ({
+  slug: job.slug,
+  priority: job.priority,
+  lastmod: job.lastmod || new Date().toISOString().split('T')[0],
+}));
 
 // Static URLs (from existing sitemap.xml)
 const STATIC_URLS = [
@@ -87,7 +80,7 @@ const STATIC_URLS = [
 /**
  * Generate sitemap XML
  */
-function generateSitemap() {
+function generateSitemap(): string {
   const baseUrl = 'https://easyfreeresume.com';
 
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
@@ -123,7 +116,7 @@ function generateSitemap() {
 /**
  * Write sitemap to public directory
  */
-function writeSitemap() {
+function writeSitemap(): void {
   try {
     const xml = generateSitemap();
     const publicDir = path.resolve(__dirname, '../public');

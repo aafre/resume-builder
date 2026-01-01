@@ -10,6 +10,7 @@ import PageHero from '../shared/PageHero';
 import BreadcrumbsWithSchema from '../shared/BreadcrumbsWithSchema';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
+import HighlightedText from '../shared/HighlightedText';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { getJobBySlug } from '../../data/jobKeywords';
 import { generateJobFAQs, getTotalKeywordCount } from '../../utils/jobKeywordHelpers';
@@ -277,10 +278,14 @@ export default function JobKeywordsPage() {
             <h4 className="font-bold text-green-800 mb-4">
               ✅ Optimized (After)
             </h4>
-            <p className="text-gray-700" dangerouslySetInnerHTML={{ __html: example.after.replace(
-              new RegExp(`(${jobData.keywords.technical.slice(0, 5).join('|')}|${jobData.keywords.processes?.slice(0, 2).join('|') || ''})`, 'gi'),
-              '<strong>$1</strong>'
-            )}} />
+            <HighlightedText
+              text={example.after}
+              keywords={[
+                ...jobData.keywords.technical.slice(0, 5),
+                ...(jobData.keywords.processes?.slice(0, 2) || []),
+              ]}
+              className="text-gray-700"
+            />
           </div>
         </div>
       </div>
