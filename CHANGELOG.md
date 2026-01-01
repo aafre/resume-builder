@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-01-01
+
+### 🚀 Features
+
+- **hooks:** Set staleTime to 0 in useResumes for instant data refresh
+- **hooks:** Set staleTime to 0 in useResumeCount
+- **templates:** Add cache invalidation after resume creation
+
+### 🚜 Refactor
+
+- **templates:** Extract cache invalidation to helper function
+
 ## [1.1.0] - 2025-12-31
 
 ### 🚀 Features
