@@ -413,7 +413,7 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
 
 
 def _escape_latex(text):
-    """Escapes special LaTeX characters in a string to prevent compilation errors.
+    r"""Escapes special LaTeX characters in a string to prevent compilation errors.
 
     Note: Does NOT escape characters used in markdown syntax (~, *, _, +) because
     they are converted to LaTeX commands by the markdown filters before rendering.
