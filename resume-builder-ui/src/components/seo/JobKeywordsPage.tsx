@@ -50,7 +50,7 @@ export default function JobKeywordsPage() {
     description: `Complete list of ${jobData.title.toLowerCase()} keywords including core skills, technical tools, certifications, and metrics that pass Applicant Tracking Systems.`,
     primaryCTA: {
       text: 'Build Your Resume',
-      href: '/editor',
+      href: '/templates',
       variant: 'primary' as const,
     },
     secondaryCTA: {
