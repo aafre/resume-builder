@@ -14,7 +14,7 @@ All templates follow the EasyFreeResume design language:
 
 ## Available Templates
 
-### 1. `magic-link.html`
+### 1. `magic-link.html` ⚡
 **Purpose**: Passwordless authentication (Magic Link sign-in)
 
 **Supabase Variable**: `{{ .ConfirmationURL }}`
@@ -26,10 +26,11 @@ All templates follow the EasyFreeResume design language:
 - 1-hour expiration notice
 - Security warning
 - Alternative link option
+- **Built with automated CSS inlining**
 
 ---
 
-### 2. `confirm-signup.html`
+### 2. `confirm-signup.html` ⚡
 **Purpose**: Email confirmation after account creation
 
 **Supabase Variable**: `{{ .ConfirmationURL }}`
@@ -41,35 +42,7 @@ All templates follow the EasyFreeResume design language:
 - Feature highlights box
 - 24-hour expiration notice
 - Onboarding tone
-
----
-
-### 3. `reset-password.html`
-**Purpose**: Password reset flow
-
-**Supabase Variable**: `{{ .ConfirmationURL }}`
-
-**Used for**: Password recovery
-
-**Key Features**:
-- Security-focused messaging
-- Clear instructions
-- 1-hour expiration
-- Warning about phishing
-
----
-
-### 4. `change-email.html`
-**Purpose**: Email address change confirmation
-
-**Supabase Variable**: `{{ .ConfirmationURL }}`
-
-**Used for**: Verifying new email when user changes it
-
-**Key Features**:
-- Confirmation focus
-- Security notice
-- Contact support prompt
+- **Built with automated CSS inlining**
 
 ---
 
@@ -207,7 +180,66 @@ Start with `base-template.html` as your foundation. It includes:
 - ❌ Include forms (link to app instead)
 - ❌ Exceed 600px width for main container
 
-### 5. Testing Checklist
+### 5. CSS Inlining Strategy
+
+**⚡ Automated Build Process** (Recommended for new/updated templates)
+
+We use an automated CSS inliner to eliminate manual style duplication:
+
+```bash
+cd email-templates
+npm install        # Install dependencies (juice, fs-extra)
+npm run build      # Build templates with inlined CSS
+```
+
+**How It Works:**
+
+1. **Source Templates** (`src/`): Clean HTML with styles only in `<style>` blocks
+   - Easy to maintain - edit styles in ONE place
+   - No manual inline style duplication
+   - Example: `src/magic-link.html`
+
+2. **Build Process**: Automated CSS inlining with [juice](https://github.com/Automattic/juice)
+   - Reads source templates from `src/`
+   - Automatically inlines all CSS into `style=""` attributes
+   - Preserves `<style>` block for modern email clients
+   - Adds email client compatibility styles (-webkit, -ms, mso)
+   - Writes production-ready templates to root directory
+
+3. **Built Templates** (root directory): Production-ready with inlined CSS
+   - These are what you copy-paste into Supabase
+   - Fully compatible with all email clients
+   - Committed to version control
+
+**Development Workflow:**
+
+```bash
+# 1. Edit source template (no inline styles needed!)
+vim src/magic-link.html
+
+# 2. Build to generate production template
+npm run build
+
+# 3. Copy built template from root directory
+cat magic-link.html  # This has inlined CSS
+
+# 4. Paste into Supabase Email Templates dashboard
+```
+
+**Benefits:**
+- ✅ **Single source of truth**: Edit styles once in `<style>` block
+- ✅ **Zero manual duplication**: Build script handles inlining
+- ✅ **No human error**: Impossible to forget updating inline styles
+- ✅ **Version controlled**: Both source and built templates tracked in git
+- ✅ **Email client compatible**: Automatic `-webkit-`, `-ms-`, `mso-` prefixes
+
+**Migration Status:**
+- ✅ `magic-link.html` - Using automated build process
+- ✅ `confirm-signup.html` - Using automated build process
+
+**Note:** Only magic-link and confirm-signup templates are actively used and maintained with the build process.
+
+### 6. Testing Checklist
 
 Before deploying a new template:
 
@@ -221,6 +253,24 @@ Before deploying a new template:
 - [ ] Test with long text content
 - [ ] Verify Supabase variables render correctly
 - [ ] Check dark mode appearance
+- [ ] Verify inline styles match `<style>` block definitions
+
+---
+
+## Technical Implementation Notes
+
+### Button Rendering
+Our email buttons use the **"bulletproof button"** pattern for maximum compatibility:
+
+- **Table-based structure**: Uses nested `<table>` with `<td>` instead of `<a>` with background
+- **VML for Outlook**: MSO conditional comments provide Vector Markup Language (VML) fallback for Outlook
+- **Fallback colors**: Solid `background-color` before `linear-gradient` for clients without gradient support
+- **Box-shadow placement**: Applied to `<td>` (not `<a>`) to match `border-radius` container and prevent rectangular shadows on rounded buttons
+
+**Why This Matters**:
+- Yahoo Mail has poor CSS support and often doesn't render `display: inline-block` buttons correctly
+- Outlook uses Microsoft Word's rendering engine, which doesn't support standard CSS
+- Table-based buttons work across all major email clients
 
 ---
 

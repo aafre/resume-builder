@@ -1,0 +1,17 @@
+{
+  "name": "email-templates",
+  "version": "1.0.0",
+  "description": "This directory contains branded, reusable email templates for all transactional emails sent by the application.",
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js",
+    "test": "echo \"No tests specified\""
+  },
+  "keywords": ["email", "templates", "supabase"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "fs-extra": "^11.3.3",
+    "juice": "^11.0.3"
+  }
+}
