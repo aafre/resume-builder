@@ -104,10 +104,14 @@ function escapeXml(unsafe: string): string {
  * Generate sitemap XML
  */
 function generateSitemap(): string {
-  const baseUrl = process.env.VITE_APP_URL;
-  if (!baseUrl) {
-    console.error('❌ Error: VITE_APP_URL is not set. Please define it in your .env file.');
-    process.exit(1);
+  // Load from environment variable, fallback to production URL
+  // In local dev: VITE_APP_URL is loaded from .env via dotenv
+  // In Docker/CI: VITE_APP_URL should be passed as build arg
+  // Fallback ensures builds succeed even if not explicitly set
+  const baseUrl = process.env.VITE_APP_URL || 'https://easyfreeresume.com';
+
+  if (!process.env.VITE_APP_URL) {
+    console.warn('⚠️  VITE_APP_URL not set, using default: https://easyfreeresume.com');
   }
 
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
