@@ -38,7 +38,7 @@ vi.mock('../data/jobKeywords', () => ({
 }));
 
 // Wrapper component for all providers
-const TestWrapper = ({ children, initialRoute = '/resume-keywords/software-engineer' }) => (
+const TestWrapper = ({ children, initialRoute = '/resume-keywords/software-engineer' }: { children: React.ReactNode; initialRoute?: string }) => (
   <HelmetProvider>
     <MemoryRouter initialEntries={[initialRoute]}>
       <Routes>

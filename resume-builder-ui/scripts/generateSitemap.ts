@@ -7,7 +7,12 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 import { JOBS_DATABASE } from '../src/data/jobKeywords/index.js';
+
+// Load environment variables from .env file (for local development)
+// In production (Docker), env vars are passed as build args
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -99,7 +104,11 @@ function escapeXml(unsafe: string): string {
  * Generate sitemap XML
  */
 function generateSitemap(): string {
-  const baseUrl = process.env.VITE_APP_URL || 'https://easyfreeresume.com';
+  const baseUrl = process.env.VITE_APP_URL;
+  if (!baseUrl) {
+    console.error('❌ Error: VITE_APP_URL is not set. Please define it in your .env file.');
+    process.exit(1);
+  }
 
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
