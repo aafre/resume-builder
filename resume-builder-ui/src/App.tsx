@@ -2,6 +2,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Navigate,
   useLocation,
 } from "react-router-dom";
 import { lazy, Suspense } from "react";
@@ -387,13 +388,10 @@ function AppContent() {
               </Suspense>
             }
           />
+          {/* 301 redirect - consolidate to SEO landing page to fix keyword cannibalization */}
           <Route
             path="/blog/customer-service-resume-keywords"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <CustomerServiceResumeKeywords />
-              </Suspense>
-            }
+            element={<Navigate to="/resume-keywords/customer-service" replace />}
           />
           <Route
             path="/blog/how-why-easyfreeresume-completely-free"
