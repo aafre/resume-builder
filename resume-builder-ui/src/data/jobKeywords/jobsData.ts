@@ -79,7 +79,7 @@ export const JOBS_DATABASE: JobKeywordsData[] = [
       },
       {
         category: 'Backend Frameworks',
-        items: ['Node.js', 'Express', 'Django', 'Spring Boot', 'Flask', '.NET'],
+        items: ['Node.js', 'Express.js', 'Django', 'Spring Boot', 'Flask', '.NET'],
       },
       {
         category: 'Databases',
