@@ -8,7 +8,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import { JOBS_DATABASE } from '../src/data/jobKeywords/index.js';
+import { JOBS_DATABASE } from '../src/data/jobKeywords/index';
 
 // Load environment variables from .env file (for local development)
 // In production (Docker), env vars are passed as build args
