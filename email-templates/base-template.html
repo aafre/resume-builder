@@ -76,9 +76,14 @@
       margin: 30px 0;
     }
 
+    .button-table {
+      margin: 0 auto;
+    }
+
     .button {
       display: inline-block;
       padding: 16px 32px;
+      background-color: #2563eb;
       background: linear-gradient(135deg, #2563eb 0%, #9333ea 50%, #4f46e5 100%);
       color: #ffffff !important;
       text-decoration: none;
@@ -87,11 +92,29 @@
       font-size: 16px;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       transition: transform 0.2s;
+      mso-hide: all;
     }
 
     .button:hover {
       transform: translateY(-2px);
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .button-td {
+      background-color: #2563eb;
+      background: linear-gradient(135deg, #2563eb 0%, #9333ea 50%, #4f46e5 100%);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .button-link {
+      display: block;
+      padding: 16px 32px;
+      color: #ffffff !important;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      mso-line-height-rule: exactly;
     }
 
     /* Alternative link */
@@ -159,10 +182,16 @@
       .greeting {
         font-size: 20px !important;
       }
-      .button {
-        display: block !important;
+      .button-table {
         width: 100% !important;
+        max-width: 100% !important;
+      }
+      .button-td {
+        width: 100% !important;
+      }
+      .button-link {
         padding: 14px 20px !important;
+        font-size: 15px !important;
       }
     }
   </style>
@@ -190,7 +219,7 @@
           <!-- Footer -->
           <tr>
             <td class="footer">
-              <p style="margin: 0 0 10px 0;">© 2025 EasyFreeResume. All rights reserved.</p>
+              <p style="margin: 0 0 10px 0;">© 2026 EasyFreeResume. All rights reserved.</p>
               <div class="footer-links">
                 <a href="https://easyfreeresume.com">Home</a>
                 <a href="https://easyfreeresume.com/about">About</a>

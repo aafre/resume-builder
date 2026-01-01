@@ -16,7 +16,9 @@
     .greeting { font-size: 24px; font-weight: 600; margin: 0 0 20px 0; color: #111827; }
     .message { font-size: 16px; color: #4b5563; margin: 0 0 30px 0; }
     .button-container { text-align: center; margin: 30px 0; }
-    .button { display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, #2563eb 0%, #9333ea 50%, #4f46e5 100%); color: #ffffff !important; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    .button-table { margin: 0 auto; }
+    .button-td { background-color: #2563eb; background: linear-gradient(135deg, #2563eb 0%, #9333ea 50%, #4f46e5 100%); border-radius: 12px; text-align: center; }
+    .button-link { display: block; padding: 16px 32px; color: #ffffff !important; text-decoration: none; font-weight: 600; font-size: 16px; mso-line-height-rule: exactly; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
     .alt-link { margin-top: 20px; padding: 15px; background-color: #f3f4f6; border-radius: 8px; font-size: 13px; color: #6b7280; word-break: break-all; }
     .alt-link a { color: #2563eb; text-decoration: none; }
     .footer { padding: 30px; text-align: center; color: #9ca3af; font-size: 14px; border-top: 1px solid #e5e7eb; }
@@ -28,7 +30,9 @@
       .content { padding: 30px 20px !important; }
       .header-gradient { padding: 30px 20px !important; }
       .greeting { font-size: 20px !important; }
-      .button { display: block !important; width: 100% !important; padding: 14px 20px !important; }
+      .button-table { width: 100% !important; max-width: 100% !important; }
+      .button-td { width: 100% !important; }
+      .button-link { padding: 14px 20px !important; font-size: 15px !important; }
     }
   </style>
 </head>
@@ -53,7 +57,21 @@
               </p>
 
               <div class="button-container">
-                <a href="{{ .ConfirmationURL }}" class="button">Sign In to EasyFreeResume</a>
+                <!--[if mso]>
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ .ConfirmationURL }}" style="height:52px;v-text-anchor:middle;width:280px;" arcsize="23%" strokecolor="#2563eb" fillcolor="#2563eb">
+                  <w:anchorlock/>
+                  <center style="color:#ffffff;font-family:sans-serif;font-size:16px;font-weight:600;">Sign In to EasyFreeResume</center>
+                </v:roundrect>
+                <![endif]-->
+                <!--[if !mso]><!-->
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" class="button-table" style="margin: 0 auto;">
+                  <tr>
+                    <td class="button-td" style="background-color: #2563eb; background: linear-gradient(135deg, #2563eb 0%, #9333ea 50%, #4f46e5 100%); border-radius: 12px; text-align: center;">
+                      <a href="{{ .ConfirmationURL }}" class="button-link" style="display: block; padding: 16px 32px; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 16px; mso-line-height-rule: exactly;">Sign In to EasyFreeResume</a>
+                    </td>
+                  </tr>
+                </table>
+                <!--<![endif]-->
               </div>
 
               <div class="alt-link">
@@ -70,7 +88,7 @@
           </tr>
           <tr>
             <td class="footer">
-              <p style="margin: 0 0 10px 0;">© 2025 EasyFreeResume. All rights reserved.</p>
+              <p style="margin: 0 0 10px 0;">© 2026 EasyFreeResume. All rights reserved.</p>
               <div class="footer-links">
                 <a href="{{ .SiteURL }}">Home</a>
                 <a href="{{ .SiteURL }}/about">About</a>
