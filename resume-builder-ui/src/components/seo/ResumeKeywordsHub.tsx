@@ -145,6 +145,7 @@ export default function ResumeKeywordsHub() {
       <DownloadCTA
         title="Ready to Optimize Your Resume?"
         description="Use these keywords with our ATS-friendly templates for maximum impact."
+        primaryHref="/templates"
       />
     </SEOPageLayout>
   );

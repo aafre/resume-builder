@@ -295,6 +295,7 @@ export default function JobKeywordsPage() {
       <DownloadCTA
         title={`Ready to Build Your ${jobData.title} Resume?`}
         description="Use these keywords with our professional ATS-optimized templates to showcase your expertise."
+        primaryHref="/templates"
       />
     </SEOPageLayout>
   );

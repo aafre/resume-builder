@@ -44,6 +44,7 @@ export default function ActualFreeResumeBuilder() {
       <DownloadCTA
         title="Start Building Your Free Resume"
         description="No credit card, no watermark, no catch. Just a professional resume in minutes."
+        primaryHref="/templates"
       />
     </SEOPageLayout>
   );

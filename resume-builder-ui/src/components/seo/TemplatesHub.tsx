@@ -105,6 +105,7 @@ export default function TemplatesHub() {
       <DownloadCTA
         title="Ready to Use an ATS-Friendly Template?"
         description="Start with our optimized templates and create your professional resume today."
+        primaryHref="/templates"
       />
     </SEOPageLayout>
   );

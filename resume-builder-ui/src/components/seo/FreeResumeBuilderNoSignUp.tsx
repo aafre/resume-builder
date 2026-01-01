@@ -72,6 +72,7 @@ export default function FreeResumeBuilderNoSignUp() {
       <DownloadCTA
         title="Build Your Resume Without Signing Up"
         description="No account required. Start creating your resume immediately."
+        primaryHref="/templates"
       />
     </SEOPageLayout>
   );
