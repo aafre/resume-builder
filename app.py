@@ -413,7 +413,18 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
 
 
 def _escape_latex(text):
-    """Escapes special LaTeX characters in a string to prevent compilation errors."""
+    """Escapes special LaTeX characters in a string to prevent compilation errors.
+
+    Note: Does NOT escape characters used in markdown syntax (~, *, _, +) because
+    they are converted to LaTeX commands by the markdown filters before rendering.
+    The markdown_formatting filter converts:
+      ~~text~~ → \sout{text}
+      **text** → \textbf{text}
+      *text* → \textit{text}
+      __text__ → \textbf{text}
+      _text_ → \textit{text}
+      ++text++ → \underline{text}
+    """
     if not isinstance(text, str):
         return text
 
@@ -423,10 +434,10 @@ def _escape_latex(text):
         "%": r"\%",
         "$": r"\$",
         "#": r"\#",
-        "_": r"\_",
+        # "_": r"\_",  # Don't escape: used for markdown italic/bold (_text_ and __text__)
         "{": r"\{",
         "}": r"\}",
-        "~": r"\textasciitilde{}",
+        # "~": r"\textasciitilde{}",  # Don't escape: used for markdown strikethrough (~~text~~)
         "^": r"\textasciicircum{}",
         "<": r"\textless{}",
         ">": r"\textgreater{}",

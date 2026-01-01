@@ -131,20 +131,20 @@ def _escape_latex(text):
     # NOTE: We intentionally DO NOT escape certain characters used in markdown syntax:
     # - ~ (tilde) is used for strikethrough: ~~text~~
     # - * (asterisk) is used for bold/italic: **text** or *text*
+    # - _ (underscore) is used for bold/italic: __text__ or _text_
     # - + (plus) is used for underline: ++text++
     # These will be converted to LaTeX commands by the markdown filters.
-    # The _ (underscore) IS escaped because it's a LaTeX special character and
-    # underscores are common in emails/URLs. Use *text* for italic instead of _text_.
+    # Users should avoid literal underscores/tildes in text, or use asterisks for bold/italic instead.
     latex_special_chars = {
         "\\": r"\textbackslash{}",  # Backslash must be escaped first
         "&": r"\&",
         "%": r"\%",
         "$": r"\$",
         "#": r"\#",
-        "_": r"\_",
+        # "_": r"\_",  # NOT escaped - used for markdown bold/italic (__text__ and _text_)
         "{": r"\{",
         "}": r"\}",
-        # "~": r"\textasciitilde{}",  # NOT escaped - used for markdown strikethrough ~~text~~
+        # "~": r"\textasciitilde{}",  # NOT escaped - used for markdown strikethrough (~~text~~)
         "^": r"\textasciicircum{}",
         "<": r"\textless{}",
         ">": r"\textgreater{}",
