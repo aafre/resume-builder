@@ -2,6 +2,55 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2026-01-01
+
+### 🚀 Features
+
+- **seo:** Optimize No Sign Up page title for instant PDF CTR
+- **seo:** Optimize Zety comparison page for pricing queries
+- **pseo:** Add TypeScript interfaces for job keywords data
+- **pseo:** Add initial 10 tech jobs database with keywords
+- **pseo:** Add helper functions for job data access
+- **pseo:** Add FAQ generator and helper utilities for job pages
+- **pseo:** Add dynamic JobKeywordsPage component for job-specific keywords
+- **pseo:** Add dynamic route for job keywords pages
+- **pseo:** Add automated sitemap generator for job pages
+- **sitemap:** Use VITE_APP_URL environment variable for configurable base URL
+
+### 🐛 Bug Fixes
+
+- **legal:** Update Privacy Policy, Terms, and About for cloud accounts
+- **seo:** Resolve customer service keywords cannibalization with 301 redirect
+- **tests:** Update PrivacyPolicy test date and remove dead code
+- **tests:** Update PrivacyPolicy test to match updated date
+- **build:** Remove unused CustomerServiceResumeKeywords import
+- **pseo:** Add XML escaping to sitemap generation to prevent malformed XML
+- **seo:** Change DownloadCTA default href from /editor to /templates
+- **seo:** Change JobKeywordsPage hero CTA from /editor to /templates
+- **build:** Write sitemap to both public/ and dist/ directories
+- **resume-count:** Change color to amber from red
+- Default to prod for sitemap base url
+
+### 🚜 Refactor
+
+- **pseo:** Modularize job keywords data for scalability
+- **pseo:** Replace generic example generator with custom job-specific examples [**BREAKING**]
+- **pseo:** Address PR review comments - improve sitemap and security
+- **pseo:** Extract formatList helper to improve code readability
+- **seo:** Make all DownloadCTA primaryHref explicit
+- **sitemap:** Address PR review comments
+- **sitemap:** Remove .js extension from TypeScript import
+- **sitemap:** Use Map for URL deduplication and cleaner code
+
+### 🧪 Testing
+
+- **pseo:** Add comprehensive unit tests for pSEO implementation
+- **seo:** Update JobKeywordsPage test for new CTA route
+
+### ⚙️ Miscellaneous Tasks
+
+- **build:** Remove generated sitemap.xml from version control
+
 ## [1.3.1] - 2026-01-01
 
 ### 🐛 Bug Fixes
