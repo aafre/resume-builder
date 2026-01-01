@@ -207,7 +207,37 @@ Start with `base-template.html` as your foundation. It includes:
 - ❌ Include forms (link to app instead)
 - ❌ Exceed 600px width for main container
 
-### 5. Testing Checklist
+### 5. CSS Inlining Strategy
+
+**Current Approach**: Manual inline styles for maximum email client compatibility
+
+Our email templates use a **hybrid approach** with both `<style>` blocks and inline styles:
+
+- **`<style>` block**: Defines all styles centrally for maintainability and modern email clients
+- **Inline styles**: Manually duplicated on HTML elements for maximum compatibility with clients that strip `<style>` tags (e.g., Gmail)
+
+**Why Both?**
+- Many email clients (Gmail, Yahoo) strip or ignore `<style>` blocks
+- Inline styles ensure consistent rendering across all clients
+- The `<style>` block serves as the single source of truth for developers
+
+**Maintenance Considerations**:
+- **Current**: When updating button styles, changes must be made in both the `<style>` block AND the inline `style=""` attributes
+- **Risk**: Forgetting to update inline styles leads to visual inconsistencies
+
+**Recommended Future Improvement**:
+Consider integrating an automated CSS inliner tool (e.g., `juice`, `premailer`, or `inline-css`) into your build/deployment process. This would:
+- ✅ Define styles once in the `<style>` block
+- ✅ Automatically apply them inline during build
+- ✅ Eliminate manual duplication
+- ✅ Reduce maintenance burden and human error
+
+**Example Tools**:
+- [juice](https://github.com/Automattic/juice) - Node.js CSS inliner
+- [premailer](https://github.com/premailer/premailer) - Ruby-based CSS inliner
+- [inline-css](https://www.npmjs.com/package/inline-css) - Node.js inliner with media query support
+
+### 6. Testing Checklist
 
 Before deploying a new template:
 
@@ -221,6 +251,24 @@ Before deploying a new template:
 - [ ] Test with long text content
 - [ ] Verify Supabase variables render correctly
 - [ ] Check dark mode appearance
+- [ ] Verify inline styles match `<style>` block definitions
+
+---
+
+## Technical Implementation Notes
+
+### Button Rendering
+Our email buttons use the **"bulletproof button"** pattern for maximum compatibility:
+
+- **Table-based structure**: Uses nested `<table>` with `<td>` instead of `<a>` with background
+- **VML for Outlook**: MSO conditional comments provide Vector Markup Language (VML) fallback for Outlook
+- **Fallback colors**: Solid `background-color` before `linear-gradient` for clients without gradient support
+- **Box-shadow placement**: Applied to `<td>` (not `<a>`) to match `border-radius` container and prevent rectangular shadows on rounded buttons
+
+**Why This Matters**:
+- Yahoo Mail has poor CSS support and often doesn't render `display: inline-block` buttons correctly
+- Outlook uses Microsoft Word's rendering engine, which doesn't support standard CSS
+- Table-based buttons work across all major email clients
 
 ---
 
