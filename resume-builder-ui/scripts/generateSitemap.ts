@@ -114,32 +114,48 @@ function generateSitemap(): string {
     console.warn('⚠️  VITE_APP_URL not set, using default: https://easyfreeresume.com');
   }
 
-  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
-  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n';
+  // Use Map to store unique URLs and prevent duplicates
+  const urls = new Map<string, { lastmod: string; changefreq: string; priority: number }>();
+
+  // Helper function to add URLs (prevents duplicates)
+  const addUrl = (loc: string, details: { lastmod: string; changefreq: string; priority: number }) => {
+    if (!urls.has(loc)) {
+      urls.set(loc, details);
+    }
+  };
 
   // Add static URLs
-  xml += '  <!-- Static Pages -->\n';
   STATIC_URLS.forEach(page => {
-    xml += '  <url>\n';
-    xml += `    <loc>${escapeXml(`${baseUrl}${page.loc}`)}</loc>\n`;
-    xml += `    <lastmod>${page.lastmod}</lastmod>\n`;
-    xml += `    <changefreq>${page.changefreq}</changefreq>\n`;
-    xml += `    <priority>${page.priority}</priority>\n`;
-    xml += '  </url>\n';
+    addUrl(page.loc, {
+      lastmod: page.lastmod,
+      changefreq: page.changefreq,
+      priority: page.priority
+    });
   });
 
   // Add programmatic SEO job pages
-  xml += '\n  <!-- Programmatic SEO - Job Keywords Pages -->\n';
   JOBS.forEach(job => {
+    addUrl(`/resume-keywords/${job.slug}`, {
+      lastmod: job.lastmod,
+      changefreq: 'monthly',
+      priority: job.priority
+    });
+  });
+
+  // Generate XML from Map (single source of truth)
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+
+  urls.forEach((details, loc) => {
     xml += '  <url>\n';
-    xml += `    <loc>${escapeXml(`${baseUrl}/resume-keywords/${job.slug}`)}</loc>\n`;
-    xml += `    <lastmod>${job.lastmod}</lastmod>\n`;
-    xml += `    <changefreq>monthly</changefreq>\n`;
-    xml += `    <priority>${job.priority}</priority>\n`;
+    xml += `    <loc>${escapeXml(`${baseUrl}${loc}`)}</loc>\n`;
+    xml += `    <lastmod>${details.lastmod}</lastmod>\n`;
+    xml += `    <changefreq>${details.changefreq}</changefreq>\n`;
+    xml += `    <priority>${details.priority}</priority>\n`;
     xml += '  </url>\n';
   });
 
-  xml += '\n</urlset>\n';
+  xml += '</urlset>\n';
 
   return xml;
 }
