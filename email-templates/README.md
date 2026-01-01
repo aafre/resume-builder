@@ -209,33 +209,63 @@ Start with `base-template.html` as your foundation. It includes:
 
 ### 5. CSS Inlining Strategy
 
-**Current Approach**: Manual inline styles for maximum email client compatibility
+**⚡ Automated Build Process** (Recommended for new/updated templates)
 
-Our email templates use a **hybrid approach** with both `<style>` blocks and inline styles:
+We use an automated CSS inliner to eliminate manual style duplication:
 
-- **`<style>` block**: Defines all styles centrally for maintainability and modern email clients
-- **Inline styles**: Manually duplicated on HTML elements for maximum compatibility with clients that strip `<style>` tags (e.g., Gmail)
+```bash
+cd email-templates
+npm install        # Install dependencies (juice, fs-extra)
+npm run build      # Build templates with inlined CSS
+```
 
-**Why Both?**
-- Many email clients (Gmail, Yahoo) strip or ignore `<style>` blocks
-- Inline styles ensure consistent rendering across all clients
-- The `<style>` block serves as the single source of truth for developers
+**How It Works:**
 
-**Maintenance Considerations**:
-- **Current**: When updating button styles, changes must be made in both the `<style>` block AND the inline `style=""` attributes
-- **Risk**: Forgetting to update inline styles leads to visual inconsistencies
+1. **Source Templates** (`src/`): Clean HTML with styles only in `<style>` blocks
+   - Easy to maintain - edit styles in ONE place
+   - No manual inline style duplication
+   - Example: `src/magic-link.html`
 
-**Recommended Future Improvement**:
-Consider integrating an automated CSS inliner tool (e.g., `juice`, `premailer`, or `inline-css`) into your build/deployment process. This would:
-- ✅ Define styles once in the `<style>` block
-- ✅ Automatically apply them inline during build
-- ✅ Eliminate manual duplication
-- ✅ Reduce maintenance burden and human error
+2. **Build Process**: Automated CSS inlining with [juice](https://github.com/Automattic/juice)
+   - Reads source templates from `src/`
+   - Automatically inlines all CSS into `style=""` attributes
+   - Preserves `<style>` block for modern email clients
+   - Adds email client compatibility styles (-webkit, -ms, mso)
+   - Writes production-ready templates to root directory
 
-**Example Tools**:
-- [juice](https://github.com/Automattic/juice) - Node.js CSS inliner
-- [premailer](https://github.com/premailer/premailer) - Ruby-based CSS inliner
-- [inline-css](https://www.npmjs.com/package/inline-css) - Node.js inliner with media query support
+3. **Built Templates** (root directory): Production-ready with inlined CSS
+   - These are what you copy-paste into Supabase
+   - Fully compatible with all email clients
+   - Committed to version control
+
+**Development Workflow:**
+
+```bash
+# 1. Edit source template (no inline styles needed!)
+vim src/magic-link.html
+
+# 2. Build to generate production template
+npm run build
+
+# 3. Copy built template from root directory
+cat magic-link.html  # This has inlined CSS
+
+# 4. Paste into Supabase Email Templates dashboard
+```
+
+**Benefits:**
+- ✅ **Single source of truth**: Edit styles once in `<style>` block
+- ✅ **Zero manual duplication**: Build script handles inlining
+- ✅ **No human error**: Impossible to forget updating inline styles
+- ✅ **Version controlled**: Both source and built templates tracked in git
+- ✅ **Email client compatible**: Automatic `-webkit-`, `-ms-`, `mso-` prefixes
+
+**Migration Status:**
+- ✅ `magic-link.html` - Migrated to build process
+- ⏳ `confirm-signup.html` - Manual inline styles (to be migrated)
+- ⏳ `reset-password.html` - Manual inline styles (to be migrated)
+- ⏳ `change-email.html` - Manual inline styles (to be migrated)
+- ⏳ `base-template.html` - Reference template (to be migrated)
 
 ### 6. Testing Checklist
 
