@@ -132,26 +132,34 @@ function generateSitemap(): string {
 }
 
 /**
- * Write sitemap to public directory
+ * Write sitemap to public directory (for dev) and dist directory (for production build)
  */
 function writeSitemap(): void {
   try {
     const xml = generateSitemap();
     const publicDir = path.resolve(__dirname, '../public');
-    const sitemapPath = path.join(publicDir, 'sitemap.xml');
+    const distDir = path.resolve(__dirname, '../dist');
+    const locations: string[] = [];
 
-    // Ensure public directory exists
+    // Write to public/ (for development)
     if (!fs.existsSync(publicDir)) {
       fs.mkdirSync(publicDir, { recursive: true });
     }
+    const publicSitemapPath = path.join(publicDir, 'sitemap.xml');
+    fs.writeFileSync(publicSitemapPath, xml, 'utf8');
+    locations.push(publicSitemapPath);
 
-    // Write sitemap
-    fs.writeFileSync(sitemapPath, xml, 'utf8');
+    // Also write to dist/ if it exists (for production build)
+    if (fs.existsSync(distDir)) {
+      const distSitemapPath = path.join(distDir, 'sitemap.xml');
+      fs.writeFileSync(distSitemapPath, xml, 'utf8');
+      locations.push(distSitemapPath);
+    }
 
     const totalUrls = STATIC_URLS.length + JOBS.length;
     console.log(`✅ Sitemap generated successfully!`);
     console.log(`   📄 Total URLs: ${totalUrls} (${STATIC_URLS.length} static + ${JOBS.length} job pages)`);
-    console.log(`   📍 Location: ${sitemapPath}`);
+    console.log(`   📍 Locations: ${locations.join(', ')}`);
   } catch (error) {
     console.error('❌ Error generating sitemap:', error);
     process.exit(1);
