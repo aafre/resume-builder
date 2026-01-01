@@ -48,6 +48,15 @@ const TemplateCarousel: React.FC = () => {
   const queryClient = useQueryClient();
   const { session, isAnonymous, isAuthenticated, anonMigrationInProgress } = useAuth();
 
+  // Helper function to invalidate resume caches
+  const invalidateResumeCaches = async () => {
+    // Invalidate both caches to ensure fresh data when user returns to /my-resumes
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['resumes'] }),
+      queryClient.invalidateQueries({ queryKey: ['resume-count'] })
+    ]);
+  };
+
   // Fetch templates on component mount
   useEffect(() => {
     const loadTemplates = async () => {
@@ -161,8 +170,7 @@ const TemplateCarousel: React.FC = () => {
       navigate(`/editor/${data.resume_id}`);
 
       // Invalidate cache to ensure fresh data when user returns to /my-resumes
-      queryClient.invalidateQueries({ queryKey: ['resumes'] });
-      queryClient.invalidateQueries({ queryKey: ['resume-count'] });
+      await invalidateResumeCaches();
     } catch (err) {
       console.error("Error creating resume:", err);
       toast.error("Failed to create resume. Please try again.");
@@ -208,8 +216,7 @@ const TemplateCarousel: React.FC = () => {
       navigate(`/editor/${data.resume_id}`);
 
       // Invalidate cache to ensure fresh data when user returns to /my-resumes
-      queryClient.invalidateQueries({ queryKey: ['resumes'] });
-      queryClient.invalidateQueries({ queryKey: ['resume-count'] });
+      await invalidateResumeCaches();
     } catch (err) {
       console.error("Error creating resume:", err);
       toast.error("Failed to create resume. Please try again.");
@@ -342,8 +349,7 @@ const TemplateCarousel: React.FC = () => {
       navigate(`/editor/${data.resume_id}`);
 
       // Invalidate cache to ensure fresh data when user returns to /my-resumes
-      queryClient.invalidateQueries({ queryKey: ['resumes'] });
-      queryClient.invalidateQueries({ queryKey: ['resume-count'] });
+      await invalidateResumeCaches();
     } catch (err) {
       console.error("Error importing resume:", err);
       toast.error("Failed to import resume. Please try again.");
