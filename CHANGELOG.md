@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1] - 2026-01-01
+
+### 🚜 Refactor
+
+- **test:** Consolidate Google User Data section tests
+
+### 📚 Documentation
+
+- **privacy:** Add Google OAuth data handling disclosures
+- **privacy:** Add support email to contact section
+
+### 🧪 Testing
+
+- **privacy:** Add tests for Google OAuth compliance section
+
 ## [2.0.0] - 2026-01-01
 
 ### 🚀 Features
