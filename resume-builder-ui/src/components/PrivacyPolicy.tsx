@@ -112,8 +112,14 @@ const PrivacyPolicy = () => {
 
         <h4 className="font-semibold mt-4">9. Contact Us</h4>
         <p>
-          If you have questions about this policy, please reach out to us via
-          Github by creating an issue{" "}
+          If you have questions about this policy, please email us at{" "}
+          <a
+            href="mailto:support@easyfreeresume.com"
+            className="text-blue-500 underline"
+          >
+            support@easyfreeresume.com
+          </a>{" "}
+          or reach out via Github by creating an issue{" "}
           <a
             href="https://github.com/aafre/resume-builder/issues"
             className="text-blue-500 underline"
