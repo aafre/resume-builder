@@ -78,6 +78,24 @@ const STATIC_URLS = [
 ];
 
 /**
+ * Escape special XML characters to ensure valid XML output
+ * @param unsafe - String that may contain XML special characters
+ * @returns Escaped string safe for XML
+ */
+function escapeXml(unsafe: string): string {
+  return unsafe.replace(/[<>&'"]/g, (c) => {
+    switch (c) {
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '&': return '&amp;';
+      case "'": return '&apos;';
+      case '"': return '&quot;';
+      default: return c;
+    }
+  });
+}
+
+/**
  * Generate sitemap XML
  */
 function generateSitemap(): string {
@@ -90,7 +108,7 @@ function generateSitemap(): string {
   xml += '  <!-- Static Pages -->\n';
   STATIC_URLS.forEach(page => {
     xml += '  <url>\n';
-    xml += `    <loc>${baseUrl}${page.loc}</loc>\n`;
+    xml += `    <loc>${escapeXml(`${baseUrl}${page.loc}`)}</loc>\n`;
     xml += `    <lastmod>${page.lastmod}</lastmod>\n`;
     xml += `    <changefreq>${page.changefreq}</changefreq>\n`;
     xml += `    <priority>${page.priority}</priority>\n`;
@@ -101,7 +119,7 @@ function generateSitemap(): string {
   xml += '\n  <!-- Programmatic SEO - Job Keywords Pages -->\n';
   JOBS.forEach(job => {
     xml += '  <url>\n';
-    xml += `    <loc>${baseUrl}/resume-keywords/${job.slug}</loc>\n`;
+    xml += `    <loc>${escapeXml(`${baseUrl}/resume-keywords/${job.slug}`)}</loc>\n`;
     xml += `    <lastmod>${job.lastmod}</lastmod>\n`;
     xml += `    <changefreq>monthly</changefreq>\n`;
     xml += `    <priority>${job.priority}</priority>\n`;
