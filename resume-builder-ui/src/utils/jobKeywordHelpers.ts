@@ -7,17 +7,39 @@ import type { FAQConfig } from '../types/seo';
 import type { JobKeywordsData } from '../data/jobKeywords/types';
 
 /**
+ * Formats an array of strings into a human-readable list.
+ * Examples:
+ * - ['a'] => "a"
+ * - ['a', 'b'] => "a and b"
+ * - ['a', 'b', 'c'] => "a, b, and c"
+ * @param items - Array of strings to format
+ * @param limit - Maximum number of items to include in the list
+ * @returns Formatted string or empty string if no items
+ */
+function formatList(items: readonly string[] | undefined, limit: number): string {
+  if (!items || items.length === 0) {
+    return '';
+  }
+  const sliced = items.slice(0, limit);
+  if (sliced.length === 0) return '';
+  if (sliced.length === 1) return sliced[0];
+  if (sliced.length === 2) return sliced.join(' and ');
+  const last = sliced.pop()!;
+  return `${sliced.join(', ')}, and ${last}`;
+}
+
+/**
  * Generate auto-populated FAQs for a job title
  * Creates 6 common questions answered using job data
  * @param job - JobKeywordsData object
  * @returns Array of FAQ objects
  */
 export function generateJobFAQs(job: JobKeywordsData): FAQConfig[] {
-  const topCoreSkills = job.keywords.core.slice(0, 3).join(', ');
-  const topTechnicalSkills = job.keywords.technical.slice(0, 3).join(', ');
+  const topCoreSkills = formatList(job.keywords.core, 4);
+  const topTechnicalSkills = formatList(job.keywords.technical, 5);
   const topProcesses = job.keywords.processes?.slice(0, 2).join(' and ') || 'Agile methodologies';
   const certCount = job.keywords.certifications?.length || 0;
-  const topCert = job.keywords.certifications?.[0] || 'relevant certifications';
+  const topCerts = formatList(job.keywords.certifications, 3);
 
   return [
     {
@@ -26,7 +48,7 @@ export function generateJobFAQs(job: JobKeywordsData): FAQConfig[] {
     },
     {
       question: `Which technical skills should I highlight on my ${job.title} resume?`,
-      answer: `Top technical skills include ${topTechnicalSkills}${job.keywords.technical.length > 3 ? `, ${job.keywords.technical[3]}` : ''}${job.keywords.technical.length > 4 ? `, and ${job.keywords.technical[4]}` : ''}. These tools and technologies are frequently required in ${job.title} job postings and help your resume pass ATS filters.`,
+      answer: `Top technical skills include ${topTechnicalSkills}. These tools and technologies are frequently required in ${job.title} job postings and help your resume pass ATS filters.`,
     },
     {
       question: `How do I optimize my ${job.title} resume for ATS?`,
@@ -34,12 +56,12 @@ export function generateJobFAQs(job: JobKeywordsData): FAQConfig[] {
     },
     {
       question: `What soft skills matter for ${job.title} roles?`,
-      answer: `Essential soft skills include ${topCoreSkills}${job.keywords.core.length > 3 ? `, and ${job.keywords.core[3]}` : ''}. Demonstrate these through specific examples in your work experience, showing how you applied these skills to achieve measurable results.`,
+      answer: `Essential soft skills include ${topCoreSkills}. Demonstrate these through specific examples in your work experience, showing how you applied these skills to achieve measurable results.`,
     },
     {
       question: `Should I include certifications on my ${job.title} resume?`,
       answer: certCount > 0
-        ? `Yes, certifications significantly strengthen your resume. Valuable certifications include ${topCert}${certCount > 1 ? `, ${job.keywords.certifications?.[1]}` : ''}${certCount > 2 ? `, and ${job.keywords.certifications?.[2]}` : ''}. List certifications prominently in a dedicated section with completion dates.`
+        ? `Yes, certifications significantly strengthen your resume. Valuable certifications include ${topCerts}. List certifications prominently in a dedicated section with completion dates.`
         : `While not always required, relevant certifications can strengthen your ${job.title} resume. Research industry-standard certifications in your field and include them prominently if you hold any. Certifications demonstrate commitment to professional development.`,
     },
     {
