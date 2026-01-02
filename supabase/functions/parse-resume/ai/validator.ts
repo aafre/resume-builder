@@ -30,20 +30,23 @@ function sanitizeEducationYear(yearString: string): {
   cleaned: string;
   wasModified: boolean;
 } {
+  const trimmedYear = yearString.trim();
+
   // Already clean - just a 4-digit year
-  if (/^\d{4}$/.test(yearString.trim())) {
-    return { cleaned: yearString.trim(), wasModified: false };
+  if (/^\d{4}$/.test(trimmedYear)) {
+    return { cleaned: trimmedYear, wasModified: false };
   }
 
   // Try to extract all 4-digit sequences and take the LAST one (graduation year)
-  const matches = yearString.match(/\b\d{4}\b/g);
+  const matches = trimmedYear.match(/\b\d{4}\b/g);
   if (matches && matches.length > 0) {
     // Take the last match - for "2018-2022" this gives "2022" (graduation year)
     return { cleaned: matches[matches.length - 1], wasModified: true };
   }
 
-  // No year found - return empty (permissive)
-  return { cleaned: '', wasModified: true };
+  // No year found - return empty (permissive).
+  // Only consider it modified if the original string had non-whitespace content.
+  return { cleaned: '', wasModified: trimmedYear !== '' };
 }
 
 /**
