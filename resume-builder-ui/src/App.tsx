@@ -15,7 +15,7 @@ import LandingPage from "./components/LandingPage";
 import EnvironmentBanner from "./components/EnvironmentBanner";
 import AnnouncementBar from "./components/AnnouncementBar";
 import ScrollToTop from "./components/ScrollToTop";
-import { EditorProvider, useEditorContext } from "./contexts/EditorContext";
+import { EditorProvider } from "./contexts/EditorContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { ConversionProvider } from "./contexts/ConversionContext";
 import usePreferencePersistence from "./hooks/usePreferencePersistence";
