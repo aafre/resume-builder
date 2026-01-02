@@ -6,35 +6,59 @@ import JobKeywordsPage from '../components/seo/JobKeywordsPage';
 import { HelmetProvider } from 'react-helmet-async';
 
 // Mock the job data to avoid dependency on actual data
+const mockSoftwareEngineerJob = {
+  slug: 'software-engineer',
+  title: 'Software Engineer',
+  metaTitle: 'Software Engineer Resume Keywords - ATS-Optimized',
+  metaDescription: 'Complete list of software engineer keywords',
+  category: 'technology' as const,
+  priority: 0.9,
+  lastmod: '2026-01-01',
+  keywords: {
+    core: ['Problem Solving', 'Team Collaboration', 'Communication'],
+    technical: ['JavaScript', 'Python', 'React', 'Node.js', 'Docker'],
+    processes: ['Agile/Scrum', 'CI/CD', 'Code Reviews'],
+    certifications: ['AWS Certified Developer'],
+  },
+  tools: [
+    { category: 'Programming Languages', items: ['Python', 'JavaScript'] },
+    { category: 'Frameworks', items: ['React', 'Node.js'] },
+  ],
+  example: {
+    before: 'Worked on software projects and helped the team deliver features on time.',
+    after: 'Developed scalable microservices using Python and React, implementing CI/CD pipelines with Docker and Kubernetes, reducing deployment time by 40% and increasing system reliability to 99.9% uptime.',
+  },
+};
+
+const mockDataScientistJob = {
+  slug: 'data-scientist',
+  title: 'Data Scientist',
+  metaTitle: 'Data Scientist Resume Keywords',
+  metaDescription: 'Data science keywords',
+  category: 'technology' as const,
+  priority: 0.8,
+  keywords: {
+    core: ['Analytical Thinking', 'Problem Solving'],
+    technical: ['Python', 'R', 'SQL', 'Machine Learning'],
+  },
+  example: {
+    before: 'Analyzed data for the team.',
+    after: 'Built ML models using Python and scikit-learn.',
+  },
+};
+
 vi.mock('../data/jobKeywords', () => ({
+  JOBS_DATABASE: [mockSoftwareEngineerJob, mockDataScientistJob],
   getJobBySlug: (slug: string) => {
     if (slug === 'software-engineer') {
-      return {
-        slug: 'software-engineer',
-        title: 'Software Engineer',
-        metaTitle: 'Software Engineer Resume Keywords - ATS-Optimized',
-        metaDescription: 'Complete list of software engineer keywords',
-        category: 'technology' as const,
-        priority: 0.9,
-        lastmod: '2026-01-01',
-        keywords: {
-          core: ['Problem Solving', 'Team Collaboration', 'Communication'],
-          technical: ['JavaScript', 'Python', 'React', 'Node.js', 'Docker'],
-          processes: ['Agile/Scrum', 'CI/CD', 'Code Reviews'],
-          certifications: ['AWS Certified Developer'],
-        },
-        tools: [
-          { category: 'Programming Languages', items: ['Python', 'JavaScript'] },
-          { category: 'Frameworks', items: ['React', 'Node.js'] },
-        ],
-        example: {
-          before: 'Worked on software projects and helped the team deliver features on time.',
-          after: 'Developed scalable microservices using Python and React, implementing CI/CD pipelines with Docker and Kubernetes, reducing deployment time by 40% and increasing system reliability to 99.9% uptime.',
-        },
-      };
+      return mockSoftwareEngineerJob;
+    }
+    if (slug === 'data-scientist') {
+      return mockDataScientistJob;
     }
     return undefined;
   },
+  getJobsByCategory: () => [],
 }));
 
 // Wrapper component for all providers
