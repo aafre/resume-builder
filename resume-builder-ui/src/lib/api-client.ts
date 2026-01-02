@@ -107,6 +107,9 @@ class ApiClient {
     if (response.status === 401 || response.status === 403) {
       console.error(`❌ Auth error: ${response.status} ${response.statusText}`);
 
+      // Clear cached session to prevent reusing expired token
+      this.cachedSession = null;
+
       toast.error('Session expired. Please sign in again.', {
         duration: 5000,
         id: 'session-expired', // Prevent duplicate toasts

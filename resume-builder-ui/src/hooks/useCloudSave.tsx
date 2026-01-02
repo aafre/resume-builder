@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { ContactInfo, Section, SaveStatus } from '../types';
-import { apiClient, ApiError } from '../lib/api-client';
+import { apiClient, ApiError, AuthError } from '../lib/api-client';
 
 interface ResumeData {
   contact_info: ContactInfo;
@@ -180,6 +180,14 @@ export function useCloudSave({
       // Re-throw RESUME_LIMIT_REACHED errors for handling in UI
       if (error instanceof ApiError && error.data?.error_code === 'RESUME_LIMIT_REACHED') {
         throw new Error('RESUME_LIMIT_REACHED');
+      }
+
+      // If auth error, clear debounce timer to prevent retry loop
+      if (error instanceof AuthError) {
+        if (debounceTimerRef.current) {
+          clearTimeout(debounceTimerRef.current);
+          debounceTimerRef.current = null;
+        }
       }
 
       // AuthError (401/403) is already handled by apiClient (sign-out + toast)
