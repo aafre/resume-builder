@@ -5,18 +5,6 @@ import { toast } from 'react-hot-toast';
 import type { User, Session } from '@supabase/supabase-js';
 
 /**
- * Wraps a promise with a timeout. Rejects if promise doesn't resolve within timeoutMs.
- */
-const withTimeout = <T,>(promise: Promise<T>, timeoutMs: number, operationName: string): Promise<T> => {
-  return Promise.race([
-    promise,
-    new Promise<T>((_, reject) =>
-      setTimeout(() => reject(new Error(`${operationName} timed out after ${timeoutMs}ms`)), timeoutMs)
-    )
-  ]);
-};
-
-/**
  * Clears potentially corrupted Supabase auth data from localStorage.
  */
 const clearSupabaseAuthStorage = () => {
@@ -114,12 +102,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Track current session in a ref for access in async callbacks
   const sessionRef = useRef<Session | null>(null);
-
-  // Track initialization state in a ref to prevent duplicate init in React Strict Mode
-  const isInitializingRef = useRef(false);
-
-  // Track if listener has already handled initialization (to avoid waiting for timeout)
-  const listenerHandledInitRef = useRef(false);
 
   // Wrapper to update both ref and state synchronously to prevent race conditions
   // This ensures sessionRef.current is updated BEFORE the state setter triggers re-renders
@@ -400,182 +382,61 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return;
     }
 
-    // Initialize auth state
+    // Simplified auth initialization - trust Supabase to restore sessions
     const initializeAuth = async () => {
-      // Prevent duplicate initialization (React Strict Mode in dev)
-      if (isInitializingRef.current) {
-        console.log('Auth already initializing, skipping duplicate call');
+      console.log('🔐 Initializing auth - trusting Supabase listener...');
+
+      // Wait briefly for onAuthStateChange listener to restore session from localStorage
+      // Supabase automatically restores sessions when persistSession: true
+      const LISTENER_WAIT_MS = 2000; // 2 seconds (down from 30s)
+
+      await new Promise(resolve => setTimeout(resolve, LISTENER_WAIT_MS));
+
+      // If listener already restored a session, we're done
+      if (sessionRef.current) {
+        console.log('✅ Session restored by Supabase listener');
+        setLoading(false);
         return;
       }
-      isInitializingRef.current = true;
-      listenerHandledInitRef.current = false; // Reset flag
 
-      const AUTH_TIMEOUT_MS = 30000; // 30 seconds (increased from 10s to handle slow connections)
-      let sessionRecovered = false;
+      // Check if URL has auth tokens (OAuth/magic link callback)
+      const hasAuthTokens = hasAuthTokensInUrl();
+      if (hasAuthTokens) {
+        console.log('⏳ Auth callback detected in URL - waiting for Supabase to process...');
+        // Supabase will handle the callback via onAuthStateChange
+        setLoading(false);
+        return;
+      }
 
+      // No session found - create anonymous session
+      console.log('📝 No session found, creating anonymous session...');
       try {
-        console.log('Initializing auth...');
-
-        // STEP 1: Try to restore existing session with timeout
-        try {
-          const { data: { session: existingSession } } = await withTimeout(
-            supabase!.auth.getSession(),
-            AUTH_TIMEOUT_MS,
-            'getSession'
-          );
-
-          if (existingSession) {
-            // Check if session is expired or close to expiring
-            if (isSessionExpired(existingSession)) {
-              console.log('⚠️ Session expired or expiring soon, attempting refresh...');
-
-              try {
-                // Try to refresh the session
-                const { data: { session: refreshedSession }, error: refreshError } = await supabase!.auth.refreshSession();
-
-                if (refreshError || !refreshedSession) {
-                  console.log('❌ Session refresh failed:', refreshError?.message || 'No session returned');
-
-                  // Properly sign out to clear server-side session (non-blocking to avoid hangs)
-                  supabase!.auth.signOut().catch(err => console.error('SignOut error during cleanup:', err));
-
-                  // Clear client-side session data
-                  clearSupabaseAuthStorage();
-
-                  // Fall through to create new anonymous session below
-                } else {
-                  // Successfully refreshed
-                  sessionRecovered = true;
-                  setSessionAndRef(refreshedSession);
-                  setUser(refreshedSession.user);
-                  console.log('✅ Session refreshed successfully:', refreshedSession.user.id);
-                  return;
-                }
-              } catch (refreshError) {
-                console.error('❌ Session refresh error:', refreshError);
-
-                // Properly sign out to clear server-side session (non-blocking to avoid hangs)
-                supabase!.auth.signOut().catch(err => console.error('SignOut error during cleanup:', err));
-
-                // Clear client-side session data
-                clearSupabaseAuthStorage();
-
-                // Fall through to create new anonymous session below
-              }
-            } else {
-              // Session is valid and not expired
-              sessionRecovered = true;
-              setSessionAndRef(existingSession);
-              setUser(existingSession.user);
-              console.log('✅ Existing session restored:', existingSession.user.id);
-              return;
-            }
-          } else {
-            console.log('No existing session found, will create anonymous session');
-          }
-        } catch (sessionError) {
-          // Session recovery failed (timeout, network error, or corrupted data)
-          console.error('⚠️ Session recovery failed:', sessionError);
-
-          // IMPORTANT: Check if session was restored by auth listener during the timeout
-          // This prevents clearing valid sessions that were restored while we were waiting
-          if (sessionRef.current) {
-            console.log('✅ Session was restored by auth listener, skipping cleanup');
-            sessionRecovered = true;
-            return;
-          }
-
-          const wasTimeout = sessionError instanceof Error && sessionError.message.includes('timed out');
-
-          if (wasTimeout) {
-            console.log('⚠️ Session recovery timed out - network may be slow, trusting auth listener to restore session');
-            // Don't clear localStorage or show error - let auth listener handle recovery
-            // The session might still be valid, just slow to load
-          } else {
-            // Non-timeout error (network glitch, fetch error, etc.)
-            console.error('⚠️ Session recovery failed with non-timeout error - network issue or corrupted data');
-            // DO NOT automatically clear storage here - could be temporary network glitch
-            // Let onAuthStateChange listener and anonymous session creation handle recovery
-            // Supabase's getSession() returns null for corrupted data rather than throwing
-            // If it throws, it's usually a network/client issue, not corruption
-          }
-
-          // Fall through to create fresh anonymous session below
-          // This handles both timeout and non-timeout errors gracefully
-        }
-
-        // STEP 2: Create fresh anonymous session (fallback)
-        // Only if listener didn't already handle initialization
-        if (!listenerHandledInitRef.current && !sessionRef.current) {
-          // Check if URL contains auth tokens from magic link or OAuth callback
-          const hasAuthTokens = hasAuthTokensInUrl();
-
-          if (hasAuthTokens) {
-            console.log('⏳ Auth tokens detected in URL - waiting for Supabase to process callback...');
-            // Don't create anonymous session - let the auth callback complete
-            // The onAuthStateChange listener will handle the session
-          } else {
-            console.log('Creating fresh anonymous session...');
-
-            // Use non-blocking pattern (like signOut fix) - don't await
-            // Let auth state listener handle the session update
-            supabase!.auth.signInAnonymously().then(({ data, error }) => {
-              if (error) {
-                console.error('❌ Anonymous sign-in error:', error);
-                toast.error('Failed to create session. Please refresh the page.');
-              } else if (data.session && data.user) {
-                console.log('✅ Anonymous session created:', data.user.id);
-              }
-            }).catch((error) => {
-              console.error('❌ Anonymous sign-in failed:', error);
-              toast.error('Failed to create session. Please refresh the page.');
-            });
-
-            // Small delay to let anonymous sign-in start processing
-            await new Promise(resolve => setTimeout(resolve, 300));
-          }
+        const { data, error } = await supabase!.auth.signInAnonymously();
+        if (error) {
+          console.error('❌ Failed to create anonymous session:', error);
+          toast.error('Failed to initialize. Please refresh the page.');
         } else {
-          console.log('Skipping anonymous session creation - listener already handled init');
+          console.log('✅ Anonymous session created:', data.user?.id);
         }
-
       } catch (error) {
-        // Catch-all for unexpected errors
-        console.error('❌ Unexpected auth initialization error:', error);
-
-        if (!sessionRecovered) {
-          toast.error('Authentication failed. Please refresh the page.');
-        }
+        console.error('❌ Anonymous sign-in error:', error);
+        toast.error('Failed to initialize. Please refresh the page.');
       } finally {
-        // Only set loading to false if listener hasn't already done it
-        if (!listenerHandledInitRef.current) {
-          setLoading(false);
-        }
-        isInitializingRef.current = false;
-        console.log('Auth initialization complete (UI ready)');
+        setLoading(false);
       }
     };
 
     initializeAuth();
 
-    // Listen for auth state changes
+    // Listen for auth state changes - Supabase handles everything
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('Auth state changed:', event, session?.user?.id);
-        console.log('  → Is Anonymous:', session?.user?.is_anonymous);
-        console.log('  → Current URL hash:', window.location.hash.substring(0, 50) + '...');
+        console.log('🔔 Auth event:', event, session?.user?.is_anonymous ? 'anonymous' : session?.user?.id || 'none');
+
+        // Update session state and cache
         setSessionAndRef(session);
         setUser(session?.user ?? null);
-
-        // Cache session in API client to avoid slow getSession() calls after hard refresh
         apiClient.setSession(session);
-
-        // If we're still initializing and listener got a valid session,
-        // immediately unblock the UI - don't wait for getSession() timeout
-        if (isInitializingRef.current && session) {
-          console.log('🚀 Listener restored session during init, unblocking UI immediately');
-          listenerHandledInitRef.current = true;
-          setLoading(false);
-        }
 
         // Store anonymous user_id for migration later
         if (session?.user?.is_anonymous) {
@@ -664,31 +525,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     );
 
-    // Listen for cross-tab auth changes via localStorage storage events
-    // This ensures Tab B knows when Tab A signs out
-    const handleStorageChange = async (e: StorageEvent) => {
-      // Only react to Supabase auth token changes
-      if (e.key?.startsWith('sb-') && e.key.includes('auth-token')) {
-        // Only react to sign-out events (token removed), not token refreshes
-        // This prevents infinite loop where refreshSession() triggers another storage event
-        if (e.oldValue && !e.newValue) {
-          console.log('🔄 Cross-tab sign-out detected, clearing session...');
-
-          // Another tab signed out, clear local session
-          setSessionAndRef(null);
-          setUser(null);
-          apiClient.setSession(null);
-        }
-        // For sign-in or token refresh events, trust Supabase's onAuthStateChange
-        // which already handles cross-tab session sync internally
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-
+    // Cleanup on unmount
     return () => {
       subscription.unsubscribe();
-      window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
 
