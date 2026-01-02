@@ -1954,15 +1954,6 @@ const Editor: React.FC = () => {
           </DragOverlay>
         </DndContext>
 
-        {/* Elegant Separator - Between content and toolbar (mobile/tablet only) */}
-        {contextIsAtBottom && (
-          <div className="fixed left-0 right-0 z-50 transition-all duration-300 bottom-80 sm:bottom-64 lg:bottom-48 px-4 lg:hidden">
-            <div className="max-w-screen-lg mx-auto">
-              <div className="bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-white/30 h-0.5 w-full"></div>
-            </div>
-          </div>
-        )}
-
         {/* Desktop Toolbar - Now hidden on desktop (actions moved to sidebar), shown on tablet only */}
         <div
           className={`hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300
@@ -2051,15 +2042,6 @@ const Editor: React.FC = () => {
           className="hidden"
           onChange={handleImportYAML}
         />
-
-        {/* Elegant Separator - Between toolbar and footer (mobile/tablet only) */}
-        {contextIsAtBottom && (
-          <div className="fixed left-0 right-0 z-50 transition-all duration-300 bottom-64 sm:bottom-48 lg:bottom-20 px-4 lg:hidden">
-            <div className="max-w-screen-lg mx-auto">
-              <div className="bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-white/30 h-0.5 w-full"></div>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Context-Aware Tour - New 5-Step Tour with Auth Branching */}
