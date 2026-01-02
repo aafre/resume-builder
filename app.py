@@ -1067,11 +1067,20 @@ def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
             supabase.storage.from_('resume-thumbnails').upload(
                 storage_path,
                 thumbnail_data,
-                file_options={"content-type": "image/png", "upsert": "true"}
+                file_options={
+                    "content-type": "image/png",
+                    "upsert": "true",
+                    "cacheControl": "public, max-age=31536000, must-revalidate"
+                }
             )
 
-            # Get public URL
+            # Get public URL and add cache-busting timestamp
             thumbnail_url = supabase.storage.from_('resume-thumbnails').get_public_url(storage_path)
+
+            # Add cache-busting parameter to force browser to fetch new thumbnails
+            import time
+            timestamp = int(time.time() * 1000)  # Unix timestamp in milliseconds
+            thumbnail_url = f"{thumbnail_url}?v={timestamp}"
 
             logging.info(f"Successfully generated and uploaded thumbnail: {storage_path}")
             return thumbnail_url
