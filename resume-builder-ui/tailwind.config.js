@@ -11,6 +11,13 @@ module.exports = {
         padding: 'padding-box',
         content: 'content-box',
       },
+      spacing: {
+        'header-mobile': 'var(--header-height-mobile)',
+        'header-desktop': 'var(--header-height-desktop)',
+        'footer': 'var(--footer-height)',
+        'mobile-bar': 'var(--mobile-action-bar-height)',
+        'tablet-toolbar': 'var(--tablet-toolbar-height)',
+      },
     },
   },
   plugins: [
