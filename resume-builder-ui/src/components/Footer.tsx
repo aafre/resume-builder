@@ -21,12 +21,12 @@ export default function Footer({}: FooterProps) {
   return (
     <footer className="bg-transparent border-t border-gray-200/60 mt-16">
       <div className="container mx-auto px-4 py-12">
-        {/* Main Footer Content - 3 Column Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        {/* Main Footer Content - Responsive Grid Layout */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 mb-8">
           {/* Column 1 - Popular Resumes */}
-          <div className="text-center md:text-left">
-            <h3 className="font-bold text-gray-900 mb-4">Popular Resumes</h3>
-            <div className="flex flex-col gap-2 items-center md:items-start">
+          <div>
+            <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">Popular Resumes</h3>
+            <div className="flex flex-col gap-2">
               <Link
                 to="/resume-keywords/software-engineer"
                 onClick={scrollToTop('/resume-keywords/software-engineer')}
@@ -66,9 +66,9 @@ export default function Footer({}: FooterProps) {
           </div>
 
           {/* Column 2 - Resources */}
-          <div className="text-center md:text-left">
-            <h3 className="font-bold text-gray-900 mb-4">Resources</h3>
-            <div className="flex flex-col gap-2 items-center md:items-start">
+          <div>
+            <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">Resources</h3>
+            <div className="flex flex-col gap-2">
               <Link
                 to="/blog"
                 onClick={scrollToTop('/blog')}
@@ -94,9 +94,9 @@ export default function Footer({}: FooterProps) {
           </div>
 
           {/* Column 3 - Legal */}
-          <div className="text-center md:text-left">
-            <h3 className="font-bold text-gray-900 mb-4">Legal</h3>
-            <div className="flex flex-col gap-2 items-center md:items-start">
+          <div className="col-span-2 md:col-span-1">
+            <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">Legal</h3>
+            <div className="flex flex-col gap-2">
               <Link
                 to="/about"
                 onClick={scrollToTop('/about')}
