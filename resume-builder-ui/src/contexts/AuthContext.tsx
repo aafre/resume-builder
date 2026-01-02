@@ -29,15 +29,6 @@ const clearSupabaseAuthStorage = () => {
 };
 
 /**
- * Checks if the current URL contains auth tokens from magic link or OAuth callback.
- * These tokens indicate an authentication flow is in progress.
- */
-const hasAuthTokensInUrl = (): boolean => {
-  const hash = window.location.hash;
-  return hash.includes('access_token') || hash.includes('refresh_token') || hash.includes('code');
-};
-
-/**
  * Checks if a session is expired or will expire soon (within 60 seconds).
  * Returns true if session should be refreshed.
  */
@@ -382,52 +373,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return;
     }
 
-    // Simplified auth initialization - trust Supabase to restore sessions
-    const initializeAuth = async () => {
-      console.log('🔐 Initializing auth - trusting Supabase listener...');
-
-      // Check if URL has auth tokens (OAuth/magic link callback) FIRST
-      const hasAuthTokens = hasAuthTokensInUrl();
-      if (hasAuthTokens) {
-        console.log('⏳ Auth callback detected in URL - waiting for Supabase to process...');
-        // Give Supabase time to process the callback
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        setLoading(false);
-        return;
-      }
-
-      // Wait briefly for onAuthStateChange listener to restore session from localStorage
-      // Supabase automatically restores sessions when persistSession: true
-      const LISTENER_WAIT_MS = 2000; // 2 seconds
-
-      await new Promise(resolve => setTimeout(resolve, LISTENER_WAIT_MS));
-
-      // If listener already restored a session, we're done
-      if (sessionRef.current) {
-        console.log('✅ Session restored by Supabase listener');
-        setLoading(false);
-        return;
-      }
-
-      // No session found - create anonymous session
-      console.log('📝 No session found, creating anonymous session...');
-      try {
-        const { data, error } = await supabase!.auth.signInAnonymously();
-        if (error) {
-          console.error('❌ Failed to create anonymous session:', error);
-          toast.error('Failed to initialize. Please refresh the page.');
-        } else {
-          console.log('✅ Anonymous session created:', data.user?.id);
-        }
-      } catch (error) {
-        console.error('❌ Anonymous sign-in error:', error);
-        toast.error('Failed to initialize. Please refresh the page.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     // Listen for auth state changes - Supabase handles everything
+    // This is the ONLY initialization logic - no separate initializeAuth function
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('🔔 Auth event:', event, session?.user?.is_anonymous ? 'anonymous' : session?.user?.id || 'none');
@@ -436,6 +383,40 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setSessionAndRef(session);
         setUser(session?.user ?? null);
         apiClient.setSession(session);
+
+        // Event-driven initialization - no timeouts, no race conditions
+        // INITIAL_SESSION fires once when Supabase completes session restoration check
+        if (event === 'INITIAL_SESSION') {
+          if (session) {
+            // Session restored from localStorage
+            console.log('✅ Session restored:', session.user?.is_anonymous ? 'anonymous' : session.user?.id);
+            setLoading(false);
+          } else {
+            // No session found - create anonymous session
+            console.log('📝 No session found, creating anonymous session...');
+            try {
+              const { data, error } = await supabase!.auth.signInAnonymously();
+              if (error) {
+                console.error('❌ Failed to create anonymous session:', error);
+                toast.error('Failed to initialize. Please refresh the page.');
+              } else {
+                console.log('✅ Anonymous session created:', data.user?.id);
+              }
+            } catch (error) {
+              console.error('❌ Anonymous sign-in error:', error);
+              toast.error('Failed to initialize. Please refresh the page.');
+            } finally {
+              setLoading(false);
+            }
+          }
+          return; // Exit early - no further processing needed for INITIAL_SESSION
+        }
+
+        // SIGNED_IN fires when OAuth/magic link callback completes
+        if (event === 'SIGNED_IN') {
+          console.log('✅ Sign-in completed');
+          setLoading(false);
+        }
 
         // Store anonymous user_id for migration later
         if (session?.user?.is_anonymous) {
@@ -523,9 +504,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       }
     );
-
-    // Initialize auth AFTER listener is subscribed
-    initializeAuth();
 
     // Cleanup on unmount
     return () => {
