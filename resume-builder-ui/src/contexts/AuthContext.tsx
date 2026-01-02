@@ -662,8 +662,38 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     );
 
+    // Listen for cross-tab auth changes via localStorage storage events
+    // This ensures Tab B knows when Tab A signs out or changes session
+    const handleStorageChange = async (e: StorageEvent) => {
+      // Only react to Supabase auth token changes
+      if (e.key?.startsWith('sb-') && e.key.includes('auth-token')) {
+        console.log('🔄 Cross-tab auth change detected, refreshing session...');
+
+        try {
+          // Refresh session to sync with changes from other tabs
+          const { data: { session: refreshedSession }, error } = await supabase!.auth.refreshSession();
+
+          if (error) {
+            console.error('Failed to refresh session after cross-tab change:', error);
+            // Clear session if refresh fails (likely means sign-out in other tab)
+            setSession(null);
+            setUser(null);
+            apiClient.setSession(null);
+          } else {
+            console.log('✅ Session synced from cross-tab change');
+            // Session will be updated via onAuthStateChange listener above
+          }
+        } catch (error) {
+          console.error('Error handling cross-tab auth change:', error);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
     return () => {
       subscription.unsubscribe();
+      window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
 
