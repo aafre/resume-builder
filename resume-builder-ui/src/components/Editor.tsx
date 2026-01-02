@@ -1684,7 +1684,7 @@ const Editor: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Main Content Container - Dynamic padding based on sidebar state */}
-      <div className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-[calc(var(--footer-height)+var(--mobile-action-bar-height)+1rem)] md:pb-[calc(var(--footer-height)+var(--tablet-toolbar-height)+1rem)] lg:pb-[calc(var(--footer-height)+1rem)] max-w-4xl lg:max-w-none transition-all duration-300 ${
+      <div className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-[calc(var(--mobile-action-bar-height)+1rem)] md:pb-[calc(var(--tablet-toolbar-height)+1rem)] lg:pb-[1rem] max-w-4xl lg:max-w-none transition-all duration-300 ${
         isSidebarCollapsed ? 'lg:mr-[88px]' : 'lg:mr-[296px]'
       }`}>
         {/* Imported Resume Review Banner */}
@@ -1956,7 +1956,7 @@ const Editor: React.FC = () => {
 
         {/* Desktop Toolbar - Now hidden on desktop (actions moved to sidebar), shown on tablet only */}
         <div
-          className="hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 left-auto right-6 border border-gray-200/60 rounded-2xl w-auto max-w-none bottom-[calc(var(--footer-height)+1rem)]"
+          className="hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 left-auto right-6 border border-gray-200/60 rounded-2xl w-auto max-w-none bottom-6"
         >
           <div className="flex items-center justify-between gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
             <EditorToolbar
