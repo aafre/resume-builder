@@ -1956,10 +1956,7 @@ const Editor: React.FC = () => {
 
         {/* Desktop Toolbar - Now hidden on desktop (actions moved to sidebar), shown on tablet only */}
         <div
-          className={`hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300
-            left-auto right-6 border border-gray-200/60 rounded-2xl w-auto max-w-none ${
-              contextIsAtBottom ? "bottom-24" : "bottom-6"
-            }`}
+          className="hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 left-auto right-6 border border-gray-200/60 rounded-2xl w-auto max-w-none bottom-[calc(var(--footer-height)+1rem)]"
         >
           <div className="flex items-center justify-between gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
             <EditorToolbar
