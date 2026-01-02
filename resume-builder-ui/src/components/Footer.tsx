@@ -2,12 +2,7 @@ import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaShieldAlt, FaLock } from "react-icons/fa";
 
-interface FooterProps {
-  isEditorPage?: boolean;
-  showAboveToolbar?: boolean;
-}
-
-export default function Footer({}: FooterProps) {
+export default function Footer() {
  const location = useLocation();
   const navigate = useNavigate();
 
