@@ -81,12 +81,17 @@ OUTPUT SCHEMA:
         {
           "degree": "Bachelor of Science",
           "school": "University Name",
-          "year": "YYYY",
+          "year": "YYYY (4-digit graduation year ONLY - e.g., 2018, 2020)",
           "field_of_study": "Computer Science",
           "icon": null
         }
       ]
     }
+
+    // IMPORTANT: Education year field rules:
+    // - year: Must be ONLY the 4-digit graduation year (e.g., "2018")
+    // - Put honors, GPA, or additional details in field_of_study (e.g., "Computer Science, First Class with Distinction")
+    // - If date range (e.g., 2018-2022), use the END year only (2022)
 
     // NOTE: For certifications, use "bulleted-list" or "dynamic-column-list"
     // Example:

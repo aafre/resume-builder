@@ -8,6 +8,7 @@ import type { ResumeTemplate } from '../types.ts';
 export interface ValidationResult {
   valid: boolean;
   errors: string[];
+  warnings: string[];
 }
 
 const VALID_SECTION_TYPES = [
@@ -20,6 +21,32 @@ const VALID_SECTION_TYPES = [
 ];
 
 /**
+ * Sanitize education year field
+ * Extracts 4-digit graduation year from malformed strings
+ * @param yearString - Year string from AI (may contain extra text)
+ * @returns Object with cleaned year and modification flag
+ */
+function sanitizeEducationYear(yearString: string): {
+  cleaned: string;
+  wasModified: boolean;
+} {
+  // Already clean - just a 4-digit year
+  if (/^\d{4}$/.test(yearString.trim())) {
+    return { cleaned: yearString.trim(), wasModified: false };
+  }
+
+  // Try to extract all 4-digit sequences and take the LAST one (graduation year)
+  const matches = yearString.match(/\b\d{4}\b/g);
+  if (matches && matches.length > 0) {
+    // Take the last match - for "2018-2022" this gives "2022" (graduation year)
+    return { cleaned: matches[matches.length - 1], wasModified: true };
+  }
+
+  // No year found - return empty (permissive)
+  return { cleaned: '', wasModified: true };
+}
+
+/**
  * Validate and sanitize resume JSON against schema
  * 100% PERMISSIVE: Fixes data instead of rejecting it
  * @param data - AI-generated JSON data
@@ -27,6 +54,7 @@ const VALID_SECTION_TYPES = [
  */
 export function validateResumeSchema(data: any): ValidationResult {
   // 100% permissive - we NEVER reject, we FIX the data
+  const warnings: string[] = [];
 
   // === 1. Ensure data is an object ===
   if (typeof data !== 'object' || data === null) {
@@ -108,17 +136,30 @@ export function validateResumeSchema(data: any): ValidationResult {
         section.content = [];
       } else {
         // Fix each education item
+        let yearsSanitized = 0;
         section.content = section.content.map((edu: any) => {
           if (typeof edu !== 'object' || edu === null) edu = {};
+
+          // Sanitize year field
+          const yearString = typeof edu.year === 'string' ? edu.year : '';
+          const { cleaned, wasModified } = sanitizeEducationYear(yearString);
+          if (wasModified) yearsSanitized++;
 
           return {
             degree: typeof edu.degree === 'string' ? edu.degree : '',
             school: typeof edu.school === 'string' ? edu.school : '',
-            year: typeof edu.year === 'string' ? edu.year : '',
+            year: cleaned,
             field_of_study: typeof edu.field_of_study === 'string' ? edu.field_of_study : '',
             icon: edu.icon || null
           };
         });
+
+        // Add warning if any years were sanitized
+        if (yearsSanitized > 0) {
+          warnings.push(
+            `Education: ${yearsSanitized} graduation year${yearsSanitized > 1 ? 's were' : ' was'} automatically extracted from additional text. Please verify accuracy.`
+          );
+        }
       }
     }
   });
@@ -126,6 +167,7 @@ export function validateResumeSchema(data: any): ValidationResult {
   // ALWAYS return valid: true - we fixed everything
   return {
     valid: true,
-    errors: []  // No errors, ever
+    errors: [],  // No errors, ever
+    warnings
   };
 }
