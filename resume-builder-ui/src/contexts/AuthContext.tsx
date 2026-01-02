@@ -386,24 +386,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const initializeAuth = async () => {
       console.log('🔐 Initializing auth - trusting Supabase listener...');
 
+      // Check if URL has auth tokens (OAuth/magic link callback) FIRST
+      const hasAuthTokens = hasAuthTokensInUrl();
+      if (hasAuthTokens) {
+        console.log('⏳ Auth callback detected in URL - waiting for Supabase to process...');
+        // Give Supabase time to process the callback
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        setLoading(false);
+        return;
+      }
+
       // Wait briefly for onAuthStateChange listener to restore session from localStorage
       // Supabase automatically restores sessions when persistSession: true
-      const LISTENER_WAIT_MS = 2000; // 2 seconds (down from 30s)
+      const LISTENER_WAIT_MS = 2000; // 2 seconds
 
       await new Promise(resolve => setTimeout(resolve, LISTENER_WAIT_MS));
 
       // If listener already restored a session, we're done
       if (sessionRef.current) {
         console.log('✅ Session restored by Supabase listener');
-        setLoading(false);
-        return;
-      }
-
-      // Check if URL has auth tokens (OAuth/magic link callback)
-      const hasAuthTokens = hasAuthTokensInUrl();
-      if (hasAuthTokens) {
-        console.log('⏳ Auth callback detected in URL - waiting for Supabase to process...');
-        // Supabase will handle the callback via onAuthStateChange
         setLoading(false);
         return;
       }
