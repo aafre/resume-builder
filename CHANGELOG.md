@@ -2,6 +2,73 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0] - 2026-01-02
+
+### 🚀 Features
+
+- **preview:** Create thumbnail bucket
+- **seo:** Update ATS-Friendly template title and description for better CTR
+- **seo:** Add centralized SEO title and description generators
+- **seo:** Add getRelatedJobs() for internal linking mesh
+- **seo:** Create RelatedJobsSection component for internal linking
+- **seo:** Add Popular Resumes section to footer for site-wide linking
+- **seo:** Display all 10 job pages on Resume Keywords Hub
+- **seo:** Integrate dynamic titles and Related Jobs section
+
+### 🐛 Bug Fixes
+
+- **resume-create:** Apply social links migration in create endpoint
+- **resume-load:** Apply social links migration in load endpoint
+- **thumbnails:** Add cache-busting to prevent stale thumbnail display
+- **thumbnails:** Add cache-busting to prevent stale thumbnail display
+- **thumbnails:** Resolve merge conflicts - finalize cache-busting implementation
+- **thumbnails:** Use consistent timestamp to fix auto-refresh polling
+- **thumbnails:** Validate date before using for cache-busting timestamp
+- **thumbnail-refresh:** Force refetch on MyResumes mount to fix stale cache
+- **ui:** Center-align footer content on mobile for better visual appeal
+- **ui:** Optimize footer layout for mobile space utilization
+- **seo:** Address Gemini Code Assist review feedback
+- **auth:** Add session to useCloudSave dependency array to prevent stale token usage
+- **auth:** Clear debounce timer on AuthError to prevent retry loop
+- **auth:** Clear cached session on 401/403 errors to prevent token reuse
+- **auth:** Add cross-tab storage event listener for session sync
+- **auth:** Fix sessionRef race condition with synchronous ref update
+- **auth:** Add auth guard in Editor to prevent zombie UI state
+- **auth:** Prevent infinite refresh loop in cross-tab storage listener
+- **auth:** Fix sessionRef race condition with synchronous ref update
+- **auth:** Add auth guard in Editor to prevent zombie UI state
+- **auth:** Move initializeAuth after listener subscription and remove redundant session dep
+- **auth:** Prioritize auth callback URL detection over session restoration
+- **auth:** Eliminate race conditions with event-driven initialization
+- **auth:** Remove unused util
+- **ai-parser:** Sanitize education year field to prevent PDF render failures
+
+### 🚜 Refactor
+
+- **templates:** Migrate john_doe_no_icon.yml to use social_links
+- **templates:** Migrate alex_rivera_data.yml to use social_links
+- **seo:** Extract JobCategorySection component to follow DRY principle
+- **cache-busting:** Use proper URL parsing for query params
+- **auth:** Simplify initialization to trust Supabase completely [**BREAKING**]
+- **validator:** Fix sanitizeEducationYear edge cases
+
+### 📚 Documentation
+
+- **seo:** Fix JSDoc comments to match implementation
+
+### ⚡ Performance
+
+- **thumbnails:** Use immutable cache directive for versioned assets
+
+### 🧪 Testing
+
+- Fix JobKeywordsPage tests by adding JOBS_DATABASE to mock
+- Fix mock hoisting issue by moving objects into factory function
+
+### ◀️ Revert
+
+- **auth:** Remove Editor auth guard that blocked resume loading
+
 ## [2.0.1] - 2026-01-01
 
 ### 🚜 Refactor
