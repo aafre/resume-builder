@@ -24,9 +24,9 @@ export default function Footer({}: FooterProps) {
         {/* Main Footer Content - 3 Column Layout */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Column 1 - Popular Resumes */}
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="font-bold text-gray-900 mb-4">Popular Resumes</h3>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 items-center md:items-start">
               <Link
                 to="/resume-keywords/software-engineer"
                 onClick={scrollToTop('/resume-keywords/software-engineer')}
@@ -66,9 +66,9 @@ export default function Footer({}: FooterProps) {
           </div>
 
           {/* Column 2 - Resources */}
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="font-bold text-gray-900 mb-4">Resources</h3>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 items-center md:items-start">
               <Link
                 to="/blog"
                 onClick={scrollToTop('/blog')}
@@ -94,9 +94,9 @@ export default function Footer({}: FooterProps) {
           </div>
 
           {/* Column 3 - Legal */}
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="font-bold text-gray-900 mb-4">Legal</h3>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 items-center md:items-start">
               <Link
                 to="/about"
                 onClick={scrollToTop('/about')}
