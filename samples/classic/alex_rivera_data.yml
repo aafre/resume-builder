@@ -5,7 +5,10 @@ contact_info:
   location: "Austin, TX"
   email: alex.rivera@email.com
   phone: +1 (512) 555-7890
-  linkedin: https://linkedin.com/in/alex-rivera-data
+  social_links:
+    - platform: linkedin
+      url: https://linkedin.com/in/alex-rivera-data
+      display_text: Alex Rivera
 
 sections:
   - name: Professional Summary
