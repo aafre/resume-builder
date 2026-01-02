@@ -144,8 +144,6 @@ const Editor: React.FC = () => {
 
   // Get context for footer integration
   const {
-    isAtBottom: contextIsAtBottom,
-    setIsAtBottom: setContextIsAtBottom,
     setIsSidebarCollapsed: setContextIsSidebarCollapsed,
   } = useEditorContext();
 
@@ -345,9 +343,6 @@ const Editor: React.FC = () => {
   const [showAIWarning, setShowAIWarning] = useState(false);
   const [_aiWarnings, setAIWarnings] = useState<string[]>([]);
   const [_aiConfidence, setAIConfidence] = useState(0);
-
-  // Simple scroll detection for footer visibility
-  const lastScrollY = useRef(0);
 
   // Store save function for unmount to avoid stale closure
   const saveOnUnmountRef = useRef<(() => Promise<void>) | null>(null);
@@ -1601,30 +1596,6 @@ const Editor: React.FC = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleOpenPreview]);
-
-  // Simple scroll detection for footer visibility
-  const handleScroll = useCallback(() => {
-    const currentScrollY = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
-
-    // Check if at bottom (with threshold accounting for footer height)
-    const atBottom = windowHeight + currentScrollY >= documentHeight - 150;
-
-    // Update context with bottom state for footer visibility
-    setContextIsAtBottom(atBottom);
-
-    lastScrollY.current = currentScrollY;
-  }, [setContextIsAtBottom]);
-
-  useEffect(() => {
-    const throttledHandleScroll = () => {
-      requestAnimationFrame(handleScroll);
-    };
-
-    window.addEventListener("scroll", throttledHandleScroll);
-    return () => window.removeEventListener("scroll", throttledHandleScroll);
-  }, [handleScroll]);
 
   // Warn user if closing browser/tab with unsaved changes
   useEffect(() => {
