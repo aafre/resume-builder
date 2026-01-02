@@ -4,26 +4,65 @@
  * Target keyword: "resume keywords"
  */
 
-import { Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
+import JobCategorySection from './JobCategorySection';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
+import { JOBS_DATABASE, getJobsByCategory } from '../../data/jobKeywords';
 
 export default function ResumeKeywordsHub() {
   const config = SEO_PAGES.keywordsHub;
+
+  // Group jobs by category
+  const technologyJobs = getJobsByCategory('technology');
+  const creativeJobs = getJobsByCategory('creative');
+  const businessJobs = getJobsByCategory('business');
+
+  // Define category configurations
+  const categories = [
+    {
+      title: '💻 Technology',
+      jobs: technologyJobs,
+      colorScheme: {
+        border: 'border-blue-200',
+        hoverBorder: 'hover:border-blue-400',
+        text: 'text-blue-600',
+      },
+    },
+    {
+      title: '🎨 Design',
+      jobs: creativeJobs,
+      colorScheme: {
+        border: 'border-purple-200',
+        hoverBorder: 'hover:border-purple-400',
+        text: 'text-purple-600',
+      },
+    },
+    {
+      title: '📊 Business & Management',
+      jobs: businessJobs,
+      colorScheme: {
+        border: 'border-green-200',
+        hoverBorder: 'hover:border-green-400',
+        text: 'text-green-600',
+      },
+    },
+  ];
+
+  // Generate schema items from all jobs
+  const schemaItems = JOBS_DATABASE.map(job => ({
+    name: `${job.title} Resume Keywords`,
+    url: `/resume-keywords/${job.slug}`,
+    description: `Essential keywords for ${job.title.toLowerCase()} roles`,
+  }));
+
   const schemas = usePageSchema({
     type: 'itemList',
-    items: [
-      {
-        name: 'Customer Service Resume Keywords',
-        url: '/resume-keywords/customer-service',
-        description: 'Essential keywords for customer service and support roles',
-      },
-    ],
+    items: schemaItems,
     faqs: config.faqs,
   });
 
@@ -55,52 +94,15 @@ export default function ResumeKeywordsHub() {
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
           Browse keywords by industry
         </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link
-            to="/resume-keywords/customer-service"
-            className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border-2 border-indigo-200 hover:border-indigo-400"
-          >
-            <div className="text-4xl mb-4">🎧</div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
-              Customer Service
-            </h3>
-            <p className="text-gray-600 mb-4">
-              CRM platforms, soft skills, metrics (CSAT, NPS, FCR), and support tools.
-            </p>
-            <div className="text-indigo-600 font-semibold">
-              View Keywords →
-            </div>
-          </Link>
 
-          <Link
-            to="/blog/software-engineer-resume-keywords"
-            className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border-2 border-blue-200 hover:border-blue-400"
-          >
-            <div className="text-4xl mb-4">💻</div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
-              Software Engineering
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Programming languages, frameworks, cloud platforms, and methodologies.
-            </p>
-            <div className="text-blue-600 font-semibold">
-              View Keywords →
-            </div>
-          </Link>
-
-          <div className="bg-gray-100 rounded-xl p-6 border-2 border-gray-200">
-            <div className="text-4xl mb-4 opacity-50">📊</div>
-            <h3 className="text-xl font-bold text-gray-500 mb-2">
-              More Industries
-            </h3>
-            <p className="text-gray-500 mb-4">
-              Finance, healthcare, marketing, and more coming soon.
-            </p>
-            <div className="text-gray-400 font-semibold">
-              Coming Soon
-            </div>
-          </div>
-        </div>
+        {categories.map(category => (
+          <JobCategorySection
+            key={category.title}
+            title={category.title}
+            jobs={category.jobs}
+            colorScheme={category.colorScheme}
+          />
+        ))}
       </div>
 
       <div className="mb-16">

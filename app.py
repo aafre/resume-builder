@@ -31,6 +31,7 @@ import atexit
 from functools import wraps
 import time
 from typing import Callable, Any
+from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
 
 from flask_cors import CORS
 from supabase import create_client, Client
@@ -1067,11 +1068,23 @@ def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
             supabase.storage.from_('resume-thumbnails').upload(
                 storage_path,
                 thumbnail_data,
-                file_options={"content-type": "image/png", "upsert": "true"}
+                file_options={
+                    "content-type": "image/png",
+                    "upsert": "true",
+                    "cacheControl": "public, max-age=31536000, immutable"
+                }
             )
 
-            # Get public URL
+            # Get public URL and add cache-busting timestamp
             thumbnail_url = supabase.storage.from_('resume-thumbnails').get_public_url(storage_path)
+
+            # Add cache-busting parameter to force browser to fetch new thumbnails
+            timestamp = int(time.time() * 1000)  # Unix timestamp in milliseconds
+            url_parts = list(urlparse(thumbnail_url))
+            query = parse_qs(url_parts[4])
+            query['v'] = [str(timestamp)]
+            url_parts[4] = urlencode(query, doseq=True)
+            thumbnail_url = urlunparse(url_parts)
 
             logging.info(f"Successfully generated and uploaded thumbnail: {storage_path}")
             return thumbnail_url
@@ -1781,6 +1794,10 @@ def create_resume():
 
         # Initialize resume with template data
         contact_info = template_data.get('contact_info', {})
+
+        # Migrate old linkedin field to new social_links format (backward compatibility)
+        contact_info = migrate_linkedin_to_social_links(contact_info)
+
         sections = template_data.get('sections', [])
 
         # If load_example is False, clear the content but keep the structure
@@ -2267,6 +2284,10 @@ def load_resume(resume_id):
             return jsonify({"success": False, "error": "Resume not found"}), 404
 
         resume = result.data[0]
+
+        # Migrate old linkedin format to new social_links (backward compatibility)
+        if resume.get('contact_info'):
+            resume['contact_info'] = migrate_linkedin_to_social_links(resume['contact_info'])
 
         # Fetch associated icons
         icons_result = supabase.table('resume_icons') \
@@ -2916,10 +2937,11 @@ def generate_pdf_for_saved_resume(resume_id):
                     current_resume = supabase.table('resumes').select('updated_at').eq('id', resume_id).execute()
                     current_updated_at = current_resume.data[0]['updated_at'] if current_resume.data else None
 
-                    # Update resume with thumbnail URL
+                    # Update resume with thumbnail URL and timestamp
+                    current_time = datetime.now(timezone.utc).isoformat()
                     update_data = {
                         'thumbnail_url': thumbnail_url,
-                        'pdf_generated_at': 'now()'
+                        'pdf_generated_at': current_time  # Use consistent timestamp
                     }
                     if current_updated_at:
                         update_data['updated_at'] = current_updated_at  # Preserve original timestamp
@@ -3165,7 +3187,7 @@ def generate_thumbnail_for_resume(resume_id):
             current_time = datetime.now(timezone.utc).isoformat()
             update_data = {
                 'thumbnail_url': thumbnail_url,
-                'pdf_generated_at': 'now()'
+                'pdf_generated_at': current_time  # Use same timestamp as response for polling
             }
             if current_updated_at:
                 update_data['updated_at'] = current_updated_at  # Preserve original timestamp
@@ -3173,6 +3195,8 @@ def generate_thumbnail_for_resume(resume_id):
             supabase.table('resumes').update(update_data).eq('id', resume_id).execute()
 
             logging.info(f"Thumbnail generated successfully for resume {resume_id}")
+            logging.debug(f"Thumbnail endpoint response - pdf_generated_at: {current_time}")
+            logging.debug(f"Database update successful for resume {resume_id}")
 
             return jsonify({
                 "success": True,

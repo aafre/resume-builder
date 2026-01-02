@@ -11,9 +11,11 @@ import BreadcrumbsWithSchema from '../shared/BreadcrumbsWithSchema';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import HighlightedText from '../shared/HighlightedText';
+import RelatedJobsSection from './RelatedJobsSection';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { getJobBySlug } from '../../data/jobKeywords';
 import { generateJobFAQs, getTotalKeywordCount } from '../../utils/jobKeywordHelpers';
+import { generateJobPageTitle, generateJobPageDescription } from '../../utils/seoHelpers';
 import type { BreadcrumbConfig, HeroConfig } from '../../types/seo';
 
 export default function JobKeywordsPage() {
@@ -73,8 +75,8 @@ export default function JobKeywordsPage() {
   return (
     <SEOPageLayout
       seoConfig={{
-        title: jobData.metaTitle,
-        description: jobData.metaDescription,
+        title: generateJobPageTitle(jobData),
+        description: generateJobPageDescription(jobData),
         keywords: [
           `${jobData.title.toLowerCase()} resume keywords`,
           `${jobData.title.toLowerCase()} skills`,
@@ -291,6 +293,8 @@ export default function JobKeywordsPage() {
       </div>
 
       <FAQSection faqs={faqs} />
+
+      <RelatedJobsSection job={jobData} />
 
       <DownloadCTA
         title={`Ready to Build Your ${jobData.title} Resume?`}

@@ -5,6 +5,7 @@
 
 import type { FAQConfig } from '../types/seo';
 import type { JobKeywordsData } from '../data/jobKeywords/types';
+import { JOBS_DATABASE } from '../data/jobKeywords';
 
 /**
  * Formats an array of strings into a human-readable list.
@@ -97,4 +98,25 @@ export function getCategoryKeywordCount(
   category: 'core' | 'technical' | 'certifications' | 'metrics' | 'processes'
 ): number {
   return job.keywords[category]?.length || 0;
+}
+
+/**
+ * Get related jobs for internal linking
+ * Prioritizes jobs in the same category, then other categories
+ * @param currentJob - Current job page's data
+ * @param limit - Maximum number of related jobs to return (default: 6)
+ * @returns Array of related JobKeywordsData objects
+ */
+export function getRelatedJobs(currentJob: JobKeywordsData, limit = 6): JobKeywordsData[] {
+  // Filter out current job
+  const otherJobs = JOBS_DATABASE.filter(job => job.slug !== currentJob.slug);
+
+  // Prioritize same category
+  const sameCategory = otherJobs.filter(job => job.category === currentJob.category);
+  const otherCategory = otherJobs.filter(job => job.category !== currentJob.category);
+
+  // Take up to limit jobs (prefer same category first)
+  const related = [...sameCategory, ...otherCategory].slice(0, limit);
+
+  return related;
 }

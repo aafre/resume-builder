@@ -284,6 +284,12 @@ serve(async (req: Request) => {
 
     console.log('Schema validation passed');
 
+    // Merge AI warnings with validator warnings
+    const combinedWarnings = [
+      ...aiResult.warnings,
+      ...schemaValidation.warnings
+    ];
+
     // === 11. Convert to YAML ===
     let yamlOutput: string;
     try {
@@ -313,7 +319,7 @@ serve(async (req: Request) => {
       parsed_yaml: yamlOutput,
       parsed_json: aiResult.json,
       confidence_score: aiResult.confidence,
-      warnings: aiResult.warnings,
+      warnings: combinedWarnings,
       openai_model: 'gpt-4o-mini',
     });
 
@@ -335,7 +341,7 @@ serve(async (req: Request) => {
     const hallucination_warning =
       'AI-generated content: Please carefully review all details for accuracy.';
 
-    const allWarnings = [...aiResult.warnings];
+    const allWarnings = [...combinedWarnings];
     if (aiResult.confidence < 0.9) {
       allWarnings.push(hallucination_warning);
     }

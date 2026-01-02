@@ -54,6 +54,12 @@ export default function MyResumes() {
     onThumbnailUpdated
   });
 
+  // Force refetch on mount to ensure fresh data for auto-trigger
+  // Prevents React Query cache from returning stale timestamps when navigating from editor
+  useEffect(() => {
+    refetch();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Auto-trigger thumbnail generation for stale resumes when data loads
   useEffect(() => {
     if (!resumes.length) return;

@@ -335,9 +335,9 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /templates/ats-friendly
   atsFriendly: {
     seo: {
-      title: 'Free ATS-Friendly Resume Template — Download',
+      title: 'Free ATS-Friendly Resume Template (2025) - Edit Online & Download',
       description:
-        'Download our most popular ATS-friendly resume template. Clean, professional layout in DOCX and Google Docs. Optimized for Applicant Tracking Systems.',
+        'Build your ATS-friendly resume online—no sign-up required. Browser-based editor with instant PDF download. Start in seconds, download in minutes.',
       keywords: [
         'ats friendly resume template',
         'free ats template download',
