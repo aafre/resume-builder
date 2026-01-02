@@ -5,7 +5,10 @@ contact_info:
   location: "London, UK"
   email: john.doe@example.com
   phone: +44 7000000000
-  linkedin: https://linkedin.com/in/JohnDoe
+  social_links:
+    - platform: linkedin
+      url: https://linkedin.com/in/JohnDoe
+      display_text: John Doe
 
 sections:
   - name: Summary
