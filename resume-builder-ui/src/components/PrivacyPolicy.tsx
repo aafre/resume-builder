@@ -1,6 +1,6 @@
 const PrivacyPolicy = () => {
   return (
-    <div className="container mx-auto my-10 px-4 sm:px-6 md:px-8">
+    <div className="container mx-auto my-10 px-4 sm:px-6 md:px-8 pb-[calc(var(--footer-height)+2rem)]">
       <h1 className="text-3xl font-bold text-center mb-6">Privacy Policy</h1>
       <p className="text-center text-gray-500 mb-6">
         Last Updated: 1 January 2026

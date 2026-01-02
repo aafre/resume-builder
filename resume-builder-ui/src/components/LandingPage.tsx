@@ -207,7 +207,7 @@ const LandingPage: React.FC = () => {
           },
         ]}
       />
-      <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-indigo-100/40 text-gray-800 relative overflow-hidden">
+      <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-indigo-100/40 text-gray-800 relative overflow-hidden pb-[calc(var(--footer-height)+2rem)]">
         {/* Subtle background pattern */}
         <div className="absolute inset-0 opacity-[0.02]" style={{
           backgroundImage: `radial-gradient(circle at 25px 25px, #6366f1 2px, transparent 0)`,

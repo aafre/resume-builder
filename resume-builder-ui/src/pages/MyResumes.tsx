@@ -364,7 +364,7 @@ export default function MyResumes() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-[1200px]">
+      <div className="container mx-auto px-4 py-8 pb-[calc(var(--footer-height)+2rem)] max-w-[1200px]">
         {/* Resume Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Ghost Card - Always first */}
