@@ -3,7 +3,7 @@ import { getTotalKeywordCount } from './jobKeywordHelpers';
 
 /**
  * Generate standardized SEO title for job keywords pages
- * Formula: "Free {Job Title} Resume Keywords & Skills List (2025) - ATS Friendly"
+ * Formula: "Free {Job Title} Resume Keywords & Skills List ({current_year}) - ATS Friendly"
  */
 export function generateJobPageTitle(job: JobKeywordsData): string {
   const year = new Date().getFullYear();
@@ -12,7 +12,7 @@ export function generateJobPageTitle(job: JobKeywordsData): string {
 
 /**
  * Generate dynamic meta description including top 3 technical skills
- * Formula: "Free {job} resume keywords including {skill1}, {skill2}, {skill3}, and {count}+ more..."
+ * Formula: "Free {job} resume keywords including {skill1}, {skill2}, {skill3}, and {count}+ more ATS-optimized skills. Updated for {year}."
  */
 export function generateJobPageDescription(job: JobKeywordsData): string {
   const year = new Date().getFullYear();
