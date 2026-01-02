@@ -3,6 +3,32 @@ import { useState } from 'react';
 import { Download, Eye } from 'lucide-react';
 import { KebabMenu } from './KebabMenu';
 
+/**
+ * Adds cache-busting query parameter to thumbnail URL
+ * Uses pdf_generated_at timestamp to ensure unique URLs for each version
+ */
+const getThumbnailUrl = (
+  thumbnail_url: string | null | undefined,
+  pdf_generated_at: string | null | undefined
+): string | null => {
+  if (!thumbnail_url) return null;
+
+  // If URL already has version param (from backend), use as-is
+  if (thumbnail_url.includes('?v=')) return thumbnail_url;
+
+  // Add pdf_generated_at as cache buster for backwards compatibility
+  if (pdf_generated_at) {
+    const date = new Date(pdf_generated_at);
+    if (!isNaN(date.getTime())) {
+      const timestamp = date.getTime();
+      const separator = thumbnail_url.includes('?') ? '&' : '?';
+      return `${thumbnail_url}${separator}v=${timestamp}`;
+    }
+  }
+
+  return thumbnail_url;
+};
+
 interface ResumeCardProps {
   resume: ResumeListItem;
   onEdit: (id: string) => void;
@@ -87,7 +113,8 @@ export function ResumeCard({
       <div className="relative bg-gray-100 h-48 overflow-hidden cursor-pointer rounded-t-lg" onClick={() => onPreview(resume.id)}>
         {/* Always show thumbnail - never hide it */}
         <img
-          src={resume.thumbnail_url || getTemplatePreview(resume.template_id)}
+          key={`${resume.id}-${resume.pdf_generated_at || 'default'}`}
+          src={getThumbnailUrl(resume.thumbnail_url, resume.pdf_generated_at) || getTemplatePreview(resume.template_id)}
           alt={resume.title}
           className="w-full h-full object-cover object-top"
         />
