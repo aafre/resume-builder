@@ -15,6 +15,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Component Height Variables - Used for consistent spacing */
+:root {
+  /* Header heights */
+  --header-height-mobile: 64px;
+  --header-height-desktop: 72px;
+
+  /* Footer height - measures entire footer component */
+  --footer-height: 200px;
+
+  /* Mobile action bar (mobile/tablet only) */
+  --mobile-action-bar-height: 110px;
+
+  /* Editor toolbar (tablet only) */
+  --tablet-toolbar-height: 80px;
+}
+
 /* 2026 Modern Button System */
 .btn-primary {
   @apply relative inline-flex items-center justify-center bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 active:scale-95 overflow-hidden;

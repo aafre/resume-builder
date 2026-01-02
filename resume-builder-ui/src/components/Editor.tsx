@@ -144,8 +144,6 @@ const Editor: React.FC = () => {
 
   // Get context for footer integration
   const {
-    isAtBottom: contextIsAtBottom,
-    setIsAtBottom: setContextIsAtBottom,
     setIsSidebarCollapsed: setContextIsSidebarCollapsed,
   } = useEditorContext();
 
@@ -345,9 +343,6 @@ const Editor: React.FC = () => {
   const [showAIWarning, setShowAIWarning] = useState(false);
   const [_aiWarnings, setAIWarnings] = useState<string[]>([]);
   const [_aiConfidence, setAIConfidence] = useState(0);
-
-  // Simple scroll detection for footer visibility
-  const lastScrollY = useRef(0);
 
   // Store save function for unmount to avoid stale closure
   const saveOnUnmountRef = useRef<(() => Promise<void>) | null>(null);
@@ -1602,30 +1597,6 @@ const Editor: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleOpenPreview]);
 
-  // Simple scroll detection for footer visibility
-  const handleScroll = useCallback(() => {
-    const currentScrollY = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
-
-    // Check if at bottom (with threshold accounting for footer height)
-    const atBottom = windowHeight + currentScrollY >= documentHeight - 150;
-
-    // Update context with bottom state for footer visibility
-    setContextIsAtBottom(atBottom);
-
-    lastScrollY.current = currentScrollY;
-  }, [setContextIsAtBottom]);
-
-  useEffect(() => {
-    const throttledHandleScroll = () => {
-      requestAnimationFrame(handleScroll);
-    };
-
-    window.addEventListener("scroll", throttledHandleScroll);
-    return () => window.removeEventListener("scroll", throttledHandleScroll);
-  }, [handleScroll]);
-
   // Warn user if closing browser/tab with unsaved changes
   useEffect(() => {
     if (isAnonymous || !contactInfo || !templateId) return;
@@ -1713,7 +1684,7 @@ const Editor: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Main Content Container - Dynamic padding based on sidebar state */}
-      <div className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-72 sm:pb-56 lg:pb-12 max-w-4xl lg:max-w-none transition-all duration-300 ${
+      <div className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-[calc(var(--mobile-action-bar-height)+1rem)] lg:pb-[1rem] max-w-4xl lg:max-w-none transition-all duration-300 ${
         isSidebarCollapsed ? 'lg:mr-[88px]' : 'lg:mr-[296px]'
       }`}>
         {/* Imported Resume Review Banner */}
@@ -1983,21 +1954,9 @@ const Editor: React.FC = () => {
           </DragOverlay>
         </DndContext>
 
-        {/* Elegant Separator - Between content and toolbar (mobile/tablet only) */}
-        {contextIsAtBottom && (
-          <div className="fixed left-0 right-0 z-50 transition-all duration-300 bottom-80 sm:bottom-64 lg:bottom-48 px-4 lg:hidden">
-            <div className="max-w-screen-lg mx-auto">
-              <div className="bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-white/30 h-0.5 w-full"></div>
-            </div>
-          </div>
-        )}
-
         {/* Desktop Toolbar - Now hidden on desktop (actions moved to sidebar), shown on tablet only */}
         <div
-          className={`hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300
-            left-auto right-6 border border-gray-200/60 rounded-2xl w-auto max-w-none ${
-              contextIsAtBottom ? "bottom-24" : "bottom-6"
-            }`}
+          className="hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 left-auto right-6 border border-gray-200/60 rounded-2xl w-auto max-w-none bottom-6"
         >
           <div className="flex items-center justify-between gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
             <EditorToolbar
@@ -2080,15 +2039,6 @@ const Editor: React.FC = () => {
           className="hidden"
           onChange={handleImportYAML}
         />
-
-        {/* Elegant Separator - Between toolbar and footer (mobile/tablet only) */}
-        {contextIsAtBottom && (
-          <div className="fixed left-0 right-0 z-50 transition-all duration-300 bottom-64 sm:bottom-48 lg:bottom-20 px-4 lg:hidden">
-            <div className="max-w-screen-lg mx-auto">
-              <div className="bg-white/50 backdrop-blur-sm rounded-full shadow-sm border border-white/30 h-0.5 w-full"></div>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Context-Aware Tour - New 5-Step Tour with Auth Branching */}
