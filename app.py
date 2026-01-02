@@ -1070,7 +1070,7 @@ def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
                 file_options={
                     "content-type": "image/png",
                     "upsert": "true",
-                    "cacheControl": "public, max-age=31536000, must-revalidate"
+                    "cacheControl": "public, max-age=31536000, immutable"
                 }
             )
 
