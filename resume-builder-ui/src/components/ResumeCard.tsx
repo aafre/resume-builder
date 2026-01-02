@@ -18,9 +18,12 @@ const getThumbnailUrl = (
 
   // Add pdf_generated_at as cache buster for backwards compatibility
   if (pdf_generated_at) {
-    const timestamp = new Date(pdf_generated_at).getTime();
-    const separator = thumbnail_url.includes('?') ? '&' : '?';
-    return `${thumbnail_url}${separator}v=${timestamp}`;
+    const date = new Date(pdf_generated_at);
+    if (!isNaN(date.getTime())) {
+      const timestamp = date.getTime();
+      const separator = thumbnail_url.includes('?') ? '&' : '?';
+      return `${thumbnail_url}${separator}v=${timestamp}`;
+    }
   }
 
   return thumbnail_url;
