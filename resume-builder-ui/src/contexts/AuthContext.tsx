@@ -426,8 +426,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     };
 
-    initializeAuth();
-
     // Listen for auth state changes - Supabase handles everything
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
@@ -524,6 +522,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       }
     );
+
+    // Initialize auth AFTER listener is subscribed
+    initializeAuth();
 
     // Cleanup on unmount
     return () => {

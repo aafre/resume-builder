@@ -262,7 +262,7 @@ export function useCloudSave({
         clearTimeout(debounceTimerRef.current);
       }
     };
-  }, [enabled, resumeData, icons, saveToCloud, session]);
+  }, [enabled, resumeData, icons, saveToCloud]);
 
   // Save on blur (when user switches tabs)
   useEffect(() => {
