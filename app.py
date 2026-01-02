@@ -1781,6 +1781,10 @@ def create_resume():
 
         # Initialize resume with template data
         contact_info = template_data.get('contact_info', {})
+
+        # Migrate old linkedin field to new social_links format (backward compatibility)
+        contact_info = migrate_linkedin_to_social_links(contact_info)
+
         sections = template_data.get('sections', [])
 
         # If load_example is False, clear the content but keep the structure
