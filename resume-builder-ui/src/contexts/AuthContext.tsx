@@ -121,10 +121,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Track if listener has already handled initialization (to avoid waiting for timeout)
   const listenerHandledInitRef = useRef(false);
 
-  // Update ref whenever session changes
-  useEffect(() => {
-    sessionRef.current = session;
-  }, [session]);
+  // Wrapper to update both ref and state synchronously to prevent race conditions
+  // This ensures sessionRef.current is updated BEFORE the state setter triggers re-renders
+  const setSessionAndRef = useCallback((newSession: Session | null) => {
+    sessionRef.current = newSession;  // Update ref first (synchronous)
+    setSession(newSession);            // Then update state (triggers re-render)
+  }, []);
 
   // TypeScript interfaces for legacy resume migration
   interface LegacyResumeData {
@@ -444,7 +446,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 } else {
                   // Successfully refreshed
                   sessionRecovered = true;
-                  setSession(refreshedSession);
+                  setSessionAndRef(refreshedSession);
                   setUser(refreshedSession.user);
                   console.log('✅ Session refreshed successfully:', refreshedSession.user.id);
                   return;
@@ -463,7 +465,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             } else {
               // Session is valid and not expired
               sessionRecovered = true;
-              setSession(existingSession);
+              setSessionAndRef(existingSession);
               setUser(existingSession.user);
               console.log('✅ Existing session restored:', existingSession.user.id);
               return;
@@ -561,7 +563,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.log('Auth state changed:', event, session?.user?.id);
         console.log('  → Is Anonymous:', session?.user?.is_anonymous);
         console.log('  → Current URL hash:', window.location.hash.substring(0, 50) + '...');
-        setSession(session);
+        setSessionAndRef(session);
         setUser(session?.user ?? null);
 
         // Cache session in API client to avoid slow getSession() calls after hard refresh
@@ -676,7 +678,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           if (error) {
             console.error('Failed to refresh session after cross-tab change:', error);
             // Clear session if refresh fails (likely means sign-out in other tab)
-            setSession(null);
+            setSessionAndRef(null);
             setUser(null);
             apiClient.setSession(null);
           } else {
