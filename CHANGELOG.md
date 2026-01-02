@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.0] - 2026-01-02
+
+### 🚀 Features
+
+- **styles:** Add CSS variables for component heights
+- **tailwind:** Add spacing utilities for CSS variables
+- **editor:** Update content padding to use CSS variables
+- **editor:** Fix tablet toolbar positioning with CSS variable
+- **pages:** Add bottom padding to prevent footer overlap
+
+### 🐛 Bug Fixes
+
+- **ui:** Remove unused import
+- **editor:** Remove footer height from padding calculations
+- **pages:** Remove unnecessary bottom padding
+- **editor:** Correct tablet bottom padding for MobileActionBar
+
+### 🚜 Refactor
+
+- **context:** Remove isAtBottom state from EditorContext
+- **editor:** Remove scroll detection logic
+- **editor:** Remove separator bars
+- **app:** Simplify footer to static positioning
+- **footer:** Remove unused props interface
+
 ## [3.0.0] - 2026-01-02
 
 ### 🚀 Features
