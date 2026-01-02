@@ -40,7 +40,9 @@ export default function JobCategorySection({ title, jobs, colorScheme }: JobCate
                 {job.title}
               </h4>
               <p className="text-gray-600 mb-4 text-sm">
-                {keywordCount}+ keywords including {job.keywords.technical.slice(0, 2).join(', ')}, and more
+                {keywordCount}+ keywords
+                {job.keywords.technical.length > 0 &&
+                  ` including ${job.keywords.technical.slice(0, 2).join(', ')}${job.keywords.technical.length > 2 ? ', and more' : ''}`}
               </p>
               <div className={`font-semibold text-sm ${colorScheme.text}`}>
                 View Keywords →

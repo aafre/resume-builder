@@ -39,19 +39,14 @@ export default function RelatedJobsSection({ job, limit = 6 }: RelatedJobsSectio
               to={`/resume-keywords/${relatedJob.slug}`}
               className="block bg-white border border-gray-200 rounded-xl p-6 hover:border-blue-500 hover:shadow-lg transition-all duration-200 group"
             >
-              <div className="flex items-start justify-between mb-3">
-                <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                  {relatedJob.title}
-                </h3>
-                <span className="text-sm text-blue-600 font-medium whitespace-nowrap ml-2">
-                  →
-                </span>
-              </div>
+              <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-3">
+                {relatedJob.title}
+              </h3>
 
               <p className="text-sm text-gray-600 mb-4">
-                {keywordCount}+ ATS-optimized keywords including{' '}
-                {relatedJob.keywords.technical.slice(0, 2).join(', ')}
-                {relatedJob.keywords.technical.length > 2 ? ', and more' : ''}
+                {keywordCount}+ ATS-optimized keywords
+                {relatedJob.keywords.technical.length > 0 &&
+                  ` including ${relatedJob.keywords.technical.slice(0, 2).join(', ')}${relatedJob.keywords.technical.length > 2 ? ', and more' : ''}`}
               </p>
 
               <div className="flex items-center text-blue-600 font-medium text-sm group-hover:text-blue-700">

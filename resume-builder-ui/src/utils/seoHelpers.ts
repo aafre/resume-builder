@@ -19,5 +19,5 @@ export function generateJobPageDescription(job: JobKeywordsData): string {
   const topSkills = job.keywords.technical.slice(0, 3);
   const totalCount = getTotalKeywordCount(job);
 
-  return `Free ${job.title.toLowerCase()} resume keywords including ${topSkills.join(', ')}, and ${totalCount}+ more ATS-optimized skills. Updated for ${year}.`;
+  return `Free ${job.title.toLowerCase()} resume keywords${topSkills.length > 0 ? ` including ${topSkills.join(', ')}` : ''}. Get ${totalCount}+ ATS-optimized skills. Updated for ${year}.`;
 }
