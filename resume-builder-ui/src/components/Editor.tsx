@@ -1684,7 +1684,7 @@ const Editor: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Main Content Container - Dynamic padding based on sidebar state */}
-      <div className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-[calc(var(--mobile-action-bar-height)+1rem)] md:pb-[calc(var(--tablet-toolbar-height)+1rem)] lg:pb-[1rem] max-w-4xl lg:max-w-none transition-all duration-300 ${
+      <div className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-[calc(var(--mobile-action-bar-height)+1rem)] lg:pb-[1rem] max-w-4xl lg:max-w-none transition-all duration-300 ${
         isSidebarCollapsed ? 'lg:mr-[88px]' : 'lg:mr-[296px]'
       }`}>
         {/* Imported Resume Review Banner */}
