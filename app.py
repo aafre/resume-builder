@@ -2272,6 +2272,10 @@ def load_resume(resume_id):
 
         resume = result.data[0]
 
+        # Migrate old linkedin format to new social_links (backward compatibility)
+        if resume.get('contact_info'):
+            resume['contact_info'] = migrate_linkedin_to_social_links(resume['contact_info'])
+
         # Fetch associated icons
         icons_result = supabase.table('resume_icons') \
             .select('filename, storage_url, storage_path') \
