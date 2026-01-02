@@ -4,43 +4,6 @@ import { apiClient } from '../lib/api-client';
 import { toast } from 'react-hot-toast';
 import type { User, Session } from '@supabase/supabase-js';
 
-/**
- * Clears potentially corrupted Supabase auth data from localStorage.
- */
-const clearSupabaseAuthStorage = () => {
-  try {
-    const keys = Object.keys(localStorage);
-    const supabaseKeys = keys.filter(key =>
-      key.startsWith('sb-') ||
-      key.includes('supabase') ||
-      key === 'supabase.auth.token'
-    );
-
-    supabaseKeys.forEach(key => {
-      console.log('Clearing corrupted auth key:', key);
-      localStorage.removeItem(key);
-    });
-
-    return supabaseKeys.length > 0;
-  } catch (error) {
-    console.error('Error clearing localStorage:', error);
-    return false;
-  }
-};
-
-/**
- * Checks if a session is expired or will expire soon (within 60 seconds).
- * Returns true if session should be refreshed.
- */
-const isSessionExpired = (session: Session | null): boolean => {
-  if (!session?.expires_at) return true;
-
-  const expiresAt = session.expires_at * 1000; // Convert to milliseconds
-  const now = Date.now();
-  const bufferMs = 60 * 1000; // 60 second buffer
-
-  return expiresAt <= (now + bufferMs);
-};
 
 interface AuthContextType {
   user: User | null;
