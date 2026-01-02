@@ -2925,10 +2925,11 @@ def generate_pdf_for_saved_resume(resume_id):
                     current_resume = supabase.table('resumes').select('updated_at').eq('id', resume_id).execute()
                     current_updated_at = current_resume.data[0]['updated_at'] if current_resume.data else None
 
-                    # Update resume with thumbnail URL
+                    # Update resume with thumbnail URL and timestamp
+                    current_time = datetime.now(timezone.utc).isoformat()
                     update_data = {
                         'thumbnail_url': thumbnail_url,
-                        'pdf_generated_at': 'now()'
+                        'pdf_generated_at': current_time  # Use consistent timestamp
                     }
                     if current_updated_at:
                         update_data['updated_at'] = current_updated_at  # Preserve original timestamp
@@ -3174,7 +3175,7 @@ def generate_thumbnail_for_resume(resume_id):
             current_time = datetime.now(timezone.utc).isoformat()
             update_data = {
                 'thumbnail_url': thumbnail_url,
-                'pdf_generated_at': 'now()'
+                'pdf_generated_at': current_time  # Use same timestamp as response for polling
             }
             if current_updated_at:
                 update_data['updated_at'] = current_updated_at  # Preserve original timestamp
@@ -3182,6 +3183,8 @@ def generate_thumbnail_for_resume(resume_id):
             supabase.table('resumes').update(update_data).eq('id', resume_id).execute()
 
             logging.info(f"Thumbnail generated successfully for resume {resume_id}")
+            logging.debug(f"Thumbnail endpoint response - pdf_generated_at: {current_time}")
+            logging.debug(f"Database update successful for resume {resume_id}")
 
             return jsonify({
                 "success": True,
