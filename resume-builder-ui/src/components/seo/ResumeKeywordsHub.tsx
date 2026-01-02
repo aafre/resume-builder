@@ -12,18 +12,27 @@ import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
+import { JOBS_DATABASE, getJobsByCategory } from '../../data/jobKeywords';
+import { getTotalKeywordCount } from '../../utils/jobKeywordHelpers';
 
 export default function ResumeKeywordsHub() {
   const config = SEO_PAGES.keywordsHub;
+
+  // Group jobs by category
+  const technologyJobs = getJobsByCategory('technology');
+  const creativeJobs = getJobsByCategory('creative');
+  const businessJobs = getJobsByCategory('business');
+
+  // Generate schema items from all jobs
+  const schemaItems = JOBS_DATABASE.map(job => ({
+    name: `${job.title} Resume Keywords`,
+    url: `/resume-keywords/${job.slug}`,
+    description: `Essential keywords for ${job.title.toLowerCase()} roles`,
+  }));
+
   const schemas = usePageSchema({
     type: 'itemList',
-    items: [
-      {
-        name: 'Customer Service Resume Keywords',
-        url: '/resume-keywords/customer-service',
-        description: 'Essential keywords for customer service and support roles',
-      },
-    ],
+    items: schemaItems,
     faqs: config.faqs,
   });
 
@@ -55,52 +64,93 @@ export default function ResumeKeywordsHub() {
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
           Browse keywords by industry
         </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link
-            to="/resume-keywords/customer-service"
-            className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border-2 border-indigo-200 hover:border-indigo-400"
-          >
-            <div className="text-4xl mb-4">🎧</div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
-              Customer Service
-            </h3>
-            <p className="text-gray-600 mb-4">
-              CRM platforms, soft skills, metrics (CSAT, NPS, FCR), and support tools.
-            </p>
-            <div className="text-indigo-600 font-semibold">
-              View Keywords →
-            </div>
-          </Link>
 
-          <Link
-            to="/blog/software-engineer-resume-keywords"
-            className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border-2 border-blue-200 hover:border-blue-400"
-          >
-            <div className="text-4xl mb-4">💻</div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
-              Software Engineering
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Programming languages, frameworks, cloud platforms, and methodologies.
-            </p>
-            <div className="text-blue-600 font-semibold">
-              View Keywords →
-            </div>
-          </Link>
-
-          <div className="bg-gray-100 rounded-xl p-6 border-2 border-gray-200">
-            <div className="text-4xl mb-4 opacity-50">📊</div>
-            <h3 className="text-xl font-bold text-gray-500 mb-2">
-              More Industries
-            </h3>
-            <p className="text-gray-500 mb-4">
-              Finance, healthcare, marketing, and more coming soon.
-            </p>
-            <div className="text-gray-400 font-semibold">
-              Coming Soon
+        {/* Technology Jobs */}
+        {technologyJobs.length > 0 && (
+          <div className="mb-12">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">💻 Technology</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {technologyJobs.map(job => {
+                const keywordCount = getTotalKeywordCount(job);
+                return (
+                  <Link
+                    key={job.slug}
+                    to={`/resume-keywords/${job.slug}`}
+                    className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border-2 border-blue-200 hover:border-blue-400"
+                  >
+                    <h4 className="text-xl font-bold text-gray-900 mb-2">
+                      {job.title}
+                    </h4>
+                    <p className="text-gray-600 mb-4 text-sm">
+                      {keywordCount}+ keywords including {job.keywords.technical.slice(0, 2).join(', ')}, and more
+                    </p>
+                    <div className="text-blue-600 font-semibold text-sm">
+                      View Keywords →
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
-        </div>
+        )}
+
+        {/* Design Jobs */}
+        {creativeJobs.length > 0 && (
+          <div className="mb-12">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">🎨 Design</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {creativeJobs.map(job => {
+                const keywordCount = getTotalKeywordCount(job);
+                return (
+                  <Link
+                    key={job.slug}
+                    to={`/resume-keywords/${job.slug}`}
+                    className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border-2 border-purple-200 hover:border-purple-400"
+                  >
+                    <h4 className="text-xl font-bold text-gray-900 mb-2">
+                      {job.title}
+                    </h4>
+                    <p className="text-gray-600 mb-4 text-sm">
+                      {keywordCount}+ keywords including {job.keywords.technical.slice(0, 2).join(', ')}, and more
+                    </p>
+                    <div className="text-purple-600 font-semibold text-sm">
+                      View Keywords →
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Business Jobs */}
+        {businessJobs.length > 0 && (
+          <div className="mb-12">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">📊 Business & Management</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {businessJobs.map(job => {
+                const keywordCount = getTotalKeywordCount(job);
+                return (
+                  <Link
+                    key={job.slug}
+                    to={`/resume-keywords/${job.slug}`}
+                    className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border-2 border-green-200 hover:border-green-400"
+                  >
+                    <h4 className="text-xl font-bold text-gray-900 mb-2">
+                      {job.title}
+                    </h4>
+                    <p className="text-gray-600 mb-4 text-sm">
+                      {keywordCount}+ keywords including {job.keywords.technical.slice(0, 2).join(', ')}, and more
+                    </p>
+                    <div className="text-green-600 font-semibold text-sm">
+                      View Keywords →
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="mb-16">
