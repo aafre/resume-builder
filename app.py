@@ -31,6 +31,7 @@ import atexit
 from functools import wraps
 import time
 from typing import Callable, Any
+from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
 
 from flask_cors import CORS
 from supabase import create_client, Client
@@ -1079,8 +1080,11 @@ def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
 
             # Add cache-busting parameter to force browser to fetch new thumbnails
             timestamp = int(time.time() * 1000)  # Unix timestamp in milliseconds
-            separator = '&' if '?' in thumbnail_url else '?'
-            thumbnail_url = f"{thumbnail_url}{separator}v={timestamp}"
+            url_parts = list(urlparse(thumbnail_url))
+            query = parse_qs(url_parts[4])
+            query['v'] = [str(timestamp)]
+            url_parts[4] = urlencode(query, doseq=True)
+            thumbnail_url = urlunparse(url_parts)
 
             logging.info(f"Successfully generated and uploaded thumbnail: {storage_path}")
             return thumbnail_url

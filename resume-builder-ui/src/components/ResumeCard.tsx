@@ -21,8 +21,9 @@ const getThumbnailUrl = (
     const date = new Date(pdf_generated_at);
     if (!isNaN(date.getTime())) {
       const timestamp = date.getTime();
-      const separator = thumbnail_url.includes('?') ? '&' : '?';
-      return `${thumbnail_url}${separator}v=${timestamp}`;
+      const url = new URL(thumbnail_url);
+      url.searchParams.set('v', timestamp.toString());
+      return url.toString();
     }
   }
 
