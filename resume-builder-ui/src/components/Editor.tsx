@@ -72,7 +72,6 @@ import {
 // Lazy-loaded error components
 const NotFound = lazy(() => import("./NotFound"));
 const ErrorPage = lazy(() => import("./ErrorPage"));
-const SignInRequiredGate = lazy(() => import("./SignInRequiredGate"));
 
 // Loading component for Suspense fallback
 const LoadingSpinner = () => (
@@ -1707,20 +1706,6 @@ const Editor: React.FC = () => {
     return (
       <Suspense fallback={<LoadingSpinner />}>
         <NotFound />
-      </Suspense>
-    );
-  }
-
-  // Show sign-in gate if user is not authenticated and not loading
-  // This prevents zombie state where buttons render but fail with auth errors
-  if (!session && !loading && !authLoading) {
-    return (
-      <Suspense fallback={<LoadingSpinner />}>
-        <SignInRequiredGate
-          heading="Sign In to Continue Editing"
-          message="Sign in to save your resume and access it from anywhere"
-          showLocalNote={false}
-        />
       </Suspense>
     );
   }
