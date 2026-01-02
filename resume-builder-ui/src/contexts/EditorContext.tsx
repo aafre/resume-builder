@@ -1,10 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface EditorContextType {
-  // Scroll state
-  isAtBottom: boolean;
-  setIsAtBottom: (value: boolean) => void;
-
   // Auto-save state
   lastSaved: Date | null;
   setLastSaved: (value: Date | null) => void;
@@ -57,7 +53,6 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({
   previewLastGenerated: externalPreviewLastGenerated,
   previewIsGenerating: externalPreviewIsGenerating,
 }) => {
-  const [isAtBottom, setIsAtBottom] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   // Use external values if provided, otherwise use internal state (for backwards compatibility)
@@ -80,8 +75,6 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({
 
   return (
     <EditorContext.Provider value={{
-      isAtBottom,
-      setIsAtBottom,
       lastSaved,
       setLastSaved: setInternalLastSaved,
       isSaving,
