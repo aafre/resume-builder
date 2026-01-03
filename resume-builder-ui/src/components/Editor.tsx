@@ -10,7 +10,11 @@ import ReactDOM from "react-dom";
 import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { AlertCircle, X } from "lucide-react";
-import { fetchTemplate, generateResume, generateThumbnail } from "../services/templates";
+import {
+  fetchTemplate,
+  generateResume,
+  generateThumbnail,
+} from "../services/templates";
 import { getSessionId } from "../utils/session";
 import { useIconRegistry } from "../hooks/useIconRegistry";
 import { usePreview } from "../hooks/usePreview";
@@ -23,11 +27,17 @@ import { apiClient } from "../lib/api-client";
 import yaml from "js-yaml";
 import { PortableYAMLData } from "../types/iconTypes";
 import { extractReferencedIconFilenames } from "../utils/iconExtractor";
-import { isExperienceSection, isEducationSection } from "../utils/sectionTypeChecker";
+import {
+  isExperienceSection,
+  isEducationSection,
+} from "../utils/sectionTypeChecker";
 import { migrateLegacySections } from "../utils/sectionMigration";
 import ContactInfoSection from "./ContactInfoSection";
 import FormattingHelp from "./FormattingHelp";
-import { validatePlatformUrl, generateDisplayText } from "../constants/socialPlatforms";
+import {
+  validatePlatformUrl,
+  generateDisplayText,
+} from "../constants/socialPlatforms";
 import { SocialLink } from "../types";
 import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
@@ -87,39 +97,39 @@ const LoadingSpinner = () => (
 // Complete list of all icons in /icons/ directory (27 icons total)
 const DEFAULT_ICONS = new Set([
   // Contact icons (13)
-  'location.png',
-  'email.png',
-  'phone.png',
-  'linkedin.png',
-  'github.png',
-  'twitter.png',
-  'website.png',
-  'pinterest.png',
-  'medium.png',
-  'youtube.png',
-  'stackoverflow.png',
-  'behance.png',
-  'dribbble.png',
+  "location.png",
+  "email.png",
+  "phone.png",
+  "linkedin.png",
+  "github.png",
+  "twitter.png",
+  "website.png",
+  "pinterest.png",
+  "medium.png",
+  "youtube.png",
+  "stackoverflow.png",
+  "behance.png",
+  "dribbble.png",
 
   // Company icons (4)
-  'company.png',
-  'company_google.png',
-  'company_amazon.png',
-  'company_apple.png',
+  "company.png",
+  "company_google.png",
+  "company_amazon.png",
+  "company_apple.png",
 
   // School/Education icons (4)
-  'school.png',
-  'school_harvard.png',
-  'school_oxford.png',
-  'school_berkeley.svg',
+  "school.png",
+  "school_harvard.png",
+  "school_oxford.png",
+  "school_berkeley.svg",
 
   // Certification icons (6)
-  'certification_aws.png',
-  'certification_azure.png',
-  'certification_k8s.png',
-  'certification_google.png',
-  'certification_devops.png',
-  'certification_scrum.png',
+  "certification_aws.png",
+  "certification_azure.png",
+  "certification_k8s.png",
+  "certification_google.png",
+  "certification_devops.png",
+  "certification_scrum.png",
 ]);
 
 interface Section {
@@ -143,9 +153,8 @@ const Editor: React.FC = () => {
   const [searchParams] = useSearchParams();
 
   // Get context for footer integration
-  const {
-    setIsSidebarCollapsed: setContextIsSidebarCollapsed,
-  } = useEditorContext();
+  const { setIsSidebarCollapsed: setContextIsSidebarCollapsed } =
+    useEditorContext();
 
   // TODO: useResponsive() will be added when implementing navigation drawer
 
@@ -164,15 +173,29 @@ const Editor: React.FC = () => {
   const iconRegistry = useIconRegistry();
 
   // Auth state - used by cloud save
-  const { isAnonymous, session, loading: authLoading, anonMigrationInProgress } = useAuth();
+  const {
+    isAnonymous,
+    session,
+    loading: authLoading,
+    anonMigrationInProgress,
+  } = useAuth();
   const isAuthenticated = !!session && !isAnonymous;
 
   // Conversion nudges
-  const { hasShownDownloadToast, markDownloadToastShown, hasShownIdleNudge, markIdleNudgeShown } = useConversion();
+  const {
+    hasShownDownloadToast,
+    markDownloadToastShown,
+    hasShownIdleNudge,
+    markIdleNudgeShown,
+  } = useConversion();
 
   const [showStorageLimitModal, setShowStorageLimitModal] = useState(false);
-  const [cloudResumeId, setCloudResumeId] = useState<string | null>(resumeIdFromUrl || null);
-  const [isLoadingFromUrl, setIsLoadingFromUrl] = useState<boolean>(!!resumeIdFromUrl);
+  const [cloudResumeId, setCloudResumeId] = useState<string | null>(
+    resumeIdFromUrl || null
+  );
+  const [isLoadingFromUrl, setIsLoadingFromUrl] = useState<boolean>(
+    !!resumeIdFromUrl
+  );
   const [hasLoadedFromUrl, setHasLoadedFromUrl] = useState<boolean>(false);
 
   // Process sections to clean up icon paths for export/preview
@@ -246,30 +269,33 @@ const Editor: React.FC = () => {
   const iconsForCloudSave = React.useMemo(() => {
     const filenames = iconRegistry.getRegisteredFilenames();
     const iconsObj: { [filename: string]: File } = {};
-    filenames.forEach(filename => {
+    filenames.forEach((filename) => {
       const file = iconRegistry.getIconFile(filename);
       if (file) {
         iconsObj[filename] = file;
       }
     });
     return iconsObj;
-  }, [iconRegistry.getRegisteredFilenames().join(',')]);
+  }, [iconRegistry.getRegisteredFilenames().join(",")]);
 
   const {
     saveStatus,
     lastSaved: cloudLastSaved,
     saveNow, // Used before critical actions
-    resumeId: savedResumeId
+    resumeId: savedResumeId,
   } = useCloudSave({
     resumeId: cloudResumeId,
-    resumeData: contactInfo && templateId ? {
-      contact_info: contactInfo,
-      sections: sections,
-      template_id: templateId
-    } : { contact_info: {} as any, sections: [], template_id: '' },
+    resumeData:
+      contactInfo && templateId
+        ? {
+            contact_info: contactInfo,
+            sections: sections,
+            template_id: templateId,
+          }
+        : { contact_info: {} as any, sections: [], template_id: "" },
     icons: iconsForCloudSave,
-    enabled: !!templateId && !!contactInfo && !isLoadingFromUrl && !authLoading,  // Wait for auth and data to be ready
-    session: session  // Pass session from AuthContext
+    enabled: !!templateId && !!contactInfo && !isLoadingFromUrl && !authLoading, // Wait for auth and data to be ready
+    session: session, // Pass session from AuthContext
   });
 
   // Update cloud resume ID when it's set from cloud save
@@ -304,7 +330,7 @@ const Editor: React.FC = () => {
   // Confirmation dialog state
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<{
-    type: 'section' | 'entry';
+    type: "section" | "entry";
     sectionIndex: number;
     entryIndex?: number;
     sectionName?: string;
@@ -335,8 +361,12 @@ const Editor: React.FC = () => {
   const [draggedSection, setDraggedSection] = useState<Section | null>(null);
 
   // Social links state management
-  const [socialLinkErrors, setSocialLinkErrors] = useState<Record<number, string>>({});
-  const [autoGeneratedIndexes, setAutoGeneratedIndexes] = useState<Set<number>>(new Set());
+  const [socialLinkErrors, setSocialLinkErrors] = useState<
+    Record<number, string>
+  >({});
+  const [autoGeneratedIndexes, setAutoGeneratedIndexes] = useState<Set<number>>(
+    new Set()
+  );
   const socialLinkDebounceRefs = useRef<Record<number, NodeJS.Timeout>>({});
 
   // AI import warning state (feature in progress)
@@ -363,68 +393,80 @@ const Editor: React.FC = () => {
    * Saves pending changes before critical actions (Preview, Download, etc.)
    * Returns true if action can proceed, false if save failed
    */
-  const saveBeforeAction = useCallback(async (actionName: string): Promise<boolean> => {
-    // Skip save for anonymous users or if no data exists
-    if (isAnonymous || !contactInfo || !templateId) {
-      return true;
-    }
-
-    // If already saving, wait for completion
-    if (saveStatus === 'saving') {
-      console.log(`Waiting for in-progress save before ${actionName}...`);
-      // Wait up to 10 seconds
-      const timeout = 10000;
-      const start = Date.now();
-      while (saveStatus === 'saving' && Date.now() - start < timeout) {
-        await new Promise(resolve => setTimeout(resolve, 100));
+  const saveBeforeAction = useCallback(
+    async (actionName: string): Promise<boolean> => {
+      // Skip save for anonymous users or if no data exists
+      if (isAnonymous || !contactInfo || !templateId) {
+        return true;
       }
-      // After waiting, check if save completed successfully (not in error state)
-      // Use type assertion since saveStatus may have changed during the loop
-      return (saveStatus as string) !== 'error';
-    }
 
-    // Always trigger save before action to ensure latest data is persisted
-    // Backend handles deduplication via hash comparison, so redundant saves are cheap
-    try {
-      console.log(`Saving before ${actionName}...`);
-      const result = await saveNow();
+      // If already saving, wait for completion
+      if (saveStatus === "saving") {
+        console.log(`Waiting for in-progress save before ${actionName}...`);
+        // Wait up to 10 seconds
+        const timeout = 10000;
+        const start = Date.now();
+        while (saveStatus === "saving" && Date.now() - start < timeout) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+        // After waiting, check if save completed successfully (not in error state)
+        // Use type assertion since saveStatus may have changed during the loop
+        return (saveStatus as string) !== "error";
+      }
 
-      if (result === null && saveStatus === 'error') {
-        toast.error(`Failed to save changes before ${actionName}. Please try again.`);
+      // Always trigger save before action to ensure latest data is persisted
+      // Backend handles deduplication via hash comparison, so redundant saves are cheap
+      try {
+        console.log(`Saving before ${actionName}...`);
+        const result = await saveNow();
+
+        if (result === null && saveStatus === "error") {
+          toast.error(
+            `Failed to save changes before ${actionName}. Please try again.`
+          );
+          return false;
+        }
+
+        return true;
+      } catch (error) {
+        console.error(`Save failed before ${actionName}:`, error);
+
+        // Handle storage limit error
+        if (
+          error instanceof Error &&
+          error.message === "RESUME_LIMIT_REACHED"
+        ) {
+          setShowStorageLimitModal(true);
+          return false;
+        }
+
+        toast.error(
+          `Failed to save changes before ${actionName}. Please try again.`
+        );
         return false;
       }
-
-      return true;
-    } catch (error) {
-      console.error(`Save failed before ${actionName}:`, error);
-
-      // Handle storage limit error
-      if (error instanceof Error && error.message === 'RESUME_LIMIT_REACHED') {
-        setShowStorageLimitModal(true);
-        return false;
-      }
-
-      toast.error(`Failed to save changes before ${actionName}. Please try again.`);
-      return false;
-    }
-  }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow]);
+    },
+    [isAnonymous, contactInfo, templateId, saveStatus, saveNow]
+  );
 
   // DEPRECATED: Block old ?template=X pattern (no longer supported)
   // Users must create resume via /api/resumes/create, then navigate to /editor/{uuid}
   useEffect(() => {
-    const templateParam = searchParams.get('template');
-    const importedParam = searchParams.get('imported');
+    const templateParam = searchParams.get("template");
+    const importedParam = searchParams.get("imported");
 
     // Exception: Allow ?template=X&imported=true for AI import flow only
-    if (templateParam && importedParam === 'true') {
+    if (templateParam && importedParam === "true") {
       setTemplateId(templateParam);
       return;
     }
 
     // Block deprecated ?template=X pattern (without imported flag)
     if (templateParam && !resumeIdFromUrl) {
-      console.error('Deprecated URL pattern detected:', window.location.href);
-      setLoadingError('Invalid URL: Please create a resume from the templates page');
+      console.error("Deprecated URL pattern detected:", window.location.href);
+      setLoadingError(
+        "Invalid URL: Please create a resume from the templates page"
+      );
       setLoading(false);
       return;
     }
@@ -501,12 +543,14 @@ const Editor: React.FC = () => {
 
         // Use session from AuthContext instead of calling getSession()
         if (!session) {
-          toast.error('Please sign in to load saved resumes');
+          toast.error("Please sign in to load saved resumes");
           return;
         }
 
         // Use centralized API client (handles auth, 401/403 interceptor)
-        const { resume } = await apiClient.get(`/api/resumes/${resumeIdFromUrl}`);
+        const { resume } = await apiClient.get(
+          `/api/resumes/${resumeIdFromUrl}`
+        );
 
         // Populate editor state from database (JSONB)
         setContactInfo(resume.contact_info);
@@ -516,27 +560,37 @@ const Editor: React.FC = () => {
 
         // Set supportsIcons flag based on template
         // Only 'modern-with-icons' template supports icons
-        const templateSupportsIcons = resume.template_id === 'modern-with-icons';
+        const templateSupportsIcons =
+          resume.template_id === "modern-with-icons";
         setSupportsIcons(templateSupportsIcons);
 
         // Load template structure for originalTemplateData (needed for "Start Fresh")
         try {
-          const { yaml: templateYaml } = await fetchTemplate(resume.template_id);
+          const { yaml: templateYaml } = await fetchTemplate(
+            resume.template_id
+          );
           const templateData = yaml.load(templateYaml) as {
             contact_info: ContactInfo;
             sections: Section[];
           };
 
           // Migrate and process template sections
-          const migratedTemplateSections = migrateLegacySections(templateData.sections);
-          const processedTemplateSections = processSections(migratedTemplateSections);
+          const migratedTemplateSections = migrateLegacySections(
+            templateData.sections
+          );
+          const processedTemplateSections = processSections(
+            migratedTemplateSections
+          );
 
           setOriginalTemplateData({
             contactInfo: templateData.contact_info,
             sections: processedTemplateSections,
           });
         } catch (templateError) {
-          console.error('Failed to load template structure for Start Fresh:', templateError);
+          console.error(
+            "Failed to load template structure for Start Fresh:",
+            templateError
+          );
           // Non-critical: Start Fresh will still fail gracefully if originalTemplateData is null
         }
 
@@ -563,27 +617,31 @@ const Editor: React.FC = () => {
 
         // Only show toast if NOT loading after migration from tour sign-in
         if (!isSigningInFromTour) {
-          toast.success('Resume loaded successfully');
+          toast.success("Resume loaded successfully");
         }
         setIsLoadingFromUrl(false);
         setHasLoadedFromUrl(true); // Mark as loaded to prevent re-runs
       } catch (error) {
-        console.error('Failed to load resume:', error);
+        console.error("Failed to load resume:", error);
 
         // Check if we can recover from template or have fallback data
         // This happens when:
         // 1. User logs in via OAuth, redirects back to /editor/{oldResumeId}
         // 2. Old resume ID doesn't exist in database (auto-save hadn't triggered yet)
         // 3. But Editor can recover by loading template data
-        const hasTemplateParam = searchParams.get('template');
+        const hasTemplateParam = searchParams.get("template");
         const hasEditorState = contactInfo && sections.length > 0;
         const canRecover = templateId || hasTemplateParam || hasEditorState;
 
         if (!canRecover) {
           // Only show toast if we can't recover - this is a true error
-          toast.error(error instanceof Error ? error.message : 'Failed to load resume');
+          toast.error(
+            error instanceof Error ? error.message : "Failed to load resume"
+          );
         } else {
-          console.log('Resume not found in database, will recover from template or existing editor state');
+          console.log(
+            "Resume not found in database, will recover from template or existing editor state"
+          );
         }
 
         setIsLoadingFromUrl(false);
@@ -594,18 +652,28 @@ const Editor: React.FC = () => {
     };
 
     loadResumeFromCloud();
-  }, [resumeIdFromUrl, authLoading, anonMigrationInProgress, session, hasLoadedFromUrl]);
+  }, [
+    resumeIdFromUrl,
+    authLoading,
+    anonMigrationInProgress,
+    session,
+    hasLoadedFromUrl,
+  ]);
 
   // Tour persistence using unified preferences hook
-  const { preferences, setPreference, isLoading: prefsLoading } = usePreferencePersistence({
+  const {
+    preferences,
+    setPreference,
+    isLoading: prefsLoading,
+  } = usePreferencePersistence({
     session,
-    authLoading
+    authLoading,
   });
 
   const shouldShowTour = !preferences.tour_completed && !prefsLoading;
 
   const markTourComplete = useCallback(async () => {
-    await setPreference('tour_completed', true);
+    await setPreference("tour_completed", true);
   }, [setPreference]);
 
   const [showAuthModalFromTour, setShowAuthModalFromTour] = useState(false);
@@ -645,7 +713,7 @@ const Editor: React.FC = () => {
       !showWelcomeTour &&
       !hasLaunchedTourAfterSignIn.current
     ) {
-      console.log('🎯 Migration complete, re-launching tour');
+      console.log("🎯 Migration complete, re-launching tour");
 
       // Small delay to let UI settle after migration
       const timer = setTimeout(() => {
@@ -658,7 +726,15 @@ const Editor: React.FC = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [isAnonymous, session, anonMigrationInProgress, authLoading, prefsLoading, preferences.tour_completed, showWelcomeTour]);
+  }, [
+    isAnonymous,
+    session,
+    anonMigrationInProgress,
+    authLoading,
+    prefsLoading,
+    preferences.tour_completed,
+    showWelcomeTour,
+  ]);
 
   const handleTourComplete = async () => {
     setShowWelcomeTour(false);
@@ -711,7 +787,7 @@ const Editor: React.FC = () => {
   const handleDeleteSection = (index: number) => {
     // Show confirmation dialog instead of deleting immediately
     setDeleteTarget({
-      type: 'section',
+      type: "section",
       sectionIndex: index,
       sectionName: sections[index]?.name,
     });
@@ -721,7 +797,7 @@ const Editor: React.FC = () => {
   const handleDeleteEntry = (sectionIndex: number, entryIndex: number) => {
     // Show confirmation dialog for entry deletion
     setDeleteTarget({
-      type: 'entry',
+      type: "entry",
       sectionIndex,
       entryIndex,
       sectionName: sections[sectionIndex]?.name,
@@ -732,18 +808,25 @@ const Editor: React.FC = () => {
   const confirmDelete = () => {
     if (!deleteTarget) return;
 
-    if (deleteTarget.type === 'section') {
+    if (deleteTarget.type === "section") {
       // Delete entire section
-      const updatedSections = sections.filter((_, i) => i !== deleteTarget.sectionIndex);
+      const updatedSections = sections.filter(
+        (_, i) => i !== deleteTarget.sectionIndex
+      );
       setSections(updatedSections);
       toast.success(`Section "${deleteTarget.sectionName}" deleted`);
-    } else if (deleteTarget.type === 'entry' && deleteTarget.entryIndex !== undefined) {
+    } else if (
+      deleteTarget.type === "entry" &&
+      deleteTarget.entryIndex !== undefined
+    ) {
       // Delete entry from section
       const updatedSections = [...sections];
       const section = updatedSections[deleteTarget.sectionIndex];
 
       if (Array.isArray(section.content)) {
-        const updatedContent = section.content.filter((_, i) => i !== deleteTarget.entryIndex);
+        const updatedContent = section.content.filter(
+          (_, i) => i !== deleteTarget.entryIndex
+        );
         updatedSections[deleteTarget.sectionIndex] = {
           ...section,
           content: updatedContent,
@@ -762,13 +845,15 @@ const Editor: React.FC = () => {
     setActiveSectionIndex(index);
 
     // Scroll to contact info (-1) or section (0+)
-    const targetRef = index === -1 ? contactInfoRef.current : sectionRefs.current[index];
+    const targetRef =
+      index === -1 ? contactInfoRef.current : sectionRefs.current[index];
 
     if (targetRef) {
       const yOffset = -100; // Offset for fixed headers
-      const y = targetRef.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      const y =
+        targetRef.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
 
@@ -802,10 +887,10 @@ const Editor: React.FC = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // Initial check
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [sections.length]);
 
   const handleDragStart = (event: DragStartEvent) => {
@@ -926,7 +1011,7 @@ const Editor: React.FC = () => {
 
   const handleExportYAML = async () => {
     // Save first to ensure export has latest changes
-    const canProceed = await saveBeforeAction('export YAML');
+    const canProceed = await saveBeforeAction("export YAML");
     if (!canProceed) return;
 
     try {
@@ -982,7 +1067,9 @@ const Editor: React.FC = () => {
     }
   };
 
-  const handleImportYAML = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImportYAML = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -991,7 +1078,7 @@ const Editor: React.FC = () => {
     setShowImportConfirm(true);
 
     // Reset file input so the same file can be selected again
-    event.target.value = '';
+    event.target.value = "";
   };
 
   const confirmImportYAML = async () => {
@@ -1002,7 +1089,7 @@ const Editor: React.FC = () => {
     // Save current work before importing (if authenticated and has content)
     // Auto-save will handle preserving the current resume
     if (!isAnonymous && contactInfo && sections.length > 0) {
-      const canProceed = await saveBeforeAction('import YAML');
+      const canProceed = await saveBeforeAction("import YAML");
       if (!canProceed) {
         setPendingImportFile(null);
         return;
@@ -1037,12 +1124,13 @@ const Editor: React.FC = () => {
 
         // Validate imported icons against template compatibility
         if (!supportsIcons) {
-          const referencedIcons = extractReferencedIconFilenames(processedSections);
+          const referencedIcons =
+            extractReferencedIconFilenames(processedSections);
           if (referencedIcons.length > 0) {
             toast(
               `This template doesn't support icons. ${referencedIcons.length} icon(s) ` +
-              `were found in the imported file and will be ignored.`,
-              { duration: 8000, icon: '⚠️' }
+                `were found in the imported file and will be ignored.`,
+              { duration: 8000, icon: "⚠️" }
             );
           }
         }
@@ -1074,7 +1162,7 @@ const Editor: React.FC = () => {
   const handleGenerateResume = async () => {
     try {
       // Save first to ensure PDF has latest changes
-      const canProceed = await saveBeforeAction('download PDF');
+      const canProceed = await saveBeforeAction("download PDF");
       if (!canProceed) return;
 
       // Validate LinkedIn URL only if provided (block invalid, allow empty)
@@ -1145,7 +1233,7 @@ const Editor: React.FC = () => {
         setTimeout(() => {
           toast(
             "Need to continue on another device? Save your work via the ⋮ menu",
-            { icon: 'ℹ️' }
+            { icon: "ℹ️" }
           );
         }, 2000);
       }
@@ -1164,7 +1252,7 @@ const Editor: React.FC = () => {
   // Preview handlers
   const handleOpenPreview = async () => {
     // Save first to ensure database has latest changes
-    const canProceed = await saveBeforeAction('preview');
+    const canProceed = await saveBeforeAction("preview");
     if (!canProceed) return;
 
     // Validate icon availability for icon-supporting templates
@@ -1189,7 +1277,7 @@ const Editor: React.FC = () => {
 
   const handleRefreshPreview = async () => {
     // Save first to ensure database has latest changes
-    const canProceed = await saveBeforeAction('refresh preview');
+    const canProceed = await saveBeforeAction("refresh preview");
     if (!canProceed) return;
 
     // Validate icon availability for icon-supporting templates
@@ -1227,14 +1315,15 @@ const Editor: React.FC = () => {
     // - Personal profiles (/in/, /pub/, /public-profile/in/, /public-profile/pub/)
     // - Username length validation (3-100 characters)
     // - Optional trailing slash
-    const linkedinProfilePattern = /^(https?:\/\/)?([\w\d]+\.)?linkedin\.com\/(?:public-profile\/)?(in|pub)\/[\w-]{3,100}\/?$/;
+    const linkedinProfilePattern =
+      /^(https?:\/\/)?([\w\d]+\.)?linkedin\.com\/(?:public-profile\/)?(in|pub)\/[\w-]{3,100}\/?$/;
 
     return linkedinProfilePattern.test(urlLower);
   };
 
   // Social Links Handlers
   const handleAddSocialLink = () => {
-    setContactInfo(prevContactInfo => {
+    setContactInfo((prevContactInfo) => {
       if (!prevContactInfo) return null;
 
       const currentLinks = prevContactInfo.social_links || [];
@@ -1242,14 +1331,14 @@ const Editor: React.FC = () => {
         ...prevContactInfo,
         social_links: [
           ...currentLinks,
-          { platform: "", url: "", display_text: "" }
-        ]
+          { platform: "", url: "", display_text: "" },
+        ],
       };
     });
   };
 
   const handleRemoveSocialLink = (index: number) => {
-    setContactInfo(prevContactInfo => {
+    setContactInfo((prevContactInfo) => {
       if (!prevContactInfo) return null;
 
       const currentLinks = prevContactInfo.social_links || [];
@@ -1257,19 +1346,19 @@ const Editor: React.FC = () => {
 
       return {
         ...prevContactInfo,
-        social_links: updatedLinks
+        social_links: updatedLinks,
       };
     });
 
     // Clear error for this index
-    setSocialLinkErrors(prev => {
+    setSocialLinkErrors((prev) => {
       const updated = { ...prev };
       delete updated[index];
       return updated;
     });
 
     // Remove from auto-generated indexes
-    setAutoGeneratedIndexes(prev => {
+    setAutoGeneratedIndexes((prev) => {
       const updated = new Set(prev);
       updated.delete(index);
       return updated;
@@ -1282,8 +1371,12 @@ const Editor: React.FC = () => {
     }
   };
 
-  const handleSocialLinkChange = (index: number, field: keyof SocialLink, value: string) => {
-    setContactInfo(prevContactInfo => {
+  const handleSocialLinkChange = (
+    index: number,
+    field: keyof SocialLink,
+    value: string
+  ) => {
+    setContactInfo((prevContactInfo) => {
       if (!prevContactInfo) return null;
 
       const currentLinks = prevContactInfo.social_links || [];
@@ -1295,12 +1388,12 @@ const Editor: React.FC = () => {
 
       updatedLinks[index] = {
         ...updatedLinks[index],
-        [field]: value
+        [field]: value,
       };
 
       return {
         ...prevContactInfo,
-        social_links: updatedLinks
+        social_links: updatedLinks,
       };
     });
 
@@ -1311,14 +1404,14 @@ const Editor: React.FC = () => {
 
       if (!value.trim()) {
         // Clear error if URL is empty
-        setSocialLinkErrors(prev => {
+        setSocialLinkErrors((prev) => {
           const updated = { ...prev };
           delete updated[index];
           return updated;
         });
 
         // Clear display text if URL is empty
-        setContactInfo(prevContactInfo => {
+        setContactInfo((prevContactInfo) => {
           if (!prevContactInfo) return null;
           const currentLinks = prevContactInfo.social_links || [];
           const updatedLinks = [...currentLinks];
@@ -1328,7 +1421,7 @@ const Editor: React.FC = () => {
           return { ...prevContactInfo, social_links: updatedLinks };
         });
 
-        setAutoGeneratedIndexes(prev => {
+        setAutoGeneratedIndexes((prev) => {
           const updated = new Set(prev);
           updated.delete(index);
           return updated;
@@ -1341,12 +1434,12 @@ const Editor: React.FC = () => {
         const validation = validatePlatformUrl(platform, value);
 
         if (!validation.valid && validation.error) {
-          setSocialLinkErrors(prev => ({
+          setSocialLinkErrors((prev) => ({
             ...prev,
-            [index]: validation.error || ""
+            [index]: validation.error || "",
           }));
         } else {
-          setSocialLinkErrors(prev => {
+          setSocialLinkErrors((prev) => {
             const updated = { ...prev };
             delete updated[index];
             return updated;
@@ -1365,12 +1458,12 @@ const Editor: React.FC = () => {
         const validation = validatePlatformUrl(value, url);
 
         if (!validation.valid && validation.error) {
-          setSocialLinkErrors(prev => ({
+          setSocialLinkErrors((prev) => ({
             ...prev,
-            [index]: validation.error || ""
+            [index]: validation.error || "",
           }));
         } else {
-          setSocialLinkErrors(prev => {
+          setSocialLinkErrors((prev) => {
             const updated = { ...prev };
             delete updated[index];
             return updated;
@@ -1382,7 +1475,7 @@ const Editor: React.FC = () => {
       }
     } else if (field === "display_text") {
       // User is manually editing, remove auto-generated flag
-      setAutoGeneratedIndexes(prev => {
+      setAutoGeneratedIndexes((prev) => {
         const updated = new Set(prev);
         updated.delete(index);
         return updated;
@@ -1390,7 +1483,11 @@ const Editor: React.FC = () => {
     }
   };
 
-  const debouncedGenerateSocialDisplayText = (index: number, platform: string, url: string) => {
+  const debouncedGenerateSocialDisplayText = (
+    index: number,
+    platform: string,
+    url: string
+  ) => {
     // Clear existing timeout for this index
     if (socialLinkDebounceRefs.current[index]) {
       clearTimeout(socialLinkDebounceRefs.current[index]);
@@ -1400,7 +1497,7 @@ const Editor: React.FC = () => {
     socialLinkDebounceRefs.current[index] = setTimeout(() => {
       const displayText = generateDisplayText(platform, url, contactInfo?.name);
 
-      setContactInfo(prevContactInfo => {
+      setContactInfo((prevContactInfo) => {
         if (!prevContactInfo) return null;
 
         const currentLinks = prevContactInfo.social_links || [];
@@ -1409,18 +1506,18 @@ const Editor: React.FC = () => {
         if (updatedLinks[index]) {
           updatedLinks[index] = {
             ...updatedLinks[index],
-            display_text: displayText
+            display_text: displayText,
           };
         }
 
         return {
           ...prevContactInfo,
-          social_links: updatedLinks
+          social_links: updatedLinks,
         };
       });
 
       // Mark this index as auto-generated
-      setAutoGeneratedIndexes(prev => new Set(prev).add(index));
+      setAutoGeneratedIndexes((prev) => new Set(prev).add(index));
     }, 500);
   };
 
@@ -1458,64 +1555,75 @@ const Editor: React.FC = () => {
 
     return {
       valid: missingIcons.length === 0,
-      missingIcons
+      missingIcons,
     };
   }, [sections, iconRegistry, supportsIcons]);
 
   /**
    * Shows detailed information about missing icons to help user locate them
    */
-  const showMissingIconsDialog = useCallback((missingIcons: string[], isFromCloudLoad: boolean = false) => {
-    if (isFromCloudLoad) {
-      // Special message for cloud load failures
-      toast.error(
-        `⚠️ Unable to load ${missingIcons.length} icon(s) from cloud storage\n\n` +
-        `This can happen if:\n` +
-        `• Icons failed to upload when resume was last saved\n` +
-        `• Temporary storage connectivity issue\n\n` +
-        `To fix:\n` +
-        `1. Re-upload the missing icons using the icon picker\n` +
-        `2. Save your resume\n` +
-        `3. Icons will then be available on next edit\n\n` +
-        `Missing icons:\n${missingIcons.map(icon => `• ${icon}`).join('\n')}`,
-        {
-          duration: 15000,
-          style: { whiteSpace: 'pre-line', maxWidth: '600px' }
-        }
-      );
-    } else {
-      // Original detailed error for regular missing icons
-      const iconLocations = missingIcons.map(icon => {
-        // Find where this icon is referenced
-        const locations: string[] = [];
-
-        sections.forEach((section) => {
-          if (isExperienceSection(section) || isEducationSection(section)) {
-            const items = section.content as any[];
-            items.forEach((item, itemIdx) => {
-              if (item.icon === icon) {
-                locations.push(`${section.name} → Entry ${itemIdx + 1}`);
-              }
-            });
-          } else if (section.type === 'icon-list') {
-            const items = section.content as any[];
-            items.forEach((item, itemIdx) => {
-              if (item.icon === icon) {
-                locations.push(`${section.name} → Item ${itemIdx + 1}`);
-              }
-            });
+  const showMissingIconsDialog = useCallback(
+    (missingIcons: string[], isFromCloudLoad: boolean = false) => {
+      if (isFromCloudLoad) {
+        // Special message for cloud load failures
+        toast.error(
+          `⚠️ Unable to load ${missingIcons.length} icon(s) from cloud storage\n\n` +
+            `This can happen if:\n` +
+            `• Icons failed to upload when resume was last saved\n` +
+            `• Temporary storage connectivity issue\n\n` +
+            `To fix:\n` +
+            `1. Re-upload the missing icons using the icon picker\n` +
+            `2. Save your resume\n` +
+            `3. Icons will then be available on next edit\n\n` +
+            `Missing icons:\n${missingIcons
+              .map((icon) => `• ${icon}`)
+              .join("\n")}`,
+          {
+            duration: 15000,
+            style: { whiteSpace: "pre-line", maxWidth: "600px" },
           }
-        });
+        );
+      } else {
+        // Original detailed error for regular missing icons
+        const iconLocations = missingIcons
+          .map((icon) => {
+            // Find where this icon is referenced
+            const locations: string[] = [];
 
-        return `• ${icon}${locations.length > 0 ? ' (used in: ' + locations.join(', ') + ')' : ''}`;
-      }).join('\n');
+            sections.forEach((section) => {
+              if (isExperienceSection(section) || isEducationSection(section)) {
+                const items = section.content as any[];
+                items.forEach((item, itemIdx) => {
+                  if (item.icon === icon) {
+                    locations.push(`${section.name} → Entry ${itemIdx + 1}`);
+                  }
+                });
+              } else if (section.type === "icon-list") {
+                const items = section.content as any[];
+                items.forEach((item, itemIdx) => {
+                  if (item.icon === icon) {
+                    locations.push(`${section.name} → Item ${itemIdx + 1}`);
+                  }
+                });
+              }
+            });
 
-      toast.error(
-        `Missing Icons (${missingIcons.length}):\n${iconLocations}\n\nPlease upload these icons or remove them from your sections.`,
-        { duration: 12000, style: { whiteSpace: 'pre-line' } }
-      );
-    }
-  }, [sections]);
+            return `• ${icon}${
+              locations.length > 0
+                ? " (used in: " + locations.join(", ") + ")"
+                : ""
+            }`;
+          })
+          .join("\n");
+
+        toast.error(
+          `Missing Icons (${missingIcons.length}):\n${iconLocations}\n\nPlease upload these icons or remove them from your sections.`,
+          { duration: 12000, style: { whiteSpace: "pre-line" } }
+        );
+      }
+    },
+    [sections]
+  );
 
   const handleLoadEmptyTemplate = () => {
     // Show confirmation dialog before clearing
@@ -1527,7 +1635,7 @@ const Editor: React.FC = () => {
 
     // Save current work before clearing (if authenticated and has content)
     if (!isAnonymous && contactInfo && sections.length > 0) {
-      const canProceed = await saveBeforeAction('start fresh');
+      const canProceed = await saveBeforeAction("start fresh");
       if (!canProceed) {
         setShowStartFreshConfirm(false);
         return;
@@ -1587,14 +1695,18 @@ const Editor: React.FC = () => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       // Ctrl+Shift+P or Cmd+Shift+P to open preview
-      if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'P') {
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        event.shiftKey &&
+        event.key === "P"
+      ) {
         event.preventDefault();
         handleOpenPreview();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleOpenPreview]);
 
   // Warn user if closing browser/tab with unsaved changes
@@ -1603,41 +1715,57 @@ const Editor: React.FC = () => {
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       // Only warn if save is pending or failed
-      if (saveStatus === 'saving' || saveStatus === 'error') {
+      if (saveStatus === "saving" || saveStatus === "error") {
         e.preventDefault();
-        e.returnValue = ''; // Chrome requires returnValue to be set
-        return ''; // For older browsers
+        e.returnValue = ""; // Chrome requires returnValue to be set
+        return ""; // For older browsers
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [isAnonymous, contactInfo, templateId, saveStatus]);
 
   // Update save function ref with current values (fixes stale closure bug)
   useEffect(() => {
     saveOnUnmountRef.current = async () => {
-      if (!isAnonymous && contactInfo && templateId && saveStatus !== 'saving') {
+      if (
+        !isAnonymous &&
+        contactInfo &&
+        templateId &&
+        saveStatus !== "saving"
+      ) {
         try {
           await saveNow();
-          console.log('Saved on unmount');
+          console.log("Saved on unmount");
 
           // Trigger thumbnail generation after save completes
           // Use savedResumeId if available, otherwise cloudResumeId
           const resumeId = savedResumeId || cloudResumeId;
           if (resumeId) {
-            console.log('Triggering thumbnail generation for resume:', resumeId);
+            console.log(
+              "Triggering thumbnail generation for resume:",
+              resumeId
+            );
             generateThumbnail(resumeId); // Fire-and-forget
           }
         } catch (error) {
-          console.error('Failed to save on unmount:', error);
+          console.error("Failed to save on unmount:", error);
         }
       }
     };
-  }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow, savedResumeId, cloudResumeId]);
+  }, [
+    isAnonymous,
+    contactInfo,
+    templateId,
+    saveStatus,
+    saveNow,
+    savedResumeId,
+    cloudResumeId,
+  ]);
 
   // Save on component unmount (navigating within app)
   useEffect(() => {
@@ -1684,9 +1812,11 @@ const Editor: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Main Content Container - Dynamic padding based on sidebar state */}
-      <div className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-[calc(var(--mobile-action-bar-height)+1rem)] lg:pb-[1rem] max-w-4xl lg:max-w-none transition-all duration-300 ${
-        isSidebarCollapsed ? 'lg:mr-[88px]' : 'lg:mr-[296px]'
-      }`}>
+      <div
+        className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-[calc(var(--mobile-action-bar-height)+1rem)] lg:pb-[1rem] max-w-4xl lg:max-w-none transition-all duration-300 ${
+          isSidebarCollapsed ? "lg:mr-[88px]" : "lg:mr-[296px]"
+        }`}
+      >
         {/* Imported Resume Review Banner */}
         {showAIWarning && (
           <div className="mb-4 p-4 rounded-lg border-2 bg-blue-50 border-blue-200 flex items-start gap-3">
@@ -1751,7 +1881,9 @@ const Editor: React.FC = () => {
                       ref={(el) => {
                         sectionRefs.current[index] = el;
                         if (index === sections.length - 1) {
-                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                          (
+                            newSectionRef as React.MutableRefObject<HTMLDivElement | null>
+                          ).current = el;
                         }
                       }}
                     >
@@ -1768,7 +1900,9 @@ const Editor: React.FC = () => {
                         onTitleSave={handleTitleSave}
                         onTitleCancel={handleTitleCancel}
                         onDelete={() => handleDeleteSection(index)}
-                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
+                        onDeleteEntry={(entryIndex) =>
+                          handleDeleteEntry(index, entryIndex)
+                        }
                         isEditingTitle={editingTitleIndex === index}
                         temporaryTitle={temporaryTitle}
                         setTemporaryTitle={setTemporaryTitle}
@@ -1789,7 +1923,9 @@ const Editor: React.FC = () => {
                       ref={(el) => {
                         sectionRefs.current[index] = el;
                         if (index === sections.length - 1) {
-                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                          (
+                            newSectionRef as React.MutableRefObject<HTMLDivElement | null>
+                          ).current = el;
                         }
                       }}
                     >
@@ -1806,7 +1942,9 @@ const Editor: React.FC = () => {
                         onTitleSave={handleTitleSave}
                         onTitleCancel={handleTitleCancel}
                         onDelete={() => handleDeleteSection(index)}
-                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
+                        onDeleteEntry={(entryIndex) =>
+                          handleDeleteEntry(index, entryIndex)
+                        }
                         isEditingTitle={editingTitleIndex === index}
                         temporaryTitle={temporaryTitle}
                         setTemporaryTitle={setTemporaryTitle}
@@ -1827,7 +1965,9 @@ const Editor: React.FC = () => {
                       ref={(el) => {
                         sectionRefs.current[index] = el;
                         if (index === sections.length - 1) {
-                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                          (
+                            newSectionRef as React.MutableRefObject<HTMLDivElement | null>
+                          ).current = el;
                         }
                       }}
                     >
@@ -1840,7 +1980,9 @@ const Editor: React.FC = () => {
                           })
                         }
                         onDelete={() => handleDeleteSection(index)}
-                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
+                        onDeleteEntry={(entryIndex) =>
+                          handleDeleteEntry(index, entryIndex)
+                        }
                         sectionName={section.name}
                         onEditTitle={() => handleTitleEdit(index)}
                         onSaveTitle={handleTitleSave}
@@ -1864,7 +2006,9 @@ const Editor: React.FC = () => {
                       ref={(el) => {
                         sectionRefs.current[index] = el;
                         if (index === sections.length - 1) {
-                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                          (
+                            newSectionRef as React.MutableRefObject<HTMLDivElement | null>
+                          ).current = el;
                         }
                       }}
                     >
@@ -1877,7 +2021,9 @@ const Editor: React.FC = () => {
                         onSaveTitle={handleTitleSave}
                         onCancelTitle={handleTitleCancel}
                         onDelete={() => handleDeleteSection(index)}
-                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
+                        onDeleteEntry={(entryIndex) =>
+                          handleDeleteEntry(index, entryIndex)
+                        }
                         isEditing={editingTitleIndex === index}
                         temporaryTitle={temporaryTitle}
                         setTemporaryTitle={setTemporaryTitle}
@@ -1955,9 +2101,7 @@ const Editor: React.FC = () => {
         </DndContext>
 
         {/* Desktop Toolbar - Now hidden on desktop (actions moved to sidebar), shown on tablet only */}
-        <div
-          className="hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 left-auto right-6 border border-gray-200/60 rounded-2xl w-auto max-w-none bottom-6"
-        >
+        <div className="hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 left-auto right-6 border border-gray-200/60 rounded-2xl w-auto max-w-none bottom-6">
           <div className="flex items-center justify-between gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
             <EditorToolbar
               onAddSection={handleAddNewSectionClick}
@@ -1982,12 +2126,12 @@ const Editor: React.FC = () => {
           onNavigationClick={() => setShowNavigationDrawer(true)}
           onPreviewClick={handleOpenPreview}
           onDownloadClick={handleGenerateResume}
-          isSaving={saveStatus === 'saving'}
+          isSaving={saveStatus === "saving"}
           isGenerating={generating}
           isGeneratingPreview={isGeneratingPreview}
           previewIsStale={previewIsStale}
           lastSaved={cloudLastSaved}
-          saveError={saveStatus === 'error'}
+          saveError={saveStatus === "error"}
         />
 
         {/* Mobile Navigation Drawer */}
@@ -2073,7 +2217,7 @@ const Editor: React.FC = () => {
         onClose={() => setShowAuthModal(false)}
         onSuccess={() => {
           setShowAuthModal(false);
-          toast.success('Welcome! Your resume will now be saved to the cloud.');
+          toast.success("Welcome! Your resume will now be saved to the cloud.");
         }}
       />
 
@@ -2114,9 +2258,11 @@ const Editor: React.FC = () => {
           setDeleteTarget(null);
         }}
         onConfirm={confirmDelete}
-        title={deleteTarget?.type === 'section' ? "Delete Section?" : "Delete Entry?"}
+        title={
+          deleteTarget?.type === "section" ? "Delete Section?" : "Delete Entry?"
+        }
         message={
-          deleteTarget?.type === 'section'
+          deleteTarget?.type === "section"
             ? `Are you sure you want to delete the "${deleteTarget.sectionName}" section? This will remove all content in this section and cannot be undone.`
             : "Are you sure you want to delete this entry? This action cannot be undone."
         }
@@ -2173,21 +2319,22 @@ const Editor: React.FC = () => {
       />
 
       {/* Idle Nudge Tooltip - Portal to body, positioned near sign-in button */}
-      {showIdleTooltip && ReactDOM.createPortal(
-        <div className="fixed top-20 right-6 z-[70] bg-blue-600 text-white text-sm px-4 py-3 rounded-lg shadow-xl animate-bounce">
-          <div className="flex items-center gap-2">
-            <span>💡</span>
-            <span>Don't forget to save your progress permanently</span>
-            <button
-              onClick={() => setShowIdleTooltip(false)}
-              className="ml-2 hover:opacity-75 text-white"
-            >
-              ✕
-            </button>
-          </div>
-        </div>,
-        document.body
-      )}
+      {showIdleTooltip &&
+        ReactDOM.createPortal(
+          <div className="fixed top-20 right-6 z-[70] bg-blue-600 text-white text-sm px-4 py-3 rounded-lg shadow-xl animate-bounce">
+            <div className="flex items-center gap-2">
+              <span>💡</span>
+              <span>Don't forget to save your progress permanently</span>
+              <button
+                onClick={() => setShowIdleTooltip(false)}
+                className="ml-2 hover:opacity-75 text-white"
+              >
+                ✕
+              </button>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 };
