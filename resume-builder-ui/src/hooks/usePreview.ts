@@ -32,6 +32,7 @@ interface UsePreviewOptions {
   // MyResumes mode (database PDF)
   resumeId?: string;
   mode?: 'live' | 'database';
+  session?: { access_token: string } | null;
 }
 
 interface IconValidationResult {
@@ -63,6 +64,7 @@ export function usePreview({
   supportsIcons = false,
   resumeId,
   mode = 'live',
+  session,
 }: UsePreviewOptions): UsePreviewReturn {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -183,8 +185,8 @@ export function usePreview({
 
     // Validation based on mode
     if (mode === 'live') {
-      if (!contactInfo || !templateId) {
-        setError('Missing contact information or template');
+      if (!contactInfo || !templateId || !processSections) {
+        setError('Missing required parameters for live preview');
         return;
       }
     } else if (mode === 'database') {
@@ -210,7 +212,14 @@ export function usePreview({
 
         if (mode === 'database') {
           // Database mode: Fetch pre-generated PDF from API
+          const headers: HeadersInit = {};
+          if (session?.access_token) {
+            headers['Authorization'] = `Bearer ${session.access_token}`;
+          }
+
           const response = await fetch(`/api/resumes/${resumeId}/pdf`, {
+            method: 'POST',
+            headers,
             signal: abortControllerRef.current?.signal,
           });
 
@@ -227,10 +236,6 @@ export function usePreview({
           pdfBlob = await response.blob();
         } else {
           // Live mode: Generate PDF from current editor state
-          if (!processSections || !contactInfo || !templateId) {
-            throw new Error('Missing required parameters for live preview');
-          }
-
           // Process sections to clean up icon paths
           const processedSections = processSections(sections);
 

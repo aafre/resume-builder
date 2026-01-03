@@ -40,6 +40,7 @@ export default function MyResumes() {
   } = usePreview({
     mode: 'database',
     resumeId: previewResumeId || undefined,
+    session,
   });
 
   // Memoize callback to prevent unnecessary re-renders in useThumbnailRefresh
@@ -245,16 +246,20 @@ export default function MyResumes() {
     }
   };
 
-  const handlePreview = async (id: string) => {
+  const handlePreview = (id: string) => {
     if (!session) return;
 
-    // Set resume ID and open modal (hook will handle generation)
+    // Set resume ID and open modal (effect will handle generation)
     setPreviewResumeId(id);
     setShowPreviewModal(true);
-
-    // Generate preview using hook
-    await generatePreview();
   };
+
+  // Trigger preview generation when modal opens with a resume ID
+  useEffect(() => {
+    if (showPreviewModal && previewResumeId) {
+      generatePreview();
+    }
+  }, [showPreviewModal, previewResumeId, generatePreview]);
 
   const handleClosePreview = () => {
     setShowPreviewModal(false);

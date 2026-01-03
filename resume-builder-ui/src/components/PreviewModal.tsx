@@ -180,7 +180,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                   </h3>
                   <p className="text-gray-600 mb-6">
                     Click "Generate Preview" to see your resume
-                  </h3>
+                  </p>
                   <button
                     onClick={onRefresh}
                     className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors mx-auto"
