@@ -11,13 +11,40 @@ interface IconRegistry {
 
 // Default icons provided by the system (served from /icons/ directory)
 const DEFAULT_ICONS = new Set([
-  'location.png', 'email.png', 'phone.png', 'linkedin.png', 'github.png',
-  'twitter.png', 'website.png', 'pinterest.png', 'medium.png', 'youtube.png',
-  'stackoverflow.png', 'behance.png', 'dribbble.png', 'company.png',
-  'company_google.png', 'company_amazon.png', 'company_apple.png',
-  'school.png', 'school_harvard.png', 'school_oxford.png', 'school_berkeley.svg',
-  'certification_aws.png', 'certification_azure.png', 'certification_k8s.png',
-  'certification_google.png', 'certification_devops.png', 'certification_scrum.png',
+  // Contact icons (13)
+  'location.png',
+  'email.png',
+  'phone.png',
+  'linkedin.png',
+  'github.png',
+  'twitter.png',
+  'website.png',
+  'pinterest.png',
+  'medium.png',
+  'youtube.png',
+  'stackoverflow.png',
+  'behance.png',
+  'dribbble.png',
+
+  // Company icons (4)
+  'company.png',
+  'company_google.png',
+  'company_amazon.png',
+  'company_apple.png',
+
+  // School/Education icons (4)
+  'school.png',
+  'school_harvard.png',
+  'school_oxford.png',
+  'school_berkeley.svg',
+
+  // Certification icons (6)
+  'certification_aws.png',
+  'certification_azure.png',
+  'certification_k8s.png',
+  'certification_google.png',
+  'certification_devops.png',
+  'certification_scrum.png',
 ]);
 
 interface UsePreviewOptions {
@@ -74,7 +101,6 @@ export function usePreview({
 
   // Cache management
   const cacheTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const previousUrlRef = useRef<string | null>(null);
 
   // Request deduplication
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -161,9 +187,6 @@ export function usePreview({
     return () => {
       if (previewUrl) {
         URL.revokeObjectURL(previewUrl);
-      }
-      if (previousUrlRef.current) {
-        URL.revokeObjectURL(previousUrlRef.current);
       }
       if (cacheTimeoutRef.current) {
         clearTimeout(cacheTimeoutRef.current);
@@ -272,10 +295,10 @@ export function usePreview({
         }
 
         // Cleanup previous URL before creating new one
-        if (previousUrlRef.current) {
-          URL.revokeObjectURL(previousUrlRef.current);
+        // The current previewUrl will be replaced, so revoke it to prevent memory leak
+        if (previewUrl) {
+          URL.revokeObjectURL(previewUrl);
         }
-        previousUrlRef.current = previewUrl;
 
         // Create new blob URL
         const newUrl = URL.createObjectURL(pdfBlob);
