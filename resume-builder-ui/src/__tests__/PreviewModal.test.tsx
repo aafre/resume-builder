@@ -460,11 +460,11 @@ describe("PreviewModal", () => {
     );
 
     // Modal should have responsive classes - check for modal container with z-index
-    const modalContainer = container.querySelector('[class*="fixed"][class*="z-[9999]"]');
+    const modalContainer = screen.getByTestId('preview-modal-container');
     expect(modalContainer).toBeInTheDocument();
 
     // Modal content should have responsive sizing
-    const modalContent = container.querySelector('[class*="bg-white"]');
+    const modalContent = screen.getByTestId('preview-modal-content');
     expect(modalContent).toBeInTheDocument();
   });
 

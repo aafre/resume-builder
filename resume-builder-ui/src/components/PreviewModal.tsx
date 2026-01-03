@@ -80,10 +80,14 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
       />
 
       {/* Modal Container - Bottom sheet on mobile, centered on desktop */}
-      <div className="fixed z-[9999] inset-0 flex items-end lg:items-center lg:justify-center animate-fade-in">
+      <div
+        className="fixed z-[9999] inset-0 flex items-end lg:items-center lg:justify-center animate-fade-in"
+        data-testid="preview-modal-container"
+      >
         <div
           className="bg-white rounded-t-2xl lg:rounded-2xl shadow-2xl w-full lg:max-w-5xl lg:mx-4 h-[95vh] lg:h-[90vh] flex flex-col animate-slide-up lg:animate-scale-in"
           onClick={(e) => e.stopPropagation()}
+          data-testid="preview-modal-content"
         >
           {/* Header */}
           <div className="flex items-center justify-between p-4 lg:p-6 border-b border-gray-200 flex-shrink-0">
