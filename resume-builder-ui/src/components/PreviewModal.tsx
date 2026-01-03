@@ -12,6 +12,8 @@ interface PreviewModalProps {
   onDownload: () => void;
 }
 
+type LoadingState = 'idle' | 'loading' | 'loaded' | 'error';
+
 const PreviewModal: React.FC<PreviewModalProps> = ({
   isOpen,
   onClose,
@@ -22,15 +24,29 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   onRefresh,
   onDownload,
 }) => {
-  const [iframeKey, setIframeKey] = useState(0);
+  const [loadingState, setLoadingState] = useState<LoadingState>('idle');
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Force iframe reload when preview URL changes
+  // Detect mobile viewport
   useEffect(() => {
-    if (previewUrl) {
-      setIframeKey(prev => prev + 1);
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Update loading state when preview URL or generation changes
+  useEffect(() => {
+    if (isGenerating) {
+      setLoadingState('loading');
+    } else if (error) {
+      setLoadingState('error');
+    } else if (!previewUrl) {
+      setLoadingState('idle');
     }
-  }, [previewUrl]);
+    // Note: 'loaded' state is set by iframe onLoad event
+  }, [isGenerating, error, previewUrl]);
 
   // Handle ESC key to close modal
   useEffect(() => {
@@ -43,6 +59,11 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
+
+  // Iframe load handler for smooth transitions
+  const handleIframeLoad = () => {
+    setLoadingState('loaded');
+  };
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -66,10 +87,10 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
         onClick={onClose}
       />
 
-      {/* Modal Container - Bottom sheet on mobile, center on desktop */}
-      <div className="fixed z-[9999] inset-0 flex items-end lg:items-center lg:justify-center animate-fade-in">
+      {/* Modal Container - Full-screen on mobile, centered on desktop */}
+      <div className={`fixed z-[9999] ${isMobile ? 'inset-0' : 'inset-0 flex items-center justify-center'} animate-fade-in`}>
         <div
-          className="bg-white rounded-t-2xl lg:rounded-2xl shadow-2xl w-full lg:max-w-5xl lg:mx-4 max-h-[95vh] lg:max-h-[90vh] flex flex-col animate-slide-up lg:animate-scale-in"
+          className={`bg-white ${isMobile ? 'h-full w-full' : 'rounded-2xl lg:max-w-5xl lg:max-h-[90vh] lg:mx-4 w-full'} flex flex-col shadow-2xl ${isMobile ? '' : 'animate-scale-in'}`}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
@@ -114,11 +135,11 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
             </div>
           )}
 
-          {/* PDF Viewer Area */}
-          <div className="flex-1 overflow-auto bg-gray-100 relative" style={{ WebkitOverflowScrolling: 'touch' }}>
-            {/* Loading Overlay */}
-            {isGenerating && (
-              <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center z-10">
+          {/* PDF Viewer Area - fills remaining space */}
+          <div className="flex-1 overflow-auto bg-gray-100 relative">
+            {/* Skeleton Loader - fades out when PDF loaded */}
+            {loadingState === 'loading' && (
+              <div className="absolute inset-0 bg-white flex flex-col items-center justify-center z-10 transition-opacity duration-300">
                 <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mb-4"></div>
                 <p className="text-gray-700 font-medium mb-2">Generating PDF preview...</p>
                 <p className="text-gray-500 text-sm">This usually takes 2-5 seconds</p>
@@ -126,7 +147,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
             )}
 
             {/* Error State */}
-            {error && !isGenerating && (
+            {loadingState === 'error' && (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-white">
                 <div className="text-center p-8">
                   <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -147,34 +168,8 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
               </div>
             )}
 
-            {/* PDF Iframe */}
-            {previewUrl && !error && (
-              <div
-                className="w-full p-4 lg:p-6"
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }}
-              >
-                <iframe
-                  ref={iframeRef}
-                  key={iframeKey}
-                  src={`${previewUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
-                  title="Resume PDF Preview"
-                  className="bg-white shadow-lg rounded-lg w-full"
-                  style={{
-                    maxWidth: '900px', // Slightly wider for better readability
-                    minHeight: '150vh', // Ensure enough height for scrolling on mobile
-                    height: '150vh',
-                    border: 'none',
-                  }}
-                />
-              </div>
-            )}
-
             {/* Empty State */}
-            {!previewUrl && !error && !isGenerating && (
+            {loadingState === 'idle' && !previewUrl && (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-white">
                 <div className="text-center p-8">
                   <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -185,7 +180,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                   </h3>
                   <p className="text-gray-600 mb-6">
                     Click "Generate Preview" to see your resume
-                  </p>
+                  </h3>
                   <button
                     onClick={onRefresh}
                     className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors mx-auto"
@@ -194,6 +189,20 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                   </button>
                 </div>
               </div>
+            )}
+
+            {/* PDF Iframe - fills entire container, fades in when loaded */}
+            {previewUrl && (
+              <iframe
+                ref={iframeRef}
+                src={`${previewUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
+                title="Resume PDF Preview"
+                onLoad={handleIframeLoad}
+                className={`w-full h-full border-none transition-opacity duration-300 ${
+                  loadingState === 'loaded' ? 'opacity-100' : 'opacity-0'
+                }`}
+                style={{ border: 'none' }}
+              />
             )}
           </div>
 
