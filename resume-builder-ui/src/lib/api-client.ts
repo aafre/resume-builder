@@ -151,9 +151,9 @@ class ApiClient {
       // Clear cached session to force fresh token fetch
       this.cachedSession = null;
 
-      // Let Supabase SDK refresh the token
+      // Let Supabase SDK refresh the token (supabase is guaranteed non-null here)
       try {
-        const { data: { session }, error } = await supabase.auth.refreshSession();
+        const { data: { session }, error } = await supabase!.auth.refreshSession();
         if (error || !session) {
           throw new Error('Token refresh failed');
         }
