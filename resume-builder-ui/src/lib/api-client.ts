@@ -26,6 +26,18 @@ export class ApiError extends Error {
   }
 }
 
+/**
+ * Custom error class to signal that a request should be retried with a fresh token
+ */
+class RetryRequestError extends Error {
+  public readonly shouldRetry = true;
+
+  constructor() {
+    super('RETRY_WITH_FRESH_TOKEN');
+    this.name = 'RetryRequestError';
+  }
+}
+
 interface RequestOptions {
   headers?: Record<string, string>;
   signal?: AbortSignal;
@@ -102,6 +114,27 @@ class ApiClient {
     };
   }
 
+  /**
+   * Handle fatal authentication errors by clearing session, showing toast, and signing out
+   */
+  private async _handleFatalAuthError(): Promise<never> {
+    this.cachedSession = null;
+
+    toast.error('Session expired. Please sign in again.', {
+      duration: 5000,
+      id: 'session-expired', // Prevent duplicate toasts
+    });
+
+    // Sign out user and clear session
+    try {
+      await supabase?.auth.signOut();
+    } catch (signOutError) {
+      console.error('Failed to sign out after auth error:', signOutError);
+    }
+
+    throw new AuthError('Session expired or unauthorized');
+  }
+
   private async handleResponse(response: Response, isRetry: boolean = false): Promise<any> {
     // Handle 401/403 auth errors globally
     if (response.status === 401 || response.status === 403) {
@@ -109,22 +142,7 @@ class ApiClient {
 
       // If this is already a retry, or if there's no Supabase client, give up
       if (isRetry || !supabase) {
-        // Clear cached session to prevent reusing expired token
-        this.cachedSession = null;
-
-        toast.error('Session expired. Please sign in again.', {
-          duration: 5000,
-          id: 'session-expired', // Prevent duplicate toasts
-        });
-
-        // Sign out user and clear session
-        try {
-          await supabase?.auth.signOut();
-        } catch (signOutError) {
-          console.error('Failed to sign out after auth error:', signOutError);
-        }
-
-        throw new AuthError('Session expired or unauthorized');
+        await this._handleFatalAuthError();
       }
 
       // First 401: try to refresh the token and signal retry needed
@@ -144,28 +162,13 @@ class ApiClient {
         this.cachedSession = session;
         console.log('✅ Token refreshed successfully');
 
-        // Throw a special error to signal retry is needed
-        const retryError = new Error('RETRY_WITH_FRESH_TOKEN') as any;
-        retryError.shouldRetry = true;
-        throw retryError;
+        // Throw error to signal retry is needed
+        throw new RetryRequestError();
       } catch (refreshError: any) {
         // If refresh failed, proceed to sign out
-        if (!refreshError.shouldRetry) {
+        if (!(refreshError instanceof RetryRequestError)) {
           console.error('❌ Token refresh failed:', refreshError);
-          this.cachedSession = null;
-
-          toast.error('Session expired. Please sign in again.', {
-            duration: 5000,
-            id: 'session-expired',
-          });
-
-          try {
-            await supabase?.auth.signOut();
-          } catch (signOutError) {
-            console.error('Failed to sign out after auth error:', signOutError);
-          }
-
-          throw new AuthError('Session expired or unauthorized');
+          await this._handleFatalAuthError();
         }
 
         // Re-throw retry signal
@@ -198,14 +201,23 @@ class ApiClient {
   }
 
   /**
-   * Perform GET request
+   * Common request handler with automatic retry logic
    */
-  async get<T = any>(url: string, options: RequestOptions = {}): Promise<T> {
+  private async _request<T = any>(
+    method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
+    url: string,
+    options: RequestOptions = {},
+    data?: any
+  ): Promise<T> {
     const makeRequest = async (isRetry: boolean = false) => {
       const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
         ...options.headers,
       };
+
+      // Don't set Content-Type for FormData - browser sets it with boundary
+      if (!(data instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
+      }
 
       if (!options.skipAuth) {
         const authHeaders = await this.getAuthHeaders(options.session);
@@ -213,8 +225,9 @@ class ApiClient {
       }
 
       const response = await fetch(url, {
-        method: 'GET',
+        method,
         headers,
+        body: data ? (data instanceof FormData ? data : JSON.stringify(data)) : undefined,
         signal: options.signal,
       });
 
@@ -225,159 +238,47 @@ class ApiClient {
       return await makeRequest(false);
     } catch (error: any) {
       // Retry once if token was refreshed
-      if (error.shouldRetry) {
-        console.log('🔁 Retrying GET request with fresh token...');
+      if (error instanceof RetryRequestError) {
+        console.log(`🔁 Retrying ${method} request with fresh token...`);
         return await makeRequest(true);
       }
       throw error;
     }
+  }
+
+  /**
+   * Perform GET request
+   */
+  async get<T = any>(url: string, options: RequestOptions = {}): Promise<T> {
+    return this._request<T>('GET', url, options);
   }
 
   /**
    * Perform POST request
    */
   async post<T = any>(url: string, data: any, options: RequestOptions = {}): Promise<T> {
-    const makeRequest = async (isRetry: boolean = false) => {
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      };
-
-      if (!options.skipAuth) {
-        const authHeaders = await this.getAuthHeaders(options.session);
-        Object.assign(headers, authHeaders);
-      }
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(data),
-        signal: options.signal,
-      });
-
-      return this.handleResponse(response, isRetry);
-    };
-
-    try {
-      return await makeRequest(false);
-    } catch (error: any) {
-      // Retry once if token was refreshed
-      if (error.shouldRetry) {
-        console.log('🔁 Retrying POST request with fresh token...');
-        return await makeRequest(true);
-      }
-      throw error;
-    }
+    return this._request<T>('POST', url, options, data);
   }
 
   /**
    * Perform PUT request
    */
   async put<T = any>(url: string, data: any, options: RequestOptions = {}): Promise<T> {
-    const makeRequest = async (isRetry: boolean = false) => {
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      };
-
-      if (!options.skipAuth) {
-        const authHeaders = await this.getAuthHeaders(options.session);
-        Object.assign(headers, authHeaders);
-      }
-
-      const response = await fetch(url, {
-        method: 'PUT',
-        headers,
-        body: JSON.stringify(data),
-        signal: options.signal,
-      });
-
-      return this.handleResponse(response, isRetry);
-    };
-
-    try {
-      return await makeRequest(false);
-    } catch (error: any) {
-      // Retry once if token was refreshed
-      if (error.shouldRetry) {
-        console.log('🔁 Retrying PUT request with fresh token...');
-        return await makeRequest(true);
-      }
-      throw error;
-    }
+    return this._request<T>('PUT', url, options, data);
   }
 
   /**
    * Perform PATCH request
    */
   async patch<T = any>(url: string, data: any, options: RequestOptions = {}): Promise<T> {
-    const makeRequest = async (isRetry: boolean = false) => {
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      };
-
-      if (!options.skipAuth) {
-        const authHeaders = await this.getAuthHeaders(options.session);
-        Object.assign(headers, authHeaders);
-      }
-
-      const response = await fetch(url, {
-        method: 'PATCH',
-        headers,
-        body: JSON.stringify(data),
-        signal: options.signal,
-      });
-
-      return this.handleResponse(response, isRetry);
-    };
-
-    try {
-      return await makeRequest(false);
-    } catch (error: any) {
-      // Retry once if token was refreshed
-      if (error.shouldRetry) {
-        console.log('🔁 Retrying PATCH request with fresh token...');
-        return await makeRequest(true);
-      }
-      throw error;
-    }
+    return this._request<T>('PATCH', url, options, data);
   }
 
   /**
    * Perform DELETE request
    */
   async delete<T = any>(url: string, options: RequestOptions = {}): Promise<T> {
-    const makeRequest = async (isRetry: boolean = false) => {
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      };
-
-      if (!options.skipAuth) {
-        const authHeaders = await this.getAuthHeaders(options.session);
-        Object.assign(headers, authHeaders);
-      }
-
-      const response = await fetch(url, {
-        method: 'DELETE',
-        headers,
-        signal: options.signal,
-      });
-
-      return this.handleResponse(response, isRetry);
-    };
-
-    try {
-      return await makeRequest(false);
-    } catch (error: any) {
-      // Retry once if token was refreshed
-      if (error.shouldRetry) {
-        console.log('🔁 Retrying DELETE request with fresh token...');
-        return await makeRequest(true);
-      }
-      throw error;
-    }
+    return this._request<T>('DELETE', url, options);
   }
 
   /**
@@ -385,37 +286,7 @@ class ApiClient {
    * Note: Don't set Content-Type header - browser will set it with boundary
    */
   async postFormData<T = any>(url: string, formData: FormData, options: RequestOptions = {}): Promise<T> {
-    const makeRequest = async (isRetry: boolean = false) => {
-      const headers: Record<string, string> = {
-        ...options.headers,
-        // Don't set Content-Type for FormData - browser sets it with boundary
-      };
-
-      if (!options.skipAuth) {
-        const authHeaders = await this.getAuthHeaders(options.session);
-        Object.assign(headers, authHeaders);
-      }
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers,
-        body: formData,
-        signal: options.signal,
-      });
-
-      return this.handleResponse(response, isRetry);
-    };
-
-    try {
-      return await makeRequest(false);
-    } catch (error: any) {
-      // Retry once if token was refreshed
-      if (error.shouldRetry) {
-        console.log('🔁 Retrying FormData POST request with fresh token...');
-        return await makeRequest(true);
-      }
-      throw error;
-    }
+    return this._request<T>('POST', url, options, formData);
   }
 }
 
