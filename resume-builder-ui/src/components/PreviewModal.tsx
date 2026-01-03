@@ -27,7 +27,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   const [loadingState, setLoadingState] = useState<LoadingState>('idle');
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  // Update loading state when preview URL or generation changes
+  // Update loading state when generation status or error changes
   useEffect(() => {
     if (isGenerating) {
       setLoadingState('loading');
@@ -37,7 +37,8 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
       setLoadingState('idle');
     }
     // Note: 'loaded' state is set by iframe onLoad event
-  }, [isGenerating, error, previewUrl]);
+    // previewUrl removed from deps to prevent flashing when URL updates
+  }, [isGenerating, error]);
 
   // Handle ESC key to close modal
   useEffect(() => {
@@ -81,7 +82,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
       {/* Modal Container - Bottom sheet on mobile, centered on desktop */}
       <div className="fixed z-[9999] inset-0 flex items-end lg:items-center lg:justify-center animate-fade-in">
         <div
-          className="bg-white rounded-t-2xl lg:rounded-2xl shadow-2xl w-full lg:max-w-5xl lg:mx-4 max-h-[95vh] lg:max-h-[90vh] flex flex-col animate-slide-up lg:animate-scale-in"
+          className="bg-white rounded-t-2xl lg:rounded-2xl shadow-2xl w-full lg:max-w-5xl lg:mx-4 h-[95vh] lg:h-[90vh] flex flex-col animate-slide-up lg:animate-scale-in"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
