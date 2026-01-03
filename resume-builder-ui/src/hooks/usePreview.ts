@@ -367,7 +367,8 @@ export function usePreview({
     if ((isStale || !previewUrl) && !isGenerating) {
       await generatePreview();
     }
-  }, [isStale, previewUrl, isGenerating, generatePreview]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isStale, isGenerating, generatePreview]);
 
   const clearPreview = useCallback(() => {
     if (currentPreviewUrlRef.current) {

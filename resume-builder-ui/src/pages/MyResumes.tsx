@@ -37,6 +37,7 @@ export default function MyResumes() {
     isGenerating: isGeneratingPreview,
     error: previewError,
     generatePreview,
+    checkAndRefreshIfStale,
   } = usePreview({
     mode: 'database',
     resumeId: previewResumeId || undefined,
@@ -257,7 +258,7 @@ export default function MyResumes() {
   // Trigger preview generation when modal opens with a resume ID
   useEffect(() => {
     if (showPreviewModal && previewResumeId) {
-      generatePreview();
+      checkAndRefreshIfStale();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showPreviewModal, previewResumeId]);
