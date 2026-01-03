@@ -259,7 +259,8 @@ export default function MyResumes() {
     if (showPreviewModal && previewResumeId) {
       generatePreview();
     }
-  }, [showPreviewModal, previewResumeId, generatePreview]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showPreviewModal, previewResumeId]);
 
   const handleClosePreview = () => {
     setShowPreviewModal(false);
