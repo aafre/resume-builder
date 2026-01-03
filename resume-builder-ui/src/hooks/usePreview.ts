@@ -228,6 +228,9 @@ export function usePreview({
 
     abortControllerRef.current = new AbortController();
 
+    // Set 30-second timeout for preview generation
+    const timeoutId = setTimeout(() => abortControllerRef.current?.abort(), 30000);
+
     const promise = (async () => {
       setIsGenerating(true);
       setError(null);
@@ -327,6 +330,7 @@ export function usePreview({
           console.error('Preview generation failed:', err);
         }
       } finally {
+        clearTimeout(timeoutId);
         generationPromiseRef.current = null;
         abortControllerRef.current = null;
         setIsGenerating(false);
