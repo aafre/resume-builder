@@ -237,7 +237,8 @@ export function usePreview({
         } else {
           // Live mode: Generate PDF from current editor state
           // Process sections to clean up icon paths
-          const processedSections = processSections(sections);
+          // Non-null assertions safe here due to validation at function start
+          const processedSections = processSections!(sections);
 
           // Create YAML data
           const yamlData = yaml.dump({
@@ -249,7 +250,7 @@ export function usePreview({
           const formData = new FormData();
           const yamlBlob = new Blob([yamlData], { type: 'application/x-yaml' });
           formData.append('yaml_file', yamlBlob, 'resume.yaml');
-          formData.append('template', templateId);
+          formData.append('template', templateId!);
 
           // Add session ID for icon isolation
           const sessionId = getSessionId();

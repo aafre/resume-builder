@@ -83,44 +83,7 @@ const LoadingSpinner = () => (
   </div>
 );
 
-// Default icons provided by the system (served from /icons/ directory)
-// Complete list of all icons in /icons/ directory (27 icons total)
-const DEFAULT_ICONS = new Set([
-  // Contact icons (13)
-  'location.png',
-  'email.png',
-  'phone.png',
-  'linkedin.png',
-  'github.png',
-  'twitter.png',
-  'website.png',
-  'pinterest.png',
-  'medium.png',
-  'youtube.png',
-  'stackoverflow.png',
-  'behance.png',
-  'dribbble.png',
-
-  // Company icons (4)
-  'company.png',
-  'company_google.png',
-  'company_amazon.png',
-  'company_apple.png',
-
-  // School/Education icons (4)
-  'school.png',
-  'school_harvard.png',
-  'school_oxford.png',
-  'school_berkeley.svg',
-
-  // Certification icons (6)
-  'certification_aws.png',
-  'certification_azure.png',
-  'certification_k8s.png',
-  'certification_google.png',
-  'certification_devops.png',
-  'certification_scrum.png',
-]);
+// DEFAULT_ICONS moved to usePreview.ts hook
 
 interface Section {
   name: string;
@@ -233,7 +196,6 @@ const Editor: React.FC = () => {
     error: previewError,
     isStale: previewIsStale,
     generatePreview,
-    debouncedGeneratePreview,
     checkAndRefreshIfStale,
     validateIcons,
   } = usePreview({
@@ -1089,7 +1051,7 @@ const Editor: React.FC = () => {
 
       // Validate icon availability for icon-supporting templates
       if (supportsIcons) {
-        const { valid, missingIcons } = validateIconAvailability();
+        const { valid, missingIcons } = validateIcons();
         if (!valid) {
           showMissingIconsDialog(missingIcons, isLoadingFromUrl);
           return;
