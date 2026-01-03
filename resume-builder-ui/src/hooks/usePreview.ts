@@ -362,12 +362,12 @@ export function usePreview({
     });
   }, [generatePreview]);
 
-  // Auto-refresh if stale (for modal open)
+  // Auto-refresh if stale or no preview exists (for modal open)
   const checkAndRefreshIfStale = useCallback(async () => {
-    if (isStale && !isGenerating) {
+    if ((isStale || !previewUrl) && !isGenerating) {
       await generatePreview();
     }
-  }, [isStale, isGenerating, generatePreview]);
+  }, [isStale, previewUrl, isGenerating, generatePreview]);
 
   const clearPreview = useCallback(() => {
     if (currentPreviewUrlRef.current) {
