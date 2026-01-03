@@ -26,15 +26,6 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
 }) => {
   const [loadingState, setLoadingState] = useState<LoadingState>('idle');
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Detect mobile viewport
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   // Update loading state when preview URL or generation changes
   useEffect(() => {
@@ -87,10 +78,10 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
         onClick={onClose}
       />
 
-      {/* Modal Container - Full-screen on mobile, centered on desktop */}
-      <div className={`fixed z-[9999] ${isMobile ? 'inset-0' : 'inset-0 flex items-center justify-center'} animate-fade-in`}>
+      {/* Modal Container - Bottom sheet on mobile, centered on desktop */}
+      <div className="fixed z-[9999] inset-0 flex items-end lg:items-center lg:justify-center animate-fade-in">
         <div
-          className={`bg-white ${isMobile ? 'h-full w-full' : 'rounded-2xl lg:max-w-5xl lg:max-h-[90vh] lg:mx-4 w-full'} flex flex-col shadow-2xl ${isMobile ? '' : 'animate-scale-in'}`}
+          className="bg-white rounded-t-2xl lg:rounded-2xl shadow-2xl w-full lg:max-w-5xl lg:mx-4 max-h-[95vh] lg:max-h-[90vh] flex flex-col animate-slide-up lg:animate-scale-in"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}

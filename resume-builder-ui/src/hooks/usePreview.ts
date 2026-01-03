@@ -101,6 +101,7 @@ export function usePreview({
 
   // Cache management
   const cacheTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const currentPreviewUrlRef = useRef<string | null>(null);  // Track URL for cleanup without causing re-renders
 
   // Request deduplication
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -185,8 +186,9 @@ export function usePreview({
   // Cleanup blob URL on unmount
   useEffect(() => {
     return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
+      // Clean up ref-tracked URL
+      if (currentPreviewUrlRef.current) {
+        URL.revokeObjectURL(currentPreviewUrlRef.current);
       }
       if (cacheTimeoutRef.current) {
         clearTimeout(cacheTimeoutRef.current);
@@ -198,7 +200,7 @@ export function usePreview({
         clearTimeout(debounceTimeoutRef.current);
       }
     };
-  }, [previewUrl]);
+  }, []); // Empty dependencies - only cleanup on unmount
 
   const generatePreview = useCallback(async () => {
     // Return existing promise if generation already in progress
@@ -295,13 +297,14 @@ export function usePreview({
         }
 
         // Cleanup previous URL before creating new one
-        // The current previewUrl will be replaced, so revoke it to prevent memory leak
-        if (previewUrl) {
-          URL.revokeObjectURL(previewUrl);
+        // Use ref to avoid circular dependency in useCallback
+        if (currentPreviewUrlRef.current) {
+          URL.revokeObjectURL(currentPreviewUrlRef.current);
         }
 
         // Create new blob URL
         const newUrl = URL.createObjectURL(pdfBlob);
+        currentPreviewUrlRef.current = newUrl;  // Track in ref
         setPreviewUrl(newUrl);
         setLastGenerated(new Date());
         setLastContentHash(currentContentHash);
@@ -340,8 +343,8 @@ export function usePreview({
     iconRegistry,
     processSections,
     resumeId,
-    previewUrl,
     currentContentHash,
+    session,
   ]);
 
   // Debounced preview generation
@@ -367,8 +370,9 @@ export function usePreview({
   }, [isStale, isGenerating, generatePreview]);
 
   const clearPreview = useCallback(() => {
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
+    if (currentPreviewUrlRef.current) {
+      URL.revokeObjectURL(currentPreviewUrlRef.current);
+      currentPreviewUrlRef.current = null;
     }
     setPreviewUrl(null);
     setLastGenerated(null);
@@ -377,7 +381,7 @@ export function usePreview({
     if (cacheTimeoutRef.current) {
       clearTimeout(cacheTimeoutRef.current);
     }
-  }, [previewUrl]);
+  }, []); // No dependencies - uses refs only
 
   return {
     previewUrl,
