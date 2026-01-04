@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 
+// Fallback canvas width when container width cannot be determined
+const FALLBACK_CANVAS_WIDTH = 350;
+
 interface PdfViewerMobileProps {
   pdfUrl: string;
   onLoad: () => void;
@@ -44,7 +47,7 @@ export const PdfViewerMobile: React.FC<PdfViewerMobileProps> = ({
           const page = await pdfDoc.getPage(pageNum);
 
           // Calculate scale for mobile viewport
-          const containerWidth = containerRef.current?.clientWidth || 350;
+          const containerWidth = containerRef.current?.clientWidth || FALLBACK_CANVAS_WIDTH;
           const viewport = page.getViewport({ scale: 1 });
           const scale = containerWidth / viewport.width;
           const scaledViewport = page.getViewport({ scale });
