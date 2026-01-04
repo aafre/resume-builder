@@ -103,6 +103,9 @@ export function usePreview({
   const cacheTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const currentPreviewUrlRef = useRef<string | null>(null);  // Track URL for cleanup without causing re-renders
 
+  // Track last resume ID to detect when we need fresh generation
+  const lastResumeIdRef = useRef<string | undefined>(undefined);
+
   // Request deduplication
   const abortControllerRef = useRef<AbortController | null>(null);
   const generationPromiseRef = useRef<Promise<void> | null>(null);
@@ -184,6 +187,8 @@ export function usePreview({
   }, [sections, iconRegistry, validationCache, generateContentHash, supportsIcons]);
 
   // Cleanup blob URL on unmount
+  // Note: Blob URLs are only revoked on unmount or when replaced during generation.
+  // We do NOT revoke when input props change to avoid race conditions with async operations.
   useEffect(() => {
     return () => {
       // Clean up ref-tracked URL
@@ -202,15 +207,11 @@ export function usePreview({
     };
   }, []); // Empty dependencies - only cleanup on unmount
 
-  // Clear preview when resumeId changes in database mode
-  // This ensures switching between different resumes shows the correct preview
+  // Clear preview state when resumeId changes (but don't revoke URL to avoid race condition)
   useEffect(() => {
     if (mode === 'database' && resumeId) {
-      // Clear the current preview URL when switching to a different resume
-      if (currentPreviewUrlRef.current) {
-        URL.revokeObjectURL(currentPreviewUrlRef.current);
-        currentPreviewUrlRef.current = null;
-      }
+      // Clear state to show loading instead of wrong resume
+      // But keep blob URL in currentPreviewUrlRef for cleanup during replacement
       setPreviewUrl(null);
       setError(null);
     }
@@ -254,12 +255,16 @@ export function usePreview({
 
         if (mode === 'database') {
           // Database mode: Fetch pre-generated PDF from API
+
+          // Track resume ID for change detection
+          lastResumeIdRef.current = resumeId;
+
           const headers: HeadersInit = {};
           if (session?.access_token) {
             headers['Authorization'] = `Bearer ${session.access_token}`;
           }
 
-          const response = await fetch(`/api/resumes/${resumeId}/pdf`, {
+          const response = await fetch(`/api/resumes/${resumeId}/pdf?preview=true`, {
             method: 'POST',
             headers,
             signal: abortControllerRef.current?.signal,
@@ -314,6 +319,7 @@ export function usePreview({
         }
 
         // Cleanup previous URL before creating new one
+        // This is the primary cleanup mechanism - old URLs are revoked only when replaced
         // Use ref to avoid circular dependency in useCallback
         if (currentPreviewUrlRef.current) {
           URL.revokeObjectURL(currentPreviewUrlRef.current);

@@ -1400,6 +1400,11 @@ def generate_linkedin_display():
         return jsonify({"success": False, "error": "Failed to generate display text"}), 500
 
 
+def _is_preview_request():
+    """Check if the request is for preview (inline) vs download (attachment)."""
+    return request.args.get('preview', 'false').lower() == 'true'
+
+
 @app.route("/api/generate", methods=["POST"])
 def generate_resume():
     """
@@ -1603,7 +1608,7 @@ def generate_resume():
             # Send the generated PDF file
             return send_file(
                 output_path,
-                as_attachment=True,
+                as_attachment=not _is_preview_request(),  # inline for preview, attachment for download
                 mimetype="application/pdf",
                 download_name=output_path.name,
             )
@@ -2957,7 +2962,7 @@ def generate_pdf_for_saved_resume(resume_id):
             # Return PDF
             return send_file(
                 output_path,
-                as_attachment=True,
+                as_attachment=not _is_preview_request(),  # inline for preview, attachment for download
                 mimetype="application/pdf",
                 download_name=f"{resume.get('title', 'Resume')}_{timestamp}.pdf"
             )

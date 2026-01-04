@@ -18,10 +18,17 @@ export default defineConfig({
         drop_debugger: true,
         pure_funcs: [
           'console.log',
-          'console.info', 
+          'console.info',
           'console.debug',
           'console.warn'
         ]
+      }
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'pdfjs': ['pdfjs-dist'],  // Separate chunk for PDF.js (~200KB gzipped)
+        }
       }
     }
   },

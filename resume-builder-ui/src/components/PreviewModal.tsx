@@ -1,11 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 import { MdClose, MdRefresh, MdFileDownload, MdWarning } from 'react-icons/md';
+import { isMobileDevice } from '../utils/deviceDetection';
+
+// Lazy-load PDF.js viewer (only loaded on mobile devices)
+const PdfViewerMobile = lazy(() =>
+  import('./PdfViewerMobile').then(mod => ({ default: mod.PdfViewerMobile }))
+);
 
 interface PreviewModalProps {
   isOpen: boolean;
   onClose: () => void;
   previewUrl: string | null;
   isGenerating: boolean;
+  isDownloading: boolean;
   isStale: boolean;
   error: string | null;
   onRefresh: () => void;
@@ -19,12 +26,14 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   onClose,
   previewUrl,
   isGenerating,
+  isDownloading,
   isStale,
   error,
   onRefresh,
   onDownload,
 }) => {
   const [loadingState, setLoadingState] = useState<LoadingState>('idle');
+  const [isMobile] = useState(() => isMobileDevice());
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // Update loading state when generation status or error changes
@@ -52,9 +61,15 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   }, [isOpen, onClose]);
 
   // Iframe load handler for smooth transitions
-  const handleIframeLoad = () => {
+  // Wrapped in useCallback to prevent unnecessary re-renders
+  const handleIframeLoad = useCallback(() => {
     setLoadingState('loaded');
-  };
+  }, []);
+
+  // PDF.js error handler - stable identity to prevent re-renders
+  const handlePdfError = useCallback(() => {
+    setLoadingState('error');
+  }, []);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -186,18 +201,33 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
               </div>
             )}
 
-            {/* PDF Iframe - fills entire container, fades in when loaded */}
+            {/* PDF Viewer - iframe on desktop, PDF.js on mobile */}
             {previewUrl && (
-              <iframe
-                ref={iframeRef}
-                src={`${previewUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
-                title="Resume PDF Preview"
-                onLoad={handleIframeLoad}
-                className={`w-full h-full border-none transition-opacity duration-300 ${
-                  loadingState === 'loaded' ? 'opacity-100' : 'opacity-0'
-                }`}
-                style={{ border: 'none' }}
-              />
+              isMobile ? (
+                <Suspense fallback={
+                  <div className="absolute inset-0 bg-white flex flex-col items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mb-4"></div>
+                    <p className="text-gray-700 font-medium">Loading PDF viewer...</p>
+                  </div>
+                }>
+                  <PdfViewerMobile
+                    pdfUrl={previewUrl}
+                    onLoad={handleIframeLoad}
+                    onError={handlePdfError}
+                  />
+                </Suspense>
+              ) : (
+                <iframe
+                  ref={iframeRef}
+                  src={`${previewUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
+                  title="Resume PDF Preview"
+                  onLoad={handleIframeLoad}
+                  className={`w-full h-full border-none transition-opacity duration-300 ${
+                    loadingState === 'loaded' ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  style={{ border: 'none' }}
+                />
+              )
             )}
           </div>
 
@@ -221,12 +251,21 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
               </button>
               <button
                 onClick={onDownload}
-                disabled={isGenerating || !previewUrl}
+                disabled={isGenerating || isDownloading || !previewUrl}
                 className="flex items-center justify-center gap-2 px-4 lg:px-6 py-3.5 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-xl font-semibold hover:from-emerald-500 hover:to-green-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transition-all active:scale-[0.98] min-h-[52px]"
                 style={{ WebkitTapHighlightColor: "transparent" }}
               >
-                <MdFileDownload className="text-xl" />
-                <span>Download</span>
+                {isDownloading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                    <span>Downloading...</span>
+                  </>
+                ) : (
+                  <>
+                    <MdFileDownload className="text-xl" />
+                    <span>Download</span>
+                  </>
+                )}
               </button>
             </div>
             {/* Safe area padding for devices with notches/home indicators */}
