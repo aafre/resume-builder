@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.3.2] - 2026-01-04
+
+### 🐛 Bug Fixes
+
+- **auth:** Release Web Lock immediately to unblock multi-tab initialization
+
+### 🚜 Refactor
+
+- **auth:** Eliminate stale tokens by passing session from AuthContext
+- **api:** Use apiClient in TemplateCarousel for automatic token refresh
+
 ## [3.3.1] - 2026-01-04
 
 ### 🐛 Bug Fixes
