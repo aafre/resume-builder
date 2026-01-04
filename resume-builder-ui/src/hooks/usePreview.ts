@@ -103,6 +103,9 @@ export function usePreview({
   const cacheTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const currentPreviewUrlRef = useRef<string | null>(null);  // Track URL for cleanup without causing re-renders
 
+  // Track last resume ID to detect when we need fresh generation
+  const lastResumeIdRef = useRef<string | undefined>(undefined);
+
   // Request deduplication
   const abortControllerRef = useRef<AbortController | null>(null);
   const generationPromiseRef = useRef<Promise<void> | null>(null);
