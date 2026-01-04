@@ -198,6 +198,7 @@ const Editor: React.FC = () => {
     generatePreview,
     checkAndRefreshIfStale,
     validateIcons,
+    clearPreview,
   } = usePreview({
     contactInfo,
     sections,
@@ -1138,6 +1139,11 @@ const Editor: React.FC = () => {
     if (!valid) {
       showMissingIconsDialog(missingIcons, isLoadingFromUrl);
       return;
+    }
+
+    // Clear stale preview to show loader instead of old content
+    if (previewIsStale) {
+      clearPreview();
     }
 
     // Open modal first, then auto-refresh if stale
