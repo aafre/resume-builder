@@ -132,7 +132,7 @@ export const PdfViewerMobile: React.FC<PdfViewerMobileProps> = ({
           <div className="text-center py-4">
             <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-600 border-t-transparent mx-auto mb-2"></div>
             <p className="text-sm text-gray-600">
-              Loading page {loadingPage} of {pages.length > 0 ? pages.length : '...'}
+              Loading PDF...
             </p>
           </div>
         )}
