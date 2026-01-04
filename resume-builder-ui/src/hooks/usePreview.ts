@@ -187,6 +187,8 @@ export function usePreview({
   }, [sections, iconRegistry, validationCache, generateContentHash, supportsIcons]);
 
   // Cleanup blob URL on unmount
+  // Note: Blob URLs are only revoked on unmount or when replaced during generation.
+  // We do NOT revoke when input props change to avoid race conditions with async operations.
   useEffect(() => {
     return () => {
       // Clean up ref-tracked URL
@@ -311,6 +313,7 @@ export function usePreview({
         }
 
         // Cleanup previous URL before creating new one
+        // This is the primary cleanup mechanism - old URLs are revoked only when replaced
         // Use ref to avoid circular dependency in useCallback
         if (currentPreviewUrlRef.current) {
           URL.revokeObjectURL(currentPreviewUrlRef.current);
