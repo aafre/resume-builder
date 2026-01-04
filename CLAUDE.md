@@ -93,11 +93,11 @@ The YAML resume format supports these section types:
 - Templates use Jinja2 with custom functions like calculate_columns() for dynamic layouts
 
 ### Preview Hook Dependency Pattern
-The `usePreview` hook intentionally omits `previewUrl` from `checkAndRefreshIfStale`'s dependency array to prevent cascading re-renders:
-- Prevents double generation bug where PDF generation triggers function recreation
-- Safe because React state is read at execution time (never stale)
-- Function identity stays stable during generation lifecycle
-- See `usePreview.ts:369` for detailed technical explanation
+The `usePreview` hook follows React best practices for dependency arrays to ensure data freshness and prevent stale closures.
+- Functions like `checkAndRefreshIfStale` include all reactive values they depend on, such as `previewUrl` and `isStale`.
+- This prevents bugs where the function might operate on outdated state.
+- Potential issues like re-renders are managed with request deduplication and memoization within the hook.
+- See `usePreview.ts:390` for the implementation of `checkAndRefreshIfStale`.
 
 
 # Repo workflow
