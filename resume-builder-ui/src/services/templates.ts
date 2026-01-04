@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabase';
+import type { Session } from '@supabase/supabase-js';
 
 const API_BASE_URL = "/api";
 const API_URL = `${API_BASE_URL}/templates`;
@@ -134,7 +134,10 @@ export async function generatePreviewPdf(
  * @param {string} resumeId - The ID of the resume to generate a thumbnail for.
  * @returns {Promise<{success: boolean, thumbnail_url?: string | null, pdf_generated_at?: string | null, error?: string, retryable?: boolean, error_type?: string}>}
  */
-export async function generateThumbnail(resumeId: string): Promise<{
+export async function generateThumbnail(
+  resumeId: string,
+  session: Session | null
+): Promise<{
   success: boolean;
   thumbnail_url?: string | null;
   pdf_generated_at?: string | null;
@@ -143,11 +146,6 @@ export async function generateThumbnail(resumeId: string): Promise<{
   error_type?: string;
 }> {
   try {
-    if (!supabase) {
-      return { success: false, error: 'Supabase not configured', retryable: false };
-    }
-
-    const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
       return { success: false, error: 'Not authenticated', retryable: false };
     }

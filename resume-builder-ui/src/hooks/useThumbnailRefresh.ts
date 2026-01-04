@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { generateThumbnail } from '../services/templates';
-import { supabase } from '../lib/supabase';
+import { apiClient } from '../lib/api-client';
+import type { Session } from '@supabase/supabase-js';
 
 interface UseThumbnailRefreshOptions {
+  session: Session | null;
   onThumbnailUpdated?: (resumeId: string, pdf_generated_at: string, thumbnail_url: string) => void;
 }
 
@@ -21,6 +23,7 @@ interface RetryState {
 }
 
 export function useThumbnailRefresh({
+  session,
   onThumbnailUpdated
 }: UseThumbnailRefreshOptions): UseThumbnailRefreshReturn {
   const [generatingIds, setGeneratingIds] = useState<Set<string>>(new Set());
@@ -30,12 +33,14 @@ export function useThumbnailRefresh({
   const startTimesRef = useRef<Map<string, number>>(new Map());
   const resumeTimestampsRef = useRef<Map<string, string>>(new Map());
   const retryStateRef = useRef<Map<string, RetryState>>(new Map());
+  const sessionRef = useRef(session);
   const onThumbnailUpdatedRef = useRef(onThumbnailUpdated);
 
-  // Update ref when callback changes (stable pattern)
+  // Update refs when props change (stable pattern)
   useEffect(() => {
+    sessionRef.current = session;
     onThumbnailUpdatedRef.current = onThumbnailUpdated;
-  }, [onThumbnailUpdated]);
+  }, [session, onThumbnailUpdated]);
 
   // Schedule retry - defined as ref to avoid recreation
   const scheduleRetryRef = useRef((resumeId: string) => {
@@ -76,7 +81,7 @@ export function useThumbnailRefresh({
     startTimesRef.current.set(resumeId, Date.now());
 
     try {
-      const result = await generateThumbnail(resumeId);
+      const result = await generateThumbnail(resumeId, sessionRef.current);
 
       if (result.success && result.pdf_generated_at) {
         // Store timestamp for polling comparison
@@ -121,12 +126,7 @@ export function useThumbnailRefresh({
   const checkThumbnailUpdates = useCallback(async () => {
     const now = Date.now();
 
-    if (!supabase) {
-      console.error('[Thumbnail] Supabase not configured - cannot poll for updates');
-      return;
-    }
-
-    const { data: { session } } = await supabase.auth.getSession();
+    const session = sessionRef.current;
     if (!session) {
       console.error('[Thumbnail] No active session - cannot poll for updates');
       return;
@@ -150,17 +150,7 @@ export function useThumbnailRefresh({
       }
 
       try {
-        const response = await fetch(`/api/resumes/${resumeId}`, {
-          headers: {
-            'Authorization': `Bearer ${session.access_token}`
-          }
-        });
-
-        if (!response.ok) {
-          return { resumeId, error: true };
-        }
-
-        const result = await response.json();
+        const result = await apiClient.get(`/api/resumes/${resumeId}`, { session });
         const resume = result.resume;
 
         // Compare timestamps

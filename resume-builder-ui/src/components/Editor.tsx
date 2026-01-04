@@ -1562,7 +1562,7 @@ const Editor: React.FC = () => {
           const resumeId = savedResumeId || cloudResumeId;
           if (resumeId) {
             console.log('Triggering thumbnail generation for resume:', resumeId);
-            generateThumbnail(resumeId); // Fire-and-forget
+            generateThumbnail(resumeId, session); // Fire-and-forget
           }
         } catch (error) {
           console.error('Failed to save on unmount:', error);

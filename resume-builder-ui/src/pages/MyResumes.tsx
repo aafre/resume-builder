@@ -64,6 +64,7 @@ export default function MyResumes() {
     generatingIds: _generatingIds,
     triggerRefresh
   } = useThumbnailRefresh({
+    session,
     onThumbnailUpdated
   });
 
