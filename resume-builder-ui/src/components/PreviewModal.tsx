@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 import { MdClose, MdRefresh, MdFileDownload, MdWarning } from 'react-icons/md';
 import { isMobileDevice } from '../utils/deviceDetection';
 
@@ -59,9 +59,15 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   }, [isOpen, onClose]);
 
   // Iframe load handler for smooth transitions
-  const handleIframeLoad = () => {
+  // Wrapped in useCallback to prevent unnecessary re-renders
+  const handleIframeLoad = useCallback(() => {
     setLoadingState('loaded');
-  };
+  }, []);
+
+  // PDF.js error handler - stable identity to prevent re-renders
+  const handlePdfError = useCallback(() => {
+    setLoadingState('error');
+  }, []);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -205,7 +211,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                   <PdfViewerMobile
                     pdfUrl={previewUrl}
                     onLoad={handleIframeLoad}
-                    onError={() => setLoadingState('error')}
+                    onError={handlePdfError}
                   />
                 </Suspense>
               ) : (
