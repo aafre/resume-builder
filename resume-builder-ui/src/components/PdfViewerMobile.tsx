@@ -55,6 +55,9 @@ export const PdfViewerMobile: React.FC<PdfViewerMobileProps> = ({
         // Calculate container width once (doesn't change between pages)
         const containerWidth = containerRef.current?.clientWidth || FALLBACK_CANVAS_WIDTH;
 
+        // Account for device pixel ratio for crisp rendering on high-DPI displays
+        const dpr = window.devicePixelRatio || 1;
+
         // Render all pages sequentially
         for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
           if (cancelled) break;
@@ -62,32 +65,34 @@ export const PdfViewerMobile: React.FC<PdfViewerMobileProps> = ({
           setLoadingPage(pageNum);
           const page = await pdfDoc.getPage(pageNum);
 
-          // Calculate scale for mobile viewport
+          // Calculate scale for mobile viewport, accounting for device pixel ratio
           const viewport = page.getViewport({ scale: 1 });
-          const scale = containerWidth / viewport.width;
-          const scaledViewport = page.getViewport({ scale });
+          const baseScale = containerWidth / viewport.width;
+          const renderScale = baseScale * dpr; // Render at native device resolution
+          const renderViewport = page.getViewport({ scale: renderScale });
 
-          // Create temporary canvas for rendering
+          // Create temporary canvas for rendering at native resolution
           const canvas = document.createElement('canvas');
           const context = canvas.getContext('2d');
 
           if (!context) continue;
 
-          canvas.height = scaledViewport.height;
-          canvas.width = scaledViewport.width;
+          canvas.height = renderViewport.height;
+          canvas.width = renderViewport.width;
 
-          // Render page to canvas
+          // Render page to canvas at high resolution
           await page.render({
             canvasContext: context,
-            viewport: scaledViewport,
+            viewport: renderViewport,
           }).promise;
 
           if (!cancelled) {
-            // Convert canvas to JPEG data URL for memory efficiency
+            // Convert canvas to PNG for lossless quality (resumes need crisp text)
+            // Store CSS display dimensions (without DPR multiplier) for proper layout
             renderedPages.push({
-              src: canvas.toDataURL('image/jpeg', 0.9),
-              width: scaledViewport.width,
-              height: scaledViewport.height,
+              src: canvas.toDataURL('image/png'),
+              width: containerWidth,
+              height: renderViewport.height / dpr,
             });
           }
         }
