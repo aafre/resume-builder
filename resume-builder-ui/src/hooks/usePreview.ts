@@ -256,11 +256,8 @@ export function usePreview({
         if (mode === 'database') {
           // Database mode: Fetch pre-generated PDF from API
 
-          // Force fresh generation if resume ID changed
-          const resumeIdChanged = resumeId !== lastResumeIdRef.current;
-          if (resumeIdChanged) {
-            lastResumeIdRef.current = resumeId;
-          }
+          // Track resume ID for change detection
+          lastResumeIdRef.current = resumeId;
 
           const headers: HeadersInit = {};
           if (session?.access_token) {
