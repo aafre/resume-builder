@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 
-// Configure PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
-
 interface PdfViewerMobileProps {
   pdfUrl: string;
   onLoad: () => void;
