@@ -53,6 +53,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [migratedResumeCount, setMigratedResumeCount] = useState(0);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const migrationAttempted = useRef(false);
+  const anonMigrationAttempted = useRef(false);
 
   // Track current session in a ref for access in async callbacks
   const sessionRef = useRef<Session | null>(null);
@@ -401,11 +402,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (event === 'SIGNED_IN' && session?.user && !session.user.is_anonymous) {
           // Check if migration is needed FIRST, before any other operations
           const oldAnonUserId = localStorage.getItem('anonymous-user-id');
-          const needsMigration = oldAnonUserId && oldAnonUserId !== session.user.id;
+          const needsMigration = oldAnonUserId && oldAnonUserId !== session.user.id && !anonMigrationAttempted.current;
 
           // Set migration flag IMMEDIATELY to prevent race conditions
           // This blocks Editor from loading resume with wrong user_id
           if (needsMigration) {
+            anonMigrationAttempted.current = true; // Prevent duplicate calls in StrictMode
             setAnonMigrationInProgress(true);
             console.log('👤 Starting migration process - blocking UI loads...');
           }
