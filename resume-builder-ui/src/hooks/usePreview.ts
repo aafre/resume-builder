@@ -207,6 +207,15 @@ export function usePreview({
     };
   }, []); // Empty dependencies - only cleanup on unmount
 
+  // Clear preview state when resumeId changes (but don't revoke URL to avoid race condition)
+  useEffect(() => {
+    if (mode === 'database' && resumeId) {
+      // Clear state to show loading instead of wrong resume
+      // But keep blob URL in currentPreviewUrlRef for cleanup during replacement
+      setPreviewUrl(null);
+      setError(null);
+    }
+  }, [mode, resumeId]);
 
   const generatePreview = useCallback(async () => {
     // Return existing promise if generation already in progress
