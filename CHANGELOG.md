@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.3.0] - 2026-01-04
+
+### 🚀 Features
+
+- **preview:** Add PDF.js for mobile preview rendering
+- **utils:** Add mobile device detection utility
+- **preview:** Add ?preview=true to PDF fetch requests
+- **preview:** Create PDF.js mobile viewer component
+- **preview:** Integrate PDF.js for mobile preview
+- **preview:** Add download loading state and request deduplication
+- **preview:** Add resume ID tracking ref for change detection
+- **preview:** Detect and track resume ID changes in database mode
+
+### 🐛 Bug Fixes
+
+- **backend:** Support inline PDF display for mobile preview
+- **preview:** Wrap callbacks in useCallback for stability
+- **preview:** Convert blob URL to ArrayBuffer for PDF.js
+- **preview:** Clear state when resumeId changes without revoking blob URL
+- **editor:** Remove unused generating state
+- **preview:** Calc container width outside for loop
+
+### 🚜 Refactor
+
+- **backend:** Extract preview request check to helper
+- **config:** Move PDF.js worker config to main.tsx
+- **preview:** Replace magic number with named constant
+- **config:** Use Vite-native worker path resolution
+- **preview:** Convert DOM manipulation to React state pattern
+- **preview:** Remove eager cleanup effect to fix blob URL race condition
+- **preview:** Simplify PDF loading message
+- **preview:** Remove unused resumeIdChanged variable
+
+### 📚 Documentation
+
+- **preview:** Update cleanup comments to explain lazy cleanup strategy
+
+### ⚙️ Miscellaneous Tasks
+
+- **build:** Configure code splitting for PDF.js
+
+### Ui
+
+- **toast:** Remove old toast msg
+
 ## [3.2.0] - 2026-01-04
 
 ### 🚀 Features
