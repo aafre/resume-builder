@@ -31,8 +31,14 @@ export const PdfViewerMobile: React.FC<PdfViewerMobileProps> = ({
 
     const loadPdf = async () => {
       try {
-        // Load PDF from blob URL
-        const loadingTask = pdfjsLib.getDocument(pdfUrl);
+        // Fetch blob URL and convert to ArrayBuffer for PDF.js
+        // PDF.js cannot directly load blob URLs via its fetch mechanism
+        const response = await fetch(pdfUrl);
+        const blob = await response.blob();
+        const arrayBuffer = await blob.arrayBuffer();
+
+        // Load PDF from ArrayBuffer
+        const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
         pdfDoc = await loadingTask.promise;
 
         if (cancelled) return;
