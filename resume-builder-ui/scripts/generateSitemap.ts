@@ -36,7 +36,6 @@ const STATIC_URLS = [
 
   // Core App Pages (0.8)
   { loc: '/templates', priority: 0.8, changefreq: 'weekly', lastmod: '2025-10-26' },
-  { loc: '/editor', priority: 0.8, changefreq: 'weekly', lastmod: '2025-10-26' },
 
   // Hub Pages (0.8)
   { loc: '/ats-resume-templates', priority: 0.8, changefreq: 'monthly', lastmod: '2025-10-26' },
