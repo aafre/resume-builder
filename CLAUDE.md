@@ -92,6 +92,13 @@ The YAML resume format supports these section types:
 - app.py is the Flask app that serves the React frontend and handles API requests
 - Templates use Jinja2 with custom functions like calculate_columns() for dynamic layouts
 
+### Preview Hook Dependency Pattern
+The `usePreview` hook follows React best practices for dependency arrays to ensure data freshness and prevent stale closures.
+- Functions like `checkAndRefreshIfStale` include all reactive values they depend on, such as `previewUrl` and `isStale`.
+- This prevents bugs where the function might operate on outdated state.
+- Potential issues like re-renders are managed with request deduplication and memoization within the hook.
+- See `usePreview.ts:390` for the implementation of `checkAndRefreshIfStale`.
+
 
 # Repo workflow
 

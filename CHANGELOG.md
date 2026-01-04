@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.2.0] - 2026-01-04
+
+### 🚀 Features
+
+- **preview:** Add abort signal support to generatePreviewPdf
+- **preview:** Enhance usePreview hook with dedup, validation, and modes
+
+### 🐛 Bug Fixes
+
+- **api:** Add automatic token refresh retry on 401 errors
+- **api:** Add non-null assertion for supabase in refreshSession
+- **preview:** Address PR #155 review comments
+- **typescript:** Resolve compilation errors in preview system
+- **preview:** Address new PR review comments - cleanup and formatting
+- **preview:** Resolve infinite loop and desktop sizing issues
+- **preview:** Resolve modal height collapse and visual flashing
+- **preview:** Stop infinite generation loop in MyResumes
+- **preview:** Auto-generate preview on first open in Editor
+- **preview:** Eliminate double generation on modal open
+- **preview:** Add 30-second timeout to prevent hanging requests
+- **preview:** Clear preview when switching between resumes in MyResumes
+- **preview:** Clear stale preview to show loader in Editor
+- **preview:** Add previewUrl to loading state dependency array
+- **sitemap:** Remove /editor as the new route is /editor/{uuid}
+
+### 🚜 Refactor
+
+- **api:** Address PR review comments - reduce duplication
+- **preview:** Redesign PreviewModal with mobile-first UX
+- **editor:** Integrate enhanced usePreview hook features
+- **myresumes:** Use usePreview hook in database mode
+- **preview:** Include all dependencies per React best practices
+
+### 📚 Documentation
+
+- **preview:** Add comprehensive documentation for dependency omissions
+
+### 🧪 Testing
+
+- **preview:** Update tests for redesigned PreviewModal and usePreview
+- **preview:** Use data-testid instead of brittle CSS selectors
+
 ## [3.1.0] - 2026-01-02
 
 ### 🚀 Features
