@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.3.3] - 2026-01-04
+
+### 🐛 Bug Fixes
+
+- **auth:** Replace raw fetch() with apiClient in migration functions
+- **auth:** Prevent duplicate anonymous migration calls in StrictMode
+
+### 🚜 Refactor
+
+- **auth:** Use type-safe error handling with instanceof checks
+
 ## [3.3.2] - 2026-01-04
 
 ### 🐛 Bug Fixes
