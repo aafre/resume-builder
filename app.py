@@ -1601,9 +1601,12 @@ def generate_resume():
                 logging.warning(f"Failed to cleanup session directory: {cleanup_error}")
 
             # Send the generated PDF file
+            # Check if request is for preview (inline) vs download (attachment)
+            is_preview = request.args.get('preview', 'false').lower() == 'true'
+
             return send_file(
                 output_path,
-                as_attachment=True,
+                as_attachment=not is_preview,  # inline for preview, attachment for download
                 mimetype="application/pdf",
                 download_name=output_path.name,
             )
@@ -2955,9 +2958,12 @@ def generate_pdf_for_saved_resume(resume_id):
                 logging.error(f"Error during thumbnail generation: {thumb_error}")
 
             # Return PDF
+            # Check if request is for preview (inline) vs download (attachment)
+            is_preview = request.args.get('preview', 'false').lower() == 'true'
+
             return send_file(
                 output_path,
-                as_attachment=True,
+                as_attachment=not is_preview,  # inline for preview, attachment for download
                 mimetype="application/pdf",
                 download_name=f"{resume.get('title', 'Resume')}_{timestamp}.pdf"
             )
