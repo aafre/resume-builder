@@ -1,5 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { MdClose, MdRefresh, MdFileDownload, MdWarning } from 'react-icons/md';
+import { isMobileDevice } from '../utils/deviceDetection';
+
+// Lazy-load PDF.js viewer (only loaded on mobile devices)
+const PdfViewerMobile = lazy(() =>
+  import('./PdfViewerMobile').then(mod => ({ default: mod.PdfViewerMobile }))
+);
 
 interface PreviewModalProps {
   isOpen: boolean;
@@ -25,6 +31,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   onDownload,
 }) => {
   const [loadingState, setLoadingState] = useState<LoadingState>('idle');
+  const [isMobile] = useState(() => isMobileDevice());
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // Update loading state when generation status or error changes
@@ -186,18 +193,33 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
               </div>
             )}
 
-            {/* PDF Iframe - fills entire container, fades in when loaded */}
+            {/* PDF Viewer - iframe on desktop, PDF.js on mobile */}
             {previewUrl && (
-              <iframe
-                ref={iframeRef}
-                src={`${previewUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
-                title="Resume PDF Preview"
-                onLoad={handleIframeLoad}
-                className={`w-full h-full border-none transition-opacity duration-300 ${
-                  loadingState === 'loaded' ? 'opacity-100' : 'opacity-0'
-                }`}
-                style={{ border: 'none' }}
-              />
+              isMobile ? (
+                <Suspense fallback={
+                  <div className="absolute inset-0 bg-white flex flex-col items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mb-4"></div>
+                    <p className="text-gray-700 font-medium">Loading PDF viewer...</p>
+                  </div>
+                }>
+                  <PdfViewerMobile
+                    pdfUrl={previewUrl}
+                    onLoad={handleIframeLoad}
+                    onError={() => setLoadingState('error')}
+                  />
+                </Suspense>
+              ) : (
+                <iframe
+                  ref={iframeRef}
+                  src={`${previewUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
+                  title="Resume PDF Preview"
+                  onLoad={handleIframeLoad}
+                  className={`w-full h-full border-none transition-opacity duration-300 ${
+                    loadingState === 'loaded' ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  style={{ border: 'none' }}
+                />
+              )
             )}
           </div>
 
