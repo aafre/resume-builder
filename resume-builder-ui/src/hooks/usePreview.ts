@@ -383,32 +383,15 @@ export function usePreview({
   /**
    * Auto-refreshes preview if content is stale or no preview exists.
    *
-   * IMPORTANT: previewUrl is intentionally omitted from dependency array.
-   *
-   * Why this is safe and correct:
-   * 1. React state is NEVER stale - when this function executes, it reads
-   *    the current value of previewUrl directly from state (!previewUrl check).
-   * 2. Including previewUrl caused a cascade bug (commit 8418ef9):
-   *    - Generate PDF → previewUrl changes → function recreates
-   *    - Function recreation triggers re-render → generates AGAIN (double generation)
-   * 3. The condition (!previewUrl) is evaluated at CALL TIME, not creation time,
-   *    so it always uses the current state value (never stale).
-   * 4. Deduplication (generationPromiseRef) prevents overlapping calls, but
-   *    doesn't prevent sequential calls after first completes.
-   *
-   * This pattern follows React guidance for intentional dependency omissions when:
-   * - State is read conditionally (not captured in closure)
-   * - Function identity stability prevents cascading renders
-   * - Behavior is correct without the dependency
-   *
-   * See commit 4135d6f for the bug fix that introduced this pattern.
+   * Note: Following React best practices, previewUrl is included in dependency array
+   * to avoid stale closures. The deduplication logic in generatePreview prevents
+   * double generation by checking if a generation is already in progress.
    */
   const checkAndRefreshIfStale = useCallback(async () => {
     if ((isStale || !previewUrl) && !isGenerating) {
       await generatePreview();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- previewUrl intentionally omitted (see comment above)
-  }, [isStale, isGenerating, generatePreview]);
+  }, [isStale, previewUrl, isGenerating, generatePreview]);
 
   const clearPreview = useCallback(() => {
     if (currentPreviewUrlRef.current) {

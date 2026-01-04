@@ -256,17 +256,13 @@ export default function MyResumes() {
   };
 
   // Trigger preview generation when modal opens with a resume ID.
-  // Note: checkAndRefreshIfStale is intentionally omitted from dependencies.
-  // Including it would cause the effect to re-run whenever the function recreates
-  // (which happens when isGenerating or generatePreview change), potentially
-  // causing unnecessary generation attempts. The current implementation correctly
-  // generates only when modal opens or resume ID changes.
+  // Following React best practices, including all dependencies.
+  // The deduplication logic in usePreview prevents double generation.
   useEffect(() => {
     if (showPreviewModal && previewResumeId) {
       checkAndRefreshIfStale();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- checkAndRefreshIfStale intentionally omitted
-  }, [showPreviewModal, previewResumeId]);
+  }, [showPreviewModal, previewResumeId, checkAndRefreshIfStale]);
 
   const handleClosePreview = () => {
     setShowPreviewModal(false);
