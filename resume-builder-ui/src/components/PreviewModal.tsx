@@ -37,8 +37,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
       setLoadingState('idle');
     }
     // Note: 'loaded' state is set by iframe onLoad event
-    // previewUrl removed from deps to prevent flashing when URL updates
-  }, [isGenerating, error]);
+  }, [isGenerating, error, previewUrl]);
 
   // Handle ESC key to close modal
   useEffect(() => {
