@@ -249,7 +249,6 @@ const Editor: React.FC = () => {
   // Note: Storage limit errors are handled in saveBeforeAction() via RESUME_LIMIT_REACHED
   // No need for blanket error handling here that shows modal for all errors
 
-  const [generating, setGenerating] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [editingTitleIndex, setEditingTitleIndex] = useState<number | null>(
@@ -1908,7 +1907,7 @@ const Editor: React.FC = () => {
               onToggleHelp={toggleHelpModal}
               onLoadEmptyTemplate={handleLoadEmptyTemplate}
               loadingAddSection={loadingAddSection}
-              generating={generating}
+              generating={isDownloading}
               loadingSave={loadingSave}
               loadingLoad={loadingLoad}
               showAdvancedMenu={showAdvancedMenu}
@@ -1924,7 +1923,7 @@ const Editor: React.FC = () => {
           onPreviewClick={handleOpenPreview}
           onDownloadClick={handleGenerateResume}
           isSaving={saveStatus === 'saving'}
-          isGenerating={generating}
+          isGenerating={isDownloading}
           isGeneratingPreview={isGeneratingPreview}
           previewIsStale={previewIsStale}
           lastSaved={cloudLastSaved}
@@ -1959,7 +1958,7 @@ const Editor: React.FC = () => {
           onImportYAML={() => fileInputRef.current?.click()}
           onStartFresh={handleLoadEmptyTemplate}
           onHelp={toggleHelpModal}
-          isGenerating={generating}
+          isGenerating={isDownloading}
           isGeneratingPreview={isGeneratingPreview}
           previewIsStale={previewIsStale}
           loadingSave={loadingSave}
