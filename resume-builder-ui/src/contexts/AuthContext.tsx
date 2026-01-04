@@ -339,7 +339,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Listen for auth state changes - Supabase handles everything
     // This is the ONLY initialization logic - no separate initializeAuth function
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         console.log('🔔 Auth event:', event, session?.user?.is_anonymous ? 'anonymous' : session?.user?.id || 'none');
 
         // Update session state and cache
@@ -357,20 +357,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           } else {
             // No session found - create anonymous session
             console.log('📝 No session found, creating anonymous session...');
-            try {
-              const { data, error } = await supabase!.auth.signInAnonymously();
-              if (error) {
-                console.error('❌ Failed to create anonymous session:', error);
+            // Set loading=false immediately to unblock UI
+            // Anonymous session will be created in background
+            setLoading(false);
+
+            // Defer async operation to avoid blocking Web Lock
+            setTimeout(async () => {
+              try {
+                const { data, error } = await supabase!.auth.signInAnonymously();
+                if (error) {
+                  console.error('❌ Failed to create anonymous session:', error);
+                  toast.error('Failed to initialize. Please refresh the page.');
+                } else {
+                  console.log('✅ Anonymous session created:', data.user?.id);
+                }
+              } catch (error) {
+                console.error('❌ Anonymous sign-in error:', error);
                 toast.error('Failed to initialize. Please refresh the page.');
-              } else {
-                console.log('✅ Anonymous session created:', data.user?.id);
               }
-            } catch (error) {
-              console.error('❌ Anonymous sign-in error:', error);
-              toast.error('Failed to initialize. Please refresh the page.');
-            } finally {
-              setLoading(false);
-            }
+            }, 0);
           }
           return; // Exit early - no further processing needed for INITIAL_SESSION
         }
@@ -399,19 +404,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             // Show migration UI
             setMigrationInProgress(true);
 
-            const migrated = await migrateAllLegacyResumes(session, legacyResumes);
-            if (migrated) {
-              setHasMigrated(true);
-              setMigratedResumeCount(legacyResumes.length);
-              setMigrationInProgress(false);
+            // Defer async migration to avoid blocking Web Lock
+            setTimeout(async () => {
+              const migrated = await migrateAllLegacyResumes(session, legacyResumes);
+              if (migrated) {
+                setHasMigrated(true);
+                setMigratedResumeCount(legacyResumes.length);
+                setMigrationInProgress(false);
 
-              // Redirect to my-resumes after short delay to show success toast
-              setTimeout(() => {
-                window.location.href = '/my-resumes';
-              }, 1500);
-            } else {
-              setMigrationInProgress(false);
-            }
+                // Redirect to my-resumes after short delay to show success toast
+                setTimeout(() => {
+                  window.location.href = '/my-resumes';
+                }, 1500);
+              } else {
+                setMigrationInProgress(false);
+              }
+            }, 0);
           }
         }
 
@@ -435,35 +443,38 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             sessionStorage.setItem('login-toast-shown', 'true');
           }
 
-          // Refresh user metadata to ensure avatar_url is populated from OAuth provider
-          try {
-            const { data: { user: refreshedUser }, error } = await supabase!.auth.getUser();
-            if (!error && refreshedUser) {
-              setUser(refreshedUser);
-              console.log('User metadata refreshed after OAuth sign-in');
-            }
-          } catch (error) {
-            console.error('Failed to refresh user metadata:', error);
-            // Non-critical error - continue with existing metadata
-          }
-
-          // Migrate anonymous user's cloud resumes to authenticated account
-          if (needsMigration) {
-            console.log('👤 Migrating anonymous cloud resumes to authenticated account...');
-
+          // Defer async operations to avoid blocking Web Lock
+          setTimeout(async () => {
+            // Refresh user metadata to ensure avatar_url is populated from OAuth provider
             try {
-              await migrateAnonResumes(session, oldAnonUserId);
-              localStorage.removeItem('anonymous-user-id');
+              const { data: { user: refreshedUser }, error } = await supabase!.auth.getUser();
+              if (!error && refreshedUser) {
+                setUser(refreshedUser);
+                console.log('User metadata refreshed after OAuth sign-in');
+              }
             } catch (error) {
-              console.error('Migration failed:', error);
-            } finally {
-              setAnonMigrationInProgress(false);
-              console.log('✅ Anonymous migration complete, UI can proceed');
+              console.error('Failed to refresh user metadata:', error);
+              // Non-critical error - continue with existing metadata
             }
-          } else {
-            // No migration needed - ensure flag is false
-            setAnonMigrationInProgress(false);
-          }
+
+            // Migrate anonymous user's cloud resumes to authenticated account
+            if (needsMigration) {
+              console.log('👤 Migrating anonymous cloud resumes to authenticated account...');
+
+              try {
+                await migrateAnonResumes(session, oldAnonUserId);
+                localStorage.removeItem('anonymous-user-id');
+              } catch (error) {
+                console.error('Migration failed:', error);
+              } finally {
+                setAnonMigrationInProgress(false);
+                console.log('✅ Anonymous migration complete, UI can proceed');
+              }
+            } else {
+              // No migration needed - ensure flag is false
+              setAnonMigrationInProgress(false);
+            }
+          }, 0);
         }
       }
     );
