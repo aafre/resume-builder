@@ -2,6 +2,7 @@ import React, { useEffect, useState, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchTemplates } from "../services/templates";
+import { apiClient } from "../lib/api-client";
 import { ArrowRightIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
@@ -92,15 +93,7 @@ const TemplateCarousel: React.FC = () => {
       setCheckingExistingResume(true);
 
       // Fetch user's resumes to check if they already have one for this template
-      const response = await fetch('/api/resumes?limit=50', {
-        headers: { 'Authorization': `Bearer ${session.access_token}` }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch resumes');
-      }
-
-      const data = await response.json();
+      const data = await apiClient.get('/api/resumes?limit=50', { session });
       const resumes = data.resumes || [];
 
       // Filter by template_id to find matching resumes
@@ -142,32 +135,23 @@ const TemplateCarousel: React.FC = () => {
       setShowStartModal(false);
 
       // Create resume with empty structure (template sections but no content)
-      const response = await fetch("/api/resumes/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
+      try {
+        const data = await apiClient.post("/api/resumes/create", {
           template_id: selectedTemplateForModal,
           load_example: false  // Empty structure
-        }),
-      });
+        }, { session });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        if (data.error_code === "RESUME_LIMIT_REACHED") {
+        // Navigate to editor
+        toast.success("Resume created! Starting editor...");
+        navigate(`/editor/${data.resume_id}`);
+      } catch (error: any) {
+        if (error.data?.error_code === "RESUME_LIMIT_REACHED") {
           toast.error("Resume limit reached (5/5). Please delete a resume to create a new one.");
           navigate("/my-resumes");
           return;
         }
-        throw new Error(data.error || "Failed to create resume");
+        throw error;
       }
-
-      // Navigate to editor
-      toast.success("Resume created! Starting editor...");
-      navigate(`/editor/${data.resume_id}`);
 
       // Invalidate cache to ensure fresh data when user returns to /my-resumes
       await invalidateResumeCaches();
@@ -188,32 +172,23 @@ const TemplateCarousel: React.FC = () => {
       setShowStartModal(false);
 
       // Create resume with example data from template
-      const response = await fetch("/api/resumes/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
+      try {
+        const data = await apiClient.post("/api/resumes/create", {
           template_id: selectedTemplateForModal,
           load_example: true  // Load example data
-        }),
-      });
+        }, { session });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        if (data.error_code === "RESUME_LIMIT_REACHED") {
+        // Navigate to editor
+        toast.success("Resume created! Starting editor...");
+        navigate(`/editor/${data.resume_id}`);
+      } catch (error: any) {
+        if (error.data?.error_code === "RESUME_LIMIT_REACHED") {
           toast.error("Resume limit reached (5/5). Please delete a resume to create a new one.");
           navigate("/my-resumes");
           return;
         }
-        throw new Error(data.error || "Failed to create resume");
+        throw error;
       }
-
-      // Navigate to editor
-      toast.success("Resume created! Starting editor...");
-      navigate(`/editor/${data.resume_id}`);
 
       // Invalidate cache to ensure fresh data when user returns to /my-resumes
       await invalidateResumeCaches();
@@ -315,13 +290,8 @@ const TemplateCarousel: React.FC = () => {
       };
 
       // Create resume in database immediately
-      const response = await fetch("/api/resumes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
+      try {
+        const data = await apiClient.post("/api/resumes", {
           id: null, // Create new resume
           title: generateTitle(),
           template_id: selectedTemplateForModal || 'modern',
@@ -330,23 +300,19 @@ const TemplateCarousel: React.FC = () => {
           icons: iconsArray,
           ai_import_warnings: warnings,
           ai_import_confidence: confidence
-        }),
-      });
+        }, { session });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        if (data.error_code === "RESUME_LIMIT_REACHED") {
+        // Navigate to editor with resume_id (standard flow)
+        toast.success("Resume imported successfully! Loading editor...");
+        navigate(`/editor/${data.resume_id}`);
+      } catch (error: any) {
+        if (error.data?.error_code === "RESUME_LIMIT_REACHED") {
           toast.error("Resume limit reached (5/5). Please delete a resume to create a new one.");
           navigate("/my-resumes");
           return;
         }
-        throw new Error(data.error || "Failed to create resume");
+        throw error;
       }
-
-      // Navigate to editor with resume_id (standard flow)
-      toast.success("Resume imported successfully! Loading editor...");
-      navigate(`/editor/${data.resume_id}`);
 
       // Invalidate cache to ensure fresh data when user returns to /my-resumes
       await invalidateResumeCaches();
