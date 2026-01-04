@@ -202,6 +202,20 @@ export function usePreview({
     };
   }, []); // Empty dependencies - only cleanup on unmount
 
+  // Clear preview when resumeId changes in database mode
+  // This ensures switching between different resumes shows the correct preview
+  useEffect(() => {
+    if (mode === 'database' && resumeId) {
+      // Clear the current preview URL when switching to a different resume
+      if (currentPreviewUrlRef.current) {
+        URL.revokeObjectURL(currentPreviewUrlRef.current);
+        currentPreviewUrlRef.current = null;
+      }
+      setPreviewUrl(null);
+      setError(null);
+    }
+  }, [mode, resumeId]);
+
   const generatePreview = useCallback(async () => {
     // Return existing promise if generation already in progress
     if (generationPromiseRef.current) {
