@@ -1114,14 +1114,6 @@ const Editor: React.FC = () => {
           setTimeout(() => {
             setShowDownloadCelebration(true);
           }, 500);
-        } else if (!isAnonymous) {
-          // Original message for authenticated users
-          setTimeout(() => {
-            toast(
-              "Need to continue on another device? Save your work via the ⋮ menu",
-              { icon: 'ℹ️' }
-            );
-          }, 2000);
         }
       } catch (error) {
         console.error("Error generating resume:", error);
