@@ -7,7 +7,11 @@ import App from "./App.tsx";
 import "./styles.css";
 
 // Configure PDF.js worker (global setup for mobile PDF preview)
-pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+// Use Vite's URL resolution for robust worker path handling across builds
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.js',
+  import.meta.url
+).toString();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
