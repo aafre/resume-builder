@@ -90,7 +90,7 @@ export const PdfViewerMobile: React.FC<PdfViewerMobileProps> = ({
             // Convert canvas to PNG for lossless quality (resumes need crisp text)
             // Store CSS display dimensions (without DPR multiplier) for proper layout
             renderedPages.push({
-              src: canvas.toDataURL('image/png'),
+              src: canvas.toDataURL('image/webp', 0.95),
               width: containerWidth,
               height: renderViewport.height / dpr,
             });
