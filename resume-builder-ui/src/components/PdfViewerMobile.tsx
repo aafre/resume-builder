@@ -52,6 +52,9 @@ export const PdfViewerMobile: React.FC<PdfViewerMobileProps> = ({
 
         const renderedPages: RenderedPage[] = [];
 
+        // Calculate container width once (doesn't change between pages)
+        const containerWidth = containerRef.current?.clientWidth || FALLBACK_CANVAS_WIDTH;
+
         // Render all pages sequentially
         for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
           if (cancelled) break;
@@ -60,7 +63,6 @@ export const PdfViewerMobile: React.FC<PdfViewerMobileProps> = ({
           const page = await pdfDoc.getPage(pageNum);
 
           // Calculate scale for mobile viewport
-          const containerWidth = containerRef.current?.clientWidth || FALLBACK_CANVAS_WIDTH;
           const viewport = page.getViewport({ scale: 1 });
           const scale = containerWidth / viewport.width;
           const scaledViewport = page.getViewport({ scale });
