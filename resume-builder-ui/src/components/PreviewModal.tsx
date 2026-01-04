@@ -12,6 +12,7 @@ interface PreviewModalProps {
   onClose: () => void;
   previewUrl: string | null;
   isGenerating: boolean;
+  isDownloading: boolean;
   isStale: boolean;
   error: string | null;
   onRefresh: () => void;
@@ -25,6 +26,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   onClose,
   previewUrl,
   isGenerating,
+  isDownloading,
   isStale,
   error,
   onRefresh,
@@ -249,12 +251,21 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
               </button>
               <button
                 onClick={onDownload}
-                disabled={isGenerating || !previewUrl}
+                disabled={isGenerating || isDownloading || !previewUrl}
                 className="flex items-center justify-center gap-2 px-4 lg:px-6 py-3.5 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-xl font-semibold hover:from-emerald-500 hover:to-green-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transition-all active:scale-[0.98] min-h-[52px]"
                 style={{ WebkitTapHighlightColor: "transparent" }}
               >
-                <MdFileDownload className="text-xl" />
-                <span>Download</span>
+                {isDownloading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                    <span>Downloading...</span>
+                  </>
+                ) : (
+                  <>
+                    <MdFileDownload className="text-xl" />
+                    <span>Download</span>
+                  </>
+                )}
               </button>
             </div>
             {/* Safe area padding for devices with notches/home indicators */}

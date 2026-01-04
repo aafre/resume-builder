@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { ResumeListItem } from '../types';
@@ -25,11 +25,13 @@ export default function MyResumes() {
   const [resumeToDelete, setResumeToDelete] = useState<ResumeListItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const [isDownloadingFromPreview, setIsDownloadingFromPreview] = useState(false);
   const [duplicateModalOpen, setDuplicateModalOpen] = useState(false);
   const [resumeToDuplicate, setResumeToDuplicate] = useState<ResumeListItem | null>(null);
   const [isDuplicating, setIsDuplicating] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [previewResumeId, setPreviewResumeId] = useState<string | null>(null);
+  const downloadPromiseRef = useRef<Promise<void> | null>(null);
 
   // Preview hook - database mode for fetching pre-generated PDFs
   const {
@@ -200,51 +202,62 @@ export default function MyResumes() {
   const handleDownload = async (id: string) => {
     if (!session) return;
 
-    try {
-      setDownloadingId(id);
-
-      const response = await fetch(`/api/resumes/${id}/pdf`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`
-        }
-      });
-
-      if (!response.ok) {
-        const result = await response.json();
-
-        // Special handling for missing icons error
-        if (result.missing_icons && result.missing_icons.length > 0) {
-          toast.error(
-            `Cannot generate PDF: Missing ${result.missing_icons.length} icon(s)\n\n` +
-            `Missing: ${result.missing_icons.join(', ')}\n\n` +
-            `Please edit this resume to upload the missing icons or remove them.`,
-            { duration: 8000 }
-          );
-          return;
-        }
-
-        throw new Error(result.error || 'Failed to generate PDF');
-      }
-
-      // Download the PDF
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${resumes.find(r => r.id === id)?.title || 'Resume'}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-
-      toast.success('Resume downloaded successfully');
-    } catch (err) {
-      console.error('Error downloading resume:', err);
-      toast.error('Failed to download resume');
-    } finally {
-      setDownloadingId(null);
+    // Deduplicate requests - return existing promise if download in progress
+    if (downloadPromiseRef.current) {
+      return downloadPromiseRef.current;
     }
+
+    const promise = (async () => {
+      try {
+        setDownloadingId(id);
+
+        const response = await fetch(`/api/resumes/${id}/pdf`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`
+          }
+        });
+
+        if (!response.ok) {
+          const result = await response.json();
+
+          // Special handling for missing icons error
+          if (result.missing_icons && result.missing_icons.length > 0) {
+            toast.error(
+              `Cannot generate PDF: Missing ${result.missing_icons.length} icon(s)\n\n` +
+              `Missing: ${result.missing_icons.join(', ')}\n\n` +
+              `Please edit this resume to upload the missing icons or remove them.`,
+              { duration: 8000 }
+            );
+            return;
+          }
+
+          throw new Error(result.error || 'Failed to generate PDF');
+        }
+
+        // Download the PDF
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${resumes.find(r => r.id === id)?.title || 'Resume'}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+
+        toast.success('Resume downloaded successfully');
+      } catch (err) {
+        console.error('Error downloading resume:', err);
+        toast.error('Failed to download resume');
+      } finally {
+        setDownloadingId(null);
+        downloadPromiseRef.current = null;
+      }
+    })();
+
+    downloadPromiseRef.current = promise;
+    return promise;
   };
 
   const handlePreview = (id: string) => {
@@ -274,7 +287,12 @@ export default function MyResumes() {
 
   const handleDownloadFromPreview = async () => {
     if (previewResumeId) {
-      await handleDownload(previewResumeId);
+      setIsDownloadingFromPreview(true);
+      try {
+        await handleDownload(previewResumeId);
+      } finally {
+        setIsDownloadingFromPreview(false);
+      }
     }
   };
 
@@ -384,6 +402,7 @@ export default function MyResumes() {
         onClose={handleClosePreview}
         previewUrl={previewUrl}
         isGenerating={isGeneratingPreview}
+        isDownloading={isDownloadingFromPreview}
         isStale={false}
         error={previewError}
         onRefresh={handleRefreshPreview}

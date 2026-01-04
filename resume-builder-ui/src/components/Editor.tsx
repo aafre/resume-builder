@@ -250,6 +250,7 @@ const Editor: React.FC = () => {
   // No need for blanket error handling here that shows modal for all errors
 
   const [generating, setGenerating] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [editingTitleIndex, setEditingTitleIndex] = useState<number | null>(
     null
@@ -257,6 +258,7 @@ const Editor: React.FC = () => {
   const [temporaryTitle, setTemporaryTitle] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
   const newSectionRef = useRef<HTMLDivElement | null>(null);
+  const downloadPromiseRef = useRef<Promise<void> | null>(null);
   const contactInfoRef = useRef<HTMLDivElement | null>(null);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -1039,91 +1041,102 @@ const Editor: React.FC = () => {
   };
 
   const handleGenerateResume = async () => {
-    try {
-      // Save first to ensure PDF has latest changes
-      const canProceed = await saveBeforeAction('download PDF');
-      if (!canProceed) return;
+    // Deduplicate requests - return existing promise if download in progress
+    if (downloadPromiseRef.current) {
+      return downloadPromiseRef.current;
+    }
 
-      // Validate LinkedIn URL only if provided (block invalid, allow empty)
-      if (contactInfo?.linkedin && !validateLinkedInUrl(contactInfo.linkedin)) {
-        toast.error("Please enter a valid LinkedIn URL or leave it empty");
-        return;
-      }
+    const promise = (async () => {
+      try {
+        // Save first to ensure PDF has latest changes
+        const canProceed = await saveBeforeAction('download PDF');
+        if (!canProceed) return;
 
-      // Validate icon availability for icon-supporting templates
-      if (supportsIcons) {
-        const { valid, missingIcons } = validateIcons();
-        if (!valid) {
-          showMissingIconsDialog(missingIcons, isLoadingFromUrl);
+        // Validate LinkedIn URL only if provided (block invalid, allow empty)
+        if (contactInfo?.linkedin && !validateLinkedInUrl(contactInfo.linkedin)) {
+          toast.error("Please enter a valid LinkedIn URL or leave it empty");
           return;
         }
-      }
 
-      setGenerating(true);
-      const processedSections = processSections(sections);
-
-      const yamlData = yaml.dump({
-        contact_info: contactInfo,
-        sections: processedSections,
-      });
-
-      const formData = new FormData();
-      const yamlBlob = new Blob([yamlData], { type: "application/x-yaml" });
-      formData.append("yaml_file", yamlBlob, "resume.yaml");
-      formData.append("template", templateId || "modern-no-icons");
-
-      // Add session ID for session-based icon isolation
-      const sessionId = getSessionId();
-      formData.append("session_id", sessionId);
-
-      // Only add icons if template supports them (validation already confirmed all icons exist)
-      if (supportsIcons) {
-        const referencedIcons = extractReferencedIconFilenames(sections);
-        for (const iconFilename of referencedIcons) {
-          const iconFile = iconRegistry.getIconFile(iconFilename);
-          if (iconFile) {
-            formData.append("icons", iconFile, iconFilename);
+        // Validate icon availability for icon-supporting templates
+        if (supportsIcons) {
+          const { valid, missingIcons } = validateIcons();
+          if (!valid) {
+            showMissingIconsDialog(missingIcons, isLoadingFromUrl);
+            return;
           }
-          // No need for else - validation already caught missing icons
         }
+
+        setIsDownloading(true);
+        const processedSections = processSections(sections);
+
+        const yamlData = yaml.dump({
+          contact_info: contactInfo,
+          sections: processedSections,
+        });
+
+        const formData = new FormData();
+        const yamlBlob = new Blob([yamlData], { type: "application/x-yaml" });
+        formData.append("yaml_file", yamlBlob, "resume.yaml");
+        formData.append("template", templateId || "modern-no-icons");
+
+        // Add session ID for session-based icon isolation
+        const sessionId = getSessionId();
+        formData.append("session_id", sessionId);
+
+        // Only add icons if template supports them (validation already confirmed all icons exist)
+        if (supportsIcons) {
+          const referencedIcons = extractReferencedIconFilenames(sections);
+          for (const iconFilename of referencedIcons) {
+            const iconFile = iconRegistry.getIconFile(iconFilename);
+            if (iconFile) {
+              formData.append("icons", iconFile, iconFilename);
+            }
+            // No need for else - validation already caught missing icons
+          }
+        }
+
+        const { pdfBlob, fileName } = await generateResume(formData);
+
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        const link = document.createElement("a");
+        link.href = pdfUrl;
+        link.download = fileName; // Use dynamic filename
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        toast.success("Resume downloaded successfully!");
+
+        // Show celebration modal for anonymous users (first time only)
+        if (isAnonymous && !hasShownDownloadToast) {
+          markDownloadToastShown();
+
+          setTimeout(() => {
+            setShowDownloadCelebration(true);
+          }, 500);
+        } else if (!isAnonymous) {
+          // Original message for authenticated users
+          setTimeout(() => {
+            toast(
+              "Need to continue on another device? Save your work via the ⋮ menu",
+              { icon: 'ℹ️' }
+            );
+          }, 2000);
+        }
+      } catch (error) {
+        console.error("Error generating resume:", error);
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
+        toast.error(`Resume generation failed: ${errorMessage}`);
+      } finally {
+        setIsDownloading(false);
+        downloadPromiseRef.current = null;
       }
+    })();
 
-      const { pdfBlob, fileName } = await generateResume(formData);
-
-      const pdfUrl = URL.createObjectURL(pdfBlob);
-      const link = document.createElement("a");
-      link.href = pdfUrl;
-      link.download = fileName; // Use dynamic filename
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      toast.success("Resume downloaded successfully!");
-
-      // Show celebration modal for anonymous users (first time only)
-      if (isAnonymous && !hasShownDownloadToast) {
-        markDownloadToastShown();
-
-        setTimeout(() => {
-          setShowDownloadCelebration(true);
-        }, 500);
-      } else if (!isAnonymous) {
-        // Original message for authenticated users
-        setTimeout(() => {
-          toast(
-            "Need to continue on another device? Save your work via the ⋮ menu",
-            { icon: 'ℹ️' }
-          );
-        }, 2000);
-      }
-    } catch (error) {
-      console.error("Error generating resume:", error);
-      const errorMessage =
-        error instanceof Error ? error.message : "Unknown error";
-      toast.error(`Resume generation failed: ${errorMessage}`);
-    } finally {
-      setGenerating(false);
-    }
+    downloadPromiseRef.current = promise;
+    return promise;
   };
 
   const toggleHelpModal = () => setShowHelpModal(!showHelpModal);
@@ -2088,6 +2101,7 @@ const Editor: React.FC = () => {
         onClose={handleClosePreview}
         previewUrl={previewUrl}
         isGenerating={isGeneratingPreview}
+        isDownloading={isDownloading}
         isStale={previewIsStale}
         error={previewError}
         onRefresh={handleRefreshPreview}
