@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, useRef, useCallback, ReactNode } from 'react';
 import { supabase } from '../lib/supabase';
-import { apiClient } from '../lib/api-client';
+import { apiClient, ApiError } from '../lib/api-client';
 import { toast } from 'react-hot-toast';
 import type { User, Session } from '@supabase/supabase-js';
 
@@ -287,18 +287,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
 
       return true;
-    } catch (error: any) {
-      // apiClient throws ApiError with status property
+    } catch (error) {
+      // apiClient can throw ApiError which has a status property
 
       // Handle 403 silently - this means the old user ID was not anonymous (stale ID)
-      if (error.status === 403) {
+      if (error instanceof ApiError && error.status === 403) {
         console.log('Skipping migration: old user ID is not anonymous (likely stale)');
         localStorage.removeItem('anonymous-user-id'); // Clean up stale ID
         return false;
       }
 
       // Show error for other failures (500, network errors, token refresh failures)
-      console.error('Failed to migrate anonymous resumes:', error.message);
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Failed to migrate anonymous resumes:', message);
       toast.error('Failed to migrate your resumes');
       return false;
     }
