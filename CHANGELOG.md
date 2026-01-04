@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.3.1] - 2026-01-04
+
+### 🐛 Bug Fixes
+
+- **preview:** Render mobile PDF at device pixel ratio for crisp display
+
 ## [3.3.0] - 2026-01-04
 
 ### 🚀 Features
