@@ -84,7 +84,7 @@ export async function generatePreviewPdf(
   const timeoutId = controller ? setTimeout(() => controller.abort(), 30000) : null;
 
   try {
-    const response = await fetch(`${API_BASE_URL}/generate`, {
+    const response = await fetch(`${API_BASE_URL}/generate?preview=true`, {
       method: "POST",
       body: formData,
       signal: signal,

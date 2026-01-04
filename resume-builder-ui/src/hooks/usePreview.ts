@@ -259,7 +259,7 @@ export function usePreview({
             headers['Authorization'] = `Bearer ${session.access_token}`;
           }
 
-          const response = await fetch(`/api/resumes/${resumeId}/pdf`, {
+          const response = await fetch(`/api/resumes/${resumeId}/pdf?preview=true`, {
             method: 'POST',
             headers,
             signal: abortControllerRef.current?.signal,
