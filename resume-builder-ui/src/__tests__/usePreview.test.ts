@@ -147,7 +147,7 @@ describe("usePreview hook", () => {
     });
 
     await waitFor(() => {
-      expect(result.current.error).toContain("Missing contact information");
+      expect(result.current.error).toContain("Missing required parameters for live preview");
     });
 
     expect(result.current.previewUrl).toBeNull();

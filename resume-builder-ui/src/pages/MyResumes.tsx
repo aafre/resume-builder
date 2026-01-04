@@ -13,6 +13,7 @@ import { toast } from 'react-hot-toast';
 import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
 import { useResumes } from '../hooks/useResumes';
 import { useAuth } from '../contexts/AuthContext';
+import { usePreview } from '../hooks/usePreview';
 
 export default function MyResumes() {
   const navigate = useNavigate();
@@ -28,10 +29,20 @@ export default function MyResumes() {
   const [resumeToDuplicate, setResumeToDuplicate] = useState<ResumeListItem | null>(null);
   const [isDuplicating, setIsDuplicating] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewResumeId, setPreviewResumeId] = useState<string | null>(null);
-  const [previewError, setPreviewError] = useState<string | null>(null);
-  const [isGeneratingPreview, setIsGeneratingPreview] = useState(false);
+
+  // Preview hook - database mode for fetching pre-generated PDFs
+  const {
+    previewUrl,
+    isGenerating: isGeneratingPreview,
+    error: previewError,
+    generatePreview,
+    checkAndRefreshIfStale,
+  } = usePreview({
+    mode: 'database',
+    resumeId: previewResumeId || undefined,
+    session,
+  });
 
   // Memoize callback to prevent unnecessary re-renders in useThumbnailRefresh
   const onThumbnailUpdated = useCallback((resumeId: string, pdf_generated_at: string, thumbnail_url: string) => {
@@ -79,15 +90,6 @@ export default function MyResumes() {
       triggerRefresh(resume.id);
     });
   }, [resumes, triggerRefresh]);
-
-  // Cleanup preview URL on unmount
-  useEffect(() => {
-    return () => {
-      if (previewUrl) {
-        window.URL.revokeObjectURL(previewUrl);
-      }
-    };
-  }, [previewUrl]);
 
   const handleEdit = (id: string) => {
     navigate(`/editor/${id}`);
@@ -245,68 +247,29 @@ export default function MyResumes() {
     }
   };
 
-  const handlePreview = async (id: string) => {
+  const handlePreview = (id: string) => {
     if (!session) return;
 
-    try {
-      setPreviewResumeId(id);
-      setIsGeneratingPreview(true);
-      setPreviewError(null);
-      setShowPreviewModal(true); // Open modal immediately to show loading
-
-      const response = await fetch(`/api/resumes/${id}/pdf`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`
-        }
-      });
-
-      if (!response.ok) {
-        const result = await response.json();
-
-        // Special handling for missing icons error
-        if (result.missing_icons && result.missing_icons.length > 0) {
-          const errorMsg =
-            `Cannot generate PDF: Missing ${result.missing_icons.length} icon(s)\n\n` +
-            `Missing: ${result.missing_icons.join(', ')}\n\n` +
-            `Please edit this resume to upload the missing icons or remove them.`;
-          setPreviewError(errorMsg);
-          toast.error(errorMsg, { duration: 8000 });
-          return;
-        }
-
-        throw new Error(result.error || 'Failed to generate PDF');
-      }
-
-      // Create blob URL for modal instead of opening new tab
-      const blob = await response.blob();
-
-      // Clean up previous preview URL if exists
-      if (previewUrl) {
-        window.URL.revokeObjectURL(previewUrl);
-      }
-
-      const url = window.URL.createObjectURL(blob);
-      setPreviewUrl(url);
-    } catch (err) {
-      console.error('Error previewing resume:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Failed to preview resume';
-      setPreviewError(errorMessage);
-      toast.error(errorMessage);
-    } finally {
-      setIsGeneratingPreview(false);
-    }
+    // Set resume ID and open modal (effect will handle generation)
+    setPreviewResumeId(id);
+    setShowPreviewModal(true);
   };
+
+  // Trigger preview generation when modal opens with a resume ID.
+  // Following React best practices, including all dependencies.
+  // The deduplication logic in usePreview prevents double generation.
+  useEffect(() => {
+    if (showPreviewModal && previewResumeId) {
+      checkAndRefreshIfStale();
+    }
+  }, [showPreviewModal, previewResumeId, checkAndRefreshIfStale]);
 
   const handleClosePreview = () => {
     setShowPreviewModal(false);
   };
 
   const handleRefreshPreview = async () => {
-    if (previewResumeId) {
-      setPreviewError(null);
-      await handlePreview(previewResumeId);
-    }
+    await generatePreview();
   };
 
   const handleDownloadFromPreview = async () => {
