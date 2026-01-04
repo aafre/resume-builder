@@ -208,27 +208,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             }
           }
 
-          // Upload to cloud
-          const response = await fetch('/api/resumes', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${session.access_token}`
-            },
-            body: JSON.stringify({
-              id: null, // Create new
-              title: data.contactInfo?.name || 'Untitled Resume',
-              template_id: templateId,
-              contact_info: data.contactInfo || {},
-              sections: data.sections || [],
-              icons: icons
-            })
-          });
-
-          const result = await response.json();
-          if (!response.ok) {
-            throw new Error(result.error || 'Failed to migrate resume');
-          }
+          // Upload to cloud using apiClient (handles token refresh automatically)
+          const result = await apiClient.post('/api/resumes', {
+            id: null, // Create new
+            title: data.contactInfo?.name || 'Untitled Resume',
+            template_id: templateId,
+            contact_info: data.contactInfo || {},
+            sections: data.sections || [],
+            icons: icons
+          }, { session });
 
           console.log('✅ Migrated resume:', result.resume_id, 'from key:', legacyResume.key);
           successCount++;
@@ -276,34 +264,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       console.log('Migrating anonymous resumes to authenticated account...');
 
-      const response = await fetch('/api/migrate-anonymous-resumes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify({
-          old_user_id: oldUserId
-        })
-      });
+      // Use apiClient for automatic token refresh
+      const result = await apiClient.post('/api/migrate-anonymous-resumes', {
+        old_user_id: oldUserId
+      }, { session });
 
-      if (!response.ok) {
-        const result = await response.json();
-
-        // Handle 403 silently - this means the old user ID was not anonymous (stale ID)
-        if (response.status === 403) {
-          console.log('Skipping migration: old user ID is not anonymous (likely stale)');
-          localStorage.removeItem('anonymous-user-id'); // Clean up stale ID
-          return false;
-        }
-
-        // Show error for other failures (500, network errors, etc.)
-        console.error('Failed to migrate anonymous resumes:', result.error);
-        toast.error('Failed to migrate your resumes');
-        return false;
-      }
-
-      const result = await response.json();
       console.log('Resume migration successful:', result);
 
       // Show toast only for important warnings (exceeds limit)
@@ -321,9 +286,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
 
       return true;
-    } catch (error) {
-      // Catch network errors, JSON parsing errors, etc.
-      console.error('Resume migration failed:', error);
+    } catch (error: any) {
+      // apiClient throws ApiError with status property
+
+      // Handle 403 silently - this means the old user ID was not anonymous (stale ID)
+      if (error.status === 403) {
+        console.log('Skipping migration: old user ID is not anonymous (likely stale)');
+        localStorage.removeItem('anonymous-user-id'); // Clean up stale ID
+        return false;
+      }
+
+      // Show error for other failures (500, network errors, token refresh failures)
+      console.error('Failed to migrate anonymous resumes:', error.message);
       toast.error('Failed to migrate your resumes');
       return false;
     }
