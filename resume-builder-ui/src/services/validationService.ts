@@ -29,7 +29,7 @@ export const validateLinkedInUrl = (url: string): boolean => {
   // - Personal profiles (/in/, /pub/, /public-profile/in/, /public-profile/pub/)
   // - Username length validation (3-100 characters)
   // - Optional trailing slash
-  const linkedinProfilePattern = /^(https?:\/\/)?([\w\d]+\.)?linkedin\.com\/(?:public-profile\/)?(in|pub)\/[\w-]{3,100}\/?$/;
+  const linkedinProfilePattern = /^(https?:\/\/)?([a-z0-9-]+\.)?linkedin\.com\/(?:public-profile\/)?(in|pub)\/[a-z0-9-]{3,100}\/?$/;
 
   return linkedinProfilePattern.test(urlLower);
 };
