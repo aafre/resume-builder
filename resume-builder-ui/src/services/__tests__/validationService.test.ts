@@ -111,6 +111,7 @@ describe('validationService', () => {
       expect(validateLinkedInUrl('linkedin.com/in/john@doe')).toBe(false);
       expect(validateLinkedInUrl('linkedin.com/in/john.doe')).toBe(false);
       expect(validateLinkedInUrl('linkedin.com/in/john doe')).toBe(false);
+      expect(validateLinkedInUrl('linkedin.com/in/john_doe')).toBe(false);
     });
 
     it('should reject URLs without /in/ or /pub/ path', () => {
