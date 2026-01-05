@@ -18,6 +18,23 @@ export interface IconRegistryForYAML {
 }
 
 /**
+ * Temporary fields added to items during editing (removed during export)
+ */
+interface TempIconFields {
+  iconFile?: File;
+  iconBase64?: string;
+}
+
+/**
+ * Base item with icon support and temporary fields
+ * Used for icon-list, experience, and education items during processing
+ */
+interface ItemWithIcon extends TempIconFields {
+  icon?: string | null;
+  [key: string]: any; // Allow flexible properties for different item types
+}
+
+/**
  * Processes sections for export by cleaning icon paths and removing temporary fields
  * Removes iconFile and iconBase64 fields, cleans "/icons/" prefix from icon paths
  *
@@ -39,7 +56,7 @@ export const processSectionsForExport = (sections: Section[]): Section[] => {
   return sections.map((section) => {
     // Handle icon-list sections (Certifications, Awards, etc.)
     if (section.type === "icon-list") {
-      const updatedContent = section.content.map((item: any) => {
+      const updatedContent = section.content.map((item: ItemWithIcon) => {
         // Remove iconFile and iconBase64 for export, keep only clean icon filename
         const { iconFile, iconBase64, ...cleanItem } = item;
         return {
@@ -60,7 +77,7 @@ export const processSectionsForExport = (sections: Section[]): Section[] => {
     // Handle Experience and Education sections
     if (isExperienceSection(section) || isEducationSection(section)) {
       const updatedContent = Array.isArray(section.content)
-        ? section.content.map((item: any) => {
+        ? section.content.map((item: ItemWithIcon) => {
             // Remove iconFile and iconBase64 for export, keep only clean icon filename
             const { iconFile, iconBase64, ...rest } = item;
             return {
