@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.4.0] - 2026-01-05
+
+### 🚀 Features
+
+- **api:** Add blob/text response type support to apiClient
+
+### 🐛 Bug Fixes
+
+- **api:** Add type assertion for null return in handleResponse
+
+### 🚜 Refactor
+
+- **thumbnails:** Migrate thumbnail generation to use apiClient
+- **download:** Migrate PDF download to use apiClient.postBlob
+- **preview:** Migrate database mode preview to use apiClient.postBlob
+- **api:** Improve blob error handling to preserve server messages
+
 ## [3.3.3] - 2026-01-04
 
 ### 🐛 Bug Fixes
