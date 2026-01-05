@@ -11,7 +11,7 @@ export interface UseModalManagerReturn {
   // Modal visibility states
   showStorageLimitModal: boolean;
   showPreviewModal: boolean;
-  showModal: boolean; // SectionTypeModal
+  showSectionTypeModal: boolean;
   showHelpModal: boolean;
   showAdvancedMenu: boolean;
   showWelcomeTour: boolean;
@@ -109,7 +109,7 @@ export const useModalManager = (): UseModalManagerReturn => {
   // Modal visibility states
   const [showStorageLimitModal, setShowStorageLimitModal] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
-  const [showModal, setShowModal] = useState(false); // SectionTypeModal
+  const [showSectionTypeModal, setShowSectionTypeModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
   const [showWelcomeTour, setShowWelcomeTour] = useState(false);
@@ -136,8 +136,8 @@ export const useModalManager = (): UseModalManagerReturn => {
   const closePreviewModal = useCallback(() => setShowPreviewModal(false), []);
 
   // Section Type Modal functions
-  const openSectionTypeModal = useCallback(() => setShowModal(true), []);
-  const closeSectionTypeModal = useCallback(() => setShowModal(false), []);
+  const openSectionTypeModal = useCallback(() => setShowSectionTypeModal(true), []);
+  const closeSectionTypeModal = useCallback(() => setShowSectionTypeModal(false), []);
 
   // Help Modal functions
   const openHelpModal = useCallback(() => setShowHelpModal(true), []);
@@ -207,7 +207,7 @@ export const useModalManager = (): UseModalManagerReturn => {
       // States
       showStorageLimitModal,
       showPreviewModal,
-      showModal,
+      showSectionTypeModal,
       showHelpModal,
       showAdvancedMenu,
       showWelcomeTour,
@@ -261,7 +261,7 @@ export const useModalManager = (): UseModalManagerReturn => {
       // States
       showStorageLimitModal,
       showPreviewModal,
-      showModal,
+      showSectionTypeModal,
       showHelpModal,
       showAdvancedMenu,
       showWelcomeTour,

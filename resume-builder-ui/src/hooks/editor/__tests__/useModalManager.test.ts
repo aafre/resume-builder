@@ -11,7 +11,7 @@ describe('useModalManager', () => {
 
       expect(result.current.showStorageLimitModal).toBe(false);
       expect(result.current.showPreviewModal).toBe(false);
-      expect(result.current.showModal).toBe(false);
+      expect(result.current.showSectionTypeModal).toBe(false);
       expect(result.current.showHelpModal).toBe(false);
       expect(result.current.showAdvancedMenu).toBe(false);
       expect(result.current.showWelcomeTour).toBe(false);
@@ -91,7 +91,7 @@ describe('useModalManager', () => {
         result.current.openSectionTypeModal();
       });
 
-      expect(result.current.showModal).toBe(true);
+      expect(result.current.showSectionTypeModal).toBe(true);
     });
 
     it('should close section type modal', () => {
@@ -102,7 +102,7 @@ describe('useModalManager', () => {
         result.current.closeSectionTypeModal();
       });
 
-      expect(result.current.showModal).toBe(false);
+      expect(result.current.showSectionTypeModal).toBe(false);
     });
   });
 
