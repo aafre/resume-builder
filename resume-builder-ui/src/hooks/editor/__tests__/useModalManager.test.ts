@@ -220,9 +220,13 @@ describe('useModalManager', () => {
   });
 
   describe('Delete Confirmation', () => {
-    it('should open delete confirmation with target', () => {
+    it('should open delete confirmation with section target', () => {
       const { result } = renderHook(() => useModalManager());
-      const target: DeleteTarget = { type: 'section', index: 0 };
+      const target: DeleteTarget = {
+        type: 'section',
+        sectionIndex: 0,
+        sectionName: 'Experience'
+      };
 
       act(() => {
         result.current.openDeleteConfirm(target);
@@ -234,7 +238,10 @@ describe('useModalManager', () => {
 
     it('should close delete confirmation and clear target', () => {
       const { result } = renderHook(() => useModalManager());
-      const target: DeleteTarget = { type: 'section', index: 0 };
+      const target: DeleteTarget = {
+        type: 'section',
+        sectionIndex: 0
+      };
 
       act(() => {
         result.current.openDeleteConfirm(target);
@@ -249,19 +256,28 @@ describe('useModalManager', () => {
       const { result } = renderHook(() => useModalManager());
 
       // Test section target
-      const sectionTarget: DeleteTarget = { type: 'section', index: 2 };
+      const sectionTarget: DeleteTarget = {
+        type: 'section',
+        sectionIndex: 2,
+        sectionName: 'Education'
+      };
       act(() => {
         result.current.openDeleteConfirm(sectionTarget);
       });
       expect(result.current.deleteTarget).toEqual(sectionTarget);
 
-      // Test social link target
-      const socialLinkTarget: DeleteTarget = { type: 'socialLink', index: 1 };
+      // Test entry target (e.g., deleting a specific job entry)
+      const entryTarget: DeleteTarget = {
+        type: 'entry',
+        sectionIndex: 0,
+        entryIndex: 1,
+        sectionName: 'Experience'
+      };
       act(() => {
         result.current.closeDeleteConfirm();
-        result.current.openDeleteConfirm(socialLinkTarget);
+        result.current.openDeleteConfirm(entryTarget);
       });
-      expect(result.current.deleteTarget).toEqual(socialLinkTarget);
+      expect(result.current.deleteTarget).toEqual(entryTarget);
     });
   });
 
