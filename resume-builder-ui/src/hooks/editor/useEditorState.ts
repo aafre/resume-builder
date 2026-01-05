@@ -4,6 +4,14 @@ import { useState, useCallback, useMemo } from 'react';
 import type { ContactInfo, Section } from '../../types';
 
 /**
+ * Type representing the original template data used for reset functionality.
+ */
+export type OriginalTemplateData = {
+  contactInfo: ContactInfo;
+  sections: Section[];
+};
+
+/**
  * Interface defining the return value of useEditorState hook.
  * Manages core editor state including contact info, sections, template metadata, and loading states.
  */
@@ -15,10 +23,7 @@ export interface UseEditorStateReturn {
 
   // Template metadata
   supportsIcons: boolean;
-  originalTemplateData: {
-    contactInfo: ContactInfo;
-    sections: Section[];
-  } | null;
+  originalTemplateData: OriginalTemplateData | null;
 
   // Loading states
   loading: boolean;
@@ -29,7 +34,7 @@ export interface UseEditorStateReturn {
   setSections: (sections: Section[]) => void;
   setTemplateId: (templateId: string | null) => void;
   setSupportsIcons: (supportsIcons: boolean) => void;
-  setOriginalTemplateData: (data: { contactInfo: ContactInfo; sections: Section[] } | null) => void;
+  setOriginalTemplateData: (data: OriginalTemplateData | null) => void;
   setLoading: (loading: boolean) => void;
   setLoadingError: (error: string | null) => void;
 
@@ -53,10 +58,7 @@ export const useEditorState = (): UseEditorStateReturn => {
 
   // Template metadata state
   const [supportsIcons, setSupportsIcons] = useState(false);
-  const [originalTemplateData, setOriginalTemplateData] = useState<{
-    contactInfo: ContactInfo;
-    sections: Section[];
-  } | null>(null);
+  const [originalTemplateData, setOriginalTemplateData] = useState<OriginalTemplateData | null>(null);
 
   // Loading states
   const [loading, setLoading] = useState(true);
