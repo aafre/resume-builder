@@ -124,9 +124,9 @@ export interface UseContactFormReturn {
  */
 export interface UseSectionDragDropReturn {
   activeSectionId: string | null;
-  sensors: any; // @dnd-kit sensors
-  handleDragStart: (event: any) => void;
-  handleDragEnd: (event: any) => void;
+  sensors: SensorDescriptor<any>[]; // @dnd-kit sensors
+  handleDragStart: (event: DragStartEvent) => void;
+  handleDragEnd: (event: DragEndEvent) => void;
 }
 
 /**
