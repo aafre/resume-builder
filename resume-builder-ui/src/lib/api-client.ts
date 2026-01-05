@@ -184,16 +184,19 @@ class ApiClient {
     // Handle different response types
     if (responseType === 'blob') {
       if (!response.ok) {
-        // For errors, try to parse JSON error message
-        let errorMessage = `Request failed: ${response.statusText}`;
+        // For errors, read the body as text, then try to parse as JSON
+        const errorText = await response.text();
+        let errorMessage = errorText || `Request failed: ${response.statusText}`;
+        let errorData;
+
         try {
-          const errorData = await response.json();
+          errorData = JSON.parse(errorText);
           errorMessage = errorData?.error || errorData?.message || errorMessage;
-          throw new ApiError(errorMessage, response.status, errorData);
-        } catch (parseError) {
-          if (parseError instanceof ApiError) throw parseError;
-          throw new ApiError(errorMessage, response.status);
+        } catch (e) {
+          // Not a JSON response, use the raw text as the error message
         }
+
+        throw new ApiError(errorMessage, response.status, errorData);
       }
       return (await response.blob()) as T;
     }
