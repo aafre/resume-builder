@@ -229,7 +229,7 @@ class ApiClient {
           response.status
         );
       }
-      return null;
+      return null as T;
     }
 
     // Handle non-OK responses
