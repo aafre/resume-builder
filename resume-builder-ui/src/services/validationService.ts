@@ -18,11 +18,12 @@ import { validatePlatformUrl as platformUrlValidator } from '../constants/social
  * validateLinkedInUrl('invalid-url') // false
  */
 export const validateLinkedInUrl = (url: string): boolean => {
-  if (!url.trim()) {
+  const trimmedUrl = url.trim();
+  if (!trimmedUrl) {
     return true; // Empty is valid (optional field)
   }
 
-  const urlLower = url.toLowerCase().trim();
+  const urlLower = trimmedUrl.toLowerCase();
 
   // Optimized LinkedIn URL regex that handles:
   // - Any subdomain (country codes, www, mobile, etc.)
