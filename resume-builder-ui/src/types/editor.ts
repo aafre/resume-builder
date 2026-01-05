@@ -1,7 +1,7 @@
 // src/types/editor.ts
 // Editor-specific type definitions
 
-import { ContactInfo, Section, SaveStatus, SocialLink } from './types';
+import { ContactInfo, Section, SocialLink } from './types';
 
 // --- Editor State Types ---
 
