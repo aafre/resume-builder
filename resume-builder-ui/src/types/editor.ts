@@ -2,6 +2,7 @@
 // Editor-specific type definitions
 
 import { ContactInfo, Section, SocialLink } from './types';
+import { DragEndEvent, DragStartEvent, SensorDescriptor } from '@dnd-kit/core';
 
 // --- Editor State Types ---
 
