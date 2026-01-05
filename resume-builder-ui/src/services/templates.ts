@@ -1,4 +1,5 @@
 import type { Session } from '@supabase/supabase-js';
+import { apiClient, ApiError } from '../lib/api-client';
 
 const API_BASE_URL = "/api";
 const API_URL = `${API_BASE_URL}/templates`;
@@ -150,24 +151,7 @@ export async function generateThumbnail(
       return { success: false, error: 'Not authenticated', retryable: false };
     }
 
-    const response = await fetch(`${API_BASE_URL}/resumes/${resumeId}/thumbnail`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${session.access_token}`
-      },
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: "Unknown error", retryable: false }));
-      return {
-        success: false,
-        error: errorData.error || `HTTP ${response.status}`,
-        retryable: errorData.retryable || false
-      };
-    }
-
-    const result = await response.json();
+    const result = await apiClient.post(`/api/resumes/${resumeId}/thumbnail`, null, { session });
     return {
       success: result.success !== false, // Backend may return success:true with null thumbnail
       thumbnail_url: result.thumbnail_url,
@@ -177,6 +161,16 @@ export async function generateThumbnail(
     };
   } catch (error) {
     console.error(`Thumbnail generation error for resume ${resumeId}:`, error);
+
+    if (error instanceof ApiError) {
+      return {
+        success: false,
+        error: error.message,
+        retryable: error.data?.retryable || false,
+        error_type: error.data?.error_type
+      };
+    }
+
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",
