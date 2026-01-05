@@ -65,17 +65,24 @@ export const useEditorState = (): UseEditorStateReturn => {
   /**
    * Updates a specific section at the given index.
    * Creates a new array with the updated section to maintain immutability.
+   * Uses functional update form to prevent stale closures and maintain stable reference.
    *
    * @param {number} index - The index of the section to update
    * @param {Section} updatedSection - The new section data
    */
   const updateSection = useCallback(
     (index: number, updatedSection: Section) => {
-      const updatedSections = [...sections];
-      updatedSections[index] = updatedSection;
-      setSections(updatedSections);
+      setSections((currentSections) => {
+        if (index < 0 || index >= currentSections.length) {
+          console.warn(`Attempted to update section at out-of-bounds index: ${index}`);
+          return currentSections;
+        }
+        const newSections = [...currentSections];
+        newSections[index] = updatedSection;
+        return newSections;
+      });
     },
-    [sections]
+    []
   );
 
   // Return stable object with useMemo to prevent unnecessary re-renders
@@ -114,7 +121,6 @@ export const useEditorState = (): UseEditorStateReturn => {
       originalTemplateData,
       loading,
       loadingError,
-      updateSection,
     ]
   );
 };

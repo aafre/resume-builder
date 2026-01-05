@@ -1,6 +1,6 @@
 // src/hooks/editor/__tests__/useEditorState.test.ts
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useEditorState } from '../useEditorState';
 import type { ContactInfo, Section } from '../../../types';
@@ -484,15 +484,20 @@ describe('useEditorState', () => {
         content: 'New content',
       };
 
+      // Spy on console.warn to verify it's called
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
       // Update at index that doesn't exist
       act(() => {
         result.current.updateSection(5, updatedSection);
       });
 
-      // JavaScript allows setting at out-of-bounds index, creating sparse array
-      // Verify the behavior matches JavaScript's default array behavior
-      expect(result.current.sections[5]).toEqual(updatedSection);
-      expect(result.current.sections.length).toBeGreaterThan(1);
+      // Should warn and leave sections unchanged
+      expect(warnSpy).toHaveBeenCalledWith('Attempted to update section at out-of-bounds index: 5');
+      expect(result.current.sections).toEqual(initialSections);
+      expect(result.current.sections).toHaveLength(1);
+
+      warnSpy.mockRestore();
     });
 
     it('should handle negative index', () => {
@@ -512,16 +517,22 @@ describe('useEditorState', () => {
         content: 'Content',
       };
 
-      // Negative index should be handled by JavaScript's default behavior
+      // Spy on console.warn to verify it's called
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      // Negative index should be rejected with bounds check
       act(() => {
         result.current.updateSection(-1, updatedSection);
       });
 
-      // JavaScript treats negative indices as property names, not array indices
-      // The sections array should remain unchanged
+      // Should warn and leave sections unchanged
+      expect(warnSpy).toHaveBeenCalledWith('Attempted to update section at out-of-bounds index: -1');
+      expect(result.current.sections).toEqual(initialSections);
       expect(result.current.sections).toHaveLength(2);
       expect(result.current.sections[0]).toEqual(initialSections[0]);
       expect(result.current.sections[1]).toEqual(initialSections[1]);
+
+      warnSpy.mockRestore();
     });
   });
 
@@ -561,7 +572,7 @@ describe('useEditorState', () => {
       expect(firstSetTemplateId).toBe(secondSetTemplateId);
     });
 
-    it('should update updateSection function when sections change', () => {
+    it('should maintain stable updateSection reference when sections change', () => {
       const { result } = renderHook(() => useEditorState());
 
       const firstUpdateSection = result.current.updateSection;
@@ -574,8 +585,9 @@ describe('useEditorState', () => {
 
       const secondUpdateSection = result.current.updateSection;
 
-      // updateSection depends on sections, so it should create new reference
-      expect(firstUpdateSection).not.toBe(secondUpdateSection);
+      // updateSection uses functional update form with empty dependencies,
+      // so it should maintain stable reference
+      expect(firstUpdateSection).toBe(secondUpdateSection);
     });
   });
 });
