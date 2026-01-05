@@ -702,10 +702,60 @@ sections:
       expect(result.sections[0].content[0].icon).toBe('acme.png');
     });
 
-    it('should throw error for invalid YAML', async () => {
+    it('should throw error for invalid YAML syntax', async () => {
       const invalidYaml = 'invalid: yaml: content: [[[';
 
       await expect(importResumeFromYAML(invalidYaml, mockIconRegistry)).rejects.toThrow();
+    });
+
+    it('should throw error for missing contact_info', async () => {
+      const yamlString = `
+sections:
+  - name: Experience
+    type: experience
+    content: []
+`;
+
+      await expect(importResumeFromYAML(yamlString, mockIconRegistry))
+        .rejects.toThrow('Invalid YAML structure: Missing required field: contact_info');
+    });
+
+    it('should throw error for missing sections', async () => {
+      const yamlString = `
+contact_info:
+  name: John Doe
+`;
+
+      await expect(importResumeFromYAML(yamlString, mockIconRegistry))
+        .rejects.toThrow('Invalid YAML structure: Missing required field: sections');
+    });
+
+    it('should throw error when contact_info is not an object', async () => {
+      const yamlString = `
+contact_info: "John Doe"
+sections: []
+`;
+
+      await expect(importResumeFromYAML(yamlString, mockIconRegistry))
+        .rejects.toThrow('Invalid YAML structure: Field "contact_info" must be an object');
+    });
+
+    it('should throw error when sections is not an array', async () => {
+      const yamlString = `
+contact_info:
+  name: John Doe
+sections: "not an array"
+`;
+
+      await expect(importResumeFromYAML(yamlString, mockIconRegistry))
+        .rejects.toThrow('Invalid YAML structure: Field "sections" must be an array');
+    });
+
+    it('should throw error when data is not an object', async () => {
+      const yamlString = `"just a string"`;
+
+      await expect(importResumeFromYAML(yamlString, mockIconRegistry))
+        .rejects.toThrow('Invalid YAML structure: Invalid YAML data: expected an object');
     });
   });
 });

@@ -7,6 +7,7 @@ import { PortableYAMLData, IconExportData } from '../types/iconTypes';
 import { migrateLegacySections } from '../utils/sectionMigration';
 import { extractReferencedIconFilenames } from '../utils/iconExtractor';
 import { isExperienceSection, isEducationSection } from '../utils/sectionTypeChecker';
+import { validateYAMLStructure } from './validationService';
 
 /**
  * Icon registry interface for YAML service operations
@@ -195,7 +196,16 @@ export const importResumeFromYAML = async (
   iconRegistry: IconRegistryForYAML
 ): Promise<YAMLImportResult> => {
   // Parse YAML content
-  const parsedYaml = yaml.load(yamlString) as PortableYAMLData;
+  const parsedData = yaml.load(yamlString);
+
+  // Validate structure before type assertion
+  const validation = validateYAMLStructure(parsedData);
+  if (!validation.valid) {
+    throw new Error(`Invalid YAML structure: ${validation.error}`);
+  }
+
+  // Safe to assert type after validation
+  const parsedYaml = parsedData as PortableYAMLData;
 
   // Import icons first if they exist in the YAML
   let iconCount = 0;
