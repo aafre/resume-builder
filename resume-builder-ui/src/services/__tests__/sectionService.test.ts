@@ -104,7 +104,6 @@ describe('sectionService', () => {
         title: '',
         dates: '',
         description: [''],
-        icon: null,
       });
     });
 
@@ -120,7 +119,6 @@ describe('sectionService', () => {
         school: '',
         year: '',
         field_of_study: '',
-        icon: null,
       });
     });
 

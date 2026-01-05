@@ -61,7 +61,7 @@ export const getUniqueDefaultName = (
  *
  * @example
  * createDefaultSection('experience', [])
- * // Returns: { name: "New Experience Section", type: "experience", content: [{ company: "", title: "", dates: "", description: [""], icon: null }] }
+ * // Returns: { name: "New Experience Section", type: "experience", content: [{ company: "", title: "", dates: "", description: [""] }] }
  */
 export const createDefaultSection = (
   type: string,
@@ -70,41 +70,40 @@ export const createDefaultSection = (
   const defaultName = getUniqueDefaultName(type, existingSections);
 
   let defaultContent;
-  if (type === "experience") {
-    // Default content for Experience sections
-    defaultContent = [
-      {
-        company: "",
-        title: "",
-        dates: "",
-        description: [""],
-        icon: null,
-      },
-    ];
-  } else if (type === "education") {
-    // Default content for Education sections
-    defaultContent = [
-      {
-        degree: "",
-        school: "",
-        year: "",
-        field_of_study: "",
-        icon: null,
-      },
-    ];
-  } else if (
-    [
-      "bulleted-list",
-      "inline-list",
-      "dynamic-column-list",
-      "icon-list",
-    ].includes(type)
-  ) {
-    // List sections start with empty array
-    defaultContent = [];
-  } else {
-    // Text sections start with empty string
-    defaultContent = "";
+  switch (type) {
+    case "experience":
+      // Default content for Experience sections
+      defaultContent = [
+        {
+          company: "",
+          title: "",
+          dates: "",
+          description: [""],
+        },
+      ];
+      break;
+    case "education":
+      // Default content for Education sections
+      defaultContent = [
+        {
+          degree: "",
+          school: "",
+          year: "",
+          field_of_study: "",
+        },
+      ];
+      break;
+    case "bulleted-list":
+    case "inline-list":
+    case "dynamic-column-list":
+    case "icon-list":
+      // List sections start with empty array
+      defaultContent = [];
+      break;
+    default:
+      // Text sections and unknown types start with empty string
+      defaultContent = "";
+      break;
   }
 
   return {
