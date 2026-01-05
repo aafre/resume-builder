@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { generatePreviewPdf } from '../services/templates';
 import { getSessionId } from '../utils/session';
 import { extractReferencedIconFilenames } from '../utils/iconExtractor';
+import { apiClient } from '../lib/api-client';
 import yaml from 'js-yaml';
 import { ContactInfo, Section } from '../types';
 
@@ -259,28 +260,14 @@ export function usePreview({
           // Track resume ID for change detection
           lastResumeIdRef.current = resumeId;
 
-          const headers: HeadersInit = {};
-          if (session?.access_token) {
-            headers['Authorization'] = `Bearer ${session.access_token}`;
-          }
-
-          const response = await fetch(`/api/resumes/${resumeId}/pdf?preview=true`, {
-            method: 'POST',
-            headers,
-            signal: abortControllerRef.current?.signal,
-          });
-
-          if (!response.ok) {
-            const errorData = await response.json().catch(() => ({ error: 'Failed to fetch preview' }));
-            throw new Error(errorData.error || 'Failed to fetch preview');
-          }
-
-          const contentType = response.headers.get('content-type');
-          if (!contentType || !contentType.includes('application/pdf')) {
-            throw new Error('Unexpected response: Expected a PDF file');
-          }
-
-          pdfBlob = await response.blob();
+          pdfBlob = await apiClient.postBlob(
+            `/api/resumes/${resumeId}/pdf?preview=true`,
+            null,
+            {
+              signal: abortControllerRef.current?.signal,
+              session
+            }
+          );
         } else {
           // Live mode: Generate PDF from current editor state
           // Process sections to clean up icon paths
