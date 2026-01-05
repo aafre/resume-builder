@@ -37,7 +37,8 @@ export const validateLinkedInUrl = (url: string): boolean => {
 
 /**
  * Validates social media platform URL
- * Re-exported from socialPlatforms.ts for centralized validation access
+ * Uses the improved `validateLinkedInUrl` for LinkedIn and falls back to the
+ * validator from `socialPlatforms.ts` for others.
  *
  * @param platform - Platform ID (e.g., 'github', 'twitter', 'linkedin')
  * @param url - Profile URL to validate
@@ -45,10 +46,20 @@ export const validateLinkedInUrl = (url: string): boolean => {
  *
  * @example
  * validatePlatformUrl('github', 'github.com/user') // { valid: true }
+ * validatePlatformUrl('linkedin', 'linkedin.com/in/johndoe') // { valid: true }
  * validatePlatformUrl('github', 'invalid') // { valid: false, error: '...' }
- * validatePlatformUrl('github', '') // { valid: true } (empty is valid)
  */
-export const validatePlatformUrl = platformUrlValidator;
+export const validatePlatformUrl = (
+  platform: string,
+  url: string
+): { valid: boolean; error?: string } => {
+  if (platform === 'linkedin') {
+    return validateLinkedInUrl(url)
+      ? { valid: true }
+      : { valid: false, error: 'Please enter a valid LinkedIn profile URL' };
+  }
+  return platformUrlValidator(platform, url);
+};
 
 /**
  * Validation result for icon file size
