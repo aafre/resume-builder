@@ -43,9 +43,7 @@ export const processSectionsForExport = (sections: Section[]): Section[] => {
         // Remove iconFile and iconBase64 for export, keep only clean icon filename
         const { iconFile, iconBase64, ...cleanItem } = item;
         return {
-          certification: cleanItem.certification || "",
-          issuer: cleanItem.issuer || "",
-          date: cleanItem.date || "",
+          ...cleanItem,
           icon: cleanItem.icon
             ? cleanItem.icon.startsWith("/icons/")
               ? cleanItem.icon.replace("/icons/", "")

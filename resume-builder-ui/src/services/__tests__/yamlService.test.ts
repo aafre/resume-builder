@@ -173,7 +173,7 @@ describe('yamlService', () => {
       expect(result[0].content[0].description).toEqual(['Built awesome things', 'Led team']);
     });
 
-    it('should handle icon-list sections', () => {
+    it('should handle icon-list sections generically', () => {
       const sections: Section[] = [
         {
           name: 'Certifications',
@@ -183,6 +183,7 @@ describe('yamlService', () => {
               certification: 'AWS Certified',
               issuer: 'Amazon',
               date: '2023',
+              customField: 'custom value', // Should be preserved
               icon: '/icons/aws.png',
               iconFile: new File([''], 'aws.png'), // Should be removed
               iconBase64: 'data:image/png;base64,XYZ', // Should be removed
@@ -193,12 +194,18 @@ describe('yamlService', () => {
 
       const result = processSectionsForExport(sections);
 
+      // Verify temporary fields are removed
       expect(result[0].content[0]).not.toHaveProperty('iconFile');
       expect(result[0].content[0]).not.toHaveProperty('iconBase64');
+
+      // Verify icon path is cleaned
       expect(result[0].content[0].icon).toBe('aws.png');
+
+      // Verify all original properties are preserved
       expect(result[0].content[0].certification).toBe('AWS Certified');
       expect(result[0].content[0].issuer).toBe('Amazon');
       expect(result[0].content[0].date).toBe('2023');
+      expect(result[0].content[0].customField).toBe('custom value');
     });
 
     it('should handle icon-list with null icon', () => {
@@ -222,15 +229,18 @@ describe('yamlService', () => {
       expect(result[0].content[0].icon).toBe(null);
     });
 
-    it('should handle icon-list with missing optional fields', () => {
+    it('should preserve all properties in icon-list items', () => {
       const sections: Section[] = [
         {
-          name: 'Certifications',
+          name: 'Awards',
           type: 'icon-list',
           content: [
             {
-              certification: 'AWS',
-              // issuer and date missing
+              award: 'Employee of the Year',
+              organization: 'ACME Corp',
+              year: 2023,
+              description: 'Outstanding performance',
+              // No icon field
             },
           ],
         },
@@ -238,9 +248,12 @@ describe('yamlService', () => {
 
       const result = processSectionsForExport(sections);
 
-      expect(result[0].content[0].certification).toBe('AWS');
-      expect(result[0].content[0].issuer).toBe('');
-      expect(result[0].content[0].date).toBe('');
+      // Verify all original properties are preserved
+      expect(result[0].content[0].award).toBe('Employee of the Year');
+      expect(result[0].content[0].organization).toBe('ACME Corp');
+      expect(result[0].content[0].year).toBe(2023);
+      expect(result[0].content[0].description).toBe('Outstanding performance');
+      expect(result[0].content[0].icon).toBe(null);
     });
 
     it('should return non-icon sections unchanged', () => {
