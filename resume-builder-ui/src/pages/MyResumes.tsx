@@ -212,32 +212,8 @@ export default function MyResumes() {
       try {
         setDownloadingId(id);
 
-        const response = await fetch(`/api/resumes/${id}/pdf`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${session.access_token}`
-          }
-        });
-
-        if (!response.ok) {
-          const result = await response.json();
-
-          // Special handling for missing icons error
-          if (result.missing_icons && result.missing_icons.length > 0) {
-            toast.error(
-              `Cannot generate PDF: Missing ${result.missing_icons.length} icon(s)\n\n` +
-              `Missing: ${result.missing_icons.join(', ')}\n\n` +
-              `Please edit this resume to upload the missing icons or remove them.`,
-              { duration: 8000 }
-            );
-            return;
-          }
-
-          throw new Error(result.error || 'Failed to generate PDF');
-        }
-
-        // Download the PDF
-        const blob = await response.blob();
+        // Download the PDF using apiClient for automatic token refresh
+        const blob = await apiClient.postBlob(`/api/resumes/${id}/pdf`, null, { session });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -250,6 +226,18 @@ export default function MyResumes() {
         toast.success('Resume downloaded successfully');
       } catch (err) {
         console.error('Error downloading resume:', err);
+
+        // Special handling for missing icons error
+        if (err instanceof ApiError && err.data?.missing_icons) {
+          toast.error(
+            `Cannot generate PDF: Missing ${err.data.missing_icons.length} icon(s)\n\n` +
+            `Missing: ${err.data.missing_icons.join(', ')}\n\n` +
+            `Please edit this resume to upload the missing icons or remove them.`,
+            { duration: 8000 }
+          );
+          return;
+        }
+
         toast.error('Failed to download resume');
       } finally {
         setDownloadingId(null);
