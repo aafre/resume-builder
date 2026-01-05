@@ -168,7 +168,7 @@ export const exportResumeAsYAML = async (
  */
 export interface YAMLImportResult {
   /** Parsed and migrated contact information */
-  contactInfo: any;
+  contactInfo: ContactInfo | null;
   /** Parsed and migrated sections */
   sections: Section[];
   /** Number of icons imported from the YAML */
