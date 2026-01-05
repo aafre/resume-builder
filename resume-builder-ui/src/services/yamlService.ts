@@ -55,42 +55,25 @@ interface ItemWithIcon extends TempIconFields {
  */
 export const processSectionsForExport = (sections: Section[]): Section[] => {
   return sections.map((section) => {
-    // Handle icon-list sections (Certifications, Awards, etc.)
-    if (section.type === "icon-list") {
+    // Handle sections with icon support (icon-list, experience, education)
+    if (
+      (section.type === 'icon-list' ||
+        isExperienceSection(section) ||
+        isEducationSection(section)) &&
+      Array.isArray(section.content)
+    ) {
       const updatedContent = section.content.map((item: ItemWithIcon) => {
         // Remove iconFile and iconBase64 for export, keep only clean icon filename
         const { iconFile, iconBase64, ...cleanItem } = item;
         return {
           ...cleanItem,
           icon: cleanItem.icon
-            ? cleanItem.icon.startsWith("/icons/")
-              ? cleanItem.icon.replace("/icons/", "")
+            ? cleanItem.icon.startsWith('/icons/')
+              ? cleanItem.icon.replace('/icons/', '')
               : cleanItem.icon
             : null,
         };
       });
-      return {
-        ...section,
-        content: updatedContent,
-      };
-    }
-
-    // Handle Experience and Education sections
-    if (isExperienceSection(section) || isEducationSection(section)) {
-      const updatedContent = Array.isArray(section.content)
-        ? section.content.map((item: ItemWithIcon) => {
-            // Remove iconFile and iconBase64 for export, keep only clean icon filename
-            const { iconFile, iconBase64, ...rest } = item;
-            return {
-              ...rest,
-              icon: rest.icon
-                ? rest.icon.startsWith("/icons/")
-                  ? rest.icon.replace("/icons/", "")
-                  : rest.icon
-                : null,
-            };
-          })
-        : section.content;
 
       return {
         ...section,
