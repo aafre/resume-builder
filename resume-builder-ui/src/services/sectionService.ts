@@ -34,17 +34,18 @@ export const getUniqueDefaultName = (
   existingSections: Section[]
 ): string => {
   const baseName = TYPE_NAME_MAP[type] || "New Section";
-  const existingNames = existingSections.map((s) => s.name.toLowerCase());
+  // Use Set for O(1) lookup performance instead of Array.includes() O(n)
+  const existingNames = new Set(existingSections.map((s) => s.name.toLowerCase()));
 
   // If base name doesn't exist, use it
-  if (!existingNames.includes(baseName.toLowerCase())) {
+  if (!existingNames.has(baseName.toLowerCase())) {
     return baseName;
   }
 
   // Otherwise, append a number starting from 2
   let counter = 2;
   let uniqueName = `${baseName} ${counter}`;
-  while (existingNames.includes(uniqueName.toLowerCase())) {
+  while (existingNames.has(uniqueName.toLowerCase())) {
     counter++;
     uniqueName = `${baseName} ${counter}`;
   }
