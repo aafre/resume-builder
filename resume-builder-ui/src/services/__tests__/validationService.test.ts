@@ -310,6 +310,54 @@ describe('validationService', () => {
       expect(result.error).toBe('Missing required field: contact_info');
     });
 
+    it('should return invalid if contact_info is a string', () => {
+      const data = {
+        contact_info: 'John Doe',
+        sections: []
+      };
+
+      const result = validateYAMLStructure(data);
+
+      expect(result.valid).toBe(false);
+      expect(result.error).toBe('Field "contact_info" must be an object');
+    });
+
+    it('should return invalid if contact_info is a number', () => {
+      const data = {
+        contact_info: 123,
+        sections: []
+      };
+
+      const result = validateYAMLStructure(data);
+
+      expect(result.valid).toBe(false);
+      expect(result.error).toBe('Field "contact_info" must be an object');
+    });
+
+    it('should return invalid if contact_info is an array', () => {
+      const data = {
+        contact_info: ['name', 'email'],
+        sections: []
+      };
+
+      const result = validateYAMLStructure(data);
+
+      expect(result.valid).toBe(false);
+      expect(result.error).toBe('Field "contact_info" must be an object');
+    });
+
+    it('should return invalid if contact_info is null', () => {
+      const data = {
+        contact_info: null,
+        sections: []
+      };
+
+      const result = validateYAMLStructure(data);
+
+      expect(result.valid).toBe(false);
+      expect(result.error).toBe('Field "contact_info" must be an object');
+    });
+
     it('should return invalid for missing sections', () => {
       const data = {
         contact_info: {
@@ -339,6 +387,18 @@ describe('validationService', () => {
       const data = {
         contact_info: { name: 'John' },
         sections: { name: 'Experience' }
+      };
+
+      const result = validateYAMLStructure(data);
+
+      expect(result.valid).toBe(false);
+      expect(result.error).toBe('Field "sections" must be an array');
+    });
+
+    it('should return invalid for non-array sections (number)', () => {
+      const data = {
+        contact_info: { name: 'John' },
+        sections: 123
       };
 
       const result = validateYAMLStructure(data);

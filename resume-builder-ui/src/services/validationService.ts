@@ -118,14 +118,24 @@ export const validateYAMLStructure = (data: any): YAMLValidationResult => {
   }
 
   // Check required fields exist
-  if (!data.contact_info) {
+  if (!data.hasOwnProperty('contact_info')) {
     return {
       valid: false,
       error: 'Missing required field: contact_info'
     };
   }
 
-  if (!data.sections) {
+  // Validate contact_info is an object (not null, not array, not primitive)
+  if (typeof data.contact_info !== 'object' ||
+      data.contact_info === null ||
+      Array.isArray(data.contact_info)) {
+    return {
+      valid: false,
+      error: 'Field "contact_info" must be an object'
+    };
+  }
+
+  if (!data.hasOwnProperty('sections')) {
     return {
       valid: false,
       error: 'Missing required field: sections'
