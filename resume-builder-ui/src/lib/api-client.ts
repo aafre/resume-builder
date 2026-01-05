@@ -43,6 +43,7 @@ interface RequestOptions {
   signal?: AbortSignal;
   skipAuth?: boolean; // Skip Authorization header (for public endpoints)
   session?: any; // Pass session directly to avoid slow getSession() calls
+  responseType?: 'json' | 'blob' | 'text' | 'raw'; // Response parsing strategy
 }
 
 /**
@@ -135,7 +136,11 @@ class ApiClient {
     throw new AuthError('Session expired or unauthorized');
   }
 
-  private async handleResponse(response: Response, isRetry: boolean = false): Promise<any> {
+  private async handleResponse<T = any>(
+    response: Response,
+    isRetry: boolean = false,
+    responseType: 'json' | 'blob' | 'text' | 'raw' = 'json'
+  ): Promise<T> {
     // Handle 401/403 auth errors globally
     if (response.status === 401 || response.status === 403) {
       console.error(`❌ Auth error: ${response.status} ${response.statusText}`);
@@ -176,7 +181,40 @@ class ApiClient {
       }
     }
 
-    // Try to parse JSON response
+    // Handle different response types
+    if (responseType === 'blob') {
+      if (!response.ok) {
+        // For errors, try to parse JSON error message
+        let errorMessage = `Request failed: ${response.statusText}`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData?.error || errorData?.message || errorMessage;
+          throw new ApiError(errorMessage, response.status, errorData);
+        } catch (parseError) {
+          if (parseError instanceof ApiError) throw parseError;
+          throw new ApiError(errorMessage, response.status);
+        }
+      }
+      return (await response.blob()) as T;
+    }
+
+    if (responseType === 'text') {
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new ApiError(
+          errorText || `Request failed: ${response.statusText}`,
+          response.status
+        );
+      }
+      return (await response.text()) as T;
+    }
+
+    if (responseType === 'raw') {
+      // Return raw Response object for custom handling
+      return response as T;
+    }
+
+    // Default: 'json' (existing logic)
     let data: any;
     try {
       data = await response.json();
@@ -231,7 +269,7 @@ class ApiClient {
         signal: options.signal,
       });
 
-      return this.handleResponse(response, isRetry);
+      return this.handleResponse<T>(response, isRetry, options.responseType || 'json');
     };
 
     try {
@@ -287,6 +325,34 @@ class ApiClient {
    */
   async postFormData<T = any>(url: string, formData: FormData, options: RequestOptions = {}): Promise<T> {
     return this._request<T>('POST', url, options, formData);
+  }
+
+  /**
+   * Perform POST request expecting blob/binary response (e.g., PDF)
+   */
+  async postBlob(url: string, data?: any, options: RequestOptions = {}): Promise<Blob> {
+    return this._request<Blob>('POST', url, { ...options, responseType: 'blob' }, data);
+  }
+
+  /**
+   * Perform GET request expecting blob/binary response
+   */
+  async getBlob(url: string, options: RequestOptions = {}): Promise<Blob> {
+    return this._request<Blob>('GET', url, { ...options, responseType: 'blob' });
+  }
+
+  /**
+   * Perform POST request expecting text response
+   */
+  async postText(url: string, data?: any, options: RequestOptions = {}): Promise<string> {
+    return this._request<string>('POST', url, { ...options, responseType: 'text' }, data);
+  }
+
+  /**
+   * Perform GET request expecting text response
+   */
+  async getText(url: string, options: RequestOptions = {}): Promise<string> {
+    return this._request<string>('GET', url, { ...options, responseType: 'text' });
   }
 }
 
