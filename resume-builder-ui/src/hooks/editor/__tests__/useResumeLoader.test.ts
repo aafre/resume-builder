@@ -582,7 +582,7 @@ sections:
       // Should still complete successfully despite template error
       expect(result.current.hasLoadedFromUrl).toBe(true);
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        'Failed to load template structure for Start Fresh:',
+        "Failed to load template structure for 'modern':",
         expect.any(Error)
       );
 

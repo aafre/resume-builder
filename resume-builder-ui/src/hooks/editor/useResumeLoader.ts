@@ -152,7 +152,7 @@ export const useResumeLoader = ({
           sections: processedSections,
         });
       } catch (error) {
-        console.error('Error fetching template:', error);
+        console.error(`Error fetching template '${templateIdToLoad}':`, error);
         setLoadingError(
           'Failed to load template. Please check your connection and try again.'
         );
@@ -228,7 +228,7 @@ export const useResumeLoader = ({
             sections: processedTemplateSections,
           });
         } catch (templateError) {
-          console.error('Failed to load template structure for Start Fresh:', templateError);
+          console.error(`Failed to load template structure for '${resume.template_id}':`, templateError);
           // Fallback: use hardcoded check only if template fetch fails
           const fallbackSupportsIcons = resume.template_id === 'modern-with-icons';
           setSupportsIcons(fallbackSupportsIcons);
@@ -264,7 +264,7 @@ export const useResumeLoader = ({
         setIsLoadingFromUrl(false);
         setHasLoadedFromUrl(true); // Mark as loaded to prevent re-runs
       } catch (error) {
-        console.error('Failed to load resume:', error);
+        console.error(`Failed to load resume '${resumeId}':`, error);
 
         // Check if we can recover from template or have fallback data
         // This happens when:
