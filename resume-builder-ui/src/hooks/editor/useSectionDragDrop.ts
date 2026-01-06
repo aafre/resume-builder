@@ -102,7 +102,7 @@ export const useSectionDragDrop = ({
 
       // Parse section index from the active id
       const sectionIndex = parseInt(active.id as string);
-      setDraggedSection(sections[sectionIndex]);
+      setDraggedSection(sections[sectionIndex] ?? null);
     },
     [sections]
   );
