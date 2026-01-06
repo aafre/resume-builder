@@ -195,7 +195,7 @@ export const EditorModals: React.FC<EditorModalsProps> = ({
         }
         message={
           modalManager.deleteTarget?.type === 'section'
-            ? `Are you sure you want to delete the "${modalManager.deleteTarget.sectionName}" section? This will remove all content in this section and cannot be undone.`
+            ? `Are you sure you want to delete the "${modalManager.deleteTarget.sectionName || 'this'}" section? This will remove all content in this section and cannot be undone.`
             : 'Are you sure you want to delete this entry? This action cannot be undone.'
         }
         confirmText="Delete"

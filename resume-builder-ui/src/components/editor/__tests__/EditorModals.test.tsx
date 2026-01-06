@@ -51,15 +51,18 @@ vi.mock('../../ResponsiveConfirmDialog', () => ({
     onClose,
     onConfirm,
     title,
+    message,
   }: {
     isOpen: boolean;
     onClose: () => void;
     onConfirm: () => void;
     title: string;
+    message: string;
   }) =>
     isOpen ? (
       <div data-testid={`confirm-dialog-${title.toLowerCase().replace(/[^a-z]/g, '-')}`}>
         <span>{title}</span>
+        <p data-testid="confirm-dialog-message">{message}</p>
         <button onClick={onClose}>Cancel</button>
         <button onClick={onConfirm}>Confirm</button>
       </div>
@@ -422,6 +425,48 @@ describe('EditorModals', () => {
       render(<EditorModals {...props} />);
 
       expect(screen.getByTestId('confirm-dialog-delete-section-')).toBeInTheDocument();
+    });
+
+    it('should show section name in message when deleting a named section', () => {
+      const props = createDefaultProps({
+        modalManager: createMockModalManager({
+          showDeleteConfirm: true,
+          deleteTarget: { type: 'section', sectionIndex: 0, sectionName: 'Experience' },
+        }),
+      });
+      render(<EditorModals {...props} />);
+
+      expect(screen.getByTestId('confirm-dialog-message')).toHaveTextContent(
+        'Are you sure you want to delete the "Experience" section?'
+      );
+    });
+
+    it('should show fallback text in message when deleting a section with no name', () => {
+      const props = createDefaultProps({
+        modalManager: createMockModalManager({
+          showDeleteConfirm: true,
+          deleteTarget: { type: 'section', sectionIndex: 0, sectionName: undefined },
+        }),
+      });
+      render(<EditorModals {...props} />);
+
+      expect(screen.getByTestId('confirm-dialog-message')).toHaveTextContent(
+        'Are you sure you want to delete the "this" section?'
+      );
+    });
+
+    it('should show entry deletion message when deleting an entry', () => {
+      const props = createDefaultProps({
+        modalManager: createMockModalManager({
+          showDeleteConfirm: true,
+          deleteTarget: { type: 'entry', sectionIndex: 0, entryIndex: 1 },
+        }),
+      });
+      render(<EditorModals {...props} />);
+
+      expect(screen.getByTestId('confirm-dialog-message')).toHaveTextContent(
+        'Are you sure you want to delete this entry? This action cannot be undone.'
+      );
     });
 
     it('should call confirmDelete when confirmed', () => {
