@@ -207,6 +207,35 @@ export const useContactForm = ({
   );
 
   /**
+   * Helper to validate URL and handle errors/auto-generation
+   * Extracted to reduce duplication between URL and platform changes
+   *
+   * @param index - Social link index
+   * @param platform - Platform ID
+   * @param url - Profile URL
+   */
+  const validateAndAutoGenerate = useCallback(
+    (index: number, platform: string, url: string) => {
+      const validation = validatePlatformUrl(platform, url);
+
+      if (!validation.valid && validation.error) {
+        setSocialLinkErrors((prev) => ({
+          ...prev,
+          [index]: validation.error || '',
+        }));
+      } else {
+        setSocialLinkErrors((prev) => {
+          const updated = { ...prev };
+          delete updated[index];
+          return updated;
+        });
+        debouncedGenerateSocialDisplayText(index, platform, url);
+      }
+    },
+    [debouncedGenerateSocialDisplayText]
+  );
+
+  /**
    * Handles changes to a social link field
    * Validates URLs, auto-generates display text, manages errors
    *
@@ -218,17 +247,17 @@ export const useContactForm = ({
    */
   const handleSocialLinkChange = useCallback(
     (index: number, field: keyof SocialLink, value: string) => {
-      // Get the current link state before any updates to avoid stale closures
-      const originalLink = contactInfo?.social_links?.[index] || {
+      // Capture current link state BEFORE any updates to avoid stale reads
+      const currentLink = contactInfo?.social_links?.[index] || {
         platform: '',
         url: '',
         display_text: '',
       };
 
-      // Determine the next state of the link by applying the change
-      const newLink = { ...originalLink, [field]: value };
+      // Compute the new link by applying the change
+      const newLink = { ...currentLink, [field]: value };
 
-      // --- Perform side effects based on the change ---
+      // --- Perform side effects based on the field being changed ---
       if (field === 'url') {
         if (!value.trim()) {
           // URL is cleared, so clear display text and side-effect states
@@ -245,38 +274,12 @@ export const useContactForm = ({
           });
         } else if (newLink.platform) {
           // URL has a value, so validate and debounce
-          const validation = validatePlatformUrl(newLink.platform, value);
-          if (!validation.valid && validation.error) {
-            setSocialLinkErrors((prev) => ({
-              ...prev,
-              [index]: validation.error || '',
-            }));
-          } else {
-            setSocialLinkErrors((prev) => {
-              const updated = { ...prev };
-              delete updated[index];
-              return updated;
-            });
-            debouncedGenerateSocialDisplayText(index, newLink.platform, value);
-          }
+          validateAndAutoGenerate(index, newLink.platform, value);
         }
       } else if (field === 'platform') {
         // Platform changed, re-validate if URL exists
         if (newLink.url && value) {
-          const validation = validatePlatformUrl(value, newLink.url);
-          if (!validation.valid && validation.error) {
-            setSocialLinkErrors((prev) => ({
-              ...prev,
-              [index]: validation.error || '',
-            }));
-          } else {
-            setSocialLinkErrors((prev) => {
-              const updated = { ...prev };
-              delete updated[index];
-              return updated;
-            });
-            debouncedGenerateSocialDisplayText(index, value, newLink.url);
-          }
+          validateAndAutoGenerate(index, value, newLink.url);
         }
       } else if (field === 'display_text') {
         // Manual edit, clear auto-gen flag
@@ -295,7 +298,7 @@ export const useContactForm = ({
         return { ...prev, social_links: updatedLinks };
       });
     },
-    [contactInfo, setContactInfo, debouncedGenerateSocialDisplayText]
+    [contactInfo, setContactInfo, validateAndAutoGenerate]
   );
 
   return {
