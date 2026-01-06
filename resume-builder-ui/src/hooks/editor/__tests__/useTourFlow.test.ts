@@ -19,7 +19,7 @@ const createMockProps = (overrides?: Partial<UseTourFlowProps>): UseTourFlowProp
   prefsLoading: false,
   setPreference: vi.fn(),
   hasShownIdleNudge: false,
-  markIdleNudgeShown: vi.fn(),
+  markIdleNudgeShown: vi.fn().mockResolvedValue(undefined),
   ...overrides,
 });
 
@@ -276,9 +276,7 @@ describe('useTourFlow', () => {
       expect(result.current.showWelcomeTour).toBe(false);
     });
 
-    it('should log message when re-launching tour', () => {
-      const consoleLogSpy = vi.spyOn(console, 'log');
-
+    it('should re-launch tour after migration completes', () => {
       // Start with anonymous user
       const baseProps = createMockProps({
         tourCompleted: false,
@@ -332,8 +330,8 @@ describe('useTourFlow', () => {
         vi.advanceTimersByTime(150);
       });
 
-      // Check for console log
-      expect(consoleLogSpy).toHaveBeenCalledWith('🎯 Migration complete, re-launching tour');
+      // Tour should be re-launched after migration
+      expect(result.current.showWelcomeTour).toBe(true);
     });
   });
 
@@ -341,7 +339,7 @@ describe('useTourFlow', () => {
 
   describe('Idle Nudge', () => {
     it('should show idle tooltip after 5 minutes for anonymous users', () => {
-      const mockMarkIdleNudgeShown = vi.fn();
+      const mockMarkIdleNudgeShown = vi.fn().mockResolvedValue(undefined);
       const props = createMockProps({
         isAnonymous: true,
         hasShownIdleNudge: false,

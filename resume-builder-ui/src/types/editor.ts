@@ -1,6 +1,7 @@
 // src/types/editor.ts
 // Editor-specific type definitions
 
+import React from 'react';
 import { ContactInfo, Section, SocialLink } from './types';
 import { DragEndEvent, DragStartEvent, SensorDescriptor } from '@dnd-kit/core';
 
@@ -174,15 +175,23 @@ export interface UseTourFlowReturn {
 
 /**
  * useSectionManagement hook return type
- * Handles section CRUD operations
+ * Handles section CRUD operations and title editing
  */
 export interface UseSectionManagementReturn {
-  handleAddSection: (type: string) => Promise<void>;
+  // Section operations
+  handleAddSection: (type: string) => void;
   handleUpdateSection: (index: number, updatedSection: Section) => void;
   handleDeleteSection: (index: number) => void;
   handleDeleteEntry: (sectionIndex: number, entryIndex: number) => void;
   confirmDelete: () => void;
-  loadingAddSection: boolean;
+
+  // Title editing
+  editingTitleIndex: number | null;
+  temporaryTitle: string;
+  setTemporaryTitle: React.Dispatch<React.SetStateAction<string>>;
+  handleTitleEdit: (index: number) => void;
+  handleTitleSave: () => void;
+  handleTitleCancel: () => void;
 }
 
 /**
