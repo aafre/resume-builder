@@ -199,10 +199,17 @@ export interface UseSectionManagementReturn {
  * Handles file import/export operations
  */
 export interface UseFileOperationsReturn {
-  handleImportYAML: (file: File) => Promise<void>;
+  // Export operations
   handleExportYAML: () => Promise<void>;
   loadingSave: boolean;
-  setLoadingSave: (loading: boolean) => void;
+
+  // Import operations
+  handleFileInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  confirmImportYAML: () => Promise<void>;
+  loadingLoad: boolean;
+
+  // File input ref for triggering file picker
+  fileInputRef: React.RefObject<HTMLInputElement>;
 }
 
 /**
