@@ -182,15 +182,13 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
 
             sections.forEach((section) => {
               if (isExperienceSection(section) || isEducationSection(section)) {
-                const items = section.content as any[];
-                items.forEach((item, itemIdx) => {
+                section.content.forEach((item, itemIdx) => {
                   if (item.icon === icon) {
                     locations.push(`${section.name} → Entry ${itemIdx + 1}`);
                   }
                 });
               } else if (section.type === 'icon-list') {
-                const items = section.content as any[];
-                items.forEach((item, itemIdx) => {
+                section.content.forEach((item, itemIdx) => {
                   if (item.icon === icon) {
                     locations.push(`${section.name} → Item ${itemIdx + 1}`);
                   }
