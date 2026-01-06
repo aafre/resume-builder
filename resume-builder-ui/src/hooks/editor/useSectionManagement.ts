@@ -219,6 +219,7 @@ export const useSectionManagement = ({
       // Title editing
       editingTitleIndex,
       temporaryTitle,
+      setTemporaryTitle,
       handleTitleEdit,
       handleTitleSave,
       handleTitleCancel,

@@ -187,6 +187,7 @@ export interface UseSectionManagementReturn {
   // Title editing
   editingTitleIndex: number | null;
   temporaryTitle: string;
+  setTemporaryTitle: (title: string) => void;
   handleTitleEdit: (index: number) => void;
   handleTitleSave: () => void;
   handleTitleCancel: () => void;

@@ -534,6 +534,51 @@ describe('useSectionManagement', () => {
       });
     });
 
+    describe('setTemporaryTitle', () => {
+      it('should update temporaryTitle for controlled input', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        // Start editing
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+        expect(result.current.temporaryTitle).toBe('Summary');
+
+        // Update title via setTemporaryTitle (controlled input)
+        act(() => {
+          result.current.setTemporaryTitle('New Title');
+        });
+
+        expect(result.current.temporaryTitle).toBe('New Title');
+      });
+
+      it('should allow setting empty string', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        act(() => {
+          result.current.setTemporaryTitle('');
+        });
+
+        expect(result.current.temporaryTitle).toBe('');
+      });
+
+      it('should be usable without handleTitleEdit', () => {
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps()));
+
+        act(() => {
+          result.current.setTemporaryTitle('Direct Set');
+        });
+
+        expect(result.current.temporaryTitle).toBe('Direct Set');
+      });
+    });
+
     describe('handleTitleSave', () => {
       it('should save title and reset editing state', () => {
         const sections = createMockSections();
@@ -544,8 +589,10 @@ describe('useSectionManagement', () => {
           result.current.handleTitleEdit(0);
         });
 
-        // We need to simulate the temporaryTitle change
-        // Since temporaryTitle is internal state, we test the full flow
+        // Update the title using setTemporaryTitle
+        act(() => {
+          result.current.setTemporaryTitle('Updated Summary');
+        });
 
         // Save (which should use current temporaryTitle)
         act(() => {
@@ -554,6 +601,11 @@ describe('useSectionManagement', () => {
 
         expect(result.current.editingTitleIndex).toBeNull();
         expect(mockSetSections).toHaveBeenCalled();
+
+        // Verify the saved name
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(sections);
+        expect(newSections[0].name).toBe('Updated Summary');
       });
 
       it('should do nothing when editingTitleIndex is null', () => {
