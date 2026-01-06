@@ -73,6 +73,7 @@ export const useTourFlow = ({
   // Idle nudge state
   const [showIdleTooltip, setShowIdleTooltip] = useState<boolean>(false);
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const idleDismissTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Sign-in from tour tracking
   const [isSigningInFromTour, setIsSigningInFromTour] = useState<boolean>(false);
@@ -155,12 +156,13 @@ export const useTourFlow = ({
         setShowIdleTooltip(true);
         markIdleNudgeShown();
 
-        // Auto-dismiss after 10 seconds
-        setTimeout(() => setShowIdleTooltip(false), 10000);
+        // Auto-dismiss after 10 seconds (track timer for cleanup)
+        idleDismissTimerRef.current = setTimeout(() => setShowIdleTooltip(false), 10000);
       }, 5 * 60 * 1000); // 5 minutes
 
       return () => {
         if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+        if (idleDismissTimerRef.current) clearTimeout(idleDismissTimerRef.current);
       };
     }
   }, [isAnonymous, hasShownIdleNudge, authLoading, markIdleNudgeShown]);
