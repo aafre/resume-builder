@@ -1,6 +1,7 @@
 // src/types/editor.ts
 // Editor-specific type definitions
 
+import React from 'react';
 import { ContactInfo, Section, SocialLink } from './types';
 import { DragEndEvent, DragStartEvent, SensorDescriptor } from '@dnd-kit/core';
 
@@ -187,7 +188,7 @@ export interface UseSectionManagementReturn {
   // Title editing
   editingTitleIndex: number | null;
   temporaryTitle: string;
-  setTemporaryTitle: (title: string) => void;
+  setTemporaryTitle: React.Dispatch<React.SetStateAction<string>>;
   handleTitleEdit: (index: number) => void;
   handleTitleSave: () => void;
   handleTitleCancel: () => void;
