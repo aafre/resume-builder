@@ -197,14 +197,12 @@ export const useResumeLoader = ({
         setTemplateId(resume.template_id); // Get template ID from database
         setCloudResumeId(resume.id);
 
-        // Set supportsIcons flag based on template
-        // Only 'modern-with-icons' template supports icons
-        const templateSupportsIcons = resume.template_id === 'modern-with-icons';
-        setSupportsIcons(templateSupportsIcons);
-
-        // Load template structure for originalTemplateData (needed for "Start Fresh")
+        // Load template structure and metadata (including supportsIcons flag)
         try {
-          const { yaml: templateYaml } = await fetchTemplate(resume.template_id);
+          const { yaml: templateYaml, supportsIcons } = await fetchTemplate(resume.template_id);
+
+          // Use authoritative supportsIcons flag from backend
+          setSupportsIcons(supportsIcons);
 
           // Parse YAML content
           const parsedData = yaml.load(templateYaml);
@@ -231,6 +229,9 @@ export const useResumeLoader = ({
           });
         } catch (templateError) {
           console.error('Failed to load template structure for Start Fresh:', templateError);
+          // Fallback: use hardcoded check only if template fetch fails
+          const fallbackSupportsIcons = resume.template_id === 'modern-with-icons';
+          setSupportsIcons(fallbackSupportsIcons);
           // Non-critical: Start Fresh will still fail gracefully if originalTemplateData is null
         }
 
