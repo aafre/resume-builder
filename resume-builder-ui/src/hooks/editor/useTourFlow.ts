@@ -152,7 +152,7 @@ export const useTourFlow = ({
       // Start 5-minute timer
       idleTimerRef.current = setTimeout(() => {
         setShowIdleTooltip(true);
-        markIdleNudgeShown();
+markIdleNudgeShown().catch(error => console.error('Failed to mark idle nudge shown:', error));
 
         // Auto-dismiss after 10 seconds (track timer for cleanup)
         idleDismissTimerRef.current = setTimeout(() => setShowIdleTooltip(false), 10000);
