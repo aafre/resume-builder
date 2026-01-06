@@ -31,6 +31,43 @@ vi.mock('@dnd-kit/sortable', async () => {
   };
 });
 
+/**
+ * Helper function to create DragStartEvent test objects
+ * Reduces boilerplate and improves test readability
+ */
+const createDragStartEvent = (id: string): DragStartEvent => ({
+  active: {
+    id,
+    data: { current: {} },
+    rect: { current: { initial: null, translated: null } },
+  },
+});
+
+/**
+ * Helper function to create DragEndEvent test objects
+ * Reduces boilerplate and improves test readability
+ *
+ * @param activeId - ID of the dragged element
+ * @param overId - ID of the drop target (null if dropped outside valid area)
+ */
+const createDragEndEvent = (activeId: string, overId: string | null): DragEndEvent => ({
+  active: {
+    id: activeId,
+    data: { current: {} },
+    rect: { current: { initial: null, translated: null } },
+  },
+  over: overId
+    ? {
+        id: overId,
+        data: { current: {} },
+        rect: { current: { initial: null, translated: null } },
+        disabled: false,
+      }
+    : null,
+  delta: { x: 0, y: 0 },
+  collisions: null,
+});
+
 describe('useSectionDragDrop', () => {
   let sections: Section[];
   let setSections: ReturnType<typeof vi.fn>;
@@ -99,16 +136,8 @@ describe('useSectionDragDrop', () => {
         useSectionDragDrop({ sections, setSections })
       );
 
-      const dragStartEvent: DragStartEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-      };
-
       act(() => {
-        result.current.handleDragStart(dragStartEvent);
+        result.current.handleDragStart(createDragStartEvent('0'));
       });
 
       expect(result.current.activeId).toBe('0');
@@ -119,16 +148,8 @@ describe('useSectionDragDrop', () => {
         useSectionDragDrop({ sections, setSections })
       );
 
-      const dragStartEvent: DragStartEvent = {
-        active: {
-          id: '1',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-      };
-
       act(() => {
-        result.current.handleDragStart(dragStartEvent);
+        result.current.handleDragStart(createDragStartEvent('1'));
       });
 
       expect(result.current.draggedSection).toEqual(sections[1]);
@@ -140,16 +161,8 @@ describe('useSectionDragDrop', () => {
         useSectionDragDrop({ sections, setSections })
       );
 
-      const dragStartEvent: DragStartEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-      };
-
       act(() => {
-        result.current.handleDragStart(dragStartEvent);
+        result.current.handleDragStart(createDragStartEvent('0'));
       });
 
       expect(result.current.activeId).toBe('0');
@@ -161,16 +174,8 @@ describe('useSectionDragDrop', () => {
         useSectionDragDrop({ sections, setSections })
       );
 
-      const dragStartEvent: DragStartEvent = {
-        active: {
-          id: '2',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-      };
-
       act(() => {
-        result.current.handleDragStart(dragStartEvent);
+        result.current.handleDragStart(createDragStartEvent('2'));
       });
 
       expect(result.current.activeId).toBe('2');
@@ -184,24 +189,8 @@ describe('useSectionDragDrop', () => {
         useSectionDragDrop({ sections, setSections })
       );
 
-      const dragEndEvent: DragEndEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-        over: {
-          id: '2',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-          disabled: false,
-        },
-        delta: { x: 0, y: 0 },
-        collisions: null,
-      };
-
       act(() => {
-        result.current.handleDragEnd(dragEndEvent);
+        result.current.handleDragEnd(createDragEndEvent('0', '2'));
       });
 
       expect(setSections).toHaveBeenCalledTimes(1);
@@ -213,24 +202,8 @@ describe('useSectionDragDrop', () => {
         useSectionDragDrop({ sections, setSections })
       );
 
-      const dragEndEvent: DragEndEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-        over: {
-          id: '2',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-          disabled: false,
-        },
-        delta: { x: 0, y: 0 },
-        collisions: null,
-      };
-
       act(() => {
-        result.current.handleDragEnd(dragEndEvent);
+        result.current.handleDragEnd(createDragEndEvent('0', '2'));
       });
 
       // Get the updater function that was passed to setSections
@@ -248,24 +221,8 @@ describe('useSectionDragDrop', () => {
         useSectionDragDrop({ sections, setSections })
       );
 
-      const dragEndEvent: DragEndEvent = {
-        active: {
-          id: '2',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-        over: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-          disabled: false,
-        },
-        delta: { x: 0, y: 0 },
-        collisions: null,
-      };
-
       act(() => {
-        result.current.handleDragEnd(dragEndEvent);
+        result.current.handleDragEnd(createDragEndEvent('2', '0'));
       });
 
       const updater = setSections.mock.calls[0][0];
@@ -282,24 +239,8 @@ describe('useSectionDragDrop', () => {
         useSectionDragDrop({ sections, setSections })
       );
 
-      const dragEndEvent: DragEndEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-        over: {
-          id: '1',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-          disabled: false,
-        },
-        delta: { x: 0, y: 0 },
-        collisions: null,
-      };
-
       act(() => {
-        result.current.handleDragEnd(dragEndEvent);
+        result.current.handleDragEnd(createDragEndEvent('0', '1'));
       });
 
       expect(toast.success).toHaveBeenCalledTimes(1);
@@ -312,40 +253,16 @@ describe('useSectionDragDrop', () => {
       );
 
       // Start drag
-      const dragStartEvent: DragStartEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-      };
-
       act(() => {
-        result.current.handleDragStart(dragStartEvent);
+        result.current.handleDragStart(createDragStartEvent('0'));
       });
 
       expect(result.current.activeId).toBe('0');
       expect(result.current.draggedSection).not.toBeNull();
 
       // End drag
-      const dragEndEvent: DragEndEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-        over: {
-          id: '1',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-          disabled: false,
-        },
-        delta: { x: 0, y: 0 },
-        collisions: null,
-      };
-
       act(() => {
-        result.current.handleDragEnd(dragEndEvent);
+        result.current.handleDragEnd(createDragEndEvent('0', '1'));
       });
 
       expect(result.current.activeId).toBeNull();
@@ -357,24 +274,8 @@ describe('useSectionDragDrop', () => {
         useSectionDragDrop({ sections, setSections })
       );
 
-      const dragEndEvent: DragEndEvent = {
-        active: {
-          id: '1',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-        over: {
-          id: '1',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-          disabled: false,
-        },
-        delta: { x: 0, y: 0 },
-        collisions: null,
-      };
-
       act(() => {
-        result.current.handleDragEnd(dragEndEvent);
+        result.current.handleDragEnd(createDragEndEvent('1', '1'));
       });
 
       expect(setSections).not.toHaveBeenCalled();
@@ -386,19 +287,8 @@ describe('useSectionDragDrop', () => {
         useSectionDragDrop({ sections, setSections })
       );
 
-      const dragEndEvent: DragEndEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-        over: null,
-        delta: { x: 0, y: 0 },
-        collisions: null,
-      };
-
       act(() => {
-        result.current.handleDragEnd(dragEndEvent);
+        result.current.handleDragEnd(createDragEndEvent('0', null));
       });
 
       expect(setSections).not.toHaveBeenCalled();
@@ -411,32 +301,13 @@ describe('useSectionDragDrop', () => {
       );
 
       // Start drag
-      const dragStartEvent: DragStartEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-      };
-
       act(() => {
-        result.current.handleDragStart(dragStartEvent);
+        result.current.handleDragStart(createDragStartEvent('0'));
       });
 
       // End drag with no over target
-      const dragEndEvent: DragEndEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-        over: null,
-        delta: { x: 0, y: 0 },
-        collisions: null,
-      };
-
       act(() => {
-        result.current.handleDragEnd(dragEndEvent);
+        result.current.handleDragEnd(createDragEndEvent('0', null));
       });
 
       expect(result.current.activeId).toBeNull();
@@ -451,16 +322,8 @@ describe('useSectionDragDrop', () => {
       );
 
       // Start drag
-      const dragStartEvent: DragStartEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-      };
-
       act(() => {
-        result.current.handleDragStart(dragStartEvent);
+        result.current.handleDragStart(createDragStartEvent('0'));
       });
 
       expect(result.current.activeId).toBe('0');
@@ -479,16 +342,8 @@ describe('useSectionDragDrop', () => {
       );
 
       // Start drag
-      const dragStartEvent: DragStartEvent = {
-        active: {
-          id: '1',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-      };
-
       act(() => {
-        result.current.handleDragStart(dragStartEvent);
+        result.current.handleDragStart(createDragStartEvent('1'));
       });
 
       expect(result.current.draggedSection).not.toBeNull();
@@ -507,16 +362,8 @@ describe('useSectionDragDrop', () => {
       );
 
       // Start drag
-      const dragStartEvent: DragStartEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-      };
-
       act(() => {
-        result.current.handleDragStart(dragStartEvent);
+        result.current.handleDragStart(createDragStartEvent('0'));
       });
 
       // Cancel drag
@@ -550,16 +397,8 @@ describe('useSectionDragDrop', () => {
         useSectionDragDrop({ sections: singleSection, setSections })
       );
 
-      const dragStartEvent: DragStartEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-      };
-
       act(() => {
-        result.current.handleDragStart(dragStartEvent);
+        result.current.handleDragStart(createDragStartEvent('0'));
       });
 
       expect(result.current.draggedSection).toEqual(singleSection[0]);
@@ -575,16 +414,8 @@ describe('useSectionDragDrop', () => {
       );
 
       // Start drag with index 1 (Education)
-      const dragStartEvent: DragStartEvent = {
-        active: {
-          id: '1',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-      };
-
       act(() => {
-        result.current.handleDragStart(dragStartEvent);
+        result.current.handleDragStart(createDragStartEvent('1'));
       });
 
       expect(result.current.draggedSection?.name).toBe('Education');
@@ -598,16 +429,8 @@ describe('useSectionDragDrop', () => {
       rerender({ sections: updatedSections, setSections });
 
       // Start a new drag - should use updated sections
-      const newDragStartEvent: DragStartEvent = {
-        active: {
-          id: '3',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-      };
-
       act(() => {
-        result.current.handleDragStart(newDragStartEvent);
+        result.current.handleDragStart(createDragStartEvent('3'));
       });
 
       expect(result.current.draggedSection?.name).toBe('Projects');
@@ -621,40 +444,16 @@ describe('useSectionDragDrop', () => {
       );
 
       // Start
-      const dragStartEvent: DragStartEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-      };
-
       act(() => {
-        result.current.handleDragStart(dragStartEvent);
+        result.current.handleDragStart(createDragStartEvent('0'));
       });
 
       expect(result.current.activeId).toBe('0');
       expect(result.current.draggedSection).toEqual(sections[0]);
 
       // End
-      const dragEndEvent: DragEndEvent = {
-        active: {
-          id: '0',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-        over: {
-          id: '2',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-          disabled: false,
-        },
-        delta: { x: 0, y: 0 },
-        collisions: null,
-      };
-
       act(() => {
-        result.current.handleDragEnd(dragEndEvent);
+        result.current.handleDragEnd(createDragEndEvent('0', '2'));
       });
 
       expect(result.current.activeId).toBeNull();
@@ -669,16 +468,8 @@ describe('useSectionDragDrop', () => {
       );
 
       // Start
-      const dragStartEvent: DragStartEvent = {
-        active: {
-          id: '1',
-          data: { current: {} },
-          rect: { current: { initial: null, translated: null } },
-        },
-      };
-
       act(() => {
-        result.current.handleDragStart(dragStartEvent);
+        result.current.handleDragStart(createDragStartEvent('1'));
       });
 
       expect(result.current.activeId).toBe('1');
