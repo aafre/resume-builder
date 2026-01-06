@@ -217,9 +217,16 @@ export interface UseFileOperationsReturn {
  * Top-level editor actions (download, preview, start fresh)
  */
 export interface UseEditorActionsReturn {
+  // Download
   isDownloading: boolean;
   handleGenerateResume: () => Promise<void>;
-  handlePreviewResume: () => Promise<void>;
-  handleStartFresh: () => Promise<void>;
-  confirmStartFresh: () => void;
+
+  // Preview
+  handleOpenPreview: () => Promise<void>;
+  handleRefreshPreview: () => Promise<void>;
+
+  // Start fresh
+  loadingStartFresh: boolean;
+  handleStartFresh: () => void;
+  confirmStartFresh: () => Promise<void>;
 }
