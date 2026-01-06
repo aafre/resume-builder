@@ -121,8 +121,6 @@ export const useTourFlow = ({
       !showWelcomeTour &&
       !hasLaunchedTourAfterSignIn.current
     ) {
-      console.log('🎯 Migration complete, re-launching tour');
-
       // Small delay to let UI settle after migration
       const timer = setTimeout(() => {
         setShowWelcomeTour(true);
