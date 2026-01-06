@@ -11,6 +11,7 @@ import { UseIconRegistryReturn } from '../useIconRegistry';
 import { fetchTemplate } from '../../services/templates';
 import { migrateLegacySections } from '../../utils/sectionMigration';
 import { processSectionsForExport } from '../../services/yamlService';
+import { validateYAMLStructure } from '../../services/validationService';
 import { apiClient } from '../../lib/api-client';
 import { supabase } from '../../lib/supabase';
 
@@ -119,7 +120,18 @@ export const useResumeLoader = ({
       try {
         setLoading(true);
         const { yaml: yamlString, supportsIcons } = await fetchTemplate(templateIdToLoad);
-        const parsedYaml = yaml.load(yamlString) as {
+
+        // Parse YAML content
+        const parsedData = yaml.load(yamlString);
+
+        // Validate structure before type assertion
+        const validation = validateYAMLStructure(parsedData);
+        if (!validation.valid) {
+          throw new Error(`Invalid template structure: ${validation.error}`);
+        }
+
+        // Safe to assert type after validation
+        const parsedYaml = parsedData as {
           contact_info: ContactInfo;
           sections: Section[];
         };
@@ -184,7 +196,18 @@ export const useResumeLoader = ({
         // Load template structure for originalTemplateData (needed for "Start Fresh")
         try {
           const { yaml: templateYaml } = await fetchTemplate(resume.template_id);
-          const templateData = yaml.load(templateYaml) as {
+
+          // Parse YAML content
+          const parsedData = yaml.load(templateYaml);
+
+          // Validate structure before type assertion
+          const validation = validateYAMLStructure(parsedData);
+          if (!validation.valid) {
+            throw new Error(`Invalid template structure: ${validation.error}`);
+          }
+
+          // Safe to assert type after validation
+          const templateData = parsedData as {
             contact_info: ContactInfo;
             sections: Section[];
           };

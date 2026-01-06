@@ -25,6 +25,9 @@ vi.mock('../../../utils/sectionMigration', () => ({
 vi.mock('../../../services/yamlService', () => ({
   processSectionsForExport: vi.fn((sections) => sections),
 }));
+vi.mock('../../../services/validationService', () => ({
+  validateYAMLStructure: vi.fn(() => ({ valid: true })),
+}));
 
 /**
  * Helper to create default mock props
@@ -157,6 +160,35 @@ sections:
 
     it('should handle template loading errors', async () => {
       vi.spyOn(templates, 'fetchTemplate').mockRejectedValue(new Error('Network error'));
+
+      const props = createMockProps({ templateId: 'modern' });
+      const { result } = renderHook(() => useResumeLoader(props));
+
+      await act(async () => {
+        await result.current.loadTemplate('modern');
+      });
+
+      expect(props.setLoadingError).toHaveBeenCalledWith(
+        'Failed to load template. Please check your connection and try again.'
+      );
+      expect(props.setLoading).toHaveBeenCalledWith(false);
+    });
+
+    it('should handle invalid YAML structure in template', async () => {
+      const mockYaml = 'invalid: yaml';
+
+      vi.spyOn(templates, 'fetchTemplate').mockResolvedValue({
+        yaml: mockYaml,
+        supportsIcons: false,
+      });
+
+      vi.spyOn(yamlModule, 'load').mockReturnValue({
+        invalid: 'structure',
+      });
+
+      // Mock validation to fail
+      const { validateYAMLStructure } = await import('../../../services/validationService');
+      (validateYAMLStructure as any).mockReturnValueOnce({ valid: false, error: 'Missing contact_info field' });
 
       const props = createMockProps({ templateId: 'modern' });
       const { result } = renderHook(() => useResumeLoader(props));
