@@ -6,7 +6,6 @@ import React, {
   lazy,
   Suspense,
 } from "react";
-import ReactDOM from "react-dom";
 import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { AlertCircle, X } from "lucide-react";
@@ -65,6 +64,7 @@ import { useTourFlow } from "../hooks/editor/useTourFlow";
 import { useSectionManagement } from "../hooks/editor/useSectionManagement";
 import { useFileOperations } from "../hooks/editor/useFileOperations";
 import { useEditorActions } from "../hooks/editor/useEditorActions";
+import { EditorHeader } from "./editor";
 
 // Lazy-loaded error components
 const NotFound = lazy(() => import("./NotFound"));
@@ -951,22 +951,16 @@ const Editor: React.FC = () => {
         onClose={modalManager.closeStorageLimitModal}
       />
 
-      {/* Idle Nudge Tooltip */}
-      {tourFlow.showIdleTooltip && ReactDOM.createPortal(
-        <div className="fixed top-20 right-6 z-[70] bg-blue-600 text-white text-sm px-4 py-3 rounded-lg shadow-xl animate-bounce">
-          <div className="flex items-center gap-2">
-            <span>💡</span>
-            <span>Don't forget to save your progress permanently</span>
-            <button
-              onClick={tourFlow.dismissIdleTooltip}
-              className="ml-2 hover:opacity-75 text-white"
-            >
-              ✕
-            </button>
-          </div>
-        </div>,
-        document.body
-      )}
+      {/* Editor Header - Status indicators and idle tooltip */}
+      <EditorHeader
+        showIdleTooltip={tourFlow.showIdleTooltip}
+        onDismissIdleTooltip={tourFlow.dismissIdleTooltip}
+        saveStatus={saveStatus}
+        lastSaved={cloudLastSaved}
+        isAnonymous={isAnonymous}
+        isAuthenticated={isAuthenticated}
+        onSignInClick={modalManager.openAuthModal}
+      />
     </div>
   );
 };
