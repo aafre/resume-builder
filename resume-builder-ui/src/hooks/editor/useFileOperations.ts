@@ -20,7 +20,7 @@ export interface UseFileOperationsProps {
   /** Current contact info */
   contactInfo: ContactInfo | null;
   /** Function to update contact info */
-  setContactInfo: (info: ContactInfo | null) => void;
+  setContactInfo: React.Dispatch<React.SetStateAction<ContactInfo | null>>;
   /** Current sections array */
   sections: Section[];
   /** Function to update sections */
@@ -34,13 +34,13 @@ export interface UseFileOperationsProps {
   /** Whether current template supports icons */
   supportsIcons: boolean;
   /** Function to update original template data (for change detection) */
-  setOriginalTemplateData: (data: { contactInfo: ContactInfo; sections: Section[] } | null) => void;
+  setOriginalTemplateData: React.Dispatch<React.SetStateAction<{ contactInfo: ContactInfo; sections: Section[] } | null>>;
   /** Function to enable/disable auto-save after loading */
-  setIsLoadingFromUrl: (loading: boolean) => void;
+  setIsLoadingFromUrl: React.Dispatch<React.SetStateAction<boolean>>;
   /** Pending import file from modal manager */
   pendingImportFile: File | null;
   /** Function to set pending import file */
-  setPendingImportFile: (file: File | null) => void;
+  setPendingImportFile: React.Dispatch<React.SetStateAction<File | null>>;
   /** Function to open import confirmation dialog */
   openImportConfirm: (file: File) => void;
   /** Function to close import confirmation dialog */
