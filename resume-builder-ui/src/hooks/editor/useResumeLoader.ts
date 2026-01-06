@@ -345,6 +345,7 @@ export const useResumeLoader = ({
 
   return {
     isLoadingFromUrl,
+    setIsLoadingFromUrl,
     hasLoadedFromUrl,
     cloudResumeId,
     setCloudResumeId,

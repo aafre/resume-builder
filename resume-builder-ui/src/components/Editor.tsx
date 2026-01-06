@@ -229,6 +229,12 @@ const Editor: React.FC = () => {
     session: session
   });
 
+  // Ref to track latest saveStatus for use in async callbacks (avoids stale closures)
+  const saveStatusRef = useRef(saveStatus);
+  useEffect(() => {
+    saveStatusRef.current = saveStatus;
+  }, [saveStatus]);
+
   /**
    * Saves pending changes before critical actions (Preview, Download, etc.)
    * Returns true if action can proceed, false if save failed
@@ -239,15 +245,15 @@ const Editor: React.FC = () => {
       return true;
     }
 
-    // If already saving, wait for completion
-    if (saveStatus === 'saving') {
+    // If already saving, wait for completion (use ref to avoid stale closure)
+    if (saveStatusRef.current === 'saving') {
       console.log(`Waiting for in-progress save before ${actionName}...`);
       const timeout = 10000;
       const start = Date.now();
-      while (saveStatus === 'saving' && Date.now() - start < timeout) {
+      while (saveStatusRef.current === 'saving' && Date.now() - start < timeout) {
         await new Promise(resolve => setTimeout(resolve, 100));
       }
-      return (saveStatus as string) !== 'error';
+      return saveStatusRef.current !== 'error';
     }
 
     // Always trigger save before action
@@ -255,7 +261,7 @@ const Editor: React.FC = () => {
       console.log(`Saving before ${actionName}...`);
       const result = await saveNow();
 
-      if (result === null && saveStatus === 'error') {
+      if (result === null && saveStatusRef.current === 'error') {
         toast.error(`Failed to save changes before ${actionName}. Please try again.`);
         return false;
       }
@@ -272,7 +278,7 @@ const Editor: React.FC = () => {
       toast.error(`Failed to save changes before ${actionName}. Please try again.`);
       return false;
     }
-  }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow, modalManager.openStorageLimitModal]);
+  }, [isAnonymous, contactInfo, templateId, saveNow, modalManager.openStorageLimitModal]);
 
   // Update cloud resume ID when it's set from cloud save
   useEffect(() => {
@@ -316,13 +322,7 @@ const Editor: React.FC = () => {
     isAnonymous,
     supportsIcons,
     setOriginalTemplateData,
-    setIsLoadingFromUrl: (loading: boolean) => {
-      // This is a simplified setter since useResumeLoader manages this internally
-      // In the current architecture, this is used after YAML import to enable auto-save
-      if (!loading) {
-        // YAML import completed, auto-save is now enabled
-      }
-    },
+    setIsLoadingFromUrl: resumeLoader.setIsLoadingFromUrl,
     pendingImportFile: modalManager.pendingImportFile,
     setPendingImportFile: modalManager.setPendingImportFile,
     openImportConfirm: modalManager.openImportConfirm,
