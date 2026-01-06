@@ -178,7 +178,10 @@ export const useFileOperations = ({
         // Longer delay for noticeable feedback on file operations
         await new Promise((resolve) => setTimeout(resolve, 1200));
 
-        const yamlContent = e.target?.result as string;
+        const yamlContent = e.target?.result;
+        if (typeof yamlContent !== 'string') {
+          throw new Error('File content could not be read as text.');
+        }
         const result = await importResumeFromYAML(yamlContent, iconRegistry);
 
         // Update state with imported data
