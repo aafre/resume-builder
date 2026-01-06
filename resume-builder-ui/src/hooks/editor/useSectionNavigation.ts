@@ -112,14 +112,16 @@ export const useSectionNavigation = ({
       }
 
       // Check each section
-      for (let i = 0; i < sectionRefs.current.length; i++) {
-        const ref = sectionRefs.current[i];
-        if (ref) {
-          const rect = ref.getBoundingClientRect();
-          const top = rect.top + window.scrollY;
-          if (scrollPosition >= top && scrollPosition < top + rect.height) {
-            setActiveSectionIndex(i);
-            return;
+      if (sectionRefs.current) {
+        for (let i = 0; i < sectionRefs.current.length; i++) {
+          const ref = sectionRefs.current[i];
+          if (ref) {
+            const rect = ref.getBoundingClientRect();
+            const top = rect.top + window.scrollY;
+            if (scrollPosition >= top && scrollPosition < top + rect.height) {
+              setActiveSectionIndex(i);
+              return;
+            }
           }
         }
       }
