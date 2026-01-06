@@ -1,8 +1,8 @@
 // src/types/editor.ts
 // Editor-specific type definitions
 
-import { DragEndEvent, DragStartEvent, useSensors } from '@dnd-kit/core';
-import { ContactInfo, Section, SaveStatus, SocialLink } from './types';
+import { ContactInfo, Section, SocialLink } from './types';
+import { DragEndEvent, DragStartEvent, SensorDescriptor } from '@dnd-kit/core';
 
 // --- Editor State Types ---
 

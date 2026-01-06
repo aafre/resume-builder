@@ -258,7 +258,7 @@ export const useModalManager = (): UseModalManagerReturn => {
       closeDownloadCelebration,
     }),
     [
-      // States
+      // Only state values are needed here, since the functions are stable
       showStorageLimitModal,
       showPreviewModal,
       showSectionTypeModal,
@@ -276,40 +276,6 @@ export const useModalManager = (): UseModalManagerReturn => {
       showDownloadCelebration,
       deleteTarget,
       pendingImportFile,
-
-      // Functions (already memoized with useCallback, so stable)
-      openStorageLimitModal,
-      closeStorageLimitModal,
-      openPreviewModal,
-      closePreviewModal,
-      openSectionTypeModal,
-      closeSectionTypeModal,
-      openHelpModal,
-      closeHelpModal,
-      openAdvancedMenu,
-      closeAdvancedMenu,
-      toggleAdvancedMenu,
-      openWelcomeTour,
-      closeWelcomeTour,
-      openIdleTooltip,
-      closeIdleTooltip,
-      openDeleteConfirm,
-      closeDeleteConfirm,
-      openStartFreshConfirm,
-      closeStartFreshConfirm,
-      openImportConfirm,
-      closeImportConfirm,
-      openNavigationDrawer,
-      closeNavigationDrawer,
-      toggleNavigationDrawer,
-      openAIWarning,
-      closeAIWarning,
-      openAuthModalFromTour,
-      closeAuthModalFromTour,
-      openAuthModal,
-      closeAuthModal,
-      openDownloadCelebration,
-      closeDownloadCelebration,
     ]
   );
 };

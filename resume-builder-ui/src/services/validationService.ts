@@ -37,7 +37,8 @@ export const validateLinkedInUrl = (url: string): boolean => {
 
 /**
  * Validates social media platform URL
- * Re-exported from socialPlatforms.ts for centralized validation access
+ * Uses the improved `validateLinkedInUrl` for LinkedIn and falls back to the
+ * validator from `socialPlatforms.ts` for others.
  *
  * @param platform - Platform ID (e.g., 'github', 'twitter', 'linkedin')
  * @param url - Profile URL to validate
@@ -45,10 +46,20 @@ export const validateLinkedInUrl = (url: string): boolean => {
  *
  * @example
  * validatePlatformUrl('github', 'github.com/user') // { valid: true }
+ * validatePlatformUrl('linkedin', 'linkedin.com/in/johndoe') // { valid: true }
  * validatePlatformUrl('github', 'invalid') // { valid: false, error: '...' }
- * validatePlatformUrl('github', '') // { valid: true } (empty is valid)
  */
-export const validatePlatformUrl = platformUrlValidator;
+export const validatePlatformUrl = (
+  platform: string,
+  url: string
+): { valid: boolean; error?: string } => {
+  if (platform === 'linkedin') {
+    return validateLinkedInUrl(url)
+      ? { valid: true }
+      : { valid: false, error: 'Please enter a valid LinkedIn profile URL' };
+  }
+  return platformUrlValidator(platform, url);
+};
 
 /**
  * Validation result for icon file size
@@ -99,7 +110,7 @@ export interface YAMLValidationResult {
  * Validates YAML resume data structure
  * Ensures required fields (contact_info, sections) exist and are properly typed
  *
- * @param data - Parsed YAML data object
+ * @param data - Parsed YAML data object (unknown type for safety)
  * @returns Validation result with error message if invalid
  *
  * @example
@@ -108,8 +119,8 @@ export interface YAMLValidationResult {
  * validateYAMLStructure({ contact_info: {...} }) // { valid: false, error: 'Missing required field: sections' }
  * validateYAMLStructure({ contact_info: {...}, sections: 'not-array' }) // { valid: false, error: 'Field "sections" must be an array' }
  */
-export const validateYAMLStructure = (data: any): YAMLValidationResult => {
-  // Check if data exists
+export const validateYAMLStructure = (data: unknown): YAMLValidationResult => {
+  // Check if data is a non-null object
   if (!data || typeof data !== 'object') {
     return {
       valid: false,
@@ -118,32 +129,36 @@ export const validateYAMLStructure = (data: any): YAMLValidationResult => {
   }
 
   // Check required fields exist
-  if (!data.hasOwnProperty('contact_info')) {
+  if (!('contact_info' in data)) {
     return {
       valid: false,
       error: 'Missing required field: contact_info'
     };
   }
 
+  const { contact_info } = data as { contact_info: unknown };
   // Validate contact_info is an object (not null, not array, not primitive)
-  if (typeof data.contact_info !== 'object' ||
-      data.contact_info === null ||
-      Array.isArray(data.contact_info)) {
+  if (
+    typeof contact_info !== 'object' ||
+    contact_info === null ||
+    Array.isArray(contact_info)
+  ) {
     return {
       valid: false,
       error: 'Field "contact_info" must be an object'
     };
   }
 
-  if (!data.hasOwnProperty('sections')) {
+  if (!('sections' in data)) {
     return {
       valid: false,
       error: 'Missing required field: sections'
     };
   }
 
+  const { sections } = data as { sections: unknown };
   // Validate sections is an array
-  if (!Array.isArray(data.sections)) {
+  if (!Array.isArray(sections)) {
     return {
       valid: false,
       error: 'Field "sections" must be an array'
