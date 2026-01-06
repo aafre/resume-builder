@@ -151,6 +151,53 @@ const Editor: React.FC = () => {
     setContextIsSidebarCollapsed,
   });
 
+  // ===== LAYER 3: Complex Logic Hooks =====
+  // NOTE: These must be declared BEFORE useCloudSave since it depends on resumeLoader
+
+  // Wrapper for setShowAIWarning using modal manager
+  const setShowAIWarning = useCallback((show: boolean) => {
+    if (show) {
+      modalManager.openAIWarning();
+    } else {
+      modalManager.closeAIWarning();
+    }
+  }, [modalManager.openAIWarning, modalManager.closeAIWarning]);
+
+  const tourFlow = useTourFlow({
+    session,
+    isAnonymous,
+    anonMigrationInProgress,
+    authLoading,
+    tourCompleted: preferences.tour_completed,
+    prefsLoading,
+    setPreference,
+    hasShownIdleNudge,
+    markIdleNudgeShown,
+  });
+
+  const resumeLoader = useResumeLoader({
+    contactInfo,
+    sections,
+    setContactInfo,
+    setSections,
+    templateId,
+    setTemplateId,
+    setSupportsIcons,
+    setOriginalTemplateData,
+    setLoading,
+    setLoadingError,
+    authLoading,
+    anonMigrationInProgress,
+    session,
+    iconRegistry,
+    resumeIdFromUrl,
+    searchParams,
+    setShowAIWarning,
+    setAIWarnings,
+    setAIConfidence,
+    isSigningInFromTour: tourFlow.isSigningInFromTour,
+  });
+
   // ===== Cloud Save Integration =====
   // Convert iconRegistry to plain object for cloud save
   const iconsForCloudSave = React.useMemo(() => {
@@ -171,14 +218,14 @@ const Editor: React.FC = () => {
     saveNow,
     resumeId: savedResumeId
   } = useCloudSave({
-    resumeId: resumeLoader?.cloudResumeId ?? null,
+    resumeId: resumeLoader.cloudResumeId,
     resumeData: contactInfo && templateId ? {
       contact_info: contactInfo,
       sections: sections,
       template_id: templateId
     } : { contact_info: {} as any, sections: [], template_id: '' },
     icons: iconsForCloudSave,
-    enabled: !!templateId && !!contactInfo && !(resumeLoader?.isLoadingFromUrl) && !authLoading,
+    enabled: !!templateId && !!contactInfo && !resumeLoader.isLoadingFromUrl && !authLoading,
     session: session
   });
 
@@ -226,53 +273,6 @@ const Editor: React.FC = () => {
       return false;
     }
   }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow, modalManager.openStorageLimitModal]);
-
-  // ===== LAYER 3: Complex Logic Hooks =====
-
-  // Wrapper for setShowAIWarning using modal manager
-  const setShowAIWarning = useCallback((show: boolean) => {
-    if (show) {
-      modalManager.openAIWarning();
-    } else {
-      modalManager.closeAIWarning();
-    }
-  }, [modalManager.openAIWarning, modalManager.closeAIWarning]);
-
-  const tourFlow = useTourFlow({
-    session,
-    isAnonymous,
-    anonMigrationInProgress,
-    authLoading,
-    tourCompleted: preferences.tour_completed,
-    prefsLoading,
-    setPreference,
-    hasShownIdleNudge,
-    markIdleNudgeShown,
-  });
-
-  // Declare resumeLoader with let so it can be used before assignment in useCloudSave
-  const resumeLoader = useResumeLoader({
-    contactInfo,
-    sections,
-    setContactInfo,
-    setSections,
-    templateId,
-    setTemplateId,
-    setSupportsIcons,
-    setOriginalTemplateData,
-    setLoading,
-    setLoadingError,
-    authLoading,
-    anonMigrationInProgress,
-    session,
-    iconRegistry,
-    resumeIdFromUrl,
-    searchParams,
-    setShowAIWarning,
-    setAIWarnings,
-    setAIConfidence,
-    isSigningInFromTour: tourFlow.isSigningInFromTour,
-  });
 
   // Update cloud resume ID when it's set from cloud save
   useEffect(() => {
