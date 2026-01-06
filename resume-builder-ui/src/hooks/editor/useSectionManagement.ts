@@ -159,7 +159,7 @@ export const useSectionManagement = ({
         newSections[deleteTarget.sectionIndex] = updatedSection;
         return newSections;
       });
-      toast.success(`Entry deleted from "${deleteTarget.sectionName}"`);
+      toast.success(deleteTarget.sectionName ? `Entry deleted from "${deleteTarget.sectionName}"` : 'Entry deleted');
     }
 
     closeDeleteConfirm();
