@@ -58,7 +58,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
       {/* Header Bar - Fixed position at top right */}
       <div className="fixed top-4 right-6 z-[65] flex items-center gap-3">
         {/* Save Status for authenticated users */}
-        {!isAnonymous && isAuthenticated && saveStatus && (
+        {isAuthenticated && saveStatus && (
           <div className="bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-md border border-gray-200/60">
             <SaveStatusIndicator status={saveStatus} lastSaved={lastSaved} />
           </div>
