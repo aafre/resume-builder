@@ -47,6 +47,9 @@ export const useSectionNavigation = ({
   sectionRefs,
   setContextIsSidebarCollapsed,
 }: UseSectionNavigationProps): UseSectionNavigationReturn => {
+  // Scroll offset to account for fixed headers (in pixels)
+  const SCROLL_Y_OFFSET = -100;
+
   // Track active section: -1 for contact info, 0+ for sections
   const [activeSectionIndex, setActiveSectionIndex] = useState<number>(-1);
 
@@ -82,9 +85,8 @@ export const useSectionNavigation = ({
         index === -1 ? contactInfoRef.current : sectionRefs.current?.[index];
 
       if (targetRef) {
-        const yOffset = -100; // Offset for fixed headers
         const y =
-          targetRef.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          targetRef.getBoundingClientRect().top + window.pageYOffset + SCROLL_Y_OFFSET;
 
         window.scrollTo({ top: y, behavior: 'smooth' });
       }
