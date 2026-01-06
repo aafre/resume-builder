@@ -27,6 +27,7 @@ vi.mock('../../../services/yamlService', () => ({
 }));
 vi.mock('../../../services/validationService', () => ({
   validateYAMLStructure: vi.fn(() => ({ valid: true })),
+  validateResumeStructure: vi.fn(() => ({ valid: true })),
 }));
 
 /**
@@ -396,6 +397,31 @@ sections:
 
       expect(toast.error).toHaveBeenCalledWith('Please sign in to load saved resumes');
       expect(apiClientModule.apiClient.get).not.toHaveBeenCalled();
+    });
+
+    it('should handle invalid resume structure from API', async () => {
+      const mockInvalidResume = {
+        // Missing required fields like contact_info, sections, template_id
+        id: 'resume-123',
+      };
+
+      vi.spyOn(apiClientModule.apiClient, 'get').mockResolvedValue({ resume: mockInvalidResume });
+
+      // Mock validation to fail
+      const { validateResumeStructure } = await import('../../../services/validationService');
+      (validateResumeStructure as any).mockReturnValueOnce({ valid: false, error: 'Missing required field: contact_info' });
+
+      const props = createMockProps();
+      const { result } = renderHook(() => useResumeLoader(props));
+
+      await act(async () => {
+        await result.current.loadResumeFromCloud('resume-123');
+      });
+
+      // Should show error toast
+      expect(toast.error).toHaveBeenCalled();
+      expect(result.current.isLoadingFromUrl).toBe(false);
+      expect(result.current.hasLoadedFromUrl).toBe(false); // Don't mark as loaded on error
     });
 
     it('should load resume automatically when resumeIdFromUrl is present', async () => {

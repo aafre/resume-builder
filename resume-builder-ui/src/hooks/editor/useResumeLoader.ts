@@ -11,7 +11,7 @@ import { UseIconRegistryReturn } from '../useIconRegistry';
 import { fetchTemplate } from '../../services/templates';
 import { migrateLegacySections } from '../../utils/sectionMigration';
 import { processSectionsForExport } from '../../services/yamlService';
-import { validateYAMLStructure } from '../../services/validationService';
+import { validateYAMLStructure, validateResumeStructure } from '../../services/validationService';
 import { apiClient } from '../../lib/api-client';
 import { supabase } from '../../lib/supabase';
 
@@ -180,7 +180,16 @@ export const useResumeLoader = ({
         }
 
         // Use centralized API client (handles auth, 401/403 interceptor)
-        const { resume } = await apiClient.get(`/api/resumes/${resumeId}`);
+        const apiResponse = await apiClient.get(`/api/resumes/${resumeId}`);
+
+        // Validate resume data structure before using it
+        const validation = validateResumeStructure(apiResponse.resume);
+        if (!validation.valid) {
+          throw new Error(`Invalid resume data from API: ${validation.error}`);
+        }
+
+        // Safe to use resume data after validation
+        const { resume } = apiResponse;
 
         // Populate editor state from database (JSONB)
         setContactInfo(resume.contact_info);

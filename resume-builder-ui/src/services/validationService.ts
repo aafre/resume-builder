@@ -169,3 +169,143 @@ export const validateYAMLStructure = (data: unknown): YAMLValidationResult => {
     valid: true
   };
 };
+
+/**
+ * Validation result for API resume data
+ */
+export interface ResumeValidationResult {
+  valid: boolean;
+  error?: string;
+}
+
+/**
+ * Validates resume data structure from API response
+ * Ensures required fields exist and are properly typed before using the data
+ *
+ * @param data - Resume data from API (unknown type for safety)
+ * @returns Validation result with error message if invalid
+ *
+ * @example
+ * validateResumeStructure({ id: '...', contact_info: {...}, sections: [...], template_id: 'modern' })
+ * // { valid: true }
+ * validateResumeStructure({}) // { valid: false, error: 'Missing required field: id' }
+ * validateResumeStructure({ id: '...', contact_info: {...} })
+ * // { valid: false, error: 'Missing required field: sections' }
+ */
+export const validateResumeStructure = (data: unknown): ResumeValidationResult => {
+  // Check if data is a non-null object
+  if (!data || typeof data !== 'object') {
+    return {
+      valid: false,
+      error: 'Invalid resume data: expected an object'
+    };
+  }
+
+  // Check required fields exist
+  const requiredFields = ['id', 'contact_info', 'sections', 'template_id'];
+  for (const field of requiredFields) {
+    if (!(field in data)) {
+      return {
+        valid: false,
+        error: `Missing required field: ${field}`
+      };
+    }
+  }
+
+  const typedData = data as Record<string, unknown>;
+
+  // Validate id is a string
+  if (typeof typedData.id !== 'string' || !typedData.id) {
+    return {
+      valid: false,
+      error: 'Field "id" must be a non-empty string'
+    };
+  }
+
+  // Validate contact_info is an object
+  if (
+    typeof typedData.contact_info !== 'object' ||
+    typedData.contact_info === null ||
+    Array.isArray(typedData.contact_info)
+  ) {
+    return {
+      valid: false,
+      error: 'Field "contact_info" must be an object'
+    };
+  }
+
+  // Validate sections is an array
+  if (!Array.isArray(typedData.sections)) {
+    return {
+      valid: false,
+      error: 'Field "sections" must be an array'
+    };
+  }
+
+  // Validate template_id is a string
+  if (typeof typedData.template_id !== 'string' || !typedData.template_id) {
+    return {
+      valid: false,
+      error: 'Field "template_id" must be a non-empty string'
+    };
+  }
+
+  // Validate optional icons field if present
+  if ('icons' in typedData) {
+    if (!Array.isArray(typedData.icons)) {
+      return {
+        valid: false,
+        error: 'Field "icons" must be an array'
+      };
+    }
+
+    // Validate each icon has required properties
+    for (let i = 0; i < typedData.icons.length; i++) {
+      const icon = typedData.icons[i];
+      if (!icon || typeof icon !== 'object') {
+        return {
+          valid: false,
+          error: `Icon at index ${i} must be an object`
+        };
+      }
+
+      const iconObj = icon as Record<string, unknown>;
+      if (typeof iconObj.filename !== 'string' || !iconObj.filename) {
+        return {
+          valid: false,
+          error: `Icon at index ${i} missing required field: filename`
+        };
+      }
+
+      if (typeof iconObj.storage_url !== 'string' || !iconObj.storage_url) {
+        return {
+          valid: false,
+          error: `Icon at index ${i} missing required field: storage_url`
+        };
+      }
+    }
+  }
+
+  // Validate optional AI fields if present
+  if ('ai_import_warnings' in typedData) {
+    if (!Array.isArray(typedData.ai_import_warnings)) {
+      return {
+        valid: false,
+        error: 'Field "ai_import_warnings" must be an array'
+      };
+    }
+  }
+
+  if ('ai_import_confidence' in typedData) {
+    if (typeof typedData.ai_import_confidence !== 'number') {
+      return {
+        valid: false,
+        error: 'Field "ai_import_confidence" must be a number'
+      };
+    }
+  }
+
+  return {
+    valid: true
+  };
+};
