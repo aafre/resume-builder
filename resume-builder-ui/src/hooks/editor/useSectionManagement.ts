@@ -184,6 +184,7 @@ export const useSectionManagement = ({
 
     setSections((currentSections) => {
       if (editingTitleIndex < 0 || editingTitleIndex >= currentSections.length) {
+        console.warn(`Attempted to save title for out-of-bounds index: ${editingTitleIndex}`);
         return currentSections;
       }
       const newSections = [...currentSections];
