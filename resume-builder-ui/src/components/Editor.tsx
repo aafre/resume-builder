@@ -28,7 +28,8 @@ import { migrateLegacySections } from "../utils/sectionMigration";
 import ContactInfoSection from "./ContactInfoSection";
 import FormattingHelp from "./FormattingHelp";
 import { validatePlatformUrl, generateDisplayText } from "../constants/socialPlatforms";
-import { SocialLink } from "../types";
+import { SocialLink, ContactInfo, Section } from "../types";
+import { DeleteTarget } from "../types/editor";
 import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
 import GenericSection from "./GenericSection";
@@ -84,22 +85,6 @@ const LoadingSpinner = () => (
 );
 
 // DEFAULT_ICONS moved to usePreview.ts hook
-
-interface Section {
-  name: string;
-  type?: string;
-  content: any;
-}
-
-interface ContactInfo {
-  name: string;
-  location: string;
-  email: string;
-  phone: string;
-  linkedin?: string; // Deprecated but kept for backward compatibility
-  linkedin_display?: string; // Deprecated but kept for backward compatibility
-  social_links?: SocialLink[];
-}
 
 const Editor: React.FC = () => {
   const { resumeId: resumeIdFromUrl } = useParams<{ resumeId: string }>();
@@ -271,12 +256,7 @@ const Editor: React.FC = () => {
 
   // Confirmation dialog state
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState<{
-    type: 'section' | 'entry';
-    sectionIndex: number;
-    entryIndex?: number;
-    sectionName?: string;
-  } | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
 
   // Start Fresh confirmation
   const [showStartFreshConfirm, setShowStartFreshConfirm] = useState(false);
