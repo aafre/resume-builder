@@ -137,10 +137,10 @@ export interface UseSectionDragDropReturn {
  * Manages sidebar and section navigation
  */
 export interface UseSectionNavigationReturn {
+  activeSectionIndex: number;
+  setActiveSectionIndex: (index: number) => void;
   isSidebarCollapsed: boolean;
   setIsSidebarCollapsed: (collapsed: boolean) => void;
-  activeSection: string | null;
-  setActiveSection: (section: string | null) => void;
   scrollToSection: (sectionIndex: number) => void;
 }
 
