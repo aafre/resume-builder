@@ -155,15 +155,19 @@ export const useEditorActions = ({
       if (isFromCloudLoad) {
         // Special message for cloud load failures
         toast.error(
-          `⚠️ Unable to load ${missingIcons.length} icon(s) from cloud storage\n\n` +
-            `This can happen if:\n` +
-            `• Icons failed to upload when resume was last saved\n` +
-            `• Temporary storage connectivity issue\n\n` +
-            `To fix:\n` +
-            `1. Re-upload the missing icons using the icon picker\n` +
-            `2. Save your resume\n` +
-            `3. Icons will then be available on next edit\n\n` +
-            `Missing icons:\n${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
+          `⚠️ Unable to load ${missingIcons.length} icon(s) from cloud storage
+
+This can happen if:
+• Icons failed to upload when resume was last saved
+• Temporary storage connectivity issue
+
+To fix:
+1. Re-upload the missing icons using the icon picker
+2. Save your resume
+3. Icons will then be available on next edit
+
+Missing icons:
+${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
           {
             duration: 15000,
             style: { whiteSpace: 'pre-line', maxWidth: '600px' },
