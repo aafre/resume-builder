@@ -324,9 +324,9 @@ const Editor: React.FC = () => {
     setOriginalTemplateData,
     setIsLoadingFromUrl: resumeLoader.setIsLoadingFromUrl,
     pendingImportFile: modalManager.pendingImportFile,
-    setPendingImportFile: modalManager.setPendingImportFile,
     openImportConfirm: modalManager.openImportConfirm,
-    closeImportConfirm: modalManager.closeImportConfirm,
+    closeImportConfirmModal: modalManager.closeImportConfirmModal,
+    clearPendingImportFile: modalManager.clearPendingImportFile,
   });
 
   const editorActions = useEditorActions({

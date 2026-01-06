@@ -39,12 +39,12 @@ export interface UseFileOperationsProps {
   setIsLoadingFromUrl: React.Dispatch<React.SetStateAction<boolean>>;
   /** Pending import file from modal manager */
   pendingImportFile: File | null;
-  /** Function to set pending import file */
-  setPendingImportFile: React.Dispatch<React.SetStateAction<File | null>>;
   /** Function to open import confirmation dialog */
   openImportConfirm: (file: File) => void;
-  /** Function to close import confirmation dialog */
-  closeImportConfirm: () => void;
+  /** Function to close import confirmation modal only (keeps file for processing) */
+  closeImportConfirmModal: () => void;
+  /** Function to clear the pending import file */
+  clearPendingImportFile: () => void;
 }
 
 /**
@@ -83,9 +83,9 @@ export const useFileOperations = ({
   setOriginalTemplateData,
   setIsLoadingFromUrl,
   pendingImportFile,
-  setPendingImportFile,
   openImportConfirm,
-  closeImportConfirm,
+  closeImportConfirmModal,
+  clearPendingImportFile,
 }: UseFileOperationsProps): UseFileOperationsReturn => {
   // Loading states
   const [loadingSave, setLoadingSave] = useState(false);
@@ -159,13 +159,14 @@ export const useFileOperations = ({
   const confirmImportYAML = useCallback(async () => {
     if (!pendingImportFile) return;
 
-    closeImportConfirm();
+    // Close modal but keep file for processing
+    closeImportConfirmModal();
 
     // Save current work before importing (if authenticated and has content)
     if (!isAnonymous && contactInfo && sections.length > 0) {
       const canProceed = await saveBeforeAction('import YAML');
       if (!canProceed) {
-        setPendingImportFile(null);
+        clearPendingImportFile();
         return;
       }
     }
@@ -229,7 +230,7 @@ export const useFileOperations = ({
         toast.error('Invalid file format. Please upload a valid resume file.');
       } finally {
         setLoadingLoad(false);
-        setPendingImportFile(null);
+        clearPendingImportFile();
       }
     };
 
@@ -237,18 +238,18 @@ export const useFileOperations = ({
       console.error('Error reading file');
       toast.error('Failed to read file. Please try again.');
       setLoadingLoad(false);
-      setPendingImportFile(null);
+      clearPendingImportFile();
     };
 
     reader.readAsText(pendingImportFile);
   }, [
     pendingImportFile,
-    closeImportConfirm,
+    closeImportConfirmModal,
     isAnonymous,
     contactInfo,
     sections.length,
     saveBeforeAction,
-    setPendingImportFile,
+    clearPendingImportFile,
     iconRegistry,
     setContactInfo,
     supportsIcons,
