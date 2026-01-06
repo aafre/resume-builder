@@ -147,7 +147,7 @@ export const useSectionManagement = ({
       setSections((currentSections) =>
         currentSections.filter((_, i) => i !== deleteTarget.sectionIndex)
       );
-      toast.success(`Section "${deleteTarget.sectionName}" deleted`);
+      toast.success(deleteTarget.sectionName ? `Section "${deleteTarget.sectionName}" deleted` : 'Section deleted');
     } else if (deleteTarget.type === 'entry' && deleteTarget.entryIndex !== undefined) {
       // Delete entry from section using sectionService
       setSections((currentSections) => {
