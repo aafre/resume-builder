@@ -69,6 +69,7 @@ export interface UseModalManagerReturn {
   // Import Confirmation
   openImportConfirm: (file: File) => void;
   closeImportConfirm: () => void;
+  setPendingImportFile: (file: File | null) => void;
 
   // Navigation Drawer
   openNavigationDrawer: () => void;
@@ -179,6 +180,10 @@ export const useModalManager = (): UseModalManagerReturn => {
     setShowImportConfirm(false);
     setPendingImportFile(null);
   }, []);
+  // Expose setPendingImportFile for direct access (used by useFileOperations)
+  const setPendingImportFileExposed = useCallback((file: File | null) => {
+    setPendingImportFile(file);
+  }, []);
 
   // Navigation Drawer functions
   const openNavigationDrawer = useCallback(() => setShowNavigationDrawer(true), []);
@@ -245,6 +250,7 @@ export const useModalManager = (): UseModalManagerReturn => {
       closeStartFreshConfirm,
       openImportConfirm,
       closeImportConfirm,
+      setPendingImportFile: setPendingImportFileExposed,
       openNavigationDrawer,
       closeNavigationDrawer,
       toggleNavigationDrawer,

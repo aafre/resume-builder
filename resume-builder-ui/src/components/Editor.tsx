@@ -10,26 +10,17 @@ import ReactDOM from "react-dom";
 import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { AlertCircle, X } from "lucide-react";
-import { fetchTemplate, generateResume, generateThumbnail } from "../services/templates";
-import { getSessionId } from "../utils/session";
+import { generateThumbnail } from "../services/templates";
 import { useIconRegistry } from "../hooks/useIconRegistry";
 import { usePreview } from "../hooks/usePreview";
 import { useCloudSave } from "../hooks/useCloudSave";
 import { useAuth } from "../contexts/AuthContext";
 import { useConversion } from "../contexts/ConversionContext";
 import { StorageLimitModal } from "./StorageLimitModal";
-import { supabase } from "../lib/supabase";
-import { apiClient } from "../lib/api-client";
-import yaml from "js-yaml";
-import { PortableYAMLData } from "../types/iconTypes";
-import { extractReferencedIconFilenames } from "../utils/iconExtractor";
-import { isExperienceSection, isEducationSection } from "../utils/sectionTypeChecker";
-import { migrateLegacySections } from "../utils/sectionMigration";
+import { processSectionsForExport } from "../services/yamlService";
 import ContactInfoSection from "./ContactInfoSection";
 import FormattingHelp from "./FormattingHelp";
-import { validatePlatformUrl, generateDisplayText } from "../constants/socialPlatforms";
-import { SocialLink, ContactInfo, Section } from "../types";
-import { DeleteTarget } from "../types/editor";
+import { Section } from "../types";
 import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
 import GenericSection from "./GenericSection";
@@ -48,27 +39,32 @@ import TabbedHelpModal from "./TabbedHelpModal";
 import AuthModal from "./AuthModal";
 import DownloadCelebrationModal from "./DownloadCelebrationModal";
 import usePreferencePersistence from "../hooks/usePreferencePersistence";
+import { isExperienceSection, isEducationSection } from "../utils/sectionTypeChecker";
 import {
   DndContext,
   closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-  DragStartEvent,
   DragOverlay,
 } from "@dnd-kit/core";
 import {
-  arrayMove,
   SortableContext,
-  sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import {
   restrictToVerticalAxis,
   restrictToWindowEdges,
 } from "@dnd-kit/modifiers";
+
+// Import extracted hooks
+import { useModalManager } from "../hooks/editor/useModalManager";
+import { useEditorState } from "../hooks/editor/useEditorState";
+import { useContactForm } from "../hooks/editor/useContactForm";
+import { useSectionDragDrop } from "../hooks/editor/useSectionDragDrop";
+import { useSectionNavigation } from "../hooks/editor/useSectionNavigation";
+import { useResumeLoader } from "../hooks/editor/useResumeLoader";
+import { useTourFlow } from "../hooks/editor/useTourFlow";
+import { useSectionManagement } from "../hooks/editor/useSectionManagement";
+import { useFileOperations } from "../hooks/editor/useFileOperations";
+import { useEditorActions } from "../hooks/editor/useEditorActions";
 
 // Lazy-loaded error components
 const NotFound = lazy(() => import("./NotFound"));
@@ -84,116 +80,78 @@ const LoadingSpinner = () => (
   </div>
 );
 
-// DEFAULT_ICONS moved to usePreview.ts hook
-
 const Editor: React.FC = () => {
   const { resumeId: resumeIdFromUrl } = useParams<{ resumeId: string }>();
   const [searchParams] = useSearchParams();
 
   // Get context for footer integration
+  const { setIsSidebarCollapsed: setContextIsSidebarCollapsed } = useEditorContext();
+
+  // ===== LAYER 1: Core State Hooks =====
+  const modalManager = useModalManager();
+  const editorState = useEditorState();
+
   const {
-    setIsSidebarCollapsed: setContextIsSidebarCollapsed,
-  } = useEditorContext();
-
-  // TODO: useResponsive() will be added when implementing navigation drawer
-
-  const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
-  const [sections, setSections] = useState<Section[]>([]);
-  const [templateId, setTemplateId] = useState<string | null>(null);
-  const [supportsIcons, setSupportsIcons] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [loadingError, setLoadingError] = useState<string | null>(null);
-  const [originalTemplateData, setOriginalTemplateData] = useState<{
-    contactInfo: ContactInfo;
-    sections: Section[];
-  } | null>(null);
+    contactInfo,
+    setContactInfo,
+    sections,
+    setSections,
+    templateId,
+    setTemplateId,
+    supportsIcons,
+    setSupportsIcons,
+    originalTemplateData,
+    setOriginalTemplateData,
+    loading,
+    setLoading,
+    loadingError,
+    setLoadingError,
+  } = editorState;
 
   // Central icon registry for all uploaded icons
   const iconRegistry = useIconRegistry();
 
-  // Auth state - used by cloud save
+  // Auth state
   const { isAnonymous, session, loading: authLoading, anonMigrationInProgress } = useAuth();
   const isAuthenticated = !!session && !isAnonymous;
 
   // Conversion nudges
   const { hasShownDownloadToast, markDownloadToastShown, hasShownIdleNudge, markIdleNudgeShown } = useConversion();
 
-  const [showStorageLimitModal, setShowStorageLimitModal] = useState(false);
-  const [cloudResumeId, setCloudResumeId] = useState<string | null>(resumeIdFromUrl || null);
-  const [isLoadingFromUrl, setIsLoadingFromUrl] = useState<boolean>(!!resumeIdFromUrl);
-  const [hasLoadedFromUrl, setHasLoadedFromUrl] = useState<boolean>(false);
+  // AI warning state (not yet displayed in UI, but used by useResumeLoader)
+  const [aiWarnings, setAIWarnings] = useState<string[]>([]);
+  const [aiConfidence, setAIConfidence] = useState(0);
 
-  // Process sections to clean up icon paths for export/preview
-  const processSections = useCallback((sections: Section[]) => {
-    return sections.map((section) => {
-      // Handle icon-list sections (Certifications, Awards, etc.)
-      if (section.type === "icon-list") {
-        const updatedContent = section.content.map((item: any) => {
-          // Remove iconFile and iconBase64 for export, keep only clean icon filename
-          const { iconFile, iconBase64, ...cleanItem } = item;
-          return {
-            certification: cleanItem.certification || "",
-            issuer: cleanItem.issuer || "",
-            date: cleanItem.date || "",
-            icon: cleanItem.icon
-              ? cleanItem.icon.startsWith("/icons/")
-                ? cleanItem.icon.replace("/icons/", "")
-                : cleanItem.icon
-              : null,
-          };
-        });
-        return {
-          ...section,
-          content: updatedContent,
-        };
-      }
-
-      if (isExperienceSection(section) || isEducationSection(section)) {
-        const updatedContent = Array.isArray(section.content)
-          ? section.content.map((item: any) => {
-              // Remove iconFile and iconBase64 for export, keep only clean icon filename
-              const { iconFile, iconBase64, ...rest } = item;
-              return {
-                ...rest,
-                icon: rest.icon
-                  ? rest.icon.startsWith("/icons/")
-                    ? rest.icon.replace("/icons/", "")
-                    : rest.icon
-                  : null,
-              };
-            })
-          : section.content;
-
-        return {
-          ...section,
-          content: updatedContent,
-        };
-      }
-
-      return section;
-    });
-  }, []);
-
-  // Preview hook - handles PDF preview generation and caching
-  const {
-    previewUrl,
-    isGenerating: isGeneratingPreview,
-    error: previewError,
-    isStale: previewIsStale,
-    generatePreview,
-    checkAndRefreshIfStale,
-    validateIcons,
-    clearPreview,
-  } = usePreview({
-    contactInfo,
-    sections,
-    templateId,
-    iconRegistry,
-    processSections,
-    supportsIcons,
+  // Tour persistence
+  const { preferences, setPreference, isLoading: prefsLoading } = usePreferencePersistence({
+    session,
+    authLoading
   });
 
-  // Cloud save hook - handles saving to Supabase for authenticated users
+  // Refs for section scrolling and navigation
+  const contactInfoRef = useRef<HTMLDivElement>(null);
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const newSectionRef = useRef<HTMLDivElement | null>(null);
+
+  // ===== LAYER 2: Dependent Hooks =====
+  const contactForm = useContactForm({
+    contactInfo,
+    setContactInfo,
+  });
+
+  const dragDrop = useSectionDragDrop({
+    sections,
+    setSections,
+  });
+
+  const navigation = useSectionNavigation({
+    sections,
+    contactInfoRef,
+    sectionRefs,
+    setContextIsSidebarCollapsed,
+  });
+
+  // ===== Cloud Save Integration =====
   // Convert iconRegistry to plain object for cloud save
   const iconsForCloudSave = React.useMemo(() => {
     const filenames = iconRegistry.getRegisteredFilenames();
@@ -210,102 +168,19 @@ const Editor: React.FC = () => {
   const {
     saveStatus,
     lastSaved: cloudLastSaved,
-    saveNow, // Used before critical actions
+    saveNow,
     resumeId: savedResumeId
   } = useCloudSave({
-    resumeId: cloudResumeId,
+    resumeId: resumeLoader?.cloudResumeId ?? null,
     resumeData: contactInfo && templateId ? {
       contact_info: contactInfo,
       sections: sections,
       template_id: templateId
     } : { contact_info: {} as any, sections: [], template_id: '' },
     icons: iconsForCloudSave,
-    enabled: !!templateId && !!contactInfo && !isLoadingFromUrl && !authLoading,  // Wait for auth and data to be ready
-    session: session  // Pass session from AuthContext
+    enabled: !!templateId && !!contactInfo && !(resumeLoader?.isLoadingFromUrl) && !authLoading,
+    session: session
   });
-
-  // Update cloud resume ID when it's set from cloud save
-  useEffect(() => {
-    if (savedResumeId && savedResumeId !== cloudResumeId) {
-      setCloudResumeId(savedResumeId);
-    }
-  }, [savedResumeId, cloudResumeId]);
-
-  // Note: Storage limit errors are handled in saveBeforeAction() via RESUME_LIMIT_REACHED
-  // No need for blanket error handling here that shows modal for all errors
-
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [showPreviewModal, setShowPreviewModal] = useState(false);
-  const [editingTitleIndex, setEditingTitleIndex] = useState<number | null>(
-    null
-  );
-  const [temporaryTitle, setTemporaryTitle] = useState<string>("");
-  const [showModal, setShowModal] = useState(false);
-  const newSectionRef = useRef<HTMLDivElement | null>(null);
-  const downloadPromiseRef = useRef<Promise<void> | null>(null);
-  const contactInfoRef = useRef<HTMLDivElement | null>(null);
-  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [showHelpModal, setShowHelpModal] = useState(false);
-  const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
-  const [showWelcomeTour, setShowWelcomeTour] = useState(false);
-
-  // Idle nudge state
-  const [showIdleTooltip, setShowIdleTooltip] = useState(false);
-  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Confirmation dialog state
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
-
-  // Start Fresh confirmation
-  const [showStartFreshConfirm, setShowStartFreshConfirm] = useState(false);
-
-  // Import YAML confirmation
-  const [showImportConfirm, setShowImportConfirm] = useState(false);
-  const [pendingImportFile, setPendingImportFile] = useState<File | null>(null);
-
-  // Navigation drawer state
-  const [showNavigationDrawer, setShowNavigationDrawer] = useState(false);
-  const [activeSectionIndex, setActiveSectionIndex] = useState<number>(-1); // -1 for contact info
-  const [isSidebarCollapsed, setIsSidebarCollapsedLocal] = useState(false);
-
-  // Sync sidebar state with context for footer awareness
-  const setIsSidebarCollapsed = (collapsed: boolean) => {
-    setIsSidebarCollapsedLocal(collapsed);
-    setContextIsSidebarCollapsed(collapsed);
-  };
-
-  const [loadingSave, setLoadingSave] = useState(false);
-  const [loadingLoad, setLoadingLoad] = useState(false);
-  const [loadingAddSection, setLoadingAddSection] = useState(false);
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const [draggedSection, setDraggedSection] = useState<Section | null>(null);
-
-  // Social links state management
-  const [socialLinkErrors, setSocialLinkErrors] = useState<Record<number, string>>({});
-  const [autoGeneratedIndexes, setAutoGeneratedIndexes] = useState<Set<number>>(new Set());
-  const socialLinkDebounceRefs = useRef<Record<number, NodeJS.Timeout>>({});
-
-  // AI import warning state (feature in progress)
-  const [showAIWarning, setShowAIWarning] = useState(false);
-  const [_aiWarnings, setAIWarnings] = useState<string[]>([]);
-  const [_aiConfidence, setAIConfidence] = useState(0);
-
-  // Store save function for unmount to avoid stale closure
-  const saveOnUnmountRef = useRef<(() => Promise<void>) | null>(null);
-
-  // Drag and drop sensors
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
 
   /**
    * Saves pending changes before critical actions (Preview, Download, etc.)
@@ -320,19 +195,15 @@ const Editor: React.FC = () => {
     // If already saving, wait for completion
     if (saveStatus === 'saving') {
       console.log(`Waiting for in-progress save before ${actionName}...`);
-      // Wait up to 10 seconds
       const timeout = 10000;
       const start = Date.now();
       while (saveStatus === 'saving' && Date.now() - start < timeout) {
         await new Promise(resolve => setTimeout(resolve, 100));
       }
-      // After waiting, check if save completed successfully (not in error state)
-      // Use type assertion since saveStatus may have changed during the loop
       return (saveStatus as string) !== 'error';
     }
 
-    // Always trigger save before action to ensure latest data is persisted
-    // Backend handles deduplication via hash comparison, so redundant saves are cheap
+    // Always trigger save before action
     try {
       console.log(`Saving before ${actionName}...`);
       const result = await saveNow();
@@ -346,19 +217,145 @@ const Editor: React.FC = () => {
     } catch (error) {
       console.error(`Save failed before ${actionName}:`, error);
 
-      // Handle storage limit error
       if (error instanceof Error && error.message === 'RESUME_LIMIT_REACHED') {
-        setShowStorageLimitModal(true);
+        modalManager.openStorageLimitModal();
         return false;
       }
 
       toast.error(`Failed to save changes before ${actionName}. Please try again.`);
       return false;
     }
-  }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow]);
+  }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow, modalManager.openStorageLimitModal]);
 
-  // DEPRECATED: Block old ?template=X pattern (no longer supported)
-  // Users must create resume via /api/resumes/create, then navigate to /editor/{uuid}
+  // ===== LAYER 3: Complex Logic Hooks =====
+
+  // Wrapper for setShowAIWarning using modal manager
+  const setShowAIWarning = useCallback((show: boolean) => {
+    if (show) {
+      modalManager.openAIWarning();
+    } else {
+      modalManager.closeAIWarning();
+    }
+  }, [modalManager.openAIWarning, modalManager.closeAIWarning]);
+
+  const tourFlow = useTourFlow({
+    session,
+    isAnonymous,
+    anonMigrationInProgress,
+    authLoading,
+    tourCompleted: preferences.tour_completed,
+    prefsLoading,
+    setPreference,
+    hasShownIdleNudge,
+    markIdleNudgeShown,
+  });
+
+  // Declare resumeLoader with let so it can be used before assignment in useCloudSave
+  const resumeLoader = useResumeLoader({
+    contactInfo,
+    sections,
+    setContactInfo,
+    setSections,
+    templateId,
+    setTemplateId,
+    setSupportsIcons,
+    setOriginalTemplateData,
+    setLoading,
+    setLoadingError,
+    authLoading,
+    anonMigrationInProgress,
+    session,
+    iconRegistry,
+    resumeIdFromUrl,
+    searchParams,
+    setShowAIWarning,
+    setAIWarnings,
+    setAIConfidence,
+    isSigningInFromTour: tourFlow.isSigningInFromTour,
+  });
+
+  // Update cloud resume ID when it's set from cloud save
+  useEffect(() => {
+    if (savedResumeId && savedResumeId !== resumeLoader.cloudResumeId) {
+      resumeLoader.setCloudResumeId(savedResumeId);
+    }
+  }, [savedResumeId, resumeLoader.cloudResumeId, resumeLoader.setCloudResumeId]);
+
+  const sectionManagement = useSectionManagement({
+    sections,
+    setSections,
+    deleteTarget: modalManager.deleteTarget,
+    openDeleteConfirm: modalManager.openDeleteConfirm,
+    closeDeleteConfirm: modalManager.closeDeleteConfirm,
+    closeSectionTypeModal: modalManager.closeSectionTypeModal,
+    onSectionAdded: () => {
+      setTimeout(() => {
+        newSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    },
+  });
+
+  // ===== Preview Hook =====
+  const preview = usePreview({
+    contactInfo,
+    sections,
+    templateId,
+    iconRegistry,
+    processSections: processSectionsForExport,
+    supportsIcons,
+  });
+
+  // ===== LAYER 4: Action Hooks =====
+  const fileOperations = useFileOperations({
+    contactInfo,
+    setContactInfo,
+    sections,
+    setSections,
+    iconRegistry,
+    saveBeforeAction,
+    isAnonymous,
+    supportsIcons,
+    setOriginalTemplateData,
+    setIsLoadingFromUrl: (loading: boolean) => {
+      // This is a simplified setter since useResumeLoader manages this internally
+      // In the current architecture, this is used after YAML import to enable auto-save
+      if (!loading) {
+        // YAML import completed, auto-save is now enabled
+      }
+    },
+    pendingImportFile: modalManager.pendingImportFile,
+    setPendingImportFile: modalManager.setPendingImportFile,
+    openImportConfirm: modalManager.openImportConfirm,
+    closeImportConfirm: modalManager.closeImportConfirm,
+  });
+
+  const editorActions = useEditorActions({
+    contactInfo,
+    setContactInfo,
+    sections,
+    setSections,
+    templateId,
+    supportsIcons,
+    iconRegistry,
+    processSections: processSectionsForExport,
+    saveBeforeAction,
+    isAnonymous,
+    hasShownDownloadToast,
+    markDownloadToastShown,
+    originalTemplateData,
+    isLoadingFromUrl: resumeLoader.isLoadingFromUrl,
+    validateIcons: preview.validateIcons,
+    previewIsStale: preview.isStale,
+    clearPreview: preview.clearPreview,
+    generatePreview: preview.generatePreview,
+    checkAndRefreshIfStale: preview.checkAndRefreshIfStale,
+    openPreviewModal: modalManager.openPreviewModal,
+    openStartFreshConfirm: modalManager.openStartFreshConfirm,
+    closeStartFreshConfirm: modalManager.closeStartFreshConfirm,
+    openDownloadCelebration: modalManager.openDownloadCelebration,
+  });
+
+  // ===== DEPRECATED URL Pattern Block =====
   useEffect(() => {
     const templateParam = searchParams.get('template');
     const importedParam = searchParams.get('imported');
@@ -376,1160 +373,55 @@ const Editor: React.FC = () => {
       setLoading(false);
       return;
     }
-  }, [searchParams, resumeIdFromUrl]);
+  }, [searchParams, resumeIdFromUrl, setTemplateId, setLoadingError, setLoading]);
 
-  useEffect(() => {
-    // Skip template loading if we're loading a saved resume from URL
-    // The resume data will be loaded from the database instead
-    if (resumeIdFromUrl || isLoadingFromUrl) {
-      return;
-    }
-
-    // Skip if no template ID is set yet
-    if (!templateId) {
-      return;
-    }
-
-    // Skip template loading if editor already has data (e.g., from YAML import)
-    // This prevents overwriting imported data with default template
-    if (contactInfo && sections.length > 0) {
-      return;
-    }
-
-    const loadTemplate = async () => {
-      try {
-        setLoading(true);
-        const { yaml: yamlString, supportsIcons } = await fetchTemplate(
-          templateId
-        );
-        const parsedYaml = yaml.load(yamlString) as {
-          contact_info: ContactInfo;
-          sections: Section[];
-        };
-        setContactInfo(parsedYaml.contact_info);
-        // Migrate legacy sections (auto-add type property for backwards compatibility)
-        const migratedSections = migrateLegacySections(parsedYaml.sections);
-        // Process sections to clean up icon paths when loading template
-        const processedSections = processSections(migratedSections);
-        setSections(processedSections);
-        setSupportsIcons(supportsIcons);
-
-        // Store original template data to compare against changes
-        setOriginalTemplateData({
-          contactInfo: parsedYaml.contact_info,
-          sections: processedSections,
-        });
-      } catch (error) {
-        console.error("Error fetching template:", error);
-        setLoadingError(
-          "Failed to load template. Please check your connection and try again."
-        );
-        // Don't show toast when we're going to show error page
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadTemplate();
-  }, [templateId, resumeIdFromUrl, isLoadingFromUrl]);
-
-  // Load saved resume from cloud when resumeId is in URL
-  useEffect(() => {
-    // Wait for auth to be ready AND migration to complete
-    if (authLoading || anonMigrationInProgress) return;
-
-    if (!resumeIdFromUrl || !supabase) return;
-
-    // Prevent loading multiple times
-    if (hasLoadedFromUrl) return;
-
-    const loadResumeFromCloud = async () => {
-      try {
-        setLoading(true);
-
-        // Use session from AuthContext instead of calling getSession()
-        if (!session) {
-          toast.error('Please sign in to load saved resumes');
-          return;
-        }
-
-        // Use centralized API client (handles auth, 401/403 interceptor)
-        const { resume } = await apiClient.get(`/api/resumes/${resumeIdFromUrl}`);
-
-        // Populate editor state from database (JSONB)
-        setContactInfo(resume.contact_info);
-        setSections(resume.sections);
-        setTemplateId(resume.template_id); // Get template ID from database
-        setCloudResumeId(resume.id);
-
-        // Set supportsIcons flag based on template
-        // Only 'modern-with-icons' template supports icons
-        const templateSupportsIcons = resume.template_id === 'modern-with-icons';
-        setSupportsIcons(templateSupportsIcons);
-
-        // Load template structure for originalTemplateData (needed for "Start Fresh")
-        try {
-          const { yaml: templateYaml } = await fetchTemplate(resume.template_id);
-          const templateData = yaml.load(templateYaml) as {
-            contact_info: ContactInfo;
-            sections: Section[];
-          };
-
-          // Migrate and process template sections
-          const migratedTemplateSections = migrateLegacySections(templateData.sections);
-          const processedTemplateSections = processSections(migratedTemplateSections);
-
-          setOriginalTemplateData({
-            contactInfo: templateData.contact_info,
-            sections: processedTemplateSections,
-          });
-        } catch (templateError) {
-          console.error('Failed to load template structure for Start Fresh:', templateError);
-          // Non-critical: Start Fresh will still fail gracefully if originalTemplateData is null
-        }
-
-        // Load icons from storage URLs and register them
-        iconRegistry.clearRegistry(); // Clear existing icons first
-        for (const icon of resume.icons || []) {
-          try {
-            const iconResponse = await fetch(icon.storage_url);
-            const blob = await iconResponse.blob();
-            const file = new File([blob], icon.filename, { type: blob.type });
-            // Use registerIconWithFilename to preserve original filename from storage
-            iconRegistry.registerIconWithFilename(file, icon.filename);
-          } catch (iconError) {
-            console.error(`Failed to load icon ${icon.filename}:`, iconError);
-          }
-        }
-
-        // Check if resume has AI import metadata and show warning banner
-        if (resume.ai_import_warnings || resume.ai_import_confidence) {
-          setShowAIWarning(true);
-          setAIWarnings(resume.ai_import_warnings || []);
-          setAIConfidence(resume.ai_import_confidence || 0);
-        }
-
-        // Only show toast if NOT loading after migration from tour sign-in
-        if (!isSigningInFromTour) {
-          toast.success('Resume loaded successfully');
-        }
-        setIsLoadingFromUrl(false);
-        setHasLoadedFromUrl(true); // Mark as loaded to prevent re-runs
-      } catch (error) {
-        console.error('Failed to load resume:', error);
-
-        // Check if we can recover from template or have fallback data
-        // This happens when:
-        // 1. User logs in via OAuth, redirects back to /editor/{oldResumeId}
-        // 2. Old resume ID doesn't exist in database (auto-save hadn't triggered yet)
-        // 3. But Editor can recover by loading template data
-        const hasTemplateParam = searchParams.get('template');
-        const hasEditorState = contactInfo && sections.length > 0;
-        const canRecover = templateId || hasTemplateParam || hasEditorState;
-
-        if (!canRecover) {
-          // Only show toast if we can't recover - this is a true error
-          toast.error(error instanceof Error ? error.message : 'Failed to load resume');
-        } else {
-          console.log('Resume not found in database, will recover from template or existing editor state');
-        }
-
-        setIsLoadingFromUrl(false);
-        // Don't set hasLoadedFromUrl on error - allow retry after migration completes
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadResumeFromCloud();
-  }, [resumeIdFromUrl, authLoading, anonMigrationInProgress, session, hasLoadedFromUrl]);
-
-  // Tour persistence using unified preferences hook
-  const { preferences, setPreference, isLoading: prefsLoading } = usePreferencePersistence({
-    session,
-    authLoading
-  });
-
-  const shouldShowTour = !preferences.tour_completed && !prefsLoading;
-
-  const markTourComplete = useCallback(async () => {
-    await setPreference('tour_completed', true);
-  }, [setPreference]);
-
-  const [showAuthModalFromTour, setShowAuthModalFromTour] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false); // Bug fix: Was referenced but not defined
-  const [showDownloadCelebration, setShowDownloadCelebration] = useState(false);
-  const [isSigningInFromTour, setIsSigningInFromTour] = useState(false);
-
-  // Track if we've already launched tour after sign-in to prevent infinite loop
-  const hasLaunchedTourAfterSignIn = useRef(false);
-  // Track if we just signed in from tour (to distinguish from regular page load)
-  const justSignedInFromTour = useRef(false);
-
-  useEffect(() => {
-    if (shouldShowTour) {
-      setTimeout(() => setShowWelcomeTour(true), 1500);
-    }
-  }, [shouldShowTour]);
-
-  // Re-launch tour after successful sign-in and migration completion
-  useEffect(() => {
-    // Only proceed if:
-    // 1. User just signed in from tour (not a regular page load)
-    // 2. User is authenticated (not anonymous anymore)
-    // 3. Migration has completed
-    // 4. Tour is not already showing
-    // 5. Haven't already launched tour after this sign-in (prevents infinite loop)
-    // 6. User hasn't completed tour yet (prevents re-launch on page reload)
-
-    if (
-      justSignedInFromTour.current &&
-      !isAnonymous &&
-      session &&
-      !anonMigrationInProgress &&
-      !authLoading &&
-      !prefsLoading &&
-      !preferences.tour_completed &&
-      !showWelcomeTour &&
-      !hasLaunchedTourAfterSignIn.current
-    ) {
-      console.log('🎯 Migration complete, re-launching tour');
-
-      // Small delay to let UI settle after migration
-      const timer = setTimeout(() => {
-        setShowWelcomeTour(true);
-        // No toast needed - tour showing "Cloud Saving Active" is sufficient
-        hasLaunchedTourAfterSignIn.current = true; // Mark as launched to prevent loop
-        justSignedInFromTour.current = false; // Reset the flag
-        setIsSigningInFromTour(false); // Reset signing-in flag
-      }, 150);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isAnonymous, session, anonMigrationInProgress, authLoading, prefsLoading, preferences.tour_completed, showWelcomeTour]);
-
-  const handleTourComplete = async () => {
-    setShowWelcomeTour(false);
-    await markTourComplete();
-    hasLaunchedTourAfterSignIn.current = false; // Reset for future sign-ins
-  };
-
-  // Idle nudge: Show tooltip after 5 minutes for anonymous users (one-time ever)
-  useEffect(() => {
-    if (isAnonymous && !hasShownIdleNudge && !authLoading) {
-      // Start 5-minute timer
-      idleTimerRef.current = setTimeout(() => {
-        setShowIdleTooltip(true);
-        markIdleNudgeShown();
-
-        // Auto-dismiss after 10 seconds
-        setTimeout(() => setShowIdleTooltip(false), 10000);
-      }, 5 * 60 * 1000); // 5 minutes
-
-      return () => {
-        if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-      };
-    }
-  }, [isAnonymous, hasShownIdleNudge, authLoading, markIdleNudgeShown]);
-
-  const handleUpdateSection = (index: number, updatedSection: Section) => {
-    const updatedSections = [...sections];
-    updatedSections[index] = updatedSection;
-    setSections(updatedSections);
-  };
-
-  const handleTitleEdit = (index: number) => {
-    setEditingTitleIndex(index);
-    setTemporaryTitle(sections[index].name);
-  };
-
-  const handleTitleSave = () => {
-    if (editingTitleIndex === null) return;
-    const updatedSections = [...sections];
-    updatedSections[editingTitleIndex].name = temporaryTitle;
-    setSections(updatedSections);
-    setEditingTitleIndex(null);
-  };
-
-  const handleTitleCancel = () => {
-    setTemporaryTitle("");
-    setEditingTitleIndex(null);
-  };
-
-  const handleDeleteSection = (index: number) => {
-    // Show confirmation dialog instead of deleting immediately
-    setDeleteTarget({
-      type: 'section',
-      sectionIndex: index,
-      sectionName: sections[index]?.name,
-    });
-    setShowDeleteConfirm(true);
-  };
-
-  const handleDeleteEntry = (sectionIndex: number, entryIndex: number) => {
-    // Show confirmation dialog for entry deletion
-    setDeleteTarget({
-      type: 'entry',
-      sectionIndex,
-      entryIndex,
-      sectionName: sections[sectionIndex]?.name,
-    });
-    setShowDeleteConfirm(true);
-  };
-
-  const confirmDelete = () => {
-    if (!deleteTarget) return;
-
-    if (deleteTarget.type === 'section') {
-      // Delete entire section
-      const updatedSections = sections.filter((_, i) => i !== deleteTarget.sectionIndex);
-      setSections(updatedSections);
-      toast.success(`Section "${deleteTarget.sectionName}" deleted`);
-    } else if (deleteTarget.type === 'entry' && deleteTarget.entryIndex !== undefined) {
-      // Delete entry from section
-      const updatedSections = [...sections];
-      const section = updatedSections[deleteTarget.sectionIndex];
-
-      if (Array.isArray(section.content)) {
-        const updatedContent = section.content.filter((_, i) => i !== deleteTarget.entryIndex);
-        updatedSections[deleteTarget.sectionIndex] = {
-          ...section,
-          content: updatedContent,
-        };
-        setSections(updatedSections);
-        toast.success(`Entry deleted from "${section.name}"`);
-      }
-    }
-
-    // Reset state
-    setDeleteTarget(null);
-    setShowDeleteConfirm(false);
-  };
-
-  const handleScrollToSection = (index: number) => {
-    setActiveSectionIndex(index);
-
-    // Scroll to contact info (-1) or section (0+)
-    const targetRef = index === -1 ? contactInfoRef.current : sectionRefs.current[index];
-
-    if (targetRef) {
-      const yOffset = -100; // Offset for fixed headers
-      const y = targetRef.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  };
-
-  // Update active section on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      // Get viewport middle point
-      const scrollPosition = window.scrollY + window.innerHeight / 3;
-
-      // Check contact info first
-      if (contactInfoRef.current) {
-        const rect = contactInfoRef.current.getBoundingClientRect();
-        const top = rect.top + window.scrollY;
-        if (scrollPosition >= top && scrollPosition < top + rect.height) {
-          setActiveSectionIndex(-1);
-          return;
-        }
-      }
-
-      // Check each section
-      for (let i = 0; i < sectionRefs.current.length; i++) {
-        const ref = sectionRefs.current[i];
-        if (ref) {
-          const rect = ref.getBoundingClientRect();
-          const top = rect.top + window.scrollY;
-          if (scrollPosition >= top && scrollPosition < top + rect.height) {
-            setActiveSectionIndex(i);
-            return;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [sections.length]);
-
-  const handleDragStart = (event: DragStartEvent) => {
-    const { active } = event;
-    setActiveId(active.id as string);
-
-    const sectionIndex = parseInt(active.id as string);
-    setDraggedSection(sections[sectionIndex]);
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (active.id !== over?.id) {
-      const oldIndex = parseInt(active.id as string);
-      const newIndex = parseInt(over?.id as string);
-
-      if (oldIndex !== undefined && newIndex !== undefined) {
-        setSections((sections) => {
-          return arrayMove(sections, oldIndex, newIndex);
-        });
-
-        // Toast notification for successful reorder
-        toast.success("Section reordered successfully!");
-      }
-    }
-
-    setActiveId(null);
-    setDraggedSection(null);
-  };
-
-  const handleDragCancel = () => {
-    setActiveId(null);
-    setDraggedSection(null);
-  };
-
-  const handleAddSection = (type: string) => {
-    // Check for duplicates - generate a unique name if needed
-    const getUniqueDefaultName = (baseType: string) => {
-      const typeNameMap: { [key: string]: string } = {
-        experience: "New Experience Section",
-        education: "New Education Section",
-        text: "New Text Section",
-        "bulleted-list": "New Bulleted List Section",
-        "inline-list": "New Inline List Section",
-        "dynamic-column-list": "New Dynamic Column List Section",
-        "icon-list": "New Icon List Section",
-      };
-
-      const baseName = typeNameMap[baseType] || "New Section";
-      const existingNames = sections.map((s) => s.name.toLowerCase());
-
-      // If base name doesn't exist, use it
-      if (!existingNames.includes(baseName.toLowerCase())) {
-        return baseName;
-      }
-
-      // Otherwise, append a number
-      let counter = 2;
-      let uniqueName = `${baseName} ${counter}`;
-      while (existingNames.includes(uniqueName.toLowerCase())) {
-        counter++;
-        uniqueName = `${baseName} ${counter}`;
-      }
-      return uniqueName;
-    };
-
-    const defaultName = getUniqueDefaultName(type);
-
-    let defaultContent;
-    if (type === "experience") {
-      // Default content for Experience sections
-      defaultContent = [
-        {
-          company: "",
-          title: "",
-          dates: "",
-          description: [""],
-          icon: null,
-        },
-      ];
-    } else if (type === "education") {
-      // Default content for Education sections
-      defaultContent = [
-        {
-          degree: "",
-          school: "",
-          year: "",
-          field_of_study: "",
-          icon: null,
-        },
-      ];
-    } else if (
-      [
-        "bulleted-list",
-        "inline-list",
-        "dynamic-column-list",
-        "icon-list",
-      ].includes(type)
-    ) {
-      defaultContent = [];
-    } else {
-      defaultContent = "";
-    }
-
-    const newSection: Section = {
-      name: defaultName,
-      type: type,
-      content: defaultContent,
-    };
-
-    setSections((prevSections) => [...prevSections, newSection]);
-    setShowModal(false);
-    setTimeout(() => {
-      newSectionRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
-  };
-
-  const handleExportYAML = async () => {
-    // Save first to ensure export has latest changes
-    const canProceed = await saveBeforeAction('export YAML');
-    if (!canProceed) return;
-
-    try {
-      setLoadingSave(true);
-      // Longer delay for noticeable feedback on file operations
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      const processedSections = processSections(sections);
-
-      // Extract all referenced icon filenames from the sections
-      const referencedIcons = extractReferencedIconFilenames(processedSections);
-
-      // Get icon data for only the referenced icons (efficient export)
-      const iconData =
-        referencedIcons.length > 0
-          ? await iconRegistry.exportIconsForYAML(referencedIcons)
-          : {};
-
-      // Create portable YAML with embedded icons
-      const portableData: PortableYAMLData = {
-        contact_info: contactInfo,
-        sections: processedSections,
-      };
-
-      // Only include __icons__ section if there are icons to embed
-      if (Object.keys(iconData).length > 0) {
-        portableData.__icons__ = iconData;
-      }
-
-      const yamlData = yaml.dump(portableData);
-
-      const blob = new Blob([yamlData], { type: "application/x-yaml" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "resume.yaml";
-      link.click();
-
-      // Show success message with icon count if applicable
-      const iconCount = Object.keys(iconData).length;
-      const message =
-        iconCount > 0
-          ? `Resume saved successfully with ${iconCount} embedded icon${
-              iconCount === 1 ? "" : "s"
-            }!`
-          : "Resume saved successfully!";
-      toast.success(message);
-    } catch (error) {
-      console.error("Error exporting YAML:", error);
-      toast.error("Save failed. Check browser settings and try again.");
-    } finally {
-      setLoadingSave(false);
-    }
-  };
-
-  const handleImportYAML = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    // Store file and show confirmation dialog
-    setPendingImportFile(file);
-    setShowImportConfirm(true);
-
-    // Reset file input so the same file can be selected again
-    event.target.value = '';
-  };
-
-  const confirmImportYAML = async () => {
-    if (!pendingImportFile) return;
-
-    setShowImportConfirm(false);
-
-    // Save current work before importing (if authenticated and has content)
-    // Auto-save will handle preserving the current resume
-    if (!isAnonymous && contactInfo && sections.length > 0) {
-      const canProceed = await saveBeforeAction('import YAML');
-      if (!canProceed) {
-        setPendingImportFile(null);
-        return;
-      }
-    }
-
-    setLoadingLoad(true);
-
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      try {
-        // Longer delay for noticeable feedback on file operations
-        await new Promise((resolve) => setTimeout(resolve, 1200));
-        const parsedYaml = yaml.load(
-          e.target?.result as string
-        ) as PortableYAMLData;
-
-        setContactInfo(parsedYaml.contact_info);
-
-        // Import icons first if they exist in the YAML
-        if (
-          parsedYaml.__icons__ &&
-          Object.keys(parsedYaml.__icons__).length > 0
-        ) {
-          await iconRegistry.importIconsFromYAML(parsedYaml.__icons__);
-        }
-
-        // Migrate legacy sections (auto-add type property for backwards compatibility)
-        const migratedSections = migrateLegacySections(parsedYaml.sections);
-        // Process sections to clean up icon paths when importing YAML
-        const processedSections = processSections(migratedSections);
-
-        // Validate imported icons against template compatibility
-        if (!supportsIcons) {
-          const referencedIcons = extractReferencedIconFilenames(processedSections);
-          if (referencedIcons.length > 0) {
-            toast(
-              `This template doesn't support icons. ${referencedIcons.length} icon(s) ` +
-              `were found in the imported file and will be ignored.`,
-              { duration: 8000, icon: '⚠️' }
-            );
-          }
-        }
-
-        setSections(processedSections);
-
-        // CRITICAL FIX: Update originalTemplateData to reflect the imported YAML
-        // This ensures hasDataChanged() returns false for the imported baseline
-        setOriginalTemplateData({
-          contactInfo: parsedYaml.contact_info,
-          sections: processedSections,
-        });
-
-        // Enable auto-save after YAML import completes
-        setIsLoadingFromUrl(false);
-
-        toast.success("Resume loaded successfully!");
-      } catch (error) {
-        console.error("Error parsing YAML file:", error);
-        toast.error("Invalid file format. Please upload a valid resume file.");
-      } finally {
-        setLoadingLoad(false);
-        setPendingImportFile(null);
-      }
-    };
-    reader.readAsText(pendingImportFile);
-  };
-
-  const handleGenerateResume = async () => {
-    // Deduplicate requests - return existing promise if download in progress
-    if (downloadPromiseRef.current) {
-      return downloadPromiseRef.current;
-    }
-
-    const promise = (async () => {
-      try {
-        // Save first to ensure PDF has latest changes
-        const canProceed = await saveBeforeAction('download PDF');
-        if (!canProceed) return;
-
-        // Validate LinkedIn URL only if provided (block invalid, allow empty)
-        if (contactInfo?.linkedin && !validateLinkedInUrl(contactInfo.linkedin)) {
-          toast.error("Please enter a valid LinkedIn URL or leave it empty");
-          return;
-        }
-
-        // Validate icon availability for icon-supporting templates
-        if (supportsIcons) {
-          const { valid, missingIcons } = validateIcons();
-          if (!valid) {
-            showMissingIconsDialog(missingIcons, isLoadingFromUrl);
-            return;
-          }
-        }
-
-        setIsDownloading(true);
-        const processedSections = processSections(sections);
-
-        const yamlData = yaml.dump({
-          contact_info: contactInfo,
-          sections: processedSections,
-        });
-
-        const formData = new FormData();
-        const yamlBlob = new Blob([yamlData], { type: "application/x-yaml" });
-        formData.append("yaml_file", yamlBlob, "resume.yaml");
-        formData.append("template", templateId || "modern-no-icons");
-
-        // Add session ID for session-based icon isolation
-        const sessionId = getSessionId();
-        formData.append("session_id", sessionId);
-
-        // Only add icons if template supports them (validation already confirmed all icons exist)
-        if (supportsIcons) {
-          const referencedIcons = extractReferencedIconFilenames(sections);
-          for (const iconFilename of referencedIcons) {
-            const iconFile = iconRegistry.getIconFile(iconFilename);
-            if (iconFile) {
-              formData.append("icons", iconFile, iconFilename);
-            }
-            // No need for else - validation already caught missing icons
-          }
-        }
-
-        const { pdfBlob, fileName } = await generateResume(formData);
-
-        const pdfUrl = URL.createObjectURL(pdfBlob);
-        const link = document.createElement("a");
-        link.href = pdfUrl;
-        link.download = fileName; // Use dynamic filename
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        toast.success("Resume downloaded successfully!");
-
-        // Show celebration modal for anonymous users (first time only)
-        if (isAnonymous && !hasShownDownloadToast) {
-          markDownloadToastShown();
-
-          setTimeout(() => {
-            setShowDownloadCelebration(true);
-          }, 500);
-        }
-      } catch (error) {
-        console.error("Error generating resume:", error);
-        const errorMessage =
-          error instanceof Error ? error.message : "Unknown error";
-        toast.error(`Resume generation failed: ${errorMessage}`);
-      } finally {
-        setIsDownloading(false);
-        downloadPromiseRef.current = null;
-      }
-    })();
-
-    downloadPromiseRef.current = promise;
-    return promise;
-  };
-
-  const toggleHelpModal = () => setShowHelpModal(!showHelpModal);
-
-  // Preview handlers
-  const handleOpenPreview = async () => {
-    // Save first to ensure database has latest changes
-    const canProceed = await saveBeforeAction('preview');
-    if (!canProceed) return;
-
-    // Validate icons using memoized function from hook
-    const { valid, missingIcons } = validateIcons();
-    if (!valid) {
-      showMissingIconsDialog(missingIcons, isLoadingFromUrl);
-      return;
-    }
-
-    // Clear stale preview to show loader instead of old content
-    if (previewIsStale) {
-      clearPreview();
-    }
-
-    // Open modal first, then auto-refresh if stale
-    setShowPreviewModal(true);
-    await checkAndRefreshIfStale();
-  };
-
-  const handleClosePreview = () => {
-    setShowPreviewModal(false);
-  };
-
-  const handleRefreshPreview = async () => {
-    // Save first to ensure database has latest changes
-    const canProceed = await saveBeforeAction('refresh preview');
-    if (!canProceed) return;
-
-    // Validate icons using memoized function from hook
-    const { valid, missingIcons } = validateIcons();
-    if (!valid) {
-      showMissingIconsDialog(missingIcons, isLoadingFromUrl);
-      return;
-    }
-
-    await generatePreview();
-  };
-
-  const handleAddNewSectionClick = async () => {
-    setLoadingAddSection(true);
-
-    // Brief delay for subtle visual feedback
-    await new Promise((resolve) => setTimeout(resolve, 300));
-
-    setShowModal(true);
-    setLoadingAddSection(false);
-  };
-
-  // Validate LinkedIn URL (without storing error state - just return boolean)
-  const validateLinkedInUrl = (url: string): boolean => {
-    if (!url.trim()) {
-      return true; // Empty is valid (optional field)
-    }
-
-    const urlLower = url.toLowerCase().trim();
-
-    // Optimized LinkedIn URL regex that handles:
-    // - Any subdomain (country codes, www, mobile, etc.)
-    // - Personal profiles (/in/, /pub/, /public-profile/in/, /public-profile/pub/)
-    // - Username length validation (3-100 characters)
-    // - Optional trailing slash
-    const linkedinProfilePattern = /^(https?:\/\/)?([\w\d]+\.)?linkedin\.com\/(?:public-profile\/)?(in|pub)\/[\w-]{3,100}\/?$/;
-
-    return linkedinProfilePattern.test(urlLower);
-  };
-
-  // Social Links Handlers
-  const handleAddSocialLink = () => {
-    setContactInfo(prevContactInfo => {
-      if (!prevContactInfo) return null;
-
-      const currentLinks = prevContactInfo.social_links || [];
-      return {
-        ...prevContactInfo,
-        social_links: [
-          ...currentLinks,
-          { platform: "", url: "", display_text: "" }
-        ]
-      };
-    });
-  };
-
-  const handleRemoveSocialLink = (index: number) => {
-    setContactInfo(prevContactInfo => {
-      if (!prevContactInfo) return null;
-
-      const currentLinks = prevContactInfo.social_links || [];
-      const updatedLinks = currentLinks.filter((_, i) => i !== index);
-
-      return {
-        ...prevContactInfo,
-        social_links: updatedLinks
-      };
-    });
-
-    // Clear error for this index
-    setSocialLinkErrors(prev => {
-      const updated = { ...prev };
-      delete updated[index];
-      return updated;
-    });
-
-    // Remove from auto-generated indexes
-    setAutoGeneratedIndexes(prev => {
-      const updated = new Set(prev);
-      updated.delete(index);
-      return updated;
-    });
-
-    // Clear any pending debounce for this index
-    if (socialLinkDebounceRefs.current[index]) {
-      clearTimeout(socialLinkDebounceRefs.current[index]);
-      delete socialLinkDebounceRefs.current[index];
-    }
-  };
-
-  const handleSocialLinkChange = (index: number, field: keyof SocialLink, value: string) => {
-    setContactInfo(prevContactInfo => {
-      if (!prevContactInfo) return null;
-
-      const currentLinks = prevContactInfo.social_links || [];
-      const updatedLinks = [...currentLinks];
-
-      if (!updatedLinks[index]) {
-        updatedLinks[index] = { platform: "", url: "", display_text: "" };
-      }
-
-      updatedLinks[index] = {
-        ...updatedLinks[index],
-        [field]: value
-      };
-
-      return {
-        ...prevContactInfo,
-        social_links: updatedLinks
-      };
-    });
-
-    // Handle validation and auto-generation based on field
-    if (field === "url") {
-      const link = contactInfo?.social_links?.[index];
-      const platform = link?.platform || "";
-
-      if (!value.trim()) {
-        // Clear error if URL is empty
-        setSocialLinkErrors(prev => {
-          const updated = { ...prev };
-          delete updated[index];
-          return updated;
-        });
-
-        // Clear display text if URL is empty
-        setContactInfo(prevContactInfo => {
-          if (!prevContactInfo) return null;
-          const currentLinks = prevContactInfo.social_links || [];
-          const updatedLinks = [...currentLinks];
-          if (updatedLinks[index]) {
-            updatedLinks[index] = { ...updatedLinks[index], display_text: "" };
-          }
-          return { ...prevContactInfo, social_links: updatedLinks };
-        });
-
-        setAutoGeneratedIndexes(prev => {
-          const updated = new Set(prev);
-          updated.delete(index);
-          return updated;
-        });
-        return;
-      }
-
-      // Validate URL for the platform
-      if (platform) {
-        const validation = validatePlatformUrl(platform, value);
-
-        if (!validation.valid && validation.error) {
-          setSocialLinkErrors(prev => ({
-            ...prev,
-            [index]: validation.error || ""
-          }));
-        } else {
-          setSocialLinkErrors(prev => {
-            const updated = { ...prev };
-            delete updated[index];
-            return updated;
-          });
-
-          // Auto-generate display text if URL is valid
-          debouncedGenerateSocialDisplayText(index, platform, value);
-        }
-      }
-    } else if (field === "platform") {
-      // Re-validate URL when platform changes
-      const link = contactInfo?.social_links?.[index];
-      const url = link?.url || "";
-
-      if (url && value) {
-        const validation = validatePlatformUrl(value, url);
-
-        if (!validation.valid && validation.error) {
-          setSocialLinkErrors(prev => ({
-            ...prev,
-            [index]: validation.error || ""
-          }));
-        } else {
-          setSocialLinkErrors(prev => {
-            const updated = { ...prev };
-            delete updated[index];
-            return updated;
-          });
-
-          // Auto-generate display text for new platform
-          debouncedGenerateSocialDisplayText(index, value, url);
-        }
-      }
-    } else if (field === "display_text") {
-      // User is manually editing, remove auto-generated flag
-      setAutoGeneratedIndexes(prev => {
-        const updated = new Set(prev);
-        updated.delete(index);
-        return updated;
-      });
-    }
-  };
-
-  const debouncedGenerateSocialDisplayText = (index: number, platform: string, url: string) => {
-    // Clear existing timeout for this index
-    if (socialLinkDebounceRefs.current[index]) {
-      clearTimeout(socialLinkDebounceRefs.current[index]);
-    }
-
-    // Set new timeout for 500ms debounce
-    socialLinkDebounceRefs.current[index] = setTimeout(() => {
-      const displayText = generateDisplayText(platform, url, contactInfo?.name);
-
-      setContactInfo(prevContactInfo => {
-        if (!prevContactInfo) return null;
-
-        const currentLinks = prevContactInfo.social_links || [];
-        const updatedLinks = [...currentLinks];
-
-        if (updatedLinks[index]) {
-          updatedLinks[index] = {
-            ...updatedLinks[index],
-            display_text: displayText
-          };
-        }
-
-        return {
-          ...prevContactInfo,
-          social_links: updatedLinks
-        };
-      });
-
-      // Mark this index as auto-generated
-      setAutoGeneratedIndexes(prev => new Set(prev).add(index));
-    }, 500);
-  };
-
-  /**
-   * Shows detailed information about missing icons to help user locate them
-   */
-  const showMissingIconsDialog = useCallback((missingIcons: string[], isFromCloudLoad: boolean = false) => {
-    if (isFromCloudLoad) {
-      // Special message for cloud load failures
-      toast.error(
-        `⚠️ Unable to load ${missingIcons.length} icon(s) from cloud storage\n\n` +
-        `This can happen if:\n` +
-        `• Icons failed to upload when resume was last saved\n` +
-        `• Temporary storage connectivity issue\n\n` +
-        `To fix:\n` +
-        `1. Re-upload the missing icons using the icon picker\n` +
-        `2. Save your resume\n` +
-        `3. Icons will then be available on next edit\n\n` +
-        `Missing icons:\n${missingIcons.map(icon => `• ${icon}`).join('\n')}`,
-        {
-          duration: 15000,
-          style: { whiteSpace: 'pre-line', maxWidth: '600px' }
-        }
-      );
-    } else {
-      // Original detailed error for regular missing icons
-      const iconLocations = missingIcons.map(icon => {
-        // Find where this icon is referenced
-        const locations: string[] = [];
-
-        sections.forEach((section) => {
-          if (isExperienceSection(section) || isEducationSection(section)) {
-            const items = section.content as any[];
-            items.forEach((item, itemIdx) => {
-              if (item.icon === icon) {
-                locations.push(`${section.name} → Entry ${itemIdx + 1}`);
-              }
-            });
-          } else if (section.type === 'icon-list') {
-            const items = section.content as any[];
-            items.forEach((item, itemIdx) => {
-              if (item.icon === icon) {
-                locations.push(`${section.name} → Item ${itemIdx + 1}`);
-              }
-            });
-          }
-        });
-
-        return `• ${icon}${locations.length > 0 ? ' (used in: ' + locations.join(', ') + ')' : ''}`;
-      }).join('\n');
-
-      toast.error(
-        `Missing Icons (${missingIcons.length}):\n${iconLocations}\n\nPlease upload these icons or remove them from your sections.`,
-        { duration: 12000, style: { whiteSpace: 'pre-line' } }
-      );
-    }
-  }, [sections]);
-
-  const handleLoadEmptyTemplate = () => {
-    // Show confirmation dialog before clearing
-    setShowStartFreshConfirm(true);
-  };
-
-  const confirmStartFresh = async () => {
-    if (!originalTemplateData) return;
-
-    // Save current work before clearing (if authenticated and has content)
-    if (!isAnonymous && contactInfo && sections.length > 0) {
-      const canProceed = await saveBeforeAction('start fresh');
-      if (!canProceed) {
-        setShowStartFreshConfirm(false);
-        return;
-      }
-    }
-
-    setShowStartFreshConfirm(false);
-    setLoadingSave(true);
-    try {
-      // Reset contact info
-      setContactInfo({
-        name: "",
-        location: "",
-        email: "",
-        phone: "",
-        linkedin: "",
-        linkedin_display: "",
-        social_links: [],
-      });
-
-      // Reset sections by preserving structure but emptying content
-      const emptySections = originalTemplateData.sections.map((section) => ({
-        ...section,
-        content: Array.isArray(section.content) ? [] : "",
-      }));
-
-      setSections(emptySections);
-      iconRegistry.clearRegistry();
-
-      toast.success("Template cleared successfully!");
-    } catch (error) {
-      console.error("Error clearing template:", error);
-      toast.error("Failed to clear template");
-    } finally {
-      setLoadingSave(false);
-    }
-  };
-
-  // Close advanced menu when clicking outside
+  // ===== Close advanced menu on click outside =====
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (showAdvancedMenu) {
+      if (modalManager.showAdvancedMenu) {
         const target = event.target as Element;
         if (!target.closest(".advanced-menu-container")) {
-          setShowAdvancedMenu(false);
+          modalManager.closeAdvancedMenu();
         }
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showAdvancedMenu]);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [modalManager.showAdvancedMenu, modalManager.closeAdvancedMenu]);
 
-  // Keyboard shortcuts for preview (Ctrl+Shift+P / Cmd+Shift+P)
+  // ===== Keyboard shortcuts for preview =====
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      // Ctrl+Shift+P or Cmd+Shift+P to open preview
       if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'P') {
         event.preventDefault();
-        handleOpenPreview();
+        editorActions.handleOpenPreview();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleOpenPreview]);
+  }, [editorActions.handleOpenPreview]);
 
-  // Warn user if closing browser/tab with unsaved changes
+  // ===== Warn user if closing browser/tab with unsaved changes =====
   useEffect(() => {
     if (isAnonymous || !contactInfo || !templateId) return;
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      // Only warn if save is pending or failed
       if (saveStatus === 'saving' || saveStatus === 'error') {
         e.preventDefault();
-        e.returnValue = ''; // Chrome requires returnValue to be set
-        return ''; // For older browsers
+        e.returnValue = '';
+        return '';
       }
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [isAnonymous, contactInfo, templateId, saveStatus]);
 
-  // Update save function ref with current values (fixes stale closure bug)
+  // ===== Save on component unmount =====
+  const saveOnUnmountRef = useRef<(() => Promise<void>) | null>(null);
+
   useEffect(() => {
     saveOnUnmountRef.current = async () => {
       if (!isAnonymous && contactInfo && templateId && saveStatus !== 'saving') {
@@ -1537,45 +429,39 @@ const Editor: React.FC = () => {
           await saveNow();
           console.log('Saved on unmount');
 
-          // Trigger thumbnail generation after save completes
-          // Use savedResumeId if available, otherwise cloudResumeId
-          const resumeId = savedResumeId || cloudResumeId;
+          const resumeId = savedResumeId || resumeLoader.cloudResumeId;
           if (resumeId) {
             console.log('Triggering thumbnail generation for resume:', resumeId);
-            generateThumbnail(resumeId, session); // Fire-and-forget
+            generateThumbnail(resumeId, session);
           }
         } catch (error) {
           console.error('Failed to save on unmount:', error);
         }
       }
     };
-  }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow, savedResumeId, cloudResumeId]);
+  }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow, savedResumeId, resumeLoader.cloudResumeId, session]);
 
-  // Save on component unmount (navigating within app)
   useEffect(() => {
     return () => {
-      // Fire-and-forget save using ref to avoid stale closure
       if (saveOnUnmountRef.current) {
         saveOnUnmountRef.current();
       }
     };
-  }, []); // Empty deps is safe here since we're using ref
+  }, []);
 
-  // Show loading state first (handles initial load and resume loading from URL)
+  // ===== Loading State =====
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
         <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-xl text-gray-600">
-            Loading your resume builder...
-          </p>
+          <p className="text-xl text-gray-600">Loading your resume builder...</p>
         </div>
       </div>
     );
   }
 
-  // Show error page if template loading failed
+  // ===== Error State =====
   if (loadingError) {
     return (
       <Suspense fallback={<LoadingSpinner />}>
@@ -1584,7 +470,7 @@ const Editor: React.FC = () => {
     );
   }
 
-  // Only show 404 if no templateId AND we're not loading from a URL resumeId
+  // ===== 404 State =====
   if (!templateId && !resumeIdFromUrl) {
     return (
       <Suspense fallback={<LoadingSpinner />}>
@@ -1593,14 +479,20 @@ const Editor: React.FC = () => {
     );
   }
 
+  // ===== Helper for adding section with loading state =====
+  const handleAddNewSectionClick = async () => {
+    modalManager.openSectionTypeModal();
+  };
+
+  // ===== Main Render =====
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Main Content Container - Dynamic padding based on sidebar state */}
+      {/* Main Content Container */}
       <div className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-[calc(var(--mobile-action-bar-height)+1rem)] lg:pb-[1rem] max-w-4xl lg:max-w-none transition-all duration-300 ${
-        isSidebarCollapsed ? 'lg:mr-[88px]' : 'lg:mr-[296px]'
+        navigation.isSidebarCollapsed ? 'lg:mr-[88px]' : 'lg:mr-[296px]'
       }`}>
         {/* Imported Resume Review Banner */}
-        {showAIWarning && (
+        {modalManager.showAIWarning && (
           <div className="mb-4 p-4 rounded-lg border-2 bg-blue-50 border-blue-200 flex items-start gap-3">
             <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-blue-600" />
             <div className="flex-1">
@@ -1612,7 +504,7 @@ const Editor: React.FC = () => {
               </p>
             </div>
             <button
-              onClick={() => setShowAIWarning(false)}
+              onClick={modalManager.closeAIWarning}
               className="text-gray-400 hover:text-gray-600"
             >
               <X className="w-4 h-4" />
@@ -1626,25 +518,25 @@ const Editor: React.FC = () => {
             <ContactInfoSection
               contactInfo={contactInfo}
               onUpdate={setContactInfo}
-              socialLinkErrors={socialLinkErrors}
-              onSocialLinkChange={handleSocialLinkChange}
-              onAddSocialLink={handleAddSocialLink}
-              onRemoveSocialLink={handleRemoveSocialLink}
-              autoGeneratedIndexes={autoGeneratedIndexes}
+              socialLinkErrors={contactForm.socialLinkErrors}
+              onSocialLinkChange={contactForm.handleSocialLinkChange}
+              onAddSocialLink={contactForm.handleAddSocialLink}
+              onRemoveSocialLink={contactForm.handleRemoveSocialLink}
+              autoGeneratedIndexes={contactForm.autoGeneratedIndexes}
             />
           </div>
         )}
 
-        {/* Global Formatting Help - Replaces repeated tips */}
+        {/* Global Formatting Help */}
         <FormattingHelp />
 
         {/* Resume Sections with Drag and Drop */}
         <DndContext
-          sensors={sensors}
+          sensors={dragDrop.sensors}
           collisionDetection={closestCenter}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          onDragCancel={handleDragCancel}
+          onDragStart={dragDrop.handleDragStart}
+          onDragEnd={dragDrop.handleDragEnd}
+          onDragCancel={dragDrop.handleDragCancel}
           modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
         >
           <SortableContext
@@ -1654,16 +546,12 @@ const Editor: React.FC = () => {
             {sections.map((section, index) => {
               if (isExperienceSection(section)) {
                 return (
-                  <DragHandle
-                    key={index}
-                    id={index.toString()}
-                    disabled={false}
-                  >
+                  <DragHandle key={index} id={index.toString()} disabled={false}>
                     <div
                       ref={(el) => {
                         sectionRefs.current[index] = el;
                         if (index === sections.length - 1) {
-                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                          newSectionRef.current = el;
                         }
                       }}
                     >
@@ -1671,19 +559,19 @@ const Editor: React.FC = () => {
                         sectionName={section.name}
                         experiences={section.content}
                         onUpdate={(updatedExperiences) =>
-                          handleUpdateSection(index, {
+                          sectionManagement.handleUpdateSection(index, {
                             ...section,
                             content: updatedExperiences,
                           })
                         }
-                        onTitleEdit={() => handleTitleEdit(index)}
-                        onTitleSave={handleTitleSave}
-                        onTitleCancel={handleTitleCancel}
-                        onDelete={() => handleDeleteSection(index)}
-                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
-                        isEditingTitle={editingTitleIndex === index}
-                        temporaryTitle={temporaryTitle}
-                        setTemporaryTitle={setTemporaryTitle}
+                        onTitleEdit={() => sectionManagement.handleTitleEdit(index)}
+                        onTitleSave={sectionManagement.handleTitleSave}
+                        onTitleCancel={sectionManagement.handleTitleCancel}
+                        onDelete={() => sectionManagement.handleDeleteSection(index)}
+                        onDeleteEntry={(entryIndex) => sectionManagement.handleDeleteEntry(index, entryIndex)}
+                        isEditingTitle={sectionManagement.editingTitleIndex === index}
+                        temporaryTitle={sectionManagement.temporaryTitle}
+                        setTemporaryTitle={sectionManagement.setTemporaryTitle}
                         supportsIcons={supportsIcons}
                         iconRegistry={iconRegistry}
                       />
@@ -1692,16 +580,12 @@ const Editor: React.FC = () => {
                 );
               } else if (isEducationSection(section)) {
                 return (
-                  <DragHandle
-                    key={index}
-                    id={index.toString()}
-                    disabled={false}
-                  >
+                  <DragHandle key={index} id={index.toString()} disabled={false}>
                     <div
                       ref={(el) => {
                         sectionRefs.current[index] = el;
                         if (index === sections.length - 1) {
-                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                          newSectionRef.current = el;
                         }
                       }}
                     >
@@ -1709,19 +593,19 @@ const Editor: React.FC = () => {
                         sectionName={section.name}
                         education={section.content}
                         onUpdate={(updatedEducation) =>
-                          handleUpdateSection(index, {
+                          sectionManagement.handleUpdateSection(index, {
                             ...section,
                             content: updatedEducation,
                           })
                         }
-                        onTitleEdit={() => handleTitleEdit(index)}
-                        onTitleSave={handleTitleSave}
-                        onTitleCancel={handleTitleCancel}
-                        onDelete={() => handleDeleteSection(index)}
-                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
-                        isEditingTitle={editingTitleIndex === index}
-                        temporaryTitle={temporaryTitle}
-                        setTemporaryTitle={setTemporaryTitle}
+                        onTitleEdit={() => sectionManagement.handleTitleEdit(index)}
+                        onTitleSave={sectionManagement.handleTitleSave}
+                        onTitleCancel={sectionManagement.handleTitleCancel}
+                        onDelete={() => sectionManagement.handleDeleteSection(index)}
+                        onDeleteEntry={(entryIndex) => sectionManagement.handleDeleteEntry(index, entryIndex)}
+                        isEditingTitle={sectionManagement.editingTitleIndex === index}
+                        temporaryTitle={sectionManagement.temporaryTitle}
+                        setTemporaryTitle={sectionManagement.setTemporaryTitle}
                         supportsIcons={supportsIcons}
                         iconRegistry={iconRegistry}
                       />
@@ -1730,36 +614,32 @@ const Editor: React.FC = () => {
                 );
               } else if (section.type === "icon-list") {
                 return (
-                  <DragHandle
-                    key={index}
-                    id={index.toString()}
-                    disabled={false}
-                  >
+                  <DragHandle key={index} id={index.toString()} disabled={false}>
                     <div
                       ref={(el) => {
                         sectionRefs.current[index] = el;
                         if (index === sections.length - 1) {
-                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                          newSectionRef.current = el;
                         }
                       }}
                     >
                       <IconListSection
                         data={section.content}
                         onUpdate={(updatedContent) =>
-                          handleUpdateSection(index, {
+                          sectionManagement.handleUpdateSection(index, {
                             ...section,
                             content: updatedContent,
                           })
                         }
-                        onDelete={() => handleDeleteSection(index)}
-                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
+                        onDelete={() => sectionManagement.handleDeleteSection(index)}
+                        onDeleteEntry={(entryIndex) => sectionManagement.handleDeleteEntry(index, entryIndex)}
                         sectionName={section.name}
-                        onEditTitle={() => handleTitleEdit(index)}
-                        onSaveTitle={handleTitleSave}
-                        onCancelTitle={handleTitleCancel}
-                        isEditing={editingTitleIndex === index}
-                        temporaryTitle={temporaryTitle}
-                        setTemporaryTitle={setTemporaryTitle}
+                        onEditTitle={() => sectionManagement.handleTitleEdit(index)}
+                        onSaveTitle={sectionManagement.handleTitleSave}
+                        onCancelTitle={sectionManagement.handleTitleCancel}
+                        isEditing={sectionManagement.editingTitleIndex === index}
+                        temporaryTitle={sectionManagement.temporaryTitle}
+                        setTemporaryTitle={sectionManagement.setTemporaryTitle}
                         iconRegistry={iconRegistry}
                       />
                     </div>
@@ -1767,32 +647,28 @@ const Editor: React.FC = () => {
                 );
               } else {
                 return (
-                  <DragHandle
-                    key={index}
-                    id={index.toString()}
-                    disabled={false}
-                  >
+                  <DragHandle key={index} id={index.toString()} disabled={false}>
                     <div
                       ref={(el) => {
                         sectionRefs.current[index] = el;
                         if (index === sections.length - 1) {
-                          (newSectionRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+                          newSectionRef.current = el;
                         }
                       }}
                     >
                       <GenericSection
                         section={section}
                         onUpdate={(updatedSection) =>
-                          handleUpdateSection(index, updatedSection)
+                          sectionManagement.handleUpdateSection(index, updatedSection)
                         }
-                        onEditTitle={() => handleTitleEdit(index)}
-                        onSaveTitle={handleTitleSave}
-                        onCancelTitle={handleTitleCancel}
-                        onDelete={() => handleDeleteSection(index)}
-                        onDeleteEntry={(entryIndex) => handleDeleteEntry(index, entryIndex)}
-                        isEditing={editingTitleIndex === index}
-                        temporaryTitle={temporaryTitle}
-                        setTemporaryTitle={setTemporaryTitle}
+                        onEditTitle={() => sectionManagement.handleTitleEdit(index)}
+                        onSaveTitle={sectionManagement.handleTitleSave}
+                        onCancelTitle={sectionManagement.handleTitleCancel}
+                        onDelete={() => sectionManagement.handleDeleteSection(index)}
+                        onDeleteEntry={(entryIndex) => sectionManagement.handleDeleteEntry(index, entryIndex)}
+                        isEditing={sectionManagement.editingTitleIndex === index}
+                        temporaryTitle={sectionManagement.temporaryTitle}
+                        setTemporaryTitle={sectionManagement.setTemporaryTitle}
                       />
                     </div>
                   </DragHandle>
@@ -1802,12 +678,12 @@ const Editor: React.FC = () => {
           </SortableContext>
 
           <DragOverlay modifiers={[restrictToVerticalAxis]}>
-            {activeId && draggedSection ? (
+            {dragDrop.activeId && dragDrop.draggedSection ? (
               <div className="drag-overlay">
-                {draggedSection.name === "Experience" ? (
+                {dragDrop.draggedSection.name === "Experience" ? (
                   <ExperienceSection
-                    sectionName={draggedSection.name}
-                    experiences={draggedSection.content}
+                    sectionName={dragDrop.draggedSection.name}
+                    experiences={dragDrop.draggedSection.content}
                     onUpdate={() => {}}
                     onTitleEdit={() => {}}
                     onTitleSave={() => {}}
@@ -1819,10 +695,10 @@ const Editor: React.FC = () => {
                     supportsIcons={supportsIcons}
                     iconRegistry={iconRegistry}
                   />
-                ) : draggedSection.name === "Education" ? (
+                ) : dragDrop.draggedSection.name === "Education" ? (
                   <EducationSection
-                    sectionName={draggedSection.name}
-                    education={draggedSection.content}
+                    sectionName={dragDrop.draggedSection.name}
+                    education={dragDrop.draggedSection.content}
                     onUpdate={() => {}}
                     onTitleEdit={() => {}}
                     onTitleSave={() => {}}
@@ -1834,30 +710,30 @@ const Editor: React.FC = () => {
                     supportsIcons={supportsIcons}
                     iconRegistry={iconRegistry}
                   />
-                ) : draggedSection.type === "icon-list" ? (
+                ) : dragDrop.draggedSection.type === "icon-list" ? (
                   <IconListSection
-                    data={draggedSection.content}
+                    data={dragDrop.draggedSection.content}
                     onUpdate={() => {}}
                     onDelete={() => {}}
-                    sectionName={draggedSection.name}
+                    sectionName={dragDrop.draggedSection.name}
                     onEditTitle={() => {}}
                     onSaveTitle={() => {}}
                     onCancelTitle={() => {}}
                     isEditing={false}
-                    temporaryTitle={""}
+                    temporaryTitle=""
                     setTemporaryTitle={() => {}}
                     iconRegistry={iconRegistry}
                   />
                 ) : (
                   <GenericSection
-                    section={draggedSection}
+                    section={dragDrop.draggedSection}
                     onUpdate={() => {}}
                     onEditTitle={() => {}}
                     onSaveTitle={() => {}}
                     onCancelTitle={() => {}}
                     onDelete={() => {}}
                     isEditing={false}
-                    temporaryTitle={""}
+                    temporaryTitle=""
                     setTemporaryTitle={() => {}}
                   />
                 )}
@@ -1866,170 +742,163 @@ const Editor: React.FC = () => {
           </DragOverlay>
         </DndContext>
 
-        {/* Desktop Toolbar - Now hidden on desktop (actions moved to sidebar), shown on tablet only */}
-        <div
-          className="hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 left-auto right-6 border border-gray-200/60 rounded-2xl w-auto max-w-none bottom-6"
-        >
+        {/* Desktop Toolbar - Tablet only */}
+        <div className="hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 left-auto right-6 border border-gray-200/60 rounded-2xl w-auto max-w-none bottom-6">
           <div className="flex items-center justify-between gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
             <EditorToolbar
               onAddSection={handleAddNewSectionClick}
-              onGenerateResume={handleGenerateResume}
-              onExportYAML={handleExportYAML}
-              onImportYAML={handleImportYAML}
-              onToggleHelp={toggleHelpModal}
-              onLoadEmptyTemplate={handleLoadEmptyTemplate}
-              loadingAddSection={loadingAddSection}
-              generating={isDownloading}
-              loadingSave={loadingSave}
-              loadingLoad={loadingLoad}
-              showAdvancedMenu={showAdvancedMenu}
-              setShowAdvancedMenu={setShowAdvancedMenu}
+              onGenerateResume={editorActions.handleGenerateResume}
+              onExportYAML={fileOperations.handleExportYAML}
+              onImportYAML={fileOperations.handleFileInputChange}
+              onToggleHelp={modalManager.openHelpModal}
+              onLoadEmptyTemplate={editorActions.handleStartFresh}
+              loadingAddSection={false}
+              generating={editorActions.isDownloading}
+              loadingSave={fileOperations.loadingSave}
+              loadingLoad={fileOperations.loadingLoad}
+              showAdvancedMenu={modalManager.showAdvancedMenu}
+              setShowAdvancedMenu={(show) => show ? modalManager.openAdvancedMenu() : modalManager.closeAdvancedMenu()}
               mode="integrated"
             />
           </div>
         </div>
 
-        {/* Mobile Action Bar - Only shown on mobile/tablet */}
+        {/* Mobile Action Bar */}
         <MobileActionBar
-          onNavigationClick={() => setShowNavigationDrawer(true)}
-          onPreviewClick={handleOpenPreview}
-          onDownloadClick={handleGenerateResume}
+          onNavigationClick={modalManager.openNavigationDrawer}
+          onPreviewClick={editorActions.handleOpenPreview}
+          onDownloadClick={editorActions.handleGenerateResume}
           isSaving={saveStatus === 'saving'}
-          isGenerating={isDownloading}
-          isGeneratingPreview={isGeneratingPreview}
-          previewIsStale={previewIsStale}
+          isGenerating={editorActions.isDownloading}
+          isGeneratingPreview={preview.isGenerating}
+          previewIsStale={preview.isStale}
           lastSaved={cloudLastSaved}
           saveError={saveStatus === 'error'}
         />
 
         {/* Mobile Navigation Drawer */}
         <MobileNavigationDrawer
-          isOpen={showNavigationDrawer}
-          onClose={() => setShowNavigationDrawer(false)}
+          isOpen={modalManager.showNavigationDrawer}
+          onClose={modalManager.closeNavigationDrawer}
           sections={sections}
-          onSectionClick={handleScrollToSection}
-          activeSectionIndex={activeSectionIndex}
+          onSectionClick={navigation.scrollToSection}
+          activeSectionIndex={navigation.activeSectionIndex}
           onAddSection={handleAddNewSectionClick}
-          onExportYAML={handleExportYAML}
-          onImportYAML={() => fileInputRef.current?.click()}
-          onStartFresh={handleLoadEmptyTemplate}
-          onHelp={toggleHelpModal}
-          loadingSave={loadingSave}
-          loadingLoad={loadingLoad}
+          onExportYAML={fileOperations.handleExportYAML}
+          onImportYAML={() => fileOperations.fileInputRef.current?.click()}
+          onStartFresh={editorActions.handleStartFresh}
+          onHelp={modalManager.openHelpModal}
+          loadingSave={fileOperations.loadingSave}
+          loadingLoad={fileOperations.loadingLoad}
         />
 
         {/* Desktop Section Navigator Sidebar */}
         <SectionNavigator
           sections={sections}
-          onSectionClick={handleScrollToSection}
-          activeSectionIndex={activeSectionIndex}
+          onSectionClick={navigation.scrollToSection}
+          activeSectionIndex={navigation.activeSectionIndex}
           onAddSection={handleAddNewSectionClick}
-          onDownloadResume={handleGenerateResume}
-          onPreviewResume={handleOpenPreview}
-          onExportYAML={handleExportYAML}
-          onImportYAML={() => fileInputRef.current?.click()}
-          onStartFresh={handleLoadEmptyTemplate}
-          onHelp={toggleHelpModal}
-          isGenerating={isDownloading}
-          isGeneratingPreview={isGeneratingPreview}
-          previewIsStale={previewIsStale}
-          loadingSave={loadingSave}
-          loadingLoad={loadingLoad}
-          onCollapseChange={setIsSidebarCollapsed}
+          onDownloadResume={editorActions.handleGenerateResume}
+          onPreviewResume={editorActions.handleOpenPreview}
+          onExportYAML={fileOperations.handleExportYAML}
+          onImportYAML={() => fileOperations.fileInputRef.current?.click()}
+          onStartFresh={editorActions.handleStartFresh}
+          onHelp={modalManager.openHelpModal}
+          isGenerating={editorActions.isDownloading}
+          isGeneratingPreview={preview.isGenerating}
+          previewIsStale={preview.isStale}
+          loadingSave={fileOperations.loadingSave}
+          loadingLoad={fileOperations.loadingLoad}
+          onCollapseChange={navigation.setIsSidebarCollapsed}
           saveStatus={saveStatus}
           lastSaved={cloudLastSaved}
           isAnonymous={isAnonymous}
           isAuthenticated={isAuthenticated}
-          onSignInClick={() => setShowAuthModal(true)}
+          onSignInClick={modalManager.openAuthModal}
         />
 
-        {/* Hidden file input for both mobile and desktop */}
+        {/* Hidden file input */}
         <input
-          ref={fileInputRef}
+          ref={fileOperations.fileInputRef}
           type="file"
           accept=".yaml,.yml"
           className="hidden"
-          onChange={handleImportYAML}
+          onChange={fileOperations.handleFileInputChange}
         />
       </div>
 
-      {/* Context-Aware Tour - New 5-Step Tour with Auth Branching */}
+      {/* Context-Aware Tour */}
       <ContextAwareTour
-        isOpen={showWelcomeTour}
-        onClose={handleTourComplete}
+        isOpen={tourFlow.showWelcomeTour}
+        onClose={tourFlow.handleTourComplete}
         isAnonymous={isAnonymous}
         isAuthenticated={isAuthenticated}
         onSignInClick={() => {
-          hasLaunchedTourAfterSignIn.current = false; // Reset before sign-in
-          justSignedInFromTour.current = false; // Start fresh
-          setShowAuthModalFromTour(true);
+          tourFlow.handleSignInFromTour();
+          modalManager.openAuthModalFromTour();
         }}
-        onTourComplete={handleTourComplete}
+        onTourComplete={tourFlow.handleTourComplete}
       />
 
       {/* Auth Modal triggered from tour */}
       <AuthModal
-        isOpen={showAuthModalFromTour}
-        onClose={() => setShowAuthModalFromTour(false)}
+        isOpen={modalManager.showAuthModalFromTour}
+        onClose={modalManager.closeAuthModalFromTour}
         onSuccess={() => {
-          setShowAuthModalFromTour(false);
-          setIsSigningInFromTour(true); // Flag to suppress automatic toasts
-          justSignedInFromTour.current = true; // Mark that we just signed in from tour
-          // Tour will auto-relaunch via useEffect watching migration state
+          modalManager.closeAuthModalFromTour();
+          tourFlow.handleSignInSuccess();
         }}
       />
 
-      {/* Auth Modal triggered from download and other actions */}
+      {/* Auth Modal triggered from actions */}
       <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
+        isOpen={modalManager.showAuthModal}
+        onClose={modalManager.closeAuthModal}
         onSuccess={() => {
-          setShowAuthModal(false);
+          modalManager.closeAuthModal();
           toast.success('Welcome! Your resume will now be saved to the cloud.');
         }}
       />
 
-      {/* Download Celebration Modal - shown after first download for anonymous users */}
+      {/* Download Celebration Modal */}
       <DownloadCelebrationModal
-        isOpen={showDownloadCelebration}
-        onClose={() => setShowDownloadCelebration(false)}
+        isOpen={modalManager.showDownloadCelebration}
+        onClose={modalManager.closeDownloadCelebration}
         onSignUp={() => {
-          setShowDownloadCelebration(false);
-          setShowAuthModal(true);
+          modalManager.closeDownloadCelebration();
+          modalManager.openAuthModal();
         }}
       />
 
-      {/* Tabbed Help Modal - Replaces old help modal */}
+      {/* Tabbed Help Modal */}
       <TabbedHelpModal
-        isOpen={showHelpModal}
-        onClose={() => setShowHelpModal(false)}
+        isOpen={modalManager.showHelpModal}
+        onClose={modalManager.closeHelpModal}
         isAnonymous={isAnonymous}
         onSignInClick={() => {
-          setShowHelpModal(false);
-          setShowAuthModal(true);
+          modalManager.closeHelpModal();
+          modalManager.openAuthModal();
         }}
       />
 
-      {showModal && (
+      {/* Section Type Modal */}
+      {modalManager.showSectionTypeModal && (
         <SectionTypeModal
-          onClose={() => setShowModal(false)}
-          onSelect={handleAddSection}
+          onClose={modalManager.closeSectionTypeModal}
+          onSelect={sectionManagement.handleAddSection}
           supportsIcons={supportsIcons}
         />
       )}
 
       {/* Delete Confirmation Dialog */}
       <ResponsiveConfirmDialog
-        isOpen={showDeleteConfirm}
-        onClose={() => {
-          setShowDeleteConfirm(false);
-          setDeleteTarget(null);
-        }}
-        onConfirm={confirmDelete}
-        title={deleteTarget?.type === 'section' ? "Delete Section?" : "Delete Entry?"}
+        isOpen={modalManager.showDeleteConfirm}
+        onClose={modalManager.closeDeleteConfirm}
+        onConfirm={sectionManagement.confirmDelete}
+        title={modalManager.deleteTarget?.type === 'section' ? "Delete Section?" : "Delete Entry?"}
         message={
-          deleteTarget?.type === 'section'
-            ? `Are you sure you want to delete the "${deleteTarget.sectionName}" section? This will remove all content in this section and cannot be undone.`
+          modalManager.deleteTarget?.type === 'section'
+            ? `Are you sure you want to delete the "${modalManager.deleteTarget.sectionName}" section? This will remove all content in this section and cannot be undone.`
             : "Are you sure you want to delete this entry? This action cannot be undone."
         }
         confirmText="Delete"
@@ -2039,60 +908,57 @@ const Editor: React.FC = () => {
 
       {/* Start Fresh Confirmation Dialog */}
       <ResponsiveConfirmDialog
-        isOpen={showStartFreshConfirm}
-        onClose={() => setShowStartFreshConfirm(false)}
-        onConfirm={confirmStartFresh}
+        isOpen={modalManager.showStartFreshConfirm}
+        onClose={modalManager.closeStartFreshConfirm}
+        onConfirm={editorActions.confirmStartFresh}
         title="Start Fresh?"
         message="Starting fresh will permanently delete all your current work. This action cannot be undone. Are you sure you want to continue?"
         confirmText="Start Fresh"
         cancelText="Cancel"
         isDestructive={true}
-        isLoading={loadingSave}
+        isLoading={editorActions.loadingStartFresh}
       />
 
       {/* Import YAML Confirmation Dialog */}
       <ResponsiveConfirmDialog
-        isOpen={showImportConfirm}
-        onClose={() => {
-          setShowImportConfirm(false);
-          setPendingImportFile(null);
-        }}
-        onConfirm={confirmImportYAML}
+        isOpen={modalManager.showImportConfirm}
+        onClose={modalManager.closeImportConfirm}
+        onConfirm={fileOperations.confirmImportYAML}
         title="Confirm Import?"
         message="Importing this will override your existing content."
         confirmText="Confirm Import"
         cancelText="Cancel Import"
         isDestructive={true}
-        isLoading={loadingLoad}
+        isLoading={fileOperations.loadingLoad}
       />
 
       {/* PDF Preview Modal */}
       <PreviewModal
-        isOpen={showPreviewModal}
-        onClose={handleClosePreview}
-        previewUrl={previewUrl}
-        isGenerating={isGeneratingPreview}
-        isDownloading={isDownloading}
-        isStale={previewIsStale}
-        error={previewError}
-        onRefresh={handleRefreshPreview}
-        onDownload={handleGenerateResume}
+        isOpen={modalManager.showPreviewModal}
+        onClose={modalManager.closePreviewModal}
+        previewUrl={preview.previewUrl}
+        isGenerating={preview.isGenerating}
+        isDownloading={editorActions.isDownloading}
+        isStale={preview.isStale}
+        error={preview.error}
+        onRefresh={editorActions.handleRefreshPreview}
+        onDownload={editorActions.handleGenerateResume}
       />
 
-      {/* Storage Limit Modal - shown when user hits 5-resume limit */}
+      {/* Storage Limit Modal */}
       <StorageLimitModal
-        isOpen={showStorageLimitModal}
-        onClose={() => setShowStorageLimitModal(false)}
+        isOpen={modalManager.showStorageLimitModal}
+        onClose={modalManager.closeStorageLimitModal}
       />
 
-      {/* Idle Nudge Tooltip - Portal to body, positioned near sign-in button */}
-      {showIdleTooltip && ReactDOM.createPortal(
+      {/* Idle Nudge Tooltip */}
+      {tourFlow.showIdleTooltip && ReactDOM.createPortal(
         <div className="fixed top-20 right-6 z-[70] bg-blue-600 text-white text-sm px-4 py-3 rounded-lg shadow-xl animate-bounce">
           <div className="flex items-center gap-2">
             <span>💡</span>
             <span>Don't forget to save your progress permanently</span>
             <button
-              onClick={() => setShowIdleTooltip(false)}
+              onClick={tourFlow.dismissIdleTooltip}
               className="ml-2 hover:opacity-75 text-white"
             >
               ✕
