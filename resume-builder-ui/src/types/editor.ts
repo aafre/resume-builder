@@ -124,10 +124,12 @@ export interface UseContactFormReturn {
  * Handles section-level drag and drop
  */
 export interface UseSectionDragDropReturn {
-  activeSectionId: string | null;
-  sensors: SensorDescriptor<any>[]; // @dnd-kit sensors
+  activeId: string | null;
+  draggedSection: Section | null;
+  sensors: ReturnType<typeof useSensors>; // @dnd-kit sensors
   handleDragStart: (event: DragStartEvent) => void;
   handleDragEnd: (event: DragEndEvent) => void;
+  handleDragCancel: () => void;
 }
 
 /**
