@@ -810,11 +810,6 @@ const Editor: React.FC = () => {
           loadingSave={fileOperations.loadingSave}
           loadingLoad={fileOperations.loadingLoad}
           onCollapseChange={navigation.setIsSidebarCollapsed}
-          saveStatus={saveStatus}
-          lastSaved={cloudLastSaved}
-          isAnonymous={isAnonymous}
-          isAuthenticated={isAuthenticated}
-          onSignInClick={modalManager.openAuthModal}
         />
 
         {/* Hidden file input */}
