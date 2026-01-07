@@ -55,6 +55,7 @@ export const useSaveIntegration = ({
   openStorageLimitModal,
 }: UseSaveIntegrationProps): UseSaveIntegrationReturn => {
   // Convert iconRegistry to plain object for cloud save
+  // Dependency uses joined filenames string to detect when icons are added/removed
   const iconsForCloudSave = useMemo(() => {
     const filenames = iconRegistry.getRegisteredFilenames();
     const iconsObj: { [filename: string]: File } = {};
@@ -65,7 +66,7 @@ export const useSaveIntegration = ({
       }
     });
     return iconsObj;
-  }, [iconRegistry.getRegisteredFilenames, iconRegistry.getIconFile]);
+  }, [iconRegistry.getRegisteredFilenames().join(',')]);
 
   const {
     saveStatus,
