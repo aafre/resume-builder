@@ -16,6 +16,7 @@ interface AuthContextType {
   migrationInProgress: boolean;
   anonMigrationInProgress: boolean;
   migratedResumeCount: number;
+  authInProgress: boolean;
   showAuthModal: () => void;
   hideAuthModal: () => void;
   authModalOpen: boolean;
@@ -52,6 +53,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [anonMigrationInProgress, setAnonMigrationInProgress] = useState(false);
   const [migratedResumeCount, setMigratedResumeCount] = useState(0);
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authInProgress, setAuthInProgress] = useState(false);
   const migrationAttempted = useRef(false);
   const anonMigrationAttempted = useRef(false);
 
@@ -360,6 +362,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (event === 'SIGNED_IN') {
           console.log('✅ Sign-in completed');
           setLoading(false);
+          setAuthInProgress(false);
         }
 
         // Store anonymous user_id for migration later
@@ -462,6 +465,37 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
   }, []);
 
+  // Proactive token refresh when tab regains focus
+  useEffect(() => {
+    if (!supabase) return;
+
+    // Capture supabase in closure to satisfy TypeScript
+    const supabaseClient = supabase;
+
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === 'visible' && sessionRef.current) {
+        const expiresAt = sessionRef.current.expires_at;
+        const now = Math.floor(Date.now() / 1000);
+        const fiveMinutes = 5 * 60;
+
+        if (expiresAt && (expiresAt - now) < fiveMinutes) {
+          try {
+            const { data: { session: newSession }, error } = await supabaseClient.auth.refreshSession();
+            if (!error && newSession) {
+              setSessionAndRef(newSession);
+              apiClient.setSession(newSession);
+            }
+          } catch {
+            // Log but don't break the app - Supabase will handle refresh on next request
+          }
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [setSessionAndRef, supabase]);
+
   const showAuthModal = () => {
     setAuthModalOpen(true);
   };
@@ -476,6 +510,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Store current path for redirect after auth
     sessionStorage.setItem('auth-return-to', window.location.pathname + window.location.search);
 
+    // Mark auth in progress to suspend beforeunload warnings
+    setAuthInProgress(true);
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -483,7 +520,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       },
     });
 
-    if (error) throw error;
+    if (error) {
+      setAuthInProgress(false);
+      throw error;
+    }
   };
 
   const signInWithLinkedIn = async () => {
@@ -492,6 +532,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Store current path for redirect after auth
     sessionStorage.setItem('auth-return-to', window.location.pathname + window.location.search);
 
+    // Mark auth in progress to suspend beforeunload warnings
+    setAuthInProgress(true);
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'linkedin_oidc',
       options: {
@@ -499,7 +542,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       },
     });
 
-    if (error) throw error;
+    if (error) {
+      setAuthInProgress(false);
+      throw error;
+    }
   };
 
   const signInWithEmail = async (email: string) => {
@@ -583,6 +629,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     migrationInProgress,
     anonMigrationInProgress,
     migratedResumeCount,
+    authInProgress,
     showAuthModal,
     hideAuthModal,
     authModalOpen,

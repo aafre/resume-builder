@@ -1186,6 +1186,10 @@ def require_auth(f):
 
         auth_header = request.headers.get('Authorization')
         if not auth_header or not auth_header.startswith('Bearer '):
+            logging.warning(
+                f"Auth missing | endpoint={request.path} | method={request.method} | "
+                f"ip={request.remote_addr}"
+            )
             return jsonify({"success": False, "error": "Unauthorized - Missing or invalid Authorization header"}), 401
 
         token = auth_header.replace('Bearer ', '')
@@ -1196,7 +1200,14 @@ def require_auth(f):
             request.user = user_response.user
             return f(*args, **kwargs)
         except Exception as e:
-            logging.error(f"Auth error: {e}")
+            # Enhanced logging with context for debugging auth issues
+            error_msg = str(e)
+            is_expired = 'expired' in error_msg.lower()
+            user_agent = request.headers.get('User-Agent', 'unknown')[:50]
+            logging.error(
+                f"Auth error: {error_msg} | endpoint={request.path} | method={request.method} | "
+                f"user_agent={user_agent} | ip={request.remote_addr} | is_token_expired={is_expired}"
+            )
             return jsonify({"success": False, "error": "Invalid or expired token"}), 401
 
     return decorated_function
