@@ -1,7 +1,16 @@
+import { SectionType } from '../services/sectionService';
+
 interface SectionTypeModalProps {
   onClose: () => void;
-  onSelect: (type: string) => void;
+  onSelect: (type: SectionType) => void;
   supportsIcons?: boolean;
+}
+
+interface SectionTypeOption {
+  type: SectionType;
+  title: string;
+  description: string;
+  useFor: string;
 }
 
 const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
@@ -9,7 +18,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   onSelect,
   supportsIcons = true,
 }) => {
-  const allSectionTypes = [
+  const allSectionTypes: SectionTypeOption[] = [
     {
       type: "experience",
       title: "Experience Section",

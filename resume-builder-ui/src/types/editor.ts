@@ -2,8 +2,9 @@
 // Editor-specific type definitions
 
 import React from 'react';
-import { ContactInfo, Section, SocialLink } from './types';
-import { DragEndEvent, DragStartEvent, SensorDescriptor } from '@dnd-kit/core';
+import { ContactInfo, Section, SocialLink } from '../types';
+import { DragEndEvent, DragStartEvent, useSensors } from '@dnd-kit/core';
+import { SectionType } from '../services/sectionService';
 
 // --- Editor State Types ---
 
@@ -151,7 +152,7 @@ export interface UseSectionNavigationReturn {
  */
 export interface UseResumeLoaderReturn {
   isLoadingFromUrl: boolean;
-  setIsLoadingFromUrl: (loading: boolean) => void;
+  setIsLoadingFromUrl: React.Dispatch<React.SetStateAction<boolean>>;
   hasLoadedFromUrl: boolean;
   cloudResumeId: string | null;
   setCloudResumeId: (id: string | null) => void;
@@ -180,7 +181,7 @@ export interface UseTourFlowReturn {
  */
 export interface UseSectionManagementReturn {
   // Section operations
-  handleAddSection: (type: string) => void;
+  handleAddSection: (type: SectionType) => void;
   handleUpdateSection: (index: number, updatedSection: Section) => void;
   handleDeleteSection: (index: number) => void;
   handleDeleteEntry: (sectionIndex: number, entryIndex: number) => void;

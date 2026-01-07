@@ -1,17 +1,8 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-  lazy,
-  Suspense,
-} from "react";
+import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { generateThumbnail } from "../services/templates";
 import { useIconRegistry } from "../hooks/useIconRegistry";
 import { usePreview } from "../hooks/usePreview";
-import { useCloudSave } from "../hooks/useCloudSave";
 import { useAuth } from "../contexts/AuthContext";
 import { useConversion } from "../contexts/ConversionContext";
 import { processSectionsForExport } from "../services/yamlService";
@@ -29,7 +20,9 @@ import { useTourFlow } from "../hooks/editor/useTourFlow";
 import { useSectionManagement } from "../hooks/editor/useSectionManagement";
 import { useFileOperations } from "../hooks/editor/useFileOperations";
 import { useEditorActions } from "../hooks/editor/useEditorActions";
-import { EditorHeader, EditorModals, EditorContent } from "./editor";
+import { useSaveIntegration } from "../hooks/editor/useSaveIntegration";
+import { useEditorEffects } from "../hooks/editor/useEditorEffects";
+import { EditorHeader, EditorModals, EditorContent } from "./editor/index";
 
 // Lazy-loaded error components
 const NotFound = lazy(() => import("./NotFound"));
@@ -84,8 +77,8 @@ const Editor: React.FC = () => {
   const { hasShownDownloadToast, markDownloadToastShown, hasShownIdleNudge, markIdleNudgeShown } = useConversion();
 
   // AI warning state (not yet displayed in UI, but used by useResumeLoader)
-  const [aiWarnings, setAIWarnings] = useState<string[]>([]);
-  const [aiConfidence, setAIConfidence] = useState(0);
+  const [_aiWarnings, setAIWarnings] = useState<string[]>([]);
+  const [_aiConfidence, setAIConfidence] = useState(0);
 
   // Tour persistence
   const { preferences, setPreference, isLoading: prefsLoading } = usePreferencePersistence({
@@ -164,93 +157,25 @@ const Editor: React.FC = () => {
   });
 
   // ===== Cloud Save Integration =====
-  // Convert iconRegistry to plain object for cloud save
-  const iconsForCloudSave = React.useMemo(() => {
-    const filenames = iconRegistry.getRegisteredFilenames();
-    const iconsObj: { [filename: string]: File } = {};
-    filenames.forEach(filename => {
-      const file = iconRegistry.getIconFile(filename);
-      if (file) {
-        iconsObj[filename] = file;
-      }
-    });
-    return iconsObj;
-  }, [iconRegistry.getRegisteredFilenames().join(',')]);
-
   const {
     saveStatus,
     lastSaved: cloudLastSaved,
     saveNow,
-    resumeId: savedResumeId
-  } = useCloudSave({
-    resumeId: resumeLoader.cloudResumeId,
-    resumeData: contactInfo && templateId ? {
-      contact_info: contactInfo,
-      sections: sections,
-      template_id: templateId
-    } : { contact_info: { name: '', location: '', email: '', phone: '' }, sections: [], template_id: '' },
-    icons: iconsForCloudSave,
-    enabled: !!templateId && !!contactInfo && !resumeLoader.isLoadingFromUrl && !authLoading,
-    session: session
+    savedResumeId,
+    saveBeforeAction,
+  } = useSaveIntegration({
+    contactInfo,
+    sections,
+    templateId,
+    iconRegistry,
+    cloudResumeId: resumeLoader.cloudResumeId,
+    setCloudResumeId: resumeLoader.setCloudResumeId,
+    isLoadingFromUrl: resumeLoader.isLoadingFromUrl,
+    authLoading,
+    session,
+    isAnonymous,
+    openStorageLimitModal: modalManager.openStorageLimitModal,
   });
-
-  // Ref to track latest saveStatus for use in async callbacks (avoids stale closures)
-  const saveStatusRef = useRef(saveStatus);
-  useEffect(() => {
-    saveStatusRef.current = saveStatus;
-  }, [saveStatus]);
-
-  /**
-   * Saves pending changes before critical actions (Preview, Download, etc.)
-   * Returns true if action can proceed, false if save failed
-   */
-  const saveBeforeAction = useCallback(async (actionName: string): Promise<boolean> => {
-    // Skip save for anonymous users or if no data exists
-    if (isAnonymous || !contactInfo || !templateId) {
-      return true;
-    }
-
-    // If already saving, wait for completion (use ref to avoid stale closure)
-    if (saveStatusRef.current === 'saving') {
-      console.log(`Waiting for in-progress save before ${actionName}...`);
-      const timeout = 10000;
-      const start = Date.now();
-      while (saveStatusRef.current === 'saving' && Date.now() - start < timeout) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-      return saveStatusRef.current !== 'error';
-    }
-
-    // Always trigger save before action
-    try {
-      console.log(`Saving before ${actionName}...`);
-      const result = await saveNow();
-
-      if (result === null && saveStatusRef.current === 'error') {
-        toast.error(`Failed to save changes before ${actionName}. Please try again.`);
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error(`Save failed before ${actionName}:`, error);
-
-      if (error instanceof Error && error.message === 'RESUME_LIMIT_REACHED') {
-        modalManager.openStorageLimitModal();
-        return false;
-      }
-
-      toast.error(`Failed to save changes before ${actionName}. Please try again.`);
-      return false;
-    }
-  }, [isAnonymous, contactInfo, templateId, saveNow, modalManager.openStorageLimitModal]);
-
-  // Update cloud resume ID when it's set from cloud save
-  useEffect(() => {
-    if (savedResumeId && savedResumeId !== resumeLoader.cloudResumeId) {
-      resumeLoader.setCloudResumeId(savedResumeId);
-    }
-  }, [savedResumeId, resumeLoader.cloudResumeId, resumeLoader.setCloudResumeId]);
 
   const sectionManagement = useSectionManagement({
     sections,
@@ -340,79 +265,20 @@ const Editor: React.FC = () => {
     }
   }, [searchParams, resumeIdFromUrl, setTemplateId, setLoadingError, setLoading]);
 
-  // ===== Close advanced menu on click outside =====
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (modalManager.showAdvancedMenu) {
-        const target = event.target as Element;
-        if (!target.closest(".advanced-menu-container")) {
-          modalManager.closeAdvancedMenu();
-        }
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [modalManager.showAdvancedMenu, modalManager.closeAdvancedMenu]);
-
-  // ===== Keyboard shortcuts for preview =====
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'P') {
-        event.preventDefault();
-        editorActions.handleOpenPreview();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [editorActions.handleOpenPreview]);
-
-  // ===== Warn user if closing browser/tab with unsaved changes =====
-  useEffect(() => {
-    if (isAnonymous || !contactInfo || !templateId) return;
-
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (saveStatus === 'saving' || saveStatus === 'error') {
-        e.preventDefault();
-        e.returnValue = '';
-        return '';
-      }
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [isAnonymous, contactInfo, templateId, saveStatus]);
-
-  // ===== Save on component unmount =====
-  const saveOnUnmountRef = useRef<(() => Promise<void>) | null>(null);
-
-  useEffect(() => {
-    saveOnUnmountRef.current = async () => {
-      if (!isAnonymous && contactInfo && templateId && saveStatus !== 'saving') {
-        try {
-          await saveNow();
-          console.log('Saved on unmount');
-
-          const resumeId = savedResumeId || resumeLoader.cloudResumeId;
-          if (resumeId) {
-            console.log('Triggering thumbnail generation for resume:', resumeId);
-            generateThumbnail(resumeId, session);
-          }
-        } catch (error) {
-          console.error('Failed to save on unmount:', error);
-        }
-      }
-    };
-  }, [isAnonymous, contactInfo, templateId, saveStatus, saveNow, savedResumeId, resumeLoader.cloudResumeId, session]);
-
-  useEffect(() => {
-    return () => {
-      if (saveOnUnmountRef.current) {
-        saveOnUnmountRef.current();
-      }
-    };
-  }, []);
+  // ===== Editor Effects (click outside, keyboard shortcuts, save lifecycle) =====
+  useEditorEffects({
+    showAdvancedMenu: modalManager.showAdvancedMenu,
+    closeAdvancedMenu: modalManager.closeAdvancedMenu,
+    handleOpenPreview: editorActions.handleOpenPreview,
+    isAnonymous,
+    contactInfo,
+    templateId,
+    saveStatus,
+    saveNow,
+    savedResumeId,
+    cloudResumeId: resumeLoader.cloudResumeId,
+    session,
+  });
 
   // ===== Loading State =====
   if (loading) {
@@ -454,6 +320,8 @@ const Editor: React.FC = () => {
         sections={sections}
         supportsIcons={supportsIcons}
         iconRegistry={iconRegistry}
+        isAnonymous={isAnonymous}
+        isAuthenticated={isAuthenticated}
         contactForm={{
           socialLinkErrors: contactForm.socialLinkErrors,
           autoGeneratedIndexes: contactForm.autoGeneratedIndexes,

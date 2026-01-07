@@ -5,7 +5,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 import { Section } from '../../types';
 import { DeleteTarget, UseSectionManagementReturn } from '../../types/editor';
-import { createDefaultSection, deleteSectionItem } from '../../services/sectionService';
+import { createDefaultSection, deleteSectionItem, SectionType } from '../../services/sectionService';
 
 /**
  * Props for useSectionManagement hook
@@ -75,7 +75,7 @@ export const useSectionManagement = ({
    * Closes the section type modal and optionally scrolls to the new section.
    */
   const handleAddSection = useCallback(
-    (type: string) => {
+    (type: SectionType) => {
       const newSection = createDefaultSection(type, sections);
       setSections((prevSections) => [...prevSections, newSection]);
       closeSectionTypeModal();

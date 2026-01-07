@@ -3,6 +3,7 @@
 
 import { UseModalManagerReturn } from '../../hooks/editor/useModalManager';
 import { UseTourFlowReturn } from '../../types/editor';
+import { SectionType } from '../../services/sectionService';
 import AuthModal from '../AuthModal';
 import DownloadCelebrationModal from '../DownloadCelebrationModal';
 import TabbedHelpModal from '../TabbedHelpModal';
@@ -27,7 +28,7 @@ export interface EditorModalsPreviewProps {
  */
 export interface EditorModalsActions {
   // Section actions
-  handleAddSection: (type: string) => void;
+  handleAddSection: (type: SectionType) => void;
   confirmDelete: () => void;
 
   // File actions

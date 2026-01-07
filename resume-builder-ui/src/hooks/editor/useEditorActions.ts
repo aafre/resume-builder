@@ -9,7 +9,6 @@ import { UseEditorActionsReturn } from '../../types/editor';
 import { generateResume } from '../../services/templates';
 import { getSessionId } from '../../utils/session';
 import { extractReferencedIconFilenames } from '../../utils/iconExtractor';
-import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
 
 /**
  * Icon validation result from usePreview
@@ -178,14 +177,28 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         const iconLocations = missingIcons
           .map((icon) => {
             // Find where this icon is referenced
+            const locations: string[] = [];
+            sections.forEach((section) => {
+              const content = section.content;
+              if (!Array.isArray(content)) {
+                return;
+              }
+
+              let entryLabel = '';
+              if (section.type === 'experience' || section.name === 'Experience' || section.type === 'education' || section.name === 'Education') {
+                entryLabel = 'Entry';
               } else if (section.type === 'icon-list') {
-                const items = section.content;
-                items.forEach((item, itemIdx) => {
-                  if (item.icon === icon) {
-                    locations.push(`${section.name} → Item ${itemIdx + 1}`);
+                entryLabel = 'Item';
+              }
+
+              if (entryLabel) {
+                content.forEach((item, index) => {
+                  if (typeof item === 'object' && item !== null && 'icon' in item && item.icon === icon) {
+                    locations.push(`${section.name} → ${entryLabel} ${index + 1}`);
                   }
                 });
               }
+            });
 
             return `• ${icon}${locations.length > 0 ? ' (used in: ' + locations.join(', ') + ')' : ''}`;
           })

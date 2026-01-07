@@ -1,6 +1,6 @@
 // src/hooks/editor/useEditorState.ts
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, Dispatch, SetStateAction } from 'react';
 import type { ContactInfo, Section } from '../../types';
 
 /**
@@ -29,14 +29,14 @@ export interface UseEditorStateReturn {
   loading: boolean;
   loadingError: string | null;
 
-  // Setters
-  setContactInfo: (contactInfo: ContactInfo | null) => void;
-  setSections: (sections: Section[]) => void;
-  setTemplateId: (templateId: string | null) => void;
-  setSupportsIcons: (supportsIcons: boolean) => void;
-  setOriginalTemplateData: (data: OriginalTemplateData | null) => void;
-  setLoading: (loading: boolean) => void;
-  setLoadingError: (error: string | null) => void;
+  // Setters - expose full Dispatch type to support functional updates
+  setContactInfo: Dispatch<SetStateAction<ContactInfo | null>>;
+  setSections: Dispatch<SetStateAction<Section[]>>;
+  setTemplateId: Dispatch<SetStateAction<string | null>>;
+  setSupportsIcons: Dispatch<SetStateAction<boolean>>;
+  setOriginalTemplateData: Dispatch<SetStateAction<OriginalTemplateData | null>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  setLoadingError: Dispatch<SetStateAction<string | null>>;
 
   // Helper functions
   updateSection: (index: number, updatedSection: Section) => void;

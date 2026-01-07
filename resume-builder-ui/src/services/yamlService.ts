@@ -62,7 +62,8 @@ export const processSectionsForExport = (sections: Section[]): Section[] => {
         isEducationSection(section)) &&
       Array.isArray(section.content)
     ) {
-      const updatedContent = section.content.map((item: ItemWithIcon) => {
+      // Type assertion needed because we're dynamically processing union type content
+      const updatedContent = (section.content as ItemWithIcon[]).map((item) => {
         // Remove iconFile and iconBase64 for export, keep only clean icon filename
         const { iconFile, iconBase64, ...cleanItem } = item;
         return {
@@ -78,7 +79,7 @@ export const processSectionsForExport = (sections: Section[]): Section[] => {
       return {
         ...section,
         content: updatedContent,
-      };
+      } as Section;
     }
 
     // Return section unchanged if it doesn't have icons
