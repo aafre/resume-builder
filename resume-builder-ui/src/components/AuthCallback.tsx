@@ -26,7 +26,6 @@ const AuthCallback: React.FC = () => {
   useEffect(() => {
     const error = searchParams.get('error');
     const errorCode = searchParams.get('error_code');
-    const errorDescription = searchParams.get('error_description');
 
     if (error || errorCode) {
       // Show user-friendly message based on error type
