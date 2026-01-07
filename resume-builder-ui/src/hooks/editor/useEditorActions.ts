@@ -10,6 +10,7 @@ import { generateResume } from '../../services/templates';
 import { getSessionId } from '../../utils/session';
 import { extractReferencedIconFilenames } from '../../utils/iconExtractor';
 import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
+import { validateLinkedInUrl } from '../../services/validationService';
 
 /**
  * Icon validation result from usePreview
@@ -78,29 +79,6 @@ export interface UseEditorActionsProps {
   /** Function to open download celebration modal */
   openDownloadCelebration: () => void;
 }
-
-/**
- * Validates a LinkedIn profile URL.
- * @param url - The URL to validate
- * @returns true if valid LinkedIn URL or empty, false otherwise
- */
-export const validateLinkedInUrl = (url: string): boolean => {
-  if (!url.trim()) {
-    return true; // Empty is valid (optional field)
-  }
-
-  const urlLower = url.toLowerCase().trim();
-
-  // Optimized LinkedIn URL regex that handles:
-  // - Any subdomain (country codes, www, mobile, etc.)
-  // - Personal profiles (/in/, /pub/, /public-profile/in/, /public-profile/pub/)
-  // - Username length validation (3-100 characters)
-  // - Optional trailing slash
-  const linkedinProfilePattern =
-    /^(https?:\/\/)?([\w\d]+\.)?linkedin\.com\/(?:public-profile\/)?(in|pub)\/[\w-]{3,100}\/?$/;
-
-  return linkedinProfilePattern.test(urlLower);
-};
 
 /**
  * Hook for handling top-level editor actions.

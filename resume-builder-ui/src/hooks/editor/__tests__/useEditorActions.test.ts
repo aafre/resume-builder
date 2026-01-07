@@ -2,7 +2,8 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
-import { useEditorActions, UseEditorActionsProps, validateLinkedInUrl } from '../useEditorActions';
+import { useEditorActions, UseEditorActionsProps } from '../useEditorActions';
+import { validateLinkedInUrl } from '../../../services/validationService';
 import { ContactInfo, Section } from '../../../types';
 
 // Mock dependencies
