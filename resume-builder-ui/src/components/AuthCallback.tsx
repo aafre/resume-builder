@@ -3,6 +3,23 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '../contexts/AuthContext';
 
+// Error messages configuration - defined outside component to prevent re-creation
+const AUTH_ERROR_MESSAGES: Record<string, { message: string; duration: number }> = {
+  bad_oauth_state: {
+    message: 'Sign-in link expired or already used. Please try signing in again.',
+    duration: 6000,
+  },
+  access_denied: {
+    message: 'Sign-in was cancelled. Please try again.',
+    duration: 5000,
+  },
+};
+
+const DEFAULT_AUTH_ERROR = {
+  message: 'Sign-in failed. Please try again.',
+  duration: 5000,
+};
+
 /**
  * AuthCallback handles OAuth/magic link redirects from Supabase.
  *
@@ -28,23 +45,13 @@ const AuthCallback: React.FC = () => {
     const errorCode = searchParams.get('error_code');
 
     if (error || errorCode) {
-      // Show user-friendly message based on error type
-      if (errorCode === 'bad_oauth_state') {
-        toast.error('Sign-in link expired or already used. Please try signing in again.', {
-          duration: 6000,
-          id: 'auth-error', // Prevent duplicate toasts
-        });
-      } else if (errorCode === 'access_denied') {
-        toast.error('Sign-in was cancelled. Please try again.', {
-          duration: 5000,
-          id: 'auth-error',
-        });
-      } else {
-        toast.error('Sign-in failed. Please try again.', {
-          duration: 5000,
-          id: 'auth-error',
-        });
-      }
+      // Look up error message from config, fall back to default
+      const errorDetails = AUTH_ERROR_MESSAGES[errorCode || ''] || DEFAULT_AUTH_ERROR;
+
+      toast.error(errorDetails.message, {
+        duration: errorDetails.duration,
+        id: 'auth-error', // Prevent duplicate toasts
+      });
 
       // Clean up and redirect to home
       sessionStorage.removeItem('auth-return-to');
