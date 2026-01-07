@@ -9,6 +9,7 @@ import { UseEditorActionsReturn } from '../../types/editor';
 import { generateResume } from '../../services/templates';
 import { getSessionId } from '../../utils/session';
 import { extractReferencedIconFilenames } from '../../utils/iconExtractor';
+import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
 
 /**
  * Icon validation result from usePreview
@@ -184,8 +185,9 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
                 return;
               }
 
+              // Use type guards for consistent section type checking
               let entryLabel = '';
-              if (section.type === 'experience' || section.name === 'Experience' || section.type === 'education' || section.name === 'Education') {
+              if (isExperienceSection(section) || isEducationSection(section)) {
                 entryLabel = 'Entry';
               } else if (section.type === 'icon-list') {
                 entryLabel = 'Item';
