@@ -53,8 +53,19 @@ describe('useContactForm', () => {
       social_links: [],
     };
 
-    // Mock setContactInfo - just capture the calls, don't execute
-    setContactInfo = vi.fn();
+    // Mock setContactInfo - executes functional updaters to support the refactored hook
+    // that reads state from inside the updater function.
+    // Reads from contactInfo directly since tests mutate it to set up different scenarios.
+    setContactInfo = vi.fn((updaterOrValue) => {
+      if (typeof updaterOrValue === 'function') {
+        // Execute functional updater on contactInfo to properly set up side effect flags
+        const newValue = updaterOrValue(contactInfo);
+        if (newValue !== null) {
+          // Update contactInfo for subsequent calls in the same test
+          Object.assign(contactInfo, newValue);
+        }
+      }
+    });
   });
 
   afterEach(() => {
@@ -153,6 +164,9 @@ describe('useContactForm', () => {
 
   describe('handleAddSocialLink', () => {
     it('should add a new empty social link', () => {
+      // Store original state for verification (mock mutates contactInfo)
+      const originalLinks = [...(contactInfo.social_links || [])];
+
       const { result } = renderHook(() =>
         useContactForm({ contactInfo, setContactInfo })
       );
@@ -163,8 +177,9 @@ describe('useContactForm', () => {
 
       expect(setContactInfo).toHaveBeenCalledTimes(1);
 
+      // Verify updater with original state (not already-mutated contactInfo)
       const updater = setContactInfo.mock.calls[0][0];
-      const newContactInfo = updater(contactInfo);
+      const newContactInfo = updater({ ...contactInfo, social_links: originalLinks });
       expect(newContactInfo.social_links).toHaveLength(1);
       expect(newContactInfo.social_links?.[0]).toEqual({
         platform: '',
@@ -177,6 +192,8 @@ describe('useContactForm', () => {
       contactInfo.social_links = [
         { platform: 'github', url: 'https://github.com/johndoe', display_text: 'GitHub' },
       ];
+      // Store original state for verification (mock mutates contactInfo)
+      const originalLinks = [...contactInfo.social_links];
 
       const { result } = renderHook(() =>
         useContactForm({ contactInfo, setContactInfo })
@@ -186,8 +203,9 @@ describe('useContactForm', () => {
         result.current.handleAddSocialLink();
       });
 
+      // Verify updater with original state (not already-mutated contactInfo)
       const updater = setContactInfo.mock.calls[0][0];
-      const newContactInfo = updater(contactInfo);
+      const newContactInfo = updater({ ...contactInfo, social_links: originalLinks });
       expect(newContactInfo.social_links).toHaveLength(2);
       expect(newContactInfo.social_links?.[1]).toEqual({
         platform: '',
@@ -221,6 +239,9 @@ describe('useContactForm', () => {
     });
 
     it('should remove social link at specified index', () => {
+      // Store original state for verification (mock mutates contactInfo)
+      const originalLinks = [...contactInfo.social_links!];
+
       const { result } = renderHook(() =>
         useContactForm({ contactInfo, setContactInfo })
       );
@@ -229,14 +250,18 @@ describe('useContactForm', () => {
         result.current.handleRemoveSocialLink(1);
       });
 
+      // Verify updater with original state (not already-mutated contactInfo)
       const updater = setContactInfo.mock.calls[0][0];
-      const newContactInfo = updater(contactInfo);
+      const newContactInfo = updater({ ...contactInfo, social_links: originalLinks });
       expect(newContactInfo.social_links).toHaveLength(2);
       expect(newContactInfo.social_links?.[0].platform).toBe('github');
       expect(newContactInfo.social_links?.[1].platform).toBe('twitter');
     });
 
     it('should remove first social link', () => {
+      // Store original state for verification (mock mutates contactInfo)
+      const originalLinks = [...contactInfo.social_links!];
+
       const { result } = renderHook(() =>
         useContactForm({ contactInfo, setContactInfo })
       );
@@ -245,8 +270,9 @@ describe('useContactForm', () => {
         result.current.handleRemoveSocialLink(0);
       });
 
+      // Verify updater with original state (not already-mutated contactInfo)
       const updater = setContactInfo.mock.calls[0][0];
-      const newContactInfo = updater(contactInfo);
+      const newContactInfo = updater({ ...contactInfo, social_links: originalLinks });
       expect(newContactInfo.social_links).toHaveLength(2);
       expect(newContactInfo.social_links?.[0].platform).toBe('linkedin');
     });
@@ -767,6 +793,8 @@ describe('useContactForm', () => {
   describe('edge cases', () => {
     it('should handle missing social_links array', () => {
       contactInfo.social_links = undefined;
+      // Store original state for verification (mock mutates contactInfo)
+      const originalLinks = contactInfo.social_links;
 
       const { result } = renderHook(() =>
         useContactForm({ contactInfo, setContactInfo })
@@ -776,8 +804,9 @@ describe('useContactForm', () => {
         result.current.handleAddSocialLink();
       });
 
+      // Verify updater with original state (not already-mutated contactInfo)
       const updater = setContactInfo.mock.calls[0][0];
-      const newContactInfo = updater(contactInfo);
+      const newContactInfo = updater({ ...contactInfo, social_links: originalLinks });
       expect(newContactInfo.social_links).toHaveLength(1);
     });
 
