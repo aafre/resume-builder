@@ -494,7 +494,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [setSessionAndRef]);
+  }, [setSessionAndRef, supabase]);
 
   const showAuthModal = () => {
     setAuthModalOpen(true);
