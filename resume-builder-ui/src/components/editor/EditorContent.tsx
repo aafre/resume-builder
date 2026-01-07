@@ -53,8 +53,8 @@ export interface EditorContentDragDropProps {
   sensors: SensorDescriptor<SensorOptions>[];
   activeId: string | null;
   draggedSection: Section | null;
-  handleDragStart: (event: any) => void;
-  handleDragEnd: (event: any) => void;
+  handleDragStart: (event: DragStartEvent) => void;
+  handleDragEnd: (event: DragEndEvent) => void;
   handleDragCancel: () => void;
 }
 
@@ -164,7 +164,7 @@ export interface EditorContentRefs {
 export interface EditorContentProps {
   // Core data
   contactInfo: ContactInfo | null;
-  setContactInfo: (info: ContactInfo | null) => void;
+  setContactInfo: React.Dispatch<React.SetStateAction<ContactInfo | null>>;
   sections: Section[];
   supportsIcons: boolean;
   iconRegistry: EditorContentIconRegistry;
