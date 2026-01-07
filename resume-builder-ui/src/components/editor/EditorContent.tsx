@@ -440,7 +440,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         <DragOverlay modifiers={[restrictToVerticalAxis]}>
           {dragDrop.activeId && dragDrop.draggedSection ? (
             <div className="drag-overlay">
-              {dragDrop.draggedSection.name === 'Experience' ? (
+              {isExperienceSection(dragDrop.draggedSection) ? (
                 <ExperienceSection
                   sectionName={dragDrop.draggedSection.name}
                   experiences={dragDrop.draggedSection.content}
@@ -455,7 +455,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                   supportsIcons={supportsIcons}
                   iconRegistry={iconRegistry}
                 />
-              ) : dragDrop.draggedSection.name === 'Education' ? (
+              ) : isEducationSection(dragDrop.draggedSection) ? (
                 <EducationSection
                   sectionName={dragDrop.draggedSection.name}
                   education={dragDrop.draggedSection.content}
