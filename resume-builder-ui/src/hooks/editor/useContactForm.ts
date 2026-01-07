@@ -1,7 +1,7 @@
 // src/hooks/editor/useContactForm.ts
 // Contact form logic hook (Layer 2) - manages contact info and social links
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, Dispatch, SetStateAction } from 'react';
 import { ContactInfo, SocialLink } from '../../types';
 import { UseContactFormReturn } from '../../types/editor';
 import {
@@ -15,7 +15,7 @@ import { validateLinkedInUrl } from '../../services/validationService';
  */
 export interface UseContactFormProps {
   contactInfo: ContactInfo | null;
-  setContactInfo: (info: ContactInfo | null) => void;
+  setContactInfo: Dispatch<SetStateAction<ContactInfo | null>>;
 }
 
 /**
@@ -126,7 +126,7 @@ export const useContactForm = ({
         if (!prev) return null;
 
         const currentLinks = prev.social_links || [];
-        const updatedLinks = currentLinks.filter((_, i) => i !== index);
+        const updatedLinks = currentLinks.filter((_: SocialLink, i: number) => i !== index);
 
         return {
           ...prev,

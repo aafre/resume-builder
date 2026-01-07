@@ -21,7 +21,7 @@ import {
   restrictToWindowEdges,
 } from '@dnd-kit/modifiers';
 
-import { ContactInfo, Section, SaveStatus } from '../../types';
+import { ContactInfo, Section, SaveStatus, IconListItem } from '../../types';
 import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
 import ContactInfoSection from '../ContactInfoSection';
 import FormattingHelp from '../FormattingHelp';
@@ -323,7 +323,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                         sectionManagement.handleUpdateSection(index, {
                           ...section,
                           content: updatedExperiences,
-                        })
+                        } as Section)
                       }
                       onTitleEdit={() => sectionManagement.handleTitleEdit(index)}
                       onTitleSave={sectionManagement.handleTitleSave}
@@ -359,7 +359,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                         sectionManagement.handleUpdateSection(index, {
                           ...section,
                           content: updatedEducation,
-                        })
+                        } as Section)
                       }
                       onTitleEdit={() => sectionManagement.handleTitleEdit(index)}
                       onTitleSave={sectionManagement.handleTitleSave}
@@ -389,12 +389,12 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                     }}
                   >
                     <IconListSection
-                      data={section.content}
+                      data={section.content as IconListItem[]}
                       onUpdate={(updatedContent) =>
                         sectionManagement.handleUpdateSection(index, {
                           ...section,
                           content: updatedContent,
-                        })
+                        } as Section)
                       }
                       onDelete={() => sectionManagement.handleDeleteSection(index)}
                       onDeleteEntry={(entryIndex) =>
@@ -481,7 +481,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                 />
               ) : dragDrop.draggedSection.type === 'icon-list' ? (
                 <IconListSection
-                  data={dragDrop.draggedSection.content}
+                  data={dragDrop.draggedSection.content as IconListItem[]}
                   onUpdate={() => {}}
                   onDelete={() => {}}
                   sectionName={dragDrop.draggedSection.name}

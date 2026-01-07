@@ -106,11 +106,13 @@ export const createDefaultSection = (
       break;
   }
 
+  // Type assertion needed because we're building a section dynamically
+  // based on the type parameter, and TypeScript can't verify the union discriminant
   return {
     name: defaultName,
     type: type,
     content: defaultContent,
-  };
+  } as Section;
 };
 
 /**
@@ -139,10 +141,12 @@ export const deleteSectionItem = (
 
   const updatedContent = section.content.filter((_, i) => i !== itemIndex);
 
+  // Type assertion needed because TypeScript can't track that the filtered content
+  // maintains the same type as the original discriminated union member
   return {
     ...section,
     content: updatedContent,
-  };
+  } as Section;
 };
 
 /**
@@ -184,10 +188,11 @@ export const reorderSectionItems = (
   }
 
   // Use @dnd-kit's arrayMove utility for consistent behavior with drag-drop
-  const reorderedContent = arrayMove(section.content, oldIndex, newIndex);
+  // Type assertion needed because arrayMove can't infer type from discriminated union content
+  const reorderedContent = arrayMove(section.content as unknown[], oldIndex, newIndex);
 
   return {
     ...section,
     content: reorderedContent,
-  };
+  } as Section;
 };

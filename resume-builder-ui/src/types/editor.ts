@@ -151,7 +151,7 @@ export interface UseSectionNavigationReturn {
  */
 export interface UseResumeLoaderReturn {
   isLoadingFromUrl: boolean;
-  setIsLoadingFromUrl: (loading: boolean) => void;
+  setIsLoadingFromUrl: React.Dispatch<React.SetStateAction<boolean>>;
   hasLoadedFromUrl: boolean;
   cloudResumeId: string | null;
   setCloudResumeId: (id: string | null) => void;

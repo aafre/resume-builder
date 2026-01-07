@@ -120,8 +120,10 @@ export const useSaveIntegration = ({
           await new Promise((resolve) => setTimeout(resolve, 100));
         }
         // After the loop, status could be 'saved' or 'error' (or still 'saving' if timed out)
-        const finalStatus: SaveStatus = saveStatusRef.current;
-        return finalStatus !== 'error';
+        // Cast needed because TypeScript narrows based on the if-check above, but ref.current
+        // can change asynchronously during the while loop
+        const currentStatus = saveStatusRef.current as SaveStatus;
+        return currentStatus !== 'error';
       }
 
       // Always trigger save before action

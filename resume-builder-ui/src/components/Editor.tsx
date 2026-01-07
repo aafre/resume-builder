@@ -77,8 +77,8 @@ const Editor: React.FC = () => {
   const { hasShownDownloadToast, markDownloadToastShown, hasShownIdleNudge, markIdleNudgeShown } = useConversion();
 
   // AI warning state (not yet displayed in UI, but used by useResumeLoader)
-  const [aiWarnings, setAIWarnings] = useState<string[]>([]);
-  const [aiConfidence, setAIConfidence] = useState(0);
+  const [_aiWarnings, setAIWarnings] = useState<string[]>([]);
+  const [_aiConfidence, setAIConfidence] = useState(0);
 
   // Tour persistence
   const { preferences, setPreference, isLoading: prefsLoading } = usePreferencePersistence({
