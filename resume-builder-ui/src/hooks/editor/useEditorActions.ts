@@ -178,14 +178,31 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         const iconLocations = missingIcons
           .map((icon) => {
             // Find where this icon is referenced
+            const locations: string[] = [];
+            sections.forEach((section, sectionIdx) => {
+              if (section.type === 'experience' || section.name === 'Experience') {
+                const experiences = section.content as { icon?: string }[];
+                experiences.forEach((exp, expIdx) => {
+                  if (exp.icon === icon) {
+                    locations.push(`${section.name} → Entry ${expIdx + 1}`);
+                  }
+                });
+              } else if (section.type === 'education' || section.name === 'Education') {
+                const education = section.content as { icon?: string }[];
+                education.forEach((edu, eduIdx) => {
+                  if (edu.icon === icon) {
+                    locations.push(`${section.name} → Entry ${eduIdx + 1}`);
+                  }
+                });
               } else if (section.type === 'icon-list') {
-                const items = section.content;
+                const items = section.content as { icon?: string }[];
                 items.forEach((item, itemIdx) => {
                   if (item.icon === icon) {
                     locations.push(`${section.name} → Item ${itemIdx + 1}`);
                   }
                 });
               }
+            });
 
             return `• ${icon}${locations.length > 0 ? ' (used in: ' + locations.join(', ') + ')' : ''}`;
           })

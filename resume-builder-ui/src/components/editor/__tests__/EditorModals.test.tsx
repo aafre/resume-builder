@@ -450,8 +450,9 @@ describe('EditorModals', () => {
       });
       render(<EditorModals {...props} />);
 
+      // When sectionName is undefined, the message uses "this" as a pronoun, not as a quoted name
       expect(screen.getByTestId('confirm-dialog-message')).toHaveTextContent(
-        'Are you sure you want to delete the "this" section?'
+        'Are you sure you want to delete this section? This will remove all content in this section and cannot be undone.'
       );
     });
 
