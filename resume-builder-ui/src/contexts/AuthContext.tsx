@@ -473,10 +473,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const signInWithGoogle = async () => {
     if (!supabase) throw new Error('Supabase not configured');
 
+    // Store current path for redirect after auth
+    sessionStorage.setItem('auth-return-to', window.location.pathname + window.location.search);
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.href, // Return to current page
+        redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
 
@@ -486,10 +489,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const signInWithLinkedIn = async () => {
     if (!supabase) throw new Error('Supabase not configured');
 
+    // Store current path for redirect after auth
+    sessionStorage.setItem('auth-return-to', window.location.pathname + window.location.search);
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'linkedin_oidc',
       options: {
-        redirectTo: window.location.href, // Return to current page
+        redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
 
@@ -501,10 +507,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     console.log('🔵 Attempting to send magic link to:', email);
 
+    // Store current path for redirect after auth
+    sessionStorage.setItem('auth-return-to', window.location.pathname + window.location.search);
+
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: window.location.href, // Stay on current page
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
 
@@ -524,8 +533,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setSigningOut(true);
 
-      // Reset toast flag and migration state
+      // Reset toast flag, migration state, and auth return path
       sessionStorage.removeItem('login-toast-shown');
+      sessionStorage.removeItem('auth-return-to');
       localStorage.removeItem('anonymous-user-id');
       migrationAttempted.current = false;
 
