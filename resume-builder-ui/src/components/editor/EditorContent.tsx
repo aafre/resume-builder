@@ -260,6 +260,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
           <button
             onClick={modals.closeAIWarning}
             className="text-gray-400 hover:text-gray-600"
+            aria-label="Close review banner"
           >
             <X className="w-4 h-4" />
           </button>

@@ -337,7 +337,7 @@ describe('EditorContent', () => {
 
       render(<EditorContent {...props} />);
 
-      const closeButton = screen.getByRole('button', { name: '' }); // X button
+      const closeButton = screen.getByRole('button', { name: 'Close review banner' });
       fireEvent.click(closeButton);
 
       expect(closeAIWarning).toHaveBeenCalledTimes(1);
