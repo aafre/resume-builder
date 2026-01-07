@@ -7,6 +7,8 @@ import {
   DndContext,
   closestCenter,
   DragOverlay,
+  DragStartEvent,
+  DragEndEvent,
   SensorDescriptor,
   SensorOptions,
 } from '@dnd-kit/core';
