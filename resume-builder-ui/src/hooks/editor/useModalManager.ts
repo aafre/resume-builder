@@ -69,6 +69,8 @@ export interface UseModalManagerReturn {
   // Import Confirmation
   openImportConfirm: (file: File) => void;
   closeImportConfirm: () => void;
+  closeImportConfirmModal: () => void;
+  clearPendingImportFile: () => void;
 
   // Navigation Drawer
   openNavigationDrawer: () => void;
@@ -175,10 +177,14 @@ export const useModalManager = (): UseModalManagerReturn => {
     setPendingImportFile(file);
     setShowImportConfirm(true);
   }, []);
+  // Separate functions for modal and file state (intention-revealing API)
+  const closeImportConfirmModal = useCallback(() => setShowImportConfirm(false), []);
+  const clearPendingImportFile = useCallback(() => setPendingImportFile(null), []);
+  // Combined function for cancellation (closes modal AND clears file)
   const closeImportConfirm = useCallback(() => {
-    setShowImportConfirm(false);
-    setPendingImportFile(null);
-  }, []);
+    closeImportConfirmModal();
+    clearPendingImportFile();
+  }, [closeImportConfirmModal, clearPendingImportFile]);
 
   // Navigation Drawer functions
   const openNavigationDrawer = useCallback(() => setShowNavigationDrawer(true), []);
@@ -245,6 +251,8 @@ export const useModalManager = (): UseModalManagerReturn => {
       closeStartFreshConfirm,
       openImportConfirm,
       closeImportConfirm,
+      closeImportConfirmModal,
+      clearPendingImportFile,
       openNavigationDrawer,
       closeNavigationDrawer,
       toggleNavigationDrawer,

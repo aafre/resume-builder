@@ -151,6 +151,7 @@ export interface UseSectionNavigationReturn {
  */
 export interface UseResumeLoaderReturn {
   isLoadingFromUrl: boolean;
+  setIsLoadingFromUrl: (loading: boolean) => void;
   hasLoadedFromUrl: boolean;
   cloudResumeId: string | null;
   setCloudResumeId: (id: string | null) => void;

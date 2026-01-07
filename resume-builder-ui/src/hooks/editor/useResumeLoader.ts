@@ -1,7 +1,7 @@
 // src/hooks/editor/useResumeLoader.ts
 // Resume loader hook (Layer 3) - manages loading resumes from cloud and templates
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { toast } from 'react-hot-toast';
 import yaml from 'js-yaml';
@@ -111,6 +111,9 @@ export const useResumeLoader = ({
   const [hasLoadedFromUrl, setHasLoadedFromUrl] = useState<boolean>(false);
   const [cloudResumeId, setCloudResumeId] = useState<string | null>(resumeIdFromUrl || null);
 
+  // Ref to prevent concurrent cloud load calls (guards against re-renders during async operation)
+  const isLoadingCloudResumeRef = useRef<boolean>(false);
+
   /**
    * Load template data from API
    * Called automatically when templateId is set or can be called imperatively
@@ -170,6 +173,12 @@ export const useResumeLoader = ({
    */
   const loadResumeFromCloud = useCallback(
     async (resumeId: string) => {
+      // Prevent concurrent loads (guards against re-renders during async operation)
+      if (isLoadingCloudResumeRef.current) {
+        return;
+      }
+      isLoadingCloudResumeRef.current = true;
+
       try {
         setLoading(true);
 
@@ -286,6 +295,7 @@ export const useResumeLoader = ({
         // Don't set hasLoadedFromUrl on error - allow retry after migration completes
       } finally {
         setLoading(false);
+        isLoadingCloudResumeRef.current = false;
       }
     },
     [
@@ -345,6 +355,7 @@ export const useResumeLoader = ({
 
   return {
     isLoadingFromUrl,
+    setIsLoadingFromUrl,
     hasLoadedFromUrl,
     cloudResumeId,
     setCloudResumeId,

@@ -286,21 +286,21 @@ export const validateResumeStructure = (data: unknown): ResumeValidationResult =
     }
   }
 
-  // Validate optional AI fields if present
-  if ('ai_import_warnings' in typedData) {
+  // Validate optional AI fields if present and non-null
+  if ('ai_import_warnings' in typedData && typedData.ai_import_warnings !== null) {
     if (!Array.isArray(typedData.ai_import_warnings)) {
       return {
         valid: false,
-        error: 'Field "ai_import_warnings" must be an array'
+        error: 'Field "ai_import_warnings" must be an array or null'
       };
     }
   }
 
-  if ('ai_import_confidence' in typedData) {
+  if ('ai_import_confidence' in typedData && typedData.ai_import_confidence !== null) {
     if (typeof typedData.ai_import_confidence !== 'number') {
       return {
         valid: false,
-        error: 'Field "ai_import_confidence" must be a number'
+        error: 'Field "ai_import_confidence" must be a number or null'
       };
     }
   }

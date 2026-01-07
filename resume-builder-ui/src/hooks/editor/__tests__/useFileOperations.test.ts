@@ -49,9 +49,9 @@ describe('useFileOperations', () => {
   let mockSaveBeforeAction: ReturnType<typeof vi.fn>;
   let mockSetOriginalTemplateData: ReturnType<typeof vi.fn>;
   let mockSetIsLoadingFromUrl: ReturnType<typeof vi.fn>;
-  let mockSetPendingImportFile: ReturnType<typeof vi.fn>;
   let mockOpenImportConfirm: ReturnType<typeof vi.fn>;
-  let mockCloseImportConfirm: ReturnType<typeof vi.fn>;
+  let mockCloseImportConfirmModal: ReturnType<typeof vi.fn>;
+  let mockClearPendingImportFile: ReturnType<typeof vi.fn>;
   let mockIconRegistry: {
     exportIconsForYAML: ReturnType<typeof vi.fn>;
     importIconsFromYAML: ReturnType<typeof vi.fn>;
@@ -74,9 +74,9 @@ describe('useFileOperations', () => {
     mockSaveBeforeAction = vi.fn().mockResolvedValue(true);
     mockSetOriginalTemplateData = vi.fn();
     mockSetIsLoadingFromUrl = vi.fn();
-    mockSetPendingImportFile = vi.fn();
     mockOpenImportConfirm = vi.fn();
-    mockCloseImportConfirm = vi.fn();
+    mockCloseImportConfirmModal = vi.fn();
+    mockClearPendingImportFile = vi.fn();
     mockIconRegistry = {
       exportIconsForYAML: vi.fn().mockResolvedValue({}),
       importIconsFromYAML: vi.fn().mockResolvedValue(undefined),
@@ -117,9 +117,9 @@ describe('useFileOperations', () => {
     setOriginalTemplateData: mockSetOriginalTemplateData,
     setIsLoadingFromUrl: mockSetIsLoadingFromUrl,
     pendingImportFile: null,
-    setPendingImportFile: mockSetPendingImportFile,
     openImportConfirm: mockOpenImportConfirm,
-    closeImportConfirm: mockCloseImportConfirm,
+    closeImportConfirmModal: mockCloseImportConfirmModal,
+    clearPendingImportFile: mockClearPendingImportFile,
     ...overrides,
   });
 
@@ -378,7 +378,7 @@ describe('useFileOperations', () => {
         await result.current.confirmImportYAML();
       });
 
-      expect(mockCloseImportConfirm).not.toHaveBeenCalled();
+      expect(mockCloseImportConfirmModal).not.toHaveBeenCalled();
     });
 
     it('should close import confirm dialog', async () => {
@@ -402,7 +402,7 @@ describe('useFileOperations', () => {
         await importPromise;
       });
 
-      expect(mockCloseImportConfirm).toHaveBeenCalled();
+      expect(mockCloseImportConfirmModal).toHaveBeenCalled();
       cleanup();
     });
 
@@ -485,7 +485,7 @@ describe('useFileOperations', () => {
         await result.current.confirmImportYAML();
       });
 
-      expect(mockSetPendingImportFile).toHaveBeenCalledWith(null);
+      expect(mockClearPendingImportFile).toHaveBeenCalled();
       expect(importResumeFromYAML).not.toHaveBeenCalled();
     });
 
