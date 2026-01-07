@@ -164,7 +164,7 @@ export interface EditorContentRefs {
 export interface EditorContentProps {
   // Core data
   contactInfo: ContactInfo | null;
-  setContactInfo: (info: ContactInfo | null) => void;
+  setContactInfo: React.Dispatch<React.SetStateAction<ContactInfo | null>>;
   sections: Section[];
   supportsIcons: boolean;
   iconRegistry: EditorContentIconRegistry;
