@@ -32,6 +32,7 @@ const renderAuthCallback = (
     migrationInProgress: false,
     anonMigrationInProgress: false,
     migratedResumeCount: 0,
+    authInProgress: false,
     showAuthModal: vi.fn(),
     hideAuthModal: vi.fn(),
     authModalOpen: false,
