@@ -313,17 +313,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
 
     // Check for OAuth error in URL (happens when auth callback fails)
+    // Supabase returns magic link errors in hash fragment (#error=...), not query params
     const urlParams = new URLSearchParams(window.location.search);
-    const authError = urlParams.get('error');
-    const authErrorCode = urlParams.get('error_code');
-    const authErrorDescription = urlParams.get('error_description');
+    const hashParams = new URLSearchParams(window.location.hash.slice(1)); // Remove leading #
+
+    const authError = urlParams.get('error') || hashParams.get('error');
+    const authErrorCode = urlParams.get('error_code') || hashParams.get('error_code');
+    const authErrorDescription = urlParams.get('error_description') || hashParams.get('error_description');
 
     if (authError || authErrorCode) {
       console.error('🔴 Auth callback error:', authErrorCode, authErrorDescription);
-
-      // Clear the error params from URL to prevent reprocessing
-      const cleanUrl = window.location.pathname;
-      window.history.replaceState({}, '', cleanUrl);
 
       // Show user-friendly error message
       const errorMessages: Record<string, string> = {
@@ -332,8 +331,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         'otp_expired': 'Your magic link has expired. Please request a new one.',
       };
 
-      const message = errorMessages[authErrorCode || ''] || authErrorDescription || 'Sign-in failed. Please try again.';
+      // Decode description in case it has URL-encoded chars like "Email+link+is+invalid"
+      const decodedDescription = authErrorDescription ? decodeURIComponent(authErrorDescription.replace(/\+/g, ' ')) : null;
+      const message = errorMessages[authErrorCode || ''] || decodedDescription || 'Sign-in failed. Please try again.';
       toast.error(message, { duration: 6000 });
+
+      // Redirect to clean state to prevent "resume not found" errors
+      // If on /editor/:resumeId, redirect to /editor (template selection)
+      if (window.location.pathname.match(/^\/editor\/[^/]+$/)) {
+        window.history.replaceState({}, '', '/editor');
+      } else {
+        // Clear error params from URL on other pages
+        window.history.replaceState({}, '', window.location.pathname);
+      }
     }
 
     // Listen for auth state changes - Supabase handles everything
