@@ -312,6 +312,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return;
     }
 
+    // Check for OAuth error in URL (happens when auth callback fails)
+    const urlParams = new URLSearchParams(window.location.search);
+    const authError = urlParams.get('error');
+    const authErrorCode = urlParams.get('error_code');
+    const authErrorDescription = urlParams.get('error_description');
+
+    if (authError || authErrorCode) {
+      console.error('🔴 Auth callback error:', authErrorCode, authErrorDescription);
+
+      // Clear the error params from URL to prevent reprocessing
+      const cleanUrl = window.location.pathname;
+      window.history.replaceState({}, '', cleanUrl);
+
+      // Show user-friendly error message
+      const errorMessages: Record<string, string> = {
+        'bad_oauth_state': 'Your sign-in link has expired. Please try signing in again.',
+        'access_denied': 'Sign-in was cancelled or denied.',
+        'otp_expired': 'Your magic link has expired. Please request a new one.',
+      };
+
+      const message = errorMessages[authErrorCode || ''] || authErrorDescription || 'Sign-in failed. Please try again.';
+      toast.error(message, { duration: 6000 });
+    }
+
     // Listen for auth state changes - Supabase handles everything
     // This is the ONLY initialization logic - no separate initializeAuth function
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -360,6 +384,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (event === 'SIGNED_IN') {
           console.log('✅ Sign-in completed');
           setLoading(false);
+        }
+
+        // TOKEN_REFRESHED fires when Supabase SDK refreshes the JWT
+        if (event === 'TOKEN_REFRESHED') {
+          console.log('🔄 Token refreshed automatically by Supabase SDK');
         }
 
         // Store anonymous user_id for migration later

@@ -84,18 +84,39 @@ class ApiClient {
     this.cachedSession = session;
   }
 
+  /**
+   * Check if token is expiring within the next 60 seconds
+   */
+  private isTokenExpiringSoon(session: any): boolean {
+    if (!session?.expires_at) return false;
+    const expiresAt = session.expires_at * 1000; // Convert to milliseconds
+    const now = Date.now();
+    return expiresAt - now < 60000; // 60 second buffer
+  }
+
   private async getAuthHeaders(providedSession?: any): Promise<Record<string, string>> {
-    // Use provided session first (from request options)
-    if (providedSession) {
-      return {
-        'Authorization': `Bearer ${providedSession.access_token}`
-      };
+    let sessionToUse = providedSession || this.cachedSession;
+
+    // Proactively refresh if token is expiring soon
+    if (sessionToUse && this.isTokenExpiringSoon(sessionToUse) && supabase) {
+      console.log('🔄 Token expiring soon, proactively refreshing...');
+      try {
+        const { data: { session: newSession }, error } = await supabase.auth.refreshSession();
+        if (!error && newSession) {
+          this.cachedSession = newSession;
+          sessionToUse = newSession;
+          console.log('✅ Token refreshed proactively');
+        }
+      } catch (refreshError) {
+        console.warn('⚠️ Proactive token refresh failed, using existing token:', refreshError);
+        // Continue with existing token - it may still work
+      }
     }
 
-    // Use cached session second (set by setSession())
-    if (this.cachedSession) {
+    // Use provided or refreshed session
+    if (sessionToUse) {
       return {
-        'Authorization': `Bearer ${this.cachedSession.access_token}`
+        'Authorization': `Bearer ${sessionToUse.access_token}`
       };
     }
 
