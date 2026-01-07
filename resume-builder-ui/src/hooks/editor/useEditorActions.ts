@@ -178,23 +178,14 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         const iconLocations = missingIcons
           .map((icon) => {
             // Find where this icon is referenced
-            const locations: string[] = [];
-
-            sections.forEach((section) => {
-              if (isExperienceSection(section) || isEducationSection(section)) {
-                section.content.forEach((item, itemIdx) => {
-                  if (item.icon === icon) {
-                    locations.push(`${section.name} → Entry ${itemIdx + 1}`);
-                  }
-                });
               } else if (section.type === 'icon-list') {
-                section.content.forEach((item, itemIdx) => {
+                const items = section.content;
+                items.forEach((item, itemIdx) => {
                   if (item.icon === icon) {
                     locations.push(`${section.name} → Item ${itemIdx + 1}`);
                   }
                 });
               }
-            });
 
             return `• ${icon}${locations.length > 0 ? ' (used in: ' + locations.join(', ') + ')' : ''}`;
           })
@@ -430,7 +421,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
     originalTemplateData,
     isAnonymous,
     contactInfo,
-    sections.length,
+    sections,
     saveBeforeAction,
     closeStartFreshConfirm,
     setContactInfo,
