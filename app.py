@@ -1196,7 +1196,11 @@ def require_auth(f):
             request.user = user_response.user
             return f(*args, **kwargs)
         except Exception as e:
+            # Enhanced logging for auth errors - helps diagnose token expiration patterns
             logging.error(f"Auth error: {e}")
+            logging.error(f"  - Endpoint: {request.method} {request.path}")
+            logging.error(f"  - User-Agent: {request.headers.get('User-Agent', 'Unknown')[:100]}")
+            logging.error(f"  - Auth header present: {bool(auth_header)}")
             return jsonify({"success": False, "error": "Invalid or expired token"}), 401
 
     return decorated_function
