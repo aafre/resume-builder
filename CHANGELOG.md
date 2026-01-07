@@ -2,6 +2,126 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.5.0] - 2026-01-07
+
+### 🚀 Features
+
+- **editor:** Create centralized type definitions (TASK-001)
+- **services:** Create section service with comprehensive tests (TASK-002, TASK-003)
+- **services:** Add validation service with 98.61% coverage
+- **services:** Add YAML service with comprehensive tests
+- **yamlService:** Add YAML structure validation on import
+- **hooks:** Create useModalManager hook with 15 modal states
+- **hooks:** Create useEditorState hook with comprehensive tests
+- **hooks:** Create useContactForm hook with comprehensive tests
+- **hooks:** Create useSectionDragDrop hook with comprehensive tests
+- **hooks:** Create useSectionNavigation hook with comprehensive tests
+- **hooks:** Create useResumeLoader hook with comprehensive tests
+- **hooks:** Create useTourFlow hook with comprehensive tests
+- **hooks:** Create useSectionManagement hook for section CRUD
+- **hooks:** Create useFileOperations hook for YAML import/export
+- **hooks:** Create useEditorActions hook for download/preview/start-fresh
+- **editor:** Create EditorHeader component
+- **editor:** Create EditorModals component
+- **editor:** Create EditorContent component
+- **editor:** Create useSaveIntegration hook
+- **editor:** Create useEditorEffects hook
+- **auth:** Add dedicated /auth/callback route for OAuth handling
+- **auth:** Add dedicated /auth/callback route for OAuth handling
+- **Auth:** Add proactive token refresh and suspend beforeunload during OAuth
+
+### 🐛 Bug Fixes
+
+- **validation:** Improve LinkedIn URL regex accuracy
+- **validation:** Add robust type checking for YAML structure
+- **tests:** Correct DeleteTarget structure in useModalManager tests
+- **useContactForm:** Prevent stale closure on contactInfo.name
+- **useContactForm:** Remap indices when removing social links
+- **useContactForm:** Implement index remapping on social link removal
+- **import:** Update
+- **useSectionNavigation:** Add null check for sectionRefs.current
+- **useResumeLoader:** Add YAML structure validation before type assertion
+- **useResumeLoader:** Add API resume data validation before use
+- **useTourFlow:** Prevent memory leak in idle tooltip auto-dismiss
+- **tourFlow:** Remove log
+- **test:** Fix useTourFlow tests for Promise mock and removed log
+- **hooks:** Expose setTemporaryTitle for controlled input handling
+- **useFileOperations:** Use React.Dispatch types for state setters
+- **toast:** Improve readability
+- **Editor:** Correct hook dependency order for useCloudSave
+- **Editor:** Resolve stale closure and no-op setter bugs
+- **validation:** Allow null for optional AI import fields
+- **useResumeLoader:** Prevent multiple concurrent cloud load calls
+- **EditorModals:** Handle undefined section name in delete message
+- **EditorContent:** Use type guards in DragOverlay
+- **type:** Add specific drag events
+- **EditorContent:** Add aria-label to close button for accessibility
+- Correct merge artifacts in useEditorActions and test expectations
+- **useSaveIntegration:** Use proper default values instead of unsafe type assertion
+- **useSaveIntegration:** Improve type safety and dependency arrays
+- Resolve multiple issues from merge and type errors
+- **useEditorActions:** Improve type safety in icon location search
+- **types:** Resolve TypeScript build errors across editor components
+- **useSaveIntegration:** Use value-based dependency for iconsForCloudSave memo
+- **Auth:** Enhance backend auth error logging with context
+- **Auth:** Enhance backend auth error logging with context
+
+### 🚜 Refactor
+
+- **yamlService:** Make icon-list processing generic
+- **yamlService:** Improve type safety for item processing
+- **yamlService:** Type contactInfo in YAMLImportResult
+- **useModalManager:** Rename showModal to showSectionTypeModal
+- **useEditorState:** Improve updateSection with functional updates and bounds checking
+- **useEditorState:** Extract OriginalTemplateData type
+- **useContactForm:** Fix stale state and consolidate updates
+- **useContactForm:** Eliminate stale reads and extract validation
+- **tests:** Add helper functions to reduce boilerplate in drag-drop tests
+- **types:** Improve editor.ts type safety (TASK-001 enhancement)
+- **sectionService:** Fix icon type mismatch and improve control flow
+- **useModalManager:** Optimize useMemo dependencies
+- **validationService:** Use improved LinkedIn validator in validatePlatformUrl
+- **validationService:** Improve type safety in validateYAMLStructure
+- **yamlService:** Consolidate icon processing for icon-list, experience, and education sections
+- **tests:** Remove duplicate test and fix misleading test name
+- **useSectionNavigation:** Extract scroll offset to named constant
+- **useResumeLoader:** Use backend supportsIcons flag instead of hardcoding
+- **useResumeLoader:** Improve error messages with context IDs
+- **types:** Update UseSectionManagementReturn to include title editing
+- **types:** Use proper React.Dispatch type for setTemporaryTitle
+- **useEditorActions:** Improve code style
+- **Editor:** Integrate all 10 extracted hooks
+- **useModalManager:** Improve import confirm API clarity
+- **SectionNavigator:** Remove duplicated status/sign-in UI
+- **EditorHeader:** Remove unused default export
+- **Editor:** Integrate EditorModals component
+- **Editor:** Integrate EditorContent component
+- **Editor:** Finalize refactor using extracted hooks
+- **sectionService:** Use typed SectionType instead of string
+- **useContactForm:** Use functional updaters to fix stale closure
+- **useEditorActions:** Use type guards for section type checking
+- **useEditorActions:** Remove duplicate validateLinkedInUrl function
+- **AuthCallback:** Use config object for error messages
+
+### ⚡ Performance
+
+- **services:** Optimize getUniqueDefaultName with Set lookup
+- **Editor:** Memoize onSectionAdded callback with useCallback
+
+### 🧪 Testing
+
+- **hooks:** Add comprehensive tests for useSectionManagement
+- **hooks:** Add comprehensive tests for useFileOperations
+- **EditorModals:** Add comprehensive tests
+- **EditorContent:** Add comprehensive tests
+- **EditorContent:** Add integration and accessibility tests
+- **auth:** Add unit tests for OAuth redirect logic
+- **auth:** Add unit tests for OAuth redirect logic
+
+### Merge
+
+- Resolve conflict with editor-refactor branch
+
 ## [3.4.0] - 2026-01-05
 
 ### 🚀 Features
