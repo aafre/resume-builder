@@ -64,13 +64,8 @@ describe('sectionService', () => {
       expect(name).toBe('New Experience Section 4');
     });
 
-    it('should return default "New Section" for unknown type', () => {
-      const sections: Section[] = [];
-
-      const name = getUniqueDefaultName('unknown-type', sections);
-
-      expect(name).toBe('New Section');
-    });
+    // Note: 'unknown-type' test removed - getUniqueDefaultName now requires
+    // a valid SectionType parameter for improved type safety
 
     it('should handle all known section types', () => {
       const sections: Section[] = [];
@@ -176,13 +171,8 @@ describe('sectionService', () => {
       expect(section.name).toBe('New Experience Section 2');
     });
 
-    it('should handle unknown section type with empty string content', () => {
-      const section = createDefaultSection('unknown-type', []);
-
-      expect(section.type).toBe('unknown-type');
-      expect(section.name).toBe('New Section');
-      expect(section.content).toBe('');
-    });
+    // Note: 'unknown-type' test removed - createDefaultSection now requires
+    // a valid SectionType parameter for improved type safety
   });
 
   describe('deleteSectionItem', () => {

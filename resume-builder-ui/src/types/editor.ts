@@ -4,6 +4,7 @@
 import React from 'react';
 import { ContactInfo, Section, SocialLink } from '../types';
 import { DragEndEvent, DragStartEvent, useSensors } from '@dnd-kit/core';
+import { SectionType } from '../services/sectionService';
 
 // --- Editor State Types ---
 
@@ -180,7 +181,7 @@ export interface UseTourFlowReturn {
  */
 export interface UseSectionManagementReturn {
   // Section operations
-  handleAddSection: (type: string) => void;
+  handleAddSection: (type: SectionType) => void;
   handleUpdateSection: (index: number, updatedSection: Section) => void;
   handleDeleteSection: (index: number) => void;
   handleDeleteEntry: (sectionIndex: number, entryIndex: number) => void;

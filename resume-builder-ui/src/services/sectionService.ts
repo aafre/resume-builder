@@ -1,13 +1,35 @@
 // src/services/sectionService.ts
 // Pure functions for section operations (no React dependencies)
 
-import { Section } from '../types';
+import {
+  Section,
+  TextSection,
+  BulletedListSection,
+  InlineListSection,
+  DynamicColumnListSection,
+  IconListSection,
+  ExperienceSection,
+  EducationSection,
+} from '../types';
 import { arrayMove } from '@dnd-kit/sortable';
+
+/**
+ * Valid section type values that can be created
+ * Derived from the Section union type discriminants
+ */
+export type SectionType =
+  | 'text'
+  | 'bulleted-list'
+  | 'inline-list'
+  | 'dynamic-column-list'
+  | 'icon-list'
+  | 'experience'
+  | 'education';
 
 /**
  * Type name mapping for section types
  */
-const TYPE_NAME_MAP: { [key: string]: string } = {
+const TYPE_NAME_MAP: Record<SectionType, string> = {
   experience: "New Experience Section",
   education: "New Education Section",
   text: "New Text Section",
@@ -30,10 +52,10 @@ const TYPE_NAME_MAP: { [key: string]: string } = {
  * getUniqueDefaultName('experience', [{ name: 'New Experience Section', ...}]) // "New Experience Section 2"
  */
 export const getUniqueDefaultName = (
-  type: string,
+  type: SectionType,
   existingSections: Section[]
 ): string => {
-  const baseName = TYPE_NAME_MAP[type] || "New Section";
+  const baseName = TYPE_NAME_MAP[type];
   // Use Set for O(1) lookup performance instead of Array.includes() O(n)
   const existingNames = new Set(existingSections.map((s) => s.name.toLowerCase()));
 
@@ -54,8 +76,10 @@ export const getUniqueDefaultName = (
 
 /**
  * Creates a default section with appropriate empty content based on type
+ * Returns a fully typed Section object without type assertions by returning
+ * complete objects from each switch case.
  *
- * @param type - Section type
+ * @param type - Section type (must be a valid SectionType)
  * @param existingSections - Existing sections for unique name generation
  * @returns New Section object with default content
  *
@@ -64,55 +88,84 @@ export const getUniqueDefaultName = (
  * // Returns: { name: "New Experience Section", type: "experience", content: [{ company: "", title: "", dates: "", description: [""] }] }
  */
 export const createDefaultSection = (
-  type: string,
+  type: SectionType,
   existingSections: Section[]
 ): Section => {
   const defaultName = getUniqueDefaultName(type, existingSections);
 
-  let defaultContent;
+  // Return complete typed objects from each case to ensure proper type inference
   switch (type) {
-    case "experience":
-      // Default content for Experience sections
-      defaultContent = [
-        {
-          company: "",
-          title: "",
-          dates: "",
-          description: [""],
-        },
-      ];
-      break;
-    case "education":
-      // Default content for Education sections
-      defaultContent = [
-        {
-          degree: "",
-          school: "",
-          year: "",
-          field_of_study: "",
-        },
-      ];
-      break;
-    case "bulleted-list":
-    case "inline-list":
-    case "dynamic-column-list":
-    case "icon-list":
-      // List sections start with empty array
-      defaultContent = [];
-      break;
-    default:
-      // Text sections and unknown types start with empty string
-      defaultContent = "";
-      break;
+    case "experience": {
+      const section: ExperienceSection = {
+        name: defaultName,
+        type: "experience",
+        content: [
+          {
+            company: "",
+            title: "",
+            dates: "",
+            description: [""],
+          },
+        ],
+      };
+      return section;
+    }
+    case "education": {
+      const section: EducationSection = {
+        name: defaultName,
+        type: "education",
+        content: [
+          {
+            degree: "",
+            school: "",
+            year: "",
+            field_of_study: "",
+          },
+        ],
+      };
+      return section;
+    }
+    case "text": {
+      const section: TextSection = {
+        name: defaultName,
+        type: "text",
+        content: "",
+      };
+      return section;
+    }
+    case "bulleted-list": {
+      const section: BulletedListSection = {
+        name: defaultName,
+        type: "bulleted-list",
+        content: [],
+      };
+      return section;
+    }
+    case "inline-list": {
+      const section: InlineListSection = {
+        name: defaultName,
+        type: "inline-list",
+        content: [],
+      };
+      return section;
+    }
+    case "dynamic-column-list": {
+      const section: DynamicColumnListSection = {
+        name: defaultName,
+        type: "dynamic-column-list",
+        content: [],
+      };
+      return section;
+    }
+    case "icon-list": {
+      const section: IconListSection = {
+        name: defaultName,
+        type: "icon-list",
+        content: [],
+      };
+      return section;
+    }
   }
-
-  // Type assertion needed because we're building a section dynamically
-  // based on the type parameter, and TypeScript can't verify the union discriminant
-  return {
-    name: defaultName,
-    type: type,
-    content: defaultContent,
-  } as Section;
 };
 
 /**
