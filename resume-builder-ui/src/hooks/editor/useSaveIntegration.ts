@@ -82,7 +82,7 @@ export const useSaveIntegration = ({
             sections: sections,
             template_id: templateId,
           }
-        : { contact_info: {} as ContactInfo, sections: [], template_id: '' },
+        : { contact_info: { name: '', location: '', email: '', phone: '' }, sections: [], template_id: '' },
     icons: iconsForCloudSave,
     enabled: !!templateId && !!contactInfo && !isLoadingFromUrl && !authLoading,
     session: session,
