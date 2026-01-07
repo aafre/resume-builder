@@ -177,6 +177,13 @@ const Editor: React.FC = () => {
     openStorageLimitModal: modalManager.openStorageLimitModal,
   });
 
+  // Memoized callback for scrolling to newly added sections
+  const handleSectionAdded = useCallback(() => {
+    setTimeout(() => {
+      newSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  }, []);
+
   const sectionManagement = useSectionManagement({
     sections,
     setSections,
@@ -184,11 +191,7 @@ const Editor: React.FC = () => {
     openDeleteConfirm: modalManager.openDeleteConfirm,
     closeDeleteConfirm: modalManager.closeDeleteConfirm,
     closeSectionTypeModal: modalManager.closeSectionTypeModal,
-    onSectionAdded: () => {
-      setTimeout(() => {
-        newSectionRef.current?.scrollIntoView({ behavior: "smooth" });
-      }, 100);
-    },
+    onSectionAdded: handleSectionAdded,
   });
 
   // ===== Preview Hook =====
