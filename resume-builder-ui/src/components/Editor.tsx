@@ -70,7 +70,7 @@ const Editor: React.FC = () => {
   const iconRegistry = useIconRegistry();
 
   // Auth state
-  const { isAnonymous, session, loading: authLoading, anonMigrationInProgress } = useAuth();
+  const { isAnonymous, session, loading: authLoading, anonMigrationInProgress, authInProgress } = useAuth();
   const isAuthenticated = !!session && !isAnonymous;
 
   // Conversion nudges
@@ -281,6 +281,7 @@ const Editor: React.FC = () => {
     savedResumeId,
     cloudResumeId: resumeLoader.cloudResumeId,
     session,
+    authInProgress,
   });
 
   // ===== Loading State =====

@@ -16,6 +16,7 @@ interface AuthContextType {
   migrationInProgress: boolean;
   anonMigrationInProgress: boolean;
   migratedResumeCount: number;
+  authInProgress: boolean;
   showAuthModal: () => void;
   hideAuthModal: () => void;
   authModalOpen: boolean;
@@ -52,6 +53,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [anonMigrationInProgress, setAnonMigrationInProgress] = useState(false);
   const [migratedResumeCount, setMigratedResumeCount] = useState(0);
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authInProgress, setAuthInProgress] = useState(false);
   const migrationAttempted = useRef(false);
   const anonMigrationAttempted = useRef(false);
 
@@ -360,6 +362,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (event === 'SIGNED_IN') {
           console.log('✅ Sign-in completed');
           setLoading(false);
+          setAuthInProgress(false);
         }
 
         // Store anonymous user_id for migration later
@@ -462,6 +465,37 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
   }, []);
 
+  // Proactive token refresh when tab regains focus
+  useEffect(() => {
+    if (!supabase) return;
+
+    // Capture supabase in closure to satisfy TypeScript
+    const supabaseClient = supabase;
+
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === 'visible' && sessionRef.current) {
+        const expiresAt = sessionRef.current.expires_at;
+        const now = Math.floor(Date.now() / 1000);
+        const fiveMinutes = 5 * 60;
+
+        if (expiresAt && (expiresAt - now) < fiveMinutes) {
+          try {
+            const { data: { session: newSession }, error } = await supabaseClient.auth.refreshSession();
+            if (!error && newSession) {
+              setSessionAndRef(newSession);
+              apiClient.setSession(newSession);
+            }
+          } catch {
+            // Log but don't break the app - Supabase will handle refresh on next request
+          }
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [setSessionAndRef, supabase]);
+
   const showAuthModal = () => {
     setAuthModalOpen(true);
   };
@@ -470,30 +504,41 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setAuthModalOpen(false);
   };
 
-  const signInWithGoogle = async () => {
+  const initiateOAuthSignIn = async (provider: 'google' | 'linkedin_oidc') => {
     if (!supabase) throw new Error('Supabase not configured');
 
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: window.location.href, // Return to current page
-      },
-    });
+    // Store current path for redirect after auth
+    sessionStorage.setItem('auth-return-to', window.location.pathname + window.location.search);
 
-    if (error) throw error;
+    // Mark auth in progress to suspend beforeunload warnings
+    setAuthInProgress(true);
+
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) {
+        // If Supabase returns an error object, it won't redirect.
+        // Throw to trigger catch block and reset state.
+        throw error;
+      }
+    } catch (error) {
+      // Catches both returned errors and thrown exceptions (e.g., network issues)
+      setAuthInProgress(false);
+      throw error;
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    await initiateOAuthSignIn('google');
   };
 
   const signInWithLinkedIn = async () => {
-    if (!supabase) throw new Error('Supabase not configured');
-
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'linkedin_oidc',
-      options: {
-        redirectTo: window.location.href, // Return to current page
-      },
-    });
-
-    if (error) throw error;
+    await initiateOAuthSignIn('linkedin_oidc');
   };
 
   const signInWithEmail = async (email: string) => {
@@ -501,10 +546,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     console.log('🔵 Attempting to send magic link to:', email);
 
+    // Store current path for redirect after auth
+    sessionStorage.setItem('auth-return-to', window.location.pathname + window.location.search);
+
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: window.location.href, // Stay on current page
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
 
@@ -524,8 +572,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setSigningOut(true);
 
-      // Reset toast flag and migration state
+      // Reset toast flag, migration state, and auth return path
       sessionStorage.removeItem('login-toast-shown');
+      sessionStorage.removeItem('auth-return-to');
       localStorage.removeItem('anonymous-user-id');
       migrationAttempted.current = false;
 
@@ -573,6 +622,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     migrationInProgress,
     anonMigrationInProgress,
     migratedResumeCount,
+    authInProgress,
     showAuthModal,
     hideAuthModal,
     authModalOpen,

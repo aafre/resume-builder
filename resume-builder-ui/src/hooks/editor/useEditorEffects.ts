@@ -23,6 +23,9 @@ interface UseEditorEffectsProps {
   savedResumeId: string | null;
   cloudResumeId: string | null;
   session: Session | null;
+
+  // Auth flow state - skip beforeunload during OAuth redirects
+  authInProgress: boolean;
 }
 
 /**
@@ -44,6 +47,7 @@ export const useEditorEffects = ({
   savedResumeId,
   cloudResumeId,
   session,
+  authInProgress,
 }: UseEditorEffectsProps): void => {
   // ===== Close advanced menu on click outside =====
   useEffect(() => {
@@ -75,7 +79,8 @@ export const useEditorEffects = ({
 
   // ===== Warn user if closing browser/tab with unsaved changes =====
   useEffect(() => {
-    if (isAnonymous || !contactInfo || !templateId) return;
+    // Skip beforeunload during OAuth redirects to prevent "unsaved work" dialog
+    if (authInProgress || isAnonymous || !contactInfo || !templateId) return;
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (saveStatus === 'saving' || saveStatus === 'error') {
@@ -87,7 +92,7 @@ export const useEditorEffects = ({
 
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [isAnonymous, contactInfo, templateId, saveStatus]);
+  }, [authInProgress, isAnonymous, contactInfo, templateId, saveStatus]);
 
   // ===== Save on component unmount =====
   const saveOnUnmountRef = useRef<(() => Promise<void>) | null>(null);
