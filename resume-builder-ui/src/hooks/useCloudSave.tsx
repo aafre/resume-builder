@@ -25,6 +25,7 @@ interface UseCloudSaveReturn {
   lastSaved: Date | null;
   saveNow: () => Promise<string | null>; // Returns resume ID on success
   resumeId: string | null;
+  cancelPendingSave: () => void; // Cancel pending saves during auth transitions
 }
 
 const DEBOUNCE_DELAY = 800; // 800ms - Google Docs-like speed
@@ -207,6 +208,15 @@ export function useCloudSave({
     return await saveToCloud();
   }, [saveToCloud]);
 
+  // Cancel any pending save and reset status (used during auth transitions)
+  const cancelPendingSave = useCallback(() => {
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+      debounceTimerRef.current = null;
+    }
+    setSaveStatus('saved'); // Reset to prevent beforeunload warning
+  }, []);
+
   // Debounced auto-save effect
   useEffect(() => {
     if (!enabled) {
@@ -290,6 +300,7 @@ export function useCloudSave({
     saveStatus,
     lastSaved,
     saveNow,
-    resumeId: currentResumeId
+    resumeId: currentResumeId,
+    cancelPendingSave
   };
 }

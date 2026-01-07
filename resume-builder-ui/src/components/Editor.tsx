@@ -226,7 +226,8 @@ const Editor: React.FC = () => {
     saveStatus,
     lastSaved: cloudLastSaved,
     saveNow, // Used before critical actions
-    resumeId: savedResumeId
+    resumeId: savedResumeId,
+    cancelPendingSave
   } = useCloudSave({
     resumeId: cloudResumeId,
     resumeData: contactInfo && templateId ? {
@@ -235,7 +236,7 @@ const Editor: React.FC = () => {
       template_id: templateId
     } : { contact_info: {} as any, sections: [], template_id: '' },
     icons: iconsForCloudSave,
-    enabled: !!templateId && !!contactInfo && !isLoadingFromUrl && !authLoading,  // Wait for auth and data to be ready
+    enabled: !!templateId && !!contactInfo && !isLoadingFromUrl && !authLoading && !anonMigrationInProgress,  // Wait for auth, data, and migration to complete
     session: session  // Pass session from AuthContext
   });
 
@@ -245,6 +246,13 @@ const Editor: React.FC = () => {
       setCloudResumeId(savedResumeId);
     }
   }, [savedResumeId, cloudResumeId]);
+
+  // Cancel pending saves when migration starts (prevents stale session 401 errors)
+  useEffect(() => {
+    if (anonMigrationInProgress) {
+      cancelPendingSave();
+    }
+  }, [anonMigrationInProgress, cancelPendingSave]);
 
   // Note: Storage limit errors are handled in saveBeforeAction() via RESUME_LIMIT_REACHED
   // No need for blanket error handling here that shows modal for all errors
@@ -1531,9 +1539,16 @@ const Editor: React.FC = () => {
 
   // Warn user if closing browser/tab with unsaved changes
   useEffect(() => {
-    if (isAnonymous || !contactInfo || !templateId) return;
+    // Skip during auth transitions - migration handles save coordination
+    if (isAnonymous || !contactInfo || !templateId || anonMigrationInProgress) return;
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      // Don't warn during auth callback redirects (magic link, OAuth)
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('code') || urlParams.has('error') || urlParams.has('access_token')) {
+        return; // Auth callback in progress, don't warn
+      }
+
       // Only warn if save is pending or failed
       if (saveStatus === 'saving' || saveStatus === 'error') {
         e.preventDefault();
@@ -1547,7 +1562,7 @@ const Editor: React.FC = () => {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [isAnonymous, contactInfo, templateId, saveStatus]);
+  }, [isAnonymous, contactInfo, templateId, saveStatus, anonMigrationInProgress]);
 
   // Update save function ref with current values (fixes stale closure bug)
   useEffect(() => {
