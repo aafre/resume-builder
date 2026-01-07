@@ -15,7 +15,6 @@ import { usePreview } from "../hooks/usePreview";
 import { useCloudSave } from "../hooks/useCloudSave";
 import { useAuth } from "../contexts/AuthContext";
 import { useConversion } from "../contexts/ConversionContext";
-import { StorageLimitModal } from "./StorageLimitModal";
 import { processSectionsForExport } from "../services/yamlService";
 import ContactInfoSection from "./ContactInfoSection";
 import FormattingHelp from "./FormattingHelp";
@@ -24,19 +23,12 @@ import ExperienceSection from "./ExperienceSection";
 import EducationSection from "./EducationSection";
 import GenericSection from "./GenericSection";
 import IconListSection from "./IconListSection";
-import SectionTypeModal from "./SectionTypeModal";
 import EditorToolbar from "./EditorToolbar";
 import MobileActionBar from "./MobileActionBar";
 import MobileNavigationDrawer from "./MobileNavigationDrawer";
 import SectionNavigator from "./SectionNavigator";
-import ResponsiveConfirmDialog from "./ResponsiveConfirmDialog";
 import DragHandle from "./DragHandle";
-import PreviewModal from "./PreviewModal";
 import { useEditorContext } from "../contexts/EditorContext";
-import ContextAwareTour from "./ContextAwareTour";
-import TabbedHelpModal from "./TabbedHelpModal";
-import AuthModal from "./AuthModal";
-import DownloadCelebrationModal from "./DownloadCelebrationModal";
 import usePreferencePersistence from "../hooks/usePreferencePersistence";
 import { isExperienceSection, isEducationSection } from "../utils/sectionTypeChecker";
 import {
@@ -64,7 +56,7 @@ import { useTourFlow } from "../hooks/editor/useTourFlow";
 import { useSectionManagement } from "../hooks/editor/useSectionManagement";
 import { useFileOperations } from "../hooks/editor/useFileOperations";
 import { useEditorActions } from "../hooks/editor/useEditorActions";
-import { EditorHeader } from "./editor";
+import { EditorHeader, EditorModals } from "./editor";
 
 // Lazy-loaded error components
 const NotFound = lazy(() => import("./NotFound"));
@@ -822,128 +814,35 @@ const Editor: React.FC = () => {
         />
       </div>
 
-      {/* Context-Aware Tour */}
-      <ContextAwareTour
-        isOpen={tourFlow.showWelcomeTour}
-        onClose={tourFlow.handleTourComplete}
+      {/* Editor Modals - All modals and dialogs */}
+      <EditorModals
+        modalManager={modalManager}
+        tourFlow={tourFlow}
+        preview={{
+          previewUrl: preview.previewUrl,
+          isGenerating: preview.isGenerating,
+          isStale: preview.isStale,
+          error: preview.error,
+        }}
+        actions={{
+          handleAddSection: sectionManagement.handleAddSection,
+          confirmDelete: sectionManagement.confirmDelete,
+          confirmImportYAML: fileOperations.confirmImportYAML,
+          confirmStartFresh: editorActions.confirmStartFresh,
+          handleRefreshPreview: editorActions.handleRefreshPreview,
+          handleGenerateResume: editorActions.handleGenerateResume,
+        }}
+        loading={{
+          loadingStartFresh: editorActions.loadingStartFresh,
+          loadingLoad: fileOperations.loadingLoad,
+          isDownloading: editorActions.isDownloading,
+        }}
         isAnonymous={isAnonymous}
         isAuthenticated={isAuthenticated}
-        onSignInClick={() => {
-          tourFlow.handleSignInFromTour();
-          modalManager.openAuthModalFromTour();
-        }}
-        onTourComplete={tourFlow.handleTourComplete}
-      />
-
-      {/* Auth Modal triggered from tour */}
-      <AuthModal
-        isOpen={modalManager.showAuthModalFromTour}
-        onClose={modalManager.closeAuthModalFromTour}
-        onSuccess={() => {
-          modalManager.closeAuthModalFromTour();
-          tourFlow.handleSignInSuccess();
-        }}
-      />
-
-      {/* Auth Modal triggered from actions */}
-      <AuthModal
-        isOpen={modalManager.showAuthModal}
-        onClose={modalManager.closeAuthModal}
-        onSuccess={() => {
-          modalManager.closeAuthModal();
+        supportsIcons={supportsIcons}
+        onAuthSuccess={() => {
           toast.success('Welcome! Your resume will now be saved to the cloud.');
         }}
-      />
-
-      {/* Download Celebration Modal */}
-      <DownloadCelebrationModal
-        isOpen={modalManager.showDownloadCelebration}
-        onClose={modalManager.closeDownloadCelebration}
-        onSignUp={() => {
-          modalManager.closeDownloadCelebration();
-          modalManager.openAuthModal();
-        }}
-      />
-
-      {/* Tabbed Help Modal */}
-      <TabbedHelpModal
-        isOpen={modalManager.showHelpModal}
-        onClose={modalManager.closeHelpModal}
-        isAnonymous={isAnonymous}
-        onSignInClick={() => {
-          modalManager.closeHelpModal();
-          modalManager.openAuthModal();
-        }}
-      />
-
-      {/* Section Type Modal */}
-      {modalManager.showSectionTypeModal && (
-        <SectionTypeModal
-          onClose={modalManager.closeSectionTypeModal}
-          onSelect={sectionManagement.handleAddSection}
-          supportsIcons={supportsIcons}
-        />
-      )}
-
-      {/* Delete Confirmation Dialog */}
-      <ResponsiveConfirmDialog
-        isOpen={modalManager.showDeleteConfirm}
-        onClose={modalManager.closeDeleteConfirm}
-        onConfirm={sectionManagement.confirmDelete}
-        title={modalManager.deleteTarget?.type === 'section' ? "Delete Section?" : "Delete Entry?"}
-        message={
-          modalManager.deleteTarget?.type === 'section'
-            ? `Are you sure you want to delete the "${modalManager.deleteTarget.sectionName}" section? This will remove all content in this section and cannot be undone.`
-            : "Are you sure you want to delete this entry? This action cannot be undone."
-        }
-        confirmText="Delete"
-        cancelText="Cancel"
-        isDestructive={true}
-      />
-
-      {/* Start Fresh Confirmation Dialog */}
-      <ResponsiveConfirmDialog
-        isOpen={modalManager.showStartFreshConfirm}
-        onClose={modalManager.closeStartFreshConfirm}
-        onConfirm={editorActions.confirmStartFresh}
-        title="Start Fresh?"
-        message="Starting fresh will permanently delete all your current work. This action cannot be undone. Are you sure you want to continue?"
-        confirmText="Start Fresh"
-        cancelText="Cancel"
-        isDestructive={true}
-        isLoading={editorActions.loadingStartFresh}
-      />
-
-      {/* Import YAML Confirmation Dialog */}
-      <ResponsiveConfirmDialog
-        isOpen={modalManager.showImportConfirm}
-        onClose={modalManager.closeImportConfirm}
-        onConfirm={fileOperations.confirmImportYAML}
-        title="Confirm Import?"
-        message="Importing this will override your existing content."
-        confirmText="Confirm Import"
-        cancelText="Cancel Import"
-        isDestructive={true}
-        isLoading={fileOperations.loadingLoad}
-      />
-
-      {/* PDF Preview Modal */}
-      <PreviewModal
-        isOpen={modalManager.showPreviewModal}
-        onClose={modalManager.closePreviewModal}
-        previewUrl={preview.previewUrl}
-        isGenerating={preview.isGenerating}
-        isDownloading={editorActions.isDownloading}
-        isStale={preview.isStale}
-        error={preview.error}
-        onRefresh={editorActions.handleRefreshPreview}
-        onDownload={editorActions.handleGenerateResume}
-      />
-
-      {/* Storage Limit Modal */}
-      <StorageLimitModal
-        isOpen={modalManager.showStorageLimitModal}
-        onClose={modalManager.closeStorageLimitModal}
       />
 
       {/* Editor Header - Status indicators and idle tooltip */}
