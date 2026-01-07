@@ -179,25 +179,22 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
             // Find where this icon is referenced
             const locations: string[] = [];
             sections.forEach((section) => {
-              if (section.type === 'experience' || section.name === 'Experience') {
-                const experiences = section.content as { icon?: string }[];
-                experiences.forEach((exp, expIdx) => {
-                  if (exp.icon === icon) {
-                    locations.push(`${section.name} → Entry ${expIdx + 1}`);
-                  }
-                });
-              } else if (section.type === 'education' || section.name === 'Education') {
-                const education = section.content as { icon?: string }[];
-                education.forEach((edu, eduIdx) => {
-                  if (edu.icon === icon) {
-                    locations.push(`${section.name} → Entry ${eduIdx + 1}`);
-                  }
-                });
+              const content = section.content;
+              if (!Array.isArray(content)) {
+                return;
+              }
+
+              let entryLabel = '';
+              if (section.type === 'experience' || section.name === 'Experience' || section.type === 'education' || section.name === 'Education') {
+                entryLabel = 'Entry';
               } else if (section.type === 'icon-list') {
-                const items = section.content as { icon?: string }[];
-                items.forEach((item, itemIdx) => {
-                  if (item.icon === icon) {
-                    locations.push(`${section.name} → Item ${itemIdx + 1}`);
+                entryLabel = 'Item';
+              }
+
+              if (entryLabel) {
+                content.forEach((item, index) => {
+                  if (typeof item === 'object' && item !== null && 'icon' in item && item.icon === icon) {
+                    locations.push(`${section.name} → ${entryLabel} ${index + 1}`);
                   }
                 });
               }
