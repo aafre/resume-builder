@@ -223,7 +223,7 @@ const Editor: React.FC = () => {
       contact_info: contactInfo,
       sections: sections,
       template_id: templateId
-    } : { contact_info: {} as any, sections: [], template_id: '' },
+    } : { contact_info: { name: '', location: '', email: '', phone: '' }, sections: [], template_id: '' },
     icons: iconsForCloudSave,
     enabled: !!templateId && !!contactInfo && !resumeLoader.isLoadingFromUrl && !authLoading,
     session: session
