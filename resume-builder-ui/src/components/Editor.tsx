@@ -1544,8 +1544,11 @@ const Editor: React.FC = () => {
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       // Don't warn during auth callback redirects (magic link, OAuth)
+      const AUTH_CALLBACK_PARAMS = ['code', 'error', 'error_code', 'access_token', 'refresh_token'];
       const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has('code') || urlParams.has('error') || urlParams.has('access_token')) {
+      const hashParams = new URLSearchParams(window.location.hash.slice(1));
+      const isAuthCallback = AUTH_CALLBACK_PARAMS.some(p => urlParams.has(p) || hashParams.has(p));
+      if (isAuthCallback) {
         return; // Auth callback in progress, don't warn
       }
 

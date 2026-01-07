@@ -1,5 +1,6 @@
 import { supabase } from './supabase';
 import { toast } from 'react-hot-toast';
+import type { Session } from '@supabase/supabase-js';
 
 /**
  * Custom error class for authentication failures
@@ -72,7 +73,7 @@ interface RequestOptions {
  * ```
  */
 class ApiClient {
-  private cachedSession: any = null;
+  private cachedSession: Session | null = null;
 
   /**
    * Set the current session to avoid calling getSession() on every request.
@@ -80,22 +81,22 @@ class ApiClient {
    *
    * Call this from AuthContext whenever session changes.
    */
-  setSession(session: any) {
+  setSession(session: Session | null) {
     this.cachedSession = session;
   }
 
   /**
    * Check if token is expiring within the next 60 seconds
    */
-  private isTokenExpiringSoon(session: any): boolean {
-    if (!session?.expires_at) return false;
+  private isTokenExpiringSoon(session: Session): boolean {
+    if (!session.expires_at) return false;
     const expiresAt = session.expires_at * 1000; // Convert to milliseconds
     const now = Date.now();
     return expiresAt - now < 60000; // 60 second buffer
   }
 
-  private async getAuthHeaders(providedSession?: any): Promise<Record<string, string>> {
-    let sessionToUse = providedSession || this.cachedSession;
+  private async getAuthHeaders(providedSession?: Session | null): Promise<Record<string, string>> {
+    let sessionToUse: Session | null = providedSession || this.cachedSession;
 
     // Proactively refresh if token is expiring soon
     if (sessionToUse && this.isTokenExpiringSoon(sessionToUse) && supabase) {
@@ -106,9 +107,12 @@ class ApiClient {
           this.cachedSession = newSession;
           sessionToUse = newSession;
           console.log('✅ Token refreshed proactively');
+        } else if (error) {
+          console.warn('⚠️ Proactive token refresh returned error, using existing token:', error.message);
+          // Continue with existing token - it may still work
         }
       } catch (refreshError) {
-        console.warn('⚠️ Proactive token refresh failed, using existing token:', refreshError);
+        console.warn('⚠️ Proactive token refresh threw exception, using existing token:', refreshError);
         // Continue with existing token - it may still work
       }
     }
