@@ -119,7 +119,9 @@ export const useSaveIntegration = ({
         while (saveStatusRef.current === 'saving' && Date.now() - start < timeout) {
           await new Promise((resolve) => setTimeout(resolve, 100));
         }
-        return saveStatusRef.current !== 'error';
+        // After the loop, status could be 'saved' or 'error' (or still 'saving' if timed out)
+        const finalStatus: SaveStatus = saveStatusRef.current;
+        return finalStatus !== 'error';
       }
 
       // Always trigger save before action

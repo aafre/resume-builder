@@ -9,7 +9,6 @@ import { UseEditorActionsReturn } from '../../types/editor';
 import { generateResume } from '../../services/templates';
 import { getSessionId } from '../../utils/session';
 import { extractReferencedIconFilenames } from '../../utils/iconExtractor';
-import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
 
 /**
  * Icon validation result from usePreview
@@ -179,7 +178,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
           .map((icon) => {
             // Find where this icon is referenced
             const locations: string[] = [];
-            sections.forEach((section, sectionIdx) => {
+            sections.forEach((section) => {
               if (section.type === 'experience' || section.name === 'Experience') {
                 const experiences = section.content as { icon?: string }[];
                 experiences.forEach((exp, expIdx) => {

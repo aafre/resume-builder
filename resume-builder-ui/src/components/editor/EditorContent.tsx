@@ -169,6 +169,10 @@ export interface EditorContentProps {
   supportsIcons: boolean;
   iconRegistry: EditorContentIconRegistry;
 
+  // Auth state
+  isAnonymous: boolean;
+  isAuthenticated: boolean;
+
   // Grouped props
   contactForm: EditorContentContactFormProps;
   dragDrop: EditorContentDragDropProps;
@@ -223,6 +227,8 @@ export const EditorContent: React.FC<EditorContentProps> = ({
   sections,
   supportsIcons,
   iconRegistry,
+  isAnonymous,
+  isAuthenticated,
   contactForm,
   dragDrop,
   sectionManagement,
@@ -575,6 +581,8 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         loadingSave={fileOperations.loadingSave}
         loadingLoad={fileOperations.loadingLoad}
         onCollapseChange={navigation.setIsSidebarCollapsed}
+        isAnonymous={isAnonymous}
+        isAuthenticated={isAuthenticated}
       />
 
       {/* Hidden file input */}

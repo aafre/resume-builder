@@ -48,6 +48,8 @@ interface SectionNavigatorProps {
   loadingSave?: boolean;
   loadingLoad?: boolean;
   onCollapseChange?: (isCollapsed: boolean) => void;
+  isAnonymous?: boolean;
+  isAuthenticated?: boolean;
 }
 
 const STORAGE_KEY = "resume-builder-sidebar-collapsed";
@@ -75,6 +77,8 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   loadingSave,
   loadingLoad,
   onCollapseChange,
+  isAnonymous = false,
+  isAuthenticated = false,
 }) => {
   // Load initial state from localStorage
   const [isCollapsed, setIsCollapsed] = useState(() => {

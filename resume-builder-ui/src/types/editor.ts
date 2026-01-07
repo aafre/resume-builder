@@ -2,8 +2,8 @@
 // Editor-specific type definitions
 
 import React from 'react';
-import { ContactInfo, Section, SocialLink } from './types';
-import { DragEndEvent, DragStartEvent, SensorDescriptor } from '@dnd-kit/core';
+import { ContactInfo, Section, SocialLink } from '../types';
+import { DragEndEvent, DragStartEvent, useSensors } from '@dnd-kit/core';
 
 // --- Editor State Types ---
 
