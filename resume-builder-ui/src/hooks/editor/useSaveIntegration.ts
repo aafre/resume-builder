@@ -65,8 +65,7 @@ export const useSaveIntegration = ({
       }
     });
     return iconsObj;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [iconRegistry.getRegisteredFilenames().join(',')]);
+  }, [iconRegistry.getRegisteredFilenames, iconRegistry.getIconFile]);
 
   const {
     saveStatus,

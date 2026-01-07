@@ -1,7 +1,7 @@
 // src/hooks/editor/useEditorEffects.ts
 // Consolidates side effects for the Editor component
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { ContactInfo } from '../../types';
 import { generateThumbnail } from '../../services/templates';
