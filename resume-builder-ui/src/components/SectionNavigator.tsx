@@ -23,10 +23,8 @@ import {
   MdDescription,
   MdVisibility,
   MdSupport,
-  MdCloudUpload,
 } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { SaveStatusIndicator } from "./SaveStatusIndicator";
 
 interface Section {
   name: string;
@@ -50,11 +48,8 @@ interface SectionNavigatorProps {
   loadingSave?: boolean;
   loadingLoad?: boolean;
   onCollapseChange?: (isCollapsed: boolean) => void;
-  saveStatus?: 'saved' | 'saving' | 'error';
-  lastSaved?: Date | null;
   isAnonymous?: boolean;
   isAuthenticated?: boolean;
-  onSignInClick?: () => void;
 }
 
 const STORAGE_KEY = "resume-builder-sidebar-collapsed";
@@ -82,11 +77,8 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   loadingSave,
   loadingLoad,
   onCollapseChange,
-  saveStatus,
-  lastSaved,
-  isAnonymous,
-  isAuthenticated,
-  onSignInClick,
+  isAnonymous = false,
+  isAuthenticated = false,
 }) => {
   // Load initial state from localStorage
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -295,36 +287,6 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
         </button>
       </div>
 
-      {/* Save Status Indicator - Only for authenticated users */}
-      {!isAnonymous && saveStatus && (
-        <div className={`border-b border-gray-200/60 ${isCollapsed ? 'px-2 py-2' : 'px-4 py-3'} bg-gray-50/30`}>
-          {isCollapsed ? (
-            <div className="flex flex-col items-center gap-1">
-              {saveStatus === 'saved' && (
-                <>
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                  <span className="text-[9px] text-gray-500">Saved</span>
-                </>
-              )}
-              {saveStatus === 'saving' && (
-                <>
-                  <div className="animate-spin rounded-full h-2.5 w-2.5 border-b border-blue-600"></div>
-                  <span className="text-[9px] text-gray-500">...</span>
-                </>
-              )}
-              {saveStatus === 'error' && (
-                <>
-                  <div className="w-2 h-2 rounded-full bg-red-500"></div>
-                  <span className="text-[9px] text-gray-500">Error</span>
-                </>
-              )}
-            </div>
-          ) : (
-            <SaveStatusIndicator status={saveStatus} lastSaved={lastSaved ?? null} />
-          )}
-        </div>
-      )}
-
       {/* Sections Navigation - Scrollable */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
         <div className={`${isCollapsed ? "py-3 px-1.5" : "p-3"}`} id="tour-section-navigator">
@@ -494,39 +456,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
 
           {/* Utility Actions */}
           <div className={`${isCollapsed ? "space-y-0.5 mt-2" : "space-y-0.5"}`}>
-            {/* Save to Cloud - PRIMARY CTA for anonymous users */}
-            {isAnonymous && onSignInClick && (
-              <>
-                <button
-                  onClick={onSignInClick}
-                  className={`w-full flex items-center justify-center transition-all rounded-lg shadow-sm hover:shadow-md ${
-                    isCollapsed
-                      ? "flex-col gap-1 py-2.5 px-1 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500"
-                      : "flex-row gap-3 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500"
-                  } text-white font-semibold`}
-                >
-                  <MdCloudUpload
-                    className={isCollapsed ? "text-base" : "text-lg"}
-                  />
-                  <span
-                    className={`${
-                      isCollapsed
-                        ? "text-[10px] leading-tight"
-                        : "text-[13px]"
-                    }`}
-                  >
-                    {isCollapsed ? "Cloud" : "Save to Cloud"}
-                  </span>
-                </button>
-                {!isCollapsed && (
-                  <p className="text-xs text-gray-500 px-3 pb-2 text-center">
-                    Never Lose Your Work
-                  </p>
-                )}
-              </>
-            )}
-
-            {/* Backup to File (authenticated) / Save My Work (anonymous) */}
+            {/* Backup to File */}
             <button
               id="tour-backup-button"
               onClick={onExportYAML}

@@ -11,7 +11,7 @@ interface IconRegistry {
   [filename: string]: IconRegistryEntry;
 }
 
-interface UseIconRegistryReturn {
+export interface UseIconRegistryReturn {
   // Register a new icon file and get the generated filename
   registerIcon: (file: File) => string;
   // Register an icon with a specific filename (for loading from storage)

@@ -5,7 +5,7 @@ interface ConversionContextType {
   hasShownIdleNudge: boolean;
   activeNudge: string | null;
   markDownloadToastShown: () => void;
-  markIdleNudgeShown: () => void;
+  markIdleNudgeShown: () => Promise<void>;
   showNudge: (nudgeId: string) => boolean;
   dismissNudge: (nudgeId: string) => void;
   resetSession: () => void;

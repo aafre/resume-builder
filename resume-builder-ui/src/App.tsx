@@ -26,6 +26,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 const TemplateCarousel = lazy(() => import("./components/TemplateCarousel"));
 const Editor = lazy(() => import("./components/Editor"));
 const MyResumes = lazy(() => import("./pages/MyResumes"));
+const AuthCallback = lazy(() => import("./components/AuthCallback"));
 
 // SEO landing pages - lazy loaded
 const ActualFreeResumeBuilder = lazy(() => import("./components/seo/ActualFreeResumeBuilder"));
@@ -212,6 +213,16 @@ function AppContent() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <BestFreeResumeBuilderReddit />
+              </Suspense>
+            }
+          />
+
+          {/* Auth callback route - must be before catch-all */}
+          <Route
+            path="/auth/callback"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <AuthCallback />
               </Suspense>
             }
           />
