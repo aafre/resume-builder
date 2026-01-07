@@ -53,8 +53,8 @@ export interface EditorContentDragDropProps {
   sensors: SensorDescriptor<SensorOptions>[];
   activeId: string | null;
   draggedSection: Section | null;
-  handleDragStart: (event: any) => void;
-  handleDragEnd: (event: any) => void;
+  handleDragStart: (event: DragStartEvent) => void;
+  handleDragEnd: (event: DragEndEvent) => void;
   handleDragCancel: () => void;
 }
 
