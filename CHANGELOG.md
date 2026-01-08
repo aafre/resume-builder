@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.6.0] - 2026-01-08
+
+### 🚀 Features
+
+- **editor:** Add useItemDragDrop hook for item-level reordering
+- **editor:** Add SortableItem component for item-level drag handles
+- **editor:** Add ItemDndContext wrapper for item DnD setup
+- **editor:** Add handleReorderEntry to useSectionManagement
+- **editor:** Update EditorContent with section IDs and reorder handler
+- **ExperienceSection:** Add item-level drag-and-drop reordering
+- **EducationSection:** Add item-level drag-and-drop reordering
+- **IconListSection:** Add item-level drag-and-drop reordering
+- **GenericSection:** Add item-level drag-and-drop for list types
+
+### 🚜 Refactor
+
+- **editor:** Update useSectionDragDrop to filter item-level drags
+
+### 🧪 Testing
+
+- **EditorContent:** Update test for new section-X ID format
+
 ## [3.5.0] - 2026-01-07
 
 ### 🚀 Features
