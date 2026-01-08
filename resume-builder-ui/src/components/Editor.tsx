@@ -348,6 +348,7 @@ const Editor: React.FC = () => {
           handleUpdateSection: sectionManagement.handleUpdateSection,
           handleDeleteSection: sectionManagement.handleDeleteSection,
           handleDeleteEntry: sectionManagement.handleDeleteEntry,
+          handleReorderEntry: sectionManagement.handleReorderEntry,
           handleTitleEdit: sectionManagement.handleTitleEdit,
           handleTitleSave: sectionManagement.handleTitleSave,
           handleTitleCancel: sectionManagement.handleTitleCancel,
