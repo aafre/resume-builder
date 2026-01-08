@@ -133,4 +133,5 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       version: ${{ needs.release.outputs.version }}
+      environment: production
     secrets: inherit
