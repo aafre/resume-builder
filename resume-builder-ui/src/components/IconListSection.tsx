@@ -3,6 +3,8 @@ import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import IconManager from "./IconManager";
 import { MarkdownHint } from "./MarkdownLinkPreview";
 import { RichTextInput } from "./RichTextInput";
+import ItemDndContext from "./ItemDndContext";
+import SortableItem from "./SortableItem";
 
 interface Certification {
   certification: string;
@@ -24,7 +26,8 @@ interface IconListSectionProps {
   data: Certification[];
   onUpdate: (updatedData: Certification[]) => void;
   onDelete?: () => void;
-  onDeleteEntry?: (index: number) => void; // NEW: Callback when entry delete is requested (triggers confirmation)
+  onDeleteEntry?: (index: number) => void; // Callback when entry delete is requested (triggers confirmation)
+  onReorderEntry?: (oldIndex: number, newIndex: number) => void; // Callback when entry is reordered via drag-and-drop
   sectionName?: string;
   onEditTitle?: () => void;
   onSaveTitle?: () => void;
@@ -40,6 +43,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
   onUpdate,
   onDelete,
   onDeleteEntry,
+  onReorderEntry,
   sectionName = "Certifications",
   onEditTitle,
   onSaveTitle,
@@ -207,80 +211,90 @@ const IconListSection: React.FC<IconListSectionProps> = ({
           </button>
         )}
       </div>
-      {!isCollapsed && data.length > 0
-        ? data.map((item, index) => (
-            <div
-              key={index}
-              className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md"
-            >
-              <div>
-                {/* Icon Manager Component */}
-                {iconRegistry && (
-                  <div className="mb-4">
-                    <IconManager
-                      value={item.icon || null}
-                      onChange={(filename, file) => handleIconChange(index, filename, file)}
-                      registerIcon={iconRegistry.registerIcon}
-                      getIconFile={iconRegistry.getIconFile}
-                      removeIcon={iconRegistry.removeIcon}
-                    />
-                  </div>
-                )}
-
-                {/* Form Fields */}
-                <div>
-                  <MarkdownHint className="mb-2" />
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {!isCollapsed && data.length > 0 && (
+        <ItemDndContext
+          items={data}
+          sectionId={`iconlist-${sectionName.replace(/\s+/g, '-').toLowerCase()}`}
+          onReorder={(oldIndex, newIndex) => {
+            if (onReorderEntry) {
+              onReorderEntry(oldIndex, newIndex);
+            }
+          }}
+        >
+          {({ itemIds }) => (
+            <>
+              {data.map((item, index) => (
+                <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
+                  <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
                     <div>
-                      <label className="block text-gray-700 font-medium mb-1">
-                        Certification
-                      </label>
-                      <RichTextInput
-                        value={item.certification}
-                        onChange={(value) =>
-                          handleUpdateItem(index, "certification", value)
-                        }
-                        placeholder="e.g., AWS Certified Solutions Architect"
-                        className="w-full border border-gray-300 rounded-lg p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-700 font-medium mb-1">
-                        Issuer
-                      </label>
-                      <RichTextInput
-                        value={item.issuer}
-                        onChange={(value) => handleUpdateItem(index, "issuer", value)}
-                        placeholder="e.g., Amazon Web Services"
-                        className="w-full border border-gray-300 rounded-lg p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-700 font-medium mb-1">
-                        Date
-                      </label>
-                      <RichTextInput
-                        value={item.date}
-                        onChange={(value) => handleUpdateItem(index, "date", value)}
-                        placeholder="e.g., 2024"
-                        className="w-full border border-gray-300 rounded-lg p-2"
-                      />
+                      {iconRegistry && (
+                        <div className="mb-4">
+                          <IconManager
+                            value={item.icon || null}
+                            onChange={(filename, file) => handleIconChange(index, filename, file)}
+                            registerIcon={iconRegistry.registerIcon}
+                            getIconFile={iconRegistry.getIconFile}
+                            removeIcon={iconRegistry.removeIcon}
+                          />
+                        </div>
+                      )}
+                      <div>
+                        <MarkdownHint className="mb-2" />
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-gray-700 font-medium mb-1">
+                              Certification
+                            </label>
+                            <RichTextInput
+                              value={item.certification}
+                              onChange={(value) =>
+                                handleUpdateItem(index, "certification", value)
+                              }
+                              placeholder="e.g., AWS Certified Solutions Architect"
+                              className="w-full border border-gray-300 rounded-lg p-2"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-gray-700 font-medium mb-1">
+                              Issuer
+                            </label>
+                            <RichTextInput
+                              value={item.issuer}
+                              onChange={(value) => handleUpdateItem(index, "issuer", value)}
+                              placeholder="e.g., Amazon Web Services"
+                              className="w-full border border-gray-300 rounded-lg p-2"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-gray-700 font-medium mb-1">
+                              Date
+                            </label>
+                            <RichTextInput
+                              value={item.date}
+                              onChange={(value) => handleUpdateItem(index, "date", value)}
+                              placeholder="e.g., 2024"
+                              className="w-full border border-gray-300 rounded-lg p-2"
+                            />
+                          </div>
+                        </div>
+                        <div className="flex justify-end mt-4">
+                          <button
+                            onClick={() => handleRemoveItem(index)}
+                            className="text-red-600 hover:text-red-800 text-lg"
+                            title="Remove Certification"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex justify-end mt-4">
-                    <button
-                      onClick={() => handleRemoveItem(index)}
-                      className="text-red-600 hover:text-red-800 text-lg"
-                      title="Remove Certification"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))
-        : null}
+                </SortableItem>
+              ))}
+            </>
+          )}
+        </ItemDndContext>
+      )}
       {!isCollapsed && (
         <button
           onClick={handleAddItem}
