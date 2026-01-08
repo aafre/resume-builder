@@ -3,6 +3,8 @@ import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import { MarkdownHint } from "./MarkdownLinkPreview";
 import { RichTextInput } from "./RichTextInput";
 import { RichTextArea } from "./RichTextArea";
+import ItemDndContext from "./ItemDndContext";
+import SortableItem from "./SortableItem";
 
 interface Section {
   name: string;
@@ -17,7 +19,8 @@ interface GenericSectionProps {
   onSaveTitle: () => void;
   onCancelTitle: () => void;
   onDelete: () => void;
-  onDeleteEntry?: (index: number) => void; // NEW: Callback when entry delete is requested (triggers confirmation)
+  onDeleteEntry?: (index: number) => void; // Callback when entry delete is requested (triggers confirmation)
+  onReorderEntry?: (oldIndex: number, newIndex: number) => void; // Callback when entry is reordered via drag-and-drop
   isEditing: boolean;
   temporaryTitle: string;
   setTemporaryTitle: (title: string) => void;
@@ -31,6 +34,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
   onCancelTitle,
   onDelete,
   onDeleteEntry,
+  onReorderEntry,
   isEditing,
   temporaryTitle,
   setTemporaryTitle,
@@ -188,28 +192,45 @@ const GenericSection: React.FC<GenericSectionProps> = ({
         {section.type === "bulleted-list" && (
           <>
             <MarkdownHint className="mb-2" />
-            {Array.isArray(section.content) &&
-              section.content.map((item: string, index: number) => (
-                <div key={index} className="mb-4">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1">
-                      <RichTextInput
-                        value={item}
-                        onChange={(value) => handleContentChange(value, index)}
-                        placeholder="Add item..."
-                        className="w-full border border-gray-300 rounded-lg p-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
-                      />
-                    </div>
-                    <button
-                      onClick={() => handleRemoveItem(index)}
-                      className="text-red-600 hover:text-red-800 flex-shrink-0"
-                      title="Remove Item"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                </div>
-              ))}
+            {Array.isArray(section.content) && section.content.length > 0 && (
+              <ItemDndContext
+                items={section.content}
+                sectionId={`bulletedlist-${section.name.replace(/\s+/g, '-').toLowerCase()}`}
+                onReorder={(oldIndex, newIndex) => {
+                  if (onReorderEntry) {
+                    onReorderEntry(oldIndex, newIndex);
+                  }
+                }}
+              >
+                {({ itemIds }) => (
+                  <>
+                    {section.content.map((item: string, index: number) => (
+                      <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
+                        <div className="mb-4">
+                          <div className="flex items-center gap-2">
+                            <div className="flex-1">
+                              <RichTextInput
+                                value={item}
+                                onChange={(value) => handleContentChange(value, index)}
+                                placeholder="Add item..."
+                                className="w-full border border-gray-300 rounded-lg p-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
+                              />
+                            </div>
+                            <button
+                              onClick={() => handleRemoveItem(index)}
+                              className="text-red-600 hover:text-red-800 flex-shrink-0"
+                              title="Remove Item"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        </div>
+                      </SortableItem>
+                    ))}
+                  </>
+                )}
+              </ItemDndContext>
+            )}
             <button
               onClick={() => {
                 const updatedContent = [...(section.content || []), ""];
@@ -227,28 +248,45 @@ const GenericSection: React.FC<GenericSectionProps> = ({
           <>
             <MarkdownHint className="mb-2" />
             <div className="space-y-2 mb-4">
-              {Array.isArray(section.content) &&
-                section.content.map((item: string, index: number) => (
-                  <div key={index}>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1">
-                        <RichTextInput
-                          value={item}
-                          onChange={(value) => handleContentChange(value, index)}
-                          placeholder="Add skill or item..."
-                          className="w-full border border-gray-300 rounded-lg p-2 text-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
-                        />
-                      </div>
-                      <button
-                        onClick={() => handleRemoveItem(index)}
-                        className="text-red-500 hover:text-red-700 text-sm flex-shrink-0"
-                        title="Remove Item"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  </div>
-                ))}
+              {Array.isArray(section.content) && section.content.length > 0 && (
+                <ItemDndContext
+                  items={section.content}
+                  sectionId={`inlinelist-${section.name.replace(/\s+/g, '-').toLowerCase()}`}
+                  onReorder={(oldIndex, newIndex) => {
+                    if (onReorderEntry) {
+                      onReorderEntry(oldIndex, newIndex);
+                    }
+                  }}
+                >
+                  {({ itemIds }) => (
+                    <>
+                      {section.content.map((item: string, index: number) => (
+                        <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <div className="flex-1">
+                                <RichTextInput
+                                  value={item}
+                                  onChange={(value) => handleContentChange(value, index)}
+                                  placeholder="Add skill or item..."
+                                  className="w-full border border-gray-300 rounded-lg p-2 text-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
+                                />
+                              </div>
+                              <button
+                                onClick={() => handleRemoveItem(index)}
+                                className="text-red-500 hover:text-red-700 text-sm flex-shrink-0"
+                                title="Remove Item"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          </div>
+                        </SortableItem>
+                      ))}
+                    </>
+                  )}
+                </ItemDndContext>
+              )}
             </div>
             <button
               onClick={() => {
@@ -267,28 +305,45 @@ const GenericSection: React.FC<GenericSectionProps> = ({
           <>
             <MarkdownHint className="mb-2" />
             <div className="space-y-2 mb-4">
-              {Array.isArray(section.content) &&
-                section.content.map((item: string, index: number) => (
-                  <div key={index}>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1">
-                        <RichTextInput
-                          value={item}
-                          onChange={(value) => handleContentChange(value, index)}
-                          placeholder="Add item..."
-                          className="w-full border border-gray-300 rounded-lg p-2 text-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
-                        />
-                      </div>
-                      <button
-                        onClick={() => handleRemoveItem(index)}
-                        className="text-red-500 hover:text-red-700 text-sm flex-shrink-0"
-                        title="Remove Item"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  </div>
-                ))}
+              {Array.isArray(section.content) && section.content.length > 0 && (
+                <ItemDndContext
+                  items={section.content}
+                  sectionId={`dynamiccolumnlist-${section.name.replace(/\s+/g, '-').toLowerCase()}`}
+                  onReorder={(oldIndex, newIndex) => {
+                    if (onReorderEntry) {
+                      onReorderEntry(oldIndex, newIndex);
+                    }
+                  }}
+                >
+                  {({ itemIds }) => (
+                    <>
+                      {section.content.map((item: string, index: number) => (
+                        <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <div className="flex-1">
+                                <RichTextInput
+                                  value={item}
+                                  onChange={(value) => handleContentChange(value, index)}
+                                  placeholder="Add item..."
+                                  className="w-full border border-gray-300 rounded-lg p-2 text-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
+                                />
+                              </div>
+                              <button
+                                onClick={() => handleRemoveItem(index)}
+                                className="text-red-500 hover:text-red-700 text-sm flex-shrink-0"
+                                title="Remove Item"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          </div>
+                        </SortableItem>
+                      ))}
+                    </>
+                  )}
+                </ItemDndContext>
+              )}
             </div>
             <button
               onClick={() => {
