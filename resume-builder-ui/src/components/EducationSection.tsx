@@ -4,6 +4,8 @@ import { SectionHeader } from "./SectionHeader";
 import { MarkdownHint } from "./MarkdownLinkPreview";
 import { RichTextInput } from "./RichTextInput";
 import { MdDelete } from "react-icons/md";
+import ItemDndContext from "./ItemDndContext";
+import SortableItem from "./SortableItem";
 
 interface EducationItem {
   degree: string;
@@ -23,17 +25,18 @@ interface IconRegistryMethods {
 }
 
 interface EducationSectionProps {
-  sectionName: string; // NEW: Custom section title
+  sectionName: string; // Custom section title
   education: EducationItem[];
   onUpdate: (updatedEducation: EducationItem[]) => void;
-  onTitleEdit: () => void; // NEW: Callback when edit mode is activated
-  onTitleSave: () => void; // NEW: Callback when title is saved
-  onTitleCancel: () => void; // NEW: Callback when title edit is cancelled
-  onDelete: () => void; // NEW: Callback when section is deleted
-  onDeleteEntry?: (index: number) => void; // NEW: Callback when entry delete is requested (triggers confirmation)
-  isEditingTitle: boolean; // NEW: Whether title is being edited
-  temporaryTitle: string; // NEW: Temporary title during editing
-  setTemporaryTitle: (title: string) => void; // NEW: Update temporary title
+  onTitleEdit: () => void; // Callback when edit mode is activated
+  onTitleSave: () => void; // Callback when title is saved
+  onTitleCancel: () => void; // Callback when title edit is cancelled
+  onDelete: () => void; // Callback when section is deleted
+  onDeleteEntry?: (index: number) => void; // Callback when entry delete is requested (triggers confirmation)
+  onReorderEntry?: (oldIndex: number, newIndex: number) => void; // Callback when entry is reordered via drag-and-drop
+  isEditingTitle: boolean; // Whether title is being edited
+  temporaryTitle: string; // Temporary title during editing
+  setTemporaryTitle: (title: string) => void; // Update temporary title
   supportsIcons?: boolean;
   iconRegistry?: IconRegistryMethods;
 }
@@ -47,6 +50,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({
   onTitleCancel,
   onDelete,
   onDeleteEntry,
+  onReorderEntry,
   isEditingTitle,
   temporaryTitle,
   setTemporaryTitle,
@@ -141,87 +145,100 @@ const EducationSection: React.FC<EducationSectionProps> = ({
         onToggleCollapse={handleToggleCollapse}
       />
       {!isCollapsed && <MarkdownHint className="mb-4" />}
-      {!isCollapsed && education.map((item, index) => (
-        <div
-          key={index}
-          className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md"
+      {!isCollapsed && (
+        <ItemDndContext
+          items={education}
+          sectionId={`education-${sectionName.replace(/\s+/g, '-').toLowerCase()}`}
+          onReorder={(oldIndex, newIndex) => {
+            if (onReorderEntry) {
+              onReorderEntry(oldIndex, newIndex);
+            }
+          }}
         >
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold">Entry {index + 1}</h3>
-            <button
-              onClick={() => handleRemoveItem(index)}
-              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-              aria-label="Delete education entry"
-              title="Delete this entry"
-            >
-              <MdDelete className="text-xl" />
-            </button>
-          </div>
-          <div className="mt-4">
-            {/* Icon Manager Section */}
-            {supportsIcons && iconRegistry && (
-              <div className="mb-4">
-                <IconManager
-                  value={item.icon || null}
-                  onChange={(filename, file) => handleIconChange(index, filename, file)}
-                  registerIcon={iconRegistry.registerIcon}
-                  getIconFile={iconRegistry.getIconFile}
-                  removeIcon={iconRegistry.removeIcon}
-                />
-              </div>
-            )}
-            {/* Other Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  Degree
-                </label>
-                <RichTextInput
-                  value={item.degree}
-                  onChange={(value) => handleUpdateItem(index, "degree", value)}
-                  placeholder="e.g., Bachelor of Science"
-                  className="w-full border border-gray-300 rounded-lg p-2"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  School
-                </label>
-                <RichTextInput
-                  value={item.school}
-                  onChange={(value) => handleUpdateItem(index, "school", value)}
-                  placeholder="e.g., University Name"
-                  className="w-full border border-gray-300 rounded-lg p-2"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  Year
-                </label>
-                <input
-                  type="text"
-                  value={item.year}
-                  onChange={(e) =>
-                    handleUpdateItem(index, "year", e.target.value)
-                  }
-                  className="w-full border border-gray-300 rounded-lg p-2"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  Field of Study
-                </label>
-                <RichTextInput
-                  value={item.field_of_study || ""}
-                  onChange={(value) => handleUpdateItem(index, "field_of_study", value)}
-                  placeholder="e.g., Computer Science"
-                  className="w-full border border-gray-300 rounded-lg p-2"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
+          {({ itemIds }) => (
+            <>
+              {education.map((item, index) => (
+                <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
+                  <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-lg font-semibold">Entry {index + 1}</h3>
+                      <button
+                        onClick={() => handleRemoveItem(index)}
+                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        aria-label="Delete education entry"
+                        title="Delete this entry"
+                      >
+                        <MdDelete className="text-xl" />
+                      </button>
+                    </div>
+                    <div className="mt-4">
+                      {supportsIcons && iconRegistry && (
+                        <div className="mb-4">
+                          <IconManager
+                            value={item.icon || null}
+                            onChange={(filename, file) => handleIconChange(index, filename, file)}
+                            registerIcon={iconRegistry.registerIcon}
+                            getIconFile={iconRegistry.getIconFile}
+                            removeIcon={iconRegistry.removeIcon}
+                          />
+                        </div>
+                      )}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-gray-700 font-medium mb-1">
+                            Degree
+                          </label>
+                          <RichTextInput
+                            value={item.degree}
+                            onChange={(value) => handleUpdateItem(index, "degree", value)}
+                            placeholder="e.g., Bachelor of Science"
+                            className="w-full border border-gray-300 rounded-lg p-2"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-gray-700 font-medium mb-1">
+                            School
+                          </label>
+                          <RichTextInput
+                            value={item.school}
+                            onChange={(value) => handleUpdateItem(index, "school", value)}
+                            placeholder="e.g., University Name"
+                            className="w-full border border-gray-300 rounded-lg p-2"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-gray-700 font-medium mb-1">
+                            Year
+                          </label>
+                          <input
+                            type="text"
+                            value={item.year}
+                            onChange={(e) =>
+                              handleUpdateItem(index, "year", e.target.value)
+                            }
+                            className="w-full border border-gray-300 rounded-lg p-2"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-gray-700 font-medium mb-1">
+                            Field of Study
+                          </label>
+                          <RichTextInput
+                            value={item.field_of_study || ""}
+                            onChange={(value) => handleUpdateItem(index, "field_of_study", value)}
+                            placeholder="e.g., Computer Science"
+                            className="w-full border border-gray-300 rounded-lg p-2"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </SortableItem>
+              ))}
+            </>
+          )}
+        </ItemDndContext>
+      )}
       {!isCollapsed && (
         <button
           onClick={handleAddItem}
