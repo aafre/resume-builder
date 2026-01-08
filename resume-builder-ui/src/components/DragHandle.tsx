@@ -6,9 +6,11 @@ interface DragHandleProps {
   id: string;
   children: React.ReactNode;
   disabled?: boolean;
+  /** When true, drag handles are always visible with blue highlight */
+  isReorderModeActive?: boolean;
 }
 
-const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false }) => {
+const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false, isReorderModeActive = false }) => {
   const {
     attributes,
     listeners,
@@ -37,10 +39,13 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
       {!disabled && (
         <div
           {...listeners}
-          className="absolute left-2 top-6 w-6 h-6 flex items-center justify-center rounded-lg 
-                     text-gray-300 hover:text-blue-600 hover:bg-blue-50/50 
-                     cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 
-                     transition-all duration-150 ease-out z-10"
+          className={`absolute left-2 top-6 w-6 h-6 flex items-center justify-center rounded-lg
+                     cursor-grab active:cursor-grabbing
+                     transition-all duration-150 ease-out z-10
+                     ${isReorderModeActive
+                       ? 'opacity-100 text-blue-600 bg-blue-50 ring-2 ring-blue-300'
+                       : 'opacity-0 group-hover:opacity-100 text-gray-300 hover:text-blue-600 hover:bg-blue-50/50'
+                     }`}
           aria-label="Drag to reorder section"
           title="Drag to reorder section"
         >

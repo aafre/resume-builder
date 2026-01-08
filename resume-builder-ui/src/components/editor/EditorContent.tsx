@@ -325,7 +325,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
           {sections.map((section, index) => {
             if (isExperienceSection(section)) {
               return (
-                <DragHandle key={index} id={`section-${index}`} disabled={false}>
+                <DragHandle key={index} id={`section-${index}`} disabled={false} isReorderModeActive={reorderMode?.isReorderModeActive}>
                   <div
                     ref={(el) => {
                       refs.sectionRefs.current[index] = el;
@@ -364,7 +364,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
               );
             } else if (isEducationSection(section)) {
               return (
-                <DragHandle key={index} id={`section-${index}`} disabled={false}>
+                <DragHandle key={index} id={`section-${index}`} disabled={false} isReorderModeActive={reorderMode?.isReorderModeActive}>
                   <div
                     ref={(el) => {
                       refs.sectionRefs.current[index] = el;
@@ -403,7 +403,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
               );
             } else if (section.type === 'icon-list') {
               return (
-                <DragHandle key={index} id={`section-${index}`} disabled={false}>
+                <DragHandle key={index} id={`section-${index}`} disabled={false} isReorderModeActive={reorderMode?.isReorderModeActive}>
                   <div
                     ref={(el) => {
                       refs.sectionRefs.current[index] = el;
@@ -441,7 +441,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
               );
             } else {
               return (
-                <DragHandle key={index} id={`section-${index}`} disabled={false}>
+                <DragHandle key={index} id={`section-${index}`} disabled={false} isReorderModeActive={reorderMode?.isReorderModeActive}>
                   <div
                     ref={(el) => {
                       refs.sectionRefs.current[index] = el;
