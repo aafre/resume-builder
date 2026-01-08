@@ -591,6 +591,15 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         onHelp={modals.openHelpModal}
         loadingSave={fileOperations.loadingSave}
         loadingLoad={fileOperations.loadingLoad}
+        // Reorder mode props
+        isReorderModeActive={reorderMode?.isReorderModeActive}
+        onEnterReorderMode={reorderMode?.enterReorderMode}
+        onCommitReorderMode={reorderMode?.commitReorderMode}
+        onCancelReorderMode={reorderMode?.cancelReorderMode}
+        onMoveSectionUp={reorderMode?.moveSectionUp}
+        onMoveSectionDown={reorderMode?.moveSectionDown}
+        canMoveUp={reorderMode?.canMoveUp}
+        canMoveDown={reorderMode?.canMoveDown}
       />
 
       {/* Desktop Section Navigator Sidebar */}
