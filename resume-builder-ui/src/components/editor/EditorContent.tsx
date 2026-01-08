@@ -575,6 +575,22 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         previewIsStale={preview.isStale}
         lastSaved={saveStatus.lastSaved}
         saveError={saveStatus.saveStatus === 'error'}
+        // Reorder mode props
+        isReorderModeActive={reorderMode?.isReorderModeActive}
+        selectedSectionIndex={navigation.activeSectionIndex}
+        totalSections={sections.length}
+        onMoveUp={() => {
+          if (navigation.activeSectionIndex >= 0) {
+            reorderMode?.moveSectionUp(navigation.activeSectionIndex);
+          }
+        }}
+        onMoveDown={() => {
+          if (navigation.activeSectionIndex >= 0) {
+            reorderMode?.moveSectionDown(navigation.activeSectionIndex);
+          }
+        }}
+        onCommitReorder={reorderMode?.commitReorderMode}
+        onCancelReorder={reorderMode?.cancelReorderMode}
       />
 
       {/* Mobile Navigation Drawer */}
