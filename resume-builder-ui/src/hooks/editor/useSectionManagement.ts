@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import { Section } from '../../types';
 import { DeleteTarget, UseSectionManagementReturn } from '../../types/editor';
 import { createDefaultSection, deleteSectionItem, reorderSectionItems, SectionType } from '../../services/sectionService';
+import { InsertPosition } from '../../components/SectionTypeModal';
 
 /**
  * Props for useSectionManagement hook
@@ -70,14 +71,31 @@ export const useSectionManagement = ({
   const [temporaryTitle, setTemporaryTitle] = useState<string>('');
 
   /**
-   * Add a new section of the specified type.
+   * Add a new section of the specified type at the specified position.
    * Uses sectionService to generate unique name and default content.
    * Closes the section type modal and optionally scrolls to the new section.
+   *
+   * @param type - The type of section to create
+   * @param position - Where to insert: 'top', 'bottom', or a specific index
    */
   const handleAddSection = useCallback(
-    (type: SectionType) => {
+    (type: SectionType, position: InsertPosition = 'top') => {
       const newSection = createDefaultSection(type, sections);
-      setSections((prevSections) => [...prevSections, newSection]);
+      setSections((prevSections) => {
+        if (position === 'top') {
+          return [newSection, ...prevSections];
+        } else if (position === 'bottom') {
+          return [...prevSections, newSection];
+        } else if (typeof position === 'number') {
+          // Insert at specific index
+          const index = Math.min(Math.max(0, position), prevSections.length);
+          const result = [...prevSections];
+          result.splice(index, 0, newSection);
+          return result;
+        }
+        // Fallback to top
+        return [newSection, ...prevSections];
+      });
       closeSectionTypeModal();
 
       // Call onSectionAdded callback after a short delay to allow render

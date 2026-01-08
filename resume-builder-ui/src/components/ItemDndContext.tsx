@@ -1,11 +1,12 @@
 // src/components/ItemDndContext.tsx
 // Higher-order component that encapsulates DnD context setup for item reordering
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   DndContext,
   closestCenter,
   DragOverlay,
+  MeasuringStrategy,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -13,7 +14,6 @@ import {
 } from '@dnd-kit/sortable';
 import {
   restrictToVerticalAxis,
-  restrictToParentElement,
 } from '@dnd-kit/modifiers';
 import { useItemDragDrop } from '../hooks/editor/useItemDragDrop';
 
@@ -105,6 +105,18 @@ function ItemDndContext<T>({
     ? itemIds.findIndex((id) => id === activeId)
     : -1;
 
+  // Measuring configuration to prevent jump-to-bottom issues
+  // WhileDragging ensures positions are recalculated during drag
+  // This fixes the issue where items jump to the bottom when picked up
+  const measuring = useMemo(
+    () => ({
+      droppable: {
+        strategy: MeasuringStrategy.WhileDragging,
+      },
+    }),
+    []
+  );
+
   return (
     <DndContext
       sensors={disabled ? [] : sensors}
@@ -112,7 +124,8 @@ function ItemDndContext<T>({
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
-      modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+      modifiers={[restrictToVerticalAxis]}
+      measuring={measuring}
     >
       <SortableContext
         items={itemIds}

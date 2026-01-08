@@ -205,7 +205,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 {({ itemIds }) => (
                   <>
                     {section.content.map((item: string, index: number) => (
-                      <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
+                      <SortableItem key={itemIds[index]} id={itemIds[index]}>
                         <div className="mb-4">
                           <div className="flex items-center gap-2">
                             <div className="flex-1">
@@ -261,7 +261,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                   {({ itemIds }) => (
                     <>
                       {section.content.map((item: string, index: number) => (
-                        <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
+                        <SortableItem key={itemIds[index]} id={itemIds[index]}>
                           <div>
                             <div className="flex items-center gap-2">
                               <div className="flex-1">
@@ -318,7 +318,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                   {({ itemIds }) => (
                     <>
                       {section.content.map((item: string, index: number) => (
-                        <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
+                        <SortableItem key={itemIds[index]} id={itemIds[index]}>
                           <div>
                             <div className="flex items-center gap-2">
                               <div className="flex-1">

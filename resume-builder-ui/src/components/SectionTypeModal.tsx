@@ -1,9 +1,19 @@
+import { useState } from 'react';
 import { SectionType } from '../services/sectionService';
+
+// Position types for section insertion
+export type InsertPosition = 'top' | 'bottom' | number;
+
+interface Section {
+  name: string;
+  type?: string;
+}
 
 interface SectionTypeModalProps {
   onClose: () => void;
-  onSelect: (type: SectionType) => void;
+  onSelect: (type: SectionType, position: InsertPosition) => void;
   supportsIcons?: boolean;
+  sections?: Section[];
 }
 
 interface SectionTypeOption {
@@ -17,7 +27,10 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   onClose,
   onSelect,
   supportsIcons = true,
+  sections = [],
 }) => {
+  const [selectedPosition, setSelectedPosition] = useState<InsertPosition>('top');
+
   const allSectionTypes: SectionTypeOption[] = [
     {
       type: "experience",
@@ -75,22 +88,59 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   ];
 
   // Filter out icon-list if template doesn't support icons
-  const sectionTypes = supportsIcons 
-    ? allSectionTypes 
+  const sectionTypes = supportsIcons
+    ? allSectionTypes
     : allSectionTypes.filter(section => section.type !== "icon-list");
+
+  const handlePositionChange = (value: string) => {
+    if (value === 'top' || value === 'bottom') {
+      setSelectedPosition(value);
+    } else {
+      // Parse index for "after section X" positions
+      const index = parseInt(value, 10);
+      if (!isNaN(index)) {
+        setSelectedPosition(index);
+      }
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white p-4 sm:p-6 rounded-lg max-w-sm sm:max-w-xl w-full">
+      <div className="bg-white p-4 sm:p-6 rounded-lg max-w-sm sm:max-w-xl w-full max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
           Select Section Type
         </h2>
+
+        {/* Position Selection */}
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <label className="block text-sm font-semibold text-blue-800 mb-2">
+            Insert Position
+          </label>
+          <select
+            value={typeof selectedPosition === 'number' ? selectedPosition.toString() : selectedPosition}
+            onChange={(e) => handlePositionChange(e.target.value)}
+            className="w-full border border-blue-300 rounded-lg p-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="top">At the top (first section)</option>
+            <option value="bottom">At the bottom (last section)</option>
+            {sections.length > 0 && (
+              <optgroup label="After specific section">
+                {sections.map((section, index) => (
+                  <option key={index} value={index + 1}>
+                    After: {section.name || `Section ${index + 1}`}
+                  </option>
+                ))}
+              </optgroup>
+            )}
+          </select>
+        </div>
+
         <div className="space-y-3 sm:space-y-4">
           {sectionTypes.map((section) => (
             <div
               key={section.type}
-              className="p-3 sm:p-4 border rounded-lg shadow-sm hover:shadow-md cursor-pointer flex flex-col"
-              onClick={() => onSelect(section.type)}
+              className="p-3 sm:p-4 border rounded-lg shadow-sm hover:shadow-md hover:border-blue-300 cursor-pointer flex flex-col transition-all duration-200"
+              onClick={() => onSelect(section.type, selectedPosition)}
             >
               <h3 className="font-semibold text-base sm:text-lg">
                 {section.title}
@@ -105,7 +155,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
           ))}
         </div>
         <button
-          className="mt-4 sm:mt-6 bg-red-500 text-white px-4 py-2 rounded-lg w-full"
+          className="mt-4 sm:mt-6 bg-red-500 text-white px-4 py-2 rounded-lg w-full hover:bg-red-600 transition-colors"
           onClick={onClose}
         >
           Cancel

@@ -12,8 +12,6 @@ interface SortableItemProps {
   children: React.ReactNode;
   /** Whether drag is disabled */
   disabled?: boolean;
-  /** Position of the drag handle */
-  dragHandlePosition?: 'left' | 'right';
   /** Additional CSS classes for the wrapper */
   className?: string;
 }
@@ -22,17 +20,16 @@ interface SortableItemProps {
  * SortableItem Component
  *
  * A reusable wrapper that makes items draggable within a SortableContext.
- * Uses a compact drag handle (6-dot grip icon) that appears on hover.
+ * Uses a full-width draggable header bar at the top for easy grabbing.
  *
  * Features:
- * - Compact drag handle for items (smaller than section handle)
- * - Visual feedback during drag (opacity, scale, shadow)
- * - Configurable handle position (left or right)
+ * - Full-width draggable header bar (consistent with section-level DragHandle)
+ * - Visual feedback during drag (opacity, shadow, ring)
  * - Support for disabled state
  * - Touch and keyboard accessible
  *
  * @example
- * <SortableItem id="experience-work-item-0" dragHandlePosition="left">
+ * <SortableItem id="experience-work-item-0">
  *   <ExperienceCard experience={experience} />
  * </SortableItem>
  */
@@ -40,7 +37,6 @@ const SortableItem: React.FC<SortableItemProps> = ({
   id,
   children,
   disabled = false,
-  dragHandlePosition = 'left',
   className = '',
 }) => {
   const {
@@ -57,54 +53,48 @@ const SortableItem: React.FC<SortableItemProps> = ({
     transition,
   };
 
-  // 6-dot grip icon for drag handle (compact version)
-  const DragHandleIcon = () => (
-    <svg
-      className="w-3.5 h-3.5"
-      fill="currentColor"
-      viewBox="0 0 20 20"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M7 4a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM7 10a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM7 16a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" />
-      <path d="M13 4a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM13 10a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM13 16a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" />
-    </svg>
-  );
-
-  const dragHandle = !disabled && (
-    <div
-      {...listeners}
-      className={`
-        flex items-center justify-center w-5 h-5 rounded
-        text-gray-300 hover:text-blue-600 hover:bg-blue-50/50
-        cursor-grab active:cursor-grabbing
-        opacity-0 group-hover:opacity-100
-        transition-all duration-150 ease-out
-        touch-manipulation
-        ${dragHandlePosition === 'right' ? 'order-last' : 'order-first'}
-      `}
-      aria-label="Drag to reorder item"
-      title="Drag to reorder"
-    >
-      <DragHandleIcon />
-    </div>
-  );
-
   return (
     <div
       ref={setNodeRef}
       style={style}
       className={`
-        relative group
-        ${isDragging ? 'opacity-50 scale-[1.02] shadow-lg z-30' : 'transition-all duration-200 ease-out'}
+        relative group rounded-xl
+        ${isDragging ? 'opacity-50 shadow-lg z-30 ring-2 ring-blue-300' : 'transition-all duration-200 ease-out'}
+        ${!disabled ? 'cursor-grab active:cursor-grabbing' : ''}
         ${className}
       `}
       {...attributes}
+      {...(disabled ? {} : listeners)}
     >
-      <div className={`flex items-start gap-1 ${dragHandlePosition === 'left' ? 'flex-row' : 'flex-row-reverse'}`}>
-        {dragHandle}
-        <div className={`flex-1 ${isDragging ? 'pointer-events-none' : ''}`}>
-          {children}
+      {/* Visual drag indicator bar at top (non-interactive, just visual) */}
+      {!disabled && (
+        <div
+          className={`
+            w-full h-1.5 rounded-t-xl
+            ${isDragging
+              ? 'bg-blue-400'
+              : 'bg-transparent group-hover:bg-blue-100'
+            }
+            transition-colors duration-150 ease-out
+            flex items-center justify-center
+          `}
+        >
+          {/* Drag indicator dots (visible on hover) */}
+          <div className={`
+            flex gap-0.5
+            ${isDragging ? 'opacity-100' : 'opacity-0 group-hover:opacity-50'}
+            transition-opacity duration-150
+          `}>
+            <div className="w-0.5 h-0.5 rounded-full bg-gray-400" />
+            <div className="w-0.5 h-0.5 rounded-full bg-gray-400" />
+            <div className="w-0.5 h-0.5 rounded-full bg-gray-400" />
+          </div>
         </div>
+      )}
+
+      {/* Item content */}
+      <div className={`${isDragging ? 'pointer-events-none select-none' : ''}`}>
+        {children}
       </div>
     </div>
   );

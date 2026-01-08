@@ -8,6 +8,12 @@ interface DragHandleProps {
   disabled?: boolean;
 }
 
+/**
+ * DragHandle Component
+ *
+ * Wraps sections with drag-and-drop functionality.
+ * Features a full-width draggable header bar at the top for easy grabbing.
+ */
 const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false }) => {
   const {
     attributes,
@@ -28,40 +34,45 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
       ref={setNodeRef}
       style={style}
       className={`relative group rounded-2xl ${
-        isDragging 
-          ? 'opacity-60 scale-105 shadow-2xl z-50' 
+        isDragging
+          ? 'opacity-60 shadow-2xl z-50'
           : 'transition-all duration-200 ease-out'
       }`}
       {...attributes}
     >
+      {/* Full-width draggable header bar */}
       {!disabled && (
         <div
           {...listeners}
-          className="absolute left-2 top-6 w-6 h-6 flex items-center justify-center rounded-lg 
-                     text-gray-300 hover:text-blue-600 hover:bg-blue-50/50 
-                     cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 
-                     transition-all duration-150 ease-out z-10"
+          className={`
+            w-full h-2 rounded-t-2xl cursor-grab active:cursor-grabbing
+            ${isDragging
+              ? 'bg-blue-400'
+              : 'bg-transparent hover:bg-blue-100 group-hover:bg-blue-50'
+            }
+            transition-colors duration-150 ease-out
+            flex items-center justify-center
+          `}
           aria-label="Drag to reorder section"
           title="Drag to reorder section"
         >
-          <svg
-            className="w-4 h-4"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-            <path d="M6 6a2 2 0 110-4 2 2 0 010 4zM6 12a2 2 0 110-4 2 2 0 010 4zM6 18a2 2 0 110-4 2 2 0 010 4z" />
-            <path d="M14 6a2 2 0 110-4 2 2 0 010 4zM14 12a2 2 0 110-4 2 2 0 010 4zM14 18a2 2 0 110-4 2 2 0 010 4z" />
-          </svg>
+          {/* Drag indicator dots (visible on hover) */}
+          <div className={`
+            flex gap-0.5
+            ${isDragging ? 'opacity-100' : 'opacity-0 group-hover:opacity-60'}
+            transition-opacity duration-150
+          `}>
+            <div className="w-1 h-1 rounded-full bg-gray-400" />
+            <div className="w-1 h-1 rounded-full bg-gray-400" />
+            <div className="w-1 h-1 rounded-full bg-gray-400" />
+          </div>
         </div>
       )}
-      
+
+      {/* Section content */}
       <div className={`
-        ${!disabled ? 'pl-2' : ''} 
         ${isDragging ? 'pointer-events-none' : ''}
-        transition-all duration-200 ease-out rounded-2xl
-        group-hover:shadow-xl group-hover:border-blue-200/60
+        transition-all duration-200 ease-out
       `}>
         {children}
       </div>
