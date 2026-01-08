@@ -68,6 +68,7 @@ export interface EditorContentSectionManagementProps {
   handleUpdateSection: (index: number, updatedSection: Section) => void;
   handleDeleteSection: (index: number) => void;
   handleDeleteEntry: (sectionIndex: number, entryIndex: number) => void;
+  handleReorderEntry: (sectionIndex: number, oldIndex: number, newIndex: number) => void;
   handleTitleEdit: (index: number) => void;
   handleTitleSave: () => void;
   handleTitleCancel: () => void;
@@ -301,13 +302,13 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
       >
         <SortableContext
-          items={sections.map((_, index) => index.toString())}
+          items={sections.map((_, index) => `section-${index}`)}
           strategy={verticalListSortingStrategy}
         >
           {sections.map((section, index) => {
             if (isExperienceSection(section)) {
               return (
-                <DragHandle key={index} id={index.toString()} disabled={false}>
+                <DragHandle key={index} id={`section-${index}`} disabled={false}>
                   <div
                     ref={(el) => {
                       refs.sectionRefs.current[index] = el;
@@ -332,6 +333,9 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                       onDeleteEntry={(entryIndex) =>
                         sectionManagement.handleDeleteEntry(index, entryIndex)
                       }
+                      onReorderEntry={(oldIndex, newIndex) =>
+                        sectionManagement.handleReorderEntry(index, oldIndex, newIndex)
+                      }
                       isEditingTitle={sectionManagement.editingTitleIndex === index}
                       temporaryTitle={sectionManagement.temporaryTitle}
                       setTemporaryTitle={sectionManagement.setTemporaryTitle}
@@ -343,7 +347,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
               );
             } else if (isEducationSection(section)) {
               return (
-                <DragHandle key={index} id={index.toString()} disabled={false}>
+                <DragHandle key={index} id={`section-${index}`} disabled={false}>
                   <div
                     ref={(el) => {
                       refs.sectionRefs.current[index] = el;
@@ -368,6 +372,9 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                       onDeleteEntry={(entryIndex) =>
                         sectionManagement.handleDeleteEntry(index, entryIndex)
                       }
+                      onReorderEntry={(oldIndex, newIndex) =>
+                        sectionManagement.handleReorderEntry(index, oldIndex, newIndex)
+                      }
                       isEditingTitle={sectionManagement.editingTitleIndex === index}
                       temporaryTitle={sectionManagement.temporaryTitle}
                       setTemporaryTitle={sectionManagement.setTemporaryTitle}
@@ -379,7 +386,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
               );
             } else if (section.type === 'icon-list') {
               return (
-                <DragHandle key={index} id={index.toString()} disabled={false}>
+                <DragHandle key={index} id={`section-${index}`} disabled={false}>
                   <div
                     ref={(el) => {
                       refs.sectionRefs.current[index] = el;
@@ -400,6 +407,9 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                       onDeleteEntry={(entryIndex) =>
                         sectionManagement.handleDeleteEntry(index, entryIndex)
                       }
+                      onReorderEntry={(oldIndex, newIndex) =>
+                        sectionManagement.handleReorderEntry(index, oldIndex, newIndex)
+                      }
                       sectionName={section.name}
                       onEditTitle={() => sectionManagement.handleTitleEdit(index)}
                       onSaveTitle={sectionManagement.handleTitleSave}
@@ -414,7 +424,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
               );
             } else {
               return (
-                <DragHandle key={index} id={index.toString()} disabled={false}>
+                <DragHandle key={index} id={`section-${index}`} disabled={false}>
                   <div
                     ref={(el) => {
                       refs.sectionRefs.current[index] = el;
@@ -434,6 +444,9 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                       onDelete={() => sectionManagement.handleDeleteSection(index)}
                       onDeleteEntry={(entryIndex) =>
                         sectionManagement.handleDeleteEntry(index, entryIndex)
+                      }
+                      onReorderEntry={(oldIndex, newIndex) =>
+                        sectionManagement.handleReorderEntry(index, oldIndex, newIndex)
                       }
                       isEditing={sectionManagement.editingTitleIndex === index}
                       temporaryTitle={sectionManagement.temporaryTitle}
