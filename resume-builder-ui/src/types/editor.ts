@@ -233,3 +233,26 @@ export interface UseEditorActionsReturn {
   handleStartFresh: () => void;
   confirmStartFresh: () => Promise<void>;
 }
+
+/**
+ * useReorderMode hook return type
+ * Manages reorder mode state and section/item move operations
+ */
+export interface UseReorderModeReturn {
+  // State
+  isReorderModeActive: boolean;
+  hasUnsavedChanges: boolean;
+
+  // Actions
+  enterReorderMode: () => void;
+  cancelReorderMode: () => void;
+  commitReorderMode: () => void;
+
+  // Section move operations
+  moveSectionUp: (index: number) => void;
+  moveSectionDown: (index: number) => void;
+
+  // Helpers
+  canMoveUp: (index: number) => boolean;
+  canMoveDown: (index: number, total: number) => boolean;
+}

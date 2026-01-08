@@ -151,6 +151,21 @@ export interface EditorContentIconRegistry {
 }
 
 /**
+ * Props for reorder mode functionality
+ */
+export interface EditorContentReorderModeProps {
+  isReorderModeActive: boolean;
+  hasUnsavedReorderChanges: boolean;
+  enterReorderMode: () => void;
+  cancelReorderMode: () => void;
+  commitReorderMode: () => void;
+  moveSectionUp: (index: number) => void;
+  moveSectionDown: (index: number) => void;
+  canMoveUp: (index: number) => boolean;
+  canMoveDown: (index: number, total: number) => boolean;
+}
+
+/**
  * Ref objects for scroll handling
  */
 export interface EditorContentRefs {
@@ -179,6 +194,7 @@ export interface EditorContentProps {
   dragDrop: EditorContentDragDropProps;
   sectionManagement: EditorContentSectionManagementProps;
   navigation: EditorContentNavigationProps;
+  reorderMode?: EditorContentReorderModeProps;
   modals: EditorContentModalProps;
   fileOperations: EditorContentFileOperationsProps;
   editorActions: EditorContentEditorActionsProps;
@@ -234,6 +250,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
   dragDrop,
   sectionManagement,
   navigation,
+  reorderMode,
   modals,
   fileOperations,
   editorActions,
@@ -596,6 +613,16 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         onCollapseChange={navigation.setIsSidebarCollapsed}
         isAnonymous={isAnonymous}
         isAuthenticated={isAuthenticated}
+        // Reorder mode props
+        isReorderModeActive={reorderMode?.isReorderModeActive}
+        hasUnsavedReorderChanges={reorderMode?.hasUnsavedReorderChanges}
+        onEnterReorderMode={reorderMode?.enterReorderMode}
+        onCancelReorderMode={reorderMode?.cancelReorderMode}
+        onCommitReorderMode={reorderMode?.commitReorderMode}
+        onMoveSectionUp={reorderMode?.moveSectionUp}
+        onMoveSectionDown={reorderMode?.moveSectionDown}
+        canMoveUp={reorderMode?.canMoveUp}
+        canMoveDown={reorderMode?.canMoveDown}
       />
 
       {/* Hidden file input */}
