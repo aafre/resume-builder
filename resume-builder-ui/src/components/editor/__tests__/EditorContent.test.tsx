@@ -424,7 +424,7 @@ describe('EditorContent', () => {
         />
       );
 
-      expect(screen.getByTestId('drag-handle-0')).toBeInTheDocument();
+      expect(screen.getByTestId('drag-handle-section-0')).toBeInTheDocument();
     });
   });
 
