@@ -461,64 +461,23 @@ export const EditorContent: React.FC<EditorContentProps> = ({
 
         <DragOverlay modifiers={[restrictToVerticalAxis]}>
           {dragDrop.activeId && dragDrop.draggedSection ? (
-            <div className="drag-overlay">
-              {isExperienceSection(dragDrop.draggedSection) ? (
-                <ExperienceSection
-                  sectionName={dragDrop.draggedSection.name}
-                  experiences={dragDrop.draggedSection.content}
-                  onUpdate={() => {}}
-                  onTitleEdit={() => {}}
-                  onTitleSave={() => {}}
-                  onTitleCancel={() => {}}
-                  onDelete={() => {}}
-                  isEditingTitle={false}
-                  temporaryTitle=""
-                  setTemporaryTitle={() => {}}
-                  supportsIcons={supportsIcons}
-                  iconRegistry={iconRegistry}
-                />
-              ) : isEducationSection(dragDrop.draggedSection) ? (
-                <EducationSection
-                  sectionName={dragDrop.draggedSection.name}
-                  education={dragDrop.draggedSection.content}
-                  onUpdate={() => {}}
-                  onTitleEdit={() => {}}
-                  onTitleSave={() => {}}
-                  onTitleCancel={() => {}}
-                  onDelete={() => {}}
-                  isEditingTitle={false}
-                  temporaryTitle=""
-                  setTemporaryTitle={() => {}}
-                  supportsIcons={supportsIcons}
-                  iconRegistry={iconRegistry}
-                />
-              ) : dragDrop.draggedSection.type === 'icon-list' ? (
-                <IconListSection
-                  data={dragDrop.draggedSection.content as IconListItem[]}
-                  onUpdate={() => {}}
-                  onDelete={() => {}}
-                  sectionName={dragDrop.draggedSection.name}
-                  onEditTitle={() => {}}
-                  onSaveTitle={() => {}}
-                  onCancelTitle={() => {}}
-                  isEditing={false}
-                  temporaryTitle=""
-                  setTemporaryTitle={() => {}}
-                  iconRegistry={iconRegistry}
-                />
-              ) : (
-                <GenericSection
-                  section={dragDrop.draggedSection}
-                  onUpdate={() => {}}
-                  onEditTitle={() => {}}
-                  onSaveTitle={() => {}}
-                  onCancelTitle={() => {}}
-                  onDelete={() => {}}
-                  isEditing={false}
-                  temporaryTitle=""
-                  setTemporaryTitle={() => {}}
-                />
-              )}
+            <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl border-2 border-blue-300 px-6 py-4 max-w-md">
+              <div className="flex items-center gap-3">
+                {/* Drag indicator */}
+                <div className="flex flex-col gap-0.5">
+                  <div className="w-1 h-1 rounded-full bg-blue-400" />
+                  <div className="w-1 h-1 rounded-full bg-blue-400" />
+                  <div className="w-1 h-1 rounded-full bg-blue-400" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800 truncate">
+                    {dragDrop.draggedSection.name}
+                  </h3>
+                  <p className="text-sm text-gray-500 capitalize">
+                    {dragDrop.draggedSection.type?.replace(/-/g, ' ') || 'Section'}
+                  </p>
+                </div>
+              </div>
             </div>
           ) : null}
         </DragOverlay>

@@ -88,14 +88,14 @@ export const useItemDragDrop = <T>({
 
   /**
    * Configure sensors for drag-and-drop
-   * - PointerSensor: 5px activation distance (slightly less than section's 8px)
+   * - PointerSensor: 8px activation distance (matches section-level for consistency)
    * - TouchSensor: 200ms delay to distinguish from scroll gestures
    * - KeyboardSensor: Keyboard navigation support for accessibility
    */
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 5,
+        distance: 8,
       },
     }),
     useSensor(TouchSensor, {
