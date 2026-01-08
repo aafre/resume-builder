@@ -5,7 +5,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 import { Section } from '../../types';
 import { DeleteTarget, UseSectionManagementReturn } from '../../types/editor';
-import { createDefaultSection, deleteSectionItem, SectionType } from '../../services/sectionService';
+import { createDefaultSection, deleteSectionItem, reorderSectionItems, SectionType } from '../../services/sectionService';
 
 /**
  * Props for useSectionManagement hook
@@ -136,6 +136,30 @@ export const useSectionManagement = ({
   );
 
   /**
+   * Reorder an entry within a section (for drag-and-drop).
+   * Uses sectionService to handle all section types consistently.
+   */
+  const handleReorderEntry = useCallback(
+    (sectionIndex: number, oldIndex: number, newIndex: number) => {
+      if (oldIndex === newIndex) return;
+
+      setSections((currentSections) => {
+        const section = currentSections[sectionIndex];
+        if (!section) {
+          console.warn(`Attempted to reorder entry in non-existent section: ${sectionIndex}`);
+          return currentSections;
+        }
+
+        const reorderedSection = reorderSectionItems(section, oldIndex, newIndex);
+        const newSections = [...currentSections];
+        newSections[sectionIndex] = reorderedSection;
+        return newSections;
+      });
+    },
+    [setSections]
+  );
+
+  /**
    * Confirm and execute the pending delete operation.
    * Handles both section deletion and entry deletion within sections.
    */
@@ -215,6 +239,7 @@ export const useSectionManagement = ({
       handleUpdateSection,
       handleDeleteSection,
       handleDeleteEntry,
+      handleReorderEntry,
       confirmDelete,
 
       // Title editing
@@ -230,6 +255,7 @@ export const useSectionManagement = ({
       handleUpdateSection,
       handleDeleteSection,
       handleDeleteEntry,
+      handleReorderEntry,
       confirmDelete,
       editingTitleIndex,
       temporaryTitle,

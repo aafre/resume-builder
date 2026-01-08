@@ -185,6 +185,7 @@ export interface UseSectionManagementReturn {
   handleUpdateSection: (index: number, updatedSection: Section) => void;
   handleDeleteSection: (index: number) => void;
   handleDeleteEntry: (sectionIndex: number, entryIndex: number) => void;
+  handleReorderEntry: (sectionIndex: number, oldIndex: number, newIndex: number) => void;
   confirmDelete: () => void;
 
   // Title editing
