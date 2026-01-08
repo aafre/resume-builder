@@ -252,6 +252,10 @@ export interface UseReorderModeReturn {
   moveSectionUp: (index: number) => void;
   moveSectionDown: (index: number) => void;
 
+  // Item move operations (within a section)
+  moveItemUp: (sectionIndex: number, itemIndex: number) => void;
+  moveItemDown: (sectionIndex: number, itemIndex: number) => void;
+
   // Helpers
   canMoveUp: (index: number) => boolean;
   canMoveDown: (index: number, total: number) => boolean;

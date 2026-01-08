@@ -5,6 +5,7 @@ import { RichTextInput } from "./RichTextInput";
 import { RichTextArea } from "./RichTextArea";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
+import ReorderableItemControls from "./shared/ReorderableItemControls";
 
 interface Section {
   name: string;
@@ -24,6 +25,11 @@ interface GenericSectionProps {
   isEditing: boolean;
   temporaryTitle: string;
   setTemporaryTitle: (title: string) => void;
+  // Reorder mode props
+  isReorderModeActive?: boolean;
+  sectionIndex?: number;
+  onMoveItemUp?: (itemIndex: number) => void;
+  onMoveItemDown?: (itemIndex: number) => void;
 }
 
 const GenericSection: React.FC<GenericSectionProps> = ({
@@ -38,6 +44,10 @@ const GenericSection: React.FC<GenericSectionProps> = ({
   isEditing,
   temporaryTitle,
   setTemporaryTitle,
+  isReorderModeActive = false,
+  sectionIndex,
+  onMoveItemUp,
+  onMoveItemDown,
 }) => {
   const [showHint, setShowHint] = useState(true);
 
@@ -205,15 +215,22 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 {({ itemIds }) => (
                   <>
                     {section.content.map((item: string, index: number) => (
-                      <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
+                      <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left" isReorderModeActive={isReorderModeActive}>
                         <div className="mb-4">
                           <div className="flex items-center gap-2">
+                            <ReorderableItemControls
+                              index={index}
+                              total={section.content.length}
+                              onMoveUp={() => onMoveItemUp?.(index)}
+                              onMoveDown={() => onMoveItemDown?.(index)}
+                              isVisible={isReorderModeActive}
+                            />
                             <div className="flex-1">
                               <RichTextInput
                                 value={item}
                                 onChange={(value) => handleContentChange(value, index)}
                                 placeholder="Add item..."
-                                className="w-full border border-gray-300 rounded-lg p-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
+                                className={`w-full border rounded-lg p-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200 ${isReorderModeActive ? 'border-amber-300' : 'border-gray-300'}`}
                               />
                             </div>
                             <button
@@ -261,15 +278,22 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                   {({ itemIds }) => (
                     <>
                       {section.content.map((item: string, index: number) => (
-                        <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
+                        <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left" isReorderModeActive={isReorderModeActive}>
                           <div>
                             <div className="flex items-center gap-2">
+                              <ReorderableItemControls
+                                index={index}
+                                total={section.content.length}
+                                onMoveUp={() => onMoveItemUp?.(index)}
+                                onMoveDown={() => onMoveItemDown?.(index)}
+                                isVisible={isReorderModeActive}
+                              />
                               <div className="flex-1">
                                 <RichTextInput
                                   value={item}
                                   onChange={(value) => handleContentChange(value, index)}
                                   placeholder="Add skill or item..."
-                                  className="w-full border border-gray-300 rounded-lg p-2 text-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
+                                  className={`w-full border rounded-lg p-2 text-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200 ${isReorderModeActive ? 'border-amber-300' : 'border-gray-300'}`}
                                 />
                               </div>
                               <button
@@ -318,15 +342,22 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                   {({ itemIds }) => (
                     <>
                       {section.content.map((item: string, index: number) => (
-                        <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
+                        <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left" isReorderModeActive={isReorderModeActive}>
                           <div>
                             <div className="flex items-center gap-2">
+                              <ReorderableItemControls
+                                index={index}
+                                total={section.content.length}
+                                onMoveUp={() => onMoveItemUp?.(index)}
+                                onMoveDown={() => onMoveItemDown?.(index)}
+                                isVisible={isReorderModeActive}
+                              />
                               <div className="flex-1">
                                 <RichTextInput
                                   value={item}
                                   onChange={(value) => handleContentChange(value, index)}
                                   placeholder="Add item..."
-                                  className="w-full border border-gray-300 rounded-lg p-2 text-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
+                                  className={`w-full border rounded-lg p-2 text-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200 ${isReorderModeActive ? 'border-amber-300' : 'border-gray-300'}`}
                                 />
                               </div>
                               <button

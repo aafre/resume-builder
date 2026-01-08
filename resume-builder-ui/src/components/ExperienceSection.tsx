@@ -6,6 +6,7 @@ import { RichTextInput } from "./RichTextInput";
 import { MdDelete } from "react-icons/md";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
+import ReorderableItemControls from "./shared/ReorderableItemControls";
 
 interface ExperienceItem {
   company: string;
@@ -39,6 +40,11 @@ interface ExperienceSectionProps {
   setTemporaryTitle: (title: string) => void; // Update temporary title
   supportsIcons?: boolean;
   iconRegistry?: IconRegistryMethods;
+  // Reorder mode props
+  isReorderModeActive?: boolean;
+  sectionIndex?: number;
+  onMoveItemUp?: (itemIndex: number) => void;
+  onMoveItemDown?: (itemIndex: number) => void;
 }
 
 const ExperienceSection: React.FC<ExperienceSectionProps> = ({
@@ -56,6 +62,10 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   setTemporaryTitle,
   supportsIcons = false,
   iconRegistry,
+  isReorderModeActive = false,
+  sectionIndex,
+  onMoveItemUp,
+  onMoveItemDown,
 }) => {
   // Collapse state - default to collapsed on mobile, expanded on desktop
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -135,10 +145,18 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
           {({ itemIds }) => (
             <>
               {experiences.map((experience, index) => (
-                <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
-                  <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
-                    <div className="flex justify-between items-center">
-                      <h3 className="text-lg font-medium">Experience #{index + 1}</h3>
+                <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left" isReorderModeActive={isReorderModeActive}>
+                  <div className="flex items-start">
+                    <ReorderableItemControls
+                      index={index}
+                      total={experiences.length}
+                      onMoveUp={() => onMoveItemUp?.(index)}
+                      onMoveDown={() => onMoveItemDown?.(index)}
+                      isVisible={isReorderModeActive}
+                    />
+                    <div className={`flex-1 bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border shadow-md ${isReorderModeActive ? 'border-amber-300' : 'border-gray-200'}`}>
+                      <div className="flex justify-between items-center">
+                        <h3 className="text-lg font-medium">Experience #{index + 1}</h3>
                       <button
                         onClick={() => {
                           if (onDeleteEntry) {
@@ -256,6 +274,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                       </div>
                     </div>
                   </div>
+                </div>
                 </SortableItem>
               ))}
             </>

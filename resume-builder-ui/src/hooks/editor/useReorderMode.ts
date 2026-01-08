@@ -31,6 +31,10 @@ export interface UseReorderModeReturn {
   moveSectionUp: (index: number) => void;
   moveSectionDown: (index: number) => void;
 
+  // Item move operations (within a section)
+  moveItemUp: (sectionIndex: number, itemIndex: number) => void;
+  moveItemDown: (sectionIndex: number, itemIndex: number) => void;
+
   // Helpers
   canMoveUp: (index: number) => boolean;
   canMoveDown: (index: number, total: number) => boolean;
@@ -175,6 +179,61 @@ export const useReorderMode = ({
   );
 
   /**
+   * Move an item up within a section (decrease index)
+   * @param sectionIndex - Index of the section containing the item
+   * @param itemIndex - Current index of the item to move
+   */
+  const moveItemUp = useCallback(
+    (sectionIndex: number, itemIndex: number) => {
+      if (!isReorderModeActive) return;
+      if (itemIndex <= 0) return; // Already at top
+
+      setSections((prev) => {
+        const newSections = [...prev];
+        const section = newSections[sectionIndex];
+
+        // Handle different section content types
+        if (Array.isArray(section.content)) {
+          const newContent = arrayMove(section.content as unknown[], itemIndex, itemIndex - 1);
+          newSections[sectionIndex] = { ...section, content: newContent as typeof section.content };
+        }
+
+        return newSections;
+      });
+    },
+    [isReorderModeActive, setSections]
+  );
+
+  /**
+   * Move an item down within a section (increase index)
+   * @param sectionIndex - Index of the section containing the item
+   * @param itemIndex - Current index of the item to move
+   */
+  const moveItemDown = useCallback(
+    (sectionIndex: number, itemIndex: number) => {
+      if (!isReorderModeActive) return;
+
+      setSections((prev) => {
+        const section = prev[sectionIndex];
+
+        // Handle different section content types
+        if (Array.isArray(section.content)) {
+          const contentArray = section.content as unknown[];
+          if (itemIndex >= contentArray.length - 1) return prev; // Already at bottom
+
+          const newSections = [...prev];
+          const newContent = arrayMove(contentArray, itemIndex, itemIndex + 1);
+          newSections[sectionIndex] = { ...section, content: newContent as typeof section.content };
+          return newSections;
+        }
+
+        return prev;
+      });
+    },
+    [isReorderModeActive, setSections]
+  );
+
+  /**
    * Check if a section can be moved up
    * @param index - Index to check
    * @returns true if section is not at the top
@@ -206,6 +265,10 @@ export const useReorderMode = ({
     // Section move operations
     moveSectionUp,
     moveSectionDown,
+
+    // Item move operations
+    moveItemUp,
+    moveItemDown,
 
     // Helpers
     canMoveUp,

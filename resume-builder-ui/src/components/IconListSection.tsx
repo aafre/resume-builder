@@ -5,6 +5,7 @@ import { MarkdownHint } from "./MarkdownLinkPreview";
 import { RichTextInput } from "./RichTextInput";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
+import ReorderableItemControls from "./shared/ReorderableItemControls";
 
 interface Certification {
   certification: string;
@@ -36,6 +37,11 @@ interface IconListSectionProps {
   temporaryTitle?: string;
   setTemporaryTitle?: (title: string) => void;
   iconRegistry?: IconRegistryMethods;
+  // Reorder mode props
+  isReorderModeActive?: boolean;
+  sectionIndex?: number;
+  onMoveItemUp?: (itemIndex: number) => void;
+  onMoveItemDown?: (itemIndex: number) => void;
 }
 
 const IconListSection: React.FC<IconListSectionProps> = ({
@@ -52,6 +58,10 @@ const IconListSection: React.FC<IconListSectionProps> = ({
   temporaryTitle = "",
   setTemporaryTitle,
   iconRegistry,
+  isReorderModeActive = false,
+  sectionIndex,
+  onMoveItemUp,
+  onMoveItemDown,
 }) => {
   const [showHint, setShowHint] = useState(true);
 
@@ -224,8 +234,16 @@ const IconListSection: React.FC<IconListSectionProps> = ({
           {({ itemIds }) => (
             <>
               {data.map((item, index) => (
-                <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
-                  <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
+                <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left" isReorderModeActive={isReorderModeActive}>
+                  <div className="flex items-start">
+                    <ReorderableItemControls
+                      index={index}
+                      total={data.length}
+                      onMoveUp={() => onMoveItemUp?.(index)}
+                      onMoveDown={() => onMoveItemDown?.(index)}
+                      isVisible={isReorderModeActive}
+                    />
+                    <div className={`flex-1 bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border shadow-md ${isReorderModeActive ? 'border-amber-300' : 'border-gray-200'}`}>
                     <div>
                       {iconRegistry && (
                         <div className="mb-4">
@@ -289,6 +307,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                       </div>
                     </div>
                   </div>
+                </div>
                 </SortableItem>
               ))}
             </>

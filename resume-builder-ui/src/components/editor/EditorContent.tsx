@@ -161,6 +161,8 @@ export interface EditorContentReorderModeProps {
   commitReorderMode: () => void;
   moveSectionUp: (index: number) => void;
   moveSectionDown: (index: number) => void;
+  moveItemUp: (sectionIndex: number, itemIndex: number) => void;
+  moveItemDown: (sectionIndex: number, itemIndex: number) => void;
   canMoveUp: (index: number) => boolean;
   canMoveDown: (index: number, total: number) => boolean;
 }
@@ -358,6 +360,10 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                       setTemporaryTitle={sectionManagement.setTemporaryTitle}
                       supportsIcons={supportsIcons}
                       iconRegistry={iconRegistry}
+                      isReorderModeActive={reorderMode?.isReorderModeActive}
+                      sectionIndex={index}
+                      onMoveItemUp={(itemIndex) => reorderMode?.moveItemUp(index, itemIndex)}
+                      onMoveItemDown={(itemIndex) => reorderMode?.moveItemDown(index, itemIndex)}
                     />
                   </div>
                 </DragHandle>
@@ -397,6 +403,10 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                       setTemporaryTitle={sectionManagement.setTemporaryTitle}
                       supportsIcons={supportsIcons}
                       iconRegistry={iconRegistry}
+                      isReorderModeActive={reorderMode?.isReorderModeActive}
+                      sectionIndex={index}
+                      onMoveItemUp={(itemIndex) => reorderMode?.moveItemUp(index, itemIndex)}
+                      onMoveItemDown={(itemIndex) => reorderMode?.moveItemDown(index, itemIndex)}
                     />
                   </div>
                 </DragHandle>
@@ -435,6 +445,10 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                       temporaryTitle={sectionManagement.temporaryTitle}
                       setTemporaryTitle={sectionManagement.setTemporaryTitle}
                       iconRegistry={iconRegistry}
+                      isReorderModeActive={reorderMode?.isReorderModeActive}
+                      sectionIndex={index}
+                      onMoveItemUp={(itemIndex) => reorderMode?.moveItemUp(index, itemIndex)}
+                      onMoveItemDown={(itemIndex) => reorderMode?.moveItemDown(index, itemIndex)}
                     />
                   </div>
                 </DragHandle>
@@ -468,6 +482,10 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                       isEditing={sectionManagement.editingTitleIndex === index}
                       temporaryTitle={sectionManagement.temporaryTitle}
                       setTemporaryTitle={sectionManagement.setTemporaryTitle}
+                      isReorderModeActive={reorderMode?.isReorderModeActive}
+                      sectionIndex={index}
+                      onMoveItemUp={(itemIndex) => reorderMode?.moveItemUp(index, itemIndex)}
+                      onMoveItemDown={(itemIndex) => reorderMode?.moveItemDown(index, itemIndex)}
                     />
                   </div>
                 </DragHandle>
