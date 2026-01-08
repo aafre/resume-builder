@@ -135,7 +135,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
           {({ itemIds }) => (
             <>
               {experiences.map((experience, index) => (
-                <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
+                <SortableItem key={itemIds[index]} id={itemIds[index]}>
                   <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
                     <div className="flex justify-between items-center">
                       <h3 className="text-lg font-medium">Experience #{index + 1}</h3>
@@ -215,33 +215,60 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                         </label>
                         <MarkdownHint />
                         <div className="space-y-3 mt-2">
-                          {experience.description.map((desc, descIndex) => (
-                            <div key={descIndex} className="flex items-start gap-3">
-                              <div className="flex-1">
-                                <RichTextInput
-                                  value={desc}
-                                  onChange={(value) => {
-                                    const updatedExperiences = [...experiences];
-                                    updatedExperiences[index].description[descIndex] = value;
-                                    onUpdate(updatedExperiences);
-                                  }}
-                                  placeholder="Describe your responsibilities, achievements, or key projects..."
-                                  className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
-                                />
-                              </div>
-                              <button
-                                onClick={() => {
-                                  const updatedExperiences = [...experiences];
-                                  updatedExperiences[index].description.splice(descIndex, 1);
-                                  onUpdate(updatedExperiences);
-                                }}
-                                className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
-                                title="Remove description point"
-                              >
-                                ✕
-                              </button>
-                            </div>
-                          ))}
+                          {experience.description.length > 0 && (
+                            <ItemDndContext
+                              items={experience.description}
+                              sectionId={`exp-${index}-desc`}
+                              onReorder={(oldDescIndex, newDescIndex) => {
+                                const updatedExperiences = [...experiences];
+                                const descriptions = [...updatedExperiences[index].description];
+                                const [movedItem] = descriptions.splice(oldDescIndex, 1);
+                                descriptions.splice(newDescIndex, 0, movedItem);
+                                updatedExperiences[index] = {
+                                  ...updatedExperiences[index],
+                                  description: descriptions,
+                                };
+                                onUpdate(updatedExperiences);
+                              }}
+                            >
+                              {({ itemIds }) => (
+                                <>
+                                  {experience.description.map((desc, descIndex) => (
+                                    <SortableItem
+                                      key={itemIds[descIndex]}
+                                      id={itemIds[descIndex]}
+                                    >
+                                      <div className="flex items-start gap-3">
+                                        <div className="flex-1">
+                                          <RichTextInput
+                                            value={desc}
+                                            onChange={(value) => {
+                                              const updatedExperiences = [...experiences];
+                                              updatedExperiences[index].description[descIndex] = value;
+                                              onUpdate(updatedExperiences);
+                                            }}
+                                            placeholder="Describe your responsibilities, achievements, or key projects..."
+                                            className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
+                                          />
+                                        </div>
+                                        <button
+                                          onClick={() => {
+                                            const updatedExperiences = [...experiences];
+                                            updatedExperiences[index].description.splice(descIndex, 1);
+                                            onUpdate(updatedExperiences);
+                                          }}
+                                          className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
+                                          title="Remove description point"
+                                        >
+                                          ✕
+                                        </button>
+                                      </div>
+                                    </SortableItem>
+                                  ))}
+                                </>
+                              )}
+                            </ItemDndContext>
+                          )}
                         </div>
                         <button
                           onClick={() => {

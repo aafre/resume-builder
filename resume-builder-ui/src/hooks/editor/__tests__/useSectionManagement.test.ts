@@ -162,7 +162,8 @@ describe('useSectionManagement', () => {
 
       const updater = mockSetSections.mock.calls[0][0];
       const newSections = updater(existingSections);
-      expect(newSections[1].name).toBe('New Text Section 2');
+      // New section is added at top by default
+      expect(newSections[0].name).toBe('New Text Section 2');
     });
 
     it('should close section type modal after adding', () => {
@@ -206,6 +207,129 @@ describe('useSectionManagement', () => {
 
       // No error should occur
       expect(mockCloseSectionTypeModal).toHaveBeenCalled();
+    });
+
+    describe('position parameter', () => {
+      it('should add section at top by default', () => {
+        const existingSections = [
+          { name: 'Existing Section', type: 'text', content: '' },
+        ];
+        const { result } = renderHook(() =>
+          useSectionManagement(createDefaultProps({ sections: existingSections }))
+        );
+
+        act(() => {
+          result.current.handleAddSection('experience');
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(existingSections);
+
+        // New section should be at index 0
+        expect(newSections[0].type).toBe('experience');
+        expect(newSections[1].name).toBe('Existing Section');
+      });
+
+      it('should add section at bottom when position is "bottom"', () => {
+        const existingSections = [
+          { name: 'Existing Section', type: 'text', content: '' },
+        ];
+        const { result } = renderHook(() =>
+          useSectionManagement(createDefaultProps({ sections: existingSections }))
+        );
+
+        act(() => {
+          result.current.handleAddSection('experience', 'bottom');
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(existingSections);
+
+        // New section should be at index 1 (end)
+        expect(newSections[0].name).toBe('Existing Section');
+        expect(newSections[1].type).toBe('experience');
+      });
+
+      it('should add section at specific index when position is a number', () => {
+        const existingSections = [
+          { name: 'Section 1', type: 'text', content: '' },
+          { name: 'Section 2', type: 'text', content: '' },
+          { name: 'Section 3', type: 'text', content: '' },
+        ];
+        const { result } = renderHook(() =>
+          useSectionManagement(createDefaultProps({ sections: existingSections }))
+        );
+
+        act(() => {
+          // Insert after section 1 (at index 1)
+          result.current.handleAddSection('experience', 1);
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(existingSections);
+
+        expect(newSections).toHaveLength(4);
+        expect(newSections[0].name).toBe('Section 1');
+        expect(newSections[1].type).toBe('experience');
+        expect(newSections[2].name).toBe('Section 2');
+        expect(newSections[3].name).toBe('Section 3');
+      });
+
+      it('should clamp position index to valid range (not negative)', () => {
+        const existingSections = [
+          { name: 'Existing Section', type: 'text', content: '' },
+        ];
+        const { result } = renderHook(() =>
+          useSectionManagement(createDefaultProps({ sections: existingSections }))
+        );
+
+        act(() => {
+          result.current.handleAddSection('experience', -5);
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(existingSections);
+
+        // Should clamp to 0
+        expect(newSections[0].type).toBe('experience');
+        expect(newSections[1].name).toBe('Existing Section');
+      });
+
+      it('should clamp position index to valid range (not beyond array length)', () => {
+        const existingSections = [
+          { name: 'Existing Section', type: 'text', content: '' },
+        ];
+        const { result } = renderHook(() =>
+          useSectionManagement(createDefaultProps({ sections: existingSections }))
+        );
+
+        act(() => {
+          result.current.handleAddSection('experience', 999);
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(existingSections);
+
+        // Should clamp to end of array
+        expect(newSections[0].name).toBe('Existing Section');
+        expect(newSections[1].type).toBe('experience');
+      });
+
+      it('should handle empty sections array with "top" position', () => {
+        const { result } = renderHook(() =>
+          useSectionManagement(createDefaultProps({ sections: [] }))
+        );
+
+        act(() => {
+          result.current.handleAddSection('text', 'top');
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater([]);
+
+        expect(newSections).toHaveLength(1);
+        expect(newSections[0].type).toBe('text');
+      });
     });
   });
 

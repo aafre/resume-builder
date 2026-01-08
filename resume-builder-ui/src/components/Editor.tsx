@@ -425,6 +425,7 @@ const Editor: React.FC = () => {
         isAnonymous={isAnonymous}
         isAuthenticated={isAuthenticated}
         supportsIcons={supportsIcons}
+        sections={sections}
         onAuthSuccess={() => {
           toast.success('Welcome! Your resume will now be saved to the cloud.');
         }}

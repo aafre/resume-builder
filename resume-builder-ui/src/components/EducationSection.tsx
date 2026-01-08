@@ -158,7 +158,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({
           {({ itemIds }) => (
             <>
               {education.map((item, index) => (
-                <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
+                <SortableItem key={itemIds[index]} id={itemIds[index]}>
                   <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
                     <div className="flex justify-between items-center">
                       <h3 className="text-lg font-semibold">Entry {index + 1}</h3>

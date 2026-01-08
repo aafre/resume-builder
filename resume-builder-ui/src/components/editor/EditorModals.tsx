@@ -4,10 +4,11 @@
 import { UseModalManagerReturn } from '../../hooks/editor/useModalManager';
 import { UseTourFlowReturn } from '../../types/editor';
 import { SectionType } from '../../services/sectionService';
+import { Section } from '../../types';
 import AuthModal from '../AuthModal';
 import DownloadCelebrationModal from '../DownloadCelebrationModal';
 import TabbedHelpModal from '../TabbedHelpModal';
-import SectionTypeModal from '../SectionTypeModal';
+import SectionTypeModal, { InsertPosition } from '../SectionTypeModal';
 import ResponsiveConfirmDialog from '../ResponsiveConfirmDialog';
 import PreviewModal from '../PreviewModal';
 import { StorageLimitModal } from '../StorageLimitModal';
@@ -28,7 +29,7 @@ export interface EditorModalsPreviewProps {
  */
 export interface EditorModalsActions {
   // Section actions
-  handleAddSection: (type: SectionType) => void;
+  handleAddSection: (type: SectionType, position?: InsertPosition) => void;
   confirmDelete: () => void;
 
   // File actions
@@ -69,6 +70,8 @@ export interface EditorModalsProps {
   isAuthenticated: boolean;
   /** Whether template supports icons */
   supportsIcons: boolean;
+  /** Current sections for position selection */
+  sections: Section[];
   /** Callback when auth completes successfully (from actions auth modal) */
   onAuthSuccess?: () => void;
 }
@@ -106,6 +109,7 @@ export interface EditorModalsProps {
  *   isAnonymous={isAnonymous}
  *   isAuthenticated={isAuthenticated}
  *   supportsIcons={supportsIcons}
+ *   sections={sections}
  * />
  */
 export const EditorModals: React.FC<EditorModalsProps> = ({
@@ -117,6 +121,7 @@ export const EditorModals: React.FC<EditorModalsProps> = ({
   isAnonymous,
   isAuthenticated,
   supportsIcons,
+  sections,
   onAuthSuccess,
 }) => {
   return (
@@ -181,6 +186,7 @@ export const EditorModals: React.FC<EditorModalsProps> = ({
           onClose={modalManager.closeSectionTypeModal}
           onSelect={actions.handleAddSection}
           supportsIcons={supportsIcons}
+          sections={sections}
         />
       )}
 
