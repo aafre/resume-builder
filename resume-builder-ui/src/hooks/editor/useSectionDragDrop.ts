@@ -90,6 +90,26 @@ export const useSectionDragDrop = ({
   );
 
   /**
+   * Parse section index from section ID
+   * Supports both "section-X" format (new) and plain "X" format (legacy)
+   * @param id - Section ID
+   * @returns The parsed index or -1 if invalid
+   */
+  const parseSectionIndex = useCallback((id: string | number): number => {
+    if (typeof id !== 'string') return -1;
+    // Ignore item-level drags (they have "-item-" in their ID)
+    if (id.includes('-item-')) return -1;
+    // Parse "section-X" format
+    if (id.startsWith('section-')) {
+      const index = parseInt(id.replace('section-', ''), 10);
+      return isNaN(index) ? -1 : index;
+    }
+    // Legacy: plain numeric string
+    const index = parseInt(id, 10);
+    return isNaN(index) ? -1 : index;
+  }, []);
+
+  /**
    * Handles the start of a drag operation
    * Captures the dragged section for preview in DragOverlay
    *
@@ -98,13 +118,15 @@ export const useSectionDragDrop = ({
   const handleDragStart = useCallback(
     (event: DragStartEvent) => {
       const { active } = event;
-      setActiveId(active.id as string);
+      const sectionIndex = parseSectionIndex(active.id as string);
 
-      // Parse section index from the active id
-      const sectionIndex = parseInt(active.id as string);
+      // Ignore item-level drags
+      if (sectionIndex < 0) return;
+
+      setActiveId(active.id as string);
       setDraggedSection(sections[sectionIndex] ?? null);
     },
-    [sections]
+    [sections, parseSectionIndex]
   );
 
   /**
@@ -117,26 +139,32 @@ export const useSectionDragDrop = ({
     (event: DragEndEvent) => {
       const { active, over } = event;
 
-      // Only process if dropped over a valid target
-      if (over && active.id !== over.id) {
-        const oldIndex = parseInt(active.id as string);
-        const newIndex = parseInt(over.id as string);
+      // Parse section indices
+      const oldIndex = parseSectionIndex(active.id as string);
+      const newIndex = over ? parseSectionIndex(over.id as string) : -1;
 
-        if (!isNaN(oldIndex) && !isNaN(newIndex)) {
-          setSections((prevSections) => {
-            return arrayMove(prevSections, oldIndex, newIndex);
-          });
+      // Ignore item-level drags or invalid targets
+      if (oldIndex < 0 || newIndex < 0) {
+        setActiveId(null);
+        setDraggedSection(null);
+        return;
+      }
 
-          // Toast notification for successful reorder
-          toast.success('Section reordered successfully!');
-        }
+      // Only process if dropped over a different position
+      if (oldIndex !== newIndex) {
+        setSections((prevSections) => {
+          return arrayMove(prevSections, oldIndex, newIndex);
+        });
+
+        // Toast notification for successful reorder
+        toast.success('Section reordered successfully!');
       }
 
       // Clear drag state
       setActiveId(null);
       setDraggedSection(null);
     },
-    [setSections]
+    [setSections, parseSectionIndex]
   );
 
   /**
