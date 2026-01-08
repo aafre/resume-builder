@@ -373,6 +373,8 @@ const Editor: React.FC = () => {
           commitReorderMode: reorderMode.commitReorderMode,
           moveSectionUp: reorderMode.moveSectionUp,
           moveSectionDown: reorderMode.moveSectionDown,
+          moveItemUp: reorderMode.moveItemUp,
+          moveItemDown: reorderMode.moveItemDown,
           canMoveUp: reorderMode.canMoveUp,
           canMoveDown: reorderMode.canMoveDown,
         }}

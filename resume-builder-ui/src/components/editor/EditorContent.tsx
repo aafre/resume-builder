@@ -161,6 +161,8 @@ export interface EditorContentReorderModeProps {
   commitReorderMode: () => void;
   moveSectionUp: (index: number) => void;
   moveSectionDown: (index: number) => void;
+  moveItemUp: (sectionIndex: number, itemIndex: number) => void;
+  moveItemDown: (sectionIndex: number, itemIndex: number) => void;
   canMoveUp: (index: number) => boolean;
   canMoveDown: (index: number, total: number) => boolean;
 }
@@ -325,7 +327,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
           {sections.map((section, index) => {
             if (isExperienceSection(section)) {
               return (
-                <DragHandle key={index} id={`section-${index}`} disabled={false}>
+                <DragHandle key={index} id={`section-${index}`} disabled={false} isReorderModeActive={reorderMode?.isReorderModeActive}>
                   <div
                     ref={(el) => {
                       refs.sectionRefs.current[index] = el;
@@ -358,13 +360,17 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                       setTemporaryTitle={sectionManagement.setTemporaryTitle}
                       supportsIcons={supportsIcons}
                       iconRegistry={iconRegistry}
+                      isReorderModeActive={reorderMode?.isReorderModeActive}
+                      sectionIndex={index}
+                      onMoveItemUp={(itemIndex) => reorderMode?.moveItemUp(index, itemIndex)}
+                      onMoveItemDown={(itemIndex) => reorderMode?.moveItemDown(index, itemIndex)}
                     />
                   </div>
                 </DragHandle>
               );
             } else if (isEducationSection(section)) {
               return (
-                <DragHandle key={index} id={`section-${index}`} disabled={false}>
+                <DragHandle key={index} id={`section-${index}`} disabled={false} isReorderModeActive={reorderMode?.isReorderModeActive}>
                   <div
                     ref={(el) => {
                       refs.sectionRefs.current[index] = el;
@@ -397,13 +403,17 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                       setTemporaryTitle={sectionManagement.setTemporaryTitle}
                       supportsIcons={supportsIcons}
                       iconRegistry={iconRegistry}
+                      isReorderModeActive={reorderMode?.isReorderModeActive}
+                      sectionIndex={index}
+                      onMoveItemUp={(itemIndex) => reorderMode?.moveItemUp(index, itemIndex)}
+                      onMoveItemDown={(itemIndex) => reorderMode?.moveItemDown(index, itemIndex)}
                     />
                   </div>
                 </DragHandle>
               );
             } else if (section.type === 'icon-list') {
               return (
-                <DragHandle key={index} id={`section-${index}`} disabled={false}>
+                <DragHandle key={index} id={`section-${index}`} disabled={false} isReorderModeActive={reorderMode?.isReorderModeActive}>
                   <div
                     ref={(el) => {
                       refs.sectionRefs.current[index] = el;
@@ -435,13 +445,17 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                       temporaryTitle={sectionManagement.temporaryTitle}
                       setTemporaryTitle={sectionManagement.setTemporaryTitle}
                       iconRegistry={iconRegistry}
+                      isReorderModeActive={reorderMode?.isReorderModeActive}
+                      sectionIndex={index}
+                      onMoveItemUp={(itemIndex) => reorderMode?.moveItemUp(index, itemIndex)}
+                      onMoveItemDown={(itemIndex) => reorderMode?.moveItemDown(index, itemIndex)}
                     />
                   </div>
                 </DragHandle>
               );
             } else {
               return (
-                <DragHandle key={index} id={`section-${index}`} disabled={false}>
+                <DragHandle key={index} id={`section-${index}`} disabled={false} isReorderModeActive={reorderMode?.isReorderModeActive}>
                   <div
                     ref={(el) => {
                       refs.sectionRefs.current[index] = el;
@@ -468,6 +482,10 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                       isEditing={sectionManagement.editingTitleIndex === index}
                       temporaryTitle={sectionManagement.temporaryTitle}
                       setTemporaryTitle={sectionManagement.setTemporaryTitle}
+                      isReorderModeActive={reorderMode?.isReorderModeActive}
+                      sectionIndex={index}
+                      onMoveItemUp={(itemIndex) => reorderMode?.moveItemUp(index, itemIndex)}
+                      onMoveItemDown={(itemIndex) => reorderMode?.moveItemDown(index, itemIndex)}
                     />
                   </div>
                 </DragHandle>
@@ -575,6 +593,22 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         previewIsStale={preview.isStale}
         lastSaved={saveStatus.lastSaved}
         saveError={saveStatus.saveStatus === 'error'}
+        // Reorder mode props
+        isReorderModeActive={reorderMode?.isReorderModeActive}
+        selectedSectionIndex={navigation.activeSectionIndex}
+        totalSections={sections.length}
+        onMoveUp={() => {
+          if (navigation.activeSectionIndex >= 0) {
+            reorderMode?.moveSectionUp(navigation.activeSectionIndex);
+          }
+        }}
+        onMoveDown={() => {
+          if (navigation.activeSectionIndex >= 0) {
+            reorderMode?.moveSectionDown(navigation.activeSectionIndex);
+          }
+        }}
+        onCommitReorder={reorderMode?.commitReorderMode}
+        onCancelReorder={reorderMode?.cancelReorderMode}
       />
 
       {/* Mobile Navigation Drawer */}
@@ -591,6 +625,15 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         onHelp={modals.openHelpModal}
         loadingSave={fileOperations.loadingSave}
         loadingLoad={fileOperations.loadingLoad}
+        // Reorder mode props
+        isReorderModeActive={reorderMode?.isReorderModeActive}
+        onEnterReorderMode={reorderMode?.enterReorderMode}
+        onCommitReorderMode={reorderMode?.commitReorderMode}
+        onCancelReorderMode={reorderMode?.cancelReorderMode}
+        onMoveSectionUp={reorderMode?.moveSectionUp}
+        onMoveSectionDown={reorderMode?.moveSectionDown}
+        canMoveUp={reorderMode?.canMoveUp}
+        canMoveDown={reorderMode?.canMoveDown}
       />
 
       {/* Desktop Section Navigator Sidebar */}
