@@ -23,6 +23,11 @@ import {
   MdDescription,
   MdVisibility,
   MdSupport,
+  MdSwapVert,
+  MdKeyboardArrowUp,
+  MdKeyboardArrowDown,
+  MdCheck,
+  MdClose,
 } from "react-icons/md";
 import { Link } from "react-router-dom";
 
@@ -50,6 +55,16 @@ interface SectionNavigatorProps {
   onCollapseChange?: (isCollapsed: boolean) => void;
   isAnonymous?: boolean;
   isAuthenticated?: boolean;
+  // Reorder mode props
+  isReorderModeActive?: boolean;
+  hasUnsavedReorderChanges?: boolean;
+  onEnterReorderMode?: () => void;
+  onCancelReorderMode?: () => void;
+  onCommitReorderMode?: () => void;
+  onMoveSectionUp?: (index: number) => void;
+  onMoveSectionDown?: (index: number) => void;
+  canMoveUp?: (index: number) => boolean;
+  canMoveDown?: (index: number, total: number) => boolean;
 }
 
 const STORAGE_KEY = "resume-builder-sidebar-collapsed";
@@ -79,6 +94,16 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   onCollapseChange,
   isAnonymous = false,
   isAuthenticated = false,
+  // Reorder mode props
+  isReorderModeActive = false,
+  hasUnsavedReorderChanges = false,
+  onEnterReorderMode,
+  onCancelReorderMode,
+  onCommitReorderMode,
+  onMoveSectionUp,
+  onMoveSectionDown,
+  canMoveUp,
+  canMoveDown,
 }) => {
   // Load initial state from localStorage
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -259,8 +284,12 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   return (
     <nav
       ref={sidebarRef}
-      className={`hidden lg:flex flex-col fixed right-0 bg-white/95 backdrop-blur-sm border-l border-gray-200/80 shadow-xl overflow-hidden z-[45] transition-all duration-300 ease-in-out ${
+      className={`hidden lg:flex flex-col fixed right-0 bg-white/95 backdrop-blur-sm shadow-xl overflow-hidden z-[45] transition-all duration-300 ease-in-out ${
         isCollapsed ? "w-[72px]" : "w-[280px]"
+      } ${
+        isReorderModeActive
+          ? "border-l-4 border-blue-500 ring-2 ring-blue-500/20"
+          : "border-l border-gray-200/80"
       }`}
       style={{
         top: `${headerHeight}px`,
@@ -269,10 +298,14 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
       aria-label="Section navigation and actions"
     >
       {/* Toggle Button - Top of sidebar with subtle border */}
-      <div className="flex items-center justify-between px-3 py-3 border-b border-gray-200/60 bg-gray-50/50">
+      <div className={`flex items-center justify-between px-3 py-3 border-b border-gray-200/60 ${
+        isReorderModeActive ? "bg-blue-50/80" : "bg-gray-50/50"
+      }`}>
         {!isCollapsed && (
-          <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider">
-            Navigator
+          <span className={`text-xs font-semibold uppercase tracking-wider ${
+            isReorderModeActive ? "text-blue-700" : "text-gray-600"
+          }`}>
+            {isReorderModeActive ? "Reorder Mode" : "Navigator"}
           </span>
         )}
         <button
@@ -335,126 +368,215 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
 
           {/* Dynamic Sections */}
           {sections.map((section, index) => (
-            <button
+            <div
               key={index}
-              onClick={() => onSectionClick(index)}
-              className={`w-full flex items-center transition-all rounded-lg group ${
-                isCollapsed
-                  ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-blue-50/80 mt-1"
-                  : "flex-row gap-3 px-3 py-2.5 hover:bg-gray-100/80 mt-0.5"
-              } ${
-                activeSectionIndex === index
-                  ? isCollapsed
-                    ? "bg-blue-50 text-blue-700"
-                    : "bg-blue-50/80 border-l-[3px] border-blue-600 text-blue-800 font-medium"
-                  : "text-gray-700 hover:text-gray-900"
-              }`}
+              className={`flex items-center ${isCollapsed ? "flex-col mt-1" : "mt-0.5"}`}
             >
-              <div
-                className={`flex items-center justify-center ${
-                  isCollapsed ? "w-7 h-7" : "w-6 h-6"
-                } rounded-md ${
-                  activeSectionIndex === index
-                    ? "bg-blue-100 text-blue-600"
-                    : "bg-gray-100/80 text-gray-500 group-hover:bg-gray-200/80 group-hover:text-gray-700"
-                }`}
-              >
-                {getSectionIcon(section)}
-              </div>
-              <span
-                className={`${
+              {/* Reorder mode: Up button (expanded only) */}
+              {isReorderModeActive && !isCollapsed && onMoveSectionUp && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onMoveSectionUp(index);
+                  }}
+                  disabled={canMoveUp ? !canMoveUp(index) : index === 0}
+                  className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded hover:bg-blue-100 text-gray-400 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  aria-label={`Move ${section.name} up`}
+                  title="Move up"
+                >
+                  <MdKeyboardArrowUp className="text-lg" />
+                </button>
+              )}
+
+              <button
+                onClick={() => !isReorderModeActive && onSectionClick(index)}
+                className={`flex-1 flex items-center transition-all rounded-lg group ${
                   isCollapsed
-                    ? "text-[11px] font-medium text-center leading-tight"
-                    : "text-[13px] flex-1 truncate text-left"
-                }`}
-                title={section.name}
+                    ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-blue-50/80"
+                    : "flex-row gap-3 px-3 py-2.5 hover:bg-gray-100/80"
+                } ${
+                  activeSectionIndex === index
+                    ? isCollapsed
+                      ? "bg-blue-50 text-blue-700"
+                      : "bg-blue-50/80 border-l-[3px] border-blue-600 text-blue-800 font-medium"
+                    : "text-gray-700 hover:text-gray-900"
+                } ${isReorderModeActive ? "cursor-default" : "cursor-pointer"}`}
               >
-                {isCollapsed ? getShortLabel(section) : section.name}
-              </span>
-            </button>
+                <div
+                  className={`flex items-center justify-center ${
+                    isCollapsed ? "w-7 h-7" : "w-6 h-6"
+                  } rounded-md ${
+                    activeSectionIndex === index
+                      ? "bg-blue-100 text-blue-600"
+                      : "bg-gray-100/80 text-gray-500 group-hover:bg-gray-200/80 group-hover:text-gray-700"
+                  }`}
+                >
+                  {getSectionIcon(section)}
+                </div>
+                <span
+                  className={`${
+                    isCollapsed
+                      ? "text-[11px] font-medium text-center leading-tight"
+                      : "text-[13px] flex-1 truncate text-left"
+                  }`}
+                  title={section.name}
+                >
+                  {isCollapsed ? getShortLabel(section) : section.name}
+                </span>
+              </button>
+
+              {/* Reorder mode: Down button (expanded only) */}
+              {isReorderModeActive && !isCollapsed && onMoveSectionDown && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onMoveSectionDown(index);
+                  }}
+                  disabled={canMoveDown ? !canMoveDown(index, sections.length) : index === sections.length - 1}
+                  className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded hover:bg-blue-100 text-gray-400 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  aria-label={`Move ${section.name} down`}
+                  title="Move down"
+                >
+                  <MdKeyboardArrowDown className="text-lg" />
+                </button>
+              )}
+            </div>
           ))}
         </div>
       </div>
 
       {/* Actions Section - Fixed at bottom */}
-      <div className="border-t border-gray-200/60 bg-gradient-to-t from-gray-50/80 to-white">
+      <div className={`border-t bg-gradient-to-t from-gray-50/80 to-white ${
+        isReorderModeActive ? "border-blue-200" : "border-gray-200/60"
+      }`}>
         <div className={`${isCollapsed ? "py-3 px-2" : "p-4"}`}>
           {!isCollapsed && (
-            <h3 className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-3 px-1">
-              Actions
+            <h3 className={`text-[11px] font-semibold uppercase tracking-wider mb-3 px-1 ${
+              isReorderModeActive ? "text-blue-600" : "text-gray-500"
+            }`}>
+              {isReorderModeActive ? "Reorder Actions" : "Actions"}
             </h3>
           )}
 
-          {/* Primary Action: Preview PDF */}
-          {onPreviewResume && (
-            <button
-              id="tour-preview-button"
-              onClick={onPreviewResume}
-              disabled={isGeneratingPreview}
-              className={`w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-blue-500 hover:to-indigo-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative ${
-                isCollapsed
-                  ? "flex-col gap-1 py-2.5 px-1 mb-2"
-                  : "flex-row gap-2 px-4 py-2.5 mb-2.5"
-              }`}
-            >
-              {/* Staleness indicator badge */}
-              {previewIsStale && !isGeneratingPreview && (
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full border-2 border-white animate-pulse"></span>
+          {/* Reorder Mode: Done + Cancel buttons */}
+          {isReorderModeActive ? (
+            <>
+              {/* Done button (commits reorder) */}
+              {onCommitReorderMode && (
+                <button
+                  onClick={onCommitReorderMode}
+                  className={`w-full flex items-center justify-center bg-gradient-to-r from-emerald-600 to-green-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-emerald-500 hover:to-green-500 transition-all active:scale-[0.98] ${
+                    isCollapsed
+                      ? "flex-col gap-1 py-2.5 px-1 mb-2"
+                      : "flex-row gap-2 px-4 py-2.5 mb-2.5"
+                  }`}
+                >
+                  <MdCheck className={isCollapsed ? "text-lg" : "text-base"} />
+                  <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
+                    {isCollapsed ? "Done" : hasUnsavedReorderChanges ? "Save Order" : "Done"}
+                  </span>
+                </button>
               )}
-              <MdVisibility className={isCollapsed ? "text-lg" : "text-base"} />
-              <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
-                {isGeneratingPreview
-                  ? isCollapsed
-                    ? "..."
-                    : "Loading..."
-                  : isCollapsed
-                  ? "Preview"
-                  : previewIsStale
-                  ? "Refresh Preview"
-                  : "Preview PDF"}
-              </span>
-            </button>
+
+              {/* Cancel button (reverts reorder) */}
+              {onCancelReorderMode && (
+                <button
+                  onClick={onCancelReorderMode}
+                  className={`w-full flex items-center justify-center bg-gray-100 text-gray-700 font-medium rounded-lg shadow-sm hover:shadow-md hover:bg-gray-200 transition-all active:scale-[0.98] ${
+                    isCollapsed
+                      ? "flex-col gap-1 py-2 px-1"
+                      : "flex-row gap-2 px-4 py-2"
+                  }`}
+                >
+                  <MdClose className={isCollapsed ? "text-base" : "text-base"} />
+                  <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
+                    Cancel
+                  </span>
+                </button>
+              )}
+
+              {/* Tip text in expanded mode */}
+              {!isCollapsed && (
+                <p className="text-xs text-gray-500 mt-3 px-1 text-center">
+                  Use ▲/▼ buttons to reorder sections
+                </p>
+              )}
+            </>
+          ) : (
+            <>
+              {/* Primary Action: Preview PDF */}
+              {onPreviewResume && (
+                <button
+                  id="tour-preview-button"
+                  onClick={onPreviewResume}
+                  disabled={isGeneratingPreview}
+                  className={`w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-blue-500 hover:to-indigo-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative ${
+                    isCollapsed
+                      ? "flex-col gap-1 py-2.5 px-1 mb-2"
+                      : "flex-row gap-2 px-4 py-2.5 mb-2.5"
+                  }`}
+                >
+                  {/* Staleness indicator badge */}
+                  {previewIsStale && !isGeneratingPreview && (
+                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full border-2 border-white animate-pulse"></span>
+                  )}
+                  <MdVisibility className={isCollapsed ? "text-lg" : "text-base"} />
+                  <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
+                    {isGeneratingPreview
+                      ? isCollapsed
+                        ? "..."
+                        : "Loading..."
+                      : isCollapsed
+                      ? "Preview"
+                      : previewIsStale
+                      ? "Refresh Preview"
+                      : "Preview PDF"}
+                  </span>
+                </button>
+              )}
+
+              {/* Primary Action: Download Resume */}
+              <button
+                id="tour-download-button"
+                onClick={onDownloadResume}
+                disabled={isGenerating}
+                className={`w-full flex items-center justify-center bg-gradient-to-r from-emerald-600 to-green-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-emerald-500 hover:to-green-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${
+                  isCollapsed
+                    ? "flex-col gap-1 py-2.5 px-1"
+                    : "flex-row gap-2 px-4 py-2.5 mb-2.5"
+                }`}
+              >
+                <MdFileDownload className={isCollapsed ? "text-lg" : "text-base"} />
+                <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
+                  {isGenerating
+                    ? isCollapsed
+                      ? "..."
+                      : "Generating..."
+                    : isCollapsed
+                    ? "Download"
+                    : "Download Resume"}
+                </span>
+              </button>
+
+              {/* Secondary Action: Add Section */}
+              <button
+                onClick={onAddSection}
+                className={`w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg shadow-sm hover:shadow-md hover:from-blue-500 hover:to-indigo-500 transition-all active:scale-[0.98] ${
+                  isCollapsed
+                    ? "flex-col gap-1 py-2 px-1 mt-2"
+                    : "flex-row gap-2 px-4 py-2 mb-3"
+                }`}
+              >
+                <MdAdd className={isCollapsed ? "text-base" : "text-base"} />
+                <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
+                  {isCollapsed ? "Add" : "Add Section"}
+                </span>
+              </button>
+            </>
           )}
 
-          {/* Primary Action: Download Resume */}
-          <button
-            id="tour-download-button"
-            onClick={onDownloadResume}
-            disabled={isGenerating}
-            className={`w-full flex items-center justify-center bg-gradient-to-r from-emerald-600 to-green-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-emerald-500 hover:to-green-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${
-              isCollapsed
-                ? "flex-col gap-1 py-2.5 px-1"
-                : "flex-row gap-2 px-4 py-2.5 mb-2.5"
-            }`}
-          >
-            <MdFileDownload className={isCollapsed ? "text-lg" : "text-base"} />
-            <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
-              {isGenerating
-                ? isCollapsed
-                  ? "..."
-                  : "Generating..."
-                : isCollapsed
-                ? "Download"
-                : "Download Resume"}
-            </span>
-          </button>
-
-          {/* Secondary Action: Add Section */}
-          <button
-            onClick={onAddSection}
-            className={`w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg shadow-sm hover:shadow-md hover:from-blue-500 hover:to-indigo-500 transition-all active:scale-[0.98] ${
-              isCollapsed
-                ? "flex-col gap-1 py-2 px-1 mt-2"
-                : "flex-row gap-2 px-4 py-2 mb-3"
-            }`}
-          >
-            <MdAdd className={isCollapsed ? "text-base" : "text-base"} />
-            <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
-              {isCollapsed ? "Add" : "Add Section"}
-            </span>
-          </button>
-
-          {/* Utility Actions */}
+          {/* Utility Actions - hidden in reorder mode */}
+          {!isReorderModeActive && (
           <div className={`${isCollapsed ? "space-y-0.5 mt-2" : "space-y-0.5"}`}>
             {/* Backup to File */}
             <button
@@ -569,9 +691,36 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                 {isCollapsed ? "Help" : "Help & Tips"}
               </span>
             </button>
-          </div>
 
-          {/* Support Section - Separate from other actions */}
+            {/* Reorder Sections button */}
+            {onEnterReorderMode && sections.length > 1 && (
+              <button
+                onClick={onEnterReorderMode}
+                className={`w-full flex items-center transition-all rounded-md ${
+                  isCollapsed
+                    ? "flex-col gap-1 py-2 px-1 hover:bg-blue-50/80"
+                    : "flex-row gap-3 px-3 py-2 hover:bg-blue-50/80 text-gray-700 hover:text-blue-700"
+                }`}
+              >
+                <MdSwapVert
+                  className={`text-blue-600 ${isCollapsed ? "text-base" : "text-base"}`}
+                />
+                <span
+                  className={`${
+                    isCollapsed
+                      ? "text-[10px] text-gray-600 leading-tight font-medium"
+                      : "text-[13px]"
+                  }`}
+                >
+                  {isCollapsed ? "Reorder" : "Reorder Sections"}
+                </span>
+              </button>
+            )}
+          </div>
+          )}
+
+          {/* Support Section - Separate from other actions, hidden in reorder mode */}
+          {!isReorderModeActive && (
           <div className={`border-t border-gray-200/60 ${isCollapsed ? "pt-2 px-2" : "pt-3 px-4"}`}>
             <Link
               to="/contact"
@@ -595,6 +744,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               </span>
             </Link>
           </div>
+          )}
         </div>
       </div>
 

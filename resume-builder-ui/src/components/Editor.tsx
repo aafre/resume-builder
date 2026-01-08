@@ -20,6 +20,7 @@ import { useTourFlow } from "../hooks/editor/useTourFlow";
 import { useSectionManagement } from "../hooks/editor/useSectionManagement";
 import { useFileOperations } from "../hooks/editor/useFileOperations";
 import { useEditorActions } from "../hooks/editor/useEditorActions";
+import { useReorderMode } from "../hooks/editor/useReorderMode";
 import { useSaveIntegration } from "../hooks/editor/useSaveIntegration";
 import { useEditorEffects } from "../hooks/editor/useEditorEffects";
 import { EditorHeader, EditorModals, EditorContent } from "./editor/index";
@@ -98,6 +99,11 @@ const Editor: React.FC = () => {
   });
 
   const dragDrop = useSectionDragDrop({
+    sections,
+    setSections,
+  });
+
+  const reorderMode = useReorderMode({
     sections,
     setSections,
   });
@@ -358,6 +364,17 @@ const Editor: React.FC = () => {
           isSidebarCollapsed: navigation.isSidebarCollapsed,
           scrollToSection: navigation.scrollToSection,
           setIsSidebarCollapsed: navigation.setIsSidebarCollapsed,
+        }}
+        reorderMode={{
+          isReorderModeActive: reorderMode.isReorderModeActive,
+          hasUnsavedReorderChanges: reorderMode.hasUnsavedChanges,
+          enterReorderMode: reorderMode.enterReorderMode,
+          cancelReorderMode: reorderMode.cancelReorderMode,
+          commitReorderMode: reorderMode.commitReorderMode,
+          moveSectionUp: reorderMode.moveSectionUp,
+          moveSectionDown: reorderMode.moveSectionDown,
+          canMoveUp: reorderMode.canMoveUp,
+          canMoveDown: reorderMode.canMoveDown,
         }}
         modals={{
           showAIWarning: modalManager.showAIWarning,
