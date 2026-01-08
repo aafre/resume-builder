@@ -20,11 +20,12 @@ interface SortableItemProps {
  * SortableItem Component
  *
  * A reusable wrapper that makes items draggable within a SortableContext.
- * Uses a full-width draggable header bar at the top for easy grabbing.
+ * The entire item is draggable with subtle hover/drag visual feedback.
  *
  * Features:
- * - Full-width draggable header bar (consistent with section-level DragHandle)
- * - Visual feedback during drag (opacity, shadow, ring)
+ * - Entire item is draggable (click anywhere to drag)
+ * - Subtle ring effect on hover (ring-1 ring-blue-200)
+ * - Visual feedback during drag (opacity, shadow, ring-2 ring-blue-300)
  * - Support for disabled state
  * - Touch and keyboard accessible
  *
@@ -58,40 +59,17 @@ const SortableItem: React.FC<SortableItemProps> = ({
       ref={setNodeRef}
       style={style}
       className={`
-        relative group rounded-xl
-        ${isDragging ? 'opacity-50 shadow-lg z-30 ring-2 ring-blue-300' : 'transition-all duration-200 ease-out'}
+        relative group rounded-xl overflow-hidden
+        ${isDragging
+          ? 'opacity-50 shadow-lg z-30 ring-2 ring-blue-300'
+          : 'transition-all duration-200 ease-out hover:ring-1 hover:ring-blue-200'
+        }
         ${!disabled ? 'cursor-grab active:cursor-grabbing' : ''}
         ${className}
       `}
       {...attributes}
       {...(disabled ? {} : listeners)}
     >
-      {/* Visual drag indicator bar at top (non-interactive, just visual) */}
-      {!disabled && (
-        <div
-          className={`
-            w-full h-1.5 rounded-t-xl
-            ${isDragging
-              ? 'bg-blue-400'
-              : 'bg-transparent group-hover:bg-blue-100'
-            }
-            transition-colors duration-150 ease-out
-            flex items-center justify-center
-          `}
-        >
-          {/* Drag indicator dots (visible on hover) */}
-          <div className={`
-            flex gap-0.5
-            ${isDragging ? 'opacity-100' : 'opacity-0 group-hover:opacity-50'}
-            transition-opacity duration-150
-          `}>
-            <div className="w-0.5 h-0.5 rounded-full bg-gray-400" />
-            <div className="w-0.5 h-0.5 rounded-full bg-gray-400" />
-            <div className="w-0.5 h-0.5 rounded-full bg-gray-400" />
-          </div>
-        </div>
-      )}
-
       {/* Item content */}
       <div className={`${isDragging ? 'pointer-events-none select-none' : ''}`}>
         {children}
