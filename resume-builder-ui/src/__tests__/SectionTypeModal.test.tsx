@@ -34,23 +34,62 @@ describe("SectionTypeModal", () => {
     expect(svgElements.length).toBe(7);
   });
 
-  it("calls onSelect with the correct type and position when a section card is clicked", () => {
+  it("calls onSelect with the correct type and position when a section card is selected and Add button clicked", () => {
     const onCloseMock = vi.fn();
     const onSelectMock = vi.fn();
 
     render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
 
-    // Click the "Text Block" card.
+    // Click the "Text Block" card to select it
     const textSectionCard = screen.getByText("Text Block");
     fireEvent.click(textSectionCard);
 
-    expect(onSelectMock).toHaveBeenCalledTimes(1);
-    // Default position is now 'bottom'
-    expect(onSelectMock).toHaveBeenCalledWith("text", "bottom");
+    // onSelect should NOT be called yet (two-step flow)
+    expect(onSelectMock).not.toHaveBeenCalled();
 
-    // Click the "Bulleted List" card.
+    // Click "Add Section" button to confirm
+    fireEvent.click(screen.getByText("Add Section"));
+
+    expect(onSelectMock).toHaveBeenCalledTimes(1);
+    // Default position is 'bottom'
+    expect(onSelectMock).toHaveBeenCalledWith("text", "bottom");
+  });
+
+  it("allows changing selection before confirming", () => {
+    const onCloseMock = vi.fn();
+    const onSelectMock = vi.fn();
+
+    render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
+
+    // Select Text Block first
+    fireEvent.click(screen.getByText("Text Block"));
+
+    // Change to Bulleted List
     fireEvent.click(screen.getByText("Bulleted List"));
+
+    // Confirm
+    fireEvent.click(screen.getByText("Add Section"));
+
+    // Should call with the last selected type
+    expect(onSelectMock).toHaveBeenCalledTimes(1);
     expect(onSelectMock).toHaveBeenCalledWith("bulleted-list", "bottom");
+  });
+
+  it("disables Add Section button when no type is selected", () => {
+    const onCloseMock = vi.fn();
+    const onSelectMock = vi.fn();
+
+    render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
+
+    // Add Section button should be disabled initially
+    const addButton = screen.getByText("Add Section");
+    expect(addButton).toBeDisabled();
+
+    // Select a type
+    fireEvent.click(screen.getByText("Text Block"));
+
+    // Now it should be enabled
+    expect(addButton).not.toBeDisabled();
   });
 
   it("calls onClose when the Cancel button is clicked", () => {
@@ -73,9 +112,9 @@ describe("SectionTypeModal", () => {
     render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
 
     // All section cards should be buttons
-    // 7 section cards + 1 cancel button + 2 position toggle buttons = 10 buttons
+    // 7 section cards + 1 cancel button + 1 add section button + 2 position toggle buttons = 11 buttons
     const sectionButtons = screen.getAllByRole("button");
-    expect(sectionButtons.length).toBe(10);
+    expect(sectionButtons.length).toBe(11);
   });
 
   it("displays 'Certifications' instead of 'Bullet List with Icons'", () => {
@@ -104,9 +143,9 @@ describe("SectionTypeModal", () => {
 
     // Should NOT show "Certifications" when icons not supported
     expect(screen.queryByText("Certifications")).not.toBeInTheDocument();
-    // Should have 6 section cards + 1 cancel button + 2 position buttons = 9 buttons
+    // Should have 6 section cards + 1 cancel button + 1 add section button + 2 position buttons = 10 buttons
     const sectionButtons = screen.getAllByRole("button");
-    expect(sectionButtons.length).toBe(9);
+    expect(sectionButtons.length).toBe(10);
   });
 
   describe("position selection - segmented control", () => {
@@ -130,8 +169,10 @@ describe("SectionTypeModal", () => {
 
       render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
 
-      // Click a section type without changing position
+      // Select a section type without changing position
       fireEvent.click(screen.getByText("Text Block"));
+      // Confirm by clicking Add Section
+      fireEvent.click(screen.getByText("Add Section"));
 
       expect(onSelectMock).toHaveBeenCalledWith("text", "bottom");
     });
@@ -145,8 +186,10 @@ describe("SectionTypeModal", () => {
       // Click the Top button
       fireEvent.click(screen.getByText("Top of Resume"));
 
-      // Click a section type
+      // Select a section type
       fireEvent.click(screen.getByText("Text Block"));
+      // Confirm by clicking Add Section
+      fireEvent.click(screen.getByText("Add Section"));
 
       expect(onSelectMock).toHaveBeenCalledWith("text", "top");
     });
@@ -235,8 +278,10 @@ describe("SectionTypeModal", () => {
       // Click "After: Experience" (index 1)
       fireEvent.click(screen.getByText("After: Experience"));
 
-      // Click a section type
+      // Select a section type
       fireEvent.click(screen.getByText("Text Block"));
+      // Confirm by clicking Add Section
+      fireEvent.click(screen.getByText("Add Section"));
 
       // Should be called with position = 1 (after first section)
       expect(onSelectMock).toHaveBeenCalledWith("text", 1);
