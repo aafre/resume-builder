@@ -17,12 +17,8 @@ export interface EditorHeaderProps {
   saveStatus: SaveStatus;
   /** Last saved timestamp */
   lastSaved: Date | null;
-  /** Whether user is anonymous */
-  isAnonymous: boolean;
   /** Whether user is authenticated */
   isAuthenticated: boolean;
-  /** Callback to open sign-in modal */
-  onSignInClick: () => void;
 }
 
 /**
@@ -30,8 +26,7 @@ export interface EditorHeaderProps {
  *
  * Displays status indicators and tooltips for the Editor:
  * - Idle nudge tooltip (portal) for anonymous users
- * - Save status indicator for authenticated users
- * - Sign-in CTA for anonymous users
+ * - Save status indicator for authenticated users (desktop only)
  *
  * @example
  * <EditorHeader
@@ -39,9 +34,7 @@ export interface EditorHeaderProps {
  *   onDismissIdleTooltip={dismissIdleTooltip}
  *   saveStatus={saveStatus}
  *   lastSaved={lastSaved}
- *   isAnonymous={isAnonymous}
  *   isAuthenticated={isAuthenticated}
- *   onSignInClick={openAuthModal}
  * />
  */
 export const EditorHeader: React.FC<EditorHeaderProps> = ({
@@ -49,42 +42,17 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
   onDismissIdleTooltip,
   saveStatus,
   lastSaved,
-  isAnonymous,
   isAuthenticated,
-  onSignInClick,
 }) => {
   return (
     <>
-      {/* Header Bar - Fixed position at top right */}
-      <div className="fixed top-4 right-6 z-[65] flex items-center gap-3">
+      {/* Header Bar - Fixed position at top right, hidden on mobile (mobile has MobileActionBar) */}
+      <div className="fixed top-4 right-6 z-[65] hidden lg:flex items-center gap-3">
         {/* Save Status for authenticated users */}
         {isAuthenticated && saveStatus && (
           <div className="bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-md border border-gray-200/60">
             <SaveStatusIndicator status={saveStatus} lastSaved={lastSaved} />
           </div>
-        )}
-
-        {/* Sign-in CTA for anonymous users */}
-        {isAnonymous && (
-          <button
-            onClick={onSignInClick}
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-md hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center gap-2"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-              />
-            </svg>
-            <span>Sign in to save</span>
-          </button>
         )}
       </div>
 

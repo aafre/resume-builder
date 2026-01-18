@@ -11,6 +11,8 @@ interface MobileActionBarProps {
   previewIsStale?: boolean;
   lastSaved?: Date | null;
   saveError?: boolean;
+  /** Whether user is authenticated - save status only shows when true */
+  isAuthenticated?: boolean;
 }
 
 /**
@@ -27,6 +29,7 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
   previewIsStale = false,
   lastSaved = null,
   saveError = false,
+  isAuthenticated = false,
 }) => {
   // Format last saved time
   const getLastSavedText = () => {
@@ -47,8 +50,8 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
 
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
-      {/* Auto-save status bar (subtle, above buttons) */}
-      {(isSaving || lastSaved || saveError) && (
+      {/* Auto-save status bar (subtle, above buttons) - only for authenticated users */}
+      {isAuthenticated && (isSaving || lastSaved || saveError) && (
         <div className="px-4 py-1 bg-gray-50 border-b border-gray-100">
           <div className="flex items-center justify-center gap-2 text-xs">
             {isSaving && (

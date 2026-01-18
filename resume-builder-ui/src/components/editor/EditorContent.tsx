@@ -31,7 +31,6 @@ import ExperienceSection from '../ExperienceSection';
 import EducationSection from '../EducationSection';
 import GenericSection from '../GenericSection';
 import IconListSection from '../IconListSection';
-import EditorToolbar from '../EditorToolbar';
 import MobileActionBar from '../MobileActionBar';
 import MobileNavigationDrawer from '../MobileNavigationDrawer';
 import SectionNavigator from '../SectionNavigator';
@@ -205,7 +204,6 @@ export interface EditorContentProps {
  * - Drag-and-drop sections with DndContext
  * - Section rendering loop (Experience, Education, IconList, Generic)
  * - DragOverlay for drag preview
- * - Desktop Toolbar (tablet)
  * - Mobile Action Bar
  * - Mobile Navigation Drawer
  * - Desktop Section Navigator Sidebar
@@ -578,29 +576,6 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         </DndContext>
       </UnifiedDndContext.Provider>
 
-      {/* Desktop Toolbar - Tablet only */}
-      <div className="hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 left-auto right-6 border border-gray-200/60 rounded-2xl w-auto max-w-none bottom-6">
-        <div className="flex items-center justify-between gap-2 sm:gap-4 p-4 lg:p-6 max-w-screen-lg mx-auto lg:max-w-none">
-          <EditorToolbar
-            onAddSection={handleAddNewSectionClick}
-            onGenerateResume={editorActions.handleGenerateResume}
-            onExportYAML={fileOperations.handleExportYAML}
-            onImportYAML={fileOperations.handleFileInputChange}
-            onToggleHelp={modals.openHelpModal}
-            onLoadEmptyTemplate={editorActions.handleStartFresh}
-            loadingAddSection={false}
-            generating={editorActions.isDownloading}
-            loadingSave={fileOperations.loadingSave}
-            loadingLoad={fileOperations.loadingLoad}
-            showAdvancedMenu={modals.showAdvancedMenu}
-            setShowAdvancedMenu={(show) =>
-              show ? modals.openAdvancedMenu() : modals.closeAdvancedMenu()
-            }
-            mode="integrated"
-          />
-        </div>
-      </div>
-
       {/* Mobile Action Bar */}
       <MobileActionBar
         onNavigationClick={modals.openNavigationDrawer}
@@ -612,6 +587,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         previewIsStale={preview.isStale}
         lastSaved={saveStatus.lastSaved}
         saveError={saveStatus.saveStatus === 'error'}
+        isAuthenticated={isAuthenticated}
       />
 
       {/* Mobile Navigation Drawer */}
