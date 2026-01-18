@@ -249,6 +249,9 @@ export const EditorContent: React.FC<EditorContentProps> = ({
   saveStatus,
   refs,
 }) => {
+  // Lifted drag preview styling - scale and rotation for tactile "picked up" feel
+  const liftedPreviewClasses = 'transform scale-[1.02] rotate-1';
+
   // Handler for adding new section
   const handleAddNewSectionClick = () => {
     modals.openSectionTypeModal();
@@ -482,8 +485,8 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         }}>
           {dragDrop.activeId ? (
             dragDrop.activeLevel === 'section' && dragDrop.draggedSection ? (
-              // Section drag preview
-              <div className="bg-white backdrop-blur-sm rounded-xl shadow-2xl border-2 border-blue-400 px-6 py-4 max-w-md cursor-grabbing">
+              // Section drag preview - lifted appearance with scale and rotation
+              <div className={`bg-white backdrop-blur-sm rounded-xl shadow-2xl border-2 border-blue-400 px-6 py-4 max-w-md cursor-grabbing ${liftedPreviewClasses}`}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
                     <div className="flex flex-col gap-0.5">
@@ -503,8 +506,8 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                 </div>
               </div>
             ) : dragDrop.activeLevel === 'item' && dragDrop.draggedItemInfo ? (
-              // Item drag preview with actual content
-              <div className="bg-white backdrop-blur-sm rounded-lg shadow-2xl border-2 border-blue-400 px-4 py-3 max-w-sm cursor-grabbing">
+              // Item drag preview with actual content - lifted appearance
+              <div className={`bg-white backdrop-blur-sm rounded-lg shadow-2xl border-2 border-blue-400 px-4 py-3 max-w-sm cursor-grabbing ${liftedPreviewClasses}`}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center flex-shrink-0">
                     {dragDrop.draggedItemInfo.type === 'experience' ? (
@@ -538,8 +541,8 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                 </div>
               </div>
             ) : dragDrop.activeLevel === 'item' ? (
-              // Fallback item preview
-              <div className="bg-white backdrop-blur-sm rounded-lg shadow-2xl border-2 border-blue-400 px-4 py-3 max-w-sm cursor-grabbing">
+              // Fallback item preview - lifted appearance
+              <div className={`bg-white backdrop-blur-sm rounded-lg shadow-2xl border-2 border-blue-400 px-4 py-3 max-w-sm cursor-grabbing ${liftedPreviewClasses}`}>
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-md bg-blue-100 flex items-center justify-center">
                     <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -550,8 +553,8 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                 </div>
               </div>
             ) : dragDrop.activeLevel === 'subitem' && dragDrop.draggedItemInfo ? (
-              // Subitem drag preview with actual content
-              <div className="bg-white backdrop-blur-sm rounded-md shadow-xl border-2 border-blue-400 px-3 py-2.5 max-w-md cursor-grabbing">
+              // Subitem drag preview with actual content - lifted appearance
+              <div className={`bg-white backdrop-blur-sm rounded-md shadow-xl border-2 border-blue-400 px-3 py-2.5 max-w-md cursor-grabbing ${liftedPreviewClasses}`}>
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded bg-blue-100 flex items-center justify-center flex-shrink-0">
                     <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
@@ -560,8 +563,8 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                 </div>
               </div>
             ) : dragDrop.activeLevel === 'subitem' ? (
-              // Fallback subitem preview
-              <div className="bg-white backdrop-blur-sm rounded-md shadow-xl border-2 border-blue-400 px-3 py-2 max-w-xs cursor-grabbing">
+              // Fallback subitem preview - lifted appearance
+              <div className={`bg-white backdrop-blur-sm rounded-md shadow-xl border-2 border-blue-400 px-3 py-2 max-w-xs cursor-grabbing ${liftedPreviewClasses}`}>
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded bg-blue-100 flex items-center justify-center">
                     <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
