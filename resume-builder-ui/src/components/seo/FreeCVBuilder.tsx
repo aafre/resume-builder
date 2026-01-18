@@ -35,20 +35,20 @@ export default function FreeCVBuilder() {
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="text-xl font-bold text-blue-800 mb-4">Use a CV if you're in:</h3>
-              <ul className="space-y-2 text-blue-700">
-                <li>• United Kingdom</li>
-                <li>• Europe (most countries)</li>
-                <li>• Australia & New Zealand</li>
-                <li>• South Africa</li>
-                <li>• Academic/research positions (worldwide)</li>
+              <ul className="space-y-2 text-blue-700 list-disc pl-5">
+                <li>United Kingdom</li>
+                <li>Europe (most countries)</li>
+                <li>Australia & New Zealand</li>
+                <li>South Africa</li>
+                <li>Academic/research positions (worldwide)</li>
               </ul>
             </div>
             <div>
               <h3 className="text-xl font-bold text-gray-700 mb-4">Use a Resume if you're in:</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li>• United States</li>
-                <li>• Canada</li>
-                <li>• Corporate roles (US companies)</li>
+              <ul className="space-y-2 text-gray-600 list-disc pl-5">
+                <li>United States</li>
+                <li>Canada</li>
+                <li>Corporate roles (US companies)</li>
               </ul>
               <p className="mt-4 text-sm text-gray-500">
                 Our templates work for both—the format is the same; only the terminology differs.
@@ -127,20 +127,20 @@ export default function FreeCVBuilder() {
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="text-xl font-bold text-green-700 mb-4">We DO NOT store:</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Your CV content</li>
-                <li>• Your personal information</li>
-                <li>• Your email address</li>
-                <li>• Your browsing history</li>
-                <li>• Any identifying data</li>
+              <ul className="space-y-2 text-gray-700 list-disc pl-5">
+                <li>Your CV content</li>
+                <li>Your personal information</li>
+                <li>Your email address</li>
+                <li>Your browsing history</li>
+                <li>Any identifying data</li>
               </ul>
             </div>
             <div>
               <h3 className="text-xl font-bold text-blue-700 mb-4">We only track:</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Anonymous page views (for analytics)</li>
-                <li>• Error reports (to fix bugs)</li>
-                <li>• Nothing that identifies you personally</li>
+              <ul className="space-y-2 text-gray-700 list-disc pl-5">
+                <li>Anonymous page views (for analytics)</li>
+                <li>Error reports (to fix bugs)</li>
+                <li>Nothing that identifies you personally</li>
               </ul>
             </div>
           </div>

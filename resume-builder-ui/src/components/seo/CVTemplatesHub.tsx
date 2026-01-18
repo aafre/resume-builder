@@ -77,22 +77,22 @@ export default function CVTemplatesHub() {
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
           <div className="bg-green-50 border border-green-200 rounded-xl p-6">
             <h3 className="text-xl font-bold text-green-800 mb-4">Include</h3>
-            <ul className="space-y-2 text-green-700">
-              <li>&#8226; Personal profile/summary (3-4 lines)</li>
-              <li>&#8226; Contact details (phone, email, location)</li>
-              <li>&#8226; Work experience with achievements</li>
-              <li>&#8226; Education and qualifications</li>
-              <li>&#8226; Relevant skills and competencies</li>
+            <ul className="space-y-2 text-green-700 list-disc pl-5">
+              <li>Personal profile/summary (3-4 lines)</li>
+              <li>Contact details (phone, email, location)</li>
+              <li>Work experience with achievements</li>
+              <li>Education and qualifications</li>
+              <li>Relevant skills and competencies</li>
             </ul>
           </div>
           <div className="bg-red-50 border border-red-200 rounded-xl p-6">
             <h3 className="text-xl font-bold text-red-800 mb-4">Avoid</h3>
-            <ul className="space-y-2 text-red-700">
-              <li>&#8226; Photo (unless specifically requested)</li>
-              <li>&#8226; Date of birth or age</li>
-              <li>&#8226; Marital status</li>
-              <li>&#8226; National insurance number</li>
-              <li>&#8226; "References available upon request"</li>
+            <ul className="space-y-2 text-red-700 list-disc pl-5">
+              <li>Photo (unless specifically requested)</li>
+              <li>Date of birth or age</li>
+              <li>Marital status</li>
+              <li>National insurance number</li>
+              <li>"References available upon request"</li>
             </ul>
           </div>
         </div>

@@ -626,22 +626,24 @@ export default function ResumeNoExperience() {
                       <strong>Senior Sales Associate</strong> – Retail Store,
                       Birmingham (Jun 2022–Present)
                     </p>
-                    <p className="text-gray-700">
-                      • Processed 80–100 transactions daily with 99.8% accuracy;
-                      handled cash reconciliation
-                    </p>
-                    <p className="text-gray-700">
-                      • Managed weekly shift schedules for 8-person team;
-                      reduced scheduling conflicts by 40%
-                    </p>
-                    <p className="text-gray-700">
-                      • Trained 5 new hires on POS system and inventory
-                      procedures; created quick-reference guide
-                    </p>
-                    <p className="text-gray-700">
-                      • Maintained inventory database; reduced stock
-                      discrepancies by 25% through regular audits
-                    </p>
+                    <ul className="list-disc pl-5 text-gray-700 space-y-1">
+                      <li>
+                        Processed 80–100 transactions daily with 99.8% accuracy;
+                        handled cash reconciliation
+                      </li>
+                      <li>
+                        Managed weekly shift schedules for 8-person team;
+                        reduced scheduling conflicts by 40%
+                      </li>
+                      <li>
+                        Trained 5 new hires on POS system and inventory
+                        procedures; created quick-reference guide
+                      </li>
+                      <li>
+                        Maintained inventory database; reduced stock
+                        discrepancies by 25% through regular audits
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -660,12 +662,10 @@ export default function ResumeNoExperience() {
                 <p className="font-bold text-gray-900 mb-2">
                   CERTIFICATIONS & TRAINING
                 </p>
-                <p className="text-gray-700">
-                  • Microsoft Office Specialist – Excel (2025)
-                </p>
-                <p className="text-gray-700">
-                  • First Aid Certified (2024)
-                </p>
+                <ul className="list-disc pl-5 text-gray-700 space-y-1">
+                  <li>Microsoft Office Specialist – Excel (2025)</li>
+                  <li>First Aid Certified (2024)</li>
+                </ul>
               </div>
             </div>
             <div className="mt-4 p-4 bg-blue-50 rounded-lg">
