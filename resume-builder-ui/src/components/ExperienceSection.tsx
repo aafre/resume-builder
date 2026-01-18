@@ -131,6 +131,11 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
               onReorderEntry(oldIndex, newIndex);
             }
           }}
+          getItemInfo={(item) => ({
+            label: item.company || 'Untitled Company',
+            sublabel: item.title || undefined,
+            type: 'experience' as const,
+          })}
         >
           {({ itemIds }) => (
             <>
@@ -218,7 +223,8 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                           {experience.description.length > 0 && (
                             <ItemDndContext
                               items={experience.description}
-                              sectionId={`exp-${index}-desc`}
+                              sectionId={`experience-${sectionName.replace(/\s+/g, '-').toLowerCase()}-item-${index}`}
+                              isSubitem={true}
                               onReorder={(oldDescIndex, newDescIndex) => {
                                 const updatedExperiences = [...experiences];
                                 const descriptions = [...updatedExperiences[index].description];
@@ -230,6 +236,10 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                                 };
                                 onUpdate(updatedExperiences);
                               }}
+                              getItemInfo={(item) => ({
+                                label: item.length > 60 ? item.substring(0, 60) + '...' : item || 'Empty bullet point',
+                                type: 'bullet' as const,
+                              })}
                             >
                               {({ itemIds }) => (
                                 <>

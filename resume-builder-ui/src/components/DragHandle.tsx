@@ -22,12 +22,17 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
     transform,
     transition,
     isDragging,
+    isOver,
+    isSorting,
   } = useSortable({ id, disabled });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
+    transform: isDragging ? undefined : CSS.Transform.toString(transform),
+    transition: isDragging ? undefined : transition,
   };
+
+  // Show drop indicator when this section is being hovered over during a drag
+  const showDropIndicator = isOver && !isDragging && isSorting;
 
   return (
     <div
@@ -35,11 +40,24 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
       style={style}
       className={`relative group rounded-2xl ${
         isDragging
-          ? 'opacity-60 shadow-2xl z-50'
+          ? 'opacity-0 pointer-events-none'
           : 'transition-all duration-200 ease-out'
-      }`}
+      } ${showDropIndicator ? 'mt-3' : ''}`}
       {...attributes}
     >
+      {/* Drop indicator line - shows where section will be placed */}
+      {showDropIndicator && (
+        <div className="absolute -top-2 left-0 right-0 flex items-center gap-2 z-40 px-2">
+          <div className="w-4 h-4 rounded-full bg-blue-500 shadow-lg flex items-center justify-center">
+            <div className="w-2 h-0.5 bg-white rounded-full" />
+          </div>
+          <div className="flex-1 h-1 bg-blue-500 rounded-full shadow-md" />
+          <div className="w-4 h-4 rounded-full bg-blue-500 shadow-lg flex items-center justify-center">
+            <div className="w-2 h-0.5 bg-white rounded-full" />
+          </div>
+        </div>
+      )}
+
       {/* Full-width draggable header bar */}
       {!disabled && (
         <div

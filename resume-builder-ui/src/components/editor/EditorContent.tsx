@@ -1,16 +1,16 @@
 // src/components/editor/EditorContent.tsx
 // Main content area for the Editor, including sections, drag-drop, toolbars
 
-import React, { RefObject } from 'react';
+import React, { RefObject, useMemo } from 'react';
 import { AlertCircle, X } from 'lucide-react';
 import {
   DndContext,
-  closestCenter,
   DragOverlay,
   DragStartEvent,
   DragEndEvent,
   SensorDescriptor,
   SensorOptions,
+  CollisionDetection,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -22,6 +22,8 @@ import {
 } from '@dnd-kit/modifiers';
 
 import { ContactInfo, Section, SaveStatus, IconListItem } from '../../types';
+import { UnifiedDndContext, UnifiedDndContextValue, DraggedItemInfo } from '../../contexts/UnifiedDndContext';
+import { DragLevel } from '../../hooks/editor/useUnifiedDragDrop';
 import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
 import ContactInfoSection from '../ContactInfoSection';
 import FormattingHelp from '../FormattingHelp';
@@ -52,10 +54,16 @@ export interface EditorContentContactFormProps {
 export interface EditorContentDragDropProps {
   sensors: SensorDescriptor<SensorOptions>[];
   activeId: string | null;
+  activeLevel: DragLevel | null;
   draggedSection: Section | null;
+  draggedItemInfo: DraggedItemInfo | null;
   handleDragStart: (event: DragStartEvent) => void;
   handleDragEnd: (event: DragEndEvent) => void;
   handleDragCancel: () => void;
+  collisionDetection: CollisionDetection;
+  registerItemHandler: (sectionId: string, onReorder: (oldIndex: number, newIndex: number) => void) => void;
+  unregisterItemHandler: (sectionId: string) => void;
+  setDraggedItemInfo: (info: DraggedItemInfo | null) => void;
 }
 
 /**
@@ -246,6 +254,14 @@ export const EditorContent: React.FC<EditorContentProps> = ({
     modals.openSectionTypeModal();
   };
 
+  // Memoize the unified DnD context value
+  const unifiedDndContextValue: UnifiedDndContextValue = useMemo(() => ({
+    registerItemHandler: dragDrop.registerItemHandler,
+    unregisterItemHandler: dragDrop.unregisterItemHandler,
+    setDraggedItemInfo: dragDrop.setDraggedItemInfo,
+    draggedItemInfo: dragDrop.draggedItemInfo,
+  }), [dragDrop.registerItemHandler, dragDrop.unregisterItemHandler, dragDrop.setDraggedItemInfo, dragDrop.draggedItemInfo]);
+
   return (
     <div
       className={`mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-[calc(var(--mobile-action-bar-height)+1rem)] lg:pb-[1rem] max-w-4xl lg:max-w-none transition-all duration-300 ${
@@ -293,14 +309,15 @@ export const EditorContent: React.FC<EditorContentProps> = ({
       <FormattingHelp />
 
       {/* Resume Sections with Drag and Drop */}
-      <DndContext
-        sensors={dragDrop.sensors}
-        collisionDetection={closestCenter}
-        onDragStart={dragDrop.handleDragStart}
-        onDragEnd={dragDrop.handleDragEnd}
-        onDragCancel={dragDrop.handleDragCancel}
-        modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
-      >
+      <UnifiedDndContext.Provider value={unifiedDndContextValue}>
+        <DndContext
+          sensors={dragDrop.sensors}
+          collisionDetection={dragDrop.collisionDetection}
+          onDragStart={dragDrop.handleDragStart}
+          onDragEnd={dragDrop.handleDragEnd}
+          onDragCancel={dragDrop.handleDragCancel}
+          modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
+        >
         <SortableContext
           items={sections.map((_, index) => `section-${index}`)}
           strategy={verticalListSortingStrategy}
@@ -459,29 +476,104 @@ export const EditorContent: React.FC<EditorContentProps> = ({
           })}
         </SortableContext>
 
-        <DragOverlay modifiers={[restrictToVerticalAxis]}>
-          {dragDrop.activeId && dragDrop.draggedSection ? (
-            <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl border-2 border-blue-300 px-6 py-4 max-w-md">
-              <div className="flex items-center gap-3">
-                {/* Drag indicator */}
-                <div className="flex flex-col gap-0.5">
-                  <div className="w-1 h-1 rounded-full bg-blue-400" />
-                  <div className="w-1 h-1 rounded-full bg-blue-400" />
-                  <div className="w-1 h-1 rounded-full bg-blue-400" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800 truncate">
-                    {dragDrop.draggedSection.name}
-                  </h3>
-                  <p className="text-sm text-gray-500 capitalize">
-                    {dragDrop.draggedSection.type?.replace(/-/g, ' ') || 'Section'}
-                  </p>
+        <DragOverlay modifiers={[restrictToVerticalAxis]} dropAnimation={{
+          duration: 250,
+          easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)',
+        }}>
+          {dragDrop.activeId ? (
+            dragDrop.activeLevel === 'section' && dragDrop.draggedSection ? (
+              // Section drag preview
+              <div className="bg-white backdrop-blur-sm rounded-xl shadow-2xl border-2 border-blue-400 px-6 py-4 max-w-md cursor-grabbing">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                    <div className="flex flex-col gap-0.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 truncate">
+                      {dragDrop.draggedSection.name}
+                    </h3>
+                    <p className="text-sm text-gray-500 capitalize">
+                      {dragDrop.draggedSection.type?.replace(/-/g, ' ') || 'Section'}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : dragDrop.activeLevel === 'item' && dragDrop.draggedItemInfo ? (
+              // Item drag preview with actual content
+              <div className="bg-white backdrop-blur-sm rounded-lg shadow-2xl border-2 border-blue-400 px-4 py-3 max-w-sm cursor-grabbing">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center flex-shrink-0">
+                    {dragDrop.draggedItemInfo.type === 'experience' ? (
+                      <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    ) : dragDrop.draggedItemInfo.type === 'education' ? (
+                      <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                      </svg>
+                    ) : dragDrop.draggedItemInfo.type === 'certification' ? (
+                      <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                      </svg>
+                    ) : (
+                      <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-semibold text-gray-800 text-sm truncate">
+                      {dragDrop.draggedItemInfo.label || 'Untitled'}
+                    </h4>
+                    {dragDrop.draggedItemInfo.sublabel && (
+                      <p className="text-xs text-gray-500 truncate">{dragDrop.draggedItemInfo.sublabel}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : dragDrop.activeLevel === 'item' ? (
+              // Fallback item preview
+              <div className="bg-white backdrop-blur-sm rounded-lg shadow-2xl border-2 border-blue-400 px-4 py-3 max-w-sm cursor-grabbing">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-md bg-blue-100 flex items-center justify-center">
+                    <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                  </div>
+                  <span className="text-sm text-gray-700 font-medium">Moving item</span>
+                </div>
+              </div>
+            ) : dragDrop.activeLevel === 'subitem' && dragDrop.draggedItemInfo ? (
+              // Subitem drag preview with actual content
+              <div className="bg-white backdrop-blur-sm rounded-md shadow-xl border-2 border-blue-400 px-3 py-2.5 max-w-md cursor-grabbing">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                  </div>
+                  <span className="text-sm text-gray-700 truncate">{dragDrop.draggedItemInfo.label}</span>
+                </div>
+              </div>
+            ) : dragDrop.activeLevel === 'subitem' ? (
+              // Fallback subitem preview
+              <div className="bg-white backdrop-blur-sm rounded-md shadow-xl border-2 border-blue-400 px-3 py-2 max-w-xs cursor-grabbing">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded bg-blue-100 flex items-center justify-center">
+                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                  </div>
+                  <span className="text-sm text-gray-700 font-medium">Moving bullet point</span>
+                </div>
+              </div>
+            ) : null
           ) : null}
         </DragOverlay>
-      </DndContext>
+        </DndContext>
+      </UnifiedDndContext.Provider>
 
       {/* Desktop Toolbar - Tablet only */}
       <div className="hidden md:flex lg:hidden fixed z-[60] bg-gradient-to-r from-slate-50/80 via-blue-50/80 to-indigo-50/80 backdrop-blur-sm shadow-lg transition-all duration-300 left-auto right-6 border border-gray-200/60 rounded-2xl w-auto max-w-none bottom-6">

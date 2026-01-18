@@ -154,6 +154,11 @@ const EducationSection: React.FC<EducationSectionProps> = ({
               onReorderEntry(oldIndex, newIndex);
             }
           }}
+          getItemInfo={(item) => ({
+            label: item.school || 'Untitled School',
+            sublabel: item.degree || undefined,
+            type: 'education' as const,
+          })}
         >
           {({ itemIds }) => (
             <>

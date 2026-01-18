@@ -201,6 +201,10 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                     onReorderEntry(oldIndex, newIndex);
                   }
                 }}
+                getItemInfo={(item: string) => ({
+                  label: item.length > 60 ? item.substring(0, 60) + '...' : item || 'Empty item',
+                  type: 'generic' as const,
+                })}
               >
                 {({ itemIds }) => (
                   <>
@@ -257,6 +261,10 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                       onReorderEntry(oldIndex, newIndex);
                     }
                   }}
+                  getItemInfo={(item: string) => ({
+                    label: item.length > 60 ? item.substring(0, 60) + '...' : item || 'Empty item',
+                    type: 'generic' as const,
+                  })}
                 >
                   {({ itemIds }) => (
                     <>
@@ -314,6 +322,10 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                       onReorderEntry(oldIndex, newIndex);
                     }
                   }}
+                  getItemInfo={(item: string) => ({
+                    label: item.length > 60 ? item.substring(0, 60) + '...' : item || 'Empty item',
+                    type: 'generic' as const,
+                  })}
                 >
                   {({ itemIds }) => (
                     <>

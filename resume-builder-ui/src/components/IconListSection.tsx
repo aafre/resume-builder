@@ -220,6 +220,11 @@ const IconListSection: React.FC<IconListSectionProps> = ({
               onReorderEntry(oldIndex, newIndex);
             }
           }}
+          getItemInfo={(item) => ({
+            label: item.certification || 'Untitled Certification',
+            sublabel: item.issuer || undefined,
+            type: 'certification' as const,
+          })}
         >
           {({ itemIds }) => (
             <>
