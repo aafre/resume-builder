@@ -70,24 +70,16 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   // Detect if using legacy API
   const isLegacyMode = legacyIsEditing !== undefined || legacyOnTitleEdit !== undefined;
 
-  // Handle title save - bridge between new and legacy APIs
+  // Handle title save - pass the new title directly to bypass async state update issues
   const handleTitleSave = useCallback((newTitle: string) => {
     if (!onTitleSave) {
       return;
     }
 
-    if (isLegacyMode) {
-      // Legacy mode: update temporaryTitle then call save
-      if (legacyOnTitleChange) {
-        legacyOnTitleChange(newTitle);
-      }
-      // The legacy onTitleSave callback takes no arguments
-      (onTitleSave as () => void)();
-    } else {
-      // New mode: pass title directly
-      (onTitleSave as (newTitle: string) => void)(newTitle);
-    }
-  }, [isLegacyMode, legacyOnTitleChange, onTitleSave]);
+    // Always pass the new title directly to avoid async state timing issues
+    // The onTitleSave handler now accepts an optional newTitle parameter
+    (onTitleSave as (newTitle: string) => void)(newTitle);
+  }, [onTitleSave]);
 
   // Determine the displayed/editable value
   const displayValue = isLegacyMode && legacyIsEditing && legacyTemporaryTitle !== undefined

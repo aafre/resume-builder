@@ -762,7 +762,8 @@ describe('useSectionManagement', () => {
         expect(newSections[0]).not.toBe(sections[0]);
       });
 
-      it('should handle out-of-bounds editingTitleIndex', () => {
+      it('should handle out-of-bounds editingTitleIndex with valid title', () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
         const sections = createMockSections();
         const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
 
@@ -771,14 +772,158 @@ describe('useSectionManagement', () => {
           result.current.handleTitleEdit(10);
         });
 
+        // Pass a valid title directly to bypass empty title check
         act(() => {
-          result.current.handleTitleSave();
+          result.current.handleTitleSave('Valid Title');
         });
 
         const updater = mockSetSections.mock.calls[0][0];
         const originalSections = createMockSections();
         const newSections = updater(originalSections);
         expect(newSections).toBe(originalSections);
+        expect(warnSpy).toHaveBeenCalledWith('Attempted to save title for out-of-bounds index: 10');
+        warnSpy.mockRestore();
+      });
+
+      it('should cancel edit when out-of-bounds index results in empty temporaryTitle', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        // Manually trigger editing state for invalid index (temporaryTitle becomes '')
+        act(() => {
+          result.current.handleTitleEdit(10);
+        });
+
+        // Call save without parameter - empty temporaryTitle triggers cancel
+        act(() => {
+          result.current.handleTitleSave();
+        });
+
+        // Should cancel edit without calling setSections
+        expect(result.current.editingTitleIndex).toBeNull();
+        expect(mockSetSections).not.toHaveBeenCalled();
+      });
+
+      it('should save title when passed directly as parameter', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        // Start editing
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        // Save with new title passed directly (simulates blur behavior)
+        act(() => {
+          result.current.handleTitleSave('Directly Passed Title');
+        });
+
+        expect(result.current.editingTitleIndex).toBeNull();
+        expect(mockSetSections).toHaveBeenCalled();
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(sections);
+        expect(newSections[0].name).toBe('Directly Passed Title');
+      });
+
+      it('should use passed title over temporaryTitle state', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        // Start editing
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        // Update temporaryTitle to something different
+        act(() => {
+          result.current.setTemporaryTitle('State Title');
+        });
+
+        // Save with different title passed directly (should override state)
+        act(() => {
+          result.current.handleTitleSave('Passed Title');
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(sections);
+        // Should use the passed title, not the state value
+        expect(newSections[0].name).toBe('Passed Title');
+      });
+
+      it('should fall back to temporaryTitle when no parameter passed', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        act(() => {
+          result.current.setTemporaryTitle('State Title');
+        });
+
+        // Call without parameter (legacy behavior)
+        act(() => {
+          result.current.handleTitleSave();
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(sections);
+        expect(newSections[0].name).toBe('State Title');
+      });
+
+      it('should trim whitespace from saved title', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        act(() => {
+          result.current.handleTitleSave('  Trimmed Title  ');
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(sections);
+        expect(newSections[0].name).toBe('Trimmed Title');
+      });
+
+      it('should not save empty title and cancel edit instead', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        act(() => {
+          result.current.handleTitleSave('');
+        });
+
+        // Should reset editing state without calling setSections
+        expect(result.current.editingTitleIndex).toBeNull();
+        expect(result.current.temporaryTitle).toBe('');
+        expect(mockSetSections).not.toHaveBeenCalled();
+      });
+
+      it('should not save whitespace-only title and cancel edit instead', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        act(() => {
+          result.current.handleTitleSave('   ');
+        });
+
+        // Should reset editing state without calling setSections
+        expect(result.current.editingTitleIndex).toBeNull();
+        expect(result.current.temporaryTitle).toBe('');
+        expect(mockSetSections).not.toHaveBeenCalled();
       });
     });
 

@@ -194,7 +194,7 @@ export interface UseSectionManagementReturn {
   temporaryTitle: string;
   setTemporaryTitle: React.Dispatch<React.SetStateAction<string>>;
   handleTitleEdit: (index: number) => void;
-  handleTitleSave: () => void;
+  handleTitleSave: (newTitle?: string) => void;
   handleTitleCancel: () => void;
 }
 
