@@ -7,6 +7,7 @@ import { MdDelete } from "react-icons/md";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
 import { arrayMove } from "@dnd-kit/sortable";
+import { GhostButton } from "./shared/GhostButton";
 
 interface ExperienceItem {
   company: string;
@@ -303,7 +304,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
         </ItemDndContext>
       )}
       {!isCollapsed && (
-        <button
+        <GhostButton
           onClick={() => {
             const newExperience: ExperienceItem = {
               company: "",
@@ -316,10 +317,9 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
             };
             onUpdate([...experiences, newExperience]);
           }}
-          className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
         >
           Add Experience
-        </button>
+        </GhostButton>
       )}
     </div>
   );

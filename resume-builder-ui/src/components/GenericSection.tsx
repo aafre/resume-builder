@@ -5,6 +5,7 @@ import { RichTextInput } from "./RichTextInput";
 import { RichTextArea } from "./RichTextArea";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
+import { GhostButton } from "./shared/GhostButton";
 
 interface Section {
   name: string;
@@ -235,15 +236,15 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 )}
               </ItemDndContext>
             )}
-            <button
+            <GhostButton
               onClick={() => {
                 const updatedContent = [...(section.content || []), ""];
                 onUpdate({ ...section, content: updatedContent });
               }}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 mt-2"
+              className="mt-2"
             >
               Add Item
-            </button>
+            </GhostButton>
           </>
         )}
 
@@ -296,15 +297,14 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 </ItemDndContext>
               )}
             </div>
-            <button
+            <GhostButton
               onClick={() => {
                 const updatedContent = [...(section.content || []), ""];
                 onUpdate({ ...section, content: updatedContent });
               }}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 text-sm"
             >
               Add Item
-            </button>
+            </GhostButton>
           </>
         )}
 
@@ -357,15 +357,14 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 </ItemDndContext>
               )}
             </div>
-            <button
+            <GhostButton
               onClick={() => {
                 const updatedContent = [...(section.content || []), ""];
                 onUpdate({ ...section, content: updatedContent });
               }}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 text-sm"
             >
               Add Item
-            </button>
+            </GhostButton>
           </>
         )}
         </div>

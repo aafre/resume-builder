@@ -6,6 +6,7 @@ import { RichTextInput } from "./RichTextInput";
 import { MdDelete } from "react-icons/md";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
+import { GhostButton } from "./shared/GhostButton";
 
 interface EducationItem {
   degree: string;
@@ -245,12 +246,9 @@ const EducationSection: React.FC<EducationSectionProps> = ({
         </ItemDndContext>
       )}
       {!isCollapsed && (
-        <button
-          onClick={handleAddItem}
-          className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 mt-4"
-        >
+        <GhostButton onClick={handleAddItem} className="mt-4">
           Add Entry
-        </button>
+        </GhostButton>
       )}
     </div>
   );
