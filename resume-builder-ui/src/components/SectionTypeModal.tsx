@@ -163,7 +163,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
                 <div className="mt-2 flex flex-wrap gap-2">
                   {sections.map((section, index) => (
                     <button
-                      key={index}
+                      key={`${section.name}-${index}`}
                       type="button"
                       onClick={() => handleAfterSectionSelect(index + 1)}
                       className={`px-3 py-1.5 text-xs rounded-full border transition-all duration-200

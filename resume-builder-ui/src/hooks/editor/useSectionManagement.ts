@@ -81,24 +81,28 @@ export const useSectionManagement = ({
   const handleAddSection = useCallback(
     (type: SectionType, position: InsertPosition = 'top') => {
       const newSection = createDefaultSection(type, sections);
-      let insertedIndex = 0;
+
+      // Calculate inserted index outside the state updater to avoid side effects
+      let insertedIndex: number;
+      if (position === 'bottom') {
+        insertedIndex = sections.length;
+      } else if (typeof position === 'number') {
+        insertedIndex = Math.min(Math.max(0, position), sections.length);
+      } else {
+        // 'top' or fallback
+        insertedIndex = 0;
+      }
 
       setSections((prevSections) => {
-        if (position === 'top') {
-          insertedIndex = 0;
-          return [newSection, ...prevSections];
-        } else if (position === 'bottom') {
-          insertedIndex = prevSections.length;
+        if (position === 'bottom') {
           return [...prevSections, newSection];
         } else if (typeof position === 'number') {
-          // Insert at specific index
-          insertedIndex = Math.min(Math.max(0, position), prevSections.length);
+          const index = Math.min(Math.max(0, position), prevSections.length);
           const result = [...prevSections];
-          result.splice(insertedIndex, 0, newSection);
+          result.splice(index, 0, newSection);
           return result;
         }
-        // Fallback to top
-        insertedIndex = 0;
+        // 'top' or fallback
         return [newSection, ...prevSections];
       });
       closeSectionTypeModal();
