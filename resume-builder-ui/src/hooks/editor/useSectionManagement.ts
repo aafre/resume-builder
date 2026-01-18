@@ -24,8 +24,8 @@ export interface UseSectionManagementProps {
   closeDeleteConfirm: () => void;
   /** Function to close section type modal after adding */
   closeSectionTypeModal: () => void;
-  /** Optional callback when section is added (e.g., for scrolling) */
-  onSectionAdded?: () => void;
+  /** Optional callback when section is added (e.g., for scrolling). Receives the index where the section was inserted. */
+  onSectionAdded?: (insertedIndex: number) => void;
 }
 
 /**
@@ -81,26 +81,35 @@ export const useSectionManagement = ({
   const handleAddSection = useCallback(
     (type: SectionType, position: InsertPosition = 'top') => {
       const newSection = createDefaultSection(type, sections);
+
+      // Calculate inserted index outside the state updater to avoid side effects
+      let insertedIndex: number;
+      if (position === 'bottom') {
+        insertedIndex = sections.length;
+      } else if (typeof position === 'number') {
+        insertedIndex = Math.min(Math.max(0, position), sections.length);
+      } else {
+        // 'top' or fallback
+        insertedIndex = 0;
+      }
+
       setSections((prevSections) => {
-        if (position === 'top') {
-          return [newSection, ...prevSections];
-        } else if (position === 'bottom') {
+        if (position === 'bottom') {
           return [...prevSections, newSection];
         } else if (typeof position === 'number') {
-          // Insert at specific index
           const index = Math.min(Math.max(0, position), prevSections.length);
           const result = [...prevSections];
           result.splice(index, 0, newSection);
           return result;
         }
-        // Fallback to top
+        // 'top' or fallback
         return [newSection, ...prevSections];
       });
       closeSectionTypeModal();
 
       // Call onSectionAdded callback after a short delay to allow render
       if (onSectionAdded) {
-        setTimeout(onSectionAdded, 100);
+        setTimeout(() => onSectionAdded(insertedIndex), 100);
       }
     },
     [sections, setSections, closeSectionTypeModal, onSectionAdded]

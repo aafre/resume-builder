@@ -13,30 +13,25 @@ describe("SectionTypeModal", () => {
     // Verify the header is rendered.
     expect(screen.getByText("Select Section Type")).toBeInTheDocument();
 
-    // Verify that each section option is rendered.
-    expect(screen.getByText("Text Section")).toBeInTheDocument();
-    expect(screen.getByText("List with Bullets")).toBeInTheDocument();
-    expect(screen.getByText("Horizontal List")).toBeInTheDocument();
+    // Verify that each section option is rendered with new titles.
+    expect(screen.getByText("Text Block")).toBeInTheDocument();
+    expect(screen.getByText("Bulleted List")).toBeInTheDocument();
+    expect(screen.getByText("Inline List")).toBeInTheDocument();
     expect(screen.getByText("Smart Table")).toBeInTheDocument();
+    expect(screen.getByText("Experience")).toBeInTheDocument();
+    expect(screen.getByText("Education")).toBeInTheDocument();
+    expect(screen.getByText("Certifications")).toBeInTheDocument();
+  });
 
-    // For the "Text Section" card, check the "Use for:" text.
-    const textSectionCard = screen.getByText("Text Section").closest("div");
-    expect(textSectionCard).toBeTruthy();
+  it("renders SVG wireframes for each section type", () => {
+    const onCloseMock = vi.fn();
+    const onSelectMock = vi.fn();
 
-    // Within this card, locate the paragraph with the "Use for:" text.
-    const useForParagraph = textSectionCard?.querySelector(
-      "p.text-gray-500.italic"
-    );
-    expect(useForParagraph).toBeTruthy();
+    const { container } = render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
 
-    // Normalize the text content (collapse multiple spaces and trim).
-    const normalizedText = (useForParagraph?.textContent ?? "")
-      .replace(/\s+/g, " ")
-      .trim();
-    // Assert that the normalized text contains the expected use-for description.
-    expect(normalizedText).toContain(
-      "Summary, Objective, About Me, Career Goal, Personal Statement"
-    );
+    // Each card should have an SVG visual (7 section types)
+    const svgElements = container.querySelectorAll('svg[aria-hidden="true"]');
+    expect(svgElements.length).toBe(7);
   });
 
   it("calls onSelect with the correct type and position when a section card is clicked", () => {
@@ -45,17 +40,17 @@ describe("SectionTypeModal", () => {
 
     render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
 
-    // Click the "Text Section" card.
-    const textSectionCard = screen.getByText("Text Section");
+    // Click the "Text Block" card.
+    const textSectionCard = screen.getByText("Text Block");
     fireEvent.click(textSectionCard);
 
     expect(onSelectMock).toHaveBeenCalledTimes(1);
-    // Default position is 'top'
-    expect(onSelectMock).toHaveBeenCalledWith("text", "top");
+    // Default position is now 'bottom'
+    expect(onSelectMock).toHaveBeenCalledWith("text", "bottom");
 
     // Click the "Bulleted List" card.
-    fireEvent.click(screen.getByText("List with Bullets"));
-    expect(onSelectMock).toHaveBeenCalledWith("bulleted-list", "top");
+    fireEvent.click(screen.getByText("Bulleted List"));
+    expect(onSelectMock).toHaveBeenCalledWith("bulleted-list", "bottom");
   });
 
   it("calls onClose when the Cancel button is clicked", () => {
@@ -71,51 +66,128 @@ describe("SectionTypeModal", () => {
     expect(onCloseMock).toHaveBeenCalledTimes(1);
   });
 
-  describe("position selection", () => {
-    it("renders position selector with default 'top' selected", () => {
+  it("renders cards as buttons for accessibility", () => {
+    const onCloseMock = vi.fn();
+    const onSelectMock = vi.fn();
+
+    render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
+
+    // All section cards should be buttons
+    // 7 section cards + 1 cancel button + 2 position toggle buttons = 10 buttons
+    const sectionButtons = screen.getAllByRole("button");
+    expect(sectionButtons.length).toBe(10);
+  });
+
+  it("displays 'Certifications' instead of 'Bullet List with Icons'", () => {
+    const onCloseMock = vi.fn();
+    const onSelectMock = vi.fn();
+
+    render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
+
+    // Should show "Certifications"
+    expect(screen.getByText("Certifications")).toBeInTheDocument();
+    // Should NOT show old name
+    expect(screen.queryByText("Bullet List with Icons")).not.toBeInTheDocument();
+  });
+
+  it("hides Certifications when supportsIcons is false", () => {
+    const onCloseMock = vi.fn();
+    const onSelectMock = vi.fn();
+
+    render(
+      <SectionTypeModal
+        onClose={onCloseMock}
+        onSelect={onSelectMock}
+        supportsIcons={false}
+      />
+    );
+
+    // Should NOT show "Certifications" when icons not supported
+    expect(screen.queryByText("Certifications")).not.toBeInTheDocument();
+    // Should have 6 section cards + 1 cancel button + 2 position buttons = 9 buttons
+    const sectionButtons = screen.getAllByRole("button");
+    expect(sectionButtons.length).toBe(9);
+  });
+
+  describe("position selection - segmented control", () => {
+    it("renders segmented control with Top and Bottom options", () => {
       const onCloseMock = vi.fn();
       const onSelectMock = vi.fn();
 
       render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
 
-      // Find the position selector
-      const positionLabel = screen.getByText("Insert Position");
-      expect(positionLabel).toBeInTheDocument();
+      // Find the position control label
+      expect(screen.getByText("Where should it go?")).toBeInTheDocument();
 
-      // Find the select element
-      const selectElement = screen.getByRole("combobox");
-      expect(selectElement).toBeInTheDocument();
-      expect(selectElement).toHaveValue("top");
+      // Find the toggle buttons
+      expect(screen.getByText("Top of Resume")).toBeInTheDocument();
+      expect(screen.getByText("Bottom of Resume")).toBeInTheDocument();
     });
 
-    it("shows 'bottom' option in position selector", () => {
+    it("defaults to 'bottom' position", () => {
       const onCloseMock = vi.fn();
       const onSelectMock = vi.fn();
 
       render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
 
-      const selectElement = screen.getByRole("combobox");
-      const bottomOption = screen.getByText("At the bottom (last section)");
-      expect(bottomOption).toBeInTheDocument();
-    });
-
-    it("calls onSelect with 'bottom' position when selected", () => {
-      const onCloseMock = vi.fn();
-      const onSelectMock = vi.fn();
-
-      render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
-
-      // Change position to bottom
-      const selectElement = screen.getByRole("combobox");
-      fireEvent.change(selectElement, { target: { value: "bottom" } });
-
-      // Click a section type
-      fireEvent.click(screen.getByText("Text Section"));
+      // Click a section type without changing position
+      fireEvent.click(screen.getByText("Text Block"));
 
       expect(onSelectMock).toHaveBeenCalledWith("text", "bottom");
     });
 
-    it("displays existing sections in 'After specific section' optgroup", () => {
+    it("calls onSelect with 'top' position when Top button is clicked", () => {
+      const onCloseMock = vi.fn();
+      const onSelectMock = vi.fn();
+
+      render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
+
+      // Click the Top button
+      fireEvent.click(screen.getByText("Top of Resume"));
+
+      // Click a section type
+      fireEvent.click(screen.getByText("Text Block"));
+
+      expect(onSelectMock).toHaveBeenCalledWith("text", "top");
+    });
+
+    it("shows 'After specific section' toggle when sections exist", () => {
+      const onCloseMock = vi.fn();
+      const onSelectMock = vi.fn();
+      const sections = [
+        { name: "Experience", type: "experience" },
+        { name: "Education", type: "education" },
+      ];
+
+      render(
+        <SectionTypeModal
+          onClose={onCloseMock}
+          onSelect={onSelectMock}
+          sections={sections}
+        />
+      );
+
+      // Should show the expand link
+      expect(screen.getByText("+ Insert after a specific section")).toBeInTheDocument();
+    });
+
+    it("does not show 'After specific section' toggle when no sections exist", () => {
+      const onCloseMock = vi.fn();
+      const onSelectMock = vi.fn();
+
+      render(
+        <SectionTypeModal
+          onClose={onCloseMock}
+          onSelect={onSelectMock}
+          sections={[]}
+        />
+      );
+
+      // Should NOT show the expand link
+      expect(screen.queryByText("+ Insert after a specific section")).not.toBeInTheDocument();
+    });
+
+    it("displays section pills when 'After specific section' is expanded", () => {
       const onCloseMock = vi.fn();
       const onSelectMock = vi.fn();
       const sections = [
@@ -132,13 +204,16 @@ describe("SectionTypeModal", () => {
         />
       );
 
-      // Check that section names appear in the dropdown
+      // Click to expand
+      fireEvent.click(screen.getByText("+ Insert after a specific section"));
+
+      // Check that section pills appear
       expect(screen.getByText("After: Experience")).toBeInTheDocument();
       expect(screen.getByText("After: Education")).toBeInTheDocument();
       expect(screen.getByText("After: Skills")).toBeInTheDocument();
     });
 
-    it("calls onSelect with numeric position for 'after section' selection", () => {
+    it("calls onSelect with numeric position when section pill is clicked", () => {
       const onCloseMock = vi.fn();
       const onSelectMock = vi.fn();
       const sections = [
@@ -154,34 +229,56 @@ describe("SectionTypeModal", () => {
         />
       );
 
-      // Select "After: Experience" (index 1)
-      const selectElement = screen.getByRole("combobox");
-      fireEvent.change(selectElement, { target: { value: "1" } });
+      // Expand the section options
+      fireEvent.click(screen.getByText("+ Insert after a specific section"));
+
+      // Click "After: Experience" (index 1)
+      fireEvent.click(screen.getByText("After: Experience"));
 
       // Click a section type
-      fireEvent.click(screen.getByText("Text Section"));
+      fireEvent.click(screen.getByText("Text Block"));
 
       // Should be called with position = 1 (after first section)
       expect(onSelectMock).toHaveBeenCalledWith("text", 1);
     });
 
-    it("does not show 'After specific section' when no sections exist", () => {
+    it("collapses section options when hide is clicked", () => {
       const onCloseMock = vi.fn();
       const onSelectMock = vi.fn();
+      const sections = [
+        { name: "Experience", type: "experience" },
+      ];
 
       render(
         <SectionTypeModal
           onClose={onCloseMock}
           onSelect={onSelectMock}
-          sections={[]}
+          sections={sections}
         />
       );
 
-      // Should only have top and bottom options
-      const options = screen.getAllByRole("option");
-      expect(options).toHaveLength(2);
-      expect(screen.getByText("At the top (first section)")).toBeInTheDocument();
-      expect(screen.getByText("At the bottom (last section)")).toBeInTheDocument();
+      // Expand
+      fireEvent.click(screen.getByText("+ Insert after a specific section"));
+      expect(screen.getByText("After: Experience")).toBeInTheDocument();
+
+      // Collapse
+      fireEvent.click(screen.getByText("− Hide options"));
+      expect(screen.queryByText("After: Experience")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("grid layout", () => {
+    it("renders section cards in a grid container", () => {
+      const onCloseMock = vi.fn();
+      const onSelectMock = vi.fn();
+
+      const { container } = render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
+
+      // Find the grid container
+      const gridContainer = container.querySelector('.grid');
+      expect(gridContainer).toBeInTheDocument();
+      expect(gridContainer).toHaveClass('grid-cols-1');
+      expect(gridContainer).toHaveClass('sm:grid-cols-2');
     });
   });
 });

@@ -178,9 +178,10 @@ const Editor: React.FC = () => {
   });
 
   // Memoized callback for scrolling to newly added sections
-  const handleSectionAdded = useCallback(() => {
+  const handleSectionAdded = useCallback((insertedIndex: number) => {
     setTimeout(() => {
-      newSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+      const targetRef = sectionRefs.current[insertedIndex];
+      targetRef?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
   }, []);
 
