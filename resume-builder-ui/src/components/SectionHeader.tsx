@@ -1,35 +1,42 @@
 // src/components/SectionHeader.tsx
 
-import React, { useState } from "react";
-import { MdExpandMore, MdExpandLess } from "react-icons/md";
-import { EditableTitle } from "./EditableTitle";
+import React, { useState, useEffect, useCallback } from "react";
+import { MdExpandMore, MdExpandLess, MdDeleteOutline } from "react-icons/md";
+import { InlineTextEditor } from "./shared/InlineTextEditor";
 
 /**
  * Props for the SectionHeader component.
+ * Supports both legacy controlled API and new simplified API.
  */
 export interface SectionHeaderProps {
   /** The section title */
   title: string;
-  /** Whether the title is currently being edited */
-  isEditing: boolean;
-  /** Temporary title during editing */
-  temporaryTitle: string;
-  /** Callback when edit is initiated */
-  onTitleEdit: () => void;
-  /** Callback when title is saved */
-  onTitleSave: () => void;
-  /** Callback when title edit is cancelled */
-  onTitleCancel: () => void;
-  /** Callback when temporary title changes */
-  onTitleChange: (newTitle: string) => void;
+
+  // === New Simplified API ===
+  /** Callback when title is saved (new API - receives new title directly) */
+  onTitleSave?: ((newTitle: string) => void) | (() => void);
+
+  // === Legacy Controlled API (for backwards compatibility) ===
+  /** @deprecated Use onTitleSave with newTitle parameter instead */
+  isEditing?: boolean;
+  /** @deprecated Use onTitleSave with newTitle parameter instead */
+  temporaryTitle?: string;
+  /** @deprecated Use onTitleSave with newTitle parameter instead */
+  onTitleEdit?: () => void;
+  /** @deprecated Use onTitleSave with newTitle parameter instead */
+  onTitleCancel?: () => void;
+  /** @deprecated Use onTitleSave with newTitle parameter instead */
+  onTitleChange?: (newTitle: string) => void;
+  /** @deprecated No longer needed */
+  showHint?: boolean;
+  /** @deprecated Managed internally */
+  showDeleteConfirm?: boolean;
+  /** @deprecated Managed internally */
+  setShowDeleteConfirm?: (show: boolean) => void;
+
+  // === Common Props ===
   /** Callback when delete is confirmed */
   onDelete: () => void;
-  /** Whether to show the rename hint */
-  showHint?: boolean;
-  /** Whether to show delete confirmation */
-  showDeleteConfirm?: boolean;
-  /** Callback to set delete confirmation state */
-  setShowDeleteConfirm?: (show: boolean) => void;
   /** Whether the section is collapsed */
   isCollapsed?: boolean;
   /** Callback when collapse is toggled */
@@ -39,46 +46,53 @@ export interface SectionHeaderProps {
 /**
  * SectionHeader Component
  *
- * A reusable header component for resume sections that includes:
- * - Editable title with pencil icon
+ * A clean header component for resume sections that includes:
+ * - Inline editable title (click to edit, blur/enter to save)
  * - Delete button with confirmation
- * - Consistent styling across all section types
+ * - Optional collapse/expand toggle
  *
- * @example
- * ```tsx
- * <SectionHeader
- *   title="Work Experience"
- *   isEditing={isEditingTitle}
- *   temporaryTitle={tempTitle}
- *   onTitleEdit={handleStartEdit}
- *   onTitleSave={handleSave}
- *   onTitleCancel={handleCancel}
- *   onTitleChange={setTempTitle}
- *   onDelete={handleDelete}
- * />
- * ```
+ * Supports both new simplified API and legacy controlled API for backwards compatibility.
  */
 export const SectionHeader: React.FC<SectionHeaderProps> = ({
   title,
-  isEditing,
-  temporaryTitle,
-  onTitleEdit,
   onTitleSave,
-  onTitleCancel,
-  onTitleChange,
+  // Legacy props
+  isEditing: legacyIsEditing,
+  temporaryTitle: legacyTemporaryTitle,
+  onTitleEdit: legacyOnTitleEdit,
+  onTitleCancel: legacyOnTitleCancel,
+  onTitleChange: legacyOnTitleChange,
+  // Common props
   onDelete,
-  showHint = false,
-  showDeleteConfirm: externalShowDeleteConfirm,
-  setShowDeleteConfirm: externalSetShowDeleteConfirm,
   isCollapsed = false,
   onToggleCollapse,
 }) => {
-  // Internal delete confirmation state (if not provided externally)
-  const [internalShowDeleteConfirm, setInternalShowDeleteConfirm] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  // Use external state if provided, otherwise use internal state
-  const showDeleteConfirm = externalShowDeleteConfirm ?? internalShowDeleteConfirm;
-  const setShowDeleteConfirm = externalSetShowDeleteConfirm ?? setInternalShowDeleteConfirm;
+  // Detect if using legacy API
+  const isLegacyMode = legacyIsEditing !== undefined || legacyOnTitleEdit !== undefined;
+
+  // Handle title save - bridge between new and legacy APIs
+  const handleTitleSave = useCallback((newTitle: string) => {
+    if (isLegacyMode && legacyOnTitleChange && onTitleSave) {
+      // Legacy mode: update temporaryTitle then call save
+      legacyOnTitleChange(newTitle);
+      // Call the legacy save (no argument)
+      (onTitleSave as () => void)();
+    } else if (onTitleSave) {
+      // New mode: pass title directly
+      (onTitleSave as (newTitle: string) => void)(newTitle);
+    }
+  }, [isLegacyMode, legacyOnTitleChange, onTitleSave]);
+
+  // For legacy mode, sync with external edit state
+  const [internalIsEditing, setInternalIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (isLegacyMode && legacyIsEditing !== undefined) {
+      setInternalIsEditing(legacyIsEditing);
+    }
+  }, [isLegacyMode, legacyIsEditing]);
 
   const handleDelete = () => {
     if (showDeleteConfirm) {
@@ -93,14 +107,19 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     setShowDeleteConfirm(false);
   };
 
+  // Determine the displayed/editable value
+  const displayValue = isLegacyMode && legacyIsEditing && legacyTemporaryTitle !== undefined
+    ? legacyTemporaryTitle
+    : title;
+
   return (
     <div className="flex items-center justify-between mb-4">
-      <div className="flex items-center gap-2 flex-1">
+      <div className="flex items-center gap-2 flex-1 min-w-0">
         {/* Collapse/Expand Button */}
         {onToggleCollapse && (
           <button
             onClick={onToggleCollapse}
-            className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors flex-shrink-0"
             aria-label={isCollapsed ? "Expand section" : "Collapse section"}
             title={isCollapsed ? "Expand section" : "Collapse section"}
           >
@@ -112,44 +131,42 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           </button>
         )}
 
-        <EditableTitle
-          title={title}
-          isEditing={isEditing}
-          temporaryTitle={temporaryTitle}
-          onEdit={onTitleEdit}
-          onSave={onTitleSave}
-          onCancel={onTitleCancel}
-          onTitleChange={onTitleChange}
-          showHint={showHint}
+        <InlineTextEditor
+          value={displayValue}
+          onSave={handleTitleSave}
+          as="h2"
+          textClassName="text-xl font-semibold text-gray-900"
+          placeholder="Section title..."
         />
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 flex-shrink-0 ml-4">
         {showDeleteConfirm ? (
           <>
-            <span className="text-sm text-gray-600">Delete this section?</span>
+            <span className="text-sm text-gray-600 hidden sm:inline">Delete?</span>
             <button
               onClick={handleDelete}
-              className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors"
+              className="text-red-600 border border-red-300 bg-red-50 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-red-100 transition-colors"
               title="Confirm Delete"
             >
-              Yes, Delete
+              Yes
             </button>
             <button
               onClick={handleCancelDelete}
-              className="bg-gray-300 text-gray-700 px-3 py-1 rounded-lg hover:bg-gray-400 transition-colors"
+              className="text-gray-600 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors"
               title="Cancel Delete"
             >
-              Cancel
+              No
             </button>
           </>
         ) : (
           <button
             onClick={handleDelete}
-            className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors"
+            className="flex items-center gap-1.5 text-gray-500 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-colors"
             title="Remove Section"
           >
-            Remove
+            <MdDeleteOutline className="text-lg" />
+            <span className="hidden sm:inline">Remove</span>
           </button>
         )}
       </div>
