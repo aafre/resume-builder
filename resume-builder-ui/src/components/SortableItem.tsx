@@ -20,11 +20,12 @@ interface SortableItemProps {
  * SortableItem Component
  *
  * A reusable wrapper that makes items draggable within a SortableContext.
- * Uses a full-width draggable header bar at the top for easy grabbing.
+ * Only the top bar is the interactive drag handle (not the entire item).
  *
  * Features:
- * - Full-width draggable header bar (consistent with section-level DragHandle)
- * - Visual feedback during drag (opacity, shadow, ring)
+ * - Top bar drag handle with visual indicator dots on hover
+ * - Visual feedback during drag (item becomes invisible, placeholder shifts)
+ * - Drop indicator line showing where item will be placed
  * - Support for disabled state
  * - Touch and keyboard accessible
  *

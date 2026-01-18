@@ -6,6 +6,7 @@ import { RichTextInput } from "./RichTextInput";
 import { MdDelete } from "react-icons/md";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
+import { arrayMove } from "@dnd-kit/sortable";
 
 interface ExperienceItem {
   company: string;
@@ -227,12 +228,14 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                               isSubitem={true}
                               onReorder={(oldDescIndex, newDescIndex) => {
                                 const updatedExperiences = [...experiences];
-                                const descriptions = [...updatedExperiences[index].description];
-                                const [movedItem] = descriptions.splice(oldDescIndex, 1);
-                                descriptions.splice(newDescIndex, 0, movedItem);
+                                const reorderedDescriptions = arrayMove(
+                                  updatedExperiences[index].description,
+                                  oldDescIndex,
+                                  newDescIndex
+                                );
                                 updatedExperiences[index] = {
                                   ...updatedExperiences[index],
-                                  description: descriptions,
+                                  description: reorderedDescriptions,
                                 };
                                 onUpdate(updatedExperiences);
                               }}

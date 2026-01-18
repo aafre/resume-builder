@@ -25,8 +25,9 @@ import { DraggedItemInfo } from '../../contexts/UnifiedDndContext';
 
 /**
  * Drag level types for ID-based routing
+ * - 'unknown' is returned for malformed IDs that don't match expected patterns
  */
-export type DragLevel = 'section' | 'item' | 'subitem';
+export type DragLevel = 'section' | 'item' | 'subitem' | 'unknown';
 
 /**
  * Item reorder handler registration
@@ -119,8 +120,8 @@ export function parseDragId(id: string): {
     };
   }
 
-  // Default to item level for backwards compatibility
-  return { level: 'item', sectionId: id };
+  // Return unknown level for malformed IDs
+  return { level: 'unknown' };
 }
 
 /**

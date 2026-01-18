@@ -7,8 +7,8 @@
 
 1. Navigate to the Editor page with an existing resume
 2. Find a section with multiple items (Education, Experience, or bulleted list)
-3. Hover over an item to reveal the drag handle (6-dot grip icon on the left)
-4. Click and hold the drag handle
+3. Hover over an item to reveal the drag handle (thin bar at the top with dots)
+4. Click and hold the drag handle bar
 5. Move the cursor slightly (8-10 pixels)
 6. **Expected**: Item should smoothly follow cursor without jumping to bottom
 7. Continue dragging up or down
@@ -19,7 +19,7 @@
 ### Test 1.2: Drag Activation Distance
 **Purpose**: Verify 8px activation distance prevents accidental drags
 
-1. Click and hold an item's drag handle
+1. Click and hold an item's drag handle bar at the top
 2. Move cursor less than 8 pixels
 3. **Expected**: Drag should NOT start
 4. Move cursor more than 8 pixels
@@ -28,7 +28,7 @@
 ### Test 1.3: Touch Device Behavior (Mobile)
 **Precondition**: Use mobile device or browser dev tools mobile emulation
 
-1. Tap and hold an item's drag handle for 200ms
+1. Tap and hold an item's drag handle bar at the top for 200ms
 2. **Expected**: Drag should activate after delay
 3. Drag to reorder
 4. **Expected**: Smooth reordering without scroll conflicts
@@ -74,7 +74,7 @@
 
 ### Test 3.1: Reorder Description Points in Experience
 1. Create or open an Experience section with multiple description points
-2. Hover over a description point to reveal drag handle
+2. Hover over a description point to reveal the drag handle bar at the top
 3. Drag the description point to a new position
 4. **Expected**: Description points reorder smoothly
 5. Save/export the resume

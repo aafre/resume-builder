@@ -51,6 +51,25 @@ const FormattingHelp: React.FC = () => {
               </li>
             </ul>
           </div>
+
+          {/* Reordering */}
+          <div>
+            <h4 className="font-semibold text-blue-900 mb-2">↕️ Reorder Sections & Items</h4>
+            <ul className="space-y-1.5 text-blue-800">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-600 mt-0.5">•</span>
+                <span><strong>Drag sections:</strong> Hover over the top edge of any section — grab the bar that appears to drag it up or down</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-600 mt-0.5">•</span>
+                <span><strong>Drag items:</strong> Hover over the top of any entry (experience, education, etc.) — grab the bar to reorder within a section</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-600 mt-0.5">•</span>
+                <span><strong>Drag bullet points:</strong> Same for description points — hover at the top and drag to reorder</span>
+              </li>
+            </ul>
+          </div>
         </div>
       )}
     </div>
