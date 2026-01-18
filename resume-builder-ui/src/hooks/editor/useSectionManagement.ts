@@ -229,9 +229,14 @@ export const useSectionManagement = ({
 
   /**
    * Save the edited section title.
+   * @param newTitle - Optional title to save. If provided, takes precedence over temporaryTitle state.
+   *                   This allows callers to pass the title directly, avoiding async state update issues.
    */
-  const handleTitleSave = useCallback(() => {
+  const handleTitleSave = useCallback((newTitle?: string) => {
     if (editingTitleIndex === null) return;
+
+    // Use passed value if provided, otherwise fall back to temporaryTitle state
+    const titleToSave = newTitle ?? temporaryTitle;
 
     setSections((currentSections) => {
       if (editingTitleIndex < 0 || editingTitleIndex >= currentSections.length) {
@@ -241,7 +246,7 @@ export const useSectionManagement = ({
       const newSections = [...currentSections];
       newSections[editingTitleIndex] = {
         ...newSections[editingTitleIndex],
-        name: temporaryTitle,
+        name: titleToSave,
       };
       return newSections;
     });
