@@ -39,6 +39,121 @@ export default function ActualFreeResumeBuilder() {
 
       {config.features && <FeatureGrid features={config.features} />}
 
+      {/* Competitor Comparison Table */}
+      <div className="mb-16">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+          "Free" resume builders: what they actually charge for
+        </h2>
+        <div className="max-w-5xl mx-auto overflow-x-auto">
+          <table className="w-full bg-white shadow-lg rounded-xl overflow-hidden">
+            <thead className="bg-gray-800 text-white">
+              <tr>
+                <th className="px-4 py-4 text-left font-semibold">Feature</th>
+                <th className="px-4 py-4 text-center font-semibold text-green-400">
+                  EasyFreeResume
+                </th>
+                <th className="px-4 py-4 text-center font-semibold">
+                  Typical "Free" Builders
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              <tr>
+                <td className="px-4 py-4 font-medium text-gray-900">
+                  PDF Download
+                </td>
+                <td className="px-4 py-4 text-center text-green-600 font-bold">
+                  ✓ Free
+                </td>
+                <td className="px-4 py-4 text-center text-red-600">
+                  $5-25 per download
+                </td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-4 font-medium text-gray-900">
+                  DOCX Download
+                </td>
+                <td className="px-4 py-4 text-center text-green-600 font-bold">
+                  ✓ Free
+                </td>
+                <td className="px-4 py-4 text-center text-red-600">
+                  Premium only ($6-24/mo)
+                </td>
+              </tr>
+              <tr>
+                <td className="px-4 py-4 font-medium text-gray-900">
+                  No Watermark
+                </td>
+                <td className="px-4 py-4 text-center text-green-600 font-bold">
+                  ✓ Always
+                </td>
+                <td className="px-4 py-4 text-center text-red-600">
+                  Premium only
+                </td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-4 font-medium text-gray-900">
+                  All Templates
+                </td>
+                <td className="px-4 py-4 text-center text-green-600 font-bold">
+                  ✓ Access all
+                </td>
+                <td className="px-4 py-4 text-center text-red-600">
+                  1-2 basic only
+                </td>
+              </tr>
+              <tr>
+                <td className="px-4 py-4 font-medium text-gray-900">
+                  No Account Required
+                </td>
+                <td className="px-4 py-4 text-center text-green-600 font-bold">
+                  ✓ Optional
+                </td>
+                <td className="px-4 py-4 text-center text-red-600">
+                  Mandatory signup
+                </td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-4 py-4 font-medium text-gray-900">
+                  Unlimited Downloads
+                </td>
+                <td className="px-4 py-4 text-center text-green-600 font-bold">
+                  ✓ Yes
+                </td>
+                <td className="px-4 py-4 text-center text-red-600">
+                  1-3 then pay
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p className="text-sm text-gray-500 mt-4 text-center">
+            Comparison based on publicly available pricing from popular resume builders (Jan 2026)
+          </p>
+        </div>
+      </div>
+
+      {/* Truth Page Positioning */}
+      <div className="mb-16">
+        <div className="max-w-4xl mx-auto bg-blue-50 border border-blue-200 rounded-xl p-8">
+          <h3 className="text-2xl font-bold text-blue-900 mb-4 text-center">
+            Why we're transparent about being free
+          </h3>
+          <p className="text-blue-800 leading-relaxed mb-4">
+            We built EasyFreeResume because we were frustrated by "free" resume builders that weren't
+            actually free. The dark patterns, the bait-and-switch, the surprise charges after you've
+            spent 30 minutes building your resume—it's not right.
+          </p>
+          <p className="text-blue-800 leading-relaxed mb-4">
+            Our model is simple: we're funded by ethical advertising, not by tricking users into
+            subscriptions. You get a professional resume, we get ad revenue. Everyone wins.
+          </p>
+          <p className="text-blue-800 leading-relaxed font-medium">
+            No hidden costs. No premium tiers. No "upgrade to unlock" buttons. Just a resume builder
+            that does what it says.
+          </p>
+        </div>
+      </div>
+
       <FAQSection faqs={config.faqs} />
 
       <DownloadCTA
