@@ -6,7 +6,8 @@ export default function ResumeNoExperience() {
       title="Resume with No Experience: Real Examples + Free Template"
       description="How to write an ATS-friendly, confidence-boosting resume when you're just starting out. Includes copy-paste examples and free template."
       publishDate="2025-07-20"
-      readTime="10–14 min"
+      lastUpdated="2026-01-18"
+      readTime="12–16 min"
       keywords={[
         "entry level resume",
         "no experience resume",
@@ -399,8 +400,25 @@ export default function ResumeNoExperience() {
           </div>
         </div>
 
+        {/* CTA before examples */}
+        <div className="my-10 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-xl p-6 md:p-8 text-center">
+          <h3 className="text-xl md:text-2xl font-bold mb-3">
+            Ready to Build Your Resume?
+          </h3>
+          <p className="text-lg mb-4 opacity-90">
+            Use the examples below as inspiration, then create your own in
+            minutes
+          </p>
+          <a
+            href="/templates"
+            className="inline-block bg-white text-green-600 px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+          >
+            Start Building Free
+          </a>
+        </div>
+
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
-          Two Complete Examples (Ready to Adapt)
+          Three Complete Examples (Ready to Adapt)
         </h2>
 
         <div className="space-y-8">
@@ -562,6 +580,120 @@ export default function ResumeNoExperience() {
               </div>
             </div>
           </div>
+
+          {/* Example 3 - Career Switcher */}
+          <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-lg">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">
+              Example 3 – Career Switcher (Retail to Admin/Operations)
+            </h3>
+            <div className="bg-gray-50 p-6 rounded-lg font-mono text-sm space-y-3">
+              <div className="text-center">
+                <p className="font-bold text-lg text-gray-900">Sarah Mitchell</p>
+                <p className="text-gray-700">
+                  Birmingham, UK · sarah.mitchell@email · 07xxx ·
+                  linkedin.com/in/sarahm
+                </p>
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">SUMMARY</p>
+                <p className="text-gray-800">
+                  Customer-focused professional with 3 years retail experience
+                  seeking administrative role. Strengths in data accuracy,
+                  scheduling, and problem resolution. Managed inventory systems
+                  and trained new team members. Dependable, organized, and
+                  tech-capable.
+                </p>
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">SKILLS</p>
+                <p className="text-gray-800">
+                  <strong>Tools:</strong> Microsoft 365 (Excel, Outlook, Word),
+                  Google Workspace, POS systems, inventory management software
+                </p>
+                <p className="text-gray-800">
+                  <strong>Transferable:</strong> Scheduling, data entry,
+                  customer communication, problem-solving, training/onboarding
+                </p>
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">EXPERIENCE</p>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-gray-800">
+                      <strong>Senior Sales Associate</strong> – Retail Store,
+                      Birmingham (Jun 2022–Present)
+                    </p>
+                    <p className="text-gray-700">
+                      • Processed 80–100 transactions daily with 99.8% accuracy;
+                      handled cash reconciliation
+                    </p>
+                    <p className="text-gray-700">
+                      • Managed weekly shift schedules for 8-person team;
+                      reduced scheduling conflicts by 40%
+                    </p>
+                    <p className="text-gray-700">
+                      • Trained 5 new hires on POS system and inventory
+                      procedures; created quick-reference guide
+                    </p>
+                    <p className="text-gray-700">
+                      • Maintained inventory database; reduced stock
+                      discrepancies by 25% through regular audits
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">EDUCATION</p>
+                <p className="text-gray-800">
+                  A-Levels, Birmingham College (2019–2021)
+                </p>
+                <p className="text-gray-700">
+                  Subjects: Business Studies (B), English (B), Mathematics (C)
+                </p>
+              </div>
+
+              <div>
+                <p className="font-bold text-gray-900 mb-2">
+                  CERTIFICATIONS & TRAINING
+                </p>
+                <p className="text-gray-700">
+                  • Microsoft Office Specialist – Excel (2025)
+                </p>
+                <p className="text-gray-700">
+                  • First Aid Certified (2024)
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+              <p className="text-blue-800 text-sm">
+                <strong>Why this works:</strong> Sarah reframes retail skills
+                (scheduling, data entry, training) as admin-relevant
+                transferable skills. She quantifies everything and shows
+                initiative through certifications.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA after examples */}
+        <div className="my-10 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-6 md:p-8 text-center">
+          <h3 className="text-xl md:text-2xl font-bold mb-3">
+            Use These Templates as Your Starting Point
+          </h3>
+          <p className="text-lg mb-4 opacity-90">
+            Pick a template, fill in your details, and download your
+            ATS-friendly resume in minutes
+          </p>
+          <a
+            href="/templates"
+            className="inline-block bg-white text-blue-600 px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+          >
+            Choose a Template
+          </a>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
