@@ -612,6 +612,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         previewIsStale={preview.isStale}
         lastSaved={saveStatus.lastSaved}
         saveError={saveStatus.saveStatus === 'error'}
+        isAuthenticated={isAuthenticated}
       />
 
       {/* Mobile Navigation Drawer */}

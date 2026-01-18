@@ -444,9 +444,7 @@ const Editor: React.FC = () => {
         onDismissIdleTooltip={tourFlow.dismissIdleTooltip}
         saveStatus={saveStatus}
         lastSaved={cloudLastSaved}
-        isAnonymous={isAnonymous}
         isAuthenticated={isAuthenticated}
-        onSignInClick={modalManager.openAuthModal}
       />
     </div>
   );

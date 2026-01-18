@@ -56,12 +56,12 @@ export interface SectionHeaderProps {
 export const SectionHeader: React.FC<SectionHeaderProps> = ({
   title,
   onTitleSave,
-  // Legacy props
+  // Legacy props (kept for backwards compatibility)
   isEditing: legacyIsEditing,
   temporaryTitle: legacyTemporaryTitle,
   onTitleEdit: legacyOnTitleEdit,
   onTitleCancel: legacyOnTitleCancel,
-  onTitleChange: legacyOnTitleChange,
+  onTitleChange: _legacyOnTitleChange,
   // Common props
   onDelete,
   isCollapsed = false,

@@ -9,9 +9,7 @@ describe('EditorHeader', () => {
     onDismissIdleTooltip: vi.fn(),
     saveStatus: 'saved',
     lastSaved: new Date(),
-    isAnonymous: false,
     isAuthenticated: true,
-    onSignInClick: vi.fn(),
   };
 
   beforeEach(() => {
@@ -64,7 +62,6 @@ describe('EditorHeader', () => {
       render(
         <EditorHeader
           {...defaultProps}
-          isAnonymous={false}
           isAuthenticated={true}
           saveStatus="saved"
         />
@@ -78,7 +75,6 @@ describe('EditorHeader', () => {
       render(
         <EditorHeader
           {...defaultProps}
-          isAnonymous={false}
           isAuthenticated={true}
           saveStatus="saving"
         />
@@ -91,7 +87,6 @@ describe('EditorHeader', () => {
       render(
         <EditorHeader
           {...defaultProps}
-          isAnonymous={false}
           isAuthenticated={true}
           saveStatus="error"
         />
@@ -100,11 +95,10 @@ describe('EditorHeader', () => {
       expect(screen.getByText('Save failed')).toBeInTheDocument();
     });
 
-    it('should not show save status for anonymous users', () => {
+    it('should not show save status for unauthenticated users', () => {
       render(
         <EditorHeader
           {...defaultProps}
-          isAnonymous={true}
           isAuthenticated={false}
           saveStatus="saved"
         />
@@ -114,56 +108,12 @@ describe('EditorHeader', () => {
     });
   });
 
-  describe('Sign-in CTA', () => {
-    it('should show sign-in button for anonymous users', () => {
-      render(
-        <EditorHeader
-          {...defaultProps}
-          isAnonymous={true}
-          isAuthenticated={false}
-        />
-      );
-
-      expect(screen.getByText('Sign in to save')).toBeInTheDocument();
-    });
-
-    it('should not show sign-in button for authenticated users', () => {
-      render(
-        <EditorHeader
-          {...defaultProps}
-          isAnonymous={false}
-          isAuthenticated={true}
-        />
-      );
-
-      expect(screen.queryByText('Sign in to save')).not.toBeInTheDocument();
-    });
-
-    it('should call onSignInClick when sign-in button is clicked', () => {
-      const onSignIn = vi.fn();
-      render(
-        <EditorHeader
-          {...defaultProps}
-          isAnonymous={true}
-          isAuthenticated={false}
-          onSignInClick={onSignIn}
-        />
-      );
-
-      const signInButton = screen.getByText('Sign in to save');
-      fireEvent.click(signInButton);
-
-      expect(onSignIn).toHaveBeenCalledTimes(1);
-    });
-  });
-
   describe('Combined states', () => {
-    it('should show both idle tooltip and sign-in CTA for anonymous users', () => {
+    it('should show idle tooltip for unauthenticated users', () => {
       render(
         <EditorHeader
           {...defaultProps}
           showIdleTooltip={true}
-          isAnonymous={true}
           isAuthenticated={false}
         />
       );
@@ -171,7 +121,6 @@ describe('EditorHeader', () => {
       expect(
         screen.getByText("Don't forget to save your progress permanently")
       ).toBeInTheDocument();
-      expect(screen.getByText('Sign in to save')).toBeInTheDocument();
     });
 
     it('should show both idle tooltip and save status for authenticated users', () => {
@@ -179,7 +128,6 @@ describe('EditorHeader', () => {
         <EditorHeader
           {...defaultProps}
           showIdleTooltip={true}
-          isAnonymous={false}
           isAuthenticated={true}
           saveStatus="saved"
         />
