@@ -281,7 +281,7 @@ describe("GenericSection Title Editing", () => {
     expect(screen.getByRole('textbox', { name: /edit text/i })).toBeInTheDocument();
   });
 
-  it("calls onDelete when the Remove Section button is clicked and confirmed", () => {
+  it("calls onDelete when the Remove Section button is clicked", () => {
     const onUpdateMock = vi.fn();
     const onEditTitleMock = vi.fn();
     const onSaveTitleMock = vi.fn();
@@ -304,12 +304,8 @@ describe("GenericSection Title Editing", () => {
       { wrapper: DndWrapper }
     );
 
-    // First click shows confirmation
+    // Click calls onDelete directly (modal handles confirmation)
     fireEvent.click(screen.getByText("Remove"));
-    expect(onDeleteMock).not.toHaveBeenCalled();
-
-    // Second click confirms deletion
-    fireEvent.click(screen.getByText("Yes"));
     expect(onDeleteMock).toHaveBeenCalledTimes(1);
   });
 });

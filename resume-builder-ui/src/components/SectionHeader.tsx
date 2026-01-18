@@ -1,6 +1,6 @@
 // src/components/SectionHeader.tsx
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import { MdExpandMore, MdExpandLess, MdDeleteOutline } from "react-icons/md";
 import { InlineTextEditor } from "./shared/InlineTextEditor";
 
@@ -67,8 +67,6 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   isCollapsed = false,
   onToggleCollapse,
 }) => {
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-
   // Detect if using legacy API
   const isLegacyMode = legacyIsEditing !== undefined || legacyOnTitleEdit !== undefined;
 
@@ -84,28 +82,6 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
       (onTitleSave as (newTitle: string) => void)(newTitle);
     }
   }, [isLegacyMode, legacyOnTitleChange, onTitleSave]);
-
-  // For legacy mode, sync with external edit state
-  const [internalIsEditing, setInternalIsEditing] = useState(false);
-
-  useEffect(() => {
-    if (isLegacyMode && legacyIsEditing !== undefined) {
-      setInternalIsEditing(legacyIsEditing);
-    }
-  }, [isLegacyMode, legacyIsEditing]);
-
-  const handleDelete = () => {
-    if (showDeleteConfirm) {
-      onDelete();
-      setShowDeleteConfirm(false);
-    } else {
-      setShowDeleteConfirm(true);
-    }
-  };
-
-  const handleCancelDelete = () => {
-    setShowDeleteConfirm(false);
-  };
 
   // Determine the displayed/editable value
   const displayValue = isLegacyMode && legacyIsEditing && legacyTemporaryTitle !== undefined
@@ -141,34 +117,14 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
       </div>
 
       <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-        {showDeleteConfirm ? (
-          <>
-            <span className="text-sm text-gray-600 hidden sm:inline">Delete?</span>
-            <button
-              onClick={handleDelete}
-              className="text-red-600 border border-red-300 bg-red-50 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-red-100 transition-colors"
-              title="Confirm Delete"
-            >
-              Yes
-            </button>
-            <button
-              onClick={handleCancelDelete}
-              className="text-gray-600 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors"
-              title="Cancel Delete"
-            >
-              No
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={handleDelete}
-            className="flex items-center gap-1.5 text-gray-500 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-colors"
-            title="Remove Section"
-          >
-            <MdDeleteOutline className="text-lg" />
-            <span className="hidden sm:inline">Remove</span>
-          </button>
-        )}
+        <button
+          onClick={onDelete}
+          className="flex items-center gap-1.5 text-gray-500 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-colors"
+          title="Remove Section"
+        >
+          <MdDeleteOutline className="text-lg" />
+          <span className="hidden sm:inline">Remove</span>
+        </button>
       </div>
     </div>
   );
