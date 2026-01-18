@@ -12,7 +12,11 @@ interface DragHandleProps {
  * DragHandle Component
  *
  * Wraps sections with drag-and-drop functionality.
- * Features a full-width draggable header bar at the top for easy grabbing.
+ * Implements "Quiet by Default, Helpful on Demand" UX:
+ * - Default: Clean, no visible controls
+ * - Hover: Subtle spotlight + grip handle reveals
+ * - Handle hover (after delay): Polite tooltip appears
+ * - Dragging: Ghost placeholder marks landing zone
  */
 const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false }) => {
   const {
@@ -40,7 +44,7 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
       style={style}
       className={`relative group rounded-2xl ${
         isDragging
-          ? 'opacity-0 pointer-events-none'
+          ? 'border-2 border-dashed border-blue-300 bg-blue-50/50 min-h-[60px]'
           : 'transition-all duration-200 ease-out'
       } ${showDropIndicator ? 'mt-3' : ''}`}
       {...attributes}
@@ -58,38 +62,54 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
         </div>
       )}
 
-      {/* Full-width draggable header bar */}
+      {/* Drag handle bar - invisible by default, reveals on item hover */}
       {!disabled && (
         <div
           {...listeners}
           className={`
-            w-full h-2 rounded-t-2xl cursor-grab active:cursor-grabbing
+            group/handle
+            w-full h-4 md:h-2 rounded-t-2xl cursor-grab active:cursor-grabbing
             ${isDragging
-              ? 'bg-blue-400'
-              : 'bg-transparent hover:bg-blue-100 group-hover:bg-blue-50'
+              ? 'bg-blue-50'
+              : 'bg-transparent'
             }
-            transition-colors duration-150 ease-out
+            transition-all duration-150 ease-out
             flex items-center justify-center
+            relative
           `}
           aria-label="Drag to reorder section"
-          title="Drag to reorder section"
         >
-          {/* Drag indicator dots (visible on hover) */}
+          {/* Grip dots - only visible on section hover, hidden by default */}
           <div className={`
-            flex gap-0.5
-            ${isDragging ? 'opacity-100' : 'opacity-0 group-hover:opacity-60'}
-            transition-opacity duration-150
+            flex gap-1
+            ${isDragging ? 'opacity-0' : 'opacity-0 group-hover:opacity-50 group-hover/handle:opacity-80'}
+            transition-opacity duration-200
           `}>
             <div className="w-1 h-1 rounded-full bg-gray-400" />
             <div className="w-1 h-1 rounded-full bg-gray-400" />
             <div className="w-1 h-1 rounded-full bg-gray-400" />
           </div>
+
+          {/* Polite tooltip - only appears when hovering on handle after ~800ms delay */}
+          {!isDragging && !isSorting && (
+            <span className="
+              absolute -top-8 left-1/2 -translate-x-1/2 z-50
+              px-2 py-1 text-xs text-white bg-slate-800 rounded
+              opacity-0 group-hover/handle:opacity-100
+              transition-opacity duration-200 delay-700
+              pointer-events-none whitespace-nowrap
+              after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2
+              after:border-4 after:border-transparent after:border-t-slate-800
+            ">
+              Drag to reorder
+            </span>
+          )}
         </div>
       )}
 
-      {/* Section content */}
+      {/* Section content - hidden when dragging to show ghost placeholder */}
       <div className={`
-        ${isDragging ? 'pointer-events-none' : ''}
+        ${isDragging ? 'opacity-0 pointer-events-none' : ''}
         transition-all duration-200 ease-out
       `}>
         {children}
