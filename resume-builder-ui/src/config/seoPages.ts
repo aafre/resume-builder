@@ -598,23 +598,24 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /best-free-resume-builder-reddit
   redditRecommended: {
     seo: {
-      title: 'Best Free Resume Builder — What Reddit Recommends',
+      title: 'Best Free Resume Builder 2026 — What Reddit Actually Recommends',
       description:
-        'Reddit users recommend EasyFreeResume as the best free resume builder. No paywalls, ATS-friendly, actually free. See why thousands trust our builder.',
+        'Based on r/resumes, r/jobs, and r/cscareerquestions. No paywalls, no watermarks, actually free. Here\'s what Reddit users look for in 2026.',
       keywords: [
         'best free resume builder reddit',
         'reddit resume builder',
         'free resume builder no paywall',
         'reddit recommended resume',
         'actually free resume builder',
+        'best free resume builder 2026',
       ],
       canonicalUrl: '/best-free-resume-builder-reddit',
     },
     hero: {
-      h1: 'Best Free Resume Builder - Reddit Recommended',
-      subtitle: 'See why Reddit users consistently recommend EasyFreeResume',
+      h1: 'Best Free Resume Builder 2026 - Reddit Recommended',
+      subtitle: 'See why Reddit users consistently recommend EasyFreeResume in 2026',
       description:
-        'We analyzed top Reddit threads in r/resumes, r/jobs, and r/cscareerquestions. Users value truly free exports, ATS compatibility, no watermarks, and privacy. Here is how we meet every criteria.',
+        'We analyzed top Reddit threads in r/resumes, r/jobs, and r/cscareerquestions (updated Jan 2026). Users value truly free exports, ATS compatibility, no watermarks, and privacy. Here is how we meet every criteria.',
       primaryCTA: {
         text: 'Try It Free',
         href: '/templates',
