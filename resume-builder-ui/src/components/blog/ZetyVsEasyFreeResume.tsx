@@ -3,15 +3,16 @@ import BlogLayout from "../BlogLayout";
 export default function ZetyVsEasyFreeResume() {
   return (
     <BlogLayout
-      title="Zety Pricing 2025: Why Pay? Use This 100% Free Alternative Instead"
-      description="Looking for Zety pricing? Don't get locked into a $5.95-$17.95/month subscription. EasyFreeResume offers the same ATS templates for $0. No hidden fees, no watermarks."
+      title="Zety Pricing 2026: Why Pay? Use This 100% Free Alternative Instead"
+      description="Looking for Zety pricing? Don't get locked into a $5.95-$23.95/month subscription. EasyFreeResume offers the same ATS templates for $0. No hidden fees, no watermarks."
       publishDate="2025-07-28"
+      lastUpdated="2026-01-18"
       readTime="9 min"
       keywords={[
         "zety pricing",
         "is zety free",
         "zety cost",
-        "zety pricing 2025",
+        "zety pricing 2026",
         "zety alternative free",
         "zety vs easyfreeresume",
         "free resume builder vs paid",
@@ -74,7 +75,7 @@ export default function ZetyVsEasyFreeResume() {
                   100% Free
                 </td>
                 <td className="px-6 py-4 text-center text-red-600">
-                  $5.95 - $17.95/month
+                  $5.95 - $23.95/month
                 </td>
               </tr>
               <tr>
@@ -340,25 +341,44 @@ export default function ZetyVsEasyFreeResume() {
 
         <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-8">
           <h3 className="font-bold text-red-800 mb-4">
-            💰 Zety Pricing Breakdown
+            💰 Zety Pricing 2026 Breakdown
           </h3>
           <div className="space-y-4 text-red-700">
-            <div>
-              <p className="font-medium">Monthly Plan: $17.95/month</p>
-              <p className="text-sm">Annual cost: $215.40</p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-red-200">
+                    <th className="text-left py-2 font-bold">Plan</th>
+                    <th className="text-left py-2 font-bold">Price</th>
+                    <th className="text-left py-2 font-bold">Annual Cost</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-red-100">
+                  <tr>
+                    <td className="py-2">Monthly</td>
+                    <td className="py-2">$23.95/month</td>
+                    <td className="py-2">$287.40/year</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2">Quarterly</td>
+                    <td className="py-2">$11.95/month</td>
+                    <td className="py-2">$143.40/year</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2">Annual (Most Popular)</td>
+                    <td className="py-2">$5.95/month</td>
+                    <td className="py-2">$71.40/year (billed upfront)</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div>
-              <p className="font-medium">
-                Most Popular: $5.95/month (billed annually)
-              </p>
-              <p className="text-sm">Upfront cost: $71.40/year</p>
-            </div>
-            <div>
-              <p className="font-medium">Hidden costs:</p>
+            <div className="mt-4">
+              <p className="font-medium">Watch out for:</p>
               <ul className="text-sm list-disc pl-5 space-y-1">
                 <li>Automatic renewal (easy to forget to cancel)</li>
                 <li>Limited access if you stop paying</li>
                 <li>No access to your resumes without subscription</li>
+                <li>Free tier only lets you build - downloading requires payment</li>
               </ul>
             </div>
           </div>
@@ -372,7 +392,7 @@ export default function ZetyVsEasyFreeResume() {
             <p className="text-6xl font-bold mb-2">$0</p>
             <p className="text-xl">Forever. No tricks.</p>
             <p className="text-sm mt-4">
-              What could you do with that extra $71-$215 per year? Professional
+              What could you do with that extra $71-$287 per year? Professional
               development courses, interview clothes, networking events, or
               interview coaching with tools like PrepAI.
             </p>

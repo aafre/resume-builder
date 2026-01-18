@@ -8,18 +8,20 @@ interface BlogLayoutProps {
   title: string;
   description: string;
   publishDate: string;
+  lastUpdated?: string;
   readTime: string;
   keywords: string[];
   showBreadcrumbs?: boolean;
   ctaType?: 'resume' | 'interview' | 'general';
 }
 
-export default function BlogLayout({ 
-  children, 
-  title, 
-  description, 
-  publishDate, 
-  readTime, 
+export default function BlogLayout({
+  children,
+  title,
+  description,
+  publishDate,
+  lastUpdated,
+  readTime,
   keywords,
   showBreadcrumbs = true,
   ctaType = 'general'
@@ -40,6 +42,7 @@ export default function BlogLayout({
           "headline": title,
           "description": description,
           "datePublished": publishDate,
+          ...(lastUpdated && { "dateModified": lastUpdated }),
           "author": {
             "@type": "Organization",
             "name": "EasyFreeResume"
@@ -91,13 +94,26 @@ export default function BlogLayout({
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
               </svg>
-              {new Date(publishDate).toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+              {new Date(publishDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
               })}
             </time>
-            
+
+            {lastUpdated && (
+              <time dateTime={lastUpdated} className="flex items-center gap-1 text-green-700">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+                </svg>
+                Updated {new Date(lastUpdated).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </time>
+            )}
+
             <span className="flex items-center gap-1">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
