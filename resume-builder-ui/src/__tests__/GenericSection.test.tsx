@@ -85,9 +85,8 @@ describe("GenericSection (Text Type)", () => {
       { wrapper: DndWrapper }
     );
 
-    // In non-editing mode, the title is rendered as text with an edit button.
-    expect(screen.getByText("Summary")).toBeInTheDocument();
-    expect(screen.getByTitle("Edit Title")).toBeInTheDocument();
+    // The title is rendered as a clickable button for inline editing
+    expect(screen.getByRole('button', { name: /edit: summary/i })).toBeInTheDocument();
     // For a text section, a textarea should be rendered (via RichTextArea mock).
     const textarea = screen.getByRole("textbox");
     expect(textarea.tagName).toBe("TEXTAREA");
@@ -248,68 +247,7 @@ describe("GenericSection (List Type)", () => {
 });
 
 describe("GenericSection Title Editing", () => {
-  it("renders title editing input when isEditing is true", () => {
-    const onUpdateMock = vi.fn();
-    const onEditTitleMock = vi.fn();
-    const onSaveTitleMock = vi.fn();
-    const onCancelTitleMock = vi.fn();
-    const onDeleteMock = vi.fn();
-    const setTemporaryTitleMock = vi.fn();
-
-    render(
-      <GenericSection
-        section={textSection}
-        onUpdate={onUpdateMock}
-        onEditTitle={onEditTitleMock}
-        onSaveTitle={onSaveTitleMock}
-        onCancelTitle={onCancelTitleMock}
-        onDelete={onDeleteMock}
-        isEditing={true}
-        temporaryTitle="Editing Title"
-        setTemporaryTitle={setTemporaryTitleMock}
-      />,
-      { wrapper: DndWrapper }
-    );
-
-    // Get the title editing input (should be type="text" for title editing)
-    const titleInput = screen.getByDisplayValue("Editing Title");
-    expect(titleInput).toBeInTheDocument();
-    expect(titleInput.tagName).toBe("INPUT");
-
-    // The Save and Cancel buttons should be present.
-    expect(screen.getByTitle("Save Title")).toBeInTheDocument();
-    expect(screen.getByTitle("Cancel")).toBeInTheDocument();
-  });
-
-  it("calls onSaveTitle and onCancelTitle when the respective buttons are clicked", () => {
-    const onUpdateMock = vi.fn();
-    const onEditTitleMock = vi.fn();
-    const onSaveTitleMock = vi.fn();
-    const onCancelTitleMock = vi.fn();
-    const onDeleteMock = vi.fn();
-    const setTemporaryTitleMock = vi.fn();
-
-    render(
-      <GenericSection
-        section={textSection}
-        onUpdate={onUpdateMock}
-        onEditTitle={onEditTitleMock}
-        onSaveTitle={onSaveTitleMock}
-        onCancelTitle={onCancelTitleMock}
-        onDelete={onDeleteMock}
-        isEditing={true}
-        temporaryTitle="Editing Title"
-        setTemporaryTitle={setTemporaryTitleMock}
-      />,
-      { wrapper: DndWrapper }
-    );
-    fireEvent.click(screen.getByTitle("Save Title"));
-    expect(onSaveTitleMock).toHaveBeenCalledTimes(1);
-    fireEvent.click(screen.getByTitle("Cancel"));
-    expect(onCancelTitleMock).toHaveBeenCalledTimes(1);
-  });
-
-  it("calls onEditTitle when the edit button is clicked in non-editing mode", () => {
+  it("renders section title that is clickable for inline editing", () => {
     const onUpdateMock = vi.fn();
     const onEditTitleMock = vi.fn();
     const onSaveTitleMock = vi.fn();
@@ -331,8 +269,16 @@ describe("GenericSection Title Editing", () => {
       />,
       { wrapper: DndWrapper }
     );
-    fireEvent.click(screen.getByTitle("Edit Title"));
-    expect(onEditTitleMock).toHaveBeenCalledTimes(1);
+
+    // The title should be rendered as a clickable button for inline editing
+    const titleButton = screen.getByRole('button', { name: /edit: summary/i });
+    expect(titleButton).toBeInTheDocument();
+
+    // Click to enter edit mode
+    fireEvent.click(titleButton);
+
+    // Should now have an input field for editing with aria-label
+    expect(screen.getByRole('textbox', { name: /edit text/i })).toBeInTheDocument();
   });
 
   it("calls onDelete when the Remove Section button is clicked", () => {
@@ -357,6 +303,8 @@ describe("GenericSection Title Editing", () => {
       />,
       { wrapper: DndWrapper }
     );
+
+    // Click calls onDelete directly (modal handles confirmation)
     fireEvent.click(screen.getByText("Remove"));
     expect(onDeleteMock).toHaveBeenCalledTimes(1);
   });

@@ -41,6 +41,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
 }) => {
   const [selectedPosition, setSelectedPosition] = useState<InsertPosition>('bottom');
   const [showAfterSection, setShowAfterSection] = useState(false);
+  const [selectedType, setSelectedType] = useState<SectionType | null>(null);
 
   const allSectionTypes: SectionTypeOption[] = [
     {
@@ -99,6 +100,16 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
 
   const handleAfterSectionSelect = (index: number) => {
     setSelectedPosition(index);
+  };
+
+  const handleTypeSelect = (type: SectionType) => {
+    setSelectedType(type);
+  };
+
+  const handleConfirm = () => {
+    if (selectedType) {
+      onSelect(selectedType, selectedPosition);
+    }
   };
 
   const isTopOrBottom = selectedPosition === 'top' || selectedPosition === 'bottom';
@@ -182,36 +193,60 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {sectionTypes.map((section) => (
-            <button
-              key={section.type}
-              onClick={() => onSelect(section.type, selectedPosition)}
-              className="group flex flex-col text-left bg-white rounded-xl border border-gray-200
-                         overflow-hidden shadow-sm hover:shadow-md hover:border-blue-400
-                         hover:ring-2 hover:ring-blue-100 transition-all duration-200"
-            >
-              {/* Visual Area */}
-              <div className="h-28 sm:h-32 bg-gray-50 p-4 flex items-center justify-center
-                              group-hover:bg-blue-50/30 transition-colors">
-                <section.Visual className="w-full h-full" />
-              </div>
+          {sectionTypes.map((section) => {
+            const isSelected = selectedType === section.type;
+            return (
+              <button
+                key={section.type}
+                type="button"
+                onClick={() => handleTypeSelect(section.type)}
+                className={`group flex flex-col text-left bg-white rounded-xl border
+                           overflow-hidden shadow-sm transition-all duration-200
+                           ${isSelected
+                             ? 'border-blue-500 ring-2 ring-blue-200 shadow-md'
+                             : 'border-gray-200 hover:shadow-md hover:border-blue-400 hover:ring-2 hover:ring-blue-100'
+                           }`}
+              >
+                {/* Visual Area */}
+                <div className={`h-28 sm:h-32 p-4 flex items-center justify-center transition-colors
+                                ${isSelected ? 'bg-blue-50' : 'bg-gray-50 group-hover:bg-blue-50/30'}`}>
+                  <section.Visual className="w-full h-full" />
+                </div>
 
-              {/* Content Area */}
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-blue-700 transition-colors">
-                  {section.title}
-                </h3>
-                <p className="text-xs text-gray-500 line-clamp-2">{section.description}</p>
-              </div>
-            </button>
-          ))}
+                {/* Content Area */}
+                <div className="p-4">
+                  <h3 className={`font-semibold mb-1 transition-colors
+                                 ${isSelected ? 'text-blue-700' : 'text-gray-900 group-hover:text-blue-700'}`}>
+                    {section.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 line-clamp-2">{section.description}</p>
+                </div>
+              </button>
+            );
+          })}
         </div>
-        <button
-          className="mt-4 sm:mt-6 bg-red-500 text-white px-4 py-2 rounded-lg w-full hover:bg-red-600 transition-colors"
-          onClick={onClose}
-        >
-          Cancel
-        </button>
+        {/* Action Buttons */}
+        <div className="mt-4 sm:mt-6 flex gap-3">
+          <button
+            type="button"
+            className="flex-1 bg-gray-100 text-gray-700 px-4 py-2.5 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={handleConfirm}
+            disabled={!selectedType}
+            className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition-colors
+                       ${selectedType
+                         ? 'bg-blue-600 text-white hover:bg-blue-700'
+                         : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                       }`}
+          >
+            Add Section
+          </button>
+        </div>
       </div>
     </div>
   );
