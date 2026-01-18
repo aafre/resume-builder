@@ -173,7 +173,7 @@ export const useUnifiedDragDrop = ({
   /**
    * Configure sensors for drag-and-drop
    * - PointerSensor: 8px activation distance to prevent accidental drags
-   * - TouchSensor: 150ms delay to distinguish from scroll gestures
+   * - TouchSensor: 150ms delay and 5px tolerance to distinguish from scroll gestures
    * - KeyboardSensor: Keyboard navigation support
    */
   const sensors = useSensors(
