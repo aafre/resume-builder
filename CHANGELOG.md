@@ -2,6 +2,55 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.7.0] - 2026-01-18
+
+### 🚀 Features
+
+- **editor:** Improve drag-and-drop UX with full-width headers and position selection
+- **editor:** Improve drag-and-drop UX with full-width headers and position selection
+- **editor:** Unify drag-and-drop with single DndContext and improved visual feedback
+- **editor:** Implement intent-based drag-and-drop UX
+- **editor:** Add SVG wireframe components for section types
+- **editor:** Upgrade SectionTypeModal to visual grid layout
+- **editor:** Upgrade insert position to segmented control
+- **editor:** Upgrade insert position to segmented control
+- **shared:** Add ActionIcon, GhostButton, InlineTextEditor components
+- **editor:** Add confirm button to SectionTypeModal
+- **help:** Upgrade help content with visual cards and device-specific tips
+
+### 🐛 Bug Fixes
+
+- **editor:** Address PR review comments for drag-and-drop
+- **editor:** Scroll to correct position after adding section
+- **editor:** Address PR review feedback
+- **editor:** Address PR review feedback for SectionHeader
+- **editor:** Save section title on blur by passing value directly
+- **editor:** Validate section title before saving
+- **editor:** Show drag handles on touch devices
+- **editor:** Remove redundant sign-in button and fix save status overlap
+- **editor:** Remove obsolete tablet floating toolbar
+- **editor:** Enable touch drag by adding touch-action and tuning sensor
+
+### 🚜 Refactor
+
+- **editor:** Extract GripDots and DragTooltip shared components
+- **editor:** Extract liftedPreviewClasses constant for DragOverlay
+- **editor:** Enhance section wireframes with realistic layouts
+- **editor:** Modernize SectionHeader with InlineTextEditor
+- **editor:** Replace Add Entry buttons with GhostButton
+- **editor:** Update GenericSection and IconListSection to use SectionHeader
+- **editor:** Remove inline delete confirmation from SectionHeader
+- **shared:** Remove redundant setEditValue calls in InlineTextEditor
+- **editor:** Use Tailwind touch-none class instead of inline style
+- **help:** Address PR review feedback
+
+### 🧪 Testing
+
+- **editor:** Wrap section tests in DndContext for drag-and-drop support
+- **editor:** Update SectionTypeModal tests for grid layout
+- **editor:** Remove EditorToolbar tests from EditorContent
+- **editor:** Add test for idle save status in EditorHeader
+
 ## [3.6.0] - 2026-01-08
 
 ### 🚀 Features
@@ -15,6 +64,10 @@ All notable changes to this project will be documented in this file.
 - **EducationSection:** Add item-level drag-and-drop reordering
 - **IconListSection:** Add item-level drag-and-drop reordering
 - **GenericSection:** Add item-level drag-and-drop for list types
+
+### 🐛 Bug Fixes
+
+- **editor:** Resolve TypeScript errors in item DnD integration
 
 ### 🚜 Refactor
 
