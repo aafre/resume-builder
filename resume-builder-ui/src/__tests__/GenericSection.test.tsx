@@ -1,6 +1,12 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
+import { DndContext } from "@dnd-kit/core";
 import GenericSection from "../components/GenericSection";
+
+// Wrapper component to provide DndContext for testing
+const DndWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <DndContext>{children}</DndContext>
+);
 
 // --- Mock RichTextArea to return a simple textarea for testing ---
 vi.mock("../components/RichTextArea", () => {
@@ -75,7 +81,8 @@ describe("GenericSection (Text Type)", () => {
         isEditing={false}
         temporaryTitle=""
         setTemporaryTitle={setTemporaryTitleMock}
-      />
+      />,
+      { wrapper: DndWrapper }
     );
 
     // In non-editing mode, the title is rendered as text with an edit button.
@@ -106,7 +113,8 @@ describe("GenericSection (Text Type)", () => {
         isEditing={false}
         temporaryTitle=""
         setTemporaryTitle={setTemporaryTitleMock}
-      />
+      />,
+      { wrapper: DndWrapper }
     );
     const textarea = screen.getByRole("textbox");
     fireEvent.change(textarea, { target: { value: "Updated text content" } });
@@ -136,7 +144,8 @@ describe("GenericSection (List Type)", () => {
         isEditing={false}
         temporaryTitle=""
         setTemporaryTitle={setTemporaryTitleMock}
-      />
+      />,
+      { wrapper: DndWrapper }
     );
     // Verify that inputs for each list item are rendered.
     expect(screen.getByDisplayValue("Skill 1")).toBeInTheDocument();
@@ -164,7 +173,8 @@ describe("GenericSection (List Type)", () => {
         isEditing={false}
         temporaryTitle=""
         setTemporaryTitle={setTemporaryTitleMock}
-      />
+      />,
+      { wrapper: DndWrapper }
     );
     const firstItemInput = screen.getByDisplayValue("Skill 1");
     fireEvent.change(firstItemInput, { target: { value: "Updated Skill" } });
@@ -192,7 +202,8 @@ describe("GenericSection (List Type)", () => {
         isEditing={false}
         temporaryTitle=""
         setTemporaryTitle={setTemporaryTitleMock}
-      />
+      />,
+      { wrapper: DndWrapper }
     );
     const addItemButton = screen.getByText("Add Item");
     fireEvent.click(addItemButton);
@@ -222,7 +233,8 @@ describe("GenericSection (List Type)", () => {
         isEditing={false}
         temporaryTitle=""
         setTemporaryTitle={setTemporaryTitleMock}
-      />
+      />,
+      { wrapper: DndWrapper }
     );
     // For each list item, there's a delete button with title "Remove Item".
     const deleteButtons = screen.getAllByTitle("Remove Item");
@@ -255,7 +267,8 @@ describe("GenericSection Title Editing", () => {
         isEditing={true}
         temporaryTitle="Editing Title"
         setTemporaryTitle={setTemporaryTitleMock}
-      />
+      />,
+      { wrapper: DndWrapper }
     );
 
     // Get the title editing input (should be type="text" for title editing)
@@ -287,7 +300,8 @@ describe("GenericSection Title Editing", () => {
         isEditing={true}
         temporaryTitle="Editing Title"
         setTemporaryTitle={setTemporaryTitleMock}
-      />
+      />,
+      { wrapper: DndWrapper }
     );
     fireEvent.click(screen.getByTitle("Save Title"));
     expect(onSaveTitleMock).toHaveBeenCalledTimes(1);
@@ -314,7 +328,8 @@ describe("GenericSection Title Editing", () => {
         isEditing={false}
         temporaryTitle=""
         setTemporaryTitle={setTemporaryTitleMock}
-      />
+      />,
+      { wrapper: DndWrapper }
     );
     fireEvent.click(screen.getByTitle("Edit Title"));
     expect(onEditTitleMock).toHaveBeenCalledTimes(1);
@@ -339,7 +354,8 @@ describe("GenericSection Title Editing", () => {
         isEditing={false}
         temporaryTitle=""
         setTemporaryTitle={setTemporaryTitleMock}
-      />
+      />,
+      { wrapper: DndWrapper }
     );
     fireEvent.click(screen.getByText("Remove"));
     expect(onDeleteMock).toHaveBeenCalledTimes(1);
