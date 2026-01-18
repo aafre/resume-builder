@@ -35,8 +35,8 @@ export interface SectionHeaderProps {
   setShowDeleteConfirm?: (show: boolean) => void;
 
   // === Common Props ===
-  /** Callback when delete is confirmed */
-  onDelete: () => void;
+  /** Callback when delete is requested (optional - button hidden if not provided) */
+  onDelete?: () => void;
   /** Whether the section is collapsed */
   isCollapsed?: boolean;
   /** Callback when collapse is toggled */
@@ -48,7 +48,7 @@ export interface SectionHeaderProps {
  *
  * A clean header component for resume sections that includes:
  * - Inline editable title (click to edit, blur/enter to save)
- * - Delete button with confirmation
+ * - Optional delete button
  * - Optional collapse/expand toggle
  *
  * Supports both new simplified API and legacy controlled API for backwards compatibility.
@@ -72,12 +72,18 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 
   // Handle title save - bridge between new and legacy APIs
   const handleTitleSave = useCallback((newTitle: string) => {
-    if (isLegacyMode && legacyOnTitleChange && onTitleSave) {
+    if (!onTitleSave) {
+      return;
+    }
+
+    if (isLegacyMode) {
       // Legacy mode: update temporaryTitle then call save
-      legacyOnTitleChange(newTitle);
-      // Call the legacy save (no argument)
+      if (legacyOnTitleChange) {
+        legacyOnTitleChange(newTitle);
+      }
+      // The legacy onTitleSave callback takes no arguments
       (onTitleSave as () => void)();
-    } else if (onTitleSave) {
+    } else {
       // New mode: pass title directly
       (onTitleSave as (newTitle: string) => void)(newTitle);
     }
@@ -94,6 +100,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         {/* Collapse/Expand Button */}
         {onToggleCollapse && (
           <button
+            type="button"
             onClick={onToggleCollapse}
             className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors flex-shrink-0"
             aria-label={isCollapsed ? "Expand section" : "Collapse section"}
@@ -110,22 +117,27 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         <InlineTextEditor
           value={displayValue}
           onSave={handleTitleSave}
+          onStartEdit={isLegacyMode ? legacyOnTitleEdit : undefined}
+          onCancel={isLegacyMode ? legacyOnTitleCancel : undefined}
           as="h2"
           textClassName="text-xl font-semibold text-gray-900"
           placeholder="Section title..."
         />
       </div>
 
-      <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-        <button
-          onClick={onDelete}
-          className="flex items-center gap-1.5 text-gray-500 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-colors"
-          title="Remove Section"
-        >
-          <MdDeleteOutline className="text-lg" />
-          <span className="hidden sm:inline">Remove</span>
-        </button>
-      </div>
+      {onDelete && (
+        <div className="flex items-center gap-2 flex-shrink-0 ml-4">
+          <button
+            type="button"
+            onClick={onDelete}
+            className="flex items-center gap-1.5 text-gray-500 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-colors"
+            title="Remove Section"
+          >
+            <MdDeleteOutline className="text-lg" />
+            <span className="hidden sm:inline">Remove</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

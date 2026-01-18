@@ -5,6 +5,10 @@ export interface InlineTextEditorProps {
   value: string;
   /** Callback when value is saved */
   onSave: (newValue: string) => void;
+  /** Callback when editing starts */
+  onStartEdit?: () => void;
+  /** Callback when editing is cancelled */
+  onCancel?: () => void;
   /** Placeholder text when empty */
   placeholder?: string;
   /** Additional CSS classes for the container */
@@ -38,6 +42,8 @@ export interface InlineTextEditorProps {
 export const InlineTextEditor: React.FC<InlineTextEditorProps> = ({
   value,
   onSave,
+  onStartEdit,
+  onCancel,
   placeholder = 'Click to edit...',
   className = '',
   textClassName = '',
@@ -68,7 +74,8 @@ export const InlineTextEditor: React.FC<InlineTextEditorProps> = ({
     if (disabled) return;
     setEditValue(value);
     setIsEditing(true);
-  }, [disabled, value]);
+    onStartEdit?.();
+  }, [disabled, value, onStartEdit]);
 
   const handleSave = useCallback(() => {
     const trimmedValue = editValue.trim();
@@ -88,7 +95,8 @@ export const InlineTextEditor: React.FC<InlineTextEditorProps> = ({
   const handleCancel = useCallback(() => {
     setEditValue(value);
     setIsEditing(false);
-  }, [value]);
+    onCancel?.();
+  }, [value, onCancel]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {

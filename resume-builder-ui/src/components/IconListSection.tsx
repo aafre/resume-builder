@@ -133,7 +133,7 @@ const IconListSection: React.FC<IconListSectionProps> = ({
         onTitleSave={onSaveTitle}
         onTitleCancel={onCancelTitle}
         onTitleChange={setTemporaryTitle}
-        onDelete={onDelete || (() => {})}
+        onDelete={onDelete}
         isCollapsed={isCollapsed}
         onToggleCollapse={handleToggleCollapse}
       />
