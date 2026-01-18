@@ -85,9 +85,8 @@ const SortableItem: React.FC<SortableItemProps> = ({
       {!disabled && (
         <div
           {...listeners}
-          style={{ touchAction: 'none' }}
           className={`
-            group/handle
+            group/handle touch-none
             w-full h-5 md:h-3 min-h-[44px] md:min-h-0 -mb-1 rounded-t-xl
             cursor-grab active:cursor-grabbing
             ${isDragging ? 'bg-blue-50' : 'bg-transparent'}
