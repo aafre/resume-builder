@@ -6,6 +6,7 @@ import { RichTextInput } from "./RichTextInput";
 import { MdDelete } from "react-icons/md";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
+import { GhostButton } from "./shared/GhostButton";
 
 interface EducationItem {
   degree: string;
@@ -154,11 +155,16 @@ const EducationSection: React.FC<EducationSectionProps> = ({
               onReorderEntry(oldIndex, newIndex);
             }
           }}
+          getItemInfo={(item) => ({
+            label: item.school || 'Untitled School',
+            sublabel: item.degree || undefined,
+            type: 'education' as const,
+          })}
         >
           {({ itemIds }) => (
             <>
               {education.map((item, index) => (
-                <SortableItem key={itemIds[index]} id={itemIds[index]} dragHandlePosition="left">
+                <SortableItem key={itemIds[index]} id={itemIds[index]}>
                   <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
                     <div className="flex justify-between items-center">
                       <h3 className="text-lg font-semibold">Entry {index + 1}</h3>
@@ -240,12 +246,9 @@ const EducationSection: React.FC<EducationSectionProps> = ({
         </ItemDndContext>
       )}
       {!isCollapsed && (
-        <button
-          onClick={handleAddItem}
-          className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 mt-4"
-        >
+        <GhostButton onClick={handleAddItem} className="mt-4">
           Add Entry
-        </button>
+        </GhostButton>
       )}
     </div>
   );

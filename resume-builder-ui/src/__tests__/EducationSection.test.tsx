@@ -1,6 +1,12 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
+import { DndContext } from "@dnd-kit/core";
 import EducationSection from "../components/EducationSection";
+
+// Wrapper component to provide DndContext for testing
+const DndWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <DndContext>{children}</DndContext>
+);
 
 // --- Mock the IconManager Component ---
 vi.mock("../components/IconManager", () => {
@@ -91,7 +97,7 @@ const createDefaultProps = (overrides = {}) => ({
 describe("EducationSection", { timeout: 5000 }, () => {
   it("renders education entries with correct values", () => {
     const props = createDefaultProps();
-    render(<EducationSection {...props} />);
+    render(<EducationSection {...props} />, { wrapper: DndWrapper });
 
     expect(screen.getByText("Entry 1")).toBeInTheDocument();
     expect(screen.getByText("Entry 2")).toBeInTheDocument();
@@ -117,7 +123,7 @@ describe("EducationSection", { timeout: 5000 }, () => {
   it("calls onUpdate when an input value is changed", () => {
     const onUpdateMock = vi.fn();
     const props = createDefaultProps({ onUpdate: onUpdateMock });
-    render(<EducationSection {...props} />);
+    render(<EducationSection {...props} />, { wrapper: DndWrapper });
 
     const degreeInput = screen.getByDisplayValue("MSc in Computer Science");
     fireEvent.change(degreeInput, {
@@ -133,7 +139,7 @@ describe("EducationSection", { timeout: 5000 }, () => {
   it("removes an education entry when the Remove button is clicked", () => {
     const onUpdateMock = vi.fn();
     const props = createDefaultProps({ onUpdate: onUpdateMock });
-    render(<EducationSection {...props} />);
+    render(<EducationSection {...props} />, { wrapper: DndWrapper });
 
     // Get all delete buttons (the trash icon)
     const deleteButtons = screen.getAllByTitle("Delete this entry");
@@ -148,7 +154,7 @@ describe("EducationSection", { timeout: 5000 }, () => {
   it("adds a new education entry when the Add Entry button is clicked", () => {
     const onUpdateMock = vi.fn();
     const props = createDefaultProps({ onUpdate: onUpdateMock });
-    render(<EducationSection {...props} />);
+    render(<EducationSection {...props} />, { wrapper: DndWrapper });
 
     const addButton = screen.getByText("Add Entry");
     fireEvent.click(addButton);
@@ -176,7 +182,7 @@ describe("EducationSection", { timeout: 5000 }, () => {
       supportsIcons: true,
       iconRegistry: mockIconRegistry,
     });
-    render(<EducationSection {...props} />);
+    render(<EducationSection {...props} />, { wrapper: DndWrapper });
 
     const iconManagerElements = screen.getAllByTestId("icon-manager");
     expect(iconManagerElements).toHaveLength(mockEducation.length);
@@ -205,7 +211,7 @@ describe("EducationSection", { timeout: 5000 }, () => {
       iconRegistry: mockIconRegistry,
     });
 
-    render(<EducationSection {...props} />);
+    render(<EducationSection {...props} />, { wrapper: DndWrapper });
 
     const iconManagerElement = screen.getByTestId("icon-manager");
     expect(iconManagerElement).toHaveAttribute("data-value", "non-existent.png");
@@ -218,7 +224,7 @@ describe("EducationSection", { timeout: 5000 }, () => {
       onUpdate: onUpdateMock,
       onDeleteEntry: onDeleteEntryMock,
     });
-    render(<EducationSection {...props} />);
+    render(<EducationSection {...props} />, { wrapper: DndWrapper });
 
     const deleteButtons = screen.getAllByTitle("Delete this entry");
     fireEvent.click(deleteButtons[0]);
@@ -230,7 +236,7 @@ describe("EducationSection", { timeout: 5000 }, () => {
 
   it("renders section header with correct title", () => {
     const props = createDefaultProps({ sectionName: "Academic Background" });
-    render(<EducationSection {...props} />);
+    render(<EducationSection {...props} />, { wrapper: DndWrapper });
 
     expect(screen.getByText("Academic Background")).toBeInTheDocument();
   });

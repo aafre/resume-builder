@@ -13,7 +13,7 @@ import usePreferencePersistence from "../hooks/usePreferencePersistence";
 import { useModalManager } from "../hooks/editor/useModalManager";
 import { useEditorState } from "../hooks/editor/useEditorState";
 import { useContactForm } from "../hooks/editor/useContactForm";
-import { useSectionDragDrop } from "../hooks/editor/useSectionDragDrop";
+import { useUnifiedDragDrop } from "../hooks/editor/useUnifiedDragDrop";
 import { useSectionNavigation } from "../hooks/editor/useSectionNavigation";
 import { useResumeLoader } from "../hooks/editor/useResumeLoader";
 import { useTourFlow } from "../hooks/editor/useTourFlow";
@@ -97,7 +97,7 @@ const Editor: React.FC = () => {
     setContactInfo,
   });
 
-  const dragDrop = useSectionDragDrop({
+  const dragDrop = useUnifiedDragDrop({
     sections,
     setSections,
   });
@@ -178,9 +178,10 @@ const Editor: React.FC = () => {
   });
 
   // Memoized callback for scrolling to newly added sections
-  const handleSectionAdded = useCallback(() => {
+  const handleSectionAdded = useCallback((insertedIndex: number) => {
     setTimeout(() => {
-      newSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+      const targetRef = sectionRefs.current[insertedIndex];
+      targetRef?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
   }, []);
 
@@ -336,10 +337,16 @@ const Editor: React.FC = () => {
         dragDrop={{
           sensors: dragDrop.sensors,
           activeId: dragDrop.activeId,
+          activeLevel: dragDrop.activeLevel,
           draggedSection: dragDrop.draggedSection,
+          draggedItemInfo: dragDrop.draggedItemInfo,
           handleDragStart: dragDrop.handleDragStart,
           handleDragEnd: dragDrop.handleDragEnd,
           handleDragCancel: dragDrop.handleDragCancel,
+          collisionDetection: dragDrop.collisionDetection,
+          registerItemHandler: dragDrop.registerItemHandler,
+          unregisterItemHandler: dragDrop.unregisterItemHandler,
+          setDraggedItemInfo: dragDrop.setDraggedItemInfo,
         }}
         sectionManagement={{
           editingTitleIndex: sectionManagement.editingTitleIndex,
@@ -425,6 +432,7 @@ const Editor: React.FC = () => {
         isAnonymous={isAnonymous}
         isAuthenticated={isAuthenticated}
         supportsIcons={supportsIcons}
+        sections={sections}
         onAuthSuccess={() => {
           toast.success('Welcome! Your resume will now be saved to the cloud.');
         }}
@@ -436,9 +444,7 @@ const Editor: React.FC = () => {
         onDismissIdleTooltip={tourFlow.dismissIdleTooltip}
         saveStatus={saveStatus}
         lastSaved={cloudLastSaved}
-        isAnonymous={isAnonymous}
         isAuthenticated={isAuthenticated}
-        onSignInClick={modalManager.openAuthModal}
       />
     </div>
   );

@@ -1,6 +1,12 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
+import { DndContext } from "@dnd-kit/core";
 import IconListSection from "../components/IconListSection";
+
+// Wrapper component to provide DndContext for testing
+const DndWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <DndContext>{children}</DndContext>
+);
 
 // --- Mock RichTextInput to return a simple input for testing ---
 vi.mock("../components/RichTextInput", () => {
@@ -62,7 +68,8 @@ describe("IconListSection", { timeout: 5000 }, () => {
   it("renders certification entries with correct values", () => {
     const onUpdateMock = vi.fn();
     render(
-      <IconListSection data={getMockCertifications()} onUpdate={onUpdateMock} />
+      <IconListSection data={getMockCertifications()} onUpdate={onUpdateMock} />,
+      { wrapper: DndWrapper }
     );
 
     // Check that the header is rendered.
@@ -86,7 +93,7 @@ describe("IconListSection", { timeout: 5000 }, () => {
 
   it("renders add button when no certifications are provided", () => {
     const onUpdateMock = vi.fn();
-    render(<IconListSection data={[]} onUpdate={onUpdateMock} />);
+    render(<IconListSection data={[]} onUpdate={onUpdateMock} />, { wrapper: DndWrapper });
     // Component doesn't render empty state message, just the Add Item button
     expect(screen.getByText("Add Item")).toBeInTheDocument();
   });
@@ -94,7 +101,8 @@ describe("IconListSection", { timeout: 5000 }, () => {
   it("calls onUpdate when a certification field is changed", () => {
     const onUpdateMock = vi.fn();
     render(
-      <IconListSection data={getMockCertifications()} onUpdate={onUpdateMock} />
+      <IconListSection data={getMockCertifications()} onUpdate={onUpdateMock} />,
+      { wrapper: DndWrapper }
     );
 
     // Change the certification field of the first item.
@@ -111,7 +119,8 @@ describe("IconListSection", { timeout: 5000 }, () => {
   it("removes a certification when its delete button is clicked", () => {
     const onUpdateMock = vi.fn();
     render(
-      <IconListSection data={getMockCertifications()} onUpdate={onUpdateMock} />
+      <IconListSection data={getMockCertifications()} onUpdate={onUpdateMock} />,
+      { wrapper: DndWrapper }
     );
 
     // The remove button is rendered with title "Remove Certification".
@@ -131,7 +140,8 @@ describe("IconListSection", { timeout: 5000 }, () => {
   it("adds a new certification when the Add Item button is clicked", () => {
     const onUpdateMock = vi.fn();
     render(
-      <IconListSection data={getMockCertifications()} onUpdate={onUpdateMock} />
+      <IconListSection data={getMockCertifications()} onUpdate={onUpdateMock} />,
+      { wrapper: DndWrapper }
     );
 
     const addButton = screen.getByText("Add Item");
@@ -155,7 +165,8 @@ describe("IconListSection", { timeout: 5000 }, () => {
         data={getMockCertifications()}
         onUpdate={onUpdateMock}
         sectionName="Licenses & Awards"
-      />
+      />,
+      { wrapper: DndWrapper }
     );
 
     expect(screen.getByText("Licenses & Awards")).toBeInTheDocument();
@@ -169,7 +180,8 @@ describe("IconListSection", { timeout: 5000 }, () => {
         data={getMockCertifications()}
         onUpdate={onUpdateMock}
         onDeleteEntry={onDeleteEntryMock}
-      />
+      />,
+      { wrapper: DndWrapper }
     );
 
     const removeButtons = screen.getAllByTitle("Remove Certification");

@@ -5,6 +5,7 @@ import React from 'react';
 import { ContactInfo, Section, SocialLink } from '../types';
 import { DragEndEvent, DragStartEvent, useSensors } from '@dnd-kit/core';
 import { SectionType } from '../services/sectionService';
+import { InsertPosition } from '../components/SectionTypeModal';
 
 // --- Editor State Types ---
 
@@ -181,7 +182,7 @@ export interface UseTourFlowReturn {
  */
 export interface UseSectionManagementReturn {
   // Section operations
-  handleAddSection: (type: SectionType) => void;
+  handleAddSection: (type: SectionType, position?: InsertPosition) => void;
   handleUpdateSection: (index: number, updatedSection: Section) => void;
   handleDeleteSection: (index: number) => void;
   handleDeleteEntry: (sectionIndex: number, entryIndex: number) => void;
@@ -193,7 +194,7 @@ export interface UseSectionManagementReturn {
   temporaryTitle: string;
   setTemporaryTitle: React.Dispatch<React.SetStateAction<string>>;
   handleTitleEdit: (index: number) => void;
-  handleTitleSave: () => void;
+  handleTitleSave: (newTitle?: string) => void;
   handleTitleCancel: () => void;
 }
 

@@ -1,21 +1,15 @@
 // src/components/ItemDndContext.tsx
-// Higher-order component that encapsulates DnD context setup for item reordering
+// Higher-order component that provides SortableContext for item reordering
+// Works with the unified DndContext at the EditorContent level
 
-import React from 'react';
-import {
-  DndContext,
-  closestCenter,
-  DragOverlay,
-} from '@dnd-kit/core';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDndMonitor } from '@dnd-kit/core';
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import {
-  restrictToVerticalAxis,
-  restrictToParentElement,
-} from '@dnd-kit/modifiers';
-import { useItemDragDrop } from '../hooks/editor/useItemDragDrop';
+import { useOptionalUnifiedDndContext, DraggedItemInfo } from '../contexts/UnifiedDndContext';
+import { parseDragId } from '../hooks/editor/useUnifiedDragDrop';
 
 /**
  * Render props passed to children
@@ -45,29 +39,29 @@ interface ItemDndContextProps<T> {
   renderDragOverlay?: (item: T, index: number) => React.ReactNode;
   /** Whether drag is disabled for all items */
   disabled?: boolean;
+  /** Whether items are subitems (use -subitem- ID pattern) */
+  isSubitem?: boolean;
+  /** Optional function to extract drag preview info from an item */
+  getItemInfo?: (item: T, index: number) => DraggedItemInfo;
 }
 
 /**
  * ItemDndContext Component
  *
- * A higher-order component that wraps content with DnD context for item reordering.
- * Encapsulates all the @dnd-kit setup needed for item-level drag and drop.
+ * A higher-order component that wraps content with SortableContext for item reordering.
+ * Registers with the unified DndContext at the EditorContent level.
  *
  * Features:
- * - Uses closestCenter collision detection
- * - Restricts dragging to vertical axis within parent element
+ * - Uses unified DndContext (no nested DndContext)
+ * - Registers handlers with parent context for proper event routing
  * - Provides render props for itemIds, activeId, and draggedItem
- * - Optional drag overlay for visual preview during drag
- * - Touch and keyboard support via useItemDragDrop hook
+ * - Touch and keyboard support via parent context
  *
  * @example
  * <ItemDndContext
  *   items={experiences}
  *   sectionId="experience-work"
  *   onReorder={(oldIndex, newIndex) => handleReorder(oldIndex, newIndex)}
- *   renderDragOverlay={(item, index) => (
- *     <ExperienceCardPreview experience={item} />
- *   )}
  * >
  *   {({ itemIds }) => (
  *     experiences.map((exp, i) => (
@@ -83,53 +77,86 @@ function ItemDndContext<T>({
   sectionId,
   onReorder,
   children,
-  renderDragOverlay,
   disabled = false,
+  isSubitem = false,
+  getItemInfo,
 }: ItemDndContextProps<T>): React.ReactElement {
-  const {
-    sensors,
-    activeId,
-    draggedItem,
-    handleDragStart,
-    handleDragEnd,
-    handleDragCancel,
-    itemIds,
-  } = useItemDragDrop({
-    items,
-    sectionId,
-    onReorder,
+  const unifiedContext = useOptionalUnifiedDndContext();
+
+  // Track active drag state for this context's items
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [draggedItem, setDraggedItem] = useState<T | null>(null);
+
+  /**
+   * Generate unique item IDs scoped to the section
+   * Format: "{sectionId}-item-{index}" or "{sectionId}-subitem-{index}"
+   */
+  const itemIds = useMemo(
+    () => items.map((_, index) =>
+      isSubitem
+        ? `${sectionId}-subitem-${index}`
+        : `${sectionId}-item-${index}`
+    ),
+    [items.length, sectionId, isSubitem]
+  );
+
+  /**
+   * Register the reorder handler with the unified context
+   */
+  useEffect(() => {
+    if (unifiedContext && !disabled) {
+      unifiedContext.registerItemHandler(sectionId, onReorder);
+      return () => {
+        unifiedContext.unregisterItemHandler(sectionId);
+      };
+    }
+  }, [unifiedContext, sectionId, onReorder, disabled]);
+
+  /**
+   * Monitor drag events to track active state for this context's items
+   */
+  useDndMonitor({
+    onDragStart(event) {
+      const id = String(event.active.id);
+      const parsed = parseDragId(id);
+
+      // Check if this drag belongs to our context
+      const belongsToUs = isSubitem
+        ? parsed.level === 'subitem' && id.startsWith(sectionId)
+        : parsed.level === 'item' && parsed.sectionId === sectionId;
+
+      if (belongsToUs) {
+        setActiveId(id);
+        const itemIndex = isSubitem ? parsed.subitemIndex : parsed.itemIndex;
+        if (itemIndex !== undefined && itemIndex >= 0 && itemIndex < items.length) {
+          const item = items[itemIndex];
+          setDraggedItem(item);
+
+          // Report item info to the unified context for drag overlay preview
+          if (unifiedContext && getItemInfo) {
+            unifiedContext.setDraggedItemInfo(getItemInfo(item, itemIndex));
+          }
+        }
+      }
+    },
+    onDragEnd() {
+      setActiveId(null);
+      setDraggedItem(null);
+    },
+    onDragCancel() {
+      setActiveId(null);
+      setDraggedItem(null);
+    },
   });
 
-  // Find the index of the dragged item for renderDragOverlay
-  const draggedIndex = activeId
-    ? itemIds.findIndex((id) => id === activeId)
-    : -1;
-
   return (
-    <DndContext
-      sensors={disabled ? [] : sensors}
-      collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onDragCancel={handleDragCancel}
-      modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+    <SortableContext
+      items={itemIds}
+      strategy={verticalListSortingStrategy}
+      disabled={disabled}
     >
-      <SortableContext
-        items={itemIds}
-        strategy={verticalListSortingStrategy}
-        disabled={disabled}
-      >
-        {children({ itemIds, activeId, draggedItem })}
-      </SortableContext>
-
-      <DragOverlay modifiers={[restrictToVerticalAxis]}>
-        {activeId && draggedItem && renderDragOverlay && draggedIndex >= 0 ? (
-          <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl border border-blue-200 p-4">
-            {renderDragOverlay(draggedItem, draggedIndex)}
-          </div>
-        ) : null}
-      </DragOverlay>
-    </DndContext>
+      {children({ itemIds, activeId, draggedItem })}
+    </SortableContext>
   );
 }
 

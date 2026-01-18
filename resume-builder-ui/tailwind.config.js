@@ -21,6 +21,9 @@ module.exports = {
     },
   },
   plugins: [
+    function ({ addVariant }) {
+      addVariant('touch', '@media (hover: none) and (pointer: coarse)');
+    },
     function ({ addUtilities }) {
       addUtilities({
         '.bg-clip-border': {

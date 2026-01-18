@@ -4,6 +4,8 @@
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import GripDots from './GripDots';
+import DragTooltip from './DragTooltip';
 
 interface SortableItemProps {
   /** Unique ID for the sortable item */
@@ -12,8 +14,6 @@ interface SortableItemProps {
   children: React.ReactNode;
   /** Whether drag is disabled */
   disabled?: boolean;
-  /** Position of the drag handle */
-  dragHandlePosition?: 'left' | 'right';
   /** Additional CSS classes for the wrapper */
   className?: string;
 }
@@ -22,17 +22,14 @@ interface SortableItemProps {
  * SortableItem Component
  *
  * A reusable wrapper that makes items draggable within a SortableContext.
- * Uses a compact drag handle (6-dot grip icon) that appears on hover.
- *
- * Features:
- * - Compact drag handle for items (smaller than section handle)
- * - Visual feedback during drag (opacity, scale, shadow)
- * - Configurable handle position (left or right)
- * - Support for disabled state
- * - Touch and keyboard accessible
+ * Implements "Quiet by Default, Helpful on Demand" UX:
+ * - Default: Clean, no visible controls
+ * - Hover: Subtle spotlight + grip handle reveals on that item only
+ * - Handle hover (after delay): Polite tooltip appears
+ * - Dragging: Ghost placeholder marks landing zone
  *
  * @example
- * <SortableItem id="experience-work-item-0" dragHandlePosition="left">
+ * <SortableItem id="experience-work-item-0">
  *   <ExperienceCard experience={experience} />
  * </SortableItem>
  */
@@ -40,7 +37,6 @@ const SortableItem: React.FC<SortableItemProps> = ({
   id,
   children,
   disabled = false,
-  dragHandlePosition = 'left',
   className = '',
 }) => {
   const {
@@ -50,44 +46,19 @@ const SortableItem: React.FC<SortableItemProps> = ({
     transform,
     transition,
     isDragging,
+    isOver,
+    isSorting,
   } = useSortable({ id, disabled });
 
+  // When isDragging is true, don't transform the original item
+  // It stays in place as a placeholder while other items shift around it
   const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
+    transform: isDragging ? undefined : CSS.Transform.toString(transform),
+    transition: isDragging ? undefined : transition,
   };
 
-  // 6-dot grip icon for drag handle (compact version)
-  const DragHandleIcon = () => (
-    <svg
-      className="w-3.5 h-3.5"
-      fill="currentColor"
-      viewBox="0 0 20 20"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M7 4a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM7 10a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM7 16a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" />
-      <path d="M13 4a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM13 10a1.5 1.5 0 110-3 1.5 1.5 0 010 3zM13 16a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" />
-    </svg>
-  );
-
-  const dragHandle = !disabled && (
-    <div
-      {...listeners}
-      className={`
-        flex items-center justify-center w-5 h-5 rounded
-        text-gray-300 hover:text-blue-600 hover:bg-blue-50/50
-        cursor-grab active:cursor-grabbing
-        opacity-0 group-hover:opacity-100
-        transition-all duration-150 ease-out
-        touch-manipulation
-        ${dragHandlePosition === 'right' ? 'order-last' : 'order-first'}
-      `}
-      aria-label="Drag to reorder item"
-      title="Drag to reorder"
-    >
-      <DragHandleIcon />
-    </div>
-  );
+  // Show drop indicator when this item is being hovered over during a drag
+  const showDropIndicator = isOver && !isDragging && isSorting;
 
   return (
     <div
@@ -95,16 +66,44 @@ const SortableItem: React.FC<SortableItemProps> = ({
       style={style}
       className={`
         relative group
-        ${isDragging ? 'opacity-50 scale-[1.02] shadow-lg z-30' : 'transition-all duration-200 ease-out'}
+        ${isDragging ? 'border-2 border-dashed border-blue-300 bg-blue-50/50 rounded-xl min-h-[40px]' : 'transition-all duration-200 ease-out'}
+        ${showDropIndicator ? 'mt-2' : ''}
         ${className}
       `}
       {...attributes}
     >
-      <div className={`flex items-start gap-1 ${dragHandlePosition === 'left' ? 'flex-row' : 'flex-row-reverse'}`}>
-        {dragHandle}
-        <div className={`flex-1 ${isDragging ? 'pointer-events-none' : ''}`}>
-          {children}
+      {/* Drop indicator line - shows where item will be placed */}
+      {showDropIndicator && (
+        <div className="absolute -top-1 left-0 right-0 flex items-center gap-2 z-40">
+          <div className="w-3 h-3 rounded-full bg-blue-500 shadow-md" />
+          <div className="flex-1 h-0.5 bg-blue-500 rounded-full shadow-sm" />
+          <div className="w-3 h-3 rounded-full bg-blue-500 shadow-md" />
         </div>
+      )}
+
+      {/* Drag handle bar - invisible by default, reveals on item hover */}
+      {!disabled && (
+        <div
+          {...listeners}
+          className={`
+            group/handle touch-none
+            w-full h-5 md:h-3 min-h-[44px] md:min-h-0 -mb-1 rounded-t-xl
+            cursor-grab active:cursor-grabbing
+            ${isDragging ? 'bg-blue-50' : 'bg-transparent'}
+            transition-all duration-150 ease-out
+            flex items-center justify-center
+            relative
+          `}
+          aria-label="Drag to reorder item"
+        >
+          <GripDots isDragging={isDragging} />
+          <DragTooltip visible={!isDragging && !isSorting} />
+        </div>
+      )}
+
+      {/* Item content - hidden when dragging to show ghost placeholder */}
+      <div className={`${isDragging ? 'opacity-0 pointer-events-none select-none' : ''}`}>
+        {children}
       </div>
     </div>
   );

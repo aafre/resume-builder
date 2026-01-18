@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import { Section } from '../../types';
 import { DeleteTarget, UseSectionManagementReturn } from '../../types/editor';
 import { createDefaultSection, deleteSectionItem, reorderSectionItems, SectionType } from '../../services/sectionService';
+import { InsertPosition } from '../../components/SectionTypeModal';
 
 /**
  * Props for useSectionManagement hook
@@ -23,8 +24,8 @@ export interface UseSectionManagementProps {
   closeDeleteConfirm: () => void;
   /** Function to close section type modal after adding */
   closeSectionTypeModal: () => void;
-  /** Optional callback when section is added (e.g., for scrolling) */
-  onSectionAdded?: () => void;
+  /** Optional callback when section is added (e.g., for scrolling). Receives the index where the section was inserted. */
+  onSectionAdded?: (insertedIndex: number) => void;
 }
 
 /**
@@ -70,19 +71,45 @@ export const useSectionManagement = ({
   const [temporaryTitle, setTemporaryTitle] = useState<string>('');
 
   /**
-   * Add a new section of the specified type.
+   * Add a new section of the specified type at the specified position.
    * Uses sectionService to generate unique name and default content.
    * Closes the section type modal and optionally scrolls to the new section.
+   *
+   * @param type - The type of section to create
+   * @param position - Where to insert: 'top', 'bottom', or a specific index
    */
   const handleAddSection = useCallback(
-    (type: SectionType) => {
+    (type: SectionType, position: InsertPosition = 'top') => {
       const newSection = createDefaultSection(type, sections);
-      setSections((prevSections) => [...prevSections, newSection]);
+
+      // Calculate inserted index outside the state updater to avoid side effects
+      let insertedIndex: number;
+      if (position === 'bottom') {
+        insertedIndex = sections.length;
+      } else if (typeof position === 'number') {
+        insertedIndex = Math.min(Math.max(0, position), sections.length);
+      } else {
+        // 'top' or fallback
+        insertedIndex = 0;
+      }
+
+      setSections((prevSections) => {
+        if (position === 'bottom') {
+          return [...prevSections, newSection];
+        } else if (typeof position === 'number') {
+          const index = Math.min(Math.max(0, position), prevSections.length);
+          const result = [...prevSections];
+          result.splice(index, 0, newSection);
+          return result;
+        }
+        // 'top' or fallback
+        return [newSection, ...prevSections];
+      });
       closeSectionTypeModal();
 
       // Call onSectionAdded callback after a short delay to allow render
       if (onSectionAdded) {
-        setTimeout(onSectionAdded, 100);
+        setTimeout(() => onSectionAdded(insertedIndex), 100);
       }
     },
     [sections, setSections, closeSectionTypeModal, onSectionAdded]
@@ -202,9 +229,21 @@ export const useSectionManagement = ({
 
   /**
    * Save the edited section title.
+   * @param newTitle - Optional title to save. If provided, takes precedence over temporaryTitle state.
+   *                   This allows callers to pass the title directly, avoiding async state update issues.
    */
-  const handleTitleSave = useCallback(() => {
+  const handleTitleSave = useCallback((newTitle?: string) => {
     if (editingTitleIndex === null) return;
+
+    // Use passed value if provided, otherwise fall back to temporaryTitle state
+    const titleToSave = (newTitle ?? temporaryTitle).trim();
+
+    if (!titleToSave) {
+      // Don't save empty titles; cancel edit instead
+      setEditingTitleIndex(null);
+      setTemporaryTitle('');
+      return;
+    }
 
     setSections((currentSections) => {
       if (editingTitleIndex < 0 || editingTitleIndex >= currentSections.length) {
@@ -214,7 +253,7 @@ export const useSectionManagement = ({
       const newSections = [...currentSections];
       newSections[editingTitleIndex] = {
         ...newSections[editingTitleIndex],
-        name: temporaryTitle,
+        name: titleToSave,
       };
       return newSections;
     });

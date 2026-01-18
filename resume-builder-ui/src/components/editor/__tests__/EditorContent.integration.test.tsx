@@ -139,35 +139,6 @@ vi.mock('../../IconListSection', () => ({
   ),
 }));
 
-vi.mock('../../EditorToolbar', () => ({
-  default: ({
-    onAddSection,
-    onExportYAML,
-    onLoadEmptyTemplate,
-    onToggleHelp,
-  }: {
-    onAddSection: () => void;
-    onExportYAML: () => void;
-    onLoadEmptyTemplate: () => void;
-    onToggleHelp: () => void;
-  }) => (
-    <div data-testid="editor-toolbar" role="toolbar" aria-label="Editor actions">
-      <button onClick={onAddSection} aria-label="Add section">
-        Add Section
-      </button>
-      <button onClick={onExportYAML} aria-label="Export YAML">
-        Export YAML
-      </button>
-      <button onClick={onLoadEmptyTemplate} aria-label="Start fresh">
-        Start Fresh
-      </button>
-      <button onClick={onToggleHelp} aria-label="Help">
-        Help
-      </button>
-    </div>
-  ),
-}));
-
 vi.mock('../../MobileActionBar', () => ({
   default: ({
     onNavigationClick,
@@ -461,19 +432,6 @@ describe('EditorContent Integration Tests', () => {
       expect(screen.getByTestId('generic-section')).toBeInTheDocument();
     });
 
-    it('should trigger add section modal when Add Section is clicked', async () => {
-      const openSectionTypeModal = vi.fn();
-      const props = createDefaultProps();
-      props.modals.openSectionTypeModal = openSectionTypeModal;
-
-      render(<EditorContent {...props} />);
-
-      const addButton = screen.getByRole('button', { name: /add section/i });
-      await user.click(addButton);
-
-      expect(openSectionTypeModal).toHaveBeenCalledTimes(1);
-    });
-
     it('should trigger delete section when delete is clicked', async () => {
       const handleDeleteSection = vi.fn();
       const props = createDefaultProps({
@@ -487,19 +445,6 @@ describe('EditorContent Integration Tests', () => {
       await user.click(deleteButton);
 
       expect(handleDeleteSection).toHaveBeenCalledTimes(1);
-    });
-
-    it('should trigger export YAML when export is clicked', async () => {
-      const handleExportYAML = vi.fn();
-      const props = createDefaultProps();
-      props.fileOperations.handleExportYAML = handleExportYAML;
-
-      render(<EditorContent {...props} />);
-
-      const exportButton = screen.getByRole('button', { name: /export yaml/i });
-      await user.click(exportButton);
-
-      expect(handleExportYAML).toHaveBeenCalledTimes(1);
     });
 
     it('should trigger download when download is clicked', async () => {
@@ -609,21 +554,6 @@ describe('EditorContent Integration Tests', () => {
       await user.click(closeButton);
 
       expect(closeAIWarning).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('Start Fresh Workflow', () => {
-    it('should trigger start fresh when clicked', async () => {
-      const handleStartFresh = vi.fn();
-      const props = createDefaultProps();
-      props.editorActions.handleStartFresh = handleStartFresh;
-
-      render(<EditorContent {...props} />);
-
-      const startFreshButton = screen.getByRole('button', { name: /start fresh/i });
-      await user.click(startFreshButton);
-
-      expect(handleStartFresh).toHaveBeenCalledTimes(1);
     });
   });
 

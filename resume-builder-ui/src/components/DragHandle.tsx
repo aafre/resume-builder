@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import GripDots from './GripDots';
+import DragTooltip from './DragTooltip';
 
 interface DragHandleProps {
   id: string;
@@ -8,6 +10,16 @@ interface DragHandleProps {
   disabled?: boolean;
 }
 
+/**
+ * DragHandle Component
+ *
+ * Wraps sections with drag-and-drop functionality.
+ * Implements "Quiet by Default, Helpful on Demand" UX:
+ * - Default: Clean, no visible controls
+ * - Hover: Subtle spotlight + grip handle reveals
+ * - Handle hover (after delay): Polite tooltip appears
+ * - Dragging: Ghost placeholder marks landing zone
+ */
 const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false }) => {
   const {
     attributes,
@@ -16,52 +28,68 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
     transform,
     transition,
     isDragging,
+    isOver,
+    isSorting,
   } = useSortable({ id, disabled });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
+    transform: isDragging ? undefined : CSS.Transform.toString(transform),
+    transition: isDragging ? undefined : transition,
   };
+
+  // Show drop indicator when this section is being hovered over during a drag
+  const showDropIndicator = isOver && !isDragging && isSorting;
 
   return (
     <div
       ref={setNodeRef}
       style={style}
       className={`relative group rounded-2xl ${
-        isDragging 
-          ? 'opacity-60 scale-105 shadow-2xl z-50' 
+        isDragging
+          ? 'border-2 border-dashed border-blue-300 bg-blue-50/50 min-h-[60px]'
           : 'transition-all duration-200 ease-out'
-      }`}
+      } ${showDropIndicator ? 'mt-3' : ''}`}
       {...attributes}
     >
+      {/* Drop indicator line - shows where section will be placed */}
+      {showDropIndicator && (
+        <div className="absolute -top-2 left-0 right-0 flex items-center gap-2 z-40 px-2">
+          <div className="w-4 h-4 rounded-full bg-blue-500 shadow-lg flex items-center justify-center">
+            <div className="w-2 h-0.5 bg-white rounded-full" />
+          </div>
+          <div className="flex-1 h-1 bg-blue-500 rounded-full shadow-md" />
+          <div className="w-4 h-4 rounded-full bg-blue-500 shadow-lg flex items-center justify-center">
+            <div className="w-2 h-0.5 bg-white rounded-full" />
+          </div>
+        </div>
+      )}
+
+      {/* Drag handle bar - invisible by default, reveals on item hover */}
       {!disabled && (
         <div
           {...listeners}
-          className="absolute left-2 top-6 w-6 h-6 flex items-center justify-center rounded-lg 
-                     text-gray-300 hover:text-blue-600 hover:bg-blue-50/50 
-                     cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 
-                     transition-all duration-150 ease-out z-10"
+          className={`
+            group/handle touch-none
+            w-full h-4 md:h-2 min-h-[44px] md:min-h-0 rounded-t-2xl cursor-grab active:cursor-grabbing
+            ${isDragging
+              ? 'bg-blue-50'
+              : 'bg-transparent'
+            }
+            transition-all duration-150 ease-out
+            flex items-center justify-center
+            relative
+          `}
           aria-label="Drag to reorder section"
-          title="Drag to reorder section"
         >
-          <svg
-            className="w-4 h-4"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-            <path d="M6 6a2 2 0 110-4 2 2 0 010 4zM6 12a2 2 0 110-4 2 2 0 010 4zM6 18a2 2 0 110-4 2 2 0 010 4z" />
-            <path d="M14 6a2 2 0 110-4 2 2 0 010 4zM14 12a2 2 0 110-4 2 2 0 010 4zM14 18a2 2 0 110-4 2 2 0 010 4z" />
-          </svg>
+          <GripDots isDragging={isDragging} />
+          <DragTooltip visible={!isDragging && !isSorting} />
         </div>
       )}
-      
+
+      {/* Section content - hidden when dragging to show ghost placeholder */}
       <div className={`
-        ${!disabled ? 'pl-2' : ''} 
-        ${isDragging ? 'pointer-events-none' : ''}
-        transition-all duration-200 ease-out rounded-2xl
-        group-hover:shadow-xl group-hover:border-blue-200/60
+        ${isDragging ? 'opacity-0 pointer-events-none' : ''}
+        transition-all duration-200 ease-out
       `}>
         {children}
       </div>

@@ -1,6 +1,12 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
+import { DndContext } from "@dnd-kit/core";
 import ExperienceSection from "../components/ExperienceSection";
+
+// Wrapper component to provide DndContext for testing
+const DndWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <DndContext>{children}</DndContext>
+);
 
 // --- Mock the IconManager Component ---
 vi.mock("../components/IconManager", () => {
@@ -95,7 +101,7 @@ const createDefaultProps = (overrides = {}) => ({
 describe("ExperienceSection", { timeout: 5000 }, () => {
   it("renders experience entries with correct values", () => {
     const props = createDefaultProps();
-    render(<ExperienceSection {...props} />);
+    render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
 
     // Check that each experience header is rendered.
     expect(screen.getByText("Experience #1")).toBeInTheDocument();
@@ -132,7 +138,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
   it("calls onUpdate when an input value is changed", () => {
     const onUpdateMock = vi.fn();
     const props = createDefaultProps({ onUpdate: onUpdateMock });
-    render(<ExperienceSection {...props} />);
+    render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
 
     // Change the company name for the first experience.
     const companyInput = screen.getByDisplayValue("Lorem Ipsum Corp");
@@ -148,7 +154,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
   it("removes an experience entry when the Remove button is clicked", () => {
     const onUpdateMock = vi.fn();
     const props = createDefaultProps({ onUpdate: onUpdateMock });
-    render(<ExperienceSection {...props} />);
+    render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
 
     // Click the delete button (trash icon) for the first experience.
     const deleteButtons = screen.getAllByTitle("Delete this experience");
@@ -163,7 +169,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
   it("adds a new experience entry when the Add Experience button is clicked", () => {
     const onUpdateMock = vi.fn();
     const props = createDefaultProps({ onUpdate: onUpdateMock });
-    render(<ExperienceSection {...props} />);
+    render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
 
     const addButton = screen.getByText("Add Experience");
     fireEvent.click(addButton);
@@ -185,7 +191,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
     const experiences = JSON.parse(JSON.stringify(baseMockExperiences));
     const initialLength = experiences[0].description.length;
     const props = createDefaultProps({ experiences, onUpdate: onUpdateMock });
-    render(<ExperienceSection {...props} />);
+    render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
 
     // For the first experience, click the Add Description Point button.
     const addDescButton = screen.getAllByText("+ Add Description Point")[0];
@@ -207,7 +213,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
     const experiences = JSON.parse(JSON.stringify(baseMockExperiences));
     const initialLength = experiences[0].description.length;
     const props = createDefaultProps({ experiences, onUpdate: onUpdateMock });
-    render(<ExperienceSection {...props} />);
+    render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
 
     // For the first experience, click the delete button for the first description.
     const deleteButtons = screen.getAllByTitle("Remove description point");
@@ -229,7 +235,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
       supportsIcons: true,
       iconRegistry: mockIconRegistry,
     });
-    render(<ExperienceSection {...props} />);
+    render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
 
     // Check that IconManager is rendered for each experience entry.
     const iconManagerElements = screen.getAllByTestId("icon-manager");
@@ -248,7 +254,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
       onUpdate: onUpdateMock,
       onDeleteEntry: onDeleteEntryMock,
     });
-    render(<ExperienceSection {...props} />);
+    render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
 
     const deleteButtons = screen.getAllByTitle("Delete this experience");
     fireEvent.click(deleteButtons[0]);
@@ -260,7 +266,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
 
   it("renders section header with correct title", () => {
     const props = createDefaultProps({ sectionName: "Work History" });
-    render(<ExperienceSection {...props} />);
+    render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
 
     expect(screen.getByText("Work History")).toBeInTheDocument();
   });

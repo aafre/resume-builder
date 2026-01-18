@@ -162,7 +162,8 @@ describe('useSectionManagement', () => {
 
       const updater = mockSetSections.mock.calls[0][0];
       const newSections = updater(existingSections);
-      expect(newSections[1].name).toBe('New Text Section 2');
+      // New section is added at top by default
+      expect(newSections[0].name).toBe('New Text Section 2');
     });
 
     it('should close section type modal after adding', () => {
@@ -206,6 +207,129 @@ describe('useSectionManagement', () => {
 
       // No error should occur
       expect(mockCloseSectionTypeModal).toHaveBeenCalled();
+    });
+
+    describe('position parameter', () => {
+      it('should add section at top by default', () => {
+        const existingSections = [
+          { name: 'Existing Section', type: 'text', content: '' },
+        ];
+        const { result } = renderHook(() =>
+          useSectionManagement(createDefaultProps({ sections: existingSections }))
+        );
+
+        act(() => {
+          result.current.handleAddSection('experience');
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(existingSections);
+
+        // New section should be at index 0
+        expect(newSections[0].type).toBe('experience');
+        expect(newSections[1].name).toBe('Existing Section');
+      });
+
+      it('should add section at bottom when position is "bottom"', () => {
+        const existingSections = [
+          { name: 'Existing Section', type: 'text', content: '' },
+        ];
+        const { result } = renderHook(() =>
+          useSectionManagement(createDefaultProps({ sections: existingSections }))
+        );
+
+        act(() => {
+          result.current.handleAddSection('experience', 'bottom');
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(existingSections);
+
+        // New section should be at index 1 (end)
+        expect(newSections[0].name).toBe('Existing Section');
+        expect(newSections[1].type).toBe('experience');
+      });
+
+      it('should add section at specific index when position is a number', () => {
+        const existingSections = [
+          { name: 'Section 1', type: 'text', content: '' },
+          { name: 'Section 2', type: 'text', content: '' },
+          { name: 'Section 3', type: 'text', content: '' },
+        ];
+        const { result } = renderHook(() =>
+          useSectionManagement(createDefaultProps({ sections: existingSections }))
+        );
+
+        act(() => {
+          // Insert after section 1 (at index 1)
+          result.current.handleAddSection('experience', 1);
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(existingSections);
+
+        expect(newSections).toHaveLength(4);
+        expect(newSections[0].name).toBe('Section 1');
+        expect(newSections[1].type).toBe('experience');
+        expect(newSections[2].name).toBe('Section 2');
+        expect(newSections[3].name).toBe('Section 3');
+      });
+
+      it('should clamp position index to valid range (not negative)', () => {
+        const existingSections = [
+          { name: 'Existing Section', type: 'text', content: '' },
+        ];
+        const { result } = renderHook(() =>
+          useSectionManagement(createDefaultProps({ sections: existingSections }))
+        );
+
+        act(() => {
+          result.current.handleAddSection('experience', -5);
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(existingSections);
+
+        // Should clamp to 0
+        expect(newSections[0].type).toBe('experience');
+        expect(newSections[1].name).toBe('Existing Section');
+      });
+
+      it('should clamp position index to valid range (not beyond array length)', () => {
+        const existingSections = [
+          { name: 'Existing Section', type: 'text', content: '' },
+        ];
+        const { result } = renderHook(() =>
+          useSectionManagement(createDefaultProps({ sections: existingSections }))
+        );
+
+        act(() => {
+          result.current.handleAddSection('experience', 999);
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(existingSections);
+
+        // Should clamp to end of array
+        expect(newSections[0].name).toBe('Existing Section');
+        expect(newSections[1].type).toBe('experience');
+      });
+
+      it('should handle empty sections array with "top" position', () => {
+        const { result } = renderHook(() =>
+          useSectionManagement(createDefaultProps({ sections: [] }))
+        );
+
+        act(() => {
+          result.current.handleAddSection('text', 'top');
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater([]);
+
+        expect(newSections).toHaveLength(1);
+        expect(newSections[0].type).toBe('text');
+      });
     });
   });
 
@@ -638,7 +762,8 @@ describe('useSectionManagement', () => {
         expect(newSections[0]).not.toBe(sections[0]);
       });
 
-      it('should handle out-of-bounds editingTitleIndex', () => {
+      it('should handle out-of-bounds editingTitleIndex with valid title', () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
         const sections = createMockSections();
         const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
 
@@ -647,14 +772,158 @@ describe('useSectionManagement', () => {
           result.current.handleTitleEdit(10);
         });
 
+        // Pass a valid title directly to bypass empty title check
         act(() => {
-          result.current.handleTitleSave();
+          result.current.handleTitleSave('Valid Title');
         });
 
         const updater = mockSetSections.mock.calls[0][0];
         const originalSections = createMockSections();
         const newSections = updater(originalSections);
         expect(newSections).toBe(originalSections);
+        expect(warnSpy).toHaveBeenCalledWith('Attempted to save title for out-of-bounds index: 10');
+        warnSpy.mockRestore();
+      });
+
+      it('should cancel edit when out-of-bounds index results in empty temporaryTitle', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        // Manually trigger editing state for invalid index (temporaryTitle becomes '')
+        act(() => {
+          result.current.handleTitleEdit(10);
+        });
+
+        // Call save without parameter - empty temporaryTitle triggers cancel
+        act(() => {
+          result.current.handleTitleSave();
+        });
+
+        // Should cancel edit without calling setSections
+        expect(result.current.editingTitleIndex).toBeNull();
+        expect(mockSetSections).not.toHaveBeenCalled();
+      });
+
+      it('should save title when passed directly as parameter', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        // Start editing
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        // Save with new title passed directly (simulates blur behavior)
+        act(() => {
+          result.current.handleTitleSave('Directly Passed Title');
+        });
+
+        expect(result.current.editingTitleIndex).toBeNull();
+        expect(mockSetSections).toHaveBeenCalled();
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(sections);
+        expect(newSections[0].name).toBe('Directly Passed Title');
+      });
+
+      it('should use passed title over temporaryTitle state', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        // Start editing
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        // Update temporaryTitle to something different
+        act(() => {
+          result.current.setTemporaryTitle('State Title');
+        });
+
+        // Save with different title passed directly (should override state)
+        act(() => {
+          result.current.handleTitleSave('Passed Title');
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(sections);
+        // Should use the passed title, not the state value
+        expect(newSections[0].name).toBe('Passed Title');
+      });
+
+      it('should fall back to temporaryTitle when no parameter passed', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        act(() => {
+          result.current.setTemporaryTitle('State Title');
+        });
+
+        // Call without parameter (legacy behavior)
+        act(() => {
+          result.current.handleTitleSave();
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(sections);
+        expect(newSections[0].name).toBe('State Title');
+      });
+
+      it('should trim whitespace from saved title', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        act(() => {
+          result.current.handleTitleSave('  Trimmed Title  ');
+        });
+
+        const updater = mockSetSections.mock.calls[0][0];
+        const newSections = updater(sections);
+        expect(newSections[0].name).toBe('Trimmed Title');
+      });
+
+      it('should not save empty title and cancel edit instead', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        act(() => {
+          result.current.handleTitleSave('');
+        });
+
+        // Should reset editing state without calling setSections
+        expect(result.current.editingTitleIndex).toBeNull();
+        expect(result.current.temporaryTitle).toBe('');
+        expect(mockSetSections).not.toHaveBeenCalled();
+      });
+
+      it('should not save whitespace-only title and cancel edit instead', () => {
+        const sections = createMockSections();
+        const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections })));
+
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        act(() => {
+          result.current.handleTitleSave('   ');
+        });
+
+        // Should reset editing state without calling setSections
+        expect(result.current.editingTitleIndex).toBeNull();
+        expect(result.current.temporaryTitle).toBe('');
+        expect(mockSetSections).not.toHaveBeenCalled();
       });
     });
 
