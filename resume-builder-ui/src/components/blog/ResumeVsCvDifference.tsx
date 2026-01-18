@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import BlogLayout from "../BlogLayout";
 
 export default function ResumeVsCvDifference() {
@@ -6,6 +7,7 @@ export default function ResumeVsCvDifference() {
       title="Resume vs CV: Understanding the Key Differences"
       description="Learn when to use a resume versus a CV, and how to format each document for maximum impact."
       publishDate="2025-07-02"
+      lastUpdated="2026-01-18"
       readTime="6 min"
       keywords={[
         "resume vs cv",
@@ -166,6 +168,31 @@ export default function ResumeVsCvDifference() {
           <li>Scholarships and admissions to higher education programs</li>
         </ul>
 
+        {/* UK-specific callout */}
+        <div className="bg-blue-50 border-2 border-blue-300 rounded-xl p-6 my-8">
+          <h4 className="text-xl font-bold text-blue-900 mb-3">
+            Applying for jobs in the UK, Europe, or Australia?
+          </h4>
+          <p className="text-blue-800 mb-4">
+            In these regions, "CV" is the standard term for all job applications—not just academic positions.
+            A UK CV is similar to a US resume: 2 pages maximum, focused on relevant experience, and tailored to the role.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <Link
+              to="/free-cv-builder-no-sign-up"
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Build Your CV Free
+            </Link>
+            <Link
+              to="/cv-templates/ats-friendly"
+              className="inline-flex items-center px-4 py-2 bg-white text-blue-600 font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors"
+            >
+              Browse CV Templates
+            </Link>
+          </div>
+        </div>
+
         <hr className="my-12 border-t-2 border-gray-200" />
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -294,6 +321,32 @@ export default function ResumeVsCvDifference() {
           our tools and guides on EasyFreeResume.com to perfect your documents
           for any career path.
         </p>
+
+        {/* Final CTA with both options */}
+        <div className="mt-12 grid md:grid-cols-2 gap-6">
+          <div className="bg-white border-2 border-gray-200 rounded-xl p-6 text-center">
+            <div className="text-4xl mb-3">&#127482;&#127480;</div>
+            <h4 className="text-xl font-bold text-gray-900 mb-2">US/Canada Job Search?</h4>
+            <p className="text-gray-600 mb-4">Build a professional resume</p>
+            <Link
+              to="/free-resume-builder-no-sign-up"
+              className="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Create Resume
+            </Link>
+          </div>
+          <div className="bg-white border-2 border-gray-200 rounded-xl p-6 text-center">
+            <div className="text-4xl mb-3">&#127468;&#127463;</div>
+            <h4 className="text-xl font-bold text-gray-900 mb-2">UK/Europe/International?</h4>
+            <p className="text-gray-600 mb-4">Build a professional CV</p>
+            <Link
+              to="/free-cv-builder-no-sign-up"
+              className="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Create CV
+            </Link>
+          </div>
+        </div>
       </div>
     </BlogLayout>
   );

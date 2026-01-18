@@ -37,6 +37,8 @@ const ResumeKeywordsHub = lazy(() => import("./components/seo/ResumeKeywordsHub"
 const CustomerServiceKeywords = lazy(() => import("./components/seo/CustomerServiceKeywords"));
 const JobKeywordsPage = lazy(() => import("./components/seo/JobKeywordsPage"));
 const BestFreeResumeBuilderReddit = lazy(() => import("./components/seo/BestFreeResumeBuilderReddit"));
+const FreeCVBuilder = lazy(() => import("./components/seo/FreeCVBuilder"));
+const CVTemplatesHub = lazy(() => import("./components/seo/CVTemplatesHub"));
 
 // Static pages - lazy loaded
 const AboutUs = lazy(() => import("./components/AboutUs"));
@@ -213,6 +215,22 @@ function AppContent() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <BestFreeResumeBuilderReddit />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-cv-builder-no-sign-up"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <FreeCVBuilder />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/cv-templates/ats-friendly"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <CVTemplatesHub />
               </Suspense>
             }
           />
