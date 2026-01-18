@@ -13,30 +13,25 @@ describe("SectionTypeModal", () => {
     // Verify the header is rendered.
     expect(screen.getByText("Select Section Type")).toBeInTheDocument();
 
-    // Verify that each section option is rendered.
-    expect(screen.getByText("Text Section")).toBeInTheDocument();
-    expect(screen.getByText("List with Bullets")).toBeInTheDocument();
-    expect(screen.getByText("Horizontal List")).toBeInTheDocument();
+    // Verify that each section option is rendered with new titles.
+    expect(screen.getByText("Text Block")).toBeInTheDocument();
+    expect(screen.getByText("Bulleted List")).toBeInTheDocument();
+    expect(screen.getByText("Inline List")).toBeInTheDocument();
     expect(screen.getByText("Smart Table")).toBeInTheDocument();
+    expect(screen.getByText("Experience")).toBeInTheDocument();
+    expect(screen.getByText("Education")).toBeInTheDocument();
+    expect(screen.getByText("Certifications")).toBeInTheDocument();
+  });
 
-    // For the "Text Section" card, check the "Use for:" text.
-    const textSectionCard = screen.getByText("Text Section").closest("div");
-    expect(textSectionCard).toBeTruthy();
+  it("renders SVG wireframes for each section type", () => {
+    const onCloseMock = vi.fn();
+    const onSelectMock = vi.fn();
 
-    // Within this card, locate the paragraph with the "Use for:" text.
-    const useForParagraph = textSectionCard?.querySelector(
-      "p.text-gray-500.italic"
-    );
-    expect(useForParagraph).toBeTruthy();
+    render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
 
-    // Normalize the text content (collapse multiple spaces and trim).
-    const normalizedText = (useForParagraph?.textContent ?? "")
-      .replace(/\s+/g, " ")
-      .trim();
-    // Assert that the normalized text contains the expected use-for description.
-    expect(normalizedText).toContain(
-      "Summary, Objective, About Me, Career Goal, Personal Statement"
-    );
+    // Each card should have an SVG visual (7 section types)
+    const svgElements = document.querySelectorAll('svg[aria-hidden="true"]');
+    expect(svgElements.length).toBe(7);
   });
 
   it("calls onSelect with the correct type and position when a section card is clicked", () => {
@@ -45,8 +40,8 @@ describe("SectionTypeModal", () => {
 
     render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
 
-    // Click the "Text Section" card.
-    const textSectionCard = screen.getByText("Text Section");
+    // Click the "Text Block" card.
+    const textSectionCard = screen.getByText("Text Block");
     fireEvent.click(textSectionCard);
 
     expect(onSelectMock).toHaveBeenCalledTimes(1);
@@ -54,7 +49,7 @@ describe("SectionTypeModal", () => {
     expect(onSelectMock).toHaveBeenCalledWith("text", "top");
 
     // Click the "Bulleted List" card.
-    fireEvent.click(screen.getByText("List with Bullets"));
+    fireEvent.click(screen.getByText("Bulleted List"));
     expect(onSelectMock).toHaveBeenCalledWith("bulleted-list", "top");
   });
 
@@ -69,6 +64,49 @@ describe("SectionTypeModal", () => {
     fireEvent.click(cancelButton);
 
     expect(onCloseMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders cards as buttons for accessibility", () => {
+    const onCloseMock = vi.fn();
+    const onSelectMock = vi.fn();
+
+    render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
+
+    // All section cards should be buttons
+    const sectionButtons = screen.getAllByRole("button");
+    // 7 section cards + 1 cancel button = 8 buttons
+    expect(sectionButtons.length).toBe(8);
+  });
+
+  it("displays 'Certifications' instead of 'Bullet List with Icons'", () => {
+    const onCloseMock = vi.fn();
+    const onSelectMock = vi.fn();
+
+    render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
+
+    // Should show "Certifications"
+    expect(screen.getByText("Certifications")).toBeInTheDocument();
+    // Should NOT show old name
+    expect(screen.queryByText("Bullet List with Icons")).not.toBeInTheDocument();
+  });
+
+  it("hides Certifications when supportsIcons is false", () => {
+    const onCloseMock = vi.fn();
+    const onSelectMock = vi.fn();
+
+    render(
+      <SectionTypeModal
+        onClose={onCloseMock}
+        onSelect={onSelectMock}
+        supportsIcons={false}
+      />
+    );
+
+    // Should NOT show "Certifications" when icons not supported
+    expect(screen.queryByText("Certifications")).not.toBeInTheDocument();
+    // Should have 6 section cards + 1 cancel button = 7 buttons
+    const sectionButtons = screen.getAllByRole("button");
+    expect(sectionButtons.length).toBe(7);
   });
 
   describe("position selection", () => {
@@ -94,7 +132,6 @@ describe("SectionTypeModal", () => {
 
       render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
 
-      const selectElement = screen.getByRole("combobox");
       const bottomOption = screen.getByText("At the bottom (last section)");
       expect(bottomOption).toBeInTheDocument();
     });
@@ -110,7 +147,7 @@ describe("SectionTypeModal", () => {
       fireEvent.change(selectElement, { target: { value: "bottom" } });
 
       // Click a section type
-      fireEvent.click(screen.getByText("Text Section"));
+      fireEvent.click(screen.getByText("Text Block"));
 
       expect(onSelectMock).toHaveBeenCalledWith("text", "bottom");
     });
@@ -159,7 +196,7 @@ describe("SectionTypeModal", () => {
       fireEvent.change(selectElement, { target: { value: "1" } });
 
       // Click a section type
-      fireEvent.click(screen.getByText("Text Section"));
+      fireEvent.click(screen.getByText("Text Block"));
 
       // Should be called with position = 1 (after first section)
       expect(onSelectMock).toHaveBeenCalledWith("text", 1);
@@ -182,6 +219,21 @@ describe("SectionTypeModal", () => {
       expect(options).toHaveLength(2);
       expect(screen.getByText("At the top (first section)")).toBeInTheDocument();
       expect(screen.getByText("At the bottom (last section)")).toBeInTheDocument();
+    });
+  });
+
+  describe("grid layout", () => {
+    it("renders section cards in a grid container", () => {
+      const onCloseMock = vi.fn();
+      const onSelectMock = vi.fn();
+
+      render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
+
+      // Find the grid container
+      const gridContainer = document.querySelector('.grid');
+      expect(gridContainer).toBeInTheDocument();
+      expect(gridContainer).toHaveClass('grid-cols-1');
+      expect(gridContainer).toHaveClass('sm:grid-cols-2');
     });
   });
 });
