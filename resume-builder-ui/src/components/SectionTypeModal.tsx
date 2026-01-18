@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MdVerticalAlignTop, MdVerticalAlignBottom } from 'react-icons/md';
 import { SectionType } from '../services/sectionService';
 import {
   ExperienceVisual,
@@ -38,7 +39,8 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   supportsIcons = true,
   sections = [],
 }) => {
-  const [selectedPosition, setSelectedPosition] = useState<InsertPosition>('top');
+  const [selectedPosition, setSelectedPosition] = useState<InsertPosition>('bottom');
+  const [showAfterSection, setShowAfterSection] = useState(false);
 
   const allSectionTypes: SectionTypeOption[] = [
     {
@@ -90,17 +92,16 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
     ? allSectionTypes
     : allSectionTypes.filter(section => section.type !== "icon-list");
 
-  const handlePositionChange = (value: string) => {
-    if (value === 'top' || value === 'bottom') {
-      setSelectedPosition(value);
-    } else {
-      // Parse index for "after section X" positions
-      const index = parseInt(value, 10);
-      if (!isNaN(index)) {
-        setSelectedPosition(index);
-      }
-    }
+  const handleTopBottomSelect = (position: 'top' | 'bottom') => {
+    setSelectedPosition(position);
+    setShowAfterSection(false);
   };
+
+  const handleAfterSectionSelect = (index: number) => {
+    setSelectedPosition(index);
+  };
+
+  const isTopOrBottom = selectedPosition === 'top' || selectedPosition === 'bottom';
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -109,28 +110,75 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
           Select Section Type
         </h2>
 
-        {/* Position Selection */}
-        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <label className="block text-sm font-semibold text-blue-800 mb-2">
-            Insert Position
+        {/* Position Selection - Segmented Control */}
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+          <label className="block text-sm font-semibold text-indigo-900 mb-3">
+            Where should it go?
           </label>
-          <select
-            value={typeof selectedPosition === 'number' ? selectedPosition.toString() : selectedPosition}
-            onChange={(e) => handlePositionChange(e.target.value)}
-            className="w-full border border-blue-300 rounded-lg p-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option value="top">At the top (first section)</option>
-            <option value="bottom">At the bottom (last section)</option>
-            {sections.length > 0 && (
-              <optgroup label="After specific section">
-                {sections.map((section, index) => (
-                  <option key={index} value={index + 1}>
-                    After: {section.name || `Section ${index + 1}`}
-                  </option>
-                ))}
-              </optgroup>
-            )}
-          </select>
+
+          {/* Segmented Control */}
+          <div className="flex gap-2 p-1 bg-white rounded-lg border border-indigo-200 shadow-sm">
+            <button
+              type="button"
+              onClick={() => handleTopBottomSelect('top')}
+              className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-md text-sm font-medium transition-all duration-200
+                ${selectedPosition === 'top'
+                  ? 'bg-indigo-600 text-white shadow-sm'
+                  : 'text-gray-600 hover:bg-indigo-50 hover:text-indigo-700'
+                }`}
+            >
+              <MdVerticalAlignTop className="w-5 h-5" />
+              <span>Top of Resume</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleTopBottomSelect('bottom')}
+              className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-md text-sm font-medium transition-all duration-200
+                ${selectedPosition === 'bottom'
+                  ? 'bg-indigo-600 text-white shadow-sm'
+                  : 'text-gray-600 hover:bg-indigo-50 hover:text-indigo-700'
+                }`}
+            >
+              <MdVerticalAlignBottom className="w-5 h-5" />
+              <span>Bottom of Resume</span>
+            </button>
+          </div>
+
+          {/* After Specific Section - Only show if sections exist */}
+          {sections.length > 0 && (
+            <div className="mt-3">
+              <button
+                type="button"
+                onClick={() => setShowAfterSection(!showAfterSection)}
+                className={`text-xs font-medium transition-colors ${
+                  showAfterSection || !isTopOrBottom
+                    ? 'text-indigo-700'
+                    : 'text-indigo-500 hover:text-indigo-700'
+                }`}
+              >
+                {showAfterSection ? '− Hide options' : '+ Insert after a specific section'}
+              </button>
+
+              {(showAfterSection || !isTopOrBottom) && (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {sections.map((section, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => handleAfterSectionSelect(index + 1)}
+                      className={`px-3 py-1.5 text-xs rounded-full border transition-all duration-200
+                        ${selectedPosition === index + 1
+                          ? 'bg-indigo-600 text-white border-indigo-600'
+                          : 'bg-white text-gray-600 border-gray-300 hover:border-indigo-400 hover:text-indigo-700'
+                        }`}
+                    >
+                      After: {section.name || `Section ${index + 1}`}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
