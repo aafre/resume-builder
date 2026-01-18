@@ -140,7 +140,7 @@ export default function ContextAwareTour({
                 <div className="flex gap-4">
                   <div className="text-3xl flex-shrink-0">{content.simpleContent.icon}</div>
                   <div className="flex-1">
-                    <p className="text-gray-700 text-base leading-relaxed">
+                    <p className="text-gray-700 text-base leading-relaxed whitespace-pre-line">
                       {content.simpleContent.description}
                     </p>
                   </div>
