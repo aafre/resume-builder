@@ -80,8 +80,8 @@ export const InlineTextEditor: React.FC<InlineTextEditorProps> = ({
   const handleSave = useCallback(() => {
     const trimmedValue = editValue.trim();
     // Don't allow empty values - revert to original
+    // (useEffect will sync editValue when isEditing becomes false)
     if (trimmedValue === '') {
-      setEditValue(value);
       setIsEditing(false);
       return;
     }
@@ -93,10 +93,10 @@ export const InlineTextEditor: React.FC<InlineTextEditorProps> = ({
   }, [editValue, value, onSave]);
 
   const handleCancel = useCallback(() => {
-    setEditValue(value);
+    // useEffect will sync editValue when isEditing becomes false
     setIsEditing(false);
     onCancel?.();
-  }, [value, onCancel]);
+  }, [onCancel]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
