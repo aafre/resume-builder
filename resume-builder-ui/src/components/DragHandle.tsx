@@ -68,6 +68,7 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
       {!disabled && (
         <div
           {...listeners}
+          style={{ touchAction: 'none' }}
           className={`
             group/handle
             w-full h-4 md:h-2 min-h-[44px] md:min-h-0 rounded-t-2xl cursor-grab active:cursor-grabbing
