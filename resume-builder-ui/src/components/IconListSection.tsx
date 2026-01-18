@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MdExpandMore, MdExpandLess } from "react-icons/md";
+import { SectionHeader } from "./SectionHeader";
 import IconManager from "./IconManager";
 import { MarkdownHint } from "./MarkdownLinkPreview";
 import { RichTextInput } from "./RichTextInput";
@@ -54,8 +54,6 @@ const IconListSection: React.FC<IconListSectionProps> = ({
   setTemporaryTitle,
   iconRegistry,
 }) => {
-  const [showHint, setShowHint] = useState(true);
-
   // Collapse state - default to collapsed on mobile, expanded on desktop
   const [isCollapsed, setIsCollapsed] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -63,18 +61,6 @@ const IconListSection: React.FC<IconListSectionProps> = ({
     }
     return false;
   });
-
-  useEffect(() => {
-    if (sectionName.startsWith("New ")) {
-      const timer = setTimeout(() => {
-        setShowHint(false);
-      }, 5000); // Hide hint after 5 seconds
-
-      return () => clearTimeout(timer);
-    } else {
-      setShowHint(false);
-    }
-  }, [sectionName]);
 
   // Update collapse state on window resize
   useEffect(() => {
@@ -139,79 +125,18 @@ const IconListSection: React.FC<IconListSectionProps> = ({
 
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center gap-2 flex-1">
-          {/* Collapse/Expand Button */}
-          <button
-            onClick={handleToggleCollapse}
-            className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-            aria-label={isCollapsed ? "Expand section" : "Collapse section"}
-            title={isCollapsed ? "Expand section" : "Collapse section"}
-          >
-            {isCollapsed ? (
-              <MdExpandMore className="text-2xl" />
-            ) : (
-              <MdExpandLess className="text-2xl" />
-            )}
-          </button>
-
-          {isEditing ? (
-            <div className="flex items-center gap-2 flex-1">
-              <input
-                type="text"
-                value={temporaryTitle}
-                onChange={(e) => setTemporaryTitle?.(e.target.value)}
-                className="border border-gray-300 rounded-lg p-2 w-full text-xl font-semibold"
-                autoFocus
-              />
-              <button
-                onClick={onSaveTitle}
-                className="text-green-600 hover:text-green-800"
-                title="Save Title"
-              >
-                ✅
-              </button>
-              <button
-                onClick={onCancelTitle}
-                className="text-red-600 hover:text-red-800"
-                title="Cancel"
-              >
-                ✕
-              </button>
-            </div>
-          ) : (
-            <h2
-              className={`text-xl font-semibold ${
-                sectionName.startsWith("New ") ? "text-gray-500 italic" : ""
-              }`}
-            >
-              {sectionName}
-              {onEditTitle && (
-                <button
-                  onClick={onEditTitle}
-                  className="ml-2 text-gray-500 hover:text-gray-700"
-                  title="Edit Title"
-                >
-                  ✏️
-                </button>
-              )}
-              {sectionName.startsWith("New ") && showHint && (
-                <span className="ml-2 text-sm text-blue-500 font-normal">
-                  (Click ✏️ to rename)
-                </span>
-              )}
-            </h2>
-          )}
-        </div>
-        {onDelete && (
-          <button
-            onClick={onDelete}
-            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-          >
-            Remove
-          </button>
-        )}
-      </div>
+      <SectionHeader
+        title={sectionName}
+        isEditing={isEditing}
+        temporaryTitle={temporaryTitle}
+        onTitleEdit={onEditTitle}
+        onTitleSave={onSaveTitle}
+        onTitleCancel={onCancelTitle}
+        onTitleChange={setTemporaryTitle}
+        onDelete={onDelete || (() => {})}
+        isCollapsed={isCollapsed}
+        onToggleCollapse={handleToggleCollapse}
+      />
       {!isCollapsed && data.length > 0 && (
         <ItemDndContext
           items={data}
