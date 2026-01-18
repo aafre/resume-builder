@@ -63,7 +63,7 @@ const IntroducingPrepAI = lazy(() => import("./components/blog/IntroducingPrepAI
 const HowToWriteResumeGuide = lazy(() => import("./components/blog/HowToWriteResumeGuide"));
 const ResumeActionVerbs = lazy(() => import("./components/blog/ResumeActionVerbs"));
 const HowToUseResumeKeywords = lazy(() => import("./components/blog/HowToUseResumeKeywords"));
-const SoftwareEngineerResumeKeywords = lazy(() => import("./components/blog/SoftwareEngineerResumeKeywords"));
+// SoftwareEngineerResumeKeywords removed - route now redirects to /resume-keywords/software-engineer
 const EasyFreeResumeFreeBlog = lazy(() => import("./components/blog/EasyFreeResumeFreeBlog"));
 const ZetyVsEasyFreeResume = lazy(() => import("./components/blog/ZetyVsEasyFreeResume"));
 const HowToListSkills = lazy(() => import("./components/blog/HowToListSkills"));
@@ -400,13 +400,10 @@ function AppContent() {
               </Suspense>
             }
           />
+          {/* Client-side redirect fallback - server-side 301 handles actual redirect */}
           <Route
             path="/blog/software-engineer-resume-keywords"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <SoftwareEngineerResumeKeywords />
-              </Suspense>
-            }
+            element={<Navigate to="/resume-keywords/software-engineer" replace />}
           />
           {/* 301 redirect - consolidate to SEO landing page to fix keyword cannibalization */}
           <Route

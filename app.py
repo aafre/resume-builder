@@ -1238,6 +1238,12 @@ def redirect_customer_service_keywords():
     return redirect("/resume-keywords/customer-service", code=301)
 
 
+@app.route("/blog/software-engineer-resume-keywords")
+def redirect_software_engineer_keywords():
+    """Redirect blog version to root SEO page to fix keyword cannibalization"""
+    return redirect("/resume-keywords/software-engineer", code=301)
+
+
 @app.route("/", defaults={"path": ""}, methods=["GET"])
 @app.route("/<path:path>", methods=["GET"])
 def serve(path):
