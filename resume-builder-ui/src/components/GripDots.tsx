@@ -20,7 +20,7 @@ const GripDots: React.FC<GripDotsProps> = ({ isDragging = false }) => {
     <div
       className={`
         flex gap-1
-        ${isDragging ? 'opacity-0' : 'opacity-0 group-hover:opacity-50 group-hover/handle:opacity-80'}
+        ${isDragging ? 'opacity-0' : 'opacity-0 group-hover:opacity-50 group-hover/handle:opacity-80 touch:opacity-50'}
         transition-opacity duration-200
       `}
     >
