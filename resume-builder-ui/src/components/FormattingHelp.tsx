@@ -35,8 +35,8 @@ const TipCard: React.FC<TipCardProps> = ({
     <h4 className="text-base font-semibold text-gray-900 mb-2">{title}</h4>
     <div className="mb-2">{primaryTip}</div>
     <ul className="space-y-1">
-      {secondaryTips.map((tip, i) => (
-        <li key={i} className="text-xs text-gray-500 flex items-start gap-1.5">
+      {secondaryTips.map((tip) => (
+        <li key={tip} className="text-xs text-gray-500 flex items-start gap-1.5">
           <span className="text-blue-400 mt-0.5">•</span>
           <span>{tip}</span>
         </li>

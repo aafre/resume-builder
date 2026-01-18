@@ -48,6 +48,12 @@ export interface TourStep {
   };
 }
 
+// Shared content for steps with identical auth/anonymous messaging
+const reorderStepContent: TourStepSimpleContent = {
+  icon: '↕️',
+  description: 'Add and reorder sections, entries, and bullet points.\n\n🖱️ Desktop: Hover to reveal the ••• handle, then drag.\n👆 Mobile: Press & hold any item, then drag to reorder.'
+};
+
 export const TOUR_STEPS: TourStep[] = [
   // Step 1: Status & Safety - Warn/reassure users about data persistence
   {
@@ -119,18 +125,8 @@ export const TOUR_STEPS: TourStep[] = [
       anonymous: 'Organize & Reorder'
     },
     content: {
-      authenticated: {
-        simpleContent: {
-          icon: '↕️',
-          description: 'Add and reorder sections, entries, and bullet points.\n\n🖱️ Desktop: Hover to reveal the ••• handle, then drag.\n👆 Mobile: Press & hold any item, then drag to reorder.'
-        }
-      },
-      anonymous: {
-        simpleContent: {
-          icon: '↕️',
-          description: 'Add and reorder sections, entries, and bullet points.\n\n🖱️ Desktop: Hover to reveal the ••• handle, then drag.\n👆 Mobile: Press & hold any item, then drag to reorder.'
-        }
-      }
+      authenticated: { simpleContent: reorderStepContent },
+      anonymous: { simpleContent: reorderStepContent }
     }
   },
 
