@@ -50,14 +50,6 @@ vi.mock('../../IconListSection', () => ({
   ),
 }));
 
-vi.mock('../../EditorToolbar', () => ({
-  default: ({ onAddSection }: { onAddSection: () => void }) => (
-    <div data-testid="editor-toolbar">
-      <button onClick={onAddSection}>Add Section</button>
-    </div>
-  ),
-}));
-
 vi.mock('../../MobileActionBar', () => ({
   default: ({
     onNavigationClick,
@@ -517,21 +509,6 @@ describe('EditorContent', () => {
       fireEvent.click(downloadButton);
 
       expect(handleGenerateResume).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('Editor Toolbar', () => {
-    it('should call openSectionTypeModal when add section is clicked', () => {
-      const openSectionTypeModal = vi.fn();
-      const props = createDefaultProps();
-      props.modals.openSectionTypeModal = openSectionTypeModal;
-
-      render(<EditorContent {...props} />);
-
-      const addButton = screen.getByText('Add Section');
-      fireEvent.click(addButton);
-
-      expect(openSectionTypeModal).toHaveBeenCalledTimes(1);
     });
   });
 

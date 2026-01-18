@@ -164,39 +164,6 @@ vi.mock('../../IconListSection', () => ({
   ),
 }));
 
-vi.mock('../../EditorToolbar', () => ({
-  default: ({
-    onAddSection,
-    onExportYAML,
-    onLoadEmptyTemplate,
-    onToggleHelp,
-  }: {
-    onAddSection: () => void;
-    onExportYAML: () => void;
-    onLoadEmptyTemplate: () => void;
-    onToggleHelp: () => void;
-  }) => (
-    <div data-testid="editor-toolbar" role="toolbar" aria-label="Editor actions">
-      <button onClick={onAddSection} aria-label="Add new section" type="button">
-        Add Section
-      </button>
-      <button onClick={onExportYAML} aria-label="Export resume as YAML file" type="button">
-        Export YAML
-      </button>
-      <button
-        onClick={onLoadEmptyTemplate}
-        aria-label="Clear all content and start fresh"
-        type="button"
-      >
-        Start Fresh
-      </button>
-      <button onClick={onToggleHelp} aria-label="Open help dialog" type="button">
-        Help
-      </button>
-    </div>
-  ),
-}));
-
 vi.mock('../../MobileActionBar', () => ({
   default: ({
     onNavigationClick,
@@ -551,9 +518,6 @@ describe('EditorContent Accessibility Tests', () => {
     it('should have proper toolbar landmarks', () => {
       render(<EditorContent {...createDefaultProps()} />);
 
-      const editorToolbar = screen.getByRole('toolbar', { name: /editor actions/i });
-      expect(editorToolbar).toBeInTheDocument();
-
       const mobileToolbar = screen.getByRole('toolbar', { name: /mobile resume actions/i });
       expect(mobileToolbar).toBeInTheDocument();
     });
@@ -602,54 +566,9 @@ describe('EditorContent Accessibility Tests', () => {
       expect(phoneInput).toHaveFocus();
     });
 
-    it('should have focusable action buttons', async () => {
-      render(
-        <EditorContent
-          {...createDefaultProps({
-            sections: [mockExperienceSection],
-          })}
-        />
-      );
-
-      const addButton = screen.getByRole('button', { name: /add new section/i });
-      expect(addButton).toBeVisible();
-
-      await user.click(addButton);
-      expect(addButton).toHaveFocus();
-    });
-
-    it('should allow keyboard navigation through toolbar buttons', async () => {
-      render(<EditorContent {...createDefaultProps()} />);
-
-      const toolbar = screen.getByRole('toolbar', { name: /editor actions/i });
-      const buttons = within(toolbar).getAllByRole('button');
-
-      await user.click(buttons[0]);
-      expect(buttons[0]).toHaveFocus();
-
-      await user.tab();
-      expect(buttons[1]).toHaveFocus();
-
-      await user.tab();
-      expect(buttons[2]).toHaveFocus();
-    });
   });
 
   describe('Keyboard Navigation', () => {
-    it('should activate buttons with Enter key', async () => {
-      const openSectionTypeModal = vi.fn();
-      const props = createDefaultProps();
-      props.modals.openSectionTypeModal = openSectionTypeModal;
-
-      render(<EditorContent {...props} />);
-
-      const addButton = screen.getByRole('button', { name: /add new section/i });
-      addButton.focus();
-
-      await user.keyboard('{Enter}');
-      expect(openSectionTypeModal).toHaveBeenCalledTimes(1);
-    });
-
     it('should activate buttons with Space key', async () => {
       const handleOpenPreview = vi.fn();
       const props = createDefaultProps();
@@ -699,10 +618,7 @@ describe('EditorContent Accessibility Tests', () => {
         />
       );
 
-      // Check for descriptive button labels
-      expect(screen.getByRole('button', { name: /add new section/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /export resume as yaml file/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /clear all content and start fresh/i })).toBeInTheDocument();
+      // Check for descriptive button labels in section components
       expect(screen.getByRole('button', { name: /delete experience section/i })).toBeInTheDocument();
     });
 
