@@ -87,7 +87,7 @@ const SortableItem: React.FC<SortableItemProps> = ({
           {...listeners}
           className={`
             group/handle
-            w-full h-5 md:h-3 -mb-1 rounded-t-xl
+            w-full h-5 md:h-3 min-h-[40px] md:min-h-0 -mb-1 rounded-t-xl
             cursor-grab active:cursor-grabbing
             ${isDragging ? 'bg-blue-50' : 'bg-transparent'}
             transition-all duration-150 ease-out

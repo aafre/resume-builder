@@ -70,7 +70,7 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
           {...listeners}
           className={`
             group/handle
-            w-full h-4 md:h-2 rounded-t-2xl cursor-grab active:cursor-grabbing
+            w-full h-4 md:h-2 min-h-[44px] md:min-h-0 rounded-t-2xl cursor-grab active:cursor-grabbing
             ${isDragging
               ? 'bg-blue-50'
               : 'bg-transparent'
