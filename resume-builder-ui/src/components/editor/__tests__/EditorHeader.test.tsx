@@ -106,6 +106,20 @@ describe('EditorHeader', () => {
 
       expect(screen.queryByText(/Saved/)).not.toBeInTheDocument();
     });
+
+    it('should not show save status when status is idle', () => {
+      render(
+        <EditorHeader
+          {...defaultProps}
+          isAuthenticated={true}
+          saveStatus="idle"
+        />
+      );
+
+      expect(screen.queryByText(/Saved/)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Saving/)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Save failed/)).not.toBeInTheDocument();
+    });
   });
 
   describe('Combined states', () => {
