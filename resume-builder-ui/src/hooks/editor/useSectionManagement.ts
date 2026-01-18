@@ -236,7 +236,14 @@ export const useSectionManagement = ({
     if (editingTitleIndex === null) return;
 
     // Use passed value if provided, otherwise fall back to temporaryTitle state
-    const titleToSave = newTitle ?? temporaryTitle;
+    const titleToSave = (newTitle ?? temporaryTitle).trim();
+
+    if (!titleToSave) {
+      // Don't save empty titles; cancel edit instead
+      setEditingTitleIndex(null);
+      setTemporaryTitle('');
+      return;
+    }
 
     setSections((currentSections) => {
       if (editingTitleIndex < 0 || editingTitleIndex >= currentSections.length) {
