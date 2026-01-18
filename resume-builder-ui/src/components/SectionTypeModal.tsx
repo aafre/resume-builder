@@ -1,5 +1,14 @@
 import { useState } from 'react';
 import { SectionType } from '../services/sectionService';
+import {
+  ExperienceVisual,
+  EducationVisual,
+  TextVisual,
+  BulletedListVisual,
+  InlineListVisual,
+  SmartTableVisual,
+  CertificationVisual,
+} from './sectionVisuals';
 
 // Position types for section insertion
 export type InsertPosition = 'top' | 'bottom' | number;
@@ -20,7 +29,7 @@ interface SectionTypeOption {
   type: SectionType;
   title: string;
   description: string;
-  useFor: string;
+  Visual: React.FC<{ className?: string }>;
 }
 
 const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
@@ -34,56 +43,45 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   const allSectionTypes: SectionTypeOption[] = [
     {
       type: "experience",
-      title: "Experience Section",
-      description:
-        "Structured format for work experience, projects, or any timeline-based entries with company, title, dates, and achievements.",
-      useFor:
-        "Work Experience, Independent Projects, Volunteer Work, Research Experience, Teaching Experience, Consulting Projects",
+      title: "Experience",
+      description: "Work history with company, title, dates, and achievements.",
+      Visual: ExperienceVisual,
     },
     {
       type: "education",
-      title: "Education Section",
-      description:
-        "Structured format for academic qualifications with degree, institution, year, and field of study.",
-      useFor:
-        "Education, Certifications, Professional Training, Online Courses, Academic Background, Qualifications",
+      title: "Education",
+      description: "Academic qualifications with degree, school, and year.",
+      Visual: EducationVisual,
     },
     {
       type: "text",
-      title: "Text Section",
-      description: "A simple text block for single-paragraph sections.",
-      useFor: "Summary, Objective, About Me, Career Goal, Personal Statement",
+      title: "Text Block",
+      description: "Simple paragraph for summaries or statements.",
+      Visual: TextVisual,
     },
     {
       type: "bulleted-list",
-      title: "List with Bullets",
-      description:
-        "Traditional bulleted list format with clear visual separation.",
-      useFor:
-        "Technical Skills, Hobbies, Key Achievements, Certifications, Volunteer Work, Strengths",
+      title: "Bulleted List",
+      description: "Traditional vertical list with bullet points.",
+      Visual: BulletedListVisual,
     },
     {
       type: "inline-list",
-      title: "Horizontal List",
-      description: "Items displayed in a single row, separated by commas.",
-      useFor:
-        "Key Skills, Software Proficiencies, Technologies, Languages, Personal Interests",
+      title: "Inline List",
+      description: "Items displayed horizontally, flowing like tags.",
+      Visual: InlineListVisual,
     },
     {
       type: "dynamic-column-list",
       title: "Smart Table",
-      description:
-        "Automatically arranges items in columns for optimal space usage.",
-      useFor:
-        "Technical Skills, Certifications, Tools, Key Projects, Accomplishments",
+      description: "Auto-arranges items in columns for space efficiency.",
+      Visual: SmartTableVisual,
     },
     {
       type: "icon-list",
-      title: "Bullet List with Icons",
-      description:
-        "Traditional bulleted list enhanced with visual icons for each item.",
-      useFor:
-        "Certifications, Awards, Professional Memberships, Licenses, Achievements",
+      title: "Certifications",
+      description: "Professional certifications with issuer and dates.",
+      Visual: CertificationVisual,
     },
   ];
 
@@ -106,7 +104,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white p-4 sm:p-6 rounded-lg max-w-sm sm:max-w-xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white p-4 sm:p-6 rounded-lg max-w-sm sm:max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
           Select Section Type
         </h2>
@@ -135,23 +133,29 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
           </select>
         </div>
 
-        <div className="space-y-3 sm:space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {sectionTypes.map((section) => (
-            <div
+            <button
               key={section.type}
-              className="p-3 sm:p-4 border rounded-lg shadow-sm hover:shadow-md hover:border-blue-300 cursor-pointer flex flex-col transition-all duration-200"
               onClick={() => onSelect(section.type, selectedPosition)}
+              className="group flex flex-col text-left bg-white rounded-xl border border-gray-200
+                         overflow-hidden shadow-sm hover:shadow-md hover:border-blue-400
+                         hover:ring-2 hover:ring-blue-100 transition-all duration-200"
             >
-              <h3 className="font-semibold text-base sm:text-lg">
-                {section.title}
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2">
-                {section.description}
-              </p>
-              <p className="text-xs sm:text-sm text-gray-500 italic">
-                <strong>Use for:</strong> {section.useFor}
-              </p>
-            </div>
+              {/* Visual Area */}
+              <div className="h-28 sm:h-32 bg-gray-50 p-4 flex items-center justify-center
+                              group-hover:bg-blue-50/30 transition-colors">
+                <section.Visual className="w-full h-full" />
+              </div>
+
+              {/* Content Area */}
+              <div className="p-4">
+                <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-blue-700 transition-colors">
+                  {section.title}
+                </h3>
+                <p className="text-xs text-gray-500 line-clamp-2">{section.description}</p>
+              </div>
+            </button>
           ))}
         </div>
         <button
