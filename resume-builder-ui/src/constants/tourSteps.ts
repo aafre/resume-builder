@@ -109,26 +109,26 @@ export const TOUR_STEPS: TourStep[] = [
     }
   },
 
-  // Step 3: Navigation - Section sidebar usage
+  // Step 3: Navigation - Section organization and reordering
   {
     id: 'navigation',
     targetElementId: 'tour-section-navigator',
     visibleFor: 'all',
     title: {
-      authenticated: 'Build Your Sections',
-      anonymous: 'Build Your Sections'
+      authenticated: 'Organize & Reorder',
+      anonymous: 'Organize & Reorder'
     },
     content: {
       authenticated: {
         simpleContent: {
-          icon: '🧭',
-          description: 'Use the Menu to add new sections, view and jump between sections. Reorder them by dragging on the Editor page.'
+          icon: '↕️',
+          description: 'Add and reorder sections, entries, and bullet points.\n\n🖱️ Desktop: Hover to reveal the ••• handle, then drag.\n👆 Mobile: Press & hold any item, then drag to reorder.'
         }
       },
       anonymous: {
         simpleContent: {
-          icon: '🧭',
-          description: 'Use the Menu to add new sections, view and jump between sections. Reorder them by dragging on the Editor page.'
+          icon: '↕️',
+          description: 'Add and reorder sections, entries, and bullet points.\n\n🖱️ Desktop: Hover to reveal the ••• handle, then drag.\n👆 Mobile: Press & hold any item, then drag to reorder.'
         }
       }
     }

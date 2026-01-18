@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { Tab } from '@headlessui/react';
-import { MdClose } from 'react-icons/md';
+import { MdClose, MdMouse, MdTouchApp } from 'react-icons/md';
 
 interface TabbedHelpModalProps {
   isOpen: boolean;
@@ -136,11 +136,20 @@ function EditorGuideContent() {
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">Reordering Sections</h3>
-        <p className="text-gray-600">
-          Drag and drop sections in the sidebar (desktop) or bottom navigation (mobile) to reorder them.
-          Customize your resume structure to highlight what matters most.
-        </p>
+        <h3 className="text-lg font-semibold text-gray-800 mb-3">Reordering Sections & Items</h3>
+        <div className="text-gray-600 space-y-2">
+          <p className="flex items-center gap-2">
+            <MdMouse className="text-blue-500 flex-shrink-0" />
+            <span><strong>Desktop:</strong> Hover over any section or item to reveal the ••• handle, then drag to reorder</span>
+          </p>
+          <p className="flex items-center gap-2">
+            <MdTouchApp className="text-blue-500 flex-shrink-0" />
+            <span><strong>Mobile:</strong> Press and hold any section or item, then drag to reorder</span>
+          </p>
+          <p className="text-sm text-gray-500 mt-2">
+            Works for sections, experience entries, education items, and bullet points.
+          </p>
+        </div>
       </div>
 
       <div>

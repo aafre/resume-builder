@@ -1,5 +1,49 @@
-import React, { useState } from "react";
-import { MdHelpOutline, MdExpandMore, MdExpandLess } from "react-icons/md";
+import React, { useState, useMemo } from "react";
+import {
+  MdHelpOutline,
+  MdExpandMore,
+  MdExpandLess,
+  MdMoreHoriz,
+  MdEdit,
+  MdCloudDone,
+  MdSaveAlt,
+  MdTouchApp,
+  MdMouse,
+} from "react-icons/md";
+import { useAuth } from "../contexts/AuthContext";
+
+/**
+ * TipCard - Visual card for displaying a help tip
+ */
+interface TipCardProps {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  primaryTip: React.ReactNode;
+  secondaryTips: string[];
+}
+
+const TipCard: React.FC<TipCardProps> = ({
+  icon: Icon,
+  title,
+  primaryTip,
+  secondaryTips,
+}) => (
+  <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
+    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-3">
+      <Icon className="text-blue-600 text-2xl" aria-hidden="true" />
+    </div>
+    <h4 className="text-base font-semibold text-gray-900 mb-2">{title}</h4>
+    <div className="mb-2">{primaryTip}</div>
+    <ul className="space-y-1">
+      {secondaryTips.map((tip, i) => (
+        <li key={i} className="text-xs text-gray-500 flex items-start gap-1.5">
+          <span className="text-blue-400 mt-0.5">•</span>
+          <span>{tip}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
 
 /**
  * Collapsible formatting help section
@@ -7,6 +51,13 @@ import { MdHelpOutline, MdExpandMore, MdExpandLess } from "react-icons/md";
  */
 const FormattingHelp: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { isAnonymous } = useAuth();
+
+  // Detect touch devices for device-specific tips
+  const isTouchDevice = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  }, []);
 
   return (
     <div className="bg-blue-50/50 backdrop-blur-sm rounded-xl border border-blue-200/60 mb-6 overflow-hidden transition-all duration-200">
@@ -15,12 +66,15 @@ const FormattingHelp: React.FC = () => {
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full flex items-center justify-between p-4 hover:bg-blue-100/50 transition-colors text-left"
         aria-expanded={isExpanded}
-        aria-label={isExpanded ? "Collapse formatting help" : "Expand formatting help"}
+        aria-label={isExpanded ? "Collapse help guide" : "Expand help guide"}
       >
         <div className="flex items-center gap-3">
-          <MdHelpOutline className="text-blue-600 text-xl flex-shrink-0" aria-hidden="true" />
+          <MdHelpOutline
+            className="text-blue-600 text-xl flex-shrink-0"
+            aria-hidden="true"
+          />
           <span className="text-blue-900 font-medium text-sm">
-            Formatting Help & Tips
+            Quick Start Guide
           </span>
         </div>
         {isExpanded ? (
@@ -30,45 +84,91 @@ const FormattingHelp: React.FC = () => {
         )}
       </button>
 
-      {/* Expandable Content */}
+      {/* Expandable Content - 3-Column Grid */}
       {isExpanded && (
-        <div className="px-4 pb-4 text-sm space-y-4">
-          {/* Quick Start */}
-          <div>
-            <h4 className="font-semibold text-blue-900 mb-2">🚀 Quick Start</h4>
-            <ul className="space-y-1.5 text-blue-800">
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-0.5">•</span>
-                <span><strong>Format text:</strong> Select any text to see formatting buttons (<strong>B</strong>, <em>I</em>, <u>U</u>, <s>S</s>, 🔗)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-0.5">•</span>
-                <span><strong>Add links:</strong> Select text, click 🔗, enter the URL</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-0.5">•</span>
-                <span><strong>Keyboard shortcuts:</strong> Ctrl+B (Bold), Ctrl+I (Italic), Ctrl+U (Underline)</span>
-              </li>
-            </ul>
-          </div>
+        <div className="px-4 pb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Card 1: Drag & Organize */}
+            <TipCard
+              icon={MdMoreHoriz}
+              title="Drag & Organize"
+              primaryTip={
+                <div className="bg-blue-50/80 rounded-lg px-3 py-2 flex items-center gap-2">
+                  {isTouchDevice ? (
+                    <>
+                      <MdTouchApp
+                        className="text-blue-600 flex-shrink-0"
+                        aria-hidden="true"
+                      />
+                      <span className="text-sm text-blue-800">
+                        Press & hold, then drag
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <MdMouse
+                        className="text-blue-600 flex-shrink-0"
+                        aria-hidden="true"
+                      />
+                      <span className="text-sm text-blue-800">
+                        Hover to reveal the ••• handle
+                      </span>
+                    </>
+                  )}
+                </div>
+              }
+              secondaryTips={[
+                "Reorder sections, entries, and bullet points",
+                "Look for ••• at the top of each item",
+              ]}
+            />
 
-          {/* Reordering */}
-          <div>
-            <h4 className="font-semibold text-blue-900 mb-2">↕️ Reorder Sections & Items</h4>
-            <ul className="space-y-1.5 text-blue-800">
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-0.5">•</span>
-                <span><strong>Drag sections:</strong> Hover over the top edge of any section — grab the bar that appears to drag it up or down</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-0.5">•</span>
-                <span><strong>Drag items:</strong> Hover over the top of any entry (experience, education, etc.) — grab the bar to reorder within a section</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 mt-0.5">•</span>
-                <span><strong>Drag bullet points:</strong> Same for description points — hover at the top and drag to reorder</span>
-              </li>
-            </ul>
+            {/* Card 2: Edit & Format */}
+            <TipCard
+              icon={MdEdit}
+              title="Edit & Format"
+              primaryTip={
+                <p className="text-sm text-gray-700">
+                  Select text to see formatting options
+                </p>
+              }
+              secondaryTips={[
+                "Bold, Italic, Underline, Strikethrough, Links",
+                "Click section titles to edit inline",
+                "Ctrl+B, Ctrl+I, Ctrl+U shortcuts",
+              ]}
+            />
+
+            {/* Card 3: Save Status - Dynamic based on auth */}
+            {isAnonymous ? (
+              <TipCard
+                icon={MdSaveAlt}
+                title="Local Auto-Save Active"
+                primaryTip={
+                  <p className="text-sm text-gray-700">
+                    Changes save to this browser only
+                  </p>
+                }
+                secondaryTips={[
+                  "⚠️ Clearing browser data will delete your work",
+                  "Sign in to secure your resume to the cloud",
+                ]}
+              />
+            ) : (
+              <TipCard
+                icon={MdCloudDone}
+                title="Cloud Sync Active"
+                primaryTip={
+                  <p className="text-sm text-gray-700">
+                    Your work is securely backed up
+                  </p>
+                }
+                secondaryTips={[
+                  "Access your resume from any device",
+                  "Create and manage up to 5 resume versions",
+                ]}
+              />
+            )}
           </div>
         </div>
       )}
