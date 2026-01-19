@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import SEOHead from "./SEOHead";
 import { InFeedAd } from "./ads";
@@ -328,9 +329,8 @@ export default function BlogIndex() {
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {regularPosts.map((post, index) => (
-                <>
+                <React.Fragment key={post.slug}>
                   <article
-                    key={post.slug}
                     className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                   >
                     <div className="mb-4 flex items-center gap-2">
@@ -395,13 +395,12 @@ export default function BlogIndex() {
                   {/* Insert in-feed ad after every 6 posts, starting from position 5 (0-indexed) */}
                   {(index + 1) % 6 === 0 && index >= 5 && (
                     <InFeedAd
-                      key={`ad-${index}`}
                       adSlot="1234567894"
                       layout="card"
                       className="rounded-2xl"
                     />
                   )}
-                </>
+                </React.Fragment>
               ))}
             </div>
           </section>

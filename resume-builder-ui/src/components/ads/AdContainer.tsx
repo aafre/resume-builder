@@ -83,7 +83,7 @@ export const AdContainer = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [adLoaded, setAdLoaded] = useState(false);
-  const adPushed = useRef(false);
+  const adPushed = useRef<string | null>(null);
 
   // Lazy loading with IntersectionObserver
   useEffect(() => {
@@ -116,20 +116,20 @@ export const AdContainer = ({
 
   // Push ad to AdSense when visible
   useEffect(() => {
-    if (!isVisible || adPushed.current || !enabled) return;
+    if (!isVisible || adPushed.current === adSlot || !enabled) return;
 
     // Check if AdSense script is available
     if (typeof window !== "undefined" && window.adsbygoogle) {
       try {
         window.adsbygoogle.push({});
-        adPushed.current = true;
+        adPushed.current = adSlot;
         setAdLoaded(true);
       } catch {
         // AdSense push failed - likely ad blocker or script not loaded
         console.debug("AdSense push failed - ad may be blocked");
       }
     }
-  }, [isVisible, enabled]);
+  }, [isVisible, enabled, adSlot]);
 
   if (!enabled) {
     return null;

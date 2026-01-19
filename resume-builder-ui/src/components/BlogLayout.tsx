@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from './SEOHead';
 import BlogCTA from './BlogCTA';
-import { InContentAd } from './ads';
 
 interface BlogLayoutProps {
   children: ReactNode;
@@ -134,9 +133,6 @@ export default function BlogLayout({
             ))}
           </div>
         </header>
-
-        {/* In-article ad - below header */}
-        <InContentAd adSlot="1234567895" marginY={24} size="standard" />
 
         <div className="prose prose-lg prose-slate max-w-none">
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 md:p-12 border border-gray-200">
