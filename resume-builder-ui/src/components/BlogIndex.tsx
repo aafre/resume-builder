@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import SEOHead from "./SEOHead";
+import { InFeedAd } from "./ads";
 
 interface BlogPost {
   slug: string;
@@ -326,70 +327,81 @@ export default function BlogIndex() {
               All Articles
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {regularPosts.map((post) => (
-                <article
-                  key={post.slug}
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                >
-                  <div className="mb-4 flex items-center gap-2">
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-full">
-                      {post.category}
-                    </span>
-                    {post.comingSoon && (
-                      <span className="px-3 py-1 bg-orange-100 text-orange-700 text-sm font-medium rounded-full">
-                        Coming Soon
+              {regularPosts.map((post, index) => (
+                <>
+                  <article
+                    key={post.slug}
+                    className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <div className="mb-4 flex items-center gap-2">
+                      <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-full">
+                        {post.category}
                       </span>
-                    )}
-                  </div>
-
-                  <h3 className="text-xl font-bold mb-3 leading-tight">
-                    {post.comingSoon ? (
-                      <span className="text-gray-500 cursor-not-allowed">
-                        {post.title}
-                      </span>
-                    ) : (
-                      <Link
-                        to={`/blog/${post.slug}`}
-                        className="text-gray-900 hover:text-blue-600 transition-colors"
-                      >
-                        {post.title}
-                      </Link>
-                    )}
-                  </h3>
-
-                  <p className="text-gray-700 mb-4 leading-relaxed">
-                    {post.description}
-                  </p>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 text-sm text-gray-600">
-                      <time dateTime={post.publishDate}>
-                        {new Date(post.publishDate).toLocaleDateString(
-                          "en-US",
-                          {
-                            month: "short",
-                            day: "numeric",
-                          }
-                        )}
-                      </time>
-                      <span>•</span>
-                      <span>{post.readTime}</span>
+                      {post.comingSoon && (
+                        <span className="px-3 py-1 bg-orange-100 text-orange-700 text-sm font-medium rounded-full">
+                          Coming Soon
+                        </span>
+                      )}
                     </div>
 
-                    {post.comingSoon ? (
-                      <span className="text-gray-400 font-medium cursor-not-allowed">
-                        Coming Soon
-                      </span>
-                    ) : (
-                      <Link
-                        to={`/blog/${post.slug}`}
-                        className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
-                      >
-                        Read more →
-                      </Link>
-                    )}
-                  </div>
-                </article>
+                    <h3 className="text-xl font-bold mb-3 leading-tight">
+                      {post.comingSoon ? (
+                        <span className="text-gray-500 cursor-not-allowed">
+                          {post.title}
+                        </span>
+                      ) : (
+                        <Link
+                          to={`/blog/${post.slug}`}
+                          className="text-gray-900 hover:text-blue-600 transition-colors"
+                        >
+                          {post.title}
+                        </Link>
+                      )}
+                    </h3>
+
+                    <p className="text-gray-700 mb-4 leading-relaxed">
+                      {post.description}
+                    </p>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3 text-sm text-gray-600">
+                        <time dateTime={post.publishDate}>
+                          {new Date(post.publishDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                            }
+                          )}
+                        </time>
+                        <span>•</span>
+                        <span>{post.readTime}</span>
+                      </div>
+
+                      {post.comingSoon ? (
+                        <span className="text-gray-400 font-medium cursor-not-allowed">
+                          Coming Soon
+                        </span>
+                      ) : (
+                        <Link
+                          to={`/blog/${post.slug}`}
+                          className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                        >
+                          Read more →
+                        </Link>
+                      )}
+                    </div>
+                  </article>
+                  {/* Insert in-feed ad after every 6 posts, starting from position 5 (0-indexed) */}
+                  {(index + 1) % 6 === 0 && index >= 5 && (
+                    <InFeedAd
+                      key={`ad-${index}`}
+                      adSlot="1234567894"
+                      layout="card"
+                      className="rounded-2xl"
+                    />
+                  )}
+                </>
               ))}
             </div>
           </section>
