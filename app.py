@@ -1148,6 +1148,7 @@ app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB
 
 # Host canonicalization: www -> apex (SEO)
 CANONICAL_HOST = "easyfreeresume.com"
+assert not CANONICAL_HOST.startswith("www."), "CANONICAL_HOST must be an apex domain (without www.)"
 
 @app.before_request
 def canonicalize_host():
