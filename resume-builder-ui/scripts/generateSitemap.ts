@@ -34,6 +34,10 @@ const STATIC_URLS = [
   { loc: '/free-resume-builder-no-sign-up', priority: 0.9, changefreq: 'monthly', lastmod: '2026-01-01' },
   { loc: '/best-free-resume-builder-reddit', priority: 0.9, changefreq: 'monthly', lastmod: '2025-10-26' },
 
+  // UK CV Market Pages (0.9)
+  { loc: '/free-cv-builder-no-sign-up', priority: 0.9, changefreq: 'monthly', lastmod: '2026-01-18' },
+  { loc: '/cv-templates/ats-friendly', priority: 0.8, changefreq: 'monthly', lastmod: '2026-01-18' },
+
   // Core App Pages (0.8)
   { loc: '/templates', priority: 0.8, changefreq: 'weekly', lastmod: '2025-10-26' },
 
