@@ -10,6 +10,7 @@ import yaml from "js-yaml";
 import TemplateStartModal from "./TemplateStartModal";
 import ResumeRecoveryModal from "./ResumeRecoveryModal";
 import AuthModal from "./AuthModal";
+import { InFeedAd } from "./ads";
 
 // Lazy-loaded error components
 const NotFound = lazy(() => import("./NotFound"));
@@ -437,101 +438,122 @@ const TemplateCarousel: React.FC = () => {
       {/* Templates Grid */}
       <div className="container mx-auto max-w-6xl px-4 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-          {templates.map((template) => {
+          {templates.map((template, index) => {
             const isSelected = selectedTemplate?.id === template.id;
             return (
-              <div
-                key={template.id}
-                className={`group cursor-pointer transition-all duration-300 ${
-                  isSelected ? "scale-[1.02]" : "hover:scale-[1.02]"
-                }`}
-                onClick={() => handleSelectTemplate(template)}
-              >
+              <React.Fragment key={template.id}>
                 <div
-                  className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 ${
-                    isSelected
-                      ? "border-blue-500 ring-4 ring-blue-200/50"
-                      : "border-gray-200 hover:border-blue-300"
+                  className={`group cursor-pointer transition-all duration-300 ${
+                    isSelected ? "scale-[1.02]" : "hover:scale-[1.02]"
                   }`}
+                  onClick={() => handleSelectTemplate(template)}
                 >
-                  {/* Template Preview - Larger Image */}
-                  <div className="relative overflow-hidden bg-gray-50">
-                    <img
-                      src={template.image_url}
-                      alt={template.name}
-                      className="w-full h-96 sm:h-[500px] object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-                    />
-                    {isSelected && (
-                      <div className="absolute top-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-xl">
-                        <CheckCircleIcon className="w-7 h-7" />
-                      </div>
-                    )}
-
-                    {/* Overlay with quick info on hover */}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-end">
-                      <div className="w-full p-6 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <p className="text-white text-sm font-medium">
-                          Click to preview details
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Template Info - Compact but informative */}
-                  <div className="p-6 lg:p-8">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <h3 className="text-2xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
-                          {template.name}
-                        </h3>
-                        <p className="text-gray-600 leading-relaxed">
-                          {template.description}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex gap-3">
-                      {isSelected ? (
-                        <>
-                          <button
-                            className="flex-1 inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleUseTemplate(template.id);
-                            }}
-                            disabled={creating || checkingExistingResume}
-                          >
-                            {checkingExistingResume ? (
-                              <>
-                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                                Checking...
-                              </>
-                            ) : creating ? (
-                              <>
-                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                                Creating...
-                              </>
-                            ) : (
-                              <>
-                                Start Building Resume
-                                <ArrowRightIcon className="w-5 h-5 ml-2" />
-                              </>
-                            )}
-                          </button>
-                        </>
-                      ) : (
-                        <button className="btn-primary w-full py-4 px-6">
-                          <span className="relative z-10">Select This Template</span>
-                        </button>
+                  <div
+                    className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 ${
+                      isSelected
+                        ? "border-blue-500 ring-4 ring-blue-200/50"
+                        : "border-gray-200 hover:border-blue-300"
+                    }`}
+                  >
+                    {/* Template Preview - Larger Image */}
+                    <div className="relative overflow-hidden bg-gray-50">
+                      <img
+                        src={template.image_url}
+                        alt={template.name}
+                        className="w-full h-96 sm:h-[500px] object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+                      />
+                      {isSelected && (
+                        <div className="absolute top-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-xl">
+                          <CheckCircleIcon className="w-7 h-7" />
+                        </div>
                       )}
+
+                      {/* Overlay with quick info on hover */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-end">
+                        <div className="w-full p-6 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <p className="text-white text-sm font-medium">
+                            Click to preview details
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Template Info - Compact but informative */}
+                    <div className="p-6 lg:p-8">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <h3 className="text-2xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
+                            {template.name}
+                          </h3>
+                          <p className="text-gray-600 leading-relaxed">
+                            {template.description}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex gap-3">
+                        {isSelected ? (
+                          <>
+                            <button
+                              className="flex-1 inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleUseTemplate(template.id);
+                              }}
+                              disabled={creating || checkingExistingResume}
+                            >
+                              {checkingExistingResume ? (
+                                <>
+                                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                                  Checking...
+                                </>
+                              ) : creating ? (
+                                <>
+                                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                                  Creating...
+                                </>
+                              ) : (
+                                <>
+                                  Start Building Resume
+                                  <ArrowRightIcon className="w-5 h-5 ml-2" />
+                                </>
+                              )}
+                            </button>
+                          </>
+                        ) : (
+                          <button className="btn-primary w-full py-4 px-6">
+                            <span className="relative z-10">Select This Template</span>
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+                {/* Insert in-feed ad after every 6 templates, starting after position 5 (0-indexed) */}
+                {/* Policy: Never show ad before first 4 cards */}
+                {(index + 1) % 6 === 0 && index >= 5 && (
+                  <InFeedAd
+                    adSlot="1234567896"
+                    layout="card"
+                    className="rounded-3xl"
+                  />
+                )}
+              </React.Fragment>
             );
           })}
         </div>
+
+        {/* Show ad after all templates if there are 4+ templates but less than 6 */}
+        {templates.length >= 4 && templates.length < 6 && (
+          <div className="mt-8 lg:mt-12 flex justify-center">
+            <InFeedAd
+              adSlot="1234567896"
+              layout="card"
+              className="rounded-3xl max-w-md"
+            />
+          </div>
+        )}
       </div>
 
       {/* Template Start Modal */}
