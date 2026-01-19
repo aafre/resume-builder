@@ -239,7 +239,7 @@ export default function ZetyVsEasyFreeResume() {
                 <p>
                   Use our{" "}
                   <a
-                    href="/blog/how-to-use-resume-keywords-to-beat-ats"
+                    href="/blog/ats-resume-optimization"
                     className="text-blue-600 underline"
                   >
                     ATS Optimization Guide

@@ -29,7 +29,7 @@ export default function SoftwareEngineerResumeKeywords() {
           <p className="text-blue-700">
             This article is a cluster post supporting our main pillar guide:{" "}
             <a
-              href="/blog/how-to-use-resume-keywords-to-beat-ats"
+              href="/blog/ats-resume-optimization"
               className="text-blue-600 hover:text-blue-800 underline font-medium"
             >
               How to Use Resume Keywords to Beat the ATS
