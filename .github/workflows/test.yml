@@ -1,26 +1,6 @@
 name: Tests
 
 on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'resume-builder-ui/**'
-      - 'app.py'
-      - 'resume_generator*.py'
-      - 'templates/**'
-      - 'requirements.txt'
-      - 'package*.json'
-  push:
-    branches:
-      - main
-    paths:
-      - 'resume-builder-ui/**'
-      - 'app.py'
-      - 'resume_generator*.py'
-      - 'templates/**'
-      - 'requirements.txt'
-      - 'package*.json'
   workflow_call:
 
 jobs:
