@@ -380,7 +380,7 @@ export default function JobKeywordsPage() {
                 className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg"
               >
                 <h4 className="font-bold text-gray-900 mb-1">
-                  ❌ {item.mistake}
+                  <span aria-hidden="true">❌</span> {item.mistake}
                 </h4>
                 <p className="text-green-700 text-sm">
                   → {item.fix}

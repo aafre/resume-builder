@@ -67,7 +67,7 @@ export default function BestFreeResumeBuilderReddit() {
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
           <div className="bg-red-50 border border-red-200 rounded-xl p-6">
             <h3 className="text-xl font-bold text-red-800 mb-4">
-              🚫 Paywall Bait-and-Switch
+              <span aria-hidden="true">🚫</span> Paywall Bait-and-Switch
             </h3>
             <p className="text-red-700 text-sm mb-3">
               "Built my entire resume only to find out I need to pay $20 to download it."
@@ -79,7 +79,7 @@ export default function BestFreeResumeBuilderReddit() {
 
           <div className="bg-red-50 border border-red-200 rounded-xl p-6">
             <h3 className="text-xl font-bold text-red-800 mb-4">
-              🚫 Watermarks on "Free" Plans
+              <span aria-hidden="true">🚫</span> Watermarks on "Free" Plans
             </h3>
             <p className="text-red-700 text-sm mb-3">
               "The free version had their logo on every page. Looked unprofessional."
@@ -91,7 +91,7 @@ export default function BestFreeResumeBuilderReddit() {
 
           <div className="bg-red-50 border border-red-200 rounded-xl p-6">
             <h3 className="text-xl font-bold text-red-800 mb-4">
-              🚫 Mandatory Account Creation
+              <span aria-hidden="true">🚫</span> Mandatory Account Creation
             </h3>
             <p className="text-red-700 text-sm mb-3">
               "Had to give them my email and phone number just to try the builder."
@@ -103,7 +103,7 @@ export default function BestFreeResumeBuilderReddit() {
 
           <div className="bg-red-50 border border-red-200 rounded-xl p-6">
             <h3 className="text-xl font-bold text-red-800 mb-4">
-              🚫 Aggressive Upselling
+              <span aria-hidden="true">🚫</span> Aggressive Upselling
             </h3>
             <p className="text-red-700 text-sm mb-3">
               "Every click showed a popup asking me to upgrade to premium."

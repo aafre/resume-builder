@@ -46,23 +46,23 @@ export default function CVTemplatesHub() {
           </p>
           <ul className="space-y-3 text-gray-700">
             <li className="flex items-start">
-              <span className="text-green-600 font-bold mr-3">&#10003;</span>
+              <span className="text-green-600 font-bold mr-3" aria-hidden="true">&#10003;</span>
               <span><strong>Standard fonts</strong> like Arial, Calibri, or Times New Roman</span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-600 font-bold mr-3">&#10003;</span>
+              <span className="text-green-600 font-bold mr-3" aria-hidden="true">&#10003;</span>
               <span><strong>Clear section headers</strong> (Personal Profile, Experience, Education, Skills)</span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-600 font-bold mr-3">&#10003;</span>
+              <span className="text-green-600 font-bold mr-3" aria-hidden="true">&#10003;</span>
               <span><strong>Simple formatting</strong> without complex tables or graphics</span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-600 font-bold mr-3">&#10003;</span>
+              <span className="text-green-600 font-bold mr-3" aria-hidden="true">&#10003;</span>
               <span><strong>Standard bullet points</strong> (avoid special characters)</span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-600 font-bold mr-3">&#10003;</span>
+              <span className="text-green-600 font-bold mr-3" aria-hidden="true">&#10003;</span>
               <span><strong>Reverse chronological order</strong> (most recent experience first)</span>
             </li>
           </ul>
