@@ -1146,6 +1146,19 @@ CORS(app, resources={
 
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB
 
+# Host canonicalization: www -> apex (SEO)
+CANONICAL_HOST = "easyfreeresume.com"
+
+@app.before_request
+def canonicalize_host():
+    """Redirect www to apex domain for SEO consolidation."""
+    host = (request.host or "").lower()
+    if host.startswith("www."):
+        # Preserve path and query string
+        target_url = f"https://{CANONICAL_HOST}{request.full_path}".rstrip("?")
+        return redirect(target_url, code=301)
+    return None
+
 # Initialize PDF process pool on app startup
 initialize_pdf_pool()
 
