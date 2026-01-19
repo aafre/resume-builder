@@ -5,6 +5,7 @@ import SEOHead from "./SEOHead";
 import CompanyMarquee from "./CompanyMarquee";
 import { useAuth } from "../contexts/AuthContext";
 import { useResumeCount } from "../hooks/useResumeCount";
+import { InContentAd } from "./ads";
 import {
   ArrowRightIcon,
   EyeIcon,
@@ -275,6 +276,11 @@ const LandingPage: React.FC = () => {
             </h3>
             <p className="text-gray-600 font-medium tracking-wide">ATS Compatible</p>
           </div>
+        </div>
+
+        {/* In-content Ad - Below stats, above fold */}
+        <div className="container mx-auto max-w-4xl px-4">
+          <InContentAd adSlot="1234567890" marginY={32} />
         </div>
 
         {/* Trusted Companies Section */}

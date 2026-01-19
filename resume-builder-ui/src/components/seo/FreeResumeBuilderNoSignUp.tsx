@@ -10,6 +10,7 @@ import StepByStep from '../shared/StepByStep';
 import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
+import { InContentAd } from '../ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 
@@ -23,6 +24,9 @@ export default function FreeResumeBuilderNoSignUp() {
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
       <PageHero config={config.hero} />
+
+      {/* In-content Ad - Below hero */}
+      <InContentAd adSlot="1234567891" marginY={32} />
 
       {config.steps && <StepByStep steps={config.steps} />}
 

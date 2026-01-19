@@ -10,6 +10,7 @@ import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import JobCategorySection from './JobCategorySection';
+import { InContentAd } from '../ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 import { JOBS_DATABASE, getJobsByCategory } from '../../data/jobKeywords';
@@ -69,6 +70,9 @@ export default function ResumeKeywordsHub() {
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
       <PageHero config={config.hero} />
+
+      {/* In-content Ad - Below hero */}
+      <InContentAd adSlot="1234567893" marginY={32} />
 
       <div className="mb-16">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
