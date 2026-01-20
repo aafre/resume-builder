@@ -73,6 +73,7 @@ interface RequestOptions {
  */
 class ApiClient {
   private cachedSession: any = null;
+  private refreshPromise: Promise<boolean> | null = null; // Prevent concurrent refresh calls
 
   /**
    * Set the current session to avoid calling getSession() on every request.
@@ -84,18 +85,62 @@ class ApiClient {
     this.cachedSession = session;
   }
 
-  private async getAuthHeaders(providedSession?: any): Promise<Record<string, string>> {
-    // Use provided session first (from request options)
-    if (providedSession) {
-      return {
-        'Authorization': `Bearer ${providedSession.access_token}`
-      };
+  /**
+   * Check if token is expired or about to expire (within 60 seconds)
+   */
+  private isTokenExpiredOrExpiring(session: any): boolean {
+    if (!session?.expires_at) return false;
+    const now = Math.floor(Date.now() / 1000);
+    const BUFFER_SECONDS = 60;
+    return session.expires_at <= now + BUFFER_SECONDS;
+  }
+
+  /**
+   * Proactively refresh token before it expires.
+   * Deduplicated: concurrent calls share the same promise.
+   */
+  private async proactiveRefresh(): Promise<boolean> {
+    if (this.refreshPromise) {
+      return this.refreshPromise;
     }
 
-    // Use cached session second (set by setSession())
-    if (this.cachedSession) {
+    this.refreshPromise = (async () => {
+      try {
+        if (!supabase) return false;
+        const { data: { session }, error } = await supabase.auth.refreshSession();
+        if (error || !session) {
+          console.warn('Proactive token refresh failed:', error?.message);
+          return false;
+        }
+        this.cachedSession = session;
+        return true;
+      } catch (error) {
+        console.warn('Proactive token refresh error:', error);
+        return false;
+      } finally {
+        this.refreshPromise = null;
+      }
+    })();
+
+    return this.refreshPromise;
+  }
+
+  private async getAuthHeaders(providedSession?: any): Promise<Record<string, string>> {
+    // Use provided session first (from request options)
+    let session = providedSession || this.cachedSession;
+
+    // Proactively refresh if token is expired or expiring soon
+    if (session && this.isTokenExpiredOrExpiring(session)) {
+      const refreshed = await this.proactiveRefresh();
+      if (refreshed) {
+        session = this.cachedSession;
+      }
+      // If refresh failed, continue with current token - 401 handler is the fallback
+    }
+
+    if (session) {
       return {
-        'Authorization': `Bearer ${this.cachedSession.access_token}`
+        'Authorization': `Bearer ${session.access_token}`
       };
     }
 
@@ -104,14 +149,14 @@ class ApiClient {
       throw new Error('Supabase client not initialized');
     }
 
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session: freshSession } } = await supabase.auth.getSession();
 
-    if (!session) {
+    if (!freshSession) {
       throw new AuthError('No active session');
     }
 
     return {
-      'Authorization': `Bearer ${session.access_token}`
+      'Authorization': `Bearer ${freshSession.access_token}`
     };
   }
 
