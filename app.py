@@ -2414,7 +2414,7 @@ def _copy_icon_worker(source_icon, user_id, new_resume_id):
             'created_at': 'now()'
         }
     except Exception as icon_error:
-        logging.error(f"Failed to copy icon {source_icon['filename']}: {icon_error}")
+        logging.error(f"Failed to copy icon {source_icon.get('filename', 'unknown')}: {icon_error}")
         return None # Return None on failure
 
 
