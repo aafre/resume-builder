@@ -1225,7 +1225,7 @@ def require_auth(f):
             if is_expired:
                 logging.warning(
                     f"Expired token | endpoint={request.path} | method={request.method} | "
-                    f"ip={request.remote_addr}"
+                    f"user_agent={user_agent} | ip={request.remote_addr}"
                 )
             else:
                 logging.error(
