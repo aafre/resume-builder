@@ -1,3 +1,4 @@
+import type { Session } from '@supabase/supabase-js';
 import { supabase } from './supabase';
 import { toast } from 'react-hot-toast';
 
@@ -38,11 +39,17 @@ class RetryRequestError extends Error {
   }
 }
 
+/**
+ * Minimal session info needed for API requests.
+ * Accepts full Supabase Session or partial object with just access_token.
+ */
+type SessionLike = Session | { access_token: string; expires_at?: number };
+
 interface RequestOptions {
   headers?: Record<string, string>;
   signal?: AbortSignal;
   skipAuth?: boolean; // Skip Authorization header (for public endpoints)
-  session?: any; // Pass session directly to avoid slow getSession() calls
+  session?: SessionLike | null; // Pass session directly to avoid slow getSession() calls
   responseType?: 'json' | 'blob' | 'text' | 'raw'; // Response parsing strategy
 }
 
@@ -72,7 +79,7 @@ interface RequestOptions {
  * ```
  */
 class ApiClient {
-  private cachedSession: any = null;
+  private cachedSession: Session | null = null;
   private refreshPromise: Promise<boolean> | null = null; // Prevent concurrent refresh calls
 
   /**
@@ -81,15 +88,15 @@ class ApiClient {
    *
    * Call this from AuthContext whenever session changes.
    */
-  setSession(session: any) {
+  setSession(session: Session | null) {
     this.cachedSession = session;
   }
 
   /**
    * Check if token is expired or about to expire (within 60 seconds)
    */
-  private isTokenExpiredOrExpiring(session: any): boolean {
-    if (!session?.expires_at) return false;
+  private isTokenExpiredOrExpiring(session: SessionLike): boolean {
+    if (!session.expires_at) return false;
     const now = Math.floor(Date.now() / 1000);
     const BUFFER_SECONDS = 60;
     return session.expires_at <= now + BUFFER_SECONDS;
@@ -125,7 +132,7 @@ class ApiClient {
     return this.refreshPromise;
   }
 
-  private async getAuthHeaders(providedSession?: any): Promise<Record<string, string>> {
+  private async getAuthHeaders(providedSession?: SessionLike | null): Promise<Record<string, string>> {
     // Use provided session first (from request options)
     let session = providedSession || this.cachedSession;
 
