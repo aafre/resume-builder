@@ -1145,6 +1145,8 @@ CORS(app, resources={
 })
 
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB
+MAX_ICON_COPY_WORKERS = 10
+
 
 # Initialize PDF process pool on app startup
 initialize_pdf_pool()
@@ -2497,7 +2499,7 @@ def duplicate_resume(resume_id):
         source_icons = source_icons_result.data
 
         if source_icons:
-            with ThreadPoolExecutor(max_workers=10) as executor:
+            with ThreadPoolExecutor(max_workers=MAX_ICON_COPY_WORKERS) as executor:
                 # Use a lambda to pass extra arguments to the worker
                 results = executor.map(lambda icon: _copy_icon_worker(icon, user_id, new_resume_id), source_icons)
 
