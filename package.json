@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test:sitemap": "npx playwright test --project=sitemap"
+    "test:sitemap": "playwright test --project=sitemap"
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",

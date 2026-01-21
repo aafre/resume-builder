@@ -1,7 +1,9 @@
 /**
  * Sitemap URL Validation Test
  *
- * Validates that all URLs defined in the sitemap are accessible (not 404).
+ * Validates that all URLs defined in the sitemap are accessible (not 404)
+ * and have valid page titles.
+ *
  * Uses the same data sources as the sitemap generator to ensure consistency.
  *
  * Run: npm run test:sitemap
@@ -14,7 +16,7 @@ test.describe('Sitemap URL Validation', () => {
   // Use a longer timeout since we're testing many URLs
   test.setTimeout(300000); // 5 minutes
 
-  test('all sitemap URLs should not return 404', async ({ page }) => {
+  test('all sitemap URLs should be valid and have non-empty titles', async ({ page }) => {
     const urls = getAllSitemapUrls();
     const counts = getUrlCounts();
 
@@ -24,6 +26,7 @@ test.describe('Sitemap URL Validation', () => {
     console.log(`  - Job example pages: ${counts.jobExamples}\n`);
 
     const failures: { url: string; status: number | null; error?: string }[] = [];
+    const emptyTitles: string[] = [];
     const successes: string[] = [];
 
     for (const path of urls) {
@@ -39,14 +42,21 @@ test.describe('Sitemap URL Validation', () => {
           failures.push({ url: path, status });
           console.log(`  [FAIL] ${path} - 404 Not Found`);
         } else if (status && status >= 400) {
-          // Also catch other error status codes
           failures.push({ url: path, status });
           console.log(`  [FAIL] ${path} - ${status}`);
         } else {
           successes.push(path);
-          // Only log successes in verbose mode to reduce noise
           if (process.env.VERBOSE) {
             console.log(`  [OK] ${path}`);
+          }
+
+          // Check title only for successful responses
+          if (status === 200) {
+            const title = await page.title();
+            if (!title || title.trim() === '') {
+              emptyTitles.push(path);
+              console.log(`  [WARN] ${path} - Empty title`);
+            }
           }
         }
       } catch (error) {
@@ -75,6 +85,11 @@ test.describe('Sitemap URL Validation', () => {
       });
     }
 
+    if (emptyTitles.length > 0) {
+      console.log(`\nPages with empty titles:`);
+      emptyTitles.forEach((url) => console.log(`  - ${url}`));
+    }
+
     // Assert no failures
     expect(
       failures,
@@ -82,42 +97,6 @@ test.describe('Sitemap URL Validation', () => {
         .map((f) => `  ${f.url}: ${f.error || f.status}`)
         .join('\n')}`
     ).toHaveLength(0);
-  });
-
-  test('all pages should have non-empty titles', async ({ page }) => {
-    const urls = getAllSitemapUrls();
-
-    console.log(`\nValidating page titles for ${urls.length} URLs...\n`);
-
-    const emptyTitles: string[] = [];
-
-    for (const path of urls) {
-      try {
-        const response = await page.goto(path, {
-          waitUntil: 'domcontentloaded',
-          timeout: 30000,
-        });
-
-        // Skip pages that already failed (404s, etc)
-        if (response?.status() !== 200) {
-          continue;
-        }
-
-        const title = await page.title();
-
-        if (!title || title.trim() === '') {
-          emptyTitles.push(path);
-          console.log(`  [WARN] ${path} - Empty title`);
-        }
-      } catch {
-        // Errors already reported in the 404 test
-      }
-    }
-
-    if (emptyTitles.length > 0) {
-      console.log(`\nPages with empty titles:`);
-      emptyTitles.forEach((url) => console.log(`  - ${url}`));
-    }
 
     expect(
       emptyTitles,
