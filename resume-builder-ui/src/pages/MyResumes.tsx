@@ -362,7 +362,7 @@ export default function MyResumes() {
               onDuplicate={handleDuplicate}
               onRename={handleRename}
               isEditButtonLoading={editingId === resume.id}
-              isPreviewLoading={previewingId === resume.id}
+              isPreviewLoading={previewingId === resume.id && isGeneratingPreview}
             />
           ))}
         </div>

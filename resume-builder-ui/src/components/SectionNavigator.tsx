@@ -408,9 +408,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                 <span className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full border-2 border-white animate-pulse"></span>
               )}
               {isPreviewLoading ? (
-                <div className={`animate-spin rounded-full border-2 border-white border-t-transparent ${
-                  isCollapsed ? "h-4 w-4" : "h-4 w-4"
-                }`}></div>
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
               ) : (
                 <MdVisibility className={isCollapsed ? "text-lg" : "text-base"} />
               )}

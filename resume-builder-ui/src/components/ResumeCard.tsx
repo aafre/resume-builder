@@ -197,13 +197,13 @@ export function ResumeCard({
           <button
             onClick={(e) => {
               e.stopPropagation();
-              if (!isEditButtonLoading) onEdit(resume.id);
+              onEdit(resume.id);
             }}
             disabled={isEditButtonLoading}
-            className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
+            className={`flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
               isEditButtonLoading
-                ? 'bg-blue-600 text-white opacity-75 cursor-not-allowed'
-                : 'bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.98]'
+                ? 'opacity-75 cursor-not-allowed'
+                : 'hover:bg-blue-700 active:scale-[0.98]'
             }`}
           >
             {isEditButtonLoading ? (
