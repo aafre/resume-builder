@@ -26,7 +26,7 @@ import re
 import base64
 import copy
 from jinja2 import Environment, FileSystemLoader
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import atexit
 from functools import wraps
 import time
@@ -2380,6 +2380,44 @@ def delete_resume(resume_id):
         return jsonify({"success": False, "error": "Failed to delete resume"}), 500
 
 
+def _copy_icon_worker(source_icon, user_id, new_resume_id):
+    """
+    Worker function to copy a single icon in a thread pool.
+    Downloads from source, uploads to destination, and returns new record.
+    """
+    try:
+        # Download icon from source storage path
+        source_path = source_icon['storage_path']
+        icon_data = supabase.storage.from_('resume-icons').download(source_path)
+
+        # Upload to new storage path
+        new_storage_path = f"{user_id}/{new_resume_id}/{source_icon['filename']}"
+        supabase.storage.from_('resume-icons').upload(
+            new_storage_path,
+            icon_data,
+            file_options={"content-type": source_icon.get('mime_type', 'image/png'), "upsert": "true"}
+        )
+
+        # Get public URL for new icon
+        new_storage_url = supabase.storage.from_('resume-icons').get_public_url(new_storage_path)
+
+        # Prepare new icon record
+        return {
+            'id': str(uuid.uuid4()),
+            'resume_id': new_resume_id,
+            'user_id': user_id,
+            'filename': source_icon['filename'],
+            'storage_path': new_storage_path,
+            'storage_url': new_storage_url,
+            'mime_type': source_icon.get('mime_type', 'image/png'),
+            'file_size': source_icon.get('file_size', 0),
+            'created_at': 'now()'
+        }
+    except Exception as icon_error:
+        logging.error(f"Failed to copy icon {source_icon['filename']}: {icon_error}")
+        return None # Return None on failure
+
+
 @app.route("/api/resumes/<resume_id>/duplicate", methods=["POST"])
 @require_auth
 def duplicate_resume(resume_id):
@@ -2454,41 +2492,17 @@ def duplicate_resume(resume_id):
             .eq('resume_id', resume_id) \
             .execute()
 
-        # Copy icons from source to new resume
+        # Concurrently copy icons from source to new resume using a thread pool
         new_icon_records = []
-        for source_icon in source_icons_result.data:
-            try:
-                # Download icon from source storage path
-                source_path = source_icon['storage_path']
-                icon_data = supabase.storage.from_('resume-icons').download(source_path)
+        source_icons = source_icons_result.data
 
-                # Upload to new storage path
-                new_storage_path = f"{user_id}/{new_resume_id}/{source_icon['filename']}"
-                supabase.storage.from_('resume-icons').upload(
-                    new_storage_path,
-                    icon_data,
-                    file_options={"content-type": source_icon.get('mime_type', 'image/png'), "upsert": "true"}
-                )
+        if source_icons:
+            with ThreadPoolExecutor(max_workers=10) as executor:
+                # Use a lambda to pass extra arguments to the worker
+                results = executor.map(lambda icon: _copy_icon_worker(icon, user_id, new_resume_id), source_icons)
 
-                # Get public URL for new icon
-                new_storage_url = supabase.storage.from_('resume-icons').get_public_url(new_storage_path)
-
-                # Prepare new icon record
-                new_icon_records.append({
-                    'id': str(uuid.uuid4()),
-                    'resume_id': new_resume_id,
-                    'user_id': user_id,
-                    'filename': source_icon['filename'],
-                    'storage_path': new_storage_path,
-                    'storage_url': new_storage_url,
-                    'mime_type': source_icon.get('mime_type', 'image/png'),
-                    'file_size': source_icon.get('file_size', 0),
-                    'created_at': 'now()'
-                })
-
-            except Exception as icon_error:
-                logging.error(f"Failed to copy icon {source_icon['filename']}: {icon_error}")
-                # Continue with other icons
+                # Filter out None results from failed copies
+                new_icon_records = [record for record in results if record is not None]
 
         # Insert new icon records
         if new_icon_records:
