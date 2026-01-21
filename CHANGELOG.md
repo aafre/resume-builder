@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.8.0] - 2026-01-21
+
+### 🚀 Features
+
+- **seo:** Update Zety comparison article for 2026
+- **seo:** Enhance no-experience resume guide with career-switcher example
+- **seo:** Enhance Reddit recommendations page for 2026
+- **seo:** Strengthen actual-free page with competitor comparison
+- **seo:** Enhance JobKeywordsPage template with new sections
+- **seo:** Enhance software engineer keywords with rich content
+- **seo:** Enhance data-analyst and product-manager keywords with rich content
+- **seo:** Add UK CV market pages
+- **seo:** Add www to apex host canonicalization
+
+### 🐛 Bug Fixes
+
+- **seo:** Add 301 redirect for software engineer keywords page
+- **a11y:** Use semantic ul elements for bulleted lists
+- **seo:** Correct broken internal link to ATS optimization guide
+- **seo:** Add missing UK CV pages to sitemap
+- **seo:** Add assertion to prevent CANONICAL_HOST misconfiguration
+- **a11y:** Hide decorative emojis from screen readers
+- **seo:** Use exact-match for www host canonicalization
+
+### 🚜 Refactor
+
+- **blog:** Extract date formatting options constant
+
 ## [3.7.0] - 2026-01-18
 
 ### 🚀 Features
