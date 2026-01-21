@@ -2691,18 +2691,33 @@ def migrate_anonymous_resumes():
 
         logging.info(f"Migrated {migrated_icons} icons, {failed_icons} failed")
 
-        # Step 3: Update user preferences
-        # Delete old user's preferences
+        # Step 3: Migrate user preferences (tour_completed, idle_nudge_shown, etc.)
+        # Transfer preferences from old anonymous user to new authenticated user
         try:
-            supabase.table('user_preferences') \
-                .delete() \
-                .eq('user_id', old_user_id) \
+            # Check if new user already has preferences
+            existing_prefs = supabase.table('user_preferences') \
+                .select('user_id') \
+                .eq('user_id', new_user_id) \
+                .maybeSingle() \
                 .execute()
-        except Exception as pref_error:
-            logging.warning(f"Failed to delete old preferences: {pref_error}")
 
-        # Update new user's preferences if needed
-        # (The frontend will handle setting last_edited_resume_id on next save)
+            if existing_prefs.data:
+                # New user already has preferences - delete old user's preferences
+                supabase.table('user_preferences') \
+                    .delete() \
+                    .eq('user_id', old_user_id) \
+                    .execute()
+                logging.info(f"Deleted old preferences (new user already has preferences)")
+            else:
+                # Migrate preferences by updating user_id
+                supabase.table('user_preferences') \
+                    .update({'user_id': new_user_id}) \
+                    .eq('user_id', old_user_id) \
+                    .execute()
+                logging.info(f"Migrated preferences from {old_user_id} to {new_user_id}")
+        except Exception as pref_error:
+            logging.warning(f"Failed to migrate preferences: {pref_error}")
+            # Non-critical - preferences will be recreated on next interaction
 
         logging.info(f"Migration complete: {old_count} resumes migrated to {new_user_id}")
 
