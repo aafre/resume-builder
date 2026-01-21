@@ -1,0 +1,110 @@
+# Graphic Designer Resume Example
+# Category: Creative (Tier 5)
+
+meta:
+  slug: graphic-designer
+  title: Graphic Designer
+  metaTitle: "Free Graphic Designer Resume Example & Template (2026)"
+  metaDescription: "Graphic designer resume example with design software skills and portfolio highlights."
+  category: creative
+  priority: 0.7
+
+resume:
+  template: modern
+  contact:
+    name: Maya Santos
+    title: Graphic Designer
+    email: maya.santos@email.com
+    phone: "(555) 901-2345"
+    location: Los Angeles, CA
+    website: mayasantos.design
+
+  summary: >
+    Creative graphic designer with 5+ years of experience in branding, digital design,
+    and print media. Expert in Adobe Creative Suite with strong typography and layout skills.
+    Delivered award-winning campaigns for Fortune 500 clients. Passionate about creating
+    visually compelling designs that drive business results.
+
+  experience:
+    - company: Creative Agency LA
+      title: Senior Graphic Designer
+      dates: Mar 2021 - Present
+      location: Los Angeles, CA
+      bullets:
+        - Lead visual design for 20+ client accounts including 3 Fortune 500 companies
+        - Designed brand identity systems generating $500K+ in client revenue
+        - Created social media campaigns reaching 5M+ impressions monthly
+        - Mentor team of 3 junior designers on design principles and software skills
+        - Won 2 industry awards for innovative packaging design
+
+    - company: Marketing Solutions Inc.
+      title: Graphic Designer
+      dates: Jun 2018 - Feb 2021
+      location: San Diego, CA
+      bullets:
+        - Designed marketing collateral for 30+ clients across diverse industries
+        - Created brand guidelines and visual identity systems for startups
+        - Produced digital and print assets including websites, brochures, and advertisements
+        - Collaborated with copywriters and developers to deliver cohesive campaigns
+
+    - company: Freelance
+      title: Graphic Designer
+      dates: Jan 2017 - May 2018
+      location: San Diego, CA
+      bullets:
+        - Built portfolio of 50+ clients through freelance design services
+        - Designed logos, business cards, and marketing materials for small businesses
+        - Managed client relationships and project timelines independently
+
+  education:
+    - school: Art Center College of Design
+      degree: BFA Graphic Design
+      year: "2017"
+      honors: Cum Laude
+
+  skills:
+    - Adobe Photoshop
+    - Adobe Illustrator
+    - Adobe InDesign
+    - Figma
+    - Sketch
+    - Typography
+    - Brand Identity
+    - UI/UX Design
+    - Print Design
+    - Motion Graphics
+    - Color Theory
+    - Layout Design
+
+bulletBank:
+  - category: Design Projects
+    bullets:
+      - "Designed brand identity for startup valued at $10M post-funding"
+      - "Created packaging design increasing product shelf appeal and sales by 30%"
+      - "Developed visual system used across 50+ touchpoints for enterprise client"
+      - "Designed website achieving 40% improvement in user engagement metrics"
+
+  - category: Creative Impact
+    bullets:
+      - "Won 3 industry awards including AIGA 50 for innovative design work"
+      - "Created social media graphics generating 10M+ impressions for campaigns"
+      - "Designed marketing materials contributing to $2M client revenue growth"
+      - "Developed infographics viewed by 500K+ users across platforms"
+
+  - category: Technical Skills
+    bullets:
+      - "Expert proficiency in Adobe Creative Suite (Photoshop, Illustrator, InDesign)"
+      - "Created motion graphics and animations using After Effects and Premiere"
+      - "Designed responsive UI components in Figma for web and mobile applications"
+      - "Prepared print-ready files meeting technical specifications for various vendors"
+
+  - category: Collaboration
+    bullets:
+      - "Collaborated with marketing team on campaigns reaching 5M+ audience"
+      - "Presented design concepts to C-level executives and stakeholders"
+      - "Worked with developers to implement designs with pixel-perfect accuracy"
+
+relatedJobs:
+  - social-media-manager
+  - marketing-coordinator
+  - front-end-developer

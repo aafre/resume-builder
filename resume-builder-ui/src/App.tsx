@@ -39,9 +39,14 @@ const JobKeywordsPage = lazy(() => import("./components/seo/JobKeywordsPage"));
 const BestFreeResumeBuilderReddit = lazy(() => import("./components/seo/BestFreeResumeBuilderReddit"));
 const FreeCVBuilder = lazy(() => import("./components/seo/FreeCVBuilder"));
 const CVTemplatesHub = lazy(() => import("./components/seo/CVTemplatesHub"));
+const CVTemplatesPage = lazy(() => import("./components/seo/CVTemplatesPage"));
 const ModernTemplatesPage = lazy(() => import("./components/seo/ModernTemplatesPage"));
 const MinimalistTemplatesPage = lazy(() => import("./components/seo/MinimalistTemplatesPage"));
 const StudentTemplatesPage = lazy(() => import("./components/seo/StudentTemplatesPage"));
+
+// Job Examples (pSEO)
+const JobExamplesHub = lazy(() => import("./components/seo/JobExamplesHub"));
+const JobExamplePage = lazy(() => import("./components/seo/JobExamplePage"));
 
 // Static pages - lazy loaded
 const AboutUs = lazy(() => import("./components/AboutUs"));
@@ -254,6 +259,14 @@ function AppContent() {
               </Suspense>
             }
           />
+          <Route
+            path="/cv-templates"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <CVTemplatesPage />
+              </Suspense>
+            }
+          />
 
           {/* Template Style Landing Pages */}
           <Route
@@ -277,6 +290,24 @@ function AppContent() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <StudentTemplatesPage />
+              </Suspense>
+            }
+          />
+
+          {/* Job Examples (pSEO) */}
+          <Route
+            path="/examples"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <JobExamplesHub />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/examples/:slug"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <JobExamplePage />
               </Suspense>
             }
           />

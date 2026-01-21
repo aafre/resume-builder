@@ -9,6 +9,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { JOBS_DATABASE } from '../src/data/jobKeywords/index';
+import { JOB_EXAMPLES_DATABASE } from '../src/data/jobExamples/index';
 
 // Load environment variables from .env file (for local development)
 // In production (Docker), env vars are passed as build args
@@ -17,11 +18,18 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Job data imported from single source of truth
+// Job keywords data imported from single source of truth
 const JOBS = JOBS_DATABASE.map(job => ({
   slug: job.slug,
   priority: job.priority,
   lastmod: job.lastmod || new Date().toISOString().split('T')[0],
+}));
+
+// Job examples data for pSEO pages
+const JOB_EXAMPLES = JOB_EXAMPLES_DATABASE.map(job => ({
+  slug: job.slug,
+  priority: job.priority,
+  lastmod: new Date().toISOString().split('T')[0],
 }));
 
 // Static URLs (from existing sitemap.xml)
@@ -36,6 +44,7 @@ const STATIC_URLS = [
 
   // UK CV Market Pages (0.9)
   { loc: '/free-cv-builder-no-sign-up', priority: 0.9, changefreq: 'monthly', lastmod: '2026-01-18' },
+  { loc: '/cv-templates', priority: 0.8, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/cv-templates/ats-friendly', priority: 0.8, changefreq: 'monthly', lastmod: '2026-01-18' },
 
   // Core App Pages (0.8)
@@ -44,6 +53,7 @@ const STATIC_URLS = [
   // Hub Pages (0.8)
   { loc: '/ats-resume-templates', priority: 0.8, changefreq: 'monthly', lastmod: '2025-10-26' },
   { loc: '/resume-keywords', priority: 0.8, changefreq: 'monthly', lastmod: '2025-10-26' },
+  { loc: '/examples', priority: 0.8, changefreq: 'weekly', lastmod: '2026-01-21' },
 
   // Template Pages (0.7)
   { loc: '/templates/ats-friendly', priority: 0.7, changefreq: 'monthly', lastmod: '2025-10-26' },
@@ -156,9 +166,18 @@ function generateSitemap(): string {
     });
   });
 
-  // Add programmatic SEO job pages
+  // Add programmatic SEO job keywords pages
   JOBS.forEach(job => {
     addUrl(`/resume-keywords/${job.slug}`, {
+      lastmod: job.lastmod,
+      changefreq: 'monthly',
+      priority: job.priority
+    });
+  });
+
+  // Add programmatic SEO job example pages
+  JOB_EXAMPLES.forEach(job => {
+    addUrl(`/examples/${job.slug}`, {
       lastmod: job.lastmod,
       changefreq: 'monthly',
       priority: job.priority
@@ -208,9 +227,9 @@ function writeSitemap(): void {
       locations.push(distSitemapPath);
     }
 
-    const totalUrls = STATIC_URLS.length + JOBS.length;
+    const totalUrls = STATIC_URLS.length + JOBS.length + JOB_EXAMPLES.length;
     console.log(`✅ Sitemap generated successfully!`);
-    console.log(`   📄 Total URLs: ${totalUrls} (${STATIC_URLS.length} static + ${JOBS.length} job pages)`);
+    console.log(`   📄 Total URLs: ${totalUrls} (${STATIC_URLS.length} static + ${JOBS.length} keyword pages + ${JOB_EXAMPLES.length} example pages)`);
     console.log(`   📍 Locations: ${locations.join(', ')}`);
   } catch (error) {
     console.error('❌ Error generating sitemap:', error);

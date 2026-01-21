@@ -1,0 +1,112 @@
+# Data Analyst Resume Example
+# Category: Technology (Tier 5)
+
+meta:
+  slug: data-analyst
+  title: Data Analyst
+  metaTitle: "Free Data Analyst Resume Example & Template (2026)"
+  metaDescription: "Data analyst resume example with SQL, Python, and visualization tool expertise. ATS-optimized."
+  category: tech
+  priority: 0.8
+
+resume:
+  template: modern
+  contact:
+    name: Priya Patel
+    title: Data Analyst
+    email: priya.patel@email.com
+    phone: "(555) 789-0123"
+    location: New York, NY
+    linkedin: linkedin.com/in/priyapatel
+
+  summary: >
+    Data analyst with 4+ years of experience transforming complex data into actionable
+    business insights. Expert in SQL, Python, and Tableau. Proven ability to communicate
+    findings to non-technical stakeholders. Track record of identifying $2M+ in cost savings
+    through data-driven recommendations.
+
+  experience:
+    - company: E-Commerce Giant Inc.
+      title: Senior Data Analyst
+      dates: Feb 2022 - Present
+      location: New York, NY
+      bullets:
+        - Analyze customer behavior data for 10M+ users to optimize marketing campaigns
+        - Built predictive model improving customer retention rate by 15%
+        - Created executive dashboards tracking $500M annual revenue across 50+ KPIs
+        - Identified pricing optimization opportunity resulting in $1.2M additional revenue
+        - Mentor 2 junior analysts on SQL best practices and statistical methods
+
+    - company: Financial Services Corp
+      title: Data Analyst
+      dates: Jun 2019 - Jan 2022
+      location: New York, NY
+      bullets:
+        - Developed automated reporting system saving 20 hours weekly of manual work
+        - Performed A/B testing analysis for product features with statistical significance
+        - Built customer segmentation model improving targeted marketing ROI by 25%
+        - Collaborated with product team to define metrics and success criteria
+
+    - company: Marketing Agency
+      title: Junior Data Analyst
+      dates: Jul 2017 - May 2019
+      location: Newark, NJ
+      bullets:
+        - Created weekly performance reports for 15 client accounts
+        - Analyzed campaign data to optimize ad spend and improve ROI
+        - Maintained data integrity in CRM systems with 100K+ records
+
+  education:
+    - school: New York University
+      degree: M.S. Data Science
+      year: "2017"
+    - school: Rutgers University
+      degree: B.S. Statistics
+      year: "2015"
+
+  skills:
+    - SQL
+    - Python (Pandas, NumPy, Scikit-learn)
+    - Tableau
+    - Power BI
+    - Excel (Advanced)
+    - R
+    - Statistical Analysis
+    - A/B Testing
+    - Machine Learning
+    - Data Visualization
+    - ETL Processes
+    - BigQuery
+
+bulletBank:
+  - category: Data Analysis
+    bullets:
+      - "Analyzed datasets with 100M+ records to identify business trends and anomalies"
+      - "Performed cohort analysis revealing 20% improvement opportunity in user onboarding"
+      - "Conducted statistical analysis supporting $5M strategic business decision"
+      - "Built regression models predicting customer lifetime value with 85% accuracy"
+
+  - category: Visualization & Reporting
+    bullets:
+      - "Designed executive dashboard tracking 100+ KPIs accessed by 50 stakeholders daily"
+      - "Created automated reports reducing manual reporting time by 15 hours weekly"
+      - "Developed data storytelling presentations for board meetings and investor calls"
+      - "Built self-service analytics tools enabling non-technical users to access insights"
+
+  - category: Technical Skills
+    bullets:
+      - "Wrote complex SQL queries joining 10+ tables with optimized performance"
+      - "Built ETL pipelines processing 5TB of data daily using Python and Airflow"
+      - "Implemented machine learning models in production serving 1M+ predictions daily"
+      - "Automated data quality checks reducing data errors by 90%"
+
+  - category: Business Impact
+    bullets:
+      - "Identified $2M cost savings opportunity through supply chain analysis"
+      - "Improved conversion rate by 12% through funnel analysis and recommendations"
+      - "Reduced customer churn by 8% through predictive modeling and early intervention"
+
+relatedJobs:
+  - software-engineer
+  - business-analyst
+  - marketing-coordinator

@@ -3,12 +3,19 @@
  * Centralized types following Single Responsibility Principle
  */
 
+export interface HreflangLink {
+  hreflang: string;
+  href: string;
+}
+
 export interface SEOConfig {
   title: string;
   description: string;
   keywords: string[];
   canonicalUrl?: string;
   ogImage?: string;
+  hreflangLinks?: HreflangLink[];
+  ogLocale?: string;
 }
 
 export interface HeroConfig {

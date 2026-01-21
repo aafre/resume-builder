@@ -1,0 +1,116 @@
+# Business Analyst Resume Example
+# Category: Corporate (Tier 2)
+
+meta:
+  slug: business-analyst
+  title: Business Analyst
+  metaTitle: "Free Business Analyst Resume Example & Template (2026)"
+  metaDescription: "Business analyst resume example with data analysis and requirements gathering skills."
+  category: corporate
+  priority: 0.8
+
+resume:
+  template: professional
+  contact:
+    name: Rachel Chen
+    title: Business Analyst
+    email: rachel.chen@email.com
+    phone: "(555) 012-3456"
+    location: Chicago, IL
+    linkedin: linkedin.com/in/rachelchen
+
+  summary: >
+    Results-driven business analyst with 6+ years of experience bridging business needs
+    and technical solutions. Expertise in requirements gathering, process improvement, and
+    data analysis. Certified in Agile methodologies. Track record of delivering projects
+    that improve efficiency and reduce costs by 20%+.
+
+  experience:
+    - company: Financial Services Group
+      title: Senior Business Analyst
+      dates: Apr 2021 - Present
+      location: Chicago, IL
+      bullets:
+        - Lead requirements gathering for $5M digital transformation initiative
+        - Analyze business processes and identify automation opportunities saving 2,000+ hours annually
+        - Create detailed user stories and acceptance criteria for development teams
+        - Facilitate workshops with stakeholders across 5 departments to align on project scope
+        - Mentor 3 junior analysts on requirements documentation and stakeholder management
+
+    - company: Consulting Partners LLC
+      title: Business Analyst
+      dates: Jul 2018 - Mar 2021
+      location: Chicago, IL
+      bullets:
+        - Conducted requirements analysis for 15+ client projects across various industries
+        - Developed business cases and ROI analyses supporting $10M+ in technology investments
+        - Created process flow diagrams and data models for system implementations
+        - Performed gap analysis and recommended solutions for business challenges
+
+    - company: Retail Corporation
+      title: Junior Business Analyst
+      dates: Jun 2016 - Jun 2018
+      location: Indianapolis, IN
+      bullets:
+        - Documented business requirements for inventory management system upgrade
+        - Supported UAT testing and created test cases for new features
+        - Generated weekly reports analyzing sales trends and KPIs
+
+  education:
+    - school: Northwestern University
+      degree: MBA, Strategy and Operations
+      year: "2018"
+    - school: Indiana University
+      degree: B.S. Information Systems
+      year: "2016"
+
+  skills:
+    - Requirements Gathering
+    - Business Process Modeling
+    - Data Analysis
+    - SQL
+    - Jira
+    - Confluence
+    - Agile/Scrum
+    - User Stories
+    - Stakeholder Management
+    - Visio
+    - Excel (Advanced)
+    - Tableau
+
+  certifications:
+    - Certified Business Analysis Professional (CBAP)
+    - Certified Scrum Product Owner (CSPO)
+
+bulletBank:
+  - category: Requirements & Analysis
+    bullets:
+      - "Gathered and documented requirements for 50+ software features"
+      - "Conducted stakeholder interviews with 100+ users across business units"
+      - "Created detailed use cases and acceptance criteria reducing defects by 30%"
+      - "Performed root cause analysis identifying process inefficiencies"
+
+  - category: Process Improvement
+    bullets:
+      - "Mapped and optimized 20+ business processes improving efficiency by 25%"
+      - "Identified automation opportunities saving 3,000+ manual hours annually"
+      - "Implemented process changes reducing customer complaint resolution time by 40%"
+      - "Designed workflow improvements adopted across 3 regional offices"
+
+  - category: Data & Reporting
+    bullets:
+      - "Built executive dashboards tracking 50+ KPIs for leadership team"
+      - "Analyzed customer data identifying $1M revenue opportunity"
+      - "Created SQL queries automating report generation"
+      - "Developed forecasting models improving budget accuracy by 15%"
+
+  - category: Stakeholder Management
+    bullets:
+      - "Facilitated requirements workshops with 30+ stakeholders"
+      - "Presented project recommendations to C-suite executives"
+      - "Managed relationships with 5 vendor teams during implementation"
+
+relatedJobs:
+  - data-analyst
+  - project-manager
+  - marketing-coordinator

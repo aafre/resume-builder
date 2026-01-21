@@ -1,0 +1,117 @@
+# Project Manager Resume Example
+# Category: Corporate (Tier 2)
+
+meta:
+  slug: project-manager
+  title: Project Manager
+  metaTitle: "Free Project Manager Resume Example & Template (2026)"
+  metaDescription: "Project manager resume example with leadership and methodology expertise. Includes PMP-ready format."
+  category: corporate
+  priority: 0.8
+
+resume:
+  template: professional
+  contact:
+    name: Michael Torres, PMP
+    title: Project Manager
+    email: michael.torres@email.com
+    phone: "(555) 567-8901"
+    location: Seattle, WA
+    linkedin: linkedin.com/in/michaeltorres
+
+  summary: >
+    PMP-certified project manager with 8+ years of experience delivering complex IT and
+    business transformation projects. Proven track record of managing $5M+ budgets and
+    cross-functional teams of 20+ members. Expert in Agile and Waterfall methodologies.
+    Consistently delivers projects on time and under budget.
+
+  experience:
+    - company: Tech Innovations Corp
+      title: Senior Project Manager
+      dates: Jan 2021 - Present
+      location: Seattle, WA
+      bullets:
+        - Lead portfolio of 5 concurrent projects totaling $8M annual budget
+        - Manage cross-functional teams of 15-25 members including developers, designers, and analysts
+        - Implemented Agile transformation increasing team velocity by 40%
+        - Reduced project delivery time by 25% through process optimization and automation
+        - Maintained 95% stakeholder satisfaction rating across all projects
+
+    - company: Enterprise Solutions Inc
+      title: Project Manager
+      dates: Mar 2018 - Dec 2020
+      location: Portland, OR
+      bullets:
+        - Delivered ERP implementation project valued at $3.5M on time and 10% under budget
+        - Coordinated with 8 vendor teams and internal stakeholders across 4 time zones
+        - Created risk management framework identifying and mitigating 50+ project risks
+        - Developed project documentation templates adopted company-wide
+
+    - company: Consulting Group LLC
+      title: Associate Project Manager
+      dates: Jun 2015 - Feb 2018
+      location: Portland, OR
+      bullets:
+        - Supported delivery of 12 client projects with combined value of $2M
+        - Managed project schedules, budgets, and resource allocation
+        - Facilitated sprint planning and retrospective sessions for Agile teams
+
+  education:
+    - school: University of Washington
+      degree: MBA, Project Management
+      year: "2015"
+    - school: Oregon State University
+      degree: B.S. Business Administration
+      year: "2012"
+
+  skills:
+    - Project Management
+    - Agile/Scrum
+    - Waterfall
+    - Budget Management
+    - Risk Management
+    - Stakeholder Management
+    - Microsoft Project
+    - Jira
+    - Confluence
+    - Resource Planning
+    - Change Management
+    - Vendor Management
+
+  certifications:
+    - Project Management Professional (PMP)
+    - Certified Scrum Master (CSM)
+    - ITIL Foundation
+
+bulletBank:
+  - category: Project Delivery
+    bullets:
+      - "Delivered $10M digital transformation project 2 weeks ahead of schedule"
+      - "Managed portfolio of 8 projects with combined budget of $15M"
+      - "Achieved 98% on-time delivery rate across 25 projects over 3 years"
+      - "Reduced project costs by 20% through vendor negotiations and resource optimization"
+
+  - category: Team Leadership
+    bullets:
+      - "Led cross-functional team of 30 members across 5 departments"
+      - "Improved team productivity by 35% through process improvements and tooling"
+      - "Mentored 5 junior project managers, 3 of whom received promotions"
+      - "Facilitated daily standups, sprint planning, and retrospectives for 4 Agile teams"
+
+  - category: Stakeholder Management
+    bullets:
+      - "Presented project status to C-suite executives in monthly steering committee"
+      - "Maintained relationships with 20+ stakeholders across business and IT"
+      - "Negotiated scope changes with clients while maintaining project profitability"
+      - "Achieved 95% stakeholder satisfaction through proactive communication"
+
+  - category: Process Improvement
+    bullets:
+      - "Implemented PMO processes reducing project initiation time by 50%"
+      - "Created standardized templates adopted across 50-person project management organization"
+      - "Developed risk assessment framework preventing $500K in potential losses"
+
+relatedJobs:
+  - business-analyst
+  - software-engineer
+  - marketing-coordinator
