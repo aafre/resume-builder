@@ -62,7 +62,7 @@ describe("ResumeCard", () => {
       expect(defaultProps.onEdit).toHaveBeenCalledWith("test-id-123");
     });
 
-    it("calls onEdit only once on rapid clicks when not loading", () => {
+    it("calls onEdit for each click when not loading", () => {
       render(<ResumeCard {...defaultProps} />);
 
       const editButton = screen.getByText("Edit Resume");
