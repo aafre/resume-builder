@@ -63,6 +63,29 @@ export interface StepConfig {
   description: string;
 }
 
+export interface HowToStep {
+  name: string;
+  text: string;
+  image?: string;
+  url?: string;
+}
+
+export interface HowToConfig {
+  name: string;
+  description: string;
+  steps: HowToStep[];
+  totalTime?: string;
+}
+
+export interface ProductConfig {
+  name: string;
+  description: string;
+  imageUrl: string;
+  url: string;
+  price?: string;
+  rating?: number;
+}
+
 export interface PageConfig {
   seo: SEOConfig;
   hero: HeroConfig;
@@ -82,7 +105,9 @@ export type SchemaType =
   | 'CreativeWork'
   | 'FAQPage'
   | 'BreadcrumbList'
-  | 'WebSite';
+  | 'WebSite'
+  | 'HowTo'
+  | 'Product';
 
 export interface StructuredDataConfig {
   '@context': string;
