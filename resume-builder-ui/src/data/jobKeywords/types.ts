@@ -19,6 +19,9 @@ export interface JobKeywordsData {
   // Override default H1 if needed
   h1?: string;
 
+  // Optional intro explaining what hiring teams mean by keywords for this role
+  roleIntro?: string;
+
   // Keyword categories
   keywords: {
     core: string[]; // Soft skills and core competencies
@@ -28,14 +31,26 @@ export interface JobKeywordsData {
     processes?: string[]; // Methodologies and frameworks
   };
 
+  // Multi-word keyword phrases (2-5 words) that ATS systems look for
+  phrases?: string[];
+
   // Optional: Detailed tool breakdown by category
   tools?: ToolCategory[];
 
   // Before/After example showing keyword integration
   example: {
     before: string; // Generic, un-optimized resume bullet
-    after: string;  // Keyword-optimized bullet with specific skills
+    after: string; // Keyword-optimized bullet with specific skills
   };
+
+  // Optional: Additional example resume bullets using keywords with metrics
+  exampleBullets?: string[];
+
+  // Optional: Common mistakes job seekers make with this role's resume
+  commonMistakes?: {
+    mistake: string;
+    fix: string;
+  }[];
 
   // Optional: Custom FAQs (overrides auto-generated)
   customFaqs?: FAQConfig[];

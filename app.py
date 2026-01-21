@@ -1146,6 +1146,21 @@ CORS(app, resources={
 
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB
 
+# Host canonicalization: www -> apex (SEO)
+CANONICAL_HOST = "easyfreeresume.com"
+WWW_HOST = f"www.{CANONICAL_HOST}"
+assert not CANONICAL_HOST.startswith("www."), "CANONICAL_HOST must be apex (no www.)"
+
+@app.before_request
+def canonicalize_host():
+    """Redirect www to apex domain for SEO consolidation."""
+    host = (request.host or "").split(":")[0].lower()  # strip port
+    if host == WWW_HOST:
+        # Preserve path and query string
+        target_url = f"https://{CANONICAL_HOST}{request.full_path}".rstrip("?")
+        return redirect(target_url, code=301)
+    return None
+
 # Initialize PDF process pool on app startup
 initialize_pdf_pool()
 
@@ -1236,6 +1251,12 @@ def redirect_reddit_builder():
 def redirect_customer_service_keywords():
     """Redirect blog version to root SEO page"""
     return redirect("/resume-keywords/customer-service", code=301)
+
+
+@app.route("/blog/software-engineer-resume-keywords")
+def redirect_software_engineer_keywords():
+    """Redirect blog version to root SEO page to fix keyword cannibalization"""
+    return redirect("/resume-keywords/software-engineer", code=301)
 
 
 @app.route("/", defaults={"path": ""}, methods=["GET"])

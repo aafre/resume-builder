@@ -37,6 +37,8 @@ const ResumeKeywordsHub = lazy(() => import("./components/seo/ResumeKeywordsHub"
 const CustomerServiceKeywords = lazy(() => import("./components/seo/CustomerServiceKeywords"));
 const JobKeywordsPage = lazy(() => import("./components/seo/JobKeywordsPage"));
 const BestFreeResumeBuilderReddit = lazy(() => import("./components/seo/BestFreeResumeBuilderReddit"));
+const FreeCVBuilder = lazy(() => import("./components/seo/FreeCVBuilder"));
+const CVTemplatesHub = lazy(() => import("./components/seo/CVTemplatesHub"));
 
 // Static pages - lazy loaded
 const AboutUs = lazy(() => import("./components/AboutUs"));
@@ -63,7 +65,7 @@ const IntroducingPrepAI = lazy(() => import("./components/blog/IntroducingPrepAI
 const HowToWriteResumeGuide = lazy(() => import("./components/blog/HowToWriteResumeGuide"));
 const ResumeActionVerbs = lazy(() => import("./components/blog/ResumeActionVerbs"));
 const HowToUseResumeKeywords = lazy(() => import("./components/blog/HowToUseResumeKeywords"));
-const SoftwareEngineerResumeKeywords = lazy(() => import("./components/blog/SoftwareEngineerResumeKeywords"));
+// SoftwareEngineerResumeKeywords removed - route now redirects to /resume-keywords/software-engineer
 const EasyFreeResumeFreeBlog = lazy(() => import("./components/blog/EasyFreeResumeFreeBlog"));
 const ZetyVsEasyFreeResume = lazy(() => import("./components/blog/ZetyVsEasyFreeResume"));
 const HowToListSkills = lazy(() => import("./components/blog/HowToListSkills"));
@@ -213,6 +215,22 @@ function AppContent() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <BestFreeResumeBuilderReddit />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-cv-builder-no-sign-up"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <FreeCVBuilder />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/cv-templates/ats-friendly"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <CVTemplatesHub />
               </Suspense>
             }
           />
@@ -400,13 +418,10 @@ function AppContent() {
               </Suspense>
             }
           />
+          {/* Client-side redirect fallback - server-side 301 handles actual redirect */}
           <Route
             path="/blog/software-engineer-resume-keywords"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <SoftwareEngineerResumeKeywords />
-              </Suspense>
-            }
+            element={<Navigate to="/resume-keywords/software-engineer" replace />}
           />
           {/* 301 redirect - consolidate to SEO landing page to fix keyword cannibalization */}
           <Route

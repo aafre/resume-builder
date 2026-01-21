@@ -239,6 +239,196 @@ export const SEO_PAGES: Record<string, PageConfig> = {
     ],
   },
 
+  // /free-cv-builder-no-sign-up (UK market)
+  cvBuilder: {
+    seo: {
+      title: 'Free CV Builder (No Sign Up) - UK & International',
+      description:
+        'Build your CV online free. No registration, no watermark. ATS-friendly CV templates for UK, Europe, and international applications.',
+      keywords: [
+        'free cv builder',
+        'cv maker no sign up',
+        'uk cv builder',
+        'cv template free',
+        'curriculum vitae builder',
+        'online cv maker free',
+      ],
+      canonicalUrl: '/free-cv-builder-no-sign-up',
+    },
+    hero: {
+      h1: 'Free CV Builder - No Sign Up Required',
+      subtitle: 'Build your CV online for free. Perfect for UK, Europe, and international job applications.',
+      description:
+        'Create a professional, ATS-friendly CV and download instantly. No account creation, no email verification, no personal information required. Your CV, ready in minutes.',
+      primaryCTA: {
+        text: 'Build CV Now',
+        href: '/templates',
+        variant: 'primary',
+      },
+    },
+    steps: [
+      {
+        number: 1,
+        title: 'Choose a template',
+        description: 'Select from our ATS-friendly, professional CV templates. All are 100% free.',
+      },
+      {
+        number: 2,
+        title: 'Fill in your details',
+        description:
+          'Add your experience, education, and skills using our intuitive editor. No technical skills required.',
+      },
+      {
+        number: 3,
+        title: 'Download instantly',
+        description:
+          'Export your CV as PDF or DOCX. No email verification, no watermarks, no sign up needed.',
+      },
+    ],
+    features: [
+      {
+        icon: '🇬🇧',
+        title: 'UK-Friendly Format',
+        description: 'Templates designed with UK employer expectations in mind. Personal profile section included.',
+      },
+      {
+        icon: '⚡',
+        title: 'Instant Access',
+        description: 'Start building immediately. The editor opens in seconds with no barriers.',
+      },
+      {
+        icon: '🔒',
+        title: 'Privacy First',
+        description: 'Your CV stays in your browser. We do not store your personal information.',
+      },
+      {
+        icon: '📥',
+        title: 'Free Downloads',
+        description: 'Export to PDF or DOCX for free. No credit card, no premium tier required.',
+      },
+      {
+        icon: '✅',
+        title: 'ATS-Compatible',
+        description: 'Clean formatting that passes Applicant Tracking Systems used by UK employers.',
+      },
+      {
+        icon: '✨',
+        title: 'No Watermark',
+        description: 'Your CV is yours. No branding or watermarks on your downloads.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is this CV builder suitable for UK jobs?',
+        answer:
+          'Yes. Our templates follow UK CV conventions including a personal profile section at the top, reverse chronological order, and professional formatting that UK employers expect.',
+      },
+      {
+        question: 'What is the difference between a CV and a resume?',
+        answer:
+          'In the UK, Europe, and many other countries, "CV" (curriculum vitae) is the standard term for a job application document. In the US and Canada, "resume" is more common. Our templates work for both—the format is identical.',
+      },
+      {
+        question: 'Can I download my CV without signing up?',
+        answer:
+          'Yes. You can create, customize, and download your complete CV in PDF or DOCX format without ever creating an account.',
+      },
+      {
+        question: 'How long should a UK CV be?',
+        answer:
+          'A standard UK job application CV should be 2 pages maximum. Our templates help you keep content concise while including all essential sections.',
+      },
+      {
+        question: 'Should I include a photo on my UK CV?',
+        answer:
+          'Generally, no. UK CVs typically do not include photos unless specifically requested by the employer. This differs from some European countries.',
+      },
+      {
+        question: 'Are the CV templates ATS-friendly?',
+        answer:
+          'Yes. All templates use clean formatting, standard fonts, and clear section headings that Applicant Tracking Systems can parse correctly.',
+      },
+    ],
+  },
+
+  // /cv-templates/ats-friendly (UK CV templates hub)
+  cvTemplatesHub: {
+    seo: {
+      title: 'Free ATS-Friendly CV Templates - UK & International',
+      description:
+        'Download professional, ATS-ready CV templates. Free PDF and DOCX formats. Clean layouts designed for UK, European, and international job applications.',
+      keywords: [
+        'ats friendly cv templates',
+        'free cv templates uk',
+        'ats cv format',
+        'professional cv template',
+        'cv templates download',
+        'uk cv template free',
+      ],
+      canonicalUrl: '/cv-templates/ats-friendly',
+    },
+    hero: {
+      h1: 'Free ATS-Friendly CV Templates',
+      subtitle: 'Professional CV templates that pass Applicant Tracking Systems.',
+      description:
+        'Download CV templates designed for UK and international job applications. Clean formatting, standard sections, and ATS-compatible layouts—all 100% free.',
+      primaryCTA: {
+        text: 'Browse Templates',
+        href: '/templates',
+        variant: 'primary',
+      },
+    },
+    features: [
+      {
+        icon: '🇬🇧',
+        title: 'UK Format',
+        description: 'Templates follow UK CV conventions with personal profile section and proper formatting.',
+      },
+      {
+        icon: '✅',
+        title: 'ATS-Optimized',
+        description: 'Clean layouts that Applicant Tracking Systems can parse correctly.',
+      },
+      {
+        icon: '📄',
+        title: 'PDF & DOCX',
+        description: 'Download in your preferred format. Edit in Word or use as-is.',
+      },
+      {
+        icon: '💰',
+        title: '100% Free',
+        description: 'No premium tier, no watermarks, no hidden costs.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What makes a CV template ATS-friendly?',
+        answer:
+          'ATS-friendly CV templates use standard fonts, clear section headings (Experience, Education, Skills), simple formatting without complex tables or graphics, and standard bullet points. Our templates are designed to pass all major ATS systems.',
+      },
+      {
+        question: 'Are these CV templates suitable for UK applications?',
+        answer:
+          'Yes. Our templates follow UK CV conventions including a personal profile section at the top, reverse chronological work history, and the 2-page standard format that UK employers expect.',
+      },
+      {
+        question: 'Can I customize these CV templates?',
+        answer:
+          'Yes. Use our free editor to add your information, rearrange sections, and customize fonts and spacing. Download the finished CV when ready.',
+      },
+      {
+        question: 'What file formats are available?',
+        answer:
+          'You can download your CV as PDF (recommended for applications) or DOCX (for further editing in Microsoft Word).',
+      },
+      {
+        question: 'Do I need to create an account?',
+        answer:
+          'No. You can browse templates, customize your CV, and download—all without creating an account or providing any personal information.',
+      },
+    ],
+  },
+
   // /ats-resume-templates (hub)
   templatesHub: {
     seo: {
@@ -598,23 +788,24 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /best-free-resume-builder-reddit
   redditRecommended: {
     seo: {
-      title: 'Best Free Resume Builder — What Reddit Recommends',
+      title: 'Best Free Resume Builder 2026 — What Reddit Actually Recommends',
       description:
-        'Reddit users recommend EasyFreeResume as the best free resume builder. No paywalls, ATS-friendly, actually free. See why thousands trust our builder.',
+        'Based on r/resumes, r/jobs, and r/cscareerquestions. No paywalls, no watermarks, actually free. Here\'s what Reddit users look for in 2026.',
       keywords: [
         'best free resume builder reddit',
         'reddit resume builder',
         'free resume builder no paywall',
         'reddit recommended resume',
         'actually free resume builder',
+        'best free resume builder 2026',
       ],
       canonicalUrl: '/best-free-resume-builder-reddit',
     },
     hero: {
-      h1: 'Best Free Resume Builder - Reddit Recommended',
-      subtitle: 'See why Reddit users consistently recommend EasyFreeResume',
+      h1: 'Best Free Resume Builder 2026 - Reddit Recommended',
+      subtitle: 'See why Reddit users consistently recommend EasyFreeResume in 2026',
       description:
-        'We analyzed top Reddit threads in r/resumes, r/jobs, and r/cscareerquestions. Users value truly free exports, ATS compatibility, no watermarks, and privacy. Here is how we meet every criteria.',
+        'We analyzed top Reddit threads in r/resumes, r/jobs, and r/cscareerquestions (updated Jan 2026). Users value truly free exports, ATS compatibility, no watermarks, and privacy. Here is how we meet every criteria.',
       primaryCTA: {
         text: 'Try It Free',
         href: '/templates',

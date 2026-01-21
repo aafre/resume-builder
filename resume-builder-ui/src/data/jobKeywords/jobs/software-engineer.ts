@@ -16,12 +16,15 @@ import {
 export const softwareEngineer: JobKeywordsData = {
   slug: 'software-engineer',
   title: 'Software Engineer',
-  metaTitle: 'Software Engineer Resume Keywords - ATS-Optimized Skills List',
+  metaTitle: 'Software Engineer Resume Keywords - ATS-Optimized Skills List (2026)',
   metaDescription:
     'Complete list of software engineer resume keywords including Python, JavaScript, React, AWS, Docker, Agile, and essential programming skills that pass ATS systems.',
   category: 'technology',
   priority: 0.9,
-  lastmod: '2026-01-01',
+  lastmod: '2026-01-18',
+
+  roleIntro:
+    'Hiring teams scan for both technical depth and practical experience. They want to see specific technologies you\'ve used (not just "programming"), evidence of scale (users, transactions, uptime), and proof you can work in modern development environments. Your resume should demonstrate you can ship production code, collaborate with teams, and solve real problems—not just that you\'ve taken courses.',
 
   keywords: {
     core: [
@@ -90,8 +93,66 @@ export const softwareEngineer: JobKeywordsData = {
     },
   ],
 
+  phrases: [
+    'full-stack development',
+    'RESTful API design',
+    'microservices architecture',
+    'test-driven development',
+    'continuous integration',
+    'agile methodology',
+    'code review',
+    'scalable systems',
+    'cloud-native applications',
+    'database optimization',
+    'performance tuning',
+    'cross-functional collaboration',
+    'technical documentation',
+    'system design',
+    'production deployment',
+  ],
+
   example: {
     before: 'Worked on software projects and helped the team deliver features on time.',
     after: 'Developed scalable microservices using Python and React, implementing CI/CD pipelines with Docker and Kubernetes, reducing deployment time by 40% and increasing system reliability to 99.9% uptime.',
   },
+
+  exampleBullets: [
+    'Architected and implemented a microservices backend using Node.js and Express, handling 50K+ daily API requests with 99.95% uptime',
+    'Reduced page load time by 60% through React code splitting, lazy loading, and CDN optimization',
+    'Built CI/CD pipeline using GitHub Actions and Docker, decreasing deployment time from 2 hours to 15 minutes',
+    'Designed and implemented RESTful APIs consumed by 3 client applications, documenting endpoints with OpenAPI/Swagger',
+    'Migrated legacy monolith to microservices architecture, improving system scalability and reducing infrastructure costs by 35%',
+    'Led code reviews for a 5-person team, establishing coding standards that reduced production bugs by 40%',
+    'Optimized PostgreSQL queries and implemented Redis caching, reducing average API response time from 800ms to 120ms',
+    'Developed real-time notification system using WebSockets, serving 10K concurrent users with <50ms latency',
+    'Implemented comprehensive test suite (Jest, Cypress) achieving 85% code coverage across frontend and backend',
+    'Collaborated with product and design teams in Agile sprints, consistently delivering features 2 days ahead of estimates',
+  ],
+
+  commonMistakes: [
+    {
+      mistake: 'Listing every technology you\'ve touched',
+      fix: 'Focus on technologies you can discuss confidently in interviews. Show depth over breadth.',
+    },
+    {
+      mistake: 'Using vague terms like "worked on" or "helped with"',
+      fix: 'Use action verbs: "Developed," "Implemented," "Architected," "Optimized," "Led"',
+    },
+    {
+      mistake: 'No metrics or quantifiable results',
+      fix: 'Add numbers: users served, latency reduced, uptime achieved, deployment frequency',
+    },
+    {
+      mistake: 'Listing outdated technologies prominently',
+      fix: 'Lead with modern, in-demand skills. Mention legacy tech only if relevant to the job',
+    },
+    {
+      mistake: 'Not showing proficiency levels',
+      fix: 'Indicate expertise: "Python (5+ years)", "React (Advanced)", "Go (Intermediate)"',
+    },
+    {
+      mistake: 'Ignoring soft skills entirely',
+      fix: 'Weave in collaboration, communication, and leadership through your bullet points',
+    },
+  ],
 };

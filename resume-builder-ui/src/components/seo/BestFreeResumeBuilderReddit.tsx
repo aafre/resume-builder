@@ -59,6 +59,106 @@ export default function BestFreeResumeBuilderReddit() {
 
       {config.features && <FeatureGrid features={config.features} columns={3} />}
 
+      {/* What Reddit Complains About section */}
+      <div className="mb-16">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+          What Reddit users complain about (avoid these red flags)
+        </h2>
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
+          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-red-800 mb-4">
+              <span aria-hidden="true">🚫</span> Paywall Bait-and-Switch
+            </h3>
+            <p className="text-red-700 text-sm mb-3">
+              "Built my entire resume only to find out I need to pay $20 to download it."
+            </p>
+            <p className="text-gray-700 text-sm">
+              Many builders let you create for free but charge to export. Always test the download before investing time.
+            </p>
+          </div>
+
+          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-red-800 mb-4">
+              <span aria-hidden="true">🚫</span> Watermarks on "Free" Plans
+            </h3>
+            <p className="text-red-700 text-sm mb-3">
+              "The free version had their logo on every page. Looked unprofessional."
+            </p>
+            <p className="text-gray-700 text-sm">
+              Some builders add branding unless you pay. Check your downloaded file before applying anywhere.
+            </p>
+          </div>
+
+          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-red-800 mb-4">
+              <span aria-hidden="true">🚫</span> Mandatory Account Creation
+            </h3>
+            <p className="text-red-700 text-sm mb-3">
+              "Had to give them my email and phone number just to try the builder."
+            </p>
+            <p className="text-gray-700 text-sm">
+              Many services require signup to collect your data. Look for builders that work without accounts.
+            </p>
+          </div>
+
+          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-red-800 mb-4">
+              <span aria-hidden="true">🚫</span> Aggressive Upselling
+            </h3>
+            <p className="text-red-700 text-sm mb-3">
+              "Every click showed a popup asking me to upgrade to premium."
+            </p>
+            <p className="text-gray-700 text-sm">
+              Dark patterns pressure you into paying. Choose tools that respect your time and don't manipulate.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Verification Checklist */}
+      <div className="mb-16">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+          How to verify a builder is actually free
+        </h2>
+        <div className="max-w-3xl mx-auto bg-green-50 border border-green-200 rounded-xl p-8">
+          <p className="text-lg text-green-800 font-medium mb-6">
+            Before investing time in any resume builder, check these boxes:
+          </p>
+          <ul className="space-y-4">
+            <li className="flex items-start">
+              <span className="text-green-600 mr-3 text-xl">☑</span>
+              <span className="text-gray-700"><strong>Download works without payment</strong> – Test with dummy content first</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-green-600 mr-3 text-xl">☑</span>
+              <span className="text-gray-700"><strong>No watermark on exported file</strong> – Open the PDF and check every page</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-green-600 mr-3 text-xl">☑</span>
+              <span className="text-gray-700"><strong>No credit card required</strong> – Free means free, not "free trial"</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-green-600 mr-3 text-xl">☑</span>
+              <span className="text-gray-700"><strong>All templates accessible</strong> – Not just 1-2 basic options</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-green-600 mr-3 text-xl">☑</span>
+              <span className="text-gray-700"><strong>PDF and DOCX both available</strong> – Some lock DOCX behind paywall</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-green-600 mr-3 text-xl">☑</span>
+              <span className="text-gray-700"><strong>Works without signup</strong> – Or at least doesn't require payment info</span>
+            </li>
+          </ul>
+          <div className="mt-6 p-4 bg-white rounded-lg">
+            <p className="text-sm text-gray-600">
+              <strong>EasyFreeResume passes all six checks.</strong> We're funded by ethical ads,
+              not by tricking users into subscriptions.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div className="mb-16">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
           Evaluation criteria: how we meet Reddit's standards

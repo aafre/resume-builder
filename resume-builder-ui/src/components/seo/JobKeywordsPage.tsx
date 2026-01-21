@@ -92,6 +92,20 @@ export default function JobKeywordsPage() {
 
       <PageHero config={heroConfig} />
 
+      {/* Role Intro Section */}
+      {jobData.roleIntro && (
+        <div className="mb-12 max-w-4xl mx-auto">
+          <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-8">
+            <h2 className="text-2xl font-bold text-indigo-900 mb-4">
+              What hiring teams look for in {jobData.title.toLowerCase()} keywords
+            </h2>
+            <p className="text-indigo-800 leading-relaxed">
+              {jobData.roleIntro}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Hub navigation */}
       <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-12 max-w-4xl mx-auto">
         <h3 className="font-bold text-blue-800 mb-3">🔗 Part of Our Series</h3>
@@ -291,6 +305,91 @@ export default function JobKeywordsPage() {
           </div>
         </div>
       </div>
+
+      {/* Keyword Phrases Section */}
+      {jobData.phrases && jobData.phrases.length > 0 && (
+        <div className="mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+            Keyword phrases for {jobData.title.toLowerCase()} resumes
+          </h2>
+          <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+            ATS systems don't just look for single words—they scan for multi-word phrases that
+            indicate specific expertise. Include these 2-5 word combinations naturally in your resume.
+          </p>
+
+          <div className="bg-teal-50 border border-teal-200 rounded-xl p-6">
+            <h3 className="font-bold text-teal-800 mb-4 text-lg">
+              🔗 High-Impact Keyword Phrases
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {jobData.phrases.map((phrase, idx) => (
+                <span
+                  key={idx}
+                  className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-medium"
+                >
+                  {phrase}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Example Bullets Section */}
+      {jobData.exampleBullets && jobData.exampleBullets.length > 0 && (
+        <div className="mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+            Ready-to-adapt resume bullets
+          </h2>
+          <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+            Here are real resume bullets that incorporate keywords naturally while demonstrating
+            measurable impact. Adapt these to your own experience.
+          </p>
+
+          <div className="space-y-3 max-w-4xl mx-auto">
+            {jobData.exampleBullets.map((bullet, idx) => (
+              <div
+                key={idx}
+                className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
+              >
+                <p className="text-gray-700">
+                  <span className="text-blue-600 font-bold mr-2">•</span>
+                  {bullet}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Common Mistakes Section */}
+      {jobData.commonMistakes && jobData.commonMistakes.length > 0 && (
+        <div className="mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+            Common {jobData.title.toLowerCase()} resume mistakes
+          </h2>
+          <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+            Avoid these pitfalls that can hurt your chances of getting past the ATS or impressing
+            hiring managers.
+          </p>
+
+          <div className="space-y-4 max-w-4xl mx-auto">
+            {jobData.commonMistakes.map((item, idx) => (
+              <div
+                key={idx}
+                className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg"
+              >
+                <h4 className="font-bold text-gray-900 mb-1">
+                  <span aria-hidden="true">❌</span> {item.mistake}
+                </h4>
+                <p className="text-green-700 text-sm">
+                  → {item.fix}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <FAQSection faqs={faqs} />
 
