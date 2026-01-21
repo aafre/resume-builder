@@ -226,6 +226,7 @@ export interface UseEditorActionsReturn {
   handleGenerateResume: () => Promise<void>;
 
   // Preview
+  isOpeningPreview: boolean;
   handleOpenPreview: () => Promise<void>;
   handleRefreshPreview: () => Promise<void>;
 

@@ -120,6 +120,7 @@ export const useEditorActions = ({
 }: UseEditorActionsProps): UseEditorActionsReturn => {
   // Loading states
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isOpeningPreview, setIsOpeningPreview] = useState(false);
   const [loadingStartFresh, setLoadingStartFresh] = useState(false);
 
   // Download deduplication ref
@@ -308,25 +309,37 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
    * Clears stale preview and auto-refreshes if needed.
    */
   const handleOpenPreview = useCallback(async (): Promise<void> => {
-    // Save first to ensure database has latest changes
-    const canProceed = await saveBeforeAction('preview');
-    if (!canProceed) return;
+    // Show loading state on button immediately
+    setIsOpeningPreview(true);
 
-    // Validate icons using memoized function from hook
-    const { valid, missingIcons } = validateIcons();
-    if (!valid) {
-      showMissingIconsDialog(missingIcons, isLoadingFromUrl);
-      return;
+    try {
+      // Save first to ensure database has latest changes
+      const canProceed = await saveBeforeAction('preview');
+      if (!canProceed) {
+        setIsOpeningPreview(false);
+        return;
+      }
+
+      // Validate icons using memoized function from hook
+      const { valid, missingIcons } = validateIcons();
+      if (!valid) {
+        showMissingIconsDialog(missingIcons, isLoadingFromUrl);
+        setIsOpeningPreview(false);
+        return;
+      }
+
+      // Clear stale preview to show loader instead of old content
+      if (previewIsStale) {
+        clearPreview();
+      }
+
+      // Open modal first, then auto-refresh if stale
+      openPreviewModal();
+      await checkAndRefreshIfStale();
+    } finally {
+      // Clear button loading state (modal is now open with its own loading)
+      setIsOpeningPreview(false);
     }
-
-    // Clear stale preview to show loader instead of old content
-    if (previewIsStale) {
-      clearPreview();
-    }
-
-    // Open modal first, then auto-refresh if stale
-    openPreviewModal();
-    await checkAndRefreshIfStale();
   }, [
     saveBeforeAction,
     validateIcons,
@@ -430,6 +443,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
       handleGenerateResume,
 
       // Preview
+      isOpeningPreview,
       handleOpenPreview,
       handleRefreshPreview,
 
@@ -441,6 +455,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
     [
       isDownloading,
       handleGenerateResume,
+      isOpeningPreview,
       handleOpenPreview,
       handleRefreshPreview,
       loadingStartFresh,
