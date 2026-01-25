@@ -114,7 +114,7 @@ export function convertToEditorFormat(yamlResume: JobExampleData['resume']): obj
           title: exp.title,
           dates: exp.dates,
           location: exp.location || '',
-          description: exp.bullets.map(bullet => `- ${bullet}`).join('\n'),
+          description: exp.bullets.map(bullet => `- ${bullet}`),
         })),
       },
       {
