@@ -7,9 +7,24 @@ import yaml from 'js-yaml';
 import type { JobExampleData } from '../data/jobExamples/types';
 
 /**
- * Cache for loaded YAML files to avoid repeated fetches
+ * Cache entry with timestamp for TTL support
  */
-const yamlCache = new Map<string, JobExampleData>();
+interface CacheEntry {
+  data: JobExampleData;
+  timestamp: number;
+}
+
+/**
+ * Cache for loaded YAML files to avoid repeated fetches
+ * Entries expire after CACHE_TTL_MS to ensure content freshness
+ */
+const yamlCache = new Map<string, CacheEntry>();
+
+/**
+ * Cache TTL in milliseconds (30 minutes)
+ * Static YAML content rarely changes, but this ensures eventual consistency
+ */
+const CACHE_TTL_MS = 30 * 60 * 1000;
 
 /**
  * Load a job example YAML file by slug
@@ -17,9 +32,10 @@ const yamlCache = new Map<string, JobExampleData>();
  * @returns The parsed job example data
  */
 export async function loadJobExample(slug: string): Promise<JobExampleData | null> {
-  // Check cache first
-  if (yamlCache.has(slug)) {
-    return yamlCache.get(slug)!;
+  // Check cache first (with TTL validation)
+  const cached = yamlCache.get(slug);
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
   }
 
   try {
@@ -40,8 +56,8 @@ export async function loadJobExample(slug: string): Promise<JobExampleData | nul
       return null;
     }
 
-    // Cache the result
-    yamlCache.set(slug, data);
+    // Cache the result with timestamp
+    yamlCache.set(slug, { data, timestamp: Date.now() });
 
     return data;
   } catch (error) {
@@ -66,10 +82,11 @@ export function clearYamlCache(): void {
 }
 
 /**
- * Check if a job example exists in the cache
+ * Check if a job example exists in the cache (and is not expired)
  */
 export function isJobExampleCached(slug: string): boolean {
-  return yamlCache.has(slug);
+  const cached = yamlCache.get(slug);
+  return !!cached && Date.now() - cached.timestamp < CACHE_TTL_MS;
 }
 
 /**

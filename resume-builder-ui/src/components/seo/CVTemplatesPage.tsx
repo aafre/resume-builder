@@ -60,7 +60,7 @@ export default function CVTemplatesPage() {
       <PageHero config={config.hero} />
 
       {/* Template Gallery Section */}
-      <section className="py-12 -mx-4 sm:-mx-6 md:-mx-8">
+      <section id="template-gallery" className="py-12 -mx-4 sm:-mx-6 md:-mx-8">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Browse CV Templates
@@ -266,7 +266,7 @@ export default function CVTemplatesPage() {
         title="Ready to Build Your Professional CV?"
         description="Choose a template above and create your CV in minutes. 100% free, no sign-up required."
         primaryText="Browse CV Templates"
-        primaryHref="/templates"
+        primaryHref="#template-gallery"
       />
     </SEOPageLayout>
   );

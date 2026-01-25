@@ -138,16 +138,11 @@ export default function JobExamplePage() {
     ],
   });
 
-  // Hero config
+  // Hero config - no CTA here since sidebar has the working "Edit This Template" button
   const heroConfig = {
     h1: `Free ${data.meta.title} Resume Example`,
     subtitle: `ATS-optimized template with ${data.bulletBank.reduce((acc, cat) => acc + cat.bullets.length, 0)}+ bullet points`,
     description: `Professional ${data.meta.title.toLowerCase()} resume example ready to customize. Edit directly in our free builder or copy bullet points to your existing resume.`,
-    primaryCTA: {
-      text: 'Edit This Template',
-      href: '#',
-      variant: 'primary' as const,
-    },
   };
 
   return (
@@ -358,7 +353,7 @@ export default function JobExamplePage() {
       <DownloadCTA
         title={`Start Your ${data.meta.title} Resume`}
         description="Use our free builder to create a professional resume in minutes. No sign-up required."
-        primaryText="Edit This Template"
+        primaryText="Browse All Templates"
         primaryHref="/templates"
       />
     </SEOPageLayout>
