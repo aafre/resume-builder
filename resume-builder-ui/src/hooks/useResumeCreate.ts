@@ -31,7 +31,7 @@ interface ContactInfo {
 interface Section {
   id?: string;
   name?: string;
-  type: string;
+  type?: string;
   title?: string;
   content: any;
 }
