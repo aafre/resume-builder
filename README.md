@@ -205,7 +205,7 @@ Please submit a pull request or open an issue to discuss your ideas.
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is open source and available under the [Apache License 2.0](LICENSE).
 
 ---
 
