@@ -1222,10 +1222,19 @@ def require_auth(f):
             error_msg = str(e)
             is_expired = 'expired' in error_msg.lower()
             user_agent = request.headers.get('User-Agent', 'unknown')[:50]
-            logging.error(
-                f"Auth error: {error_msg} | endpoint={request.path} | method={request.method} | "
-                f"user_agent={user_agent} | ip={request.remote_addr} | is_token_expired={is_expired}"
-            )
+
+            # Use WARNING for expired tokens (expected during proactive refresh race conditions)
+            # Use ERROR for other auth failures (unexpected issues)
+            if is_expired:
+                logging.warning(
+                    f"Expired token | endpoint={request.path} | method={request.method} | "
+                    f"user_agent={user_agent} | ip={request.remote_addr}"
+                )
+            else:
+                logging.error(
+                    f"Auth error: {error_msg} | endpoint={request.path} | method={request.method} | "
+                    f"user_agent={user_agent} | ip={request.remote_addr}"
+                )
             return jsonify({"success": False, "error": "Invalid or expired token"}), 401
 
     return decorated_function
