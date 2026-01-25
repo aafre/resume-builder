@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.11.0] - 2026-01-25
+
+### 🚀 Features
+
+- **seo:** Make year references dynamic using CURRENT_YEAR constant
+
+### ⚙️ Miscellaneous Tasks
+
+- **blog:** Update publish dates from 2025 to January 2026
+
 ## [3.10.0] - 2026-01-25
 
 ### 🚀 Features
