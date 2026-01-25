@@ -6,3 +6,5 @@ export type { InContentAdProps } from "./InContentAd";
 
 export { InFeedAd } from "./InFeedAd";
 export type { InFeedAdProps } from "./InFeedAd";
+
+export { isExplicitAdsEnabled } from "./adUtils";

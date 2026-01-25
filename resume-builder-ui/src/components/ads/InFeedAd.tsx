@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
 import { AdContainer, AdContainerProps } from "./AdContainer";
+import { isExplicitAdsEnabled } from "./adUtils";
 
 export interface InFeedAdProps
   extends Omit<AdContainerProps, "adFormat" | "minHeight" | "minWidth"> {
@@ -53,9 +54,7 @@ export const InFeedAd = ({
   enabled = true,
   ...rest
 }: InFeedAdProps) => {
-  // Feature flag for explicit ad placements (default: disabled, Auto Ads only)
-  const explicitAdsEnabled =
-    import.meta.env.VITE_ENABLE_EXPLICIT_ADS === "true";
+  const explicitAdsEnabled = isExplicitAdsEnabled();
 
   // Return null early if ads are disabled - don't render the wrapper div
   if (!enabled || !explicitAdsEnabled) {
