@@ -370,7 +370,7 @@ class TestThreadPoolWorkerIntegration:
 
         # Submit 3 concurrent requests
         futures = []
-        for i in range(3):
+        for i in range(7):
             output_path = temp_output_dir / f"concurrent_test_{i}.pdf"
             future = app.PDF_THREAD_POOL.submit(
                 app.pdf_generation_worker,
