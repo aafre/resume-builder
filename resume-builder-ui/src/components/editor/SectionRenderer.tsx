@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { Section, IconListItem } from '../../types';
 import { EditorContentIconRegistry } from './EditorContent';
 import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
@@ -7,23 +7,25 @@ import EducationSection from '../EducationSection';
 import GenericSection from '../GenericSection';
 import IconListSection from '../IconListSection';
 
-interface SectionManagementProps {
-  editingTitleIndex: number | null;
-  temporaryTitle: string;
-  setTemporaryTitle: React.Dispatch<React.SetStateAction<string>>;
+interface SectionRendererProps {
+  section: Section;
+  index: number;
+
+  // Stable handlers
   handleUpdateSection: (index: number, updatedSection: Section) => void;
   handleDeleteSection: (index: number) => void;
   handleDeleteEntry: (sectionIndex: number, entryIndex: number) => void;
   handleReorderEntry: (sectionIndex: number, oldIndex: number, newIndex: number) => void;
   handleTitleEdit: (index: number) => void;
-  handleTitleSave: () => void;
+  handleTitleSave: (newTitle?: string) => void;
   handleTitleCancel: () => void;
-}
 
-interface SectionRendererProps {
-  section: Section;
-  index: number;
-  sectionManagement: SectionManagementProps;
+  // State
+  isEditingTitle: boolean;
+  temporaryTitle: string;
+  setTemporaryTitle: React.Dispatch<React.SetStateAction<string>>;
+
+  // Config
   supportsIcons: boolean;
   iconRegistry: EditorContentIconRegistry;
 }
@@ -31,43 +33,51 @@ interface SectionRendererProps {
 const SectionRenderer: React.FC<SectionRendererProps> = React.memo(({
   section,
   index,
-  sectionManagement,
+  handleUpdateSection,
+  handleDeleteSection,
+  handleDeleteEntry,
+  handleReorderEntry,
+  handleTitleEdit,
+  handleTitleSave,
+  handleTitleCancel,
+  isEditingTitle,
+  temporaryTitle,
+  setTemporaryTitle,
   supportsIcons,
   iconRegistry,
 }) => {
   // Create stable callbacks for this specific section index
-  const {
-    handleUpdateSection,
-    handleTitleEdit,
-    handleTitleSave,
-    handleTitleCancel,
-    handleDeleteSection,
-    handleDeleteEntry,
-    handleReorderEntry,
-    editingTitleIndex,
-    temporaryTitle,
-    setTemporaryTitle,
-  } = sectionManagement;
+  // These use only stable props (handlers and index), so they remain stable across renders
 
-  // Stable callbacks using the stable functions from sectionManagement
-  const onTitleEdit = useMemo(() => () => handleTitleEdit(index), [handleTitleEdit, index]);
-  const onDelete = useMemo(() => () => handleDeleteSection(index), [handleDeleteSection, index]);
-  const onDeleteEntry = useMemo(() => (entryIndex: number) => handleDeleteEntry(index, entryIndex), [handleDeleteEntry, index]);
-  const onReorder = useMemo(() => (oldIndex: number, newIndex: number) => handleReorderEntry(index, oldIndex, newIndex), [handleReorderEntry, index]);
+  const onTitleEdit = useCallback(() => handleTitleEdit(index), [handleTitleEdit, index]);
+  const onDelete = useCallback(() => handleDeleteSection(index), [handleDeleteSection, index]);
 
-  const isEditingTitle = editingTitleIndex === index;
+  const onDeleteEntry = useCallback((entryIndex: number) => {
+    handleDeleteEntry(index, entryIndex);
+  }, [handleDeleteEntry, index]);
+
+  const onReorder = useCallback((oldIndex: number, newIndex: number) => {
+    handleReorderEntry(index, oldIndex, newIndex);
+  }, [handleReorderEntry, index]);
+
+  const onUpdate = useCallback((updatedContent: any) => {
+    // Note: We use the function form of handleUpdateSection if possible, but here we construct the new section
+    // 'section' dependency here is necessary.
+    // This callback will update when 'section' updates, which is correct (self-update).
+    // It will remain stable if 'section' is stable (other sections updating).
+    handleUpdateSection(index, { ...section, content: updatedContent } as Section);
+  }, [handleUpdateSection, index, section]);
+
+  const onGenericUpdate = useCallback((updatedSection: Section) => {
+    handleUpdateSection(index, updatedSection);
+  }, [handleUpdateSection, index]);
 
   if (isExperienceSection(section)) {
     return (
       <ExperienceSection
         sectionName={section.name}
         experiences={section.content}
-        onUpdate={(updatedExperiences) =>
-          handleUpdateSection(index, {
-            ...section,
-            content: updatedExperiences,
-          } as Section)
-        }
+        onUpdate={onUpdate}
         onTitleEdit={onTitleEdit}
         onTitleSave={handleTitleSave}
         onTitleCancel={handleTitleCancel}
@@ -86,12 +96,7 @@ const SectionRenderer: React.FC<SectionRendererProps> = React.memo(({
       <EducationSection
         sectionName={section.name}
         education={section.content}
-        onUpdate={(updatedEducation) =>
-          handleUpdateSection(index, {
-            ...section,
-            content: updatedEducation,
-          } as Section)
-        }
+        onUpdate={onUpdate}
         onTitleEdit={onTitleEdit}
         onTitleSave={handleTitleSave}
         onTitleCancel={handleTitleCancel}
@@ -109,12 +114,7 @@ const SectionRenderer: React.FC<SectionRendererProps> = React.memo(({
     return (
       <IconListSection
         data={section.content as IconListItem[]}
-        onUpdate={(updatedContent) =>
-          handleUpdateSection(index, {
-            ...section,
-            content: updatedContent,
-          } as Section)
-        }
+        onUpdate={onUpdate}
         onDelete={onDelete}
         onDeleteEntry={onDeleteEntry}
         onReorderEntry={onReorder}
@@ -132,9 +132,7 @@ const SectionRenderer: React.FC<SectionRendererProps> = React.memo(({
     return (
       <GenericSection
         section={section}
-        onUpdate={(updatedSection) =>
-          handleUpdateSection(index, updatedSection)
-        }
+        onUpdate={onGenericUpdate}
         onEditTitle={onTitleEdit}
         onSaveTitle={handleTitleSave}
         onCancelTitle={handleTitleCancel}

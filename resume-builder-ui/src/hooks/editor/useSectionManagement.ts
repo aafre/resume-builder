@@ -76,6 +76,12 @@ export const useSectionManagement = ({
   const [editingTitleIndex, setEditingTitleIndex] = useState<number | null>(null);
   const [temporaryTitle, setTemporaryTitle] = useState<string>('');
 
+  // Keep track of editing state in a ref for stable callbacks
+  const titleStateRef = useRef({ editingTitleIndex, temporaryTitle });
+  useEffect(() => {
+    titleStateRef.current = { editingTitleIndex, temporaryTitle };
+  }, [editingTitleIndex, temporaryTitle]);
+
   /**
    * Add a new section of the specified type at the specified position.
    * Uses sectionService to generate unique name and default content.
@@ -240,10 +246,12 @@ export const useSectionManagement = ({
    *                   This allows callers to pass the title directly, avoiding async state update issues.
    */
   const handleTitleSave = useCallback((newTitle?: string) => {
-    if (editingTitleIndex === null) return;
+    const { editingTitleIndex: currentIndex, temporaryTitle: currentTitle } = titleStateRef.current;
+
+    if (currentIndex === null) return;
 
     // Use passed value if provided, otherwise fall back to temporaryTitle state
-    const titleToSave = (newTitle ?? temporaryTitle).trim();
+    const titleToSave = (newTitle ?? currentTitle).trim();
 
     if (!titleToSave) {
       // Don't save empty titles; cancel edit instead
@@ -253,13 +261,13 @@ export const useSectionManagement = ({
     }
 
     setSections((currentSections) => {
-      if (editingTitleIndex < 0 || editingTitleIndex >= currentSections.length) {
-        console.warn(`Attempted to save title for out-of-bounds index: ${editingTitleIndex}`);
+      if (currentIndex < 0 || currentIndex >= currentSections.length) {
+        console.warn(`Attempted to save title for out-of-bounds index: ${currentIndex}`);
         return currentSections;
       }
       const newSections = [...currentSections];
-      newSections[editingTitleIndex] = {
-        ...newSections[editingTitleIndex],
+      newSections[currentIndex] = {
+        ...newSections[currentIndex],
         name: titleToSave,
       };
       return newSections;
@@ -267,7 +275,7 @@ export const useSectionManagement = ({
 
     setEditingTitleIndex(null);
     setTemporaryTitle('');
-  }, [editingTitleIndex, temporaryTitle, setSections]);
+  }, [setSections]);
 
   /**
    * Cancel title editing without saving changes.

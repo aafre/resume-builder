@@ -333,7 +333,16 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                 <SectionRenderer
                   section={section}
                   index={index}
-                  sectionManagement={sectionManagement}
+                  handleUpdateSection={sectionManagement.handleUpdateSection}
+                  handleDeleteSection={sectionManagement.handleDeleteSection}
+                  handleDeleteEntry={sectionManagement.handleDeleteEntry}
+                  handleReorderEntry={sectionManagement.handleReorderEntry}
+                  handleTitleEdit={sectionManagement.handleTitleEdit}
+                  handleTitleSave={sectionManagement.handleTitleSave}
+                  handleTitleCancel={sectionManagement.handleTitleCancel}
+                  isEditingTitle={sectionManagement.editingTitleIndex === index}
+                  temporaryTitle={sectionManagement.editingTitleIndex === index ? sectionManagement.temporaryTitle : ''}
+                  setTemporaryTitle={sectionManagement.setTemporaryTitle}
                   supportsIcons={supportsIcons}
                   iconRegistry={iconRegistry}
                 />
