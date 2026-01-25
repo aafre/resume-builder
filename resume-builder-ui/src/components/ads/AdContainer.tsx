@@ -85,6 +85,10 @@ export const AdContainer = ({
   const [adLoaded, setAdLoaded] = useState(false);
   const adPushed = useRef<string | null>(null);
 
+  // Feature flag for explicit ad placements (default: disabled, Auto Ads only)
+  const explicitAdsEnabled =
+    import.meta.env.VITE_ENABLE_EXPLICIT_ADS === "true";
+
   // Lazy loading with IntersectionObserver
   useEffect(() => {
     if (!enabled) return;
@@ -131,7 +135,7 @@ export const AdContainer = ({
     }
   }, [isVisible, enabled, adSlot]);
 
-  if (!enabled) {
+  if (!enabled || !explicitAdsEnabled) {
     return null;
   }
 

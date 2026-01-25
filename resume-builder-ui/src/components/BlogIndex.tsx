@@ -395,7 +395,7 @@ export default function BlogIndex() {
                   {/* Insert in-feed ad after every 6 posts, starting from position 5 (0-indexed) */}
                   {(index + 1) % 6 === 0 && index >= 5 && (
                     <InFeedAd
-                      adSlot="1234567894"
+                      adSlot="7742218947"
                       layout="card"
                       className="rounded-2xl"
                     />

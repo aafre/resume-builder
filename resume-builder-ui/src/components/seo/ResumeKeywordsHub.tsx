@@ -72,7 +72,7 @@ export default function ResumeKeywordsHub() {
       <PageHero config={config.hero} />
 
       {/* In-content Ad - Below hero */}
-      <InContentAd adSlot="1234567893" marginY={32} />
+      <InContentAd adSlot="9055300614" marginY={32} />
 
       <div className="mb-16">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">

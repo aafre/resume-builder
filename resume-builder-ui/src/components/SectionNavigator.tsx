@@ -621,7 +621,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
       {!isCollapsed && (
         <div className="px-3 py-3 border-t border-gray-200/40 bg-gray-50/30">
           <AdContainer
-            adSlot="1234567897"
+            adSlot="3691293294"
             adFormat="vertical"
             minHeight={250}
             minWidth={240}

@@ -534,7 +534,7 @@ const TemplateCarousel: React.FC = () => {
                 {/* Policy: Never show ad before first 4 cards */}
                 {(index + 1) % 6 === 0 && index >= 5 && (
                   <InFeedAd
-                    adSlot="1234567896"
+                    adSlot="3806186822"
                     layout="card"
                     className="rounded-3xl"
                   />
@@ -548,7 +548,7 @@ const TemplateCarousel: React.FC = () => {
         {templates.length >= 4 && templates.length < 6 && (
           <div className="mt-8 lg:mt-12 flex justify-center">
             <InFeedAd
-              adSlot="1234567896"
+              adSlot="3806186822"
               layout="card"
               className="rounded-3xl max-w-md"
             />

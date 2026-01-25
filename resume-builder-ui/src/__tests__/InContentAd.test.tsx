@@ -17,6 +17,9 @@ beforeEach(() => {
   }));
 
   window.adsbygoogle = [];
+
+  // Enable explicit ads feature flag for tests
+  vi.stubEnv("VITE_ENABLE_EXPLICIT_ADS", "true");
 });
 
 describe("InContentAd", () => {

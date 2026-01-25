@@ -37,7 +37,7 @@ export default function TemplatesHub() {
       <PageHero config={config.hero} />
 
       {/* In-content Ad - Below hero */}
-      <InContentAd adSlot="1234567892" marginY={32} />
+      <InContentAd adSlot="6343391269" marginY={32} />
 
       <div className="mb-16">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">

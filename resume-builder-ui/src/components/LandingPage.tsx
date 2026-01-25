@@ -280,7 +280,7 @@ const LandingPage: React.FC = () => {
 
         {/* In-content Ad - Below stats, above fold */}
         <div className="container mx-auto max-w-4xl px-4">
-          <InContentAd adSlot="1234567890" marginY={32} />
+          <InContentAd adSlot="1232650916" marginY={32} />
         </div>
 
         {/* Trusted Companies Section */}
