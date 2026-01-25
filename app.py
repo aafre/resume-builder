@@ -28,7 +28,7 @@ import copy
 from jinja2 import Environment, FileSystemLoader
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import atexit
-from functools import wraps
+from functools import wraps, partial
 import time
 from typing import Callable, Any
 from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
@@ -2500,8 +2500,9 @@ def duplicate_resume(resume_id):
 
         if source_icons:
             with ThreadPoolExecutor(max_workers=MAX_ICON_COPY_WORKERS) as executor:
-                # Use a lambda to pass extra arguments to the worker
-                results = executor.map(lambda icon: _copy_icon_worker(icon, user_id, new_resume_id), source_icons)
+                # Use partial to pass extra arguments to the worker
+                copy_worker = partial(_copy_icon_worker, user_id=user_id, new_resume_id=new_resume_id)
+                results = executor.map(copy_worker, source_icons)
 
                 # Filter out None results from failed copies
                 new_icon_records = [record for record in results if record is not None]
