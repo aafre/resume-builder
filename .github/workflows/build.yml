@@ -1,23 +1,31 @@
 name: Build
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'resume-builder-ui/**'
-      - 'app.py'
-      - 'resume_generator*.py'
-      - 'templates/**'
-      - 'requirements.txt'
-      - 'package*.json'
-      - 'Dockerfile*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag for the image'
+        required: false
+        default: 'latest'
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+          - development
+          - production
   workflow_call:
     inputs:
       version:
         description: 'Version tag for the image'
         required: true
         type: string
+      environment:
+        description: 'Target environment (development or production)'
+        required: true
+        type: string
+        default: 'production'
     outputs:
       image-tag:
         description: 'Built image tag'
@@ -25,8 +33,9 @@ on:
 
 jobs:
   build:
-    name: Build and Push
+    name: Build and Push (${{ inputs.environment }})
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     outputs:
       image-tag: ${{ steps.meta.outputs.tags }}
     
@@ -43,9 +52,9 @@ jobs:
         with:
           images: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app
           tags: |
-            type=raw,value=${{ inputs.version || 'latest' }}
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=sha,prefix={{branch}}-
+            type=raw,value=${{ inputs.version || 'latest' }}-${{ inputs.environment }}
+            type=raw,value=${{ inputs.environment }}-latest
+            type=sha,prefix=${{ inputs.environment }}-
 
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v2
@@ -104,6 +113,7 @@ jobs:
         run: |
           echo "📦 **Docker Image Built and Pushed Successfully!**" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
           echo "**Tags:** ${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
           echo "**Registry:** GCP Artifact Registry (europe-west2)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY

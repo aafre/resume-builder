@@ -1,0 +1,78 @@
+name: Build & Deploy to DEV
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (defaults to dev-{sha})'
+        required: false
+        type: string
+
+env:
+  REGISTRY: europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder/easyfreeresume-app
+
+jobs:
+  build:
+    name: Build DEV Image
+    uses: ./.github/workflows/build.yml
+    with:
+      version: ${{ inputs.version || format('dev-{0}', github.sha) }}
+      environment: development
+    secrets: inherit
+
+  deploy:
+    name: Deploy to DEV Cloud Run
+    needs: build
+    runs-on: ubuntu-latest
+    environment: development
+
+    steps:
+      - name: Deployment Info
+        run: |
+          echo "🚀 **Deploying to DEV environment**" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ inputs.version || format('dev-{0}', github.sha) }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ secrets.GCP_CLOUD_RUN_SERVICE_DEV }}
+          image: ${{ env.REGISTRY }}:${{ inputs.version || format('dev-{0}', github.sha) }}-development
+          region: europe-west2
+          flags: |
+            --cpu=1
+            --memory=1Gi
+            --min-instances=0
+            --max-instances=5
+            --concurrency=80
+            --timeout=300
+            --allow-unauthenticated
+
+      - name: Deployment Summary
+        run: |
+          echo "🎉 **DEV Deployment Completed!**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Service URL:** ${{ steps.deploy.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Image:** ${{ env.REGISTRY }}:${{ inputs.version || format('dev-{0}', github.sha) }}-development" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 **Test at:** ${{ steps.deploy.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Health Check
+        run: |
+          sleep 10
+          if curl -f -s "${{ steps.deploy.outputs.url }}" > /dev/null; then
+            echo "✅ Health check passed"
+            echo "**Health Check:** ✅ Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ Health check failed - verify manually"
+            echo "**Health Check:** ⚠️ Failed" >> $GITHUB_STEP_SUMMARY
+          fi
