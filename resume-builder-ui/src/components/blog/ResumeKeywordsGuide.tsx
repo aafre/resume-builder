@@ -5,7 +5,7 @@ export default function ResumeKeywordsGuide() {
     <BlogLayout
       title="Resume Keywords by Industry: The Complete 2026 Guide"
       description="The definitive guide to resume keywords recruiters and ATS systems are scanning for in 2026. Learn exactly where to place keywords for maximum impact."
-      publishDate="2025-07-15"
+      publishDate="2026-01-15"
       lastUpdated="2026-01-25"
       readTime="9–11 min"
       keywords={[

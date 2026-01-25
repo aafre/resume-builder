@@ -5,7 +5,7 @@ const QuantifyResumeAccomplishments = () => {
     <BlogLayout 
       title="How to Quantify Your Resume Accomplishments (Even If You're Not a Numbers Person)"
       description="Learn simple formulas and strategies to turn your job duties into powerful, data-driven achievements that impress recruiters and demonstrate your true impact."
-      publishDate="2025-07-16"
+      publishDate="2026-01-16"
       lastUpdated="2026-01-25"
       readTime="7 min"
       keywords={["quantify resume accomplishments", "resume metrics", "resume numbers", "quantified achievements", "resume results", "ATS resume optimization"]}

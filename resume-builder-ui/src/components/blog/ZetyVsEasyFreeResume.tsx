@@ -46,7 +46,7 @@ export default function ZetyVsEasyFreeResume() {
     <BlogLayout
       title="Zety Pricing 2026: Why Pay? Use This 100% Free Alternative Instead"
       description="Looking for Zety pricing? Don't get locked into a $5.95-$23.95/month subscription. EasyFreeResume offers the same ATS templates for $0. No hidden fees, no watermarks."
-      publishDate="2025-07-28"
+      publishDate="2026-01-28"
       lastUpdated="2026-01-18"
       readTime="9 min"
       keywords={[

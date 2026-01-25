@@ -5,7 +5,7 @@ export default function JobInterviewGuide() {
     <BlogLayout
       title="The Ultimate Guide to Nailing Your Next Job Interview"
       description="A comprehensive guide covering everything from pre-interview research and common questions to post-interview follow-up etiquette."
-      publishDate="2025-09-05"
+      publishDate="2026-01-05"
       lastUpdated="2026-01-25"
       readTime="7 min"
       keywords={[

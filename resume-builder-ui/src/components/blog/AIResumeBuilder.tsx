@@ -5,7 +5,7 @@ export default function AIResumeBuilder() {
     <BlogLayout
       title="AI Resume Builders: Your Secret Weapon for Job Search in 2026?"
       description="Explore how AI can revolutionize your resume writing, from drafting content to optimizing for ATS, and learn best practices for smart usage in today's job market. Updated for 2026."
-      publishDate="2025-07-27"
+      publishDate="2026-01-27"
       lastUpdated="2026-01-25"
       readTime="9 min"
       keywords={[

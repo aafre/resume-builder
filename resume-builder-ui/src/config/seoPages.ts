@@ -6,18 +6,20 @@
 
 import type { PageConfig } from '../types/seo';
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 export const SEO_PAGES: Record<string, PageConfig> = {
   // /templates (SEO-rich templates landing page)
   templates: {
     seo: {
-      title: 'Free Resume Templates 2026 | ATS-Friendly Professional Designs',
+      title: `Free Resume Templates ${CURRENT_YEAR} | ATS-Friendly Professional Designs`,
       description:
         'Browse free, ATS-optimized resume templates. Modern, professional designs that pass Applicant Tracking Systems. No sign-up required. Download PDF instantly.',
       keywords: [
         'free resume templates',
         'ats resume templates',
         'professional resume templates',
-        'resume templates 2026',
+        `resume templates ${CURRENT_YEAR}`,
         'modern resume templates',
         'free resume templates download',
       ],
@@ -629,7 +631,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /templates/ats-friendly
   atsFriendly: {
     seo: {
-      title: 'Free ATS-Friendly Resume Template (2025) - Edit Online & Download',
+      title: `Free ATS-Friendly Resume Template (${CURRENT_YEAR}) - Edit Online & Download`,
       description:
         'Build your ATS-friendly resume online—no sign-up required. Browser-based editor with instant PDF download. Start in seconds, download in minutes.',
       keywords: [
@@ -892,24 +894,24 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /best-free-resume-builder-reddit
   redditRecommended: {
     seo: {
-      title: 'Best Free Resume Builder 2026 — What Reddit Actually Recommends',
+      title: `Best Free Resume Builder ${CURRENT_YEAR} — What Reddit Actually Recommends`,
       description:
-        'Based on r/resumes, r/jobs, and r/cscareerquestions. No paywalls, no watermarks, actually free. Here\'s what Reddit users look for in 2026.',
+        `Based on r/resumes, r/jobs, and r/cscareerquestions. No paywalls, no watermarks, actually free. Here's what Reddit users look for in ${CURRENT_YEAR}.`,
       keywords: [
         'best free resume builder reddit',
         'reddit resume builder',
         'free resume builder no paywall',
         'reddit recommended resume',
         'actually free resume builder',
-        'best free resume builder 2026',
+        `best free resume builder ${CURRENT_YEAR}`,
       ],
       canonicalUrl: '/best-free-resume-builder-reddit',
     },
     hero: {
-      h1: 'Best Free Resume Builder 2026 - Reddit Recommended',
-      subtitle: 'See why Reddit users consistently recommend EasyFreeResume in 2026',
+      h1: `Best Free Resume Builder ${CURRENT_YEAR} - Reddit Recommended`,
+      subtitle: `See why Reddit users consistently recommend EasyFreeResume in ${CURRENT_YEAR}`,
       description:
-        'We analyzed top Reddit threads in r/resumes, r/jobs, and r/cscareerquestions (updated Jan 2026). Users value truly free exports, ATS compatibility, no watermarks, and privacy. Here is how we meet every criteria.',
+        `We analyzed top Reddit threads in r/resumes, r/jobs, and r/cscareerquestions (updated Jan ${CURRENT_YEAR}). Users value truly free exports, ATS compatibility, no watermarks, and privacy. Here is how we meet every criteria.`,
       primaryCTA: {
         text: 'Try It Free',
         href: '/templates',
@@ -996,7 +998,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /templates/modern-resume-templates
   modernTemplates: {
     seo: {
-      title: 'Modern Resume Templates 2026 | Free Contemporary Designs',
+      title: `Modern Resume Templates ${CURRENT_YEAR} | Free Contemporary Designs`,
       description:
         'Download free modern resume templates with clean, contemporary designs. Perfect for tech, startups, and creative industries. ATS-friendly formats.',
       keywords: [
@@ -1059,7 +1061,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /templates/minimalist-resume-templates
   minimalistTemplates: {
     seo: {
-      title: 'Minimalist Resume Templates 2026 | Clean & Simple Designs',
+      title: `Minimalist Resume Templates ${CURRENT_YEAR} | Clean & Simple Designs`,
       description:
         'Free minimalist resume templates with clean, distraction-free layouts. Let your content shine with elegant simplicity. ATS-optimized for all industries.',
       keywords: [
@@ -1122,7 +1124,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /templates/resume-templates-for-students
   studentTemplates: {
     seo: {
-      title: 'Student Resume Templates 2026 | Free Templates for First-Time Job Seekers',
+      title: `Student Resume Templates ${CURRENT_YEAR} | Free Templates for First-Time Job Seekers`,
       description:
         'Free resume templates designed for students and recent graduates. Highlight education, internships, and projects when you have limited work experience.',
       keywords: [
@@ -1190,7 +1192,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /cv-templates (Main CV Templates page for UK/EU/AU/NZ market)
   cvTemplates: {
     seo: {
-      title: 'Free CV Templates 2026 | Professional UK & International Designs',
+      title: `Free CV Templates ${CURRENT_YEAR} | Professional UK & International Designs`,
       description:
         'Browse free, professional CV templates for UK, Europe, and international applications. ATS-optimised, no sign-up required. Download PDF instantly.',
       keywords: [
@@ -1200,7 +1202,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         'professional cv template',
         'cv templates download',
         'curriculum vitae templates',
-        'cv templates 2026',
+        `cv templates ${CURRENT_YEAR}`,
         'ats cv templates',
       ],
       canonicalUrl: '/cv-templates',

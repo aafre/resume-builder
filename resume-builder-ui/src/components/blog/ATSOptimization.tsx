@@ -5,7 +5,7 @@ export default function ATSOptimization() {
     <BlogLayout
       title="ATS Resume Optimization: Beat the Bots and Land Interviews"
       description="Master the art of creating ATS-friendly resumes that pass automated screening systems and reach human recruiters."
-      publishDate="2025-07-22"
+      publishDate="2026-01-22"
       readTime="8 min"
       keywords={[
         "ATS optimization",

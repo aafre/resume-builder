@@ -5,7 +5,7 @@ export default function ResumeNoExperience() {
     <BlogLayout
       title="Resume with No Experience: Real Examples + Free Template"
       description="How to write an ATS-friendly, confidence-boosting resume when you're just starting out. Includes copy-paste examples and free template."
-      publishDate="2025-07-20"
+      publishDate="2026-01-20"
       lastUpdated="2026-01-25"
       readTime="12–16 min"
       keywords={[

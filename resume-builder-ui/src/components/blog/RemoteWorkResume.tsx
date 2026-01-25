@@ -5,7 +5,7 @@ export default function RemoteWorkResume() {
     <BlogLayout
       title="Remote Work Resume: Stand Out in the Digital Job Market"
       description="Optimize your resume for remote positions and showcase the skills that remote employers value most."
-      publishDate="2025-07-10"
+      publishDate="2026-01-10"
       readTime="7 min"
       keywords={[
         "remote resume tips",
