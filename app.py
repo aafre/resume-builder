@@ -173,66 +173,45 @@ def pdf_generation_worker(template_name, yaml_path, output_path, session_icons_d
     - Reliable PDF generation without Qt concurrency issues
     """
     try:
-        import subprocess
         import logging
         from pathlib import Path
+        import resume_generator
         
         # Set up logging for worker process
         logging.basicConfig(level=logging.INFO, format="%(asctime)s [WORKER] %(message)s")
         
-        cmd = [
-            "python",
-            "resume_generator.py",
-            "--template",
-            template_name,
-            "--input",
-            str(yaml_path),
-            "--output",
-            str(output_path),
-            "--session-icons-dir",
-            str(session_icons_dir),
-            "--session-id",
-            session_id,
-        ]
+        logging.debug(f"Worker generating PDF: {template_name}")
         
-        logging.debug(f"Worker running command: {' '.join(cmd)}")
-        
-        # Get the project root (worker process needs proper cwd)
-        project_root = Path(__file__).parent.resolve()
-        
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            cwd=str(project_root)
-        )
-        
-        if result.returncode != 0:
-            # Enhanced error logging for subprocess failures
-            logging.error(f"Worker subprocess failed with return code {result.returncode}")
-            logging.error(f"Command executed: {' '.join(cmd)}")
-            logging.error(f"Subprocess stdout: {result.stdout}")
-            logging.error(f"Subprocess stderr: {result.stderr}")
-            logging.error(f"Working directory: {project_root}")
+        try:
+            # Load and prepare resume data
+            data = resume_generator.load_resume_data(str(yaml_path))
+            data = resume_generator.normalize_sections(data)
+
+            # Generate PDF directly
+            resume_generator.generate_pdf(
+                template_name,
+                data,
+                str(output_path),
+                session_icons_dir=str(session_icons_dir),
+                session_id=session_id
+            )
+        except Exception as e:
+            # Enhanced error logging for generation failures
+            logging.error(f"Worker generation failed: {str(e)}")
             logging.error(f"Template: {template_name}, Session: {session_id}")
-            error_msg = f"Worker subprocess failed: {result.stderr}"
-            return {"success": False, "error": error_msg}
+            return {"success": False, "error": str(e)}
         
         # Verify PDF was created and has content
         pdf_path = Path(output_path)
         if not pdf_path.exists() or pdf_path.stat().st_size == 0:
             # Enhanced error logging for missing or empty PDF
             if not pdf_path.exists():
-                logging.error("PDF file was not created by worker subprocess")
+                logging.error("PDF file was not created by worker")
             else:
                 logging.error("PDF file was created but is empty (0 bytes)")
             logging.error(f"Expected PDF at: {output_path}")
-            logging.error(f"Command executed: {' '.join(cmd)}")
-            logging.error(f"Subprocess stdout: {result.stdout}")
-            logging.error(f"Subprocess stderr: {result.stderr}")
-            logging.error(f"Working directory: {project_root}")
             logging.error(f"Template: {template_name}, Session: {session_id}")
-            error_msg = "PDF file was not created by worker subprocess"
+            error_msg = "PDF file was not created by worker"
             return {"success": False, "error": error_msg}
         
         logging.info("Worker PDF generation completed successfully")
