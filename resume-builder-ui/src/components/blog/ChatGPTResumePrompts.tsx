@@ -1,5 +1,6 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
+import CopyablePrompt from "../shared/CopyablePrompt";
 
 export default function ChatGPTResumePrompts() {
   return (
@@ -78,45 +79,33 @@ export default function ChatGPTResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #1: Standard Professional Summary</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Write a 3-4 sentence professional summary for a [JOB TITLE] with [X] years of experience in [INDUSTRY]. My key strengths are [SKILL 1], [SKILL 2], and [SKILL 3]. I'm applying for a role at [TYPE OF COMPANY]. Make it results-focused and confident without using the word "I" at the beginning of sentences.
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Most industries, experienced professionals
-            </p>
-          </div>
+          <CopyablePrompt
+            title="Prompt #1: Standard Professional Summary"
+            bestFor="Most industries, experienced professionals"
+          >
+            Write a 3-4 sentence professional summary for a [JOB TITLE] with [X] years of experience in [INDUSTRY]. My key strengths are [SKILL 1], [SKILL 2], and [SKILL 3]. I'm applying for a role at [TYPE OF COMPANY]. Make it results-focused and confident without using the word "I" at the beginning of sentences.
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #2: Career Changer Summary</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Write a professional summary for someone transitioning from [CURRENT FIELD] to [TARGET FIELD]. Emphasize transferable skills like [SKILL 1], [SKILL 2], and [SKILL 3]. Frame my [X] years of experience as an asset for this new direction. Keep it under 60 words.
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Career changers, industry switchers
-            </p>
-          </div>
+          <CopyablePrompt
+            title="Prompt #2: Career Changer Summary"
+            bestFor="Career changers, industry switchers"
+          >
+            Write a professional summary for someone transitioning from [CURRENT FIELD] to [TARGET FIELD]. Emphasize transferable skills like [SKILL 1], [SKILL 2], and [SKILL 3]. Frame my [X] years of experience as an asset for this new direction. Keep it under 60 words.
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #3: Entry-Level Summary</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Write a professional summary for a recent [DEGREE] graduate seeking an entry-level [JOB TITLE] position. Highlight relevant coursework in [SUBJECT], internship experience at [COMPANY/TYPE], and skills in [SKILL 1] and [SKILL 2]. Emphasize eagerness to learn without sounding inexperienced.
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> New graduates, first-time job seekers
-            </p>
-          </div>
+          <CopyablePrompt
+            title="Prompt #3: Entry-Level Summary"
+            bestFor="New graduates, first-time job seekers"
+          >
+            Write a professional summary for a recent [DEGREE] graduate seeking an entry-level [JOB TITLE] position. Highlight relevant coursework in [SUBJECT], internship experience at [COMPANY/TYPE], and skills in [SKILL 1] and [SKILL 2]. Emphasize eagerness to learn without sounding inexperienced.
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #4: Executive Summary</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Write an executive summary for a [C-SUITE TITLE/VP] with [X]+ years leading [DEPARTMENT/FUNCTION] at [COMPANY SIZE] companies. Key achievements include [ACHIEVEMENT 1], [ACHIEVEMENT 2]. Focus on strategic vision, leadership impact, and business results. Use authoritative but not pompous language.
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Senior leaders, executives, directors
-            </p>
-          </div>
+          <CopyablePrompt
+            title="Prompt #4: Executive Summary"
+            bestFor="Senior leaders, executives, directors"
+          >
+            Write an executive summary for a [C-SUITE TITLE/VP] with [X]+ years leading [DEPARTMENT/FUNCTION] at [COMPANY SIZE] companies. Key achievements include [ACHIEVEMENT 1], [ACHIEVEMENT 2]. Focus on strategic vision, leadership impact, and business results. Use authoritative but not pompous language.
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -124,63 +113,46 @@ export default function ChatGPTResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #5: Transform Duty into Achievement</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Rewrite this job responsibility as a quantified achievement using the formula "Accomplished [X] by doing [Y], resulting in [Z]": "[PASTE YOUR TASK/RESPONSIBILITY]"
+          <CopyablePrompt
+            title="Prompt #5: Transform Duty into Achievement"
+            bestFor="Converting boring job duties into impactful bullets"
+          >
+            Rewrite this job responsibility as a quantified achievement using the formula "Accomplished [X] by doing [Y], resulting in [Z]": "[PASTE YOUR TASK/RESPONSIBILITY]"<br /><br />
+            If I don't have exact numbers, suggest realistic metrics I could use or ask me clarifying questions.
+          </CopyablePrompt>
 
-              If I don't have exact numbers, suggest realistic metrics I could use or ask me clarifying questions.
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Converting boring job duties into impactful bullets
-            </p>
-          </div>
+          <CopyablePrompt
+            title="Prompt #6: Batch Bullet Point Generator"
+            bestFor="Quickly generating multiple bullet points"
+          >
+            I worked as a [JOB TITLE] at [COMPANY TYPE]. Here are my main responsibilities:<br />
+            1. [TASK 1]<br />
+            2. [TASK 2]<br />
+            3. [TASK 3]<br /><br />
+            For each one, write 2 achievement-focused resume bullet points that:<br />
+            - Start with strong action verbs<br />
+            - Include quantifiable results where possible<br />
+            - Are under 25 words each
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #6: Batch Bullet Point Generator</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              I worked as a [JOB TITLE] at [COMPANY TYPE]. Here are my main responsibilities:
-              1. [TASK 1]
-              2. [TASK 2]
-              3. [TASK 3]
+          <CopyablePrompt
+            title="Prompt #7: Action Verb Upgrade"
+            bestFor="Polishing existing resume content"
+          >
+            Improve these resume bullet points by replacing weak verbs (helped, worked, did, made) with stronger action verbs. Keep the same meaning but make them more impactful:<br /><br />
+            [PASTE YOUR CURRENT BULLETS]
+          </CopyablePrompt>
 
-              For each one, write 2 achievement-focused resume bullet points that:
-              - Start with strong action verbs
-              - Include quantifiable results where possible
-              - Are under 25 words each
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Quickly generating multiple bullet points
-            </p>
-          </div>
-
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #7: Action Verb Upgrade</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Improve these resume bullet points by replacing weak verbs (helped, worked, did, made) with stronger action verbs. Keep the same meaning but make them more impactful:
-
-              [PASTE YOUR CURRENT BULLETS]
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Polishing existing resume content
-            </p>
-          </div>
-
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #8: Keyword-Optimized Bullets</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Here's a job description I'm applying to:
-              [PASTE JOB DESCRIPTION]
-
-              And here are my current experience bullets:
-              [PASTE YOUR BULLETS]
-
-              Rewrite my bullets to naturally incorporate relevant keywords from the job description while keeping them truthful and achievement-focused.
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Tailoring your resume to specific jobs
-            </p>
-          </div>
+          <CopyablePrompt
+            title="Prompt #8: Keyword-Optimized Bullets"
+            bestFor="Tailoring your resume to specific jobs"
+          >
+            Here's a job description I'm applying to:<br />
+            [PASTE JOB DESCRIPTION]<br /><br />
+            And here are my current experience bullets:<br />
+            [PASTE YOUR BULLETS]<br /><br />
+            Rewrite my bullets to naturally incorporate relevant keywords from the job description while keeping them truthful and achievement-focused.
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -188,48 +160,34 @@ export default function ChatGPTResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #9: Skills Extraction from Job Description</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Analyze this job description and list the top 15 skills (both hard and soft) that would be most important for this role. Categorize them as "Technical Skills," "Soft Skills," and "Tools/Platforms":
+          <CopyablePrompt
+            title="Prompt #9: Skills Extraction from Job Description"
+            bestFor="Identifying what skills to highlight"
+          >
+            Analyze this job description and list the top 15 skills (both hard and soft) that would be most important for this role. Categorize them as "Technical Skills," "Soft Skills," and "Tools/Platforms":<br /><br />
+            [PASTE JOB DESCRIPTION]
+          </CopyablePrompt>
 
-              [PASTE JOB DESCRIPTION]
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Identifying what skills to highlight
-            </p>
-          </div>
+          <CopyablePrompt
+            title="Prompt #10: Industry-Specific Skills List"
+            bestFor="Discovering relevant skills you may have missed"
+          >
+            List 20 in-demand skills for a [JOB TITLE] in [INDUSTRY] in 2026. Include:<br />
+            - 8 technical/hard skills<br />
+            - 6 soft skills<br />
+            - 6 tools or platforms<br /><br />
+            Only include skills that would appear on actual job descriptions, not generic abilities.
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #10: Industry-Specific Skills List</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              List 20 in-demand skills for a [JOB TITLE] in [INDUSTRY] in 2026. Include:
-              - 8 technical/hard skills
-              - 6 soft skills
-              - 6 tools or platforms
-
-              Only include skills that would appear on actual job descriptions, not generic abilities.
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Discovering relevant skills you may have missed
-            </p>
-          </div>
-
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #11: Skills Gap Analysis</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Compare my current skills to this job description:
-
-              My skills: [LIST YOUR SKILLS]
-
-              Job description: [PASTE JOB DESCRIPTION]
-
-              Identify: 1) Skills I have that match, 2) Skills I have that I should emphasize more, 3) Skills gaps I should address or downplay
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Understanding your fit for a specific role
-            </p>
-          </div>
+          <CopyablePrompt
+            title="Prompt #11: Skills Gap Analysis"
+            bestFor="Understanding your fit for a specific role"
+          >
+            Compare my current skills to this job description:<br /><br />
+            My skills: [LIST YOUR SKILLS]<br /><br />
+            Job description: [PASTE JOB DESCRIPTION]<br /><br />
+            Identify: 1) Skills I have that match, 2) Skills I have that I should emphasize more, 3) Skills gaps I should address or downplay
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -237,39 +195,29 @@ export default function ChatGPTResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #12: Full Resume Tailoring</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              I'm applying for this role:
-              [PASTE JOB DESCRIPTION]
+          <CopyablePrompt
+            title="Prompt #12: Full Resume Tailoring"
+            bestFor="Customizing your resume for each application"
+          >
+            I'm applying for this role:<br />
+            [PASTE JOB DESCRIPTION]<br /><br />
+            Here's my current resume:<br />
+            [PASTE RESUME TEXT]<br /><br />
+            Suggest specific changes to better align my resume with this job. Include:<br />
+            1. Keywords to add<br />
+            2. Bullets to reorder or emphasize<br />
+            3. Skills to highlight<br />
+            4. Any content to remove or de-emphasize
+          </CopyablePrompt>
 
-              Here's my current resume:
-              [PASTE RESUME TEXT]
-
-              Suggest specific changes to better align my resume with this job. Include:
-              1. Keywords to add
-              2. Bullets to reorder or emphasize
-              3. Skills to highlight
-              4. Any content to remove or de-emphasize
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Customizing your resume for each application
-            </p>
-          </div>
-
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #13: Company Culture Alignment</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Based on this company's careers page and job description, what tone and keywords should I use in my resume? The company appears to value [X, Y, Z based on your research].
-
-              Job description: [PASTE]
-
-              Suggest how to adapt my language and which experiences to highlight.
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Matching company culture in your messaging
-            </p>
-          </div>
+          <CopyablePrompt
+            title="Prompt #13: Company Culture Alignment"
+            bestFor="Matching company culture in your messaging"
+          >
+            Based on this company's careers page and job description, what tone and keywords should I use in my resume? The company appears to value [X, Y, Z based on your research].<br /><br />
+            Job description: [PASTE]<br /><br />
+            Suggest how to adapt my language and which experiences to highlight.
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -277,55 +225,40 @@ export default function ChatGPTResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #14: Tech/Software Engineering</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Write 5 resume bullet points for a [LEVEL] software engineer with experience in [TECH STACK]. Each bullet should:
-              - Start with an action verb
-              - Include a specific technology or methodology
-              - Mention scale (users, transactions, team size)
-              - Show business impact when possible
-            </div>
-          </div>
+          <CopyablePrompt title="Prompt #14: Tech/Software Engineering">
+            Write 5 resume bullet points for a [LEVEL] software engineer with experience in [TECH STACK]. Each bullet should:<br />
+            - Start with an action verb<br />
+            - Include a specific technology or methodology<br />
+            - Mention scale (users, transactions, team size)<br />
+            - Show business impact when possible
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #15: Marketing/Sales</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Write 5 metrics-driven resume bullets for a [MARKETING/SALES ROLE] that highlight:
-              - Revenue or pipeline generated
-              - Growth percentages
-              - Campaign performance (CTR, conversion, etc.)
-              - Team leadership or client relationships
+          <CopyablePrompt title="Prompt #15: Marketing/Sales">
+            Write 5 metrics-driven resume bullets for a [MARKETING/SALES ROLE] that highlight:<br />
+            - Revenue or pipeline generated<br />
+            - Growth percentages<br />
+            - Campaign performance (CTR, conversion, etc.)<br />
+            - Team leadership or client relationships<br /><br />
+            My experience includes: [BRIEF DESCRIPTION]
+          </CopyablePrompt>
 
-              My experience includes: [BRIEF DESCRIPTION]
-            </div>
-          </div>
+          <CopyablePrompt title="Prompt #16: Healthcare">
+            Write professional resume bullets for a [HEALTHCARE ROLE] that emphasize:<br />
+            - Patient care quality and outcomes<br />
+            - Compliance and safety protocols<br />
+            - Team collaboration<br />
+            - Any certifications or specialized training<br /><br />
+            Keep language appropriate for healthcare industry expectations.
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #16: Healthcare</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Write professional resume bullets for a [HEALTHCARE ROLE] that emphasize:
-              - Patient care quality and outcomes
-              - Compliance and safety protocols
-              - Team collaboration
-              - Any certifications or specialized training
-
-              Keep language appropriate for healthcare industry expectations.
-            </div>
-          </div>
-
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #17: Finance/Accounting</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Write 5 resume bullets for a [FINANCE ROLE] that showcase:
-              - Financial analysis and reporting
-              - Process improvements and efficiency gains
-              - Compliance and accuracy
-              - Tools and systems expertise (Excel, SAP, etc.)
-
-              Use precise language appropriate for the finance industry.
-            </div>
-          </div>
+          <CopyablePrompt title="Prompt #17: Finance/Accounting">
+            Write 5 resume bullets for a [FINANCE ROLE] that showcase:<br />
+            - Financial analysis and reporting<br />
+            - Process improvements and efficiency gains<br />
+            - Compliance and accuracy<br />
+            - Tools and systems expertise (Excel, SAP, etc.)<br /><br />
+            Use precise language appropriate for the finance industry.
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -333,52 +266,39 @@ export default function ChatGPTResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #18: ATS Keyword Optimization</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Analyze my resume for ATS (Applicant Tracking System) optimization against this job description:
+          <CopyablePrompt
+            title="Prompt #18: ATS Keyword Optimization"
+            bestFor="Ensuring your resume passes automated screening"
+          >
+            Analyze my resume for ATS (Applicant Tracking System) optimization against this job description:<br /><br />
+            Job Description: [PASTE]<br />
+            My Resume: [PASTE]<br /><br />
+            List:<br />
+            1. Important keywords I'm missing<br />
+            2. Keywords I have but should use more frequently<br />
+            3. Any formatting issues that might confuse ATS<br />
+            4. Suggested revisions for key bullets
+          </CopyablePrompt>
 
-              Job Description: [PASTE]
-              My Resume: [PASTE]
+          <CopyablePrompt
+            title="Prompt #19: Quantification Helper"
+            bestFor="Adding impact through quantification"
+          >
+            Help me add numbers and metrics to these resume bullets. For each one, suggest:<br />
+            1. What could be quantified<br />
+            2. How to estimate reasonable numbers if I don't have exact figures<br />
+            3. A rewritten version with metrics<br /><br />
+            My bullets:<br />
+            [PASTE YOUR BULLETS]
+          </CopyablePrompt>
 
-              List:
-              1. Important keywords I'm missing
-              2. Keywords I have but should use more frequently
-              3. Any formatting issues that might confuse ATS
-              4. Suggested revisions for key bullets
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Ensuring your resume passes automated screening
-            </p>
-          </div>
-
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #19: Quantification Helper</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Help me add numbers and metrics to these resume bullets. For each one, suggest:
-              1. What could be quantified
-              2. How to estimate reasonable numbers if I don't have exact figures
-              3. A rewritten version with metrics
-
-              My bullets:
-              [PASTE YOUR BULLETS]
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Adding impact through quantification
-            </p>
-          </div>
-
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #20: Conciseness Editor</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              These resume bullets are too long. Shorten each one to under 20 words while keeping the most important information and impact:
-
-              [PASTE YOUR LONG BULLETS]
-            </div>
-            <p className="text-gray-600 mt-3 text-sm">
-              <strong>Best for:</strong> Fitting more content on one page
-            </p>
-          </div>
+          <CopyablePrompt
+            title="Prompt #20: Conciseness Editor"
+            bestFor="Fitting more content on one page"
+          >
+            These resume bullets are too long. Shorten each one to under 20 words while keeping the most important information and impact:<br /><br />
+            [PASTE YOUR LONG BULLETS]
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -386,36 +306,24 @@ export default function ChatGPTResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #21: Grammar and Consistency Check</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Review my resume for:
-              1. Grammar and spelling errors
-              2. Tense consistency (past tense for past jobs, present for current)
-              3. Parallel structure in bullet points
-              4. Consistent formatting (periods, capitalization)
+          <CopyablePrompt title="Prompt #21: Grammar and Consistency Check">
+            Review my resume for:<br />
+            1. Grammar and spelling errors<br />
+            2. Tense consistency (past tense for past jobs, present for current)<br />
+            3. Parallel structure in bullet points<br />
+            4. Consistent formatting (periods, capitalization)<br /><br />
+            [PASTE RESUME]
+          </CopyablePrompt>
 
-              [PASTE RESUME]
-            </div>
-          </div>
+          <CopyablePrompt title="Prompt #22: Tone Adjustment">
+            My resume currently sounds too [humble/arrogant/generic/casual]. Rewrite these sections to sound more [confident/professional/achievement-focused/modern] while maintaining accuracy:<br /><br />
+            [PASTE SECTIONS]
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #22: Tone Adjustment</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              My resume currently sounds too [humble/arrogant/generic/casual]. Rewrite these sections to sound more [confident/professional/achievement-focused/modern] while maintaining accuracy:
-
-              [PASTE SECTIONS]
-            </div>
-          </div>
-
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #23: Remove Fluff and Clichés</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Remove clichés, buzzwords, and empty phrases from my resume. Replace vague terms like "results-driven," "team player," "detail-oriented" with specific examples or concrete achievements:
-
-              [PASTE RESUME]
-            </div>
-          </div>
+          <CopyablePrompt title="Prompt #23: Remove Fluff and Clichés">
+            Remove clichés, buzzwords, and empty phrases from my resume. Replace vague terms like "results-driven," "team player," "detail-oriented" with specific examples or concrete achievements:<br /><br />
+            [PASTE RESUME]
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -423,42 +331,29 @@ export default function ChatGPTResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #24: Employment Gap Explanation</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              I have a [LENGTH] employment gap from [DATE] to [DATE] because [BRIEF REASON: caregiving, health, education, layoff, etc.].
+          <CopyablePrompt title="Prompt #24: Employment Gap Explanation">
+            I have a [LENGTH] employment gap from [DATE] to [DATE] because [BRIEF REASON: caregiving, health, education, layoff, etc.].<br /><br />
+            Write a brief, professional way to address this that:<br />
+            - Doesn't over-explain or apologize<br />
+            - Highlights any relevant activities during the gap<br />
+            - Positions me as ready and eager to return
+          </CopyablePrompt>
 
-              Write a brief, professional way to address this that:
-              - Doesn't over-explain or apologize
-              - Highlights any relevant activities during the gap
-              - Positions me as ready and eager to return
-            </div>
-          </div>
+          <CopyablePrompt title="Prompt #25: Freelance/Contract Work">
+            Format my freelance/contract experience professionally. I worked with:<br />
+            [LIST CLIENTS/PROJECTS]<br /><br />
+            Create a cohesive "Consulting" or "Freelance" section that:<br />
+            - Shows diverse experience as a strength<br />
+            - Highlights specific achievements<br />
+            - Doesn't look like job-hopping
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #25: Freelance/Contract Work</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Format my freelance/contract experience professionally. I worked with:
-              [LIST CLIENTS/PROJECTS]
-
-              Create a cohesive "Consulting" or "Freelance" section that:
-              - Shows diverse experience as a strength
-              - Highlights specific achievements
-              - Doesn't look like job-hopping
-            </div>
-          </div>
-
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #26: Side Projects</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
-              Write resume entries for my side projects that demonstrate relevant skills:
-
-              Project 1: [DESCRIBE]
-              Project 2: [DESCRIBE]
-
-              Make them sound professional and relevant to a [TARGET JOB] role, even though they weren't paid work.
-            </div>
-          </div>
+          <CopyablePrompt title="Prompt #26: Side Projects">
+            Write resume entries for my side projects that demonstrate relevant skills:<br /><br />
+            Project 1: [DESCRIBE]<br />
+            Project 2: [DESCRIBE]<br /><br />
+            Make them sound professional and relevant to a [TARGET JOB] role, even though they weren't paid work.
+          </CopyablePrompt>
         </div>
 
         {/* Important Warnings */}
