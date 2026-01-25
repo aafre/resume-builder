@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import SEOHead from "./SEOHead";
 import { InFeedAd } from "./ads";
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 interface BlogPost {
   slug: string;
   title: string;
@@ -100,7 +102,7 @@ const blogPosts: BlogPost[] = [
   },
   {
     slug: "how-to-write-a-resume-guide",
-    title: "How to Write a Resume in 2025: The Complete Step-by-Step Guide",
+    title: `How to Write a Resume in ${CURRENT_YEAR}: The Complete Step-by-Step Guide`,
     description: "From a blank page to a finished, professional resume, this guide covers every section, formatting rule, and writing tip you need to know.",
     publishDate: "2025-08-25",
     readTime: "8 min",
@@ -116,7 +118,7 @@ const blogPosts: BlogPost[] = [
   },
   {
     slug: "ai-resume-builder",
-    title: "AI Resume Builders: Your Secret Weapon for Job Search in 2025?",
+    title: `AI Resume Builders: Your Secret Weapon for Job Search in ${CURRENT_YEAR}?`,
     description:
       "Explore how AI can revolutionize your resume writing, from drafting content to optimizing for ATS, and learn best practices for smart usage in today's job market.",
     publishDate: "2025-07-27",
@@ -163,16 +165,16 @@ const blogPosts: BlogPost[] = [
   },
   {
     slug: "resume-keywords-guide",
-    title: "Resume Keywords by Industry: The Complete 2025 Guide",
+    title: `Resume Keywords by Industry: The Complete ${CURRENT_YEAR} Guide`,
     description:
-      "The definitive guide to resume keywords recruiters and ATS systems are scanning for in 2025.",
+      `The definitive guide to resume keywords recruiters and ATS systems are scanning for in ${CURRENT_YEAR}.`,
     publishDate: "2025-07-15",
     readTime: "9–11 min",
     category: "Keywords",
   },
   {
     slug: "cover-letter-guide",
-    title: "How to Write a Cover Letter That Gets Read in 2025",
+    title: `How to Write a Cover Letter That Gets Read in ${CURRENT_YEAR}`,
     description:
       "Master the art of writing cover letters that stand out, get noticed, and support your resume in the modern job market.",
     publishDate: "2025-07-12",
@@ -191,7 +193,7 @@ const blogPosts: BlogPost[] = [
   },
   {
     slug: "resume-length-guide",
-    title: "Resume Length: How Long Should Your Resume Be in 2025?",
+    title: `Resume Length: How Long Should Your Resume Be in ${CURRENT_YEAR}?`,
     description:
       "Discover the optimal resume length for your experience level and industry, with specific guidelines.",
     publishDate: "2025-07-08",
@@ -200,7 +202,7 @@ const blogPosts: BlogPost[] = [
   },
   {
     slug: "tech-resume-guide",
-    title: "Tech Resume Guide: Land Your Dream Developer Job in 2025",
+    title: `Tech Resume Guide: Land Your Dream Developer Job in ${CURRENT_YEAR}`,
     description:
       "Create a standout tech resume with industry-specific tips, project showcases, and skill presentations.",
     publishDate: "2025-07-05",
@@ -218,7 +220,7 @@ const blogPosts: BlogPost[] = [
   },
   {
     slug: "how-to-use-resume-keywords",
-    title: "How to Use Resume Keywords to Beat the ATS (The Ultimate 2025 Guide)",
+    title: `How to Use Resume Keywords to Beat the ATS (The Ultimate ${CURRENT_YEAR} Guide)`,
     description: "A deep dive into finding and using the right keywords to ensure your resume gets past applicant tracking systems and into human hands. Your master guide to ATS optimization.",
     publishDate: "2025-08-15",
     readTime: "11 min",
