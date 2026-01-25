@@ -7,6 +7,9 @@ interface MobileActionBarProps {
   onDownloadClick: () => void;
   isSaving?: boolean;
   isGenerating?: boolean;
+  /** Whether the preview button is being clicked (saving, validating) */
+  isOpeningPreview?: boolean;
+  /** Whether the preview is being generated */
   isGeneratingPreview?: boolean;
   previewIsStale?: boolean;
   lastSaved?: Date | null;
@@ -25,12 +28,15 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
   onDownloadClick,
   isSaving = false,
   isGenerating = false,
+  isOpeningPreview = false,
   isGeneratingPreview = false,
   previewIsStale = false,
   lastSaved = null,
   saveError = false,
   isAuthenticated = false,
 }) => {
+  // Show loading on button when either opening (save/validate) or generating
+  const isPreviewLoading = isOpeningPreview || isGeneratingPreview;
   // Format last saved time
   const getLastSavedText = () => {
     if (!lastSaved) return "";
@@ -94,18 +100,18 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
         {onPreviewClick && (
           <button
             onClick={onPreviewClick}
-            disabled={isGeneratingPreview || isGenerating}
+            disabled={isPreviewLoading || isGenerating}
             className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl shadow-lg transition-all hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed relative"
             aria-label="Preview resume PDF"
             style={{ WebkitTapHighlightColor: "transparent" }}
           >
             {/* Staleness indicator */}
-            {previewIsStale && !isGeneratingPreview && (
+            {previewIsStale && !isPreviewLoading && (
               <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-amber-400 rounded-full border-2 border-white animate-pulse shadow-sm"></span>
             )}
-            {isGeneratingPreview ? (
+            {isPreviewLoading ? (
               <>
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mb-1.5"></div>
+                <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent mb-1.5"></div>
                 <span className="text-xs font-semibold">Loading...</span>
               </>
             ) : (

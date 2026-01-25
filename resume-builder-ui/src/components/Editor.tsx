@@ -390,6 +390,7 @@ const Editor: React.FC = () => {
           handleOpenPreview: editorActions.handleOpenPreview,
           handleStartFresh: editorActions.handleStartFresh,
           isDownloading: editorActions.isDownloading,
+          isOpeningPreview: editorActions.isOpeningPreview,
         }}
         preview={{
           isGenerating: preview.isGenerating,

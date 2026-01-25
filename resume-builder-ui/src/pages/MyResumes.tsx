@@ -31,6 +31,8 @@ export default function MyResumes() {
   const [isDuplicating, setIsDuplicating] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [previewResumeId, setPreviewResumeId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [previewingId, setPreviewingId] = useState<string | null>(null);
   const downloadPromiseRef = useRef<Promise<void> | null>(null);
 
   // Preview hook - database mode for fetching pre-generated PDFs
@@ -95,6 +97,7 @@ export default function MyResumes() {
   }, [resumes, triggerRefresh]);
 
   const handleEdit = (id: string) => {
+    setEditingId(id);
     navigate(`/editor/${id}`);
   };
 
@@ -252,7 +255,8 @@ export default function MyResumes() {
   const handlePreview = (id: string) => {
     if (!session) return;
 
-    // Set resume ID and open modal (effect will handle generation)
+    // Set loading state and resume ID, open modal (effect will handle generation)
+    setPreviewingId(id);
     setPreviewResumeId(id);
     setShowPreviewModal(true);
   };
@@ -268,6 +272,7 @@ export default function MyResumes() {
 
   const handleClosePreview = () => {
     setShowPreviewModal(false);
+    setPreviewingId(null);
   };
 
   const handleRefreshPreview = async () => {
@@ -356,6 +361,8 @@ export default function MyResumes() {
               onPreview={handlePreview}
               onDuplicate={handleDuplicate}
               onRename={handleRename}
+              isEditButtonLoading={editingId === resume.id}
+              isPreviewLoading={previewingId === resume.id && isGeneratingPreview}
             />
           ))}
         </div>
