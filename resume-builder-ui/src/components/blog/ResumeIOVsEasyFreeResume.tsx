@@ -5,7 +5,7 @@ import { generateComparisonSchema } from "../../utils/schemaGenerators";
 
 function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center justify-center gap-1">
       {Array.from({ length: max }, (_, i) => (
         <span
           key={i}
