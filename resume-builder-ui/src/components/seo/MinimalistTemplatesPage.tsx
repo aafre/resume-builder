@@ -39,7 +39,7 @@ export default function MinimalistTemplatesPage() {
             No clutter, no distractions—just professional presentation.
           </p>
         </div>
-        <TemplateCarousel />
+        <TemplateCarousel showHeader={false} />
       </section>
 
       {/* Benefits of Minimalist Design */}
