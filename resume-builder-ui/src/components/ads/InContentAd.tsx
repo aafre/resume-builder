@@ -55,6 +55,15 @@ export const InContentAd = ({
   enabled = true,
   ...rest
 }: InContentAdProps) => {
+  // Feature flag for explicit ad placements (default: disabled, Auto Ads only)
+  const explicitAdsEnabled =
+    import.meta.env.VITE_ENABLE_EXPLICIT_ADS === "true";
+
+  // Return null early if ads are disabled - don't render the wrapper div
+  if (!enabled || !explicitAdsEnabled) {
+    return null;
+  }
+
   const minHeightMap = {
     small: 100,
     standard: 250,
@@ -66,10 +75,6 @@ export const InContentAd = ({
     marginBottom: `${marginY}px`,
     ...style,
   };
-
-  if (!enabled) {
-    return null;
-  }
 
   return (
     <div
