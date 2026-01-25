@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import BlogLayout from "../BlogLayout";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
 
@@ -294,19 +295,19 @@ export default function ZetyVsEasyFreeResume() {
                 </p>
                 <p>
                   Use our comprehensive blog guides (like{" "}
-                  <a
-                    href="/blog/resume-action-verbs"
+                  <Link
+                    to="/blog/resume-action-verbs"
                     className="text-blue-600 underline"
                   >
                     Action Verbs for Resumes
-                  </a>{" "}
+                  </Link>{" "}
                   or{" "}
-                  <a
-                    href="/blog/chatgpt-resume-prompts"
+                  <Link
+                    to="/blog/chatgpt-resume-prompts"
                     className="text-blue-600 underline"
                   >
                     ChatGPT Resume Prompts
-                  </a>
+                  </Link>
                   ) to write compelling, personalized content.
                 </p>
               </div>
@@ -333,12 +334,12 @@ export default function ZetyVsEasyFreeResume() {
                 </p>
                 <p>
                   Check out our{" "}
-                  <a
-                    href="/blog/cover-letter-guide"
+                  <Link
+                    to="/blog/cover-letter-guide"
                     className="text-blue-600 underline"
                   >
                     Cover Letter Writing Guide
-                  </a>{" "}
+                  </Link>{" "}
                   for templates and tips.
                 </p>
               </div>
@@ -366,19 +367,19 @@ export default function ZetyVsEasyFreeResume() {
                 </p>
                 <p>
                   Use our{" "}
-                  <a
-                    href="/blog/ats-resume-optimization"
+                  <Link
+                    to="/blog/ats-resume-optimization"
                     className="text-blue-600 underline"
                   >
                     ATS Optimization Guide
-                  </a>{" "}
+                  </Link>{" "}
                   or{" "}
-                  <a
-                    href="/blog/ai-resume-review"
+                  <Link
+                    to="/blog/ai-resume-review"
                     className="text-blue-600 underline"
                   >
                     AI Resume Review Guide
-                  </a>{" "}
+                  </Link>{" "}
                   for real-world resume improvement strategies.
                 </p>
               </div>
@@ -723,12 +724,12 @@ export default function ZetyVsEasyFreeResume() {
               <p className="font-medium">3. Knowledge & Strategy (Our Blog)</p>
               <p className="text-sm">
                 Stay current with guides like our{" "}
-                <a
-                  href="/blog/how-to-write-a-resume-guide"
+                <Link
+                  to="/blog/how-to-write-a-resume-guide"
                   className="underline"
                 >
                   Complete Resume Writing Guide
-                </a>
+                </Link>
               </p>
             </div>
             <div>
@@ -747,12 +748,12 @@ export default function ZetyVsEasyFreeResume() {
           <p className="text-xl mb-6 opacity-90">
             Start with EasyFreeResume — it's actually free, no tricks
           </p>
-          <a
-            href="/templates"
+          <Link
+            to="/templates"
             className="inline-block bg-white text-green-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Build Your Free Resume Now
-          </a>
+          </Link>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -799,12 +800,12 @@ export default function ZetyVsEasyFreeResume() {
             <p className="font-bold text-sm">Switch to Free</p>
             <p className="text-xs opacity-90">Save $71+/year</p>
           </div>
-          <a
-            href="/templates"
+          <Link
+            to="/templates"
             className="bg-white text-green-600 px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
           >
             Try Free
-          </a>
+          </Link>
         </div>
       </div>
     </BlogLayout>
