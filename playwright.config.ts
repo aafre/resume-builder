@@ -77,6 +77,13 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
+    // Sitemap validation tests - enabled separately from main E2E tests
+    {
+      name: 'sitemap',
+      testMatch: 'sitemap-validation.spec.ts',
+      use: { ...devices['Desktop Chrome'] },
+    },
+
     // Uncomment for cross-browser testing
     // {
     //   name: 'firefox',
