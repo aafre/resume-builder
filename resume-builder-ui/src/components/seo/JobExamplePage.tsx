@@ -132,13 +132,13 @@ export default function JobExamplePage() {
   });
 
   // Create resume from job example data
-  const doCreateResume = async () => {
+  const doCreateResume = async (templateIdOverride?: string) => {
     if (!data || !session) return;
 
     const editorData = convertToEditorFormat(data.resume);
 
-    // Use selected template or fall back to the example's default template
-    const templateId = selectedTemplateId || data.resume.template || 'modern';
+    // Use override, then selected template, then example's default template
+    const templateId = templateIdOverride || selectedTemplateId || data.resume.template || 'modern';
 
     await createResume({
       templateId,
@@ -174,22 +174,7 @@ export default function JobExamplePage() {
     }
 
     // Authenticated users - create directly with selected template
-    if (!data || !session) return;
-
-    const editorData = convertToEditorFormat(data.resume);
-
-    await createResume({
-      templateId,
-      title: `${data.meta.title} Resume`,
-      contactInfo: {
-        name: data.resume.contact.name,
-        email: data.resume.contact.email,
-        phone: data.resume.contact.phone,
-        location: data.resume.contact.location,
-        linkedin: data.resume.contact.linkedin,
-      },
-      sections: (editorData as { sections: Section[] }).sections,
-    });
+    await doCreateResume(templateId);
   };
 
   // Handle "Sign In" from conversion prompt
