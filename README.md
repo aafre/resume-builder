@@ -49,7 +49,7 @@ cp .env.local.example .env.local
 # Edit .env.local with your local Supabase keys from `supabase status`
 
 # Apply database migrations
-supabase db reset
+supabase db push
 
 # Terminal 1: Frontend
 cd resume-builder-ui && npm install && npm run dev
