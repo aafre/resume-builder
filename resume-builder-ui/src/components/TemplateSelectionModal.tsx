@@ -12,7 +12,7 @@
  * - Touch-friendly with sticky action bar on mobile
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { MdClose, MdCheck } from 'react-icons/md';
 import { fetchTemplates } from '../services/templates';
@@ -60,33 +60,33 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
   const [loading, setLoading] = useState(!_testTemplates);
   const [error, setError] = useState<string | null>(null);
 
+  // Memoized template loading function
+  const loadTemplates = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await fetchTemplates();
+      setTemplates(data);
+      // Select first template by default if none selected
+      setSelectedTemplateId((current) => {
+        if (!current && data.length > 0) {
+          return data[0].id;
+        }
+        return current;
+      });
+    } catch (err) {
+      setError('Failed to load templates. Please try again.');
+      console.error('Error fetching templates:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   // Fetch templates when modal opens (skip if test templates provided)
   useEffect(() => {
     if (!isOpen || _testTemplates) return;
-
-    const loadTemplates = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await fetchTemplates();
-        setTemplates(data);
-        // Select first template by default if none selected
-        setSelectedTemplateId((current) => {
-          if (!current && data.length > 0) {
-            return data[0].id;
-          }
-          return current;
-        });
-      } catch (err) {
-        setError('Failed to load templates. Please try again.');
-        console.error('Error fetching templates:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     loadTemplates();
-  }, [isOpen, _testTemplates]);
+  }, [isOpen, _testTemplates, loadTemplates]);
 
   // Handle test templates
   useEffect(() => {
@@ -123,17 +123,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
   };
 
   const handleRetry = () => {
-    setLoading(true);
-    setError(null);
-    fetchTemplates()
-      .then((data) => {
-        setTemplates(data);
-        if (!selectedTemplateId && data.length > 0) {
-          setSelectedTemplateId(data[0].id);
-        }
-      })
-      .catch(() => setError('Failed to load templates.'))
-      .finally(() => setLoading(false));
+    loadTemplates();
   };
 
   if (!isOpen) return null;
