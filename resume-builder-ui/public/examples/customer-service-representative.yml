@@ -1,0 +1,98 @@
+# Customer Service Representative Resume Example
+# Category: Operations (Tier 1 - High Volume)
+
+meta:
+  slug: customer-service-representative
+  title: Customer Service Representative
+  metaTitle: "Free Customer Service Representative Resume Example & Template (2026)"
+  metaDescription: "Professional customer service representative resume example with 20+ bullet points. Edit instantly in our free builder."
+  category: operations
+  priority: 0.8
+
+resume:
+  template: modern
+  contact:
+    name: Sarah Mitchell
+    title: Customer Service Representative
+    email: sarah.mitchell@email.com
+    phone: "(555) 123-4567"
+    location: Chicago, IL
+
+  summary: >
+    Dedicated customer service professional with 4+ years of experience
+    resolving complex issues and maintaining 98% customer satisfaction.
+    Skilled in CRM systems, conflict resolution, and team collaboration.
+    Recognized for exceeding monthly performance targets and mentoring new team members.
+
+  experience:
+    - company: TechCorp Solutions
+      title: Senior Customer Service Representative
+      dates: Jan 2022 - Present
+      location: Chicago, IL
+      bullets:
+        - Resolved 80+ customer inquiries daily via phone, email, and chat with 98% satisfaction rating
+        - Reduced average call handling time by 25% through improved troubleshooting processes
+        - Trained and mentored 5 new team members on company policies and CRM systems
+        - Identified recurring issues and collaborated with product team to implement solutions
+        - Achieved Employee of the Quarter recognition for exceptional customer feedback scores
+
+    - company: RetailMax Inc.
+      title: Customer Service Associate
+      dates: Jun 2019 - Dec 2021
+      location: Chicago, IL
+      bullets:
+        - Processed returns, exchanges, and complaints for 150+ daily transactions
+        - Achieved "Employee of the Month" 3 times for exceptional customer feedback
+        - Managed escalated complaints, turning 85% of negative experiences into positive outcomes
+        - Maintained product knowledge across 500+ SKUs to assist customers effectively
+
+  education:
+    - school: City Community College
+      degree: Associate Degree in Business Administration
+      year: "2019"
+
+  skills:
+    - Customer Relationship Management (CRM)
+    - Zendesk
+    - Salesforce
+    - Conflict Resolution
+    - Active Listening
+    - Problem Solving
+    - Microsoft Office Suite
+    - Bilingual (English/Spanish)
+    - Data Entry
+    - Time Management
+
+bulletBank:
+  - category: Customer Interaction
+    bullets:
+      - "Handled 100+ customer interactions daily across phone, email, and live chat channels"
+      - "Maintained 99% customer satisfaction score over 12-month period"
+      - "De-escalated 50+ difficult customer situations monthly, retaining 90% of at-risk accounts"
+      - "Resolved first-contact inquiries at 85% rate, exceeding team average by 15%"
+      - "Responded to customer emails within 2-hour SLA, maintaining 99% compliance rate"
+
+  - category: Process Improvement
+    bullets:
+      - "Created FAQ knowledge base reducing repeat inquiries by 30%"
+      - "Streamlined return process, cutting average resolution time from 15 to 8 minutes"
+      - "Developed troubleshooting guide adopted by 20-person customer service team"
+      - "Identified and reported product defect pattern, preventing 200+ future complaints"
+
+  - category: Team & Leadership
+    bullets:
+      - "Mentored team of 8 junior representatives, improving team CSAT by 15%"
+      - "Led weekly training sessions on new product features and policies"
+      - "Covered supervisor responsibilities during absences, managing team of 12"
+      - "Onboarded 15+ new hires, reducing training time by 20%"
+
+  - category: Technical Skills
+    bullets:
+      - "Proficient in Zendesk, Salesforce, and Freshdesk CRM platforms"
+      - "Managed customer database of 10,000+ accounts in Salesforce"
+      - "Created automated email templates reducing response time by 40%"
+
+relatedJobs:
+  - administrative-assistant
+  - receptionist
+  - retail-sales-associate

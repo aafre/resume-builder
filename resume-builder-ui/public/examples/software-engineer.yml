@@ -1,0 +1,112 @@
+# Software Engineer Resume Example
+# Category: Technology (Tier 5 - High CPC)
+
+meta:
+  slug: software-engineer
+  title: Software Engineer
+  metaTitle: "Free Software Engineer Resume Example & Template (2026)"
+  metaDescription: "Professional software engineer resume example with technical skills and project achievements. ATS-optimized format."
+  category: tech
+  priority: 0.8
+
+resume:
+  template: modern
+  contact:
+    name: Alex Chen
+    title: Software Engineer
+    email: alex.chen@email.com
+    phone: "(555) 234-5678"
+    location: San Francisco, CA
+    linkedin: linkedin.com/in/alexchen
+
+  summary: >
+    Full-stack software engineer with 5+ years of experience building scalable web applications.
+    Proficient in React, Node.js, and cloud services. Led development of microservices
+    architecture serving 1M+ daily users. Passionate about clean code, testing, and mentoring junior developers.
+
+  experience:
+    - company: TechStartup Inc.
+      title: Senior Software Engineer
+      dates: Mar 2022 - Present
+      location: San Francisco, CA
+      bullets:
+        - Led development of microservices architecture handling 1M+ daily API requests with 99.9% uptime
+        - Reduced page load time by 40% through code optimization and lazy loading implementation
+        - Mentored 4 junior developers through code reviews and pair programming sessions
+        - Designed and implemented CI/CD pipeline reducing deployment time from 2 hours to 15 minutes
+        - Collaborated with product team to define technical requirements for new features
+
+    - company: Enterprise Corp
+      title: Software Engineer
+      dates: Jun 2019 - Feb 2022
+      location: San Jose, CA
+      bullets:
+        - Built React components used across 5 product teams, reducing duplicate code by 30%
+        - Implemented automated testing suite with 85% code coverage using Jest and Cypress
+        - Optimized database queries reducing average response time from 500ms to 50ms
+        - Participated in on-call rotation, resolving production issues within SLA
+
+    - company: Digital Agency
+      title: Junior Software Engineer
+      dates: Aug 2017 - May 2019
+      location: Oakland, CA
+      bullets:
+        - Developed responsive web applications using React and Node.js
+        - Created RESTful APIs serving 100K+ daily requests
+        - Contributed to open-source projects with 500+ GitHub stars
+
+  education:
+    - school: University of California, Berkeley
+      degree: B.S. Computer Science
+      year: "2017"
+      gpa: "3.7"
+
+  skills:
+    - JavaScript/TypeScript
+    - React
+    - Node.js
+    - Python
+    - PostgreSQL
+    - MongoDB
+    - AWS (EC2, S3, Lambda)
+    - Docker
+    - Kubernetes
+    - Git
+    - CI/CD
+    - Agile/Scrum
+
+  certifications:
+    - AWS Certified Developer - Associate
+    - Google Cloud Professional Developer
+
+bulletBank:
+  - category: Technical Achievement
+    bullets:
+      - "Architected microservices system processing 10M+ transactions daily"
+      - "Reduced infrastructure costs by 35% through containerization and auto-scaling"
+      - "Improved API response time by 60% through caching and query optimization"
+      - "Migrated legacy monolith to microservices, reducing deployment failures by 80%"
+
+  - category: Leadership & Collaboration
+    bullets:
+      - "Led team of 6 engineers in delivering $2M feature on schedule"
+      - "Conducted 100+ code reviews, improving team code quality metrics by 25%"
+      - "Established engineering best practices adopted across 3 product teams"
+      - "Presented technical architecture to stakeholders and executive leadership"
+
+  - category: Frontend Development
+    bullets:
+      - "Built component library used by 50+ engineers across the organization"
+      - "Implemented accessibility features achieving WCAG 2.1 AA compliance"
+      - "Reduced bundle size by 45% through code splitting and tree shaking"
+
+  - category: Backend Development
+    bullets:
+      - "Designed RESTful API serving 5M+ requests per day with 99.99% availability"
+      - "Implemented real-time features using WebSockets for 100K concurrent users"
+      - "Built data pipeline processing 1TB+ daily using Apache Kafka"
+
+relatedJobs:
+  - front-end-developer
+  - data-analyst
+  - project-manager

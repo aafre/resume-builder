@@ -1,0 +1,105 @@
+# Administrative Assistant Resume Example
+# Category: Operations (Tier 1 - High Volume)
+
+meta:
+  slug: administrative-assistant
+  title: Administrative Assistant
+  metaTitle: "Free Administrative Assistant Resume Example & Template (2026)"
+  metaDescription: "Administrative assistant resume example with office skills and experience. Free template ready to customize."
+  category: operations
+  priority: 0.8
+
+resume:
+  template: classic
+  contact:
+    name: Emily Rodriguez
+    title: Administrative Assistant
+    email: emily.rodriguez@email.com
+    phone: "(555) 345-6789"
+    location: Austin, TX
+
+  summary: >
+    Detail-oriented administrative assistant with 6+ years of experience supporting executive
+    teams and managing office operations. Proficient in Microsoft Office Suite, calendar management,
+    and travel coordination. Known for excellent organizational skills and maintaining confidentiality.
+
+  experience:
+    - company: Global Finance Partners
+      title: Executive Administrative Assistant
+      dates: Apr 2021 - Present
+      location: Austin, TX
+      bullets:
+        - Manage calendars for 3 C-level executives, scheduling 50+ meetings weekly
+        - Coordinate domestic and international travel arrangements for 15-person leadership team
+        - Process expense reports totaling $200K+ monthly with 100% accuracy
+        - Prepare presentations and reports for board meetings and investor calls
+        - Maintain confidential personnel files and sensitive company documents
+
+    - company: Marketing Solutions LLC
+      title: Administrative Assistant
+      dates: Jun 2018 - Mar 2021
+      location: Austin, TX
+      bullets:
+        - Answered 100+ daily calls and directed inquiries to appropriate departments
+        - Organized company events for up to 200 attendees, managing $50K budgets
+        - Maintained office supply inventory, reducing costs by 15% through vendor negotiations
+        - Created filing system improving document retrieval time by 40%
+
+    - company: City Medical Center
+      title: Office Assistant
+      dates: Aug 2016 - May 2018
+      location: Austin, TX
+      bullets:
+        - Scheduled patient appointments and managed physician calendars
+        - Processed insurance verifications and maintained patient records
+        - Greeted and assisted 75+ patients daily in busy medical office
+
+  education:
+    - school: Austin Community College
+      degree: Associate Degree in Office Administration
+      year: "2016"
+
+  skills:
+    - Microsoft Office Suite (Excel, Word, PowerPoint, Outlook)
+    - Calendar Management
+    - Travel Coordination
+    - Expense Reporting
+    - Data Entry
+    - Customer Service
+    - Meeting Coordination
+    - Document Management
+    - QuickBooks
+    - SAP
+
+bulletBank:
+  - category: Executive Support
+    bullets:
+      - "Managed complex calendars for 5 executives across multiple time zones"
+      - "Coordinated board meetings including logistics for 20+ attendees"
+      - "Prepared executive correspondence and communications"
+      - "Served as gatekeeper, screening calls and prioritizing requests"
+
+  - category: Office Management
+    bullets:
+      - "Streamlined office procedures reducing administrative overhead by 25%"
+      - "Negotiated vendor contracts saving $15K annually on office supplies"
+      - "Implemented digital filing system eliminating 90% of paper records"
+      - "Managed office relocation for 50-person team with zero downtime"
+
+  - category: Communication & Coordination
+    bullets:
+      - "Drafted professional correspondence on behalf of senior leadership"
+      - "Organized quarterly all-hands meetings for 200+ employees"
+      - "Maintained relationships with key clients and external partners"
+      - "Coordinated cross-departmental projects involving 6 teams"
+
+  - category: Technical Skills
+    bullets:
+      - "Created advanced Excel reports with pivot tables and macros"
+      - "Designed PowerPoint presentations for investor meetings"
+      - "Managed CRM database with 5,000+ client records"
+
+relatedJobs:
+  - receptionist
+  - customer-service-representative
+  - project-manager

@@ -1206,4 +1206,115 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       },
     ],
   },
+
+  // /cv-templates (Main CV Templates page for UK/EU/AU/NZ market)
+  cvTemplates: {
+    seo: {
+      title: 'Free CV Templates 2026 | Professional UK & International Designs',
+      description:
+        'Browse free, professional CV templates for UK, Europe, and international applications. ATS-optimised, no sign-up required. Download PDF instantly.',
+      keywords: [
+        'cv templates',
+        'free cv templates',
+        'uk cv templates',
+        'professional cv template',
+        'cv templates download',
+        'curriculum vitae templates',
+        'cv templates 2026',
+        'ats cv templates',
+      ],
+      canonicalUrl: '/cv-templates',
+    },
+    hero: {
+      h1: 'Free CV Templates',
+      subtitle: 'Professional templates for UK, Europe, and international applications',
+      description:
+        'Choose from our collection of free CV templates. Every template follows UK and international CV conventions. ATS-optimised, no watermarks, no sign-up required.',
+      primaryCTA: {
+        text: 'Browse CV Templates',
+        href: '/templates',
+        variant: 'primary',
+      },
+    },
+    features: [
+      {
+        icon: '🇬🇧',
+        title: 'UK CV Format',
+        description:
+          'Templates designed for UK employer expectations. Personal profile section, 2-page format, and UK date conventions.',
+      },
+      {
+        icon: '✅',
+        title: 'ATS-Optimised',
+        description:
+          'Every template passes Applicant Tracking Systems used by UK and international employers including CIPHR, PageUp, and Workday.',
+      },
+      {
+        icon: '📄',
+        title: '2-Page Standard',
+        description:
+          'Proper UK CV length. Our templates help you present comprehensive experience within the standard 2-page format.',
+      },
+      {
+        icon: '🔒',
+        title: 'Privacy First',
+        description:
+          'Your CV stays in your browser. No data storage, no tracking. Download directly without creating an account.',
+      },
+      {
+        icon: '📥',
+        title: 'Instant PDF Download',
+        description:
+          'Download your CV as PDF immediately. No email required, no watermarks, completely free.',
+      },
+      {
+        icon: '💰',
+        title: '100% Free',
+        description:
+          'All templates, all features, forever free. No premium tier, no hidden costs. Build unlimited CVs.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What is the difference between a CV and a resume?',
+        answer:
+          'In the UK, Europe, Australia, and New Zealand, "CV" (curriculum vitae) is the standard term for a job application document. In the US and Canada, "resume" is more common. The document format is essentially the same—our templates work for both. Use whichever term is standard in your target country.',
+      },
+      {
+        question: 'How long should a UK CV be?',
+        answer:
+          'A standard UK CV should be 2 pages maximum. This differs from academic CVs (which can be longer) and US resumes (typically 1 page). Our templates are designed to help you present your experience comprehensively within the 2-page standard.',
+      },
+      {
+        question: 'Should I include a photo on my UK CV?',
+        answer:
+          'Generally, no. UK CVs typically do not include photos unless specifically requested by the employer. This differs from some European countries like Germany or France where photos are more common. Always follow the conventions of your target country.',
+      },
+      {
+        question: 'What personal information should I include on a UK CV?',
+        answer:
+          'Include: your name, phone number, email, and general location (city/region). Do not include: date of birth, marital status, national insurance number, or nationality. UK equality laws discourage this information to prevent discrimination.',
+      },
+      {
+        question: 'What is a personal profile section?',
+        answer:
+          'A personal profile (also called a personal statement) is a 3-4 line summary at the top of your CV. It briefly describes your experience, key skills, and career objectives. It is standard on UK CVs and replaces the "objective statement" used in US resumes.',
+      },
+      {
+        question: 'Are these CV templates free to download?',
+        answer:
+          'Yes, 100% free. All templates are available without payment, sign-up, or hidden fees. You can download unlimited CVs in PDF format at no cost. We sustain our service through ethical advertising, not by locking features behind paywalls.',
+      },
+      {
+        question: 'Will these templates work for international applications?',
+        answer:
+          'Yes. Our templates follow widely accepted professional standards suitable for UK, Europe, Australia, New Zealand, and most international applications. For US applications, we recommend our resume-focused templates which follow American conventions.',
+      },
+      {
+        question: 'What date format should I use on a UK CV?',
+        answer:
+          'Use DD/MM/YYYY or written format (e.g., "January 2024 - Present" or "Jan 2024 - Present"). Be consistent throughout your CV. Our editor helps you maintain consistent date formatting.',
+      },
+    ],
+  },
 };

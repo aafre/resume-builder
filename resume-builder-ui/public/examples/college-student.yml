@@ -1,0 +1,108 @@
+# College Student Resume Example
+# Category: Entry Level (Tier 4)
+
+meta:
+  slug: college-student
+  title: College Student
+  metaTitle: "Free College Student Resume Example & Template (2026)"
+  metaDescription: "College student resume example for internships and first jobs. Education-focused format."
+  category: entry-level
+  priority: 0.8
+
+resume:
+  template: minimal
+  contact:
+    name: Jordan Kim
+    title: Marketing Student
+    email: jordan.kim@university.edu
+    phone: "(555) 678-9012"
+    location: Boston, MA
+    linkedin: linkedin.com/in/jordankim
+
+  summary: >
+    Motivated marketing student at Boston University with strong academic performance
+    and hands-on experience in social media management and event planning. Seeking
+    summer internship to apply coursework in digital marketing and data analytics.
+    Dean's List student with leadership experience in campus organizations.
+
+  experience:
+    - company: University Marketing Club
+      title: Social Media Manager
+      dates: Sep 2023 - Present
+      location: Boston, MA
+      bullets:
+        - Manage Instagram and LinkedIn accounts with 2,500+ combined followers
+        - Increased engagement rate by 45% through content optimization and posting schedule
+        - Created graphics and video content using Canva and Adobe Premiere
+        - Coordinate with club leadership to promote 10+ events per semester
+
+    - company: Local Coffee Shop
+      title: Barista & Shift Lead
+      dates: May 2022 - Aug 2023
+      location: Boston, MA
+      bullets:
+        - Provided excellent customer service in fast-paced environment serving 200+ daily customers
+        - Trained 5 new team members on POS system, drink preparation, and customer service
+        - Managed cash register with $1,000+ daily transactions and maintained accurate till
+        - Recognized as Employee of the Month for consistent positive customer feedback
+
+    - company: Student Government Association
+      title: Event Coordinator (Volunteer)
+      dates: Sep 2022 - May 2023
+      location: Boston, MA
+      bullets:
+        - Planned and executed campus events with attendance of 100-500 students
+        - Managed event budgets totaling $15,000 across academic year
+        - Collaborated with vendors, campus facilities, and student organizations
+
+  education:
+    - school: Boston University
+      degree: B.S. Marketing, Minor in Data Analytics
+      year: Expected May 2025
+      gpa: "3.6"
+      honors: Dean's List (4 semesters)
+
+  skills:
+    - Social Media Marketing
+    - Content Creation
+    - Adobe Creative Suite
+    - Canva
+    - Microsoft Excel
+    - Google Analytics
+    - Data Analysis
+    - Event Planning
+    - Customer Service
+    - Team Collaboration
+
+bulletBank:
+  - category: Academic Projects
+    bullets:
+      - "Developed marketing plan for local nonprofit, resulting in 30% donation increase"
+      - "Conducted market research survey with 200+ respondents for capstone project"
+      - "Created data visualization dashboard analyzing e-commerce trends using Tableau"
+      - "Presented social media strategy to panel of marketing professionals"
+
+  - category: Leadership & Activities
+    bullets:
+      - "Elected Vice President of Marketing Club, growing membership from 30 to 75 students"
+      - "Organized career networking event connecting 50 students with industry professionals"
+      - "Volunteered 100+ hours with local food bank coordinating donation drives"
+      - "Member of university honors program maintaining 3.5+ GPA"
+
+  - category: Technical Skills
+    bullets:
+      - "Proficient in Excel including VLOOKUP, pivot tables, and data visualization"
+      - "Experience with Google Analytics tracking website traffic and user behavior"
+      - "Created social media content achieving 5,000+ impressions monthly"
+      - "Familiar with CRM platforms including HubSpot and Salesforce basics"
+
+  - category: Customer Service
+    bullets:
+      - "Resolved customer complaints with positive outcomes maintaining 95% satisfaction"
+      - "Upsold premium products increasing average transaction value by 15%"
+      - "Memorized 50+ menu items and customization options for efficient service"
+
+relatedJobs:
+  - internship
+  - marketing-coordinator
+  - entry-level-marketing

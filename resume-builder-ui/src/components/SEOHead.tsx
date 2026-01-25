@@ -1,5 +1,10 @@
 import { Helmet } from 'react-helmet-async';
 
+interface HreflangLink {
+  hreflang: string;
+  href: string;
+}
+
 interface SEOHeadProps {
   title?: string;
   description?: string;
@@ -11,6 +16,8 @@ interface SEOHeadProps {
   ogType?: string;
   twitterCard?: string;
   structuredData?: object;
+  hreflangLinks?: HreflangLink[];
+  ogLocale?: string;
 }
 
 export default function SEOHead({
@@ -23,7 +30,9 @@ export default function SEOHead({
   ogImage = "/android-chrome-512x512.png",
   ogType = "website",
   twitterCard = "summary_large_image",
-  structuredData
+  structuredData,
+  hreflangLinks,
+  ogLocale = "en_US",
 }: SEOHeadProps) {
   const finalOgTitle = ogTitle || title;
   const finalOgDescription = ogDescription || description;
@@ -42,7 +51,12 @@ export default function SEOHead({
       
       {/* Canonical URL */}
       {finalCanonicalUrl && <link rel="canonical" href={finalCanonicalUrl} />}
-      
+
+      {/* Hreflang Tags for International SEO */}
+      {hreflangLinks && hreflangLinks.map((link) => (
+        <link key={link.hreflang} rel="alternate" hrefLang={link.hreflang} href={link.href} />
+      ))}
+
       {/* Open Graph Meta Tags */}
       <meta property="og:title" content={finalOgTitle} />
       <meta property="og:description" content={finalOgDescription} />
@@ -50,7 +64,7 @@ export default function SEOHead({
       <meta property="og:url" content={finalCanonicalUrl} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:site_name" content="EasyFreeResume" />
-      <meta property="og:locale" content="en_US" />
+      <meta property="og:locale" content={ogLocale} />
       
       {/* Twitter Card Meta Tags */}
       <meta name="twitter:card" content={twitterCard} />
