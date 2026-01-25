@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.10.0] - 2026-01-25
+
+### 🚀 Features
+
+- **footer:** Add links
+
+### 🚜 Refactor
+
+- **footer:** Use semantic HTML and reduce code duplication
+
+### 📚 Documentation
+
+- **blog:** Refresh 21 blog posts for 2026
+
+### ⚙️ Miscellaneous Tasks
+
+- **sitemap:** Update lastmod dates for refreshed blog posts
+
 ## [3.9.0] - 2026-01-25
 
 ### 🚀 Features
