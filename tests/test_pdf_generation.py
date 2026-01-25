@@ -444,9 +444,9 @@ class TestGenerateEndpoint:
                 content_type='multipart/form-data'
             )
 
-        if response.status_code == 200:
-            assert response.content_type == 'application/pdf'
-            assert len(response.data) > 1000  # PDF should have reasonable size
+        assert response.status_code == 200
+        assert response.content_type == 'application/pdf'
+        assert len(response.data) > 1000  # PDF should have reasonable size
 
     def test_templates_endpoint_returns_json(self, flask_test_client):
         """Verify /api/templates returns JSON with templates list."""
