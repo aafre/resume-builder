@@ -193,7 +193,7 @@ function writeSitemap(): void {
 
 // Only run writeSitemap when script is executed directly (not imported)
 // This allows the generateSitemap function to be imported for testing
-const isDirectExecution = process.argv[1]?.includes('generateSitemap');
+const isDirectExecution = process.argv[1] && path.resolve(process.argv[1]) === __filename;
 if (isDirectExecution) {
   writeSitemap();
 }
