@@ -1,5 +1,5 @@
 /// <reference types="vitest" />
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import { STATIC_URLS } from '../data/sitemapUrls';
 import { JOBS_DATABASE } from '../data/jobKeywords';
 import { JOB_EXAMPLES_DATABASE } from '../data/jobExamples';
@@ -8,110 +8,18 @@ import {
   CV_REGIONS,
   RESUME_REGION,
   DEFAULT_REGION,
-  findHreflangPair,
 } from '../data/hreflangMappings';
-
-/**
- * Helper to escape XML characters (mirrors generateSitemap.ts)
- */
-function escapeXml(unsafe: string): string {
-  return unsafe.replace(/[<>&'"]/g, c => {
-    switch (c) {
-      case '<':
-        return '&lt;';
-      case '>':
-        return '&gt;';
-      case '&':
-        return '&amp;';
-      case "'":
-        return '&apos;';
-      case '"':
-        return '&quot;';
-      default:
-        return c;
-    }
-  });
-}
-
-/**
- * Simulates the sitemap generation logic for testing
- * This mirrors the logic in scripts/generateSitemap.ts
- */
-function generateSitemapXml(baseUrl: string): string {
-  const urls = new Map<string, { lastmod: string; changefreq: string; priority: number }>();
-
-  const addUrl = (
-    loc: string,
-    details: { lastmod: string; changefreq: string; priority: number }
-  ) => {
-    if (!urls.has(loc)) {
-      urls.set(loc, details);
-    }
-  };
-
-  // Add static URLs
-  STATIC_URLS.forEach(page => {
-    addUrl(page.loc, {
-      lastmod: page.lastmod,
-      changefreq: page.changefreq,
-      priority: page.priority,
-    });
-  });
-
-  // Add job keywords pages
-  JOBS_DATABASE.forEach(job => {
-    addUrl(`/resume-keywords/${job.slug}`, {
-      lastmod: job.lastmod || new Date().toISOString().split('T')[0],
-      changefreq: 'monthly',
-      priority: job.priority,
-    });
-  });
-
-  // Add job examples pages
-  JOB_EXAMPLES_DATABASE.forEach(job => {
-    addUrl(`/examples/${job.slug}`, {
-      lastmod: new Date().toISOString().split('T')[0],
-      changefreq: 'monthly',
-      priority: job.priority,
-    });
-  });
-
-  const hasHreflangPairs = HREFLANG_PAIRS.length > 0;
-
-  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
-  if (hasHreflangPairs) {
-    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n';
-    xml += '        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n';
-  } else {
-    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
-  }
-
-  urls.forEach((details, loc) => {
-    xml += '  <url>\n';
-    xml += `    <loc>${escapeXml(`${baseUrl}${loc}`)}</loc>\n`;
-
-    const hreflangPair = findHreflangPair(loc);
-    if (hreflangPair) {
-      CV_REGIONS.forEach(region => {
-        xml += `    <xhtml:link rel="alternate" hreflang="${region}" href="${escapeXml(`${baseUrl}${hreflangPair.cv}`)}"/>\n`;
-      });
-      xml += `    <xhtml:link rel="alternate" hreflang="${RESUME_REGION}" href="${escapeXml(`${baseUrl}${hreflangPair.resume}`)}"/>\n`;
-      xml += `    <xhtml:link rel="alternate" hreflang="${DEFAULT_REGION}" href="${escapeXml(`${baseUrl}${hreflangPair.resume}`)}"/>\n`;
-    }
-
-    xml += `    <lastmod>${details.lastmod}</lastmod>\n`;
-    xml += `    <changefreq>${details.changefreq}</changefreq>\n`;
-    xml += `    <priority>${details.priority}</priority>\n`;
-    xml += '  </url>\n';
-  });
-
-  xml += '</urlset>\n';
-  return xml;
-}
+import { generateSitemap, escapeXml } from '../../scripts/generateSitemap';
 
 describe('Sitemap XML Generation', () => {
   const baseUrl = 'https://easyfreeresume.com';
-  const xml = generateSitemapXml(baseUrl);
+  let xml: string;
+
+  beforeAll(() => {
+    // Set env var for consistent base URL in tests
+    process.env.VITE_APP_URL = baseUrl;
+    xml = generateSitemap();
+  });
 
   describe('XML Structure', () => {
     it('should start with XML declaration', () => {

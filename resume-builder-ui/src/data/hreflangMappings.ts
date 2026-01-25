@@ -48,6 +48,16 @@ export type CvRegion = (typeof CV_REGIONS)[number];
 export type HreflangRegion = CvRegion | typeof RESUME_REGION | typeof DEFAULT_REGION;
 
 /**
+ * Lookup map for O(1) hreflang pair lookups by path
+ * Built once at module load time
+ */
+const pathLookupMap = new Map<string, HreflangPair>();
+HREFLANG_PAIRS.forEach(pair => {
+  pathLookupMap.set(pair.resume, pair);
+  pathLookupMap.set(pair.cv, pair);
+});
+
+/**
  * Get all hreflang regions
  */
 export function getAllHreflangRegions(): HreflangRegion[] {
@@ -56,11 +66,12 @@ export function getAllHreflangRegions(): HreflangRegion[] {
 
 /**
  * Find the hreflang pair for a given URL path
+ * Uses Map for O(1) lookup performance
  * @param path - URL path to check
  * @returns HreflangPair if path is part of a pair, undefined otherwise
  */
 export function findHreflangPair(path: string): HreflangPair | undefined {
-  return HREFLANG_PAIRS.find(pair => pair.resume === path || pair.cv === path);
+  return pathLookupMap.get(path);
 }
 
 /**

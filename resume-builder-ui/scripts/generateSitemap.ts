@@ -45,23 +45,30 @@ const JOB_EXAMPLES = JOB_EXAMPLES_DATABASE.map(job => ({
  * @param unsafe - String that may contain XML special characters
  * @returns Escaped string safe for XML
  */
-function escapeXml(unsafe: string): string {
-  return unsafe.replace(/[<>&'"]/g, (c) => {
+export function escapeXml(unsafe: string): string {
+  return unsafe.replace(/[<>&'"]/g, c => {
     switch (c) {
-      case '<': return '&lt;';
-      case '>': return '&gt;';
-      case '&': return '&amp;';
-      case "'": return '&apos;';
-      case '"': return '&quot;';
-      default: return c;
+      case '<':
+        return '&lt;';
+      case '>':
+        return '&gt;';
+      case '&':
+        return '&amp;';
+      case "'":
+        return '&apos;';
+      case '"':
+        return '&quot;';
+      default:
+        return c;
     }
   });
 }
 
 /**
  * Generate sitemap XML
+ * Exported for testing
  */
-function generateSitemap(): string {
+export function generateSitemap(): string {
   // Load from environment variable, fallback to production URL
   // In local dev: VITE_APP_URL is loaded from .env via dotenv
   // In Docker/CI: VITE_APP_URL should be passed as build arg
@@ -184,5 +191,9 @@ function writeSitemap(): void {
   }
 }
 
-// Run generator
-writeSitemap();
+// Only run writeSitemap when script is executed directly (not imported)
+// This allows the generateSitemap function to be imported for testing
+const isDirectExecution = process.argv[1]?.includes('generateSitemap');
+if (isDirectExecution) {
+  writeSitemap();
+}
