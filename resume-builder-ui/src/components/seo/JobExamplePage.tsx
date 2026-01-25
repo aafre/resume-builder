@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import FAQSection from '../shared/FAQSection';
@@ -15,6 +15,10 @@ import BreadcrumbsWithSchema from '../shared/BreadcrumbsWithSchema';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { loadJobExample, convertToEditorFormat } from '../../utils/yamlLoader';
 import { getRelatedJobs, JOB_CATEGORIES } from '../../data/jobExamples';
+import { useAuth } from '../../contexts/AuthContext';
+import { useResumeCreate } from '../../hooks/useResumeCreate';
+import ConversionPromptModal from '../ConversionPromptModal';
+import AuthModal from '../AuthModal';
 import type { JobExampleData } from '../../data/jobExamples/types';
 import type { FAQConfig } from '../../types/seo';
 
@@ -53,10 +57,14 @@ const NotFound = ({ slug }: { slug: string }) => (
 
 export default function JobExamplePage() {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
   const [data, setData] = useState<JobExampleData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [showConversionPrompt, setShowConversionPrompt] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  const { isAnonymous, session } = useAuth();
+  const { createResume, creating } = useResumeCreate();
 
   // Load YAML data
   useEffect(() => {
@@ -119,16 +127,56 @@ export default function JobExamplePage() {
     ],
   });
 
+  // Create resume from job example data
+  const doCreateResume = async () => {
+    if (!data || !session) return;
+
+    const editorData = convertToEditorFormat(data.resume);
+
+    await createResume({
+      templateId: data.resume.template || 'modern',
+      title: `${data.meta.title} Resume`,
+      contactInfo: {
+        name: data.resume.contact.name,
+        email: data.resume.contact.email,
+        phone: data.resume.contact.phone,
+        location: data.resume.contact.location,
+        linkedin: data.resume.contact.linkedin,
+      },
+      sections: (editorData as { sections: any[] }).sections,
+    });
+  };
+
   // Handle "Edit This Template" click
   const handleEditTemplate = () => {
-    if (!data) return;
+    if (!data || !session) return;
 
-    // Convert YAML resume to editor format and store in sessionStorage
-    const editorData = convertToEditorFormat(data.resume);
-    sessionStorage.setItem('loadedResumeData', JSON.stringify(editorData));
+    // Show conversion prompt for anonymous users
+    if (isAnonymous) {
+      setShowConversionPrompt(true);
+      return;
+    }
 
-    // Navigate to editor
-    navigate('/editor');
+    // Authenticated users - create directly
+    doCreateResume();
+  };
+
+  // Handle "Sign In" from conversion prompt
+  const handleSignIn = () => {
+    setShowConversionPrompt(false);
+    setShowAuthModal(true);
+  };
+
+  // Handle "Continue as Guest" from conversion prompt
+  const handleContinueAsGuest = async () => {
+    setShowConversionPrompt(false);
+    await doCreateResume();
+  };
+
+  // Handle successful authentication
+  const handleAuthSuccess = () => {
+    setShowAuthModal(false);
+    // User can now click the button again (they're authenticated)
   };
 
   // Early returns AFTER all hooks
@@ -278,9 +326,17 @@ export default function JobExamplePage() {
 
               <button
                 onClick={handleEditTemplate}
-                className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors mb-4"
+                disabled={creating}
+                className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors mb-4 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                Edit This Template
+                {creating ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    Creating...
+                  </>
+                ) : (
+                  'Edit This Template'
+                )}
               </button>
 
               <Link
@@ -357,6 +413,23 @@ export default function JobExamplePage() {
         description="Use our free builder to create a professional resume in minutes. No sign-up required."
         primaryText="Browse All Templates"
         primaryHref="/templates"
+      />
+
+      {/* Conversion Prompt Modal (for anonymous users) */}
+      <ConversionPromptModal
+        isOpen={showConversionPrompt}
+        onClose={() => setShowConversionPrompt(false)}
+        onSignIn={handleSignIn}
+        onContinueAsGuest={handleContinueAsGuest}
+        actionLabel="use this template"
+        loading={creating}
+      />
+
+      {/* Auth Modal (triggered from conversion prompt) */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={handleAuthSuccess}
       />
     </SEOPageLayout>
   );

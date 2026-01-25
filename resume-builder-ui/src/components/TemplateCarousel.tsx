@@ -1,6 +1,5 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
 import { fetchTemplates } from "../services/templates";
 import { apiClient } from "../lib/api-client";
 import { ArrowRightIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
@@ -11,6 +10,7 @@ import TemplateStartModal from "./TemplateStartModal";
 import ResumeRecoveryModal from "./ResumeRecoveryModal";
 import AuthModal from "./AuthModal";
 import { InFeedAd } from "./ads";
+import { useResumeCreate } from "../hooks/useResumeCreate";
 
 // Lazy-loaded error components
 const NotFound = lazy(() => import("./NotFound"));
@@ -42,7 +42,6 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [creating, setCreating] = useState(false);
   const [showStartModal, setShowStartModal] = useState(false);
   const [selectedTemplateForModal, setSelectedTemplateForModal] = useState<string | null>(null);
   const [checkingExistingResume, setCheckingExistingResume] = useState(false);
@@ -52,17 +51,8 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
   const [existingResumeTitle, setExistingResumeTitle] = useState<string>('');
   const [processingRecoveryRedirect, setProcessingRecoveryRedirect] = useState(false);
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { session, isAnonymous, isAuthenticated, anonMigrationInProgress } = useAuth();
-
-  // Helper function to invalidate resume caches
-  const invalidateResumeCaches = async () => {
-    // Invalidate both caches to ensure fresh data when user returns to /my-resumes
-    await Promise.all([
-      queryClient.invalidateQueries({ queryKey: ['resumes'] }),
-      queryClient.invalidateQueries({ queryKey: ['resume-count'] })
-    ]);
-  };
+  const { createResume, creating } = useResumeCreate();
 
   // Fetch templates on component mount
   useEffect(() => {
@@ -134,76 +124,24 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
 
   // Handle "Empty Structure" selection
   const handleModalSelectEmpty = async () => {
-    if (!selectedTemplateForModal || !session) return;
+    if (!selectedTemplateForModal) return;
 
-    try {
-      setCreating(true);
-      setShowStartModal(false);
-
-      // Create resume with empty structure (template sections but no content)
-      try {
-        const data = await apiClient.post("/api/resumes/create", {
-          template_id: selectedTemplateForModal,
-          load_example: false  // Empty structure
-        }, { session });
-
-        // Navigate to editor
-        toast.success("Resume created! Starting editor...");
-        navigate(`/editor/${data.resume_id}`);
-      } catch (error: any) {
-        if (error.data?.error_code === "RESUME_LIMIT_REACHED") {
-          toast.error("Resume limit reached (5/5). Please delete a resume to create a new one.");
-          navigate("/my-resumes");
-          return;
-        }
-        throw error;
-      }
-
-      // Invalidate cache to ensure fresh data when user returns to /my-resumes
-      await invalidateResumeCaches();
-    } catch (err) {
-      console.error("Error creating resume:", err);
-      toast.error("Failed to create resume. Please try again.");
-    } finally {
-      setCreating(false);
-    }
+    setShowStartModal(false);
+    await createResume({
+      templateId: selectedTemplateForModal,
+      loadExample: false,
+    });
   };
 
   // Handle "Example Data" selection
   const handleModalSelectExample = async () => {
-    if (!selectedTemplateForModal || !session) return;
+    if (!selectedTemplateForModal) return;
 
-    try {
-      setCreating(true);
-      setShowStartModal(false);
-
-      // Create resume with example data from template
-      try {
-        const data = await apiClient.post("/api/resumes/create", {
-          template_id: selectedTemplateForModal,
-          load_example: true  // Load example data
-        }, { session });
-
-        // Navigate to editor
-        toast.success("Resume created! Starting editor...");
-        navigate(`/editor/${data.resume_id}`);
-      } catch (error: any) {
-        if (error.data?.error_code === "RESUME_LIMIT_REACHED") {
-          toast.error("Resume limit reached (5/5). Please delete a resume to create a new one.");
-          navigate("/my-resumes");
-          return;
-        }
-        throw error;
-      }
-
-      // Invalidate cache to ensure fresh data when user returns to /my-resumes
-      await invalidateResumeCaches();
-    } catch (err) {
-      console.error("Error creating resume:", err);
-      toast.error("Failed to create resume. Please try again.");
-    } finally {
-      setCreating(false);
-    }
+    setShowStartModal(false);
+    await createResume({
+      templateId: selectedTemplateForModal,
+      loadExample: true,
+    });
   };
 
   // Handle "Continue as Guest" / "Continue Editing" from recovery modal
@@ -244,90 +182,59 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
 
   // Handle AI resume import from TemplateStartModal
   const handleModalSelectImport = async (yamlString: string, confidence: number, warnings: string[]) => {
-    if (!session) {
-      toast.error("Please sign in to import a resume");
-      return;
+    setShowStartModal(false);
+
+    // Parse YAML to extract contact_info and sections
+    const parsedYaml = yaml.load(yamlString) as {
+      contact_info: any;
+      sections: any[];
+      __icons__?: Record<string, string>;
+    };
+
+    // Prepare icons array for upload (if present in YAML)
+    const iconsArray: { filename: string; data: string }[] = [];
+    if (parsedYaml.__icons__) {
+      for (const [filename, data] of Object.entries(parsedYaml.__icons__)) {
+        iconsArray.push({ filename, data });
+      }
     }
 
-    try {
-      setCreating(true);
-      setShowStartModal(false);
-
-      // Parse YAML to extract contact_info and sections
-      const parsedYaml = yaml.load(yamlString) as {
-        contact_info: any;
-        sections: any[];
-        __icons__?: Record<string, string>;
-      };
-
-      // Prepare icons array for upload (if present in YAML)
-      const iconsArray = [];
-      if (parsedYaml.__icons__) {
-        for (const [filename, data] of Object.entries(parsedYaml.__icons__)) {
-          iconsArray.push({ filename, data });
+    // Generate smart title (same logic as useCloudSave)
+    const generateTitle = (): string => {
+      // Priority 1: First job title from Experience section
+      const experienceSection = parsedYaml.sections.find(
+        s => s.type === 'experience'
+      );
+      if (experienceSection && Array.isArray(experienceSection.content) &&
+          experienceSection.content.length > 0) {
+        const firstJob = experienceSection.content[0];
+        if (typeof firstJob === 'object' && firstJob !== null && 'title' in firstJob && firstJob.title) {
+          return firstJob.title; // e.g., "Senior Product Manager"
         }
       }
 
-      // Generate smart title (same logic as useCloudSave)
-      const generateTitle = (): string => {
-        // Priority 1: First job title from Experience section
-        const experienceSection = parsedYaml.sections.find(
-          s => s.type === 'experience'
-        );
-        if (experienceSection && Array.isArray(experienceSection.content) &&
-            experienceSection.content.length > 0) {
-          const firstJob = experienceSection.content[0];
-          if (typeof firstJob === 'object' && firstJob !== null && 'title' in firstJob && firstJob.title) {
-            return firstJob.title; // e.g., "Senior Product Manager"
-          }
-        }
-
-        // Priority 2: Name + Template
-        if (parsedYaml.contact_info?.name) {
-          const templateName = (selectedTemplateForModal || 'modern')
-            .split('-')
-            .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-            .join(' ');
-          return `${parsedYaml.contact_info.name} - ${templateName}`;
-        }
-
-        // Priority 3: Fallback
-        return 'Imported Resume';
-      };
-
-      // Create resume in database immediately
-      try {
-        const data = await apiClient.post("/api/resumes", {
-          id: null, // Create new resume
-          title: generateTitle(),
-          template_id: selectedTemplateForModal || 'modern',
-          contact_info: parsedYaml.contact_info,
-          sections: parsedYaml.sections,
-          icons: iconsArray,
-          ai_import_warnings: warnings,
-          ai_import_confidence: confidence
-        }, { session });
-
-        // Navigate to editor with resume_id (standard flow)
-        toast.success("Resume imported successfully! Loading editor...");
-        navigate(`/editor/${data.resume_id}`);
-      } catch (error: any) {
-        if (error.data?.error_code === "RESUME_LIMIT_REACHED") {
-          toast.error("Resume limit reached (5/5). Please delete a resume to create a new one.");
-          navigate("/my-resumes");
-          return;
-        }
-        throw error;
+      // Priority 2: Name + Template
+      if (parsedYaml.contact_info?.name) {
+        const templateName = (selectedTemplateForModal || 'modern')
+          .split('-')
+          .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+          .join(' ');
+        return `${parsedYaml.contact_info.name} - ${templateName}`;
       }
 
-      // Invalidate cache to ensure fresh data when user returns to /my-resumes
-      await invalidateResumeCaches();
-    } catch (err) {
-      console.error("Error importing resume:", err);
-      toast.error("Failed to import resume. Please try again.");
-    } finally {
-      setCreating(false);
-    }
+      // Priority 3: Fallback
+      return 'Imported Resume';
+    };
+
+    await createResume({
+      templateId: selectedTemplateForModal || 'modern',
+      title: generateTitle(),
+      contactInfo: parsedYaml.contact_info,
+      sections: parsedYaml.sections,
+      icons: iconsArray,
+      aiImportConfidence: confidence,
+      aiImportWarnings: warnings,
+    });
   };
 
   // Check for recovery intent early on mount to prevent template page flash
