@@ -28,11 +28,6 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       subtitle: 'Professional, ATS-friendly designs that get you interviews',
       description:
         'Choose from our collection of free resume templates. Every template is optimized for Applicant Tracking Systems and designed by professionals. No watermarks, no sign-up required.',
-      primaryCTA: {
-        text: 'Start Building',
-        href: '/templates',
-        variant: 'primary',
-      },
     },
     features: [
       {
