@@ -17,8 +17,50 @@ export default function Footer() {
     <footer className="bg-transparent border-t border-gray-200/60 mt-16">
       <div className="container mx-auto px-4 py-12">
         {/* Main Footer Content - Responsive Grid Layout */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8">
-          {/* Column 1 - Resume Templates */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 mb-8">
+          {/* Column 1 - Resume Builder */}
+          <div>
+            <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">Resume Builder</h3>
+            <div className="flex flex-col gap-2">
+              <Link
+                to="/free-resume-builder-no-sign-up"
+                onClick={scrollToTop('/free-resume-builder-no-sign-up')}
+                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
+              >
+                Free Resume Builder
+              </Link>
+              <Link
+                to="/actual-free-resume-builder"
+                onClick={scrollToTop('/actual-free-resume-builder')}
+                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
+              >
+                100% Free Builder
+              </Link>
+              <Link
+                to="/best-free-resume-builder-reddit"
+                onClick={scrollToTop('/best-free-resume-builder-reddit')}
+                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
+              >
+                Best Free Builder
+              </Link>
+              <Link
+                to="/free-cv-builder-no-sign-up"
+                onClick={scrollToTop('/free-cv-builder-no-sign-up')}
+                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
+              >
+                Free CV Builder (UK)
+              </Link>
+              <Link
+                to="/ats-resume-templates"
+                onClick={scrollToTop('/ats-resume-templates')}
+                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
+              >
+                ATS Resume Templates
+              </Link>
+            </div>
+          </div>
+
+          {/* Column 2 - Resume Templates */}
           <div>
             <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">Resume Templates</h3>
             <div className="flex flex-col gap-2">
@@ -60,7 +102,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2 - Resume Examples */}
+          {/* Column 3 - Resume Examples */}
           <div>
             <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">Resume Examples</h3>
             <div className="flex flex-col gap-2">
@@ -86,8 +128,8 @@ export default function Footer() {
                 Project Manager
               </Link>
               <Link
-                to="/examples/customer-service"
-                onClick={scrollToTop('/examples/customer-service')}
+                to="/examples/customer-service-representative"
+                onClick={scrollToTop('/examples/customer-service-representative')}
                 className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
               >
                 Customer Service
@@ -102,7 +144,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 3 - Resources */}
+          {/* Column 4 - Resources */}
           <div>
             <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">Resources</h3>
             <div className="flex flex-col gap-2">
@@ -135,16 +177,16 @@ export default function Footer() {
                 ATS Optimization Guide
               </Link>
               <Link
-                to="/ats-resume-templates"
-                onClick={scrollToTop('/ats-resume-templates')}
+                to="/blog/how-to-write-a-resume-guide"
+                onClick={scrollToTop('/blog/how-to-write-a-resume-guide')}
                 className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
               >
-                ATS Resume Templates
+                How to Write a Resume
               </Link>
             </div>
           </div>
 
-          {/* Column 4 - Company */}
+          {/* Column 5 - Company */}
           <div>
             <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">Company</h3>
             <div className="flex flex-col gap-2">
