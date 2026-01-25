@@ -1,0 +1,112 @@
+# Entry Level Marketing Resume Example
+# Category: Entry Level (Tier 4)
+
+meta:
+  slug: entry-level-marketing
+  title: Entry Level Marketing
+  metaTitle: "Free Entry Level Marketing Resume Example & Template (2026)"
+  metaDescription: "Entry level marketing resume example for recent graduates starting their career."
+  category: entry-level
+  priority: 0.7
+
+resume:
+  template: minimal
+  contact:
+    name: Emily Chen
+    title: Marketing Graduate
+    email: emily.chen@email.com
+    phone: "(555) 456-7890"
+    location: Chicago, IL
+    linkedin: linkedin.com/in/emilychen
+
+  summary: >
+    Recent marketing graduate with hands-on experience in digital marketing, content creation,
+    and social media management through internships and campus leadership. Strong analytical
+    skills with proficiency in Google Analytics and marketing tools. Creative problem solver
+    eager to launch marketing career at a growth-oriented company.
+
+  experience:
+    - company: Consumer Goods Company
+      title: Marketing Intern
+      dates: May 2024 - Aug 2024
+      location: Chicago, IL
+      bullets:
+        - Assisted marketing team with campaign execution across email, social, and digital channels
+        - Created social media content achieving 15% higher engagement than previous quarter
+        - Analyzed campaign performance data and prepared weekly reports for marketing manager
+        - Coordinated with design team to produce marketing collateral for product launches
+        - Managed influencer outreach resulting in 5 successful partnerships
+
+    - company: University Marketing Department
+      title: Student Marketing Assistant
+      dates: Sep 2022 - May 2024
+      location: Chicago, IL
+      bullets:
+        - Managed university social media accounts with 25K+ combined followers
+        - Created content for student recruitment campaigns and campus events
+        - Wrote blog posts and email newsletters for prospective students
+        - Tracked engagement metrics and provided recommendations for improvement
+
+    - company: Campus Newspaper
+      title: Advertising Manager
+      dates: Jan 2023 - May 2024
+      location: Chicago, IL
+      bullets:
+        - Sold advertising space to local businesses generating $15K annual revenue
+        - Designed ad layouts and worked with clients on messaging and creative
+        - Built relationships with 30+ local business advertisers
+
+  education:
+    - school: Northwestern University
+      degree: B.A. Marketing, Minor in Communications
+      year: "2024"
+      gpa: "3.6"
+      honors: Marketing Honors Society, Dean's List
+
+  skills:
+    - Digital Marketing
+    - Social Media Marketing
+    - Content Creation
+    - Google Analytics
+    - Email Marketing
+    - Canva
+    - Microsoft Office
+    - Copywriting
+    - Market Research
+    - Campaign Analysis
+    - HubSpot
+    - Adobe Creative Suite
+
+bulletBank:
+  - category: Digital Marketing
+    bullets:
+      - "Managed social media accounts growing followers by 30% over academic year"
+      - "Created email campaigns with 35% open rate exceeding industry average"
+      - "Ran Facebook and Instagram ads achieving $2 cost per lead"
+      - "Implemented SEO improvements increasing organic traffic by 25%"
+
+  - category: Content Creation
+    bullets:
+      - "Produced 50+ social media posts monthly across multiple platforms"
+      - "Wrote blog content driving 5K monthly page views"
+      - "Created video content for TikTok and Instagram Reels"
+      - "Designed marketing materials using Canva and Adobe Creative Suite"
+
+  - category: Academic Projects
+    bullets:
+      - "Developed integrated marketing campaign for local nonprofit as capstone project"
+      - "Conducted market research survey with 500+ respondents analyzing consumer behavior"
+      - "Created brand strategy presentation for Fortune 500 company competition"
+      - "Led team project analyzing social media marketing effectiveness"
+
+  - category: Analytics
+    bullets:
+      - "Analyzed campaign metrics using Google Analytics and social platform insights"
+      - "Created data visualizations presenting marketing performance to stakeholders"
+      - "Identified audience segments driving highest conversion rates"
+      - "Tracked KPIs and reported on marketing ROI weekly"
+
+relatedJobs:
+  - college-student
+  - marketing-coordinator
+  - social-media-manager

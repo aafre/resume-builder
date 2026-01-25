@@ -1,0 +1,117 @@
+# Accountant Resume Example
+# Category: Corporate (Tier 2)
+
+meta:
+  slug: accountant
+  title: Accountant
+  metaTitle: "Free Accountant Resume Example & Template (2026)"
+  metaDescription: "Accountant resume example with financial reporting and accounting software expertise."
+  category: corporate
+  priority: 0.7
+
+resume:
+  template: professional
+  contact:
+    name: David Park
+    title: Staff Accountant
+    email: david.park@email.com
+    phone: "(555) 890-1234"
+    location: Atlanta, GA
+    linkedin: linkedin.com/in/davidpark
+
+  summary: >
+    CPA-licensed accountant with 5+ years of experience in corporate accounting and
+    financial reporting. Expertise in month-end close, account reconciliation, and GAAP
+    compliance. Skilled in ERP systems and advanced Excel. Detail-oriented professional
+    committed to accuracy and continuous process improvement.
+
+  experience:
+    - company: Southeast Manufacturing Corp
+      title: Staff Accountant
+      dates: Mar 2021 - Present
+      location: Atlanta, GA
+      bullets:
+        - Manage month-end close process for $50M revenue business completing within 5 business days
+        - Prepare journal entries, account reconciliations, and variance analysis
+        - Assist with annual audit providing documentation and responding to auditor inquiries
+        - Maintain fixed asset register and calculate monthly depreciation schedules
+        - Implemented process improvements reducing reconciliation time by 30%
+
+    - company: Regional CPA Firm
+      title: Staff Accountant
+      dates: Jun 2019 - Feb 2021
+      location: Atlanta, GA
+      bullets:
+        - Prepared financial statements and tax returns for 40+ small business clients
+        - Conducted bookkeeping services including accounts payable and receivable
+        - Performed bank reconciliations and payroll processing
+        - Assisted senior accountants with audit engagements and tax planning
+
+    - company: Tech Startup Inc
+      title: Junior Accountant
+      dates: Aug 2017 - May 2019
+      location: Athens, GA
+      bullets:
+        - Processed invoices and expense reports ensuring proper coding and approvals
+        - Reconciled credit card statements and petty cash accounts
+        - Assisted with accounts receivable collections improving DSO by 10 days
+
+  education:
+    - school: University of Georgia
+      degree: B.S. Accounting
+      year: "2017"
+    - school: Georgia State University
+      degree: Master of Accountancy
+      year: "2019"
+
+  skills:
+    - Financial Reporting
+    - GAAP Compliance
+    - Month-End Close
+    - Account Reconciliation
+    - Journal Entries
+    - Fixed Assets
+    - QuickBooks
+    - SAP
+    - NetSuite
+    - Advanced Excel
+    - Tax Preparation
+    - Audit Support
+
+  certifications:
+    - CPA (Certified Public Accountant)
+    - QuickBooks ProAdvisor
+
+bulletBank:
+  - category: Financial Reporting
+    bullets:
+      - "Prepared monthly, quarterly, and annual financial statements under GAAP"
+      - "Reduced month-end close timeline from 10 days to 5 days through automation"
+      - "Created management reports providing KPI analysis to executive team"
+      - "Maintained 100% accuracy in financial reporting with zero audit adjustments"
+
+  - category: Account Reconciliation
+    bullets:
+      - "Reconciled 50+ general ledger accounts monthly with full documentation"
+      - "Identified and resolved $100K discrepancy in intercompany accounts"
+      - "Implemented reconciliation templates reducing preparation time by 40%"
+      - "Cleared backlog of 6 months of unreconciled accounts within 2 weeks"
+
+  - category: Process Improvement
+    bullets:
+      - "Automated invoice processing reducing manual data entry by 60%"
+      - "Developed Excel macros saving 10 hours per month on routine tasks"
+      - "Streamlined expense reporting process improving employee compliance"
+      - "Created accounting procedures manual for department standardization"
+
+  - category: Compliance & Audit
+    bullets:
+      - "Supported external audit with zero material findings for 3 consecutive years"
+      - "Ensured SOX compliance for revenue recognition and fixed asset controls"
+      - "Maintained proper segregation of duties and internal control documentation"
+      - "Prepared tax workpapers and supporting schedules for annual filings"
+
+relatedJobs:
+  - business-analyst
+  - project-manager
+  - administrative-assistant

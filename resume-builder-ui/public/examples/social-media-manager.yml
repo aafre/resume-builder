@@ -1,0 +1,110 @@
+# Social Media Manager Resume Example
+# Category: Creative (Tier 6)
+
+meta:
+  slug: social-media-manager
+  title: Social Media Manager
+  metaTitle: "Free Social Media Manager Resume Example & Template (2026)"
+  metaDescription: "Social media manager resume example with platform expertise and engagement metrics."
+  category: creative
+  priority: 0.7
+
+resume:
+  template: modern
+  contact:
+    name: Rachel Green
+    title: Social Media Manager
+    email: rachel.green@email.com
+    phone: "(555) 234-5678"
+    location: New York, NY
+    linkedin: linkedin.com/in/rachelgreen
+
+  summary: >
+    Creative social media manager with 5+ years of experience building engaged communities
+    and driving brand awareness. Expertise across Instagram, TikTok, LinkedIn, and Twitter/X.
+    Proven track record of growing followers, increasing engagement, and generating leads
+    through strategic content. Data-driven approach to optimizing social performance.
+
+  experience:
+    - company: Fashion Forward Brand
+      title: Social Media Manager
+      dates: Mar 2022 - Present
+      location: New York, NY
+      bullets:
+        - Manage social media presence across 5 platforms reaching 500K+ combined followers
+        - Develop and execute content strategy aligned with marketing campaigns and brand voice
+        - Grew Instagram following from 50K to 200K through organic content and influencer partnerships
+        - Create engaging short-form video content for TikTok and Reels averaging 100K+ views
+        - Manage $50K monthly paid social budget achieving 4x ROAS
+
+    - company: Digital Marketing Agency
+      title: Social Media Specialist
+      dates: Jun 2019 - Feb 2022
+      location: Brooklyn, NY
+      bullets:
+        - Managed social accounts for 8 B2B and B2C clients across various industries
+        - Created content calendars and scheduled posts using Sprout Social and Later
+        - Increased client engagement rates by average of 150% within 6 months
+        - Wrote compelling copy for posts, ads, and promotional campaigns
+
+    - company: Local Boutique
+      title: Social Media Coordinator (Part-Time)
+      dates: Sep 2017 - May 2019
+      location: New York, NY
+      bullets:
+        - Launched and grew Instagram account from 0 to 15K followers
+        - Photographed products and created lifestyle content for posts and stories
+        - Engaged with community through comments, DMs, and user-generated content
+
+  education:
+    - school: New York University
+      degree: B.A. Communications, Minor in Marketing
+      year: "2019"
+
+  skills:
+    - Content Strategy
+    - Instagram
+    - TikTok
+    - LinkedIn
+    - Twitter/X
+    - Paid Social Advertising
+    - Influencer Marketing
+    - Community Management
+    - Copywriting
+    - Analytics
+    - Sprout Social
+    - Adobe Creative Suite
+
+bulletBank:
+  - category: Growth & Engagement
+    bullets:
+      - "Grew TikTok following from 0 to 100K in 8 months through viral content strategy"
+      - "Achieved 8% average engagement rate on Instagram (industry average: 1.2%)"
+      - "Increased LinkedIn followers by 300% through thought leadership content"
+      - "Generated 10K+ email signups through social media lead campaigns"
+
+  - category: Content Creation
+    bullets:
+      - "Produced 500+ pieces of original content including photos, videos, and graphics"
+      - "Created viral TikTok video reaching 2M+ views and 100K+ shares"
+      - "Developed content pillars and templates streamlining content production"
+      - "Managed user-generated content campaigns increasing brand authenticity"
+
+  - category: Paid Social
+    bullets:
+      - "Managed $500K annual paid social budget across Meta, TikTok, and LinkedIn"
+      - "Achieved cost per acquisition 40% below industry benchmark"
+      - "Ran A/B tests on creative and targeting improving campaign performance by 60%"
+      - "Launched retargeting campaigns recovering 25% of abandoned cart users"
+
+  - category: Community Management
+    bullets:
+      - "Responded to 200+ comments and DMs daily maintaining 2-hour response time"
+      - "Built community of brand advocates driving 30% of social referral traffic"
+      - "Managed influencer relationships coordinating 50+ partnerships annually"
+      - "Handled social media crisis communication protecting brand reputation"
+
+relatedJobs:
+  - marketing-coordinator
+  - graphic-designer
+  - front-end-developer

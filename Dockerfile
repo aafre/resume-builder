@@ -63,6 +63,7 @@ COPY --chown=appuser:appuser app.py resume_generator*.py ./
 COPY --chown=appuser:appuser templates/ ./templates/
 COPY --chown=appuser:appuser samples/ ./samples/
 COPY --chown=appuser:appuser icons/ ./icons/
+COPY --chown=appuser:appuser docs/templates/ ./docs/templates/
 
 # Copy built React assets from build stage
 COPY --from=react-build --chown=appuser:appuser /app/react/dist/ /app/static/

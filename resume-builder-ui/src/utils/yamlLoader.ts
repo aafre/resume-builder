@@ -144,6 +144,21 @@ export function convertToEditorFormat(yamlResume: JobExampleData['resume']): obj
             content: yamlResume.certifications,
           }]
         : []),
+      ...(yamlResume.projects && yamlResume.projects.length > 0
+        ? [{
+            id: 'projects',
+            type: 'experience',
+            name: 'Projects',
+            content: yamlResume.projects.map((proj, index) => ({
+              id: `proj-${index}`,
+              company: '',
+              title: proj.name,
+              dates: '',
+              location: '',
+              description: [proj.description],
+            })),
+          }]
+        : []),
     ],
   };
 }

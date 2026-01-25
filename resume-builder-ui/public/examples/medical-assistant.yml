@@ -1,0 +1,117 @@
+# Medical Assistant Resume Example
+# Category: Healthcare (Tier 3)
+
+meta:
+  slug: medical-assistant
+  title: Medical Assistant
+  metaTitle: "Free Medical Assistant Resume Example & Template (2026)"
+  metaDescription: "Medical assistant resume example with clinical and administrative healthcare skills."
+  category: healthcare
+  priority: 0.7
+
+resume:
+  template: professional
+  contact:
+    name: Maria Santos
+    title: Certified Medical Assistant
+    email: maria.santos@email.com
+    phone: "(555) 345-6789"
+    location: Phoenix, AZ
+    linkedin: ""
+
+  summary: >
+    CMA-certified medical assistant with 5+ years of experience in fast-paced clinical
+    settings. Skilled in patient intake, vital signs, phlebotomy, and EHR management.
+    Bilingual in English and Spanish, providing excellent patient care to diverse
+    populations. Known for efficiency, compassion, and attention to detail.
+
+  experience:
+    - company: Southwest Medical Group
+      title: Medical Assistant
+      dates: Mar 2021 - Present
+      location: Phoenix, AZ
+      bullets:
+        - Assist 3 physicians with patient care for 40+ patients daily in busy family practice
+        - Perform clinical duties including vital signs, injections, EKGs, and phlebotomy
+        - Manage patient intake, medical histories, and documentation in Epic EHR system
+        - Coordinate referrals, prior authorizations, and prescription refills
+        - Provide bilingual support for Spanish-speaking patients improving care access
+
+    - company: Valley Urgent Care
+      title: Medical Assistant
+      dates: Jun 2019 - Feb 2021
+      location: Phoenix, AZ
+      bullets:
+        - Provided rapid patient assessment and triage in high-volume urgent care setting
+        - Performed point-of-care testing including strep, flu, and COVID-19 tests
+        - Assisted with minor procedures including wound care, splinting, and suturing
+        - Maintained clean and stocked exam rooms ensuring readiness for patient flow
+
+    - company: Desert Family Medicine
+      title: Medical Assistant (Entry Level)
+      dates: Jan 2018 - May 2019
+      location: Tempe, AZ
+      bullets:
+        - Recorded patient vital signs and prepared examination rooms
+        - Scheduled appointments and managed front desk operations during peak hours
+        - Filed medical records and ensured HIPAA compliance in documentation
+
+  education:
+    - school: Phoenix College
+      degree: Certificate, Medical Assisting
+      year: "2017"
+    - school: Maricopa Community College
+      degree: Associate of Applied Science, Healthcare Administration
+      year: "2020"
+
+  skills:
+    - Patient Care
+    - Vital Signs
+    - Phlebotomy
+    - Injections
+    - EKG/ECG
+    - Epic EHR
+    - Medical Terminology
+    - HIPAA Compliance
+    - Bilingual (English/Spanish)
+    - Patient Education
+    - Appointment Scheduling
+    - Insurance Verification
+
+  certifications:
+    - Certified Medical Assistant (CMA-AAMA)
+    - BLS/CPR Certified
+    - Phlebotomy Technician
+
+bulletBank:
+  - category: Clinical Skills
+    bullets:
+      - "Performed 50+ phlebotomy draws weekly with 98% first-stick success rate"
+      - "Administered vaccinations and injections to patients of all ages"
+      - "Conducted EKGs, spirometry, and hearing/vision screenings"
+      - "Assisted with minor surgical procedures maintaining sterile technique"
+
+  - category: Patient Care
+    bullets:
+      - "Provided compassionate care to anxious patients reducing appointment no-shows by 15%"
+      - "Educated patients on medications, procedures, and follow-up care instructions"
+      - "Managed chronic disease monitoring for diabetic and hypertensive patients"
+      - "Received consistent positive feedback on patient satisfaction surveys"
+
+  - category: Administrative
+    bullets:
+      - "Processed 100+ insurance authorizations monthly with 95% approval rate"
+      - "Maintained accurate documentation in EHR reducing billing errors by 20%"
+      - "Coordinated specialist referrals and tracked patient follow-up compliance"
+      - "Managed medical supply inventory preventing stockouts and reducing waste"
+
+  - category: Efficiency
+    bullets:
+      - "Streamlined patient rooming process reducing wait times by 10 minutes"
+      - "Cross-trained to cover front desk, back office, and clinical duties as needed"
+      - "Implemented new vaccine tracking system improving immunization compliance"
+
+relatedJobs:
+  - registered-nurse
+  - dental-assistant
+  - receptionist

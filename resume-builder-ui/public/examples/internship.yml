@@ -1,0 +1,117 @@
+# Internship Resume Example
+# Category: Entry Level (Tier 4)
+
+meta:
+  slug: internship
+  title: Internship Resume
+  metaTitle: "Free Internship Resume Example & Template (2026)"
+  metaDescription: "Internship resume example highlighting academic projects and relevant coursework."
+  category: entry-level
+  priority: 0.7
+
+resume:
+  template: minimal
+  contact:
+    name: Chris Anderson
+    title: Computer Science Student
+    email: chris.anderson@university.edu
+    phone: "(555) 345-6789"
+    location: Austin, TX
+    linkedin: linkedin.com/in/chrisanderson
+    github: github.com/canderson
+
+  summary: >
+    Computer science junior seeking summer software engineering internship. Strong foundation
+    in data structures, algorithms, and web development through coursework and personal
+    projects. Experience with Python, Java, and JavaScript. Eager to apply classroom
+    knowledge to real-world challenges in a collaborative team environment.
+
+  experience:
+    - company: University IT Help Desk
+      title: Technical Support Assistant
+      dates: Sep 2023 - Present
+      location: Austin, TX
+      bullets:
+        - Provide technical support to 500+ students and faculty for hardware and software issues
+        - Troubleshoot network connectivity, printer setup, and software installation problems
+        - Document solutions in knowledge base reducing repeat tickets by 25%
+        - Train new help desk staff on ticketing system and common troubleshooting procedures
+
+    - company: CS Department
+      title: Teaching Assistant - Intro to Programming
+      dates: Jan 2024 - Present
+      location: Austin, TX
+      bullets:
+        - Lead weekly lab sessions helping 30 students with Python programming assignments
+        - Hold office hours providing one-on-one assistance with debugging and concepts
+        - Grade assignments and provide constructive feedback on code quality
+
+    - company: Local Nonprofit
+      title: Web Development Volunteer
+      dates: May 2023 - Aug 2023
+      location: Austin, TX
+      bullets:
+        - Redesigned organization website using WordPress improving mobile responsiveness
+        - Created donation page increasing online contributions by 40%
+        - Trained staff on content management system for ongoing updates
+
+  education:
+    - school: University of Texas at Austin
+      degree: B.S. Computer Science
+      year: Expected May 2026
+      gpa: "3.7"
+      honors: Dean's List, CS Honors Program
+
+  skills:
+    - Python
+    - Java
+    - JavaScript
+    - React
+    - SQL
+    - Git
+    - Data Structures
+    - Algorithms
+    - HTML/CSS
+    - Linux
+    - Agile
+    - Problem Solving
+
+  projects:
+    - name: Task Management App
+      description: Built full-stack web app using React and Node.js with MongoDB database
+    - name: Algorithm Visualizer
+      description: Created interactive tool demonstrating sorting algorithms with JavaScript
+
+bulletBank:
+  - category: Academic Projects
+    bullets:
+      - "Built full-stack e-commerce site with user authentication and payment integration"
+      - "Developed machine learning model predicting stock prices with 85% accuracy"
+      - "Created mobile app for campus events reaching 1,000+ downloads"
+      - "Implemented compiler for subset of C language as part of systems course"
+
+  - category: Technical Skills
+    bullets:
+      - "Completed coursework in Data Structures, Algorithms, and Database Systems"
+      - "Proficient in object-oriented programming with Java and Python"
+      - "Experience with version control using Git and collaborative development on GitHub"
+      - "Familiar with Agile methodologies through team project experience"
+
+  - category: Leadership & Activities
+    bullets:
+      - "Active member of Computer Science Student Association attending weekly meetings"
+      - "Participated in HackTX hackathon building health tracking app in 24 hours"
+      - "Mentor incoming freshmen through CS department peer mentoring program"
+      - "Completed Google's CS Summer Institute workshop on Android development"
+
+  - category: Problem Solving
+    bullets:
+      - "Solved 100+ LeetCode problems practicing algorithmic problem solving"
+      - "Debugged complex issues in team projects meeting project deadlines"
+      - "Optimized database queries reducing application response time by 50%"
+      - "Identified and fixed security vulnerability in volunteer project"
+
+relatedJobs:
+  - college-student
+  - software-engineer
+  - front-end-developer
