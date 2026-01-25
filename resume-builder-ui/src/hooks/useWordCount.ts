@@ -130,14 +130,10 @@ export const useWordCount = (
     // 600-1199 words: 1 ad (at least 600 words)
     // 1200-1799 words: 2 ads (at least 1200 words)
     // etc.
-    let allowedAds: number;
-    if (wordCount < wordsPerAd) {
-      // Between minWordsForAds and wordsPerAd - allow 1 ad
-      allowedAds = 1;
-    } else {
-      // 1 ad per wordsPerAd words
-      allowedAds = Math.min(Math.floor(wordCount / wordsPerAd), maxAds);
-    }
+    // If word count is above the minimum, allow at least 1 ad.
+    const adsByWordCount = Math.floor(wordCount / wordsPerAd);
+    const baseAds = adsByWordCount > 0 ? adsByWordCount : 1;
+    const allowedAds = Math.min(baseAds, maxAds);
 
     const adPositions = calculateAdPositions(allowedAds);
 
