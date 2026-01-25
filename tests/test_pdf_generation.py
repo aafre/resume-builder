@@ -147,13 +147,18 @@ class TestThreadPoolInitialization:
             # Restore original pool
             app.PDF_THREAD_POOL = original_pool
 
-    def test_pool_has_correct_max_workers(self):
+    @patch('concurrent.futures.ThreadPoolExecutor')
+    def test_pool_has_correct_max_workers(self, mock_ThreadPoolExecutor):
         """Verify pool is initialized with expected worker count."""
-        if app.PDF_THREAD_POOL is None:
+        original_pool = app.PDF_THREAD_POOL
+        app.PDF_THREAD_POOL = None
+        try:
             app.initialize_pdf_pool()
-
-        # ThreadPoolExecutor stores max_workers in _max_workers
-        assert app.PDF_THREAD_POOL._max_workers == 5
+            mock_ThreadPoolExecutor.assert_called_once_with(max_workers=5)
+        finally:
+            # The new pool is a mock, so we can't shut it down.
+            # Just restore the original.
+            app.PDF_THREAD_POOL = original_pool
 
 
 # =============================================================================
@@ -396,17 +401,23 @@ class TestThreadPoolWorkerIntegration:
             assert result.get("success") is True, f"Worker failed: {result.get('error')}"
             assert output_path.exists()
 
-    def test_pool_timeout_handling(self, temp_output_dir, temp_session_dir):
-        """Verify pool respects timeout for slow operations."""
+    def test_pool_timeout_handling(self):
+        """Verify future.result() respects timeout for slow operations."""
         if app.PDF_THREAD_POOL is None:
             app.initialize_pdf_pool()
 
-        # Submit a task that should complete quickly
-        future = app.PDF_THREAD_POOL.submit(lambda: {"success": True, "test": "quick"})
+        import time
+        from concurrent.futures import TimeoutError
 
-        # Should complete well before timeout
-        result = future.result(timeout=5)
-        assert result.get("success") is True
+        def slow_task():
+            time.sleep(2)
+            return "done"
+
+        future = app.PDF_THREAD_POOL.submit(slow_task)
+
+        with pytest.raises(TimeoutError):
+            # This should raise TimeoutError because the task takes 2s
+            future.result(timeout=1)
 
 
 # =============================================================================
@@ -424,7 +435,7 @@ class TestGenerateEndpoint:
         )
 
         # Should fail without yaml_file
-        assert response.status_code in (400, 422, 500)
+        assert response.status_code == 400
 
     @requires_pdfkit
     def test_generate_endpoint_returns_pdf_content_type(self, flask_test_client, temp_output_dir):
@@ -444,9 +455,9 @@ class TestGenerateEndpoint:
                 content_type='multipart/form-data'
             )
 
-        if response.status_code == 200:
-            assert response.content_type == 'application/pdf'
-            assert len(response.data) > 1000  # PDF should have reasonable size
+        assert response.status_code == 200
+        assert response.content_type == 'application/pdf'
+        assert len(response.data) > 1000  # PDF should have reasonable size
 
     def test_templates_endpoint_returns_json(self, flask_test_client):
         """Verify /api/templates returns JSON with templates list."""
