@@ -34,6 +34,8 @@ export default function SEOPageLayout({
         }
         ogImage={seoConfig.ogImage}
         structuredData={schemas.length === 1 ? schemas[0] : schemas}
+        hreflangLinks={seoConfig.hreflangLinks}
+        ogLocale={seoConfig.ogLocale}
       />
       <div
         className={`min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-100/40 ${className}`}

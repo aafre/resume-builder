@@ -4,7 +4,7 @@
  * Follows DRY principle - single source of truth for schema generation
  */
 
-import type { FAQConfig, BreadcrumbConfig, StructuredDataConfig } from '../types/seo';
+import type { FAQConfig, BreadcrumbConfig, StructuredDataConfig, HowToStep } from '../types/seo';
 
 const BASE_URL = 'https://easyfreeresume.com';
 
@@ -129,4 +129,114 @@ export function combineSchemas(
   ...schemas: StructuredDataConfig[]
 ): StructuredDataConfig[] {
   return schemas;
+}
+
+/**
+ * Generate HowTo schema
+ * Used for: step-by-step guides, tutorials
+ */
+export function generateHowToSchema(
+  name: string,
+  description: string,
+  steps: HowToStep[],
+  totalTime?: string,
+  dateModified?: string
+): StructuredDataConfig {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name,
+    description,
+    ...(totalTime && { totalTime }),
+    ...(dateModified && { dateModified }),
+    step: steps.map((step, index) => ({
+      '@type': 'HowToStep',
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+      ...(step.url && { url: `${BASE_URL}${step.url}` }),
+    })),
+  };
+}
+
+/**
+ * Generate Product schema
+ * Used for: template pages, product listings
+ */
+export function generateProductSchema(
+  name: string,
+  description: string,
+  imageUrl: string,
+  url: string,
+  dateModified?: string
+): StructuredDataConfig {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name,
+    description,
+    image: imageUrl.startsWith('http') ? imageUrl : `${BASE_URL}${imageUrl}`,
+    url: `${BASE_URL}${url}`,
+    ...(dateModified && { dateModified }),
+    brand: {
+      '@type': 'Organization',
+      name: 'EasyFreeResume',
+    },
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+    },
+  };
+}
+
+/**
+ * Generate Comparison schema for competitor comparison pages
+ * Used for: vs competitor pages
+ */
+export function generateComparisonSchema(
+  productA: { name: string; rating: number; price: string },
+  productB: { name: string; rating: number; price: string },
+  dateModified?: string
+): StructuredDataConfig {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    ...(dateModified && { dateModified }),
+    itemListElement: [
+      {
+        '@type': 'Product',
+        position: 1,
+        name: productA.name,
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: productA.rating,
+          bestRating: 5,
+          ratingCount: 1,
+        },
+        offers: {
+          '@type': 'Offer',
+          price: productA.price,
+          priceCurrency: 'USD',
+        },
+      },
+      {
+        '@type': 'Product',
+        position: 2,
+        name: productB.name,
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: productB.rating,
+          bestRating: 5,
+          ratingCount: 1,
+        },
+        offers: {
+          '@type': 'Offer',
+          price: productB.price,
+          priceCurrency: 'USD',
+        },
+      },
+    ],
+  };
 }

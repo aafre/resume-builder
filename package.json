@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "test:sitemap": "playwright test --project=sitemap"
+  },
   "devDependencies": {
     "@playwright/test": "^1.57.0",
     "@supabase/supabase-js": "^2.89.0",

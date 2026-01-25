@@ -1,6 +1,5 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
 import { fetchTemplates } from "../services/templates";
 import { apiClient } from "../lib/api-client";
 import { ArrowRightIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
@@ -10,6 +9,8 @@ import yaml from "js-yaml";
 import TemplateStartModal from "./TemplateStartModal";
 import ResumeRecoveryModal from "./ResumeRecoveryModal";
 import AuthModal from "./AuthModal";
+import { InFeedAd } from "./ads";
+import { useResumeCreate } from "../hooks/useResumeCreate";
 
 // Lazy-loaded error components
 const NotFound = lazy(() => import("./NotFound"));
@@ -29,14 +30,18 @@ interface Template {
   image_url: string;
 }
 
-const TemplateCarousel: React.FC = () => {
+interface TemplateCarouselProps {
+  /** Hide the header section when embedded in another page (e.g., TemplatesPage) */
+  showHeader?: boolean;
+}
+
+const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }) => {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
     null
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [creating, setCreating] = useState(false);
   const [showStartModal, setShowStartModal] = useState(false);
   const [selectedTemplateForModal, setSelectedTemplateForModal] = useState<string | null>(null);
   const [checkingExistingResume, setCheckingExistingResume] = useState(false);
@@ -46,17 +51,8 @@ const TemplateCarousel: React.FC = () => {
   const [existingResumeTitle, setExistingResumeTitle] = useState<string>('');
   const [processingRecoveryRedirect, setProcessingRecoveryRedirect] = useState(false);
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { session, isAnonymous, isAuthenticated, anonMigrationInProgress } = useAuth();
-
-  // Helper function to invalidate resume caches
-  const invalidateResumeCaches = async () => {
-    // Invalidate both caches to ensure fresh data when user returns to /my-resumes
-    await Promise.all([
-      queryClient.invalidateQueries({ queryKey: ['resumes'] }),
-      queryClient.invalidateQueries({ queryKey: ['resume-count'] })
-    ]);
-  };
+  const { createResume, creating } = useResumeCreate();
 
   // Fetch templates on component mount
   useEffect(() => {
@@ -128,76 +124,24 @@ const TemplateCarousel: React.FC = () => {
 
   // Handle "Empty Structure" selection
   const handleModalSelectEmpty = async () => {
-    if (!selectedTemplateForModal || !session) return;
+    if (!selectedTemplateForModal) return;
 
-    try {
-      setCreating(true);
-      setShowStartModal(false);
-
-      // Create resume with empty structure (template sections but no content)
-      try {
-        const data = await apiClient.post("/api/resumes/create", {
-          template_id: selectedTemplateForModal,
-          load_example: false  // Empty structure
-        }, { session });
-
-        // Navigate to editor
-        toast.success("Resume created! Starting editor...");
-        navigate(`/editor/${data.resume_id}`);
-      } catch (error: any) {
-        if (error.data?.error_code === "RESUME_LIMIT_REACHED") {
-          toast.error("Resume limit reached (5/5). Please delete a resume to create a new one.");
-          navigate("/my-resumes");
-          return;
-        }
-        throw error;
-      }
-
-      // Invalidate cache to ensure fresh data when user returns to /my-resumes
-      await invalidateResumeCaches();
-    } catch (err) {
-      console.error("Error creating resume:", err);
-      toast.error("Failed to create resume. Please try again.");
-    } finally {
-      setCreating(false);
-    }
+    setShowStartModal(false);
+    await createResume({
+      templateId: selectedTemplateForModal,
+      loadExample: false,
+    });
   };
 
   // Handle "Example Data" selection
   const handleModalSelectExample = async () => {
-    if (!selectedTemplateForModal || !session) return;
+    if (!selectedTemplateForModal) return;
 
-    try {
-      setCreating(true);
-      setShowStartModal(false);
-
-      // Create resume with example data from template
-      try {
-        const data = await apiClient.post("/api/resumes/create", {
-          template_id: selectedTemplateForModal,
-          load_example: true  // Load example data
-        }, { session });
-
-        // Navigate to editor
-        toast.success("Resume created! Starting editor...");
-        navigate(`/editor/${data.resume_id}`);
-      } catch (error: any) {
-        if (error.data?.error_code === "RESUME_LIMIT_REACHED") {
-          toast.error("Resume limit reached (5/5). Please delete a resume to create a new one.");
-          navigate("/my-resumes");
-          return;
-        }
-        throw error;
-      }
-
-      // Invalidate cache to ensure fresh data when user returns to /my-resumes
-      await invalidateResumeCaches();
-    } catch (err) {
-      console.error("Error creating resume:", err);
-      toast.error("Failed to create resume. Please try again.");
-    } finally {
-      setCreating(false);
-    }
+    setShowStartModal(false);
+    await createResume({
+      templateId: selectedTemplateForModal,
+      loadExample: true,
+    });
   };
 
   // Handle "Continue as Guest" / "Continue Editing" from recovery modal
@@ -238,90 +182,59 @@ const TemplateCarousel: React.FC = () => {
 
   // Handle AI resume import from TemplateStartModal
   const handleModalSelectImport = async (yamlString: string, confidence: number, warnings: string[]) => {
-    if (!session) {
-      toast.error("Please sign in to import a resume");
-      return;
+    setShowStartModal(false);
+
+    // Parse YAML to extract contact_info and sections
+    const parsedYaml = yaml.load(yamlString) as {
+      contact_info: any;
+      sections: any[];
+      __icons__?: Record<string, string>;
+    };
+
+    // Prepare icons array for upload (if present in YAML)
+    const iconsArray: { filename: string; data: string }[] = [];
+    if (parsedYaml.__icons__) {
+      for (const [filename, data] of Object.entries(parsedYaml.__icons__)) {
+        iconsArray.push({ filename, data });
+      }
     }
 
-    try {
-      setCreating(true);
-      setShowStartModal(false);
-
-      // Parse YAML to extract contact_info and sections
-      const parsedYaml = yaml.load(yamlString) as {
-        contact_info: any;
-        sections: any[];
-        __icons__?: Record<string, string>;
-      };
-
-      // Prepare icons array for upload (if present in YAML)
-      const iconsArray = [];
-      if (parsedYaml.__icons__) {
-        for (const [filename, data] of Object.entries(parsedYaml.__icons__)) {
-          iconsArray.push({ filename, data });
+    // Generate smart title (same logic as useCloudSave)
+    const generateTitle = (): string => {
+      // Priority 1: First job title from Experience section
+      const experienceSection = parsedYaml.sections.find(
+        s => s.type === 'experience'
+      );
+      if (experienceSection && Array.isArray(experienceSection.content) &&
+          experienceSection.content.length > 0) {
+        const firstJob = experienceSection.content[0];
+        if (typeof firstJob === 'object' && firstJob !== null && 'title' in firstJob && firstJob.title) {
+          return firstJob.title; // e.g., "Senior Product Manager"
         }
       }
 
-      // Generate smart title (same logic as useCloudSave)
-      const generateTitle = (): string => {
-        // Priority 1: First job title from Experience section
-        const experienceSection = parsedYaml.sections.find(
-          s => s.type === 'experience'
-        );
-        if (experienceSection && Array.isArray(experienceSection.content) &&
-            experienceSection.content.length > 0) {
-          const firstJob = experienceSection.content[0];
-          if (typeof firstJob === 'object' && firstJob !== null && 'title' in firstJob && firstJob.title) {
-            return firstJob.title; // e.g., "Senior Product Manager"
-          }
-        }
-
-        // Priority 2: Name + Template
-        if (parsedYaml.contact_info?.name) {
-          const templateName = (selectedTemplateForModal || 'modern')
-            .split('-')
-            .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-            .join(' ');
-          return `${parsedYaml.contact_info.name} - ${templateName}`;
-        }
-
-        // Priority 3: Fallback
-        return 'Imported Resume';
-      };
-
-      // Create resume in database immediately
-      try {
-        const data = await apiClient.post("/api/resumes", {
-          id: null, // Create new resume
-          title: generateTitle(),
-          template_id: selectedTemplateForModal || 'modern',
-          contact_info: parsedYaml.contact_info,
-          sections: parsedYaml.sections,
-          icons: iconsArray,
-          ai_import_warnings: warnings,
-          ai_import_confidence: confidence
-        }, { session });
-
-        // Navigate to editor with resume_id (standard flow)
-        toast.success("Resume imported successfully! Loading editor...");
-        navigate(`/editor/${data.resume_id}`);
-      } catch (error: any) {
-        if (error.data?.error_code === "RESUME_LIMIT_REACHED") {
-          toast.error("Resume limit reached (5/5). Please delete a resume to create a new one.");
-          navigate("/my-resumes");
-          return;
-        }
-        throw error;
+      // Priority 2: Name + Template
+      if (parsedYaml.contact_info?.name) {
+        const templateName = (selectedTemplateForModal || 'modern')
+          .split('-')
+          .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+          .join(' ');
+        return `${parsedYaml.contact_info.name} - ${templateName}`;
       }
 
-      // Invalidate cache to ensure fresh data when user returns to /my-resumes
-      await invalidateResumeCaches();
-    } catch (err) {
-      console.error("Error importing resume:", err);
-      toast.error("Failed to import resume. Please try again.");
-    } finally {
-      setCreating(false);
-    }
+      // Priority 3: Fallback
+      return 'Imported Resume';
+    };
+
+    await createResume({
+      templateId: selectedTemplateForModal || 'modern',
+      title: generateTitle(),
+      contactInfo: parsedYaml.contact_info,
+      sections: parsedYaml.sections,
+      icons: iconsArray,
+      aiImportConfidence: confidence,
+      aiImportWarnings: warnings,
+    });
   };
 
   // Check for recovery intent early on mount to prevent template page flash
@@ -423,115 +336,138 @@ const TemplateCarousel: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Header Section */}
-      <div className="text-center py-16 px-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800 mb-6">
-          Choose Your Perfect Template
-        </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Select a professional template that matches your style and industry
-        </p>
-      </div>
+    <div className={showHeader ? "min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50" : ""}>
+      {/* Header Section - only shown when used standalone */}
+      {showHeader && (
+        <div className="text-center py-16 px-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800 mb-6">
+            Free Resume Templates
+          </h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Professional, ATS-friendly designs that get you interviews. Choose a template and start building in minutes.
+          </p>
+        </div>
+      )}
 
       {/* Templates Grid */}
       <div className="container mx-auto max-w-6xl px-4 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-          {templates.map((template) => {
+          {templates.map((template, index) => {
             const isSelected = selectedTemplate?.id === template.id;
             return (
-              <div
-                key={template.id}
-                className={`group cursor-pointer transition-all duration-300 ${
-                  isSelected ? "scale-[1.02]" : "hover:scale-[1.02]"
-                }`}
-                onClick={() => handleSelectTemplate(template)}
-              >
+              <React.Fragment key={template.id}>
                 <div
-                  className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 ${
-                    isSelected
-                      ? "border-blue-500 ring-4 ring-blue-200/50"
-                      : "border-gray-200 hover:border-blue-300"
+                  className={`group cursor-pointer transition-all duration-300 ${
+                    isSelected ? "scale-[1.02]" : "hover:scale-[1.02]"
                   }`}
+                  onClick={() => handleSelectTemplate(template)}
                 >
-                  {/* Template Preview - Larger Image */}
-                  <div className="relative overflow-hidden bg-gray-50">
-                    <img
-                      src={template.image_url}
-                      alt={template.name}
-                      className="w-full h-96 sm:h-[500px] object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-                    />
-                    {isSelected && (
-                      <div className="absolute top-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-xl">
-                        <CheckCircleIcon className="w-7 h-7" />
-                      </div>
-                    )}
-
-                    {/* Overlay with quick info on hover */}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-end">
-                      <div className="w-full p-6 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <p className="text-white text-sm font-medium">
-                          Click to preview details
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Template Info - Compact but informative */}
-                  <div className="p-6 lg:p-8">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <h3 className="text-2xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
-                          {template.name}
-                        </h3>
-                        <p className="text-gray-600 leading-relaxed">
-                          {template.description}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex gap-3">
-                      {isSelected ? (
-                        <>
-                          <button
-                            className="flex-1 inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleUseTemplate(template.id);
-                            }}
-                            disabled={creating || checkingExistingResume}
-                          >
-                            {checkingExistingResume ? (
-                              <>
-                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                                Checking...
-                              </>
-                            ) : creating ? (
-                              <>
-                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                                Creating...
-                              </>
-                            ) : (
-                              <>
-                                Start Building Resume
-                                <ArrowRightIcon className="w-5 h-5 ml-2" />
-                              </>
-                            )}
-                          </button>
-                        </>
-                      ) : (
-                        <button className="btn-primary w-full py-4 px-6">
-                          <span className="relative z-10">Select This Template</span>
-                        </button>
+                  <div
+                    className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 ${
+                      isSelected
+                        ? "border-blue-500 ring-4 ring-blue-200/50"
+                        : "border-gray-200 hover:border-blue-300"
+                    }`}
+                  >
+                    {/* Template Preview - Larger Image */}
+                    <div className="relative overflow-hidden bg-gray-50">
+                      <img
+                        src={template.image_url}
+                        alt={template.name}
+                        className="w-full h-96 sm:h-[500px] object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+                      />
+                      {isSelected && (
+                        <div className="absolute top-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-xl">
+                          <CheckCircleIcon className="w-7 h-7" />
+                        </div>
                       )}
+
+                      {/* Overlay with quick info on hover */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-end">
+                        <div className="w-full p-6 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <p className="text-white text-sm font-medium">
+                            Click to preview details
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Template Info - Compact but informative */}
+                    <div className="p-6 lg:p-8">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <h3 className="text-2xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
+                            {template.name}
+                          </h3>
+                          <p className="text-gray-600 leading-relaxed">
+                            {template.description}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex gap-3">
+                        {isSelected ? (
+                          <>
+                            <button
+                              className="flex-1 inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleUseTemplate(template.id);
+                              }}
+                              disabled={creating || checkingExistingResume}
+                            >
+                              {checkingExistingResume ? (
+                                <>
+                                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                                  Checking...
+                                </>
+                              ) : creating ? (
+                                <>
+                                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                                  Creating...
+                                </>
+                              ) : (
+                                <>
+                                  Start Building Resume
+                                  <ArrowRightIcon className="w-5 h-5 ml-2" />
+                                </>
+                              )}
+                            </button>
+                          </>
+                        ) : (
+                          <button className="btn-primary w-full py-4 px-6">
+                            <span className="relative z-10">Select This Template</span>
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+                {/* Insert in-feed ad after every 6 templates, starting after position 5 (0-indexed) */}
+                {/* Policy: Never show ad before first 4 cards */}
+                {(index + 1) % 6 === 0 && index >= 5 && (
+                  <InFeedAd
+                    adSlot="3806186822"
+                    layout="card"
+                    className="rounded-3xl"
+                  />
+                )}
+              </React.Fragment>
             );
           })}
         </div>
+
+        {/* Show ad after all templates if there are 4+ templates but less than 6 */}
+        {templates.length >= 4 && templates.length < 6 && (
+          <div className="mt-8 lg:mt-12 flex justify-center">
+            <InFeedAd
+              adSlot="3806186822"
+              layout="card"
+              className="rounded-3xl max-w-md"
+            />
+          </div>
+        )}
       </div>
 
       {/* Template Start Modal */}

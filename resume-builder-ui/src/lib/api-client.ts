@@ -1,3 +1,4 @@
+import type { Session } from '@supabase/supabase-js';
 import { supabase } from './supabase';
 import { toast } from 'react-hot-toast';
 
@@ -38,11 +39,17 @@ class RetryRequestError extends Error {
   }
 }
 
+/**
+ * Minimal session info needed for API requests.
+ * Accepts full Supabase Session or partial object with just access_token.
+ */
+type SessionLike = Session | { access_token: string; expires_at?: number };
+
 interface RequestOptions {
   headers?: Record<string, string>;
   signal?: AbortSignal;
   skipAuth?: boolean; // Skip Authorization header (for public endpoints)
-  session?: any; // Pass session directly to avoid slow getSession() calls
+  session?: SessionLike | null; // Pass session directly to avoid slow getSession() calls
   responseType?: 'json' | 'blob' | 'text' | 'raw'; // Response parsing strategy
 }
 
@@ -72,7 +79,8 @@ interface RequestOptions {
  * ```
  */
 class ApiClient {
-  private cachedSession: any = null;
+  private cachedSession: Session | null = null;
+  private refreshPromise: Promise<boolean> | null = null; // Prevent concurrent refresh calls
 
   /**
    * Set the current session to avoid calling getSession() on every request.
@@ -80,22 +88,66 @@ class ApiClient {
    *
    * Call this from AuthContext whenever session changes.
    */
-  setSession(session: any) {
+  setSession(session: Session | null) {
     this.cachedSession = session;
   }
 
-  private async getAuthHeaders(providedSession?: any): Promise<Record<string, string>> {
-    // Use provided session first (from request options)
-    if (providedSession) {
-      return {
-        'Authorization': `Bearer ${providedSession.access_token}`
-      };
+  /**
+   * Check if token is expired or about to expire (within 60 seconds)
+   */
+  private isTokenExpiredOrExpiring(session: SessionLike): boolean {
+    if (!session.expires_at) return false;
+    const now = Math.floor(Date.now() / 1000);
+    const BUFFER_SECONDS = 60;
+    return session.expires_at <= now + BUFFER_SECONDS;
+  }
+
+  /**
+   * Proactively refresh token before it expires.
+   * Deduplicated: concurrent calls share the same promise.
+   */
+  private async proactiveRefresh(): Promise<boolean> {
+    if (this.refreshPromise) {
+      return this.refreshPromise;
     }
 
-    // Use cached session second (set by setSession())
-    if (this.cachedSession) {
+    this.refreshPromise = (async () => {
+      try {
+        if (!supabase) return false;
+        const { data: { session }, error } = await supabase.auth.refreshSession();
+        if (error || !session) {
+          console.warn('Proactive token refresh failed:', error?.message);
+          return false;
+        }
+        this.cachedSession = session;
+        return true;
+      } catch (error) {
+        console.warn('Proactive token refresh error:', error);
+        return false;
+      } finally {
+        this.refreshPromise = null;
+      }
+    })();
+
+    return this.refreshPromise;
+  }
+
+  private async getAuthHeaders(providedSession?: SessionLike | null): Promise<Record<string, string>> {
+    // Use provided session first (from request options)
+    let session = providedSession || this.cachedSession;
+
+    // Proactively refresh if token is expired or expiring soon
+    if (session && this.isTokenExpiredOrExpiring(session)) {
+      const refreshed = await this.proactiveRefresh();
+      if (refreshed) {
+        session = this.cachedSession;
+      }
+      // If refresh failed, continue with current token - 401 handler is the fallback
+    }
+
+    if (session) {
       return {
-        'Authorization': `Bearer ${this.cachedSession.access_token}`
+        'Authorization': `Bearer ${session.access_token}`
       };
     }
 
@@ -104,14 +156,14 @@ class ApiClient {
       throw new Error('Supabase client not initialized');
     }
 
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session: freshSession } } = await supabase.auth.getSession();
 
-    if (!session) {
+    if (!freshSession) {
       throw new AuthError('No active session');
     }
 
     return {
-      'Authorization': `Bearer ${session.access_token}`
+      'Authorization': `Bearer ${freshSession.access_token}`
     };
   }
 
@@ -141,7 +193,30 @@ class ApiClient {
     isRetry: boolean = false,
     responseType: 'json' | 'blob' | 'text' | 'raw' = 'json'
   ): Promise<T> {
-    // Handle 401/403 auth errors globally
+    // Handle 403 - could be auth error OR business logic error (e.g., RESUME_LIMIT_REACHED)
+    if (response.status === 403) {
+      // Clone response to read body without consuming it
+      const clonedResponse = response.clone();
+      let errorData: any = null;
+
+      try {
+        errorData = await clonedResponse.json();
+      } catch {
+        // Not JSON, treat as auth error below
+      }
+
+      // Check for known business logic error codes that should NOT trigger auth handling
+      const businessLogicErrorCodes = ['RESUME_LIMIT_REACHED'];
+      if (errorData?.error_code && businessLogicErrorCodes.includes(errorData.error_code)) {
+        // This is a business logic error, not auth - throw ApiError so caller can handle it
+        const errorMessage = errorData.error || errorData.message || 'Permission denied';
+        throw new ApiError(errorMessage, response.status, errorData);
+      }
+
+      // Otherwise fall through to auth error handling below
+    }
+
+    // Handle 401 auth errors (always authentication) and 403 auth errors (non-business-logic)
     if (response.status === 401 || response.status === 403) {
       console.error(`❌ Auth error: ${response.status} ${response.statusText}`);
 

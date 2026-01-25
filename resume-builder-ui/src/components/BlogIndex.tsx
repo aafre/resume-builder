@@ -1,5 +1,7 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import SEOHead from "./SEOHead";
+import { InFeedAd } from "./ads";
 
 interface BlogPost {
   slug: string;
@@ -13,6 +15,65 @@ interface BlogPost {
 }
 
 const blogPosts: BlogPost[] = [
+  // New AI Blog Content (Featured)
+  {
+    slug: "chatgpt-resume-prompts",
+    title: "25+ ChatGPT Prompts for Resume Writing (Copy & Paste Ready)",
+    description: "Get the best ChatGPT prompts for writing resume summaries, experience bullets, skills sections, and more. Copy-paste ready prompts that actually work in 2026.",
+    publishDate: "2026-01-21",
+    readTime: "12 min",
+    category: "AI & Tools",
+    featured: true,
+  },
+  {
+    slug: "ai-resume-writing-guide",
+    title: "AI Resume Writing: The Complete 2026 Guide (ChatGPT, Claude, Gemini & More)",
+    description: "Master AI-powered resume writing with ChatGPT, Claude, Gemini, and Grok. Learn the best tools, prompts, and strategies for creating resumes that get interviews.",
+    publishDate: "2026-01-21",
+    readTime: "15 min",
+    category: "AI & Tools",
+  },
+  {
+    slug: "claude-resume-prompts",
+    title: "15+ Claude AI Prompts for Resume Writing (2026)",
+    description: "Get the best Claude prompts for writing professional resumes. Claude excels at nuanced, professional writing. Copy-paste these prompts for better results.",
+    publishDate: "2026-01-21",
+    readTime: "10 min",
+    category: "AI & Tools",
+  },
+  {
+    slug: "gemini-resume-prompts",
+    title: "Google Gemini Prompts for Resume Writing (2026)",
+    description: "Best Gemini AI prompts for resume writing. Leverage Google's AI for job description analysis, keyword extraction, and resume optimization.",
+    publishDate: "2026-01-21",
+    readTime: "8 min",
+    category: "AI & Tools",
+  },
+  {
+    slug: "grok-resume-prompts",
+    title: "Grok AI Prompts for Resume Writing (2026)",
+    description: "Use Grok AI (xAI) for fast resume writing with a conversational approach. Best prompts for quick iterations and real-time resume feedback.",
+    publishDate: "2026-01-21",
+    readTime: "7 min",
+    category: "AI & Tools",
+  },
+  {
+    slug: "ai-job-description-analyzer",
+    title: "How to Use AI to Analyze Job Descriptions (Extract Keywords & Requirements)",
+    description: "Learn to use AI tools like ChatGPT and Claude to extract keywords, identify requirements, and decode what employers really want from job descriptions.",
+    publishDate: "2026-01-21",
+    readTime: "9 min",
+    category: "AI & Tools",
+  },
+  {
+    slug: "ai-resume-review",
+    title: "How to Use AI to Review Your Resume (Get Feedback Before Applying)",
+    description: "Learn to use ChatGPT, Claude, and other AI tools to review your resume for errors, improvements, and ATS optimization before submitting applications.",
+    publishDate: "2026-01-21",
+    readTime: "8 min",
+    category: "AI & Tools",
+  },
+  // Existing posts
   {
     slug: "job-interview-guide",
     title: "The Ultimate Guide to Nailing Your Next Job Interview",
@@ -20,7 +81,6 @@ const blogPosts: BlogPost[] = [
     publishDate: "2025-09-05",
     readTime: "7 min",
     category: "Interview Prep",
-    featured: true,
   },
   {
     slug: "behavioral-interview-questions",
@@ -191,10 +251,58 @@ const blogPosts: BlogPost[] = [
   },
   {
     slug: "zety-vs-easy-free-resume",
-    title: "Zety vs. EasyFreeResume: Why Pay for a Resume in 2025?",
-    description: "A direct comparison between the popular paid resume builder Zety and our completely free alternative. See the features and decide for yourself if a paid builder is worth it.",
+    title: "Zety Pricing 2026: Why Pay? Use This 100% Free Alternative Instead",
+    description: "Looking for Zety pricing? Don't get locked into a $5.95-$23.95/month subscription. EasyFreeResume offers the same ATS templates for $0. No hidden fees, no watermarks.",
     publishDate: "2025-07-28",
     readTime: "9 min",
+    category: "Comparisons",
+  },
+  {
+    slug: "resume-io-vs-easy-free-resume",
+    title: "Resume.io Pricing 2026: Free Alternative That Does More",
+    description: "Resume.io costs $2.95-$24.95/month for downloads. EasyFreeResume offers the same ATS templates for $0. Compare features, privacy, and see why free wins.",
+    publishDate: "2026-01-21",
+    readTime: "8 min",
+    category: "Comparisons",
+  },
+  {
+    slug: "resume-genius-vs-easy-free-resume",
+    title: "Resume Genius Pricing 2026: Is $7.95/Month Worth It? (Free Alternative)",
+    description: "Resume Genius charges $7.95-$39.95/month for PDF downloads. See how EasyFreeResume offers the same ATS templates completely free with better privacy.",
+    publishDate: "2026-01-21",
+    readTime: "8 min",
+    category: "Comparisons",
+  },
+  {
+    slug: "novoresume-vs-easy-free-resume",
+    title: "NovoResume Pricing 2026: Premium Templates Free Alternative",
+    description: "NovoResume's premium plans cost $16-$99/year. Compare features with EasyFreeResume, a 100% free alternative with ATS-friendly templates and better privacy.",
+    publishDate: "2026-01-21",
+    readTime: "7 min",
+    category: "Comparisons",
+  },
+  {
+    slug: "enhancv-vs-easy-free-resume",
+    title: "Enhancv Pricing 2026: Is $9.99/Month Worth It? Free Alternative Compared",
+    description: "Enhancv costs $9.99-$24.99/month for premium features. Compare with EasyFreeResume, a free alternative with ATS-friendly templates and complete privacy.",
+    publishDate: "2026-01-21",
+    readTime: "7 min",
+    category: "Comparisons",
+  },
+  {
+    slug: "canva-resume-vs-easy-free-resume",
+    title: "Canva Resume Templates 2026: Why They Fail ATS (Better Alternative)",
+    description: "Canva's free resume templates look great but often fail ATS scans. Learn why and discover EasyFreeResume, a free alternative designed for ATS compatibility.",
+    publishDate: "2026-01-21",
+    readTime: "8 min",
+    category: "Comparisons",
+  },
+  {
+    slug: "flowcv-vs-easy-free-resume",
+    title: "FlowCV vs EasyFreeResume 2026: Which Free Resume Builder is Better?",
+    description: "Both FlowCV and EasyFreeResume offer free resume building. Compare features, privacy, and templates to see which free option is truly better for your job search.",
+    publishDate: "2026-01-21",
+    readTime: "7 min",
     category: "Comparisons",
   },
   {
@@ -326,70 +434,79 @@ export default function BlogIndex() {
               All Articles
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {regularPosts.map((post) => (
-                <article
-                  key={post.slug}
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                >
-                  <div className="mb-4 flex items-center gap-2">
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-full">
-                      {post.category}
-                    </span>
-                    {post.comingSoon && (
-                      <span className="px-3 py-1 bg-orange-100 text-orange-700 text-sm font-medium rounded-full">
-                        Coming Soon
+              {regularPosts.map((post, index) => (
+                <React.Fragment key={post.slug}>
+                  <article
+                    className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <div className="mb-4 flex items-center gap-2">
+                      <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-full">
+                        {post.category}
                       </span>
-                    )}
-                  </div>
-
-                  <h3 className="text-xl font-bold mb-3 leading-tight">
-                    {post.comingSoon ? (
-                      <span className="text-gray-500 cursor-not-allowed">
-                        {post.title}
-                      </span>
-                    ) : (
-                      <Link
-                        to={`/blog/${post.slug}`}
-                        className="text-gray-900 hover:text-blue-600 transition-colors"
-                      >
-                        {post.title}
-                      </Link>
-                    )}
-                  </h3>
-
-                  <p className="text-gray-700 mb-4 leading-relaxed">
-                    {post.description}
-                  </p>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 text-sm text-gray-600">
-                      <time dateTime={post.publishDate}>
-                        {new Date(post.publishDate).toLocaleDateString(
-                          "en-US",
-                          {
-                            month: "short",
-                            day: "numeric",
-                          }
-                        )}
-                      </time>
-                      <span>•</span>
-                      <span>{post.readTime}</span>
+                      {post.comingSoon && (
+                        <span className="px-3 py-1 bg-orange-100 text-orange-700 text-sm font-medium rounded-full">
+                          Coming Soon
+                        </span>
+                      )}
                     </div>
 
-                    {post.comingSoon ? (
-                      <span className="text-gray-400 font-medium cursor-not-allowed">
-                        Coming Soon
-                      </span>
-                    ) : (
-                      <Link
-                        to={`/blog/${post.slug}`}
-                        className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
-                      >
-                        Read more →
-                      </Link>
-                    )}
-                  </div>
-                </article>
+                    <h3 className="text-xl font-bold mb-3 leading-tight">
+                      {post.comingSoon ? (
+                        <span className="text-gray-500 cursor-not-allowed">
+                          {post.title}
+                        </span>
+                      ) : (
+                        <Link
+                          to={`/blog/${post.slug}`}
+                          className="text-gray-900 hover:text-blue-600 transition-colors"
+                        >
+                          {post.title}
+                        </Link>
+                      )}
+                    </h3>
+
+                    <p className="text-gray-700 mb-4 leading-relaxed">
+                      {post.description}
+                    </p>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3 text-sm text-gray-600">
+                        <time dateTime={post.publishDate}>
+                          {new Date(post.publishDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                            }
+                          )}
+                        </time>
+                        <span>•</span>
+                        <span>{post.readTime}</span>
+                      </div>
+
+                      {post.comingSoon ? (
+                        <span className="text-gray-400 font-medium cursor-not-allowed">
+                          Coming Soon
+                        </span>
+                      ) : (
+                        <Link
+                          to={`/blog/${post.slug}`}
+                          className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                        >
+                          Read more →
+                        </Link>
+                      )}
+                    </div>
+                  </article>
+                  {/* Insert in-feed ad after every 6 posts, starting from position 5 (0-indexed) */}
+                  {(index + 1) % 6 === 0 && index >= 5 && (
+                    <InFeedAd
+                      adSlot="7742218947"
+                      layout="card"
+                      className="rounded-2xl"
+                    />
+                  )}
+                </React.Fragment>
               ))}
             </div>
           </section>

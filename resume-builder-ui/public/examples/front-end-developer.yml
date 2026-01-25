@@ -1,0 +1,114 @@
+# Front-End Developer Resume Example
+# Category: Tech (Tier 5)
+
+meta:
+  slug: front-end-developer
+  title: Front-End Developer
+  metaTitle: "Free Front-End Developer Resume Example & Template (2026)"
+  metaDescription: "Front-end developer resume example with React, JavaScript, and CSS skills."
+  category: tech
+  priority: 0.7
+
+resume:
+  template: modern
+  contact:
+    name: Sarah Kim
+    title: Front-End Developer
+    email: sarah.kim@email.com
+    phone: "(555) 123-4567"
+    location: San Francisco, CA
+    linkedin: linkedin.com/in/sarahkim
+    github: github.com/sarahkim
+
+  summary: >
+    Front-end developer with 4+ years of experience building responsive, accessible
+    web applications. Expert in React, TypeScript, and modern CSS. Passionate about
+    user experience, performance optimization, and clean code. Collaborative team
+    member with experience in Agile environments and cross-functional teams.
+
+  experience:
+    - company: TechFlow Solutions
+      title: Front-End Developer
+      dates: Jun 2022 - Present
+      location: San Francisco, CA
+      bullets:
+        - Build and maintain React applications serving 100K+ monthly active users
+        - Implement responsive designs using CSS-in-JS and Tailwind CSS
+        - Optimize application performance achieving 95+ Lighthouse scores
+        - Write unit and integration tests maintaining 85% code coverage
+        - Mentor junior developers through code reviews and pair programming
+
+    - company: Digital Agency Co
+      title: Junior Front-End Developer
+      dates: Jan 2020 - May 2022
+      location: Oakland, CA
+      bullets:
+        - Developed client websites and web applications using React and Vue.js
+        - Collaborated with designers to implement pixel-perfect UI components
+        - Integrated REST APIs and managed application state with Redux
+        - Improved site accessibility achieving WCAG 2.1 AA compliance
+
+    - company: Startup Labs
+      title: Front-End Intern
+      dates: Jun 2019 - Dec 2019
+      location: San Francisco, CA
+      bullets:
+        - Built landing pages and marketing site components using HTML, CSS, JavaScript
+        - Learned React fundamentals and contributed to component library
+        - Fixed bugs and improved cross-browser compatibility
+
+  education:
+    - school: UC Berkeley Extension
+      degree: Certificate, Front-End Web Development
+      year: "2019"
+    - school: San Jose State University
+      degree: B.A. Graphic Design
+      year: "2018"
+
+  skills:
+    - React
+    - TypeScript
+    - JavaScript
+    - HTML5
+    - CSS3
+    - Tailwind CSS
+    - Redux
+    - REST APIs
+    - Git
+    - Jest
+    - Webpack
+    - Accessibility (WCAG)
+
+bulletBank:
+  - category: Development Skills
+    bullets:
+      - "Built component library with 50+ reusable React components and Storybook documentation"
+      - "Migrated legacy jQuery codebase to React reducing bundle size by 40%"
+      - "Implemented lazy loading and code splitting improving initial load time by 60%"
+      - "Developed real-time features using WebSockets and React Query"
+
+  - category: Performance
+    bullets:
+      - "Achieved 98 Lighthouse performance score through optimization strategies"
+      - "Reduced Time to Interactive from 6s to 2s through code splitting and lazy loading"
+      - "Implemented image optimization reducing page weight by 70%"
+      - "Set up performance monitoring alerting team to regressions"
+
+  - category: Collaboration
+    bullets:
+      - "Led technical discussions in sprint planning and design review meetings"
+      - "Wrote comprehensive documentation for component APIs and usage patterns"
+      - "Conducted 100+ code reviews providing constructive feedback to team members"
+      - "Paired with backend developers to design efficient API contracts"
+
+  - category: Accessibility
+    bullets:
+      - "Achieved WCAG 2.1 AA compliance across all user-facing applications"
+      - "Implemented keyboard navigation and screen reader support"
+      - "Conducted accessibility audits and remediated 50+ issues"
+      - "Created accessibility testing guidelines adopted by engineering team"
+
+relatedJobs:
+  - software-engineer
+  - data-analyst
+  - graphic-designer

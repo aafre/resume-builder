@@ -1,0 +1,108 @@
+# Receptionist Resume Example
+# Category: Operations (Tier 1)
+
+meta:
+  slug: receptionist
+  title: Receptionist
+  metaTitle: "Free Receptionist Resume Example & Template (2026)"
+  metaDescription: "Receptionist resume example highlighting front desk skills and customer interaction. Free to edit and download."
+  category: operations
+  priority: 0.7
+
+resume:
+  template: classic
+  contact:
+    name: Amanda Foster
+    title: Receptionist
+    email: amanda.foster@email.com
+    phone: "(555) 234-5678"
+    location: Miami, FL
+    linkedin: ""
+
+  summary: >
+    Professional receptionist with 5+ years of experience managing front desk operations
+    and providing exceptional customer service. Skilled in multi-line phone systems,
+    appointment scheduling, and administrative support. Known for creating welcoming
+    environments and handling high-volume visitor traffic efficiently.
+
+  experience:
+    - company: Premier Law Firm
+      title: Front Desk Receptionist
+      dates: Mar 2021 - Present
+      location: Miami, FL
+      bullets:
+        - Greet and direct 75+ visitors daily in professional law office environment
+        - Manage multi-line phone system handling 150+ calls daily with professional demeanor
+        - Schedule appointments and maintain calendars for 12 attorneys
+        - Process incoming and outgoing mail, packages, and legal documents
+        - Maintain confidential client files and visitor logs with strict privacy protocols
+
+    - company: Medical Plaza
+      title: Receptionist
+      dates: Jun 2018 - Feb 2021
+      location: Miami, FL
+      bullets:
+        - Welcomed patients and managed check-in process for busy medical practice
+        - Verified insurance information and collected co-payments for 80+ daily patients
+        - Scheduled appointments using electronic health records system
+        - Maintained clean and organized waiting area creating positive first impressions
+
+    - company: Corporate Office Solutions
+      title: Office Assistant
+      dates: Aug 2016 - May 2018
+      location: Fort Lauderdale, FL
+      bullets:
+        - Assisted with front desk coverage and administrative tasks
+        - Managed conference room scheduling for 50-person office
+        - Ordered office supplies and maintained inventory
+
+  education:
+    - school: Miami Dade College
+      degree: Associate Degree in Business Administration
+      year: "2016"
+
+  skills:
+    - Customer Service
+    - Multi-Line Phone Systems
+    - Appointment Scheduling
+    - Microsoft Office Suite
+    - Data Entry
+    - Filing & Organization
+    - Visitor Management
+    - Cash Handling
+    - Professional Communication
+    - Calendar Management
+
+bulletBank:
+  - category: Customer Service
+    bullets:
+      - "Greeted and assisted 100+ visitors daily with professional and friendly demeanor"
+      - "Achieved 99% positive feedback on customer satisfaction surveys"
+      - "Resolved visitor inquiries and complaints with patience and problem-solving skills"
+      - "Created welcoming atmosphere receiving recognition from management"
+
+  - category: Administrative Skills
+    bullets:
+      - "Managed complex scheduling for 15+ executives using Outlook"
+      - "Processed 200+ pieces of mail and packages daily with accurate sorting"
+      - "Maintained organized filing system for 5,000+ records"
+      - "Handled confidential documents with strict adherence to privacy policies"
+
+  - category: Phone & Communication
+    bullets:
+      - "Answered and routed 150+ calls daily on multi-line phone system"
+      - "Screened calls and took detailed messages for busy professionals"
+      - "Communicated professionally with clients, vendors, and visitors"
+      - "Reduced call wait times by 30% through efficient call management"
+
+  - category: Office Operations
+    bullets:
+      - "Coordinated meeting logistics for 20+ weekly conference room bookings"
+      - "Managed office supply inventory reducing costs by 15%"
+      - "Maintained clean and organized reception area at all times"
+      - "Supported onboarding of new employees with building access and orientation"
+
+relatedJobs:
+  - administrative-assistant
+  - customer-service-representative
+  - retail-sales-associate

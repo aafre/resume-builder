@@ -99,6 +99,52 @@ The `usePreview` hook follows React best practices for dependency arrays to ensu
 - Potential issues like re-renders are managed with request deduplication and memoization within the hook.
 - See `usePreview.ts:390` for the implementation of `checkAndRefreshIfStale`.
 
+### Ads Configuration
+
+The app uses Google AdSense with two ad strategies:
+- **Auto Ads**: Enabled by default, Google automatically places ads
+- **Explicit Ads**: Manual ad placements in specific locations (disabled by default)
+
+#### Enabling Explicit Ads
+
+Explicit ads are controlled by the `VITE_ENABLE_EXPLICIT_ADS` environment variable (default: `false`).
+
+**Before enabling, complete these steps:**
+
+1. **Add page exclusions in AdSense** (to prevent double-ads from Auto Ads + Explicit):
+   - Go to: AdSense → Ads → Auto ads → Excluded pages
+   - Add exclusions for pages with explicit ads:
+     - `/` (landing page)
+     - `/templates`
+     - `/blog`
+     - `/blog/*`
+     - `/editor/*`
+     - `/free-resume-builder-no-sign-up`
+     - `/ats-resume-templates`
+     - `/resume-keywords`
+
+2. **Set the environment variable in production**:
+   ```bash
+   VITE_ENABLE_EXPLICIT_ADS=true
+   ```
+
+3. **Monitor for a few days**:
+   - Check ad density doesn't violate AdSense policies
+   - Monitor revenue impact
+   - Consider pausing any running experiments while testing
+
+#### Ad Slot Reference
+
+| Location | Slot ID | Ad Unit Name |
+|----------|---------|--------------|
+| Landing page (below stats) | `1232650916` | efr-landing-incontent |
+| Free Resume Builder page | `3994545622` | efr-freepage-incontent |
+| Templates Hub page | `6343391269` | efr-templates-incontent |
+| Resume Keywords page | `9055300614` | efr-keywords-incontent |
+| Blog index (in-feed) | `7742218947` | efr-blog-infeed |
+| Template carousel (in-feed) | `3806186822` | efr-carousel-infeed |
+| Editor sidebar | `3691293294` | efr-editor-sidebar |
+
 
 # Repo workflow
 

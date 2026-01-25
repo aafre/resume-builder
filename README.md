@@ -1,22 +1,66 @@
+<div align="center">
+
 [![Tests](https://github.com/aafre/resume-builder/actions/workflows/test.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/test.yml)
 [![Build](https://github.com/aafre/resume-builder/actions/workflows/build.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/build.yml)
 [![License](https://img.shields.io/github/license/aafre/resume-builder.svg)](LICENSE)
 
-# Professional Resume Builder 📝
-Create Professional, ATS-Friendly Resumes. Private, Free, and No Sign-Up Required.
+# EasyFreeResume
 
-**[🔗 Start Building Your Resume →](https://easyfreeresume.com)**
+**Create professional, ATS-friendly resumes in minutes.**
+No sign-up. No tracking. 100% free.
 
-✨ Intuitive User Interface • 🔒 Privacy-first • ⚡ Instant PDF download 
+[Live Demo](https://easyfreeresume.com) | [Quick Start](#-60-second-local-run) | [Templates](#templates)
 
-## How It Works
+<table>
+<tr>
+<td><img src="docs/templates/alex_rivera.png" width="200" alt="Professional Template"/></td>
+<td><img src="docs/templates/jane_doe.png" width="200" alt="Elegant Template"/></td>
+</tr>
+<tr>
+<td><img src="docs/templates/modern-no-icons.png" width="200" alt="Minimalist Template"/></td>
+<td><img src="docs/templates/modern-with-icons.png" width="200" alt="Modern Template"/></td>
+</tr>
+</table>
 
-1. **[Visit the App](https://easyfreeresume.com)** - Open in any browser
-2. **Choose a Template** - Select from professional designs
-3. **Fill Your Info** - Easy visual editor with auto-save
-4. **Download PDF** - Get your polished resume instantly
+</div>
 
-That's it! No account creation, no email verification, no complicated setup.
+---
+
+## ⚡ 60-Second Local Run
+
+### Prerequisites
+- **Node.js** 18+ and npm
+- **Python** 3.11+
+- **Docker** (recommended)
+- **Supabase CLI** ([install guide](https://supabase.com/docs/guides/cli))
+
+### Quick Start
+
+```bash
+# Clone the repo
+git clone https://github.com/aafre/resume-builder.git && cd resume-builder
+
+# Start local Supabase (runs Postgres, Auth, Storage)
+supabase start
+
+# Copy environment files and update with keys from `supabase status`
+cp .env.example .env
+cp .env.local.example .env.local
+# Edit .env.local with your local Supabase keys from `supabase status`
+
+# Apply database migrations
+supabase db push
+
+# Terminal 1: Frontend
+cd resume-builder-ui && npm install && npm run dev
+
+# Terminal 2: Backend
+pip install -r requirements.txt && python app.py
+```
+
+Open **http://localhost:5173** and start building!
+
+> **Tip:** Run `supabase status` to get your local API keys for `.env.local`
 
 ---
 
@@ -29,14 +73,14 @@ That's it! No account creation, no email verification, no complicated setup.
 ### 🔒 **Privacy Focused**
 - **No Sign-Up**: Start building immediately
 - **Local Storage**: Your data saved on your device
-- **No Tracking**: No personal information saved, ever. 
+- **No Tracking**: No personal information saved, ever.
 - **Export Control**: Download and keep your resume as YAML file.
 
 ### 📝 **Professional Output**
 - **ATS-Compatible**: Optimized text formatting ensures your resume passes automated screening systems
 - **Multiple Templates**: Clean, modern designs that stand out to hiring managers
 - **Customizable Sections**: Rearrange, add, or remove resume sections to perfectly tailor your resume for any job
-- **Icon Support**: Upload custom icons to personalize your resume and highlight key information 
+- **Icon Support**: Upload custom icons to personalize your resume and highlight key information
 
 ---
 
@@ -55,7 +99,7 @@ Clean, structured layout with traditional formatting and excellent space utiliza
 
 ![Professional Template](docs/templates/alex_rivera.png)
 
-### Elegant  
+### Elegant
 Refined design with sophisticated typography and organized section layout
 - **Sample YAML:** `samples/classic/jane_doe.yml`
 - **Template ID:** `classic-jane-doe`
@@ -73,7 +117,7 @@ Clean, professional design focusing on content clarity
 
 ### Modern
 Contemporary design enhanced with visual icons and dynamic styling elements
-- **Sample YAML:** `samples/modern/john_doe.yml`  
+- **Sample YAML:** `samples/modern/john_doe.yml`
 - **Template ID:** `modern-with-icons`
 - **Best for:** Tech, creative, and modern industries
 
@@ -157,7 +201,7 @@ API will be available at `http://localhost:5000`
 **Direct PDF Generation (No API)**
 ```bash
 python resume_generator.py --template modern --input samples/modern/john_doe.yml --output output/resume.pdf
-``` 
+```
 
 
 ---
@@ -166,12 +210,12 @@ python resume_generator.py --template modern --input samples/modern/john_doe.yml
 
 ### Frontend
 - **React 18** - Modern UI framework with hooks and context
-- **TypeScript** - Type-safe JavaScript for better development experience  
+- **TypeScript** - Type-safe JavaScript for better development experience
 - **Vite** - Fast build tool and development server
 - **Tailwind CSS** - Utility-first CSS framework for rapid styling
 - **React Router** - Client-side routing for single-page application
 
-### Backend  
+### Backend
 - **Flask** - Lightweight Python web framework
 - **Jinja2** - Template engine for dynamic HTML generation
 - **pdfkit** - PDF generation from HTML/CSS
@@ -195,7 +239,7 @@ python resume_generator.py --template modern --input samples/modern/john_doe.yml
 ### Contributing
 We welcome contributions! Whether it's:
 - 🐛 Bug fixes
-- ✨ New features  
+- ✨ New features
 - 🎨 Template designs
 - 📝 Documentation improvements
 
@@ -205,8 +249,12 @@ Please submit a pull request or open an issue to discuss your ideas.
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is open source and available under the [Apache License 2.0](LICENSE).
 
 ---
 
+<div align="center">
+
 *Ready to build your professional resume? [Get started at easyfreeresume.com →](https://easyfreeresume.com)*
+
+</div>

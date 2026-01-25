@@ -1,0 +1,116 @@
+# Dental Assistant Resume Example
+# Category: Healthcare (Tier 3)
+
+meta:
+  slug: dental-assistant
+  title: Dental Assistant
+  metaTitle: "Free Dental Assistant Resume Example & Template (2026)"
+  metaDescription: "Dental assistant resume example with chairside assistance and patient care skills."
+  category: healthcare
+  priority: 0.7
+
+resume:
+  template: professional
+  contact:
+    name: Nicole Thompson
+    title: Registered Dental Assistant
+    email: nicole.thompson@email.com
+    phone: "(555) 901-2345"
+    location: San Diego, CA
+    linkedin: ""
+
+  summary: >
+    RDA-certified dental assistant with 5+ years of chairside experience in general and
+    cosmetic dentistry. Skilled in digital radiography, impression taking, and patient
+    education. Known for creating comfortable patient experiences and maintaining efficient
+    operatory flow. Passionate about preventive care and oral health education.
+
+  experience:
+    - company: Coastal Dental Group
+      title: Registered Dental Assistant
+      dates: May 2021 - Present
+      location: San Diego, CA
+      bullets:
+        - Provide chairside assistance for 2 dentists treating 25+ patients daily
+        - Take digital X-rays, impressions, and intraoral photographs
+        - Prepare and place temporary restorations, apply sealants, and polish teeth
+        - Educate patients on oral hygiene, post-operative care, and treatment plans
+        - Maintain sterilization protocols and ensure OSHA compliance
+
+    - company: Family Dentistry Associates
+      title: Dental Assistant
+      dates: Aug 2019 - Apr 2021
+      location: La Jolla, CA
+      bullets:
+        - Assisted with restorative procedures including fillings, crowns, and extractions
+        - Managed operatory setup and breakdown ensuring efficient patient turnover
+        - Processed and mounted dental X-rays using digital imaging systems
+        - Scheduled appointments and verified insurance for 100+ patients weekly
+
+    - company: Smile Dental Clinic
+      title: Dental Assistant Trainee
+      dates: Jan 2018 - Jul 2019
+      location: San Diego, CA
+      bullets:
+        - Completed RDA training program while assisting with patient care
+        - Sterilized instruments and maintained infection control standards
+        - Took and developed X-rays under dentist supervision
+
+  education:
+    - school: Concorde Career College
+      degree: Diploma, Dental Assisting
+      year: "2018"
+
+  skills:
+    - Chairside Assistance
+    - Digital Radiography
+    - Impression Taking
+    - Sterilization
+    - Patient Education
+    - Dentrix Software
+    - Infection Control
+    - OSHA Compliance
+    - Temporary Restorations
+    - Coronal Polishing
+    - Sealant Application
+    - Bilingual (English/Spanish)
+
+  certifications:
+    - Registered Dental Assistant (RDA)
+    - X-Ray Certified
+    - CPR/BLS Certified
+    - Coronal Polishing Certificate
+
+bulletBank:
+  - category: Clinical Skills
+    bullets:
+      - "Assisted with 1,000+ restorative and cosmetic procedures annually"
+      - "Achieved 100% accuracy in taking digital X-rays requiring no retakes"
+      - "Placed pit and fissure sealants on 200+ pediatric patients"
+      - "Fabricated and cemented temporary crowns with excellent marginal fit"
+
+  - category: Patient Care
+    bullets:
+      - "Received consistent positive reviews for creating comfortable patient experiences"
+      - "Reduced patient anxiety through clear communication and gentle chairside manner"
+      - "Educated patients on home care resulting in improved hygiene compliance"
+      - "Managed pediatric patients effectively using distraction and positive reinforcement"
+
+  - category: Efficiency
+    bullets:
+      - "Maintained on-time schedule with average patient turnover of 10 minutes"
+      - "Prepared operatories and materials anticipating procedure needs"
+      - "Cross-trained on front office duties providing coverage as needed"
+      - "Organized supply inventory reducing waste and preventing stockouts"
+
+  - category: Compliance & Safety
+    bullets:
+      - "Maintained 100% compliance with infection control and sterilization protocols"
+      - "Passed all OSHA inspections with zero citations"
+      - "Documented procedures accurately in patient records"
+      - "Properly disposed of biohazardous materials and sharps"
+
+relatedJobs:
+  - medical-assistant
+  - registered-nurse
+  - receptionist

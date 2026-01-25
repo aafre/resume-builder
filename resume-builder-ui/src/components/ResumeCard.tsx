@@ -38,6 +38,8 @@ interface ResumeCardProps {
   onPreview: (id: string) => void;
   onDuplicate: (id: string) => void;
   onRename: (id: string, newTitle: string) => Promise<void>;
+  isEditButtonLoading?: boolean;
+  isPreviewLoading?: boolean;
 }
 
 export function ResumeCard({
@@ -47,7 +49,9 @@ export function ResumeCard({
   onDownload,
   onPreview,
   onDuplicate,
-  onRename
+  onRename,
+  isEditButtonLoading = false,
+  isPreviewLoading = false
 }: ResumeCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(resume.title);
@@ -111,20 +115,38 @@ export function ResumeCard({
       className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200 group"
     >
       {/* Thumbnail */}
-      <div className="relative bg-gray-100 h-48 overflow-hidden cursor-pointer rounded-t-lg" onClick={() => onPreview(resume.id)}>
+      <div
+        data-testid="thumbnail-container"
+        className={`relative bg-gray-100 h-48 overflow-hidden rounded-t-lg ${
+          isPreviewLoading ? 'cursor-wait' : 'cursor-pointer'
+        }`}
+        onClick={() => !isPreviewLoading && onPreview(resume.id)}
+      >
         {/* Always show thumbnail - never hide it */}
         <img
           key={`${resume.id}-${resume.pdf_generated_at || 'default'}`}
           src={getThumbnailUrl(resume.thumbnail_url, resume.pdf_generated_at) || getTemplatePreview(resume.template_id)}
           alt={resume.title}
-          className="w-full h-full object-cover object-top"
+          className={`w-full h-full object-cover object-top transition-all duration-200 ${
+            isPreviewLoading ? 'scale-105 blur-[2px]' : ''
+          }`}
         />
 
-        {/* Preview Hover - Always available for complete transparency */}
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2">
-          <Eye className="w-8 h-8 text-white" />
-          <span className="text-white font-medium text-lg">Preview</span>
-        </div>
+        {/* Preview Loading Overlay */}
+        {isPreviewLoading && (
+          <div data-testid="preview-loading-overlay" className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center gap-2">
+            <div data-testid="preview-loading-spinner" className="animate-spin rounded-full h-8 w-8 border-2 border-white border-t-transparent"></div>
+            <span className="text-white font-medium text-sm">Opening preview...</span>
+          </div>
+        )}
+
+        {/* Preview Hover - Hide while loading */}
+        {!isPreviewLoading && (
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2">
+            <Eye className="w-8 h-8 text-white" />
+            <span className="text-white font-medium text-lg">Preview</span>
+          </div>
+        )}
       </div>
 
       {/* Content */}
@@ -178,9 +200,21 @@ export function ResumeCard({
               e.stopPropagation();
               onEdit(resume.id);
             }}
-            className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+            disabled={isEditButtonLoading}
+            className={`flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
+              isEditButtonLoading
+                ? 'opacity-75 cursor-not-allowed'
+                : 'hover:bg-blue-700 active:scale-[0.98]'
+            }`}
           >
-            Edit Resume
+            {isEditButtonLoading ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                <span>Opening...</span>
+              </>
+            ) : (
+              'Edit Resume'
+            )}
           </button>
 
           <button

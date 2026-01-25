@@ -1,0 +1,108 @@
+# Registered Nurse Resume Example
+# Category: Healthcare (Tier 3)
+
+meta:
+  slug: registered-nurse
+  title: Registered Nurse
+  metaTitle: "Free Registered Nurse Resume Example & Template (2026)"
+  metaDescription: "Registered nurse resume example with clinical skills and patient care experience. ATS-optimized nursing resume."
+  category: healthcare
+  priority: 0.8
+
+resume:
+  template: professional
+  contact:
+    name: Jennifer Williams, RN, BSN
+    title: Registered Nurse
+    email: jennifer.williams@email.com
+    phone: "(555) 456-7890"
+    location: Denver, CO
+    linkedin: ""
+
+  summary: >
+    Compassionate registered nurse with 7+ years of experience in acute care and emergency
+    settings. Expertise in patient assessment, medication administration, and care coordination.
+    ACLS and PALS certified. Committed to delivering exceptional patient care and collaborating
+    with interdisciplinary healthcare teams.
+
+  experience:
+    - company: Denver Regional Medical Center
+      title: Emergency Room Registered Nurse
+      dates: Jun 2020 - Present
+      location: Denver, CO
+      bullets:
+        - Provide direct patient care in Level I trauma center with 60,000+ annual ED visits
+        - Triage and assess 15-20 patients per shift, prioritizing based on acuity levels
+        - Administer medications and treatments following physician orders with zero errors
+        - Collaborate with physicians, specialists, and support staff in multidisciplinary rounds
+        - Mentor 4 new graduate nurses through hospital orientation program
+
+    - company: Mountain View Hospital
+      title: Medical-Surgical Nurse
+      dates: Mar 2017 - May 2020
+      location: Boulder, CO
+      bullets:
+        - Managed care for 5-7 patients per shift on 32-bed medical-surgical unit
+        - Developed and implemented patient care plans in collaboration with care team
+        - Educated patients and families on discharge instructions and medication management
+        - Participated in quality improvement initiative reducing fall rates by 30%
+
+  education:
+    - school: University of Colorado Denver
+      degree: Bachelor of Science in Nursing (BSN)
+      year: "2017"
+    - school: Colorado State University
+      degree: Bachelor of Science in Biology
+      year: "2014"
+
+  skills:
+    - Patient Assessment
+    - Medication Administration
+    - IV Therapy
+    - Wound Care
+    - Electronic Health Records (Epic, Cerner)
+    - Care Coordination
+    - Patient Education
+    - Vital Signs Monitoring
+    - Infection Control
+    - CPR/BLS
+
+  certifications:
+    - Registered Nurse License (Colorado)
+    - ACLS (Advanced Cardiovascular Life Support)
+    - PALS (Pediatric Advanced Life Support)
+    - BLS (Basic Life Support)
+    - TNCC (Trauma Nursing Core Course)
+
+bulletBank:
+  - category: Patient Care
+    bullets:
+      - "Delivered compassionate care to 150+ patients monthly in fast-paced ER setting"
+      - "Maintained 98% patient satisfaction scores through attentive, personalized care"
+      - "Performed comprehensive assessments identifying critical changes in patient conditions"
+      - "Administered 500+ medications daily with 100% accuracy and protocol compliance"
+
+  - category: Clinical Skills
+    bullets:
+      - "Proficient in IV insertion, blood draws, and central line management"
+      - "Skilled in wound assessment, debridement, and dressing changes"
+      - "Experienced in ventilator management and respiratory support"
+      - "Competent in cardiac monitoring and rhythm interpretation"
+
+  - category: Leadership & Quality
+    bullets:
+      - "Led unit-based council improving hand hygiene compliance from 85% to 98%"
+      - "Precepted 12 new graduate nurses over 3-year period"
+      - "Participated in Magnet designation process and evidence-based practice initiatives"
+      - "Reduced medication errors by 25% through implementation of double-check system"
+
+  - category: Communication
+    bullets:
+      - "Provided clear, empathetic patient education resulting in improved outcomes"
+      - "Collaborated with interdisciplinary teams in daily care conferences"
+      - "Communicated patient status updates to physicians and specialists"
+
+relatedJobs:
+  - medical-assistant
+  - dental-assistant
+  - teacher

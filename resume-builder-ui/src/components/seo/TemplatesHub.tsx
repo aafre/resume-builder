@@ -10,6 +10,7 @@ import PageHero from '../shared/PageHero';
 import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
+import { InContentAd } from '../ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 
@@ -34,6 +35,9 @@ export default function TemplatesHub() {
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
       <PageHero config={config.hero} />
+
+      {/* In-content Ad - Below hero */}
+      <InContentAd adSlot="6343391269" marginY={32} />
 
       <div className="mb-16">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">

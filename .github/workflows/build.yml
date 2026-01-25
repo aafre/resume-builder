@@ -1,17 +1,6 @@
 name: Build
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'resume-builder-ui/**'
-      - 'app.py'
-      - 'resume_generator*.py'
-      - 'templates/**'
-      - 'requirements.txt'
-      - 'package*.json'
-      - 'Dockerfile*'
   workflow_call:
     inputs:
       version:

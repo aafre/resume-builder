@@ -25,6 +25,7 @@ import {
   MdSupport,
 } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { AdContainer } from "./ads";
 
 interface Section {
   name: string;
@@ -43,6 +44,9 @@ interface SectionNavigatorProps {
   onStartFresh: () => void;
   onHelp: () => void;
   isGenerating?: boolean;
+  /** Whether the preview button is being clicked (saving, validating) */
+  isOpeningPreview?: boolean;
+  /** Whether the preview is being generated */
   isGeneratingPreview?: boolean;
   previewIsStale?: boolean;
   loadingSave?: boolean;
@@ -72,6 +76,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   onStartFresh,
   onHelp,
   isGenerating,
+  isOpeningPreview = false,
   isGeneratingPreview,
   previewIsStale,
   loadingSave,
@@ -80,6 +85,8 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   isAnonymous = false,
   isAuthenticated = false,
 }) => {
+  // Show loading on button when either opening (save/validate) or generating
+  const isPreviewLoading = isOpeningPreview || isGeneratingPreview;
   // Load initial state from localStorage
   const [isCollapsed, setIsCollapsed] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -390,7 +397,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             <button
               id="tour-preview-button"
               onClick={onPreviewResume}
-              disabled={isGeneratingPreview}
+              disabled={isPreviewLoading}
               className={`w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-blue-500 hover:to-indigo-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative ${
                 isCollapsed
                   ? "flex-col gap-1 py-2.5 px-1 mb-2"
@@ -398,12 +405,16 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               }`}
             >
               {/* Staleness indicator badge */}
-              {previewIsStale && !isGeneratingPreview && (
+              {previewIsStale && !isPreviewLoading && (
                 <span className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full border-2 border-white animate-pulse"></span>
               )}
-              <MdVisibility className={isCollapsed ? "text-lg" : "text-base"} />
+              {isPreviewLoading ? (
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+              ) : (
+                <MdVisibility className={isCollapsed ? "text-lg" : "text-base"} />
+              )}
               <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
-                {isGeneratingPreview
+                {isPreviewLoading
                   ? isCollapsed
                     ? "..."
                     : "Loading..."
@@ -612,6 +623,21 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             </kbd>{" "}
             to toggle
           </p>
+        </div>
+      )}
+
+      {/* Desktop-only sidebar ad - far from interactive elements
+          Phase 3 implementation - monitor for impact on editor completion rate */}
+      {!isCollapsed && (
+        <div className="px-3 py-3 border-t border-gray-200/40 bg-gray-50/30">
+          <AdContainer
+            adSlot="3691293294"
+            adFormat="vertical"
+            minHeight={250}
+            minWidth={240}
+            rootMargin="100px"
+            testId="editor-sidebar-ad"
+          />
         </div>
       )}
     </nav>

@@ -1,0 +1,108 @@
+# Teacher Resume Example
+# Category: Education (Tier 3)
+
+meta:
+  slug: teacher
+  title: Teacher
+  metaTitle: "Free Teacher Resume Example & Template (2026)"
+  metaDescription: "Teacher resume example with curriculum development and classroom management experience."
+  category: education
+  priority: 0.8
+
+resume:
+  template: classic
+  contact:
+    name: David Thompson
+    title: High School English Teacher
+    email: david.thompson@email.com
+    phone: "(555) 890-1234"
+    location: Phoenix, AZ
+    linkedin: ""
+
+  summary: >
+    Dedicated English teacher with 8+ years of experience inspiring students to achieve
+    academic excellence. Expert in curriculum development, differentiated instruction,
+    and classroom management. Consistently improved student test scores by 20%+.
+    Passionate about creating inclusive learning environments where all students thrive.
+
+  experience:
+    - company: Central High School
+      title: English Teacher (Grades 9-12)
+      dates: Aug 2019 - Present
+      location: Phoenix, AZ
+      bullets:
+        - Teach 5 classes daily with 150+ students including AP English Literature
+        - Improved AP exam pass rate from 65% to 85% over 3-year period
+        - Developed and implemented standards-based curriculum aligned to Common Core
+        - Lead English department professional development sessions for 12 teachers
+        - Sponsor student newspaper club mentoring 25 aspiring journalists
+
+    - company: Westside Middle School
+      title: English/Language Arts Teacher (Grades 6-8)
+      dates: Aug 2015 - Jun 2019
+      location: Phoenix, AZ
+      bullets:
+        - Taught reading and writing skills to 120+ students across multiple skill levels
+        - Implemented differentiated instruction strategies for diverse learners
+        - Increased student reading proficiency scores by 25% on state assessments
+        - Collaborated with special education team to support IEP students
+        - Created after-school tutoring program serving 30 at-risk students
+
+  education:
+    - school: Arizona State University
+      degree: M.Ed. Curriculum and Instruction
+      year: "2018"
+    - school: University of Arizona
+      degree: B.A. English Literature
+      year: "2015"
+
+  skills:
+    - Curriculum Development
+    - Classroom Management
+    - Differentiated Instruction
+    - Student Assessment
+    - Lesson Planning
+    - Educational Technology
+    - Google Classroom
+    - Canvas LMS
+    - Parent Communication
+    - IEP Collaboration
+
+  certifications:
+    - Arizona Teaching Certificate (Secondary English 6-12)
+    - AP English Literature Certified
+    - Google Certified Educator Level 2
+
+bulletBank:
+  - category: Student Achievement
+    bullets:
+      - "Improved class average test scores by 20% through targeted instruction strategies"
+      - "Achieved 90% student proficiency rate on state standardized assessments"
+      - "Prepared 25 students for AP exams with 88% achieving scores of 3 or higher"
+      - "Increased student reading levels by average of 1.5 grade levels per year"
+
+  - category: Curriculum & Instruction
+    bullets:
+      - "Designed project-based learning units engaging 95% of students"
+      - "Implemented technology-enhanced instruction using Google Classroom and Canvas"
+      - "Created differentiated materials for students reading 3+ grade levels below"
+      - "Developed writing workshop curriculum adopted by English department"
+
+  - category: Leadership & Collaboration
+    bullets:
+      - "Mentored 5 student teachers through university partnership program"
+      - "Led professional learning community focusing on literacy strategies"
+      - "Collaborated with interdisciplinary team to create cross-curricular projects"
+      - "Presented instructional strategies at state education conference"
+
+  - category: Student Support
+    bullets:
+      - "Maintained 98% parent satisfaction rate through proactive communication"
+      - "Established after-school tutoring program improving at-risk student grades"
+      - "Created inclusive classroom environment for students of all backgrounds"
+      - "Served as advisor to 20+ students providing academic and personal guidance"
+
+relatedJobs:
+  - tutor
+  - administrative-assistant
+  - project-manager

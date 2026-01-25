@@ -1,8 +1,34 @@
 User-agent: *
 Allow: /
 
+# AI Search Crawlers - explicitly allow for AI-powered search
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
 # Main sitemap
 Sitemap: https://easyfreeresume.com/sitemap.xml
+
+# Allow resources needed for rendering (important for Google Images)
+Allow: /assets/
+Allow: /images/
 
 # Allow all well-behaved bots
 Allow: /blog/

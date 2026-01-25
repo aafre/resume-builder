@@ -7,6 +7,110 @@
 import type { PageConfig } from '../types/seo';
 
 export const SEO_PAGES: Record<string, PageConfig> = {
+  // /templates (SEO-rich templates landing page)
+  templates: {
+    seo: {
+      title: 'Free Resume Templates 2026 | ATS-Friendly Professional Designs',
+      description:
+        'Browse free, ATS-optimized resume templates. Modern, professional designs that pass Applicant Tracking Systems. No sign-up required. Download PDF instantly.',
+      keywords: [
+        'free resume templates',
+        'ats resume templates',
+        'professional resume templates',
+        'resume templates 2026',
+        'modern resume templates',
+        'free resume templates download',
+      ],
+      canonicalUrl: '/templates',
+    },
+    hero: {
+      h1: 'Free Resume Templates',
+      subtitle: 'Professional, ATS-friendly designs that get you interviews',
+      description:
+        'Choose from our collection of free resume templates. Every template is optimized for Applicant Tracking Systems and designed by professionals. No watermarks, no sign-up required.',
+    },
+    features: [
+      {
+        icon: '✅',
+        title: 'ATS-Optimized',
+        description:
+          'Every template passes major Applicant Tracking Systems including Workday, Taleo, and iCIMS.',
+      },
+      {
+        icon: '🎨',
+        title: 'Professional Designs',
+        description:
+          'Modern layouts created by professional designers. Clean typography and balanced spacing.',
+      },
+      {
+        icon: '📥',
+        title: 'Instant Download',
+        description:
+          'Download your resume as PDF immediately. No email required, no watermarks added.',
+      },
+      {
+        icon: '🔒',
+        title: 'Privacy First',
+        description:
+          'Your data stays in your browser. We never store your personal information on our servers.',
+      },
+      {
+        icon: '✏️',
+        title: 'Easy Customization',
+        description:
+          'Change fonts, colors, and sections. Add or remove content with our intuitive editor.',
+      },
+      {
+        icon: '💰',
+        title: '100% Free',
+        description:
+          'All templates, all features, forever free. No premium tier, no hidden costs.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Are these resume templates really free?',
+        answer:
+          'Yes, 100% free. All templates are available without payment, sign-up, or hidden fees. You can download unlimited resumes in PDF format at no cost. We sustain our service through ethical advertising, not by locking features behind paywalls.',
+      },
+      {
+        question: 'Will these templates pass ATS systems?',
+        answer:
+          'Yes. Every template is designed specifically for Applicant Tracking System compatibility. We use standard fonts (Arial, Calibri, Times New Roman), clean single-column layouts, proper heading hierarchy, and standard bullet points. Our templates have been tested with major ATS platforms including Workday, Taleo, iCIMS, and Greenhouse.',
+      },
+      {
+        question: 'Do I need to create an account?',
+        answer:
+          'No account is required. You can build and download your resume as a guest. Creating a free account (optional) unlocks cloud storage for saving up to 5 resumes and accessing them from any device.',
+      },
+      {
+        question: 'What file formats can I download?',
+        answer:
+          'You can download your resume as a PDF file, which is universally accepted and preserves formatting across all devices. PDF is recommended for most job applications.',
+      },
+      {
+        question: 'Can I customize the templates?',
+        answer:
+          'Yes. Our editor allows you to customize fonts, spacing, sections, and content. You can add or remove sections, reorder content, and personalize colors while maintaining ATS compatibility.',
+      },
+      {
+        question: 'How do I choose the right template?',
+        answer:
+          'Consider your industry and experience level. Modern templates work well for tech and creative roles. Classic layouts suit finance, law, and traditional industries. Minimalist designs are versatile for any field. All our templates are ATS-friendly regardless of style.',
+      },
+      {
+        question: 'Are these templates suitable for all industries?',
+        answer:
+          'Yes. We offer templates for every industry and career level. Whether you are in tech, healthcare, finance, education, or creative fields, our templates provide professional formatting that hiring managers expect.',
+      },
+      {
+        question: 'Can I use these templates for international job applications?',
+        answer:
+          'Yes. Our templates follow widely accepted resume formatting standards. For UK applications, we also offer CV-specific templates with appropriate formatting conventions.',
+      },
+    ],
+  },
+
   // /actual-free-resume-builder
   actualFree: {
     seo: {
@@ -885,6 +989,306 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         question: 'Can I import my existing resume?',
         answer:
           'Yes. You can export a data file for a resume you have created or worked on before. Upload it to continue editing without starting from scratch.',
+      },
+    ],
+  },
+
+  // /templates/modern-resume-templates
+  modernTemplates: {
+    seo: {
+      title: 'Modern Resume Templates 2026 | Free Contemporary Designs',
+      description:
+        'Download free modern resume templates with clean, contemporary designs. Perfect for tech, startups, and creative industries. ATS-friendly formats.',
+      keywords: [
+        'modern resume template',
+        'contemporary resume design',
+        'sleek resume template',
+        'tech resume template',
+        'startup resume template',
+        'modern cv template',
+      ],
+      canonicalUrl: '/templates/modern-resume-templates',
+    },
+    hero: {
+      h1: 'Modern Resume Templates',
+      subtitle: 'Contemporary designs for forward-thinking professionals',
+      description:
+        'Stand out with our modern resume templates featuring clean lines, strategic white space, and contemporary typography. Perfect for tech, creative, and startup roles.',
+    },
+    features: [
+      {
+        icon: '✨',
+        title: 'Contemporary Aesthetics',
+        description: 'Clean, minimalist designs with modern typography that reflect current design trends.',
+      },
+      {
+        icon: '💼',
+        title: 'Tech Industry Ready',
+        description: 'Layouts optimized for software engineers, product managers, and startup professionals.',
+      },
+      {
+        icon: '✅',
+        title: 'ATS Compatible',
+        description: 'Modern look without sacrificing ATS compatibility. Your resume gets seen by humans.',
+      },
+      {
+        icon: '📱',
+        title: 'Digital-First Design',
+        description: 'Optimized for both print and digital viewing. Looks great on any screen.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What makes a resume template "modern"?',
+        answer:
+          'Modern resume templates feature clean, minimalist designs with contemporary typography, strategic use of white space, and subtle color accents. They avoid cluttered layouts and outdated decorative elements.',
+      },
+      {
+        question: 'Are modern templates suitable for conservative industries?',
+        answer:
+          'While modern templates work great for tech, creative, and startup roles, we recommend classic templates for very conservative industries like law, finance, or government. Always consider your target employer.',
+      },
+      {
+        question: 'Will modern templates pass ATS screening?',
+        answer:
+          'Yes. Our modern templates are designed with ATS compatibility in mind. They use standard fonts, proper heading hierarchy, and clean formatting that ATS systems can easily parse.',
+      },
+    ],
+  },
+
+  // /templates/minimalist-resume-templates
+  minimalistTemplates: {
+    seo: {
+      title: 'Minimalist Resume Templates 2026 | Clean & Simple Designs',
+      description:
+        'Free minimalist resume templates with clean, distraction-free layouts. Let your content shine with elegant simplicity. ATS-optimized for all industries.',
+      keywords: [
+        'minimalist resume template',
+        'simple resume template',
+        'clean resume design',
+        'elegant resume template',
+        'basic resume template',
+        'no frills resume',
+      ],
+      canonicalUrl: '/templates/minimalist-resume-templates',
+    },
+    hero: {
+      h1: 'Minimalist Resume Templates',
+      subtitle: 'Clean simplicity that lets your qualifications shine',
+      description:
+        'Sometimes less is more. Our minimalist templates strip away distractions and put the focus where it belongs: on your experience, skills, and achievements.',
+    },
+    features: [
+      {
+        icon: '🎯',
+        title: 'Content-Focused',
+        description: 'No distracting graphics or colors. Your qualifications take center stage.',
+      },
+      {
+        icon: '📄',
+        title: 'Timeless Design',
+        description: 'Clean layouts that never go out of style. Appropriate for any industry.',
+      },
+      {
+        icon: '⚡',
+        title: 'Easy to Read',
+        description: 'Clear hierarchy and generous spacing make your resume scannable in seconds.',
+      },
+      {
+        icon: '✅',
+        title: 'Maximum ATS Score',
+        description: 'Simple formatting means perfect ATS compatibility every time.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Why choose a minimalist resume template?',
+        answer:
+          'Minimalist templates ensure recruiters focus on your content, not design elements. They scan quickly, work universally across industries, and have the highest ATS compatibility rates.',
+      },
+      {
+        question: 'Are minimalist resumes too plain?',
+        answer:
+          'Not at all. Minimalist design is a deliberate choice that signals professionalism and confidence. Many top companies and executives prefer clean, distraction-free resumes that get straight to the point.',
+      },
+      {
+        question: 'Can I add some color to a minimalist template?',
+        answer:
+          'Yes. Our minimalist templates allow subtle color customization. A single accent color for headers or your name can add personality while maintaining the clean aesthetic.',
+      },
+    ],
+  },
+
+  // /templates/resume-templates-for-students
+  studentTemplates: {
+    seo: {
+      title: 'Student Resume Templates 2026 | Free Templates for First-Time Job Seekers',
+      description:
+        'Free resume templates designed for students and recent graduates. Highlight education, internships, and projects when you have limited work experience.',
+      keywords: [
+        'student resume template',
+        'college student resume',
+        'entry level resume template',
+        'new graduate resume',
+        'first job resume template',
+        'resume for students with no experience',
+      ],
+      canonicalUrl: '/templates/resume-templates-for-students',
+    },
+    hero: {
+      h1: 'Student Resume Templates',
+      subtitle: 'Designed for students, interns, and new graduates',
+      description:
+        'New to the job market? Our student-focused templates emphasize education, skills, projects, and extracurriculars to help you compete even without extensive work experience.',
+    },
+    features: [
+      {
+        icon: '🎓',
+        title: 'Education First',
+        description: 'Templates that put your degree, GPA, and relevant coursework front and center.',
+      },
+      {
+        icon: '💡',
+        title: 'Project Showcase',
+        description: 'Dedicated sections for academic projects, capstones, and portfolio work.',
+      },
+      {
+        icon: '🏆',
+        title: 'Activities & Leadership',
+        description: 'Highlight clubs, organizations, volunteer work, and leadership roles.',
+      },
+      {
+        icon: '📈',
+        title: 'Skills Emphasis',
+        description: 'Prominent skills section to showcase technical and soft skills.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What should a student resume include?',
+        answer:
+          'Focus on education (degree, GPA if 3.0+, relevant coursework), skills (technical and soft), projects, internships, campus activities, volunteer work, and any part-time jobs that show relevant skills.',
+      },
+      {
+        question: 'How do I write a resume with no work experience?',
+        answer:
+          'Focus on transferable skills from coursework, projects, volunteer work, and activities. Quantify achievements where possible (e.g., "Led 15-member club," "Raised $5,000 for charity"). Check our blog for detailed guides.',
+      },
+      {
+        question: 'Should students include their GPA?',
+        answer:
+          'Include your GPA if it is 3.0 or higher. You can also include your major GPA if it is significantly higher than your cumulative GPA. After your first full-time job, GPA becomes less relevant.',
+      },
+      {
+        question: 'How long should a student resume be?',
+        answer:
+          'One page is standard and expected for students and new graduates. Focus on quality over quantity—include only the most relevant and impactful information.',
+      },
+    ],
+  },
+
+  // /cv-templates (Main CV Templates page for UK/EU/AU/NZ market)
+  cvTemplates: {
+    seo: {
+      title: 'Free CV Templates 2026 | Professional UK & International Designs',
+      description:
+        'Browse free, professional CV templates for UK, Europe, and international applications. ATS-optimised, no sign-up required. Download PDF instantly.',
+      keywords: [
+        'cv templates',
+        'free cv templates',
+        'uk cv templates',
+        'professional cv template',
+        'cv templates download',
+        'curriculum vitae templates',
+        'cv templates 2026',
+        'ats cv templates',
+      ],
+      canonicalUrl: '/cv-templates',
+    },
+    hero: {
+      h1: 'Free CV Templates',
+      subtitle: 'Professional templates for UK, Europe, and international applications',
+      description:
+        'Choose from our collection of free CV templates. Every template follows UK and international CV conventions. ATS-optimised, no watermarks, no sign-up required.',
+    },
+    features: [
+      {
+        icon: '🇬🇧',
+        title: 'UK CV Format',
+        description:
+          'Templates designed for UK employer expectations. Personal profile section, 2-page format, and UK date conventions.',
+      },
+      {
+        icon: '✅',
+        title: 'ATS-Optimised',
+        description:
+          'Every template passes Applicant Tracking Systems used by UK and international employers including CIPHR, PageUp, and Workday.',
+      },
+      {
+        icon: '📄',
+        title: '2-Page Standard',
+        description:
+          'Proper UK CV length. Our templates help you present comprehensive experience within the standard 2-page format.',
+      },
+      {
+        icon: '🔒',
+        title: 'Privacy First',
+        description:
+          'Your CV stays in your browser. No data storage, no tracking. Download directly without creating an account.',
+      },
+      {
+        icon: '📥',
+        title: 'Instant PDF Download',
+        description:
+          'Download your CV as PDF immediately. No email required, no watermarks, completely free.',
+      },
+      {
+        icon: '💰',
+        title: '100% Free',
+        description:
+          'All templates, all features, forever free. No premium tier, no hidden costs. Build unlimited CVs.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What is the difference between a CV and a resume?',
+        answer:
+          'In the UK, Europe, Australia, and New Zealand, "CV" (curriculum vitae) is the standard term for a job application document. In the US and Canada, "resume" is more common. The document format is essentially the same—our templates work for both. Use whichever term is standard in your target country.',
+      },
+      {
+        question: 'How long should a UK CV be?',
+        answer:
+          'A standard UK CV should be 2 pages maximum. This differs from academic CVs (which can be longer) and US resumes (typically 1 page). Our templates are designed to help you present your experience comprehensively within the 2-page standard.',
+      },
+      {
+        question: 'Should I include a photo on my UK CV?',
+        answer:
+          'Generally, no. UK CVs typically do not include photos unless specifically requested by the employer. This differs from some European countries like Germany or France where photos are more common. Always follow the conventions of your target country.',
+      },
+      {
+        question: 'What personal information should I include on a UK CV?',
+        answer:
+          'Include: your name, phone number, email, and general location (city/region). Do not include: date of birth, marital status, national insurance number, or nationality. UK equality laws discourage this information to prevent discrimination.',
+      },
+      {
+        question: 'What is a personal profile section?',
+        answer:
+          'A personal profile (also called a personal statement) is a 3-4 line summary at the top of your CV. It briefly describes your experience, key skills, and career objectives. It is standard on UK CVs and replaces the "objective statement" used in US resumes.',
+      },
+      {
+        question: 'Are these CV templates free to download?',
+        answer:
+          'Yes, 100% free. All templates are available without payment, sign-up, or hidden fees. You can download unlimited CVs in PDF format at no cost. We sustain our service through ethical advertising, not by locking features behind paywalls.',
+      },
+      {
+        question: 'Will these templates work for international applications?',
+        answer:
+          'Yes. Our templates follow widely accepted professional standards suitable for UK, Europe, Australia, New Zealand, and most international applications. For US applications, we recommend our resume-focused templates which follow American conventions.',
+      },
+      {
+        question: 'What date format should I use on a UK CV?',
+        answer:
+          'Use DD/MM/YYYY or written format (e.g., "January 2024 - Present" or "Jan 2024 - Present"). Be consistent throughout your CV. Our editor helps you maintain consistent date formatting.',
       },
     ],
   },
