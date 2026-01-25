@@ -9,7 +9,7 @@
 **Create professional, ATS-friendly resumes in minutes.**
 No sign-up. No tracking. 100% free.
 
-[Live Demo](https://easyfreeresume.com) | [Quick Start](#60-second-local-run) | [Templates](#templates)
+[Live Demo](https://easyfreeresume.com) | [Quick Start](#-60-second-local-run) | [Templates](#templates)
 
 <table>
 <tr>
