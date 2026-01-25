@@ -2714,18 +2714,17 @@ def migrate_anonymous_resumes():
 
         logging.info(f"Migrated {migrated_icons} icons, {failed_icons} failed")
 
-        # Step 3: Update user preferences
-        # Delete old user's preferences
+        # Step 3: Migrate user preferences (tour_completed, idle_nudge_shown, etc.)
+        # Uses atomic RPC to avoid race conditions during check-then-act
         try:
-            supabase.table('user_preferences') \
-                .delete() \
-                .eq('user_id', old_user_id) \
-                .execute()
+            supabase.rpc('migrate_user_preferences', {
+                'old_uid': old_user_id,
+                'new_uid': new_user_id
+            }).execute()
+            logging.info(f"Migrated preferences from {old_user_id} to {new_user_id}")
         except Exception as pref_error:
-            logging.warning(f"Failed to delete old preferences: {pref_error}")
-
-        # Update new user's preferences if needed
-        # (The frontend will handle setting last_edited_resume_id on next save)
+            logging.warning(f"Failed to migrate preferences: {pref_error}", exc_info=True)
+            # Non-critical - preferences will be recreated on next interaction
 
         logging.info(f"Migration complete: {old_count} resumes migrated to {new_user_id}")
 
