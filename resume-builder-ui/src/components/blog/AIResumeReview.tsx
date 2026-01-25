@@ -1,5 +1,6 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
+import CopyablePrompt from "../shared/CopyablePrompt";
 
 export default function AIResumeReview() {
   return (
@@ -48,9 +49,7 @@ export default function AIResumeReview() {
           Use this comprehensive prompt for a full review:
         </p>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-          <h4 className="font-bold text-gray-900 mb-3">Master Review Prompt</h4>
-          <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+        <CopyablePrompt title="Master Review Prompt">
             Review my resume thoroughly. I want honest, critical feedback.<br /><br />
             [PASTE YOUR RESUME]<br /><br />
             Check for:<br /><br />
@@ -75,17 +74,14 @@ export default function AIResumeReview() {
             - What should I add or remove?<br />
             - How can I strengthen weak areas?<br /><br />
             Be specific. For each issue, show me the problem and the fix.
-          </div>
-        </div>
+        </CopyablePrompt>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
           Specific Review Prompts
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Grammar & Consistency Check</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Grammar & Consistency Check">
               Check this resume for grammar, spelling, and consistency errors:<br /><br />
               [PASTE RESUME]<br /><br />
               Specifically check:<br />
@@ -97,12 +93,9 @@ export default function AIResumeReview() {
               6. Date format consistency<br />
               7. Number format consistency (%, $, etc.)<br /><br />
               List every issue with exact location and correction.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Impact Assessment</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Impact Assessment">
               Rate each bullet point on my resume for impact (1-5 scale):<br /><br />
               [PASTE RESUME]<br /><br />
               For each bullet, assess:<br />
@@ -111,12 +104,9 @@ export default function AIResumeReview() {
               - Is the action verb strong?<br />
               - Is it specific or vague?<br /><br />
               For bullets rated 3 or below, suggest an improved version.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">ATS Compatibility Check</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="ATS Compatibility Check">
               Review my resume for ATS (Applicant Tracking System) compatibility:<br /><br />
               [PASTE RESUME]<br /><br />
               I'm applying for: [TARGET JOB OR PASTE JD]<br /><br />
@@ -127,12 +117,9 @@ export default function AIResumeReview() {
               4. Any elements that might confuse ATS?<br />
               5. Contact info complete and correctly placed?<br /><br />
               Score my ATS-readiness 1-10 and suggest fixes.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Recruiter Perspective Review</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Recruiter Perspective Review">
               Review this resume as a [INDUSTRY] recruiter doing a 30-second scan:<br /><br />
               [PASTE RESUME]<br /><br />
               Tell me:<br />
@@ -143,12 +130,9 @@ export default function AIResumeReview() {
               5. What questions would you want answered in an interview?<br />
               6. Overall impression (hire/maybe/pass)<br /><br />
               Be honest—I need real feedback, not encouragement.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Red Flag Identifier</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Red Flag Identifier">
               Look at my resume and identify any red flags a recruiter might see:<br /><br />
               [PASTE RESUME]<br /><br />
               Check for:<br />
@@ -159,8 +143,7 @@ export default function AIResumeReview() {
               5. Overqualified or underqualified signals<br />
               6. Any other concerns<br /><br />
               For each red flag, suggest how I might address or mitigate it.
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">

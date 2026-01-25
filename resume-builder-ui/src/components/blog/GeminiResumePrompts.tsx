@@ -1,5 +1,6 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
+import CopyablePrompt from "../shared/CopyablePrompt";
 
 export default function GeminiResumePrompts() {
   return (
@@ -43,9 +44,7 @@ export default function GeminiResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #1: Comprehensive JD Analysis</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #1: Comprehensive JD Analysis">
               Analyze this job description in detail:<br /><br />
               [PASTE JOB DESCRIPTION]<br /><br />
               Provide:<br />
@@ -56,12 +55,9 @@ export default function GeminiResumePrompts() {
               5. **Company Culture Signals** (what they value)<br />
               6. **Potential Interview Questions** (based on the role)<br /><br />
               Format as a structured breakdown I can use to tailor my resume.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #2: Keyword Extraction</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #2: Keyword Extraction">
               Extract all resume-worthy keywords from this job description:<br /><br />
               [PASTE JOB DESCRIPTION]<br /><br />
               Categorize into:<br />
@@ -71,12 +67,9 @@ export default function GeminiResumePrompts() {
               - Soft skills<br />
               - Industry terminology<br /><br />
               Show frequency if terms appear multiple times.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #3: Company Research</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #3: Company Research">
               Research [COMPANY NAME] and tell me:<br /><br />
               1. Company values and mission<br />
               2. Recent news or achievements<br />
@@ -84,8 +77,7 @@ export default function GeminiResumePrompts() {
               4. Culture based on public information<br />
               5. What they likely value in candidates<br /><br />
               I'm applying for a [JOB TITLE] role. What should I emphasize on my resume based on this research?
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -93,9 +85,7 @@ export default function GeminiResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #4: Achievement Bullets</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #4: Achievement Bullets">
               Create achievement-focused resume bullets for my role as [JOB TITLE].<br /><br />
               What I did:<br />
               [DESCRIBE YOUR RESPONSIBILITIES]<br /><br />
@@ -106,12 +96,9 @@ export default function GeminiResumePrompts() {
               - Include quantifiable results where possible<br />
               - Are concise (under 20 words each)<br />
               - Align with [TARGET ROLE] requirements
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #5: Professional Summary</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #5: Professional Summary">
               Write a professional summary for a [JOB TITLE] with [X] years of experience.<br /><br />
               My background:<br />
               - Industries: [LIST]<br />
@@ -122,12 +109,9 @@ export default function GeminiResumePrompts() {
               1. Achievement-focused (lead with biggest win)<br />
               2. Expertise-focused (lead with specialization)<br />
               3. Value-proposition (lead with what I offer employers)
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #6: Skills Matrix</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #6: Skills Matrix">
               Create a skills matrix for my resume targeting [JOB TITLE]:<br /><br />
               My skills: [LIST ALL SKILLS]<br /><br />
               Job requirements: [PASTE KEY REQUIREMENTS]<br /><br />
@@ -136,8 +120,7 @@ export default function GeminiResumePrompts() {
               2. How to group them (categories)<br />
               3. Which skills to skip (not relevant)<br />
               4. Any skill gaps I should address
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -145,9 +128,7 @@ export default function GeminiResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #7: Resume-JD Match Score</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #7: Resume-JD Match Score">
               Score my resume against this job description:<br /><br />
               Resume: [PASTE]<br /><br />
               Job Description: [PASTE]<br /><br />
@@ -157,12 +138,9 @@ export default function GeminiResumePrompts() {
               3. Skills alignment<br />
               4. Experience relevance<br />
               5. Specific improvements to increase my score
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #8: Tailor for Industry</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #8: Tailor for Industry">
               I'm moving from [CURRENT INDUSTRY] to [TARGET INDUSTRY].<br /><br />
               My resume: [PASTE]<br /><br />
               Help me:<br />
@@ -171,12 +149,9 @@ export default function GeminiResumePrompts() {
               3. Reframe experiences for new industry<br />
               4. Highlight relevant cross-industry knowledge<br />
               5. Suggest what to de-emphasize or remove
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #9: Competitive Analysis</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #9: Competitive Analysis">
               For a [JOB TITLE] role in [INDUSTRY], what do strong candidates typically have on their resumes?<br /><br />
               Cover:<br />
               - Common backgrounds and experiences<br />
@@ -184,8 +159,7 @@ export default function GeminiResumePrompts() {
               - Typical achievements that stand out<br />
               - What differentiates great candidates<br /><br />
               Then analyze my resume against these standards: [PASTE RESUME]
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -193,9 +167,7 @@ export default function GeminiResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #10: Comprehensive Review</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #10: Comprehensive Review">
               Review my resume as a [INDUSTRY] recruiter would:<br /><br />
               [PASTE RESUME]<br /><br />
               Evaluate:<br />
@@ -206,8 +178,7 @@ export default function GeminiResumePrompts() {
               5. Missing elements<br />
               6. Overall competitiveness<br /><br />
               Score each area 1-10 and explain why.
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">

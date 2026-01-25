@@ -1,5 +1,6 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
+import CopyablePrompt from "../shared/CopyablePrompt";
 
 export default function ClaudeResumePrompts() {
   return (
@@ -43,9 +44,7 @@ export default function ClaudeResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #1: Nuanced Professional Summary</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #1: Nuanced Professional Summary">
               I need a professional summary for my resume. Here's my context:<br /><br />
               - Current role: [JOB TITLE] at [COMPANY TYPE]<br />
               - Years of experience: [X] years<br />
@@ -56,19 +55,15 @@ export default function ClaudeResumePrompts() {
               2. Highlights my most relevant expertise<br />
               3. Ends with what I bring to potential employers<br /><br />
               Tone: Confident but not boastful. Professional but not stiff.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #2: Senior/Executive Summary</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #2: Senior/Executive Summary">
               Write an executive summary for a [TITLE] with [X]+ years in [INDUSTRY].<br /><br />
               Key achievements:<br />
               - [ACHIEVEMENT 1 with metric]<br />
               - [ACHIEVEMENT 2 with metric]<br /><br />
               The summary should convey strategic thinking and leadership impact without being verbose. Target: 50-60 words. Use language appropriate for board-level communication.
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -76,9 +71,7 @@ export default function ClaudeResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #3: Achievement Transformation</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #3: Achievement Transformation">
               Transform this job responsibility into an achievement-focused resume bullet:<br /><br />
               Original: "[PASTE YOUR RESPONSIBILITY]"<br /><br />
               Requirements:<br />
@@ -88,12 +81,9 @@ export default function ClaudeResumePrompts() {
               - Keep under 25 words<br />
               - Don't invent metrics I didn't provide<br /><br />
               If you need more information to quantify the achievement, ask me.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #4: Bullet Point Refinement</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #4: Bullet Point Refinement">
               Improve these resume bullet points while maintaining truthfulness:<br /><br />
               [PASTE YOUR BULLETS]<br /><br />
               For each bullet:<br />
@@ -102,20 +92,16 @@ export default function ClaudeResumePrompts() {
               3. Improve flow and readability<br />
               4. Ensure parallel structure across all bullets<br /><br />
               Show me the original and revised version side by side.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #5: Role-Specific Bullets</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #5: Role-Specific Bullets">
               Generate 5 resume bullets for a [JOB TITLE] role.<br /><br />
               My key responsibilities included:<br />
               [LIST YOUR MAIN TASKS]<br /><br />
               Results I achieved:<br />
               [LIST ANY OUTCOMES OR METRICS]<br /><br />
               Write bullets that emphasize impact over activity. Each bullet should demonstrate a different skill or competency relevant to [TARGET ROLE].
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -123,9 +109,7 @@ export default function ClaudeResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #6: Deep Job Analysis</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #6: Deep Job Analysis">
               Analyze this job description thoroughly:<br /><br />
               [PASTE JOB DESCRIPTION]<br /><br />
               Provide:<br />
@@ -135,12 +119,9 @@ export default function ClaudeResumePrompts() {
               4. **Keywords to include** (exact phrases from the JD)<br />
               5. **Company culture signals** (what values do they seem to prioritize?)<br />
               6. **Red flags or concerns** (anything unusual in the posting)
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #7: Resume-Job Fit Analysis</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #7: Resume-Job Fit Analysis">
               Compare my resume against this job description:<br /><br />
               My resume:<br />
               [PASTE RESUME]<br /><br />
@@ -151,8 +132,7 @@ export default function ClaudeResumePrompts() {
               2. Strengths to emphasize<br />
               3. Gaps to address or minimize<br />
               4. Specific changes to make my resume more competitive
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -160,9 +140,7 @@ export default function ClaudeResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #8: Strategic Skills Selection</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #8: Strategic Skills Selection">
               I have these skills: [LIST ALL YOUR SKILLS]<br /><br />
               I'm targeting this role: [JOB DESCRIPTION OR TITLE]<br /><br />
               Help me select and organize my skills section:<br />
@@ -170,17 +148,13 @@ export default function ClaudeResumePrompts() {
               2. Which skills to include but not emphasize<br />
               3. Which skills to omit entirely<br />
               4. How to group/categorize them effectively
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #9: Technical Skills Description</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #9: Technical Skills Description">
               For each of these technical skills, write a brief phrase showing my proficiency level in a way that's more meaningful than "intermediate" or "advanced":<br /><br />
               Skills: [LIST SKILLS]<br /><br />
               Example format: "Python - built production ETL pipelines" rather than "Python - advanced"
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -188,9 +162,7 @@ export default function ClaudeResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #10: Full Resume Tailoring</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #10: Full Resume Tailoring">
               Tailor my resume for this specific role:<br /><br />
               Current resume:<br />
               [PASTE RESUME]<br /><br />
@@ -202,12 +174,9 @@ export default function ClaudeResumePrompts() {
               3. Skills to add or reorder<br />
               4. Keywords to incorporate naturally<br /><br />
               Don't rewrite everything—focus on high-impact changes.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #11: ATS Optimization</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #11: ATS Optimization">
               Review my resume for ATS (Applicant Tracking System) compatibility:<br /><br />
               [PASTE RESUME]<br /><br />
               Target job:<br />
@@ -218,8 +187,7 @@ export default function ClaudeResumePrompts() {
               3. Section headers that might not be recognized<br />
               4. Any content that needs standardization<br /><br />
               Suggest fixes for each issue found.
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -227,9 +195,7 @@ export default function ClaudeResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #12: Final Review</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #12: Final Review">
               Review this resume as a [INDUSTRY] hiring manager would:<br /><br />
               [PASTE RESUME]<br /><br />
               Evaluate:<br />
@@ -239,12 +205,9 @@ export default function ClaudeResumePrompts() {
               4. Professional presentation<br />
               5. Any red flags or concerns<br /><br />
               Be honest and specific. I want to improve, not just hear positives.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #13: Tone Adjustment</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #13: Tone Adjustment">
               The tone of my resume feels [too humble/too boastful/too generic/too casual].<br /><br />
               [PASTE RESUME OR SECTION]<br /><br />
               Rewrite to achieve a tone that is:<br />
@@ -252,12 +215,9 @@ export default function ClaudeResumePrompts() {
               - Professional but not stiff<br />
               - Specific but not verbose<br /><br />
               Show me before/after for key sections.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #14: Conciseness Edit</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #14: Conciseness Edit">
               My resume is too long. Help me cut it down:<br /><br />
               [PASTE RESUME]<br /><br />
               I need to reach [1 page / 2 pages].<br /><br />
@@ -267,12 +227,9 @@ export default function ClaudeResumePrompts() {
               3. Wordy phrases that can be tightened<br />
               4. Sections that could be shortened<br /><br />
               Prioritize keeping my strongest achievements and most relevant experience.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #15: Proofread</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #15: Proofread">
               Proofread my resume carefully for:<br /><br />
               [PASTE RESUME]<br /><br />
               Check:<br />
@@ -282,8 +239,7 @@ export default function ClaudeResumePrompts() {
               4. Number formatting (%, $, dates)<br />
               5. Capitalization consistency<br /><br />
               List every issue found with the exact location and correction.
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">

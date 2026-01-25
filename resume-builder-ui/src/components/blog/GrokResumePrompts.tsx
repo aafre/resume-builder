@@ -1,5 +1,6 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
+import CopyablePrompt from "../shared/CopyablePrompt";
 
 export default function GrokResumePrompts() {
   return (
@@ -43,33 +44,24 @@ export default function GrokResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #1: Rapid Bullet Improvement</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #1: Rapid Bullet Improvement">
               Make this resume bullet more impactful in 3 different ways:<br /><br />
               "[YOUR BULLET]"<br /><br />
               Give me:<br />
               1. More action-oriented version<br />
               2. More metrics-focused version<br />
               3. More concise version
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #2: Quick Summary Generator</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #2: Quick Summary Generator">
               Write a punchy 2-sentence professional summary for a [JOB TITLE] with [X] years experience. Key skills: [LIST 3]. Make it memorable, not generic.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #3: Verb Swap</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #3: Verb Swap">
               These bullets start with weak verbs. Give me stronger alternatives:<br /><br />
               [PASTE BULLETS]<br /><br />
               Just show me the improved verbs, I'll handle the rest.
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -77,29 +69,20 @@ export default function GrokResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #4: Achievement Mining</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #4: Achievement Mining">
               I was a [JOB TITLE] at a [COMPANY TYPE]. My main job was [BRIEF DESCRIPTION].<br /><br />
               Help me identify 5 potential achievements I might have had that would look good on a resume. Ask me questions to dig deeper.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #5: Skills Brainstorm</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #5: Skills Brainstorm">
               I'm a [JOB TITLE] applying for [TARGET ROLE].<br /><br />
               What skills should I definitely include? What skills would make me stand out? What skills should I skip? Be direct.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #6: Unique Value Proposition</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #6: Unique Value Proposition">
               Here's my background: [BRIEF SUMMARY]<br /><br />
               What makes me different from other [JOB TITLE] candidates? Help me find my unique angle for my resume.
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -107,36 +90,27 @@ export default function GrokResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #7: Brutal Review</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #7: Brutal Review">
               Be honest and direct about this resume. What's weak? What's missing? What would make a recruiter pass?<br /><br />
               [PASTE RESUME]<br /><br />
               I can take criticism. Don't hold back.
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #8: Red Flag Check</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #8: Red Flag Check">
               Look at my resume and tell me any red flags a recruiter might see:<br /><br />
               [PASTE RESUME]<br /><br />
               - Employment gaps?<br />
               - Job hopping?<br />
               - Missing information?<br />
               - Anything else concerning?
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #9: Competitive Reality Check</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #9: Competitive Reality Check">
               Realistically, how competitive am I for this role?<br /><br />
               My resume: [PASTE]<br /><br />
               Target job: [PASTE JD]<br /><br />
               Give me the honest truth and what I'd need to change.
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -144,30 +118,21 @@ export default function GrokResumePrompts() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #10: Cut the Fluff</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #10: Cut the Fluff">
               Remove all the fluff, buzzwords, and clichés from this text. Keep only what's concrete and meaningful:<br /><br />
               [PASTE TEXT]
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #11: Quick Keyword Inject</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #11: Quick Keyword Inject">
               Add these keywords naturally into my bullets without making them sound forced:<br /><br />
               Keywords: [LIST]<br /><br />
               Bullets: [PASTE]
-            </div>
-          </div>
+          </CopyablePrompt>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-900 mb-3">Prompt #12: Tone Shift</h4>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+          <CopyablePrompt title="Prompt #12: Tone Shift">
               This sounds too [humble/boring/aggressive]. Make it sound more [confident/interesting/professional]:<br /><br />
               [PASTE TEXT]
-            </div>
-          </div>
+          </CopyablePrompt>
         </div>
 
         <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">
