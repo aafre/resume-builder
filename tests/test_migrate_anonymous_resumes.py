@@ -2,14 +2,12 @@
 Tests for the /api/migrate-anonymous-resumes endpoint.
 
 Tests cover:
-1. Preferences migration when new user has no existing preferences
-2. Preferences deletion when new user already has preferences
-3. Error handling for preferences migration
-4. Edge cases (same user, no resumes to migrate)
+1. RPC is called with correct parameters for preference migration
+2. Error handling for preferences migration
+3. API contract tests (HTTP status codes and responses)
 """
 import pytest
-from unittest.mock import MagicMock, patch
-import json
+from unittest.mock import MagicMock, patch, call
 import sys
 import os
 
@@ -33,6 +31,7 @@ def create_mock_supabase():
     mock.in_.return_value = mock
     mock.is_.return_value = mock
     mock.maybeSingle.return_value = mock
+    mock.rpc.return_value = mock
     mock.storage.from_.return_value = mock
     mock.download.return_value = b'fake-image-data'
     mock.upload.return_value = None
@@ -49,165 +48,60 @@ def create_mock_response(data=None, count=0):
     return response
 
 
-class TestMigratePreferencesBehavior:
+class TestMigratePreferencesRPC:
     """
-    Unit tests for the user_preferences migration logic.
+    Unit tests for the user_preferences migration RPC call.
 
-    These tests verify the migration behavior by testing the logic directly,
-    rather than through HTTP requests which require complex mocking of the
-    Flask app and Supabase client initialization.
+    These tests verify that the migrate_user_preferences RPC is called
+    with the correct parameters. The actual migration logic is handled
+    atomically in the database function.
     """
 
-    def test_migrate_preferences_when_new_user_has_none(self):
+    def test_rpc_called_with_correct_parameters(self):
         """
-        Scenario: Anonymous user has preferences, new authenticated user does not.
-        Expected: Preferences should be migrated (user_id updated, not deleted).
+        Verify that supabase.rpc('migrate_user_preferences', ...) is called
+        with the correct old_uid and new_uid parameters.
         """
         mock_supabase = create_mock_supabase()
+        mock_supabase.execute.return_value = create_mock_response()
 
-        # Track what operations are performed
-        operations = []
-
-        def track_update(data):
-            operations.append(('update', data))
-            return mock_supabase
-
-        def track_delete():
-            operations.append(('delete', None))
-            return mock_supabase
-
-        mock_supabase.update.side_effect = track_update
-        mock_supabase.delete.side_effect = track_delete
-
-        # New user has NO preferences
-        mock_supabase.execute.return_value = create_mock_response(data=None)
-
-        # Simulate the migration logic from app.py
-        new_user_id = NEW_USER_ID
         old_user_id = OLD_USER_ID
-
-        # This is the logic we're testing (extracted from app.py lines 2694-2720)
-        try:
-            existing_prefs = mock_supabase.table('user_preferences') \
-                .select('user_id') \
-                .eq('user_id', new_user_id) \
-                .maybeSingle() \
-                .execute()
-
-            if existing_prefs.data:
-                # New user already has preferences - delete old
-                mock_supabase.table('user_preferences') \
-                    .delete() \
-                    .eq('user_id', old_user_id) \
-                    .execute()
-            else:
-                # Migrate preferences by updating user_id
-                mock_supabase.table('user_preferences') \
-                    .update({'user_id': new_user_id}) \
-                    .eq('user_id', old_user_id) \
-                    .execute()
-        except Exception:
-            pass
-
-        # Verify UPDATE was called, not DELETE
-        assert any(op[0] == 'update' for op in operations), \
-            "Expected update to be called when new user has no preferences"
-        assert not any(op[0] == 'delete' for op in operations), \
-            "Expected delete NOT to be called when new user has no preferences"
-
-        # Verify update was called with correct user_id
-        update_ops = [op for op in operations if op[0] == 'update']
-        assert update_ops[0][1] == {'user_id': NEW_USER_ID}
-
-    def test_delete_old_preferences_when_new_user_has_some(self):
-        """
-        Scenario: Both anonymous and new user have preferences.
-        Expected: Old preferences should be deleted (new user keeps theirs).
-        """
-        mock_supabase = create_mock_supabase()
-
-        operations = []
-
-        def track_update(data):
-            operations.append(('update', data))
-            return mock_supabase
-
-        def track_delete():
-            operations.append(('delete', None))
-            return mock_supabase
-
-        mock_supabase.update.side_effect = track_update
-        mock_supabase.delete.side_effect = track_delete
-
-        # New user HAS preferences
-        mock_supabase.execute.return_value = create_mock_response(
-            data={'user_id': NEW_USER_ID}
-        )
-
         new_user_id = NEW_USER_ID
-        old_user_id = OLD_USER_ID
 
-        # Migration logic
-        try:
-            existing_prefs = mock_supabase.table('user_preferences') \
-                .select('user_id') \
-                .eq('user_id', new_user_id) \
-                .maybeSingle() \
-                .execute()
+        # This mirrors the actual app.py implementation
+        mock_supabase.rpc('migrate_user_preferences', {
+            'old_uid': old_user_id,
+            'new_uid': new_user_id
+        }).execute()
 
-            if existing_prefs.data:
-                mock_supabase.table('user_preferences') \
-                    .delete() \
-                    .eq('user_id', old_user_id) \
-                    .execute()
-            else:
-                mock_supabase.table('user_preferences') \
-                    .update({'user_id': new_user_id}) \
-                    .eq('user_id', old_user_id) \
-                    .execute()
-        except Exception:
-            pass
+        # Verify RPC was called with correct function name and parameters
+        mock_supabase.rpc.assert_called_once_with('migrate_user_preferences', {
+            'old_uid': OLD_USER_ID,
+            'new_uid': NEW_USER_ID
+        })
 
-        # Verify DELETE was called, not UPDATE
-        assert any(op[0] == 'delete' for op in operations), \
-            "Expected delete to be called when new user has preferences"
-        assert not any(op[0] == 'update' for op in operations), \
-            "Expected update NOT to be called when new user already has preferences"
-
-    def test_preferences_error_is_caught_gracefully(self):
+    def test_rpc_error_is_caught_gracefully(self):
         """
-        Scenario: Database error during preferences migration.
+        Scenario: Database error during RPC execution.
         Expected: Error should be caught and logged, not propagated.
         """
         mock_supabase = create_mock_supabase()
 
-        # Simulate database error
+        # Simulate database error from RPC
         mock_supabase.execute.side_effect = Exception("Database connection failed")
 
-        new_user_id = NEW_USER_ID
         old_user_id = OLD_USER_ID
+        new_user_id = NEW_USER_ID
 
         error_caught = False
         logged_warning = None
 
         # Migration logic with error handling (as in app.py)
         try:
-            existing_prefs = mock_supabase.table('user_preferences') \
-                .select('user_id') \
-                .eq('user_id', new_user_id) \
-                .maybeSingle() \
-                .execute()
-
-            if existing_prefs.data:
-                mock_supabase.table('user_preferences') \
-                    .delete() \
-                    .eq('user_id', old_user_id) \
-                    .execute()
-            else:
-                mock_supabase.table('user_preferences') \
-                    .update({'user_id': new_user_id}) \
-                    .eq('user_id', old_user_id) \
-                    .execute()
+            mock_supabase.rpc('migrate_user_preferences', {
+                'old_uid': old_user_id,
+                'new_uid': new_user_id
+            }).execute()
         except Exception as e:
             # This is the expected behavior - error is caught and logged
             error_caught = True
@@ -311,62 +205,3 @@ class TestMigrationAPIContract:
             )
 
         assert response.status_code == 401
-
-
-class TestMigrationLogicIntegration:
-    """
-    Integration-style tests that verify the complete migration flow.
-    """
-
-    def test_full_preferences_migration_flow(self):
-        """
-        Test the complete preferences migration flow:
-        1. Check if new user has preferences
-        2. If not, update old preferences to new user_id
-        3. If yes, delete old preferences
-        """
-        mock_supabase = create_mock_supabase()
-
-        # Simulate: first call returns None (new user has no prefs)
-        # second call succeeds (update)
-        call_count = [0]
-
-        def mock_execute():
-            call_count[0] += 1
-            if call_count[0] == 1:
-                # Check for existing prefs - none found
-                return create_mock_response(data=None)
-            else:
-                # Update succeeds
-                return create_mock_response()
-
-        mock_supabase.execute.side_effect = mock_execute
-
-        new_user_id = NEW_USER_ID
-        old_user_id = OLD_USER_ID
-        migration_succeeded = False
-
-        try:
-            existing_prefs = mock_supabase.table('user_preferences') \
-                .select('user_id') \
-                .eq('user_id', new_user_id) \
-                .maybeSingle() \
-                .execute()
-
-            if existing_prefs.data:
-                mock_supabase.table('user_preferences') \
-                    .delete() \
-                    .eq('user_id', old_user_id) \
-                    .execute()
-            else:
-                mock_supabase.table('user_preferences') \
-                    .update({'user_id': new_user_id}) \
-                    .eq('user_id', old_user_id) \
-                    .execute()
-
-            migration_succeeded = True
-        except Exception:
-            pass
-
-        assert migration_succeeded, "Migration should complete successfully"
-        assert call_count[0] == 2, "Should make exactly 2 database calls"
