@@ -85,6 +85,40 @@ export default function JobExamplePage() {
       });
   }, [slug]);
 
+  // Compute derived values (always computed to maintain hook order)
+  const relatedJobs = slug ? getRelatedJobs(slug, 4) : [];
+  const categoryInfo = data ? JOB_CATEGORIES.find(c => c.id === data.meta.category) : null;
+  const faqs: FAQConfig[] = data?.customFaqs || (data ? generateFAQs(data) : []);
+
+  // Create SEO config (with defaults for loading/error states)
+  const seoConfig = data ? {
+    title: data.meta.metaTitle,
+    description: data.meta.metaDescription,
+    keywords: [
+      `${data.meta.title.toLowerCase()} resume`,
+      `${data.meta.title.toLowerCase()} resume example`,
+      `${data.meta.title.toLowerCase()} resume template`,
+      `free ${data.meta.title.toLowerCase()} resume`,
+    ],
+    canonicalUrl: `/examples/${slug}`,
+  } : {
+    title: 'Resume Example',
+    description: 'Professional resume example',
+    keywords: [],
+    canonicalUrl: `/examples/${slug || ''}`,
+  };
+
+  // Create schema (must be called unconditionally to maintain hook order)
+  const schemas = usePageSchema({
+    type: 'itemList',
+    faqs,
+    breadcrumbs: [
+      { label: 'Home', href: '/' },
+      { label: 'Resume Examples', href: '/examples' },
+      { label: data?.meta.title || 'Example', href: `/examples/${slug || ''}` },
+    ],
+  });
+
   // Handle "Edit This Template" click
   const handleEditTemplate = () => {
     if (!data) return;
@@ -97,6 +131,7 @@ export default function JobExamplePage() {
     navigate('/editor');
   };
 
+  // Early returns AFTER all hooks
   if (loading) {
     return <LoadingSkeleton />;
   }
@@ -104,39 +139,6 @@ export default function JobExamplePage() {
   if (error || !data || !slug) {
     return <NotFound slug={slug || 'unknown'} />;
   }
-
-  // Get related jobs
-  const relatedJobs = getRelatedJobs(slug, 4);
-
-  // Get category info
-  const categoryInfo = JOB_CATEGORIES.find(c => c.id === data.meta.category);
-
-  // Generate FAQs (use custom FAQs if provided, otherwise generate)
-  const faqs: FAQConfig[] = data.customFaqs || generateFAQs(data);
-
-  // Create SEO config
-  const seoConfig = {
-    title: data.meta.metaTitle,
-    description: data.meta.metaDescription,
-    keywords: [
-      `${data.meta.title.toLowerCase()} resume`,
-      `${data.meta.title.toLowerCase()} resume example`,
-      `${data.meta.title.toLowerCase()} resume template`,
-      `free ${data.meta.title.toLowerCase()} resume`,
-    ],
-    canonicalUrl: `/examples/${slug}`,
-  };
-
-  // Create schema
-  const schemas = usePageSchema({
-    type: 'itemList',
-    faqs,
-    breadcrumbs: [
-      { label: 'Home', href: '/' },
-      { label: 'Resume Examples', href: '/examples' },
-      { label: data.meta.title, href: `/examples/${slug}` },
-    ],
-  });
 
   // Hero config - no CTA here since sidebar has the working "Edit This Template" button
   const heroConfig = {
