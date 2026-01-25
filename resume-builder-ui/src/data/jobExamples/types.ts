@@ -46,6 +46,7 @@ export interface ResumeContact {
   phone: string;
   location: string;
   linkedin?: string;
+  github?: string;
   website?: string;
 }
 

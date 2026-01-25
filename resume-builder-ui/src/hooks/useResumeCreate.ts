@@ -24,6 +24,7 @@ interface ContactInfo {
   phone?: string;
   location?: string;
   linkedin?: string;
+  github?: string;
   linkedin_display?: string;
   social_links?: Array<{ platform: string; url: string; display: string }>;
 }
