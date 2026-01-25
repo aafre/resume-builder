@@ -116,6 +116,7 @@ export function ResumeCard({
     >
       {/* Thumbnail */}
       <div
+        data-testid="thumbnail-container"
         className={`relative bg-gray-100 h-48 overflow-hidden rounded-t-lg ${
           isPreviewLoading ? 'cursor-wait' : 'cursor-pointer'
         }`}
@@ -133,8 +134,8 @@ export function ResumeCard({
 
         {/* Preview Loading Overlay */}
         {isPreviewLoading && (
-          <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center gap-2">
-            <div className="animate-spin rounded-full h-8 w-8 border-2 border-white border-t-transparent"></div>
+          <div data-testid="preview-loading-overlay" className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center gap-2">
+            <div data-testid="preview-loading-spinner" className="animate-spin rounded-full h-8 w-8 border-2 border-white border-t-transparent"></div>
             <span className="text-white font-medium text-sm">Opening preview...</span>
           </div>
         )}

@@ -147,15 +147,13 @@ describe("ResumeCard", () => {
     });
 
     it("shows spinner in loading overlay", () => {
-      const { container } = render(
-        <ResumeCard {...defaultProps} isPreviewLoading={true} />
-      );
+      render(<ResumeCard {...defaultProps} isPreviewLoading={true} />);
 
-      // Should have spinner in the overlay
-      const overlay = container.querySelector(".bg-black\\/50");
+      // Find overlay and spinner using data-testid (more robust than CSS classes)
+      const overlay = screen.getByTestId("preview-loading-overlay");
       expect(overlay).toBeInTheDocument();
 
-      const spinner = overlay?.querySelector(".animate-spin");
+      const spinner = screen.getByTestId("preview-loading-spinner");
       expect(spinner).toBeInTheDocument();
     });
 
@@ -169,12 +167,10 @@ describe("ResumeCard", () => {
     });
 
     it("has cursor-wait class when loading", () => {
-      const { container } = render(
-        <ResumeCard {...defaultProps} isPreviewLoading={true} />
-      );
+      render(<ResumeCard {...defaultProps} isPreviewLoading={true} />);
 
-      const thumbnailContainer = container.querySelector(".cursor-wait");
-      expect(thumbnailContainer).toBeInTheDocument();
+      const thumbnailContainer = screen.getByTestId("thumbnail-container");
+      expect(thumbnailContainer).toHaveClass("cursor-wait");
     });
 
     it("applies blur and scale effect to image when loading", () => {
