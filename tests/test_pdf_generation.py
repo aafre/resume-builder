@@ -28,7 +28,6 @@ import shutil
 import os
 import sys
 from pathlib import Path
-from unittest.mock import MagicMock, patch, Mock
 from concurrent.futures import ThreadPoolExecutor
 
 # Add parent directory to path
@@ -147,18 +146,13 @@ class TestThreadPoolInitialization:
             # Restore original pool
             app.PDF_THREAD_POOL = original_pool
 
-    @patch('concurrent.futures.ThreadPoolExecutor')
-    def test_pool_has_correct_max_workers(self, mock_ThreadPoolExecutor):
+    def test_pool_has_correct_max_workers(self):
         """Verify pool is initialized with expected worker count."""
-        original_pool = app.PDF_THREAD_POOL
-        app.PDF_THREAD_POOL = None
-        try:
+        if app.PDF_THREAD_POOL is None:
             app.initialize_pdf_pool()
-            mock_ThreadPoolExecutor.assert_called_once_with(max_workers=5)
-        finally:
-            # The new pool is a mock, so we can't shut it down.
-            # Just restore the original.
-            app.PDF_THREAD_POOL = original_pool
+
+        # ThreadPoolExecutor stores max_workers in _max_workers
+        assert app.PDF_THREAD_POOL._max_workers == 5
 
 
 # =============================================================================
