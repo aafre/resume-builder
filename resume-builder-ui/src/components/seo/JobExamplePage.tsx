@@ -19,8 +19,10 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useResumeCreate } from '../../hooks/useResumeCreate';
 import ConversionPromptModal from '../ConversionPromptModal';
 import AuthModal from '../AuthModal';
+import TemplateSelectionModal from '../TemplateSelectionModal';
 import type { JobExampleData } from '../../data/jobExamples/types';
 import type { FAQConfig } from '../../types/seo';
+import type { Section } from '../../types';
 
 // Loading skeleton component
 const LoadingSkeleton = () => (
@@ -62,6 +64,8 @@ export default function JobExamplePage() {
   const [error, setError] = useState(false);
   const [showConversionPrompt, setShowConversionPrompt] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
 
   const { isAnonymous, session } = useAuth();
   const { createResume, creating } = useResumeCreate();
@@ -133,8 +137,11 @@ export default function JobExamplePage() {
 
     const editorData = convertToEditorFormat(data.resume);
 
+    // Use selected template or fall back to the example's default template
+    const templateId = selectedTemplateId || data.resume.template || 'modern';
+
     await createResume({
-      templateId: data.resume.template || 'modern',
+      templateId,
       title: `${data.meta.title} Resume`,
       contactInfo: {
         name: data.resume.contact.name,
@@ -143,13 +150,22 @@ export default function JobExamplePage() {
         location: data.resume.contact.location,
         linkedin: data.resume.contact.linkedin,
       },
-      sections: (editorData as { sections: any[] }).sections,
+      sections: (editorData as { sections: Section[] }).sections,
     });
   };
 
-  // Handle "Edit This Template" click
+  // Handle "Edit This Template" click - show template selection first
   const handleEditTemplate = () => {
     if (!data || !session) return;
+
+    // Always show template selection modal first
+    setShowTemplateModal(true);
+  };
+
+  // Handle template selection from modal
+  const handleTemplateSelect = async (templateId: string) => {
+    setSelectedTemplateId(templateId);
+    setShowTemplateModal(false);
 
     // Show conversion prompt for anonymous users
     if (isAnonymous) {
@@ -157,8 +173,23 @@ export default function JobExamplePage() {
       return;
     }
 
-    // Authenticated users - create directly
-    doCreateResume();
+    // Authenticated users - create directly with selected template
+    if (!data || !session) return;
+
+    const editorData = convertToEditorFormat(data.resume);
+
+    await createResume({
+      templateId,
+      title: `${data.meta.title} Resume`,
+      contactInfo: {
+        name: data.resume.contact.name,
+        email: data.resume.contact.email,
+        phone: data.resume.contact.phone,
+        location: data.resume.contact.location,
+        linkedin: data.resume.contact.linkedin,
+      },
+      sections: (editorData as { sections: Section[] }).sections,
+    });
   };
 
   // Handle "Sign In" from conversion prompt
@@ -413,6 +444,14 @@ export default function JobExamplePage() {
         description="Use our free builder to create a professional resume in minutes. No sign-up required."
         primaryText="Browse All Templates"
         primaryHref="/templates"
+      />
+
+      {/* Template Selection Modal */}
+      <TemplateSelectionModal
+        isOpen={showTemplateModal}
+        onClose={() => setShowTemplateModal(false)}
+        onSelect={handleTemplateSelect}
+        initialTemplateId={data.resume.template}
       />
 
       {/* Conversion Prompt Modal (for anonymous users) */}
