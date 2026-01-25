@@ -77,9 +77,13 @@ export default function CopyablePrompt({
   );
 }
 
+/** Block-level elements that should have newlines after their content */
+const BLOCK_ELEMENTS = ['p', 'div', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'tr', 'blockquote'];
+
 /**
  * Extract plain text from React children for copying
  * Handles <br /> elements by converting them to newlines
+ * Handles block-level elements by adding newlines after their content
  */
 function extractTextFromChildren(children: ReactNode): string {
   if (typeof children === 'string') {
@@ -96,10 +100,14 @@ function extractTextFromChildren(children: ReactNode): string {
       return '\n';
     }
 
+    const elementType = typeof children.type === 'string' ? children.type : null;
+    const isBlockElement = elementType && BLOCK_ELEMENTS.includes(elementType);
+
     const props = children.props as { children?: ReactNode };
-    if (props?.children) {
-      return extractTextFromChildren(props.children);
-    }
+    const innerText = props?.children ? extractTextFromChildren(props.children) : '';
+
+    // Add newline after block-level elements
+    return isBlockElement ? innerText + '\n' : innerText;
   }
 
   return '';
