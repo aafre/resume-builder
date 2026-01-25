@@ -107,7 +107,7 @@ function extractTextFromChildren(children: ReactNode): string {
     const innerText = props?.children ? extractTextFromChildren(props.children) : '';
 
     // Add newline after block-level elements
-    return isBlockElement ? innerText + '\n' : innerText;
+    return isBlockElement ? innerText.trimEnd() + '\n' : innerText;
   }
 
   return '';
