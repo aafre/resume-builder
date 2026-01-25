@@ -5,7 +5,7 @@ export default function ResumeLengthGuide() {
     <BlogLayout
       title="Resume Length: How Long Should Your Resume Be in 2026?"
       description="Discover the optimal resume length for your experience level and industry, with specific guidelines. Updated for 2026."
-      publishDate="2025-07-08"
+      publishDate="2026-01-08"
       lastUpdated="2026-01-25"
       readTime="6 min"
       keywords={[

@@ -5,7 +5,7 @@ export default function ProfessionalSummaryExamples() {
     <BlogLayout
       title="Professional Summary Examples: 20+ Winning Templates"
       description="Craft a compelling professional summary that grabs attention with these proven examples and templates for every industry and experience level."
-      publishDate="2025-07-18"
+      publishDate="2026-01-18"
       readTime="8 min"
       keywords={[
         "professional summary",

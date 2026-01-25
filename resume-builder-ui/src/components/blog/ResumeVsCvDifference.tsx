@@ -6,7 +6,7 @@ export default function ResumeVsCvDifference() {
     <BlogLayout
       title="Resume vs CV: Understanding the Key Differences"
       description="Learn when to use a resume versus a CV, and how to format each document for maximum impact."
-      publishDate="2025-07-02"
+      publishDate="2026-01-02"
       lastUpdated="2026-01-25"
       readTime="6 min"
       keywords={[

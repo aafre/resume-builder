@@ -5,7 +5,7 @@ export default function TechResumeGuide() {
     <BlogLayout
       title="Tech Resume Guide: Land Your Dream Developer Job in 2026"
       description="Create a standout tech resume with industry-specific tips, project showcases, and skill presentations. Updated for 2026."
-      publishDate="2025-07-05"
+      publishDate="2026-01-05"
       lastUpdated="2026-01-25"
       readTime="9 min"
       keywords={[

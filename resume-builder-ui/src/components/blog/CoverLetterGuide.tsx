@@ -5,7 +5,7 @@ export default function CoverLetterGuide() {
     <BlogLayout
       title="How to Write a Cover Letter That Gets Read in 2026"
       description="Master the art of writing cover letters that stand out, get noticed, and support your resume in the modern job market."
-      publishDate="2025-07-12"
+      publishDate="2026-01-12"
       readTime="7 min" // Adjusted based on content length (see calculation below)
       keywords={[
         "cover letter tips",

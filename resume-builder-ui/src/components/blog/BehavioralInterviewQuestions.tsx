@@ -5,7 +5,7 @@ export default function BehavioralInterviewQuestions() {
     <BlogLayout
       title="15+ Behavioral Interview Questions (and How to Answer with the STAR Method)"
       description="Prepare for tough behavioral questions by mastering the STAR method with these common examples and answer frameworks."
-      publishDate="2025-09-02"
+      publishDate="2026-01-02"
       lastUpdated="2026-01-25"
       readTime="6 min"
       keywords={[
