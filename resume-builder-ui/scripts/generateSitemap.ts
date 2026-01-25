@@ -11,6 +11,13 @@ import dotenv from 'dotenv';
 import { JOBS_DATABASE } from '../src/data/jobKeywords/index';
 import { JOB_EXAMPLES_DATABASE } from '../src/data/jobExamples/index';
 import { STATIC_URLS } from '../src/data/sitemapUrls';
+import {
+  HREFLANG_PAIRS,
+  CV_REGIONS,
+  RESUME_REGION,
+  DEFAULT_REGION,
+  findHreflangPair,
+} from '../src/data/hreflangMappings';
 
 // Load environment variables from .env file (for local development)
 // In production (Docker), env vars are passed as build args
@@ -102,13 +109,35 @@ function generateSitemap(): string {
     });
   });
 
+  // Check if we have any hreflang pairs that need the xhtml namespace
+  const hasHreflangPairs = HREFLANG_PAIRS.length > 0;
+
   // Generate XML from Map (single source of truth)
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
-  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+  if (hasHreflangPairs) {
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n';
+    xml += '        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n';
+  } else {
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+  }
 
   urls.forEach((details, loc) => {
     xml += '  <url>\n';
     xml += `    <loc>${escapeXml(`${baseUrl}${loc}`)}</loc>\n`;
+
+    // Add hreflang links if this URL is part of a CV/Resume pair
+    const hreflangPair = findHreflangPair(loc);
+    if (hreflangPair) {
+      // Add CV regions pointing to CV page
+      CV_REGIONS.forEach(region => {
+        xml += `    <xhtml:link rel="alternate" hreflang="${region}" href="${escapeXml(`${baseUrl}${hreflangPair.cv}`)}"/>\n`;
+      });
+      // Add US region pointing to resume page
+      xml += `    <xhtml:link rel="alternate" hreflang="${RESUME_REGION}" href="${escapeXml(`${baseUrl}${hreflangPair.resume}`)}"/>\n`;
+      // Add x-default pointing to resume page (default experience)
+      xml += `    <xhtml:link rel="alternate" hreflang="${DEFAULT_REGION}" href="${escapeXml(`${baseUrl}${hreflangPair.resume}`)}"/>\n`;
+    }
+
     xml += `    <lastmod>${details.lastmod}</lastmod>\n`;
     xml += `    <changefreq>${details.changefreq}</changefreq>\n`;
     xml += `    <priority>${details.priority}</priority>\n`;
