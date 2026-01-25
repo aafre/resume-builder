@@ -114,6 +114,8 @@ class TestThreadPoolInitialization:
         """Verify initialize_pdf_pool creates a working pool."""
         # monkeypatch will automatically restore the original value
         monkeypatch.setattr(app, "PDF_THREAD_POOL", None)
+        # Mock atexit.register to prevent side effects across tests
+        monkeypatch.setattr(app.atexit, "register", lambda func: None)
 
         app.initialize_pdf_pool()
 
