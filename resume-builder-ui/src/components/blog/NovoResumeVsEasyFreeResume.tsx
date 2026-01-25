@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
@@ -30,29 +30,18 @@ function WinnerBadge() {
 }
 
 export default function NovoResumeVsEasyFreeResume() {
-  useEffect(() => {
-    const schema = generateComparisonSchema(
-      { name: "EasyFreeResume", rating: 4.8, price: "0" },
-      { name: "NovoResume", rating: 3.8, price: "99.00" },
-      "2026-01-21"
-    );
-
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.text = JSON.stringify(schema);
-    script.id = "comparison-schema";
-    document.head.appendChild(script);
-
-    return () => {
-      const existingScript = document.getElementById("comparison-schema");
-      if (existingScript) {
-        existingScript.remove();
-      }
-    };
-  }, []);
+  const schema = generateComparisonSchema(
+    { name: "EasyFreeResume", rating: 4.8, price: "0" },
+    { name: "NovoResume", rating: 3.8, price: "99.00" },
+    "2026-01-21"
+  );
 
   return (
-    <BlogLayout
+    <>
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(schema)}</script>
+      </Helmet>
+      <BlogLayout
       title="NovoResume Pricing 2026: Premium Templates Free Alternative"
       description="NovoResume's premium plans cost $16-$99/year. Compare features with EasyFreeResume, a 100% free alternative with ATS-friendly templates and better privacy."
       publishDate="2026-01-21"
@@ -346,5 +335,6 @@ export default function NovoResumeVsEasyFreeResume() {
         </div>
       </div>
     </BlogLayout>
+    </>
   );
 }

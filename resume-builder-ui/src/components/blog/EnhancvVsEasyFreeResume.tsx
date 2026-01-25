@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
@@ -30,29 +30,18 @@ function WinnerBadge() {
 }
 
 export default function EnhancvVsEasyFreeResume() {
-  useEffect(() => {
-    const schema = generateComparisonSchema(
-      { name: "EasyFreeResume", rating: 4.8, price: "0" },
-      { name: "Enhancv", rating: 4.0, price: "119.88" },
-      "2026-01-21"
-    );
-
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.text = JSON.stringify(schema);
-    script.id = "comparison-schema";
-    document.head.appendChild(script);
-
-    return () => {
-      const existingScript = document.getElementById("comparison-schema");
-      if (existingScript) {
-        existingScript.remove();
-      }
-    };
-  }, []);
+  const schema = generateComparisonSchema(
+    { name: "EasyFreeResume", rating: 4.8, price: "0" },
+    { name: "Enhancv", rating: 4.0, price: "119.88" },
+    "2026-01-21"
+  );
 
   return (
-    <BlogLayout
+    <>
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(schema)}</script>
+      </Helmet>
+      <BlogLayout
       title="Enhancv Pricing 2026: Is $9.99/Month Worth It? Free Alternative Compared"
       description="Enhancv costs $9.99-$24.99/month for premium features. Compare with EasyFreeResume, a free alternative with ATS-friendly templates and complete privacy."
       publishDate="2026-01-21"
@@ -347,5 +336,6 @@ export default function EnhancvVsEasyFreeResume() {
         </div>
       </div>
     </BlogLayout>
+    </>
   );
 }

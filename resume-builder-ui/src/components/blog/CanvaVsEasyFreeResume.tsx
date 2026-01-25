@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
@@ -30,28 +30,17 @@ function WinnerBadge() {
 }
 
 export default function CanvaVsEasyFreeResume() {
-  useEffect(() => {
-    const schema = generateComparisonSchema(
-      { name: "EasyFreeResume", rating: 4.8, price: "0" },
-      { name: "Canva", rating: 3.5, price: "0" },
-      "2026-01-21"
-    );
-
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.text = JSON.stringify(schema);
-    script.id = "comparison-schema";
-    document.head.appendChild(script);
-
-    return () => {
-      const existingScript = document.getElementById("comparison-schema");
-      if (existingScript) {
-        existingScript.remove();
-      }
-    };
-  }, []);
+  const schema = generateComparisonSchema(
+    { name: "EasyFreeResume", rating: 4.8, price: "0" },
+    { name: "Canva", rating: 3.5, price: "0" },
+    "2026-01-21"
+  );
 
   return (
+    <>
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(schema)}</script>
+      </Helmet>
     <BlogLayout
       title="Canva Resume Templates 2026: Why They Fail ATS (Better Alternative)"
       description="Canva's free resume templates look great but often fail ATS scans. Learn why and discover EasyFreeResume, a free alternative designed for ATS compatibility."
@@ -362,5 +351,6 @@ export default function CanvaVsEasyFreeResume() {
         </div>
       </div>
     </BlogLayout>
+    </>
   );
 }

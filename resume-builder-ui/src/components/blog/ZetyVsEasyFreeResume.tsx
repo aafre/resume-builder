@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import BlogLayout from "../BlogLayout";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
@@ -32,29 +32,17 @@ function WinnerBadge() {
 }
 
 export default function ZetyVsEasyFreeResume() {
-  // Add comparison schema to head
-  useEffect(() => {
-    const schema = generateComparisonSchema(
-      { name: "EasyFreeResume", rating: 4.8, price: "0" },
-      { name: "Zety", rating: 3.5, price: "71.40" },
-      "2026-01-18"
-    );
-
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.text = JSON.stringify(schema);
-    script.id = "comparison-schema";
-    document.head.appendChild(script);
-
-    return () => {
-      const existingScript = document.getElementById("comparison-schema");
-      if (existingScript) {
-        existingScript.remove();
-      }
-    };
-  }, []);
+  const schema = generateComparisonSchema(
+    { name: "EasyFreeResume", rating: 4.8, price: "0" },
+    { name: "Zety", rating: 3.5, price: "71.40" },
+    "2026-01-18"
+  );
 
   return (
+    <>
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(schema)}</script>
+      </Helmet>
     <BlogLayout
       title="Zety Pricing 2026: Why Pay? Use This 100% Free Alternative Instead"
       description="Looking for Zety pricing? Don't get locked into a $5.95-$23.95/month subscription. EasyFreeResume offers the same ATS templates for $0. No hidden fees, no watermarks."
@@ -809,5 +797,6 @@ export default function ZetyVsEasyFreeResume() {
         </div>
       </div>
     </BlogLayout>
+    </>
   );
 }

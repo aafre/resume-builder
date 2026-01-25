@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
@@ -30,29 +30,18 @@ function WinnerBadge() {
 }
 
 export default function ResumeIOVsEasyFreeResume() {
-  useEffect(() => {
-    const schema = generateComparisonSchema(
-      { name: "EasyFreeResume", rating: 4.8, price: "0" },
-      { name: "Resume.io", rating: 3.6, price: "44.95" },
-      "2026-01-21"
-    );
-
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.text = JSON.stringify(schema);
-    script.id = "comparison-schema";
-    document.head.appendChild(script);
-
-    return () => {
-      const existingScript = document.getElementById("comparison-schema");
-      if (existingScript) {
-        existingScript.remove();
-      }
-    };
-  }, []);
+  const schema = generateComparisonSchema(
+    { name: "EasyFreeResume", rating: 4.8, price: "0" },
+    { name: "Resume.io", rating: 3.6, price: "44.95" },
+    "2026-01-21"
+  );
 
   return (
-    <BlogLayout
+    <>
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(schema)}</script>
+      </Helmet>
+      <BlogLayout
       title="Resume.io Pricing 2026: Free Alternative That Does More"
       description="Resume.io costs $2.95-$24.95/month for downloads. EasyFreeResume offers the same ATS templates for $0. Compare features, privacy, and see why free wins."
       publishDate="2026-01-21"
@@ -356,5 +345,6 @@ export default function ResumeIOVsEasyFreeResume() {
         </div>
       </div>
     </BlogLayout>
+    </>
   );
 }

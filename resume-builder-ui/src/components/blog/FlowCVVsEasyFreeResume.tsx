@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
@@ -30,29 +30,18 @@ function WinnerBadge() {
 }
 
 export default function FlowCVVsEasyFreeResume() {
-  useEffect(() => {
-    const schema = generateComparisonSchema(
-      { name: "EasyFreeResume", rating: 4.8, price: "0" },
-      { name: "FlowCV", rating: 4.2, price: "0" },
-      "2026-01-21"
-    );
-
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.text = JSON.stringify(schema);
-    script.id = "comparison-schema";
-    document.head.appendChild(script);
-
-    return () => {
-      const existingScript = document.getElementById("comparison-schema");
-      if (existingScript) {
-        existingScript.remove();
-      }
-    };
-  }, []);
+  const schema = generateComparisonSchema(
+    { name: "EasyFreeResume", rating: 4.8, price: "0" },
+    { name: "FlowCV", rating: 4.2, price: "0" },
+    "2026-01-21"
+  );
 
   return (
-    <BlogLayout
+    <>
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(schema)}</script>
+      </Helmet>
+      <BlogLayout
       title="FlowCV vs EasyFreeResume 2026: Which Free Resume Builder is Better?"
       description="Both FlowCV and EasyFreeResume offer free resume building. Compare features, privacy, and templates to see which free option is truly better for your job search."
       publishDate="2026-01-21"
@@ -342,5 +331,6 @@ export default function FlowCVVsEasyFreeResume() {
         </div>
       </div>
     </BlogLayout>
+    </>
   );
 }

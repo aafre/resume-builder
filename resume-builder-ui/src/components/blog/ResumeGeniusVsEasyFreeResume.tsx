@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
@@ -30,29 +30,18 @@ function WinnerBadge() {
 }
 
 export default function ResumeGeniusVsEasyFreeResume() {
-  useEffect(() => {
-    const schema = generateComparisonSchema(
-      { name: "EasyFreeResume", rating: 4.8, price: "0" },
-      { name: "Resume Genius", rating: 3.4, price: "95.40" },
-      "2026-01-21"
-    );
-
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.text = JSON.stringify(schema);
-    script.id = "comparison-schema";
-    document.head.appendChild(script);
-
-    return () => {
-      const existingScript = document.getElementById("comparison-schema");
-      if (existingScript) {
-        existingScript.remove();
-      }
-    };
-  }, []);
+  const schema = generateComparisonSchema(
+    { name: "EasyFreeResume", rating: 4.8, price: "0" },
+    { name: "Resume Genius", rating: 3.4, price: "95.40" },
+    "2026-01-21"
+  );
 
   return (
-    <BlogLayout
+    <>
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(schema)}</script>
+      </Helmet>
+      <BlogLayout
       title="Resume Genius Pricing 2026: Is $7.95/Month Worth It? (Free Alternative)"
       description="Resume Genius charges $7.95-$39.95/month for PDF downloads. See how EasyFreeResume offers the same ATS templates completely free with better privacy."
       publishDate="2026-01-21"
@@ -341,5 +330,6 @@ export default function ResumeGeniusVsEasyFreeResume() {
         </div>
       </div>
     </BlogLayout>
+    </>
   );
 }
