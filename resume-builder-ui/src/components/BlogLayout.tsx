@@ -122,7 +122,7 @@ export default function BlogLayout({
 
           <div className="flex flex-wrap gap-2">
             {keywords.map((keyword, index) => (
-              <span 
+              <span
                 key={index}
                 className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full"
               >

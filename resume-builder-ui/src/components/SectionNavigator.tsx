@@ -25,6 +25,7 @@ import {
   MdSupport,
 } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { AdContainer } from "./ads";
 
 interface Section {
   name: string;
@@ -612,6 +613,21 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             </kbd>{" "}
             to toggle
           </p>
+        </div>
+      )}
+
+      {/* Desktop-only sidebar ad - far from interactive elements
+          Phase 3 implementation - monitor for impact on editor completion rate */}
+      {!isCollapsed && (
+        <div className="px-3 py-3 border-t border-gray-200/40 bg-gray-50/30">
+          <AdContainer
+            adSlot="3691293294"
+            adFormat="vertical"
+            minHeight={250}
+            minWidth={240}
+            rootMargin="100px"
+            testId="editor-sidebar-ad"
+          />
         </div>
       )}
     </nav>
