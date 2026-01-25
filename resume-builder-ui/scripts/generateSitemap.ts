@@ -47,6 +47,9 @@ const STATIC_URLS = [
 
   // Template Pages (0.7)
   { loc: '/templates/ats-friendly', priority: 0.7, changefreq: 'monthly', lastmod: '2025-10-26' },
+  { loc: '/templates/modern-resume-templates', priority: 0.7, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/templates/minimalist-resume-templates', priority: 0.7, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/templates/resume-templates-for-students', priority: 0.7, changefreq: 'monthly', lastmod: '2026-01-21' },
 
   // Manually-curated keyword page (0.7)
   { loc: '/resume-keywords/customer-service', priority: 0.7, changefreq: 'monthly', lastmod: '2026-01-01' },
@@ -77,6 +80,23 @@ const STATIC_URLS = [
   { loc: '/blog/zety-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-01' },
   { loc: '/blog/how-to-list-skills', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
   { loc: '/blog/quantify-resume-accomplishments', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
+
+  // New AI Blog Posts (0.5)
+  { loc: '/blog/chatgpt-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/ai-resume-writing-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/claude-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/gemini-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/grok-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/ai-job-description-analyzer', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/ai-resume-review', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+
+  // Competitor Comparison Posts (0.5)
+  { loc: '/blog/resume-io-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/resume-genius-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/novoresume-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/enhancv-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/canva-resume-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/flowcv-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
 
   // Static Pages (0.3)
   { loc: '/about', priority: 0.3, changefreq: 'yearly', lastmod: '2025-10-26' },

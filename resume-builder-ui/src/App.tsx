@@ -23,7 +23,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 // Lazy-loaded route components
-const TemplateCarousel = lazy(() => import("./components/TemplateCarousel"));
+const TemplatesPage = lazy(() => import("./components/seo/TemplatesPage"));
 const Editor = lazy(() => import("./components/Editor"));
 const MyResumes = lazy(() => import("./pages/MyResumes"));
 const AuthCallback = lazy(() => import("./components/AuthCallback"));
@@ -39,6 +39,9 @@ const JobKeywordsPage = lazy(() => import("./components/seo/JobKeywordsPage"));
 const BestFreeResumeBuilderReddit = lazy(() => import("./components/seo/BestFreeResumeBuilderReddit"));
 const FreeCVBuilder = lazy(() => import("./components/seo/FreeCVBuilder"));
 const CVTemplatesHub = lazy(() => import("./components/seo/CVTemplatesHub"));
+const ModernTemplatesPage = lazy(() => import("./components/seo/ModernTemplatesPage"));
+const MinimalistTemplatesPage = lazy(() => import("./components/seo/MinimalistTemplatesPage"));
+const StudentTemplatesPage = lazy(() => import("./components/seo/StudentTemplatesPage"));
 
 // Static pages - lazy loaded
 const AboutUs = lazy(() => import("./components/AboutUs"));
@@ -70,6 +73,23 @@ const EasyFreeResumeFreeBlog = lazy(() => import("./components/blog/EasyFreeResu
 const ZetyVsEasyFreeResume = lazy(() => import("./components/blog/ZetyVsEasyFreeResume"));
 const HowToListSkills = lazy(() => import("./components/blog/HowToListSkills"));
 const QuantifyResumeAccomplishments = lazy(() => import("./components/blog/QuantifyResumeAccomplishments"));
+
+// New AI blog posts
+const ChatGPTResumePrompts = lazy(() => import("./components/blog/ChatGPTResumePrompts"));
+const AIResumeWritingGuide = lazy(() => import("./components/blog/AIResumeWritingGuide"));
+const ClaudeResumePrompts = lazy(() => import("./components/blog/ClaudeResumePrompts"));
+const GeminiResumePrompts = lazy(() => import("./components/blog/GeminiResumePrompts"));
+const GrokResumePrompts = lazy(() => import("./components/blog/GrokResumePrompts"));
+const AIJobDescriptionAnalyzer = lazy(() => import("./components/blog/AIJobDescriptionAnalyzer"));
+const AIResumeReview = lazy(() => import("./components/blog/AIResumeReview"));
+
+// Competitor comparison blog posts
+const ResumeIOVsEasyFreeResume = lazy(() => import("./components/blog/ResumeIOVsEasyFreeResume"));
+const ResumeGeniusVsEasyFreeResume = lazy(() => import("./components/blog/ResumeGeniusVsEasyFreeResume"));
+const NovoResumeVsEasyFreeResume = lazy(() => import("./components/blog/NovoResumeVsEasyFreeResume"));
+const EnhancvVsEasyFreeResume = lazy(() => import("./components/blog/EnhancvVsEasyFreeResume"));
+const CanvaVsEasyFreeResume = lazy(() => import("./components/blog/CanvaVsEasyFreeResume"));
+const FlowCVVsEasyFreeResume = lazy(() => import("./components/blog/FlowCVVsEasyFreeResume"));
 
 // Error pages - lazy loaded
 const NotFound = lazy(() => import("./components/NotFound"));
@@ -165,7 +185,7 @@ function AppContent() {
             path="/templates"
             element={
               <Suspense fallback={<LoadingSpinner />}>
-                <TemplateCarousel />
+                <TemplatesPage />
               </Suspense>
             }
           />
@@ -231,6 +251,32 @@ function AppContent() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <CVTemplatesHub />
+              </Suspense>
+            }
+          />
+
+          {/* Template Style Landing Pages */}
+          <Route
+            path="/templates/modern-resume-templates"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ModernTemplatesPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/templates/minimalist-resume-templates"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <MinimalistTemplatesPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/templates/resume-templates-for-students"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <StudentTemplatesPage />
               </Suspense>
             }
           />
@@ -457,6 +503,114 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <QuantifyResumeAccomplishments />
+              </Suspense>
+            }
+          />
+
+          {/* New AI Blog Posts */}
+          <Route
+            path="/blog/chatgpt-resume-prompts"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ChatGPTResumePrompts />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/ai-resume-writing-guide"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <AIResumeWritingGuide />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/claude-resume-prompts"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ClaudeResumePrompts />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/gemini-resume-prompts"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <GeminiResumePrompts />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/grok-resume-prompts"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <GrokResumePrompts />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/ai-job-description-analyzer"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <AIJobDescriptionAnalyzer />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/ai-resume-review"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <AIResumeReview />
+              </Suspense>
+            }
+          />
+
+          {/* Competitor Comparison Blog Posts */}
+          <Route
+            path="/blog/resume-io-vs-easy-free-resume"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ResumeIOVsEasyFreeResume />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/resume-genius-vs-easy-free-resume"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ResumeGeniusVsEasyFreeResume />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/novoresume-vs-easy-free-resume"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <NovoResumeVsEasyFreeResume />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/enhancv-vs-easy-free-resume"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <EnhancvVsEasyFreeResume />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/canva-resume-vs-easy-free-resume"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <CanvaVsEasyFreeResume />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/flowcv-vs-easy-free-resume"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <FlowCVVsEasyFreeResume />
               </Suspense>
             }
           />

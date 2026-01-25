@@ -1,7 +1,48 @@
+import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import BlogLayout from "../BlogLayout";
+import { generateComparisonSchema } from "../../utils/schemaGenerators";
+
+// Star rating component
+function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
+  return (
+    <div className="flex items-center gap-1">
+      {Array.from({ length: max }, (_, i) => (
+        <span
+          key={i}
+          className={`text-xl ${i < rating ? "text-yellow-400" : "text-gray-300"}`}
+        >
+          ★
+        </span>
+      ))}
+      <span className="ml-2 text-sm font-medium text-gray-600">
+        {rating}/{max}
+      </span>
+    </div>
+  );
+}
+
+// Winner badge component
+function WinnerBadge() {
+  return (
+    <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-800">
+      WINNER
+    </span>
+  );
+}
 
 export default function ZetyVsEasyFreeResume() {
+  const schema = generateComparisonSchema(
+    { name: "EasyFreeResume", rating: 4.8, price: "0" },
+    { name: "Zety", rating: 3.5, price: "71.40" },
+    "2026-01-18"
+  );
+
   return (
+    <>
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(schema)}</script>
+      </Helmet>
     <BlogLayout
       title="Zety Pricing 2026: Why Pay? Use This 100% Free Alternative Instead"
       description="Looking for Zety pricing? Don't get locked into a $5.95-$23.95/month subscription. EasyFreeResume offers the same ATS templates for $0. No hidden fees, no watermarks."
@@ -20,6 +61,30 @@ export default function ZetyVsEasyFreeResume() {
       ]}
     >
       <div className="space-y-8">
+        {/* Quick Verdict Box */}
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-2xl p-6 my-8 shadow-lg">
+          <h3 className="font-bold text-green-800 text-xl mb-4">
+            ⚡ Quick Verdict
+          </h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="text-center p-4 bg-white rounded-xl shadow-sm">
+              <p className="font-bold text-green-700 text-lg mb-2">EasyFreeResume</p>
+              <StarRating rating={5} />
+              <p className="text-3xl font-bold text-green-600 mt-2">$0</p>
+              <p className="text-sm text-gray-600">Forever free</p>
+            </div>
+            <div className="text-center p-4 bg-white rounded-xl shadow-sm">
+              <p className="font-bold text-gray-700 text-lg mb-2">Zety</p>
+              <StarRating rating={3} />
+              <p className="text-3xl font-bold text-red-600 mt-2">$71+</p>
+              <p className="text-sm text-gray-600">Per year</p>
+            </div>
+          </div>
+          <p className="text-green-800 mt-4 text-center font-medium">
+            Winner: EasyFreeResume — Same quality templates, zero cost, better privacy
+          </p>
+        </div>
+
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
           When it comes to online resume builders, Zety is one of the biggest
           names in the game. It has a slick interface and lots of features. But
@@ -66,16 +131,24 @@ export default function ZetyVsEasyFreeResume() {
                 <th className="px-6 py-4 text-center font-bold text-blue-600">
                   Zety
                 </th>
+                <th className="px-6 py-4 text-center font-bold text-gray-600">
+                  Winner
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              <tr>
+              <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-gray-900">Cost</td>
                 <td className="px-6 py-4 text-center text-green-600 font-bold">
                   100% Free
                 </td>
                 <td className="px-6 py-4 text-center text-red-600">
                   $5.95 - $23.95/month
+                </td>
+                <td className="px-6 py-4 text-center">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">
+                    EasyFreeResume
+                  </span>
                 </td>
               </tr>
               <tr>
@@ -88,14 +161,24 @@ export default function ZetyVsEasyFreeResume() {
                 <td className="px-6 py-4 text-center text-red-600">
                   ❌ Requires paid plan
                 </td>
+                <td className="px-6 py-4 text-center">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">
+                    EasyFreeResume
+                  </span>
+                </td>
               </tr>
-              <tr>
+              <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-gray-900">
                   Sign-Up Required
                 </td>
                 <td className="px-6 py-4 text-center text-green-600">✅ No</td>
                 <td className="px-6 py-4 text-center text-red-600">
                   ❌ Yes, mandatory
+                </td>
+                <td className="px-6 py-4 text-center">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">
+                    EasyFreeResume
+                  </span>
                 </td>
               </tr>
               <tr>
@@ -106,14 +189,24 @@ export default function ZetyVsEasyFreeResume() {
                   ✅ All templates optimized
                 </td>
                 <td className="px-6 py-4 text-center text-green-600">✅ Yes</td>
+                <td className="px-6 py-4 text-center">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">
+                    Tie
+                  </span>
+                </td>
               </tr>
-              <tr>
+              <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-gray-900">Privacy</td>
                 <td className="px-6 py-4 text-center text-green-600">
                   ✅ Local storage only
                 </td>
                 <td className="px-6 py-4 text-center text-red-600">
                   ❌ Data stored on servers
+                </td>
+                <td className="px-6 py-4 text-center">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">
+                    EasyFreeResume
+                  </span>
                 </td>
               </tr>
               <tr>
@@ -126,8 +219,13 @@ export default function ZetyVsEasyFreeResume() {
                 <td className="px-6 py-4 text-center text-green-600">
                   ✅ User-friendly interface
                 </td>
+                <td className="px-6 py-4 text-center">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">
+                    Tie
+                  </span>
+                </td>
               </tr>
-              <tr>
+              <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-gray-900">
                   Multiple Resume Versions
                 </td>
@@ -137,9 +235,21 @@ export default function ZetyVsEasyFreeResume() {
                 <td className="px-6 py-4 text-center text-yellow-600">
                   ⚠️ Limited on free plan
                 </td>
+                <td className="px-6 py-4 text-center">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">
+                    EasyFreeResume
+                  </span>
+                </td>
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <div className="bg-green-100 border border-green-300 rounded-xl p-4 text-center">
+          <p className="font-bold text-green-800">
+            Score: EasyFreeResume 5 — Zety 0 — Ties 2
+            <WinnerBadge />
+          </p>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -173,12 +283,19 @@ export default function ZetyVsEasyFreeResume() {
                 </p>
                 <p>
                   Use our comprehensive blog guides (like{" "}
-                  <a
-                    href="/blog/resume-action-verbs"
+                  <Link
+                    to="/blog/resume-action-verbs"
                     className="text-blue-600 underline"
                   >
                     Action Verbs for Resumes
-                  </a>
+                  </Link>{" "}
+                  or{" "}
+                  <Link
+                    to="/blog/chatgpt-resume-prompts"
+                    className="text-blue-600 underline"
+                  >
+                    ChatGPT Resume Prompts
+                  </Link>
                   ) to write compelling, personalized content.
                 </p>
               </div>
@@ -205,12 +322,12 @@ export default function ZetyVsEasyFreeResume() {
                 </p>
                 <p>
                   Check out our{" "}
-                  <a
-                    href="/blog/cover-letter-guide"
+                  <Link
+                    to="/blog/cover-letter-guide"
                     className="text-blue-600 underline"
                   >
                     Cover Letter Writing Guide
-                  </a>{" "}
+                  </Link>{" "}
                   for templates and tips.
                 </p>
               </div>
@@ -238,12 +355,19 @@ export default function ZetyVsEasyFreeResume() {
                 </p>
                 <p>
                   Use our{" "}
-                  <a
-                    href="/blog/ats-resume-optimization"
+                  <Link
+                    to="/blog/ats-resume-optimization"
                     className="text-blue-600 underline"
                   >
                     ATS Optimization Guide
-                  </a>{" "}
+                  </Link>{" "}
+                  or{" "}
+                  <Link
+                    to="/blog/ai-resume-review"
+                    className="text-blue-600 underline"
+                  >
+                    AI Resume Review Guide
+                  </Link>{" "}
                   for real-world resume improvement strategies.
                 </p>
               </div>
@@ -264,6 +388,7 @@ export default function ZetyVsEasyFreeResume() {
           <div className="bg-green-50 border border-green-200 rounded-xl p-6">
             <h3 className="text-lg font-bold text-green-800 mb-4">
               🔒 EasyFreeResume Privacy
+              <WinnerBadge />
             </h3>
             <ul className="space-y-3 text-green-700">
               <li className="flex items-start space-x-2">
@@ -387,6 +512,7 @@ export default function ZetyVsEasyFreeResume() {
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">
           <h3 className="font-bold text-green-800 mb-4">
             💚 EasyFreeResume Cost
+            <WinnerBadge />
           </h3>
           <div className="text-green-700 text-center">
             <p className="text-6xl font-bold mb-2">$0</p>
@@ -397,6 +523,55 @@ export default function ZetyVsEasyFreeResume() {
               interview coaching with tools like PrepAI.
             </p>
           </div>
+        </div>
+
+        {/* How to Switch Section */}
+        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+          How to Switch from Zety to EasyFreeResume
+        </h2>
+
+        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+          Already using Zety? Here's how to migrate your resume:
+        </p>
+
+        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6 my-8">
+          <ol className="space-y-4 text-indigo-700">
+            <li className="flex gap-4">
+              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">1</span>
+              <div>
+                <p className="font-medium">Export your content from Zety</p>
+                <p className="text-sm">Download your resume as PDF or copy your text content</p>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">2</span>
+              <div>
+                <p className="font-medium">Go to EasyFreeResume.com</p>
+                <p className="text-sm">No sign-up needed — start building immediately</p>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">3</span>
+              <div>
+                <p className="font-medium">Choose an ATS-friendly template</p>
+                <p className="text-sm">All our templates are optimized for applicant tracking systems</p>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">4</span>
+              <div>
+                <p className="font-medium">Paste your content and customize</p>
+                <p className="text-sm">Our editor makes it easy to format your resume</p>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">5</span>
+              <div>
+                <p className="font-medium">Download free PDF — no watermark</p>
+                <p className="text-sm">Cancel your Zety subscription and save $71+/year</p>
+              </div>
+            </li>
+          </ol>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -423,7 +598,7 @@ export default function ZetyVsEasyFreeResume() {
                 <p className="font-medium">⚠️ Considerations:</p>
                 <ul className="text-sm list-disc pl-5 space-y-1">
                   <li>Fewer bells and whistles</li>
-                  <li>No AI content suggestions</li>
+                  <li>No built-in AI content suggestions</li>
                   <li>Relies on your own writing skills</li>
                 </ul>
               </div>
@@ -486,6 +661,7 @@ export default function ZetyVsEasyFreeResume() {
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-8">
           <h3 className="font-bold text-green-800 mb-4">
             ✅ EasyFreeResume is Perfect If:
+            <WinnerBadge />
           </h3>
           <ul className="list-disc pl-6 space-y-2 text-green-700">
             <li>You want complete control over your resume content and data</li>
@@ -536,12 +712,12 @@ export default function ZetyVsEasyFreeResume() {
               <p className="font-medium">3. Knowledge & Strategy (Our Blog)</p>
               <p className="text-sm">
                 Stay current with guides like our{" "}
-                <a
-                  href="/blog/how-to-write-a-resume-guide"
+                <Link
+                  to="/blog/how-to-write-a-resume-guide"
                   className="underline"
                 >
                   Complete Resume Writing Guide
-                </a>
+                </Link>
               </p>
             </div>
             <div>
@@ -553,20 +729,19 @@ export default function ZetyVsEasyFreeResume() {
           </div>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
-            Why Not Try Both?
+            Ready to Save $71+ Per Year?
           </h3>
           <p className="text-xl mb-6 opacity-90">
-            Start with EasyFreeResume (it's actually free), then decide if you
-            need premium features elsewhere
+            Start with EasyFreeResume — it's actually free, no tricks
           </p>
-          <a
-            href="/templates"
-            className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+          <Link
+            to="/templates"
+            className="inline-block bg-white text-green-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
-            Try EasyFreeResume Now
-          </a>
+            Build Your Free Resume Now
+          </Link>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -605,6 +780,23 @@ export default function ZetyVsEasyFreeResume() {
           subscription fee.
         </p>
       </div>
+
+      {/* Sticky CTA Banner */}
+      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-4 shadow-lg z-50 md:hidden">
+        <div className="flex items-center justify-between max-w-4xl mx-auto">
+          <div>
+            <p className="font-bold text-sm">Switch to Free</p>
+            <p className="text-xs opacity-90">Save $71+/year</p>
+          </div>
+          <Link
+            to="/templates"
+            className="bg-white text-green-600 px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
+          >
+            Try Free
+          </Link>
+        </div>
+      </div>
     </BlogLayout>
+    </>
   );
 }
