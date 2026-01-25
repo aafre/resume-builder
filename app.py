@@ -2716,7 +2716,7 @@ def migrate_anonymous_resumes():
                     .execute()
                 logging.info(f"Migrated preferences from {old_user_id} to {new_user_id}")
         except Exception as pref_error:
-            logging.warning(f"Failed to migrate preferences: {pref_error}")
+            logging.warning(f"Failed to migrate preferences: {pref_error}", exc_info=True)
             # Non-critical - preferences will be recreated on next interaction
 
         logging.info(f"Migration complete: {old_count} resumes migrated to {new_user_id}")

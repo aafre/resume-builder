@@ -188,6 +188,7 @@ class TestMigratePreferencesBehavior:
         old_user_id = OLD_USER_ID
 
         error_caught = False
+        logged_warning = None
 
         # Migration logic with error handling (as in app.py)
         try:
@@ -208,11 +209,16 @@ class TestMigratePreferencesBehavior:
                     .eq('user_id', old_user_id) \
                     .execute()
         except Exception as e:
-            # This is the expected behavior - error is caught
+            # This is the expected behavior - error is caught and logged
             error_caught = True
+            logged_warning = f"Failed to migrate preferences: {e}"
 
         # Error should have been caught (not propagated)
         assert error_caught, "Expected database error to be caught gracefully"
+        # Verify warning message format matches app.py
+        assert logged_warning is not None, "Expected warning to be logged"
+        assert "Failed to migrate preferences" in logged_warning
+        assert "Database connection failed" in logged_warning
 
 
 class TestMigrationEdgeCases:
