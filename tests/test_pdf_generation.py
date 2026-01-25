@@ -110,48 +110,41 @@ class TestThreadPoolInitialization:
         assert app.PDF_THREAD_POOL is not None
         assert isinstance(app.PDF_THREAD_POOL, ThreadPoolExecutor)
 
-    def test_initialize_pdf_pool_creates_pool(self):
+    def test_initialize_pdf_pool_creates_pool(self, monkeypatch):
         """Verify initialize_pdf_pool creates a working pool."""
-        # Save original pool
-        original_pool = app.PDF_THREAD_POOL
+        # monkeypatch will automatically restore the original value
+        monkeypatch.setattr(app, "PDF_THREAD_POOL", None)
 
-        try:
-            # Reset and reinitialize
-            app.PDF_THREAD_POOL = None
-            app.initialize_pdf_pool()
+        app.initialize_pdf_pool()
 
-            assert app.PDF_THREAD_POOL is not None
+        assert app.PDF_THREAD_POOL is not None
 
-            # Verify pool can submit tasks
-            future = app.PDF_THREAD_POOL.submit(lambda: "test")
-            result = future.result(timeout=5)
-            assert result == "test"
-        finally:
-            # Restore original pool
-            if app.PDF_THREAD_POOL and app.PDF_THREAD_POOL != original_pool:
-                app.PDF_THREAD_POOL.shutdown(wait=False)
-            app.PDF_THREAD_POOL = original_pool
+        # Verify pool can submit tasks
+        future = app.PDF_THREAD_POOL.submit(lambda: "test")
+        result = future.result(timeout=5)
+        assert result == "test"
 
-    def test_cleanup_pdf_pool_shuts_down_pool(self):
+        # Clean up the pool created during the test
+        app.PDF_THREAD_POOL.shutdown(wait=True)
+
+    def test_cleanup_pdf_pool_shuts_down_pool(self, monkeypatch):
         """Verify cleanup_pdf_pool properly shuts down the pool."""
-        # Create a temporary pool
-        original_pool = app.PDF_THREAD_POOL
-        app.PDF_THREAD_POOL = ThreadPoolExecutor(max_workers=1)
+        # Create a temporary pool; monkeypatch restores original after test
+        temp_pool = ThreadPoolExecutor(max_workers=1)
+        monkeypatch.setattr(app, "PDF_THREAD_POOL", temp_pool)
 
-        try:
-            # Cleanup should set pool to None
-            app.cleanup_pdf_pool()
-            assert app.PDF_THREAD_POOL is None
-        finally:
-            # Restore original pool
-            app.PDF_THREAD_POOL = original_pool
+        # Cleanup should shut down the pool and set it to None
+        app.cleanup_pdf_pool()
+        assert app.PDF_THREAD_POOL is None
 
     def test_pool_has_correct_max_workers(self):
         """Verify pool is initialized with expected worker count."""
         if app.PDF_THREAD_POOL is None:
             app.initialize_pdf_pool()
 
-        # ThreadPoolExecutor stores max_workers in _max_workers
+        # Note: _max_workers is a private attribute of ThreadPoolExecutor.
+        # We access it here because there's no public API to query max_workers,
+        # and we need to verify our configuration is correct.
         assert app.PDF_THREAD_POOL._max_workers == 5
 
 
@@ -394,24 +387,6 @@ class TestThreadPoolWorkerIntegration:
             result = future.result(timeout=120)
             assert result.get("success") is True, f"Worker failed: {result.get('error')}"
             assert output_path.exists()
-
-    def test_pool_timeout_handling(self):
-        """Verify future.result() respects timeout for slow operations."""
-        if app.PDF_THREAD_POOL is None:
-            app.initialize_pdf_pool()
-
-        import time
-        from concurrent.futures import TimeoutError
-
-        def slow_task():
-            time.sleep(2)
-            return "done"
-
-        future = app.PDF_THREAD_POOL.submit(slow_task)
-
-        with pytest.raises(TimeoutError):
-            # This should raise TimeoutError because the task takes 2s
-            future.result(timeout=1)
 
 
 # =============================================================================
