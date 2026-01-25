@@ -1,0 +1,114 @@
+# Human Resources Generalist Resume Example
+# Category: Corporate (Tier 2)
+
+meta:
+  slug: human-resources-generalist
+  title: Human Resources Generalist
+  metaTitle: "Free Human Resources Generalist Resume Example & Template (2026)"
+  metaDescription: "HR generalist resume example covering recruitment, benefits, and employee relations."
+  category: corporate
+  priority: 0.7
+
+resume:
+  template: professional
+  contact:
+    name: Amanda Chen
+    title: Human Resources Generalist
+    email: amanda.chen@email.com
+    phone: "(555) 678-9012"
+    location: Denver, CO
+    linkedin: linkedin.com/in/amandachen
+
+  summary: >
+    SHRM-CP certified HR generalist with 6+ years of experience supporting full employee
+    lifecycle. Expertise in recruitment, employee relations, benefits administration, and
+    compliance. Proven track record of reducing turnover and improving employee engagement.
+    Trusted partner to managers and employees for HR guidance and support.
+
+  experience:
+    - company: TechStart Inc
+      title: Human Resources Generalist
+      dates: Feb 2021 - Present
+      location: Denver, CO
+      bullets:
+        - Support HR operations for 300+ employees across 3 office locations
+        - Manage full-cycle recruitment filling 50+ positions annually with 45-day average time-to-fill
+        - Administer benefits programs including health insurance, 401(k), and PTO policies
+        - Conduct investigations and resolve employee relations issues maintaining confidentiality
+        - Reduced voluntary turnover by 18% through improved onboarding and engagement initiatives
+
+    - company: Mountain View Corporation
+      title: HR Coordinator
+      dates: Jun 2018 - Jan 2021
+      location: Boulder, CO
+      bullets:
+        - Processed bi-weekly payroll for 150 employees ensuring accuracy and compliance
+        - Coordinated new hire onboarding including I-9 verification and orientation sessions
+        - Maintained HRIS records and generated reports for management review
+        - Assisted with annual open enrollment serving as primary point of contact for benefits questions
+
+    - company: Staffing Solutions Agency
+      title: Recruiting Coordinator
+      dates: Aug 2016 - May 2018
+      location: Denver, CO
+      bullets:
+        - Screened resumes and scheduled interviews for 100+ candidates monthly
+        - Posted job openings across multiple platforms and managed applicant tracking system
+        - Conducted reference checks and background screenings for final candidates
+
+  education:
+    - school: University of Colorado Denver
+      degree: B.A. Human Resource Management
+      year: "2016"
+
+  skills:
+    - Recruitment
+    - Employee Relations
+    - Benefits Administration
+    - HRIS Systems
+    - Payroll Processing
+    - Onboarding
+    - Performance Management
+    - Employment Law
+    - Conflict Resolution
+    - Training & Development
+    - ADP Workforce Now
+    - Workday
+
+  certifications:
+    - SHRM-CP (Certified Professional)
+    - PHR (Professional in Human Resources)
+
+bulletBank:
+  - category: Recruitment
+    bullets:
+      - "Filled 75 positions in single year reducing external agency spend by $150K"
+      - "Implemented structured interview process improving quality of hire scores by 25%"
+      - "Built talent pipeline reducing critical role time-to-fill from 60 to 35 days"
+      - "Achieved 90% offer acceptance rate through competitive compensation analysis"
+
+  - category: Employee Relations
+    bullets:
+      - "Resolved 50+ employee relations issues annually maintaining positive workplace culture"
+      - "Conducted workplace investigations with thorough documentation and fair outcomes"
+      - "Developed manager training on difficult conversations and performance feedback"
+      - "Implemented anonymous feedback system increasing employee voice participation by 40%"
+
+  - category: Benefits & Compliance
+    bullets:
+      - "Administered benefits for 500+ employees with 99% accuracy in enrollments"
+      - "Led annual open enrollment achieving 95% participation in voluntary benefits"
+      - "Ensured compliance with FMLA, ADA, and state employment laws"
+      - "Conducted quarterly I-9 audits maintaining 100% compliance"
+
+  - category: HR Operations
+    bullets:
+      - "Streamlined onboarding process reducing new hire paperwork time by 50%"
+      - "Implemented self-service HRIS portal reducing HR inquiries by 30%"
+      - "Created HR metrics dashboard providing real-time data to leadership"
+      - "Developed employee handbook and policy updates ensuring legal compliance"
+
+relatedJobs:
+  - business-analyst
+  - project-manager
+  - administrative-assistant

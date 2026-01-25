@@ -1,0 +1,109 @@
+# High School Student Resume Example
+# Category: Entry Level (Tier 4)
+
+meta:
+  slug: high-school-student
+  title: High School Student
+  metaTitle: "Free High School Student Resume Example & Template (2026)"
+  metaDescription: "High school student resume example for part-time jobs and volunteer experience."
+  category: entry-level
+  priority: 0.7
+
+resume:
+  template: minimal
+  contact:
+    name: Alex Rivera
+    title: High School Student
+    email: alex.rivera@email.com
+    phone: "(555) 234-5678"
+    location: Austin, TX
+
+  summary: >
+    Motivated high school junior with strong academic record and excellent communication skills.
+    Experienced in customer service through volunteer work and school organizations. Seeking
+    part-time position to develop professional skills while maintaining academic excellence.
+    Reliable, punctual, and eager to learn.
+
+  experience:
+    - company: Austin Public Library
+      title: Volunteer Library Assistant
+      dates: Sep 2024 - Present
+      location: Austin, TX
+      bullets:
+        - Assist librarians with shelving 100+ books daily and maintaining organized sections
+        - Help patrons locate materials and navigate library computer systems
+        - Support children's reading program serving 20+ kids weekly during summer months
+        - Maintain clean and welcoming environment for library visitors
+
+    - company: Lincoln High School
+      title: Student Council Representative
+      dates: Aug 2023 - Present
+      location: Austin, TX
+      bullets:
+        - Elected to represent 400+ students in junior class council meetings
+        - Organize school events including homecoming dance attended by 500 students
+        - Collaborate with administration to address student concerns and suggestions
+        - Manage social media communications reaching 1,200 student followers
+
+    - company: Neighborhood Lawn Care
+      title: Self-Employed
+      dates: May 2023 - Present
+      location: Austin, TX
+      bullets:
+        - Built client base of 8 regular customers through quality service and reliability
+        - Provide lawn mowing, edging, and yard maintenance services
+        - Schedule appointments and manage billing independently
+        - Earned $2,000+ through entrepreneurial initiative
+
+  education:
+    - school: Lincoln High School
+      degree: High School Diploma (In Progress)
+      year: Expected May 2026
+      gpa: "3.7"
+      honors: Honor Roll, National Honor Society
+
+  skills:
+    - Customer Service
+    - Microsoft Office
+    - Google Workspace
+    - Social Media
+    - Communication
+    - Time Management
+    - Teamwork
+    - Organization
+    - Problem Solving
+    - Reliability
+
+bulletBank:
+  - category: Academic Achievements
+    bullets:
+      - "Maintained 3.8 GPA while participating in extracurricular activities"
+      - "Completed AP courses in English and History with scores of 4 and 5"
+      - "Selected for National Honor Society based on academic excellence and service"
+      - "Received Principal's Award for Outstanding Academic Achievement"
+
+  - category: Leadership & Activities
+    bullets:
+      - "Captain of junior varsity soccer team, leading 15-member squad"
+      - "Founded environmental club with 25 active members"
+      - "Organized school supply drive collecting 500+ items for local shelter"
+      - "Mentored incoming freshmen as part of peer buddy program"
+
+  - category: Work Ethic
+    bullets:
+      - "Completed all assigned tasks accurately and ahead of schedule"
+      - "Received positive feedback from supervisors for reliability and attitude"
+      - "Available for flexible scheduling including weekends and holidays"
+      - "Zero absences or tardiness in volunteer and school commitments"
+
+  - category: Technical Skills
+    bullets:
+      - "Proficient in Microsoft Word, Excel, and PowerPoint for school projects"
+      - "Experience with Canva creating posters and social media graphics"
+      - "Comfortable learning new software and technology quickly"
+      - "Basic knowledge of photo and video editing tools"
+
+relatedJobs:
+  - college-student
+  - internship
+  - retail-sales-associate

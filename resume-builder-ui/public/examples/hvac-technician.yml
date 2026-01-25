@@ -1,0 +1,115 @@
+# HVAC Technician Resume Example
+# Category: Trades (Tier 5)
+
+meta:
+  slug: hvac-technician
+  title: HVAC Technician
+  metaTitle: "Free HVAC Technician Resume Example & Template (2026)"
+  metaDescription: "HVAC technician resume example with system maintenance and repair expertise."
+  category: trades
+  priority: 0.7
+
+resume:
+  template: professional
+  contact:
+    name: Robert Thompson
+    title: HVAC Service Technician
+    email: robert.thompson@email.com
+    phone: "(555) 678-9012"
+    location: Phoenix, AZ
+
+  summary: >
+    EPA-certified HVAC technician with 7+ years of experience installing, maintaining, and
+    repairing residential and commercial HVAC systems. Expert in troubleshooting complex
+    issues, refrigerant handling, and energy-efficient system design. Strong customer
+    service skills with proven ability to explain technical issues clearly.
+
+  experience:
+    - company: Desert Climate Control
+      title: Senior HVAC Technician
+      dates: Feb 2021 - Present
+      location: Phoenix, AZ
+      bullets:
+        - Perform installation, maintenance, and repair of HVAC systems for commercial clients
+        - Diagnose and repair complex issues including compressor failures, refrigerant leaks, and control problems
+        - Lead installation projects for systems up to 50 tons for commercial buildings
+        - Mentor 3 junior technicians on diagnostic procedures and best practices
+        - Maintain 97% customer satisfaction rating based on post-service surveys
+
+    - company: Cool Air Services
+      title: HVAC Technician
+      dates: May 2018 - Jan 2021
+      location: Phoenix, AZ
+      bullets:
+        - Serviced 8-10 residential and light commercial calls daily during peak season
+        - Installed split systems, packaged units, and mini-splits for new construction
+        - Performed preventive maintenance extending equipment lifespan
+        - Handled refrigerant recovery, recycling, and charging per EPA guidelines
+
+    - company: ABC Mechanical
+      title: HVAC Apprentice
+      dates: Jun 2016 - Apr 2018
+      location: Tempe, AZ
+      bullets:
+        - Completed HVAC apprenticeship program learning installation and service fundamentals
+        - Assisted senior technicians with equipment installation and ductwork fabrication
+        - Learned to read blueprints and perform load calculations
+
+  education:
+    - school: Gateway Community College
+      degree: Certificate, HVAC Technology
+      year: "2016"
+
+  skills:
+    - HVAC Installation
+    - System Diagnostics
+    - Refrigerant Handling
+    - Preventive Maintenance
+    - Ductwork
+    - Electrical Controls
+    - Load Calculations
+    - Blueprint Reading
+    - Customer Service
+    - EPA Regulations
+    - Building Codes
+    - Energy Efficiency
+
+  certifications:
+    - EPA 608 Universal Certification
+    - NATE Certified (HVAC)
+    - OSHA 10-Hour Construction Safety
+    - R-410A Certified
+
+bulletBank:
+  - category: Installation
+    bullets:
+      - "Installed 100+ HVAC systems annually in residential and commercial applications"
+      - "Completed rooftop unit replacements for 200+ ton commercial buildings"
+      - "Designed and installed ductwork achieving optimal airflow distribution"
+      - "Installed variable refrigerant flow (VRF) systems for energy efficiency"
+
+  - category: Diagnostics & Repair
+    bullets:
+      - "Achieved 95% first-time fix rate through thorough diagnostic procedures"
+      - "Repaired compressor and motor failures reducing customer downtime"
+      - "Diagnosed electrical control issues using multimeters and schematics"
+      - "Identified refrigerant leaks using electronic detectors and UV dye"
+
+  - category: Preventive Maintenance
+    bullets:
+      - "Performed seasonal tune-ups extending equipment life by average of 5 years"
+      - "Created preventive maintenance schedules for commercial building portfolios"
+      - "Cleaned and serviced 500+ units annually maintaining peak efficiency"
+      - "Identified potential failures during inspections preventing emergency breakdowns"
+
+  - category: Customer Service
+    bullets:
+      - "Explained technical issues and repair options clearly to customers"
+      - "Provided accurate estimates and completed work within quoted pricing"
+      - "Received 50+ five-star reviews mentioning professionalism and expertise"
+      - "Built relationships resulting in 40% repeat customer and referral rate"
+
+relatedJobs:
+  - electrician
+  - warehouse-worker
+  - project-manager

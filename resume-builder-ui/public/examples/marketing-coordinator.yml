@@ -1,0 +1,110 @@
+# Marketing Coordinator Resume Example
+# Category: Corporate (Tier 2)
+
+meta:
+  slug: marketing-coordinator
+  title: Marketing Coordinator
+  metaTitle: "Free Marketing Coordinator Resume Example & Template (2026)"
+  metaDescription: "Marketing coordinator resume example with campaign management and digital marketing skills."
+  category: corporate
+  priority: 0.7
+
+resume:
+  template: modern
+  contact:
+    name: Jessica Martinez
+    title: Marketing Coordinator
+    email: jessica.martinez@email.com
+    phone: "(555) 789-0123"
+    location: Miami, FL
+    linkedin: linkedin.com/in/jessicamartinez
+
+  summary: >
+    Creative marketing coordinator with 4+ years of experience executing multi-channel
+    marketing campaigns. Skilled in digital marketing, content creation, and event planning.
+    Proven ability to increase brand awareness and drive engagement through strategic
+    marketing initiatives. Detail-oriented team player with strong project management skills.
+
+  experience:
+    - company: Coastal Media Group
+      title: Marketing Coordinator
+      dates: Apr 2022 - Present
+      location: Miami, FL
+      bullets:
+        - Coordinate marketing campaigns across email, social media, and paid advertising channels
+        - Manage content calendar and publish 20+ social media posts weekly across 4 platforms
+        - Plan and execute 12 corporate events annually with budgets up to $50K each
+        - Analyze campaign performance using Google Analytics and create monthly reports
+        - Increased email open rates by 35% through A/B testing and list segmentation
+
+    - company: Bright Ideas Agency
+      title: Marketing Assistant
+      dates: Jun 2020 - Mar 2022
+      location: Fort Lauderdale, FL
+      bullets:
+        - Supported 5 client accounts with content creation and campaign coordination
+        - Created marketing collateral including brochures, presentations, and social graphics
+        - Managed client social media accounts growing combined followers by 10K
+        - Coordinated with vendors for print materials and promotional items
+
+    - company: Local Tourism Board
+      title: Marketing Intern
+      dates: Jan 2020 - May 2020
+      location: Miami, FL
+      bullets:
+        - Assisted with destination marketing campaigns promoting local attractions
+        - Created blog content and social media posts highlighting visitor experiences
+        - Compiled competitive research and market analysis reports
+
+  education:
+    - school: Florida International University
+      degree: B.S. Marketing
+      year: "2020"
+
+  skills:
+    - Campaign Management
+    - Social Media Marketing
+    - Email Marketing
+    - Content Creation
+    - Event Planning
+    - Google Analytics
+    - Adobe Creative Suite
+    - Mailchimp
+    - HubSpot
+    - Canva
+    - SEO/SEM
+    - Project Management
+
+bulletBank:
+  - category: Digital Marketing
+    bullets:
+      - "Managed $100K annual digital advertising budget across Google and Meta platforms"
+      - "Increased website traffic by 50% through SEO optimization and content marketing"
+      - "Achieved 25% conversion rate on landing pages through A/B testing"
+      - "Grew social media following from 5K to 25K across all platforms in 18 months"
+
+  - category: Campaign Execution
+    bullets:
+      - "Launched product campaign generating 500+ qualified leads in first month"
+      - "Coordinated cross-functional teams to deliver campaigns on time and under budget"
+      - "Created integrated campaigns spanning email, social, web, and print channels"
+      - "Developed marketing automation workflows reducing manual tasks by 40%"
+
+  - category: Content Creation
+    bullets:
+      - "Produced 100+ pieces of content annually including blogs, videos, and infographics"
+      - "Wrote email newsletters achieving 40% open rate (industry average: 21%)"
+      - "Created brand style guide ensuring consistent messaging across all channels"
+      - "Managed relationships with freelance writers, designers, and photographers"
+
+  - category: Event Marketing
+    bullets:
+      - "Planned trade show presence generating 200+ booth visitors and 50 sales leads"
+      - "Organized virtual webinar series with 500+ registrants per event"
+      - "Coordinated product launch event with 150 attendees and media coverage"
+      - "Managed event logistics including venue, catering, AV, and promotional materials"
+
+relatedJobs:
+  - business-analyst
+  - project-manager
+  - social-media-manager

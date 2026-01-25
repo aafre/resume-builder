@@ -1,0 +1,114 @@
+# Electrician Resume Example
+# Category: Trades (Tier 5)
+
+meta:
+  slug: electrician
+  title: Electrician
+  metaTitle: "Free Electrician Resume Example & Template (2026)"
+  metaDescription: "Electrician resume example with certifications and installation experience."
+  category: trades
+  priority: 0.7
+
+resume:
+  template: professional
+  contact:
+    name: James Rodriguez
+    title: Licensed Journeyman Electrician
+    email: james.rodriguez@email.com
+    phone: "(555) 567-8901"
+    location: Dallas, TX
+
+  summary: >
+    Licensed journeyman electrician with 8+ years of experience in commercial and residential
+    electrical systems. Expertise in installation, maintenance, troubleshooting, and NEC
+    compliance. Strong safety record with zero workplace incidents. Skilled at reading
+    blueprints, leading crews, and completing projects on time and within budget.
+
+  experience:
+    - company: Metro Electric Services
+      title: Journeyman Electrician
+      dates: Apr 2020 - Present
+      location: Dallas, TX
+      bullets:
+        - Install and maintain electrical systems for commercial buildings up to 500K sq ft
+        - Lead crew of 3-4 apprentices on job sites ensuring quality and safety compliance
+        - Read and interpret blueprints, schematics, and technical specifications
+        - Troubleshoot complex electrical issues minimizing customer downtime
+        - Complete projects on schedule maintaining 98% customer satisfaction rating
+
+    - company: Residential Electric Co
+      title: Electrician
+      dates: Jun 2017 - Mar 2020
+      location: Fort Worth, TX
+      bullets:
+        - Performed electrical installations for new home construction and renovations
+        - Installed panels, circuits, outlets, switches, and lighting fixtures
+        - Upgraded electrical systems to meet current NEC code requirements
+        - Responded to service calls diagnosing and repairing electrical faults
+
+    - company: ABC Electric
+      title: Apprentice Electrician
+      dates: Jan 2015 - May 2017
+      location: Dallas, TX
+      bullets:
+        - Completed 4-year electrical apprenticeship program with classroom and on-the-job training
+        - Assisted journeymen with wiring, conduit installation, and panel work
+        - Learned to read blueprints and follow electrical codes
+
+  education:
+    - school: Dallas County Community College
+      degree: Certificate, Electrical Technology
+      year: "2015"
+
+  skills:
+    - Electrical Installation
+    - Troubleshooting
+    - NEC Code Compliance
+    - Blueprint Reading
+    - Panel Installation
+    - Conduit Bending
+    - Motor Controls
+    - PLC Systems
+    - Safety Protocols
+    - Crew Leadership
+    - Customer Service
+    - Project Estimation
+
+  certifications:
+    - Texas Journeyman Electrician License
+    - OSHA 30-Hour Construction Safety
+    - First Aid/CPR Certified
+
+bulletBank:
+  - category: Installation
+    bullets:
+      - "Completed electrical rough-in for 50+ new commercial construction projects"
+      - "Installed 200+ residential service panels ranging from 100-400 amps"
+      - "Wired data centers with redundant power systems and UPS backup"
+      - "Installed lighting systems for retail, office, and warehouse facilities"
+
+  - category: Troubleshooting
+    bullets:
+      - "Diagnosed and repaired electrical faults reducing average repair time by 25%"
+      - "Identified root cause of recurring breaker trips saving customer $10K in potential damage"
+      - "Used multimeters, amp clamps, and thermal imaging for precise diagnostics"
+      - "Maintained 95% first-visit resolution rate on service calls"
+
+  - category: Safety & Compliance
+    bullets:
+      - "Maintained zero safety incidents over 8-year career"
+      - "Ensured all work complied with NEC 2023 code requirements"
+      - "Passed 100% of electrical inspections on first submission"
+      - "Conducted safety briefings and enforced PPE requirements on job sites"
+
+  - category: Leadership
+    bullets:
+      - "Supervised crew of 4 apprentices mentoring them toward journeyman certification"
+      - "Coordinated with general contractors and other trades on project scheduling"
+      - "Managed material procurement and inventory for assigned projects"
+      - "Trained team on new techniques and code updates"
+
+relatedJobs:
+  - hvac-technician
+  - warehouse-worker
+  - project-manager

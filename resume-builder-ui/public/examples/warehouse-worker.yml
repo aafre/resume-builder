@@ -1,0 +1,114 @@
+# Warehouse Worker Resume Example
+# Category: Operations (Tier 1)
+
+meta:
+  slug: warehouse-worker
+  title: Warehouse Worker
+  metaTitle: "Free Warehouse Worker Resume Example & Template (2026)"
+  metaDescription: "Warehouse worker resume example with inventory management and logistics experience."
+  category: operations
+  priority: 0.7
+
+resume:
+  template: modern
+  contact:
+    name: Marcus Williams
+    title: Warehouse Associate
+    email: marcus.williams@email.com
+    phone: "(555) 567-8901"
+    location: Indianapolis, IN
+
+  summary: >
+    Reliable warehouse worker with 6+ years of experience in high-volume distribution centers.
+    Skilled in inventory management, order fulfillment, and forklift operation. Consistently
+    exceeds productivity targets while maintaining 99.5% accuracy rate. Safety-focused team
+    player with excellent attendance record.
+
+  experience:
+    - company: Amazon Fulfillment Center
+      title: Warehouse Associate II
+      dates: Jan 2021 - Present
+      location: Indianapolis, IN
+      bullets:
+        - Pick, pack, and ship 300+ orders per shift in fast-paced fulfillment environment
+        - Operate reach truck and order picker forklifts safely in narrow aisle warehouse
+        - Maintain 99.8% order accuracy rate exceeding department standard of 99.5%
+        - Train new associates on picking procedures, safety protocols, and RF scanner use
+        - Recognized as "Peak Performer" during holiday seasons for exceeding rate targets
+
+    - company: FedEx Ground
+      title: Package Handler
+      dates: Mar 2019 - Dec 2020
+      location: Indianapolis, IN
+      bullets:
+        - Loaded and unloaded 1,500+ packages per shift from delivery trucks
+        - Sorted packages accurately by zip code and delivery route
+        - Maintained safe work environment with zero recordable incidents over 2 years
+        - Assisted with dock operations during peak volume periods
+
+    - company: Local Distribution Co
+      title: Warehouse Associate
+      dates: Jun 2017 - Feb 2019
+      location: Columbus, IN
+      bullets:
+        - Received incoming shipments and verified against purchase orders
+        - Organized inventory in designated bin locations using WMS system
+        - Prepared outbound shipments including palletizing and shrink wrapping
+
+  education:
+    - school: Ivy Tech Community College
+      degree: Certificate, Supply Chain Management
+      year: "2020"
+
+  skills:
+    - Order Fulfillment
+    - Inventory Management
+    - Forklift Operation
+    - RF Scanner
+    - WMS Systems
+    - Shipping & Receiving
+    - Pallet Jack
+    - Quality Control
+    - Safety Compliance
+    - Team Collaboration
+    - Physical Stamina
+    - Attention to Detail
+
+  certifications:
+    - OSHA Forklift Certified
+    - Reach Truck Certified
+    - Order Picker Certified
+
+bulletBank:
+  - category: Productivity
+    bullets:
+      - "Consistently exceeded pick rate targets by 20% averaging 350 units per hour"
+      - "Processed 2,000+ orders during single shift on peak volume days"
+      - "Reduced packing time by 15% through efficient workstation organization"
+      - "Selected for high-priority orders requiring expedited fulfillment"
+
+  - category: Accuracy & Quality
+    bullets:
+      - "Maintained 99.9% accuracy rate over 6-month evaluation period"
+      - "Identified and reported inventory discrepancies preventing shipping errors"
+      - "Performed quality checks ensuring products met shipping standards"
+      - "Zero customer complaints attributed to picking or packing errors"
+
+  - category: Safety
+    bullets:
+      - "Completed 3+ years without workplace injury or safety incident"
+      - "Participated in safety committee improving warehouse procedures"
+      - "Trained 15 associates on proper lifting techniques and equipment operation"
+      - "Recognized for consistently following safety protocols and PPE requirements"
+
+  - category: Equipment Operation
+    bullets:
+      - "Operated reach truck, order picker, and counterbalance forklifts safely"
+      - "Performed daily equipment inspections identifying maintenance needs"
+      - "Maneuvered in narrow aisles with 100% safety record"
+      - "Cross-trained on multiple equipment types providing scheduling flexibility"
+
+relatedJobs:
+  - retail-sales-associate
+  - receptionist
+  - customer-service-representative
