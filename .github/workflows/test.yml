@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  test:
+  frontend-test:
     name: Frontend Tests
     runs-on: ubuntu-latest
     defaults:
@@ -18,8 +18,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
           cache-dependency-path: resume-builder-ui/package-lock.json
 
       - name: Install dependencies
@@ -33,3 +33,37 @@ jobs:
           echo "✅ **Frontend Tests Completed Successfully**" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "All unit tests passed with coverage reporting." >> $GITHUB_STEP_SUMMARY
+
+  backend-test:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install wkhtmltopdf
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wkhtmltopdf
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run backend tests
+        run: python -m pytest tests/ -v --tb=short
+
+      - name: Test Summary
+        run: |
+          echo "✅ **Backend Tests Completed Successfully**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "All backend unit and integration tests passed." >> $GITHUB_STEP_SUMMARY

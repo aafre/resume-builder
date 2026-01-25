@@ -45,3 +45,9 @@ resume-builder = "resume_builder_api.app:main"
 dev = [
   "pytest==8.3.4"
 ]
+
+[tool.pytest.ini_options]
+markers = [
+    "requires_pdfkit: marks tests that require pdfkit and wkhtmltopdf to be installed",
+]
+testpaths = ["tests"]

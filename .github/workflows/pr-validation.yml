@@ -26,10 +26,12 @@ jobs:
               - 'app.py'
               - 'resume_generator*.py'
               - 'templates/**'
+              - 'tests/**'
               - 'requirements.txt'
               - 'package*.json'
               - 'Dockerfile*'
               - '.github/workflows/**'
+              - 'pyproject.toml'
             docs-only:
               - '*.md'
               - 'docs/**'

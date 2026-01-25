@@ -26,7 +26,7 @@ import re
 import base64
 import copy
 from jinja2 import Environment, FileSystemLoader
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
 import atexit
 from functools import wraps, partial
 import time
@@ -244,42 +244,49 @@ def pdf_generation_worker(template_name, yaml_path, output_path, session_icons_d
         return {"success": False, "error": error_msg}
 
 
-# Initialize process pool for PDF generation
-# 
-# We use ProcessPoolExecutor instead of direct PDF generation because:
-# 1. wkhtmltopdf (pdfkit) has Qt threading conflicts with Flask's multi-threaded nature
-# 2. Direct calls cause "QNetworkReplyImplPrivate" errors and Qt state contamination
-# 3. Process pool provides isolation while avoiding subprocess startup overhead (~10x faster)
-# 4. Pre-warmed worker processes handle concurrent requests efficiently
-PDF_PROCESS_POOL = None
+# Initialize thread pool for PDF generation dispatch
+#
+# Architecture: ThreadPoolExecutor dispatches to subprocess.run() calls
+# - subprocess.run() spawns fresh Python processes for each PDF generation
+# - This provides complete isolation (fresh Python interpreter + Qt state)
+# - ThreadPoolExecutor is lightweight for dispatching I/O-bound work
+# - Avoids ProcessPoolExecutor overhead since subprocess already provides isolation
+#
+# Configuration:
+# - max_workers=5: Threads are cheap since they just wait on subprocess I/O
+# - Each worker dispatches a subprocess that runs wkhtmltopdf (~100-200MB RAM each)
+# - Additional requests queue until a worker is available
+# - Cloud Run horizontal scaling handles additional concurrency across instances
+PDF_THREAD_POOL = None
 
 def initialize_pdf_pool():
     """
-    Initialize the process pool for PDF generation.
-    
-    Creates a pool of worker processes that handle PDF generation in isolation.
-    This prevents Qt WebKit threading issues that occur when wkhtmltopdf is called
-    directly from Flask's multi-threaded context.
+    Initialize the thread pool for PDF generation dispatch.
+
+    Uses ThreadPoolExecutor to dispatch subprocess calls that handle PDF generation.
+    The subprocess provides process isolation (fresh Python + Qt state), so threads
+    are sufficient for the dispatch layer.
     """
-    global PDF_PROCESS_POOL
+    global PDF_THREAD_POOL
     try:
-        # Create pool with 3 worker processes
-        PDF_PROCESS_POOL = ProcessPoolExecutor(max_workers=3)
-        logging.info("PDF process pool initialized with 3 workers")
-        
+        # 5 workers - threads are I/O-bound (waiting on subprocess)
+        # Limit is primarily memory: each wkhtmltopdf subprocess uses ~100-200MB
+        PDF_THREAD_POOL = ThreadPoolExecutor(max_workers=5)
+        logging.info("PDF thread pool initialized with 5 workers")
+
         # Register cleanup function
         atexit.register(cleanup_pdf_pool)
     except Exception as e:
-        logging.error(f"Failed to initialize PDF process pool: {e}")
-        PDF_PROCESS_POOL = None
+        logging.error(f"Failed to initialize PDF thread pool: {e}")
+        PDF_THREAD_POOL = None
 
 def cleanup_pdf_pool():
-    """Clean up the process pool on app shutdown."""
-    global PDF_PROCESS_POOL
-    if PDF_PROCESS_POOL:
-        logging.info("Shutting down PDF process pool")
-        PDF_PROCESS_POOL.shutdown(wait=True)
-        PDF_PROCESS_POOL = None
+    """Clean up the thread pool on app shutdown."""
+    global PDF_THREAD_POOL
+    if PDF_THREAD_POOL:
+        logging.info("Shutting down PDF thread pool")
+        PDF_THREAD_POOL.shutdown(wait=True)
+        PDF_THREAD_POOL = None
 
 
 # Resume Generation Helper Functions
@@ -1184,6 +1191,17 @@ TEMPLATE_FILE_MAP = {
     "classic-jane-doe": PROJECT_ROOT / "samples" / "classic" / "jane_doe.yml",
 }
 
+# Template ID to directory mapping
+# Maps UI template IDs to actual template directory names
+TEMPLATE_DIR_MAP = {
+    "modern-with-icons": "modern",     # HTML template - icons supported
+    "modern-no-icons": "modern",       # HTML template - no icons
+    "modern": "modern",                # Default HTML template
+    "classic": "classic",              # LaTeX template (generic)
+    "classic-alex-rivera": "classic",  # LaTeX template (data analytics)
+    "classic-jane-doe": "classic",     # LaTeX template (marketing)
+}
+
 
 # Authentication Middleware
 def require_auth(f):
@@ -1547,25 +1565,14 @@ def generate_resume():
             else:
                 logging.debug("Skipping user uploaded icons for no-icons template variant")
             
-            # Map template IDs to actual template directories
-            # Modern templates (both with/without icons) use HTML/CSS generation, Classic templates use LaTeX
-            template_mapping = {
-                "modern-with-icons": "modern",     # HTML template - icons will be copied above
-                "modern-no-icons": "modern",       # HTML template - no icons copied above
-                "modern": "modern",                 # Default HTML template
-                "classic": "classic",               # LaTeX template (generic)
-                "classic-alex-rivera": "classic",   # LaTeX template (data analytics)
-                "classic-jane-doe": "classic",      # LaTeX template (marketing)
-                "minimal": "minimal"                # Future template
-            }
-            
-            if template not in template_mapping:
+            # Validate template ID against known templates
+            if template not in TEMPLATE_DIR_MAP:
                 raise ValueError(
-                    f"Invalid template: {template}. Available templates: {', '.join(template_mapping.keys())}"
+                    f"Invalid template: {template}. Available templates: {', '.join(TEMPLATE_DIR_MAP.keys())}"
                 )
-            
+
             # Use the mapped template directory
-            actual_template = template_mapping[template]
+            actual_template = TEMPLATE_DIR_MAP[template]
             
             # Use subprocess for PDF generation to avoid Qt state issues
             if actual_template == "classic":
@@ -1573,14 +1580,14 @@ def generate_resume():
                 logging.info(f"Using direct LaTeX generation for template: {actual_template}")
                 generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
             else:
-                # HTML path: Use process pool for fast PDF generation with Qt isolation
-                # This approach prevents Qt threading conflicts while providing ~10x performance
-                # improvement over subprocess due to pre-warmed worker processes
-                logging.info(f"Using process pool HTML generation for template: {actual_template}")
-                
-                if PDF_PROCESS_POOL is None:
-                    # Fallback to subprocess if pool not available
-                    logging.warning("Process pool not available, falling back to subprocess")
+                # HTML path: Use thread pool to dispatch subprocess for PDF generation
+                # Subprocess provides process isolation (fresh Python + Qt state)
+                # Thread pool provides backpressure and timeout handling
+                logging.info(f"Using thread pool HTML generation for template: {actual_template}")
+
+                if PDF_THREAD_POOL is None:
+                    # Fallback to direct subprocess if pool not available
+                    logging.warning("Thread pool not available, falling back to direct subprocess")
                     cmd = [
                         "python",
                         "resume_generator.py",
@@ -1607,9 +1614,9 @@ def generate_resume():
                         logging.error(f"Subprocess error: {result.stderr}")
                         raise RuntimeError("Failed to generate the resume")
                 else:
-                    # Use process pool for faster execution
-                    logging.debug("Submitting PDF generation task to process pool")
-                    future = PDF_PROCESS_POOL.submit(
+                    # Use thread pool with timeout handling
+                    logging.debug("Submitting PDF generation task to thread pool")
+                    future = PDF_THREAD_POOL.submit(
                         pdf_generation_worker,
                         actual_template,
                         yaml_path,
@@ -2941,25 +2948,14 @@ def generate_pdf_for_saved_resume(resume_id):
             output_path = temp_dir_path / f"Resume_{timestamp}.pdf"
 
             template_id = resume.get('template_id', 'modern')
-
-            # Map template IDs to actual templates
-            template_mapping = {
-                "modern-with-icons": "modern",
-                "modern-no-icons": "modern",
-                "modern": "modern",
-                "classic": "classic",
-                "classic-alex-rivera": "classic",
-                "classic-jane-doe": "classic"
-            }
-
-            actual_template = template_mapping.get(template_id, "modern")
+            actual_template = TEMPLATE_DIR_MAP.get(template_id, "modern")
 
             # Generate PDF using appropriate method
             if actual_template == "classic":
                 generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
             else:
-                # Use process pool or subprocess
-                if PDF_PROCESS_POOL is None:
+                # Use thread pool or direct subprocess
+                if PDF_THREAD_POOL is None:
                     cmd = [
                         "python",
                         "resume_generator.py",
@@ -2981,7 +2977,7 @@ def generate_pdf_for_saved_resume(resume_id):
                         logging.error(f"PDF generation error: {result.stderr}")
                         raise RuntimeError("Failed to generate PDF")
                 else:
-                    future = PDF_PROCESS_POOL.submit(
+                    future = PDF_THREAD_POOL.submit(
                         pdf_generation_worker,
                         actual_template,
                         yaml_path,
@@ -3185,25 +3181,14 @@ def generate_thumbnail_for_resume(resume_id):
             output_path = temp_dir_path / f"Resume_{timestamp}.pdf"
 
             template_id = resume.get('template_id', 'modern')
-
-            # Map template IDs to actual templates
-            template_mapping = {
-                "modern-with-icons": "modern",
-                "modern-no-icons": "modern",
-                "modern": "modern",
-                "classic": "classic",
-                "classic-alex-rivera": "classic",
-                "classic-jane-doe": "classic"
-            }
-
-            actual_template = template_mapping.get(template_id, "modern")
+            actual_template = TEMPLATE_DIR_MAP.get(template_id, "modern")
 
             # Generate PDF using appropriate method
             if actual_template == "classic":
                 generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
             else:
-                # Use process pool or subprocess
-                if PDF_PROCESS_POOL is None:
+                # Use thread pool or direct subprocess
+                if PDF_THREAD_POOL is None:
                     cmd = [
                         "python",
                         "resume_generator.py",
@@ -3225,7 +3210,7 @@ def generate_thumbnail_for_resume(resume_id):
                         logging.error(f"PDF generation error: {result.stderr}")
                         raise RuntimeError("Failed to generate PDF")
                 else:
-                    future = PDF_PROCESS_POOL.submit(
+                    future = PDF_THREAD_POOL.submit(
                         pdf_generation_worker,
                         actual_template,
                         yaml_path,
