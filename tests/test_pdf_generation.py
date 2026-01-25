@@ -147,13 +147,18 @@ class TestThreadPoolInitialization:
             # Restore original pool
             app.PDF_THREAD_POOL = original_pool
 
-    def test_pool_has_correct_max_workers(self):
+    @patch('concurrent.futures.ThreadPoolExecutor')
+    def test_pool_has_correct_max_workers(self, mock_ThreadPoolExecutor):
         """Verify pool is initialized with expected worker count."""
-        if app.PDF_THREAD_POOL is None:
+        original_pool = app.PDF_THREAD_POOL
+        app.PDF_THREAD_POOL = None
+        try:
             app.initialize_pdf_pool()
-
-        # ThreadPoolExecutor stores max_workers in _max_workers
-        assert app.PDF_THREAD_POOL._max_workers == 5
+            mock_ThreadPoolExecutor.assert_called_once_with(max_workers=5)
+        finally:
+            # The new pool is a mock, so we can't shut it down.
+            # Just restore the original.
+            app.PDF_THREAD_POOL = original_pool
 
 
 # =============================================================================
