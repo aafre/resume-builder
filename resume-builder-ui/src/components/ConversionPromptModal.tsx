@@ -69,6 +69,7 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
       >
         {/* Close button */}
         <button
+          type="button"
           onClick={onClose}
           disabled={loading}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100 disabled:opacity-50"
@@ -112,6 +113,7 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
           <div className="space-y-3">
             {/* Primary: Sign In */}
             <button
+              type="button"
               onClick={onSignIn}
               disabled={loading}
               className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold px-6 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
@@ -122,6 +124,7 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
 
             {/* Secondary: Continue as Guest */}
             <button
+              type="button"
               onClick={onContinueAsGuest}
               disabled={loading}
               className="w-full flex items-center justify-center gap-2 border-2 border-gray-300 text-gray-700 font-semibold px-6 py-3 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
