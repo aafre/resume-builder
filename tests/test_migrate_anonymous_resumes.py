@@ -221,27 +221,96 @@ class TestMigratePreferencesBehavior:
         assert "Database connection failed" in logged_warning
 
 
-class TestMigrationEdgeCases:
-    """Edge case tests."""
+class TestMigrationAPIContract:
+    """
+    API contract tests using Flask's test_client.
 
-    def test_same_user_should_skip_migration(self):
-        """When old_user_id == new_user_id, migration should be skipped."""
-        old_user_id = 'same-user-123'
-        new_user_id = 'same-user-123'
+    These tests verify the HTTP interface behaves correctly for edge cases,
+    ensuring the endpoint returns proper status codes and response formats.
+    """
 
-        should_migrate = old_user_id != new_user_id
+    @pytest.fixture
+    def client(self):
+        """Create Flask test client with mocked dependencies."""
+        # Import here to avoid issues with module-level imports
+        with patch.dict('sys.modules', {'supabase': MagicMock()}):
+            import app as flask_app
+            flask_app.app.config['TESTING'] = True
+            with flask_app.app.test_client() as client:
+                yield client, flask_app
 
-        assert not should_migrate, \
-            "Migration should be skipped when old and new user IDs are the same"
+    @pytest.fixture
+    def auth_headers(self):
+        """Provide mock authorization headers."""
+        return {'Authorization': 'Bearer mock-jwt-token'}
 
-    def test_missing_old_user_id_should_fail_validation(self):
-        """Request without old_user_id should fail validation."""
-        request_data = {}
+    def test_same_user_returns_200_with_no_migration_needed(self, client, auth_headers):
+        """
+        API Contract: When old_user_id == new_user_id, endpoint should return
+        HTTP 200 with message indicating no migration needed.
+        """
+        test_client, flask_app = client
+        same_user_id = 'same-user-123'
 
-        old_user_id = request_data.get('old_user_id')
+        # Mock the require_auth decorator to set request.user_id
+        with patch.object(flask_app, 'supabase') as mock_supabase:
+            # Mock JWT verification in require_auth
+            with patch.object(flask_app.supabase, 'auth') as mock_auth:
+                mock_auth.get_user.return_value = MagicMock(
+                    user=MagicMock(id=same_user_id)
+                )
 
-        assert old_user_id is None, \
-            "Missing old_user_id should fail validation"
+                response = test_client.post(
+                    '/api/migrate-anonymous-resumes',
+                    json={'old_user_id': same_user_id},
+                    headers=auth_headers
+                )
+
+        assert response.status_code == 200
+        data = response.get_json()
+        assert data['migrated_count'] == 0
+        assert data['message'] == 'Same user, no migration needed'
+
+    def test_missing_old_user_id_returns_400(self, client, auth_headers):
+        """
+        API Contract: Request without old_user_id should return HTTP 400
+        with appropriate error message.
+        """
+        test_client, flask_app = client
+        new_user_id = 'auth-user-456'
+
+        with patch.object(flask_app, 'supabase') as mock_supabase:
+            with patch.object(flask_app.supabase, 'auth') as mock_auth:
+                mock_auth.get_user.return_value = MagicMock(
+                    user=MagicMock(id=new_user_id)
+                )
+
+                # Send request without old_user_id
+                response = test_client.post(
+                    '/api/migrate-anonymous-resumes',
+                    json={},
+                    headers=auth_headers
+                )
+
+        assert response.status_code == 400
+        data = response.get_json()
+        assert 'error' in data
+        assert 'old_user_id' in data['error'].lower()
+
+    def test_missing_auth_header_returns_401(self, client):
+        """
+        API Contract: Request without Authorization header should return HTTP 401.
+        """
+        test_client, flask_app = client
+
+        with patch.object(flask_app, 'supabase', MagicMock()):
+            response = test_client.post(
+                '/api/migrate-anonymous-resumes',
+                json={'old_user_id': 'some-user-id'}
+                # No auth headers
+            )
+
+        assert response.status_code == 401
 
 
 class TestMigrationLogicIntegration:
