@@ -1,5 +1,6 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
+import CopyablePrompt from "../shared/CopyablePrompt";
 
 export default function AIJobDescriptionAnalyzer() {
   return (
@@ -47,9 +48,7 @@ export default function AIJobDescriptionAnalyzer() {
           Start with this comprehensive prompt to get a full breakdown:
         </p>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-          <h4 className="font-bold text-gray-900 mb-3">Master Analysis Prompt</h4>
-          <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+        <CopyablePrompt title="Master Analysis Prompt">
             Analyze this job description thoroughly:<br /><br />
             [PASTE FULL JOB DESCRIPTION]<br /><br />
             Provide:<br /><br />
@@ -70,8 +69,7 @@ export default function AIJobDescriptionAnalyzer() {
             - What work environment does this suggest?<br /><br />
             **6. RED FLAGS OR CONCERNS**<br />
             - Anything unusual or potentially concerning
-          </div>
-        </div>
+        </CopyablePrompt>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
           Step 2: Keyword Extraction
@@ -81,9 +79,7 @@ export default function AIJobDescriptionAnalyzer() {
           For ATS optimization, you need exact keyword matches. Use this prompt:
         </p>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-          <h4 className="font-bold text-gray-900 mb-3">Keyword Extraction Prompt</h4>
-          <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+        <CopyablePrompt title="Keyword Extraction Prompt">
             Extract every keyword and phrase from this job description that should appear on a tailored resume:<br /><br />
             [PASTE JOB DESCRIPTION]<br /><br />
             Organize into categories:<br />
@@ -95,8 +91,7 @@ export default function AIJobDescriptionAnalyzer() {
             6. **Industry Terms** (jargon specific to this field)<br />
             7. **Action Verbs** (verbs they use repeatedly)<br /><br />
             Include frequency count if terms appear multiple times.
-          </div>
-        </div>
+        </CopyablePrompt>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
           Step 3: Decode Hidden Expectations
@@ -106,9 +101,7 @@ export default function AIJobDescriptionAnalyzer() {
           What they write isn't always what they mean. This prompt helps decode the subtext:
         </p>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-          <h4 className="font-bold text-gray-900 mb-3">Hidden Meaning Decoder</h4>
-          <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+        <CopyablePrompt title="Hidden Meaning Decoder">
             What do these phrases in this job description REALLY mean?<br /><br />
             [PASTE JOB DESCRIPTION]<br /><br />
             Decode common euphemisms like:<br />
@@ -119,8 +112,7 @@ export default function AIJobDescriptionAnalyzer() {
             - "Work hard, play hard"<br />
             - "Looking for a rockstar"<br /><br />
             What is this employer really looking for? What's the work culture likely to be?
-          </div>
-        </div>
+        </CopyablePrompt>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
           Step 4: Match Analysis
@@ -130,9 +122,7 @@ export default function AIJobDescriptionAnalyzer() {
           Once you've analyzed the JD, compare it against your background:
         </p>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-          <h4 className="font-bold text-gray-900 mb-3">Fit Analysis Prompt</h4>
-          <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+        <CopyablePrompt title="Fit Analysis Prompt">
             Compare my background to this job description:<br /><br />
             **Job Description:**<br />
             [PASTE JD]<br /><br />
@@ -145,8 +135,7 @@ export default function AIJobDescriptionAnalyzer() {
             4. **Gaps** - requirements I don't obviously meet<br />
             5. **Unique Value** - things I bring that aren't listed but could be valuable<br /><br />
             For each gap, suggest how I might address it on my resume.
-          </div>
-        </div>
+        </CopyablePrompt>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
           Step 5: Create Tailored Content
@@ -156,9 +145,7 @@ export default function AIJobDescriptionAnalyzer() {
           Now turn your analysis into resume content:
         </p>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-          <h4 className="font-bold text-gray-900 mb-3">Resume Tailoring Prompt</h4>
-          <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+        <CopyablePrompt title="Resume Tailoring Prompt">
             Based on this job description analysis:<br /><br />
             Keywords: [LIST TOP 15 KEYWORDS]<br />
             Key requirements: [LIST MAIN REQUIREMENTS]<br />
@@ -168,8 +155,7 @@ export default function AIJobDescriptionAnalyzer() {
             2. 3-4 experience bullets that incorporate the key keywords<br />
             3. A skills section organized by relevance to this role<br /><br />
             Make sure keywords appear naturally, not forced.
-          </div>
-        </div>
+        </CopyablePrompt>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
           Example Analysis Walkthrough

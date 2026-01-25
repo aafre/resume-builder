@@ -101,26 +101,26 @@ export function convertToEditorFormat(yamlResume: JobExampleData['resume']): obj
       {
         id: 'summary',
         type: 'text',
-        title: 'Professional Summary',
+        name: 'Professional Summary',
         content: yamlResume.summary,
       },
       {
         id: 'experience',
         type: 'experience',
-        title: 'Work Experience',
+        name: 'Work Experience',
         content: yamlResume.experience.map((exp, index) => ({
           id: `exp-${index}`,
           company: exp.company,
           title: exp.title,
           dates: exp.dates,
           location: exp.location || '',
-          description: exp.bullets.map(bullet => `- ${bullet}`).join('\n'),
+          description: exp.bullets,
         })),
       },
       {
         id: 'education',
         type: 'education',
-        title: 'Education',
+        name: 'Education',
         content: yamlResume.education.map((edu, index) => ({
           id: `edu-${index}`,
           school: edu.school,
@@ -133,14 +133,14 @@ export function convertToEditorFormat(yamlResume: JobExampleData['resume']): obj
       {
         id: 'skills',
         type: 'dynamic-column-list',
-        title: 'Skills',
+        name: 'Skills',
         content: yamlResume.skills,
       },
       ...(yamlResume.certifications && yamlResume.certifications.length > 0
         ? [{
             id: 'certifications',
             type: 'bulleted-list',
-            title: 'Certifications',
+            name: 'Certifications',
             content: yamlResume.certifications,
           }]
         : []),
