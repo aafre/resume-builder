@@ -4,7 +4,7 @@
 [![Build](https://github.com/aafre/resume-builder/actions/workflows/build.yml/badge.svg)](https://github.com/aafre/resume-builder/actions/workflows/build.yml)
 [![License](https://img.shields.io/github/license/aafre/resume-builder.svg)](LICENSE)
 
-# Resume Builder
+# EasyFreeResume
 
 **Create professional, ATS-friendly resumes in minutes.**
 No sign-up. No tracking. 100% free.
