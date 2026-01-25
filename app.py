@@ -28,7 +28,7 @@ import copy
 from jinja2 import Environment, FileSystemLoader
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import atexit
-from functools import wraps
+from functools import wraps, partial
 import time
 from typing import Callable, Any
 from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
@@ -1114,6 +1114,9 @@ if not SUPABASE_URL or not SUPABASE_SECRET_KEY:
 else:
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_SECRET_KEY)
     logging.info("Supabase client initialized successfully")
+
+# Maximum number of concurrent threads for copying icons during resume duplication
+MAX_ICON_COPY_WORKERS = 10
 
 # Development mode: Don't serve React from root to avoid route conflicts
 # Production mode: Serve React build from root (static_url_path="/")
@@ -2380,26 +2383,31 @@ def delete_resume(resume_id):
         return jsonify({"success": False, "error": "Failed to delete resume"}), 500
 
 
-def _copy_icon_worker(source_icon, user_id, new_resume_id):
+def _copy_icon_worker(user_id, new_resume_id, source_icon):
     """
     Worker function to copy a single icon in a thread pool.
     Downloads from source, uploads to destination, and returns new record.
+
+    Note: Creates its own Supabase client instance for thread safety.
     """
     try:
+        # Create thread-local Supabase client for thread safety
+        thread_supabase = create_client(SUPABASE_URL, SUPABASE_SECRET_KEY)
+
         # Download icon from source storage path
         source_path = source_icon['storage_path']
-        icon_data = supabase.storage.from_('resume-icons').download(source_path)
+        icon_data = thread_supabase.storage.from_('resume-icons').download(source_path)
 
         # Upload to new storage path
         new_storage_path = f"{user_id}/{new_resume_id}/{source_icon['filename']}"
-        supabase.storage.from_('resume-icons').upload(
+        thread_supabase.storage.from_('resume-icons').upload(
             new_storage_path,
             icon_data,
             file_options={"content-type": source_icon.get('mime_type', 'image/png'), "upsert": "true"}
         )
 
         # Get public URL for new icon
-        new_storage_url = supabase.storage.from_('resume-icons').get_public_url(new_storage_path)
+        new_storage_url = thread_supabase.storage.from_('resume-icons').get_public_url(new_storage_path)
 
         # Prepare new icon record
         return {
@@ -2415,7 +2423,7 @@ def _copy_icon_worker(source_icon, user_id, new_resume_id):
         }
     except Exception as icon_error:
         logging.error(f"Failed to copy icon {source_icon.get('filename', 'unknown')}: {icon_error}")
-        return None # Return None on failure
+        return None
 
 
 @app.route("/api/resumes/<resume_id>/duplicate", methods=["POST"])
@@ -2497,9 +2505,10 @@ def duplicate_resume(resume_id):
         source_icons = source_icons_result.data
 
         if source_icons:
-            with ThreadPoolExecutor(max_workers=10) as executor:
-                # Use a lambda to pass extra arguments to the worker
-                results = executor.map(lambda icon: _copy_icon_worker(icon, user_id, new_resume_id), source_icons)
+            with ThreadPoolExecutor(max_workers=MAX_ICON_COPY_WORKERS) as executor:
+                # Use partial to bind user_id and new_resume_id, leaving source_icon as the iterable arg
+                worker = partial(_copy_icon_worker, user_id, new_resume_id)
+                results = executor.map(worker, source_icons)
 
                 # Filter out None results from failed copies
                 new_icon_records = [record for record in results if record is not None]
