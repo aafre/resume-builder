@@ -151,8 +151,8 @@ export function convertToEditorFormat(yamlResume: JobExampleData['resume']): obj
             name: 'Projects',
             content: yamlResume.projects.map((proj, index) => ({
               id: `proj-${index}`,
-              company: proj.name,
-              title: '',
+              company: '',
+              title: proj.name,
               dates: '',
               location: '',
               description: [proj.description],
