@@ -28,8 +28,28 @@ No sign-up. No tracking. 100% free.
 
 ## ⚡ 60-Second Local Run
 
+### Prerequisites
+- **Node.js** 18+ and npm
+- **Python** 3.11+
+- **Docker** (recommended)
+- **Supabase CLI** ([install guide](https://supabase.com/docs/guides/cli))
+
+### Quick Start
+
 ```bash
+# Clone the repo
 git clone https://github.com/aafre/resume-builder.git && cd resume-builder
+
+# Start local Supabase (runs Postgres, Auth, Storage)
+supabase start
+
+# Copy environment files and update with keys from `supabase status`
+cp .env.example .env
+cp .env.local.example .env.local
+# Edit .env.local with your local Supabase keys from `supabase status`
+
+# Apply database migrations
+supabase db reset
 
 # Terminal 1: Frontend
 cd resume-builder-ui && npm install && npm run dev
@@ -38,7 +58,9 @@ cd resume-builder-ui && npm install && npm run dev
 pip install -r requirements.txt && python app.py
 ```
 
-Open **http://localhost:5173** and start building your resume!
+Open **http://localhost:5173** and start building!
+
+> **Tip:** Run `supabase status` to get your local API keys for `.env.local`
 
 ---
 
