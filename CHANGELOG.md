@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.11.1] - 2026-01-25
+
+### 🐛 Bug Fixes
+
+- **blog:** Make year references dynamic in BlogIndex titles
+
 ## [3.11.0] - 2026-01-25
 
 ### 🚀 Features
