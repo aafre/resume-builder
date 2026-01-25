@@ -1,4 +1,4 @@
-FROM node:25 AS react-build
+FROM node:25-slim AS react-build
 
 # Build-time arguments for Vite (frontend environment variables)
 # These get embedded into the JavaScript bundle during build
@@ -13,7 +13,11 @@ ENV VITE_APP_URL=$VITE_APP_URL
 
 WORKDIR /app/react
 COPY resume-builder-ui/package*.json ./
-RUN npm ci
+
+# Use cache mount for npm to speed up subsequent builds
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --prefer-offline
+
 COPY resume-builder-ui/ ./
 
 # Build React app with embedded environment variables
@@ -29,7 +33,10 @@ RUN groupadd -r appuser && useradd -r -g appuser appuser
 WORKDIR /app
 
 # Install system dependencies for HTML PDF generation and LaTeX support
-RUN apt-get update && \
+# Use cache mount to speed up apt operations
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && \
     apt-get install -y --no-install-recommends \
         wkhtmltopdf \
         texlive-xetex \
@@ -39,18 +46,25 @@ RUN apt-get update && \
         texlive-fonts-extra \
         fontconfig \
         curl \
-        poppler-utils \
-        && apt-get clean && rm -rf /var/lib/apt/lists/*
+        poppler-utils && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
+# Use cache mount for uv/pip to speed up subsequent builds
 COPY requirements.txt .
-RUN uv pip install --system --no-cache -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install --system -r requirements.txt
 
-# Copy application files with proper ownership
-COPY --chown=appuser:appuser . .
+# Copy only necessary application files (excludes resume-builder-ui via .dockerignore patterns)
+# Copy Python files
+COPY --chown=appuser:appuser app.py resume_generator*.py ./
 
-# Remove React source directory and copy built assets with proper ownership
-RUN rm -rf /app/resume-builder-ui
+# Copy directories needed for the application
+COPY --chown=appuser:appuser templates/ ./templates/
+COPY --chown=appuser:appuser samples/ ./samples/
+COPY --chown=appuser:appuser icons/ ./icons/
+
+# Copy built React assets from build stage
 COPY --from=react-build --chown=appuser:appuser /app/react/dist/ /app/static/
 
 # Create HOME directory for appuser and set proper permissions
