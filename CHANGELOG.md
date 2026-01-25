@@ -2,6 +2,103 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.9.0] - 2026-01-25
+
+### 🚀 Features
+
+- **ads:** Add useWordCount hook for blog ad word-gating
+- **ads:** Add ad infrastructure components with CLS prevention
+- **ads:** Add in-content ads to SEO landing pages
+- **ads:** Add ads to blog pages
+- **ads:** Add in-feed ads to template gallery
+- **ads:** Add optional desktop-only editor sidebar ad
+- **ads:** Add feature flag and real AdSense slot IDs
+- Parallelize resume icon duplication
+- **auth:** Add proactive JWT token refresh before expiry
+- **ui:** Add loading animations to Edit Resume and Preview buttons
+- **ui:** Add loading animation to Preview button on editor page
+- **seo:** Add AI crawler directives and schema generators
+- **seo:** Add SEO-rich templates page
+- **blog:** Add AI resume writing guides and prompts
+- **blog:** Add competitor comparison pages
+- **seo:** Add template style landing pages
+- **seo:** Add CV templates page and job examples pSEO
+- **ui:** Add showHeader prop to TemplateCarousel
+- **seo:** Expand footer with comprehensive internal linking
+- **seo:** Expand footer with comprehensive internal linking
+- **editor:** Improve Edit This Template flow
+- **blog:** Add copy button to AI prompt boxes
+- **ui:** Improve TemplateSelectionModal UX with larger previews
+- **seo:** Integrate TemplateSelectionModal into job example pages
+- **seo:** Add 15 missing job example YAML files
+- **seo:** Add hreflang tags to sitemap for CV/resume pages
+- **types:** Add github field to resume contact types
+
+### 🐛 Bug Fixes
+
+- **ads:** Address PR review feedback
+- **ads:** Address PR review feedback
+- **ads:** Correct useWordCount test for content change recalculation
+- **duplicate:** Address PR review feedback for icon parallelization
+- **api:** Migrate user_preferences on anon-to-auth conversion
+- **api:** Add exc_info to logging and improve test coverage
+- **api:** Use atomic RPC for preference migration
+- **ui:** Address PR review feedback for loading animations
+- **blog:** Use Link component for internal navigation in ZetyVsEasyFreeResume
+- **seo:** Address PR review comments for CTA buttons and caching
+- **seo:** Remove duplicate header and fix CTA on TemplatesPage
+- **seo:** Remove duplicate headers from template style pages
+- **seo:** Remove redundant hero CTAs from template style pages
+- **ads:** Check feature flag in wrapper components, not just AdContainer
+- **editor:** Use correct field name in convertToEditorFormat
+- **ui:** Add explicit type="button" to ConversionPromptModal buttons
+- **editor:** Return description as array in convertToEditorFormat
+- **editor:** Return description as array in convertToEditorFormat
+- **docs:** Correct Quick Start anchor link for emoji header
+- **docs:** Use non-destructive db push for migrations
+- **ui:** Handle block-level elements in CopyablePrompt text extraction
+- **build:** Resolve err
+- **docker:** Ensure templates available in docker
+- **examples:** Address PR review feedback for job examples
+- **yamlLoader:** Use title field for project name instead of company
+- **blog:** Center star ratings in Quick Verdict section
+
+### 🚜 Refactor
+
+- **auth:** Improve type safety with Session type
+- **blog:** Use Helmet for schema injection in comparison pages
+- **e2e:** Address PR review feedback for sitemap tests
+- **e2e:** Parallelize sitemap tests and pre-compute URLs
+- **ads:** Extract duplicate feature flag logic into shared utility
+- **ui:** Extract template loading into useCallback
+- **seo:** Deduplicate resume creation in JobExamplePage
+- **sitemap:** Address PR review feedback
+
+### 📚 Documentation
+
+- **ads:** Add enablement guide and refactoring issue
+- Fix license reference in README
+- Revamp README with product hero and 60-second local run
+- Expand Quick Start with prerequisites and Supabase setup
+- Rename project title to EasyFreeResume in README
+
+### ⚡ Performance
+
+- **ads:** Optimize AdSense script loading
+- **docker:** Optimize build with cache mounts and selective COPY
+- **docker:** Optimize build with cache mounts and selective COPY
+
+### 🧪 Testing
+
+- **api:** Convert edge case tests to API contract tests
+- **ui:** Use data-testid for more robust test selectors
+- **e2e:** Add sitemap 404 validation test
+
+### ⚙️ Miscellaneous Tasks
+
+- **seo:** Add routes and update sitemap for all new pages
+- Remove job example generator scripts from this branch
+
 ## [3.8.0] - 2026-01-21
 
 ### 🚀 Features
