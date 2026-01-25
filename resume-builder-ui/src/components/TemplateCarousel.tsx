@@ -30,7 +30,12 @@ interface Template {
   image_url: string;
 }
 
-const TemplateCarousel: React.FC = () => {
+interface TemplateCarouselProps {
+  /** Hide the header section when embedded in another page (e.g., TemplatesPage) */
+  showHeader?: boolean;
+}
+
+const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }) => {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
     null
@@ -424,16 +429,18 @@ const TemplateCarousel: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Header Section */}
-      <div className="text-center py-16 px-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800 mb-6">
-          Choose Your Perfect Template
-        </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Select a professional template that matches your style and industry
-        </p>
-      </div>
+    <div className={showHeader ? "min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50" : ""}>
+      {/* Header Section - only shown when used standalone */}
+      {showHeader && (
+        <div className="text-center py-16 px-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800 mb-6">
+            Free Resume Templates
+          </h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Professional, ATS-friendly designs that get you interviews. Choose a template and start building in minutes.
+          </p>
+        </div>
+      )}
 
       {/* Templates Grid */}
       <div className="container mx-auto max-w-6xl px-4 pb-20">
