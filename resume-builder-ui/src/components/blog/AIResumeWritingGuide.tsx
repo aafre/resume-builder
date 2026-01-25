@@ -1,5 +1,6 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
+import CopyablePrompt from "../shared/CopyablePrompt";
 
 export default function AIResumeWritingGuide() {
   return (
@@ -183,7 +184,7 @@ export default function AIResumeWritingGuide() {
             <p className="text-gray-700 mb-3">
               Use AI to extract key information:
             </p>
-            <div className="bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm">
+            <CopyablePrompt title="Job Description Analysis">
               Analyze this job description and identify:<br />
               1. Required hard skills<br />
               2. Required soft skills<br />
@@ -191,7 +192,7 @@ export default function AIResumeWritingGuide() {
               4. Nice-to-have qualifications<br />
               5. Company values/culture indicators<br /><br />
               [PASTE JOB DESCRIPTION]
-            </div>
+            </CopyablePrompt>
           </div>
 
           <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">

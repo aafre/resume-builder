@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
 import { AdContainer, AdContainerProps } from "./AdContainer";
+import { isExplicitAdsEnabled } from "./adUtils";
 
 export interface InContentAdProps
   extends Omit<AdContainerProps, "adFormat" | "minHeight"> {
@@ -55,6 +56,13 @@ export const InContentAd = ({
   enabled = true,
   ...rest
 }: InContentAdProps) => {
+  const explicitAdsEnabled = isExplicitAdsEnabled();
+
+  // Return null early if ads are disabled - don't render the wrapper div
+  if (!enabled || !explicitAdsEnabled) {
+    return null;
+  }
+
   const minHeightMap = {
     small: 100,
     standard: 250,
@@ -66,10 +74,6 @@ export const InContentAd = ({
     marginBottom: `${marginY}px`,
     ...style,
   };
-
-  if (!enabled) {
-    return null;
-  }
 
   return (
     <div

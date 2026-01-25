@@ -30,17 +30,8 @@ export default function TemplatesPage() {
       <PageHero config={config.hero} />
 
       {/* Template Gallery Section - Embedded TemplateCarousel */}
-      <section className="py-12 -mx-4 sm:-mx-6 md:-mx-8">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Choose Your Template
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Select a professional template and start building your resume in minutes.
-            All templates are ATS-optimized and completely free.
-          </p>
-        </div>
-        <TemplateCarousel />
+      <section id="template-gallery" className="py-8 -mx-4 sm:-mx-6 md:-mx-8">
+        <TemplateCarousel showHeader={false} />
       </section>
 
       {/* Why Our Templates Section */}
@@ -129,8 +120,8 @@ export default function TemplatesPage() {
       <DownloadCTA
         title="Ready to Build Your Resume?"
         description="Pick a template above and start building your professional resume in minutes. It's completely free."
-        primaryText="Browse Templates"
-        primaryHref="#"
+        primaryText="Back to Templates"
+        primaryHref="#template-gallery"
       />
     </SEOPageLayout>
   );

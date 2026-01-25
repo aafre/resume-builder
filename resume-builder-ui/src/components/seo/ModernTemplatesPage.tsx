@@ -39,7 +39,7 @@ export default function ModernTemplatesPage() {
             All designs are ATS-optimized and completely free.
           </p>
         </div>
-        <TemplateCarousel />
+        <TemplateCarousel showHeader={false} />
       </section>
 
       {/* What Makes Modern Templates Different */}

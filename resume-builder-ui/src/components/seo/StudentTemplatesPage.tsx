@@ -39,7 +39,7 @@ export default function StudentTemplatesPage() {
             perfect when you're building your career from the ground up.
           </p>
         </div>
-        <TemplateCarousel />
+        <TemplateCarousel showHeader={false} />
       </section>
 
       {/* What to Include Section */}

@@ -1177,6 +1177,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Template file mapping
 TEMPLATE_FILE_MAP = {
+    "modern": TEMPLATES_DIR / "john_doe.yml",  # Alias for job example pages
     "modern-no-icons": TEMPLATES_DIR / "john_doe_no_icon.yml",
     "modern-with-icons": TEMPLATES_DIR / "john_doe.yml",
     "classic-alex-rivera": PROJECT_ROOT / "samples" / "classic" / "alex_rivera_data.yml",

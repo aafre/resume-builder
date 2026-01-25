@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import FAQSection from '../shared/FAQSection';
@@ -15,8 +15,14 @@ import BreadcrumbsWithSchema from '../shared/BreadcrumbsWithSchema';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { loadJobExample, convertToEditorFormat } from '../../utils/yamlLoader';
 import { getRelatedJobs, JOB_CATEGORIES } from '../../data/jobExamples';
+import { useAuth } from '../../contexts/AuthContext';
+import { useResumeCreate } from '../../hooks/useResumeCreate';
+import ConversionPromptModal from '../ConversionPromptModal';
+import AuthModal from '../AuthModal';
+import TemplateSelectionModal from '../TemplateSelectionModal';
 import type { JobExampleData } from '../../data/jobExamples/types';
 import type { FAQConfig } from '../../types/seo';
+import type { Section } from '../../types';
 
 // Loading skeleton component
 const LoadingSkeleton = () => (
@@ -53,10 +59,16 @@ const NotFound = ({ slug }: { slug: string }) => (
 
 export default function JobExamplePage() {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
   const [data, setData] = useState<JobExampleData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [showConversionPrompt, setShowConversionPrompt] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
+
+  const { isAnonymous, session } = useAuth();
+  const { createResume, creating } = useResumeCreate();
 
   // Load YAML data
   useEffect(() => {
@@ -85,37 +97,13 @@ export default function JobExamplePage() {
       });
   }, [slug]);
 
-  // Handle "Edit This Template" click
-  const handleEditTemplate = () => {
-    if (!data) return;
+  // Compute derived values (always computed to maintain hook order)
+  const relatedJobs = slug ? getRelatedJobs(slug, 4) : [];
+  const categoryInfo = data ? JOB_CATEGORIES.find(c => c.id === data.meta.category) : null;
+  const faqs: FAQConfig[] = data?.customFaqs || (data ? generateFAQs(data) : []);
 
-    // Convert YAML resume to editor format and store in sessionStorage
-    const editorData = convertToEditorFormat(data.resume);
-    sessionStorage.setItem('loadedResumeData', JSON.stringify(editorData));
-
-    // Navigate to editor
-    navigate('/editor');
-  };
-
-  if (loading) {
-    return <LoadingSkeleton />;
-  }
-
-  if (error || !data || !slug) {
-    return <NotFound slug={slug || 'unknown'} />;
-  }
-
-  // Get related jobs
-  const relatedJobs = getRelatedJobs(slug, 4);
-
-  // Get category info
-  const categoryInfo = JOB_CATEGORIES.find(c => c.id === data.meta.category);
-
-  // Generate FAQs (use custom FAQs if provided, otherwise generate)
-  const faqs: FAQConfig[] = data.customFaqs || generateFAQs(data);
-
-  // Create SEO config
-  const seoConfig = {
+  // Create SEO config (with defaults for loading/error states)
+  const seoConfig = data ? {
     title: data.meta.metaTitle,
     description: data.meta.metaDescription,
     keywords: [
@@ -125,18 +113,96 @@ export default function JobExamplePage() {
       `free ${data.meta.title.toLowerCase()} resume`,
     ],
     canonicalUrl: `/examples/${slug}`,
+  } : {
+    title: 'Resume Example',
+    description: 'Professional resume example',
+    keywords: [],
+    canonicalUrl: `/examples/${slug || ''}`,
   };
 
-  // Create schema
+  // Create schema (must be called unconditionally to maintain hook order)
   const schemas = usePageSchema({
     type: 'itemList',
     faqs,
     breadcrumbs: [
       { label: 'Home', href: '/' },
       { label: 'Resume Examples', href: '/examples' },
-      { label: data.meta.title, href: `/examples/${slug}` },
+      { label: data?.meta.title || 'Example', href: `/examples/${slug || ''}` },
     ],
   });
+
+  // Create resume from job example data
+  const doCreateResume = async (templateIdOverride?: string) => {
+    if (!data || !session) return;
+
+    const editorData = convertToEditorFormat(data.resume);
+
+    // Use override, then selected template, then example's default template
+    const templateId = templateIdOverride || selectedTemplateId || data.resume.template || 'modern';
+
+    await createResume({
+      templateId,
+      title: `${data.meta.title} Resume`,
+      contactInfo: {
+        name: data.resume.contact.name,
+        email: data.resume.contact.email,
+        phone: data.resume.contact.phone,
+        location: data.resume.contact.location,
+        linkedin: data.resume.contact.linkedin,
+      },
+      sections: (editorData as { sections: Section[] }).sections,
+    });
+  };
+
+  // Handle "Edit This Template" click - show template selection first
+  const handleEditTemplate = () => {
+    if (!data || !session) return;
+
+    // Always show template selection modal first
+    setShowTemplateModal(true);
+  };
+
+  // Handle template selection from modal
+  const handleTemplateSelect = async (templateId: string) => {
+    setSelectedTemplateId(templateId);
+    setShowTemplateModal(false);
+
+    // Show conversion prompt for anonymous users
+    if (isAnonymous) {
+      setShowConversionPrompt(true);
+      return;
+    }
+
+    // Authenticated users - create directly with selected template
+    await doCreateResume(templateId);
+  };
+
+  // Handle "Sign In" from conversion prompt
+  const handleSignIn = () => {
+    setShowConversionPrompt(false);
+    setShowAuthModal(true);
+  };
+
+  // Handle "Continue as Guest" from conversion prompt
+  const handleContinueAsGuest = async () => {
+    setShowConversionPrompt(false);
+    await doCreateResume();
+  };
+
+  // Handle successful authentication
+  const handleAuthSuccess = () => {
+    setShowAuthModal(false);
+    // User can now click the button again (they're authenticated)
+  };
+
+  // Early returns AFTER all hooks
+  if (loading) {
+    return <LoadingSkeleton />;
+  }
+
+  if (error || !data || !slug) {
+    return <NotFound slug={slug || 'unknown'} />;
+  }
 
   // Hero config - no CTA here since sidebar has the working "Edit This Template" button
   const heroConfig = {
@@ -276,9 +342,17 @@ export default function JobExamplePage() {
 
               <button
                 onClick={handleEditTemplate}
-                className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors mb-4"
+                disabled={creating}
+                className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors mb-4 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                Edit This Template
+                {creating ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    Creating...
+                  </>
+                ) : (
+                  'Edit This Template'
+                )}
               </button>
 
               <Link
@@ -355,6 +429,31 @@ export default function JobExamplePage() {
         description="Use our free builder to create a professional resume in minutes. No sign-up required."
         primaryText="Browse All Templates"
         primaryHref="/templates"
+      />
+
+      {/* Template Selection Modal */}
+      <TemplateSelectionModal
+        isOpen={showTemplateModal}
+        onClose={() => setShowTemplateModal(false)}
+        onSelect={handleTemplateSelect}
+        initialTemplateId={data.resume.template}
+      />
+
+      {/* Conversion Prompt Modal (for anonymous users) */}
+      <ConversionPromptModal
+        isOpen={showConversionPrompt}
+        onClose={() => setShowConversionPrompt(false)}
+        onSignIn={handleSignIn}
+        onContinueAsGuest={handleContinueAsGuest}
+        actionLabel="use this template"
+        loading={creating}
+      />
+
+      {/* Auth Modal (triggered from conversion prompt) */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={handleAuthSuccess}
       />
     </SEOPageLayout>
   );

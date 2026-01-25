@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
 import { AdContainer, AdContainerProps } from "./AdContainer";
+import { isExplicitAdsEnabled } from "./adUtils";
 
 export interface InFeedAdProps
   extends Omit<AdContainerProps, "adFormat" | "minHeight" | "minWidth"> {
@@ -53,6 +54,13 @@ export const InFeedAd = ({
   enabled = true,
   ...rest
 }: InFeedAdProps) => {
+  const explicitAdsEnabled = isExplicitAdsEnabled();
+
+  // Return null early if ads are disabled - don't render the wrapper div
+  if (!enabled || !explicitAdsEnabled) {
+    return null;
+  }
+
   const layoutStyles: Record<typeof layout, CSSProperties> = {
     card: {
       minHeight: "280px",
@@ -95,10 +103,6 @@ export const InFeedAd = ({
 
   const minHeight = layout === "card" ? 280 : 100;
   const minWidth = layout === "card" ? 250 : undefined;
-
-  if (!enabled) {
-    return null;
-  }
 
   return (
     <div

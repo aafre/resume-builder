@@ -70,7 +70,7 @@ export default function CVTemplatesPage() {
             All designs are ATS-compatible and completely free.
           </p>
         </div>
-        <TemplateCarousel />
+        <TemplateCarousel showHeader={false} />
       </section>
 
       {/* CV vs Resume Explanation */}

@@ -193,7 +193,30 @@ class ApiClient {
     isRetry: boolean = false,
     responseType: 'json' | 'blob' | 'text' | 'raw' = 'json'
   ): Promise<T> {
-    // Handle 401/403 auth errors globally
+    // Handle 403 - could be auth error OR business logic error (e.g., RESUME_LIMIT_REACHED)
+    if (response.status === 403) {
+      // Clone response to read body without consuming it
+      const clonedResponse = response.clone();
+      let errorData: any = null;
+
+      try {
+        errorData = await clonedResponse.json();
+      } catch {
+        // Not JSON, treat as auth error below
+      }
+
+      // Check for known business logic error codes that should NOT trigger auth handling
+      const businessLogicErrorCodes = ['RESUME_LIMIT_REACHED'];
+      if (errorData?.error_code && businessLogicErrorCodes.includes(errorData.error_code)) {
+        // This is a business logic error, not auth - throw ApiError so caller can handle it
+        const errorMessage = errorData.error || errorData.message || 'Permission denied';
+        throw new ApiError(errorMessage, response.status, errorData);
+      }
+
+      // Otherwise fall through to auth error handling below
+    }
+
+    // Handle 401 auth errors (always authentication) and 403 auth errors (non-business-logic)
     if (response.status === 401 || response.status === 403) {
       console.error(`❌ Auth error: ${response.status} ${response.statusText}`);
 

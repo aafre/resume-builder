@@ -28,11 +28,6 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       subtitle: 'Professional, ATS-friendly designs that get you interviews',
       description:
         'Choose from our collection of free resume templates. Every template is optimized for Applicant Tracking Systems and designed by professionals. No watermarks, no sign-up required.',
-      primaryCTA: {
-        text: 'Start Building',
-        href: '/templates',
-        variant: 'primary',
-      },
     },
     features: [
       {
@@ -1019,11 +1014,6 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       subtitle: 'Contemporary designs for forward-thinking professionals',
       description:
         'Stand out with our modern resume templates featuring clean lines, strategic white space, and contemporary typography. Perfect for tech, creative, and startup roles.',
-      primaryCTA: {
-        text: 'Start Building',
-        href: '/templates',
-        variant: 'primary',
-      },
     },
     features: [
       {
@@ -1087,11 +1077,6 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       subtitle: 'Clean simplicity that lets your qualifications shine',
       description:
         'Sometimes less is more. Our minimalist templates strip away distractions and put the focus where it belongs: on your experience, skills, and achievements.',
-      primaryCTA: {
-        text: 'Start Building',
-        href: '/templates',
-        variant: 'primary',
-      },
     },
     features: [
       {
@@ -1155,11 +1140,6 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       subtitle: 'Designed for students, interns, and new graduates',
       description:
         'New to the job market? Our student-focused templates emphasize education, skills, projects, and extracurriculars to help you compete even without extensive work experience.',
-      primaryCTA: {
-        text: 'Start Building',
-        href: '/templates',
-        variant: 'primary',
-      },
     },
     features: [
       {
@@ -1230,11 +1210,6 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       subtitle: 'Professional templates for UK, Europe, and international applications',
       description:
         'Choose from our collection of free CV templates. Every template follows UK and international CV conventions. ATS-optimised, no watermarks, no sign-up required.',
-      primaryCTA: {
-        text: 'Browse CV Templates',
-        href: '/templates',
-        variant: 'primary',
-      },
     },
     features: [
       {
