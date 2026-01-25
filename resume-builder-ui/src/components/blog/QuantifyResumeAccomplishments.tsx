@@ -6,13 +6,18 @@ const QuantifyResumeAccomplishments = () => {
       title="How to Quantify Your Resume Accomplishments (Even If You're Not a Numbers Person)"
       description="Learn simple formulas and strategies to turn your job duties into powerful, data-driven achievements that impress recruiters and demonstrate your true impact."
       publishDate="2025-07-16"
+      lastUpdated="2026-01-25"
       readTime="7 min"
       keywords={["quantify resume accomplishments", "resume metrics", "resume numbers", "quantified achievements", "resume results", "ATS resume optimization"]}
       ctaType="resume"
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
-          Numbers speak louder than words on your resume. Quantified accomplishments are 40% more likely to catch a hiring manager's attention than generic statements. Learn how to transform weak bullet points into powerful, metric-driven achievements that prove your value.
+          Updated for 2026: Numbers speak louder than words on your resume.
+          Quantified accomplishments are over 40% more likely to catch a hiring
+          manager's attention than generic statements. Learn how to transform
+          weak bullet points into powerful, metric-driven achievements that
+          prove your value.
         </p>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Why Quantifying Accomplishments Matters</h2>

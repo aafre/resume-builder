@@ -16,9 +16,9 @@ export interface SitemapUrl {
  */
 export const STATIC_URLS: SitemapUrl[] = [
   // High Priority Landing Pages (1.0)
-  { loc: '/', priority: 1.0, changefreq: 'weekly', lastmod: '2025-10-26' },
+  { loc: '/', priority: 1.0, changefreq: 'weekly', lastmod: '2026-01-25' },
 
-  // New SEO Landing Pages (0.9)
+  // New SEO Landing Pages (0.9) - updated footer links today
   { loc: '/actual-free-resume-builder', priority: 0.9, changefreq: 'monthly', lastmod: '2025-10-26' },
   { loc: '/free-resume-builder-no-sign-up', priority: 0.9, changefreq: 'monthly', lastmod: '2026-01-01' },
   { loc: '/best-free-resume-builder-reddit', priority: 0.9, changefreq: 'monthly', lastmod: '2025-10-26' },
@@ -46,33 +46,33 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/resume-keywords/customer-service', priority: 0.7, changefreq: 'monthly', lastmod: '2026-01-01' },
 
   // Blog Hub (0.6)
-  { loc: '/blog', priority: 0.6, changefreq: 'weekly', lastmod: '2025-10-26' },
+  { loc: '/blog', priority: 0.6, changefreq: 'weekly', lastmod: '2026-01-25' },
 
-  // Blog Posts (0.5)
-  { loc: '/blog/resume-keywords-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2025-07-15' },
-  { loc: '/blog/resume-no-experience', priority: 0.5, changefreq: 'monthly', lastmod: '2025-07-20' },
-  { loc: '/blog/job-interview-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2025-09-05' },
-  { loc: '/blog/ats-resume-optimization', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/resume-mistakes-to-avoid', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/professional-summary-examples', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/cover-letter-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/remote-work-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/resume-length-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/tech-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/resume-vs-cv-difference', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/ai-resume-builder', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/behavioral-interview-questions', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/introducing-prepai-ai-interview-coach', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/how-to-write-a-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/resume-action-verbs', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/how-to-use-resume-keywords', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/software-engineer-resume-keywords', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/how-why-easyfreeresume-completely-free', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
+  // Blog Posts (0.5) - being updated with content refreshes
+  { loc: '/blog/resume-keywords-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/resume-no-experience', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/job-interview-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/ats-resume-optimization', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/resume-mistakes-to-avoid', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/professional-summary-examples', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/cover-letter-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/remote-work-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/resume-length-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/tech-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/resume-vs-cv-difference', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/ai-resume-builder', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/behavioral-interview-questions', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/introducing-prepai-ai-interview-coach', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/how-to-write-a-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/resume-action-verbs', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/how-to-use-resume-keywords', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/software-engineer-resume-keywords', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/how-why-easyfreeresume-completely-free', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/zety-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-01' },
-  { loc: '/blog/how-to-list-skills', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
-  { loc: '/blog/quantify-resume-accomplishments', priority: 0.5, changefreq: 'monthly', lastmod: '2025-01-15' },
+  { loc: '/blog/how-to-list-skills', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/quantify-resume-accomplishments', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
 
-  // New AI Blog Posts (0.5)
+  // New AI Blog Posts (0.5) - recently created
   { loc: '/blog/chatgpt-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/ai-resume-writing-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/claude-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
@@ -81,7 +81,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/ai-job-description-analyzer', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/ai-resume-review', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
 
-  // Competitor Comparison Posts (0.5)
+  // Competitor Comparison Posts (0.5) - recently created
   { loc: '/blog/resume-io-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/resume-genius-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/novoresume-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },

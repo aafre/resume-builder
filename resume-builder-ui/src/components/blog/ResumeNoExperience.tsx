@@ -6,7 +6,7 @@ export default function ResumeNoExperience() {
       title="Resume with No Experience: Real Examples + Free Template"
       description="How to write an ATS-friendly, confidence-boosting resume when you're just starting out. Includes copy-paste examples and free template."
       publishDate="2025-07-20"
-      lastUpdated="2026-01-18"
+      lastUpdated="2026-01-25"
       readTime="12–16 min"
       keywords={[
         "entry level resume",
@@ -20,10 +20,10 @@ export default function ResumeNoExperience() {
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
-          Starting your career without "official" experience can feel
-          intimidating – but employers hire for potential as much as for
-          history. If you show the right skills, projects, and results, you can
-          win interviews even with a blank work history.
+          Updated for 2026: Starting your career without "official" experience
+          can feel intimidating – but employers continue to hire for potential
+          as much as for history. If you show the right skills, projects, and
+          results, you can win interviews even with a blank work history.
         </p>
 
         <p className="text-lg leading-relaxed text-gray-700">

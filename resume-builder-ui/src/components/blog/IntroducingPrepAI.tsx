@@ -5,7 +5,7 @@ export default function IntroducingPrepAI() {
     <BlogLayout
       title="Don't Just Prepare, PrepAI: Introducing Your AI Interview Coach"
       description="Move beyond standard interview advice. Discover how PrepAI, our new AI-powered tool, provides instant, personalized feedback to help you ace your next interview."
-      publishDate="2025-08-30"
+      publishDate="2026-01-25"
       readTime="6 min"
       keywords={[
         "PrepAI",
@@ -22,9 +22,9 @@ export default function IntroducingPrepAI() {
           You've perfected your resume, researched the company, and prepared
           your STAR stories. But there's one crucial step missing: realistic
           interview practice with personalized feedback based on your actual CV
-          and target role. Meet PrepAI, the AI-powered interview coach that
-          analyzes your resume and creates tailored practice sessions to help
-          you land your next role faster.
+          and target role. Updated for 2026, meet PrepAI, the AI-powered
+          interview coach that analyzes your resume and creates tailored
+          practice sessions to help you land your next role faster.
         </p>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -311,7 +311,7 @@ export default function IntroducingPrepAI() {
         </div>
 
         <p className="text-lg leading-relaxed text-gray-700 mt-8">
-          The job market is competitive, but with the right tools and
+          The 2026 job market remains competitive, but with the right tools and
           preparation, you can stand out from the crowd. Combine a
           professionally crafted resume with the confidence that comes from
           thorough interview practice, and you'll be unstoppable in your job

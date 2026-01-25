@@ -3,7 +3,7 @@ import BlogLayout from "../BlogLayout";
 export default function CoverLetterGuide() {
   return (
     <BlogLayout
-      title="How to Write a Cover Letter That Gets Read in 2025"
+      title="How to Write a Cover Letter That Gets Read in 2026"
       description="Master the art of writing cover letters that stand out, get noticed, and support your resume in the modern job market."
       publishDate="2025-07-12"
       readTime="7 min" // Adjusted based on content length (see calculation below)
@@ -11,21 +11,21 @@ export default function CoverLetterGuide() {
         "cover letter tips",
         "job application",
         "resume support",
-        "career advice 2025",
+        "career advice 2026",
         "job search",
         "professional writing",
       ]}
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
-          Writing a cover letter in 2025 is no longer a formality - it's a
+          Writing a cover letter in 2026 is no longer a formality - it's a
           strategic tool that can tip the scales in your favor. Done right, your
           cover letter can spark interest, show personality, and explain exactly
           why you belong at the company.
         </p>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
-          Why Cover Letters Still Matter in 2025
+          Why Cover Letters Still Matter in 2026
         </h2>
         <p className="text-lg leading-relaxed text-gray-700">
           According to a recent survey by ResumeLab, 83% of hiring managers say
@@ -99,7 +99,7 @@ export default function CoverLetterGuide() {
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
-          Cover Letter Template (2025-Optimized)
+          Cover Letter Template (2026-Optimized)
         </h2>
         <pre className="whitespace-pre-wrap bg-gray-100 rounded-md p-4 text-sm overflow-x-auto font-mono text-gray-800 border border-gray-200">
           {`Dear [Hiring Manager's Name],

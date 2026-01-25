@@ -17,10 +17,10 @@ export default function ProfessionalSummaryExamples() {
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
-          Your professional summary is the most important section of your
-          resume-it's the first thing recruiters read and often determines
-          whether they'll continue reading. A compelling summary can be the
-          difference between landing an interview and having your resume
+          Updated for 2026: Your professional summary is the most important
+          section of your resume-it's the first thing recruiters read and often
+          determines whether they'll continue reading. A compelling summary can
+          be the difference between landing an interview and having your resume
           overlooked. This guide provides 20+ proven examples and templates to
           help you craft a summary that opens doors.
         </p>

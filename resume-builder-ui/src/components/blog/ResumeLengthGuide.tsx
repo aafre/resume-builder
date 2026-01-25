@@ -3,9 +3,10 @@ import BlogLayout from "../BlogLayout";
 export default function ResumeLengthGuide() {
   return (
     <BlogLayout
-      title="Resume Length: How Long Should Your Resume Be in 2025?"
-      description="Discover the optimal resume length for your experience level and industry, with specific guidelines."
+      title="Resume Length: How Long Should Your Resume Be in 2026?"
+      description="Discover the optimal resume length for your experience level and industry, with specific guidelines. Updated for 2026."
       publishDate="2025-07-08"
+      lastUpdated="2026-01-25"
       readTime="6 min"
       keywords={[
         "resume length",
@@ -17,13 +18,13 @@ export default function ResumeLengthGuide() {
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
-          One of the most common questions job seekers ask is: "How long should my resume be?" The answer isn't one-size-fits-all, but there are clear guidelines based on your experience level, industry, and career goals. In 2025, getting resume length right is crucial for capturing attention without overwhelming recruiters.
+          One of the most common questions job seekers ask is: "How long should my resume be?" The answer isn't one-size-fits-all, but there are clear guidelines based on your experience level, industry, and career goals. In 2026, getting resume length right is more crucial than ever for capturing attention without overwhelming recruiters.
         </p>
 
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
           <h3 className="text-lg font-bold text-blue-800 mb-2">📊 Quick Facts</h3>
           <p className="text-blue-700">
-            Recruiters spend an average of 6-8 seconds on initial resume review. Studies show that 77% of recruiters prefer resumes that are 1-2 pages long, regardless of experience level.
+            Recruiters spend an average of 6-8 seconds on initial resume review. Studies show that over 77% of recruiters prefer resumes that are 1-2 pages long, regardless of experience level.
           </p>
         </div>
 

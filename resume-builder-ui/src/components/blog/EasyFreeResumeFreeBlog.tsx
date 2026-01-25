@@ -6,6 +6,7 @@ export default function EasyFreeResumeFreeBlog() {
       title="How (and Why) is EasyFreeResume Completely Free?"
       description="No paywalls, no hidden fees, no premium upgrades. We break down why we built a truly free resume builder and how we are committed to keeping it that way."
       publishDate="2025-08-01"
+      lastUpdated="2026-01-25"
       readTime="8 min"
       keywords={[
         "actually free resume builder",
@@ -17,10 +18,10 @@ export default function EasyFreeResumeFreeBlog() {
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
-          If you've ever searched for a "free resume builder," you know the
-          frustrating routine. You spend an hour carefully crafting your resume,
-          only to be hit with a paywall when you try to download it. It's a
-          classic bait-and-switch.
+          Updated for 2026: If you've ever searched for a "free resume builder,"
+          you know the frustrating routine. You spend an hour carefully crafting
+          your resume, only to be hit with a paywall when you try to download
+          it. It's a classic bait-and-switch that remains all too common.
         </p>
 
         <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">

@@ -6,6 +6,7 @@ export default function JobInterviewGuide() {
       title="The Ultimate Guide to Nailing Your Next Job Interview"
       description="A comprehensive guide covering everything from pre-interview research and common questions to post-interview follow-up etiquette."
       publishDate="2025-09-05"
+      lastUpdated="2026-01-25"
       readTime="7 min"
       keywords={[
         "job interview guide",
@@ -19,10 +20,10 @@ export default function JobInterviewGuide() {
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
-          Your resume did its job - you've landed the interview. Now it's time
-          to prepare for the most critical step in your job search. This
-          comprehensive guide will walk you through everything you need to know
-          to impress your interviewers and land the offer.
+          Updated for 2026: Your resume did its job - you've landed the
+          interview. Now it's time to prepare for the most critical step in your
+          job search. This comprehensive guide will walk you through everything
+          you need to know to impress your interviewers and land the offer.
         </p>
 
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">

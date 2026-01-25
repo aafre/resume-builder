@@ -3,14 +3,14 @@ import BlogLayout from "../BlogLayout";
 export default function HowToWriteResumeGuide() {
   return (
     <BlogLayout
-      title="How to Write a Resume in 2025: The Complete Step-by-Step Guide"
+      title="How to Write a Resume in 2026: The Complete Step-by-Step Guide"
       description="From a blank page to a finished, professional resume, this guide covers every section, formatting rule, and writing tip you need to know."
-      publishDate="2025-08-25"
+      publishDate="2026-01-25"
       readTime="8 min"
       keywords={[
         "how to write a resume",
         "resume writing guide",
-        "resume format 2025",
+        "resume format 2026",
         "professional resume",
         "resume tips",
         "career advice",
@@ -20,10 +20,10 @@ export default function HowToWriteResumeGuide() {
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
           Writing a resume from scratch can feel overwhelming, but it doesn't
-          have to be. This comprehensive guide will walk you through every step
-          of creating a professional resume that gets results, from choosing the
-          right format to crafting compelling content that catches recruiters'
-          attention.
+          have to be. Updated for 2026, this comprehensive guide will walk you
+          through every step of creating a professional resume that gets results,
+          from choosing the right format to crafting compelling content that
+          catches recruiters' attention.
         </p>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
@@ -314,7 +314,7 @@ export default function HowToWriteResumeGuide() {
         </h2>
 
         <p className="text-lg leading-relaxed text-gray-700">
-          A generic resume won't cut it in today's competitive job market.
+          A generic resume won't cut it in today's highly competitive job market.
           Here's how to customize your resume for each position:
         </p>
 

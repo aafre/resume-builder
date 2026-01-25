@@ -7,7 +7,7 @@ export default function ResumeVsCvDifference() {
       title="Resume vs CV: Understanding the Key Differences"
       description="Learn when to use a resume versus a CV, and how to format each document for maximum impact."
       publishDate="2025-07-02"
-      lastUpdated="2026-01-18"
+      lastUpdated="2026-01-25"
       readTime="6 min"
       keywords={[
         "resume vs cv",
@@ -24,7 +24,7 @@ export default function ResumeVsCvDifference() {
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
           "Should I send a resume or a CV?" This is a common question that can
-          trip up even experienced job seekers. While often used
+          trip up even experienced job seekers. Updated for 2026, this guide clarifies the key differences. While often used
           interchangeably, a <strong>resume</strong> and a <strong>CV (Curriculum Vitae)</strong> are
           distinct documents with different purposes, lengths, and content.
           Knowing which one to use for a particular application is crucial for

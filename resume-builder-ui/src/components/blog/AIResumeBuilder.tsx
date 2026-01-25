@@ -3,15 +3,16 @@ import BlogLayout from "../BlogLayout";
 export default function AIResumeBuilder() {
   return (
     <BlogLayout
-      title="AI Resume Builders: Your Secret Weapon for Job Search in 2025?"
-      description="Explore how AI can revolutionize your resume writing, from drafting content to optimizing for ATS, and learn best practices for smart usage in today's job market."
+      title="AI Resume Builders: Your Secret Weapon for Job Search in 2026?"
+      description="Explore how AI can revolutionize your resume writing, from drafting content to optimizing for ATS, and learn best practices for smart usage in today's job market. Updated for 2026."
       publishDate="2025-07-27"
+      lastUpdated="2026-01-25"
       readTime="9 min"
       keywords={[
         "AI resume builder",
         "resume writing AI",
         "ATS optimization",
-        "job search 2025",
+        "job search 2026",
         "artificial intelligence jobs",
         "career tech",
         "EasyFreeResume AI",
@@ -19,7 +20,7 @@ export default function AIResumeBuilder() {
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
-          In the rapidly evolving job market of 2025, getting noticed by
+          In the rapidly evolving job market of 2026, getting noticed by
           recruiters and Applicant Tracking Systems (ATS) is more challenging
           than ever. Enter AI resume builders – powerful tools that promise to
           streamline your job application process and significantly boost your
@@ -254,7 +255,7 @@ export default function AIResumeBuilder() {
           Final Thoughts: AI as Your Co-Pilot, Not Auto-Pilot
         </h2>
         <p className="text-lg leading-relaxed text-gray-700">
-          In 2025, AI resume builders are undoubtedly a game-changer for job
+          In 2026, AI resume builders are undoubtedly a game-changer for job
           seekers. They offer unprecedented efficiency and optimization
           capabilities, helping you navigate the complexities of ATS and stand
           out to human recruiters.

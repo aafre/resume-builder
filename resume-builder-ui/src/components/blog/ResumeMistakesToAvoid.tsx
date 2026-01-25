@@ -12,13 +12,13 @@ export default function ResumeMistakesToAvoid() {
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
-          Your resume is your first impression with potential employers. A single mistake can mean the difference between landing an interview and having your application dismissed. After reviewing thousands of resumes, we've identified the most critical errors that consistently hurt job seekers' chances.
+          Updated for 2026: Your resume is your first impression with potential employers. A single mistake can mean the difference between landing an interview and having your application dismissed. After reviewing thousands of resumes, we've identified the most critical errors that consistently hurt job seekers' chances.
         </p>
 
         <div className="bg-red-50 border border-red-200 rounded-xl p-6">
           <h3 className="text-lg font-bold text-red-800 mb-2">⚠️ Critical Stat</h3>
           <p className="text-red-700">
-            Recruiters spend an average of just 6-8 seconds scanning a resume. These common mistakes can eliminate you in those crucial first moments.
+            Recruiters spend an average of just 6-8 seconds scanning a resume initially. These common mistakes can eliminate you in those crucial first moments.
           </p>
         </div>
 
@@ -163,7 +163,7 @@ export default function ResumeMistakesToAvoid() {
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">9. Neglecting ATS Optimization</h2>
         <p className="text-lg leading-relaxed text-gray-700">
-          Over 95% of Fortune 500 companies use Applicant Tracking Systems (ATS) to filter resumes. If your resume isn't ATS-friendly, it may never reach human eyes, regardless of your qualifications.
+          Over 98% of Fortune 500 companies use Applicant Tracking Systems (ATS) to filter resumes. If your resume isn't ATS-friendly, it may never reach human eyes, regardless of your qualifications.
         </p>
         <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
           <h4 className="font-bold text-purple-800 mb-3">🤖 ATS Optimization Tips:</h4>

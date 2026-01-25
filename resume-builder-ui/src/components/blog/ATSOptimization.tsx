@@ -17,11 +17,11 @@ export default function ATSOptimization() {
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
-          In today's digital hiring landscape, your resume must first impress a
-          robot before it reaches human eyes. Applicant Tracking Systems (ATS)
-          act as digital gatekeepers, filtering out up to 75% of resumes before
-          recruiters ever see them. Understanding how to optimize for these
-          systems is crucial for job search success.
+          Updated for 2026: In today's digital hiring landscape, your resume
+          must first impress a robot before it reaches human eyes. Applicant
+          Tracking Systems (ATS) act as digital gatekeepers, filtering out over
+          75% of resumes before recruiters ever see them. Understanding how to
+          optimize for these systems is crucial for job search success.
         </p>
 
         <div className="bg-red-50 border border-red-200 rounded-xl p-6">
@@ -29,9 +29,9 @@ export default function ATSOptimization() {
             🚨 Shocking Reality
           </h3>
           <p className="text-red-700">
-            98% of Fortune 500 companies use ATS software. Studies show that 75%
-            of qualified candidates are rejected by ATS before human review due
-            to formatting and keyword issues.
+            Over 98% of Fortune 500 companies use ATS software. Studies show
+            that over 75% of qualified candidates are rejected by ATS before
+            human review due to formatting and keyword issues.
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export default function ATSOptimization() {
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
-          Common ATS Systems in 2024
+          Common ATS Systems in 2026
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
