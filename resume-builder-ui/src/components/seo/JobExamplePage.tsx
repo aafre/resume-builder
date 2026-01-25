@@ -148,7 +148,8 @@ export default function JobExamplePage() {
         email: data.resume.contact.email,
         phone: data.resume.contact.phone,
         location: data.resume.contact.location,
-        linkedin: data.resume.contact.linkedin,
+        linkedin: data.resume.contact.linkedin || '',
+        github: data.resume.contact.github || '',
       },
       sections: (editorData as { sections: Section[] }).sections,
     });
