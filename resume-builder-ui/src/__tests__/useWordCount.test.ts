@@ -228,16 +228,16 @@ describe("useWordCount", () => {
     });
 
     it("recalculates when content changes", () => {
-      let content = "word ".repeat(500);
-      const { result, rerender } = renderHook(() => useWordCount(content));
+      const { result, rerender } = renderHook(
+        ({ content }) => useWordCount(content),
+        { initialProps: { content: "word ".repeat(500) } }
+      );
 
       expect(result.current.wordCount).toBe(500);
 
-      content = "word ".repeat(1000);
-      rerender();
+      rerender({ content: "word ".repeat(1000) });
 
-      // Note: renderHook doesn't automatically pick up variable changes
-      // We'd need to pass content as a prop or use a state-based approach
+      expect(result.current.wordCount).toBe(1000);
     });
   });
 
