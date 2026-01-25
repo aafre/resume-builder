@@ -299,19 +299,9 @@ class TestTemplateMapping:
 
     def test_template_ids_map_to_valid_directories(self):
         """Verify all template IDs map to directories that exist."""
-        # Template IDs used in the UI and their expected directory mappings
-        template_mappings = {
-            "modern-with-icons": "modern",
-            "modern-no-icons": "modern",
-            "modern": "modern",
-            "classic": "classic",
-            "classic-alex-rivera": "classic",
-            "classic-jane-doe": "classic",
-        }
-
         templates_dir = Path(__file__).parent.parent / "templates"
 
-        for template_id, expected_dir in template_mappings.items():
+        for template_id, expected_dir in app.TEMPLATE_DIR_MAP.items():
             dir_path = templates_dir / expected_dir
             assert dir_path.exists(), \
                 f"Template ID '{template_id}' maps to '{expected_dir}' but directory doesn't exist"

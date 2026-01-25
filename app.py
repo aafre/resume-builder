@@ -1191,6 +1191,17 @@ TEMPLATE_FILE_MAP = {
     "classic-jane-doe": PROJECT_ROOT / "samples" / "classic" / "jane_doe.yml",
 }
 
+# Template ID to directory mapping
+# Maps UI template IDs to actual template directory names
+TEMPLATE_DIR_MAP = {
+    "modern-with-icons": "modern",     # HTML template - icons supported
+    "modern-no-icons": "modern",       # HTML template - no icons
+    "modern": "modern",                # Default HTML template
+    "classic": "classic",              # LaTeX template (generic)
+    "classic-alex-rivera": "classic",  # LaTeX template (data analytics)
+    "classic-jane-doe": "classic",     # LaTeX template (marketing)
+}
+
 
 # Authentication Middleware
 def require_auth(f):
@@ -1554,25 +1565,14 @@ def generate_resume():
             else:
                 logging.debug("Skipping user uploaded icons for no-icons template variant")
             
-            # Map template IDs to actual template directories
-            # Modern templates (both with/without icons) use HTML/CSS generation, Classic templates use LaTeX
-            template_mapping = {
-                "modern-with-icons": "modern",     # HTML template - icons will be copied above
-                "modern-no-icons": "modern",       # HTML template - no icons copied above
-                "modern": "modern",                 # Default HTML template
-                "classic": "classic",               # LaTeX template (generic)
-                "classic-alex-rivera": "classic",   # LaTeX template (data analytics)
-                "classic-jane-doe": "classic",      # LaTeX template (marketing)
-                "minimal": "minimal"                # Future template
-            }
-            
-            if template not in template_mapping:
+            # Validate template ID against known templates
+            if template not in TEMPLATE_DIR_MAP:
                 raise ValueError(
-                    f"Invalid template: {template}. Available templates: {', '.join(template_mapping.keys())}"
+                    f"Invalid template: {template}. Available templates: {', '.join(TEMPLATE_DIR_MAP.keys())}"
                 )
-            
+
             # Use the mapped template directory
-            actual_template = template_mapping[template]
+            actual_template = TEMPLATE_DIR_MAP[template]
             
             # Use subprocess for PDF generation to avoid Qt state issues
             if actual_template == "classic":
@@ -2948,18 +2948,7 @@ def generate_pdf_for_saved_resume(resume_id):
             output_path = temp_dir_path / f"Resume_{timestamp}.pdf"
 
             template_id = resume.get('template_id', 'modern')
-
-            # Map template IDs to actual templates
-            template_mapping = {
-                "modern-with-icons": "modern",
-                "modern-no-icons": "modern",
-                "modern": "modern",
-                "classic": "classic",
-                "classic-alex-rivera": "classic",
-                "classic-jane-doe": "classic"
-            }
-
-            actual_template = template_mapping.get(template_id, "modern")
+            actual_template = TEMPLATE_DIR_MAP.get(template_id, "modern")
 
             # Generate PDF using appropriate method
             if actual_template == "classic":
@@ -3192,18 +3181,7 @@ def generate_thumbnail_for_resume(resume_id):
             output_path = temp_dir_path / f"Resume_{timestamp}.pdf"
 
             template_id = resume.get('template_id', 'modern')
-
-            # Map template IDs to actual templates
-            template_mapping = {
-                "modern-with-icons": "modern",
-                "modern-no-icons": "modern",
-                "modern": "modern",
-                "classic": "classic",
-                "classic-alex-rivera": "classic",
-                "classic-jane-doe": "classic"
-            }
-
-            actual_template = template_mapping.get(template_id, "modern")
+            actual_template = TEMPLATE_DIR_MAP.get(template_id, "modern")
 
             # Generate PDF using appropriate method
             if actual_template == "classic":
