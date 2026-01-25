@@ -401,17 +401,23 @@ class TestThreadPoolWorkerIntegration:
             assert result.get("success") is True, f"Worker failed: {result.get('error')}"
             assert output_path.exists()
 
-    def test_pool_timeout_handling(self, temp_output_dir, temp_session_dir):
-        """Verify pool respects timeout for slow operations."""
+    def test_pool_timeout_handling(self):
+        """Verify future.result() respects timeout for slow operations."""
         if app.PDF_THREAD_POOL is None:
             app.initialize_pdf_pool()
 
-        # Submit a task that should complete quickly
-        future = app.PDF_THREAD_POOL.submit(lambda: {"success": True, "test": "quick"})
+        import time
+        from concurrent.futures import TimeoutError
 
-        # Should complete well before timeout
-        result = future.result(timeout=5)
-        assert result.get("success") is True
+        def slow_task():
+            time.sleep(2)
+            return "done"
+
+        future = app.PDF_THREAD_POOL.submit(slow_task)
+
+        with pytest.raises(TimeoutError):
+            # This should raise TimeoutError because the task takes 2s
+            future.result(timeout=1)
 
 
 # =============================================================================
