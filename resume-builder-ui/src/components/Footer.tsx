@@ -2,8 +2,76 @@ import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaShieldAlt, FaLock } from "react-icons/fa";
 
+// Footer link definitions for maintainability
+const footerLinks = {
+  resumeBuilder: [
+    { path: '/free-resume-builder-no-sign-up', label: 'Free Resume Builder' },
+    { path: '/actual-free-resume-builder', label: '100% Free Builder' },
+    { path: '/best-free-resume-builder-reddit', label: 'Best Free Builder' },
+    { path: '/free-cv-builder-no-sign-up', label: 'Free CV Builder (UK)' },
+    { path: '/ats-resume-templates', label: 'ATS Resume Templates' },
+  ],
+  resumeTemplates: [
+    { path: '/templates', label: 'All Templates' },
+    { path: '/templates/modern-resume-templates', label: 'Modern Templates' },
+    { path: '/templates/minimalist-resume-templates', label: 'Minimalist Templates' },
+    { path: '/templates/resume-templates-for-students', label: 'Student Templates' },
+    { path: '/cv-templates', label: 'CV Templates (UK)' },
+  ],
+  resumeExamples: [
+    { path: '/examples', label: 'All Examples' },
+    { path: '/examples/software-engineer', label: 'Software Engineer' },
+    { path: '/examples/project-manager', label: 'Project Manager' },
+    { path: '/examples/customer-service-representative', label: 'Customer Service' },
+    { path: '/examples/registered-nurse', label: 'Registered Nurse' },
+  ],
+  resources: [
+    { path: '/resume-keywords', label: 'Resume Keywords' },
+    { path: '/blog', label: 'Career Blog' },
+    { path: '/blog/chatgpt-resume-prompts', label: 'ChatGPT Resume Prompts' },
+    { path: '/blog/ats-resume-optimization', label: 'ATS Optimization Guide' },
+    { path: '/blog/how-to-write-a-resume-guide', label: 'How to Write a Resume' },
+  ],
+  company: [
+    { path: '/about', label: 'About Us' },
+    { path: '/contact', label: 'Contact' },
+    { path: '/privacy-policy', label: 'Privacy Policy' },
+    { path: '/terms-of-service', label: 'Terms of Service' },
+  ],
+};
+
+// Reusable footer column component
+function FooterColumn({
+  title,
+  links,
+  scrollToTop
+}: {
+  title: string;
+  links: { path: string; label: string }[];
+  scrollToTop: (path: string) => () => void;
+}) {
+  return (
+    <nav aria-label={title}>
+      <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">{title}</h3>
+      <ul className="flex flex-col gap-2">
+        {links.map(({ path, label }) => (
+          <li key={path}>
+            <Link
+              to={path}
+              onClick={scrollToTop(path)}
+              className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
+            >
+              {label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
 export default function Footer() {
- const location = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
 
   const scrollToTop = (path: string) => () => {
@@ -13,213 +81,17 @@ export default function Footer() {
       navigate(path);
     }
   };
+
   return (
     <footer className="bg-transparent border-t border-gray-200/60 mt-16">
       <div className="container mx-auto px-4 py-12">
         {/* Main Footer Content - Responsive Grid Layout */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 mb-8">
-          {/* Column 1 - Resume Builder */}
-          <div>
-            <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">Resume Builder</h3>
-            <div className="flex flex-col gap-2">
-              <Link
-                to="/free-resume-builder-no-sign-up"
-                onClick={scrollToTop('/free-resume-builder-no-sign-up')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Free Resume Builder
-              </Link>
-              <Link
-                to="/actual-free-resume-builder"
-                onClick={scrollToTop('/actual-free-resume-builder')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                100% Free Builder
-              </Link>
-              <Link
-                to="/best-free-resume-builder-reddit"
-                onClick={scrollToTop('/best-free-resume-builder-reddit')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Best Free Builder
-              </Link>
-              <Link
-                to="/free-cv-builder-no-sign-up"
-                onClick={scrollToTop('/free-cv-builder-no-sign-up')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Free CV Builder (UK)
-              </Link>
-              <Link
-                to="/ats-resume-templates"
-                onClick={scrollToTop('/ats-resume-templates')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                ATS Resume Templates
-              </Link>
-            </div>
-          </div>
-
-          {/* Column 2 - Resume Templates */}
-          <div>
-            <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">Resume Templates</h3>
-            <div className="flex flex-col gap-2">
-              <Link
-                to="/templates"
-                onClick={scrollToTop('/templates')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                All Templates
-              </Link>
-              <Link
-                to="/templates/modern-resume-templates"
-                onClick={scrollToTop('/templates/modern-resume-templates')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Modern Templates
-              </Link>
-              <Link
-                to="/templates/minimalist-resume-templates"
-                onClick={scrollToTop('/templates/minimalist-resume-templates')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Minimalist Templates
-              </Link>
-              <Link
-                to="/templates/resume-templates-for-students"
-                onClick={scrollToTop('/templates/resume-templates-for-students')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Student Templates
-              </Link>
-              <Link
-                to="/cv-templates"
-                onClick={scrollToTop('/cv-templates')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                CV Templates (UK)
-              </Link>
-            </div>
-          </div>
-
-          {/* Column 3 - Resume Examples */}
-          <div>
-            <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">Resume Examples</h3>
-            <div className="flex flex-col gap-2">
-              <Link
-                to="/examples"
-                onClick={scrollToTop('/examples')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                All Examples
-              </Link>
-              <Link
-                to="/examples/software-engineer"
-                onClick={scrollToTop('/examples/software-engineer')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Software Engineer
-              </Link>
-              <Link
-                to="/examples/project-manager"
-                onClick={scrollToTop('/examples/project-manager')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Project Manager
-              </Link>
-              <Link
-                to="/examples/customer-service-representative"
-                onClick={scrollToTop('/examples/customer-service-representative')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Customer Service
-              </Link>
-              <Link
-                to="/examples/registered-nurse"
-                onClick={scrollToTop('/examples/registered-nurse')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Registered Nurse
-              </Link>
-            </div>
-          </div>
-
-          {/* Column 4 - Resources */}
-          <div>
-            <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">Resources</h3>
-            <div className="flex flex-col gap-2">
-              <Link
-                to="/resume-keywords"
-                onClick={scrollToTop('/resume-keywords')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Resume Keywords
-              </Link>
-              <Link
-                to="/blog"
-                onClick={scrollToTop('/blog')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Career Blog
-              </Link>
-              <Link
-                to="/blog/chatgpt-resume-prompts"
-                onClick={scrollToTop('/blog/chatgpt-resume-prompts')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                ChatGPT Resume Prompts
-              </Link>
-              <Link
-                to="/blog/ats-resume-optimization"
-                onClick={scrollToTop('/blog/ats-resume-optimization')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                ATS Optimization Guide
-              </Link>
-              <Link
-                to="/blog/how-to-write-a-resume-guide"
-                onClick={scrollToTop('/blog/how-to-write-a-resume-guide')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                How to Write a Resume
-              </Link>
-            </div>
-          </div>
-
-          {/* Column 5 - Company */}
-          <div>
-            <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">Company</h3>
-            <div className="flex flex-col gap-2">
-              <Link
-                to="/about"
-                onClick={scrollToTop('/about')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                About Us
-              </Link>
-              <Link
-                to="/contact"
-                onClick={scrollToTop('/contact')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Contact
-              </Link>
-              <Link
-                to="/privacy-policy"
-                onClick={scrollToTop('/privacy-policy')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                to="/terms-of-service"
-                onClick={scrollToTop('/terms-of-service')}
-                className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
-              >
-                Terms of Service
-              </Link>
-            </div>
-          </div>
+          <FooterColumn title="Resume Builder" links={footerLinks.resumeBuilder} scrollToTop={scrollToTop} />
+          <FooterColumn title="Resume Templates" links={footerLinks.resumeTemplates} scrollToTop={scrollToTop} />
+          <FooterColumn title="Resume Examples" links={footerLinks.resumeExamples} scrollToTop={scrollToTop} />
+          <FooterColumn title="Resources" links={footerLinks.resources} scrollToTop={scrollToTop} />
+          <FooterColumn title="Company" links={footerLinks.company} scrollToTop={scrollToTop} />
         </div>
 
         {/* Bottom Section - Copyright & Trust Badges */}
