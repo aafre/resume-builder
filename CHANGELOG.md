@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.11.2] - 2026-01-25
+
+### 🐛 Bug Fixes
+
+- **test:** Simplify max_workers test to check actual pool value
+
+### 🚜 Refactor
+
+- **test:** Address PR review comments
+- **test:** Mock atexit.register to prevent side effects
+- **app:** Extract template mapping to module-level constant
+
+### ⚡ Performance
+
+- **pdf:** Replace ProcessPoolExecutor with ThreadPoolExecutor
+
+### 🧪 Testing
+
+- **pdf:** Add comprehensive PDF generation tests
+
+### ⚙️ Miscellaneous Tasks
+
+- Add tests/ and pyproject.toml to paths filter
+- **version:** Update tests python version to 3.13 match docker container in prod
+
 ## [3.11.1] - 2026-01-25
 
 ### 🐛 Bug Fixes
