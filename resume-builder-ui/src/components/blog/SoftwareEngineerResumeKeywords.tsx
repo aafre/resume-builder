@@ -5,7 +5,7 @@ export default function SoftwareEngineerResumeKeywords() {
     <BlogLayout
       title="50+ Essential Keywords for a Software Engineer Resume"
       description="From programming languages to agile methodologies, these are the must-have keywords that will get your software engineering resume noticed by top tech companies."
-      publishDate="2025-08-10"
+      publishDate="2026-01-25"
       readTime="9 min"
       keywords={[
         "software engineer resume keywords",
@@ -19,9 +19,10 @@ export default function SoftwareEngineerResumeKeywords() {
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
           In the competitive tech industry, your resume needs to be optimized
           for both human recruiters and the Applicant Tracking Systems (ATS)
-          that screen applications. Including the right keywords is crucial.
-          This guide covers the essential keywords you need to include in your
-          software engineer resume to get noticed.
+          that screen applications. Updated for 2026, including the right
+          keywords is more crucial than ever. This guide covers the essential
+          keywords you need to include in your software engineer resume to
+          get noticed.
         </p>
 
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
@@ -50,7 +51,7 @@ export default function SoftwareEngineerResumeKeywords() {
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
           <h3 className="font-bold text-green-800 mb-4">
-            💻 High-Demand Programming Languages (2025):
+            💻 High-Demand Programming Languages (2026):
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
             <div>
@@ -593,9 +594,9 @@ export default function SoftwareEngineerResumeKeywords() {
           By strategically including these keywords and backing them up with
           concrete examples of your work, you'll create a powerful software
           engineer resume that is optimized for ATS scans and impressive to
-          hiring managers. Remember, the goal isn't just to pass the ATS filter
-          – it's to clearly communicate your technical expertise and potential
-          value to the engineering team.
+          hiring managers. Remember, in 2026 the goal isn't just to pass the ATS
+          filter - it's to clearly communicate your technical expertise and
+          potential value to the engineering team.
         </p>
       </div>
     </BlogLayout>

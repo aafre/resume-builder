@@ -3,15 +3,16 @@ import BlogLayout from "../BlogLayout";
 export default function ResumeKeywordsGuide() {
   return (
     <BlogLayout
-      title="Resume Keywords by Industry: The Complete 2025 Guide"
-      description="The definitive guide to resume keywords recruiters and ATS systems are scanning for in 2025. Learn exactly where to place keywords for maximum impact."
+      title="Resume Keywords by Industry: The Complete 2026 Guide"
+      description="The definitive guide to resume keywords recruiters and ATS systems are scanning for in 2026. Learn exactly where to place keywords for maximum impact."
       publishDate="2025-07-15"
+      lastUpdated="2026-01-25"
       readTime="9–11 min"
       keywords={[
         "resume keywords",
         "industry keywords",
         "ATS resume tips",
-        "resume optimization 2025",
+        "resume optimization 2026",
         "career keywords",
         "resume phrases",
       ]}
@@ -34,7 +35,7 @@ export default function ResumeKeywordsGuide() {
             This guide will show you:
           </h3>
           <ul className="list-disc pl-6 space-y-2 text-blue-700">
-            <li>✅ What resume keywords are and why they matter in 2025</li>
+            <li>✅ What resume keywords are and why they matter in 2026</li>
             <li>
               ✅ How to find the right keywords for <em>your</em> career
             </li>
@@ -167,12 +168,12 @@ export default function ResumeKeywordsGuide() {
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
-          Top Resume Keywords by Industry (2025 Edition)
+          Top Resume Keywords by Industry (2026 Edition)
         </h2>
 
         <p className="text-lg leading-relaxed text-gray-700 mb-8">
           Below are the <strong>must-have keywords</strong> for major industries
-          in 2025. Use these as a starting point, then tailor based on your
+          in 2026. Use these as a starting point, then tailor based on your
           target job posting.
         </p>
 

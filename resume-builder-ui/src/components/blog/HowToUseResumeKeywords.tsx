@@ -3,9 +3,9 @@ import BlogLayout from "../BlogLayout";
 export default function HowToUseResumeKeywords() {
   return (
     <BlogLayout
-      title="How to Use Resume Keywords to Beat the ATS (The Ultimate 2025 Guide)"
+      title="How to Use Resume Keywords to Beat the ATS (The Ultimate 2026 Guide)"
       description="A deep dive into finding and using the right keywords to ensure your resume gets past applicant tracking systems and into human hands. Your master guide to ATS optimization."
-      publishDate="2025-08-15"
+      publishDate="2026-01-25"
       readTime="11 min"
       keywords={[
         "resume keywords",
@@ -13,7 +13,7 @@ export default function HowToUseResumeKeywords() {
         "beat the ats",
         "applicant tracking system",
         "ats resume",
-        "resume tips 2025",
+        "resume tips 2026",
       ]}
     >
       <div className="space-y-8">
@@ -25,19 +25,19 @@ export default function HowToUseResumeKeywords() {
         </p>
 
         <p className="text-lg leading-relaxed text-gray-700">
-          The answer might be the Applicant Tracking System (ATS). Over 95% of
-          large companies use an ATS to scan and filter resumes before they ever
-          reach a human recruiter. If your resume isn't optimized with the right
-          keywords, it's likely being sent straight to the rejection pile by a
-          robot.
+          The answer might be the Applicant Tracking System (ATS). In 2026, over
+          97% of large companies use an ATS to scan and filter resumes before
+          they ever reach a human recruiter. If your resume isn't optimized with
+          the right keywords, it's likely being sent straight to the rejection
+          pile by a robot.
         </p>
 
         <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-8">
           <h3 className="font-bold text-red-800 mb-3">🚨 The Hard Truth</h3>
           <p className="text-red-700">
-            According to recent studies, 75% of resumes never make it past the
-            ATS screening. This means your perfectly crafted resume might never
-            be seen by human eyes simply because it lacks the right keywords.
+            According to recent studies, over 75% of resumes never make it past
+            the ATS screening. This means your perfectly crafted resume might
+            never be seen by human eyes simply because it lacks the right keywords.
           </p>
         </div>
 

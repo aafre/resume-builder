@@ -3,9 +3,10 @@ import BlogLayout from "../BlogLayout";
 export default function TechResumeGuide() {
   return (
     <BlogLayout
-      title="Tech Resume Guide: Land Your Dream Developer Job in 2025"
-      description="Create a standout tech resume with industry-specific tips, project showcases, and skill presentations."
+      title="Tech Resume Guide: Land Your Dream Developer Job in 2026"
+      description="Create a standout tech resume with industry-specific tips, project showcases, and skill presentations. Updated for 2026."
       publishDate="2025-07-05"
+      lastUpdated="2026-01-25"
       readTime="9 min"
       keywords={[
         "tech resume",
@@ -25,7 +26,7 @@ export default function TechResumeGuide() {
           it's your digital handshake. It needs to speak the language of code,
           frameworks, and problem-solving, immediately demonstrating your value
           to a potential employer. This guide will walk you through crafting a
-          tech resume that truly stands out in 2025.
+          tech resume that truly stands out in 2026.
         </p>
 
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
@@ -436,7 +437,7 @@ export default function TechResumeGuide() {
         <p className="text-lg leading-relaxed text-gray-700 mt-6">
           Mastering your tech resume is an ongoing process. By focusing on
           clarity, relevance, and demonstrable skills, you'll significantly
-          increase your chances of landing that dream developer job in 2025 and
+          increase your chances of landing that dream developer job in 2026 and
           beyond.
         </p>
       </div>

@@ -6,6 +6,7 @@ export default function HowToListSkills() {
       title="How to List Skills on a Resume: A Step-by-Step Guide (100+ Examples)"
       description="Master the art of creating a powerful skills section. Learn what to include, how to format it, and get inspired with over 100 examples for any industry."
       publishDate="2025-07-23"
+      lastUpdated="2026-01-25"
       readTime="12 min"
       keywords={[
         "how to list skills on resume",
@@ -17,9 +18,10 @@ export default function HowToListSkills() {
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
-          The skills section is one of the most important parts of your resume.
-          It's a quick snapshot that tells recruiters and Applicant Tracking
-          Systems (ATS) whether you have the qualifications for the job.
+          Updated for 2026: The skills section remains one of the most important
+          parts of your resume. It's a quick snapshot that tells recruiters and
+          Applicant Tracking Systems (ATS) whether you have the qualifications
+          for the job.
         </p>
 
         <p className="text-lg leading-relaxed text-gray-700">
@@ -34,8 +36,8 @@ export default function HowToListSkills() {
           <p className="text-yellow-700">
             A well-crafted skills section can be the difference between your
             resume being filtered out by ATS or making it to a human recruiter.
-            Studies show that 75% of resumes are rejected by ATS before a human
-            ever sees them.
+            Studies show that over 75% of resumes are rejected by ATS before a
+            human ever sees them.
           </p>
         </div>
 

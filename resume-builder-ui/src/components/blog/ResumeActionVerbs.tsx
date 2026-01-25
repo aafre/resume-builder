@@ -5,7 +5,7 @@ export default function ResumeActionVerbs() {
     <BlogLayout
       title="Action Verbs for Resumes: 200+ Words to Boost Your Impact"
       description="Replace boring words with powerful action verbs that grab recruiters' attention and showcase your accomplishments."
-      publishDate="2025-08-20"
+      publishDate="2026-01-25"
       readTime="9 min"
       keywords={[
         "resume action verbs",
@@ -19,9 +19,9 @@ export default function ResumeActionVerbs() {
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
           The difference between a good resume and a great one often comes down
-          to word choice. Action verbs are powerful tools that transform passive
-          job descriptions into dynamic achievements that capture recruiters'
-          attention and demonstrate your impact.
+          to word choice. Updated for 2026, action verbs remain powerful tools
+          that transform passive job descriptions into dynamic achievements that
+          capture recruiters' attention and demonstrate your impact.
         </p>
 
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
@@ -706,8 +706,8 @@ export default function ResumeActionVerbs() {
         </div>
 
         <p className="text-lg leading-relaxed text-gray-700 mt-8">
-          Remember, action verbs are just one element of a powerful resume. For a
-          complete guide on writing compelling resume content, check out our{" "}
+          Remember, action verbs are just one element of a powerful resume in 2026.
+          For a complete guide on writing compelling resume content, check out our{" "}
           <a
             href="/blog/how-to-write-a-resume-guide"
             className="text-blue-600 hover:text-blue-800 underline"

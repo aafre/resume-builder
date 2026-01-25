@@ -18,7 +18,7 @@ export default function RemoteWorkResume() {
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
           Remote work is no longer just a perk - it's a permanent shift in how
-          we work. In 2025, standing out in the digital job market means
+          we work. In 2026, standing out in the digital job market means
           crafting a resume tailored for remote roles, highlighting your
           adaptability, self-management, and communication skills that remote
           employers value most.
@@ -29,9 +29,9 @@ export default function RemoteWorkResume() {
             📈 Remote Work Growth
           </h3>
           <p className="text-blue-700">
-            Remote jobs have grown by over 150% in the last five years,
-            according to FlexJobs. As more companies embrace remote-first
-            policies, competition for these roles has intensified significantly.
+            Remote jobs have grown by over 200% in the last six years, according
+            to FlexJobs. As more companies embrace remote-first policies,
+            competition for these roles has intensified significantly.
           </p>
         </div>
 
@@ -216,7 +216,7 @@ export default function RemoteWorkResume() {
               <div>
                 <p className="font-bold text-blue-600">REMOTE EXPERIENCE</p>
                 <p className="font-medium">
-                  Project Manager (Remote) – Acme Inc. – 2021–2025
+                  Project Manager (Remote) – Acme Inc. – 2022–2026
                 </p>
                 <ul className="list-disc pl-4 text-sm mt-1">
                   <li>
@@ -311,8 +311,8 @@ export default function RemoteWorkResume() {
           The Future of Remote Work
         </h2>
         <p className="text-lg leading-relaxed text-gray-700">
-          Remote work isn't going anywhere. In fact, it's expected that over 25%
-          of professional jobs will be remote by the end of 2025. If you're
+          Remote work isn't going anywhere. In fact, it's expected that over 30%
+          of professional jobs will be remote by the end of 2026. If you're
           aiming for flexibility, freedom, or access to global opportunities,
           your resume needs to reflect that reality.
         </p>

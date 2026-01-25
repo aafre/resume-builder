@@ -6,6 +6,7 @@ export default function BehavioralInterviewQuestions() {
       title="15+ Behavioral Interview Questions (and How to Answer with the STAR Method)"
       description="Prepare for tough behavioral questions by mastering the STAR method with these common examples and answer frameworks."
       publishDate="2025-09-02"
+      lastUpdated="2026-01-25"
       readTime="6 min"
       keywords={[
         "behavioral interview questions",
@@ -21,7 +22,7 @@ export default function BehavioralInterviewQuestions() {
         <p className="text-xl leading-relaxed text-gray-700 font-medium">
           Behavioral interview questions are designed to reveal how you've
           handled situations in the past, giving employers insight into how
-          you'll perform in the future. Master these questions using the STAR
+          you'll perform in the future. Updated for 2026, this guide helps you master these questions using the STAR
           method to showcase your skills and experience effectively.
         </p>
 
