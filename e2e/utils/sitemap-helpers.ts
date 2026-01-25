@@ -9,25 +9,31 @@ import { JOBS_DATABASE } from '../../resume-builder-ui/src/data/jobKeywords/inde
 import { JOB_EXAMPLES_DATABASE } from '../../resume-builder-ui/src/data/jobExamples/index';
 import { getStaticUrlPaths } from '../../resume-builder-ui/src/data/sitemapUrls';
 
+// Pre-compute URL lists at module load time since the data is static
+const staticUrls = getStaticUrlPaths();
+const jobKeywordUrls = JOBS_DATABASE.map((job) => `/resume-keywords/${job.slug}`);
+const jobExampleUrls = JOB_EXAMPLES_DATABASE.map((job) => `/examples/${job.slug}`);
+const allUrls = [...staticUrls, ...jobKeywordUrls, ...jobExampleUrls];
+
 /**
  * Get only static URLs (useful for faster subset testing)
  */
 export function getStaticUrls(): string[] {
-  return getStaticUrlPaths();
+  return staticUrls;
 }
 
 /**
  * Get only dynamic job keyword URLs
  */
 export function getJobKeywordUrls(): string[] {
-  return JOBS_DATABASE.map((job) => `/resume-keywords/${job.slug}`);
+  return jobKeywordUrls;
 }
 
 /**
  * Get only dynamic job example URLs
  */
 export function getJobExampleUrls(): string[] {
-  return JOB_EXAMPLES_DATABASE.map((job) => `/examples/${job.slug}`);
+  return jobExampleUrls;
 }
 
 /**
@@ -37,7 +43,7 @@ export function getJobExampleUrls(): string[] {
  * @returns Array of all URL paths (without domain)
  */
 export function getAllSitemapUrls(): string[] {
-  return [...getStaticUrls(), ...getJobKeywordUrls(), ...getJobExampleUrls()];
+  return allUrls;
 }
 
 /**
@@ -49,14 +55,10 @@ export function getUrlCounts(): {
   jobExamples: number;
   total: number;
 } {
-  const staticCount = getStaticUrls().length;
-  const jobKeywordsCount = getJobKeywordUrls().length;
-  const jobExamplesCount = getJobExampleUrls().length;
-
   return {
-    static: staticCount,
-    jobKeywords: jobKeywordsCount,
-    jobExamples: jobExamplesCount,
-    total: staticCount + jobKeywordsCount + jobExamplesCount,
+    static: staticUrls.length,
+    jobKeywords: jobKeywordUrls.length,
+    jobExamples: jobExampleUrls.length,
+    total: allUrls.length,
   };
 }
