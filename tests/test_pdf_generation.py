@@ -435,7 +435,7 @@ class TestGenerateEndpoint:
         )
 
         # Should fail without yaml_file
-        assert response.status_code in (400, 422, 500)
+        assert response.status_code == 400
 
     @requires_pdfkit
     def test_generate_endpoint_returns_pdf_content_type(self, flask_test_client, temp_output_dir):
