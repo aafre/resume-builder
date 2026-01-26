@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ contact_info.name }}'s Resume</title>
+
+    <!-- Link Google Fonts based on YAML font selection -->
+    {% if font %}
+        <link href="https://fonts.googleapis.com/css?family={{ font | replace(' ', '+') }}&display=swap" rel="stylesheet">
+        <style>
+            body {
+                font-family: '{{ font }}', sans-serif;
+            }
+        </style>
+    {% else %}
+        <!-- Default font if not specified in YAML -->
+        <link href="https://fonts.googleapis.com/css?family=Arial&display=swap" rel="stylesheet">
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+            }
+        </style>
+    {% endif %}
+
+    <!-- Link custom CSS file -->
+    <link rel="stylesheet" href="{{ css_path }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Column -->
+        <div class="sidebar">
+            <!-- Header Info in Sidebar -->
+            <div class="sidebar-header">
+                <h1 class="name">{{ contact_info.name }}</h1>
+
+                <div class="contact-block">
+                     <div class="contact-item">
+                        <img src="{{ icon_path }}/location.png" alt="Location Icon" class="icon icon-white">
+                        <span>{{ contact_info.location }}</span>
+                    </div>
+                    <div class="contact-item">
+                        <img src="{{ icon_path }}/email.png" alt="Email Icon" class="icon icon-white">
+                        <a href="mailto:{{ contact_info.email }}">{{ contact_info.email }}</a>
+                    </div>
+                    <div class="contact-item">
+                        <img src="{{ icon_path }}/phone.png" alt="Phone Icon" class="icon icon-white">
+                        <span>{{ contact_info.phone }}</span>
+                    </div>
+
+                    {% if contact_info.social_links %}
+                        {% for social_link in contact_info.social_links %}
+                            {% if social_link.url and social_link.url.strip() and social_link.platform %}
+                            <div class="contact-item">
+                                <img src="{{ icon_path }}/{{ social_link.platform }}.png" alt="{{ social_link.platform | capitalize }} Icon" class="icon icon-white">
+                                <a href="{{ social_link.url }}">{{ social_link.display_text or social_link.handle or social_link.platform | capitalize }}</a>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% elif contact_info.linkedin and contact_info.linkedin.strip() %}
+                        {# Backward compatibility for old linkedin field #}
+                        <div class="contact-item">
+                            <img src="{{ icon_path }}/linkedin.png" alt="LinkedIn Icon" class="icon icon-white">
+                            <a href="{{ contact_info.linkedin }}">{{ contact_info.linkedin_display or contact_info.linkedin_handle }}</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Sidebar Sections: Education, Skills (Icon/Inline Lists) -->
+            {% for section in sections %}
+                {% if section.type == "education" or section.name == "Education" %}
+                    <div class="sidebar-section">
+                        {% include 'education.html' %}
+                    </div>
+                {% elif section.type == "icon-list" %}
+                    <div class="sidebar-section">
+                        {% include 'icon-list.html' %}
+                    </div>
+                {% elif section.type == "inline-list" %}
+                    <div class="sidebar-section">
+                        {% include 'inline-list.html' %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Main Content Column -->
+        <div class="main-content">
+            <!-- Main Sections: Experience, Summary, Text, Bulleted List -->
+            {% for section in sections %}
+                {% if section.type == "experience" or section.name == "Experience" %}
+                    {% include 'experience.html' %}
+                {% elif section.type == "text" %}
+                    {% include 'text.html' %}
+                {% elif section.type == "bulleted-list" %}
+                    {% include 'bulleted-list.html' %}
+                {% elif section.type == "dynamic-column-list" %}
+                    {% include 'dynamic-column-list.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

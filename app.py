@@ -1187,6 +1187,7 @@ TEMPLATE_FILE_MAP = {
     "modern": TEMPLATES_DIR / "john_doe.yml",  # Alias for job example pages
     "modern-no-icons": TEMPLATES_DIR / "john_doe_no_icon.yml",
     "modern-with-icons": TEMPLATES_DIR / "john_doe.yml",
+    "sidebar": TEMPLATES_DIR / "john_doe.yml",
     "classic-alex-rivera": PROJECT_ROOT / "samples" / "classic" / "alex_rivera_data.yml",
     "classic-jane-doe": PROJECT_ROOT / "samples" / "classic" / "jane_doe.yml",
 }
@@ -1197,6 +1198,7 @@ TEMPLATE_DIR_MAP = {
     "modern-with-icons": "modern",     # HTML template - icons supported
     "modern-no-icons": "modern",       # HTML template - no icons
     "modern": "modern",                # Default HTML template
+    "sidebar": "sidebar",              # Sidebar HTML template
     "classic": "classic",              # LaTeX template (generic)
     "classic-alex-rivera": "classic",  # LaTeX template (data analytics)
     "classic-jane-doe": "classic",     # LaTeX template (marketing)
@@ -1355,6 +1357,14 @@ def get_templates():
                 "id": "modern-with-icons",
                 "name": "Modern",
                 "description": "Contemporary design enhanced with visual icons and dynamic styling elements.",
+                "image_url": url_for(
+                    "serve_templates", filename="modern-with-icons.png", _external=True
+                ),
+            },
+            {
+                "id": "sidebar",
+                "name": "Sidebar",
+                "description": "Professional two-column layout with a distinct sidebar for contact info and skills.",
                 "image_url": url_for(
                     "serve_templates", filename="modern-with-icons.png", _external=True
                 ),

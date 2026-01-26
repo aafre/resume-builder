@@ -1,0 +1,24 @@
+<div class="section">
+    <h2 class="section-heading">{{ section.name }}</h2>
+    {% for job in section.content %}
+        <div class="experience-item">
+            <div class="company-header">
+                <div class="company-details">
+                    {% if job.icon %}
+                        <img src="{{ icon_path }}/{{ job.icon }}" alt="Company Icon" class="company-icon">
+                    {% endif %}
+                    <div class="text-container">
+                        <span class="company-name">{{ job.company | markdown_links | markdown_formatting | safe }}</span>
+                        <p class="position-name">{{ job.title | markdown_links | markdown_formatting | safe }}</p>
+                        <p class="tenure">{{ job.dates | markdown_links | markdown_formatting | safe }}</p>
+                    </div>
+                </div>
+            </div>
+            <ul>
+                {% for bullet in job.description %}
+                    <li>{{ bullet | markdown_links | markdown_formatting | safe }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+</div>
