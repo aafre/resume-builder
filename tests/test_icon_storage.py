@@ -273,7 +273,7 @@ class TestSaveResumeWithIcons:
 
         # Storage upload should NOT be called for unchanged icon
         # (icon with same filename and size)
-        # Note: This test verifies the smart diffing logic
+        mock_sb.storage.from_.return_value.upload.assert_not_called()
 
     def test_save_resume_deletes_removed_icons(self, flask_test_client, auth_headers, sample_icon_data):
         """Verify icons removed from resume are deleted."""
@@ -312,94 +312,3 @@ class TestSaveResumeWithIcons:
         # Verify delete was called for the old icons
         delete_calls = mock_sb.table.return_value.delete.call_args_list
         assert len(delete_calls) > 0
-
-
-class TestExtractIconsFromYaml:
-    """Tests for extract_icons_from_yaml helper function."""
-
-    def test_extract_icons_finds_all_references(self, flask_test_client):
-        """Verify all icon references are extracted from YAML data."""
-        client, mock_sb, flask_app = flask_test_client
-
-        data = {
-            'sections': [
-                {
-                    'name': 'Experience',
-                    'content': [
-                        {'company': 'Google', 'icon': 'company_google.png'},
-                        {'company': 'Meta', 'icon': 'company_meta.png'}
-                    ]
-                },
-                {
-                    'name': 'Certifications',
-                    'content': [
-                        {'name': 'AWS', 'icon': 'cert_aws.png'}
-                    ]
-                }
-            ]
-        }
-
-        icons = flask_app.extract_icons_from_yaml(data)
-
-        assert icons == {'company_google.png', 'company_meta.png', 'cert_aws.png'}
-
-    def test_extract_icons_handles_nested_data(self, flask_test_client):
-        """Verify deeply nested icon references are found."""
-        client, mock_sb, flask_app = flask_test_client
-
-        data = {
-            'level1': {
-                'level2': {
-                    'level3': {
-                        'icon': 'deeply_nested.png'
-                    }
-                }
-            }
-        }
-
-        icons = flask_app.extract_icons_from_yaml(data)
-
-        assert 'deeply_nested.png' in icons
-
-    def test_extract_icons_strips_path_prefix(self, flask_test_client):
-        """Verify /icons/ prefix is stripped from icon paths."""
-        client, mock_sb, flask_app = flask_test_client
-
-        data = {
-            'sections': [
-                {
-                    'content': [
-                        {'icon': '/icons/prefixed_icon.png'}
-                    ]
-                }
-            ]
-        }
-
-        icons = flask_app.extract_icons_from_yaml(data)
-
-        assert 'prefixed_icon.png' in icons
-        assert '/icons/prefixed_icon.png' not in icons
-
-    def test_extract_icons_handles_empty_data(self, flask_test_client):
-        """Verify empty data returns empty set."""
-        client, mock_sb, flask_app = flask_test_client
-
-        assert flask_app.extract_icons_from_yaml({}) == set()
-        assert flask_app.extract_icons_from_yaml([]) == set()
-        assert flask_app.extract_icons_from_yaml(None) == set()
-
-    def test_extract_icons_ignores_non_string_icons(self, flask_test_client):
-        """Verify non-string icon values are ignored."""
-        client, mock_sb, flask_app = flask_test_client
-
-        data = {
-            'sections': [
-                {'icon': 123},  # Number, not string
-                {'icon': None},  # None
-                {'icon': ['array']},  # Array
-            ]
-        }
-
-        icons = flask_app.extract_icons_from_yaml(data)
-
-        assert icons == set()

@@ -247,7 +247,7 @@ class TestAuthEdgeCases:
 
         assert response.status_code == 401
 
-    def test_auth_error_logging_includes_context(self, flask_test_client, auth_headers):
+    def test_auth_error_logging_includes_context(self, flask_test_client, auth_headers, caplog):
         """Verify auth errors are logged with proper context."""
         client, mock_sb, _ = flask_test_client
 
@@ -258,9 +258,12 @@ class TestAuthEdgeCases:
         response = client.get('/api/resumes', headers=auth_headers)
 
         assert response.status_code == 401
+        # Verify the error was logged
+        assert any('Auth service unavailable' in record.message or 'error' in record.message.lower()
+                   for record in caplog.records)
 
-    def test_concurrent_auth_requests_isolated(self, flask_test_client, auth_headers):
-        """Verify concurrent requests have isolated user contexts."""
+    def test_multiple_sequential_auth_requests_succeed(self, flask_test_client, auth_headers):
+        """Verify multiple sequential requests each authenticate independently."""
         client, mock_sb, _ = flask_test_client
 
         # Configure mock auth
@@ -269,7 +272,7 @@ class TestAuthEdgeCases:
         mock_sb.auth.get_user.return_value = MagicMock(user=mock_user)
         mock_sb.table.return_value.execute.return_value = create_mock_response([], count=0)
 
-        # Make multiple requests
+        # Make multiple sequential requests
         response1 = client.get('/api/resumes', headers=auth_headers)
         response2 = client.get('/api/resumes', headers=auth_headers)
 

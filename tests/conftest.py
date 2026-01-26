@@ -72,7 +72,6 @@ def create_mock_supabase():
     mock.rpc.return_value = mock_table
 
     # Storage support
-    mock_storage = MagicMock()
     mock_bucket = MagicMock()
     mock.storage.from_.return_value = mock_bucket
     mock_bucket.download.return_value = b'fake-image-data'
@@ -109,40 +108,19 @@ def flask_test_client(mock_supabase):
             client, mock_sb = flask_test_client
             response = client.get('/api/templates')
     """
-    with patch.dict('sys.modules', {'supabase': MagicMock()}):
-        import app as flask_app
+    import app as flask_app
 
-        # Patch the supabase client in the app module
-        with patch.object(flask_app, 'supabase', mock_supabase):
-            flask_app.app.config['TESTING'] = True
-            with flask_app.app.test_client() as client:
-                yield client, mock_supabase, flask_app
+    # Patch the supabase client in the app module
+    with patch.object(flask_app, 'supabase', mock_supabase):
+        flask_app.app.config['TESTING'] = True
+        with flask_app.app.test_client() as client:
+            yield client, mock_supabase, flask_app
 
 
 @pytest.fixture
 def auth_headers():
     """Provide mock authorization headers."""
     return {'Authorization': 'Bearer test-jwt-token'}
-
-
-@pytest.fixture
-def authenticated_client(flask_test_client, auth_headers):
-    """
-    Provide a Flask test client configured for authenticated requests.
-
-    Usage:
-        def test_protected_endpoint(authenticated_client):
-            client, mock_sb, app = authenticated_client
-            response = client.get('/api/resumes', headers={'Authorization': 'Bearer test-token'})
-    """
-    client, mock_sb, flask_app = flask_test_client
-
-    # Configure mock auth to return a valid user
-    mock_user = MagicMock()
-    mock_user.id = TEST_USER_ID
-    mock_sb.auth.get_user.return_value = MagicMock(user=mock_user)
-
-    return client, mock_sb, flask_app
 
 
 # =============================================================================
@@ -261,21 +239,3 @@ sections:
 """
 
 
-# =============================================================================
-# Helper Functions
-# =============================================================================
-
-def setup_mock_table_response(mock_supabase, table_name, data, count=None):
-    """
-    Configure mock Supabase to return specific data for a table query.
-
-    Args:
-        mock_supabase: The mock Supabase client
-        table_name: Name of the table being queried
-        data: Data to return from execute()
-        count: Optional count value
-    """
-    response = create_mock_response(data, count)
-    mock_table = mock_supabase.table.return_value
-    mock_table.execute.return_value = response
-    return response

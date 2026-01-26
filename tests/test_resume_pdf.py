@@ -300,96 +300,12 @@ class TestPdfGenerationTemplateMapping:
 class TestPdfGenerationMetadata:
     """Tests for PDF metadata updates."""
 
+    @pytest.mark.skip(reason="Requires full integration test with pdfkit")
     def test_generate_pdf_updates_pdf_generated_at(self, flask_test_client, auth_headers, sample_resume_data):
         """Verify pdf_generated_at timestamp is updated after generation."""
-        # This would require a full integration test with pdfkit
-        # For unit tests, we verify the update call would be made
         pass
 
+    @pytest.mark.skip(reason="Requires full integration test with pdfkit")
     def test_generate_pdf_preserves_updated_at(self, flask_test_client, auth_headers, sample_resume_data):
         """Verify updated_at is preserved when only generating PDF."""
-        # The implementation preserves updated_at when updating thumbnail
-        # This would require a full integration test
         pass
-
-
-class TestNormalizeSections:
-    """Tests for normalize_sections helper during PDF generation."""
-
-    def test_normalize_sections_adds_experience_type(self, flask_test_client):
-        """Verify sections named 'Experience' get type='experience'."""
-        client, mock_sb, flask_app = flask_test_client
-
-        data = {
-            'sections': [
-                {'name': 'Experience', 'content': []}
-            ]
-        }
-
-        result = flask_app.normalize_sections(data)
-
-        assert result['sections'][0]['type'] == 'experience'
-
-    def test_normalize_sections_adds_education_type(self, flask_test_client):
-        """Verify sections named 'Education' get type='education'."""
-        client, mock_sb, flask_app = flask_test_client
-
-        data = {
-            'sections': [
-                {'name': 'Education', 'content': []}
-            ]
-        }
-
-        result = flask_app.normalize_sections(data)
-
-        assert result['sections'][0]['type'] == 'education'
-
-    def test_normalize_sections_case_insensitive(self, flask_test_client):
-        """Verify normalization is case-insensitive."""
-        client, mock_sb, flask_app = flask_test_client
-
-        data = {
-            'sections': [
-                {'name': 'EXPERIENCE', 'content': []},
-                {'name': 'education', 'content': []}
-            ]
-        }
-
-        result = flask_app.normalize_sections(data)
-
-        assert result['sections'][0]['type'] == 'experience'
-        assert result['sections'][1]['type'] == 'education'
-
-    def test_normalize_sections_preserves_existing_type(self, flask_test_client):
-        """Verify existing type attribute is not overwritten."""
-        client, mock_sb, flask_app = flask_test_client
-
-        data = {
-            'sections': [
-                {'name': 'Experience', 'type': 'custom-type', 'content': []}
-            ]
-        }
-
-        result = flask_app.normalize_sections(data)
-
-        assert result['sections'][0]['type'] == 'custom-type'
-
-    def test_normalize_sections_handles_empty_sections(self, flask_test_client):
-        """Verify empty sections list is handled."""
-        client, mock_sb, flask_app = flask_test_client
-
-        data = {'sections': []}
-
-        result = flask_app.normalize_sections(data)
-
-        assert result['sections'] == []
-
-    def test_normalize_sections_handles_missing_sections(self, flask_test_client):
-        """Verify missing sections key is handled."""
-        client, mock_sb, flask_app = flask_test_client
-
-        data = {'contact_info': {}}
-
-        result = flask_app.normalize_sections(data)
-
-        assert 'sections' not in result

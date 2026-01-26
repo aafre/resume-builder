@@ -119,9 +119,11 @@ class TestDuplicateResume:
 
         assert response.status_code == 200
 
-        # Verify storage download/upload was attempted for icons
-        # Note: The actual copy happens in _copy_icon_worker which creates its own client
-        # We can verify the source icons were queried
+        # Verify source icons were queried for the original resume
+        # The duplication endpoint queries icons to copy them to the new resume
+        table_calls = [str(call) for call in mock_sb.table.call_args_list]
+        assert any('resume_icons' in call for call in table_calls), \
+            f"Expected query to 'resume_icons' table, got calls: {table_calls}"
 
     def test_duplicate_generates_new_title(self, flask_test_client, auth_headers, sample_resume_data):
         """Verify duplication uses the provided new title."""
