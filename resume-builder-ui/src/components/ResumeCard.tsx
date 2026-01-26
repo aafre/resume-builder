@@ -121,9 +121,9 @@ export function ResumeCard({
         tabIndex={!isPreviewLoading ? 0 : -1}
         aria-label={`Preview ${resume.title}`}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          if ((e.key === 'Enter' || e.key === ' ') && !isPreviewLoading) {
             e.preventDefault();
-            e.currentTarget.click();
+            onPreview(resume.id);
           }
         }}
         className={`relative bg-gray-100 h-48 overflow-hidden rounded-t-lg ${
@@ -189,7 +189,8 @@ export function ResumeCard({
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                e.currentTarget.click();
+                e.stopPropagation();
+                setIsEditing(true);
               }
             }}
             onClick={(e) => {
