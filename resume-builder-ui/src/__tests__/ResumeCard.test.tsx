@@ -335,5 +335,44 @@ describe("ResumeCard", () => {
       const input = screen.getByRole("textbox");
       expect(input).toHaveAttribute("aria-label", "Rename resume");
     });
+
+    it("thumbnail triggers preview on Space key", () => {
+      render(<ResumeCard {...defaultProps} />);
+      const thumbnail = screen.getByTestId("thumbnail-container");
+
+      fireEvent.keyDown(thumbnail, { key: " " });
+      expect(defaultProps.onPreview).toHaveBeenCalledWith("test-id-123");
+    });
+
+    it("title triggers edit mode on Space key", () => {
+      render(<ResumeCard {...defaultProps} />);
+      const title = screen.getByText("My Test Resume");
+
+      fireEvent.keyDown(title, { key: " " });
+      expect(screen.getByRole("textbox")).toBeInTheDocument();
+    });
+
+    it("thumbnail does not trigger preview on Enter key when loading", () => {
+      render(<ResumeCard {...defaultProps} isPreviewLoading={true} />);
+      const thumbnail = screen.getByTestId("thumbnail-container");
+
+      fireEvent.keyDown(thumbnail, { key: "Enter" });
+      expect(defaultProps.onPreview).not.toHaveBeenCalled();
+    });
+
+    it("thumbnail does not trigger preview on Space key when loading", () => {
+      render(<ResumeCard {...defaultProps} isPreviewLoading={true} />);
+      const thumbnail = screen.getByTestId("thumbnail-container");
+
+      fireEvent.keyDown(thumbnail, { key: " " });
+      expect(defaultProps.onPreview).not.toHaveBeenCalled();
+    });
+
+    it("thumbnail is not focusable when loading", () => {
+      render(<ResumeCard {...defaultProps} isPreviewLoading={true} />);
+      const thumbnail = screen.getByTestId("thumbnail-container");
+
+      expect(thumbnail).toHaveAttribute("tabIndex", "-1");
+    });
   });
 });
