@@ -1040,6 +1040,475 @@ describe('useSectionManagement', () => {
     });
   });
 
+  describe('Callback Stability with Refs (Performance Optimizations)', () => {
+    /**
+     * These tests verify that callbacks use refs to maintain stable references
+     * even when sections array changes, enabling O(1) section updates.
+     */
+
+    describe('handleUpdateSection stability', () => {
+      it('should maintain stable reference across section changes', () => {
+        const { result, rerender } = renderHook(
+          ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+          { initialProps: { sections: createMockSections() } }
+        );
+
+        const firstRef = result.current.handleUpdateSection;
+
+        // Change sections to a completely different array
+        rerender({ sections: [{ name: 'Completely New', type: 'text', content: 'new' }] });
+
+        const secondRef = result.current.handleUpdateSection;
+
+        // Should be same reference due to useCallback with stable deps (only setSections)
+        expect(firstRef).toBe(secondRef);
+      });
+
+      it('should work correctly after sections change (uses latest sections via ref)', () => {
+        const sections = createMockSections();
+        const { result, rerender } = renderHook(
+          ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+          { initialProps: { sections } }
+        );
+
+        // Add a new section via rerender
+        const newSections = [
+          ...sections,
+          { name: 'New Section', type: 'text', content: 'content' },
+        ];
+        rerender({ sections: newSections });
+
+        // handleUpdateSection should still work on new index
+        act(() => {
+          result.current.handleUpdateSection(3, {
+            name: 'Updated New Section',
+            type: 'text',
+            content: 'updated',
+          });
+        });
+
+        expect(mockSetSections).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('handleDeleteSection stability', () => {
+      it('should maintain stable reference across section changes', () => {
+        const { result, rerender } = renderHook(
+          ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+          { initialProps: { sections: createMockSections() } }
+        );
+
+        const firstRef = result.current.handleDeleteSection;
+
+        rerender({ sections: [{ name: 'Different', type: 'text', content: '' }] });
+
+        const secondRef = result.current.handleDeleteSection;
+
+        // Should be same reference (only depends on openDeleteConfirm)
+        expect(firstRef).toBe(secondRef);
+      });
+
+      it('should access latest sections via ref for section name', () => {
+        const sections = createMockSections();
+        const { result, rerender } = renderHook(
+          ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+          { initialProps: { sections } }
+        );
+
+        // Update sections with different names
+        const newSections = [
+          { name: 'Renamed Summary', type: 'text', content: '' },
+          { name: 'Renamed Experience', type: 'experience', content: [] },
+        ];
+        rerender({ sections: newSections });
+
+        act(() => {
+          result.current.handleDeleteSection(0);
+        });
+
+        // Should have the NEW section name from the ref
+        expect(mockOpenDeleteConfirm).toHaveBeenCalledWith({
+          type: 'section',
+          sectionIndex: 0,
+          sectionName: 'Renamed Summary',
+        });
+      });
+    });
+
+    describe('handleDeleteEntry stability', () => {
+      it('should maintain stable reference across section changes', () => {
+        const { result, rerender } = renderHook(
+          ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+          { initialProps: { sections: createMockSections() } }
+        );
+
+        const firstRef = result.current.handleDeleteEntry;
+
+        rerender({ sections: [{ name: 'Other', type: 'bulleted-list', content: [] }] });
+
+        const secondRef = result.current.handleDeleteEntry;
+
+        expect(firstRef).toBe(secondRef);
+      });
+
+      it('should access latest sections via ref for section name', () => {
+        const { result, rerender } = renderHook(
+          ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+          { initialProps: { sections: createMockSections() } }
+        );
+
+        // Update sections with different name
+        rerender({
+          sections: [{ name: 'Updated Name', type: 'experience', content: [{ company: 'A' }] }],
+        });
+
+        act(() => {
+          result.current.handleDeleteEntry(0, 0);
+        });
+
+        expect(mockOpenDeleteConfirm).toHaveBeenCalledWith({
+          type: 'entry',
+          sectionIndex: 0,
+          entryIndex: 0,
+          sectionName: 'Updated Name',
+        });
+      });
+    });
+
+    describe('handleReorderEntry stability', () => {
+      it('should maintain stable reference across section changes', () => {
+        const { result, rerender } = renderHook(
+          ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+          { initialProps: { sections: createMockSections() } }
+        );
+
+        const firstRef = result.current.handleReorderEntry;
+
+        rerender({ sections: [{ name: 'Test', type: 'text', content: '' }] });
+
+        const secondRef = result.current.handleReorderEntry;
+
+        // Should be same reference (only depends on setSections)
+        expect(firstRef).toBe(secondRef);
+      });
+
+      it('should operate on latest sections state', () => {
+        const sectionsWithItems = [
+          {
+            name: 'Skills',
+            type: 'bulleted-list',
+            content: ['A', 'B', 'C'],
+          },
+        ];
+
+        const { result, rerender } = renderHook(
+          ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+          { initialProps: { sections: sectionsWithItems } }
+        );
+
+        // Add more items via rerender
+        const updatedSections = [
+          {
+            name: 'Skills',
+            type: 'bulleted-list',
+            content: ['A', 'B', 'C', 'D', 'E'],
+          },
+        ];
+        rerender({ sections: updatedSections });
+
+        // Should be able to reorder including new indices
+        act(() => {
+          result.current.handleReorderEntry(0, 4, 0);
+        });
+
+        expect(mockSetSections).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('handleTitleEdit stability', () => {
+      it('should maintain stable reference across section changes', () => {
+        const { result, rerender } = renderHook(
+          ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+          { initialProps: { sections: createMockSections() } }
+        );
+
+        const firstRef = result.current.handleTitleEdit;
+
+        rerender({ sections: [{ name: 'New', type: 'text', content: '' }] });
+
+        const secondRef = result.current.handleTitleEdit;
+
+        // Should be same reference (no dependencies that change)
+        expect(firstRef).toBe(secondRef);
+      });
+
+      it('should access latest sections via ref for initial title value', () => {
+        const { result, rerender } = renderHook(
+          ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+          { initialProps: { sections: createMockSections() } }
+        );
+
+        // Update sections with different name
+        rerender({ sections: [{ name: 'Brand New Title', type: 'text', content: '' }] });
+
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        // Should get the NEW title from the ref
+        expect(result.current.temporaryTitle).toBe('Brand New Title');
+      });
+    });
+
+    describe('handleTitleSave stability', () => {
+      it('should maintain stable reference across section changes', () => {
+        const { result, rerender } = renderHook(
+          ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+          { initialProps: { sections: createMockSections() } }
+        );
+
+        const firstRef = result.current.handleTitleSave;
+
+        rerender({ sections: [{ name: 'Changed', type: 'text', content: '' }] });
+
+        const secondRef = result.current.handleTitleSave;
+
+        // Should be same reference (only depends on setSections)
+        expect(firstRef).toBe(secondRef);
+      });
+
+      it('should work correctly with ref-based state access', () => {
+        const sections = createMockSections();
+        const { result, rerender } = renderHook(
+          ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+          { initialProps: { sections } }
+        );
+
+        // Start editing
+        act(() => {
+          result.current.handleTitleEdit(0);
+        });
+
+        // Sections change during editing
+        rerender({ sections: [...sections, { name: 'Extra', type: 'text', content: '' }] });
+
+        // Save should still work using ref-based state
+        act(() => {
+          result.current.handleTitleSave('New Name');
+        });
+
+        expect(mockSetSections).toHaveBeenCalled();
+        expect(result.current.editingTitleIndex).toBeNull();
+      });
+    });
+
+    describe('handleTitleCancel stability', () => {
+      it('should maintain stable reference across multiple rerenders', () => {
+        const { result, rerender } = renderHook(
+          ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+          { initialProps: { sections: createMockSections() } }
+        );
+
+        const firstRef = result.current.handleTitleCancel;
+
+        // Multiple rerenders with different sections
+        rerender({ sections: [] });
+        rerender({ sections: [{ name: 'A', type: 'text', content: '' }] });
+        rerender({ sections: createMockSections() });
+
+        const finalRef = result.current.handleTitleCancel;
+
+        // Should always be same reference (no dependencies)
+        expect(firstRef).toBe(finalRef);
+      });
+    });
+  });
+
+  describe('Ref Synchronization', () => {
+    /**
+     * These tests verify that sectionsRef.current stays in sync with sections prop
+     * to ensure callbacks always operate on the latest data.
+     */
+
+    it('should keep sectionsRef in sync after initial render', () => {
+      const sections = createMockSections();
+      const { result } = renderHook(() =>
+        useSectionManagement(createDefaultProps({ sections }))
+      );
+
+      // Delete section should use correct name from ref
+      act(() => {
+        result.current.handleDeleteSection(1);
+      });
+
+      expect(mockOpenDeleteConfirm).toHaveBeenCalledWith({
+        type: 'section',
+        sectionIndex: 1,
+        sectionName: 'Experience',
+      });
+    });
+
+    it('should update sectionsRef after sections prop changes', () => {
+      const { result, rerender } = renderHook(
+        ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+        { initialProps: { sections: createMockSections() } }
+      );
+
+      // Update to new sections
+      const newSections = [
+        { name: 'New Summary', type: 'text', content: '' },
+        { name: 'New Experience', type: 'experience', content: [] },
+      ];
+      rerender({ sections: newSections });
+
+      // Callback should see the NEW section names via ref
+      act(() => {
+        result.current.handleDeleteSection(0);
+      });
+
+      expect(mockOpenDeleteConfirm).toHaveBeenCalledWith({
+        type: 'section',
+        sectionIndex: 0,
+        sectionName: 'New Summary',
+      });
+    });
+
+    it('should handle rapid section updates correctly', () => {
+      const { result, rerender } = renderHook(
+        ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+        { initialProps: { sections: [{ name: 'Section 0', type: 'text', content: '' }] } }
+      );
+
+      // Rapid updates
+      for (let i = 1; i <= 5; i++) {
+        rerender({ sections: [{ name: `Section ${i}`, type: 'text', content: '' }] });
+      }
+
+      // Should have latest value
+      act(() => {
+        result.current.handleTitleEdit(0);
+      });
+
+      expect(result.current.temporaryTitle).toBe('Section 5');
+    });
+
+    it('should handle sections becoming empty', () => {
+      const { result, rerender } = renderHook(
+        ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+        { initialProps: { sections: createMockSections() } }
+      );
+
+      // Sections become empty
+      rerender({ sections: [] });
+
+      // Operations on empty array should handle gracefully
+      act(() => {
+        result.current.handleDeleteSection(0);
+      });
+
+      expect(mockOpenDeleteConfirm).toHaveBeenCalledWith({
+        type: 'section',
+        sectionIndex: 0,
+        sectionName: undefined,
+      });
+    });
+
+    it('should handle sections growing dynamically', () => {
+      const { result, rerender } = renderHook(
+        ({ sections }) => useSectionManagement(createDefaultProps({ sections })),
+        { initialProps: { sections: [] } }
+      );
+
+      // Add sections dynamically
+      const newSections = createMockSections();
+      rerender({ sections: newSections });
+
+      // Should be able to access all new sections
+      act(() => {
+        result.current.handleTitleEdit(2);
+      });
+
+      expect(result.current.temporaryTitle).toBe('Skills');
+    });
+  });
+
+  describe('Title State Ref Synchronization', () => {
+    /**
+     * Tests for titleStateRef keeping editingTitleIndex and temporaryTitle in sync
+     */
+
+    it('should keep titleStateRef in sync with editingTitleIndex', () => {
+      const sections = createMockSections();
+      const { result } = renderHook(() =>
+        useSectionManagement(createDefaultProps({ sections }))
+      );
+
+      // Start editing
+      act(() => {
+        result.current.handleTitleEdit(1);
+      });
+
+      // handleTitleSave uses the ref, so it should know we're editing index 1
+      act(() => {
+        result.current.handleTitleSave('Updated Title');
+      });
+
+      const updater = mockSetSections.mock.calls[0][0];
+      const newSections = updater(sections);
+      expect(newSections[1].name).toBe('Updated Title');
+    });
+
+    it('should keep titleStateRef in sync with temporaryTitle', () => {
+      const sections = createMockSections();
+      const { result } = renderHook(() =>
+        useSectionManagement(createDefaultProps({ sections }))
+      );
+
+      act(() => {
+        result.current.handleTitleEdit(0);
+      });
+
+      act(() => {
+        result.current.setTemporaryTitle('Custom Title');
+      });
+
+      // Save without passing title (should use ref value)
+      act(() => {
+        result.current.handleTitleSave();
+      });
+
+      const updater = mockSetSections.mock.calls[0][0];
+      const newSections = updater(sections);
+      expect(newSections[0].name).toBe('Custom Title');
+    });
+
+    it('should handle consecutive edit and save operations correctly', () => {
+      const sections = createMockSections();
+      const { result } = renderHook(() =>
+        useSectionManagement(createDefaultProps({ sections }))
+      );
+
+      // Edit action sets both editingTitleIndex and temporaryTitle synchronously
+      act(() => {
+        result.current.handleTitleEdit(0);
+      });
+
+      // Verify state was set correctly
+      expect(result.current.editingTitleIndex).toBe(0);
+      expect(result.current.temporaryTitle).toBe('Summary');
+
+      // Save should work correctly using the current state
+      act(() => {
+        result.current.handleTitleSave();
+      });
+
+      expect(mockSetSections).toHaveBeenCalled();
+      const updater = mockSetSections.mock.calls[0][0];
+      const newSections = updater(sections);
+      expect(newSections[0].name).toBe('Summary');
+    });
+  });
+
   describe('Edge Cases', () => {
     it('should handle empty sections array', () => {
       const { result } = renderHook(() => useSectionManagement(createDefaultProps({ sections: [] })));
