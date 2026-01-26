@@ -256,7 +256,7 @@ describe('yamlService', () => {
       expect(result[0].content[0].icon).toBe(null);
     });
 
-    it('should return non-icon sections unchanged', () => {
+    it('should return non-icon sections with original content and added IDs', () => {
       const sections: Section[] = [
         {
           name: 'Summary',
@@ -272,8 +272,17 @@ describe('yamlService', () => {
 
       const result = processSectionsForExport(sections);
 
-      expect(result[0]).toEqual(sections[0]);
-      expect(result[1]).toEqual(sections[1]);
+      // Original properties should be preserved
+      expect(result[0].name).toBe('Summary');
+      expect(result[0].type).toBe('text');
+      expect(result[0].content).toBe('This is a summary paragraph');
+      expect(result[1].name).toBe('Skills');
+      expect(result[1].type).toBe('bulleted-list');
+      expect(result[1].content).toEqual(['JavaScript', 'TypeScript', 'React']);
+
+      // IDs should be added to sections without them
+      expect(result[0].id).toBeDefined();
+      expect(result[1].id).toBeDefined();
     });
 
     it('should handle empty sections array', () => {

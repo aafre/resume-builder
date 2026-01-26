@@ -27,6 +27,14 @@ export type SectionType =
   | 'education';
 
 /**
+ * Generates a unique ID for a section
+ * Uses crypto.randomUUID() for proper UUID generation
+ */
+export const generateSectionId = (): string => {
+  return crypto.randomUUID();
+};
+
+/**
  * Type name mapping for section types
  */
 const TYPE_NAME_MAP: Record<SectionType, string> = {
@@ -92,11 +100,13 @@ export const createDefaultSection = (
   existingSections: Section[]
 ): Section => {
   const defaultName = getUniqueDefaultName(type, existingSections);
+  const id = generateSectionId();
 
   // Return complete typed objects from each case to ensure proper type inference
   switch (type) {
     case "experience": {
       const section: ExperienceSection = {
+        id,
         name: defaultName,
         type: "experience",
         content: [
@@ -112,6 +122,7 @@ export const createDefaultSection = (
     }
     case "education": {
       const section: EducationSection = {
+        id,
         name: defaultName,
         type: "education",
         content: [
@@ -127,6 +138,7 @@ export const createDefaultSection = (
     }
     case "text": {
       const section: TextSection = {
+        id,
         name: defaultName,
         type: "text",
         content: "",
@@ -135,6 +147,7 @@ export const createDefaultSection = (
     }
     case "bulleted-list": {
       const section: BulletedListSection = {
+        id,
         name: defaultName,
         type: "bulleted-list",
         content: [],
@@ -143,6 +156,7 @@ export const createDefaultSection = (
     }
     case "inline-list": {
       const section: InlineListSection = {
+        id,
         name: defaultName,
         type: "inline-list",
         content: [],
@@ -151,6 +165,7 @@ export const createDefaultSection = (
     }
     case "dynamic-column-list": {
       const section: DynamicColumnListSection = {
+        id,
         name: defaultName,
         type: "dynamic-column-list",
         content: [],
@@ -159,6 +174,7 @@ export const createDefaultSection = (
     }
     case "icon-list": {
       const section: IconListSection = {
+        id,
         name: defaultName,
         type: "icon-list",
         content: [],
@@ -166,6 +182,22 @@ export const createDefaultSection = (
       return section;
     }
   }
+};
+
+/**
+ * Ensures all sections have unique IDs
+ * Used when loading existing resume data that may not have IDs
+ *
+ * @param sections - Array of sections to process
+ * @returns New array with IDs assigned to any sections missing them
+ */
+export const ensureSectionIds = (sections: Section[]): Section[] => {
+  return sections.map((section) => {
+    if (section.id) {
+      return section;
+    }
+    return { ...section, id: generateSectionId() };
+  });
 };
 
 /**

@@ -11,6 +11,7 @@ import { UseIconRegistryReturn } from '../useIconRegistry';
 import { fetchTemplate } from '../../services/templates';
 import { migrateLegacySections } from '../../utils/sectionMigration';
 import { processSectionsForExport } from '../../services/yamlService';
+import { ensureSectionIds } from '../../services/sectionService';
 import { validateYAMLStructure, validateResumeStructure } from '../../services/validationService';
 import { apiClient } from '../../lib/api-client';
 import { supabase } from '../../lib/supabase';
@@ -201,8 +202,9 @@ export const useResumeLoader = ({
         const { resume } = apiResponse;
 
         // Populate editor state from database (JSONB)
+        // Ensure sections have unique IDs for stable list rendering
         setContactInfo(resume.contact_info);
-        setSections(resume.sections);
+        setSections(ensureSectionIds(resume.sections));
         setTemplateId(resume.template_id); // Get template ID from database
         setCloudResumeId(resume.id);
 

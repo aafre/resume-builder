@@ -28,8 +28,9 @@ export interface ResumeTemplate {
 
 // Base interface for a section.
 export interface SectionBase {
+  id?: string; // Unique identifier for stable list rendering and drag-and-drop
   name: string;
-  type?: string; // Optional as some sections do not need a type 
+  type?: string; // Optional as some sections do not need a type
   content: any;
 }
 

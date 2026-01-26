@@ -317,11 +317,11 @@ export const EditorContent: React.FC<EditorContentProps> = ({
           modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
         >
         <SortableContext
-          items={sections.map((_, index) => `section-${index}`)}
+          items={sections.map((section, index) => section.id || `section-${index}`)}
           strategy={verticalListSortingStrategy}
         >
           {sections.map((section, index) => (
-            <DragHandle key={index} id={`section-${index}`} disabled={false}>
+            <DragHandle key={section.id || index} id={section.id || `section-${index}`} disabled={false}>
               <div
                 ref={(el) => {
                   refs.sectionRefs.current[index] = el;
