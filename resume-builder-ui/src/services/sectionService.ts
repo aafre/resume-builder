@@ -27,14 +27,6 @@ export type SectionType =
   | 'education';
 
 /**
- * Generates a unique ID for a section
- * Uses crypto.randomUUID() for proper UUID generation
- */
-export const generateSectionId = (): string => {
-  return crypto.randomUUID();
-};
-
-/**
  * Type name mapping for section types
  */
 const TYPE_NAME_MAP: Record<SectionType, string> = {
@@ -45,6 +37,29 @@ const TYPE_NAME_MAP: Record<SectionType, string> = {
   "inline-list": "New Inline List Section",
   "dynamic-column-list": "New Dynamic Column List Section",
   "icon-list": "New Icon List Section",
+};
+
+/**
+ * Generates a unique ID for a section
+ * Uses crypto.randomUUID() if available, otherwise falls back to timestamp + random
+ */
+export const generateSectionId = (): string => {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  // Fallback for older environments or non-secure contexts
+  return 'sec-' + Math.random().toString(36).substring(2, 11) + Date.now().toString(36);
+};
+
+/**
+ * Ensures all sections in the array have an ID
+ * Useful when loading legacy data that might be missing IDs
+ */
+export const ensureSectionIds = (sections: Section[]): Section[] => {
+  return sections.map(section => {
+    if (section.id) return section;
+    return { ...section, id: generateSectionId() };
+  });
 };
 
 /**
@@ -182,22 +197,6 @@ export const createDefaultSection = (
       return section;
     }
   }
-};
-
-/**
- * Ensures all sections have unique IDs
- * Used when loading existing resume data that may not have IDs
- *
- * @param sections - Array of sections to process
- * @returns New array with IDs assigned to any sections missing them
- */
-export const ensureSectionIds = (sections: Section[]): Section[] => {
-  return sections.map((section) => {
-    if (section.id) {
-      return section;
-    }
-    return { ...section, id: generateSectionId() };
-  });
 };
 
 /**

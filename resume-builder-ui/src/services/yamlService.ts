@@ -5,10 +5,10 @@ import yaml from 'js-yaml';
 import { Section, ContactInfo } from '../types';
 import { PortableYAMLData, IconExportData } from '../types/iconTypes';
 import { migrateLegacySections } from '../utils/sectionMigration';
+import { ensureSectionIds } from './sectionService';
 import { extractReferencedIconFilenames } from '../utils/iconExtractor';
 import { isExperienceSection, isEducationSection } from '../utils/sectionTypeChecker';
 import { validateYAMLStructure } from './validationService';
-import { ensureSectionIds } from './sectionService';
 
 /**
  * Icon registry interface for YAML service operations
@@ -55,10 +55,7 @@ interface ItemWithIcon extends TempIconFields {
  * // Result: icon becomes "logo.png", iconFile and iconBase64 are removed
  */
 export const processSectionsForExport = (sections: Section[]): Section[] => {
-  // Ensure all sections have unique IDs for stable list rendering
-  const sectionsWithIds = ensureSectionIds(sections);
-
-  return sectionsWithIds.map((section) => {
+  return sections.map((section) => {
     // Handle sections with icon support (icon-list, experience, education)
     if (
       (section.type === 'icon-list' ||
@@ -205,9 +202,12 @@ export const importResumeFromYAML = async (
   // Migrate legacy sections (auto-add type property for backwards compatibility)
   const migratedSections = migrateLegacySections(parsedYaml.sections);
 
+  // Ensure all sections have stable IDs
+  const sectionsWithIds = ensureSectionIds(migratedSections);
+
   return {
     contactInfo: parsedYaml.contact_info,
-    sections: migratedSections,
+    sections: sectionsWithIds,
     iconCount,
   };
 };

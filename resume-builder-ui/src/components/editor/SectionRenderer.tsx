@@ -60,10 +60,8 @@ const SectionRenderer: React.FC<SectionRendererProps> = React.memo(({
     handleReorderEntry(index, oldIndex, newIndex);
   }, [handleReorderEntry, index]);
 
-  // Note: We use 'unknown' here because child components have specific callback signatures
-  // (ExperienceItem[], EducationItem[], etc.) that don't match the Section['content'] union type.
-  // TypeScript's strict checking prevents assigning the union to specific array types.
-  const onUpdate = useCallback((updatedContent: unknown) => {
+  const onUpdate = useCallback((updatedContent: any) => {
+    // Note: We use the function form of handleUpdateSection if possible, but here we construct the new section
     // 'section' dependency here is necessary.
     // This callback will update when 'section' updates, which is correct (self-update).
     // It will remain stable if 'section' is stable (other sections updating).
