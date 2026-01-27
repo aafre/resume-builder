@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import { Section, IconListItem } from '../../types';
 import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
 import ExperienceSection from '../ExperienceSection';
@@ -29,7 +29,8 @@ const SectionItem = memo(({
 }: SectionItemProps) => {
 
   // Handlers
-  const handleUpdate = useCallback((updatedContent: Section['content']) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleUpdate = useCallback((updatedContent: any) => {
     sectionManagement.handleUpdateSection(index, {
       ...section,
       content: updatedContent,
