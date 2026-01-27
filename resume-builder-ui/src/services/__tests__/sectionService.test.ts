@@ -1,8 +1,6 @@
 // src/services/__tests__/sectionService.test.ts
 import { describe, it, expect } from 'vitest';
 import {
-  generateSectionId,
-  ensureSectionIds,
   getUniqueDefaultName,
   createDefaultSection,
   deleteSectionItem,
@@ -462,65 +460,6 @@ describe('sectionService', () => {
       expect(result.content[0]).toEqual(section.content[0]); // Company A
       expect(result.content[1]).toEqual(section.content[2]); // Company C
       expect(result.content[2]).toEqual(section.content[1]); // Company B
-    });
-  });
-
-  describe('generateSectionId', () => {
-    it('should return a non-empty string', () => {
-      const id = generateSectionId();
-      expect(typeof id).toBe('string');
-      expect(id.length).toBeGreaterThan(0);
-    });
-
-    it('should generate unique IDs', () => {
-      const ids = new Set([...Array(100)].map(() => generateSectionId()));
-      expect(ids.size).toBe(100);
-    });
-  });
-
-  describe('ensureSectionIds', () => {
-    it('should add IDs to sections without IDs', () => {
-      const sections: Section[] = [
-        { name: 'Test', type: 'text', content: '' },
-      ];
-      const result = ensureSectionIds(sections);
-      expect(result[0].id).toBeDefined();
-      expect(typeof result[0].id).toBe('string');
-    });
-
-    it('should preserve existing IDs', () => {
-      const sections: Section[] = [
-        { id: 'existing-id', name: 'Test', type: 'text', content: '' },
-      ];
-      const result = ensureSectionIds(sections);
-      expect(result[0].id).toBe('existing-id');
-    });
-
-    it('should return new array (immutable)', () => {
-      const sections: Section[] = [
-        { name: 'Test', type: 'text', content: '' },
-      ];
-      const result = ensureSectionIds(sections);
-      expect(result).not.toBe(sections);
-    });
-
-    it('should handle empty array', () => {
-      const result = ensureSectionIds([]);
-      expect(result).toEqual([]);
-    });
-
-    it('should handle mixed sections with and without IDs', () => {
-      const sections: Section[] = [
-        { id: 'keep-this-id', name: 'Section 1', type: 'text', content: '' },
-        { name: 'Section 2', type: 'bulleted-list', content: [] },
-        { id: 'another-id', name: 'Section 3', type: 'experience', content: [] },
-      ];
-      const result = ensureSectionIds(sections);
-
-      expect(result[0].id).toBe('keep-this-id');
-      expect(result[1].id).toBeDefined();
-      expect(result[1].id).not.toBe('keep-this-id');
-      expect(result[2].id).toBe('another-id');
     });
   });
 });
