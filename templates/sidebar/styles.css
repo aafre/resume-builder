@@ -1,0 +1,219 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    color: #333;
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+}
+
+/* Layout Container - Using Table for wkhtmltopdf robustness */
+.container {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    height: 100%;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    display: table-cell;
+    vertical-align: top;
+    width: 30%;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 30px 20px;
+    box-sizing: border-box;
+}
+
+.sidebar a {
+    color: #ecf0f1;
+    text-decoration: none;
+}
+
+.sidebar h1, .sidebar h2, .sidebar h3 {
+    color: #fff;
+}
+
+/* Main Content Styling */
+.main-content {
+    display: table-cell;
+    vertical-align: top;
+    width: 70%;
+    background-color: #fff;
+    padding: 40px 40px;
+    box-sizing: border-box;
+}
+
+/* Header Styling (in Sidebar) */
+.sidebar-header {
+    margin-bottom: 30px;
+}
+
+.name {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    word-wrap: break-word; /* robust word breaking */
+}
+
+/* Contact Block - Remove Flexbox/Gap for robustness */
+.contact-block {
+    display: block;
+}
+
+.contact-item {
+    display: block; /* Stack vertically */
+    margin-bottom: 10px; /* Replace gap */
+    font-size: 13px;
+    line-height: 1.4;
+    overflow: hidden; /* Clear floats if needed */
+}
+
+.contact-item .icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    vertical-align: middle;
+    float: left; /* Use float for icon alignment */
+}
+
+.contact-item span, .contact-item a {
+    display: block;
+    margin-left: 26px; /* Offset for icon width + margin */
+}
+
+/* Icon Inversion for Dark Background */
+.icon-white {
+    -webkit-filter: brightness(0) invert(1);
+    filter: brightness(0) invert(1);
+}
+
+/* Sidebar Section Styling */
+.sidebar-section {
+    margin-bottom: 25px;
+}
+
+.sidebar-section .section-heading {
+    color: #bdc3c7;
+    font-size: 16px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #7f8c8d;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.sidebar-section .education-item p {
+    font-size: 13px;
+    margin: 5px 0;
+}
+
+/* Adjust lists in sidebar */
+.sidebar .inline-list li {
+    background: rgba(255,255,255,0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    display: inline-block; /* Ensure chips behavior */
+}
+/* No separator for chips */
+.sidebar .inline-list li:not(:last-child)::after {
+    content: "";
+    margin: 0;
+}
+
+.sidebar .icon-list li {
+    font-size: 13px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.sidebar .icon-list li img {
+    vertical-align: middle;
+}
+
+/* Main Content Typography */
+.main-content h2.section-heading {
+    color: #2c3e50;
+    font-size: 18px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #2c3e50;
+    padding-bottom: 8px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.main-content p {
+    line-height: 1.6;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* Experience Section in Main */
+.experience-item {
+    margin-bottom: 25px;
+    page-break-inside: avoid;
+}
+
+.company-header {
+    /* Replace flex with table for split alignment */
+    display: table;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.company-name {
+    display: table-cell;
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Position/Tenure also need care. Let's keep them block for now or use table row if side-by-side needed */
+.position-name {
+    font-size: 15px;
+    font-weight: bold;
+    color: #34495e;
+    margin-bottom: 2px;
+    display: block;
+}
+
+.tenure {
+    display: table-cell;
+    text-align: right; /* Right align tenure */
+    font-size: 13px;
+    color: #7f8c8d;
+    font-style: italic;
+    white-space: nowrap;
+}
+
+.experience-item ul {
+    margin-top: 5px;
+    padding-left: 20px;
+}
+
+.experience-item li {
+    margin-bottom: 5px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Links in Main Content */
+.main-content a {
+    color: #2980b9;
+    text-decoration: none;
+}
+.main-content a:hover {
+    text-decoration: underline;
+}
+
+/* Divider removal */
+.divider {
+    display: none;
+}

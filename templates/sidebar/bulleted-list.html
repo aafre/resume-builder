@@ -1,0 +1,9 @@
+<!-- type: bulleted-list -->
+<div class="section">
+    <h2 class="section-heading">{{ section.name }}</h2>
+    <ul class="bulleted-list">
+        {% for item in section.content %}
+            <li>{{ item | markdown_links | markdown_formatting | safe }}</li>
+        {% endfor %}
+    </ul>
+</div>
