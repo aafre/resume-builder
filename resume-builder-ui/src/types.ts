@@ -28,8 +28,9 @@ export interface ResumeTemplate {
 
 // Base interface for a section.
 export interface SectionBase {
+  id?: string; // Stable identifier for drag-and-drop and React keys
   name: string;
-  type?: string; // Optional as some sections do not need a type 
+  type?: string; // Optional as some sections do not need a type
   content: any;
 }
 
