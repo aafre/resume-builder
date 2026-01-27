@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, memo } from "react";
 import {
   MdHelpOutline,
   MdExpandMore,
@@ -49,7 +49,7 @@ const TipCard: React.FC<TipCardProps> = ({
  * Collapsible formatting help section
  * Shows once globally instead of repeating in each section
  */
-const FormattingHelp: React.FC = () => {
+const FormattingHelp: React.FC = memo(() => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { isAnonymous } = useAuth();
 
@@ -174,6 +174,6 @@ const FormattingHelp: React.FC = () => {
       )}
     </div>
   );
-};
+});
 
 export default FormattingHelp;
