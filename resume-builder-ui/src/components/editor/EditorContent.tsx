@@ -21,20 +21,15 @@ import {
   restrictToWindowEdges,
 } from '@dnd-kit/modifiers';
 
-import { ContactInfo, Section, SaveStatus, IconListItem } from '../../types';
+import { ContactInfo, Section, SaveStatus } from '../../types';
 import { UnifiedDndContext, UnifiedDndContextValue, DraggedItemInfo } from '../../contexts/UnifiedDndContext';
 import { DragLevel } from '../../hooks/editor/useUnifiedDragDrop';
-import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
 import ContactInfoSection from '../ContactInfoSection';
 import FormattingHelp from '../FormattingHelp';
-import ExperienceSection from '../ExperienceSection';
-import EducationSection from '../EducationSection';
-import GenericSection from '../GenericSection';
-import IconListSection from '../IconListSection';
 import MobileActionBar from '../MobileActionBar';
 import MobileNavigationDrawer from '../MobileNavigationDrawer';
 import SectionNavigator from '../SectionNavigator';
-import DragHandle from '../DragHandle';
+import SectionItem from './SectionItem';
 
 /**
  * Props for contact form functionality
@@ -324,158 +319,18 @@ export const EditorContent: React.FC<EditorContentProps> = ({
           items={sections.map((_, index) => `section-${index}`)}
           strategy={verticalListSortingStrategy}
         >
-          {sections.map((section, index) => {
-            if (isExperienceSection(section)) {
-              return (
-                <DragHandle key={index} id={`section-${index}`} disabled={false}>
-                  <div
-                    ref={(el) => {
-                      refs.sectionRefs.current[index] = el;
-                      if (index === sections.length - 1) {
-                        refs.newSectionRef.current = el;
-                      }
-                    }}
-                  >
-                    <ExperienceSection
-                      sectionName={section.name}
-                      experiences={section.content}
-                      onUpdate={(updatedExperiences) =>
-                        sectionManagement.handleUpdateSection(index, {
-                          ...section,
-                          content: updatedExperiences,
-                        } as Section)
-                      }
-                      onTitleEdit={() => sectionManagement.handleTitleEdit(index)}
-                      onTitleSave={sectionManagement.handleTitleSave}
-                      onTitleCancel={sectionManagement.handleTitleCancel}
-                      onDelete={() => sectionManagement.handleDeleteSection(index)}
-                      onDeleteEntry={(entryIndex) =>
-                        sectionManagement.handleDeleteEntry(index, entryIndex)
-                      }
-                      onReorderEntry={(oldIndex, newIndex) =>
-                        sectionManagement.handleReorderEntry(index, oldIndex, newIndex)
-                      }
-                      isEditingTitle={sectionManagement.editingTitleIndex === index}
-                      temporaryTitle={sectionManagement.temporaryTitle}
-                      setTemporaryTitle={sectionManagement.setTemporaryTitle}
-                      supportsIcons={supportsIcons}
-                      iconRegistry={iconRegistry}
-                    />
-                  </div>
-                </DragHandle>
-              );
-            } else if (isEducationSection(section)) {
-              return (
-                <DragHandle key={index} id={`section-${index}`} disabled={false}>
-                  <div
-                    ref={(el) => {
-                      refs.sectionRefs.current[index] = el;
-                      if (index === sections.length - 1) {
-                        refs.newSectionRef.current = el;
-                      }
-                    }}
-                  >
-                    <EducationSection
-                      sectionName={section.name}
-                      education={section.content}
-                      onUpdate={(updatedEducation) =>
-                        sectionManagement.handleUpdateSection(index, {
-                          ...section,
-                          content: updatedEducation,
-                        } as Section)
-                      }
-                      onTitleEdit={() => sectionManagement.handleTitleEdit(index)}
-                      onTitleSave={sectionManagement.handleTitleSave}
-                      onTitleCancel={sectionManagement.handleTitleCancel}
-                      onDelete={() => sectionManagement.handleDeleteSection(index)}
-                      onDeleteEntry={(entryIndex) =>
-                        sectionManagement.handleDeleteEntry(index, entryIndex)
-                      }
-                      onReorderEntry={(oldIndex, newIndex) =>
-                        sectionManagement.handleReorderEntry(index, oldIndex, newIndex)
-                      }
-                      isEditingTitle={sectionManagement.editingTitleIndex === index}
-                      temporaryTitle={sectionManagement.temporaryTitle}
-                      setTemporaryTitle={sectionManagement.setTemporaryTitle}
-                      supportsIcons={supportsIcons}
-                      iconRegistry={iconRegistry}
-                    />
-                  </div>
-                </DragHandle>
-              );
-            } else if (section.type === 'icon-list') {
-              return (
-                <DragHandle key={index} id={`section-${index}`} disabled={false}>
-                  <div
-                    ref={(el) => {
-                      refs.sectionRefs.current[index] = el;
-                      if (index === sections.length - 1) {
-                        refs.newSectionRef.current = el;
-                      }
-                    }}
-                  >
-                    <IconListSection
-                      data={section.content as IconListItem[]}
-                      onUpdate={(updatedContent) =>
-                        sectionManagement.handleUpdateSection(index, {
-                          ...section,
-                          content: updatedContent,
-                        } as Section)
-                      }
-                      onDelete={() => sectionManagement.handleDeleteSection(index)}
-                      onDeleteEntry={(entryIndex) =>
-                        sectionManagement.handleDeleteEntry(index, entryIndex)
-                      }
-                      onReorderEntry={(oldIndex, newIndex) =>
-                        sectionManagement.handleReorderEntry(index, oldIndex, newIndex)
-                      }
-                      sectionName={section.name}
-                      onEditTitle={() => sectionManagement.handleTitleEdit(index)}
-                      onSaveTitle={sectionManagement.handleTitleSave}
-                      onCancelTitle={sectionManagement.handleTitleCancel}
-                      isEditing={sectionManagement.editingTitleIndex === index}
-                      temporaryTitle={sectionManagement.temporaryTitle}
-                      setTemporaryTitle={sectionManagement.setTemporaryTitle}
-                      iconRegistry={iconRegistry}
-                    />
-                  </div>
-                </DragHandle>
-              );
-            } else {
-              return (
-                <DragHandle key={index} id={`section-${index}`} disabled={false}>
-                  <div
-                    ref={(el) => {
-                      refs.sectionRefs.current[index] = el;
-                      if (index === sections.length - 1) {
-                        refs.newSectionRef.current = el;
-                      }
-                    }}
-                  >
-                    <GenericSection
-                      section={section}
-                      onUpdate={(updatedSection) =>
-                        sectionManagement.handleUpdateSection(index, updatedSection)
-                      }
-                      onEditTitle={() => sectionManagement.handleTitleEdit(index)}
-                      onSaveTitle={sectionManagement.handleTitleSave}
-                      onCancelTitle={sectionManagement.handleTitleCancel}
-                      onDelete={() => sectionManagement.handleDeleteSection(index)}
-                      onDeleteEntry={(entryIndex) =>
-                        sectionManagement.handleDeleteEntry(index, entryIndex)
-                      }
-                      onReorderEntry={(oldIndex, newIndex) =>
-                        sectionManagement.handleReorderEntry(index, oldIndex, newIndex)
-                      }
-                      isEditing={sectionManagement.editingTitleIndex === index}
-                      temporaryTitle={sectionManagement.temporaryTitle}
-                      setTemporaryTitle={sectionManagement.setTemporaryTitle}
-                    />
-                  </div>
-                </DragHandle>
-              );
-            }
-          })}
+          {sections.map((section, index) => (
+            <SectionItem
+              key={index}
+              section={section}
+              index={index}
+              totalSections={sections.length}
+              sectionManagement={sectionManagement}
+              refs={refs}
+              supportsIcons={supportsIcons}
+              iconRegistry={iconRegistry}
+            />
+          ))}
         </SortableContext>
 
         <DragOverlay modifiers={[restrictToVerticalAxis]} dropAnimation={{
