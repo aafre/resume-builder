@@ -285,4 +285,55 @@ describe("ResumeCard", () => {
       expect(screen.getByText(/Updated 5m ago/i)).toBeInTheDocument();
     });
   });
+
+  describe("accessibility", () => {
+    it("download button has aria-label", () => {
+      render(<ResumeCard {...defaultProps} />);
+      const downloadButton = screen.getByTitle("Download PDF");
+      expect(downloadButton).toHaveAttribute("aria-label", "Download PDF");
+    });
+
+    it("thumbnail is accessible via keyboard", () => {
+      render(<ResumeCard {...defaultProps} />);
+      const thumbnail = screen.getByTestId("thumbnail-container");
+
+      expect(thumbnail).toHaveAttribute("role", "button");
+      expect(thumbnail).toHaveAttribute("tabIndex", "0");
+      expect(thumbnail).toHaveAttribute("aria-label", "Preview My Test Resume");
+    });
+
+    it("thumbnail triggers preview on Enter key", () => {
+      render(<ResumeCard {...defaultProps} />);
+      const thumbnail = screen.getByTestId("thumbnail-container");
+
+      fireEvent.keyDown(thumbnail, { key: "Enter" });
+      expect(defaultProps.onPreview).toHaveBeenCalledWith("test-id-123");
+    });
+
+    it("title is accessible via keyboard", () => {
+      render(<ResumeCard {...defaultProps} />);
+      const title = screen.getByText("My Test Resume");
+
+      expect(title).toHaveAttribute("role", "button");
+      expect(title).toHaveAttribute("tabIndex", "0");
+      expect(title).toHaveAttribute("aria-label", "Rename My Test Resume");
+    });
+
+    it("title triggers edit mode on Enter key", () => {
+      render(<ResumeCard {...defaultProps} />);
+      const title = screen.getByText("My Test Resume");
+
+      fireEvent.keyDown(title, { key: "Enter" });
+      expect(screen.getByRole("textbox")).toBeInTheDocument();
+    });
+
+    it("rename input has aria-label", () => {
+      render(<ResumeCard {...defaultProps} />);
+      const title = screen.getByText("My Test Resume");
+      fireEvent.click(title);
+
+      const input = screen.getByRole("textbox");
+      expect(input).toHaveAttribute("aria-label", "Rename resume");
+    });
+  });
 });

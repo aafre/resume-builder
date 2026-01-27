@@ -117,6 +117,15 @@ export function ResumeCard({
       {/* Thumbnail */}
       <div
         data-testid="thumbnail-container"
+        role="button"
+        tabIndex={!isPreviewLoading ? 0 : -1}
+        aria-label={`Preview ${resume.title}`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            e.currentTarget.click();
+          }
+        }}
         className={`relative bg-gray-100 h-48 overflow-hidden rounded-t-lg ${
           isPreviewLoading ? 'cursor-wait' : 'cursor-pointer'
         }`}
@@ -156,6 +165,7 @@ export function ResumeCard({
           <input
             type="text"
             value={editedTitle}
+            aria-label="Rename resume"
             onChange={(e) => setEditedTitle(e.target.value)}
             onBlur={handleRename}
             onKeyDown={(e) => {
@@ -172,7 +182,16 @@ export function ResumeCard({
           />
         ) : (
           <h3
-            className="font-bold text-xl text-gray-900 truncate mb-2 cursor-text hover:bg-gray-50 rounded px-2 py-1 -mx-2 transition"
+            className="font-bold text-xl text-gray-900 truncate mb-2 cursor-text hover:bg-gray-50 rounded px-2 py-1 -mx-2 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            role="button"
+            tabIndex={0}
+            aria-label={`Rename ${resume.title}`}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.currentTarget.click();
+              }
+            }}
             onClick={(e) => {
               e.stopPropagation();
               setIsEditing(true);
@@ -224,6 +243,7 @@ export function ResumeCard({
             }}
             className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
             title="Download PDF"
+            aria-label="Download PDF"
           >
             <Download className="w-5 h-5" />
           </button>
