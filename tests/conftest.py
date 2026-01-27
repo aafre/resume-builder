@@ -76,7 +76,7 @@ def create_mock_supabase():
     mock.storage.from_.return_value = mock_bucket
     mock_bucket.download.return_value = b'fake-image-data'
     mock_bucket.upload.return_value = None
-    mock_bucket.get_public_url.return_value = 'https://test.supabase.co/storage/icon.png'
+    mock_bucket.get_public_url.side_effect = lambda path: f'https://test.supabase.co/storage/{path}'
     mock_bucket.remove.return_value = None
 
     # Auth support
