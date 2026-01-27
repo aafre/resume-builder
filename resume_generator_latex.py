@@ -77,6 +77,42 @@ def convert_markdown_formatting_to_latex(text):
     # 6. Underline with ++ (custom syntax)
     text = re.sub(r'\+\+(.+?)\+\+', r'\\underline{\1}', text)
 
+    # 7. Escape remaining dangerous characters that weren't consumed by markdown
+    text = _escape_remaining_latex_chars(text)
+
+    return text
+
+
+def _escape_remaining_latex_chars(text):
+    r"""Escapes markdown characters that weren't consumed by markdown conversion.
+
+    After markdown patterns like _italic_ and ~~strikethrough~~ are converted to
+    LaTeX commands, any remaining underscores or tildes in the text are "stray"
+    characters that need to be escaped to prevent LaTeX errors.
+
+    For example:
+    - 'AWS_Lambda' has underscores that don't form a valid italic pattern
+    - '~500 users' has a tilde that doesn't form a strikethrough pattern
+
+    Without escaping, these would cause LaTeX to enter math mode (for _) or
+    produce unwanted spacing (for ~), potentially causing errors like:
+    "Command \end{itemize} invalid in math mode"
+
+    Args:
+        text: String that has already had markdown patterns converted
+
+    Returns:
+        String with stray underscores and tildes properly escaped for LaTeX
+    """
+    if not isinstance(text, str):
+        return text
+
+    # Escape underscores NOT already escaped (negative lookbehind for backslash)
+    text = re.sub(r'(?<!\\)_', r'\\_', text)
+
+    # Escape tildes NOT already escaped
+    text = re.sub(r'(?<!\\)~', r'\\textasciitilde{}', text)
+
     return text
 
 
