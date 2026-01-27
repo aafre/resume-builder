@@ -307,17 +307,7 @@ sections:
 
       expect(apiClientModule.apiClient.get).toHaveBeenCalledWith('/api/resumes/resume-123');
       expect(props.setContactInfo).toHaveBeenCalledWith(mockResume.contact_info);
-      // Sections should have IDs added by ensureSectionIds
-      expect(props.setSections).toHaveBeenCalledWith(
-        expect.arrayContaining([
-          expect.objectContaining({
-            name: 'Education',
-            type: 'education',
-            content: [],
-            id: expect.any(String),
-          }),
-        ])
-      );
+      expect(props.setSections).toHaveBeenCalledWith(mockResume.sections);
       expect(props.setTemplateId).toHaveBeenCalledWith('modern-with-icons');
       expect(props.setSupportsIcons).toHaveBeenCalledWith(true);
       expect(props.iconRegistry.clearRegistry).toHaveBeenCalled();
