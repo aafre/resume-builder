@@ -84,13 +84,12 @@ class TestUploadIconToStorage:
         """Verify upload returns storage URL."""
         client, mock_sb, flask_app = flask_test_client
 
-        expected_url = 'https://test.supabase.co/storage/icon.png'
-        mock_sb.storage.from_.return_value.get_public_url.return_value = expected_url
-
         storage_path, storage_url = flask_app.upload_icon_to_storage(
             TEST_USER_ID, TEST_RESUME_ID, 'icon.png', b'data'
         )
 
+        # URL is dynamically generated based on storage path
+        expected_url = f'https://test.supabase.co/storage/{TEST_USER_ID}/{TEST_RESUME_ID}/icon.png'
         assert storage_url == expected_url
 
     def test_upload_icon_raises_on_failure(self, flask_test_client):
