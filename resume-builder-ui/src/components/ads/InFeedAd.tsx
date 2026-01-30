@@ -1,4 +1,5 @@
 import { CSSProperties } from "react";
+import { AD_CONFIG } from "../../config/ads";
 import { AdContainer, AdContainerProps } from "./AdContainer";
 import { isExplicitAdsEnabled } from "./adUtils";
 
@@ -57,7 +58,7 @@ export const InFeedAd = ({
   const explicitAdsEnabled = isExplicitAdsEnabled();
 
   // Return null early if ads are disabled - don't render the wrapper div
-  if (!enabled || !explicitAdsEnabled) {
+  if (!enabled || (!explicitAdsEnabled && !AD_CONFIG.debug)) {
     return null;
   }
 

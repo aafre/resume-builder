@@ -26,6 +26,7 @@ import {
 } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { AdContainer } from "./ads";
+import { AD_CONFIG } from "../config/ads";
 
 interface Section {
   name: string;
@@ -631,7 +632,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
       {!isCollapsed && (
         <div className="px-3 py-3 border-t border-gray-200/40 bg-gray-50/30">
           <AdContainer
-            adSlot="3691293294"
+            adSlot={AD_CONFIG.slots.editorSidebar}
             adFormat="vertical"
             minHeight={250}
             minWidth={240}

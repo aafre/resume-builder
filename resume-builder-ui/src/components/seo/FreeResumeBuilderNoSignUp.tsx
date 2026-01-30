@@ -11,6 +11,7 @@ import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import { InContentAd } from '../ads';
+import { AD_CONFIG } from '../../config/ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 
@@ -26,7 +27,7 @@ export default function FreeResumeBuilderNoSignUp() {
       <PageHero config={config.hero} />
 
       {/* In-content Ad - Below hero */}
-      <InContentAd adSlot="3994545622" marginY={32} />
+      <InContentAd adSlot={AD_CONFIG.slots.freepageIncontent} marginY={32} />
 
       {config.steps && <StepByStep steps={config.steps} />}
 

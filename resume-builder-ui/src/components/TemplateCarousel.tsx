@@ -10,6 +10,7 @@ import TemplateStartModal from "./TemplateStartModal";
 import ResumeRecoveryModal from "./ResumeRecoveryModal";
 import AuthModal from "./AuthModal";
 import { InFeedAd } from "./ads";
+import { AD_CONFIG } from "../config/ads";
 import { useResumeCreate } from "../hooks/useResumeCreate";
 
 // Lazy-loaded error components
@@ -448,7 +449,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                 {/* Policy: Never show ad before first 4 cards */}
                 {(index + 1) % 6 === 0 && index >= 5 && (
                   <InFeedAd
-                    adSlot="3806186822"
+                    adSlot={AD_CONFIG.slots.carouselInfeed}
                     layout="card"
                     className="rounded-3xl"
                   />
@@ -462,7 +463,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
         {templates.length >= 4 && templates.length < 6 && (
           <div className="mt-8 lg:mt-12 flex justify-center">
             <InFeedAd
-              adSlot="3806186822"
+              adSlot={AD_CONFIG.slots.carouselInfeed}
               layout="card"
               className="rounded-3xl max-w-md"
             />

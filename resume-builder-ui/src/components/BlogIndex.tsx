@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import SEOHead from "./SEOHead";
 import { InFeedAd } from "./ads";
+import { AD_CONFIG } from "../config/ads";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -503,7 +504,7 @@ export default function BlogIndex() {
                   {/* Insert in-feed ad after every 6 posts, starting from position 5 (0-indexed) */}
                   {(index + 1) % 6 === 0 && index >= 5 && (
                     <InFeedAd
-                      adSlot="7742218947"
+                      adSlot={AD_CONFIG.slots.blogInfeed}
                       layout="card"
                       className="rounded-2xl"
                     />
