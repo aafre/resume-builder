@@ -16,6 +16,7 @@ fi
 : "${SUPABASE_SECRET_KEY:?Error: SUPABASE_SECRET_KEY is not set in .env}"
 
 VITE_APP_URL="${VITE_APP_URL:-https://dev.easyfreeresume.com}"
+VITE_ENABLE_EXPLICIT_ADS="${VITE_ENABLE_EXPLICIT_ADS:-true}"
 
 # Registry
 REGISTRY="europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder"
@@ -25,11 +26,13 @@ TAG="dev"
 echo "Building DEV Docker image..."
 echo "  VITE_APP_URL: $VITE_APP_URL"
 echo "  VITE_SUPABASE_URL: $VITE_SUPABASE_URL"
+echo "  VITE_ENABLE_EXPLICIT_ADS: $VITE_ENABLE_EXPLICIT_ADS"
 
 docker build \
   --build-arg VITE_SUPABASE_URL="$VITE_SUPABASE_URL" \
   --build-arg VITE_SUPABASE_PUBLISHABLE_KEY="$VITE_SUPABASE_PUBLISHABLE_KEY" \
   --build-arg VITE_APP_URL="$VITE_APP_URL" \
+  --build-arg VITE_ENABLE_EXPLICIT_ADS="$VITE_ENABLE_EXPLICIT_ADS" \
   -t "$IMAGE_NAME:$TAG" \
   .
 
