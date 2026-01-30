@@ -1,7 +1,7 @@
 // src/components/SectionHeader.tsx
 
 import React, { useCallback } from "react";
-import { MdExpandMore, MdExpandLess, MdDeleteOutline } from "react-icons/md";
+import { ChevronDown, ChevronUp, Trash2 } from "lucide-react";
 import { InlineTextEditor } from "./shared/InlineTextEditor";
 
 /**
@@ -94,14 +94,14 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           <button
             type="button"
             onClick={onToggleCollapse}
-            className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors flex-shrink-0"
+            className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             aria-label={isCollapsed ? "Expand section" : "Collapse section"}
             title={isCollapsed ? "Expand section" : "Collapse section"}
           >
             {isCollapsed ? (
-              <MdExpandMore className="text-2xl" />
+              <ChevronDown className="w-5 h-5" />
             ) : (
-              <MdExpandLess className="text-2xl" />
+              <ChevronUp className="w-5 h-5" />
             )}
           </button>
         )}
@@ -122,10 +122,11 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           <button
             type="button"
             onClick={onDelete}
-            className="flex items-center gap-1.5 text-gray-500 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-colors"
+            className="flex items-center gap-1.5 text-gray-500 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
             title="Remove Section"
+            aria-label="Remove Section"
           >
-            <MdDeleteOutline className="text-lg" />
+            <Trash2 className="w-4 h-4" />
             <span className="hidden sm:inline">Remove</span>
           </button>
         </div>

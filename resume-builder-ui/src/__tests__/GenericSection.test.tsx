@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { DndContext } from "@dnd-kit/core";
@@ -305,7 +306,7 @@ describe("GenericSection Title Editing", () => {
     );
 
     // Click calls onDelete directly (modal handles confirmation)
-    fireEvent.click(screen.getByText("Remove"));
+    fireEvent.click(screen.getByRole('button', { name: /remove section/i }));
     expect(onDeleteMock).toHaveBeenCalledTimes(1);
   });
 });
