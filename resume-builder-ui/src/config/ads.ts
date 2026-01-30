@@ -13,7 +13,7 @@ export const AD_CONFIG = {
     sideRailRight: "4121894901",
     blogIncontent: "3576273453",
     myresumesIncontent: "1958765996",
-    landingMobileTop: "2808813237",
+    mobileTop: "2808813237",
   },
 } as const;
 

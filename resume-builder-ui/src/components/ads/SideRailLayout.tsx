@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { AD_CONFIG } from "../../config/ads";
 import { AdContainer } from "./AdContainer";
+import { InContentAd } from "./InContentAd";
 import { isExplicitAdsEnabled } from "./adUtils";
 
 interface SideRailLayoutProps {
@@ -46,6 +47,14 @@ export const SideRailLayout = ({
 
       {/* Page content */}
       <div className="flex-1 min-w-0">
+        {/* Mobile-top ad — visible below md, compensates for hidden side rails */}
+        <div className="block md:hidden">
+          <InContentAd
+            adSlot={AD_CONFIG.slots.mobileTop}
+            size="small"
+            marginY={16}
+          />
+        </div>
         {children}
       </div>
 
