@@ -1,5 +1,5 @@
 export const AD_CONFIG = {
-  debug: true, // Toggle to see ad placements. Remove when done.
+  debug: import.meta.env.VITE_ADS_DEBUG_MODE === "true",
   clientId: "ca-pub-8976874751886843",
   slots: {
     landingIncontent: "1232650916",
