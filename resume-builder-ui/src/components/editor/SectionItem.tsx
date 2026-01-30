@@ -71,7 +71,8 @@ const SectionItem: React.FC<SectionItemProps> = memo(({
           <ExperienceSection
             sectionName={section.name}
             experiences={section.content}
-            onUpdate={onUpdate}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onUpdate={onUpdate as any}
             onTitleEdit={onTitleEditCallback}
             onTitleSave={handleTitleSave}
             onTitleCancel={handleTitleCancel}
@@ -94,7 +95,8 @@ const SectionItem: React.FC<SectionItemProps> = memo(({
           <EducationSection
             sectionName={section.name}
             education={section.content}
-            onUpdate={onUpdate}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onUpdate={onUpdate as any}
             onTitleEdit={onTitleEditCallback}
             onTitleSave={handleTitleSave}
             onTitleCancel={handleTitleCancel}
@@ -116,7 +118,8 @@ const SectionItem: React.FC<SectionItemProps> = memo(({
         <div ref={(el) => setSectionRef(index, el)}>
           <IconListSection
             data={section.content as IconListItem[]}
-            onUpdate={onUpdate}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onUpdate={onUpdate as any}
             onDelete={onDelete}
             onDeleteEntry={onDeleteEntryCallback}
             onReorderEntry={onReorderEntryCallback}
