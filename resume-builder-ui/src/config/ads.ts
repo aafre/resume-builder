@@ -9,6 +9,10 @@ export const AD_CONFIG = {
     blogInfeed: "7742218947",
     carouselInfeed: "3806186822",
     editorSidebar: "3691293294",
+    sideRailLeft: "TODO_SIDE_RAIL_LEFT",
+    sideRailRight: "TODO_SIDE_RAIL_RIGHT",
+    blogIncontent: "TODO_BLOG_INCONTENT",
+    myresumesIncontent: "TODO_MYRESUMES_INCONTENT",
   },
 } as const;
 

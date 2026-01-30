@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import SEOHead from "./SEOHead";
-import { InFeedAd } from "./ads";
+import { InFeedAd, InContentAd } from "./ads";
 import { AD_CONFIG } from "../config/ads";
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -431,6 +431,13 @@ export default function BlogIndex() {
             </section>
           )}
 
+          {/* In-content ad between featured and grid */}
+          <InContentAd
+            adSlot={AD_CONFIG.slots.blogIncontent}
+            size="standard"
+            marginY={32}
+          />
+
           {/* All Articles Grid */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-8">
@@ -501,8 +508,8 @@ export default function BlogIndex() {
                       )}
                     </div>
                   </article>
-                  {/* Insert in-feed ad after every 6 posts, starting from position 5 (0-indexed) */}
-                  {(index + 1) % 6 === 0 && index >= 5 && (
+                  {/* Insert in-feed ad after every 4 posts, starting from position 3 (0-indexed) */}
+                  {(index + 1) % 4 === 0 && index >= 3 && (
                     <InFeedAd
                       adSlot={AD_CONFIG.slots.blogInfeed}
                       layout="card"
