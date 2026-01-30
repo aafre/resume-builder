@@ -13,6 +13,7 @@ export const AD_CONFIG = {
     sideRailRight: "TODO_SIDE_RAIL_RIGHT",
     blogIncontent: "TODO_BLOG_INCONTENT",
     myresumesIncontent: "TODO_MYRESUMES_INCONTENT",
+    landingMobileTop: "TODO_LANDING_MOBILE_TOP",
   },
 } as const;
 

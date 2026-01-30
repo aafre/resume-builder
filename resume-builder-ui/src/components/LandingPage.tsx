@@ -259,6 +259,11 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
 
+        {/* Mobile-only ad after hero, above the fold on small screens */}
+        <div className="block md:hidden container mx-auto max-w-4xl px-4">
+          <InContentAd adSlot={AD_CONFIG.slots.landingMobileTop} size="small" marginY={16} />
+        </div>
+
         {/* Stats Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-16 my-16 px-4">
           <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
