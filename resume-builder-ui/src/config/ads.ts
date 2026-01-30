@@ -9,11 +9,11 @@ export const AD_CONFIG = {
     blogInfeed: "7742218947",
     carouselInfeed: "3806186822",
     editorSidebar: "3691293294",
-    sideRailLeft: "TODO_SIDE_RAIL_LEFT",
-    sideRailRight: "TODO_SIDE_RAIL_RIGHT",
-    blogIncontent: "TODO_BLOG_INCONTENT",
-    myresumesIncontent: "TODO_MYRESUMES_INCONTENT",
-    landingMobileTop: "TODO_LANDING_MOBILE_TOP",
+    sideRailLeft: "2941074550",
+    sideRailRight: "4121894901",
+    blogIncontent: "3576273453",
+    myresumesIncontent: "1958765996",
+    landingMobileTop: "2808813237",
   },
 } as const;
 
