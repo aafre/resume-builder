@@ -98,9 +98,6 @@ describe("SideRailLayout", () => {
       AD_SLOT_NAMES: {},
       isExplicitAdsEnabled: () => false,
     }));
-    vi.doMock("../components/ads/adUtils", () => ({
-      isExplicitAdsEnabled: () => false,
-    }));
 
     // Re-import to pick up the mock
     const { SideRailLayout: MockedLayout } = await import(
