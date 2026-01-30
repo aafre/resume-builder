@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import SectionControls from "./SectionControls";
-
-interface Section {
-  name: string;
-  type: string;
-  content: any;
-}
+import { Section } from "../types";
 
 const SectionEditor: React.FC<{
   section: Section;
@@ -90,10 +85,11 @@ const SectionEditor: React.FC<{
       <div className="mb-4">
         <label className="block text-gray-700 font-medium mb-1">Type</label>
         <select
-          value={section.type}
+          value={section.type || "text"}
           onChange={(e) => {
             if (isFixedSection) return;
             const updatedSections = [...sections];
+            // @ts-ignore - allowing dynamic type assignment for this editor
             updatedSections[sectionIndex].type = e.target.value;
             setSections(updatedSections);
           }}
@@ -129,6 +125,7 @@ const SectionEditor: React.FC<{
                 value={item.icon || ""}
                 onChange={(e) => {
                   const updatedSections = [...sections];
+                  // @ts-ignore - loose typing for legacy editor content access
                   updatedSections[sectionIndex].content[itemIndex].icon =
                     e.target.value;
                   setSections(updatedSections);
@@ -141,6 +138,7 @@ const SectionEditor: React.FC<{
                 value={item.text || ""}
                 onChange={(e) => {
                   const updatedSections = [...sections];
+                  // @ts-ignore - loose typing for legacy editor content access
                   updatedSections[sectionIndex].content[itemIndex].text =
                     e.target.value;
                   setSections(updatedSections);
@@ -151,7 +149,7 @@ const SectionEditor: React.FC<{
               <button
                 onClick={() => {
                   const updatedSections = [...sections];
-                  updatedSections[sectionIndex].content.splice(itemIndex, 1);
+                  (updatedSections[sectionIndex].content as any[]).splice(itemIndex, 1);
                   setSections(updatedSections);
                 }}
                 className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
@@ -162,7 +160,7 @@ const SectionEditor: React.FC<{
           ))
         ) : (
           <textarea
-            value={section.content || ""}
+            value={(section.content as string) || ""}
             onChange={(e) => {
               const updatedSections = [...sections];
               updatedSections[sectionIndex].content = e.target.value;
@@ -175,7 +173,7 @@ const SectionEditor: React.FC<{
           <button
             onClick={() => {
               const updatedSections = [...sections];
-              updatedSections[sectionIndex].content.push({
+              (updatedSections[sectionIndex].content as any[]).push({
                 icon: "",
                 text: "",
               });

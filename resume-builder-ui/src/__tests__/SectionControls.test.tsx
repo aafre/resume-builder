@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, screen, fireEvent } from "@testing-library/react";
 import SectionControls from "../components/SectionControls";
 import { describe, expect, it, vi } from "vitest";
