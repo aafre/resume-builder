@@ -5,6 +5,7 @@ import yaml from 'js-yaml';
 import { Section, ContactInfo } from '../types';
 import { PortableYAMLData, IconExportData } from '../types/iconTypes';
 import { migrateLegacySections } from '../utils/sectionMigration';
+import { ensureSectionIds } from './sectionService';
 import { extractReferencedIconFilenames } from '../utils/iconExtractor';
 import { isExperienceSection, isEducationSection } from '../utils/sectionTypeChecker';
 import { validateYAMLStructure } from './validationService';
@@ -201,9 +202,12 @@ export const importResumeFromYAML = async (
   // Migrate legacy sections (auto-add type property for backwards compatibility)
   const migratedSections = migrateLegacySections(parsedYaml.sections);
 
+  // Ensure all sections have stable IDs
+  const sectionsWithIds = ensureSectionIds(migratedSections);
+
   return {
     contactInfo: parsedYaml.contact_info,
-    sections: migratedSections,
+    sections: sectionsWithIds,
     iconCount,
   };
 };

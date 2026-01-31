@@ -79,7 +79,7 @@ export interface UseUnifiedDragDropReturn {
  * Parse drag level and extract info from ID
  *
  * ID formats:
- * - Section: "section-{index}"
+ * - Section: "section-{index}" OR "{uuid}" (legacy vs new)
  * - Item: "{sectionId}-item-{index}"
  * - Subitem: "{sectionId}-item-{itemIndex}-subitem-{subIndex}"
  */
@@ -111,17 +111,22 @@ export function parseDragId(id: string): {
     };
   }
 
-  // Check for section
-  const sectionMatch = id.match(/^section-(\d+)$/);
-  if (sectionMatch) {
+  // Check for legacy section index format
+  const sectionIndexMatch = id.match(/^section-(\d+)$/);
+  if (sectionIndexMatch) {
     return {
       level: 'section',
-      sectionIndex: parseInt(sectionMatch[1], 10),
+      sectionIndex: parseInt(sectionIndexMatch[1], 10),
+      sectionId: id, // Keep full ID as fallback
     };
   }
 
-  // Return unknown level for malformed IDs
-  return { level: 'unknown' };
+  // Fallback: Assume it is a Section ID (UUID) if it doesn't match item patterns
+  // This allows using UUIDs as sortable IDs
+  return {
+    level: 'section',
+    sectionId: id,
+  };
 }
 
 /**
@@ -263,8 +268,16 @@ export const useUnifiedDragDrop = ({
       setActiveLevel(parsed.level);
 
       // If dragging a section, capture it for preview
-      if (parsed.level === 'section' && parsed.sectionIndex !== undefined) {
-        setDraggedSection(sections[parsed.sectionIndex] ?? null);
+      if (parsed.level === 'section') {
+        if (parsed.sectionIndex !== undefined) {
+          setDraggedSection(sections[parsed.sectionIndex] ?? null);
+        } else if (parsed.sectionId) {
+          // Look up section by ID
+          const section = sections.find(s => s.id === parsed.sectionId);
+          setDraggedSection(section ?? null);
+        } else {
+          setDraggedSection(null);
+        }
       } else {
         setDraggedSection(null);
       }
@@ -303,11 +316,25 @@ export const useUnifiedDragDrop = ({
 
       switch (activeParsed.level) {
         case 'section': {
-          const oldIndex = activeParsed.sectionIndex!;
-          const newIndex = overParsed.sectionIndex!;
+          let oldIndex = activeParsed.sectionIndex;
+          let newIndex = overParsed.sectionIndex;
 
-          if (oldIndex !== newIndex) {
-            setSections((prevSections) => arrayMove(prevSections, oldIndex, newIndex));
+          // If indices weren't parsed (because using IDs), look them up
+          if (oldIndex === undefined && activeParsed.sectionId) {
+             oldIndex = sections.findIndex(s => s.id === activeParsed.sectionId);
+          }
+          if (newIndex === undefined && overParsed.sectionId) {
+             newIndex = sections.findIndex(s => s.id === overParsed.sectionId);
+          }
+
+          if (
+            oldIndex !== undefined &&
+            newIndex !== undefined &&
+            oldIndex !== -1 &&
+            newIndex !== -1 &&
+            oldIndex !== newIndex
+          ) {
+            setSections((prevSections) => arrayMove(prevSections, oldIndex!, newIndex!));
             toast.success('Section reordered successfully!');
           }
           break;
@@ -351,7 +378,7 @@ export const useUnifiedDragDrop = ({
       setDraggedSection(null);
       setDraggedItemInfo(null);
     },
-    [setSections]
+    [setSections, sections] // Added sections dependency for ID lookup
   );
 
   /**
