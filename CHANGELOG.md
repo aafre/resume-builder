@@ -2,6 +2,62 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.12.0] - 2026-01-31
+
+### 🚀 Features
+
+- **ui:** Improve accessibility of ResumeCard
+- **ads:** Centralise config and add debug mode to display
+- **ads:** Add side rails, blog in-content ad, and my-resumes ad
+- **ads:** Add mobile-only ad after hero on landing page
+- **ads:** Make mobile-top ad global via SideRailLayout
+- **ads:** Use horizontal layout for carousel in-feed ad
+
+### 🐛 Bug Fixes
+
+- **test:** Update test to expect dynamic public URL
+- **editor:** Address PR review - improve type safety and use stable section IDs
+- **editor:** Restore tests and improve type safety
+- **editor:** Restore tests and type fix rolled back by Jules
+- **latex:** Escape stray underscores and tildes after markdown conversion
+- **ads:** Address PR review feedback
+- **ads:** Use vi.doMock in SideRailLayout test for module-level config
+- **editor:** Sidebar made responsive
+- **ads:** Debug overlay now spans full width for horizontal ads
+- **editor:** Correct SectionRenderer onUpdate type to fix build
+- **ads:** Add missing in-content ad to /templates page
+- **ads:** Correct InFeedAd row format to match AdSense config
+- **ads:** Collapse unfilled ad containers to prevent empty white boxes
+- **ads:** Use horizontal format for InFeedAd row layout
+
+### 🚜 Refactor
+
+- **ui:** Delegate onKeyDown to onClick in ResumeCard
+- **ui:** Delegate onKeyDown to onClick in ResumeCard
+- **test:** Address PR review comments
+- **test:** Make get_public_url mock dynamic
+- **ads:** Remove redundant adUtils mock in SideRailLayout test
+- **ads:** Consolidate AD_CONFIG imports to use barrel file
+- **ads:** Memoize onUnfilled callbacks with useCallback
+
+### 🧪 Testing
+
+- **ui:** Add keyboard accessibility tests for ResumeCard
+- **backend:** Add comprehensive test suite for API endpoints
+- **editor:** Add test coverage for SectionRenderer and useSectionManagement performance optimizations
+- **editor:** Fix useResumeLoader test to expect section IDs
+- **editor:** Fix useResumeLoader test to verify section IDs
+- **ads:** Add tests for unfilled ad container collapse behavior
+- **ads:** Rename misleading test and document untestable race condition
+
+### ⚙️ Miscellaneous Tasks
+
+- Address PR comments
+- Address PR comments
+- **ads:** Replace placeholder IDs with real AdSense slot IDs
+- **build:** Pass VITE_ENABLE_EXPLICIT_ADS in dev Docker build
+- Force LF line endings for shell scripts via .gitattributes
+
 ## [3.11.2] - 2026-01-25
 
 ### 🐛 Bug Fixes
