@@ -14,6 +14,7 @@ import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
 import { useResumes } from '../hooks/useResumes';
 import { useAuth } from '../contexts/AuthContext';
 import { usePreview } from '../hooks/usePreview';
+import { InContentAd, AD_CONFIG } from '../components/ads';
 
 export default function MyResumes() {
   const navigate = useNavigate();
@@ -366,6 +367,13 @@ export default function MyResumes() {
             />
           ))}
         </div>
+
+        {/* In-content ad below resume grid */}
+        <InContentAd
+          adSlot={AD_CONFIG.slots.myresumesIncontent}
+          size="standard"
+          marginY={32}
+        />
       </div>
 
       {/* Delete Modal */}

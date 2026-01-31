@@ -1,6 +1,5 @@
-import { CSSProperties } from "react";
+import { CSSProperties, useState, useCallback } from "react";
 import { AdContainer, AdContainerProps } from "./AdContainer";
-import { isExplicitAdsEnabled } from "./adUtils";
 
 export interface InContentAdProps
   extends Omit<AdContainerProps, "adFormat" | "minHeight"> {
@@ -56,10 +55,10 @@ export const InContentAd = ({
   enabled = true,
   ...rest
 }: InContentAdProps) => {
-  const explicitAdsEnabled = isExplicitAdsEnabled();
+  const [hidden, setHidden] = useState(false);
+  const handleUnfilled = useCallback(() => setHidden(true), []);
 
-  // Return null early if ads are disabled - don't render the wrapper div
-  if (!enabled || !explicitAdsEnabled) {
+  if (!enabled) {
     return null;
   }
 
@@ -70,8 +69,13 @@ export const InContentAd = ({
   };
 
   const containerStyle: CSSProperties = {
-    marginTop: `${marginY}px`,
-    marginBottom: `${marginY}px`,
+    marginTop: hidden ? 0 : `${marginY}px`,
+    marginBottom: hidden ? 0 : `${marginY}px`,
+    maxHeight: hidden ? 0 : undefined,
+    opacity: hidden ? 0 : 1,
+    overflow: "hidden",
+    transition:
+      "margin 300ms ease, max-height 300ms ease, opacity 300ms ease",
     ...style,
   };
 
@@ -81,7 +85,7 @@ export const InContentAd = ({
       style={containerStyle}
       data-testid="in-content-ad-wrapper"
     >
-      {showLabel && (
+      {showLabel && !hidden && (
         <div
           style={{
             textAlign: "center",
@@ -101,6 +105,7 @@ export const InContentAd = ({
         minHeight={minHeightMap[size]}
         testId="in-content-ad"
         enabled={enabled}
+        onUnfilled={handleUnfilled}
         {...rest}
       />
     </div>

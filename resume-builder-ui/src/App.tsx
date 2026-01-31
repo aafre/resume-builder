@@ -17,6 +17,7 @@ import AnnouncementBar from "./components/AnnouncementBar";
 import ScrollToTop from "./components/ScrollToTop";
 import { EditorProvider } from "./contexts/EditorContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { SideRailLayout } from "./components/ads";
 import { ConversionProvider } from "./contexts/ConversionContext";
 import usePreferencePersistence from "./hooks/usePreferencePersistence";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -165,6 +166,7 @@ function AppContent() {
           isEditorPage ? "px-0" : "px-4 sm:px-6 md:px-8"
         }`}
       >
+        <SideRailLayout enabled={!isEditorPage}>
         <Routes>
           {/* Critical route - no lazy loading */}
           <Route path="/" element={<LandingPage />} />
@@ -698,6 +700,7 @@ function AppContent() {
             }
           />
         </Routes>
+        </SideRailLayout>
       </main>
 
       {/* Footer - Always visible, static positioning */}

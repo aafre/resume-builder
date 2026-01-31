@@ -40,6 +40,29 @@ const TYPE_NAME_MAP: Record<SectionType, string> = {
 };
 
 /**
+ * Generates a unique ID for a section
+ * Uses crypto.randomUUID() if available, otherwise falls back to timestamp + random
+ */
+export const generateSectionId = (): string => {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  // Fallback for older environments or non-secure contexts
+  return 'sec-' + Math.random().toString(36).substring(2, 11) + Date.now().toString(36);
+};
+
+/**
+ * Ensures all sections in the array have an ID
+ * Useful when loading legacy data that might be missing IDs
+ */
+export const ensureSectionIds = (sections: Section[]): Section[] => {
+  return sections.map(section => {
+    if (section.id) return section;
+    return { ...section, id: generateSectionId() };
+  });
+};
+
+/**
  * Generates a unique section name based on type and existing sections
  * Case-insensitive comparison to avoid duplicates like "Experience" and "experience"
  *
@@ -92,11 +115,13 @@ export const createDefaultSection = (
   existingSections: Section[]
 ): Section => {
   const defaultName = getUniqueDefaultName(type, existingSections);
+  const id = generateSectionId();
 
   // Return complete typed objects from each case to ensure proper type inference
   switch (type) {
     case "experience": {
       const section: ExperienceSection = {
+        id,
         name: defaultName,
         type: "experience",
         content: [
@@ -112,6 +137,7 @@ export const createDefaultSection = (
     }
     case "education": {
       const section: EducationSection = {
+        id,
         name: defaultName,
         type: "education",
         content: [
@@ -127,6 +153,7 @@ export const createDefaultSection = (
     }
     case "text": {
       const section: TextSection = {
+        id,
         name: defaultName,
         type: "text",
         content: "",
@@ -135,6 +162,7 @@ export const createDefaultSection = (
     }
     case "bulleted-list": {
       const section: BulletedListSection = {
+        id,
         name: defaultName,
         type: "bulleted-list",
         content: [],
@@ -143,6 +171,7 @@ export const createDefaultSection = (
     }
     case "inline-list": {
       const section: InlineListSection = {
+        id,
         name: defaultName,
         type: "inline-list",
         content: [],
@@ -151,6 +180,7 @@ export const createDefaultSection = (
     }
     case "dynamic-column-list": {
       const section: DynamicColumnListSection = {
+        id,
         name: defaultName,
         type: "dynamic-column-list",
         content: [],
@@ -159,6 +189,7 @@ export const createDefaultSection = (
     }
     case "icon-list": {
       const section: IconListSection = {
+        id,
         name: defaultName,
         type: "icon-list",
         content: [],

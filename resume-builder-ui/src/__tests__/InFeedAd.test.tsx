@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { InFeedAd } from "../components/ads/InFeedAd";
 
@@ -6,15 +6,30 @@ import { InFeedAd } from "../components/ads/InFeedAd";
 const mockObserve = vi.fn();
 const mockDisconnect = vi.fn();
 
+// Mock MutationObserver
+let mutationCallback: MutationCallback;
+const mockMutationObserve = vi.fn();
+const mockMutationDisconnect = vi.fn();
+
 beforeEach(() => {
   mockObserve.mockClear();
   mockDisconnect.mockClear();
+  mockMutationObserve.mockClear();
+  mockMutationDisconnect.mockClear();
 
   window.IntersectionObserver = vi.fn().mockImplementation(() => ({
     observe: mockObserve,
     disconnect: mockDisconnect,
     unobserve: vi.fn(),
   }));
+
+  window.MutationObserver = vi.fn().mockImplementation((callback) => {
+    mutationCallback = callback;
+    return {
+      observe: mockMutationObserve,
+      disconnect: mockMutationDisconnect,
+    };
+  });
 
   window.adsbygoogle = [];
 
@@ -167,5 +182,148 @@ describe("InFeedAd", () => {
 
     const container = screen.getByTestId("in-feed-ad-container");
     expect(container).toHaveStyle({ minHeight: "100px" });
+  });
+
+  describe("unfilled ad collapse", () => {
+    it("collapses outer wrapper when ad is unfilled (card layout)", async () => {
+      (window.IntersectionObserver as ReturnType<typeof vi.fn>).mockImplementation(
+        (callback: IntersectionObserverCallback) => {
+          setTimeout(() => {
+            callback(
+              [{ isIntersecting: true }] as unknown as IntersectionObserverEntry[],
+              {} as IntersectionObserver
+            );
+          }, 0);
+          return {
+            observe: mockObserve,
+            disconnect: mockDisconnect,
+            unobserve: vi.fn(),
+          };
+        }
+      );
+
+      render(<InFeedAd adSlot="1234567890" layout="card" />);
+
+      await waitFor(() => {
+        expect(document.querySelector("ins.adsbygoogle")).toBeInTheDocument();
+      });
+
+      const insElement = document.querySelector("ins.adsbygoogle")!;
+
+      act(() => {
+        insElement.setAttribute("data-ad-status", "unfilled");
+        mutationCallback(
+          [
+            {
+              type: "attributes",
+              attributeName: "data-ad-status",
+              target: insElement,
+            } as unknown as MutationRecord,
+          ],
+          {} as MutationObserver
+        );
+      });
+
+      await waitFor(() => {
+        const wrapper = screen.getByTestId("in-feed-ad");
+        expect(wrapper).toHaveStyle({ minHeight: "0px" });
+        expect(wrapper).toHaveStyle({ minWidth: "0px" });
+        expect(wrapper).toHaveStyle({ opacity: "0" });
+      });
+    });
+
+    it("collapses outer wrapper when ad is unfilled (row layout)", async () => {
+      (window.IntersectionObserver as ReturnType<typeof vi.fn>).mockImplementation(
+        (callback: IntersectionObserverCallback) => {
+          setTimeout(() => {
+            callback(
+              [{ isIntersecting: true }] as unknown as IntersectionObserverEntry[],
+              {} as IntersectionObserver
+            );
+          }, 0);
+          return {
+            observe: mockObserve,
+            disconnect: mockDisconnect,
+            unobserve: vi.fn(),
+          };
+        }
+      );
+
+      render(<InFeedAd adSlot="1234567890" layout="row" />);
+
+      await waitFor(() => {
+        expect(document.querySelector("ins.adsbygoogle")).toBeInTheDocument();
+      });
+
+      const insElement = document.querySelector("ins.adsbygoogle")!;
+
+      act(() => {
+        insElement.setAttribute("data-ad-status", "unfilled");
+        mutationCallback(
+          [
+            {
+              type: "attributes",
+              attributeName: "data-ad-status",
+              target: insElement,
+            } as unknown as MutationRecord,
+          ],
+          {} as MutationObserver
+        );
+      });
+
+      await waitFor(() => {
+        const wrapper = screen.getByTestId("in-feed-ad");
+        expect(wrapper).toHaveStyle({ minHeight: "0px" });
+        expect(wrapper).toHaveStyle({ opacity: "0" });
+      });
+    });
+
+    it("keeps wrapper visible when ad is filled", async () => {
+      (window.IntersectionObserver as ReturnType<typeof vi.fn>).mockImplementation(
+        (callback: IntersectionObserverCallback) => {
+          setTimeout(() => {
+            callback(
+              [{ isIntersecting: true }] as unknown as IntersectionObserverEntry[],
+              {} as IntersectionObserver
+            );
+          }, 0);
+          return {
+            observe: mockObserve,
+            disconnect: mockDisconnect,
+            unobserve: vi.fn(),
+          };
+        }
+      );
+
+      render(<InFeedAd adSlot="1234567890" layout="card" />);
+
+      await waitFor(() => {
+        expect(document.querySelector("ins.adsbygoogle")).toBeInTheDocument();
+      });
+
+      const insElement = document.querySelector("ins.adsbygoogle")!;
+
+      act(() => {
+        insElement.setAttribute("data-ad-status", "filled");
+        mutationCallback(
+          [
+            {
+              type: "attributes",
+              attributeName: "data-ad-status",
+              target: insElement,
+            } as unknown as MutationRecord,
+          ],
+          {} as MutationObserver
+        );
+      });
+
+      const wrapper = screen.getByTestId("in-feed-ad");
+      expect(wrapper).toHaveStyle({
+        minHeight: "280px",
+        minWidth: "250px",
+        opacity: "1",
+        backgroundColor: "#fafafa",
+      });
+    });
   });
 });

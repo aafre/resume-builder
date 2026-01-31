@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, CSSProperties, ReactNode } from "react";
-import { isExplicitAdsEnabled } from "./adUtils";
+import { useEffect, useRef, useState, useCallback, CSSProperties, ReactNode } from "react";
+import { AD_CONFIG, AD_SLOT_NAMES, isExplicitAdsEnabled } from "../../config/ads";
 
 declare global {
   interface Window {
@@ -49,6 +49,10 @@ export interface AdContainerProps {
    * Whether the ad is enabled (useful for conditional rendering)
    */
   enabled?: boolean;
+  /**
+   * Callback fired when AdSense marks the ad slot as unfilled
+   */
+  onUnfilled?: () => void;
 }
 
 /**
@@ -80,11 +84,19 @@ export const AdContainer = ({
   testId = "ad-container",
   fallback,
   enabled = true,
+  onUnfilled,
 }: AdContainerProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const insRef = useRef<HTMLModElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [adLoaded, setAdLoaded] = useState(false);
+  const [adUnfilled, setAdUnfilled] = useState(false);
   const adPushed = useRef<string | null>(null);
+
+  const handleUnfilled = useCallback(() => {
+    setAdUnfilled(true);
+    onUnfilled?.();
+  }, [onUnfilled]);
 
   const explicitAdsEnabled = isExplicitAdsEnabled();
 
@@ -134,16 +146,88 @@ export const AdContainer = ({
     }
   }, [isVisible, enabled, adSlot]);
 
-  if (!enabled || !explicitAdsEnabled) {
+  // Watch for AdSense setting data-ad-status="unfilled" on the <ins> element
+  useEffect(() => {
+    const insEl = insRef.current;
+    if (!insEl || !enabled) return;
+
+    // Check immediately in case the attribute was set before the observer attached
+    if (insEl.getAttribute("data-ad-status") === "unfilled") {
+      handleUnfilled();
+      return;
+    }
+
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "data-ad-status" &&
+          insEl.getAttribute("data-ad-status") === "unfilled"
+        ) {
+          handleUnfilled();
+          observer.disconnect();
+          break;
+        }
+      }
+    });
+
+    observer.observe(insEl, {
+      attributes: true,
+      attributeFilter: ["data-ad-status"],
+    });
+
+    return () => observer.disconnect();
+  }, [isVisible, enabled, handleUnfilled]);
+
+  if (!enabled || (!explicitAdsEnabled && !AD_CONFIG.debug)) {
     return null;
   }
 
+  if (AD_CONFIG.debug && !explicitAdsEnabled) {
+    const slotName = AD_SLOT_NAMES[adSlot] ?? adSlot;
+    const isFullWidth = adFormat === "horizontal" || adFormat === "auto";
+    return (
+      <div
+        ref={containerRef}
+        className={`ad-container ${className}`}
+        style={{
+          minHeight: `${minHeight}px`,
+          ...(minWidth && { minWidth: `${minWidth}px` }),
+          ...(isFullWidth && { width: "100%" }),
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#fce4ec",
+          border: "2px dashed #e91e63",
+          borderRadius: "6px",
+          overflow: "hidden",
+          ...style,
+        }}
+        data-testid={testId}
+        aria-label="Advertisement (debug)"
+      >
+        <span
+          style={{
+            color: "#e91e63",
+            fontWeight: 700,
+            fontSize: "14px",
+            fontFamily: "monospace",
+          }}
+        >
+          [{slotName}]
+        </span>
+      </div>
+    );
+  }
+
   const containerStyle: CSSProperties = {
-    minHeight: `${minHeight}px`,
-    ...(minWidth && { minWidth: `${minWidth}px` }),
+    minHeight: adUnfilled ? "0px" : `${minHeight}px`,
+    ...(minWidth && !adUnfilled && { minWidth: `${minWidth}px` }),
     display: "block",
     textAlign: "center",
     overflow: "hidden",
+    opacity: adUnfilled ? 0 : 1,
+    transition: "min-height 300ms ease, opacity 300ms ease",
     ...style,
   };
 
@@ -186,9 +270,10 @@ export const AdContainer = ({
       {!adLoaded && fallback}
       {isVisible && (
         <ins
+          ref={insRef}
           className="adsbygoogle"
           style={{ display: "block", ...adLayoutProps.style }}
-          data-ad-client="ca-pub-8976874751886843"
+          data-ad-client={AD_CONFIG.clientId}
           data-ad-slot={adSlot}
           {...adLayoutProps}
         />

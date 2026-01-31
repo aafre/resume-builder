@@ -144,6 +144,7 @@ Explicit ads are controlled by the `VITE_ENABLE_EXPLICIT_ADS` environment variab
 | Blog index (in-feed) | `7742218947` | efr-blog-infeed |
 | Template carousel (in-feed) | `3806186822` | efr-carousel-infeed |
 | Editor sidebar | `3691293294` | efr-editor-sidebar |
+| Mobile top (all non-editor pages) | `2808813237` | efr-mobile-top |
 
 
 # Repo workflow

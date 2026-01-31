@@ -1,7 +1,7 @@
 // src/hooks/editor/useSectionManagement.ts
 // Hook for managing section CRUD operations and title editing
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { Section } from '../../types';
 import { DeleteTarget, UseSectionManagementReturn } from '../../types/editor';
@@ -66,9 +66,21 @@ export const useSectionManagement = ({
   closeSectionTypeModal,
   onSectionAdded,
 }: UseSectionManagementProps): UseSectionManagementReturn => {
+  // Keep track of latest sections in a ref to avoid unstable callbacks
+  const sectionsRef = useRef(sections);
+  useEffect(() => {
+    sectionsRef.current = sections;
+  }, [sections]);
+
   // Title editing state
   const [editingTitleIndex, setEditingTitleIndex] = useState<number | null>(null);
   const [temporaryTitle, setTemporaryTitle] = useState<string>('');
+
+  // Keep track of editing state in a ref for stable callbacks
+  const titleStateRef = useRef({ editingTitleIndex, temporaryTitle });
+  useEffect(() => {
+    titleStateRef.current = { editingTitleIndex, temporaryTitle };
+  }, [editingTitleIndex, temporaryTitle]);
 
   /**
    * Add a new section of the specified type at the specified position.
@@ -80,14 +92,15 @@ export const useSectionManagement = ({
    */
   const handleAddSection = useCallback(
     (type: SectionType, position: InsertPosition = 'top') => {
-      const newSection = createDefaultSection(type, sections);
+      const currentSections = sectionsRef.current;
+      const newSection = createDefaultSection(type, currentSections);
 
       // Calculate inserted index outside the state updater to avoid side effects
       let insertedIndex: number;
       if (position === 'bottom') {
-        insertedIndex = sections.length;
+        insertedIndex = currentSections.length;
       } else if (typeof position === 'number') {
-        insertedIndex = Math.min(Math.max(0, position), sections.length);
+        insertedIndex = Math.min(Math.max(0, position), currentSections.length);
       } else {
         // 'top' or fallback
         insertedIndex = 0;
@@ -112,7 +125,7 @@ export const useSectionManagement = ({
         setTimeout(() => onSectionAdded(insertedIndex), 100);
       }
     },
-    [sections, setSections, closeSectionTypeModal, onSectionAdded]
+    [setSections, closeSectionTypeModal, onSectionAdded]
   );
 
   /**
@@ -141,10 +154,10 @@ export const useSectionManagement = ({
       openDeleteConfirm({
         type: 'section',
         sectionIndex: index,
-        sectionName: sections[index]?.name,
+        sectionName: sectionsRef.current[index]?.name,
       });
     },
-    [sections, openDeleteConfirm]
+    [openDeleteConfirm]
   );
 
   /**
@@ -156,10 +169,10 @@ export const useSectionManagement = ({
         type: 'entry',
         sectionIndex,
         entryIndex,
-        sectionName: sections[sectionIndex]?.name,
+        sectionName: sectionsRef.current[sectionIndex]?.name,
       });
     },
-    [sections, openDeleteConfirm]
+    [openDeleteConfirm]
   );
 
   /**
@@ -222,9 +235,9 @@ export const useSectionManagement = ({
   const handleTitleEdit = useCallback(
     (index: number) => {
       setEditingTitleIndex(index);
-      setTemporaryTitle(sections[index]?.name || '');
+      setTemporaryTitle(sectionsRef.current[index]?.name || '');
     },
-    [sections]
+    []
   );
 
   /**
@@ -233,10 +246,12 @@ export const useSectionManagement = ({
    *                   This allows callers to pass the title directly, avoiding async state update issues.
    */
   const handleTitleSave = useCallback((newTitle?: string) => {
-    if (editingTitleIndex === null) return;
+    const { editingTitleIndex: currentIndex, temporaryTitle: currentTitle } = titleStateRef.current;
+
+    if (currentIndex === null) return;
 
     // Use passed value if provided, otherwise fall back to temporaryTitle state
-    const titleToSave = (newTitle ?? temporaryTitle).trim();
+    const titleToSave = (newTitle ?? currentTitle).trim();
 
     if (!titleToSave) {
       // Don't save empty titles; cancel edit instead
@@ -246,13 +261,13 @@ export const useSectionManagement = ({
     }
 
     setSections((currentSections) => {
-      if (editingTitleIndex < 0 || editingTitleIndex >= currentSections.length) {
-        console.warn(`Attempted to save title for out-of-bounds index: ${editingTitleIndex}`);
+      if (currentIndex < 0 || currentIndex >= currentSections.length) {
+        console.warn(`Attempted to save title for out-of-bounds index: ${currentIndex}`);
         return currentSections;
       }
       const newSections = [...currentSections];
-      newSections[editingTitleIndex] = {
-        ...newSections[editingTitleIndex],
+      newSections[currentIndex] = {
+        ...newSections[currentIndex],
         name: titleToSave,
       };
       return newSections;
@@ -260,7 +275,7 @@ export const useSectionManagement = ({
 
     setEditingTitleIndex(null);
     setTemporaryTitle('');
-  }, [editingTitleIndex, temporaryTitle, setSections]);
+  }, [setSections]);
 
   /**
    * Cancel title editing without saving changes.

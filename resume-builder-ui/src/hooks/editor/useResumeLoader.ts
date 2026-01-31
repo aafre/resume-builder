@@ -10,6 +10,7 @@ import { UseResumeLoaderReturn } from '../../types/editor';
 import { UseIconRegistryReturn } from '../useIconRegistry';
 import { fetchTemplate } from '../../services/templates';
 import { migrateLegacySections } from '../../utils/sectionMigration';
+import { ensureSectionIds } from '../../services/sectionService';
 import { processSectionsForExport } from '../../services/yamlService';
 import { validateYAMLStructure, validateResumeStructure } from '../../services/validationService';
 import { apiClient } from '../../lib/api-client';
@@ -144,8 +145,11 @@ export const useResumeLoader = ({
         // Migrate legacy sections (auto-add type property for backwards compatibility)
         const migratedSections = migrateLegacySections(parsedYaml.sections);
 
+        // Ensure all sections have stable IDs
+        const sectionsWithIds = ensureSectionIds(migratedSections);
+
         // Process sections to clean up icon paths when loading template
-        const processedSections = processSectionsForExport(migratedSections);
+        const processedSections = processSectionsForExport(sectionsWithIds);
         setSections(processedSections);
         setSupportsIcons(supportsIcons);
 
@@ -202,7 +206,11 @@ export const useResumeLoader = ({
 
         // Populate editor state from database (JSONB)
         setContactInfo(resume.contact_info);
-        setSections(resume.sections);
+
+        // Ensure all sections have stable IDs (legacy data might not)
+        const sectionsWithIds = ensureSectionIds(resume.sections);
+        setSections(sectionsWithIds);
+
         setTemplateId(resume.template_id); // Get template ID from database
         setCloudResumeId(resume.id);
 
