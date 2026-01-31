@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { AdContainer } from "../components/ads/AdContainer";
 import { AD_CONFIG } from "../config/ads";
@@ -8,11 +8,26 @@ const mockIntersectionObserver = vi.fn();
 const mockObserve = vi.fn();
 const mockDisconnect = vi.fn();
 
+// Mock MutationObserver
+let mutationCallback: MutationCallback;
+const mockMutationObserve = vi.fn();
+const mockMutationDisconnect = vi.fn();
+const mockMutationObserver = vi.fn().mockImplementation((callback) => {
+  mutationCallback = callback;
+  return {
+    observe: mockMutationObserve,
+    disconnect: mockMutationDisconnect,
+  };
+});
+
 beforeEach(() => {
   // Reset mocks
   mockObserve.mockClear();
   mockDisconnect.mockClear();
   mockIntersectionObserver.mockClear();
+  mockMutationObserve.mockClear();
+  mockMutationDisconnect.mockClear();
+  mockMutationObserver.mockClear();
 
   // Setup IntersectionObserver mock
   mockIntersectionObserver.mockImplementation((callback) => {
@@ -23,6 +38,7 @@ beforeEach(() => {
     };
   });
   window.IntersectionObserver = mockIntersectionObserver;
+  window.MutationObserver = mockMutationObserver;
 
   // Setup adsbygoogle mock
   window.adsbygoogle = [];
@@ -191,5 +207,184 @@ describe("AdContainer", () => {
 
     const insElement = document.querySelector("ins.adsbygoogle");
     expect(insElement).not.toBeInTheDocument();
+  });
+
+  describe("unfilled ad collapse", () => {
+    const renderVisibleAd = async (props?: { onUnfilled?: () => void }) => {
+      mockIntersectionObserver.mockImplementation((callback) => {
+        setTimeout(() => {
+          callback([{ isIntersecting: true }]);
+        }, 0);
+        return {
+          observe: mockObserve,
+          disconnect: mockDisconnect,
+          unobserve: vi.fn(),
+        };
+      });
+
+      render(
+        <AdContainer
+          adSlot="1234567890"
+          testId="test-ad"
+          onUnfilled={props?.onUnfilled}
+        />
+      );
+
+      // Wait for the ins element to render
+      await waitFor(() => {
+        expect(document.querySelector("ins.adsbygoogle")).toBeInTheDocument();
+      });
+    };
+
+    it("sets up MutationObserver on the ins element when visible", async () => {
+      await renderVisibleAd();
+
+      expect(mockMutationObserver).toHaveBeenCalled();
+      expect(mockMutationObserve).toHaveBeenCalledWith(
+        expect.any(Element),
+        { attributes: true, attributeFilter: ["data-ad-status"] }
+      );
+    });
+
+    it("collapses container when data-ad-status is set to unfilled", async () => {
+      await renderVisibleAd();
+
+      const insElement = document.querySelector("ins.adsbygoogle")!;
+
+      act(() => {
+        insElement.setAttribute("data-ad-status", "unfilled");
+        mutationCallback(
+          [
+            {
+              type: "attributes",
+              attributeName: "data-ad-status",
+              target: insElement,
+            } as unknown as MutationRecord,
+          ],
+          {} as MutationObserver
+        );
+      });
+
+      const container = screen.getByTestId("test-ad");
+      expect(container).toHaveStyle({ minHeight: "0px", opacity: "0" });
+    });
+
+    it("fires onUnfilled callback when ad is unfilled", async () => {
+      const onUnfilled = vi.fn();
+      await renderVisibleAd({ onUnfilled });
+
+      const insElement = document.querySelector("ins.adsbygoogle")!;
+
+      act(() => {
+        insElement.setAttribute("data-ad-status", "unfilled");
+        mutationCallback(
+          [
+            {
+              type: "attributes",
+              attributeName: "data-ad-status",
+              target: insElement,
+            } as unknown as MutationRecord,
+          ],
+          {} as MutationObserver
+        );
+      });
+
+      expect(onUnfilled).toHaveBeenCalledTimes(1);
+    });
+
+    it("does not collapse when data-ad-status is filled", async () => {
+      await renderVisibleAd();
+
+      const insElement = document.querySelector("ins.adsbygoogle")!;
+
+      act(() => {
+        insElement.setAttribute("data-ad-status", "filled");
+        mutationCallback(
+          [
+            {
+              type: "attributes",
+              attributeName: "data-ad-status",
+              target: insElement,
+            } as unknown as MutationRecord,
+          ],
+          {} as MutationObserver
+        );
+      });
+
+      const container = screen.getByTestId("test-ad");
+      expect(container).toHaveStyle({ minHeight: "250px", opacity: "1" });
+    });
+
+    it("collapses when mutation fires synchronously on observe", async () => {
+      // MutationObserver mock that fires the callback synchronously during observe()
+      // Note: The immediate getAttribute check in AdContainer (line 155) covers the
+      // race condition where the attribute is set before the observer attaches, but
+      // that path is not unit-testable because React effects run synchronously after
+      // render — there's no gap to inject the attribute between <ins> mount and
+      // the effect execution.
+      window.MutationObserver = vi.fn().mockImplementation((callback: MutationCallback) => {
+        return {
+          observe: vi.fn().mockImplementation((el: HTMLElement) => {
+            if (el && typeof el.setAttribute === "function") {
+              el.setAttribute("data-ad-status", "unfilled");
+              callback(
+                [
+                  {
+                    type: "attributes",
+                    attributeName: "data-ad-status",
+                    target: el,
+                  } as unknown as MutationRecord,
+                ],
+                {} as MutationObserver
+              );
+            }
+          }),
+          disconnect: mockMutationDisconnect,
+        };
+      });
+
+      mockIntersectionObserver.mockImplementation((callback) => {
+        setTimeout(() => {
+          callback([{ isIntersecting: true }]);
+        }, 0);
+        return {
+          observe: mockObserve,
+          disconnect: mockDisconnect,
+          unobserve: vi.fn(),
+        };
+      });
+
+      render(<AdContainer adSlot="1234567890" testId="test-ad" />);
+
+      await waitFor(() => {
+        const container = screen.getByTestId("test-ad");
+        expect(container).toHaveStyle({ minHeight: "0px", opacity: "0" });
+      });
+    });
+
+    it("disconnects MutationObserver on unmount", async () => {
+      mockIntersectionObserver.mockImplementation((callback) => {
+        setTimeout(() => {
+          callback([{ isIntersecting: true }]);
+        }, 0);
+        return {
+          observe: mockObserve,
+          disconnect: mockDisconnect,
+          unobserve: vi.fn(),
+        };
+      });
+
+      const { unmount } = render(
+        <AdContainer adSlot="1234567890" testId="test-ad" />
+      );
+
+      await waitFor(() => {
+        expect(document.querySelector("ins.adsbygoogle")).toBeInTheDocument();
+      });
+
+      unmount();
+
+      expect(mockMutationDisconnect).toHaveBeenCalled();
+    });
   });
 });

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, CSSProperties, ReactNode } from "react";
+import { useEffect, useRef, useState, useCallback, CSSProperties, ReactNode } from "react";
 import { AD_CONFIG, AD_SLOT_NAMES, isExplicitAdsEnabled } from "../../config/ads";
 
 declare global {
@@ -49,6 +49,10 @@ export interface AdContainerProps {
    * Whether the ad is enabled (useful for conditional rendering)
    */
   enabled?: boolean;
+  /**
+   * Callback fired when AdSense marks the ad slot as unfilled
+   */
+  onUnfilled?: () => void;
 }
 
 /**
@@ -80,11 +84,19 @@ export const AdContainer = ({
   testId = "ad-container",
   fallback,
   enabled = true,
+  onUnfilled,
 }: AdContainerProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const insRef = useRef<HTMLModElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [adLoaded, setAdLoaded] = useState(false);
+  const [adUnfilled, setAdUnfilled] = useState(false);
   const adPushed = useRef<string | null>(null);
+
+  const handleUnfilled = useCallback(() => {
+    setAdUnfilled(true);
+    onUnfilled?.();
+  }, [onUnfilled]);
 
   const explicitAdsEnabled = isExplicitAdsEnabled();
 
@@ -134,6 +146,39 @@ export const AdContainer = ({
     }
   }, [isVisible, enabled, adSlot]);
 
+  // Watch for AdSense setting data-ad-status="unfilled" on the <ins> element
+  useEffect(() => {
+    const insEl = insRef.current;
+    if (!insEl || !enabled) return;
+
+    // Check immediately in case the attribute was set before the observer attached
+    if (insEl.getAttribute("data-ad-status") === "unfilled") {
+      handleUnfilled();
+      return;
+    }
+
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "data-ad-status" &&
+          insEl.getAttribute("data-ad-status") === "unfilled"
+        ) {
+          handleUnfilled();
+          observer.disconnect();
+          break;
+        }
+      }
+    });
+
+    observer.observe(insEl, {
+      attributes: true,
+      attributeFilter: ["data-ad-status"],
+    });
+
+    return () => observer.disconnect();
+  }, [isVisible, enabled, handleUnfilled]);
+
   if (!enabled || (!explicitAdsEnabled && !AD_CONFIG.debug)) {
     return null;
   }
@@ -176,11 +221,13 @@ export const AdContainer = ({
   }
 
   const containerStyle: CSSProperties = {
-    minHeight: `${minHeight}px`,
-    ...(minWidth && { minWidth: `${minWidth}px` }),
+    minHeight: adUnfilled ? "0px" : `${minHeight}px`,
+    ...(minWidth && !adUnfilled && { minWidth: `${minWidth}px` }),
     display: "block",
     textAlign: "center",
     overflow: "hidden",
+    opacity: adUnfilled ? 0 : 1,
+    transition: "min-height 300ms ease, opacity 300ms ease",
     ...style,
   };
 
@@ -223,6 +270,7 @@ export const AdContainer = ({
       {!adLoaded && fallback}
       {isVisible && (
         <ins
+          ref={insRef}
           className="adsbygoogle"
           style={{ display: "block", ...adLayoutProps.style }}
           data-ad-client={AD_CONFIG.clientId}
