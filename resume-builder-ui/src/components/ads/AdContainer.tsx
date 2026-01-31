@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, CSSProperties, ReactNode } from "react";
-import { isExplicitAdsEnabled } from "./adUtils";
+import { AD_CONFIG, AD_SLOT_NAMES, isExplicitAdsEnabled } from "../../config/ads";
 
 declare global {
   interface Window {
@@ -134,8 +134,45 @@ export const AdContainer = ({
     }
   }, [isVisible, enabled, adSlot]);
 
-  if (!enabled || !explicitAdsEnabled) {
+  if (!enabled || (!explicitAdsEnabled && !AD_CONFIG.debug)) {
     return null;
+  }
+
+  if (AD_CONFIG.debug && !explicitAdsEnabled) {
+    const slotName = AD_SLOT_NAMES[adSlot] ?? adSlot;
+    const isFullWidth = adFormat === "horizontal" || adFormat === "auto";
+    return (
+      <div
+        ref={containerRef}
+        className={`ad-container ${className}`}
+        style={{
+          minHeight: `${minHeight}px`,
+          ...(minWidth && { minWidth: `${minWidth}px` }),
+          ...(isFullWidth && { width: "100%" }),
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#fce4ec",
+          border: "2px dashed #e91e63",
+          borderRadius: "6px",
+          overflow: "hidden",
+          ...style,
+        }}
+        data-testid={testId}
+        aria-label="Advertisement (debug)"
+      >
+        <span
+          style={{
+            color: "#e91e63",
+            fontWeight: 700,
+            fontSize: "14px",
+            fontFamily: "monospace",
+          }}
+        >
+          [{slotName}]
+        </span>
+      </div>
+    );
   }
 
   const containerStyle: CSSProperties = {
@@ -188,7 +225,7 @@ export const AdContainer = ({
         <ins
           className="adsbygoogle"
           style={{ display: "block", ...adLayoutProps.style }}
-          data-ad-client="ca-pub-8976874751886843"
+          data-ad-client={AD_CONFIG.clientId}
           data-ad-slot={adSlot}
           {...adLayoutProps}
         />

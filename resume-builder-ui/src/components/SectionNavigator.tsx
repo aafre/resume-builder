@@ -25,7 +25,7 @@ import {
   MdSupport,
 } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { AdContainer } from "./ads";
+import { AdContainer, AD_CONFIG } from "./ads";
 
 interface Section {
   name: string;
@@ -381,9 +381,8 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             </button>
           ))}
         </div>
-      </div>
 
-      {/* Actions Section - Fixed at bottom */}
+      {/* Actions Section */}
       <div className="border-t border-gray-200/60 bg-gradient-to-t from-gray-50/80 to-white">
         <div className={`${isCollapsed ? "py-3 px-2" : "p-4"}`}>
           {!isCollapsed && (
@@ -631,15 +630,16 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
       {!isCollapsed && (
         <div className="px-3 py-3 border-t border-gray-200/40 bg-gray-50/30">
           <AdContainer
-            adSlot="3691293294"
+            adSlot={AD_CONFIG.slots.editorSidebar}
             adFormat="vertical"
-            minHeight={250}
+            minHeight={100}
             minWidth={240}
             rootMargin="100px"
             testId="editor-sidebar-ad"
           />
         </div>
       )}
+      </div>
     </nav>
   );
 };

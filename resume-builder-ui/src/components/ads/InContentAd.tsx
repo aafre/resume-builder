@@ -1,6 +1,5 @@
 import { CSSProperties } from "react";
 import { AdContainer, AdContainerProps } from "./AdContainer";
-import { isExplicitAdsEnabled } from "./adUtils";
 
 export interface InContentAdProps
   extends Omit<AdContainerProps, "adFormat" | "minHeight"> {
@@ -56,10 +55,7 @@ export const InContentAd = ({
   enabled = true,
   ...rest
 }: InContentAdProps) => {
-  const explicitAdsEnabled = isExplicitAdsEnabled();
-
-  // Return null early if ads are disabled - don't render the wrapper div
-  if (!enabled || !explicitAdsEnabled) {
+  if (!enabled) {
     return null;
   }
 

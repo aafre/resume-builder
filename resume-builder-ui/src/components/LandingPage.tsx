@@ -5,7 +5,7 @@ import SEOHead from "./SEOHead";
 import CompanyMarquee from "./CompanyMarquee";
 import { useAuth } from "../contexts/AuthContext";
 import { useResumeCount } from "../hooks/useResumeCount";
-import { InContentAd } from "./ads";
+import { InContentAd, AD_CONFIG } from "./ads";
 import {
   ArrowRightIcon,
   EyeIcon,
@@ -280,7 +280,7 @@ const LandingPage: React.FC = () => {
 
         {/* In-content Ad - Below stats, above fold */}
         <div className="container mx-auto max-w-4xl px-4">
-          <InContentAd adSlot="1232650916" marginY={32} />
+          <InContentAd adSlot={AD_CONFIG.slots.landingIncontent} marginY={32} />
         </div>
 
         {/* Trusted Companies Section */}

@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { AdContainer } from "../components/ads/AdContainer";
+import { AD_CONFIG } from "../config/ads";
 
 // Mock IntersectionObserver
 const mockIntersectionObserver = vi.fn();
@@ -180,7 +181,7 @@ describe("AdContainer", () => {
       expect(insElement).toHaveAttribute("data-ad-slot", "1234567890");
       expect(insElement).toHaveAttribute(
         "data-ad-client",
-        "ca-pub-8976874751886843"
+        AD_CONFIG.clientId
       );
     });
   });
