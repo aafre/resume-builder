@@ -10,6 +10,7 @@ import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import TemplateCarousel from '../TemplateCarousel';
+import { InContentAd, AD_CONFIG } from '../ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 
@@ -33,6 +34,8 @@ export default function TemplatesPage() {
       <section id="template-gallery" className="py-8 -mx-4 sm:-mx-6 md:-mx-8">
         <TemplateCarousel showHeader={false} />
       </section>
+
+      <InContentAd adSlot={AD_CONFIG.slots.templatesIncontent} marginY={32} />
 
       {/* Why Our Templates Section */}
       <div className="my-16">
