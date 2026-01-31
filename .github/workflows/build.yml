@@ -58,6 +58,7 @@ jobs:
             VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}
             VITE_SUPABASE_PUBLISHABLE_KEY=${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
             VITE_APP_URL=${{ secrets.VITE_APP_URL }}
+            VITE_ENABLE_EXPLICIT_ADS=${{ secrets.VITE_ENABLE_EXPLICIT_ADS }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
