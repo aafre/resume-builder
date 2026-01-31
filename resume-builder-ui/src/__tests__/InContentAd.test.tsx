@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { InContentAd } from "../components/ads/InContentAd";
 
@@ -6,15 +6,30 @@ import { InContentAd } from "../components/ads/InContentAd";
 const mockObserve = vi.fn();
 const mockDisconnect = vi.fn();
 
+// Mock MutationObserver
+let mutationCallback: MutationCallback;
+const mockMutationObserve = vi.fn();
+const mockMutationDisconnect = vi.fn();
+
 beforeEach(() => {
   mockObserve.mockClear();
   mockDisconnect.mockClear();
+  mockMutationObserve.mockClear();
+  mockMutationDisconnect.mockClear();
 
   window.IntersectionObserver = vi.fn().mockImplementation(() => ({
     observe: mockObserve,
     disconnect: mockDisconnect,
     unobserve: vi.fn(),
   }));
+
+  window.MutationObserver = vi.fn().mockImplementation((callback) => {
+    mutationCallback = callback;
+    return {
+      observe: mockMutationObserve,
+      disconnect: mockMutationDisconnect,
+    };
+  });
 
   window.adsbygoogle = [];
 
@@ -129,5 +144,105 @@ describe("InContentAd", () => {
         rootMargin: "300px",
       })
     );
+  });
+
+  describe("unfilled ad collapse", () => {
+    it("collapses outer wrapper when ad is unfilled", async () => {
+      // Make ad visible immediately
+      (window.IntersectionObserver as ReturnType<typeof vi.fn>).mockImplementation(
+        (callback: IntersectionObserverCallback) => {
+          setTimeout(() => {
+            callback(
+              [{ isIntersecting: true }] as unknown as IntersectionObserverEntry[],
+              {} as IntersectionObserver
+            );
+          }, 0);
+          return {
+            observe: mockObserve,
+            disconnect: mockDisconnect,
+            unobserve: vi.fn(),
+          };
+        }
+      );
+
+      render(<InContentAd adSlot="1234567890" />);
+
+      // Wait for ins element to appear
+      await waitFor(() => {
+        expect(document.querySelector("ins.adsbygoogle")).toBeInTheDocument();
+      });
+
+      const insElement = document.querySelector("ins.adsbygoogle")!;
+
+      // Simulate AdSense marking the ad as unfilled
+      act(() => {
+        insElement.setAttribute("data-ad-status", "unfilled");
+        mutationCallback(
+          [
+            {
+              type: "attributes",
+              attributeName: "data-ad-status",
+              target: insElement,
+            } as unknown as MutationRecord,
+          ],
+          {} as MutationObserver
+        );
+      });
+
+      const wrapper = screen.getByTestId("in-content-ad-wrapper");
+      expect(wrapper).toHaveStyle({
+        marginTop: "0",
+        marginBottom: "0",
+        maxHeight: "0",
+        opacity: "0",
+      });
+    });
+
+    it("keeps wrapper visible when ad is filled", async () => {
+      (window.IntersectionObserver as ReturnType<typeof vi.fn>).mockImplementation(
+        (callback: IntersectionObserverCallback) => {
+          setTimeout(() => {
+            callback(
+              [{ isIntersecting: true }] as unknown as IntersectionObserverEntry[],
+              {} as IntersectionObserver
+            );
+          }, 0);
+          return {
+            observe: mockObserve,
+            disconnect: mockDisconnect,
+            unobserve: vi.fn(),
+          };
+        }
+      );
+
+      render(<InContentAd adSlot="1234567890" />);
+
+      await waitFor(() => {
+        expect(document.querySelector("ins.adsbygoogle")).toBeInTheDocument();
+      });
+
+      const insElement = document.querySelector("ins.adsbygoogle")!;
+
+      act(() => {
+        insElement.setAttribute("data-ad-status", "filled");
+        mutationCallback(
+          [
+            {
+              type: "attributes",
+              attributeName: "data-ad-status",
+              target: insElement,
+            } as unknown as MutationRecord,
+          ],
+          {} as MutationObserver
+        );
+      });
+
+      const wrapper = screen.getByTestId("in-content-ad-wrapper");
+      expect(wrapper).toHaveStyle({
+        marginTop: "24px",
+        marginBottom: "24px",
+        opacity: "1",
+      });
+    });
   });
 });
