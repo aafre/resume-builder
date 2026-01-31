@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.12.1] - 2026-01-31
+
+### Build
+
+- **ci:** Pass VITE_ENABLE_EXPLICIT_ADS in production Docker build
+
 ## [3.12.0] - 2026-01-31
 
 ### 🚀 Features
