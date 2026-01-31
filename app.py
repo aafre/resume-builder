@@ -28,6 +28,7 @@ import copy
 from jinja2 import Environment, FileSystemLoader
 from concurrent.futures import ThreadPoolExecutor
 import atexit
+from latex_utils import _escape_latex, convert_markdown_formatting_to_latex
 from functools import wraps, partial
 import time
 from typing import Callable, Any
@@ -420,44 +421,6 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
         return "LinkedIn Profile"
 
 
-def _escape_latex(text):
-    r"""Escapes special LaTeX characters in a string to prevent compilation errors.
-
-    Note: Does NOT escape characters used in markdown syntax (~, *, _, +) because
-    they are converted to LaTeX commands by the markdown filters before rendering.
-    The markdown_formatting filter converts:
-      ~~text~~ → \sout{text}
-      **text** → \textbf{text}
-      *text* → \textit{text}
-      __text__ → \textbf{text}
-      _text_ → \textit{text}
-      ++text++ → \underline{text}
-    """
-    if not isinstance(text, str):
-        return text
-
-    latex_special_chars = {
-        "\\": r"\textbackslash{}",
-        "&": r"\&",
-        "%": r"\%",
-        "$": r"\$",
-        "#": r"\#",
-        # "_": r"\_",  # Don't escape: used for markdown italic/bold (_text_ and __text__)
-        "{": r"\{",
-        "}": r"\}",
-        # "~": r"\textasciitilde{}",  # Don't escape: used for markdown strikethrough (~~text~~)
-        "^": r"\textasciicircum{}",
-        "<": r"\textless{}",
-        ">": r"\textgreater{}",
-        "|": r"\textbar{}",
-        "-": r"{-}",
-    }
-
-    pattern = re.compile("|".join(re.escape(key) for key in latex_special_chars.keys()))
-    escaped_text = pattern.sub(lambda match: latex_special_chars[match.group(0)], text)
-    return escaped_text
-
-
 def normalize_sections(data):
     """
     Add type attributes to sections for backward compatibility.
@@ -584,52 +547,6 @@ def convert_markdown_formatting_to_html(text):
 
     # 6. Underline with ++ (custom syntax)
     text = re.sub(r'\+\+(.+?)\+\+', r'<u>\1</u>', text)
-
-    return text
-
-
-def convert_markdown_formatting_to_latex(text):
-    """
-    Convert Markdown-style formatting to LaTeX commands.
-
-    Supports:
-    - Bold: **text** or __text__ → \\textbf{text}
-    - Italic: *text* or _text_ → \\textit{text}
-    - Strikethrough: ~~text~~ → \\sout{text}
-    - Underline: ++text++ → \\underline{text} (custom syntax, not standard markdown)
-
-    Args:
-        text: String that may contain markdown formatting
-
-    Returns:
-        String with markdown formatting converted to LaTeX commands
-
-    Example:
-        "This is **bold** and *italic*" -> "This is \\textbf{bold} and \\textit{italic}"
-    """
-    if not text or not isinstance(text, str):
-        return text
-
-    import re
-
-    # Process in specific order to avoid conflicts
-    # 1. Bold with ** (must come before single *)
-    text = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\1}', text)
-
-    # 2. Bold with __ (must come before single _)
-    text = re.sub(r'__(.+?)__', r'\\textbf{\1}', text)
-
-    # 3. Italic with * (after ** is processed)
-    text = re.sub(r'\*(.+?)\*', r'\\textit{\1}', text)
-
-    # 4. Italic with _ (after __ is processed)
-    text = re.sub(r'_(.+?)_', r'\\textit{\1}', text)
-
-    # 5. Strikethrough with ~~
-    text = re.sub(r'~~(.+?)~~', r'\\sout{\1}', text)
-
-    # 6. Underline with ++ (custom syntax)
-    text = re.sub(r'\+\+(.+?)\+\+', r'\\underline{\1}', text)
 
     return text
 
