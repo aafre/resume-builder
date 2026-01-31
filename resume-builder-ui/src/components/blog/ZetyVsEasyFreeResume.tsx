@@ -33,8 +33,8 @@ function WinnerBadge() {
 
 export default function ZetyVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", rating: 4.8, price: "0" },
-    { name: "Zety", rating: 3.5, price: "71.40" },
+    { name: "EasyFreeResume", price: "0" },
+    { name: "Zety", price: "71.40" },
     "2026-01-18"
   );
 

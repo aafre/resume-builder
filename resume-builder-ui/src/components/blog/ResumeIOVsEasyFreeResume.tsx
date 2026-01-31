@@ -31,8 +31,8 @@ function WinnerBadge() {
 
 export default function ResumeIOVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", rating: 4.8, price: "0" },
-    { name: "Resume.io", rating: 3.6, price: "44.95" },
+    { name: "EasyFreeResume", price: "0" },
+    { name: "Resume.io", price: "44.95" },
     "2026-01-21"
   );
 

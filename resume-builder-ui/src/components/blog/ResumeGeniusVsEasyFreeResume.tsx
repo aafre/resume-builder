@@ -31,8 +31,8 @@ function WinnerBadge() {
 
 export default function ResumeGeniusVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", rating: 4.8, price: "0" },
-    { name: "Resume Genius", rating: 3.4, price: "95.40" },
+    { name: "EasyFreeResume", price: "0" },
+    { name: "Resume Genius", price: "95.40" },
     "2026-01-21"
   );
 

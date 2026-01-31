@@ -31,8 +31,8 @@ function WinnerBadge() {
 
 export default function CanvaVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", rating: 4.8, price: "0" },
-    { name: "Canva", rating: 3.5, price: "0" },
+    { name: "EasyFreeResume", price: "0" },
+    { name: "Canva", price: "0" },
     "2026-01-21"
   );
 

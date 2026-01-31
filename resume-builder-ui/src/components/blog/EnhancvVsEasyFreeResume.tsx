@@ -31,8 +31,8 @@ function WinnerBadge() {
 
 export default function EnhancvVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", rating: 4.8, price: "0" },
-    { name: "Enhancv", rating: 4.0, price: "119.88" },
+    { name: "EasyFreeResume", price: "0" },
+    { name: "Enhancv", price: "119.88" },
     "2026-01-21"
   );
 

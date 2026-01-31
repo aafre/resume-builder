@@ -31,8 +31,8 @@ function WinnerBadge() {
 
 export default function NovoResumeVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", rating: 4.8, price: "0" },
-    { name: "NovoResume", rating: 3.8, price: "99.00" },
+    { name: "EasyFreeResume", price: "0" },
+    { name: "NovoResume", price: "99.00" },
     "2026-01-21"
   );
 

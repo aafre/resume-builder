@@ -196,8 +196,8 @@ export function generateProductSchema(
  * Used for: vs competitor pages
  */
 export function generateComparisonSchema(
-  productA: { name: string; rating: number; price: string },
-  productB: { name: string; rating: number; price: string },
+  productA: { name: string; price: string },
+  productB: { name: string; price: string },
   dateModified?: string
 ): StructuredDataConfig {
   return {
@@ -209,12 +209,6 @@ export function generateComparisonSchema(
         '@type': 'Product',
         position: 1,
         name: productA.name,
-        aggregateRating: {
-          '@type': 'AggregateRating',
-          ratingValue: productA.rating,
-          bestRating: 5,
-          ratingCount: 1,
-        },
         offers: {
           '@type': 'Offer',
           price: productA.price,
@@ -225,12 +219,6 @@ export function generateComparisonSchema(
         '@type': 'Product',
         position: 2,
         name: productB.name,
-        aggregateRating: {
-          '@type': 'AggregateRating',
-          ratingValue: productB.rating,
-          bestRating: 5,
-          ratingCount: 1,
-        },
         offers: {
           '@type': 'Offer',
           price: productB.price,
