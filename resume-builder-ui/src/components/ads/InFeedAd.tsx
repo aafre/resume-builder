@@ -116,7 +116,7 @@ export const InFeedAd = ({
     >
       <AdContainer
         adSlot={adSlot}
-        adFormat={layout === "card" ? "rectangle" : "auto"}
+        adFormat={layout === "card" ? "rectangle" : "horizontal"}
         minHeight={minHeight}
         minWidth={minWidth}
         testId="in-feed-ad-container"
