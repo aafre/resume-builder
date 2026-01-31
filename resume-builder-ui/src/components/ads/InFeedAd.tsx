@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties, useState } from "react";
 import { AdContainer, AdContainerProps } from "./AdContainer";
 
 export interface InFeedAdProps
@@ -53,30 +53,32 @@ export const InFeedAd = ({
   enabled = true,
   ...rest
 }: InFeedAdProps) => {
+  const [hidden, setHidden] = useState(false);
+
   if (!enabled) {
     return null;
   }
 
   const layoutStyles: Record<typeof layout, CSSProperties> = {
     card: {
-      minHeight: "280px",
-      minWidth: "250px",
+      minHeight: hidden ? "0px" : "280px",
+      minWidth: hidden ? "0px" : "250px",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: "#fafafa",
+      backgroundColor: hidden ? "transparent" : "#fafafa",
       borderRadius: "8px",
-      border: "1px solid #e5e7eb",
+      border: hidden ? "none" : "1px solid #e5e7eb",
     },
     row: {
-      minHeight: "100px",
+      minHeight: hidden ? "0px" : "100px",
       width: "100%",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: "#fafafa",
+      backgroundColor: hidden ? "transparent" : "#fafafa",
       borderRadius: "4px",
-      border: "1px solid #e5e7eb",
+      border: hidden ? "none" : "1px solid #e5e7eb",
     },
   };
 
@@ -94,6 +96,10 @@ export const InFeedAd = ({
           ? `${dimensions.height}px`
           : dimensions.height,
     }),
+    opacity: hidden ? 0 : 1,
+    overflow: "hidden",
+    transition:
+      "min-height 300ms ease, min-width 300ms ease, opacity 300ms ease, background-color 300ms ease, border 300ms ease",
     ...style,
   };
 
@@ -114,6 +120,7 @@ export const InFeedAd = ({
         minWidth={minWidth}
         testId="in-feed-ad-container"
         enabled={enabled}
+        onUnfilled={() => setHidden(true)}
         {...rest}
       />
     </div>
