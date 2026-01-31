@@ -32,8 +32,11 @@ export default function BlogLayout({
   showBreadcrumbs = true,
   ctaType = 'general'
 }: BlogLayoutProps) {
-  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
-  
+  // Use origin + pathname to strip query params and hash from canonical URL
+  const currentUrl = typeof window !== 'undefined'
+    ? window.location.origin + window.location.pathname
+    : '';
+
   return (
     <>
       <SEOHead
@@ -42,6 +45,12 @@ export default function BlogLayout({
         keywords={keywords.join(', ')}
         canonicalUrl={currentUrl}
         ogType="article"
+        articleMeta={{
+          publishedTime: publishDate,
+          modifiedTime: lastUpdated,
+          author: 'EasyFreeResume',
+          section: 'Career Advice',
+        }}
         structuredData={{
           "@context": "https://schema.org",
           "@type": "BlogPosting",
