@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import SEOHead from "./SEOHead";
-import { InFeedAd, InContentAd } from "./ads";
-import { AD_CONFIG } from "../config/ads";
+import { InFeedAd, InContentAd, AD_CONFIG } from "./ads";
 
 const CURRENT_YEAR = new Date().getFullYear();
 

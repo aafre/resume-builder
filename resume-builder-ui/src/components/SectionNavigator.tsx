@@ -25,8 +25,7 @@ import {
   MdSupport,
 } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { AdContainer } from "./ads";
-import { AD_CONFIG } from "../config/ads";
+import { AdContainer, AD_CONFIG } from "./ads";
 
 interface Section {
   name: string;

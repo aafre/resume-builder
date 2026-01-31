@@ -1,8 +1,7 @@
 import { ReactNode } from "react";
-import { AD_CONFIG } from "../../config/ads";
+import { AD_CONFIG, isExplicitAdsEnabled } from "../../config/ads";
 import { AdContainer } from "./AdContainer";
 import { InContentAd } from "./InContentAd";
-import { isExplicitAdsEnabled } from "./adUtils";
 
 interface SideRailLayoutProps {
   children: ReactNode;

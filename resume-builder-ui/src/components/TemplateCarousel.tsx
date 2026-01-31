@@ -9,8 +9,7 @@ import yaml from "js-yaml";
 import TemplateStartModal from "./TemplateStartModal";
 import ResumeRecoveryModal from "./ResumeRecoveryModal";
 import AuthModal from "./AuthModal";
-import { InFeedAd } from "./ads";
-import { AD_CONFIG } from "../config/ads";
+import { InFeedAd, AD_CONFIG } from "./ads";
 import { useResumeCreate } from "../hooks/useResumeCreate";
 
 // Lazy-loaded error components

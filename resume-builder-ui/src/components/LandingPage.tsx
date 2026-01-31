@@ -5,8 +5,7 @@ import SEOHead from "./SEOHead";
 import CompanyMarquee from "./CompanyMarquee";
 import { useAuth } from "../contexts/AuthContext";
 import { useResumeCount } from "../hooks/useResumeCount";
-import { InContentAd } from "./ads";
-import { AD_CONFIG } from "../config/ads";
+import { InContentAd, AD_CONFIG } from "./ads";
 import {
   ArrowRightIcon,
   EyeIcon,

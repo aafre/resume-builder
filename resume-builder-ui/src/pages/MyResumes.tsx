@@ -14,8 +14,7 @@ import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
 import { useResumes } from '../hooks/useResumes';
 import { useAuth } from '../contexts/AuthContext';
 import { usePreview } from '../hooks/usePreview';
-import { InContentAd } from '../components/ads';
-import { AD_CONFIG } from '../config/ads';
+import { InContentAd, AD_CONFIG } from '../components/ads';
 
 export default function MyResumes() {
   const navigate = useNavigate();

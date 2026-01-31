@@ -10,8 +10,7 @@ import StepByStep from '../shared/StepByStep';
 import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
-import { InContentAd } from '../ads';
-import { AD_CONFIG } from '../../config/ads';
+import { InContentAd, AD_CONFIG } from '../ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 
