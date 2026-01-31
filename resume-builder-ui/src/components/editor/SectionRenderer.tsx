@@ -60,11 +60,10 @@ const SectionRenderer: React.FC<SectionRendererProps> = React.memo(({
     handleReorderEntry(index, oldIndex, newIndex);
   }, [handleReorderEntry, index]);
 
-  const onUpdate = useCallback((updatedContent: Section['content']) => {
-    // Note: We use the function form of handleUpdateSection if possible, but here we construct the new section
-    // 'section' dependency here is necessary.
-    // This callback will update when 'section' updates, which is correct (self-update).
-    // It will remain stable if 'section' is stable (other sections updating).
+  const onUpdate = useCallback((updatedContent: unknown) => {
+    // Pass-through wrapper: content type varies by section and is enforced
+    // by each child component's own prop types. We just wrap it into the
+    // section object and forward to the parent handler.
     handleUpdateSection(index, { ...section, content: updatedContent } as Section);
   }, [handleUpdateSection, index, section]);
 
