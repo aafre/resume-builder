@@ -1326,19 +1326,51 @@ def redirect_software_engineer_keywords():
     return redirect("/resume-keywords/software-engineer", code=301)
 
 
+# Valid SPA route prefixes — must match React Router routes in App.tsx
+VALID_SPA_ROUTES = {
+    "",  # root
+    "actual-free-resume-builder",
+    "free-resume-builder-no-sign-up",
+    "templates",
+    "ats-resume-templates",
+    "resume-keywords",
+    "best-free-resume-builder-reddit",
+    "free-cv-builder-no-sign-up",
+    "cv-templates",
+    "examples",
+    "editor",
+    "my-resumes",
+    "auth",
+    "blog",
+    "about",
+    "contact",
+    "privacy-policy",
+    "terms-of-service",
+    "error",
+}
+
+
 @app.route("/", defaults={"path": ""}, methods=["GET"])
 @app.route("/<path:path>", methods=["GET"])
 def serve(path):
     """
     Serve the React app from the static folder. If a specific file is requested
-    and exists, serve it. Otherwise, serve 'index.html' for React routes.
+    and exists, serve it. For known SPA routes, serve index.html with 200.
+    For unknown routes, serve index.html with 404 to avoid soft-404 SEO issues.
     """
     try:
         # If the requested path exists in the static folder, serve it
         if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
             return send_from_directory(app.static_folder, path)
-        # Otherwise, serve the React app's index.html
-        return send_from_directory(app.static_folder, "index.html")
+
+        # Check if the path matches a known SPA route prefix
+        first_segment = path.split("/")[0] if path else ""
+        if first_segment in VALID_SPA_ROUTES:
+            return send_from_directory(app.static_folder, "index.html")
+
+        # Unknown route — serve index.html with 404 status so search engines
+        # don't index non-existent pages (avoids soft-404 crawl issues)
+        return send_from_directory(app.static_folder, "index.html"), 404
     except Exception as e:
         # Log and handle any unexpected errors gracefully
         return f"An error occurred: {str(e)}", 500
@@ -3409,9 +3441,9 @@ def update_user_preferences():
 @app.errorhandler(404)
 def not_found(e):
     """
-    Handle 404 errors by serving the React app's index.html for unmatched routes.
+    Handle 404 errors by serving the React app's index.html with a proper 404 status.
     """
-    return send_from_directory(app.static_folder, "index.html")
+    return send_from_directory(app.static_folder, "index.html"), 404
 
 
 @app.errorhandler(500)
