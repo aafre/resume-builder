@@ -1,7 +1,7 @@
 // src/hooks/editor/useUnifiedDragDrop.ts
 // Unified drag-and-drop hook managing all drag levels (sections, items, subitems)
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 import {
   KeyboardSensor,
@@ -391,18 +391,34 @@ export const useUnifiedDragDrop = ({
     setDraggedItemInfo(null);
   }, []);
 
-  return {
-    activeId,
-    activeLevel,
-    draggedSection,
-    draggedItemInfo,
-    sensors,
-    handleDragStart,
-    handleDragEnd,
-    handleDragCancel,
-    collisionDetection,
-    registerItemHandler,
-    setDraggedItemInfo,
-    unregisterItemHandler,
-  };
+  return useMemo(
+    () => ({
+      activeId,
+      activeLevel,
+      draggedSection,
+      draggedItemInfo,
+      sensors,
+      handleDragStart,
+      handleDragEnd,
+      handleDragCancel,
+      collisionDetection,
+      registerItemHandler,
+      setDraggedItemInfo,
+      unregisterItemHandler,
+    }),
+    [
+      activeId,
+      activeLevel,
+      draggedSection,
+      draggedItemInfo,
+      sensors,
+      handleDragStart,
+      handleDragEnd,
+      handleDragCancel,
+      collisionDetection,
+      registerItemHandler,
+      setDraggedItemInfo,
+      unregisterItemHandler,
+    ]
+  );
 };

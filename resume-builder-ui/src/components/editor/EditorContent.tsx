@@ -225,7 +225,7 @@ export interface EditorContentProps {
  *   refs={refs}
  * />
  */
-export const EditorContent: React.FC<EditorContentProps> = ({
+export const EditorContent: React.FC<EditorContentProps> = React.memo(({
   contactInfo,
   setContactInfo,
   sections,
@@ -514,4 +514,4 @@ export const EditorContent: React.FC<EditorContentProps> = ({
       />
     </div>
   );
-};
+});
