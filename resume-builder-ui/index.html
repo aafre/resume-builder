@@ -11,7 +11,6 @@
       content="Build a professional resume in minutes with our completely free, no sign-up required online tool. Simple, clean templates that make your application stand out."
     />
     <meta name="robots" content="index, follow" />
-    <meta name="language" content="English" />
     <meta name="author" content="EasyFreeResume" />
 
     <!-- Open Graph / Facebook -->
@@ -32,18 +31,18 @@
     <meta property="og:site_name" content="EasyFreeResume" />
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://easyfreeresume.com/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://easyfreeresume.com/" />
     <meta
-      property="twitter:title"
+      name="twitter:title"
       content="EasyFreeResume: The Easiest Free Resume Builder (No Sign-Ups)"
     />
     <meta
-      property="twitter:description"
+      name="twitter:description"
       content="Build a professional resume in minutes with our completely free, no sign-up required online tool. Simple, clean templates that make your application stand out."
     />
     <meta
-      property="twitter:image"
+      name="twitter:image"
       content="https://easyfreeresume.com/android-chrome-512x512.png"
     />
 
@@ -78,6 +77,13 @@
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <div style="padding: 2rem; text-align: center; font-family: system-ui, sans-serif;">
+        <h1>EasyFreeResume</h1>
+        <p>A free, professional resume builder with ATS-optimized templates. No sign-up required.</p>
+        <p>JavaScript is required to use this application. Please enable JavaScript in your browser settings.</p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
 
     <!-- Structured Data - Non-blocking -->
