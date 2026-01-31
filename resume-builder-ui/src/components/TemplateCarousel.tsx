@@ -448,11 +448,13 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                 {/* Insert in-feed ad after every 6 templates, starting after position 5 (0-indexed) */}
                 {/* Policy: Never show ad before first 4 cards */}
                 {(index + 1) % 6 === 0 && index >= 5 && (
-                  <InFeedAd
-                    adSlot={AD_CONFIG.slots.carouselInfeed}
-                    layout="card"
-                    className="rounded-3xl"
-                  />
+                  <div className="col-span-full">
+                    <InFeedAd
+                      adSlot={AD_CONFIG.slots.carouselInfeed}
+                      layout="row"
+                      className="rounded-3xl"
+                    />
+                  </div>
                 )}
               </React.Fragment>
             );
@@ -461,11 +463,11 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
 
         {/* Show ad after all templates if there are 4+ templates but less than 6 */}
         {templates.length >= 4 && templates.length < 6 && (
-          <div className="mt-8 lg:mt-12 flex justify-center">
+          <div className="mt-8 lg:mt-12">
             <InFeedAd
               adSlot={AD_CONFIG.slots.carouselInfeed}
-              layout="card"
-              className="rounded-3xl max-w-md"
+              layout="row"
+              className="rounded-3xl"
             />
           </div>
         )}
