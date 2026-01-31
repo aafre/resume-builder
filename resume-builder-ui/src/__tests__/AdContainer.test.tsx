@@ -315,15 +315,18 @@ describe("AdContainer", () => {
       expect(container).toHaveStyle({ minHeight: "250px", opacity: "1" });
     });
 
-    it("collapses immediately if ins already has unfilled status", async () => {
-      // Override MutationObserver: when observe is called, simulate that the
-      // attribute was already set by immediately firing the callback
+    it("collapses when mutation fires synchronously on observe", async () => {
+      // MutationObserver mock that fires the callback synchronously during observe()
+      // Note: The immediate getAttribute check in AdContainer (line 155) covers the
+      // race condition where the attribute is set before the observer attaches, but
+      // that path is not unit-testable because React effects run synchronously after
+      // render — there's no gap to inject the attribute between <ins> mount and
+      // the effect execution.
       window.MutationObserver = vi.fn().mockImplementation((callback: MutationCallback) => {
         return {
           observe: vi.fn().mockImplementation((el: HTMLElement) => {
             if (el && typeof el.setAttribute === "function") {
               el.setAttribute("data-ad-status", "unfilled");
-              // Fire the callback as if the attribute was mutated
               callback(
                 [
                   {
