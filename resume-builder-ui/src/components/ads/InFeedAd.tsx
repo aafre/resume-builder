@@ -1,4 +1,4 @@
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useState, useCallback } from "react";
 import { AdContainer, AdContainerProps } from "./AdContainer";
 
 export interface InFeedAdProps
@@ -54,6 +54,7 @@ export const InFeedAd = ({
   ...rest
 }: InFeedAdProps) => {
   const [hidden, setHidden] = useState(false);
+  const handleUnfilled = useCallback(() => setHidden(true), []);
 
   if (!enabled) {
     return null;
@@ -120,7 +121,7 @@ export const InFeedAd = ({
         minWidth={minWidth}
         testId="in-feed-ad-container"
         enabled={enabled}
-        onUnfilled={() => setHidden(true)}
+        onUnfilled={handleUnfilled}
         {...rest}
       />
     </div>

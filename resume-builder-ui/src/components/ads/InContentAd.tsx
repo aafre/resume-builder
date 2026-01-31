@@ -1,4 +1,4 @@
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useState, useCallback } from "react";
 import { AdContainer, AdContainerProps } from "./AdContainer";
 
 export interface InContentAdProps
@@ -56,6 +56,7 @@ export const InContentAd = ({
   ...rest
 }: InContentAdProps) => {
   const [hidden, setHidden] = useState(false);
+  const handleUnfilled = useCallback(() => setHidden(true), []);
 
   if (!enabled) {
     return null;
@@ -104,7 +105,7 @@ export const InContentAd = ({
         minHeight={minHeightMap[size]}
         testId="in-content-ad"
         enabled={enabled}
-        onUnfilled={() => setHidden(true)}
+        onUnfilled={handleUnfilled}
         {...rest}
       />
     </div>
