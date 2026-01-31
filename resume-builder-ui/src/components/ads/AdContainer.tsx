@@ -140,6 +140,7 @@ export const AdContainer = ({
 
   if (AD_CONFIG.debug && !explicitAdsEnabled) {
     const slotName = AD_SLOT_NAMES[adSlot] ?? adSlot;
+    const isFullWidth = adFormat === "horizontal" || adFormat === "auto";
     return (
       <div
         ref={containerRef}
@@ -147,6 +148,7 @@ export const AdContainer = ({
         style={{
           minHeight: `${minHeight}px`,
           ...(minWidth && { minWidth: `${minWidth}px` }),
+          ...(isFullWidth && { width: "100%" }),
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
