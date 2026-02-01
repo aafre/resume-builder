@@ -217,8 +217,7 @@ const LandingPage: React.FC = () => {
         {/* Hero Section */}
         <div className="text-center my-16 px-4 max-w-4xl mx-auto">
           {/* Professional Gradient Title */}
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-8 pb-2 leading-snug tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 relative">
-            <span className="absolute inset-0 text-gray-800 opacity-10">The Truly Free Resume Builder</span>
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-8 pb-2 leading-snug tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 drop-shadow-[0_0_12px_rgba(31,41,55,0.1)]">
             The Truly Free Resume Builder
           </h1>
           <p className="text-xl md:text-2xl max-w-3xl mx-auto text-gray-800 mb-4 leading-loose">
