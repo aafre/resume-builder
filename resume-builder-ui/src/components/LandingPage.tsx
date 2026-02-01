@@ -262,18 +262,18 @@ const LandingPage: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-16 my-16 px-4">
           <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
             <DocumentTextIcon className="w-10 h-10 text-blue-500 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
-            <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-blue-500 group-hover:to-purple-500 transition-all duration-300">
+            <p className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-blue-500 group-hover:to-purple-500 transition-all duration-300">
               <span className="inline-block min-w-[180px] text-center">
                 <CountUp end={totalUsers} duration={3} separator="," />+
               </span>
-            </h3>
+            </p>
             <p className="text-gray-600 font-medium tracking-wide">Resumes Created</p>
           </div>
           <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
             <CheckBadgeIcon className="w-10 h-10 text-indigo-500 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
-            <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-indigo-500 group-hover:to-purple-500 transition-all duration-300">
+            <p className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-indigo-500 group-hover:to-purple-500 transition-all duration-300">
               100%
-            </h3>
+            </p>
             <p className="text-gray-600 font-medium tracking-wide">ATS Compatible</p>
           </div>
         </div>
