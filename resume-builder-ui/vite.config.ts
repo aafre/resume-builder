@@ -27,9 +27,6 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'pdfjs': ['pdfjs-dist'],
-          'tiptap': ['@tiptap/core', '@tiptap/react', '@tiptap/starter-kit',
-                     '@tiptap/extension-underline', '@tiptap/extension-placeholder'],
           'vendor': ['react-helmet-async', '@tanstack/react-query',
                      'react-hot-toast', 'js-yaml'],
         }
