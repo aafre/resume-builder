@@ -65,15 +65,9 @@
     <!-- Title -->
     <title>EasyFreeResume: The Easiest Free Resume Builder (No Sign-Ups)</title>
 
-    <!-- AdSense Preconnect Hints -->
+    <!-- AdSense — preconnect only; script is deferred to end of body -->
     <link rel="preconnect" href="https://pagead2.googlesyndication.com">
     <link rel="preconnect" href="https://googleads.g.doubleclick.net">
-
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8976874751886843"
-      crossorigin="anonymous"
-    ></script>
   </head>
   <body>
     <div id="root">
@@ -153,25 +147,23 @@
       }
     </script>
 
-    <!-- AdSense Configuration - Non-blocking -->
+    <!-- AdSense — deferred load to free bandwidth for LCP -->
     <script>
-      // This script will ensure all ads open in a new tab.
       window.adsbygoogle = window.adsbygoogle || [];
-
-      // Wait for DOM and AdSense to load
-      window.addEventListener('load', function() {
-        if (window.adsbygoogle && window.adsbygoogle.push) {
-          var originalPush = window.adsbygoogle.push;
-          window.adsbygoogle.push = function(args) {
-            if (typeof args === "object" && args.google_ad_client) {
-              args.google_ad_host_config = {
-                adTarget: "_blank",
-              };
-            }
-            return originalPush.apply(this, arguments);
-          };
+      (function loadAdSense() {
+        function inject() {
+          var s = document.createElement('script');
+          s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8976874751886843';
+          s.crossOrigin = 'anonymous';
+          s.async = true;
+          document.head.appendChild(s);
         }
-      });
+        if (typeof requestIdleCallback === 'function') {
+          requestIdleCallback(inject, { timeout: 2000 });
+        } else {
+          setTimeout(inject, 2000);
+        }
+      })();
     </script>
   </body>
 </html>
