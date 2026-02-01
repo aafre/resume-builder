@@ -227,7 +227,7 @@ export const AdContainer = ({
     textAlign: "center",
     overflow: "hidden",
     opacity: adUnfilled ? 0 : 1,
-    transition: "min-height 300ms ease, opacity 300ms ease",
+    transition: "opacity 300ms ease",
     ...style,
   };
 

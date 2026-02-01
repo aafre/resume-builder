@@ -74,8 +74,7 @@ export const InContentAd = ({
     maxHeight: hidden ? 0 : undefined,
     opacity: hidden ? 0 : 1,
     overflow: "hidden",
-    transition:
-      "margin 300ms ease, max-height 300ms ease, opacity 300ms ease",
+    transition: "max-height 300ms ease, opacity 300ms ease",
     ...style,
   };
 
