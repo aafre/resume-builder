@@ -21,8 +21,9 @@ import { ConversionProvider } from "./contexts/ConversionContext";
 import usePreferencePersistence from "./hooks/usePreferencePersistence";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-// Landing page — lazy-loaded so the app-shell H1 paints before React JS downloads
-const LandingPage = lazy(() => import("./components/LandingPage"));
+// Landing page — inlined (6.5 KB brotli) to avoid Suspense fallback → page
+// transition that causes massive CLS on mobile (footer shifts twice)
+import LandingPage from "./components/LandingPage";
 
 // Dev tools — lazy-loaded so they don't add to the main bundle
 const ReactQueryDevtools = lazy(() =>
@@ -174,14 +175,8 @@ function AppContent() {
       >
         <SideRailLayout enabled={!isEditorPage}>
         <Routes>
-          {/* Landing page — lazy so the app-shell H1 (LCP) paints before JS */}
-          <Route path="/" element={
-            <Suspense fallback={
-              <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #f8fafc, rgba(243,232,255,0.3), rgba(224,231,255,0.4))' }} />
-            }>
-              <LandingPage />
-            </Suspense>
-          } />
+          {/* Landing page — inlined to eliminate Suspense CLS */}
+          <Route path="/" element={<LandingPage />} />
 
           {/* SEO Landing Pages */}
           <Route
