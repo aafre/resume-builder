@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 
+// Configure PDF.js worker (runs once when this chunk loads)
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.js',
+  import.meta.url
+).toString();
+
 // Fallback canvas width when container width cannot be determined
 const FALLBACK_CANVAS_WIDTH = 350;
 
