@@ -259,7 +259,7 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Trusted Companies Section */}
-        <div className="container mx-auto max-w-6xl my-20 px-4">
+        <div className="container mx-auto max-w-6xl my-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
               Used by Professionals from Leading Companies
@@ -282,7 +282,7 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Why Job Seekers Choose Us */}
-        <div className="container mx-auto max-w-6xl my-20 px-4 text-center">
+        <div className="container mx-auto max-w-6xl my-20 px-4 text-center" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 800px' }}>
           <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
             Why Job Seekers Choose Our Free Resume Builder
           </h2>
@@ -314,7 +314,7 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Helpful Resources Section */}
-        <div className="container mx-auto max-w-6xl my-20 px-4">
+        <div className="container mx-auto max-w-6xl my-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 600px' }}>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-12 text-center">
             Everything You Need to Succeed
           </h2>
@@ -400,7 +400,7 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* FAQ Section */}
-        <div className="container mx-auto max-w-4xl my-20 px-4">
+        <div className="container mx-auto max-w-4xl my-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 800px' }}>
           <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4 text-center">
             Frequently Asked Questions
           </h2>
@@ -446,7 +446,7 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Final CTA Section */}
-        <div className="container mx-auto max-w-4xl my-20 px-4 text-center">
+        <div className="container mx-auto max-w-4xl my-20 px-4 text-center" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
           <div className="relative bg-gradient-to-br from-blue-700 via-purple-700 to-indigo-800 rounded-3xl shadow-2xl p-12 text-white overflow-hidden">
             {/* Static background pattern — replaces 3 animated blur circles */}
             <div className="absolute inset-0 opacity-10" style={{
