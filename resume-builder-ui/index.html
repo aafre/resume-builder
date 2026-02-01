@@ -76,7 +76,24 @@
     ></script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- App Shell: visible until React mounts, then replaced -->
+      <div style="min-height:100vh;background:linear-gradient(135deg,#eff6ff 0%,#f5f3ff 50%,#eef2ff 100%)">
+        <div style="max-width:56rem;margin:0 auto;padding:6rem 1rem 2rem;text-align:center">
+          <h1 style="font-size:2.25rem;font-weight:800;margin-bottom:2rem;padding-bottom:.5rem;line-height:1.375;letter-spacing:-.025em;background:linear-gradient(to right,#2563eb,#9333ea,#4338ca);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+            The Truly Free Resume Builder
+          </h1>
+          <p style="font-size:1.25rem;max-width:48rem;margin:0 auto;color:#1f2937;margin-bottom:1rem;line-height:2">
+            Create ATS-optimized resumes that get you noticed by hiring managers.
+          </p>
+          <div style="display:flex;justify-content:center;gap:1rem;margin-top:2rem">
+            <div style="background:linear-gradient(to right,#2563eb,#9333ea,#4338ca);color:white;padding:1rem 2rem;border-radius:.75rem;font-size:1.125rem;font-weight:600">
+              Start Building Now →
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <noscript>
       <div style="padding: 2rem; text-align: center; font-family: system-ui, sans-serif;">
         <h1>EasyFreeResume</h1>
