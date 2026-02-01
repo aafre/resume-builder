@@ -375,6 +375,8 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                         src={template.image_url}
                         alt={template.name}
                         className="w-full h-96 sm:h-[500px] object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+                        width="400"
+                        height="500"
                       />
                       {isSelected && (
                         <div className="absolute top-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-xl">
