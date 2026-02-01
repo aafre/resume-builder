@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import CountUp from "react-countup";
 import SEOHead from "./SEOHead";
 import CompanyMarquee from "./CompanyMarquee";
 import { useAuth } from "../contexts/AuthContext";
@@ -49,31 +48,13 @@ const LandingPage: React.FC = () => {
     // No auto-redirect for authenticated users - let them see landing page
   }, [searchParams, navigate]);
 
-  const calculateUsersServed = (): number => {
+  const totalUsersFormatted = useMemo(() => {
     const launchDate = new Date("2019-01-01T00:00:00Z");
     const now = new Date();
-
-    // 1. Calculate the base (Linear growth of 28/day up to now)
     const msPerDay = 24 * 60 * 60 * 1000;
     const daysSinceLaunch = Math.floor((now.getTime() - launchDate.getTime()) / msPerDay);
-    const originalBase = 52000 + (daysSinceLaunch * 28);
-
-    // 2. Add the "Pulse" (Extra daily growth for the visual effect)
-    const secondsInToday = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
-    const extraGrowthToday = (secondsInToday / 86400) * 432;
-
-    return Math.floor(originalBase + extraGrowthToday);
-  };
-
-  const [totalUsers, setTotalUsers] = useState<number>(calculateUsersServed());
-
-  // Timer: Updates the number every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTotalUsers(calculateUsersServed());
-    }, 5000); // Update every 5 seconds
-
-    return () => clearInterval(interval); // Cleanup on unmount
+    const count = 52000 + daysSinceLaunch * 28;
+    return count.toLocaleString("en-US");
   }, []);
 
   // Features data
@@ -258,7 +239,7 @@ const LandingPage: React.FC = () => {
             <DocumentTextIcon className="w-10 h-10 text-blue-500 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
             <p className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-blue-500 group-hover:to-purple-500 transition-all duration-300">
               <span className="inline-block min-w-[180px] text-center">
-                <CountUp end={totalUsers} duration={3} separator="," />+
+                {totalUsersFormatted}+
               </span>
             </p>
             <p className="text-gray-600 font-medium tracking-wide">Resumes Created</p>
