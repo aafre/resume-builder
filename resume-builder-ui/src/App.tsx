@@ -176,7 +176,9 @@ function AppContent() {
         <Routes>
           {/* Landing page — lazy so the app-shell H1 (LCP) paints before JS */}
           <Route path="/" element={
-            <Suspense fallback={null}>
+            <Suspense fallback={
+              <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #f8fafc, rgba(243,232,255,0.3), rgba(224,231,255,0.4))' }} />
+            }>
               <LandingPage />
             </Suspense>
           } />
