@@ -11,7 +11,6 @@ import { Toaster } from "react-hot-toast";
 // Critical components - loaded immediately
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import LandingPage from "./components/LandingPage";
 import EnvironmentBanner from "./components/EnvironmentBanner";
 import AnnouncementBar from "./components/AnnouncementBar";
 import ScrollToTop from "./components/ScrollToTop";
@@ -21,7 +20,14 @@ import { SideRailLayout } from "./components/ads";
 import { ConversionProvider } from "./contexts/ConversionContext";
 import usePreferencePersistence from "./hooks/usePreferencePersistence";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+// Landing page — lazy-loaded so the app-shell H1 paints before React JS downloads
+const LandingPage = lazy(() => import("./components/LandingPage"));
+
+// Dev tools — lazy-loaded so they don't add to the main bundle
+const ReactQueryDevtools = lazy(() =>
+  import('@tanstack/react-query-devtools').then((m) => ({ default: m.ReactQueryDevtools }))
+);
 
 // Lazy-loaded route components
 const TemplatesPage = lazy(() => import("./components/seo/TemplatesPage"));
@@ -168,8 +174,12 @@ function AppContent() {
       >
         <SideRailLayout enabled={!isEditorPage}>
         <Routes>
-          {/* Critical route - no lazy loading */}
-          <Route path="/" element={<LandingPage />} />
+          {/* Landing page — lazy so the app-shell H1 (LCP) paints before JS */}
+          <Route path="/" element={
+            <Suspense fallback={null}>
+              <LandingPage />
+            </Suspense>
+          } />
 
           {/* SEO Landing Pages */}
           <Route
@@ -757,7 +767,9 @@ function AppWithProviders() {
             }}
           />
         </EditorProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
+        <Suspense fallback={null}>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </Suspense>
       </QueryClientProvider>
     </ConversionProvider>
   );
