@@ -34,6 +34,7 @@ from typing import Callable, Any
 from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
 
 from flask_cors import CORS
+from flask_compress import Compress
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
@@ -1172,6 +1173,7 @@ else:
     app = Flask(__name__, static_folder="static", static_url_path="/static")
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+Compress(app)
 
 # CORS configuration: Restrict origins for security
 # Flask serves React static files from same container, so same-origin by default
