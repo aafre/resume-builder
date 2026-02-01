@@ -103,7 +103,7 @@ export default function Footer() {
                 © {new Date().getFullYear()}{" "}
                 <span className="font-semibold">EasyFreeResume.com</span>
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-600 mt-1">
                 Build professional resumes effortlessly
               </p>
             </div>
