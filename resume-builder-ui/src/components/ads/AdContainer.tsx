@@ -204,6 +204,7 @@ export const AdContainer = ({
           ...style,
         }}
         data-testid={testId}
+        role="complementary"
         aria-label="Advertisement (debug)"
       >
         <span
@@ -265,6 +266,7 @@ export const AdContainer = ({
       className={`ad-container ${className}`}
       style={containerStyle}
       data-testid={testId}
+      role="complementary"
       aria-label="Advertisement"
     >
       {!adLoaded && fallback}
