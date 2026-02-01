@@ -76,35 +76,55 @@
         <!-- Header placeholder (matches sticky header height) -->
         <div style="height:64px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1)"></div>
         <!-- Main content area matching LandingPage layout -->
+        <!-- Hide mobile-top ad placeholder on desktop (matches Tailwind md:hidden) -->
+        <style>.shell-mobile-ad{display:block}@media(min-width:768px){.shell-mobile-ad{display:none}}</style>
         <main style="flex:1 1 0%;padding:0 1rem">
-          <div style="display:flex;flex-direction:column;align-items:center;min-height:100vh;background:linear-gradient(to bottom right,#f8fafc,rgba(243,232,255,.3),rgba(224,231,255,.4));position:relative;overflow:hidden">
-            <div style="text-align:center;margin:4rem 0;padding:0 1rem;max-width:56rem;margin-left:auto;margin-right:auto">
-              <h1 style="font-size:2.25rem;font-weight:800;margin-bottom:2rem;padding-bottom:.5rem;line-height:1.375;letter-spacing:-.025em;background:linear-gradient(to right,#2563eb,#9333ea,#4338ca);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-                The Truly Free Resume Builder
-              </h1>
-              <p style="font-size:1.25rem;max-width:48rem;margin:0 auto;color:#1f2937;margin-bottom:1rem;line-height:2">
-                Create ATS-optimized resumes that get you noticed by hiring managers.
-              </p>
-              <!-- Pill badges matching React -->
-              <div style="display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:2.5rem">
-                <div style="display:flex;align-items:center;background:rgba(255,255,255,.95);padding:.5rem 1rem;border-radius:9999px;box-shadow:0 1px 2px rgba(0,0,0,.05);font-size:.875rem;font-weight:500;color:#374151">
-                  100% Free
-                </div>
-                <div style="display:flex;align-items:center;background:rgba(255,255,255,.95);padding:.5rem 1rem;border-radius:9999px;box-shadow:0 1px 2px rgba(0,0,0,.05);font-size:.875rem;font-weight:500;color:#374151">
-                  No Sign-up
+          <!-- SideRailLayout wrapper (matches React when explicit ads enabled) -->
+          <div style="display:flex;justify-content:center;gap:1.5rem">
+            <div style="flex:1 1 0%;min-width:0">
+              <!-- Mobile-top ad placeholder (matches SideRailLayout block md:hidden InContentAd) -->
+              <div class="shell-mobile-ad">
+                <div style="margin:16px 0;overflow:hidden">
+                  <div style="min-height:100px"></div>
                 </div>
               </div>
-              <div style="display:flex;flex-direction:column;justify-content:center;gap:1rem;margin-top:2rem">
-                <a href="/templates" style="display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(to right,#2563eb,#9333ea,#4338ca);color:white;padding:1rem 2rem;border-radius:.75rem;font-size:1.125rem;font-weight:600;text-decoration:none">
-                  Start Building Now &rarr;
-                </a>
-                <a href="/templates" style="display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.5);color:#374151;padding:1rem 2rem;border-radius:.75rem;font-size:1.125rem;font-weight:600;text-decoration:none;box-shadow:0 4px 6px -1px rgba(0,0,0,.1)">
-                  View Templates
-                </a>
+              <!-- Landing page content -->
+              <div style="display:flex;flex-direction:column;align-items:center;min-height:100vh;background:linear-gradient(to bottom right,#f8fafc,rgba(243,232,255,.3),rgba(224,231,255,.4));position:relative;overflow:hidden">
+                <div style="text-align:center;margin:4rem 0;padding:0 1rem;max-width:56rem;margin-left:auto;margin-right:auto">
+                  <h1 style="font-size:2.25rem;font-weight:800;margin-bottom:2rem;padding-bottom:.5rem;line-height:1.375;letter-spacing:-.025em;background:linear-gradient(to right,#2563eb,#9333ea,#4338ca);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+                    The Truly Free Resume Builder
+                  </h1>
+                  <p style="font-size:1.25rem;max-width:48rem;margin:0 auto;color:#1f2937;margin-bottom:1rem;line-height:2">
+                    Create ATS-optimized resumes that get you noticed by hiring managers.
+                  </p>
+                  <!-- Pill badges matching React -->
+                  <div style="display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:2.5rem">
+                    <div style="display:flex;align-items:center;background:rgba(255,255,255,.95);padding:.5rem 1rem;border-radius:9999px;box-shadow:0 1px 2px rgba(0,0,0,.05);font-size:.875rem;font-weight:500;color:#374151">
+                      100% Free
+                    </div>
+                    <div style="display:flex;align-items:center;background:rgba(255,255,255,.95);padding:.5rem 1rem;border-radius:9999px;box-shadow:0 1px 2px rgba(0,0,0,.05);font-size:.875rem;font-weight:500;color:#374151">
+                      No Sign-up
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;justify-content:center;gap:1rem;margin-top:2rem">
+                    <a href="/templates" style="display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(to right,#2563eb,#9333ea,#4338ca);color:white;padding:1rem 2rem;border-radius:.75rem;font-size:1.125rem;font-weight:600;text-decoration:none">
+                      Start Building Now &rarr;
+                    </a>
+                    <a href="/templates" style="display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.5);color:#374151;padding:1rem 2rem;border-radius:.75rem;font-size:1.125rem;font-weight:600;text-decoration:none;box-shadow:0 4px 6px -1px rgba(0,0,0,.1)">
+                      View Templates
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </main>
+        <!-- Above-footer ad placeholder (matches App.tsx InContentAd wrapper) -->
+        <div style="max-width:56rem;margin:0 auto;padding:0 1rem">
+          <div style="margin:32px 0;overflow:hidden">
+            <div style="min-height:250px"></div>
+          </div>
+        </div>
         <footer style="background:#f3f4f6;color:#374151;border-top:1px solid #e5e7eb;margin-top:auto">
           <div style="padding:3rem 1rem;min-height:450px"></div>
         </footer>
