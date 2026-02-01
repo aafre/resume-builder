@@ -16,7 +16,7 @@ import AnnouncementBar from "./components/AnnouncementBar";
 import ScrollToTop from "./components/ScrollToTop";
 import { EditorProvider } from "./contexts/EditorContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import { SideRailLayout } from "./components/ads";
+import { SideRailLayout, InContentAd, AD_CONFIG } from "./components/ads";
 import { ConversionProvider } from "./contexts/ConversionContext";
 import usePreferencePersistence from "./hooks/usePreferencePersistence";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -712,6 +712,13 @@ function AppContent() {
         </Routes>
         </SideRailLayout>
       </main>
+
+      {/* Above-footer ad — all non-editor pages */}
+      {!isEditorPage && (
+        <div className="container mx-auto max-w-4xl px-4">
+          <InContentAd adSlot={AD_CONFIG.slots.aboveFooter} marginY={32} />
+        </div>
+      )}
 
       {/* Footer - Always visible, static positioning */}
       <footer className="bg-gray-100 text-gray-700 border-t shadow-sm mt-auto">
