@@ -70,7 +70,7 @@ export function getAllJobSlugs(): string[] {
  * @returns Array of JobKeywordsData objects matching the category
  */
 export function getJobsByCategory(
-  category: 'technology' | 'healthcare' | 'business' | 'creative' | 'trades'
+  category: 'technology' | 'healthcare' | 'business' | 'creative' | 'trades' | 'education'
 ): JobKeywordsData[] {
   return JOBS_DATABASE.filter((job) => job.category === category);
 }

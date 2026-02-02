@@ -25,6 +25,7 @@ export default function ResumeKeywordsHub() {
   const businessJobs = getJobsByCategory('business');
   const healthcareJobs = getJobsByCategory('healthcare');
   const tradesJobs = getJobsByCategory('trades');
+  const educationJobs = getJobsByCategory('education');
 
   // Define category configurations
   const categories = [
@@ -71,6 +72,15 @@ export default function ResumeKeywordsHub() {
         border: 'border-amber-200',
         hoverBorder: 'hover:border-amber-400',
         text: 'text-amber-600',
+      },
+    },
+    {
+      title: '📚 Education',
+      jobs: educationJobs,
+      colorScheme: {
+        border: 'border-teal-200',
+        hoverBorder: 'hover:border-teal-400',
+        text: 'text-teal-600',
       },
     },
   ];

@@ -7,7 +7,7 @@ export const teacher: JobKeywordsData = {
   metaTitle: 'Teacher Resume Keywords - ATS-Optimized Skills List (2026)',
   metaDescription:
     'Complete list of teacher resume keywords including curriculum design, classroom management, differentiated instruction, IEP, and education technology skills for ATS.',
-  category: 'creative',
+  category: 'education',
   priority: 0.8,
   lastmod: '2026-02-02',
 

@@ -36,7 +36,7 @@ describe('jobKeywords index (data access helpers)', () => {
     });
 
     it('should have valid categories for all jobs', () => {
-      const validCategories = ['technology', 'healthcare', 'business', 'creative', 'trades'];
+      const validCategories = ['technology', 'healthcare', 'business', 'creative', 'trades', 'education'];
       JOBS_DATABASE.forEach(job => {
         expect(validCategories).toContain(job.category);
       });
@@ -135,11 +135,11 @@ describe('jobKeywords index (data access helpers)', () => {
     it('should return jobs for all populated categories', () => {
       const healthcareJobs = getJobsByCategory('healthcare');
       const businessJobs = getJobsByCategory('business');
-      const creativeJobs = getJobsByCategory('creative');
+      const educationJobs = getJobsByCategory('education');
 
       expect(healthcareJobs.length).toBeGreaterThan(0);
       expect(businessJobs.length).toBeGreaterThan(0);
-      expect(creativeJobs.length).toBeGreaterThan(0);
+      expect(educationJobs.length).toBeGreaterThan(0);
     });
 
     it('should return jobs with correct category', () => {
