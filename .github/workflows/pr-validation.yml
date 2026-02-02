@@ -8,7 +8,7 @@ on:
 jobs:
   changes:
     name: Detect Changes
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       code-changed: ${{ steps.changes.outputs.code }}
       docs-only: ${{ steps.changes.outputs.docs-only }}
@@ -46,7 +46,7 @@ jobs:
 
   docker-build:
     name: Build Docker (Verify)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [changes, test]
     if: needs.changes.outputs.code-changed == 'true' && !failure()
 
@@ -61,7 +61,7 @@ jobs:
 
   docs-only-check:
     name: Documentation Only
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: changes
     if: needs.changes.outputs.code-changed == 'false'
     
