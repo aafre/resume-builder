@@ -27,6 +27,7 @@ describe('DeleteResumeModal', () => {
     vi.clearAllMocks();
   });
 
+  // Basic rendering tests
   it('renders correctly when open', () => {
     render(<DeleteResumeModal {...defaultProps} />);
 
