@@ -6,7 +6,7 @@ on:
 jobs:
   frontend-test:
     name: Frontend Tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         working-directory: resume-builder-ui
@@ -36,7 +36,7 @@ jobs:
 
   backend-test:
     name: Backend Tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository
