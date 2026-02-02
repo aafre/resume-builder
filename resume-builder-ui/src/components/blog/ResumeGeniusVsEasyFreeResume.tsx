@@ -42,15 +42,18 @@ export default function ResumeGeniusVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
       <BlogLayout
-      title="Resume Genius Pricing 2026: Is $7.95/Month Worth It? (Free Alternative)"
-      description="Resume Genius charges $7.95-$39.95/month for PDF downloads. See how EasyFreeResume offers the same ATS templates completely free with better privacy."
+      title="Resume Genius vs EasyFreeResume: Free Alternative"
+      description="Resume Genius costs $7.95-$39.95/mo. Compare Resume Genius vs EasyFreeResume: pricing, ATS templates, privacy, and why a free builder may be all you need."
       publishDate="2026-01-21"
+      lastUpdated="2026-02-02"
       readTime="8 min"
       keywords={[
         "resume genius pricing",
         "resume genius free",
         "resume genius cost",
         "resume genius alternative",
+        "resume genius vs",
+        "is resume genius free",
         "resume genius vs easyfreeresume",
         "free resume builder",
         "resume genius review 2026",

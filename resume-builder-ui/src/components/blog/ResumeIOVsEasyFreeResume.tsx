@@ -42,16 +42,19 @@ export default function ResumeIOVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
       <BlogLayout
-      title="Resume.io Pricing 2026: Free Alternative That Does More"
-      description="Resume.io costs $2.95-$24.95/month for downloads. EasyFreeResume offers the same ATS templates for $0. Compare features, privacy, and see why free wins."
+      title="Resume.io vs EasyFreeResume: Honest Comparison"
+      description="Resume.io charges $2.95-$24.95/mo for PDF downloads. See how EasyFreeResume compares: free ATS templates, no sign-up, and full privacy. Side-by-side review."
       publishDate="2026-01-21"
+      lastUpdated="2026-02-02"
       readTime="8 min"
       keywords={[
         "resume.io pricing",
         "resume.io free",
         "resume.io cost",
         "resume.io alternative",
+        "resume io vs",
         "resume.io vs easyfreeresume",
+        "is resume.io free",
         "free resume builder",
         "resume.io review",
       ]}
