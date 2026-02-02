@@ -1,0 +1,91 @@
+# EasyFreeResume
+
+> 100% free, no-sign-up resume builder with ATS-optimized templates. PDF and DOCX export. No account required — data stays in your browser.
+
+## Key Facts
+- URL: https://easyfreeresume.com
+- Pricing: Free (all features, forever, no hidden fees)
+- Formats: PDF, DOCX
+- Templates: ATS-friendly professional designs
+- Privacy: No account required, data stays in browser
+- No watermarks, no paywalls, no trial limits
+
+## Resume Builder
+- [Templates](https://easyfreeresume.com/templates): Browse all resume templates
+- [ATS-Friendly Templates](https://easyfreeresume.com/ats-resume-templates): Templates optimized for Applicant Tracking Systems
+- [Modern Templates](https://easyfreeresume.com/templates/modern-resume-templates)
+- [Minimalist Templates](https://easyfreeresume.com/templates/minimalist-resume-templates)
+- [Student Templates](https://easyfreeresume.com/templates/resume-templates-for-students)
+
+## CV Builder (UK/AU/NZ)
+- [CV Templates](https://easyfreeresume.com/cv-templates)
+- [ATS-Friendly CV Templates](https://easyfreeresume.com/cv-templates/ats-friendly)
+- [Free CV Builder](https://easyfreeresume.com/free-cv-builder-no-sign-up)
+
+## Resume Keywords by Job Title
+- [Keywords Hub](https://easyfreeresume.com/resume-keywords)
+- [Customer Service](https://easyfreeresume.com/resume-keywords/customer-service)
+- [Software Engineer](https://easyfreeresume.com/resume-keywords/software-engineer)
+- [Data Scientist](https://easyfreeresume.com/resume-keywords/data-scientist)
+- [Product Manager](https://easyfreeresume.com/resume-keywords/product-manager)
+- [Frontend Developer](https://easyfreeresume.com/resume-keywords/frontend-developer)
+- [Backend Developer](https://easyfreeresume.com/resume-keywords/backend-developer)
+- [Full Stack Developer](https://easyfreeresume.com/resume-keywords/full-stack-developer)
+- [DevOps Engineer](https://easyfreeresume.com/resume-keywords/devops-engineer)
+- [Data Analyst](https://easyfreeresume.com/resume-keywords/data-analyst)
+- [UX Designer](https://easyfreeresume.com/resume-keywords/ux-designer)
+- [Project Manager](https://easyfreeresume.com/resume-keywords/project-manager)
+
+## Resume Examples by Job Title
+- [Examples Hub](https://easyfreeresume.com/examples)
+- [Software Engineer](https://easyfreeresume.com/examples/software-engineer)
+- [Registered Nurse](https://easyfreeresume.com/examples/registered-nurse)
+- [Teacher](https://easyfreeresume.com/examples/teacher)
+- [Project Manager](https://easyfreeresume.com/examples/project-manager)
+- [Customer Service Representative](https://easyfreeresume.com/examples/customer-service-representative)
+- [Administrative Assistant](https://easyfreeresume.com/examples/administrative-assistant)
+- [Data Analyst](https://easyfreeresume.com/examples/data-analyst)
+- [Marketing Coordinator](https://easyfreeresume.com/examples/marketing-coordinator)
+- [Accountant](https://easyfreeresume.com/examples/accountant)
+- [Graphic Designer](https://easyfreeresume.com/examples/graphic-designer)
+- [College Student](https://easyfreeresume.com/examples/college-student)
+- [High School Student](https://easyfreeresume.com/examples/high-school-student)
+
+## AI Resume Guides
+- [ChatGPT Resume Prompts](https://easyfreeresume.com/blog/chatgpt-resume-prompts)
+- [Claude Resume Prompts](https://easyfreeresume.com/blog/claude-resume-prompts)
+- [Gemini Resume Prompts](https://easyfreeresume.com/blog/gemini-resume-prompts)
+- [Grok Resume Prompts](https://easyfreeresume.com/blog/grok-resume-prompts)
+- [AI Resume Writing Guide](https://easyfreeresume.com/blog/ai-resume-writing-guide)
+- [AI Resume Review](https://easyfreeresume.com/blog/ai-resume-review)
+- [AI Job Description Analyzer](https://easyfreeresume.com/blog/ai-job-description-analyzer)
+
+## Resume Writing Guides
+- [How to Write a Resume](https://easyfreeresume.com/blog/how-to-write-a-resume-guide)
+- [ATS Resume Optimization](https://easyfreeresume.com/blog/ats-resume-optimization)
+- [Resume Action Verbs](https://easyfreeresume.com/blog/resume-action-verbs)
+- [Resume Keywords Guide](https://easyfreeresume.com/blog/resume-keywords-guide)
+- [How to Use Resume Keywords](https://easyfreeresume.com/blog/how-to-use-resume-keywords)
+- [Professional Summary Examples](https://easyfreeresume.com/blog/professional-summary-examples)
+- [How to List Skills](https://easyfreeresume.com/blog/how-to-list-skills)
+- [Quantify Resume Accomplishments](https://easyfreeresume.com/blog/quantify-resume-accomplishments)
+- [Resume with No Experience](https://easyfreeresume.com/blog/resume-no-experience)
+- [Resume Length Guide](https://easyfreeresume.com/blog/resume-length-guide)
+- [Resume vs CV Difference](https://easyfreeresume.com/blog/resume-vs-cv-difference)
+- [Tech Resume Guide](https://easyfreeresume.com/blog/tech-resume-guide)
+- [Remote Work Resume](https://easyfreeresume.com/blog/remote-work-resume)
+- [Cover Letter Guide](https://easyfreeresume.com/blog/cover-letter-guide)
+- [Resume Mistakes to Avoid](https://easyfreeresume.com/blog/resume-mistakes-to-avoid)
+
+## Interview Preparation
+- [Job Interview Guide](https://easyfreeresume.com/blog/job-interview-guide)
+- [Behavioral Interview Questions](https://easyfreeresume.com/blog/behavioral-interview-questions)
+
+## Competitor Comparisons
+- [Zety vs EasyFreeResume](https://easyfreeresume.com/blog/zety-vs-easy-free-resume)
+- [Resume.io vs EasyFreeResume](https://easyfreeresume.com/blog/resume-io-vs-easy-free-resume)
+- [Resume Genius vs EasyFreeResume](https://easyfreeresume.com/blog/resume-genius-vs-easy-free-resume)
+- [Novoresume vs EasyFreeResume](https://easyfreeresume.com/blog/novoresume-vs-easy-free-resume)
+- [Enhancv vs EasyFreeResume](https://easyfreeresume.com/blog/enhancv-vs-easy-free-resume)
+- [Canva vs EasyFreeResume](https://easyfreeresume.com/blog/canva-resume-vs-easy-free-resume)
+- [FlowCV vs EasyFreeResume](https://easyfreeresume.com/blog/flowcv-vs-easy-free-resume)

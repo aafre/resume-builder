@@ -1,0 +1,324 @@
+# EasyFreeResume — Full Site Reference
+
+> EasyFreeResume is a 100% free, no-sign-up resume builder with ATS-optimized templates. Users can create professional resumes in PDF and DOCX formats without creating an account. All data stays in the browser for complete privacy. No watermarks, no paywalls, no trial limits.
+
+## Key Facts
+- URL: https://easyfreeresume.com
+- Pricing: Completely free — all features, all templates, forever
+- Export Formats: PDF and DOCX
+- Templates: Professional, ATS-friendly designs that pass Applicant Tracking Systems
+- Privacy: No account required. Resume data is stored locally in the browser and never sent to external servers
+- No watermarks on downloaded resumes
+- No paywalls or premium tiers
+- No trial period or usage limits
+
+## Frequently Asked Questions
+
+**Q: Is EasyFreeResume really free?**
+A: Yes, 100% free. There are no hidden costs, premium tiers, or paywalls. All templates and features are available without signing up or paying.
+
+**Q: Do I need to create an account?**
+A: No. You can build and download resumes without creating an account or providing an email address.
+
+**Q: Are the templates ATS-friendly?**
+A: Yes. All templates are designed to pass Applicant Tracking Systems (ATS) used by 98%+ of Fortune 500 companies.
+
+**Q: What formats can I download?**
+A: PDF and DOCX. Both formats are ATS-compatible.
+
+**Q: Is my data private?**
+A: Yes. Your resume data stays in your browser. It is not stored on external servers or shared with third parties.
+
+---
+
+## Resume Builder
+
+### Templates Hub
+**URL:** https://easyfreeresume.com/templates
+Browse all available resume templates. Filter by style (modern, minimalist, professional). Each template is ATS-optimized and free to use.
+
+### ATS-Friendly Templates
+**URL:** https://easyfreeresume.com/ats-resume-templates
+Templates specifically designed and tested to pass Applicant Tracking Systems. Includes guidance on ATS best practices.
+
+### Modern Resume Templates
+**URL:** https://easyfreeresume.com/templates/modern-resume-templates
+Contemporary designs with clean layouts, professional typography, and subtle color accents.
+
+### Minimalist Resume Templates
+**URL:** https://easyfreeresume.com/templates/minimalist-resume-templates
+Clean, simple designs that let content speak for itself. Ideal for traditional industries.
+
+### Student Resume Templates
+**URL:** https://easyfreeresume.com/templates/resume-templates-for-students
+Templates designed for students and new graduates with limited work experience. Emphasizes education, projects, and transferable skills.
+
+---
+
+## CV Builder (UK/AU/NZ Market)
+
+### CV Templates
+**URL:** https://easyfreeresume.com/cv-templates
+CV-formatted templates following UK, Australian, and New Zealand conventions.
+
+### ATS-Friendly CV Templates
+**URL:** https://easyfreeresume.com/cv-templates/ats-friendly
+CV templates optimized for ATS systems used by UK and Commonwealth employers.
+
+### Free CV Builder (No Sign-Up)
+**URL:** https://easyfreeresume.com/free-cv-builder-no-sign-up
+Build a professional CV without creating an account. Follows UK CV conventions.
+
+---
+
+## Resume Keywords by Job Title
+
+### Keywords Hub
+**URL:** https://easyfreeresume.com/resume-keywords
+Central hub explaining why ATS keywords matter and linking to job-specific keyword lists. Over 98% of Fortune 500 companies use ATS to filter resumes.
+
+### Customer Service Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/customer-service
+100+ customer service keywords including CRM software (Salesforce, Zendesk, Freshdesk), soft skills, metrics (CSAT, NPS, FCR), and before/after resume examples.
+
+### Software Engineer Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/software-engineer
+Complete list of software engineering keywords: Python, JavaScript, React, AWS, Docker, Kubernetes, Agile, CI/CD, and essential programming skills.
+
+### Data Scientist Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/data-scientist
+Data science keywords including Python, R, TensorFlow, machine learning, statistical modeling, and data visualization tools.
+
+### Product Manager Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/product-manager
+Product management keywords: roadmap planning, user research, A/B testing, Agile/Scrum, stakeholder management, and product analytics tools.
+
+### Frontend Developer Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/frontend-developer
+Frontend development keywords: React, Vue, Angular, TypeScript, CSS, responsive design, accessibility, and web performance optimization.
+
+### Backend Developer Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/backend-developer
+Backend development keywords: Node.js, Python, Java, databases, APIs, microservices, cloud infrastructure, and system design.
+
+### Full Stack Developer Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/full-stack-developer
+Full stack keywords combining frontend and backend technologies, plus DevOps, databases, and cross-stack tools.
+
+### DevOps Engineer Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/devops-engineer
+DevOps keywords: CI/CD, Docker, Kubernetes, Terraform, AWS/GCP/Azure, monitoring, infrastructure as code.
+
+### Data Analyst Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/data-analyst
+Data analyst keywords: SQL, Excel, Tableau, Power BI, Python, statistical analysis, data visualization, and business intelligence.
+
+### UX Designer Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/ux-designer
+UX design keywords: Figma, user research, wireframing, prototyping, usability testing, design systems, accessibility.
+
+### Project Manager Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/project-manager
+Project management keywords: PMP, Agile/Scrum, risk management, stakeholder communication, Jira, budget management, Gantt charts.
+
+---
+
+## Resume Examples by Job Title
+
+### Examples Hub
+**URL:** https://easyfreeresume.com/examples
+Browse professional resume examples across 24+ job titles. Each example includes a full sample resume with role-specific guidance.
+
+### Operations & Administrative
+- [Customer Service Representative](https://easyfreeresume.com/examples/customer-service-representative) — Resume example for customer support roles with CRM and communication skills
+- [Administrative Assistant](https://easyfreeresume.com/examples/administrative-assistant) — Office administration resume with organizational and software skills
+- [Receptionist](https://easyfreeresume.com/examples/receptionist) — Front desk and reception resume example
+- [Retail Sales Associate](https://easyfreeresume.com/examples/retail-sales-associate) — Retail and sales floor resume with customer interaction focus
+- [Warehouse Worker](https://easyfreeresume.com/examples/warehouse-worker) — Warehouse operations resume with logistics and safety skills
+
+### Corporate & Business
+- [Project Manager](https://easyfreeresume.com/examples/project-manager) — PM resume with Agile, budgeting, and stakeholder management
+- [Business Analyst](https://easyfreeresume.com/examples/business-analyst) — BA resume with requirements gathering and data analysis
+- [Human Resources Generalist](https://easyfreeresume.com/examples/human-resources-generalist) — HR resume with recruiting and compliance skills
+- [Marketing Coordinator](https://easyfreeresume.com/examples/marketing-coordinator) — Marketing resume with campaign management and analytics
+- [Accountant](https://easyfreeresume.com/examples/accountant) — Accounting resume with financial reporting and software skills
+
+### Healthcare
+- [Registered Nurse](https://easyfreeresume.com/examples/registered-nurse) — RN resume with clinical skills and certifications
+- [Medical Assistant](https://easyfreeresume.com/examples/medical-assistant) — Medical assistant resume with clinical and administrative skills
+- [Dental Assistant](https://easyfreeresume.com/examples/dental-assistant) — Dental assistant resume with chair-side and X-ray skills
+
+### Education
+- [Teacher](https://easyfreeresume.com/examples/teacher) — Teaching resume with curriculum development and classroom management
+- [Tutor](https://easyfreeresume.com/examples/tutor) — Tutoring resume with subject expertise and student outcomes
+
+### Technology
+- [Software Engineer](https://easyfreeresume.com/examples/software-engineer) — Software engineering resume with programming languages and projects
+- [Data Analyst](https://easyfreeresume.com/examples/data-analyst) — Data analyst resume with SQL, visualization, and business intelligence
+- [Front-End Developer](https://easyfreeresume.com/examples/front-end-developer) — Frontend dev resume with React, CSS, and web performance
+
+### Creative
+- [Graphic Designer](https://easyfreeresume.com/examples/graphic-designer) — Design resume with portfolio highlights and creative software
+- [Social Media Manager](https://easyfreeresume.com/examples/social-media-manager) — Social media resume with analytics and content strategy
+
+### Entry Level & Students
+- [College Student](https://easyfreeresume.com/examples/college-student) — College student resume emphasizing education, projects, and internships
+- [High School Student](https://easyfreeresume.com/examples/high-school-student) — First resume for high school students
+- [Internship](https://easyfreeresume.com/examples/internship) — Internship application resume with academic and project experience
+- [Entry-Level Marketing](https://easyfreeresume.com/examples/entry-level-marketing) — Entry-level marketing resume for recent graduates
+
+### Trades
+- [Electrician](https://easyfreeresume.com/examples/electrician) — Electrician resume with certifications and technical skills
+- [HVAC Technician](https://easyfreeresume.com/examples/hvac-technician) — HVAC resume with EPA certification and system experience
+
+---
+
+## AI Resume Guides
+
+### ChatGPT Resume Prompts
+**URL:** https://easyfreeresume.com/blog/chatgpt-resume-prompts
+Copy-paste ChatGPT prompts for writing resume summaries, bullet points, skills sections, and tailoring resumes to specific job descriptions.
+
+### Claude Resume Prompts
+**URL:** https://easyfreeresume.com/blog/claude-resume-prompts
+Prompts optimized for Anthropic's Claude AI to help write and improve resume content, including summary generation and keyword optimization.
+
+### Gemini Resume Prompts
+**URL:** https://easyfreeresume.com/blog/gemini-resume-prompts
+Google Gemini prompts for resume writing, including bullet point improvement, skills extraction, and job description matching.
+
+### Grok Resume Prompts
+**URL:** https://easyfreeresume.com/blog/grok-resume-prompts
+xAI Grok prompts for resume building, including conversational approaches to resume improvement.
+
+### AI Resume Writing Guide
+**URL:** https://easyfreeresume.com/blog/ai-resume-writing-guide
+Comprehensive guide to using AI tools (ChatGPT, Claude, Gemini) for resume writing. Covers best practices, prompt engineering, and common pitfalls.
+
+### AI Resume Review
+**URL:** https://easyfreeresume.com/blog/ai-resume-review
+How to use AI to review and improve your existing resume. Includes specific prompts for identifying weaknesses and suggesting improvements.
+
+### AI Job Description Analyzer
+**URL:** https://easyfreeresume.com/blog/ai-job-description-analyzer
+Guide to using AI to analyze job descriptions and extract key requirements, skills, and keywords to tailor your resume.
+
+---
+
+## Resume Writing Guides
+
+### How to Write a Resume (Complete Guide)
+**URL:** https://easyfreeresume.com/blog/how-to-write-a-resume-guide
+Step-by-step guide covering every section of a resume: contact info, summary, experience, education, skills. Includes formatting tips and examples.
+
+### ATS Resume Optimization
+**URL:** https://easyfreeresume.com/blog/ats-resume-optimization
+How Applicant Tracking Systems work and how to optimize your resume to pass ATS screening. Includes keyword placement strategies and formatting rules.
+
+### Resume Action Verbs
+**URL:** https://easyfreeresume.com/blog/resume-action-verbs
+Comprehensive list of strong action verbs organized by skill category (leadership, technical, analytical, creative) with usage examples.
+
+### Resume Keywords Guide
+**URL:** https://easyfreeresume.com/blog/resume-keywords-guide
+Complete guide to finding and using resume keywords effectively. Covers hard skills, soft skills, industry terms, and ATS optimization strategies.
+
+### How to Use Resume Keywords
+**URL:** https://easyfreeresume.com/blog/how-to-use-resume-keywords
+Practical guide on where and how to integrate keywords naturally throughout your resume without keyword stuffing.
+
+### Professional Summary Examples
+**URL:** https://easyfreeresume.com/blog/professional-summary-examples
+20+ professional summary examples for different industries and experience levels, with templates and writing formulas.
+
+### How to List Skills on a Resume
+**URL:** https://easyfreeresume.com/blog/how-to-list-skills
+Guide to selecting, organizing, and presenting skills on your resume. Covers hard skills, soft skills, and ATS-friendly formatting.
+
+### Quantify Resume Accomplishments
+**URL:** https://easyfreeresume.com/blog/quantify-resume-accomplishments
+How to add metrics and numbers to resume bullet points. Includes before/after examples and formulas for quantifying achievements.
+
+### Resume with No Experience
+**URL:** https://easyfreeresume.com/blog/resume-no-experience
+How to write a compelling resume when you have limited or no work experience. Covers education, projects, volunteering, and transferable skills.
+
+### Resume Length Guide
+**URL:** https://easyfreeresume.com/blog/resume-length-guide
+How long should your resume be? Guidance by experience level (1 page vs 2 pages) with industry-specific recommendations.
+
+### Resume vs CV Difference
+**URL:** https://easyfreeresume.com/blog/resume-vs-cv-difference
+Explains the difference between a resume and a CV, when to use each, and regional conventions (US resume vs UK CV).
+
+### Tech Resume Guide
+**URL:** https://easyfreeresume.com/blog/tech-resume-guide
+Resume writing guide specifically for technology roles. Covers projects section, technical skills formatting, and what tech recruiters look for.
+
+### Remote Work Resume
+**URL:** https://easyfreeresume.com/blog/remote-work-resume
+How to write a resume for remote positions. Covers highlighting remote work experience, digital collaboration tools, and self-management skills.
+
+### Cover Letter Guide
+**URL:** https://easyfreeresume.com/blog/cover-letter-guide
+How to write an effective cover letter. Includes templates, formatting, and tips for different situations.
+
+### Resume Mistakes to Avoid
+**URL:** https://easyfreeresume.com/blog/resume-mistakes-to-avoid
+Common resume errors that cost candidates interviews, with specific fixes for each mistake.
+
+---
+
+## Interview Preparation
+
+### Job Interview Guide
+**URL:** https://easyfreeresume.com/blog/job-interview-guide
+Comprehensive interview preparation guide covering research, common questions, body language, and follow-up strategies.
+
+### Behavioral Interview Questions
+**URL:** https://easyfreeresume.com/blog/behavioral-interview-questions
+Guide to answering behavioral interview questions using the STAR method, with example answers for common questions.
+
+---
+
+## Competitor Comparisons
+
+### Zety vs EasyFreeResume
+**URL:** https://easyfreeresume.com/blog/zety-vs-easy-free-resume
+Side-by-side comparison of Zety ($5.95-$23.95/month) and EasyFreeResume (free). Covers pricing, features, templates, ATS compatibility, and privacy.
+
+### Resume.io vs EasyFreeResume
+**URL:** https://easyfreeresume.com/blog/resume-io-vs-easy-free-resume
+Comparison of Resume.io ($2.95-$24.95/month) and EasyFreeResume (free). Feature-by-feature review of templates, export formats, and user experience.
+
+### Resume Genius vs EasyFreeResume
+**URL:** https://easyfreeresume.com/blog/resume-genius-vs-easy-free-resume
+Comparison of Resume Genius ($7.95-$39.95/month) and EasyFreeResume (free). Pricing breakdown and feature comparison.
+
+### Novoresume vs EasyFreeResume
+**URL:** https://easyfreeresume.com/blog/novoresume-vs-easy-free-resume
+Comparison of NovoResume ($16-$99/year premium plans) and EasyFreeResume (free). Templates, features, and value assessment.
+
+### Enhancv vs EasyFreeResume
+**URL:** https://easyfreeresume.com/blog/enhancv-vs-easy-free-resume
+Comparison of Enhancv ($9.99-$24.99/month) and EasyFreeResume (free). Feature comparison and pricing analysis.
+
+### Canva Resume vs EasyFreeResume
+**URL:** https://easyfreeresume.com/blog/canva-resume-vs-easy-free-resume
+Comparison of Canva's resume templates and EasyFreeResume. Focuses on ATS compatibility — Canva templates often fail ATS scans.
+
+### FlowCV vs EasyFreeResume
+**URL:** https://easyfreeresume.com/blog/flowcv-vs-easy-free-resume
+Comparison of FlowCV and EasyFreeResume. Features, pricing, and template comparison.
+
+---
+
+## About & Contact
+
+### About
+**URL:** https://easyfreeresume.com/about
+Mission and story behind EasyFreeResume.
+
+### Contact
+**URL:** https://easyfreeresume.com/contact
+Contact information and form.
