@@ -5,7 +5,6 @@ import { RichTextInput } from "./RichTextInput";
 import IconManager from "./IconManager";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
-import { MarkdownHint } from "./MarkdownLinkPreview";
 
 // Define interfaces locally matching ExperienceSection
 export interface ExtendedExperienceItem {
@@ -151,7 +150,6 @@ const ExperienceItem: React.FC<ExperienceItemProps> = memo(({
           <label className="block text-gray-700 font-medium mb-1">
             Job Description & Achievements
           </label>
-          <MarkdownHint />
           <div className="space-y-3 mt-2">
             {experience.description.length > 0 && (
               <ItemDndContext
