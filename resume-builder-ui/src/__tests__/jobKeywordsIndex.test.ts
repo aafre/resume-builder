@@ -11,8 +11,8 @@ import {
 
 describe('jobKeywords index (data access helpers)', () => {
   describe('JOBS_DATABASE', () => {
-    it('should have 10 jobs', () => {
-      expect(JOBS_DATABASE).toHaveLength(10);
+    it('should have 15 jobs', () => {
+      expect(JOBS_DATABASE).toHaveLength(15);
     });
 
     it('should have all jobs with required fields', () => {
@@ -35,9 +35,10 @@ describe('jobKeywords index (data access helpers)', () => {
       expect(slugs.length).toBe(uniqueSlugs.size);
     });
 
-    it('should have all jobs in technology category', () => {
+    it('should have valid categories for all jobs', () => {
+      const validCategories = ['technology', 'healthcare', 'business', 'creative', 'trades'];
       JOBS_DATABASE.forEach(job => {
-        expect(job.category).toBe('technology');
+        expect(validCategories).toContain(job.category);
       });
     });
   });
@@ -85,10 +86,10 @@ describe('jobKeywords index (data access helpers)', () => {
   });
 
   describe('getAllJobSlugs', () => {
-    it('should return array of 10 slugs', () => {
+    it('should return array of 15 slugs', () => {
       const slugs = getAllJobSlugs();
 
-      expect(slugs).toHaveLength(10);
+      expect(slugs).toHaveLength(15);
       expect(Array.isArray(slugs)).toBe(true);
     });
 
@@ -105,6 +106,11 @@ describe('jobKeywords index (data access helpers)', () => {
       expect(slugs).toContain('data-analyst');
       expect(slugs).toContain('ux-designer');
       expect(slugs).toContain('project-manager');
+      expect(slugs).toContain('registered-nurse');
+      expect(slugs).toContain('marketing-manager');
+      expect(slugs).toContain('financial-analyst');
+      expect(slugs).toContain('teacher');
+      expect(slugs).toContain('sales-representative');
     });
 
     it('should return strings', () => {
@@ -117,22 +123,23 @@ describe('jobKeywords index (data access helpers)', () => {
   });
 
   describe('getJobsByCategory', () => {
-    it('should return all 10 jobs for technology category', () => {
+    it('should return technology jobs', () => {
       const jobs = getJobsByCategory('technology');
 
-      expect(jobs).toHaveLength(10);
+      expect(jobs.length).toBeGreaterThan(0);
+      jobs.forEach(job => {
+        expect(job.category).toBe('technology');
+      });
     });
 
-    it('should return empty array for categories with no jobs', () => {
+    it('should return jobs for all populated categories', () => {
       const healthcareJobs = getJobsByCategory('healthcare');
       const businessJobs = getJobsByCategory('business');
       const creativeJobs = getJobsByCategory('creative');
-      const tradesJobs = getJobsByCategory('trades');
 
-      expect(healthcareJobs).toHaveLength(0);
-      expect(businessJobs).toHaveLength(0);
-      expect(creativeJobs).toHaveLength(0);
-      expect(tradesJobs).toHaveLength(0);
+      expect(healthcareJobs.length).toBeGreaterThan(0);
+      expect(businessJobs.length).toBeGreaterThan(0);
+      expect(creativeJobs.length).toBeGreaterThan(0);
     });
 
     it('should return jobs with correct category', () => {
@@ -145,10 +152,10 @@ describe('jobKeywords index (data access helpers)', () => {
   });
 
   describe('getTotalJobCount', () => {
-    it('should return 10', () => {
+    it('should return 15', () => {
       const count = getTotalJobCount();
 
-      expect(count).toBe(10);
+      expect(count).toBe(15);
     });
 
     it('should match JOBS_DATABASE length', () => {
