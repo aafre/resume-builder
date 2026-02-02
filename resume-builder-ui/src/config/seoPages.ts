@@ -824,15 +824,19 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /resume-keywords/customer-service
   customerServiceKeywords: {
     seo: {
-      title: 'Customer Service Resume Keywords and Skills [Free List]',
+      title: '100+ Customer Service Resume Keywords for 2026 [ATS-Optimized]',
       description:
-        'Complete list of customer service resume keywords that ATS systems scan for. Includes soft skills, CRM software, metrics, and real examples.',
+        'Free list of 100+ customer service keywords for your resume: CRM skills (Salesforce, Zendesk), soft skills, CSAT/NPS metrics, and before/after examples. Updated 2026.',
       keywords: [
         'customer service resume keywords',
         'customer support keywords',
         'CRM resume skills',
         'help desk resume keywords',
         'customer service skills list',
+        'resume keywords for customer service',
+        'personal keywords for customer service',
+        'good customer service keywords',
+        'customer service skills for resume',
       ],
       canonicalUrl: '/resume-keywords/customer-service',
     },
