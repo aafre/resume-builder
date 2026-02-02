@@ -70,6 +70,8 @@
     <link rel="preconnect" href="https://googleads.g.doubleclick.net">
   </head>
   <body>
+    <!-- Route-aware shell: hide landing content on non-home routes before first paint -->
+    <script>if(location.pathname!=="/")document.documentElement.classList.add("not-home")</script>
     <div id="root">
       <!-- App Shell: matches React layout so the H1 (LCP) paints without shift -->
       <div style="display:flex;flex-direction:column;min-height:100vh;background:#f9fafb">
@@ -77,7 +79,14 @@
         <div style="height:64px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1)"></div>
         <!-- Main content area matching LandingPage layout -->
         <!-- Hide mobile-top ad placeholder on desktop (matches Tailwind md:hidden) -->
-        <style>.shell-mobile-ad{display:block}@media(min-width:768px){.shell-mobile-ad{display:none}}</style>
+        <style>
+          .shell-mobile-ad{display:block}
+          @media(min-width:768px){.shell-mobile-ad{display:none}}
+          /* Route-aware shell visibility */
+          .not-home #shell-landing{display:none}
+          #shell-generic{display:none}
+          .not-home #shell-generic{display:block}
+        </style>
         <main style="flex:1 1 0%;padding:0 1rem">
           <!-- SideRailLayout wrapper (matches React when explicit ads enabled) -->
           <div style="display:flex;justify-content:center;gap:1.5rem">
@@ -88,8 +97,8 @@
                   <div style="min-height:100px"></div>
                 </div>
               </div>
-              <!-- Landing page content -->
-              <div style="display:flex;flex-direction:column;align-items:center;min-height:100vh;background:linear-gradient(to bottom right,#f8fafc,rgba(243,232,255,.3),rgba(224,231,255,.4));position:relative;overflow:hidden">
+              <!-- Landing page content (hidden on non-home routes) -->
+              <div id="shell-landing" style="display:flex;flex-direction:column;align-items:center;min-height:100vh;background:linear-gradient(to bottom right,#f8fafc,rgba(243,232,255,.3),rgba(224,231,255,.4));position:relative;overflow:hidden">
                 <div style="text-align:center;margin:4rem 0;padding:0 1rem;max-width:56rem;margin-left:auto;margin-right:auto">
                   <h1 style="font-size:2.25rem;font-weight:800;margin-bottom:2rem;padding-bottom:.5rem;line-height:1.375;letter-spacing:-.025em;background:linear-gradient(to right,#2563eb,#9333ea,#4338ca);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
                     The Truly Free Resume Builder
@@ -114,6 +123,23 @@
                       View Templates
                     </a>
                   </div>
+                </div>
+              </div>
+              <!-- Generic page placeholder (shown on non-home routes) -->
+              <div id="shell-generic" style="min-height:1200px;background:linear-gradient(to bottom right,#f8fafc,rgba(219,234,254,.3),rgba(199,210,254,.4))">
+                <div style="max-width:80rem;margin:0 auto;padding:3rem 1rem">
+                  <!-- Breadcrumb skeleton -->
+                  <div style="height:20px;width:12rem;background:#e5e7eb;border-radius:6px;margin-bottom:2rem"></div>
+                  <!-- H1 skeleton -->
+                  <div style="height:48px;width:75%;background:#e5e7eb;border-radius:8px;margin-bottom:1rem"></div>
+                  <!-- Subtitle skeleton -->
+                  <div style="height:24px;width:66%;background:#e5e7eb;border-radius:6px;margin-bottom:2rem"></div>
+                  <!-- CTA button skeleton -->
+                  <div style="height:56px;width:10rem;background:#e5e7eb;border-radius:12px;margin-bottom:3rem"></div>
+                  <!-- Content section skeletons -->
+                  <div style="height:12rem;background:#e5e7eb;border-radius:8px;margin-bottom:1.5rem"></div>
+                  <div style="height:12rem;background:#e5e7eb;border-radius:8px;margin-bottom:1.5rem"></div>
+                  <div style="height:12rem;background:#e5e7eb;border-radius:8px"></div>
                 </div>
               </div>
             </div>
