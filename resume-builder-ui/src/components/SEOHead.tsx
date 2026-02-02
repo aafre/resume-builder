@@ -49,7 +49,7 @@ export default function SEOHead({
   const finalOgDescription = ogDescription || description;
   // Use origin + pathname to strip query params and hash from canonical URL
   const currentUrl = typeof window !== 'undefined'
-    ? window.location.origin + window.location.pathname
+    ? BASE_URL + window.location.pathname.replace(/\/+$/, '')
     : '';
   const finalCanonicalUrl = canonicalUrl || currentUrl;
   // Ensure ogImage is an absolute URL
