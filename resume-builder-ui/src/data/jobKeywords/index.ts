@@ -17,6 +17,11 @@ import { devopsEngineer } from './jobs/devops-engineer';
 import { dataAnalyst } from './jobs/data-analyst';
 import { uxDesigner } from './jobs/ux-designer';
 import { projectManager } from './jobs/project-manager';
+import { registeredNurse } from './jobs/registered-nurse';
+import { marketingManager } from './jobs/marketing-manager';
+import { financialAnalyst } from './jobs/financial-analyst';
+import { teacher } from './jobs/teacher';
+import { salesRepresentative } from './jobs/sales-representative';
 import type { JobKeywordsData } from './types';
 
 /**
@@ -35,6 +40,11 @@ export const JOBS_DATABASE: JobKeywordsData[] = [
   dataAnalyst,
   uxDesigner,
   projectManager,
+  registeredNurse,
+  marketingManager,
+  financialAnalyst,
+  teacher,
+  salesRepresentative,
 ];
 
 /**

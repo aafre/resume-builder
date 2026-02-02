@@ -121,6 +121,26 @@ UX design keywords: Figma, user research, wireframing, prototyping, usability te
 **URL:** https://easyfreeresume.com/resume-keywords/project-manager
 Project management keywords: PMP, Agile/Scrum, risk management, stakeholder communication, Jira, budget management, Gantt charts.
 
+### Registered Nurse Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/registered-nurse
+Nursing keywords: EMR systems (Epic, Cerner), clinical skills, BLS/ACLS certifications, patient care metrics, and evidence-based practice.
+
+### Marketing Manager Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/marketing-manager
+Marketing keywords: Google Analytics, HubSpot, SEO/SEM, campaign management, ROAS, CAC, content strategy, and digital marketing tools.
+
+### Financial Analyst Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/financial-analyst
+Finance keywords: Excel (advanced), financial modeling, DCF, FP&A, Bloomberg, SQL, GAAP/IFRS, and valuation methodologies.
+
+### Teacher Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/teacher
+Education keywords: curriculum development, differentiated instruction, Google Classroom, IEP, classroom management, and student assessment.
+
+### Sales Representative Resume Keywords
+**URL:** https://easyfreeresume.com/resume-keywords/sales-representative
+Sales keywords: Salesforce CRM, pipeline management, quota attainment, MEDDIC, prospecting, negotiation, and revenue metrics.
+
 ---
 
 ## Resume Examples by Job Title
