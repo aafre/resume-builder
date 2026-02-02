@@ -109,10 +109,18 @@ function createStaticServer(distDir: string, port: number): Promise<http.Server>
   return new Promise((resolve, reject) => {
     const server = http.createServer((req, res) => {
       const url = req.url || '/';
-      const urlPath = url.split('?')[0];
+      const urlPath = new URL(url, `http://localhost:${port}`).pathname;
+
+      // Prevent path traversal by ensuring the resolved path is within the dist directory
+      const resolvedPath = path.resolve(path.join(distDir, urlPath));
+      if (!resolvedPath.startsWith(path.resolve(distDir))) {
+        res.writeHead(403, { 'Content-Type': 'text/plain' });
+        res.end('Forbidden');
+        return;
+      }
 
       // Try to serve the exact file first
-      let filePath = path.join(distDir, urlPath);
+      let filePath = resolvedPath;
       if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
         const ext = path.extname(filePath);
         const contentTypes: Record<string, string> = {
