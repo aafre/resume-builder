@@ -1351,6 +1351,41 @@ VALID_SPA_ROUTES = {
     "error",
 }
 
+# Bot user-agent patterns for prerendered HTML serving
+# When a bot requests a page, serve the prerendered HTML if available
+BOT_USER_AGENTS = re.compile(
+    r"googlebot|bingbot|yandexbot|duckduckbot|baiduspider|"
+    r"slurp|facebot|ia_archiver|semrushbot|ahrefsbot|"
+    r"gptbot|claude-web|perplexitybot|amazonbot|bytespider|ccbot|"
+    r"google-extended|applebot",
+    re.IGNORECASE,
+)
+
+# Prerendered HTML directory (populated by scripts/prerender.ts)
+PRERENDER_DIR = os.path.join(app.static_folder, "prerendered")
+
+
+def _is_bot(user_agent: str) -> bool:
+    """Check if the request is from a known search engine or AI bot."""
+    return bool(BOT_USER_AGENTS.search(user_agent))
+
+
+def _get_prerendered_path(route_path: str) -> str | None:
+    """Return the filesystem path to prerendered HTML if it exists."""
+    if not os.path.isdir(PRERENDER_DIR):
+        return None
+
+    if route_path == "" or route_path == "/":
+        candidate = os.path.join(PRERENDER_DIR, "index.html")
+    else:
+        # Strip leading slash and look for <path>/index.html
+        clean = route_path.strip("/")
+        candidate = os.path.join(PRERENDER_DIR, clean, "index.html")
+
+    if os.path.isfile(candidate):
+        return candidate
+    return None
+
 
 @app.route("/", defaults={"path": ""}, methods=["GET"])
 @app.route("/<path:path>", methods=["GET"])
@@ -1359,15 +1394,30 @@ def serve(path):
     Serve the React app from the static folder. If a specific file is requested
     and exists, serve it. For known SPA routes, serve index.html with 200.
     For unknown routes, serve index.html with 404 to avoid soft-404 SEO issues.
+
+    Bot detection: If the request is from a known bot (Googlebot, Bingbot, etc.)
+    and a prerendered HTML file exists for the route, serve the static HTML instead
+    of the SPA shell. This ensures bots see fully-rendered content without needing
+    to execute JavaScript.
     """
     try:
         # If the requested path exists in the static folder, serve it
-        if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-            return send_from_directory(app.static_folder, path)
+        # (skip the prerendered directory itself — it's for bot serving only)
+        if path != "" and not path.startswith("prerendered/"):
+            file_path = os.path.join(app.static_folder, path)
+            if os.path.exists(file_path) and os.path.isfile(file_path):
+                return send_from_directory(app.static_folder, path)
 
         # Check if the path matches a known SPA route prefix
         first_segment = path.split("/")[0] if path else ""
         if first_segment in VALID_SPA_ROUTES:
+            # For bots: serve prerendered HTML if available
+            user_agent = request.headers.get("User-Agent", "")
+            if _is_bot(user_agent):
+                prerendered = _get_prerendered_path(path)
+                if prerendered:
+                    return send_file(prerendered, mimetype="text/html")
+
             return send_from_directory(app.static_folder, "index.html")
 
         # Unknown route — serve index.html with 404 status so search engines
