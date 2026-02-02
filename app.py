@@ -1375,12 +1375,9 @@ def _get_prerendered_path(route_path: str) -> str | None:
     if not os.path.isdir(PRERENDER_DIR):
         return None
 
-    if route_path == "" or route_path == "/":
-        candidate = os.path.join(PRERENDER_DIR, "index.html")
-    else:
-        # Strip leading slash and look for <path>/index.html
-        clean = route_path.strip("/")
-        candidate = os.path.join(PRERENDER_DIR, clean, "index.html")
+    # Strip leading/trailing slashes to handle various path formats like "/", "/about", "about/"
+    clean = route_path.strip("/")
+    candidate = os.path.join(PRERENDER_DIR, clean, "index.html")
 
     if os.path.isfile(candidate):
         return candidate
