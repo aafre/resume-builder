@@ -76,7 +76,7 @@ export default function ResumeKeywordsHub() {
 
       <div className="mb-16">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
-          Why resume keywords matter in 2025
+          Why resume keywords matter in 2026
         </h2>
         <div className="max-w-4xl mx-auto bg-white rounded-xl p-8 shadow-md">
           <p className="text-lg text-gray-700 mb-6 leading-relaxed">
