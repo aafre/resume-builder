@@ -9,9 +9,9 @@ import {
 export const productManager: JobKeywordsData = {
   slug: 'product-manager',
   title: 'Product Manager',
-  metaTitle: 'Product Manager Resume Keywords - Agile, Roadmaps & Strategy (2026)',
+  metaTitle: 'Product Manager Resume Keywords (2026) - 80+ Skills, Tools & Metrics',
   metaDescription:
-    'Top product manager resume keywords: product roadmap, Agile, user stories, stakeholder management, A/B testing, and product strategy for ATS success.',
+    'Free product manager resume keywords: Agile, roadmapping, stakeholder management, A/B testing, Jira, Confluence. Includes before/after bullet examples for PM resumes.',
   category: 'technology',
   priority: 0.9,
   lastmod: '2026-01-18',

@@ -44,8 +44,8 @@ export default function ZetyVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
     <BlogLayout
-      title="Zety vs EasyFreeResume: Free Alternative Compared"
-      description="Is Zety free? No — plans cost $5.95-$23.95/month. Compare Zety vs EasyFreeResume side-by-side: pricing, ATS templates, privacy, and download formats."
+      title="Zety Pricing 2026: Is Zety Free? (+ Free Alternative)"
+      description="Zety costs $5.95-$23.95/month and plans auto-renew. Full pricing breakdown for 2026, plus a genuinely free alternative with ATS-friendly templates and no paywalls."
       publishDate="2026-01-28"
       lastUpdated="2026-02-02"
       readTime="9 min"

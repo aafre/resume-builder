@@ -10,9 +10,9 @@ import {
 export const dataAnalyst: JobKeywordsData = {
   slug: 'data-analyst',
   title: 'Data Analyst',
-  metaTitle: 'Data Analyst Resume Keywords - SQL, Excel & Data Visualization (2026)',
+  metaTitle: 'Data Analyst Resume Keywords (2026) - SQL, Python, Tableau & More',
   metaDescription:
-    'Data analyst resume keywords: SQL, Excel, Tableau, Power BI, Python, data visualization, statistical analysis, and business intelligence skills.',
+    'Free data analyst resume keywords: SQL, Python, Tableau, Power BI, statistical analysis, data visualization. With ATS-optimized bullet examples you can copy.',
   category: 'technology',
   priority: 0.85,
   lastmod: '2026-01-18',
