@@ -50,7 +50,7 @@ export const SideRailLayout = ({
         <div className="block md:hidden">
           <InContentAd
             adSlot={AD_CONFIG.slots.mobileTop}
-            size="small"
+            size="standard"
             marginY={16}
           />
         </div>

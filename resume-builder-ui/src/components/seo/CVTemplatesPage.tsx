@@ -212,7 +212,7 @@ export default function CVTemplatesPage() {
               <h4 className="font-bold text-amber-800 mb-2">Recommended Formats</h4>
               <ul className="text-amber-700 space-y-1">
                 <li>"January 2024 - Present"</li>
-                <li>"Jan 2024 - Dec 2025"</li>
+                <li>"Jan 2025 - Dec 2026"</li>
                 <li>"2022 - 2024" (year only)</li>
               </ul>
             </div>

@@ -222,7 +222,7 @@ export const AdContainer = ({
   }
 
   const containerStyle: CSSProperties = {
-    minHeight: adUnfilled ? "0px" : `${minHeight}px`,
+    minHeight: `${minHeight}px`,
     ...(minWidth && !adUnfilled && { minWidth: `${minWidth}px` }),
     display: "block",
     textAlign: "center",

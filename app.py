@@ -46,9 +46,7 @@ load_dotenv()
 # Default: INFO level (production-ready logging)
 DEBUG_LOGGING = os.getenv("DEBUG_LOGGING", "false").lower() == "true"
 log_level = logging.DEBUG if DEBUG_LOGGING else logging.INFO
-logging.basicConfig(
-    level=log_level, format="%(asctime)s [%(levelname)s] %(message)s"
-)
+logging.basicConfig(level=log_level, format="%(asctime)s [%(levelname)s] %(message)s")
 
 
 def retry_on_connection_error(max_retries=3, backoff_factor=0.5):
@@ -67,6 +65,7 @@ def retry_on_connection_error(max_retries=3, backoff_factor=0.5):
         def some_database_operation():
             return supabase.table('users').select('*').execute()
     """
+
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args, **kwargs) -> Any:
@@ -79,17 +78,19 @@ def retry_on_connection_error(max_retries=3, backoff_factor=0.5):
                     error_msg = str(e).lower()
 
                     # Only retry on connection-related errors
-                    is_retryable = any([
-                        'server disconnected' in error_msg,
-                        'connection' in error_msg,
-                        'timeout' in error_msg,
-                        'reset' in error_msg
-                    ])
+                    is_retryable = any(
+                        [
+                            "server disconnected" in error_msg,
+                            "connection" in error_msg,
+                            "timeout" in error_msg,
+                            "reset" in error_msg,
+                        ]
+                    )
 
                     if not is_retryable or attempt == max_retries:
                         raise
 
-                    wait_time = backoff_factor * (2 ** attempt)
+                    wait_time = backoff_factor * (2**attempt)
                     logging.warning(
                         f"Retry {attempt + 1}/{max_retries} for {func.__name__} "
                         f"after {wait_time}s due to: {e}"
@@ -99,6 +100,7 @@ def retry_on_connection_error(max_retries=3, backoff_factor=0.5):
             raise last_exception
 
         return wrapper
+
     return decorator
 
 
@@ -124,50 +126,46 @@ def classify_thumbnail_error(error):
         return {
             "retryable": False,
             "error_type": "dependency",
-            "user_message": "Server configuration error. Please contact support."
+            "user_message": "Server configuration error. Please contact support.",
         }
 
     # Connection/network errors - retryable
-    transient_keywords = ['server disconnected', 'connection', 'timeout', 'reset', 'network']
+    transient_keywords = [
+        "server disconnected",
+        "connection",
+        "timeout",
+        "reset",
+        "network",
+    ]
     if any(keyword in error_msg for keyword in transient_keywords):
-        return {
-            "retryable": True,
-            "error_type": "network",
-            "user_message": None
-        }
+        return {"retryable": True, "error_type": "network", "user_message": None}
 
     # Storage errors - retryable (may be transient auth token)
-    if 'storage' in error_msg or 'bucket' in error_msg:
-        return {
-            "retryable": True,
-            "error_type": "storage",
-            "user_message": None
-        }
+    if "storage" in error_msg or "bucket" in error_msg:
+        return {"retryable": True, "error_type": "storage", "user_message": None}
 
     # Data validation errors - permanent
-    if 'invalid' in error_msg or 'corrupted' in error_msg or 'missing' in error_msg:
+    if "invalid" in error_msg or "corrupted" in error_msg or "missing" in error_msg:
         return {
             "retryable": False,
             "error_type": "data",
-            "user_message": "Resume data issue. Please edit the resume."
+            "user_message": "Resume data issue. Please edit the resume.",
         }
 
     # Default: assume retryable
-    return {
-        "retryable": True,
-        "error_type": "unknown",
-        "user_message": None
-    }
+    return {"retryable": True, "error_type": "unknown", "user_message": None}
 
 
-def pdf_generation_worker(template_name, yaml_path, output_path, session_icons_dir, session_id):
+def pdf_generation_worker(
+    template_name, yaml_path, output_path, session_icons_dir, session_id
+):
     """
     Worker function for process pool PDF generation.
-    
+
     This runs in an isolated process to prevent Qt WebKit state contamination.
     wkhtmltopdf (used by pdfkit) has Qt threading issues when called directly
     from Flask's multi-threaded context, causing "QNetworkReplyImplPrivate" errors.
-    
+
     By running each PDF generation in a separate process, we ensure:
     - Fresh Qt state for each request (no contamination)
     - Complete isolation from Flask's threading model
@@ -177,10 +175,12 @@ def pdf_generation_worker(template_name, yaml_path, output_path, session_icons_d
         import subprocess
         import logging
         from pathlib import Path
-        
+
         # Set up logging for worker process
-        logging.basicConfig(level=logging.INFO, format="%(asctime)s [WORKER] %(message)s")
-        
+        logging.basicConfig(
+            level=logging.INFO, format="%(asctime)s [WORKER] %(message)s"
+        )
+
         cmd = [
             "python",
             "resume_generator.py",
@@ -195,22 +195,21 @@ def pdf_generation_worker(template_name, yaml_path, output_path, session_icons_d
             "--session-id",
             session_id,
         ]
-        
+
         logging.debug(f"Worker running command: {' '.join(cmd)}")
-        
+
         # Get the project root (worker process needs proper cwd)
         project_root = Path(__file__).parent.resolve()
-        
+
         result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            cwd=str(project_root)
+            cmd, capture_output=True, text=True, cwd=str(project_root)
         )
-        
+
         if result.returncode != 0:
             # Enhanced error logging for subprocess failures
-            logging.error(f"Worker subprocess failed with return code {result.returncode}")
+            logging.error(
+                f"Worker subprocess failed with return code {result.returncode}"
+            )
             logging.error(f"Command executed: {' '.join(cmd)}")
             logging.error(f"Subprocess stdout: {result.stdout}")
             logging.error(f"Subprocess stderr: {result.stderr}")
@@ -218,7 +217,7 @@ def pdf_generation_worker(template_name, yaml_path, output_path, session_icons_d
             logging.error(f"Template: {template_name}, Session: {session_id}")
             error_msg = f"Worker subprocess failed: {result.stderr}"
             return {"success": False, "error": error_msg}
-        
+
         # Verify PDF was created and has content
         pdf_path = Path(output_path)
         if not pdf_path.exists() or pdf_path.stat().st_size == 0:
@@ -235,10 +234,10 @@ def pdf_generation_worker(template_name, yaml_path, output_path, session_icons_d
             logging.error(f"Template: {template_name}, Session: {session_id}")
             error_msg = "PDF file was not created by worker subprocess"
             return {"success": False, "error": error_msg}
-        
+
         logging.info("Worker PDF generation completed successfully")
         return {"success": True, "output": str(output_path)}
-        
+
     except Exception as e:
         error_msg = f"Worker process failed: {str(e)}"
         logging.error(error_msg)
@@ -260,6 +259,7 @@ def pdf_generation_worker(template_name, yaml_path, output_path, session_icons_d
 # - Cloud Run horizontal scaling handles additional concurrency across instances
 PDF_THREAD_POOL = None
 
+
 def initialize_pdf_pool():
     """
     Initialize the thread pool for PDF generation dispatch.
@@ -280,6 +280,7 @@ def initialize_pdf_pool():
     except Exception as e:
         logging.error(f"Failed to initialize PDF thread pool: {e}")
         PDF_THREAD_POOL = None
+
 
 def cleanup_pdf_pool():
     """Clean up the thread pool on app shutdown."""
@@ -312,13 +313,13 @@ def get_social_media_handle(url, platform="linkedin"):
     # Platform-specific handle extraction
     if platform == "stackoverflow":
         # Extract username from stackoverflow.com/users/123456/username
-        match = re.search(r'/users/\d+/([\w\-]+)', url)
+        match = re.search(r"/users/\d+/([\w\-]+)", url)
         return match.group(1) if match else url.split("/")[-1]
 
     elif platform == "medium":
         # Extract @username from medium.com/@username
         handle = url.split("/")[-1]
-        return handle if handle.startswith('@') else f"@{handle}"
+        return handle if handle.startswith("@") else f"@{handle}"
 
     elif platform == "twitter":
         # Extract @username from twitter.com/username or x.com/username
@@ -347,11 +348,13 @@ def migrate_linkedin_to_social_links(contact_info):
     linkedin_url = contact_info.get("linkedin", "")
     if linkedin_url and linkedin_url.strip():
         # Create social_links array with migrated LinkedIn
-        contact_info["social_links"] = [{
-            "platform": "linkedin",
-            "url": linkedin_url,
-            "display_text": contact_info.get("linkedin_display", "")
-        }]
+        contact_info["social_links"] = [
+            {
+                "platform": "linkedin",
+                "url": linkedin_url,
+                "display_text": contact_info.get("linkedin_display", ""),
+            }
+        ]
         app.logger.info("Migrated old 'linkedin' field to 'social_links' array")
     else:
         # Initialize empty social_links array
@@ -367,10 +370,10 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
     Args:
         linkedin_url (str): The full LinkedIn URL.
         contact_name (str): The user's full name for fallback generation.
-    
+
     Returns:
         str: A clean, professional display text for the resume.
-        
+
     Examples:
         - "linkedin.com/in/john-fitzgerald-doe" -> "John Fitzgerald Doe"
         - "linkedin.com/in/jane-doe-a1b2c3d4" with name "Jane Doe" -> "Jane Doe"
@@ -379,9 +382,9 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
     # First, validate that this is actually a LinkedIn URL
     if not linkedin_url or "linkedin" not in linkedin_url.lower():
         return "LinkedIn Profile"
-    
+
     raw_handle = get_social_media_handle(linkedin_url)
-    
+
     # If there's no handle, we can't do much.
     if not raw_handle:
         return "LinkedIn Profile"
@@ -392,17 +395,17 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
         # Rule 1: Too long
         if len(handle) > 50:
             return False
-            
+
         # Rule 2: Too many hyphens
-        if handle.count('-') > 1:
+        if handle.count("-") > 1:
             return False
-            
+
         # Rule 3: Long sequences of numbers (e.g., ...1998)
-        if re.search(r'\d{4,}', handle):
+        if re.search(r"\d{4,}", handle):
             return False
-            
+
         # Rule 4: Common random suffixes (e.g., ...-a1b2c3d4)
-        if re.search(r'-[a-z0-9]{8,}', handle.lower()):
+        if re.search(r"-[a-z0-9]{8,}", handle.lower()):
             return False
 
         return True
@@ -410,13 +413,13 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
     # --- Main logic ---
     if is_clean_handle(raw_handle):
         # Format the clean handle into a readable name
-        parts = raw_handle.replace('_', '-').split('-')
-        return ' '.join(part.capitalize() for part in parts if part)
+        parts = raw_handle.replace("_", "-").split("-")
+        return " ".join(part.capitalize() for part in parts if part)
     else:
         # If the handle is messy, use the contact name if available
         if contact_name:
             return contact_name.strip()
-        
+
         # Final fallback if handle is messy and no name is provided
         return "LinkedIn Profile"
 
@@ -483,10 +486,14 @@ def normalize_sections(data):
 
         if section_name_lower == "experience":
             section["type"] = "experience"
-            logging.debug(f"Normalized section '{section.get('name')}' to type='experience'")
+            logging.debug(
+                f"Normalized section '{section.get('name')}' to type='experience'"
+            )
         elif section_name_lower == "education":
             section["type"] = "education"
-            logging.debug(f"Normalized section '{section.get('name')}' to type='education'")
+            logging.debug(
+                f"Normalized section '{section.get('name')}' to type='education'"
+            )
 
     return data
 
@@ -509,7 +516,8 @@ def convert_markdown_links_to_html(text):
 
     # Regex to match [text](url) pattern
     import re
-    pattern = r'\[([^\]]+)\]\(([^\)]+)\)'
+
+    pattern = r"\[([^\]]+)\]\(([^\)]+)\)"
 
     # Replace with HTML anchor tag
     html_text = re.sub(pattern, r'<a href="\2">\1</a>', text)
@@ -535,10 +543,11 @@ def convert_markdown_links_to_latex(text):
 
     # Regex to match [text](url) pattern
     import re
-    pattern = r'\[([^\]]+)\]\(([^\)]+)\)'
+
+    pattern = r"\[([^\]]+)\]\(([^\)]+)\)"
 
     # Replace with LaTeX href command
-    latex_text = re.sub(pattern, r'\\href{\2}{\1}', text)
+    latex_text = re.sub(pattern, r"\\href{\2}{\1}", text)
 
     return latex_text
 
@@ -569,22 +578,22 @@ def convert_markdown_formatting_to_html(text):
 
     # Process in specific order to avoid conflicts
     # 1. Bold with ** (must come before single *)
-    text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
+    text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
 
     # 2. Bold with __ (must come before single _)
-    text = re.sub(r'__(.+?)__', r'<strong>\1</strong>', text)
+    text = re.sub(r"__(.+?)__", r"<strong>\1</strong>", text)
 
     # 3. Italic with * (after ** is processed)
-    text = re.sub(r'\*(.+?)\*', r'<em>\1</em>', text)
+    text = re.sub(r"\*(.+?)\*", r"<em>\1</em>", text)
 
     # 4. Italic with _ (after __ is processed)
-    text = re.sub(r'_(.+?)_', r'<em>\1</em>', text)
+    text = re.sub(r"_(.+?)_", r"<em>\1</em>", text)
 
     # 5. Strikethrough with ~~
-    text = re.sub(r'~~(.+?)~~', r'<s>\1</s>', text)
+    text = re.sub(r"~~(.+?)~~", r"<s>\1</s>", text)
 
     # 6. Underline with ++ (custom syntax)
-    text = re.sub(r'\+\+(.+?)\+\+', r'<u>\1</u>', text)
+    text = re.sub(r"\+\+(.+?)\+\+", r"<u>\1</u>", text)
 
     return text
 
@@ -615,22 +624,22 @@ def convert_markdown_formatting_to_latex(text):
 
     # Process in specific order to avoid conflicts
     # 1. Bold with ** (must come before single *)
-    text = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\1}', text)
+    text = re.sub(r"\*\*(.+?)\*\*", r"\\textbf{\1}", text)
 
     # 2. Bold with __ (must come before single _)
-    text = re.sub(r'__(.+?)__', r'\\textbf{\1}', text)
+    text = re.sub(r"__(.+?)__", r"\\textbf{\1}", text)
 
     # 3. Italic with * (after ** is processed)
-    text = re.sub(r'\*(.+?)\*', r'\\textit{\1}', text)
+    text = re.sub(r"\*(.+?)\*", r"\\textit{\1}", text)
 
     # 4. Italic with _ (after __ is processed)
-    text = re.sub(r'_(.+?)_', r'\\textit{\1}', text)
+    text = re.sub(r"_(.+?)_", r"\\textit{\1}", text)
 
     # 5. Strikethrough with ~~
-    text = re.sub(r'~~(.+?)~~', r'\\sout{\1}', text)
+    text = re.sub(r"~~(.+?)~~", r"\\sout{\1}", text)
 
     # 6. Underline with ++ (custom syntax)
-    text = re.sub(r'\+\+(.+?)\+\+', r'\\underline{\1}', text)
+    text = re.sub(r"\+\+(.+?)\+\+", r"\\underline{\1}", text)
 
     # 7. Escape remaining dangerous characters that weren't consumed by markdown
     text = _escape_remaining_latex_chars(text)
@@ -663,18 +672,20 @@ def _escape_remaining_latex_chars(text):
         return text
 
     # Escape underscores NOT already escaped (negative lookbehind for backslash)
-    text = re.sub(r'(?<!\\)_', r'\\_', text)
+    text = re.sub(r"(?<!\\)_", r"\\_", text)
 
     # Escape tildes NOT already escaped
-    text = re.sub(r'(?<!\\)~', r'\\textasciitilde{}', text)
+    text = re.sub(r"(?<!\\)~", r"\\textasciitilde{}", text)
 
     return text
 
 
 def _prepare_latex_data(data):
     """Recursively applies LaTeX escaping to all string values in the data dictionary."""
-    logging.info("Preparing data for LaTeX rendering, applying escaping and deriving fields.")
-    
+    logging.info(
+        "Preparing data for LaTeX rendering, applying escaping and deriving fields."
+    )
+
     prepared_data = copy.deepcopy(data)
 
     def apply_escaping_recursive(item, current_key=None):
@@ -729,21 +740,30 @@ def _prepare_latex_data(data):
                         # Extract domain from URL
                         try:
                             from urllib.parse import urlparse
+
                             parsed = urlparse(url)
-                            link["display_text"] = parsed.hostname.replace('www.', '') if parsed.hostname else "Website"
+                            link["display_text"] = (
+                                parsed.hostname.replace("www.", "")
+                                if parsed.hostname
+                                else "Website"
+                            )
                         except:
                             link["display_text"] = "Website"
                     else:
                         # Default: use handle or platform name
                         link["display_text"] = link["handle"] or platform.capitalize()
 
-                    logging.info(f"Generated {platform} display text: {link['display_text']}")
+                    logging.info(
+                        f"Generated {platform} display text: {link['display_text']}"
+                    )
 
         # Store processed social_links back in contact_info
         contact_info["social_links"] = social_links
 
         # Maintain backward compatibility: keep linkedin fields for old templates
-        linkedin_link = next((link for link in social_links if link.get("platform") == "linkedin"), None)
+        linkedin_link = next(
+            (link for link in social_links if link.get("platform") == "linkedin"), None
+        )
         if linkedin_link:
             contact_info["linkedin"] = linkedin_link.get("url", "")
             contact_info["linkedin_handle"] = linkedin_link.get("handle", "")
@@ -773,61 +793,59 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
 
         # Load and prepare data
         prepared_data = _prepare_latex_data(yaml_data)
-        
+
         # Setup template directory and Jinja2 environment
         template_dir = PROJECT_ROOT / "templates" / template_name
-        
+
         # Configure Jinja2 with LaTeX-compatible delimiters
         latex_env = Environment(
             loader=FileSystemLoader(template_dir),
-            block_start_string='\\BLOCK{',
-            block_end_string='}',
-            variable_start_string='\\VAR{',
-            variable_end_string='}',
-            comment_start_string='\\#{',
-            comment_end_string='}',
-            line_statement_prefix='%%',
-            line_comment_prefix='%#',
+            block_start_string="\\BLOCK{",
+            block_end_string="}",
+            variable_start_string="\\VAR{",
+            variable_end_string="}",
+            comment_start_string="\\#{",
+            comment_end_string="}",
+            line_statement_prefix="%%",
+            line_comment_prefix="%#",
             trim_blocks=True,
-            autoescape=False
+            autoescape=False,
         )
 
         # Register custom filters for markdown links and formatting
-        latex_env.filters['markdown_links'] = convert_markdown_links_to_latex
-        latex_env.filters['markdown_formatting'] = convert_markdown_formatting_to_latex
+        latex_env.filters["markdown_links"] = convert_markdown_links_to_latex
+        latex_env.filters["markdown_formatting"] = convert_markdown_formatting_to_latex
 
         # Render the LaTeX template
         template = latex_env.get_template("resume.tex")
         latex_content = template.render(**prepared_data)
-        
+
         # Create unique temporary file for LaTeX using existing session_id
         temp_dir = Path(tempfile.gettempdir())
         temp_tex_file = temp_dir / f"resume_{session_id}.tex"
         temp_pdf_file = temp_dir / f"resume_{session_id}.pdf"
-        
+
         # Write LaTeX content to temporary file
         with open(temp_tex_file, "w", encoding="utf-8") as f:
             f.write(latex_content)
-        
+
         logging.debug(f"LaTeX content written to: {temp_tex_file}")
-        
+
         # Compile LaTeX to PDF using xelatex
         compile_command = [
             "xelatex",
             "-interaction=nonstopmode",
-            "-output-directory", str(temp_dir),
-            str(temp_tex_file)
+            "-output-directory",
+            str(temp_dir),
+            str(temp_tex_file),
         ]
-        
+
         logging.debug(f"Running LaTeX compilation: {' '.join(compile_command)}")
-        
+
         result = subprocess.run(
-            compile_command,
-            capture_output=True,
-            text=True,
-            cwd=str(temp_dir)
+            compile_command, capture_output=True, text=True, cwd=str(temp_dir)
         )
-        
+
         # Check if PDF was generated successfully (primary success indicator)
         if not temp_pdf_file.exists():
             logging.error("PDF file was not generated by LaTeX compilation")
@@ -835,20 +853,22 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
             logging.error(f"LaTeX stdout: {result.stdout}")
             logging.error(f"LaTeX stderr: {result.stderr}")
             raise Exception("PDF file was not generated")
-        
+
         # Log warnings if present but don't fail if PDF exists
         if result.stderr:
             logging.warning(f"LaTeX compilation warnings: {result.stderr}")
-        
+
         # Only fail on non-zero return code if PDF wasn't generated
         if result.returncode != 0:
-            logging.warning(f"LaTeX compilation completed with warnings (return code {result.returncode})")
+            logging.warning(
+                f"LaTeX compilation completed with warnings (return code {result.returncode})"
+            )
             logging.warning(f"LaTeX stdout: {result.stdout}")
-        
+
         # Copy the generated PDF to the output location
         shutil.copy2(temp_pdf_file, output_path)
         logging.info(f"PDF successfully generated at: {output_path}")
-        
+
         # Clean up temporary files
         for pattern in [f"resume_{session_id}.*"]:
             for temp_file in temp_dir.glob(pattern):
@@ -857,12 +877,14 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
                     logging.debug(f"Cleaned up temporary file: {temp_file}")
                 except Exception as e:
                     logging.warning(f"Could not remove temporary file {temp_file}: {e}")
-        
+
         return str(output_path)
-        
+
     except Exception as e:
         # Complete error context for debugging - ONLY on actual errors
-        logging.error(f"LaTeX PDF generation failed for template '{template_name}', Session: {session_id}")
+        logging.error(
+            f"LaTeX PDF generation failed for template '{template_name}', Session: {session_id}"
+        )
         logging.error(f"Error: {str(e)}")
         logging.error(f"YAML data for reproduction: {yaml_data}")
         raise e
@@ -926,7 +948,11 @@ def extract_icons_from_yaml(data):
         for key, value in data.items():
             if key == "icon" and isinstance(value, str):
                 # Frontend now sends clean filenames, but handle both cases
-                clean_icon_name = value.replace('/icons/', '') if value.startswith('/icons/') else value
+                clean_icon_name = (
+                    value.replace("/icons/", "")
+                    if value.startswith("/icons/")
+                    else value
+                )
                 icons.add(clean_icon_name)
             else:
                 icons.update(extract_icons_from_yaml(value))
@@ -937,7 +963,9 @@ def extract_icons_from_yaml(data):
 
 
 # Supabase Storage Helper Functions
-def upload_icon_to_storage(user_id, resume_id, filename, file_data, mime_type="image/png"):
+def upload_icon_to_storage(
+    user_id, resume_id, filename, file_data, mime_type="image/png"
+):
     """
     Upload icon file to Supabase Storage.
 
@@ -962,14 +990,16 @@ def upload_icon_to_storage(user_id, resume_id, filename, file_data, mime_type="i
 
     try:
         # Upload to 'resume-icons' bucket
-        supabase.storage.from_('resume-icons').upload(
+        supabase.storage.from_("resume-icons").upload(
             storage_path,
             file_data,
-            file_options={"content-type": mime_type, "upsert": "true"}
+            file_options={"content-type": mime_type, "upsert": "true"},
         )
 
         # Get public URL
-        storage_url = supabase.storage.from_('resume-icons').get_public_url(storage_path)
+        storage_url = supabase.storage.from_("resume-icons").get_public_url(
+            storage_path
+        )
 
         logging.debug(f"Uploaded icon to storage: {storage_path}")
         return storage_path, storage_url
@@ -994,13 +1024,15 @@ def check_resume_limit(user_id):
 
     try:
         # Query resumes table for non-deleted resumes
-        result = supabase.table('resumes') \
-            .select('id', count='exact') \
-            .eq('user_id', user_id) \
-            .is_('deleted_at', 'null') \
+        result = (
+            supabase.table("resumes")
+            .select("id", count="exact")
+            .eq("user_id", user_id)
+            .is_("deleted_at", "null")
             .execute()
+        )
 
-        current_count = result.count if hasattr(result, 'count') else len(result.data)
+        current_count = result.count if hasattr(result, "count") else len(result.data)
         can_create = current_count < 5
 
         logging.debug(f"User {user_id} has {current_count}/5 resumes")
@@ -1030,21 +1062,27 @@ def download_icon_from_storage(storage_path, dest_path, max_retries=2):
     for attempt in range(max_retries + 1):
         try:
             # Download file from storage
-            file_data = supabase.storage.from_('resume-icons').download(storage_path)
+            file_data = supabase.storage.from_("resume-icons").download(storage_path)
 
             # Write to destination
-            with open(dest_path, 'wb') as f:
+            with open(dest_path, "wb") as f:
                 f.write(file_data)
 
-            logging.debug(f"Downloaded icon from storage: {storage_path} -> {dest_path}")
+            logging.debug(
+                f"Downloaded icon from storage: {storage_path} -> {dest_path}"
+            )
             return True
         except Exception as e:
             if attempt < max_retries:
-                wait_time = 0.5 * (2 ** attempt)  # Exponential backoff: 0.5s, 1s
-                logging.warning(f"Icon download attempt {attempt + 1} failed for {storage_path}, retrying in {wait_time}s: {e}")
+                wait_time = 0.5 * (2**attempt)  # Exponential backoff: 0.5s, 1s
+                logging.warning(
+                    f"Icon download attempt {attempt + 1} failed for {storage_path}, retrying in {wait_time}s: {e}"
+                )
                 time.sleep(wait_time)
             else:
-                logging.error(f"Failed to download icon {storage_path} after {max_retries + 1} attempts: {e}")
+                logging.error(
+                    f"Failed to download icon {storage_path} after {max_retries + 1} attempts: {e}"
+                )
                 return False
 
     return False
@@ -1063,7 +1101,9 @@ def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
         str: Public URL of the uploaded thumbnail, or None if generation fails
     """
     if supabase is None:
-        logging.warning("Supabase client not initialized - skipping thumbnail generation")
+        logging.warning(
+            "Supabase client not initialized - skipping thumbnail generation"
+        )
         return None
 
     try:
@@ -1073,12 +1113,7 @@ def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
 
         # Convert first page of PDF to image at 150 DPI
         logging.debug(f"Converting PDF to thumbnail: {pdf_path}")
-        images = convert_from_path(
-            pdf_path,
-            first_page=1,
-            last_page=1,
-            dpi=150
-        )
+        images = convert_from_path(pdf_path, first_page=1, last_page=1, dpi=150)
 
         if not images:
             logging.error("No images generated from PDF")
@@ -1093,44 +1128,50 @@ def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
         aspect_ratio = page_image.height / page_image.width
         target_height = int(target_width * aspect_ratio)
 
-        thumbnail = page_image.resize((target_width, target_height), Image.Resampling.LANCZOS)
+        thumbnail = page_image.resize(
+            (target_width, target_height), Image.Resampling.LANCZOS
+        )
 
         # Save to temporary file
-        with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp_file:
-            thumbnail.save(tmp_file.name, 'PNG', optimize=True, quality=85)
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_file:
+            thumbnail.save(tmp_file.name, "PNG", optimize=True, quality=85)
             tmp_path = tmp_file.name
 
         try:
             # Read the thumbnail data
-            with open(tmp_path, 'rb') as f:
+            with open(tmp_path, "rb") as f:
                 thumbnail_data = f.read()
 
             # Upload to Supabase Storage: resume-thumbnails/{user_id}/{resume_id}/thumbnail.png
             storage_path = f"{user_id}/{resume_id}/thumbnail.png"
 
             logging.debug(f"Uploading thumbnail to storage: {storage_path}")
-            supabase.storage.from_('resume-thumbnails').upload(
+            supabase.storage.from_("resume-thumbnails").upload(
                 storage_path,
                 thumbnail_data,
                 file_options={
                     "content-type": "image/png",
                     "upsert": "true",
-                    "cacheControl": "public, max-age=31536000, immutable"
-                }
+                    "cacheControl": "public, max-age=31536000, immutable",
+                },
             )
 
             # Get public URL and add cache-busting timestamp
-            thumbnail_url = supabase.storage.from_('resume-thumbnails').get_public_url(storage_path)
+            thumbnail_url = supabase.storage.from_("resume-thumbnails").get_public_url(
+                storage_path
+            )
 
             # Add cache-busting parameter to force browser to fetch new thumbnails
             timestamp = int(time.time() * 1000)  # Unix timestamp in milliseconds
             url_parts = list(urlparse(thumbnail_url))
             query = parse_qs(url_parts[4])
-            query['v'] = [str(timestamp)]
+            query["v"] = [str(timestamp)]
             url_parts[4] = urlencode(query, doseq=True)
             thumbnail_url = urlunparse(url_parts)
 
-            logging.info(f"Successfully generated and uploaded thumbnail: {storage_path}")
+            logging.info(
+                f"Successfully generated and uploaded thumbnail: {storage_path}"
+            )
             return thumbnail_url
 
         finally:
@@ -1150,10 +1191,14 @@ def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
 
 # Initialize Supabase client
 SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_SECRET_KEY = os.getenv("SUPABASE_SECRET_KEY")  # Use secret key for admin operations
+SUPABASE_SECRET_KEY = os.getenv(
+    "SUPABASE_SECRET_KEY"
+)  # Use secret key for admin operations
 
 if not SUPABASE_URL or not SUPABASE_SECRET_KEY:
-    logging.warning("Supabase credentials not found. Resume storage features will be disabled.")
+    logging.warning(
+        "Supabase credentials not found. Resume storage features will be disabled."
+    )
     supabase: Client = None
 else:
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_SECRET_KEY)
@@ -1164,8 +1209,8 @@ MAX_ICON_COPY_WORKERS = 10
 
 # Development mode: Don't serve React from root to avoid route conflicts
 # Production mode: Serve React build from root (static_url_path="/")
-FLASK_ENV = os.getenv('FLASK_ENV', 'development')
-if FLASK_ENV == 'production':
+FLASK_ENV = os.getenv("FLASK_ENV", "development")
+if FLASK_ENV == "production":
     # Production: Flask serves React static files from root
     app = Flask(__name__, static_folder="static", static_url_path="/")
 else:
@@ -1179,18 +1224,21 @@ Compress(app)
 # Flask serves React static files from same container, so same-origin by default
 # But we still configure CORS for dev environments and explicit domain control
 ALLOWED_ORIGINS = os.getenv(
-    'ALLOWED_ORIGINS',
-    'http://localhost:3000,http://localhost:5000,http://localhost:5173,https://easyfreeresume.com'
-).split(',')
+    "ALLOWED_ORIGINS",
+    "http://localhost:3000,http://localhost:5000,http://localhost:5173,https://easyfreeresume.com",
+).split(",")
 
-CORS(app, resources={
-    r"/api/*": {
-        "origins": ALLOWED_ORIGINS,
-        "methods": ["GET", "POST", "PUT", "PATCH", "DELETE"],
-        "allow_headers": ["Content-Type", "Authorization"],
-        "supports_credentials": True
-    }
-})
+CORS(
+    app,
+    resources={
+        r"/api/*": {
+            "origins": ALLOWED_ORIGINS,
+            "methods": ["GET", "POST", "PUT", "PATCH", "DELETE"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": True,
+        }
+    },
+)
 
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB
 
@@ -1198,6 +1246,7 @@ app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB
 CANONICAL_HOST = "easyfreeresume.com"
 WWW_HOST = f"www.{CANONICAL_HOST}"
 assert not CANONICAL_HOST.startswith("www."), "CANONICAL_HOST must be apex (no www.)"
+
 
 @app.before_request
 def canonicalize_host():
@@ -1208,6 +1257,7 @@ def canonicalize_host():
         target_url = f"https://{CANONICAL_HOST}{request.full_path}".rstrip("?")
         return redirect(target_url, code=301)
     return None
+
 
 # Initialize PDF process pool on app startup
 initialize_pdf_pool()
@@ -1225,19 +1275,22 @@ TEMPLATE_FILE_MAP = {
     "modern": TEMPLATES_DIR / "john_doe.yml",  # Alias for job example pages
     "modern-no-icons": TEMPLATES_DIR / "john_doe_no_icon.yml",
     "modern-with-icons": TEMPLATES_DIR / "john_doe.yml",
-    "classic-alex-rivera": PROJECT_ROOT / "samples" / "classic" / "alex_rivera_data.yml",
+    "classic-alex-rivera": PROJECT_ROOT
+    / "samples"
+    / "classic"
+    / "alex_rivera_data.yml",
     "classic-jane-doe": PROJECT_ROOT / "samples" / "classic" / "jane_doe.yml",
 }
 
 # Template ID to directory mapping
 # Maps UI template IDs to actual template directory names
 TEMPLATE_DIR_MAP = {
-    "modern-with-icons": "modern",     # HTML template - icons supported
-    "modern-no-icons": "modern",       # HTML template - no icons
-    "modern": "modern",                # Default HTML template
-    "classic": "classic",              # LaTeX template (generic)
+    "modern-with-icons": "modern",  # HTML template - icons supported
+    "modern-no-icons": "modern",  # HTML template - no icons
+    "modern": "modern",  # Default HTML template
+    "classic": "classic",  # LaTeX template (generic)
     "classic-alex-rivera": "classic",  # LaTeX template (data analytics)
-    "classic-jane-doe": "classic",     # LaTeX template (marketing)
+    "classic-jane-doe": "classic",  # LaTeX template (marketing)
 }
 
 
@@ -1254,45 +1307,90 @@ def require_auth(f):
             user = request.user
             ...
     """
+
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if supabase is None:
-            return jsonify({"success": False, "error": "Resume storage not configured"}), 503
+            return (
+                jsonify({"success": False, "error": "Resume storage not configured"}),
+                503,
+            )
 
-        auth_header = request.headers.get('Authorization')
-        if not auth_header or not auth_header.startswith('Bearer '):
+        auth_header = request.headers.get("Authorization")
+        if not auth_header or not auth_header.startswith("Bearer "):
             logging.warning(
                 f"Auth missing | endpoint={request.path} | method={request.method} | "
                 f"ip={request.remote_addr}"
             )
-            return jsonify({"success": False, "error": "Unauthorized - Missing or invalid Authorization header"}), 401
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "error": "Unauthorized - Missing or invalid Authorization header",
+                    }
+                ),
+                401,
+            )
 
-        token = auth_header.replace('Bearer ', '')
-        try:
-            # Verify JWT and extract user
-            user_response = supabase.auth.get_user(token)
-            request.user_id = user_response.user.id
-            request.user = user_response.user
-            return f(*args, **kwargs)
-        except Exception as e:
-            # Enhanced logging with context for debugging auth issues
-            error_msg = str(e)
-            is_expired = 'expired' in error_msg.lower()
-            user_agent = request.headers.get('User-Agent', 'unknown')[:50]
+        token = auth_header.replace("Bearer ", "")
 
-            # Use WARNING for expired tokens (expected during proactive refresh race conditions)
-            # Use ERROR for other auth failures (unexpected issues)
-            if is_expired:
-                logging.warning(
-                    f"Expired token | endpoint={request.path} | method={request.method} | "
-                    f"user_agent={user_agent} | ip={request.remote_addr}"
+        # NEW: Retry get_user once on connection errors (2 total attempts, 0.5s delay)
+        # Supabase has no built-in retry; this protects all 13 auth'd endpoints at the gateway.
+        # Does NOT retry expired/invalid tokens — only transient connection failures.
+        max_auth_attempts = 2
+        last_auth_exception = None
+        for auth_attempt in range(max_auth_attempts):
+            try:
+                # Verify JWT and extract user
+                user_response = supabase.auth.get_user(token)
+                request.user_id = user_response.user.id
+                request.user = user_response.user
+                return f(*args, **kwargs)
+            except Exception as e:
+                error_msg = str(e)
+                error_lower = error_msg.lower()
+
+                # Same keywords as retry_on_connection_error decorator
+                is_connection_error = any(
+                    [
+                        "server disconnected" in error_lower,
+                        "connection" in error_lower,
+                        "timeout" in error_lower,
+                        "reset" in error_lower,
+                    ]
                 )
-            else:
-                logging.error(
-                    f"Auth error: {error_msg} | endpoint={request.path} | method={request.method} | "
-                    f"user_agent={user_agent} | ip={request.remote_addr}"
-                )
-            return jsonify({"success": False, "error": "Invalid or expired token"}), 401
+
+                if is_connection_error and auth_attempt < max_auth_attempts - 1:
+                    logging.warning(
+                        f"Auth retry {auth_attempt + 1}/{max_auth_attempts - 1} | "
+                        f"endpoint={request.path} | error={error_msg}"
+                    )
+                    last_auth_exception = e
+                    time.sleep(0.5)
+                    continue
+
+                # Not retryable or final attempt — fall through to error handling
+                last_auth_exception = e
+                break
+
+        # Enhanced logging with context for debugging auth issues
+        error_msg = str(last_auth_exception)
+        is_expired = "expired" in error_msg.lower()
+        user_agent = request.headers.get("User-Agent", "unknown")[:50]
+
+        # Use WARNING for expired tokens (expected during proactive refresh race conditions)
+        # Use ERROR for other auth failures (unexpected issues)
+        if is_expired:
+            logging.warning(
+                f"Expired token | endpoint={request.path} | method={request.method} | "
+                f"user_agent={user_agent} | ip={request.remote_addr}"
+            )
+        else:
+            logging.error(
+                f"Auth error: {error_msg} | endpoint={request.path} | method={request.method} | "
+                f"user_agent={user_agent} | ip={request.remote_addr}"
+            )
+        return jsonify({"success": False, "error": "Invalid or expired token"}), 401
 
     return decorated_function
 
@@ -1351,6 +1449,38 @@ VALID_SPA_ROUTES = {
     "error",
 }
 
+# Bot user-agent patterns for prerendered HTML serving
+# When a bot requests a page, serve the prerendered HTML if available
+BOT_USER_AGENTS = re.compile(
+    r"googlebot|bingbot|yandexbot|duckduckbot|baiduspider|"
+    r"slurp|facebot|ia_archiver|semrushbot|ahrefsbot|"
+    r"gptbot|claude-web|perplexitybot|amazonbot|bytespider|ccbot|"
+    r"google-extended|applebot",
+    re.IGNORECASE,
+)
+
+# Prerendered HTML directory (populated by scripts/prerender.ts)
+PRERENDER_DIR = os.path.join(app.static_folder, "prerendered")
+
+
+def _is_bot(user_agent: str) -> bool:
+    """Check if the request is from a known search engine or AI bot."""
+    return bool(BOT_USER_AGENTS.search(user_agent))
+
+
+def _get_prerendered_path(route_path: str) -> str | None:
+    """Return the filesystem path to prerendered HTML if it exists."""
+    if not os.path.isdir(PRERENDER_DIR):
+        return None
+
+    # Strip leading/trailing slashes to handle various path formats like "/", "/about", "about/"
+    clean = route_path.strip("/")
+    candidate = os.path.join(PRERENDER_DIR, clean, "index.html")
+
+    if os.path.isfile(candidate):
+        return candidate
+    return None
+
 
 @app.route("/", defaults={"path": ""}, methods=["GET"])
 @app.route("/<path:path>", methods=["GET"])
@@ -1359,15 +1489,30 @@ def serve(path):
     Serve the React app from the static folder. If a specific file is requested
     and exists, serve it. For known SPA routes, serve index.html with 200.
     For unknown routes, serve index.html with 404 to avoid soft-404 SEO issues.
+
+    Bot detection: If the request is from a known bot (Googlebot, Bingbot, etc.)
+    and a prerendered HTML file exists for the route, serve the static HTML instead
+    of the SPA shell. This ensures bots see fully-rendered content without needing
+    to execute JavaScript.
     """
     try:
         # If the requested path exists in the static folder, serve it
-        if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-            return send_from_directory(app.static_folder, path)
+        # (skip the prerendered directory itself — it's for bot serving only)
+        if path != "" and not path.startswith("prerendered/"):
+            file_path = os.path.join(app.static_folder, path)
+            if os.path.exists(file_path) and os.path.isfile(file_path):
+                return send_from_directory(app.static_folder, path)
 
         # Check if the path matches a known SPA route prefix
         first_segment = path.split("/")[0] if path else ""
         if first_segment in VALID_SPA_ROUTES:
+            # For bots: serve prerendered HTML if available
+            user_agent = request.headers.get("User-Agent", "")
+            if _is_bot(user_agent):
+                prerendered = _get_prerendered_path(path)
+                if prerendered:
+                    return send_file(prerendered, mimetype="text/html")
+
             return send_from_directory(app.static_folder, "index.html")
 
         # Unknown route — serve index.html with 404 status so search engines
@@ -1501,29 +1646,29 @@ def generate_linkedin_display():
         data = request.get_json()
         if not data:
             return jsonify({"success": False, "error": "No data provided"}), 400
-        
+
         linkedin_url = data.get("linkedin_url", "").strip()
         contact_name = data.get("contact_name", "").strip()
-        
+
         if not linkedin_url:
             return jsonify({"success": False, "error": "LinkedIn URL is required"}), 400
-        
+
         # Generate smart display text
         display_text = generate_linkedin_display_text(linkedin_url, contact_name)
-        
-        return jsonify({
-            "success": True,
-            "display_text": display_text
-        })
-        
+
+        return jsonify({"success": True, "display_text": display_text})
+
     except Exception as e:
         logging.error(f"Error generating LinkedIn display text: {e}")
-        return jsonify({"success": False, "error": "Failed to generate display text"}), 500
+        return (
+            jsonify({"success": False, "error": "Failed to generate display text"}),
+            500,
+        )
 
 
 def _is_preview_request():
     """Check if the request is for preview (inline) vs download (attachment)."""
-    return request.args.get('preview', 'false').lower() == 'true'
+    return request.args.get("preview", "false").lower() == "true"
 
 
 @app.route("/api/generate", methods=["POST"])
@@ -1547,7 +1692,7 @@ def generate_resume():
             yaml_file.save(yaml_path)
 
             # Parse YAML to extract icon references
-            with open(yaml_path, 'r') as f:
+            with open(yaml_path, "r") as f:
                 yaml_data = yaml.safe_load(f)
 
             # Normalize sections for backward compatibility
@@ -1557,47 +1702,69 @@ def generate_resume():
             session_id = request.form.get("session_id")
             if not session_id:
                 raise ValueError("No session ID provided")
-            
+
             # Create session-specific icon directory
             session_icons_dir = Path("/tmp") / "sessions" / session_id / "icons"
             session_icons_dir.mkdir(parents=True, exist_ok=True)
 
             # Select the template and determine if it uses icons
             template = request.form.get("template", "modern")
-            uses_icons = template == "modern-with-icons"  # Only modern-with-icons template needs icons
-            
+            uses_icons = (
+                template == "modern-with-icons"
+            )  # Only modern-with-icons template needs icons
+
             # Always copy base contact icons that are hardcoded in templates
             # Include all social platform icons for new social_links feature
             base_contact_icons = [
-                "location.png", "email.png", "phone.png", "linkedin.png",
-                "github.png", "twitter.png", "website.png", "pinterest.png",
-                "medium.png", "youtube.png", "stackoverflow.png", "behance.png", "dribbble.png"
+                "location.png",
+                "email.png",
+                "phone.png",
+                "linkedin.png",
+                "github.png",
+                "twitter.png",
+                "website.png",
+                "pinterest.png",
+                "medium.png",
+                "youtube.png",
+                "stackoverflow.png",
+                "behance.png",
+                "dribbble.png",
             ]
             for icon_name in base_contact_icons:
                 default_icon_path = ICONS_DIR / icon_name
                 if default_icon_path.exists():
                     session_icon_path = session_icons_dir / icon_name
                     shutil.copy2(default_icon_path, session_icon_path)
-                    logging.debug(f"Copied base contact icon: {icon_name} to session directory")
+                    logging.debug(
+                        f"Copied base contact icon: {icon_name} to session directory"
+                    )
                 else:
-                    logging.warning(f"Base contact icon not found: {icon_name} at {default_icon_path}")
+                    logging.warning(
+                        f"Base contact icon not found: {icon_name} at {default_icon_path}"
+                    )
 
             # Copy additional icons referenced in YAML content (only for icon-supporting templates)
             if uses_icons:
                 referenced_icons = extract_icons_from_yaml(yaml_data)
-                logging.debug(f"Found {len(referenced_icons)} referenced icons: {referenced_icons}")
+                logging.debug(
+                    f"Found {len(referenced_icons)} referenced icons: {referenced_icons}"
+                )
                 for icon_name in referenced_icons:
                     # Skip if already copied as base contact icon
                     if icon_name in base_contact_icons:
                         continue
-                        
+
                     default_icon_path = ICONS_DIR / icon_name
                     if default_icon_path.exists():
                         session_icon_path = session_icons_dir / icon_name
                         shutil.copy2(default_icon_path, session_icon_path)
-                        logging.debug(f"Copied default icon: {icon_name} to session directory")
+                        logging.debug(
+                            f"Copied default icon: {icon_name} to session directory"
+                        )
                     else:
-                        logging.warning(f"Default icon not found: {icon_name} at {default_icon_path}")
+                        logging.warning(
+                            f"Default icon not found: {icon_name} at {default_icon_path}"
+                        )
             else:
                 logging.debug("Skipping referenced icons for no-icons template variant")
 
@@ -1615,14 +1782,18 @@ def generate_resume():
                         or icon_file.filename.rsplit(".", 1)[1].lower()
                         not in allowed_extensions
                     ):
-                        raise ValueError(f"Invalid icon file type: {icon_file.filename}")
+                        raise ValueError(
+                            f"Invalid icon file type: {icon_file.filename}"
+                        )
 
                     # Save icon to the session-specific icons directory
                     icon_path = session_icons_dir / icon_file.filename
                     icon_file.save(icon_path)
             else:
-                logging.debug("Skipping user uploaded icons for no-icons template variant")
-            
+                logging.debug(
+                    "Skipping user uploaded icons for no-icons template variant"
+                )
+
             # Validate template ID against known templates
             if template not in TEMPLATE_DIR_MAP:
                 raise ValueError(
@@ -1631,21 +1802,29 @@ def generate_resume():
 
             # Use the mapped template directory
             actual_template = TEMPLATE_DIR_MAP[template]
-            
+
             # Use subprocess for PDF generation to avoid Qt state issues
             if actual_template == "classic":
                 # LaTeX path: Use XeLaTeX compilation for classic templates
-                logging.info(f"Using direct LaTeX generation for template: {actual_template}")
-                generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
+                logging.info(
+                    f"Using direct LaTeX generation for template: {actual_template}"
+                )
+                generate_latex_pdf(
+                    yaml_data, str(session_icons_dir), str(output_path), actual_template
+                )
             else:
                 # HTML path: Use thread pool to dispatch subprocess for PDF generation
                 # Subprocess provides process isolation (fresh Python + Qt state)
                 # Thread pool provides backpressure and timeout handling
-                logging.info(f"Using thread pool HTML generation for template: {actual_template}")
+                logging.info(
+                    f"Using thread pool HTML generation for template: {actual_template}"
+                )
 
                 if PDF_THREAD_POOL is None:
                     # Fallback to direct subprocess if pool not available
-                    logging.warning("Thread pool not available, falling back to direct subprocess")
+                    logging.warning(
+                        "Thread pool not available, falling back to direct subprocess"
+                    )
                     cmd = [
                         "python",
                         "resume_generator.py",
@@ -1662,10 +1841,7 @@ def generate_resume():
                     ]
 
                     result = subprocess.run(
-                        cmd,
-                        capture_output=True,
-                        text=True,
-                        cwd=str(PROJECT_ROOT)
+                        cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT)
                     )
 
                     if result.returncode != 0:
@@ -1680,21 +1856,27 @@ def generate_resume():
                         yaml_path,
                         output_path,
                         session_icons_dir,
-                        session_id
+                        session_id,
                     )
-                    
+
                     # Wait for result with timeout
                     try:
                         result = future.result(timeout=60)  # 60 second timeout
-                        
+
                         if not result["success"]:
-                            logging.error(f"Process pool worker failed: {result['error']}")
+                            logging.error(
+                                f"Process pool worker failed: {result['error']}"
+                            )
                             logging.error(f"Failed template: {actual_template}")
                             logging.error(f"Failed session: {session_id}")
                             logging.error(f"YAML data for reproduction: {yaml_data}")
-                            raise RuntimeError(f"Failed to generate the resume: {result['error']}")
-                        
-                        logging.info("Process pool PDF generation completed successfully")
+                            raise RuntimeError(
+                                f"Failed to generate the resume: {result['error']}"
+                            )
+
+                        logging.info(
+                            "Process pool PDF generation completed successfully"
+                        )
                     except Exception as e:
                         logging.error(f"Process pool execution failed: {e}")
                         logging.error(f"Failed template: {actual_template}")
@@ -1824,7 +2006,7 @@ def serve_templates(filename):
     """
     try:
         # Validate filename - prevent path traversal
-        if '..' in filename or filename.startswith('/'):
+        if ".." in filename or filename.startswith("/"):
             logging.warning(f"Path traversal attempt in template request: {filename}")
             return jsonify({"success": False, "error": "Invalid path"}), 400
 
@@ -1859,6 +2041,7 @@ def serve_templates(filename):
 
 # Resume Storage API Endpoints
 
+
 @app.route("/api/resumes/create", methods=["POST"])
 @require_auth
 @retry_on_connection_error(max_retries=3, backoff_factor=0.5)
@@ -1883,17 +2066,22 @@ def create_resume():
     try:
         data = request.get_json() or {}
         user_id = request.user_id
-        template_id = data.get('template_id', 'modern-with-icons')
-        load_example = data.get('load_example', True)  # Default to example data
+        template_id = data.get("template_id", "modern-with-icons")
+        load_example = data.get("load_example", True)  # Default to example data
 
         # Check 5-resume limit
         can_create, current_count = check_resume_limit(user_id)
         if not can_create:
-            return jsonify({
-                "success": False,
-                "error": f"Resume limit reached ({current_count}/5)",
-                "error_code": "RESUME_LIMIT_REACHED"
-            }), 403
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "error": f"Resume limit reached ({current_count}/5)",
+                        "error_code": "RESUME_LIMIT_REACHED",
+                    }
+                ),
+                403,
+            )
 
         # Load template YAML data
         template_file = TEMPLATE_FILE_MAP.get(template_id)
@@ -1908,68 +2096,76 @@ def create_resume():
             template_data = yaml.safe_load(file)
 
         # Initialize resume with template data
-        contact_info = template_data.get('contact_info', {})
+        contact_info = template_data.get("contact_info", {})
 
         # Migrate old linkedin field to new social_links format (backward compatibility)
         contact_info = migrate_linkedin_to_social_links(contact_info)
 
-        sections = template_data.get('sections', [])
+        sections = template_data.get("sections", [])
 
         # If load_example is False, clear the content but keep the structure
         if not load_example:
             # Clear contact info fields but keep the structure
             contact_info = {
-                'name': '',
-                'location': '',
-                'email': '',
-                'phone': '',
-                'social_links': []
+                "name": "",
+                "location": "",
+                "email": "",
+                "phone": "",
+                "social_links": [],
             }
 
             # Clear section content but keep section names and types
             # Determine correct empty content type based on section type
-            list_types = {'bulleted-list', 'inline-list', 'dynamic-column-list',
-                         'icon-list', 'experience', 'education'}
+            list_types = {
+                "bulleted-list",
+                "inline-list",
+                "dynamic-column-list",
+                "icon-list",
+                "experience",
+                "education",
+            }
 
             sections = [
                 {
-                    'name': section.get('name', ''),
-                    'type': section.get('type', 'text'),
-                    'content': [] if section.get('type', 'text') in list_types else ''
+                    "name": section.get("name", ""),
+                    "type": section.get("type", "text"),
+                    "content": [] if section.get("type", "text") in list_types else "",
                 }
                 for section in sections
             ]
 
         # Create resume row with template data
         new_resume = {
-            'user_id': user_id,
-            'title': 'Untitled Resume',
-            'template_id': template_id,
-            'contact_info': contact_info,
-            'sections': sections,
-            'json_hash': None,  # No hash yet (no data)
-            'created_at': 'now()',
-            'updated_at': 'now()',
-            'last_accessed_at': 'now()'
+            "user_id": user_id,
+            "title": "Untitled Resume",
+            "template_id": template_id,
+            "contact_info": contact_info,
+            "sections": sections,
+            "json_hash": None,  # No hash yet (no data)
+            "created_at": "now()",
+            "updated_at": "now()",
+            "last_accessed_at": "now()",
         }
 
         # Insert resume and get generated ID
-        result = supabase.table('resumes').insert(new_resume).execute()
-        resume_id = result.data[0]['id']
+        result = supabase.table("resumes").insert(new_resume).execute()
+        resume_id = result.data[0]["id"]
 
         # Update user preferences to track last edited resume
-        supabase.table('user_preferences').upsert({
-            'user_id': user_id,
-            'last_edited_resume_id': resume_id
-        }).execute()
+        supabase.table("user_preferences").upsert(
+            {"user_id": user_id, "last_edited_resume_id": resume_id}
+        ).execute()
 
-        logging.info(f"Created resume: {resume_id} for user {user_id} (load_example={load_example})")
+        logging.info(
+            f"Created resume: {resume_id} for user {user_id} (load_example={load_example})"
+        )
 
-        return jsonify({
-            "success": True,
-            "resume_id": resume_id,
-            "template_id": template_id
-        }), 201
+        return (
+            jsonify(
+                {"success": True, "resume_id": resume_id, "template_id": template_id}
+            ),
+            201,
+        )
 
     except Exception as e:
         logging.error(f"Error creating resume: {e}")
@@ -2009,14 +2205,14 @@ def save_resume():
             return jsonify({"success": False, "error": "No data provided"}), 400
 
         user_id = request.user_id
-        resume_id = data.get('id')
-        title = data.get('title', 'Untitled Resume')
-        template_id = data.get('template_id')
-        contact_info = data.get('contact_info', {})
-        sections = data.get('sections', [])
-        icons = data.get('icons', [])
-        ai_import_warnings = data.get('ai_import_warnings')  # Optional JSONB array
-        ai_import_confidence = data.get('ai_import_confidence')  # Optional decimal
+        resume_id = data.get("id")
+        title = data.get("title", "Untitled Resume")
+        template_id = data.get("template_id")
+        contact_info = data.get("contact_info", {})
+        sections = data.get("sections", [])
+        icons = data.get("icons", [])
+        ai_import_warnings = data.get("ai_import_warnings")  # Optional JSONB array
+        ai_import_confidence = data.get("ai_import_confidence")  # Optional decimal
 
         # Validate required fields
         if not template_id:
@@ -2026,85 +2222,124 @@ def save_resume():
         # Include icon metadata to detect icon-only changes
         icon_metadata = [
             {
-                'filename': icon['filename'],
-                'size': len(base64.b64decode(icon['data'].split(',')[1] if ',' in icon['data'] else icon['data']))
+                "filename": icon["filename"],
+                "size": len(
+                    base64.b64decode(
+                        icon["data"].split(",")[1]
+                        if "," in icon["data"]
+                        else icon["data"]
+                    )
+                ),
             }
             for icon in icons
-            if icon.get('filename') and icon.get('data')
+            if icon.get("filename") and icon.get("data")
         ]
 
-        json_repr = json.dumps({
-            'contact_info': contact_info,
-            'sections': sections,
-            'icon_metadata': sorted(icon_metadata, key=lambda x: x['filename'])  # Sort for consistency
-        }, sort_keys=True)
-        new_hash = hashlib.sha256(json_repr.encode('utf-8')).hexdigest()
+        json_repr = json.dumps(
+            {
+                "contact_info": contact_info,
+                "sections": sections,
+                "icon_metadata": sorted(
+                    icon_metadata, key=lambda x: x["filename"]
+                ),  # Sort for consistency
+            },
+            sort_keys=True,
+        )
+        new_hash = hashlib.sha256(json_repr.encode("utf-8")).hexdigest()
 
         # Check if this is an update or new resume
         is_update = resume_id is not None
 
         if is_update:
             # Verify resume belongs to user and get current hash
-            existing = supabase.table('resumes').select('id, json_hash').eq('id', resume_id).eq('user_id', user_id).is_('deleted_at', 'null').execute()
+            existing = (
+                supabase.table("resumes")
+                .select("id, json_hash")
+                .eq("id", resume_id)
+                .eq("user_id", user_id)
+                .is_("deleted_at", "null")
+                .execute()
+            )
             if not existing.data:
-                return jsonify({"success": False, "error": "Resume not found or unauthorized"}), 404
+                return (
+                    jsonify(
+                        {"success": False, "error": "Resume not found or unauthorized"}
+                    ),
+                    404,
+                )
 
             # Smart diffing: skip if hash hasn't changed
-            current_hash = existing.data[0].get('json_hash')
+            current_hash = existing.data[0].get("json_hash")
             if current_hash == new_hash:
-                logging.debug(f"No changes detected for resume {resume_id}, skipping save")
+                logging.debug(
+                    f"No changes detected for resume {resume_id}, skipping save"
+                )
                 # Update user preferences even if no content change
-                supabase.table('user_preferences').upsert({
-                    'user_id': user_id,
-                    'last_edited_resume_id': resume_id
-                }).execute()
-                return jsonify({
-                    "success": True,
-                    "message": "No changes detected",
-                    "skipped": True,
-                    "resume_id": resume_id
-                }), 200
+                supabase.table("user_preferences").upsert(
+                    {"user_id": user_id, "last_edited_resume_id": resume_id}
+                ).execute()
+                return (
+                    jsonify(
+                        {
+                            "success": True,
+                            "message": "No changes detected",
+                            "skipped": True,
+                            "resume_id": resume_id,
+                        }
+                    ),
+                    200,
+                )
         else:
             # Check 5-resume limit for new resumes
             can_create, current_count = check_resume_limit(user_id)
             if not can_create:
-                return jsonify({
-                    "success": False,
-                    "error": f"Resume limit reached ({current_count}/5)",
-                    "error_code": "RESUME_LIMIT_REACHED"
-                }), 403
+                return (
+                    jsonify(
+                        {
+                            "success": False,
+                            "error": f"Resume limit reached ({current_count}/5)",
+                            "error_code": "RESUME_LIMIT_REACHED",
+                        }
+                    ),
+                    403,
+                )
 
             # Generate new resume ID
             resume_id = str(uuid.uuid4())
 
         # Prepare resume data
         resume_data = {
-            'id': resume_id,
-            'user_id': user_id,
-            'title': title,
-            'template_id': template_id,
-            'contact_info': contact_info,
-            'sections': sections,
-            'json_hash': new_hash,  # Store hash for future diffing
-            'updated_at': 'now()',
-            'last_accessed_at': 'now()'
+            "id": resume_id,
+            "user_id": user_id,
+            "title": title,
+            "template_id": template_id,
+            "contact_info": contact_info,
+            "sections": sections,
+            "json_hash": new_hash,  # Store hash for future diffing
+            "updated_at": "now()",
+            "last_accessed_at": "now()",
         }
 
         # Add AI import metadata if provided
         if ai_import_warnings is not None:
-            resume_data['ai_import_warnings'] = ai_import_warnings
+            resume_data["ai_import_warnings"] = ai_import_warnings
         if ai_import_confidence is not None:
-            resume_data['ai_import_confidence'] = ai_import_confidence
+            resume_data["ai_import_confidence"] = ai_import_confidence
 
         if not is_update:
-            resume_data['created_at'] = 'now()'
+            resume_data["created_at"] = "now()"
 
         # Smart icon diffing: upload only changed icons
         # Fetch existing icons if updating
         existing_icons = {}
         if is_update:
-            existing_result = supabase.table('resume_icons').select('filename, file_size, storage_path, storage_url, mime_type').eq('resume_id', resume_id).execute()
-            existing_icons = {icon['filename']: icon for icon in existing_result.data}
+            existing_result = (
+                supabase.table("resume_icons")
+                .select("filename, file_size, storage_path, storage_url, mime_type")
+                .eq("resume_id", resume_id)
+                .execute()
+            )
+            existing_icons = {icon["filename"]: icon for icon in existing_result.data}
 
         # Identify which icons need uploading
         icons_to_upload = []
@@ -2112,39 +2347,41 @@ def save_resume():
         icons_to_delete = []
 
         for icon in icons:
-            filename = icon.get('filename')
-            data_b64 = icon.get('data')
+            filename = icon.get("filename")
+            data_b64 = icon.get("data")
 
             if not filename or not data_b64:
                 continue
 
             try:
                 # Decode to get actual size
-                file_data = base64.b64decode(data_b64.split(',')[1] if ',' in data_b64 else data_b64)
+                file_data = base64.b64decode(
+                    data_b64.split(",")[1] if "," in data_b64 else data_b64
+                )
                 new_size = len(file_data)
 
                 # Check if icon exists and hasn't changed (size match = content match proxy)
                 if filename in existing_icons:
                     existing_icon = existing_icons[filename]
-                    if existing_icon['file_size'] == new_size:
+                    if existing_icon["file_size"] == new_size:
                         # Icon unchanged, reuse existing record
                         icons_to_keep.append(existing_icon)
                         logging.debug(f"Reusing existing icon: {filename}")
                         continue
 
                 # Icon is new or changed, needs upload
-                icons_to_upload.append({
-                    'filename': filename,
-                    'data': file_data,
-                    'size': new_size
-                })
+                icons_to_upload.append(
+                    {"filename": filename, "data": file_data, "size": new_size}
+                )
 
             except Exception as decode_error:
                 logging.error(f"Failed to decode icon {filename}: {decode_error}")
                 continue
 
         # Identify icons to delete (existed before but not in new set)
-        new_icon_filenames = {icon['filename'] for icon in icons if icon.get('filename')}
+        new_icon_filenames = {
+            icon["filename"] for icon in icons if icon.get("filename")
+        }
         for filename in existing_icons:
             if filename not in new_icon_filenames:
                 icons_to_delete.append(filename)
@@ -2152,35 +2389,37 @@ def save_resume():
         # Upload only changed/new icons
         icon_records = []
         for icon_data in icons_to_upload:
-            filename = icon_data['filename']
-            file_data = icon_data['data']
+            filename = icon_data["filename"]
+            file_data = icon_data["data"]
 
             try:
                 # Detect MIME type from filename extension
-                extension = filename.rsplit('.', 1)[-1].lower()
+                extension = filename.rsplit(".", 1)[-1].lower()
                 mime_type = {
-                    'png': 'image/png',
-                    'jpg': 'image/jpeg',
-                    'jpeg': 'image/jpeg',
-                    'svg': 'image/svg+xml'
-                }.get(extension, 'image/png')
+                    "png": "image/png",
+                    "jpg": "image/jpeg",
+                    "jpeg": "image/jpeg",
+                    "svg": "image/svg+xml",
+                }.get(extension, "image/png")
 
                 # Upload to storage
                 storage_path, storage_url = upload_icon_to_storage(
                     user_id, resume_id, filename, file_data, mime_type
                 )
 
-                icon_records.append({
-                    'id': str(uuid.uuid4()),
-                    'resume_id': resume_id,
-                    'user_id': user_id,
-                    'filename': filename,
-                    'storage_path': storage_path,
-                    'storage_url': storage_url,
-                    'mime_type': mime_type,
-                    'file_size': icon_data['size'],
-                    'created_at': 'now()'
-                })
+                icon_records.append(
+                    {
+                        "id": str(uuid.uuid4()),
+                        "resume_id": resume_id,
+                        "user_id": user_id,
+                        "filename": filename,
+                        "storage_path": storage_path,
+                        "storage_url": storage_url,
+                        "mime_type": mime_type,
+                        "file_size": icon_data["size"],
+                        "created_at": "now()",
+                    }
+                )
                 logging.info(f"Uploaded new/changed icon: {filename}")
 
             except Exception as upload_error:
@@ -2190,50 +2429,60 @@ def save_resume():
         # Combine new uploads with unchanged icons
         all_icon_records = icon_records + [
             {
-                'id': str(uuid.uuid4()),
-                'resume_id': resume_id,
-                'user_id': user_id,
-                'filename': icon['filename'],
-                'storage_path': icon['storage_path'],
-                'storage_url': icon['storage_url'],
-                'mime_type': icon['mime_type'],
-                'file_size': icon['file_size'],
-                'created_at': 'now()'
+                "id": str(uuid.uuid4()),
+                "resume_id": resume_id,
+                "user_id": user_id,
+                "filename": icon["filename"],
+                "storage_path": icon["storage_path"],
+                "storage_url": icon["storage_url"],
+                "mime_type": icon["mime_type"],
+                "file_size": icon["file_size"],
+                "created_at": "now()",
             }
             for icon in icons_to_keep
         ]
 
         # Save resume to database (upsert)
-        supabase.table('resumes').upsert(resume_data).execute()
+        supabase.table("resumes").upsert(resume_data).execute()
 
         # Delete removed icons
         if icons_to_delete and is_update:
             for filename in icons_to_delete:
-                supabase.table('resume_icons').delete().eq('resume_id', resume_id).eq('filename', filename).execute()
+                supabase.table("resume_icons").delete().eq("resume_id", resume_id).eq(
+                    "filename", filename
+                ).execute()
                 logging.info(f"Deleted removed icon: {filename}")
 
         # Replace all icon records with new set
         if is_update:
-            supabase.table('resume_icons').delete().eq('resume_id', resume_id).execute()
+            supabase.table("resume_icons").delete().eq("resume_id", resume_id).execute()
 
         if all_icon_records:
-            supabase.table('resume_icons').insert(all_icon_records).execute()
+            supabase.table("resume_icons").insert(all_icon_records).execute()
 
-        logging.info(f"Icon summary - Uploaded: {len(icon_records)}, Kept: {len(icons_to_keep)}, Deleted: {len(icons_to_delete)}")
+        logging.info(
+            f"Icon summary - Uploaded: {len(icon_records)}, Kept: {len(icons_to_keep)}, Deleted: {len(icons_to_delete)}"
+        )
 
         # Update user preferences to track last edited resume
-        supabase.table('user_preferences').upsert({
-            'user_id': user_id,
-            'last_edited_resume_id': resume_id
-        }).execute()
+        supabase.table("user_preferences").upsert(
+            {"user_id": user_id, "last_edited_resume_id": resume_id}
+        ).execute()
 
-        logging.info(f"Resume {'updated' if is_update else 'created'} successfully: {resume_id}")
+        logging.info(
+            f"Resume {'updated' if is_update else 'created'} successfully: {resume_id}"
+        )
 
-        return jsonify({
-            "success": True,
-            "resume_id": resume_id,
-            "message": f"Resume {'updated' if is_update else 'saved'} successfully"
-        }), 200
+        return (
+            jsonify(
+                {
+                    "success": True,
+                    "resume_id": resume_id,
+                    "message": f"Resume {'updated' if is_update else 'saved'} successfully",
+                }
+            ),
+            200,
+        )
 
     except Exception as e:
         logging.error(f"Error saving resume: {e}")
@@ -2273,28 +2522,38 @@ def list_resumes():
         user_id = request.user_id
 
         # Get pagination parameters
-        limit = min(int(request.args.get('limit', 20)), 50)  # Max 50
-        offset = int(request.args.get('offset', 0))
+        limit = min(int(request.args.get("limit", 20)), 50)  # Max 50
+        offset = int(request.args.get("offset", 0))
 
         # Query resumes with pagination and count in a single request
         # This eliminates connection gap that caused "Server disconnected" errors with large result sets
-        result = supabase.table('resumes') \
-            .select('id, title, template_id, created_at, updated_at, last_accessed_at, pdf_url, pdf_generated_at, thumbnail_url', count='exact') \
-            .eq('user_id', user_id) \
-            .is_('deleted_at', 'null') \
-            .order('updated_at', desc=True) \
-            .range(offset, offset + limit - 1) \
+        result = (
+            supabase.table("resumes")
+            .select(
+                "id, title, template_id, created_at, updated_at, last_accessed_at, pdf_url, pdf_generated_at, thumbnail_url",
+                count="exact",
+            )
+            .eq("user_id", user_id)
+            .is_("deleted_at", "null")
+            .order("updated_at", desc=True)
+            .range(offset, offset + limit - 1)
             .execute()
+        )
 
         resumes = result.data
-        total_count = result.count if hasattr(result, 'count') else len(result.data)
+        total_count = result.count if hasattr(result, "count") else len(result.data)
 
-        return jsonify({
-            "success": True,
-            "resumes": resumes,
-            "total_count": total_count,
-            "limit": limit
-        }), 200
+        return (
+            jsonify(
+                {
+                    "success": True,
+                    "resumes": resumes,
+                    "total_count": total_count,
+                    "limit": limit,
+                }
+            ),
+            200,
+        )
 
     except Exception as e:
         logging.error(f"Error listing resumes: {e}", exc_info=True)
@@ -2330,20 +2589,19 @@ def get_resume_count():
         user_id = request.user_id
 
         # Count-only query using Supabase's count feature
-        result = supabase.table('resumes') \
-            .select('id', count='exact') \
-            .eq('user_id', user_id) \
-            .is_('deleted_at', 'null') \
+        result = (
+            supabase.table("resumes")
+            .select("id", count="exact")
+            .eq("user_id", user_id)
+            .is_("deleted_at", "null")
             .execute()
+        )
 
-        count = result.count if hasattr(result, 'count') else len(result.data)
+        count = result.count if hasattr(result, "count") else len(result.data)
 
         logging.debug(f"Resume count for user {user_id}: {count}")
 
-        return jsonify({
-            "success": True,
-            "count": count
-        }), 200
+        return jsonify({"success": True, "count": count}), 200
 
     except Exception as e:
         logging.error(f"Error getting resume count: {e}", exc_info=True)
@@ -2361,6 +2619,7 @@ def get_resume_count():
 
 @app.route("/api/resumes/<resume_id>", methods=["GET"])
 @require_auth
+@retry_on_connection_error(max_retries=3, backoff_factor=0.5)
 def load_resume(resume_id):
     """
     Load a specific resume for the authenticated user.
@@ -2388,12 +2647,14 @@ def load_resume(resume_id):
         user_id = request.user_id
 
         # Query resume
-        result = supabase.table('resumes') \
-            .select('*') \
-            .eq('id', resume_id) \
-            .eq('user_id', user_id) \
-            .is_('deleted_at', 'null') \
+        result = (
+            supabase.table("resumes")
+            .select("*")
+            .eq("id", resume_id)
+            .eq("user_id", user_id)
+            .is_("deleted_at", "null")
             .execute()
+        )
 
         if not result.data:
             return jsonify({"success": False, "error": "Resume not found"}), 404
@@ -2401,42 +2662,51 @@ def load_resume(resume_id):
         resume = result.data[0]
 
         # Migrate old linkedin format to new social_links (backward compatibility)
-        if resume.get('contact_info'):
-            resume['contact_info'] = migrate_linkedin_to_social_links(resume['contact_info'])
+        if resume.get("contact_info"):
+            resume["contact_info"] = migrate_linkedin_to_social_links(
+                resume["contact_info"]
+            )
 
         # Fetch associated icons
-        icons_result = supabase.table('resume_icons') \
-            .select('filename, storage_url, storage_path') \
-            .eq('resume_id', resume_id) \
+        icons_result = (
+            supabase.table("resume_icons")
+            .select("filename, storage_url, storage_path")
+            .eq("resume_id", resume_id)
             .execute()
+        )
 
-        resume['icons'] = icons_result.data
+        resume["icons"] = icons_result.data
 
         # Update last_accessed_at while preserving updated_at (non-blocking - don't fail if this fails)
         try:
             # Preserve updated_at when only updating last_accessed_at
-            current_updated_at = resume.get('updated_at')
-            update_data = {'last_accessed_at': datetime.now().isoformat()}
+            current_updated_at = resume.get("updated_at")
+            update_data = {"last_accessed_at": datetime.now().isoformat()}
             if current_updated_at:
-                update_data['updated_at'] = current_updated_at  # Preserve original timestamp
+                update_data["updated_at"] = (
+                    current_updated_at  # Preserve original timestamp
+                )
 
-            supabase.table('resumes').update(update_data).eq('id', resume_id).execute()
+            supabase.table("resumes").update(update_data).eq("id", resume_id).execute()
         except Exception as timestamp_error:
-            logging.warning(f"Failed to update last_accessed_at for resume {resume_id}: {timestamp_error}")
+            logging.warning(
+                f"Failed to update last_accessed_at for resume {resume_id}: {timestamp_error}"
+            )
             # Continue anyway - this is not critical
 
-        return jsonify({
-            "success": True,
-            "resume": resume
-        }), 200
+        return jsonify({"success": True, "resume": resume}), 200
 
     except Exception as e:
         logging.error(f"Error loading resume: {e}", exc_info=True)
-        return jsonify({"success": False, "error": f"Failed to load resume: {str(e)}"}), 500
+        return (
+            jsonify({"success": False, "error": f"Failed to load resume: {str(e)}"}),
+            500,
+        )
 
 
 @app.route("/api/resumes/<resume_id>", methods=["DELETE"])
 @require_auth
+@retry_on_connection_error(max_retries=3, backoff_factor=0.5)
 def delete_resume(resume_id):
     """
     Soft delete a resume for the authenticated user.
@@ -2451,28 +2721,26 @@ def delete_resume(resume_id):
         user_id = request.user_id
 
         # Verify resume belongs to user
-        result = supabase.table('resumes') \
-            .select('id') \
-            .eq('id', resume_id) \
-            .eq('user_id', user_id) \
-            .is_('deleted_at', 'null') \
+        result = (
+            supabase.table("resumes")
+            .select("id")
+            .eq("id", resume_id)
+            .eq("user_id", user_id)
+            .is_("deleted_at", "null")
             .execute()
+        )
 
         if not result.data:
             return jsonify({"success": False, "error": "Resume not found"}), 404
 
         # Soft delete (set deleted_at timestamp)
-        supabase.table('resumes') \
-            .update({'deleted_at': 'now()'}) \
-            .eq('id', resume_id) \
-            .execute()
+        supabase.table("resumes").update({"deleted_at": "now()"}).eq(
+            "id", resume_id
+        ).execute()
 
         logging.info(f"Resume deleted successfully: {resume_id}")
 
-        return jsonify({
-            "success": True,
-            "message": "Resume deleted successfully"
-        }), 200
+        return jsonify({"success": True, "message": "Resume deleted successfully"}), 200
 
     except Exception as e:
         logging.error(f"Error deleting resume: {e}")
@@ -2491,39 +2759,47 @@ def _copy_icon_worker(user_id, new_resume_id, source_icon):
         thread_supabase = create_client(SUPABASE_URL, SUPABASE_SECRET_KEY)
 
         # Download icon from source storage path
-        source_path = source_icon['storage_path']
-        icon_data = thread_supabase.storage.from_('resume-icons').download(source_path)
+        source_path = source_icon["storage_path"]
+        icon_data = thread_supabase.storage.from_("resume-icons").download(source_path)
 
         # Upload to new storage path
         new_storage_path = f"{user_id}/{new_resume_id}/{source_icon['filename']}"
-        thread_supabase.storage.from_('resume-icons').upload(
+        thread_supabase.storage.from_("resume-icons").upload(
             new_storage_path,
             icon_data,
-            file_options={"content-type": source_icon.get('mime_type', 'image/png'), "upsert": "true"}
+            file_options={
+                "content-type": source_icon.get("mime_type", "image/png"),
+                "upsert": "true",
+            },
         )
 
         # Get public URL for new icon
-        new_storage_url = thread_supabase.storage.from_('resume-icons').get_public_url(new_storage_path)
+        new_storage_url = thread_supabase.storage.from_("resume-icons").get_public_url(
+            new_storage_path
+        )
 
         # Prepare new icon record
         return {
-            'id': str(uuid.uuid4()),
-            'resume_id': new_resume_id,
-            'user_id': user_id,
-            'filename': source_icon['filename'],
-            'storage_path': new_storage_path,
-            'storage_url': new_storage_url,
-            'mime_type': source_icon.get('mime_type', 'image/png'),
-            'file_size': source_icon.get('file_size', 0),
-            'created_at': 'now()'
+            "id": str(uuid.uuid4()),
+            "resume_id": new_resume_id,
+            "user_id": user_id,
+            "filename": source_icon["filename"],
+            "storage_path": new_storage_path,
+            "storage_url": new_storage_url,
+            "mime_type": source_icon.get("mime_type", "image/png"),
+            "file_size": source_icon.get("file_size", 0),
+            "created_at": "now()",
         }
     except Exception as icon_error:
-        logging.error(f"Failed to copy icon {source_icon.get('filename', 'unknown')}: {icon_error}")
+        logging.error(
+            f"Failed to copy icon {source_icon.get('filename', 'unknown')}: {icon_error}"
+        )
         return None
 
 
 @app.route("/api/resumes/<resume_id>/duplicate", methods=["POST"])
 @require_auth
+@retry_on_connection_error(max_retries=3, backoff_factor=0.5)
 def duplicate_resume(resume_id):
     """
     Duplicate a resume with a new title.
@@ -2543,7 +2819,7 @@ def duplicate_resume(resume_id):
     try:
         user_id = request.user_id
         data = request.get_json()
-        new_title = data.get('new_title', '').strip()
+        new_title = data.get("new_title", "").strip()
 
         if not new_title:
             return jsonify({"success": False, "error": "New title is required"}), 400
@@ -2551,19 +2827,26 @@ def duplicate_resume(resume_id):
         # Check 5-resume limit before duplicating
         can_create, current_count = check_resume_limit(user_id)
         if not can_create:
-            return jsonify({
-                "success": False,
-                "error": "You have reached the maximum limit of 5 resumes",
-                "error_code": "RESUME_LIMIT_REACHED"
-            }), 400
+            return (
+                jsonify(
+                    {
+                        "success": False,
+                        "error": "You have reached the maximum limit of 5 resumes",
+                        "error_code": "RESUME_LIMIT_REACHED",
+                    }
+                ),
+                400,
+            )
 
         # Verify source resume belongs to user
-        source_result = supabase.table('resumes') \
-            .select('*') \
-            .eq('id', resume_id) \
-            .eq('user_id', user_id) \
-            .is_('deleted_at', 'null') \
+        source_result = (
+            supabase.table("resumes")
+            .select("*")
+            .eq("id", resume_id)
+            .eq("user_id", user_id)
+            .is_("deleted_at", "null")
             .execute()
+        )
 
         if not source_result.data:
             return jsonify({"success": False, "error": "Source resume not found"}), 404
@@ -2575,26 +2858,28 @@ def duplicate_resume(resume_id):
 
         # Create new resume with same data but new ID and title
         new_resume_data = {
-            'id': new_resume_id,
-            'user_id': user_id,
-            'title': new_title,
-            'template_id': source_resume['template_id'],
-            'contact_info': source_resume['contact_info'],
-            'sections': source_resume['sections'],
-            'json_hash': source_resume.get('json_hash'),
-            'created_at': 'now()',
-            'updated_at': 'now()',
-            'last_accessed_at': 'now()'
+            "id": new_resume_id,
+            "user_id": user_id,
+            "title": new_title,
+            "template_id": source_resume["template_id"],
+            "contact_info": source_resume["contact_info"],
+            "sections": source_resume["sections"],
+            "json_hash": source_resume.get("json_hash"),
+            "created_at": "now()",
+            "updated_at": "now()",
+            "last_accessed_at": "now()",
         }
 
         # Insert new resume
-        supabase.table('resumes').insert(new_resume_data).execute()
+        supabase.table("resumes").insert(new_resume_data).execute()
 
         # Fetch source icons
-        source_icons_result = supabase.table('resume_icons') \
-            .select('filename, storage_path, mime_type, file_size') \
-            .eq('resume_id', resume_id) \
+        source_icons_result = (
+            supabase.table("resume_icons")
+            .select("filename, storage_path, mime_type, file_size")
+            .eq("resume_id", resume_id)
             .execute()
+        )
 
         # Concurrently copy icons from source to new resume using a thread pool
         new_icon_records = []
@@ -2611,15 +2896,20 @@ def duplicate_resume(resume_id):
 
         # Insert new icon records
         if new_icon_records:
-            supabase.table('resume_icons').insert(new_icon_records).execute()
+            supabase.table("resume_icons").insert(new_icon_records).execute()
 
         logging.info(f"Resume duplicated successfully: {resume_id} -> {new_resume_id}")
 
-        return jsonify({
-            "success": True,
-            "resume_id": new_resume_id,
-            "message": "Resume duplicated successfully"
-        }), 200
+        return (
+            jsonify(
+                {
+                    "success": True,
+                    "resume_id": new_resume_id,
+                    "message": "Resume duplicated successfully",
+                }
+            ),
+            200,
+        )
 
     except Exception as e:
         logging.error(f"Error duplicating resume: {e}")
@@ -2628,6 +2918,7 @@ def duplicate_resume(resume_id):
 
 @app.route("/api/migrate-anonymous-resumes", methods=["POST"])
 @require_auth
+@retry_on_connection_error(max_retries=3, backoff_factor=0.5)
 def migrate_anonymous_resumes():
     """
     Migrate all resumes from an old user to the authenticated user.
@@ -2651,19 +2942,24 @@ def migrate_anonymous_resumes():
     """
     try:
         new_user_id = request.user_id  # Authenticated user from JWT
-        old_user_id = request.json.get('old_user_id')
+        old_user_id = request.json.get("old_user_id")
 
         # Validation
         if not old_user_id:
             return jsonify({"error": "old_user_id is required"}), 400
 
         if old_user_id == new_user_id:
-            return jsonify({
-                "migrated_count": 0,
-                "total_count": 0,
-                "exceeds_limit": False,
-                "message": "Same user, no migration needed"
-            }), 200
+            return (
+                jsonify(
+                    {
+                        "migrated_count": 0,
+                        "total_count": 0,
+                        "exceeds_limit": False,
+                        "message": "Same user, no migration needed",
+                    }
+                ),
+                200,
+            )
 
         # NOTE: We don't check if the old user is "anonymous" because Supabase
         # automatically links anonymous accounts to OAuth accounts on sign-in,
@@ -2671,17 +2967,21 @@ def migrate_anonymous_resumes():
         # Instead, we check if the old user has resumes to migrate.
 
         # Get resume counts
-        old_resumes_response = supabase.table('resumes') \
-            .select('id', count='exact') \
-            .eq('user_id', old_user_id) \
-            .is_('deleted_at', 'null') \
+        old_resumes_response = (
+            supabase.table("resumes")
+            .select("id", count="exact")
+            .eq("user_id", old_user_id)
+            .is_("deleted_at", "null")
             .execute()
+        )
 
-        new_resumes_response = supabase.table('resumes') \
-            .select('id', count='exact') \
-            .eq('user_id', new_user_id) \
-            .is_('deleted_at', 'null') \
+        new_resumes_response = (
+            supabase.table("resumes")
+            .select("id", count="exact")
+            .eq("user_id", new_user_id)
+            .is_("deleted_at", "null")
             .execute()
+        )
 
         old_count = old_resumes_response.count or 0
         new_count = new_resumes_response.count or 0
@@ -2690,43 +2990,53 @@ def migrate_anonymous_resumes():
 
         # Early return if no resumes to migrate (idempotency)
         if old_count == 0:
-            return jsonify({
-                "migrated_count": 0,
-                "total_count": new_count,
-                "exceeds_limit": False,
-                "message": "No resumes to migrate"
-            }), 200
+            return (
+                jsonify(
+                    {
+                        "migrated_count": 0,
+                        "total_count": new_count,
+                        "exceeds_limit": False,
+                        "message": "No resumes to migrate",
+                    }
+                ),
+                200,
+            )
 
-        logging.info(f"Starting migration: {old_count} resumes from {old_user_id} to {new_user_id} (total: {total_count})")
+        logging.info(
+            f"Starting migration: {old_count} resumes from {old_user_id} to {new_user_id} (total: {total_count})"
+        )
 
         # Get all resumes being migrated with their updated_at timestamps
-        resumes_to_migrate = supabase.table('resumes') \
-            .select('id, updated_at') \
-            .eq('user_id', old_user_id) \
-            .is_('deleted_at', 'null') \
+        resumes_to_migrate = (
+            supabase.table("resumes")
+            .select("id, updated_at")
+            .eq("user_id", old_user_id)
+            .is_("deleted_at", "null")
             .execute()
+        )
 
-        old_resume_ids = [r['id'] for r in resumes_to_migrate.data]
-        resume_timestamps = {r['id']: r['updated_at'] for r in resumes_to_migrate.data}
+        old_resume_ids = [r["id"] for r in resumes_to_migrate.data]
+        resume_timestamps = {r["id"]: r["updated_at"] for r in resumes_to_migrate.data}
 
         # Step 1: Update resume ownership while preserving updated_at timestamps
         # We update each resume individually to preserve its original updated_at
         for resume_id, original_timestamp in resume_timestamps.items():
-            supabase.table('resumes') \
-                .update({
-                    'user_id': new_user_id,
-                    'updated_at': original_timestamp  # Preserve original timestamp
-                }) \
-                .eq('id', resume_id) \
-                .execute()
+            supabase.table("resumes").update(
+                {
+                    "user_id": new_user_id,
+                    "updated_at": original_timestamp,  # Preserve original timestamp
+                }
+            ).eq("id", resume_id).execute()
 
         logging.info(f"Updated {old_count} resume records while preserving timestamps")
 
         # Step 2: Migrate icons (storage files + database records)
-        icons_response = supabase.table('resume_icons') \
-            .select('*') \
-            .in_('resume_id', old_resume_ids) \
+        icons_response = (
+            supabase.table("resume_icons")
+            .select("*")
+            .in_("resume_id", old_resume_ids)
             .execute()
+        )
 
         icons_to_migrate = icons_response.data
         migrated_icons = 0
@@ -2734,47 +3044,55 @@ def migrate_anonymous_resumes():
 
         for icon in icons_to_migrate:
             try:
-                old_path = icon['storage_path']
-                resume_id = icon['resume_id']
-                filename = icon['filename']
+                old_path = icon["storage_path"]
+                resume_id = icon["resume_id"]
+                filename = icon["filename"]
 
                 # New storage path with new user_id
                 new_path = f"{new_user_id}/{resume_id}/{filename}"
 
                 # Download from old path
-                file_data = supabase.storage.from_('resume-icons').download(old_path)
+                file_data = supabase.storage.from_("resume-icons").download(old_path)
 
                 # Upload to new path
-                supabase.storage.from_('resume-icons').upload(
+                supabase.storage.from_("resume-icons").upload(
                     new_path,
                     file_data,
-                    file_options={"content-type": icon.get('mime_type', 'image/png'), "upsert": "true"}
+                    file_options={
+                        "content-type": icon.get("mime_type", "image/png"),
+                        "upsert": "true",
+                    },
                 )
 
                 # Get new public URL
-                new_url = supabase.storage.from_('resume-icons').get_public_url(new_path)
+                new_url = supabase.storage.from_("resume-icons").get_public_url(
+                    new_path
+                )
 
                 # Update icon record
-                supabase.table('resume_icons') \
-                    .update({
-                        'user_id': new_user_id,
-                        'storage_path': new_path,
-                        'storage_url': new_url
-                    }) \
-                    .eq('id', icon['id']) \
-                    .execute()
+                supabase.table("resume_icons").update(
+                    {
+                        "user_id": new_user_id,
+                        "storage_path": new_path,
+                        "storage_url": new_url,
+                    }
+                ).eq("id", icon["id"]).execute()
 
                 # Delete old file from storage
                 try:
-                    supabase.storage.from_('resume-icons').remove([old_path])
+                    supabase.storage.from_("resume-icons").remove([old_path])
                 except Exception as delete_error:
-                    logging.warning(f"Failed to delete old icon file {old_path}: {delete_error}")
+                    logging.warning(
+                        f"Failed to delete old icon file {old_path}: {delete_error}"
+                    )
                     # Non-critical error, continue
 
                 migrated_icons += 1
 
             except Exception as icon_error:
-                logging.error(f"Failed to migrate icon {icon.get('filename', 'unknown')}: {icon_error}")
+                logging.error(
+                    f"Failed to migrate icon {icon.get('filename', 'unknown')}: {icon_error}"
+                )
                 failed_icons += 1
                 # Continue with other icons
 
@@ -2783,23 +3101,32 @@ def migrate_anonymous_resumes():
         # Step 3: Migrate user preferences (tour_completed, idle_nudge_shown, etc.)
         # Uses atomic RPC to avoid race conditions during check-then-act
         try:
-            supabase.rpc('migrate_user_preferences', {
-                'old_uid': old_user_id,
-                'new_uid': new_user_id
-            }).execute()
+            supabase.rpc(
+                "migrate_user_preferences",
+                {"old_uid": old_user_id, "new_uid": new_user_id},
+            ).execute()
             logging.info(f"Migrated preferences from {old_user_id} to {new_user_id}")
         except Exception as pref_error:
-            logging.warning(f"Failed to migrate preferences: {pref_error}", exc_info=True)
+            logging.warning(
+                f"Failed to migrate preferences: {pref_error}", exc_info=True
+            )
             # Non-critical - preferences will be recreated on next interaction
 
-        logging.info(f"Migration complete: {old_count} resumes migrated to {new_user_id}")
+        logging.info(
+            f"Migration complete: {old_count} resumes migrated to {new_user_id}"
+        )
 
-        return jsonify({
-            "migrated_count": old_count,
-            "total_count": total_count,
-            "exceeds_limit": exceeds_limit,
-            "message": f"Successfully migrated {old_count} resume(s)"
-        }), 200
+        return (
+            jsonify(
+                {
+                    "migrated_count": old_count,
+                    "total_count": total_count,
+                    "exceeds_limit": exceeds_limit,
+                    "message": f"Successfully migrated {old_count} resume(s)",
+                }
+            ),
+            200,
+        )
 
     except Exception as e:
         logging.error(f"Error migrating anonymous resumes: {e}")
@@ -2808,6 +3135,7 @@ def migrate_anonymous_resumes():
 
 @app.route("/api/resumes/<resume_id>", methods=["PATCH"])
 @require_auth
+@retry_on_connection_error(max_retries=3, backoff_factor=0.5)
 def update_resume_partial(resume_id):
     """
     Partially update a resume (currently supports title only).
@@ -2826,48 +3154,52 @@ def update_resume_partial(resume_id):
     try:
         user_id = request.user_id
         data = request.get_json()
-        new_title = data.get('title', '').strip()
+        new_title = data.get("title", "").strip()
 
         if not new_title:
             return jsonify({"success": False, "error": "Title cannot be empty"}), 400
 
         if len(new_title) > 200:
-            return jsonify({"success": False, "error": "Title too long (max 200 characters)"}), 400
+            return (
+                jsonify(
+                    {"success": False, "error": "Title too long (max 200 characters)"}
+                ),
+                400,
+            )
 
         # Verify resume belongs to user
-        result = supabase.table('resumes') \
-            .select('id') \
-            .eq('id', resume_id) \
-            .eq('user_id', user_id) \
-            .is_('deleted_at', 'null') \
+        result = (
+            supabase.table("resumes")
+            .select("id")
+            .eq("id", resume_id)
+            .eq("user_id", user_id)
+            .is_("deleted_at", "null")
             .execute()
+        )
 
         if not result.data:
             return jsonify({"success": False, "error": "Resume not found"}), 404
 
         # Update title
-        supabase.table('resumes') \
-            .update({
-                'title': new_title,
-                'updated_at': 'now()'
-            }) \
-            .eq('id', resume_id) \
-            .execute()
+        supabase.table("resumes").update(
+            {"title": new_title, "updated_at": "now()"}
+        ).eq("id", resume_id).execute()
 
         logging.info(f"Resume title updated: {resume_id} -> {new_title}")
 
-        return jsonify({
-            "success": True,
-            "title": new_title
-        }), 200
+        return jsonify({"success": True, "title": new_title}), 200
 
     except Exception as e:
         logging.error(f"Error updating resume title: {e}")
-        return jsonify({"success": False, "error": "Failed to update resume title"}), 500
+        return (
+            jsonify({"success": False, "error": "Failed to update resume title"}),
+            500,
+        )
 
 
 @app.route("/api/resumes/<resume_id>/pdf", methods=["POST"])
 @require_auth
+@retry_on_connection_error(max_retries=3, backoff_factor=0.5)
 def generate_pdf_for_saved_resume(resume_id):
     """
     Generate PDF on-demand for a saved resume.
@@ -2880,12 +3212,14 @@ def generate_pdf_for_saved_resume(resume_id):
             temp_dir_path = Path(temp_dir)
 
             # Load resume data
-            result = supabase.table('resumes') \
-                .select('*') \
-                .eq('id', resume_id) \
-                .eq('user_id', user_id) \
-                .is_('deleted_at', 'null') \
+            result = (
+                supabase.table("resumes")
+                .select("*")
+                .eq("id", resume_id)
+                .eq("user_id", user_id)
+                .is_("deleted_at", "null")
                 .execute()
+            )
 
             if not result.data:
                 return jsonify({"success": False, "error": "Resume not found"}), 404
@@ -2893,10 +3227,12 @@ def generate_pdf_for_saved_resume(resume_id):
             resume = result.data[0]
 
             # Load icons
-            icons_result = supabase.table('resume_icons') \
-                .select('filename, storage_path') \
-                .eq('resume_id', resume_id) \
+            icons_result = (
+                supabase.table("resume_icons")
+                .select("filename, storage_path")
+                .eq("resume_id", resume_id)
                 .execute()
+            )
 
             # Create session directory for icons
             session_id = str(uuid.uuid4())
@@ -2906,11 +3242,15 @@ def generate_pdf_for_saved_resume(resume_id):
             # Download icons from storage
             failed_icons = []
             for icon in icons_result.data:
-                icon_path = session_icons_dir / icon['filename']
-                success = download_icon_from_storage(icon['storage_path'], str(icon_path))
+                icon_path = session_icons_dir / icon["filename"]
+                success = download_icon_from_storage(
+                    icon["storage_path"], str(icon_path)
+                )
                 if not success:
-                    failed_icons.append(icon['filename'])
-                    logging.error(f"Failed to download icon: {icon['filename']} from {icon['storage_path']}")
+                    failed_icons.append(icon["filename"])
+                    logging.error(
+                        f"Failed to download icon: {icon['filename']} from {icon['storage_path']}"
+                    )
 
             # Fail fast if any icons missing
             if failed_icons:
@@ -2924,24 +3264,34 @@ def generate_pdf_for_saved_resume(resume_id):
 
             # Prepare YAML data
             yaml_data = {
-                'template': resume.get('template_id'),
-                'contact_info': resume.get('contact_info', {}),
-                'sections': resume.get('sections', [])
+                "template": resume.get("template_id"),
+                "contact_info": resume.get("contact_info", {}),
+                "sections": resume.get("sections", []),
             }
 
             # Normalize sections
             yaml_data = normalize_sections(yaml_data)
 
             # Icon validation and copying for icon-supporting templates
-            template_id = resume.get('template_id', 'modern')
+            template_id = resume.get("template_id", "modern")
             uses_icons = template_id == "modern-with-icons"
 
             # Always copy base contact icons that are hardcoded in templates
             # These are required for all modern template variants (with and without content icons)
             base_contact_icons = [
-                "location.png", "email.png", "phone.png", "linkedin.png",
-                "github.png", "twitter.png", "website.png", "pinterest.png",
-                "medium.png", "youtube.png", "stackoverflow.png", "behance.png", "dribbble.png"
+                "location.png",
+                "email.png",
+                "phone.png",
+                "linkedin.png",
+                "github.png",
+                "twitter.png",
+                "website.png",
+                "pinterest.png",
+                "medium.png",
+                "youtube.png",
+                "stackoverflow.png",
+                "behance.png",
+                "dribbble.png",
             ]
 
             for icon_name in base_contact_icons:
@@ -2956,7 +3306,9 @@ def generate_pdf_for_saved_resume(resume_id):
             # Extract content icons (from Experience, Education, Certifications, etc.) only for icon-supporting templates
             if uses_icons:
                 referenced_icons = extract_icons_from_yaml(yaml_data)
-                logging.debug(f"Found {len(referenced_icons)} referenced icons in resume data")
+                logging.debug(
+                    f"Found {len(referenced_icons)} referenced icons in resume data"
+                )
 
                 # Validate and copy default icons
                 missing_icons = []
@@ -2968,7 +3320,9 @@ def generate_pdf_for_saved_resume(resume_id):
                     # Check if user uploaded this icon (already downloaded from storage above)
                     user_icon_path = session_icons_dir / icon_name
                     if user_icon_path.exists():
-                        logging.debug(f"Icon already in session: {icon_name} (user-uploaded)")
+                        logging.debug(
+                            f"Icon already in session: {icon_name} (user-uploaded)"
+                        )
                         continue
 
                     # Try to copy from default icons directory
@@ -2980,7 +3334,9 @@ def generate_pdf_for_saved_resume(resume_id):
                     else:
                         # Icon not found in storage or /icons/ directory
                         missing_icons.append(icon_name)
-                        logging.error(f"Icon not found: {icon_name} (not in storage or /icons/)")
+                        logging.error(
+                            f"Icon not found: {icon_name} (not in storage or /icons/)"
+                        )
 
                 # Return error if any icons are missing
                 if missing_icons:
@@ -2990,27 +3346,34 @@ def generate_pdf_for_saved_resume(resume_id):
                         f"Please edit this resume to either upload the missing icons or remove them from your sections."
                     )
                     logging.error(f"PDF generation blocked: {error_msg}")
-                    return jsonify({
-                        "success": False,
-                        "error": error_msg,
-                        "missing_icons": missing_icons
-                    }), 400
+                    return (
+                        jsonify(
+                            {
+                                "success": False,
+                                "error": error_msg,
+                                "missing_icons": missing_icons,
+                            }
+                        ),
+                        400,
+                    )
 
             # Write YAML to temp file
             yaml_path = temp_dir_path / "resume.yaml"
-            with open(yaml_path, 'w') as f:
+            with open(yaml_path, "w") as f:
                 yaml.dump(yaml_data, f)
 
             # Generate PDF
             timestamp = datetime.now().strftime("%Y%m%d_%H_%M_%S")
             output_path = temp_dir_path / f"Resume_{timestamp}.pdf"
 
-            template_id = resume.get('template_id', 'modern')
+            template_id = resume.get("template_id", "modern")
             actual_template = TEMPLATE_DIR_MAP.get(template_id, "modern")
 
             # Generate PDF using appropriate method
             if actual_template == "classic":
-                generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
+                generate_latex_pdf(
+                    yaml_data, str(session_icons_dir), str(output_path), actual_template
+                )
             else:
                 # Use thread pool or direct subprocess
                 if PDF_THREAD_POOL is None:
@@ -3029,7 +3392,9 @@ def generate_pdf_for_saved_resume(resume_id):
                         session_id,
                     ]
 
-                    result = subprocess.run(cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT))
+                    result = subprocess.run(
+                        cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT)
+                    )
 
                     if result.returncode != 0:
                         logging.error(f"PDF generation error: {result.stderr}")
@@ -3041,7 +3406,7 @@ def generate_pdf_for_saved_resume(resume_id):
                         yaml_path,
                         output_path,
                         session_icons_dir,
-                        session_id
+                        session_id,
                     )
 
                     result = future.result(timeout=60)
@@ -3054,25 +3419,44 @@ def generate_pdf_for_saved_resume(resume_id):
 
             # Generate thumbnail from PDF (piggyback strategy)
             try:
-                thumbnail_url = generate_thumbnail_from_pdf(str(output_path), user_id, resume_id)
+                thumbnail_url = generate_thumbnail_from_pdf(
+                    str(output_path), user_id, resume_id
+                )
                 if thumbnail_url:
                     # Fetch current updated_at to preserve it (avoid triggering timestamp update for metadata-only change)
-                    current_resume = supabase.table('resumes').select('updated_at').eq('id', resume_id).execute()
-                    current_updated_at = current_resume.data[0]['updated_at'] if current_resume.data else None
+                    current_resume = (
+                        supabase.table("resumes")
+                        .select("updated_at")
+                        .eq("id", resume_id)
+                        .execute()
+                    )
+                    current_updated_at = (
+                        current_resume.data[0]["updated_at"]
+                        if current_resume.data
+                        else None
+                    )
 
                     # Update resume with thumbnail URL and timestamp
                     current_time = datetime.now(timezone.utc).isoformat()
                     update_data = {
-                        'thumbnail_url': thumbnail_url,
-                        'pdf_generated_at': current_time  # Use consistent timestamp
+                        "thumbnail_url": thumbnail_url,
+                        "pdf_generated_at": current_time,  # Use consistent timestamp
                     }
                     if current_updated_at:
-                        update_data['updated_at'] = current_updated_at  # Preserve original timestamp
+                        update_data["updated_at"] = (
+                            current_updated_at  # Preserve original timestamp
+                        )
 
-                    supabase.table('resumes').update(update_data).eq('id', resume_id).execute()
-                    logging.info(f"Thumbnail generated and saved for resume {resume_id}")
+                    supabase.table("resumes").update(update_data).eq(
+                        "id", resume_id
+                    ).execute()
+                    logging.info(
+                        f"Thumbnail generated and saved for resume {resume_id}"
+                    )
                 else:
-                    logging.warning(f"Thumbnail generation failed for resume {resume_id}, but continuing with PDF")
+                    logging.warning(
+                        f"Thumbnail generation failed for resume {resume_id}, but continuing with PDF"
+                    )
             except Exception as thumb_error:
                 # Don't fail PDF generation if thumbnail fails
                 logging.error(f"Error during thumbnail generation: {thumb_error}")
@@ -3082,7 +3466,7 @@ def generate_pdf_for_saved_resume(resume_id):
                 output_path,
                 as_attachment=not _is_preview_request(),  # inline for preview, attachment for download
                 mimetype="application/pdf",
-                download_name=f"{resume.get('title', 'Resume')}_{timestamp}.pdf"
+                download_name=f"{resume.get('title', 'Resume')}_{timestamp}.pdf",
             )
 
         except Exception as e:
@@ -3113,12 +3497,14 @@ def generate_thumbnail_for_resume(resume_id):
             temp_dir_path = Path(temp_dir)
 
             # Load resume data
-            result = supabase.table('resumes') \
-                .select('*') \
-                .eq('id', resume_id) \
-                .eq('user_id', user_id) \
-                .is_('deleted_at', 'null') \
+            result = (
+                supabase.table("resumes")
+                .select("*")
+                .eq("id", resume_id)
+                .eq("user_id", user_id)
+                .is_("deleted_at", "null")
                 .execute()
+            )
 
             if not result.data:
                 return jsonify({"success": False, "error": "Resume not found"}), 404
@@ -3126,10 +3512,12 @@ def generate_thumbnail_for_resume(resume_id):
             resume = result.data[0]
 
             # Load icons
-            icons_result = supabase.table('resume_icons') \
-                .select('filename, storage_path') \
-                .eq('resume_id', resume_id) \
+            icons_result = (
+                supabase.table("resume_icons")
+                .select("filename, storage_path")
+                .eq("resume_id", resume_id)
                 .execute()
+            )
 
             # Create session directory for icons
             session_id = str(uuid.uuid4())
@@ -3139,11 +3527,15 @@ def generate_thumbnail_for_resume(resume_id):
             # Download icons from storage
             failed_icons = []
             for icon in icons_result.data:
-                icon_path = session_icons_dir / icon['filename']
-                success = download_icon_from_storage(icon['storage_path'], str(icon_path))
+                icon_path = session_icons_dir / icon["filename"]
+                success = download_icon_from_storage(
+                    icon["storage_path"], str(icon_path)
+                )
                 if not success:
-                    failed_icons.append(icon['filename'])
-                    logging.error(f"Failed to download icon: {icon['filename']} from {icon['storage_path']}")
+                    failed_icons.append(icon["filename"])
+                    logging.error(
+                        f"Failed to download icon: {icon['filename']} from {icon['storage_path']}"
+                    )
 
             # Log warning if any icons failed, but continue with graceful degradation
             if failed_icons:
@@ -3157,24 +3549,34 @@ def generate_thumbnail_for_resume(resume_id):
 
             # Prepare YAML data
             yaml_data = {
-                'template': resume.get('template_id'),
-                'contact_info': resume.get('contact_info', {}),
-                'sections': resume.get('sections', [])
+                "template": resume.get("template_id"),
+                "contact_info": resume.get("contact_info", {}),
+                "sections": resume.get("sections", []),
             }
 
             # Normalize sections
             yaml_data = normalize_sections(yaml_data)
 
             # Icon validation and copying for icon-supporting templates
-            template_id = resume.get('template_id', 'modern')
+            template_id = resume.get("template_id", "modern")
             uses_icons = template_id == "modern-with-icons"
 
             # Always copy base contact icons that are hardcoded in templates
             # These are required for all modern template variants (with and without content icons)
             base_contact_icons = [
-                "location.png", "email.png", "phone.png", "linkedin.png",
-                "github.png", "twitter.png", "website.png", "pinterest.png",
-                "medium.png", "youtube.png", "stackoverflow.png", "behance.png", "dribbble.png"
+                "location.png",
+                "email.png",
+                "phone.png",
+                "linkedin.png",
+                "github.png",
+                "twitter.png",
+                "website.png",
+                "pinterest.png",
+                "medium.png",
+                "youtube.png",
+                "stackoverflow.png",
+                "behance.png",
+                "dribbble.png",
             ]
 
             for icon_name in base_contact_icons:
@@ -3189,7 +3591,9 @@ def generate_thumbnail_for_resume(resume_id):
             # Extract content icons (from Experience, Education, Certifications, etc.) only for icon-supporting templates
             if uses_icons:
                 referenced_icons = extract_icons_from_yaml(yaml_data)
-                logging.debug(f"Found {len(referenced_icons)} referenced icons in resume data")
+                logging.debug(
+                    f"Found {len(referenced_icons)} referenced icons in resume data"
+                )
 
                 # Validate and copy default icons
                 missing_icons = []
@@ -3201,7 +3605,9 @@ def generate_thumbnail_for_resume(resume_id):
                     # Check if user uploaded this icon (already downloaded from storage above)
                     user_icon_path = session_icons_dir / icon_name
                     if user_icon_path.exists():
-                        logging.debug(f"Icon already in session: {icon_name} (user-uploaded)")
+                        logging.debug(
+                            f"Icon already in session: {icon_name} (user-uploaded)"
+                        )
                         continue
 
                     # Try to copy from default icons directory
@@ -3213,7 +3619,9 @@ def generate_thumbnail_for_resume(resume_id):
                     else:
                         # Icon not found in storage or /icons/ directory
                         missing_icons.append(icon_name)
-                        logging.error(f"Icon not found: {icon_name} (not in storage or /icons/)")
+                        logging.error(
+                            f"Icon not found: {icon_name} (not in storage or /icons/)"
+                        )
 
                 # Return error if any icons are missing
                 if missing_icons:
@@ -3223,27 +3631,34 @@ def generate_thumbnail_for_resume(resume_id):
                         f"Please edit this resume to either upload the missing icons or remove them from your sections."
                     )
                     logging.error(f"PDF generation blocked: {error_msg}")
-                    return jsonify({
-                        "success": False,
-                        "error": error_msg,
-                        "missing_icons": missing_icons
-                    }), 400
+                    return (
+                        jsonify(
+                            {
+                                "success": False,
+                                "error": error_msg,
+                                "missing_icons": missing_icons,
+                            }
+                        ),
+                        400,
+                    )
 
             # Write YAML to temp file
             yaml_path = temp_dir_path / "resume.yaml"
-            with open(yaml_path, 'w') as f:
+            with open(yaml_path, "w") as f:
                 yaml.dump(yaml_data, f)
 
             # Generate PDF
             timestamp = datetime.now().strftime("%Y%m%d_%H_%M_%S")
             output_path = temp_dir_path / f"Resume_{timestamp}.pdf"
 
-            template_id = resume.get('template_id', 'modern')
+            template_id = resume.get("template_id", "modern")
             actual_template = TEMPLATE_DIR_MAP.get(template_id, "modern")
 
             # Generate PDF using appropriate method
             if actual_template == "classic":
-                generate_latex_pdf(yaml_data, str(session_icons_dir), str(output_path), actual_template)
+                generate_latex_pdf(
+                    yaml_data, str(session_icons_dir), str(output_path), actual_template
+                )
             else:
                 # Use thread pool or direct subprocess
                 if PDF_THREAD_POOL is None:
@@ -3262,7 +3677,9 @@ def generate_thumbnail_for_resume(resume_id):
                         session_id,
                     ]
 
-                    result = subprocess.run(cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT))
+                    result = subprocess.run(
+                        cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT)
+                    )
 
                     if result.returncode != 0:
                         logging.error(f"PDF generation error: {result.stderr}")
@@ -3274,7 +3691,7 @@ def generate_thumbnail_for_resume(resume_id):
                         yaml_path,
                         output_path,
                         session_icons_dir,
-                        session_id
+                        session_id,
                     )
 
                     result = future.result(timeout=60)
@@ -3286,35 +3703,58 @@ def generate_thumbnail_for_resume(resume_id):
                 raise FileNotFoundError("PDF file was not generated")
 
             # Generate thumbnail from PDF
-            thumbnail_url = generate_thumbnail_from_pdf(str(output_path), user_id, resume_id)
+            thumbnail_url = generate_thumbnail_from_pdf(
+                str(output_path), user_id, resume_id
+            )
 
             if not thumbnail_url:
-                return jsonify({"success": False, "error": "Failed to generate thumbnail"}), 500
+                return (
+                    jsonify(
+                        {"success": False, "error": "Failed to generate thumbnail"}
+                    ),
+                    500,
+                )
 
             # Fetch current updated_at to preserve it (avoid triggering timestamp update for metadata-only change)
-            current_resume = supabase.table('resumes').select('updated_at').eq('id', resume_id).execute()
-            current_updated_at = current_resume.data[0]['updated_at'] if current_resume.data else None
+            current_resume = (
+                supabase.table("resumes")
+                .select("updated_at")
+                .eq("id", resume_id)
+                .execute()
+            )
+            current_updated_at = (
+                current_resume.data[0]["updated_at"] if current_resume.data else None
+            )
 
             # Update resume with thumbnail URL and timestamp
             current_time = datetime.now(timezone.utc).isoformat()
             update_data = {
-                'thumbnail_url': thumbnail_url,
-                'pdf_generated_at': current_time  # Use same timestamp as response for polling
+                "thumbnail_url": thumbnail_url,
+                "pdf_generated_at": current_time,  # Use same timestamp as response for polling
             }
             if current_updated_at:
-                update_data['updated_at'] = current_updated_at  # Preserve original timestamp
+                update_data["updated_at"] = (
+                    current_updated_at  # Preserve original timestamp
+                )
 
-            supabase.table('resumes').update(update_data).eq('id', resume_id).execute()
+            supabase.table("resumes").update(update_data).eq("id", resume_id).execute()
 
             logging.info(f"Thumbnail generated successfully for resume {resume_id}")
-            logging.debug(f"Thumbnail endpoint response - pdf_generated_at: {current_time}")
+            logging.debug(
+                f"Thumbnail endpoint response - pdf_generated_at: {current_time}"
+            )
             logging.debug(f"Database update successful for resume {resume_id}")
 
-            return jsonify({
-                "success": True,
-                "thumbnail_url": thumbnail_url,
-                "pdf_generated_at": current_time
-            }), 200
+            return (
+                jsonify(
+                    {
+                        "success": True,
+                        "thumbnail_url": thumbnail_url,
+                        "pdf_generated_at": current_time,
+                    }
+                ),
+                200,
+            )
 
         except Exception as e:
             error_classification = classify_thumbnail_error(e)
@@ -3323,28 +3763,40 @@ def generate_thumbnail_for_resume(resume_id):
                 f"(retryable={error_classification['retryable']}, type={error_classification['error_type']})"
             )
 
-            if error_classification['retryable']:
+            if error_classification["retryable"]:
                 # Return success with null thumbnail - frontend will retry
-                return jsonify({
-                    "success": True,
-                    "thumbnail_url": None,
-                    "pdf_generated_at": None,
-                    "retryable": True,
-                    "error_type": error_classification['error_type']
-                }), 200
+                return (
+                    jsonify(
+                        {
+                            "success": True,
+                            "thumbnail_url": None,
+                            "pdf_generated_at": None,
+                            "retryable": True,
+                            "error_type": error_classification["error_type"],
+                        }
+                    ),
+                    200,
+                )
             else:
                 # Permanent error - return error but don't expect retry
-                return jsonify({
-                    "success": False,
-                    "error": error_classification.get('user_message', str(e)),
-                    "retryable": False
-                }), 500
+                return (
+                    jsonify(
+                        {
+                            "success": False,
+                            "error": error_classification.get("user_message", str(e)),
+                            "retryable": False,
+                        }
+                    ),
+                    500,
+                )
 
 
 # User Preferences API Endpoints
 
+
 @app.route("/api/user/preferences", methods=["GET"])
 @require_auth
+@retry_on_connection_error(max_retries=3, backoff_factor=0.5)
 def get_user_preferences():
     """
     Get user preferences including last_edited_resume_id.
@@ -3363,30 +3815,26 @@ def get_user_preferences():
         user_id = request.user_id
 
         # Query user preferences
-        result = supabase.table('user_preferences') \
-            .select('*') \
-            .eq('user_id', user_id) \
+        result = (
+            supabase.table("user_preferences")
+            .select("*")
+            .eq("user_id", user_id)
             .execute()
+        )
 
         if result.data:
-            return jsonify({
-                "success": True,
-                "preferences": result.data[0]
-            }), 200
+            return jsonify({"success": True, "preferences": result.data[0]}), 200
         else:
             # Create default preferences if not exists
             default_prefs = {
-                'user_id': user_id,
-                'last_edited_resume_id': None,
-                'preferences': {}
+                "user_id": user_id,
+                "last_edited_resume_id": None,
+                "preferences": {},
             }
 
-            supabase.table('user_preferences').insert(default_prefs).execute()
+            supabase.table("user_preferences").insert(default_prefs).execute()
 
-            return jsonify({
-                "success": True,
-                "preferences": default_prefs
-            }), 200
+            return jsonify({"success": True, "preferences": default_prefs}), 200
 
     except Exception as e:
         logging.error(f"Error getting user preferences: {e}")
@@ -3395,6 +3843,7 @@ def get_user_preferences():
 
 @app.route("/api/user/preferences", methods=["POST"])
 @require_auth
+@retry_on_connection_error(max_retries=3, backoff_factor=0.5)
 def update_user_preferences():
     """
     Update user preferences (e.g., last_edited_resume_id).
@@ -3420,20 +3869,17 @@ def update_user_preferences():
 
         # Prepare update data
         prefs_data = {
-            'user_id': user_id,
-            'last_edited_resume_id': data.get('last_edited_resume_id'),
-            'preferences': data.get('preferences', {})
+            "user_id": user_id,
+            "last_edited_resume_id": data.get("last_edited_resume_id"),
+            "preferences": data.get("preferences", {}),
         }
 
         # Upsert preferences
-        supabase.table('user_preferences').upsert(prefs_data).execute()
+        supabase.table("user_preferences").upsert(prefs_data).execute()
 
         logging.info(f"Updated preferences for user {user_id}")
 
-        return jsonify({
-            "success": True,
-            "message": "Preferences updated"
-        }), 200
+        return jsonify({"success": True, "message": "Preferences updated"}), 200
 
     except Exception as e:
         logging.error(f"Error updating user preferences: {e}")

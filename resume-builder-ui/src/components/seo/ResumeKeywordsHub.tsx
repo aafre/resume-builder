@@ -4,6 +4,7 @@
  * Target keyword: "resume keywords"
  */
 
+import { Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import FeatureGrid from '../shared/FeatureGrid';
@@ -22,6 +23,9 @@ export default function ResumeKeywordsHub() {
   const technologyJobs = getJobsByCategory('technology');
   const creativeJobs = getJobsByCategory('creative');
   const businessJobs = getJobsByCategory('business');
+  const healthcareJobs = getJobsByCategory('healthcare');
+  const tradesJobs = getJobsByCategory('trades');
+  const educationJobs = getJobsByCategory('education');
 
   // Define category configurations
   const categories = [
@@ -52,6 +56,33 @@ export default function ResumeKeywordsHub() {
         text: 'text-green-600',
       },
     },
+    {
+      title: '🏥 Healthcare',
+      jobs: healthcareJobs,
+      colorScheme: {
+        border: 'border-red-200',
+        hoverBorder: 'hover:border-red-400',
+        text: 'text-red-600',
+      },
+    },
+    {
+      title: '🔧 Trades & Skilled Labor',
+      jobs: tradesJobs,
+      colorScheme: {
+        border: 'border-amber-200',
+        hoverBorder: 'hover:border-amber-400',
+        text: 'text-amber-600',
+      },
+    },
+    {
+      title: '📚 Education',
+      jobs: educationJobs,
+      colorScheme: {
+        border: 'border-teal-200',
+        hoverBorder: 'hover:border-teal-400',
+        text: 'text-teal-600',
+      },
+    },
   ];
 
   // Generate schema items from all jobs
@@ -76,7 +107,7 @@ export default function ResumeKeywordsHub() {
 
       <div className="mb-16">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
-          Why resume keywords matter in 2025
+          Why resume keywords matter in 2026
         </h2>
         <div className="max-w-4xl mx-auto bg-white rounded-xl p-8 shadow-md">
           <p className="text-lg text-gray-700 mb-6 leading-relaxed">
@@ -93,6 +124,35 @@ export default function ResumeKeywordsHub() {
       </div>
 
       {config.features && <FeatureGrid features={config.features} />}
+
+      {/* Featured: Customer Service Keywords */}
+      <div className="mb-16">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+          Most popular keyword guide
+        </h2>
+        <Link
+          to="/resume-keywords/customer-service"
+          className="block max-w-4xl mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 hover:border-blue-400 rounded-xl p-8 shadow-md hover:shadow-xl transition-all"
+        >
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <span className="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full mb-3">
+                FEATURED
+              </span>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                Customer Service Resume Keywords
+              </h3>
+              <p className="text-gray-600">
+                100+ keywords including CRM software (Salesforce, Zendesk), soft skills, CSAT/NPS metrics,
+                and before/after resume examples for 5 different customer service roles.
+              </p>
+            </div>
+            <div className="text-blue-600 font-semibold whitespace-nowrap text-lg">
+              View Guide →
+            </div>
+          </div>
+        </Link>
+      </div>
 
       <div className="mb-16">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
