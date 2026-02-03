@@ -1208,11 +1208,11 @@ else:
 MAX_ICON_COPY_WORKERS = 10
 
 # Development mode: Don't serve React from root to avoid route conflicts
-# Production mode: Serve React build from root (static_url_path="/")
+# Production mode: Serve React build (static_url_path="/_s" to avoid catching SPA routes)
 FLASK_ENV = os.getenv("FLASK_ENV", "development")
 if FLASK_ENV == "production":
     # Production: Flask serves React static files from root
-    app = Flask(__name__, static_folder="static", static_url_path="/")
+    app = Flask(__name__, static_folder="static", static_url_path="/_s")
 else:
     # Development: Vite dev server handles React, Flask only handles API
     app = Flask(__name__, static_folder="static", static_url_path="/static")
