@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.14.0] - 2026-02-03
+
+### 🚀 Features
+
+- **seo:** Add hreflang links for UK/US page pairs and British English descriptions
+- **seo:** Enhance keywords hub content and add internal linking from blogs
+
+### 🐛 Bug Fixes
+
+- **seo:** Fix rich results by removing fake ratings, wrapping schemas in @graph, and using native details/summary
+- **seo:** Remove redirected URL from sitemap and expand prerender routes
+- **seo:** Fix sitemap indentation and use Link for internal navigation
+- **seo:** Prevent SPA routes from returning HTTP 404
+- Remove unused useState import from LandingPage
+
+### 🚜 Refactor
+
+- **seo:** Remove as-any cast by using schema generator functions
+
+### ⚡ Performance
+
+- **seo:** Rewrite meta titles/descriptions for high-impression pages
+
 ## [3.13.0] - 2026-02-03
 
 ### 🚀 Features
