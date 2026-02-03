@@ -365,3 +365,9 @@ body.fc-dialog-open {
   overflow: hidden !important;
 }
 
+/* Isolate ad containers to prevent AdSense style injections from cascading to <main> */
+.in-content-ad,
+.ad-container {
+  contain: layout;
+}
+
