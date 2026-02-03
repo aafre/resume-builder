@@ -16,9 +16,9 @@ import {
 export const softwareEngineer: JobKeywordsData = {
   slug: 'software-engineer',
   title: 'Software Engineer',
-  metaTitle: 'Software Engineer Resume Keywords - ATS-Optimized Skills List (2026)',
+  metaTitle: 'Software Engineer Resume Keywords (2026) - 120+ ATS Skills & Examples',
   metaDescription:
-    'Complete list of software engineer resume keywords including Python, JavaScript, React, AWS, Docker, Agile, and essential programming skills that pass ATS systems.',
+    'Free software engineer resume keywords: Python, Java, React, AWS, CI/CD, microservices, Docker. Includes before/after bullet examples for developer resumes.',
   category: 'technology',
   priority: 0.9,
   lastmod: '2026-01-18',

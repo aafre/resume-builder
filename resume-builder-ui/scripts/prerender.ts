@@ -77,6 +77,9 @@ const ROUTES_TO_PRERENDER = [
   '/cv-templates/ats-friendly',
   '/free-cv-builder-no-sign-up',
 
+  // Blog index
+  '/blog',
+
   // Blog - comparison posts (high impression, low CTR)
   '/blog/zety-vs-easy-free-resume',
   '/blog/resume-io-vs-easy-free-resume',
@@ -95,6 +98,12 @@ const ROUTES_TO_PRERENDER = [
   '/blog/how-to-write-a-resume-guide',
   '/blog/ats-resume-optimization',
   '/blog/resume-keywords-guide',
+
+  // Blog - high-impression posts
+  '/blog/professional-summary-examples',
+  '/blog/how-to-use-resume-keywords',
+  '/blog/resume-no-experience',
+  '/blog/resume-vs-cv-difference',
 
   // Info pages
   '/about',

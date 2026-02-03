@@ -17,15 +17,16 @@ interface JobCategorySectionProps {
   title: string;
   jobs: JobKeywordsData[];
   colorScheme: ColorScheme;
+  id?: string;
 }
 
-export default function JobCategorySection({ title, jobs, colorScheme }: JobCategorySectionProps) {
+export default function JobCategorySection({ title, jobs, colorScheme, id }: JobCategorySectionProps) {
   if (jobs.length === 0) {
     return null;
   }
 
   return (
-    <div className="mb-12">
+    <div className="mb-12" id={id}>
       <h3 className="text-2xl font-bold text-gray-900 mb-6">{title}</h3>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {jobs.map(job => {

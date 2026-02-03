@@ -30,6 +30,7 @@ export default function ResumeKeywordsHub() {
   // Define category configurations
   const categories = [
     {
+      id: 'technology',
       title: '💻 Technology',
       jobs: technologyJobs,
       colorScheme: {
@@ -39,6 +40,7 @@ export default function ResumeKeywordsHub() {
       },
     },
     {
+      id: 'design',
       title: '🎨 Design',
       jobs: creativeJobs,
       colorScheme: {
@@ -48,6 +50,7 @@ export default function ResumeKeywordsHub() {
       },
     },
     {
+      id: 'business',
       title: '📊 Business & Management',
       jobs: businessJobs,
       colorScheme: {
@@ -57,6 +60,7 @@ export default function ResumeKeywordsHub() {
       },
     },
     {
+      id: 'healthcare',
       title: '🏥 Healthcare',
       jobs: healthcareJobs,
       colorScheme: {
@@ -66,6 +70,7 @@ export default function ResumeKeywordsHub() {
       },
     },
     {
+      id: 'trades',
       title: '🔧 Trades & Skilled Labor',
       jobs: tradesJobs,
       colorScheme: {
@@ -75,6 +80,7 @@ export default function ResumeKeywordsHub() {
       },
     },
     {
+      id: 'education',
       title: '📚 Education',
       jobs: educationJobs,
       colorScheme: {
@@ -105,20 +111,67 @@ export default function ResumeKeywordsHub() {
       {/* In-content Ad - Below hero */}
       <InContentAd adSlot={AD_CONFIG.slots.keywordsIncontent} marginY={32} />
 
-      <div className="mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
-          Why resume keywords matter in 2026
-        </h2>
-        <div className="max-w-4xl mx-auto bg-white rounded-xl p-8 shadow-md">
+      {/* Long-form intro for SEO ranking */}
+      <div className="mb-16 max-w-4xl mx-auto">
+        <div className="bg-white rounded-xl p-8 md:p-10 shadow-md">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+            What Are Resume Keywords?
+          </h2>
+          <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+            Resume keywords are specific words and phrases that hiring managers and Applicant
+            Tracking Systems (ATS) use to identify qualified candidates. They include hard skills
+            (like &ldquo;Python&rdquo; or &ldquo;SQL&rdquo;), soft skills (like &ldquo;cross-functional collaboration&rdquo;),
+            job titles, certifications, industry tools, and action verbs that describe your
+            accomplishments.
+          </p>
+          <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+            Over 98% of Fortune 500 companies use ATS software to filter resumes before a
+            human recruiter ever sees them. These systems scan your resume for keywords that
+            match the job description and rank candidates accordingly. A resume without the
+            right keywords will be filtered out regardless of qualifications.
+          </p>
           <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-            Over 98% of Fortune 500 companies use Applicant Tracking Systems (ATS) to filter
-            resumes before human recruiters see them. These systems scan for specific keywords
-            that match the job description.
+            The keyword lists below are organized by industry and role. Each page includes
+            core skills, technical tools, certifications, and before/after bullet examples
+            showing how to incorporate keywords naturally into your resume.
+          </p>
+
+          {/* Table of contents */}
+          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+            <h3 className="font-bold text-gray-900 mb-3">On this page</h3>
+            <ul className="space-y-2 text-blue-600">
+              <li><a href="#technology" className="hover:underline">Technology &amp; Engineering Keywords</a></li>
+              <li><a href="#design" className="hover:underline">Design &amp; Creative Keywords</a></li>
+              <li><a href="#business" className="hover:underline">Business &amp; Management Keywords</a></li>
+              <li><a href="#healthcare" className="hover:underline">Healthcare Keywords</a></li>
+              <li><a href="#trades" className="hover:underline">Trades &amp; Skilled Labor Keywords</a></li>
+              <li><a href="#education" className="hover:underline">Education Keywords</a></li>
+              <li><a href="#how-to-find" className="hover:underline">How to Find Keywords for Your Resume</a></li>
+              <li><a href="#faq" className="hover:underline">Frequently Asked Questions</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl p-8 md:p-10 shadow-md mt-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Why Resume Keywords Matter in 2026
+          </h2>
+          <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+            ATS technology has become more sophisticated but also more widespread. In 2026,
+            even mid-size companies and startups use automated screening. The systems compare
+            your resume against the job posting and assign a match score. Resumes below the
+            threshold are never reviewed by a human.
+          </p>
+          <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+            This means keyword optimization is no longer optional &mdash; it is a prerequisite
+            for getting interviews. The good news is that using the right keywords also makes
+            your resume more compelling to human readers, because it demonstrates you speak
+            the language of your industry.
           </p>
           <p className="text-lg text-gray-700 leading-relaxed">
-            Without the right keywords, your resume may never reach a human recruiter - no matter
-            how qualified you are. Using industry-specific keywords naturally throughout your
-            resume is critical to passing ATS filters and landing interviews.
+            The most effective approach is to start with a strong base resume, then tailor
+            the keywords for each application by mirroring the language from the specific job
+            posting. Our industry guides below give you that strong foundation.
           </p>
         </div>
       </div>
@@ -162,6 +215,7 @@ export default function ResumeKeywordsHub() {
         {categories.map(category => (
           <JobCategorySection
             key={category.title}
+            id={category.id}
             title={category.title}
             jobs={category.jobs}
             colorScheme={category.colorScheme}
@@ -169,7 +223,7 @@ export default function ResumeKeywordsHub() {
         ))}
       </div>
 
-      <div className="mb-16">
+      <div className="mb-16" id="how-to-find">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
           How to find keywords for your resume
         </h2>
@@ -206,7 +260,9 @@ export default function ResumeKeywordsHub() {
         </div>
       </div>
 
-      <FAQSection faqs={config.faqs} />
+      <div id="faq">
+        <FAQSection faqs={config.faqs} />
+      </div>
 
       <DownloadCTA
         title="Ready to Optimize Your Resume?"
