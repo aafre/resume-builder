@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import BlogLayout from "../BlogLayout";
 
 export default function HowToUseResumeKeywords() {
@@ -282,12 +283,12 @@ export default function HowToUseResumeKeywords() {
           Every industry has its own unique language. To help you get started,
           we've created detailed keyword guides for specific fields. Browse all
           of them on our{" "}
-          <a
-            href="/resume-keywords"
+          <Link
+            to="/resume-keywords"
             className="text-blue-600 hover:text-blue-800 underline"
           >
             Resume Keywords by Industry
-          </a>{" "}
+          </Link>{" "}
           hub.
         </p>
 
@@ -296,12 +297,12 @@ export default function HowToUseResumeKeywords() {
             <h4 className="font-bold text-gray-800 mb-3">💻 For Tech Roles:</h4>
             <p className="text-gray-700 mb-3">
               Dive into our list of{" "}
-              <a
-                href="/resume-keywords/software-engineer"
+              <Link
+                to="/resume-keywords/software-engineer"
                 className="text-blue-600 hover:text-blue-800 underline"
               >
                 120+ Software Engineer Resume Keywords
-              </a>
+              </Link>
               .
             </p>
             <div className="text-sm text-gray-600">
@@ -315,12 +316,12 @@ export default function HowToUseResumeKeywords() {
             </h4>
             <p className="text-gray-700 mb-3">
               Check out our{" "}
-              <a
-                href="/resume-keywords/customer-service"
+              <Link
+                to="/resume-keywords/customer-service"
                 className="text-blue-600 hover:text-blue-800 underline"
               >
                 100+ Customer Service Resume Keywords
-              </a>
+              </Link>
               .
             </p>
             <div className="text-sm text-gray-600">
