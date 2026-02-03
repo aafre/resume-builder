@@ -266,7 +266,7 @@ describe("AdContainer", () => {
       });
 
       const container = screen.getByTestId("test-ad");
-      expect(container).toHaveStyle({ minHeight: "0px", opacity: "0" });
+      expect(container).toHaveStyle({ minHeight: "250px", opacity: "0" });
     });
 
     it("fires onUnfilled callback when ad is unfilled", async () => {
@@ -358,7 +358,7 @@ describe("AdContainer", () => {
 
       await waitFor(() => {
         const container = screen.getByTestId("test-ad");
-        expect(container).toHaveStyle({ minHeight: "0px", opacity: "0" });
+        expect(container).toHaveStyle({ minHeight: "250px", opacity: "0" });
       });
     });
 

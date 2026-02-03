@@ -69,8 +69,10 @@
     <title>EasyFreeResume: The Easiest Free Resume Builder (No Sign-Ups)</title>
 
     <!-- AdSense — preconnect only; script is deferred to end of body -->
-    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
-    <link rel="preconnect" href="https://googleads.g.doubleclick.net">
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://googleads.g.doubleclick.net" crossorigin="anonymous">
+    <link rel="preconnect" href="https://mgetvioaymkvafczmhwo.supabase.co" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
   </head>
   <body>
     <!-- Route-aware shell: hide landing content on non-home routes before first paint -->
@@ -78,6 +80,8 @@
     <div id="root">
       <!-- App Shell: matches React layout so the H1 (LCP) paints without shift -->
       <div style="display:flex;flex-direction:column;min-height:100vh;background:#f9fafb">
+        <!-- AnnouncementBar placeholder (matches ~43px banner for unauthenticated landing) -->
+        <div class="shell-announcement" style="background:linear-gradient(to right,rgb(147,51,234),rgb(59,130,246));padding:10px 12px;min-height:43px"></div>
         <!-- Header placeholder (matches sticky header height) -->
         <div style="height:64px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1)"></div>
         <!-- Main content area matching LandingPage layout -->
@@ -89,6 +93,7 @@
           .not-home #shell-landing{display:none}
           #shell-generic{display:none}
           .not-home #shell-generic{display:block}
+          .not-home .shell-announcement{display:none}
         </style>
         <main style="flex:1 1 0%;padding:0 1rem">
           <!-- SideRailLayout wrapper (matches React when explicit ads enabled) -->
@@ -97,7 +102,7 @@
               <!-- Mobile-top ad placeholder (matches SideRailLayout block md:hidden InContentAd) -->
               <div class="shell-mobile-ad">
                 <div style="margin:16px 0;overflow:hidden">
-                  <div style="min-height:100px"></div>
+                  <div style="min-height:250px"></div>
                 </div>
               </div>
               <!-- Landing page content (hidden on non-home routes) -->
