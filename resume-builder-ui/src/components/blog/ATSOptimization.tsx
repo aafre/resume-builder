@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import BlogLayout from "../BlogLayout";
 
 export default function ATSOptimization() {
@@ -236,6 +237,8 @@ export default function ATSOptimization() {
           Keywords are the foundation of ATS optimization. These systems scan
           for specific terms, skills, and phrases that match job requirements.
           Strategic keyword placement can dramatically improve your ranking.
+          We maintain <Link to="/resume-keywords" className="text-blue-600 hover:underline font-medium">industry-specific keyword lists</Link> for
+          17+ job categories to help you find the right terms for your field.
         </p>
 
         <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">

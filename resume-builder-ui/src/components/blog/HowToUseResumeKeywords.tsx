@@ -280,7 +280,15 @@ export default function HowToUseResumeKeywords() {
 
         <p className="text-lg leading-relaxed text-gray-700">
           Every industry has its own unique language. To help you get started,
-          we've created detailed guides for specific fields.
+          we've created detailed keyword guides for specific fields. Browse all
+          of them on our{" "}
+          <a
+            href="/resume-keywords"
+            className="text-blue-600 hover:text-blue-800 underline"
+          >
+            Resume Keywords by Industry
+          </a>{" "}
+          hub.
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
@@ -289,10 +297,10 @@ export default function HowToUseResumeKeywords() {
             <p className="text-gray-700 mb-3">
               Dive into our list of{" "}
               <a
-                href="/blog/software-engineer-resume-keywords"
+                href="/resume-keywords/software-engineer"
                 className="text-blue-600 hover:text-blue-800 underline"
               >
-                50+ Essential Keywords for a Software Engineer Resume
+                120+ Software Engineer Resume Keywords
               </a>
               .
             </p>
@@ -308,10 +316,10 @@ export default function HowToUseResumeKeywords() {
             <p className="text-gray-700 mb-3">
               Check out our{" "}
               <a
-                href="/blog/customer-service-resume-keywords"
+                href="/resume-keywords/customer-service"
                 className="text-blue-600 hover:text-blue-800 underline"
               >
-                Top Keywords for Customer Service Resumes
+                100+ Customer Service Resume Keywords
               </a>
               .
             </p>
