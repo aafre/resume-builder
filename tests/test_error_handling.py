@@ -5,6 +5,7 @@ Tests cover:
 1. retry_on_connection_error decorator
 2. Connection error classification
 3. Exponential backoff timing
+4. require_auth retry on connection errors
 
 Run tests:
     pytest tests/test_error_handling.py -v
@@ -14,6 +15,7 @@ from unittest.mock import MagicMock, patch, call
 import sys
 import os
 import time
+import json
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -351,3 +353,73 @@ class TestClassifyThumbnailErrorRetryability:
             error = Exception(error_msg)
             result = flask_app.classify_thumbnail_error(error)
             assert result['retryable'] is False, f"Expected '{error_msg}' to NOT be retryable"
+
+
+class TestRequireAuthRetry:
+    """Tests for require_auth retry on transient connection errors."""
+
+    def test_retries_on_connection_error_then_succeeds(self, flask_test_client, auth_headers):
+        """Verify require_auth retries get_user on connection error and succeeds on second attempt."""
+        client, mock_sb, flask_app = flask_test_client
+
+        call_count = 0
+        mock_user = MagicMock()
+        mock_user.id = 'test-user-id-123'
+
+        def get_user_side_effect(token):
+            nonlocal call_count
+            call_count += 1
+            if call_count == 1:
+                raise Exception("Server disconnected without sending any data")
+            return MagicMock(user=mock_user)
+
+        mock_sb.auth.get_user.side_effect = get_user_side_effect
+
+        with patch('time.sleep'):
+            response = client.get('/api/user/preferences', headers=auth_headers)
+
+        assert response.status_code == 200
+        assert call_count == 2
+
+    @pytest.mark.parametrize("error_message", [
+        "Token expired",
+        "Invalid JWT: signature verification failed",
+    ])
+    def test_does_not_retry_on_non_connection_errors(self, flask_test_client, auth_headers, error_message):
+        """Verify require_auth does NOT retry on non-connection errors like invalid/expired tokens."""
+        client, mock_sb, flask_app = flask_test_client
+
+        call_count = 0
+
+        def get_user_side_effect(token):
+            nonlocal call_count
+            call_count += 1
+            raise Exception(error_message)
+
+        mock_sb.auth.get_user.side_effect = get_user_side_effect
+
+        response = client.get('/api/user/preferences', headers=auth_headers)
+
+        assert response.status_code == 401
+        assert call_count == 1
+
+    def test_returns_401_when_retry_also_fails(self, flask_test_client, auth_headers):
+        """Verify require_auth returns 401 when both attempts raise connection errors."""
+        client, mock_sb, flask_app = flask_test_client
+
+        call_count = 0
+
+        def get_user_side_effect(token):
+            nonlocal call_count
+            call_count += 1
+            raise Exception("Connection reset by peer")
+
+        mock_sb.auth.get_user.side_effect = get_user_side_effect
+
+        with patch('time.sleep'):
+            response = client.get('/api/user/preferences', headers=auth_headers)
+
+        assert response.status_code == 401
+        data = json.loads(response.data)
+        assert data['success'] is False
+        assert call_count == 2
