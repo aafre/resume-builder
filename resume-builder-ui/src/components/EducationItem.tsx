@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { MdDelete } from "react-icons/md";
 import { RichTextInput } from "./RichTextInput";
 import IconManager from "./IconManager";
