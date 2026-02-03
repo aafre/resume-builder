@@ -24,6 +24,12 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         'free resume templates download',
       ],
       canonicalUrl: '/templates',
+      hreflangLinks: [
+        { hreflang: 'en-US', href: 'https://easyfreeresume.com/templates' },
+        { hreflang: 'en-GB', href: 'https://easyfreeresume.com/cv-templates/ats-friendly' },
+        { hreflang: 'en-AU', href: 'https://easyfreeresume.com/cv-templates/ats-friendly' },
+        { hreflang: 'x-default', href: 'https://easyfreeresume.com/templates' },
+      ],
     },
     hero: {
       h1: 'Free Resume Templates',
@@ -242,6 +248,12 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         'no account resume',
       ],
       canonicalUrl: '/free-resume-builder-no-sign-up',
+      hreflangLinks: [
+        { hreflang: 'en-US', href: 'https://easyfreeresume.com/free-resume-builder-no-sign-up' },
+        { hreflang: 'en-GB', href: 'https://easyfreeresume.com/free-cv-builder-no-sign-up' },
+        { hreflang: 'en-AU', href: 'https://easyfreeresume.com/free-cv-builder-no-sign-up' },
+        { hreflang: 'x-default', href: 'https://easyfreeresume.com/free-resume-builder-no-sign-up' },
+      ],
     },
     hero: {
       h1: 'Build Your Resume in Minutes - No Account Required',
@@ -350,7 +362,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
     seo: {
       title: 'Free CV Builder (No Sign Up) - UK & International',
       description:
-        'Build your CV online free. No registration, no watermark. ATS-friendly CV templates for UK, Europe, and international applications.',
+        'Build your CV online for free — no registration, no watermark. ATS-optimised CV templates suitable for UK, EU, and Commonwealth applications. Download PDF instantly.',
       keywords: [
         'free cv builder',
         'cv builder uk',
@@ -363,6 +375,13 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         'online cv maker free',
       ],
       canonicalUrl: '/free-cv-builder-no-sign-up',
+      hreflangLinks: [
+        { hreflang: 'en-US', href: 'https://easyfreeresume.com/free-resume-builder-no-sign-up' },
+        { hreflang: 'en-GB', href: 'https://easyfreeresume.com/free-cv-builder-no-sign-up' },
+        { hreflang: 'en-AU', href: 'https://easyfreeresume.com/free-cv-builder-no-sign-up' },
+        { hreflang: 'x-default', href: 'https://easyfreeresume.com/free-resume-builder-no-sign-up' },
+      ],
+      ogLocale: 'en_GB',
     },
     hero: {
       h1: 'Free CV Builder - No Sign Up Required',
@@ -465,7 +484,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
     seo: {
       title: 'Free ATS-Friendly CV Templates - UK & International',
       description:
-        'Download professional, ATS-ready CV templates. Free PDF and DOCX formats. Clean layouts designed for UK, European, and international job applications.',
+        'Download professional, ATS-optimised CV templates. Free PDF and DOCX formats. Clean layouts designed for UK, European, and Commonwealth job applications.',
       keywords: [
         'ats friendly cv templates',
         'free cv templates uk',
@@ -475,6 +494,13 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         'uk cv template free',
       ],
       canonicalUrl: '/cv-templates/ats-friendly',
+      hreflangLinks: [
+        { hreflang: 'en-US', href: 'https://easyfreeresume.com/templates' },
+        { hreflang: 'en-GB', href: 'https://easyfreeresume.com/cv-templates/ats-friendly' },
+        { hreflang: 'en-AU', href: 'https://easyfreeresume.com/cv-templates/ats-friendly' },
+        { hreflang: 'x-default', href: 'https://easyfreeresume.com/templates' },
+      ],
+      ogLocale: 'en_GB',
     },
     hero: {
       h1: 'Free ATS-Friendly CV Templates',
@@ -645,6 +671,12 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         'professional resume template',
       ],
       canonicalUrl: '/templates/ats-friendly',
+      hreflangLinks: [
+        { hreflang: 'en-US', href: 'https://easyfreeresume.com/templates/ats-friendly' },
+        { hreflang: 'en-GB', href: 'https://easyfreeresume.com/cv-templates' },
+        { hreflang: 'en-AU', href: 'https://easyfreeresume.com/cv-templates' },
+        { hreflang: 'x-default', href: 'https://easyfreeresume.com/templates/ats-friendly' },
+      ],
     },
     breadcrumbs: [
       { label: 'Home', href: '/' },
@@ -1201,7 +1233,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
     seo: {
       title: `Free CV Templates ${CURRENT_YEAR} | Professional UK & International Designs`,
       description:
-        'Browse free, professional CV templates for UK, Europe, and international applications. ATS-optimised, no sign-up required. Download PDF instantly.',
+        'Browse free, professional CV templates for UK, EU, and Commonwealth applications. ATS-optimised, no sign-up required. Download PDF instantly.',
       keywords: [
         'cv templates',
         'free cv templates',
@@ -1215,6 +1247,13 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         'cv template free download uk',
       ],
       canonicalUrl: '/cv-templates',
+      hreflangLinks: [
+        { hreflang: 'en-US', href: 'https://easyfreeresume.com/templates/ats-friendly' },
+        { hreflang: 'en-GB', href: 'https://easyfreeresume.com/cv-templates' },
+        { hreflang: 'en-AU', href: 'https://easyfreeresume.com/cv-templates' },
+        { hreflang: 'x-default', href: 'https://easyfreeresume.com/templates/ats-friendly' },
+      ],
+      ogLocale: 'en_GB',
     },
     hero: {
       h1: 'Free CV Templates',
