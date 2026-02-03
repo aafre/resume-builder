@@ -2,6 +2,83 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.13.0] - 2026-02-03
+
+### 🚀 Features
+
+- **ads:** Add explicit above-footer ad unit on all pages
+- **seo:** Add llms.txt and llms-full.txt for AI discoverability
+- **seo:** Enrich customer service keywords page with guidance content
+- **seo:** Expand keywords hub with featured banner and new categories
+- **seo:** Add 5 new job keyword pages for pSEO expansion
+- **seo:** Add build-time prerendering for bot user-agents
+
+### 🐛 Bug Fixes
+
+- **seo:** Return proper 404 status for unknown routes
+- **seo:** Fix Twitter card tags, remove dead meta, add noscript
+- **seo:** Fix OG image URLs, canonical fallback, add article meta
+- **seo:** Add disallow rules to robots.txt, fix manifest theme color
+- **seo:** Remove fake aggregate ratings from comparison schemas
+- **a11y:** Add width/height attributes to images for CLS
+- **a11y:** Fix heading order on landing page stats section
+- **a11y:** Improve footer text contrast ratio
+- **seo:** Use descriptive link text for announcement CTA
+- **cls:** Align app shell with React layout to prevent shift
+- **cls:** Replace CountUp animation with static number
+- **cls:** Remove animated transitions from ad containers on unfill
+- **a11y:** Add role=complementary to ad containers
+- **cls:** Add footer placeholder to app shell
+- **cls:** Change LandingPage Suspense fallback to reserve height
+- **cls:** Gate above-footer ad wrapper on explicit ads flag
+- **cls:** Inline LandingPage to eliminate Suspense CLS
+- **cls:** Update app shell footer height to match React Footer
+- **cls:** Add SideRailLayout and ad placeholders to app shell
+- **seo:** Update stale year references to 2026
+- **cls:** Route-aware app shell, SEO skeleton, and keyword prefetch
+- **keywords:** Recategorize teacher from creative to education
+- **prerender:** Guard against path traversal in build-time static server
+- **cwv:** Resolve mobile CLS, LCP, and duplicate canonical
+- **cwv:** Reduce mobile CLS from 0.409 to ~0.05
+- **retry:** Add Supabase connection retry to all authenticated endpoints
+- **cwv:** Add style containment to ad containers
+
+### 🚜 Refactor
+
+- **prerender:** Simplify path resolution for root route
+- **test:** Parametrize non-retryable auth error tests
+
+### ⚡ Performance
+
+- **ui:** Remove unused Font Awesome CSS import
+- **ui:** Remove lazy-loading from above-fold company logos
+- **build:** Add manual chunks for tiptap and vendor deps
+- **lcp:** Replace shadow span with CSS drop-shadow filter
+- **lcp:** Add app shell to index.html for instant first paint
+- **lcp:** Move pdfjs import from main.tsx to PdfViewerMobile
+- **lcp:** Remove manualChunks for pdfjs and tiptap
+- **lcp:** Add flask-compress for gzip/brotli response compression
+- **lcp:** Add vite-plugin-compression for pre-built gzip/brotli
+- **lcp:** Lazy-load LandingPage and ReactQueryDevtools
+- **lcp:** Remove backdrop-blur and expensive CSS effects
+- **lcp:** Defer AdSense loading to requestIdleCallback
+- **dom:** Add content-visibility to below-fold sections
+
+### 🧪 Testing
+
+- Update jobKeywordsIndex tests for 15 jobs across categories
+
+### ⚙️ Miscellaneous Tasks
+
+- **ads:** Set real slot ID for above-footer ad unit
+- **sitemap:** Update stale lastmod dates and bump customer service priority
+
+### Seo
+
+- **blog:** Rewrite comparison post meta titles for CTR
+- **keywords:** Improve customer service page meta title and description
+- **uk:** Enrich CV page meta keywords for UK market
+
 ## [3.12.1] - 2026-01-31
 
 ### Build
