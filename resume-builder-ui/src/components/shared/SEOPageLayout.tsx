@@ -7,6 +7,7 @@
 import { ReactNode } from 'react';
 import SEOHead from '../SEOHead';
 import type { SEOConfig, StructuredDataConfig } from '../../types/seo';
+import { wrapInGraph } from '../../utils/schemaGenerators';
 
 interface SEOPageLayoutProps {
   children: ReactNode;
@@ -33,7 +34,7 @@ export default function SEOPageLayout({
             : undefined
         }
         ogImage={seoConfig.ogImage}
-        structuredData={schemas.length === 1 ? schemas[0] : schemas}
+        structuredData={schemas.length === 1 ? schemas[0] : wrapInGraph(schemas)}
         hreflangLinks={seoConfig.hreflangLinks}
         ogLocale={seoConfig.ogLocale}
       />

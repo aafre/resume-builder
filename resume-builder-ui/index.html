@@ -71,8 +71,25 @@
     <!-- AdSense — preconnect only; script is deferred to end of body -->
     <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous">
     <link rel="preconnect" href="https://googleads.g.doubleclick.net" crossorigin="anonymous">
+    <link rel="preconnect" href="https://quantcast.mgr.consensu.org" crossorigin="anonymous">
     <link rel="preconnect" href="https://mgetvioaymkvafczmhwo.supabase.co" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <!-- Quantcast Choice CMP — bottom banner consent for EEA/UK -->
+    <script type="text/javascript" async>
+    (function() {
+      var host = window.location.hostname;
+      var element = document.createElement('script');
+      var firstScript = document.getElementsByTagName('script')[0];
+      var url = 'https://quantcast.mgr.consensu.org'
+        .concat('/choice/', '{QUANTCAST_CMP_ID}', '/', host, '/choice.js');
+      element.async = true;
+      element.type = 'text/javascript';
+      element.src = url;
+      firstScript.parentNode.insertBefore(element, firstScript);
+      function makeStub(n,t){var i=n;var s=function(){var a=arguments;if(typeof a[t]==='function'){a[t](i)}};return s}
+      window.__tcfapi = window.__tcfapi || makeStub({gdprApplies:false,cmpLoaded:false,cmpStatus:'stub',displayStatus:'hidden',eventStatus:'stub',tcString:'',tcfPolicyVersion:4,listenerId:0},'callback');
+    })();
+    </script>
   </head>
   <body>
     <!-- Route-aware shell: hide landing content on non-home routes before first paint -->
@@ -188,11 +205,6 @@
           "price": "0",
           "priceCurrency": "USD"
         },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "reviewCount": "1247"
-        },
         "publisher": {
           "@type": "Organization",
           "name": "EasyFreeResume",
@@ -201,6 +213,21 @@
             "url": "https://easyfreeresume.com/android-chrome-512x512.png"
           }
         }
+      }
+    </script>
+
+    <!-- Organization Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "EasyFreeResume",
+        "url": "https://easyfreeresume.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://easyfreeresume.com/android-chrome-512x512.png"
+        },
+        "sameAs": []
       }
     </script>
 

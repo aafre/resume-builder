@@ -132,6 +132,18 @@ export function combineSchemas(
 }
 
 /**
+ * Wrap multiple schemas in a single @graph object
+ * Strips duplicate @context keys from individual schemas
+ * Google's validator can fail on plain arrays of separate @context objects
+ */
+export function wrapInGraph(schemas: StructuredDataConfig[]): object {
+  return {
+    '@context': 'https://schema.org',
+    '@graph': schemas.map(({ '@context': _, ...rest }) => rest),
+  };
+}
+
+/**
  * Generate HowTo schema
  * Used for: step-by-step guides, tutorials
  */

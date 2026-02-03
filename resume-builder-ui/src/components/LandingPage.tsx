@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import SEOHead from "./SEOHead";
+import { generateFAQPageSchema, wrapInGraph } from "../utils/schemaGenerators";
 import CompanyMarquee from "./CompanyMarquee";
 import { useAuth } from "../contexts/AuthContext";
 import { useResumeCount } from "../hooks/useResumeCount";
@@ -156,18 +157,14 @@ const LandingPage: React.FC = () => {
     },
   ];
 
-  // Accordion state
-  const [openFAQIndex, setOpenFAQIndex] = useState<number | null>(null);
-  const handleFAQToggle = (index: number) => {
-    setOpenFAQIndex(openFAQIndex === index ? null : index);
-  };
+  // FAQ uses native <details>/<summary> for crawler visibility
 
   return (
     <>
       <SEOHead
         title="EasyFreeResume — 100% Free, No Sign-Ups, ATS-Friendly Resume Builder"
         description="Build a free, ATS-friendly resume online. No sign-ups. No paywalls. Export in DOCX and PDF."
-        structuredData={[
+        structuredData={wrapInGraph([
           {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
@@ -187,7 +184,8 @@ const LandingPage: React.FC = () => {
             name: "EasyFreeResume",
             url: "https://easyfreeresume.com",
           },
-        ]}
+          generateFAQPageSchema(faqs),
+        ] as any)}
       />
       <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-indigo-100/40 text-gray-800 relative overflow-hidden">
         {/* Hero Section */}
@@ -408,40 +406,26 @@ const LandingPage: React.FC = () => {
             Everything you need to know about building your free resume
           </p>
           <div className="space-y-4">
-            {faqs.map((faq, index) => {
-              const isOpen = openFAQIndex === index;
-              return (
-                <div
-                  key={index}
-                  className="bg-white/95 border border-white/40 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-500 group"
-                >
-                  <button
-                    onClick={() => handleFAQToggle(index)}
-                    className="flex items-center justify-between w-full text-left p-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-2xl"
-                  >
-                    <h3 className="text-lg font-semibold text-gray-800 pr-4">
-                      {faq.question}
-                    </h3>
-                    <ChevronDownIcon
-                      className={`w-6 h-6 text-gray-400 transition-transform duration-300 flex-shrink-0 ${
-                        isOpen ? "rotate-180 text-blue-600" : ""
-                      }`}
-                    />
-                  </button>
-                  <div style={{ contain: 'layout' }}>
-                    <div
-                      className={`overflow-hidden transition-all duration-300 ${
-                        isOpen ? "max-h-48 pb-6" : "max-h-0"
-                      }`}
-                    >
-                      <p className="text-gray-600 px-6 leading-relaxed">
-                        {faq.answer}
-                      </p>
-                    </div>
-                  </div>
+            {faqs.map((faq, index) => (
+              <details
+                key={index}
+                className="bg-white/95 border border-white/40 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-500 group"
+              >
+                <summary className="flex items-center justify-between w-full text-left p-6 cursor-pointer list-none [&::-webkit-details-marker]:hidden focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-2xl">
+                  <h3 className="text-lg font-semibold text-gray-800 pr-4">
+                    {faq.question}
+                  </h3>
+                  <ChevronDownIcon
+                    className="w-6 h-6 text-gray-400 transition-transform duration-300 flex-shrink-0 group-open:rotate-180 group-open:text-blue-600"
+                  />
+                </summary>
+                <div className="pb-6">
+                  <p className="text-gray-600 px-6 leading-relaxed">
+                    {faq.answer}
+                  </p>
                 </div>
-              );
-            })}
+              </details>
+            ))}
           </div>
         </div>
 
