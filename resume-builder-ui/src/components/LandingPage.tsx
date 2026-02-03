@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import SEOHead from "./SEOHead";
 import { generateSoftwareApplicationSchema, generateWebSiteSchema, generateFAQPageSchema, wrapInGraph } from "../utils/schemaGenerators";
