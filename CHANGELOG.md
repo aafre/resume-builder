@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.14.1] - 2026-02-03
+
+### 🐛 Bug Fixes
+
+- **ads:** Remove Quantcast CMP stub that blocked AdSense
+
 ## [3.14.0] - 2026-02-03
 
 ### 🚀 Features
