@@ -381,8 +381,12 @@ class TestRequireAuthRetry:
         assert response.status_code == 200
         assert call_count == 2
 
-    def test_does_not_retry_on_expired_token(self, flask_test_client, auth_headers):
-        """Verify require_auth does NOT retry when token is expired."""
+    @pytest.mark.parametrize("error_message", [
+        "Token expired",
+        "Invalid JWT: signature verification failed",
+    ])
+    def test_does_not_retry_on_non_connection_errors(self, flask_test_client, auth_headers, error_message):
+        """Verify require_auth does NOT retry on non-connection errors like invalid/expired tokens."""
         client, mock_sb, flask_app = flask_test_client
 
         call_count = 0
@@ -390,25 +394,7 @@ class TestRequireAuthRetry:
         def get_user_side_effect(token):
             nonlocal call_count
             call_count += 1
-            raise Exception("Token expired")
-
-        mock_sb.auth.get_user.side_effect = get_user_side_effect
-
-        response = client.get('/api/user/preferences', headers=auth_headers)
-
-        assert response.status_code == 401
-        assert call_count == 1
-
-    def test_does_not_retry_on_invalid_token(self, flask_test_client, auth_headers):
-        """Verify require_auth does NOT retry when token is invalid."""
-        client, mock_sb, flask_app = flask_test_client
-
-        call_count = 0
-
-        def get_user_side_effect(token):
-            nonlocal call_count
-            call_count += 1
-            raise Exception("Invalid JWT: signature verification failed")
+            raise Exception(error_message)
 
         mock_sb.auth.get_user.side_effect = get_user_side_effect
 
