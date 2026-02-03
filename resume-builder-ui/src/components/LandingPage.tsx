@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import SEOHead from "./SEOHead";
-import { generateFAQPageSchema, wrapInGraph } from "../utils/schemaGenerators";
+import { generateSoftwareApplicationSchema, generateWebSiteSchema, generateFAQPageSchema, wrapInGraph } from "../utils/schemaGenerators";
 import CompanyMarquee from "./CompanyMarquee";
 import { useAuth } from "../contexts/AuthContext";
 import { useResumeCount } from "../hooks/useResumeCount";
@@ -165,27 +165,10 @@ const LandingPage: React.FC = () => {
         title="EasyFreeResume — 100% Free, No Sign-Ups, ATS-Friendly Resume Builder"
         description="Build a free, ATS-friendly resume online. No sign-ups. No paywalls. Export in DOCX and PDF."
         structuredData={wrapInGraph([
-          {
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "EasyFreeResume",
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD",
-            },
-            url: "https://easyfreeresume.com",
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "EasyFreeResume",
-            url: "https://easyfreeresume.com",
-          },
+          generateSoftwareApplicationSchema(),
+          generateWebSiteSchema(),
           generateFAQPageSchema(faqs),
-        ] as any)}
+        ])}
       />
       <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-indigo-100/40 text-gray-800 relative overflow-hidden">
         {/* Hero Section */}
