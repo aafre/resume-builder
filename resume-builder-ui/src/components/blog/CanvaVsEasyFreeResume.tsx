@@ -31,9 +31,9 @@ function WinnerBadge() {
 
 export default function CanvaVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", price: "0" },
-    { name: "Canva", price: "0" },
-    "2026-01-21"
+    { name: "EasyFreeResume", price: "0", description: "Free online resume builder with ATS-friendly templates, no sign-up required, and unlimited PDF downloads.", image: "/docs/templates/modern-no-icons.png" },
+    { name: "Canva", price: "0", description: "Free graphic design platform with resume templates, offering a Pro tier for premium features.", image: "/docs/templates/modern-no-icons.png" },
+    "2026-02-03"
   );
 
   return (

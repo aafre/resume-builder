@@ -31,9 +31,9 @@ function WinnerBadge() {
 
 export default function EnhancvVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", price: "0" },
-    { name: "Enhancv", price: "119.88" },
-    "2026-01-21"
+    { name: "EasyFreeResume", price: "0", description: "Free online resume builder with ATS-friendly templates, no sign-up required, and unlimited PDF downloads.", image: "/docs/templates/modern-no-icons.png" },
+    { name: "Enhancv", price: "119.88", description: "Resume builder with modern templates and content suggestions, offering monthly and annual subscription plans.", image: "/docs/templates/modern-no-icons.png" },
+    "2026-02-03"
   );
 
   return (

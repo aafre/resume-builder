@@ -203,40 +203,47 @@ export function generateProductSchema(
   };
 }
 
+interface ComparisonProduct {
+  name: string;
+  price: string;
+  description: string;
+  image: string;
+}
+
 /**
  * Generate Comparison schema for competitor comparison pages
  * Used for: vs competitor pages
  */
 export function generateComparisonSchema(
-  productA: { name: string; price: string },
-  productB: { name: string; price: string },
+  productA: ComparisonProduct,
+  productB: ComparisonProduct,
   dateModified?: string
 ): StructuredDataConfig {
+  const buildProduct = (product: ComparisonProduct, position: number) => ({
+    '@type': 'Product',
+    position,
+    name: product.name,
+    description: product.description,
+    image: product.image.startsWith('http') ? product.image : `${BASE_URL}${product.image}`,
+    brand: {
+      '@type': 'Organization',
+      name: product.name,
+    },
+    offers: {
+      '@type': 'Offer',
+      price: product.price,
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/OnlineOnly',
+    },
+  });
+
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     ...(dateModified && { dateModified }),
     itemListElement: [
-      {
-        '@type': 'Product',
-        position: 1,
-        name: productA.name,
-        offers: {
-          '@type': 'Offer',
-          price: productA.price,
-          priceCurrency: 'USD',
-        },
-      },
-      {
-        '@type': 'Product',
-        position: 2,
-        name: productB.name,
-        offers: {
-          '@type': 'Offer',
-          price: productB.price,
-          priceCurrency: 'USD',
-        },
-      },
+      buildProduct(productA, 1),
+      buildProduct(productB, 2),
     ],
   };
 }

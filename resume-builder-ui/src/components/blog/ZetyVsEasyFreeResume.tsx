@@ -33,9 +33,9 @@ function WinnerBadge() {
 
 export default function ZetyVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", price: "0" },
-    { name: "Zety", price: "71.40" },
-    "2026-01-18"
+    { name: "EasyFreeResume", price: "0", description: "Free online resume builder with ATS-friendly templates, no sign-up required, and unlimited PDF downloads.", image: "/docs/templates/modern-no-icons.png" },
+    { name: "Zety", price: "71.40", description: "Online resume builder with templates and cover letters, offering monthly and quarterly subscription plans.", image: "/docs/templates/modern-no-icons.png" },
+    "2026-02-03"
   );
 
   return (
