@@ -11,7 +11,6 @@
       content="Build a professional resume in minutes with our completely free, no sign-up required online tool. Simple, clean templates that make your application stand out."
     />
     <meta name="robots" content="index, follow" />
-    <meta name="language" content="English" />
     <meta name="author" content="EasyFreeResume" />
 
     <!-- Open Graph / Facebook -->
@@ -32,18 +31,18 @@
     <meta property="og:site_name" content="EasyFreeResume" />
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://easyfreeresume.com/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://easyfreeresume.com/" />
     <meta
-      property="twitter:title"
+      name="twitter:title"
       content="EasyFreeResume: The Easiest Free Resume Builder (No Sign-Ups)"
     />
     <meta
-      property="twitter:description"
+      name="twitter:description"
       content="Build a professional resume in minutes with our completely free, no sign-up required online tool. Simple, clean templates that make your application stand out."
     />
     <meta
-      property="twitter:image"
+      name="twitter:image"
       content="https://easyfreeresume.com/android-chrome-512x512.png"
     />
 
@@ -63,21 +62,115 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://easyfreeresume.com/" />
 
+    <!-- LLM-readable site description (llmstxt.org) -->
+    <link rel="author" type="text/plain" href="/llms.txt" />
+
     <!-- Title -->
     <title>EasyFreeResume: The Easiest Free Resume Builder (No Sign-Ups)</title>
 
-    <!-- AdSense Preconnect Hints -->
-    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
-    <link rel="preconnect" href="https://googleads.g.doubleclick.net">
-
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8976874751886843"
-      crossorigin="anonymous"
-    ></script>
+    <!-- AdSense — preconnect only; script is deferred to end of body -->
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://googleads.g.doubleclick.net" crossorigin="anonymous">
+    <link rel="preconnect" href="https://mgetvioaymkvafczmhwo.supabase.co" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
   </head>
   <body>
-    <div id="root"></div>
+    <!-- Route-aware shell: hide landing content on non-home routes before first paint -->
+    <script>if(location.pathname!=="/")document.documentElement.classList.add("not-home")</script>
+    <div id="root">
+      <!-- App Shell: matches React layout so the H1 (LCP) paints without shift -->
+      <div style="display:flex;flex-direction:column;min-height:100vh;background:#f9fafb">
+        <!-- AnnouncementBar placeholder (matches ~43px banner for unauthenticated landing) -->
+        <div class="shell-announcement" style="background:linear-gradient(to right,rgb(147,51,234),rgb(59,130,246));padding:10px 12px;min-height:43px"></div>
+        <!-- Header placeholder (matches sticky header height) -->
+        <div style="height:64px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1)"></div>
+        <!-- Main content area matching LandingPage layout -->
+        <!-- Hide mobile-top ad placeholder on desktop (matches Tailwind md:hidden) -->
+        <style>
+          .shell-mobile-ad{display:block}
+          @media(min-width:768px){.shell-mobile-ad{display:none}}
+          /* Route-aware shell visibility */
+          .not-home #shell-landing{display:none}
+          #shell-generic{display:none}
+          .not-home #shell-generic{display:block}
+          .not-home .shell-announcement{display:none}
+        </style>
+        <main style="flex:1 1 0%;padding:0 1rem">
+          <!-- SideRailLayout wrapper (matches React when explicit ads enabled) -->
+          <div style="display:flex;justify-content:center;gap:1.5rem">
+            <div style="flex:1 1 0%;min-width:0">
+              <!-- Mobile-top ad placeholder (matches SideRailLayout block md:hidden InContentAd) -->
+              <div class="shell-mobile-ad">
+                <div style="margin:16px 0;overflow:hidden">
+                  <div style="min-height:250px"></div>
+                </div>
+              </div>
+              <!-- Landing page content (hidden on non-home routes) -->
+              <div id="shell-landing" style="display:flex;flex-direction:column;align-items:center;min-height:100vh;background:linear-gradient(to bottom right,#f8fafc,rgba(243,232,255,.3),rgba(224,231,255,.4));position:relative;overflow:hidden">
+                <div style="text-align:center;margin:4rem 0;padding:0 1rem;max-width:56rem;margin-left:auto;margin-right:auto">
+                  <h1 style="font-size:2.25rem;font-weight:800;margin-bottom:2rem;padding-bottom:.5rem;line-height:1.375;letter-spacing:-.025em;background:linear-gradient(to right,#2563eb,#9333ea,#4338ca);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+                    The Truly Free Resume Builder
+                  </h1>
+                  <p style="font-size:1.25rem;max-width:48rem;margin:0 auto;color:#1f2937;margin-bottom:1rem;line-height:2">
+                    Create ATS-optimized resumes that get you noticed by hiring managers.
+                  </p>
+                  <!-- Pill badges matching React -->
+                  <div style="display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:2.5rem">
+                    <div style="display:flex;align-items:center;background:rgba(255,255,255,.95);padding:.5rem 1rem;border-radius:9999px;box-shadow:0 1px 2px rgba(0,0,0,.05);font-size:.875rem;font-weight:500;color:#374151">
+                      100% Free
+                    </div>
+                    <div style="display:flex;align-items:center;background:rgba(255,255,255,.95);padding:.5rem 1rem;border-radius:9999px;box-shadow:0 1px 2px rgba(0,0,0,.05);font-size:.875rem;font-weight:500;color:#374151">
+                      No Sign-up
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;justify-content:center;gap:1rem;margin-top:2rem">
+                    <a href="/templates" style="display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(to right,#2563eb,#9333ea,#4338ca);color:white;padding:1rem 2rem;border-radius:.75rem;font-size:1.125rem;font-weight:600;text-decoration:none">
+                      Start Building Now &rarr;
+                    </a>
+                    <a href="/templates" style="display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.5);color:#374151;padding:1rem 2rem;border-radius:.75rem;font-size:1.125rem;font-weight:600;text-decoration:none;box-shadow:0 4px 6px -1px rgba(0,0,0,.1)">
+                      View Templates
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <!-- Generic page placeholder (shown on non-home routes) -->
+              <div id="shell-generic" style="min-height:1200px;background:linear-gradient(to bottom right,#f8fafc,rgba(219,234,254,.3),rgba(199,210,254,.4))">
+                <div style="max-width:80rem;margin:0 auto;padding:3rem 1rem">
+                  <!-- Breadcrumb skeleton -->
+                  <div style="height:20px;width:12rem;background:#e5e7eb;border-radius:6px;margin-bottom:2rem"></div>
+                  <!-- H1 skeleton -->
+                  <div style="height:48px;width:75%;background:#e5e7eb;border-radius:8px;margin-bottom:1rem"></div>
+                  <!-- Subtitle skeleton -->
+                  <div style="height:24px;width:66%;background:#e5e7eb;border-radius:6px;margin-bottom:2rem"></div>
+                  <!-- CTA button skeleton -->
+                  <div style="height:56px;width:10rem;background:#e5e7eb;border-radius:12px;margin-bottom:3rem"></div>
+                  <!-- Content section skeletons -->
+                  <div style="height:12rem;background:#e5e7eb;border-radius:8px;margin-bottom:1.5rem"></div>
+                  <div style="height:12rem;background:#e5e7eb;border-radius:8px;margin-bottom:1.5rem"></div>
+                  <div style="height:12rem;background:#e5e7eb;border-radius:8px"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <!-- Above-footer ad placeholder (matches App.tsx InContentAd wrapper) -->
+        <div style="max-width:56rem;margin:0 auto;padding:0 1rem">
+          <div style="margin:32px 0;overflow:hidden">
+            <div style="min-height:250px"></div>
+          </div>
+        </div>
+        <footer style="background:#f3f4f6;color:#374151;border-top:1px solid #e5e7eb;margin-top:auto">
+          <div style="padding:3rem 1rem;min-height:450px"></div>
+        </footer>
+      </div>
+    </div>
+    <noscript>
+      <div style="padding: 2rem; text-align: center; font-family: system-ui, sans-serif;">
+        <h1>EasyFreeResume</h1>
+        <p>A free, professional resume builder with ATS-optimized templates. No sign-up required.</p>
+        <p>JavaScript is required to use this application. Please enable JavaScript in your browser settings.</p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
 
     <!-- Structured Data - Non-blocking -->
@@ -111,25 +204,23 @@
       }
     </script>
 
-    <!-- AdSense Configuration - Non-blocking -->
+    <!-- AdSense — deferred load to free bandwidth for LCP -->
     <script>
-      // This script will ensure all ads open in a new tab.
       window.adsbygoogle = window.adsbygoogle || [];
-
-      // Wait for DOM and AdSense to load
-      window.addEventListener('load', function() {
-        if (window.adsbygoogle && window.adsbygoogle.push) {
-          var originalPush = window.adsbygoogle.push;
-          window.adsbygoogle.push = function(args) {
-            if (typeof args === "object" && args.google_ad_client) {
-              args.google_ad_host_config = {
-                adTarget: "_blank",
-              };
-            }
-            return originalPush.apply(this, arguments);
-          };
+      (function loadAdSense() {
+        function inject() {
+          var s = document.createElement('script');
+          s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8976874751886843';
+          s.crossOrigin = 'anonymous';
+          s.async = true;
+          document.head.appendChild(s);
         }
-      });
+        if (typeof requestIdleCallback === 'function') {
+          requestIdleCallback(inject, { timeout: 2000 });
+        } else {
+          setTimeout(inject, 2000);
+        }
+      })();
     </script>
   </body>
 </html>

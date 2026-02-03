@@ -31,8 +31,8 @@ function WinnerBadge() {
 
 export default function FlowCVVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", rating: 4.8, price: "0" },
-    { name: "FlowCV", rating: 4.2, price: "0" },
+    { name: "EasyFreeResume", price: "0" },
+    { name: "FlowCV", price: "0" },
     "2026-01-21"
   );
 

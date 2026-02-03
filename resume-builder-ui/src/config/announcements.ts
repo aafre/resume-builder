@@ -21,7 +21,7 @@ export const announcements: AnnouncementConfig[] = [
       action: 'sign-in',
     },
     secondaryCta: {
-      text: 'Learn More',
+      text: 'Why EasyFreeResume is free',
       url: '/blog/how-why-easyfreeresume-completely-free',
     },
     variant: 'feature',

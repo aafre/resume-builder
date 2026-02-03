@@ -1,16 +1,3 @@
-@import '@fortawesome/fontawesome-free/css/all.css';
-
-/* Override FontAwesome font-display for better CLS performance */
-@font-face {
-  font-family: 'Font Awesome 6 Free';
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Font Awesome 6 Brands';
-  font-display: swap;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -356,5 +343,31 @@ footer {
 
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
   background-color: rgba(156, 163, 175, 0.7);
+}
+
+/* Force Google Funding Choices consent to overlay (fixes 0.246 mobile CLS) */
+.fc-consent-root,
+.fc-dialog-container,
+.fc-ab-root {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+body.fc-dialog-open {
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Isolate ad containers for layout performance and style encapsulation */
+.in-content-ad,
+.ad-container {
+  contain: layout style;
 }
 

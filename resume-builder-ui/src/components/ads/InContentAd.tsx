@@ -69,13 +69,11 @@ export const InContentAd = ({
   };
 
   const containerStyle: CSSProperties = {
-    marginTop: hidden ? 0 : `${marginY}px`,
-    marginBottom: hidden ? 0 : `${marginY}px`,
-    maxHeight: hidden ? 0 : undefined,
+    marginTop: `${marginY}px`,
+    marginBottom: `${marginY}px`,
     opacity: hidden ? 0 : 1,
     overflow: "hidden",
-    transition:
-      "margin 300ms ease, max-height 300ms ease, opacity 300ms ease",
+    transition: "opacity 300ms ease",
     ...style,
   };
 

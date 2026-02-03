@@ -31,8 +31,8 @@ function WinnerBadge() {
 
 export default function CanvaVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", rating: 4.8, price: "0" },
-    { name: "Canva", rating: 3.5, price: "0" },
+    { name: "EasyFreeResume", price: "0" },
+    { name: "Canva", price: "0" },
     "2026-01-21"
   );
 
@@ -42,16 +42,19 @@ export default function CanvaVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
     <BlogLayout
-      title="Canva Resume Templates 2026: Why They Fail ATS (Better Alternative)"
-      description="Canva's free resume templates look great but often fail ATS scans. Learn why and discover EasyFreeResume, a free alternative designed for ATS compatibility."
+      title="Canva Resume vs EasyFreeResume: ATS Compared"
+      description="Canva resume templates look great but often fail ATS scans. See how EasyFreeResume compares: ATS pass rates, PDF export, and which free builder gets more interviews."
       publishDate="2026-01-21"
+      lastUpdated="2026-02-02"
       readTime="8 min"
       keywords={[
         "canva resume template",
         "canva resume ats",
         "canva resume builder",
         "canva resume alternative",
+        "canva resume vs",
         "canva vs easyfreeresume",
+        "are canva resumes ats friendly",
         "ats friendly resume",
         "canva resume problems",
       ]}

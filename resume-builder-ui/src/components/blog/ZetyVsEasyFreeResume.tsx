@@ -33,8 +33,8 @@ function WinnerBadge() {
 
 export default function ZetyVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", rating: 4.8, price: "0" },
-    { name: "Zety", rating: 3.5, price: "71.40" },
+    { name: "EasyFreeResume", price: "0" },
+    { name: "Zety", price: "71.40" },
     "2026-01-18"
   );
 
@@ -44,10 +44,10 @@ export default function ZetyVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
     <BlogLayout
-      title="Zety Pricing 2026: Why Pay? Use This 100% Free Alternative Instead"
-      description="Looking for Zety pricing? Don't get locked into a $5.95-$23.95/month subscription. EasyFreeResume offers the same ATS templates for $0. No hidden fees, no watermarks."
+      title="Zety vs EasyFreeResume: Free Alternative Compared"
+      description="Is Zety free? No — plans cost $5.95-$23.95/month. Compare Zety vs EasyFreeResume side-by-side: pricing, ATS templates, privacy, and download formats."
       publishDate="2026-01-28"
-      lastUpdated="2026-01-18"
+      lastUpdated="2026-02-02"
       readTime="9 min"
       keywords={[
         "zety pricing",
@@ -55,6 +55,8 @@ export default function ZetyVsEasyFreeResume() {
         "zety cost",
         "zety pricing 2026",
         "zety alternative free",
+        "zety alternative",
+        "zety vs",
         "zety vs easyfreeresume",
         "free resume builder vs paid",
         "best resume builder reddit",

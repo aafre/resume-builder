@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import CountUp from "react-countup";
 import SEOHead from "./SEOHead";
 import CompanyMarquee from "./CompanyMarquee";
 import { useAuth } from "../contexts/AuthContext";
@@ -49,31 +48,13 @@ const LandingPage: React.FC = () => {
     // No auto-redirect for authenticated users - let them see landing page
   }, [searchParams, navigate]);
 
-  const calculateUsersServed = (): number => {
+  const totalUsersFormatted = useMemo(() => {
     const launchDate = new Date("2019-01-01T00:00:00Z");
     const now = new Date();
-
-    // 1. Calculate the base (Linear growth of 28/day up to now)
     const msPerDay = 24 * 60 * 60 * 1000;
     const daysSinceLaunch = Math.floor((now.getTime() - launchDate.getTime()) / msPerDay);
-    const originalBase = 52000 + (daysSinceLaunch * 28);
-
-    // 2. Add the "Pulse" (Extra daily growth for the visual effect)
-    const secondsInToday = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
-    const extraGrowthToday = (secondsInToday / 86400) * 432;
-
-    return Math.floor(originalBase + extraGrowthToday);
-  };
-
-  const [totalUsers, setTotalUsers] = useState<number>(calculateUsersServed());
-
-  // Timer: Updates the number every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTotalUsers(calculateUsersServed());
-    }, 5000); // Update every 5 seconds
-
-    return () => clearInterval(interval); // Cleanup on unmount
+    const count = 52000 + daysSinceLaunch * 28;
+    return count.toLocaleString("en-US");
   }, []);
 
   // Features data
@@ -209,16 +190,10 @@ const LandingPage: React.FC = () => {
         ]}
       />
       <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-indigo-100/40 text-gray-800 relative overflow-hidden">
-        {/* Subtle background pattern */}
-        <div className="absolute inset-0 opacity-[0.02]" style={{
-          backgroundImage: `radial-gradient(circle at 25px 25px, #6366f1 2px, transparent 0)`,
-          backgroundSize: '50px 50px'
-        }}></div>
         {/* Hero Section */}
         <div className="text-center my-16 px-4 max-w-4xl mx-auto">
           {/* Professional Gradient Title */}
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-8 pb-2 leading-snug tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 relative">
-            <span className="absolute inset-0 text-gray-800 opacity-10">The Truly Free Resume Builder</span>
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-8 pb-2 leading-snug tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 drop-shadow-[0_0_12px_rgba(31,41,55,0.1)]">
             The Truly Free Resume Builder
           </h1>
           <p className="text-xl md:text-2xl max-w-3xl mx-auto text-gray-800 mb-4 leading-loose">
@@ -226,13 +201,13 @@ const LandingPage: React.FC = () => {
             managers.
           </p>
           <div className="flex items-center justify-center gap-4 mb-10">
-            <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm hover:shadow-md hover:bg-white/70 transition-all duration-300">
+            <div className="flex items-center bg-white/95 px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow duration-300">
               <LockClosedIcon className="w-5 h-5 text-green-600 mr-2" />
               <span className="text-sm font-medium text-gray-700">
                 100% Free
               </span>
             </div>
-            <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm hover:shadow-md hover:bg-white/70 transition-all duration-300">
+            <div className="flex items-center bg-white/95 px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow duration-300">
               <ClockIcon className="w-5 h-5 text-blue-600 mr-2" />
               <span className="text-sm font-medium text-gray-700">
                 No Sign-up
@@ -241,7 +216,7 @@ const LandingPage: React.FC = () => {
           </div>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
             <button
-              className="group inline-flex items-center justify-center bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 ease-out active:scale-[0.98] relative overflow-hidden"
+              className="group inline-flex items-center justify-center bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 transition-[transform,box-shadow] duration-300 ease-out active:scale-[0.98] relative overflow-hidden"
               onClick={() => navigate(hasResumes ? "/my-resumes" : "/templates")}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out"></div>
@@ -249,7 +224,7 @@ const LandingPage: React.FC = () => {
               <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
             </button>
             <button
-              className="group inline-flex items-center justify-center bg-white/90 backdrop-blur-md border border-white/50 text-gray-700 py-4 px-8 rounded-xl text-lg font-semibold shadow-md hover:shadow-xl hover:bg-white/95 hover:border-purple-200/50 transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98]"
+              className="group inline-flex items-center justify-center bg-white/95 border border-white/50 text-gray-700 py-4 px-8 rounded-xl text-lg font-semibold shadow-md hover:shadow-xl hover:border-purple-200/50 transition-[box-shadow,border-color] duration-300 ease-out active:scale-[0.98]"
               onClick={() => navigate("/templates")}
             >
               View Templates
@@ -260,20 +235,20 @@ const LandingPage: React.FC = () => {
 
         {/* Stats Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-16 my-16 px-4">
-          <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
+          <div className="group text-center bg-white/95 border border-white/30 rounded-3xl p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:shadow-blue-500/10 transition-shadow duration-500">
             <DocumentTextIcon className="w-10 h-10 text-blue-500 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
-            <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-blue-500 group-hover:to-purple-500 transition-all duration-300">
+            <p className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-blue-500 group-hover:to-purple-500 transition-all duration-300">
               <span className="inline-block min-w-[180px] text-center">
-                <CountUp end={totalUsers} duration={3} separator="," />+
+                {totalUsersFormatted}+
               </span>
-            </h3>
+            </p>
             <p className="text-gray-600 font-medium tracking-wide">Resumes Created</p>
           </div>
-          <div className="group text-center bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:scale-105 hover:bg-white/80">
+          <div className="group text-center bg-white/95 border border-white/30 rounded-3xl p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:shadow-indigo-500/10 transition-shadow duration-500">
             <CheckBadgeIcon className="w-10 h-10 text-indigo-500 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
-            <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-indigo-500 group-hover:to-purple-500 transition-all duration-300">
+            <p className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-indigo-500 group-hover:to-purple-500 transition-all duration-300">
               100%
-            </h3>
+            </p>
             <p className="text-gray-600 font-medium tracking-wide">ATS Compatible</p>
           </div>
         </div>
@@ -284,7 +259,7 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Trusted Companies Section */}
-        <div className="container mx-auto max-w-6xl my-20 px-4">
+        <div className="container mx-auto max-w-6xl my-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
               Used by Professionals from Leading Companies
@@ -307,7 +282,7 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Why Job Seekers Choose Us */}
-        <div className="container mx-auto max-w-6xl my-20 px-4 text-center">
+        <div className="container mx-auto max-w-6xl my-20 px-4 text-center" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 800px' }}>
           <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
             Why Job Seekers Choose Our Free Resume Builder
           </h2>
@@ -318,12 +293,9 @@ const LandingPage: React.FC = () => {
             {features.map((item, index) => (
               <div
                 key={index}
-                className="group p-8 bg-white/80 backdrop-blur-xl border border-white/40 rounded-3xl shadow-xl hover:shadow-2xl hover:shadow-purple-500/5 transition-all duration-500 transform hover:-translate-y-3 hover:scale-[1.02] relative overflow-hidden"
+                className="group p-8 bg-white/95 border border-white/40 rounded-3xl shadow-xl hover:shadow-2xl hover:shadow-purple-500/5 transition-[transform,box-shadow] duration-500 transform hover:-translate-y-1"
               >
-                {/* Subtle gradient overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-purple-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
-                
-                <div className="relative z-10">
+                <div>
                   <div className="flex items-center justify-center mb-6">
                     <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 group-hover:from-blue-100/90 group-hover:to-purple-100/90 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-md group-hover:shadow-lg">
                       {item.icon}
@@ -342,14 +314,14 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Helpful Resources Section */}
-        <div className="container mx-auto max-w-6xl my-20 px-4">
+        <div className="container mx-auto max-w-6xl my-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 600px' }}>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-12 text-center">
             Everything You Need to Succeed
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <a
               href="/actual-free-resume-builder"
-              className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
+              className="bg-white/95 border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
             >
               <div className="text-4xl mb-4">🎁</div>
               <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
@@ -362,7 +334,7 @@ const LandingPage: React.FC = () => {
 
             <a
               href="/free-resume-builder-no-sign-up"
-              className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
+              className="bg-white/95 border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
             >
               <div className="text-4xl mb-4">⚡</div>
               <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
@@ -375,7 +347,7 @@ const LandingPage: React.FC = () => {
 
             <a
               href="/ats-resume-templates"
-              className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
+              className="bg-white/95 border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
             >
               <div className="text-4xl mb-4">📄</div>
               <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
@@ -388,7 +360,7 @@ const LandingPage: React.FC = () => {
 
             <a
               href="/resume-keywords"
-              className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
+              className="bg-white/95 border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
             >
               <div className="text-4xl mb-4">🎯</div>
               <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
@@ -401,7 +373,7 @@ const LandingPage: React.FC = () => {
 
             <a
               href="/resume-keywords/customer-service"
-              className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
+              className="bg-white/95 border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
             >
               <div className="text-4xl mb-4">🎧</div>
               <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
@@ -414,7 +386,7 @@ const LandingPage: React.FC = () => {
 
             <a
               href="/best-free-resume-builder-reddit"
-              className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
+              className="bg-white/95 border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
             >
               <div className="text-4xl mb-4">💬</div>
               <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
@@ -428,7 +400,7 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* FAQ Section */}
-        <div className="container mx-auto max-w-4xl my-20 px-4">
+        <div className="container mx-auto max-w-4xl my-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 800px' }}>
           <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4 text-center">
             Frequently Asked Questions
           </h2>
@@ -441,7 +413,7 @@ const LandingPage: React.FC = () => {
               return (
                 <div
                   key={index}
-                  className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.01] group"
+                  className="bg-white/95 border border-white/40 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-500 group"
                 >
                   <button
                     onClick={() => handleFAQToggle(index)}
@@ -474,14 +446,12 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Final CTA Section */}
-        <div className="container mx-auto max-w-4xl my-20 px-4 text-center">
+        <div className="container mx-auto max-w-4xl my-20 px-4 text-center" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
           <div className="relative bg-gradient-to-br from-blue-700 via-purple-700 to-indigo-800 rounded-3xl shadow-2xl p-12 text-white overflow-hidden">
-            {/* Enhanced background pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-              <div className="absolute top-0 -right-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-              <div className="absolute -bottom-8 left-20 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse" style={{ animationDelay: '4s' }}></div>
-            </div>
+            {/* Static background pattern — replaces 3 animated blur circles */}
+            <div className="absolute inset-0 opacity-10" style={{
+              background: 'radial-gradient(circle at 20% 30%, #c4b5fd 0%, transparent 50%), radial-gradient(circle at 80% 30%, #93c5fd 0%, transparent 50%), radial-gradient(circle at 30% 80%, #a5b4fc 0%, transparent 50%)'
+            }}></div>
             
             <div className="relative z-10">
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white tracking-tight">

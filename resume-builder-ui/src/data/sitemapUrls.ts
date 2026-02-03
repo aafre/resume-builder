@@ -19,9 +19,9 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/', priority: 1.0, changefreq: 'weekly', lastmod: '2026-01-25' },
 
   // New SEO Landing Pages (0.9) - updated footer links today
-  { loc: '/actual-free-resume-builder', priority: 0.9, changefreq: 'monthly', lastmod: '2025-10-26' },
+  { loc: '/actual-free-resume-builder', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-02' },
   { loc: '/free-resume-builder-no-sign-up', priority: 0.9, changefreq: 'monthly', lastmod: '2026-01-01' },
-  { loc: '/best-free-resume-builder-reddit', priority: 0.9, changefreq: 'monthly', lastmod: '2025-10-26' },
+  { loc: '/best-free-resume-builder-reddit', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-02' },
 
   // UK CV Market Pages (0.9)
   { loc: '/free-cv-builder-no-sign-up', priority: 0.9, changefreq: 'monthly', lastmod: '2026-01-18' },
@@ -29,21 +29,21 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/cv-templates/ats-friendly', priority: 0.8, changefreq: 'monthly', lastmod: '2026-01-18' },
 
   // Core App Pages (0.8)
-  { loc: '/templates', priority: 0.8, changefreq: 'weekly', lastmod: '2025-10-26' },
+  { loc: '/templates', priority: 0.8, changefreq: 'weekly', lastmod: '2026-02-02' },
 
   // Hub Pages (0.8)
-  { loc: '/ats-resume-templates', priority: 0.8, changefreq: 'monthly', lastmod: '2025-10-26' },
-  { loc: '/resume-keywords', priority: 0.8, changefreq: 'monthly', lastmod: '2025-10-26' },
+  { loc: '/ats-resume-templates', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-02' },
+  { loc: '/resume-keywords', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-02' },
   { loc: '/examples', priority: 0.8, changefreq: 'weekly', lastmod: '2026-01-21' },
 
   // Template Pages (0.7)
-  { loc: '/templates/ats-friendly', priority: 0.7, changefreq: 'monthly', lastmod: '2025-10-26' },
+  { loc: '/templates/ats-friendly', priority: 0.7, changefreq: 'monthly', lastmod: '2026-02-02' },
   { loc: '/templates/modern-resume-templates', priority: 0.7, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/templates/minimalist-resume-templates', priority: 0.7, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/templates/resume-templates-for-students', priority: 0.7, changefreq: 'monthly', lastmod: '2026-01-21' },
 
   // Manually-curated keyword page (0.7)
-  { loc: '/resume-keywords/customer-service', priority: 0.7, changefreq: 'monthly', lastmod: '2026-01-01' },
+  { loc: '/resume-keywords/customer-service', priority: 0.85, changefreq: 'monthly', lastmod: '2026-02-02' },
 
   // Blog Hub (0.6)
   { loc: '/blog', priority: 0.6, changefreq: 'weekly', lastmod: '2026-01-25' },
@@ -90,8 +90,8 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/flowcv-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
 
   // Static Pages (0.3)
-  { loc: '/about', priority: 0.3, changefreq: 'yearly', lastmod: '2025-10-26' },
-  { loc: '/contact', priority: 0.3, changefreq: 'yearly', lastmod: '2025-10-26' },
+  { loc: '/about', priority: 0.3, changefreq: 'yearly', lastmod: '2026-02-02' },
+  { loc: '/contact', priority: 0.3, changefreq: 'yearly', lastmod: '2026-02-02' },
   { loc: '/privacy-policy', priority: 0.3, changefreq: 'yearly', lastmod: '2026-01-01' },
   { loc: '/terms-of-service', priority: 0.3, changefreq: 'yearly', lastmod: '2026-01-01' },
 ];

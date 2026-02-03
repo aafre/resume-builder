@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build && npm run generate:sitemap",
+    "build:prerender": "tsc -b && vite build && npm run generate:sitemap && npm run prerender",
     "generate:sitemap": "tsx scripts/generateSitemap.ts",
+    "prerender": "tsx scripts/prerender.ts",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
@@ -75,6 +77,7 @@
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.1",
     "vite": "^6.0.3",
+    "vite-plugin-compression": "^0.5.1",
     "vitest": "^3.0.5"
   }
 }

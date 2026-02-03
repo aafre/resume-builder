@@ -204,6 +204,7 @@ export const AdContainer = ({
           ...style,
         }}
         data-testid={testId}
+        role="complementary"
         aria-label="Advertisement (debug)"
       >
         <span
@@ -221,13 +222,13 @@ export const AdContainer = ({
   }
 
   const containerStyle: CSSProperties = {
-    minHeight: adUnfilled ? "0px" : `${minHeight}px`,
+    minHeight: `${minHeight}px`,
     ...(minWidth && !adUnfilled && { minWidth: `${minWidth}px` }),
     display: "block",
     textAlign: "center",
     overflow: "hidden",
     opacity: adUnfilled ? 0 : 1,
-    transition: "min-height 300ms ease, opacity 300ms ease",
+    transition: "opacity 300ms ease",
     ...style,
   };
 
@@ -265,6 +266,7 @@ export const AdContainer = ({
       className={`ad-container ${className}`}
       style={containerStyle}
       data-testid={testId}
+      role="complementary"
       aria-label="Advertisement"
     >
       {!adLoaded && fallback}

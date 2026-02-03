@@ -12,7 +12,7 @@ export interface JobKeywordsData {
   // SEO metadata
   metaTitle: string; // SEO title tag
   metaDescription: string; // SEO meta description
-  category: 'technology' | 'healthcare' | 'business' | 'creative' | 'trades';
+  category: 'technology' | 'healthcare' | 'business' | 'creative' | 'trades' | 'education';
   priority: number; // Sitemap priority (0.7-0.9)
   lastmod?: string; // Last modified date (YYYY-MM-DD)
 

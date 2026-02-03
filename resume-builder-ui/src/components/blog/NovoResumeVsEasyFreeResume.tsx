@@ -31,8 +31,8 @@ function WinnerBadge() {
 
 export default function NovoResumeVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", rating: 4.8, price: "0" },
-    { name: "NovoResume", rating: 3.8, price: "99.00" },
+    { name: "EasyFreeResume", price: "0" },
+    { name: "NovoResume", price: "99.00" },
     "2026-01-21"
   );
 
@@ -42,15 +42,18 @@ export default function NovoResumeVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
       <BlogLayout
-      title="NovoResume Pricing 2026: Premium Templates Free Alternative"
-      description="NovoResume's premium plans cost $16-$99/year. Compare features with EasyFreeResume, a 100% free alternative with ATS-friendly templates and better privacy."
+      title="Novoresume vs EasyFreeResume: Which is Better?"
+      description="Novoresume premium costs $16-$99/yr. Compare Novoresume vs EasyFreeResume: free ATS templates, download formats, privacy, and which builder is worth your time."
       publishDate="2026-01-21"
+      lastUpdated="2026-02-02"
       readTime="7 min"
       keywords={[
         "novoresume pricing",
         "novoresume free",
         "novoresume premium",
         "novoresume alternative",
+        "novoresume vs",
+        "is novoresume free",
         "novoresume vs easyfreeresume",
         "free resume builder",
         "novoresume review",

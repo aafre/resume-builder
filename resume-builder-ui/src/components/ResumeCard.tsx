@@ -139,6 +139,8 @@ export function ResumeCard({
           className={`w-full h-full object-cover object-top transition-all duration-200 ${
             isPreviewLoading ? 'scale-105 blur-[2px]' : ''
           }`}
+          width="300"
+          height="400"
         />
 
         {/* Preview Loading Overlay */}

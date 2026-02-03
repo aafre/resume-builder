@@ -11,17 +11,32 @@ import { Toaster } from "react-hot-toast";
 // Critical components - loaded immediately
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import LandingPage from "./components/LandingPage";
 import EnvironmentBanner from "./components/EnvironmentBanner";
 import AnnouncementBar from "./components/AnnouncementBar";
 import ScrollToTop from "./components/ScrollToTop";
 import { EditorProvider } from "./contexts/EditorContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import { SideRailLayout } from "./components/ads";
+import { SideRailLayout, InContentAd, AD_CONFIG, isExplicitAdsEnabled } from "./components/ads";
 import { ConversionProvider } from "./contexts/ConversionContext";
 import usePreferencePersistence from "./hooks/usePreferencePersistence";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+// Landing page — inlined (6.5 KB brotli) to avoid Suspense fallback → page
+// transition that causes massive CLS on mobile (footer shifts twice)
+import LandingPage from "./components/LandingPage";
+
+// Dev tools — lazy-loaded so they don't add to the main bundle
+const ReactQueryDevtools = lazy(() =>
+  import('@tanstack/react-query-devtools').then((m) => ({ default: m.ReactQueryDevtools }))
+);
+
+// Prefetch keyword page chunks on matching routes — starts network
+// fetch in parallel with React initialization, eliminating waterfall
+if (window.location.pathname.startsWith('/resume-keywords')) {
+  import('./components/seo/JobKeywordsPage');
+  import('./components/seo/ResumeKeywordsHub');
+  import('./components/seo/CustomerServiceKeywords');
+}
 
 // Lazy-loaded route components
 const TemplatesPage = lazy(() => import("./components/seo/TemplatesPage"));
@@ -144,6 +159,31 @@ const EditorLoadingSkeleton = () => (
   </div>
 );
 
+const SEOPageSkeleton = () => (
+  <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom right, #f8fafc, rgba(219,234,254,0.3), rgba(199,210,254,0.4))' }}>
+    <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="animate-pulse">
+        {/* Breadcrumb */}
+        <div className="h-5 w-48 bg-gray-200 rounded-md mb-8"></div>
+        {/* Hero H1 */}
+        <div className="h-12 w-3/4 bg-gray-200 rounded-lg mb-4"></div>
+        {/* Subtitle */}
+        <div className="h-6 w-2/3 bg-gray-200 rounded-md mb-8"></div>
+        {/* CTA buttons */}
+        <div className="flex gap-4 mb-12">
+          <div className="h-14 w-40 bg-gray-200 rounded-xl"></div>
+          <div className="h-14 w-40 bg-gray-200 rounded-xl"></div>
+        </div>
+        {/* Content sections */}
+        <div className="h-48 bg-gray-200 rounded-lg mb-6"></div>
+        <div className="h-48 bg-gray-200 rounded-lg mb-6"></div>
+        <div className="h-48 bg-gray-200 rounded-lg mb-6"></div>
+        <div className="h-48 bg-gray-200 rounded-lg mb-6"></div>
+        <div className="h-48 bg-gray-200 rounded-lg"></div>
+      </div>
+    </div>
+  </div>
+);
 
 function AppContent() {
   const location = useLocation();
@@ -168,7 +208,7 @@ function AppContent() {
       >
         <SideRailLayout enabled={!isEditorPage}>
         <Routes>
-          {/* Critical route - no lazy loading */}
+          {/* Landing page — inlined to eliminate Suspense CLS */}
           <Route path="/" element={<LandingPage />} />
 
           {/* SEO Landing Pages */}
@@ -215,7 +255,7 @@ function AppContent() {
           <Route
             path="/resume-keywords"
             element={
-              <Suspense fallback={<LoadingSpinner />}>
+              <Suspense fallback={<SEOPageSkeleton />}>
                 <ResumeKeywordsHub />
               </Suspense>
             }
@@ -223,7 +263,7 @@ function AppContent() {
           <Route
             path="/resume-keywords/customer-service"
             element={
-              <Suspense fallback={<LoadingSpinner />}>
+              <Suspense fallback={<SEOPageSkeleton />}>
                 <CustomerServiceKeywords />
               </Suspense>
             }
@@ -232,7 +272,7 @@ function AppContent() {
           <Route
             path="/resume-keywords/:jobSlug"
             element={
-              <Suspense fallback={<LoadingSpinner />}>
+              <Suspense fallback={<SEOPageSkeleton />}>
                 <JobKeywordsPage />
               </Suspense>
             }
@@ -703,6 +743,13 @@ function AppContent() {
         </SideRailLayout>
       </main>
 
+      {/* Above-footer ad — all non-editor pages (only when explicit ads enabled) */}
+      {!isEditorPage && (isExplicitAdsEnabled() || AD_CONFIG.debug) && (
+        <div className="container mx-auto max-w-4xl px-4">
+          <InContentAd adSlot={AD_CONFIG.slots.aboveFooter} marginY={32} />
+        </div>
+      )}
+
       {/* Footer - Always visible, static positioning */}
       <footer className="bg-gray-100 text-gray-700 border-t shadow-sm mt-auto">
         <Footer />
@@ -757,7 +804,9 @@ function AppWithProviders() {
             }}
           />
         </EditorProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
+        <Suspense fallback={null}>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </Suspense>
       </QueryClientProvider>
     </ConversionProvider>
   );

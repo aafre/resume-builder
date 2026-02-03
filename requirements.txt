@@ -3,6 +3,7 @@ jinja2
 pdfkit
 markdown2
 flask
+flask-compress
 flask-cors
 flask-talisman
 gunicorn

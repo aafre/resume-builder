@@ -65,14 +65,13 @@ export default function CompanyMarquee({
         {duplicatedCompanies.map((company, index) => (
           <div
             key={`${company.name}-${index}`}
-            className="flex-shrink-0 w-36 h-16 flex items-center justify-center bg-white/70 backdrop-blur-sm rounded-xl border border-gray-200/60 shadow-sm hover:shadow-md hover:bg-white/90 transition-all duration-300 group cursor-default"
+            className="flex-shrink-0 w-36 h-16 flex items-center justify-center bg-white/95 rounded-xl border border-gray-200/60 shadow-sm hover:shadow-md transition-shadow duration-300 group cursor-default"
           >
             <img
               src={company.logo}
               alt={company.alt}
               className="max-w-28 max-h-10 object-contain transition-all duration-300 opacity-80 group-hover:opacity-100 group-hover:scale-105"
               style={{ aspectRatio: '16/9' }}
-              loading="lazy"
               width="112"
               height="40"
               onError={(e) => {

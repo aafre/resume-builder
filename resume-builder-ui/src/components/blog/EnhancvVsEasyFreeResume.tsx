@@ -31,8 +31,8 @@ function WinnerBadge() {
 
 export default function EnhancvVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", rating: 4.8, price: "0" },
-    { name: "Enhancv", rating: 4.0, price: "119.88" },
+    { name: "EasyFreeResume", price: "0" },
+    { name: "Enhancv", price: "119.88" },
     "2026-01-21"
   );
 
@@ -42,15 +42,18 @@ export default function EnhancvVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
       <BlogLayout
-      title="Enhancv Pricing 2026: Is $9.99/Month Worth It? Free Alternative Compared"
-      description="Enhancv costs $9.99-$24.99/month for premium features. Compare with EasyFreeResume, a free alternative with ATS-friendly templates and complete privacy."
+      title="Enhancv vs EasyFreeResume: Side-by-Side Review"
+      description="Enhancv plans run $9.99-$24.99/mo. Compare Enhancv vs EasyFreeResume feature-by-feature: ATS templates, pricing, export formats, and privacy."
       publishDate="2026-01-21"
+      lastUpdated="2026-02-02"
       readTime="7 min"
       keywords={[
         "enhancv pricing",
         "enhancv free",
         "enhancv cost",
         "enhancv alternative",
+        "enhancv vs",
+        "is enhancv free",
         "enhancv vs easyfreeresume",
         "free resume builder",
         "enhancv review 2026",

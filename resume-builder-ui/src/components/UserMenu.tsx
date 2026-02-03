@@ -68,6 +68,8 @@ const UserMenu: React.FC = () => {
             src={avatarUrl}
             alt={displayName}
             className="w-8 h-8 rounded-full object-cover ring-2 ring-purple-100"
+            width="32"
+            height="32"
             onError={handleError}
             referrerPolicy="no-referrer"
             crossOrigin="anonymous"

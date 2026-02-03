@@ -191,9 +191,8 @@ describe("InContentAd", () => {
 
       const wrapper = screen.getByTestId("in-content-ad-wrapper");
       expect(wrapper).toHaveStyle({
-        marginTop: "0",
-        marginBottom: "0",
-        maxHeight: "0",
+        marginTop: "24px",
+        marginBottom: "24px",
         opacity: "0",
       });
     });

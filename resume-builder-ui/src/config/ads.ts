@@ -14,6 +14,7 @@ export const AD_CONFIG = {
     blogIncontent: "3576273453",
     myresumesIncontent: "1958765996",
     mobileTop: "2808813237",
+    aboveFooter: "8825866171",
   },
 } as const;
 

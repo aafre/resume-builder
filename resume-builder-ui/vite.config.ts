@@ -2,9 +2,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import tailwindcss from "tailwindcss";
+import viteCompression from 'vite-plugin-compression';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    viteCompression({ algorithm: 'gzip' }),
+    viteCompression({ algorithm: 'brotliCompress' }),
+  ],
   css: {
     postcss: {
       plugins: [tailwindcss()],
@@ -27,7 +32,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'pdfjs': ['pdfjs-dist'],  // Separate chunk for PDF.js (~200KB gzipped)
+          'vendor': ['react-helmet-async', '@tanstack/react-query',
+                     'react-hot-toast', 'js-yaml'],
         }
       }
     }

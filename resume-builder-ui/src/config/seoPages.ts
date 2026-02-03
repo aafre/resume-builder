@@ -353,9 +353,12 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         'Build your CV online free. No registration, no watermark. ATS-friendly CV templates for UK, Europe, and international applications.',
       keywords: [
         'free cv builder',
+        'cv builder uk',
+        'cv builder uk free',
         'cv maker no sign up',
         'uk cv builder',
         'cv template free',
+        'cv maker online free uk',
         'curriculum vitae builder',
         'online cv maker free',
       ],
@@ -824,15 +827,19 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /resume-keywords/customer-service
   customerServiceKeywords: {
     seo: {
-      title: 'Customer Service Resume Keywords and Skills [Free List]',
+      title: '100+ Customer Service Resume Keywords for 2026 [ATS-Optimized]',
       description:
-        'Complete list of customer service resume keywords that ATS systems scan for. Includes soft skills, CRM software, metrics, and real examples.',
+        'Free list of 100+ customer service keywords for your resume: CRM skills (Salesforce, Zendesk), soft skills, CSAT/NPS metrics, and before/after examples. Updated 2026.',
       keywords: [
         'customer service resume keywords',
         'customer support keywords',
         'CRM resume skills',
         'help desk resume keywords',
         'customer service skills list',
+        'resume keywords for customer service',
+        'personal keywords for customer service',
+        'good customer service keywords',
+        'customer service skills for resume',
       ],
       canonicalUrl: '/resume-keywords/customer-service',
     },
@@ -1199,11 +1206,13 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         'cv templates',
         'free cv templates',
         'uk cv templates',
+        'cv template uk free',
         'professional cv template',
         'cv templates download',
         'curriculum vitae templates',
         `cv templates ${CURRENT_YEAR}`,
         'ats cv templates',
+        'cv template free download uk',
       ],
       canonicalUrl: '/cv-templates',
     },

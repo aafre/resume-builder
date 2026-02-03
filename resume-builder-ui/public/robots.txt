@@ -1,5 +1,10 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /auth/
+Disallow: /editor/
+Disallow: /my-resumes
+Disallow: /error/
 
 # AI Search Crawlers - explicitly allow for AI-powered search
 User-agent: GPTBot
@@ -23,29 +28,10 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
+# LLM-readable site description
+# See https://llmstxt.org/ for specification
+# llms.txt: concise site overview for AI crawlers
+# llms-full.txt: expanded version with all page descriptions
+
 # Main sitemap
 Sitemap: https://easyfreeresume.com/sitemap.xml
-
-# Allow resources needed for rendering (important for Google Images)
-Allow: /assets/
-Allow: /images/
-
-# Allow all well-behaved bots
-Allow: /blog/
-Allow: /templates/
-Allow: /ats-resume-templates/
-Allow: /resume-keywords/
-Allow: /actual-free-resume-builder/
-Allow: /free-resume-builder-no-sign-up/
-Allow: /best-free-resume-builder-reddit/
-Allow: /about/
-Allow: /contact/
-Allow: /privacy-policy/
-Allow: /terms-of-service/
-
-# Disallow certain paths (optional)
-Disallow: /api/
-Disallow: /error/
-
-# Crawl-delay for respectful crawling
-Crawl-delay: 1
