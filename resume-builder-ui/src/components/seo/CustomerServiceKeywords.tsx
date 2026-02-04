@@ -106,13 +106,13 @@ export default function CustomerServiceKeywords() {
             <p className="text-gray-600 text-sm mb-3">
               Focus on sales floor interactions, product knowledge, and point-of-sale systems.
             </p>
-            <ul className="space-y-1 text-gray-700 text-sm">
-              <li>• <strong>POS Systems</strong> — registers, Square, Shopify POS</li>
-              <li>• <strong>Upselling / Cross-selling</strong> — revenue-driving skills</li>
-              <li>• <strong>Product Knowledge</strong> — inventory and merchandising</li>
-              <li>• <strong>Cash Handling</strong> — transactions and drawer reconciliation</li>
-              <li>• <strong>Loss Prevention</strong> — shrinkage reduction</li>
-              <li>• <strong>Visual Merchandising</strong> — displays and store presentation</li>
+            <ul className="space-y-1 text-gray-700 text-sm list-disc list-inside">
+              <li><strong>POS Systems</strong> — registers, Square, Shopify POS</li>
+              <li><strong>Upselling / Cross-selling</strong> — revenue-driving skills</li>
+              <li><strong>Product Knowledge</strong> — inventory and merchandising</li>
+              <li><strong>Cash Handling</strong> — transactions and drawer reconciliation</li>
+              <li><strong>Loss Prevention</strong> — shrinkage reduction</li>
+              <li><strong>Visual Merchandising</strong> — displays and store presentation</li>
             </ul>
           </div>
 
@@ -123,13 +123,13 @@ export default function CustomerServiceKeywords() {
             <p className="text-gray-600 text-sm mb-3">
               Emphasize call volume, metrics, and telephone-specific skills.
             </p>
-            <ul className="space-y-1 text-gray-700 text-sm">
-              <li>• <strong>Average Handle Time (AHT)</strong> — call efficiency metric</li>
-              <li>• <strong>Call Volume</strong> — e.g., "80+ calls/day"</li>
-              <li>• <strong>First Call Resolution (FCR)</strong> — one-touch fixes</li>
-              <li>• <strong>IVR Systems</strong> — interactive voice response navigation</li>
-              <li>• <strong>Script Adherence</strong> — compliance and quality standards</li>
-              <li>• <strong>De-escalation</strong> — calming upset callers</li>
+            <ul className="space-y-1 text-gray-700 text-sm list-disc list-inside">
+              <li><strong>Average Handle Time (AHT)</strong> — call efficiency metric</li>
+              <li><strong>Call Volume</strong> — e.g., "80+ calls/day"</li>
+              <li><strong>First Call Resolution (FCR)</strong> — one-touch fixes</li>
+              <li><strong>IVR Systems</strong> — interactive voice response navigation</li>
+              <li><strong>Script Adherence</strong> — compliance and quality standards</li>
+              <li><strong>De-escalation</strong> — calming upset callers</li>
             </ul>
           </div>
 
@@ -140,13 +140,13 @@ export default function CustomerServiceKeywords() {
             <p className="text-gray-600 text-sm mb-3">
               Highlight diagnostic abilities, technical tools, and knowledge base contributions.
             </p>
-            <ul className="space-y-1 text-gray-700 text-sm">
-              <li>• <strong>Troubleshooting</strong> — systematic diagnosis of issues</li>
-              <li>• <strong>Remote Desktop Support</strong> — TeamViewer, AnyDesk</li>
-              <li>• <strong>Tier 1 / Tier 2 / Tier 3 Support</strong> — escalation level</li>
-              <li>• <strong>Knowledge Base</strong> — documentation and article creation</li>
-              <li>• <strong>Root Cause Analysis</strong> — identifying underlying issues</li>
-              <li>• <strong>SLA Compliance</strong> — meeting service-level commitments</li>
+            <ul className="space-y-1 text-gray-700 text-sm list-disc list-inside">
+              <li><strong>Troubleshooting</strong> — systematic diagnosis of issues</li>
+              <li><strong>Remote Desktop Support</strong> — TeamViewer, AnyDesk</li>
+              <li><strong>Tier 1 / Tier 2 / Tier 3 Support</strong> — escalation level</li>
+              <li><strong>Knowledge Base</strong> — documentation and article creation</li>
+              <li><strong>Root Cause Analysis</strong> — identifying underlying issues</li>
+              <li><strong>SLA Compliance</strong> — meeting service-level commitments</li>
             </ul>
           </div>
 
@@ -157,13 +157,13 @@ export default function CustomerServiceKeywords() {
             <p className="text-gray-600 text-sm mb-3">
               Focus on retention, account growth, and strategic relationship management.
             </p>
-            <ul className="space-y-1 text-gray-700 text-sm">
-              <li>• <strong>Customer Retention</strong> — churn reduction strategies</li>
-              <li>• <strong>Net Promoter Score (NPS)</strong> — loyalty measurement</li>
-              <li>• <strong>Account Management</strong> — portfolio oversight</li>
-              <li>• <strong>Onboarding</strong> — new customer implementation</li>
-              <li>• <strong>Upsell / Expansion Revenue</strong> — account growth</li>
-              <li>• <strong>QBRs</strong> — quarterly business reviews</li>
+            <ul className="space-y-1 text-gray-700 text-sm list-disc list-inside">
+              <li><strong>Customer Retention</strong> — churn reduction strategies</li>
+              <li><strong>Net Promoter Score (NPS)</strong> — loyalty measurement</li>
+              <li><strong>Account Management</strong> — portfolio oversight</li>
+              <li><strong>Onboarding</strong> — new customer implementation</li>
+              <li><strong>Upsell / Expansion Revenue</strong> — account growth</li>
+              <li><strong>QBRs</strong> — quarterly business reviews</li>
             </ul>
           </div>
 
@@ -174,13 +174,13 @@ export default function CustomerServiceKeywords() {
             <p className="text-gray-600 text-sm mb-3">
               Combine customer service soft skills with IT-specific tools and processes.
             </p>
-            <ul className="grid md:grid-cols-2 gap-x-6 gap-y-1 text-gray-700 text-sm">
-              <li>• <strong>ITIL Framework</strong> — IT service management methodology</li>
-              <li>• <strong>Active Directory</strong> — user account management</li>
-              <li>• <strong>Ticketing Systems</strong> — Jira, ServiceNow, Freshservice</li>
-              <li>• <strong>Password Resets / Access Management</strong> — common ticket types</li>
-              <li>• <strong>Hardware Troubleshooting</strong> — physical device support</li>
-              <li>• <strong>VPN / Network Connectivity</strong> — remote access support</li>
+            <ul className="grid md:grid-cols-2 gap-x-6 gap-y-1 text-gray-700 text-sm list-disc list-inside">
+              <li><strong>ITIL Framework</strong> — IT service management methodology</li>
+              <li><strong>Active Directory</strong> — user account management</li>
+              <li><strong>Ticketing Systems</strong> — Jira, ServiceNow, Freshservice</li>
+              <li><strong>Password Resets / Access Management</strong> — common ticket types</li>
+              <li><strong>Hardware Troubleshooting</strong> — physical device support</li>
+              <li><strong>VPN / Network Connectivity</strong> — remote access support</li>
             </ul>
           </div>
         </div>
@@ -202,14 +202,14 @@ export default function CustomerServiceKeywords() {
             <h3 className="font-bold text-gray-900 mb-3 text-lg">
               Retail
             </h3>
-            <ul className="space-y-1 text-gray-700 text-sm">
-              <li>• <strong>POS Systems</strong> — Square, Shopify POS, Clover</li>
-              <li>• <strong>Inventory Management</strong> — stock tracking and replenishment</li>
-              <li>• <strong>Cash Handling</strong> — drawer reconciliation, deposits</li>
-              <li>• <strong>Upselling</strong> — suggestive selling and add-on revenue</li>
-              <li>• <strong>Visual Merchandising</strong> — planograms and displays</li>
-              <li>• <strong>Loss Prevention</strong> — shrinkage control, LP audits</li>
-              <li>• <strong>Clienteling</strong> — personalized customer engagement</li>
+            <ul className="space-y-1 text-gray-700 text-sm list-disc list-inside">
+              <li><strong>POS Systems</strong> — Square, Shopify POS, Clover</li>
+              <li><strong>Inventory Management</strong> — stock tracking and replenishment</li>
+              <li><strong>Cash Handling</strong> — drawer reconciliation, deposits</li>
+              <li><strong>Upselling</strong> — suggestive selling and add-on revenue</li>
+              <li><strong>Visual Merchandising</strong> — planograms and displays</li>
+              <li><strong>Loss Prevention</strong> — shrinkage control, LP audits</li>
+              <li><strong>Clienteling</strong> — personalized customer engagement</li>
             </ul>
           </div>
 
@@ -217,14 +217,14 @@ export default function CustomerServiceKeywords() {
             <h3 className="font-bold text-gray-900 mb-3 text-lg">
               SaaS / Tech Support
             </h3>
-            <ul className="space-y-1 text-gray-700 text-sm">
-              <li>• <strong>Ticketing Systems</strong> — Zendesk, Jira Service Desk, Freshdesk</li>
-              <li>• <strong>Knowledge Base</strong> — documentation and self-service content</li>
-              <li>• <strong>Screen Sharing</strong> — Zoom, TeamViewer, remote demos</li>
-              <li>• <strong>Remote Troubleshooting</strong> — diagnosing issues over the wire</li>
-              <li>• <strong>Bug Reporting</strong> — reproducing and escalating defects</li>
-              <li>• <strong>SLA Management</strong> — meeting service-level targets</li>
-              <li>• <strong>Tier 1 / 2 / 3 Support</strong> — escalation tiers and ownership</li>
+            <ul className="space-y-1 text-gray-700 text-sm list-disc list-inside">
+              <li><strong>Ticketing Systems</strong> — Zendesk, Jira Service Desk, Freshdesk</li>
+              <li><strong>Knowledge Base</strong> — documentation and self-service content</li>
+              <li><strong>Screen Sharing</strong> — Zoom, TeamViewer, remote demos</li>
+              <li><strong>Remote Troubleshooting</strong> — diagnosing issues over the wire</li>
+              <li><strong>Bug Reporting</strong> — reproducing and escalating defects</li>
+              <li><strong>SLA Management</strong> — meeting service-level targets</li>
+              <li><strong>Tier 1 / 2 / 3 Support</strong> — escalation tiers and ownership</li>
             </ul>
           </div>
 
@@ -232,13 +232,13 @@ export default function CustomerServiceKeywords() {
             <h3 className="font-bold text-gray-900 mb-3 text-lg">
               Healthcare
             </h3>
-            <ul className="space-y-1 text-gray-700 text-sm">
-              <li>• <strong>HIPAA Compliance</strong> — patient privacy regulations</li>
-              <li>• <strong>Patient Scheduling</strong> — appointment coordination</li>
-              <li>• <strong>EMR / EHR Systems</strong> — Epic, Cerner, Meditech</li>
-              <li>• <strong>Insurance Verification</strong> — eligibility and prior authorizations</li>
-              <li>• <strong>Medical Terminology</strong> — clinical vocabulary fluency</li>
-              <li>• <strong>Patient Advocacy</strong> — navigating care on behalf of patients</li>
+            <ul className="space-y-1 text-gray-700 text-sm list-disc list-inside">
+              <li><strong>HIPAA Compliance</strong> — patient privacy regulations</li>
+              <li><strong>Patient Scheduling</strong> — appointment coordination</li>
+              <li><strong>EMR / EHR Systems</strong> — Epic, Cerner, Meditech</li>
+              <li><strong>Insurance Verification</strong> — eligibility and prior authorizations</li>
+              <li><strong>Medical Terminology</strong> — clinical vocabulary fluency</li>
+              <li><strong>Patient Advocacy</strong> — navigating care on behalf of patients</li>
             </ul>
           </div>
 
@@ -246,13 +246,13 @@ export default function CustomerServiceKeywords() {
             <h3 className="font-bold text-gray-900 mb-3 text-lg">
               Banking / Finance
             </h3>
-            <ul className="space-y-1 text-gray-700 text-sm">
-              <li>• <strong>KYC Compliance</strong> — Know Your Customer procedures</li>
-              <li>• <strong>Loan Processing</strong> — applications and underwriting support</li>
-              <li>• <strong>Account Management</strong> — client portfolio oversight</li>
-              <li>• <strong>Fraud Detection</strong> — suspicious activity monitoring</li>
-              <li>• <strong>Regulatory Compliance</strong> — FINRA, FDIC, SOX awareness</li>
-              <li>• <strong>Financial Products</strong> — mortgages, credit cards, investments</li>
+            <ul className="space-y-1 text-gray-700 text-sm list-disc list-inside">
+              <li><strong>KYC Compliance</strong> — Know Your Customer procedures</li>
+              <li><strong>Loan Processing</strong> — applications and underwriting support</li>
+              <li><strong>Account Management</strong> — client portfolio oversight</li>
+              <li><strong>Fraud Detection</strong> — suspicious activity monitoring</li>
+              <li><strong>Regulatory Compliance</strong> — FINRA, FDIC, SOX awareness</li>
+              <li><strong>Financial Products</strong> — mortgages, credit cards, investments</li>
             </ul>
           </div>
 
@@ -260,13 +260,13 @@ export default function CustomerServiceKeywords() {
             <h3 className="font-bold text-gray-900 mb-3 text-lg">
               Hospitality
             </h3>
-            <ul className="grid md:grid-cols-2 gap-x-6 gap-y-1 text-gray-700 text-sm">
-              <li>• <strong>Reservation Systems</strong> — Opera, ALICE, Cloudbeds</li>
-              <li>• <strong>Guest Relations</strong> — complaint handling and VIP services</li>
-              <li>• <strong>Concierge Services</strong> — local recommendations and bookings</li>
-              <li>• <strong>Loyalty Programs</strong> — rewards enrollment and management</li>
-              <li>• <strong>RevPAR</strong> — revenue per available room tracking</li>
-              <li>• <strong>Occupancy Management</strong> — room allocation and overbooking</li>
+            <ul className="grid md:grid-cols-2 gap-x-6 gap-y-1 text-gray-700 text-sm list-disc list-inside">
+              <li><strong>Reservation Systems</strong> — Opera, ALICE, Cloudbeds</li>
+              <li><strong>Guest Relations</strong> — complaint handling and VIP services</li>
+              <li><strong>Concierge Services</strong> — local recommendations and bookings</li>
+              <li><strong>Loyalty Programs</strong> — rewards enrollment and management</li>
+              <li><strong>RevPAR</strong> — revenue per available room tracking</li>
+              <li><strong>Occupancy Management</strong> — room allocation and overbooking</li>
             </ul>
           </div>
         </div>
@@ -287,14 +287,14 @@ export default function CustomerServiceKeywords() {
             <h3 className="font-bold text-green-800 mb-4 text-lg">
               🤝 Communication Skills
             </h3>
-            <ul className="space-y-2 text-green-700">
-              <li>• Customer Support</li>
-              <li>• Client Relations</li>
-              <li>• Active Listening</li>
-              <li>• Communication Skills</li>
-              <li>• Interpersonal Skills</li>
-              <li>• Verbal Communication</li>
-              <li>• Written Communication</li>
+            <ul className="space-y-2 text-green-700 list-disc list-inside">
+              <li>Customer Support</li>
+              <li>Client Relations</li>
+              <li>Active Listening</li>
+              <li>Communication Skills</li>
+              <li>Interpersonal Skills</li>
+              <li>Verbal Communication</li>
+              <li>Written Communication</li>
             </ul>
           </div>
 
@@ -302,14 +302,14 @@ export default function CustomerServiceKeywords() {
             <h3 className="font-bold text-purple-800 mb-4 text-lg">
               🎯 Problem-Solving
             </h3>
-            <ul className="space-y-2 text-purple-700">
-              <li>• Conflict Resolution</li>
-              <li>• Problem-Solving</li>
-              <li>• Critical Thinking</li>
-              <li>• Decision Making</li>
-              <li>• Troubleshooting</li>
-              <li>• Issue Resolution</li>
-              <li>• Solution-Oriented</li>
+            <ul className="space-y-2 text-purple-700 list-disc list-inside">
+              <li>Conflict Resolution</li>
+              <li>Problem-Solving</li>
+              <li>Critical Thinking</li>
+              <li>Decision Making</li>
+              <li>Troubleshooting</li>
+              <li>Issue Resolution</li>
+              <li>Solution-Oriented</li>
             </ul>
           </div>
         </div>
@@ -377,24 +377,24 @@ export default function CustomerServiceKeywords() {
           <div className="grid md:grid-cols-2 gap-6 text-orange-700">
             <div>
               <h4 className="font-medium mb-2">Performance Metrics:</h4>
-              <ul className="text-sm space-y-1">
-                <li>• Customer Satisfaction (CSAT)</li>
-                <li>• Net Promoter Score (NPS)</li>
-                <li>• First Contact Resolution (FCR)</li>
-                <li>• Average Handle Time (AHT)</li>
-                <li>• Customer Effort Score (CES)</li>
-                <li>• Response Time</li>
+              <ul className="text-sm space-y-1 list-disc list-inside">
+                <li>Customer Satisfaction (CSAT)</li>
+                <li>Net Promoter Score (NPS)</li>
+                <li>First Contact Resolution (FCR)</li>
+                <li>Average Handle Time (AHT)</li>
+                <li>Customer Effort Score (CES)</li>
+                <li>Response Time</li>
               </ul>
             </div>
             <div>
               <h4 className="font-medium mb-2">Process Keywords:</h4>
-              <ul className="text-sm space-y-1">
-                <li>• Quality Assurance (QA)</li>
-                <li>• Service Level Agreements (SLAs)</li>
-                <li>• Escalation Procedures</li>
-                <li>• Inbound and Outbound Calls</li>
-                <li>• Ticketing System</li>
-                <li>• Knowledge Base Management</li>
+              <ul className="text-sm space-y-1 list-disc list-inside">
+                <li>Quality Assurance (QA)</li>
+                <li>Service Level Agreements (SLAs)</li>
+                <li>Escalation Procedures</li>
+                <li>Inbound and Outbound Calls</li>
+                <li>Ticketing System</li>
+                <li>Knowledge Base Management</li>
               </ul>
             </div>
           </div>
