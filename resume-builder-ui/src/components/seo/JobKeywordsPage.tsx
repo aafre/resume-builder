@@ -4,7 +4,7 @@
  * Programmatic SEO pages for job-specific resume keywords
  */
 
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate, Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import BreadcrumbsWithSchema from '../shared/BreadcrumbsWithSchema';
@@ -394,6 +394,16 @@ export default function JobKeywordsPage() {
       <FAQSection faqs={faqs} />
 
       <RelatedJobsSection job={jobData} />
+
+      {/* Related Resources */}
+      <div className="bg-gray-50 rounded-xl p-6 mt-12 mb-16 max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Related Resources</h2>
+        <ul className="space-y-2">
+          <li><Link to="/blog/how-to-use-resume-keywords" className="text-blue-600 hover:underline">How to Use Resume Keywords Effectively</Link></li>
+          <li><Link to="/blog/ats-resume-optimization" className="text-blue-600 hover:underline">ATS Resume Optimization Guide</Link></li>
+          <li><Link to="/resume-keywords" className="text-blue-600 hover:underline">Browse All Resume Keywords by Job Title</Link></li>
+        </ul>
+      </div>
 
       <DownloadCTA
         title={`Ready to Build Your ${jobData.title} Resume?`}

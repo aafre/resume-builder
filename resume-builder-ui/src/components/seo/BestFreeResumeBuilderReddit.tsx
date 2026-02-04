@@ -4,6 +4,7 @@
  * Target keyword: "best free resume builder reddit"
  */
 
+import { Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import FeatureGrid from '../shared/FeatureGrid';
@@ -11,6 +12,7 @@ import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
+import CompareBuildersCrossLinks from '../blog/CompareBuildersCrossLinks';
 
 export default function BestFreeResumeBuilderReddit() {
   const config = SEO_PAGES.redditRecommended;
@@ -227,6 +229,15 @@ export default function BestFreeResumeBuilderReddit() {
             ours work just as well as paid options.
           </p>
         </div>
+      </div>
+
+      {/* See How Specific Builders Compare */}
+      <div className="mb-16 max-w-4xl mx-auto">
+        <CompareBuildersCrossLinks
+          title="See How Specific Builders Compare"
+          description="Want a detailed breakdown of a specific resume builder? We've analyzed pricing, features, and hidden costs:"
+          bgColor="bg-blue-50"
+        />
       </div>
 
       <FAQSection faqs={config.faqs} />

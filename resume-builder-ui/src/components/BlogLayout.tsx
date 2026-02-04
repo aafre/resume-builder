@@ -40,7 +40,7 @@ export default function BlogLayout({
   return (
     <>
       <SEOHead
-        title={`${title} | EasyFreeResume Blog`}
+        title={`${title} | EasyFreeResume`}
         description={description}
         keywords={keywords.join(', ')}
         canonicalUrl={currentUrl}

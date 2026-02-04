@@ -16,12 +16,12 @@ import {
 export const softwareEngineer: JobKeywordsData = {
   slug: 'software-engineer',
   title: 'Software Engineer',
-  metaTitle: 'Software Engineer Resume Keywords (2026) - 120+ ATS Skills & Examples',
+  metaTitle: 'Software Engineer Resume Keywords (2026) — 120+ Dev Skills & Tools',
   metaDescription:
-    'Free software engineer resume keywords: Python, Java, React, AWS, CI/CD, microservices, Docker. Includes before/after bullet examples for developer resumes.',
+    'Complete software engineer resume keywords: Python, Java, React, AWS, CI/CD, Docker, Kubernetes. Before/after examples for SWE resumes. ATS-optimized.',
   category: 'technology',
   priority: 0.9,
-  lastmod: '2026-01-18',
+  lastmod: '2026-02-04',
 
   roleIntro:
     'Hiring teams scan for both technical depth and practical experience. They want to see specific technologies you\'ve used (not just "programming"), evidence of scale (users, transactions, uptime), and proof you can work in modern development environments. Your resume should demonstrate you can ship production code, collaborate with teams, and solve real problems—not just that you\'ve taken courses.',
@@ -127,6 +127,11 @@ export const softwareEngineer: JobKeywordsData = {
     'Developed real-time notification system using WebSockets, serving 10K concurrent users with <50ms latency',
     'Implemented comprehensive test suite (Jest, Cypress) achieving 85% code coverage across frontend and backend',
     'Collaborated with product and design teams in Agile sprints, consistently delivering features 2 days ahead of estimates',
+    'Implemented automated alerting and runbook documentation, improving incident response time by 50% and maintaining 99.99% uptime SLA for payment processing service',
+    'Led migration of 3 legacy Java services to Go microservices on Kubernetes, reducing infrastructure costs by 45% and improving p99 latency from 1.2s to 180ms',
+    'Optimized data ingestion pipeline to handle 2M events/sec throughput, reducing end-to-end processing latency from 30s to under 2s using Kafka and Apache Flink',
+    'Implemented OWASP Top 10 security best practices across 12 microservices, resolving 25 critical vulnerabilities and passing SOC 2 compliance audit',
+    'Built internal CLI tool and VS Code extension for service scaffolding, reducing new microservice setup time from 3 days to 20 minutes and adopted by 40+ engineers',
   ],
 
   commonMistakes: [
@@ -153,6 +158,24 @@ export const softwareEngineer: JobKeywordsData = {
     {
       mistake: 'Ignoring soft skills entirely',
       fix: 'Weave in collaboration, communication, and leadership through your bullet points',
+    },
+  ],
+
+  customFaqs: [
+    {
+      question: 'What keywords should a junior vs senior software engineer use on their resume?',
+      answer:
+        'Junior engineers should emphasize foundational skills (data structures, algorithms, Git, testing) and learning velocity—mention technologies you\'ve shipped with, internships, and personal projects with real users. Senior engineers should highlight architecture decisions, mentorship, system design, scalability, cross-team leadership, and production ownership. Both levels need metrics, but seniors are expected to show broader scope: "Led migration for 15-person team" vs. "Implemented feature in React."',
+    },
+    {
+      question: 'How should I list programming languages on my resume?',
+      answer:
+        'Group languages by proficiency or relevance, not alphabetically. Lead with languages in the job description. A strong format is: "Languages: Python (5 years), TypeScript (3 years), Go (2 years)." Alternatively, demonstrate proficiency through your bullet points—"Built real-time pipeline in Go handling 1M events/day" is more convincing than listing "Go" in a skills section. Avoid listing languages you cannot discuss in an interview.',
+    },
+    {
+      question: 'Should I include DevOps and cloud skills on a software engineer resume?',
+      answer:
+        'Yes. Modern SWE roles expect familiarity with CI/CD, Docker, Kubernetes, and at least one cloud provider (AWS, GCP, or Azure). Include these in your skills section and, more importantly, in your bullet points: "Deployed services to AWS ECS using Terraform and GitHub Actions." Even if you are not a DevOps specialist, showing you can own the full lifecycle from code to production is a strong signal to hiring teams.',
     },
   ],
 };

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import BlogLayout from "../BlogLayout";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
 import { EASY_FREE_RESUME_PRODUCT } from "../../data/products";
+import CompareBuildersCrossLinks from './CompareBuildersCrossLinks';
 
 // Star rating component
 function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
@@ -45,8 +46,8 @@ export default function ZetyVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
     <BlogLayout
-      title="Zety Pricing 2026: Is Zety Free? (+ Free Alternative)"
-      description="Zety costs $5.95-$23.95/month and plans auto-renew. Full pricing breakdown for 2026, plus a genuinely free alternative with ATS-friendly templates and no paywalls."
+      title="Zety Pricing 2026: Is It Free? (Real Costs Revealed)"
+      description="Zety charges $5.95-$23.95/month with auto-renewing plans. Full 2026 pricing breakdown, hidden costs, and a 100% free alternative. No tricks, no paywalls."
       publishDate="2026-01-28"
       lastUpdated="2026-02-02"
       readTime="9 min"
@@ -61,6 +62,9 @@ export default function ZetyVsEasyFreeResume() {
         "zety vs easyfreeresume",
         "free resume builder vs paid",
         "best resume builder reddit",
+        "zety resume builder pricing",
+        "zety subscription cost",
+        "zety plans",
       ]}
     >
       <div className="space-y-8">
@@ -782,6 +786,8 @@ export default function ZetyVsEasyFreeResume() {
           alternatives. You have nothing to lose - except maybe a monthly
           subscription fee.
         </p>
+
+        <CompareBuildersCrossLinks excludePath="/blog/zety-vs-easy-free-resume" />
       </div>
 
       {/* Sticky CTA Banner */}

@@ -171,7 +171,7 @@ export const JOB_EXAMPLES_DATABASE: JobExampleInfo[] = [
     title: 'College Student',
     category: 'entry-level',
     priority: 0.8,
-    metaDescription: 'College student resume example for internships and first jobs. Education-focused format.',
+    metaDescription: 'Free college student resume example with ATS-friendly formatting. Includes coursework, projects, and extracurricular examples. No experience needed.',
   },
   {
     slug: 'high-school-student',

@@ -3,6 +3,7 @@ import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
 import { EASY_FREE_RESUME_PRODUCT } from "../../data/products";
+import CompareBuildersCrossLinks from './CompareBuildersCrossLinks';
 
 function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
   return (
@@ -34,7 +35,7 @@ export default function ResumeIOVsEasyFreeResume() {
   const schema = generateComparisonSchema(
     EASY_FREE_RESUME_PRODUCT,
     { name: "Resume.io", price: "44.95", description: "Resume builder with professional templates and a step-by-step editor, offering tiered subscription plans." },
-    "2026-02-03"
+    "2026-02-04"
   );
 
   return (
@@ -43,10 +44,10 @@ export default function ResumeIOVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
       <BlogLayout
-      title="Resume.io vs EasyFreeResume: Honest Comparison"
+      title="Resume.io Pricing 2026: Plans, Costs & Free Alternative"
       description="Resume.io charges $2.95-$24.95/mo for PDF downloads. See how EasyFreeResume compares: free ATS templates, no sign-up, and full privacy. Side-by-side review."
       publishDate="2026-01-21"
-      lastUpdated="2026-02-02"
+      lastUpdated="2026-02-04"
       readTime="8 min"
       keywords={[
         "resume.io pricing",
@@ -310,27 +311,7 @@ export default function ResumeIOVsEasyFreeResume() {
           </Link>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
-          Related Comparisons
-        </h2>
-
-        <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
-          <li>
-            <Link to="/blog/zety-vs-easy-free-resume" className="text-blue-600 hover:underline">
-              Zety vs EasyFreeResume
-            </Link>
-          </li>
-          <li>
-            <Link to="/blog/resume-genius-vs-easy-free-resume" className="text-blue-600 hover:underline">
-              Resume Genius vs EasyFreeResume
-            </Link>
-          </li>
-          <li>
-            <Link to="/blog/canva-resume-vs-easy-free-resume" className="text-blue-600 hover:underline">
-              Canva vs EasyFreeResume
-            </Link>
-          </li>
-        </ul>
+        <CompareBuildersCrossLinks excludePath="/blog/resume-io-vs-easy-free-resume" />
       </div>
 
       {/* Sticky CTA Banner */}

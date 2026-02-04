@@ -567,9 +567,9 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /ats-resume-templates (hub)
   templatesHub: {
     seo: {
-      title: 'Free ATS Resume Templates (2026) - Tested on Real ATS Systems',
+      title: 'Free ATS Resume Templates (2026) — Tested on Workday, Taleo & More',
       description:
-        'Download free ATS-friendly resume templates tested on Workday, Taleo, iCIMS & Greenhouse. Clean layouts that pass applicant tracking systems every time.',
+        'Download free ATS-friendly resume templates tested on Workday, Taleo, iCIMS, and Greenhouse. Clean layouts that pass every ATS. No sign-up required.',
       keywords: [
         'ats friendly resume templates',
         'free resume templates',
@@ -763,9 +763,9 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /resume-keywords (hub)
   keywordsHub: {
     seo: {
-      title: 'Resume Keywords by Industry (2026) - Complete ATS Keyword Lists',
+      title: 'Resume Keywords by Job Title & Industry (2026) — Complete ATS Guide',
       description:
-        'Find resume keywords for 17+ industries: tech, healthcare, finance, marketing, education. ATS-optimized keyword lists with copy-paste examples for every role.',
+        'Find the right resume keywords for your job title: 17+ industries, 50+ roles. ATS-optimized keyword lists with copy-paste examples. Updated for 2026.',
       keywords: [
         'resume keywords',
         'ats keywords',
@@ -859,9 +859,9 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /resume-keywords/customer-service
   customerServiceKeywords: {
     seo: {
-      title: 'Customer Service Resume Keywords (2026) - 100+ ATS Skills & Phrases',
+      title: '150+ Customer Service Resume Keywords (2026) — ATS-Optimized',
       description:
-        'Complete list of customer service resume keywords: CRM skills, Zendesk, Salesforce, conflict resolution, CSAT metrics. Copy-paste examples for call center, tech support & customer success roles.',
+        'Complete customer service resume keywords: CRM tools, conflict resolution, CSAT metrics. Organized by role — call center, retail, tech support, healthcare. Copy-paste ready.',
       keywords: [
         'customer service resume keywords',
         'customer support keywords',
@@ -933,9 +933,9 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /best-free-resume-builder-reddit
   redditRecommended: {
     seo: {
-      title: `Best Free Resume Builder ${CURRENT_YEAR} — What Reddit Actually Recommends`,
+      title: `Best Free Resume Builder ${CURRENT_YEAR} (Reddit-Tested, Actually Free)`,
       description:
-        `Based on r/resumes, r/jobs, and r/cscareerquestions. No paywalls, no watermarks, actually free. Here's what Reddit users look for in ${CURRENT_YEAR}.`,
+        `What r/resumes and r/jobs actually recommend in ${CURRENT_YEAR}. We analyzed 100+ Reddit threads. No paywalls, no watermarks, no sign-up. Here's what passed the test.`,
       keywords: [
         'best free resume builder reddit',
         'reddit resume builder',
