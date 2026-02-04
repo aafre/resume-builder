@@ -45,8 +45,8 @@ export default function ZetyVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
     <BlogLayout
-      title="Zety Pricing 2026: Is Zety Free? (+ Free Alternative)"
-      description="Zety costs $5.95-$23.95/month and plans auto-renew. Full pricing breakdown for 2026, plus a genuinely free alternative with ATS-friendly templates and no paywalls."
+      title="Zety Pricing 2026: Is It Free? (Real Costs Revealed)"
+      description="Zety charges $5.95-$23.95/month with auto-renewing plans. Full 2026 pricing breakdown, hidden costs, and a 100% free alternative. No tricks, no paywalls."
       publishDate="2026-01-28"
       lastUpdated="2026-02-02"
       readTime="9 min"
@@ -61,6 +61,9 @@ export default function ZetyVsEasyFreeResume() {
         "zety vs easyfreeresume",
         "free resume builder vs paid",
         "best resume builder reddit",
+        "zety resume builder pricing",
+        "zety subscription cost",
+        "zety plans",
       ]}
     >
       <div className="space-y-8">
@@ -782,6 +785,20 @@ export default function ZetyVsEasyFreeResume() {
           alternatives. You have nothing to lose - except maybe a monthly
           subscription fee.
         </p>
+
+        {/* Compare Other Resume Builders */}
+        <div className="bg-gray-50 rounded-xl p-6 mt-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Compare Other Resume Builders</h2>
+          <p className="text-gray-600 mb-4">See how other popular resume builders compare on pricing, features, and hidden costs:</p>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <li><Link to="/blog/resume-io-vs-easy-free-resume" className="text-blue-600 hover:underline">Resume.io Pricing Breakdown</Link></li>
+            <li><Link to="/blog/resume-genius-vs-easy-free-resume" className="text-blue-600 hover:underline">Resume Genius Pricing</Link></li>
+            <li><Link to="/blog/novoresume-vs-easy-free-resume" className="text-blue-600 hover:underline">Novoresume Pricing</Link></li>
+            <li><Link to="/blog/enhancv-vs-easy-free-resume" className="text-blue-600 hover:underline">Enhancv Pricing</Link></li>
+            <li><Link to="/blog/canva-resume-vs-easy-free-resume" className="text-blue-600 hover:underline">Canva Resume Builder Review</Link></li>
+            <li><Link to="/blog/flowcv-vs-easy-free-resume" className="text-blue-600 hover:underline">FlowCV Review</Link></li>
+          </ul>
+        </div>
       </div>
 
       {/* Sticky CTA Banner */}
