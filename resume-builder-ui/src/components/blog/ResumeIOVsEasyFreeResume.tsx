@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
+import { EASY_FREE_RESUME_PRODUCT } from "../../data/products";
 
 function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
   return (
@@ -31,7 +32,7 @@ function WinnerBadge() {
 
 export default function ResumeIOVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", price: "0", description: "Free online resume builder with ATS-friendly templates, no sign-up required, and unlimited PDF downloads.", image: "/docs/templates/modern-no-icons.png" },
+    EASY_FREE_RESUME_PRODUCT,
     { name: "Resume.io", price: "44.95", description: "Resume builder with professional templates and a step-by-step editor, offering tiered subscription plans." },
     "2026-02-03"
   );
