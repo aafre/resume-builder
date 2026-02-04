@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
-import CompareBuildersCrossLinks from "../components/blog/CompareBuildersCrossLinks";
+import CompareBuildersCrossLinks, { ALL_COMPARISONS } from "../components/blog/CompareBuildersCrossLinks";
 
 describe("CompareBuildersCrossLinks", () => {
   it("renders all 7 comparison links when no excludePath is given", () => {
@@ -73,15 +73,7 @@ describe("CompareBuildersCrossLinks", () => {
       </MemoryRouter>
     );
 
-    const expectedHrefs = [
-      "/blog/zety-vs-easy-free-resume",
-      "/blog/resume-io-vs-easy-free-resume",
-      "/blog/resume-genius-vs-easy-free-resume",
-      "/blog/novoresume-vs-easy-free-resume",
-      "/blog/enhancv-vs-easy-free-resume",
-      "/blog/canva-resume-vs-easy-free-resume",
-      "/blog/flowcv-vs-easy-free-resume",
-    ];
+    const expectedHrefs = ALL_COMPARISONS.map((c) => c.path);
 
     const links = screen.getAllByRole("link");
     const hrefs = links.map((link) => link.getAttribute("href"));

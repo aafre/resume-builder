@@ -5,7 +5,7 @@ interface ComparisonLink {
   label: string;
 }
 
-const ALL_COMPARISONS: ComparisonLink[] = [
+export const ALL_COMPARISONS: ComparisonLink[] = [
   { path: '/blog/zety-vs-easy-free-resume', label: 'Zety Pricing Breakdown' },
   { path: '/blog/resume-io-vs-easy-free-resume', label: 'Resume.io Pricing Breakdown' },
   { path: '/blog/resume-genius-vs-easy-free-resume', label: 'Resume Genius Pricing' },
