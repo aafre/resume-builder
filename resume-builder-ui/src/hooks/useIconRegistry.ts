@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useMemo } from 'react';
 import { IconExportData, IconStorageData } from '../types/iconTypes';
 
 interface IconRegistryEntry {
@@ -231,7 +231,8 @@ export const useIconRegistry = (): UseIconRegistryReturn => {
     }
   }, [importIconsFromYAML]);
 
-  return {
+  // Use useMemo to ensure stable object reference for context/prop consumers
+  return useMemo(() => ({
     registerIcon,
     registerIconWithFilename,
     getIconFile,
@@ -243,5 +244,17 @@ export const useIconRegistry = (): UseIconRegistryReturn => {
     importIconsFromYAML,
     exportForStorage,
     importFromStorage,
-  };
+  }), [
+    registerIcon,
+    registerIconWithFilename,
+    getIconFile,
+    removeIcon,
+    clearRegistry,
+    getRegisteredFilenames,
+    getRegistrySize,
+    exportIconsForYAML,
+    importIconsFromYAML,
+    exportForStorage,
+    importFromStorage,
+  ]);
 };
