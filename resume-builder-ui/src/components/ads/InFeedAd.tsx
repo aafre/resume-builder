@@ -62,8 +62,8 @@ export const InFeedAd = ({
 
   const layoutStyles: Record<typeof layout, CSSProperties> = {
     card: {
-      minHeight: hidden ? "0px" : "280px",
-      minWidth: hidden ? "0px" : "250px",
+      minHeight: "280px",
+      minWidth: "250px",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -72,7 +72,7 @@ export const InFeedAd = ({
       border: hidden ? "none" : "1px solid #e5e7eb",
     },
     row: {
-      minHeight: hidden ? "0px" : "100px",
+      minHeight: "100px",
       width: "100%",
       display: "flex",
       alignItems: "center",
@@ -98,9 +98,9 @@ export const InFeedAd = ({
           : dimensions.height,
     }),
     opacity: hidden ? 0 : 1,
+    visibility: hidden ? "hidden" : "visible",
     overflow: "hidden",
-    transition:
-      "min-height 300ms ease, min-width 300ms ease, opacity 300ms ease, background-color 300ms ease, border 300ms ease",
+    transition: "opacity 300ms ease, background-color 300ms ease, border 300ms ease",
     ...style,
   };
 
