@@ -34,7 +34,7 @@ export default function CanvaVsEasyFreeResume() {
   const schema = generateComparisonSchema(
     EASY_FREE_RESUME_PRODUCT,
     { name: "Canva", price: "0", description: "Free graphic design platform with resume templates, offering a Pro tier for premium features." },
-    "2026-02-03"
+    "2026-02-04"
   );
 
   return (
@@ -43,10 +43,10 @@ export default function CanvaVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
     <BlogLayout
-      title="Canva Resume vs EasyFreeResume: ATS Compared"
+      title="Canva Resume Builder 2026: Limitations & Free Alternative"
       description="Canva resume templates look great but often fail ATS scans. See how EasyFreeResume compares: ATS pass rates, PDF export, and which free builder gets more interviews."
       publishDate="2026-01-21"
-      lastUpdated="2026-02-02"
+      lastUpdated="2026-02-04"
       readTime="8 min"
       keywords={[
         "canva resume template",
@@ -316,27 +316,19 @@ export default function CanvaVsEasyFreeResume() {
           </Link>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
-          Related Resources
-        </h2>
-
-        <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
-          <li>
-            <Link to="/blog/ats-resume-optimization" className="text-blue-600 hover:underline">
-              Complete ATS Optimization Guide
-            </Link>
-          </li>
-          <li>
-            <Link to="/blog/zety-vs-easy-free-resume" className="text-blue-600 hover:underline">
-              Zety vs EasyFreeResume
-            </Link>
-          </li>
-          <li>
-            <Link to="/templates/ats-friendly" className="text-blue-600 hover:underline">
-              ATS-Friendly Resume Templates
-            </Link>
-          </li>
-        </ul>
+        {/* Compare Other Resume Builders */}
+        <div className="bg-gray-50 rounded-xl p-6 mt-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Compare Other Resume Builders</h2>
+          <p className="text-gray-600 mb-4">See how other popular resume builders compare on pricing, features, and hidden costs:</p>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <li><Link to="/blog/zety-vs-easy-free-resume" className="text-blue-600 hover:underline">Zety Pricing Breakdown</Link></li>
+            <li><Link to="/blog/resume-io-vs-easy-free-resume" className="text-blue-600 hover:underline">Resume.io Pricing Breakdown</Link></li>
+            <li><Link to="/blog/resume-genius-vs-easy-free-resume" className="text-blue-600 hover:underline">Resume Genius Pricing</Link></li>
+            <li><Link to="/blog/novoresume-vs-easy-free-resume" className="text-blue-600 hover:underline">Novoresume Pricing</Link></li>
+            <li><Link to="/blog/enhancv-vs-easy-free-resume" className="text-blue-600 hover:underline">Enhancv Pricing</Link></li>
+            <li><Link to="/blog/flowcv-vs-easy-free-resume" className="text-blue-600 hover:underline">FlowCV Review</Link></li>
+          </ul>
+        </div>
       </div>
 
       {/* Sticky CTA Banner */}
