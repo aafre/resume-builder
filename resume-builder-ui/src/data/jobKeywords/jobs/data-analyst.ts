@@ -10,12 +10,12 @@ import {
 export const dataAnalyst: JobKeywordsData = {
   slug: 'data-analyst',
   title: 'Data Analyst',
-  metaTitle: 'Data Analyst Resume Keywords (2026) - SQL, Python, Tableau & More',
+  metaTitle: 'Data Analyst Resume Keywords (2026) — SQL, Python, Tableau & More',
   metaDescription:
-    'Free data analyst resume keywords: SQL, Python, Tableau, Power BI, statistical analysis, data visualization. With ATS-optimized bullet examples you can copy.',
+    'Data analyst resume keywords: SQL, Python, Tableau, Power BI, ETL, statistical analysis. Before/after bullet examples. Copy-paste into your resume.',
   category: 'technology',
   priority: 0.85,
-  lastmod: '2026-01-18',
+  lastmod: '2026-02-04',
 
   roleIntro:
     'Hiring teams want to see that you can translate raw data into actionable business insights. They\'re looking for hands-on SQL skills, experience with visualization tools, and evidence that your analysis drove real business decisions. Show concrete examples where your insights led to measurable outcomes—revenue increases, cost savings, or process improvements.',
@@ -120,6 +120,11 @@ export const dataAnalyst: JobKeywordsData = {
     'Performed root cause analysis on declining conversion rates, identifying checkout friction points that led to 15% improvement after fix',
     'Built self-service Power BI reports enabling sales team to access real-time pipeline data, reducing ad-hoc requests by 60%',
     'Analyzed customer churn patterns using SQL and Tableau, presenting findings that drove retention strategy changes',
+    'Designed and launched real-time logistics dashboard in Power BI, enabling operations team to reduce delivery delays by 20% through proactive routing adjustments',
+    'Built automated data pipeline using Python and Apache Airflow to ingest data from 5 source systems, reducing ETL errors by 90% and saving 12 hours of manual reconciliation weekly',
+    'Partnered with marketing, finance, and product teams to standardize KPI definitions across departments, creating a single source of truth that improved cross-team alignment',
+    'Developed demand forecasting model using Python (scikit-learn) and historical sales data, improving quarterly forecast accuracy from 72% to 91%',
+    'Implemented data quality monitoring framework with automated anomaly detection, catching 15+ data integrity issues per month before they reached downstream reports',
   ],
 
   commonMistakes: [
@@ -146,6 +151,24 @@ export const dataAnalyst: JobKeywordsData = {
     {
       mistake: 'Ignoring data quality and cleaning work',
       fix: 'Highlight: "Cleaned and validated datasets," "Ensured data integrity across sources"',
+    },
+  ],
+
+  customFaqs: [
+    {
+      question: 'Data Analyst vs Data Scientist keywords — what is the difference?',
+      answer:
+        'Data Analyst resumes emphasize SQL, Excel, Tableau/Power BI, reporting, dashboards, KPI tracking, and business intelligence. Data Scientist resumes lean into machine learning, deep learning, NLP, Python (scikit-learn, TensorFlow), statistical modeling, and experimentation design. There is overlap in SQL, Python, and A/B testing, but analysts focus on descriptive and diagnostic analytics while scientists focus on predictive and prescriptive work. Tailor your keywords based on which title the job posting uses.',
+    },
+    {
+      question: 'Do I need Python for a data analyst resume?',
+      answer:
+        'Python is increasingly expected but not always required. Many data analyst roles still accept SQL + Excel + a visualization tool (Tableau or Power BI) as the core stack. However, listing Python with libraries like Pandas, NumPy, or Matplotlib gives you a competitive advantage and opens doors to roles at tech companies. If you know Python, include it prominently. If not, prioritize SQL proficiency and visualization tools first, and note Python as a skill you are developing.',
+    },
+    {
+      question: 'How do I show business impact on a data analyst resume?',
+      answer:
+        'Connect every analysis to a business outcome. Instead of "Built dashboard in Tableau," write "Built Tableau dashboard tracking daily revenue KPIs, enabling sales leadership to identify underperforming regions and recover $150K in quarterly revenue." Use metrics like revenue influenced, cost savings, time saved, decisions supported, and efficiency gains. If you do not have exact numbers, use reasonable estimates: "Reduced reporting time by approximately 60%."',
     },
   ],
 };
