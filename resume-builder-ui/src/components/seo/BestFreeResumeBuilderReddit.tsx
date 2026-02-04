@@ -4,6 +4,7 @@
  * Target keyword: "best free resume builder reddit"
  */
 
+import { Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import FeatureGrid from '../shared/FeatureGrid';
@@ -226,6 +227,23 @@ export default function BestFreeResumeBuilderReddit() {
             But for <strong>creating and formatting a resume yourself</strong>, free tools like
             ours work just as well as paid options.
           </p>
+        </div>
+      </div>
+
+      {/* See How Specific Builders Compare */}
+      <div className="mb-16 max-w-4xl mx-auto">
+        <div className="bg-blue-50 rounded-xl p-6 mt-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">See How Specific Builders Compare</h2>
+          <p className="text-gray-600 mb-4">Want a detailed breakdown of a specific resume builder? We've analyzed pricing, features, and hidden costs:</p>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <li><Link to="/blog/zety-vs-easy-free-resume" className="text-blue-600 hover:underline">Zety Pricing &amp; Review</Link></li>
+            <li><Link to="/blog/resume-io-vs-easy-free-resume" className="text-blue-600 hover:underline">Resume.io Pricing &amp; Review</Link></li>
+            <li><Link to="/blog/resume-genius-vs-easy-free-resume" className="text-blue-600 hover:underline">Resume Genius Review</Link></li>
+            <li><Link to="/blog/novoresume-vs-easy-free-resume" className="text-blue-600 hover:underline">Novoresume Review</Link></li>
+            <li><Link to="/blog/enhancv-vs-easy-free-resume" className="text-blue-600 hover:underline">Enhancv Review</Link></li>
+            <li><Link to="/blog/canva-resume-vs-easy-free-resume" className="text-blue-600 hover:underline">Canva Resume Builder Review</Link></li>
+            <li><Link to="/blog/flowcv-vs-easy-free-resume" className="text-blue-600 hover:underline">FlowCV Review</Link></li>
+          </ul>
         </div>
       </div>
 
