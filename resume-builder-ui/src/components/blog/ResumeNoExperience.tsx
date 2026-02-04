@@ -3,8 +3,8 @@ import BlogLayout from "../BlogLayout";
 export default function ResumeNoExperience() {
   return (
     <BlogLayout
-      title="Resume with No Experience: Real Examples + Free Template"
-      description="How to write an ATS-friendly, confidence-boosting resume when you're just starting out. Includes copy-paste examples and free template."
+      title="How to Write a Resume With No Experience (2026 Guide)"
+      description="Step-by-step guide to writing a resume with no work experience. 5+ copy-paste examples, ATS-friendly template, and what to put instead of job history."
       publishDate="2026-01-20"
       lastUpdated="2026-01-25"
       readTime="12–16 min"
@@ -15,6 +15,9 @@ export default function ResumeNoExperience() {
         "new graduate resume",
         "student resume",
         "ATS resume tips",
+        "resume with no work experience",
+        "how to make a resume with no experience",
+        "resume for first job",
       ]}
       ctaType="resume"
     >
