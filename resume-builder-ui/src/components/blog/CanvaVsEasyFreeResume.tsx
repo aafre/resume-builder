@@ -3,6 +3,7 @@ import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
 import { EASY_FREE_RESUME_PRODUCT } from "../../data/products";
+import CompareBuildersCrossLinks from './CompareBuildersCrossLinks';
 
 function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
   return (
@@ -316,19 +317,7 @@ export default function CanvaVsEasyFreeResume() {
           </Link>
         </div>
 
-        {/* Compare Other Resume Builders */}
-        <div className="bg-gray-50 rounded-xl p-6 mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Compare Other Resume Builders</h2>
-          <p className="text-gray-600 mb-4">See how other popular resume builders compare on pricing, features, and hidden costs:</p>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <li><Link to="/blog/zety-vs-easy-free-resume" className="text-blue-600 hover:underline">Zety Pricing Breakdown</Link></li>
-            <li><Link to="/blog/resume-io-vs-easy-free-resume" className="text-blue-600 hover:underline">Resume.io Pricing Breakdown</Link></li>
-            <li><Link to="/blog/resume-genius-vs-easy-free-resume" className="text-blue-600 hover:underline">Resume Genius Pricing</Link></li>
-            <li><Link to="/blog/novoresume-vs-easy-free-resume" className="text-blue-600 hover:underline">Novoresume Pricing</Link></li>
-            <li><Link to="/blog/enhancv-vs-easy-free-resume" className="text-blue-600 hover:underline">Enhancv Pricing</Link></li>
-            <li><Link to="/blog/flowcv-vs-easy-free-resume" className="text-blue-600 hover:underline">FlowCV Review</Link></li>
-          </ul>
-        </div>
+        <CompareBuildersCrossLinks excludePath="/blog/canva-resume-vs-easy-free-resume" />
       </div>
 
       {/* Sticky CTA Banner */}
