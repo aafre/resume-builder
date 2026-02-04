@@ -2,6 +2,55 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.15.0] - 2026-02-04
+
+### 🚀 Features
+
+- **content:** Expand customer service keywords page depth
+- **content:** Enhance product-manager keyword page data
+- **content:** Enhance software-engineer keyword page data
+- **content:** Enhance data-analyst keyword page data
+- **seo:** Update competitor comparison pages with pricing titles and cross-links
+- **seo:** Strengthen internal linking across keyword and comparison pages
+- **content:** Expand resume keywords hub with intro and quick-reference lists
+- **content:** Enhance professional summary examples page
+
+### 🐛 Bug Fixes
+
+- **seo:** Add missing Product fields to comparison schema for GSC validation
+- **perf:** Reserve AnnouncementBar height on landing page to prevent CLS
+- **perf:** Stabilize CTA button widths to prevent CLS
+- **perf:** Prevent InFeedAd height collapse to eliminate CLS
+- **schema:** Remove competitor images and add brand field to ComparisonProduct
+- Update test
+- **seo:** Shorten BlogLayout title suffix to prevent truncation
+- **seo:** Optimize meta tags for Claude and Gemini prompt pages
+- **seo:** Optimize meta tags for resume-no-experience blog post
+- **seo:** Optimize Zety comparison page meta tags and keywords
+- **seo:** Update meta tags for Reddit, customer service, ATS, and keywords hub pages
+- **seo:** Update college student example meta and add FAQs
+- **seo:** Update sitemap lastmod dates for all modified pages
+- **a11y:** Use list-disc/list-inside instead of hardcoded bullet chars
+- **seo:** Remove unused Link import in BestFreeResumeBuilderReddit
+
+### 🚜 Refactor
+
+- **blog:** Extract shared EasyFreeResume product data to products.ts
+- **ui:** Extract duplicated gradient constant in AnnouncementBar
+- Extract CompareBuildersCrossLinks shared component
+- **blog:** Export ALL_COMPARISONS and use in tests
+
+### ⚡ Performance
+
+- **ads:** Add preconnect for Google Funding Choices CMP domain
+- **build:** Split supabase and lucide-react into separate chunks
+- **assets:** Replace 192x192 PNG logo with 80x80 WebP (16KB -> 2KB)
+- **assets:** Convert Bloomberg logo from PNG to SVG (5.8KB -> <1KB)
+
+### 🧪 Testing
+
+- Add unit tests for CompareBuildersCrossLinks component
+
 ## [3.14.1] - 2026-02-03
 
 ### 🐛 Bug Fixes
