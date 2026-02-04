@@ -203,11 +203,12 @@ export function generateProductSchema(
   };
 }
 
-interface ComparisonProduct {
+export interface ComparisonProduct {
   name: string;
   price: string;
   description: string;
-  image: string;
+  image?: string;
+  brand?: string;
 }
 
 /**
@@ -224,10 +225,12 @@ export function generateComparisonSchema(
     position,
     name: product.name,
     description: product.description,
-    image: product.image.startsWith('http') ? product.image : `${BASE_URL}${product.image}`,
+    ...(product.image && {
+      image: product.image.startsWith('http') ? product.image : `${BASE_URL}${product.image}`,
+    }),
     brand: {
       '@type': 'Organization',
-      name: product.name,
+      name: product.brand || product.name,
     },
     offers: {
       '@type': 'Offer',

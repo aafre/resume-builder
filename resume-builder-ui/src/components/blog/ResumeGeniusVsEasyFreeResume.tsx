@@ -32,7 +32,7 @@ function WinnerBadge() {
 export default function ResumeGeniusVsEasyFreeResume() {
   const schema = generateComparisonSchema(
     { name: "EasyFreeResume", price: "0", description: "Free online resume builder with ATS-friendly templates, no sign-up required, and unlimited PDF downloads.", image: "/docs/templates/modern-no-icons.png" },
-    { name: "Resume Genius", price: "95.40", description: "Resume builder with guided wizard and pre-written content, offering monthly and quarterly subscription plans.", image: "/docs/templates/modern-no-icons.png" },
+    { name: "Resume Genius", price: "95.40", description: "Resume builder with guided wizard and pre-written content, offering monthly and quarterly subscription plans." },
     "2026-02-03"
   );
 

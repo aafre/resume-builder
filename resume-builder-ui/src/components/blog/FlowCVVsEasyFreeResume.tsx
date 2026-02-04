@@ -32,7 +32,7 @@ function WinnerBadge() {
 export default function FlowCVVsEasyFreeResume() {
   const schema = generateComparisonSchema(
     { name: "EasyFreeResume", price: "0", description: "Free online resume builder with ATS-friendly templates, no sign-up required, and unlimited PDF downloads.", image: "/docs/templates/modern-no-icons.png" },
-    { name: "FlowCV", price: "0", description: "Free online resume builder with customizable templates and a Pro plan for additional features.", image: "/docs/templates/modern-no-icons.png" },
+    { name: "FlowCV", price: "0", description: "Free online resume builder with customizable templates and a Pro plan for additional features." },
     "2026-02-03"
   );
 

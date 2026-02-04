@@ -32,7 +32,7 @@ function WinnerBadge() {
 export default function ResumeIOVsEasyFreeResume() {
   const schema = generateComparisonSchema(
     { name: "EasyFreeResume", price: "0", description: "Free online resume builder with ATS-friendly templates, no sign-up required, and unlimited PDF downloads.", image: "/docs/templates/modern-no-icons.png" },
-    { name: "Resume.io", price: "44.95", description: "Resume builder with professional templates and a step-by-step editor, offering tiered subscription plans.", image: "/docs/templates/modern-no-icons.png" },
+    { name: "Resume.io", price: "44.95", description: "Resume builder with professional templates and a step-by-step editor, offering tiered subscription plans." },
     "2026-02-03"
   );
 
