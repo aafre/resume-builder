@@ -4,7 +4,6 @@
  * Target keyword: "best free resume builder reddit"
  */
 
-import { Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import FeatureGrid from '../shared/FeatureGrid';
