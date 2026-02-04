@@ -5,8 +5,8 @@ import CopyablePrompt from "../shared/CopyablePrompt";
 export default function ClaudeResumePrompts() {
   return (
     <BlogLayout
-      title="15+ Claude AI Prompts for Resume Writing (2026)"
-      description="Get the best Claude prompts for writing professional resumes. Claude excels at nuanced, professional writing. Copy-paste these prompts for better results."
+      title="15+ Claude AI Resume Prompts (Copy-Paste Ready) 2026"
+      description="Best Claude prompts for resume writing: professional summary, experience bullets, skills optimization, cover letters. Copy-paste ready. Works with Claude 3.5 and Opus."
       publishDate="2026-01-21"
       readTime="10 min"
       keywords={[
@@ -16,6 +16,9 @@ export default function ClaudeResumePrompts() {
         "claude for resume writing",
         "best ai for resume",
         "claude prompts job application",
+        "claude prompt for resume",
+        "claude prompts for resume",
+        "resume prompt for claude",
       ]}
       ctaType="resume"
     >

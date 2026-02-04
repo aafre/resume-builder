@@ -5,8 +5,8 @@ import CopyablePrompt from "../shared/CopyablePrompt";
 export default function GeminiResumePrompts() {
   return (
     <BlogLayout
-      title="Google Gemini Prompts for Resume Writing (2026)"
-      description="Best Gemini AI prompts for resume writing. Leverage Google's AI for job description analysis, keyword extraction, and resume optimization."
+      title="Best Gemini Resume Prompts (Copy-Paste Ready) 2026"
+      description="Top Gemini prompts for resume writing: job description analysis, keyword extraction, bullet optimization. Copy-paste ready for Gemini Advanced and free."
       publishDate="2026-01-21"
       readTime="8 min"
       keywords={[
@@ -16,6 +16,9 @@ export default function GeminiResumePrompts() {
         "google ai resume writing",
         "gemini prompts job application",
         "bard resume prompts",
+        "gemini prompt for cv",
+        "cv prompt for gemini",
+        "gemini resume prompt",
       ]}
       ctaType="resume"
     >
