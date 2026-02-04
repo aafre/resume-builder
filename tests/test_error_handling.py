@@ -15,7 +15,6 @@ from unittest.mock import MagicMock, patch, call
 import sys
 import os
 import time
-import json
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -420,6 +419,6 @@ class TestRequireAuthRetry:
             response = client.get('/api/user/preferences', headers=auth_headers)
 
         assert response.status_code == 401
-        data = json.loads(response.data)
+        data = response.get_json()
         assert data['success'] is False
         assert call_count == 2

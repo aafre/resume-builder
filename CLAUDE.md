@@ -147,6 +147,14 @@ Explicit ads are controlled by the `VITE_ENABLE_EXPLICIT_ADS` environment variab
 | Mobile top (all non-editor pages) | `2808813237` | efr-mobile-top |
 
 
+### Blog Page Update Checklist
+
+When modifying a blog page (especially comparison/competitor pages), update the date in **both** places:
+1. **`dateModified`** in the `generateComparisonSchema()` call inside the blog component (e.g., `ZetyVsEasyFreeResume.tsx`)
+2. **`lastmod`** in `resume-builder-ui/src/data/sitemapUrls.ts` for the corresponding URL entry
+
+The sitemap is regenerated during `npm run build`, but the source dates in `sitemapUrls.ts` are manual.
+
 # Repo workflow
 
 ## Git commit style

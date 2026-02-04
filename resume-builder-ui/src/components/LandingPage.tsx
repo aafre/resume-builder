@@ -197,7 +197,7 @@ const LandingPage: React.FC = () => {
           </div>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
             <button
-              className="group inline-flex items-center justify-center bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 transition-[transform,box-shadow] duration-300 ease-out active:scale-[0.98] relative overflow-hidden"
+              className="group inline-flex items-center justify-center min-w-[260px] bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 transition-[transform,box-shadow] duration-300 ease-out active:scale-[0.98] relative overflow-hidden"
               onClick={() => navigate(hasResumes ? "/my-resumes" : "/templates")}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out"></div>
@@ -429,7 +429,7 @@ const LandingPage: React.FC = () => {
                 professional resumes with our free builder.
               </p>
               <button
-                className="group inline-flex items-center justify-center bg-white text-purple-700 py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 ease-out active:scale-95 relative overflow-hidden"
+                className="group inline-flex items-center justify-center min-w-[260px] bg-white text-purple-700 py-4 px-8 rounded-xl text-lg font-semibold shadow-lg hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 ease-out active:scale-95 relative overflow-hidden"
                 onClick={() => navigate(hasResumes ? "/my-resumes" : "/templates")}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-purple-100/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out"></div>

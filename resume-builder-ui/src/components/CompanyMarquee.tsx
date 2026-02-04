@@ -1,6 +1,6 @@
 // Static imports for all company logos
 import appleLogoUrl from '/logos/apple.svg';
-import bloombergLogoUrl from '/logos/bloomberg.png';
+import bloombergLogoUrl from '/logos/bloomberg.svg';
 import bnppLogoUrl from '/logos/bnpp.svg';
 import googleLogoUrl from '/logos/google.svg';
 import jpmorganLogoUrl from '/logos/jpmorgan.svg';

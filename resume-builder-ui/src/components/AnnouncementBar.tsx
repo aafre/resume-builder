@@ -5,6 +5,8 @@ import { useAuth } from '../contexts/AuthContext';
 import usePreferencePersistence from '../hooks/usePreferencePersistence';
 import { getActiveAnnouncement } from '../config/announcements';
 
+const ANNOUNCEMENT_GRADIENT = 'linear-gradient(to right, rgb(147, 51, 234), rgb(59, 130, 246))';
+
 /**
  * AnnouncementBar - Reusable notification banner for app-wide announcements
  *
@@ -54,12 +56,25 @@ export default function AnnouncementBar() {
     }
   };
 
-  if (!shouldShow || !activeAnnouncement) return null;
+  if (!shouldShow || !activeAnnouncement) {
+    // On the landing page, render an invisible placeholder with the same height
+    // to prevent CLS during hydration while async state (auth/preferences) resolves.
+    if (location.pathname === '/') {
+      return (
+        <div style={{
+          background: ANNOUNCEMENT_GRADIENT,
+          minHeight: '43px',
+          visibility: 'hidden',
+        }} />
+      );
+    }
+    return null;
+  }
 
   return (
     <div
       style={{
-        background: 'linear-gradient(to right, rgb(147, 51, 234), rgb(59, 130, 246))',
+        background: ANNOUNCEMENT_GRADIENT,
         borderBottom: '1px solid rgba(147, 51, 234, 0.3)',
         position: 'relative',
         zIndex: 60

@@ -2,6 +2,8 @@ import { Helmet } from "react-helmet-async";
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
+import { EASY_FREE_RESUME_PRODUCT } from "../../data/products";
+import CompareBuildersCrossLinks from './CompareBuildersCrossLinks';
 
 function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
   return (
@@ -31,9 +33,9 @@ function WinnerBadge() {
 
 export default function FlowCVVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", price: "0" },
-    { name: "FlowCV", price: "0" },
-    "2026-01-21"
+    EASY_FREE_RESUME_PRODUCT,
+    { name: "FlowCV", price: "0", description: "Free online resume builder with customizable templates and a Pro plan for additional features." },
+    "2026-02-04"
   );
 
   return (
@@ -42,9 +44,10 @@ export default function FlowCVVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
       <BlogLayout
-      title="FlowCV vs EasyFreeResume 2026: Which Free Resume Builder is Better?"
+      title="FlowCV Review 2026: Is It Really Free? (Honest Look)"
       description="Both FlowCV and EasyFreeResume offer free resume building. Compare features, privacy, and templates to see which free option is truly better for your job search."
       publishDate="2026-01-21"
+      lastUpdated="2026-02-04"
       readTime="7 min"
       keywords={[
         "flowcv review",
@@ -292,27 +295,7 @@ export default function FlowCVVsEasyFreeResume() {
           </Link>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
-          Related Comparisons
-        </h2>
-
-        <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
-          <li>
-            <Link to="/blog/zety-vs-easy-free-resume" className="text-blue-600 hover:underline">
-              Zety vs EasyFreeResume
-            </Link>
-          </li>
-          <li>
-            <Link to="/blog/resume-io-vs-easy-free-resume" className="text-blue-600 hover:underline">
-              Resume.io vs EasyFreeResume
-            </Link>
-          </li>
-          <li>
-            <Link to="/blog/novoresume-vs-easy-free-resume" className="text-blue-600 hover:underline">
-              NovoResume vs EasyFreeResume
-            </Link>
-          </li>
-        </ul>
+        <CompareBuildersCrossLinks excludePath="/blog/flowcv-vs-easy-free-resume" />
       </div>
 
       {/* Sticky CTA Banner */}

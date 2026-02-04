@@ -34,6 +34,8 @@ export default defineConfig({
         manualChunks: {
           'vendor': ['react-helmet-async', '@tanstack/react-query',
                      'react-hot-toast', 'js-yaml'],
+          'supabase': ['@supabase/supabase-js'],
+          'icons': ['lucide-react'],
         }
       }
     }

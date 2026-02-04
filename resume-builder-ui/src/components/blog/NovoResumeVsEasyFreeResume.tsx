@@ -2,6 +2,8 @@ import { Helmet } from "react-helmet-async";
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
+import { EASY_FREE_RESUME_PRODUCT } from "../../data/products";
+import CompareBuildersCrossLinks from './CompareBuildersCrossLinks';
 
 function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
   return (
@@ -31,9 +33,9 @@ function WinnerBadge() {
 
 export default function NovoResumeVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", price: "0" },
-    { name: "NovoResume", price: "99.00" },
-    "2026-01-21"
+    EASY_FREE_RESUME_PRODUCT,
+    { name: "NovoResume", price: "99.00", description: "Resume builder with professional templates and a content optimizer, offering premium annual plans." },
+    "2026-02-04"
   );
 
   return (
@@ -42,10 +44,10 @@ export default function NovoResumeVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
       <BlogLayout
-      title="Novoresume vs EasyFreeResume: Which is Better?"
+      title="Novoresume Pricing 2026: Plans, Costs & Free Alternative"
       description="Novoresume premium costs $16-$99/yr. Compare Novoresume vs EasyFreeResume: free ATS templates, download formats, privacy, and which builder is worth your time."
       publishDate="2026-01-21"
-      lastUpdated="2026-02-02"
+      lastUpdated="2026-02-04"
       readTime="7 min"
       keywords={[
         "novoresume pricing",
@@ -299,27 +301,7 @@ export default function NovoResumeVsEasyFreeResume() {
           </Link>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
-          Related Comparisons
-        </h2>
-
-        <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
-          <li>
-            <Link to="/blog/zety-vs-easy-free-resume" className="text-blue-600 hover:underline">
-              Zety vs EasyFreeResume
-            </Link>
-          </li>
-          <li>
-            <Link to="/blog/enhancv-vs-easy-free-resume" className="text-blue-600 hover:underline">
-              Enhancv vs EasyFreeResume
-            </Link>
-          </li>
-          <li>
-            <Link to="/blog/flowcv-vs-easy-free-resume" className="text-blue-600 hover:underline">
-              FlowCV vs EasyFreeResume
-            </Link>
-          </li>
-        </ul>
+        <CompareBuildersCrossLinks excludePath="/blog/novoresume-vs-easy-free-resume" />
       </div>
 
       {/* Sticky CTA Banner */}

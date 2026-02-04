@@ -185,7 +185,7 @@ describe("InFeedAd", () => {
   });
 
   describe("unfilled ad collapse", () => {
-    it("collapses outer wrapper when ad is unfilled (card layout)", async () => {
+    it("hides outer wrapper when ad is unfilled (card layout)", async () => {
       (window.IntersectionObserver as ReturnType<typeof vi.fn>).mockImplementation(
         (callback: IntersectionObserverCallback) => {
           setTimeout(() => {
@@ -226,13 +226,15 @@ describe("InFeedAd", () => {
 
       await waitFor(() => {
         const wrapper = screen.getByTestId("in-feed-ad");
-        expect(wrapper).toHaveStyle({ minHeight: "0px" });
-        expect(wrapper).toHaveStyle({ minWidth: "0px" });
+        // Dimensions stay stable to prevent CLS; visibility hides the slot
+        expect(wrapper).toHaveStyle({ minHeight: "280px" });
+        expect(wrapper).toHaveStyle({ minWidth: "250px" });
         expect(wrapper).toHaveStyle({ opacity: "0" });
+        expect(wrapper).toHaveStyle({ visibility: "hidden" });
       });
     });
 
-    it("collapses outer wrapper when ad is unfilled (row layout)", async () => {
+    it("hides outer wrapper when ad is unfilled (row layout)", async () => {
       (window.IntersectionObserver as ReturnType<typeof vi.fn>).mockImplementation(
         (callback: IntersectionObserverCallback) => {
           setTimeout(() => {
@@ -273,8 +275,10 @@ describe("InFeedAd", () => {
 
       await waitFor(() => {
         const wrapper = screen.getByTestId("in-feed-ad");
-        expect(wrapper).toHaveStyle({ minHeight: "0px" });
+        // Dimensions stay stable to prevent CLS; visibility hides the slot
+        expect(wrapper).toHaveStyle({ minHeight: "100px" });
         expect(wrapper).toHaveStyle({ opacity: "0" });
+        expect(wrapper).toHaveStyle({ visibility: "hidden" });
       });
     });
 

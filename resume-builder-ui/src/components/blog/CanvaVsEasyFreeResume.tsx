@@ -2,6 +2,8 @@ import { Helmet } from "react-helmet-async";
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 import { generateComparisonSchema } from "../../utils/schemaGenerators";
+import { EASY_FREE_RESUME_PRODUCT } from "../../data/products";
+import CompareBuildersCrossLinks from './CompareBuildersCrossLinks';
 
 function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
   return (
@@ -31,9 +33,9 @@ function WinnerBadge() {
 
 export default function CanvaVsEasyFreeResume() {
   const schema = generateComparisonSchema(
-    { name: "EasyFreeResume", price: "0" },
-    { name: "Canva", price: "0" },
-    "2026-01-21"
+    EASY_FREE_RESUME_PRODUCT,
+    { name: "Canva", price: "0", description: "Free graphic design platform with resume templates, offering a Pro tier for premium features." },
+    "2026-02-04"
   );
 
   return (
@@ -42,10 +44,10 @@ export default function CanvaVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
     <BlogLayout
-      title="Canva Resume vs EasyFreeResume: ATS Compared"
+      title="Canva Resume Builder 2026: Limitations & Free Alternative"
       description="Canva resume templates look great but often fail ATS scans. See how EasyFreeResume compares: ATS pass rates, PDF export, and which free builder gets more interviews."
       publishDate="2026-01-21"
-      lastUpdated="2026-02-02"
+      lastUpdated="2026-02-04"
       readTime="8 min"
       keywords={[
         "canva resume template",
@@ -315,27 +317,7 @@ export default function CanvaVsEasyFreeResume() {
           </Link>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
-          Related Resources
-        </h2>
-
-        <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
-          <li>
-            <Link to="/blog/ats-resume-optimization" className="text-blue-600 hover:underline">
-              Complete ATS Optimization Guide
-            </Link>
-          </li>
-          <li>
-            <Link to="/blog/zety-vs-easy-free-resume" className="text-blue-600 hover:underline">
-              Zety vs EasyFreeResume
-            </Link>
-          </li>
-          <li>
-            <Link to="/templates/ats-friendly" className="text-blue-600 hover:underline">
-              ATS-Friendly Resume Templates
-            </Link>
-          </li>
-        </ul>
+        <CompareBuildersCrossLinks excludePath="/blog/canva-resume-vs-easy-free-resume" />
       </div>
 
       {/* Sticky CTA Banner */}

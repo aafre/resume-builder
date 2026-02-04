@@ -7,7 +7,7 @@ import AutoSaveIndicator from "./AutoSaveIndicator";
 import AnonymousWarningBadge from "./AnonymousWarningBadge";
 import UserMenu from "./UserMenu";
 import AuthModal from "./AuthModal";
-import logo from "/android-chrome-192x192.png";
+import logo from "/logo-80.webp";
 
 export default function Header() {
   const location = useLocation();
