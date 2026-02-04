@@ -130,16 +130,48 @@ export default function ResumeKeywordsHub() {
             match the job description and rank candidates accordingly. A resume without the
             right keywords will be filtered out regardless of qualifications.
           </p>
+          <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+            Keywords generally fall into five categories. <strong>Hard skills</strong> are
+            teachable abilities such as programming languages, accounting methods, or design
+            software. <strong>Soft skills</strong> are interpersonal qualities like leadership,
+            communication, or problem-solving. <strong>Technical tools</strong> are specific
+            platforms and software you have used, from Salesforce and Jira to Tableau and AWS.{' '}
+            <strong>Certifications</strong> include industry credentials such as PMP, CPA,
+            AWS Solutions Architect, or Google Analytics. Finally, <strong>action verbs</strong>{' '}
+            are the words that open your bullet points &mdash; managed, developed, implemented,
+            optimized &mdash; and signal to both ATS and recruiters that you have hands-on
+            experience.
+          </p>
+          <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+            The most common mistake job seekers make is writing a single resume and sending it
+            to every opening. Each job posting uses slightly different language, and ATS software
+            matches your resume against that exact language. If a posting asks for &ldquo;project
+            coordination&rdquo; and your resume says &ldquo;project management,&rdquo; some
+            systems will not count that as a match. That is why tailoring your keywords to each
+            application matters so much.
+          </p>
+          <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+            Our approach is simple: start with a master keyword list for your industry and
+            role, then customize for every application. The guides below cover 17+ industries
+            and 50+ roles, each with curated keyword lists, technical tools, certifications,
+            and real before-and-after bullet examples showing how to weave keywords into your
+            resume naturally without keyword stuffing.
+          </p>
           <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-            The keyword lists below are organized by industry and role. Each page includes
-            core skills, technical tools, certifications, and before/after bullet examples
-            showing how to incorporate keywords naturally into your resume.
+            Whether you are a software engineer looking for the right technical stack keywords,
+            a marketing manager who needs to match demand-generation terminology, or a customer
+            service professional listing CRM tools and satisfaction metrics, the right keywords
+            can mean the difference between being screened out and landing an interview. Scroll
+            down to find keyword guides organized by industry and role, or jump to the
+            quick-reference lists below.
           </p>
 
           {/* Table of contents */}
           <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
             <h3 className="font-bold text-gray-900 mb-3">On this page</h3>
             <ul className="space-y-2 text-blue-600">
+              <li><a href="#popular-keywords" className="hover:underline">Most Popular Keywords Across All Industries</a></li>
+              <li><a href="#quick-reference" className="hover:underline">Quick-Reference Lists by Job Title</a></li>
               <li><a href="#technology" className="hover:underline">Technology &amp; Engineering Keywords</a></li>
               <li><a href="#design" className="hover:underline">Design &amp; Creative Keywords</a></li>
               <li><a href="#business" className="hover:underline">Business &amp; Management Keywords</a></li>
@@ -173,6 +205,147 @@ export default function ResumeKeywordsHub() {
             the keywords for each application by mirroring the language from the specific job
             posting. Our industry guides below give you that strong foundation.
           </p>
+        </div>
+      </div>
+
+      {/* Most Popular Keywords Across All Industries */}
+      <div className="mb-16 max-w-4xl mx-auto" id="popular-keywords">
+        <div className="bg-white rounded-xl p-8 md:p-10 shadow-md">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+            Most Popular Keywords Across All Industries
+          </h2>
+          <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+            Regardless of your field, certain keywords appear in job postings across every
+            industry. Adding these universal terms to your resume increases ATS match rates
+            for almost any role.
+          </p>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-blue-50 rounded-lg p-5 border border-blue-100">
+              <h3 className="font-bold text-blue-900 mb-3">Action Verbs</h3>
+              <ul className="space-y-1 text-blue-800 text-sm">
+                <li>Managed</li>
+                <li>Developed</li>
+                <li>Implemented</li>
+                <li>Optimized</li>
+                <li>Collaborated</li>
+                <li>Analyzed</li>
+                <li>Led</li>
+                <li>Delivered</li>
+              </ul>
+            </div>
+            <div className="bg-green-50 rounded-lg p-5 border border-green-100">
+              <h3 className="font-bold text-green-900 mb-3">Soft Skills</h3>
+              <ul className="space-y-1 text-green-800 text-sm">
+                <li>Cross-functional collaboration</li>
+                <li>Problem-solving</li>
+                <li>Communication</li>
+                <li>Time management</li>
+                <li>Leadership</li>
+                <li>Critical thinking</li>
+                <li>Adaptability</li>
+                <li>Attention to detail</li>
+              </ul>
+            </div>
+            <div className="bg-purple-50 rounded-lg p-5 border border-purple-100">
+              <h3 className="font-bold text-purple-900 mb-3">Business Terms</h3>
+              <ul className="space-y-1 text-purple-800 text-sm">
+                <li>KPIs / Metrics</li>
+                <li>ROI</li>
+                <li>Stakeholder management</li>
+                <li>Process improvement</li>
+                <li>Budget management</li>
+                <li>Strategic planning</li>
+                <li>Data-driven decisions</li>
+                <li>Continuous improvement</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick-Reference Lists by Job Title */}
+      <div className="mb-16 max-w-4xl mx-auto" id="quick-reference">
+        <div className="bg-white rounded-xl p-8 md:p-10 shadow-md">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Quick-Reference: Top 10 Keywords by Job Title
+          </h2>
+          <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+            Need keywords fast? Here are the top 10 most impactful resume keywords for
+            the five most popular job categories. Click the role name to view the full
+            keyword guide.
+          </p>
+
+          <div className="space-y-8">
+            {/* Software Engineer */}
+            <div className="border border-gray-200 rounded-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <Link to="/resume-keywords/software-engineer" className="text-blue-600 hover:underline">
+                  Software Engineer
+                </Link>
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {['Python', 'JavaScript', 'React', 'AWS', 'CI/CD', 'Microservices', 'REST APIs', 'Agile / Scrum', 'Git', 'System Design'].map(kw => (
+                  <span key={kw} className="bg-blue-50 text-blue-800 text-sm px-3 py-1 rounded-full border border-blue-200">{kw}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Product Manager */}
+            <div className="border border-gray-200 rounded-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <Link to="/resume-keywords/product-manager" className="text-blue-600 hover:underline">
+                  Product Manager
+                </Link>
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {['Product Roadmap', 'User Research', 'A/B Testing', 'Agile / Scrum', 'Stakeholder Management', 'OKRs', 'Go-to-Market', 'Jira', 'Data-Driven', 'Cross-Functional'].map(kw => (
+                  <span key={kw} className="bg-green-50 text-green-800 text-sm px-3 py-1 rounded-full border border-green-200">{kw}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Data Analyst */}
+            <div className="border border-gray-200 rounded-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <Link to="/resume-keywords/data-analyst" className="text-blue-600 hover:underline">
+                  Data Analyst
+                </Link>
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {['SQL', 'Python', 'Tableau', 'Excel', 'Data Visualization', 'ETL', 'Statistical Analysis', 'Power BI', 'A/B Testing', 'Data Modeling'].map(kw => (
+                  <span key={kw} className="bg-amber-50 text-amber-800 text-sm px-3 py-1 rounded-full border border-amber-200">{kw}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Customer Service */}
+            <div className="border border-gray-200 rounded-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <Link to="/resume-keywords/customer-service" className="text-blue-600 hover:underline">
+                  Customer Service
+                </Link>
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {['CRM (Salesforce / Zendesk)', 'Customer Satisfaction (CSAT)', 'Conflict Resolution', 'First Call Resolution', 'Upselling', 'NPS', 'Ticket Management', 'SLA Compliance', 'Active Listening', 'De-escalation'].map(kw => (
+                  <span key={kw} className="bg-red-50 text-red-800 text-sm px-3 py-1 rounded-full border border-red-200">{kw}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Marketing Manager */}
+            <div className="border border-gray-200 rounded-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <Link to="/resume-keywords/marketing-manager" className="text-blue-600 hover:underline">
+                  Marketing Manager
+                </Link>
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {['SEO / SEM', 'Google Analytics', 'Content Strategy', 'Marketing Automation', 'HubSpot', 'Demand Generation', 'Brand Management', 'Campaign ROI', 'Social Media Marketing', 'Lead Nurturing'].map(kw => (
+                  <span key={kw} className="bg-purple-50 text-purple-800 text-sm px-3 py-1 rounded-full border border-purple-200">{kw}</span>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
