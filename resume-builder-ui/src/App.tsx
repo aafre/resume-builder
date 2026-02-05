@@ -375,11 +375,7 @@ function AppContent() {
           />
           <Route
             path="/editor"
-            element={
-              <Suspense fallback={<EditorLoadingSkeleton />}>
-                <Editor />
-              </Suspense>
-            }
+            element={<Navigate to="/templates" replace />}
           />
           <Route
             path="/my-resumes"
@@ -547,6 +543,21 @@ function AppContent() {
             path="/blog/customer-service-resume-keywords"
             element={<Navigate to="/resume-keywords/customer-service" replace />}
           />
+          {/* Redirects for old URLs — fixes "Crawled - currently not indexed" in GSC */}
+          <Route
+            path="/blog/how-to-use-resume-keywords-to-beat-ats"
+            element={<Navigate to="/blog/how-to-use-resume-keywords" replace />}
+          />
+          <Route
+            path="/blog/how-to-list-skills-on-resume"
+            element={<Navigate to="/blog/how-to-list-skills" replace />}
+          />
+          <Route
+            path="/blog/career-change-resume"
+            element={<Navigate to="/blog" replace />}
+          />
+          <Route path="/privacy" element={<Navigate to="/privacy-policy" replace />} />
+          <Route path="/terms" element={<Navigate to="/terms-of-service" replace />} />
           <Route
             path="/blog/how-why-easyfreeresume-completely-free"
             element={
