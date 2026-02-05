@@ -34,6 +34,7 @@ const footerLinks = {
   ],
   company: [
     { path: '/about', label: 'About Us' },
+    { path: '/blog/how-why-easyfreeresume-completely-free', label: 'Why It\'s Free' },
     { path: '/contact', label: 'Contact' },
     { path: '/privacy-policy', label: 'Privacy Policy' },
     { path: '/terms-of-service', label: 'Terms of Service' },
@@ -96,9 +97,9 @@ export default function Footer() {
 
         {/* Bottom Section - Copyright & Trust Badges */}
         <div className="pt-8 border-t border-gray-200/60">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col items-center gap-4">
             {/* Copyright */}
-            <div className="text-center md:text-left">
+            <div className="text-center">
               <p className="text-sm text-gray-600">
                 © {new Date().getFullYear()}{" "}
                 <span className="font-semibold">EasyFreeResume.com</span>
