@@ -101,6 +101,10 @@ body {
   flex-direction: column;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 #root {
   display: flex;
   flex-direction: column;
@@ -350,6 +354,13 @@ footer {
 .in-content-ad,
 .ad-container {
   contain: layout style;
+  max-width: 100%;
+}
+
+ins.adsbygoogle,
+ins.adsbygoogle[data-ad-status] {
+  max-width: 100% !important;
+  overflow: hidden !important;
 }
 
 /* Force Google Funding Choices consent modal to overlay (prevents CLS) */
