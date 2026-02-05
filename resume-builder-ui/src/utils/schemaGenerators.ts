@@ -7,6 +7,7 @@
 import type { FAQConfig, BreadcrumbConfig, StructuredDataConfig, HowToStep } from '../types/seo';
 
 const BASE_URL = 'https://easyfreeresume.com';
+const currentYearEnd = () => `${new Date().getFullYear()}-12-31`;
 
 /**
  * Generate SoftwareApplication schema
@@ -199,7 +200,7 @@ export function generateProductSchema(
       price: '0',
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
-      priceValidUntil: `${new Date().getFullYear()}-12-31`,
+      priceValidUntil: currentYearEnd(),
     },
   };
 }
@@ -223,8 +224,6 @@ export function generateComparisonSchema(
   productB: ComparisonProduct,
   dateModified?: string
 ): StructuredDataConfig {
-  const currentYearEnd = `${new Date().getFullYear()}-12-31`;
-
   const buildApp = (product: ComparisonProduct, position: number) => ({
     '@type': 'SoftwareApplication',
     position,
@@ -240,7 +239,7 @@ export function generateComparisonSchema(
       price: product.price,
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
-      priceValidUntil: currentYearEnd,
+      priceValidUntil: currentYearEnd(),
     },
   });
 
