@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.16.0] - 2026-02-05
+
+### 🚀 Features
+
+- **footer:** Add 'Why It's Free' link to Company section
+
+### 🐛 Bug Fixes
+
+- **ui:** Remove empty AnnouncementBar space for logged-in users
+- **footer:** Center copyright text and trust badges
+- **footer:** Center copyright text on all screen sizes
+
 ## [3.15.0] - 2026-02-04
 
 ### 🚀 Features
