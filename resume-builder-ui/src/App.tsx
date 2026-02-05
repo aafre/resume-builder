@@ -202,7 +202,7 @@ function AppContent() {
 
       {/* Main Content */}
       <main
-        className={`flex-grow overflow-x-hidden ${
+        className={`flex-grow ${
           isEditorPage ? "px-0" : "px-4 sm:px-6 md:px-8"
         }`}
       >
