@@ -99,7 +99,7 @@ export default function Footer() {
         <div className="pt-8 border-t border-gray-200/60">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
-            <div className="text-center md:text-left">
+            <div className="text-center">
               <p className="text-sm text-gray-600">
                 © {new Date().getFullYear()}{" "}
                 <span className="font-semibold">EasyFreeResume.com</span>
