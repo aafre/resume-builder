@@ -34,6 +34,7 @@ const footerLinks = {
   ],
   company: [
     { path: '/about', label: 'About Us' },
+    { path: '/blog/how-why-easyfreeresume-completely-free', label: 'Why It\'s Free' },
     { path: '/contact', label: 'Contact' },
     { path: '/privacy-policy', label: 'Privacy Policy' },
     { path: '/terms-of-service', label: 'Terms of Service' },
