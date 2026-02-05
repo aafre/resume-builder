@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { X } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
 import { MarkdownHint } from "./MarkdownLinkPreview";
 import { RichTextInput } from "./RichTextInput";
@@ -153,10 +154,12 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                             </div>
                             <button
                               onClick={() => handleRemoveItem(index)}
-                              className="text-red-600 hover:text-red-800 flex-shrink-0"
+                              className="text-red-600 hover:text-red-800 p-1 hover:bg-red-50 rounded transition-colors flex-shrink-0"
                               title="Remove Item"
+                              aria-label="Remove item"
+                              type="button"
                             >
-                              ✕
+                              <X className="w-4 h-4" />
                             </button>
                           </div>
                         </div>
@@ -213,10 +216,12 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                               </div>
                               <button
                                 onClick={() => handleRemoveItem(index)}
-                                className="text-red-500 hover:text-red-700 text-sm flex-shrink-0"
+                                className="text-red-500 hover:text-red-700 p-1 hover:bg-red-50 rounded transition-colors text-sm flex-shrink-0"
                                 title="Remove Item"
+                                aria-label="Remove item"
+                                type="button"
                               >
-                                ✕
+                                <X className="w-4 h-4" />
                               </button>
                             </div>
                           </div>
@@ -273,10 +278,12 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                               </div>
                               <button
                                 onClick={() => handleRemoveItem(index)}
-                                className="text-red-500 hover:text-red-700 text-sm flex-shrink-0"
+                                className="text-red-500 hover:text-red-700 p-1 hover:bg-red-50 rounded transition-colors text-sm flex-shrink-0"
                                 title="Remove Item"
+                                aria-label="Remove item"
+                                type="button"
                               >
-                                ✕
+                                <X className="w-4 h-4" />
                               </button>
                             </div>
                           </div>

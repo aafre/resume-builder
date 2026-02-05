@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { X } from "lucide-react";
 import IconManager from "./IconManager";
 import { SectionHeader } from "./SectionHeader";
 import { MarkdownHint } from "./MarkdownLinkPreview";
@@ -273,8 +274,10 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                                           }}
                                           className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
                                           title="Remove description point"
+                                          aria-label="Remove description point"
+                                          type="button"
                                         >
-                                          ✕
+                                          <X className="w-4 h-4" />
                                         </button>
                                       </div>
                                     </SortableItem>
