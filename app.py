@@ -1426,6 +1426,42 @@ def redirect_software_engineer_keywords():
     return redirect("/resume-keywords/software-engineer", code=301)
 
 
+@app.route("/editor")
+def redirect_editor():
+    """Redirect bare /editor (soft 404) to templates page"""
+    return redirect("/templates", code=301)
+
+
+@app.route("/blog/how-to-use-resume-keywords-to-beat-ats")
+def redirect_keywords_beat_ats():
+    """Redirect old blog URL to current version"""
+    return redirect("/blog/how-to-use-resume-keywords", code=301)
+
+
+@app.route("/blog/how-to-list-skills-on-resume")
+def redirect_list_skills_on_resume():
+    """Redirect old blog URL to current version"""
+    return redirect("/blog/how-to-list-skills", code=301)
+
+
+@app.route("/blog/career-change-resume")
+def redirect_career_change_resume():
+    """Redirect old blog URL to blog index (no equivalent exists)"""
+    return redirect("/blog", code=301)
+
+
+@app.route("/privacy")
+def redirect_privacy():
+    """Redirect old /privacy to canonical /privacy-policy"""
+    return redirect("/privacy-policy", code=301)
+
+
+@app.route("/terms")
+def redirect_terms():
+    """Redirect old /terms to canonical /terms-of-service"""
+    return redirect("/terms-of-service", code=301)
+
+
 # Valid SPA route prefixes — must match React Router routes in App.tsx
 VALID_SPA_ROUTES = {
     "",  # root
