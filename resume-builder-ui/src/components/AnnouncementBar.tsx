@@ -57,9 +57,9 @@ export default function AnnouncementBar() {
   };
 
   if (!shouldShow || !activeAnnouncement) {
-    // On the landing page, render an invisible placeholder with the same height
-    // to prevent CLS during hydration while async state (auth/preferences) resolves.
-    if (location.pathname === '/') {
+    // On the landing page, render an invisible placeholder ONLY while auth/preferences
+    // are still loading. Once resolved, return null to avoid empty space for logged-in users.
+    if (location.pathname === '/' && (authLoading || isLoading)) {
       return (
         <div style={{
           background: ANNOUNCEMENT_GRADIENT,
