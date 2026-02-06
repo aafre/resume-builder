@@ -26,6 +26,7 @@ interface SEOHeadProps {
   hreflangLinks?: HreflangLink[];
   ogLocale?: string;
   articleMeta?: ArticleMeta;
+  robots?: string;
 }
 
 const BASE_URL = 'https://easyfreeresume.com';
@@ -44,6 +45,7 @@ export default function SEOHead({
   hreflangLinks,
   ogLocale = "en_US",
   articleMeta,
+  robots = "index, follow",
 }: SEOHeadProps) {
   const finalOgTitle = ogTitle || title;
   const finalOgDescription = ogDescription || description;
@@ -61,7 +63,7 @@ export default function SEOHead({
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
-      <meta name="robots" content="index, follow" />
+      <meta name="robots" content={robots} />
       <meta name="author" content="EasyFreeResume" />
 
       {/* Canonical URL */}
