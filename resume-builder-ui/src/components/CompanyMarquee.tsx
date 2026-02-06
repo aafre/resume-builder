@@ -71,7 +71,6 @@ export default function CompanyMarquee({
               src={company.logo}
               alt={company.alt}
               className="max-w-28 max-h-10 object-contain transition-all duration-300 opacity-80 group-hover:opacity-100 group-hover:scale-105"
-              style={{ aspectRatio: '16/9' }}
               width="112"
               height="40"
               onError={(e) => {
