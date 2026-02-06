@@ -2,6 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- FOUC guard: hide body until external CSS loads and overrides opacity to 1 -->
+    <style>
+      body { opacity: 0 }
+      @keyframes fouc-reveal { to { opacity: 1 } }
+      body { animation: fouc-reveal 0s 5s forwards }
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name='impact-site-verification' value='9e4dbb7d-2722-4101-a53b-081932d0f330'>
 

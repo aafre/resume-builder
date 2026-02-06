@@ -224,6 +224,9 @@ body {
    overflow:visible — no scroll container is created, so flex-grow still works. */
 body {
   overflow-x: hidden;
+  opacity: 1;
+  animation: none;
+  transition: opacity 0.1s ease-out;
 }
 
 #root {
