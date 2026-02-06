@@ -1,5 +1,3 @@
-@import '@fontsource-variable/plus-jakarta-sans';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -171,6 +169,20 @@ details .faq-content > div {
   background-size: 3px 3px, 5px 5px;
 }
 
+/* Marquee animation for CompanyMarquee */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.hover\:animation-pause:hover {
+  animation-play-state: paused;
+}
+
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -300,7 +312,7 @@ footer {
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
   color: #374151 !important;
-  font-family: 'Plus Jakarta Sans Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   font-size: 14px !important;
   font-weight: 500 !important;
   margin-bottom: 12px !important;
