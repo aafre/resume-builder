@@ -1,8 +1,12 @@
-const SectionControls: React.FC<{
+import { ArrowUp, ArrowDown, Trash2 } from 'lucide-react';
+
+interface SectionControlsProps<T> {
   sectionIndex: number;
-  sections: any[];
-  setSections: (sections: any[]) => void;
-}> = ({ sectionIndex, sections, setSections }) => {
+  sections: T[];
+  setSections: (sections: T[]) => void;
+}
+
+const SectionControls = <T,>({ sectionIndex, sections, setSections }: SectionControlsProps<T>) => {
   const moveSection = (fromIndex: number, toIndex: number) => {
     const newSections = [...sections];
     const [removedSection] = newSections.splice(fromIndex, 1);
@@ -21,30 +25,36 @@ const SectionControls: React.FC<{
       <button
         onClick={() => moveSection(sectionIndex, sectionIndex - 1)}
         disabled={sectionIndex === 0}
-        className={`px-2 py-1 rounded ${
+        aria-label="Move section up"
+        title="Move section up"
+        className={`p-1.5 rounded focus-visible:ring-2 focus-visible:ring-offset-2 focus:outline-none focus-visible:ring-blue-500 transition-colors ${
           sectionIndex === 0
-            ? "bg-gray-300 cursor-not-allowed"
+            ? "bg-gray-300 cursor-not-allowed text-gray-500"
             : "bg-blue-500 hover:bg-blue-600 text-white"
         }`}
       >
-        ↑
+        <ArrowUp size={16} />
       </button>
       <button
         onClick={() => moveSection(sectionIndex, sectionIndex + 1)}
         disabled={sectionIndex === sections.length - 1}
-        className={`px-2 py-1 rounded ${
+        aria-label="Move section down"
+        title="Move section down"
+        className={`p-1.5 rounded focus-visible:ring-2 focus-visible:ring-offset-2 focus:outline-none focus-visible:ring-blue-500 transition-colors ${
           sectionIndex === sections.length - 1
-            ? "bg-gray-300 cursor-not-allowed"
+            ? "bg-gray-300 cursor-not-allowed text-gray-500"
             : "bg-blue-500 hover:bg-blue-600 text-white"
         }`}
       >
-        ↓
+        <ArrowDown size={16} />
       </button>
       <button
         onClick={deleteSection}
-        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+        aria-label="Delete section"
+        title="Delete section"
+        className="bg-red-500 hover:bg-red-600 text-white p-1.5 rounded focus-visible:ring-2 focus-visible:ring-offset-2 focus:outline-none focus-visible:ring-red-500 transition-colors"
       >
-        🗑
+        <Trash2 size={16} />
       </button>
     </div>
   );
