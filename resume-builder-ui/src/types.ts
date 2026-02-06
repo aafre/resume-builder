@@ -84,7 +84,9 @@ export interface ExperienceItem {
   title: string;
   dates: string;
   description: string[];
-  icon?: string;
+  icon?: string | null;
+  iconFile?: File | null;
+  iconBase64?: string | null;
 }
 
 // Education section.

@@ -19,6 +19,15 @@ export interface DeleteTarget {
   sectionName?: string;
 }
 
+/**
+ * Icon registry methods passed from parent Editor component
+ */
+export interface IconRegistryMethods {
+  registerIcon: (file: File) => string;
+  getIconFile: (filename: string) => File | null;
+  removeIcon: (filename: string) => void;
+}
+
 // --- Hook Return Type Interfaces ---
 
 /**
