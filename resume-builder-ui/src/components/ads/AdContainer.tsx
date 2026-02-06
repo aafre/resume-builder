@@ -129,21 +129,27 @@ export const AdContainer = ({
     };
   }, [rootMargin, enabled]);
 
-  // Push ad to AdSense when visible
+  // Push ad to AdSense when visible.
+  // The push is deferred with setTimeout so React StrictMode's
+  // mount→unmount→remount cycle cancels the first timer, preventing
+  // a duplicate push that would trigger an AdSense "already have ads" error.
   useEffect(() => {
     if (!isVisible || adPushed.current === adSlot || !enabled) return;
 
-    // Check if AdSense script is available
-    if (typeof window !== "undefined" && window.adsbygoogle) {
-      try {
-        window.adsbygoogle.push({});
-        adPushed.current = adSlot;
-        setAdLoaded(true);
-      } catch {
-        // AdSense push failed - likely ad blocker or script not loaded
-        console.debug("AdSense push failed - ad may be blocked");
+    const timerId = setTimeout(() => {
+      if (typeof window !== "undefined" && window.adsbygoogle) {
+        try {
+          window.adsbygoogle.push({});
+          adPushed.current = adSlot;
+          setAdLoaded(true);
+        } catch {
+          // AdSense push failed - likely ad blocker or script not loaded
+          console.debug("AdSense push failed - ad may be blocked");
+        }
       }
-    }
+    }, 0);
+
+    return () => clearTimeout(timerId);
   }, [isVisible, enabled, adSlot]);
 
   // Watch for AdSense setting data-ad-status="unfilled" on the <ins> element
