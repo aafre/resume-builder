@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.16.1] - 2026-02-06
+
+### 🐛 Bug Fixes
+
+- **seo:** Redirect /editor to /templates and add old URL redirects
+- **seo:** Use SoftwareApplication schema for comparisons, add priceValidUntil
+- **seo:** Remove redundant /editor/ rule from robots.txt
+- **seo:** Add server-side 301 redirects for old URLs and /editor
+- **ui:** Prevent mobile horizontal overflow from Google Auto Ads
+- **ui:** Prevent mobile horizontal overflow from Google Auto Ads
+- **ui:** Correct overflow-x containment to body-only
+
+### 🚜 Refactor
+
+- **seo:** Consolidate redirect routes and DRY up priceValidUntil
+- **ui:** Simplify adsbygoogle selector and add !important comment
+
 ## [3.16.0] - 2026-02-05
 
 ### 🚀 Features
