@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { MdDelete } from "react-icons/md";
 import { arrayMove } from "@dnd-kit/sortable";
 import { ExperienceItem as ExperienceItemType } from "../types";
