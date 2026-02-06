@@ -101,6 +101,14 @@ body {
   flex-direction: column;
 }
 
+/* Prevent horizontal overflow from Google Auto Ads injecting wide elements.
+   IMPORTANT: Only on body, NOT html. When html has overflow:visible (default),
+   body's overflow propagates to the viewport and body itself computes as
+   overflow:visible — no scroll container is created, so flex-grow still works. */
+body {
+  overflow-x: hidden;
+}
+
 #root {
   display: flex;
   flex-direction: column;
@@ -350,6 +358,13 @@ footer {
 .in-content-ad,
 .ad-container {
   contain: layout style;
+  max-width: 100%;
+}
+
+ins.adsbygoogle {
+  /* !important overrides inline styles injected by Google Ads scripts */
+  max-width: 100% !important;
+  overflow: hidden !important;
 }
 
 /* Force Google Funding Choices consent modal to overlay (prevents CLS) */

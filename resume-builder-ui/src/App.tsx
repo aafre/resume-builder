@@ -375,11 +375,7 @@ function AppContent() {
           />
           <Route
             path="/editor"
-            element={
-              <Suspense fallback={<EditorLoadingSkeleton />}>
-                <Editor />
-              </Suspense>
-            }
+            element={<Navigate to="/templates" replace />}
           />
           <Route
             path="/my-resumes"
@@ -537,16 +533,18 @@ function AppContent() {
               </Suspense>
             }
           />
-          {/* Client-side redirect fallback - server-side 301 handles actual redirect */}
-          <Route
-            path="/blog/software-engineer-resume-keywords"
-            element={<Navigate to="/resume-keywords/software-engineer" replace />}
-          />
-          {/* 301 redirect - consolidate to SEO landing page to fix keyword cannibalization */}
-          <Route
-            path="/blog/customer-service-resume-keywords"
-            element={<Navigate to="/resume-keywords/customer-service" replace />}
-          />
+          {/* Client-side redirect fallbacks — server-side 301s in app.py are primary */}
+          {[
+            { from: "/blog/software-engineer-resume-keywords", to: "/resume-keywords/software-engineer" },
+            { from: "/blog/customer-service-resume-keywords", to: "/resume-keywords/customer-service" },
+            { from: "/blog/how-to-use-resume-keywords-to-beat-ats", to: "/blog/how-to-use-resume-keywords" },
+            { from: "/blog/how-to-list-skills-on-resume", to: "/blog/how-to-list-skills" },
+            { from: "/blog/career-change-resume", to: "/blog" },
+            { from: "/privacy", to: "/privacy-policy" },
+            { from: "/terms", to: "/terms-of-service" },
+          ].map(({ from, to }) => (
+            <Route key={from} path={from} element={<Navigate to={to} replace />} />
+          ))}
           <Route
             path="/blog/how-why-easyfreeresume-completely-free"
             element={

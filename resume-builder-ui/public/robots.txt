@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /auth/
-Disallow: /editor/
+Disallow: /editor
 Disallow: /my-resumes
 Disallow: /error/
 

@@ -7,6 +7,7 @@
 import type { FAQConfig, BreadcrumbConfig, StructuredDataConfig, HowToStep } from '../types/seo';
 
 const BASE_URL = 'https://easyfreeresume.com';
+const currentYearEnd = () => `${new Date().getFullYear()}-12-31`;
 
 /**
  * Generate SoftwareApplication schema
@@ -199,6 +200,7 @@ export function generateProductSchema(
       price: '0',
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
+      priceValidUntil: currentYearEnd(),
     },
   };
 }
@@ -213,6 +215,8 @@ export interface ComparisonProduct {
 
 /**
  * Generate Comparison schema for competitor comparison pages
+ * Uses SoftwareApplication (not Product) to avoid triggering Merchant Listing
+ * validation — these are free software tools, not purchasable products.
  * Used for: vs competitor pages
  */
 export function generateComparisonSchema(
@@ -220,23 +224,22 @@ export function generateComparisonSchema(
   productB: ComparisonProduct,
   dateModified?: string
 ): StructuredDataConfig {
-  const buildProduct = (product: ComparisonProduct, position: number) => ({
-    '@type': 'Product',
+  const buildApp = (product: ComparisonProduct, position: number) => ({
+    '@type': 'SoftwareApplication',
     position,
     name: product.name,
     description: product.description,
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
     ...(product.image && {
       image: product.image.startsWith('http') ? product.image : `${BASE_URL}${product.image}`,
     }),
-    brand: {
-      '@type': 'Organization',
-      name: product.brand || product.name,
-    },
     offers: {
       '@type': 'Offer',
       price: product.price,
       priceCurrency: 'USD',
-      availability: 'https://schema.org/OnlineOnly',
+      availability: 'https://schema.org/InStock',
+      priceValidUntil: currentYearEnd(),
     },
   });
 
@@ -245,8 +248,8 @@ export function generateComparisonSchema(
     '@type': 'ItemList',
     ...(dateModified && { dateModified }),
     itemListElement: [
-      buildProduct(productA, 1),
-      buildProduct(productB, 2),
+      buildApp(productA, 1),
+      buildApp(productB, 2),
     ],
   };
 }
