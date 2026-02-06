@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
+import { HelmetProvider } from "react-helmet-async";
 import ErrorPage from "../components/ErrorPage";
 
 // Mock useNavigate from react-router-dom.
@@ -11,7 +12,7 @@ vi.mock("react-router-dom", () => ({
 
 describe("ErrorPage", () => {
   it("renders default message when no message prop is provided", () => {
-    render(<ErrorPage />);
+    render(<HelmetProvider><ErrorPage /></HelmetProvider>);
 
     // Verify the header is rendered.
     expect(screen.getByText("5XX")).toBeInTheDocument();
@@ -28,14 +29,14 @@ describe("ErrorPage", () => {
   });
 
   it("renders provided message when message prop is provided", () => {
-    render(<ErrorPage message="Custom error message" />);
+    render(<HelmetProvider><ErrorPage message="Custom error message" /></HelmetProvider>);
 
     // Verify that the custom message is rendered.
     expect(screen.getByText("Custom error message")).toBeInTheDocument();
   });
 
   it("calls navigate with '/' when the Go Back to Home button is clicked", () => {
-    render(<ErrorPage />);
+    render(<HelmetProvider><ErrorPage /></HelmetProvider>);
 
     const button = screen.getByRole("button", { name: /Go Home/i });
     fireEvent.click(button);
