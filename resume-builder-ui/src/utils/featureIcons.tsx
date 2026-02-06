@@ -103,7 +103,7 @@ export function FeatureIcon({ emoji, index }: { emoji: string; index: number }) 
   if (IconComponent) {
     return (
       <div
-        className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${theme.bg} shadow-sm flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 motion-reduce:group-hover:scale-100 motion-reduce:group-hover:rotate-0 transition-all duration-300`}
+        className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${theme.bg} shadow-sm flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}
       >
         <IconComponent className={`w-7 h-7 ${theme.icon}`} />
       </div>

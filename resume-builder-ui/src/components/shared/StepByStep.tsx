@@ -37,7 +37,7 @@ export default function StepByStep({
               )}
 
               {/* Step card */}
-              <div className="relative bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg hover:-translate-y-1 motion-reduce:hover:translate-y-0 transition-all duration-300">
+              <div className="relative bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-[transform,box-shadow] duration-300">
                 {/* Step number */}
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mb-4 mx-auto shadow-lg">
                   {step.number}

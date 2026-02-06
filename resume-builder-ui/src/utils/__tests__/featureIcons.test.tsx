@@ -47,11 +47,10 @@ describe('FeatureIcon', () => {
     expect(wrapper.className).toContain('from-blue-50');
   });
 
-  it('includes motion-reduce overrides on the icon container', () => {
+  it('uses transition-transform instead of transition-all', () => {
     const { container } = render(<FeatureIcon emoji="⚡" index={0} />);
     const wrapper = container.firstElementChild as HTMLElement;
-    expect(wrapper.className).toContain('motion-reduce:group-hover:scale-100');
-    expect(wrapper.className).toContain('motion-reduce:group-hover:rotate-0');
+    expect(wrapper.className).toContain('transition-transform');
   });
 
   it('includes hover transform classes', () => {

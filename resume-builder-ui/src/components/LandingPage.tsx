@@ -296,11 +296,11 @@ const LandingPage: React.FC = () => {
               {features.map((item, index) => (
                 <div
                   key={index}
-                  className="group p-8 bg-white/95 card-gradient-border rounded-3xl shadow-premium shadow-premium-hover transition-[transform,box-shadow] duration-500 transform hover:-translate-y-1"
+                  className="group p-8 bg-white/95 card-gradient-border rounded-3xl shadow-premium shadow-premium-hover transition-[transform,box-shadow] duration-500 hover:-translate-y-1"
                 >
                   <div>
                     <div className="flex items-center justify-center mb-6">
-                      <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 group-hover:from-blue-100/90 group-hover:to-purple-100/90 group-hover:scale-110 group-hover:rotate-3 motion-reduce:group-hover:scale-100 motion-reduce:group-hover:rotate-0 transition-all duration-300 shadow-md group-hover:shadow-lg">
+                      <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 group-hover:from-blue-100/90 group-hover:to-purple-100/90 group-hover:scale-110 group-hover:rotate-3 transition-[transform,box-shadow,background-color] duration-300 shadow-md group-hover:shadow-lg">
                         {item.icon}
                       </div>
                     </div>
