@@ -379,15 +379,15 @@ const LandingPage: React.FC = () => {
               </a>
 
               <a
-                href="/resume-keywords/customer-service"
+                href="/jobs"
                 className="bg-white/95 card-gradient-border rounded-2xl p-6 shadow-premium shadow-premium-hover transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
               >
-                <div className="flex justify-center mb-5"><FeatureIcon emoji="🎧" index={4} /></div>
+                <div className="flex justify-center mb-5"><FeatureIcon emoji="💼" index={4} /></div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                  Customer Service Keywords
+                  Job Search
                 </h3>
                 <p className="text-gray-600">
-                  Essential keywords for customer service roles including CRM platforms and soft skills.
+                  Search thousands of job openings across 19 countries with salary info and direct apply links.
                 </p>
               </a>
 
