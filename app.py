@@ -3936,17 +3936,69 @@ _adzuna_cache = {}
 _ADZUNA_CACHE_TTL = 900  # seconds
 
 
-@app.route("/api/jobs/search", methods=["GET"])
+@app.route("/api/jobs/search", methods=["GET", "POST"])
 def search_jobs():
     """
     Proxy endpoint for Adzuna job search API.
-    Hides API credentials from the browser and caches responses.
 
-    Query params:
-        query (required): Job title / keywords
-        location (optional): Location string
-        country (optional): Adzuna country code (default: us)
+    GET: Legacy passthrough (backward compat, no re-ranking)
+    POST: 3-tier search with scoring via JobMatchEngine
     """
+    if request.method == "POST":
+        return _search_jobs_post()
+    return _search_jobs_get()
+
+
+def _search_jobs_post():
+    """POST handler: 3-tier search with resume-context scoring."""
+    from job_engine import MatchContext, JobMatchEngine
+
+    body = request.get_json(silent=True) or {}
+    query = (body.get("query") or "").strip()
+    if not query:
+        return jsonify({"success": False, "error": "query is required"}), 400
+
+    country = (body.get("country") or "us").strip().lower()
+    if country not in ADZUNA_SUPPORTED_COUNTRIES:
+        country = "us"
+
+    app_id = os.getenv("ADZUNA_APP_ID")
+    app_key = os.getenv("ADZUNA_APP_KEY")
+    if not app_id or not app_key:
+        logging.warning("Adzuna API credentials not configured")
+        return jsonify({"success": False, "error": "Job search not configured"}), 502
+
+    sort_by = (body.get("sort_by") or "relevance").strip()
+    if sort_by not in ("relevance", "salary", "date"):
+        sort_by = "relevance"
+
+    context = MatchContext(
+        query=query,
+        location=(body.get("location") or "").strip(),
+        country=country,
+        category=(body.get("category") or "").strip().lower(),
+        skills=body.get("skills") or [],
+        seniority_level=(body.get("seniority_level") or "").strip(),
+        years_experience=int(body.get("years_experience") or 0),
+        salary_min=int(body.get("salary_min") or 0),
+        title_only=bool(body.get("title_only")),
+        max_days_old=int(body.get("max_days_old") or 0),
+        full_time=bool(body.get("full_time")),
+        permanent=bool(body.get("permanent")),
+        sort_by=sort_by,
+    )
+
+    try:
+        engine = JobMatchEngine(app_id, app_key, supabase=supabase)
+        data = engine.search_and_rank(context)
+        return jsonify({"success": True, "data": data})
+    except Exception as e:
+        logging.error(f"Job match engine error: {e}")
+        return jsonify({"success": False, "error": "Job search temporarily unavailable"}), 502
+
+
+def _search_jobs_get():
+    """GET handler: legacy passthrough (backward compat, no re-ranking)."""
     query = request.args.get("query", "").strip()
     if not query:
         return jsonify({"success": False, "error": "query parameter is required"}), 400
@@ -4041,6 +4093,82 @@ def search_jobs():
     except http_requests.RequestException as e:
         logging.error(f"Adzuna API error: {e}")
         return jsonify({"success": False, "error": "Job search temporarily unavailable"}), 502
+
+
+# ===== AI Role Suggestions =====
+
+_suggestion_cache: dict[str, tuple[dict, float]] = {}
+_SUGGESTION_CACHE_TTL = 900  # 15 minutes
+
+
+@app.route("/api/jobs/suggest-roles", methods=["POST"])
+def suggest_roles():
+    """
+    Suggest alternative job roles based on title, skills, and career history.
+    Calls the suggest-roles Supabase Edge Function with 15-min in-memory cache.
+    Gracefully returns the original title on any failure.
+    """
+    body = request.get_json(silent=True) or {}
+    title = (body.get("title") or "").strip()
+    if not title:
+        return jsonify({"success": True, "primary_role": "", "alternative_roles": [], "confidence": 0})
+
+    skills = body.get("skills") or []
+    experience_titles = body.get("experience_titles") or []
+
+    # Build cache key from all inputs (lowercase, sorted)
+    cache_key = json.dumps({
+        "title": title.lower(),
+        "skills": sorted(s.lower() for s in skills if isinstance(s, str)),
+        "experience_titles": [t.lower() for t in experience_titles if isinstance(t, str)],
+    }, sort_keys=True)
+
+    now = time.time()
+    cached = _suggestion_cache.get(cache_key)
+    if cached and (now - cached[1]) < _SUGGESTION_CACHE_TTL:
+        return jsonify({"success": True, **cached[0]})
+
+    fallback = {"primary_role": title, "alternative_roles": [], "confidence": 0}
+
+    if not supabase:
+        return jsonify({"success": True, **fallback})
+
+    try:
+        response = supabase.functions.invoke(
+            "suggest-roles",
+            invoke_options={"body": {
+                "title": title,
+                "skills": skills,
+                "experience_titles": experience_titles,
+            }},
+        )
+
+        # supabase-py returns bytes or str or dict
+        if isinstance(response, bytes):
+            data = json.loads(response.decode("utf-8"))
+        elif isinstance(response, str):
+            data = json.loads(response)
+        elif isinstance(response, dict):
+            data = response
+        else:
+            logging.warning(f"Unexpected suggest-roles response type: {type(response)}")
+            return jsonify({"success": True, **fallback})
+
+        if not data.get("success"):
+            logging.warning(f"suggest-roles returned error: {data.get('error')}")
+            return jsonify({"success": True, **fallback})
+
+        result = {
+            "primary_role": data.get("primary_role", title),
+            "alternative_roles": data.get("alternative_roles", []),
+            "confidence": data.get("confidence", 0),
+        }
+        _suggestion_cache[cache_key] = (result, now)
+        return jsonify({"success": True, **result})
+
+    except Exception as e:
+        logging.warning(f"suggest-roles call failed (graceful skip): {e}")
+        return jsonify({"success": True, **fallback})
 
 
 @app.errorhandler(404)

@@ -11,11 +11,19 @@ export interface AdzunaJob {
   salary_is_predicted: boolean;
   url: string;
   created: string;
+  match_score?: number;
 }
 
 export interface JobSearchResult {
   count: number;
   jobs: AdzunaJob[];
+  ai_terms_used?: string[];
+}
+
+export interface RoleSuggestion {
+  primary_role: string;
+  alternative_roles: string[];
+  confidence: number;
 }
 
 export interface JobSearchOptions {
@@ -23,8 +31,9 @@ export interface JobSearchOptions {
   location: string;
   country: string;
   category?: string | null;
-  page?: number;
   skills?: string[];
+  seniorityLevel?: string;
+  yearsExperience?: number;
   titleOnly?: boolean;
   maxDaysOld?: number;
   salaryMin?: number;
@@ -34,23 +43,32 @@ export interface JobSearchOptions {
 }
 
 /**
- * Search for jobs via the backend Adzuna proxy.
+ * Search for jobs via the backend 3-tier matching engine.
+ * Sends resume context as POST body for server-side scoring.
  * Throws on non-200 responses or network errors.
  */
 export async function searchJobs(opts: JobSearchOptions): Promise<JobSearchResult> {
-  const params = new URLSearchParams({ query: opts.query, country: opts.country });
-  if (opts.location) params.set('location', opts.location);
-  if (opts.category) params.set('category', opts.category);
-  if (opts.page && opts.page > 1) params.set('page', String(opts.page));
-  if (opts.skills && opts.skills.length > 0) params.set('what_or', opts.skills.join(' '));
-  if (opts.titleOnly) params.set('title_only', '1');
-  if (opts.maxDaysOld) params.set('max_days_old', String(opts.maxDaysOld));
-  if (opts.salaryMin) params.set('salary_min', String(opts.salaryMin));
-  if (opts.fullTime) params.set('full_time', '1');
-  if (opts.permanent) params.set('permanent', '1');
-  if (opts.sortBy && opts.sortBy !== 'relevance') params.set('sort_by', opts.sortBy);
+  const body: Record<string, unknown> = {
+    query: opts.query,
+    country: opts.country,
+  };
+  if (opts.location) body.location = opts.location;
+  if (opts.category) body.category = opts.category;
+  if (opts.skills && opts.skills.length > 0) body.skills = opts.skills;
+  if (opts.seniorityLevel) body.seniority_level = opts.seniorityLevel;
+  if (opts.yearsExperience) body.years_experience = opts.yearsExperience;
+  if (opts.titleOnly) body.title_only = true;
+  if (opts.maxDaysOld) body.max_days_old = opts.maxDaysOld;
+  if (opts.salaryMin) body.salary_min = opts.salaryMin;
+  if (opts.fullTime) body.full_time = true;
+  if (opts.permanent) body.permanent = true;
+  if (opts.sortBy && opts.sortBy !== 'relevance') body.sort_by = opts.sortBy;
 
-  const response = await fetch(`${API_BASE_URL}/jobs/search?${params}`);
+  const response = await fetch(`${API_BASE_URL}/jobs/search`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
   if (!response.ok) {
     throw new Error('Job search request failed');
   }
@@ -61,4 +79,38 @@ export async function searchJobs(opts: JobSearchOptions): Promise<JobSearchResul
   }
 
   return data.data;
+}
+
+/**
+ * Suggest alternative roles based on title, skills, and career history.
+ * Returns null on any failure (non-critical feature).
+ */
+export async function suggestRoles(
+  title: string,
+  skills: string[],
+  experienceTitles: string[],
+): Promise<RoleSuggestion | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/jobs/suggest-roles`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title,
+        skills,
+        experience_titles: experienceTitles,
+      }),
+    });
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    if (!data.success) return null;
+
+    return {
+      primary_role: data.primary_role,
+      alternative_roles: data.alternative_roles,
+      confidence: data.confidence,
+    };
+  } catch {
+    return null;
+  }
 }

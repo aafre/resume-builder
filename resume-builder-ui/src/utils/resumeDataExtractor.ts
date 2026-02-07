@@ -1,5 +1,6 @@
 // src/utils/resumeDataExtractor.ts
 
+import yaml from 'js-yaml';
 import { ContactInfo, Section, ExperienceItem } from '../types';
 import { isExperienceSection } from './sectionTypeChecker';
 import { detectCountryCode, sanitizeLocationForSearch } from './countryDetector';
@@ -142,4 +143,18 @@ export function extractSkills(sections: Section[]): string[] {
   }
 
   return skills;
+}
+
+/**
+ * Extracts job search params directly from a YAML string (e.g. from parse-resume).
+ * Lightweight: skips icon handling and validation — just extracts search-relevant data.
+ */
+export function extractSearchParamsFromYAML(yamlString: string): JobSearchParams | null {
+  try {
+    const parsed = yaml.load(yamlString) as { contact_info?: ContactInfo; sections?: Section[] };
+    if (!parsed?.sections) return null;
+    return extractJobSearchParams(parsed.contact_info || null, parsed.sections);
+  } catch {
+    return null;
+  }
 }

@@ -4,13 +4,18 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Briefcase, MapPin, Search, ExternalLink, ChevronDown, Clock, FileText, BookOpen, Target } from 'lucide-react';
-import { searchJobs, AdzunaJob } from '../services/jobs';
+import { Briefcase, MapPin, Search, ExternalLink, ChevronDown, Clock, FileText, BookOpen, Target, Upload, Sparkles, Info } from 'lucide-react';
+import { searchJobs, suggestRoles, AdzunaJob } from '../services/jobs';
+import type { RoleSuggestion } from '../services/jobs';
 import { normalizeJobTitle } from '../utils/jobTitleNormalizer';
 import { detectCountryCode, sanitizeLocationForSearch } from '../utils/countryDetector';
 import { formatSalary } from '../utils/currencyFormat';
 import { getSalaryFloor } from '../utils/salaryFloor';
+import { extractSearchParamsFromYAML } from '../utils/resumeDataExtractor';
 import type { SeniorityLevel } from '../utils/resumeDataExtractor';
+import { useResumeParser } from '../hooks/useResumeParser';
+import { useAuth } from '../contexts/AuthContext';
+import { isExperienceSection } from '../utils/sectionTypeChecker';
 import { SEO_PAGES } from '../config/seoPages';
 import { usePageSchema } from '../hooks/usePageSchema';
 import SEOPageLayout from './shared/SEOPageLayout';
@@ -82,14 +87,19 @@ export default function JobsPage() {
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(1);
-  const [loadingMore, setLoadingMore] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(10);
   const [searchedCountry, setSearchedCountry] = useState('us');
+  const [dragActive, setDragActive] = useState(false);
+  const [suggestions, setSuggestions] = useState<RoleSuggestion | null>(null);
+  const [resumeParsing, setResumeParsing] = useState(false);
+  const [aiTermsUsed, setAiTermsUsed] = useState<string[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
   const shouldAutoSearch = useRef(false);
   const prefillSkillsRef = useRef<string[]>([]);
   const prefillSeniorityRef = useRef<SeniorityLevel | null>(null);
-  const lastSearchParams = useRef<{ query: string; location: string; country: string; category?: string | null; skills?: string[] }>({ query: '', location: '', country: 'us' });
+  const prefillYearsExpRef = useRef<number>(0);
+  const { session } = useAuth();
+  const { parseResume, parsing: parserBusy, progress: parserProgress, progressMessage } = useResumeParser();
 
   const schemas = usePageSchema({
     type: 'website',
@@ -108,6 +118,7 @@ export default function JobsPage() {
         if (data.country) setCountry(data.country);
         if (Array.isArray(data.skills)) prefillSkillsRef.current = data.skills;
         if (data.seniorityLevel) prefillSeniorityRef.current = data.seniorityLevel;
+        if (data.yearsExperience) prefillYearsExpRef.current = data.yearsExperience;
         sessionStorage.removeItem('jobSearchPrefill');
         if (data.title) shouldAutoSearch.current = true;
       }
@@ -121,7 +132,9 @@ export default function JobsPage() {
     setLoading(true);
     setError(null);
     setHasSearched(true);
-    setPage(1);
+    setVisibleCount(10);
+    // Clear suggestions on manual search (keep for auto/resume-triggered)
+    if (e) setSuggestions(null);
 
     try {
       const { query, category } = normalizeJobTitle(titleInput.trim());
@@ -135,9 +148,10 @@ export default function JobsPage() {
       const isPrefilled = !e;
       const skills = isPrefilled ? prefillSkillsRef.current : [];
       const seniority = isPrefilled ? prefillSeniorityRef.current : null;
+      const yearsExp = isPrefilled ? prefillYearsExpRef.current : 0;
       prefillSkillsRef.current = [];
       prefillSeniorityRef.current = null;
-      lastSearchParams.current = { query: searchQuery, location: searchLocation, country: searchCountry, category, skills };
+      prefillYearsExpRef.current = 0;
 
       const result = await searchJobs({
         query: searchQuery,
@@ -145,6 +159,8 @@ export default function JobsPage() {
         country: searchCountry,
         category,
         skills: skills.length > 0 ? skills : undefined,
+        seniorityLevel: seniority || undefined,
+        yearsExperience: yearsExp || undefined,
         titleOnly: true,
         maxDaysOld: 30,
         salaryMin: seniority ? getSalaryFloor(searchCountry, seniority) : undefined,
@@ -152,6 +168,7 @@ export default function JobsPage() {
       setJobs(result.jobs);
       setTotalCount(result.count);
       setSearchedCountry(searchCountry);
+      setAiTermsUsed(result.ai_terms_used || []);
     } catch {
       setError('Unable to fetch jobs. Please try again.');
       setJobs([]);
@@ -161,20 +178,9 @@ export default function JobsPage() {
     }
   }, [titleInput, locationInput, country]);
 
-  const handleLoadMore = useCallback(async () => {
-    const nextPage = page + 1;
-    setLoadingMore(true);
-    try {
-      const { query, location, country: c, category, skills } = lastSearchParams.current;
-      const result = await searchJobs({ query, location, country: c, category, page: nextPage, skills: skills && skills.length > 0 ? skills : undefined, titleOnly: true, maxDaysOld: 30 });
-      setJobs(prev => [...prev, ...result.jobs]);
-      setPage(nextPage);
-    } catch {
-      // silently fail load more
-    } finally {
-      setLoadingMore(false);
-    }
-  }, [page]);
+  const handleLoadMore = useCallback(() => {
+    setVisibleCount(prev => prev + 10);
+  }, []);
 
   // Auto-search when pre-filled from editor
   useEffect(() => {
@@ -186,11 +192,115 @@ export default function JobsPage() {
 
   const handlePillClick = (title: string) => {
     setTitleInput(title);
+    setSuggestions(null);
     // Trigger search on next tick after state update
     setTimeout(() => {
       formRef.current?.requestSubmit();
     }, 0);
   };
+
+  const handleDrag = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
+
+  const handleDragIn = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
+      setDragActive(true);
+    }
+  }, []);
+
+  const handleDragOut = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // Only deactivate if leaving the form (not entering a child)
+    const rect = formRef.current?.getBoundingClientRect();
+    if (rect) {
+      const { clientX: x, clientY: y } = e;
+      if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
+        setDragActive(false);
+      }
+    }
+  }, []);
+
+  const handleResumeDrop = useCallback(async (file: File) => {
+    setDragActive(false);
+    setSuggestions(null);
+    setError(null);
+
+    // Validate file type
+    const allowedTypes = [
+      'application/pdf',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ];
+    if (!allowedTypes.includes(file.type)) {
+      setError('Please drop a PDF or DOCX file.');
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setError('File too large (max 10MB).');
+      return;
+    }
+
+    if (!session) {
+      setError('Please sign in to upload a resume.');
+      return;
+    }
+
+    setResumeParsing(true);
+    try {
+      const result = await parseResume(file);
+      const params = extractSearchParamsFromYAML(result.yaml);
+      if (!params) {
+        setError('Could not extract job details from your resume. Try searching manually.');
+        return;
+      }
+
+      // Populate form fields
+      setTitleInput(params.displayTitle || params.query);
+      if (params.location) setLocationInput(params.location);
+      if (params.country) setCountry(params.country);
+
+      // Store skills/seniority for the auto-search
+      prefillSkillsRef.current = params.skills;
+      prefillSeniorityRef.current = params.seniorityLevel;
+      prefillYearsExpRef.current = params.yearsExperience;
+      shouldAutoSearch.current = true;
+
+      // Extract experience titles for role suggestions (in background)
+      try {
+        const parsed = (await import('js-yaml')).default.load(result.yaml) as { sections?: Array<{ type?: string; content?: Array<{ title?: string }> }> };
+        const expSection = parsed?.sections?.find((s) => isExperienceSection(s as never));
+        const expTitles = (expSection?.content || [])
+          .map((item) => item.title?.trim())
+          .filter(Boolean) as string[];
+
+        suggestRoles(params.query, params.skills, expTitles).then((s) => {
+          if (s && s.alternative_roles.length > 0) setSuggestions(s);
+        });
+      } catch {
+        // Non-critical — suggestions are optional
+      }
+    } catch (err) {
+      if (!error) {
+        setError(err instanceof Error ? err.message : 'Failed to parse resume.');
+      }
+    } finally {
+      setResumeParsing(false);
+    }
+  }, [session, parseResume, error]);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleResumeDrop(e.dataTransfer.files[0]);
+      e.dataTransfer.clearData();
+    }
+  }, [handleResumeDrop]);
 
   const dynamicTitle = hasSearched && titleInput.trim()
     ? `${titleInput.trim()} Jobs${locationInput.trim() ? ` in ${locationInput.trim()}` : ''} | EasyFreeResume`
@@ -224,61 +334,94 @@ export default function JobsPage() {
         <form
           ref={formRef}
           onSubmit={handleSearch}
-          className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6 mb-8"
+          onDragEnter={handleDragIn}
+          onDragOver={handleDrag}
+          onDragLeave={handleDragOut}
+          onDrop={handleDrop}
+          className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6 mb-8 relative"
         >
-          <div className="flex flex-col sm:flex-row gap-3">
-            {/* Job Title */}
-            <div className="flex-1 relative">
-              <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                value={titleInput}
-                onChange={(e) => setTitleInput(e.target.value)}
-                placeholder="Job title (e.g. Software Engineer)"
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              />
+          {/* Drag overlay */}
+          {dragActive && (
+            <div className="absolute inset-0 bg-indigo-50/90 border-2 border-dashed border-indigo-400 rounded-2xl z-10 flex flex-col items-center justify-center gap-2 pointer-events-none">
+              <Upload className="w-8 h-8 text-indigo-500" />
+              <p className="text-indigo-700 font-semibold text-sm">Drop your resume here (PDF or DOCX)</p>
             </div>
+          )}
 
-            {/* Location */}
-            <div className="flex-1 relative">
-              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                value={locationInput}
-                onChange={(e) => setLocationInput(e.target.value)}
-                placeholder="City or region (optional)"
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              />
+          {/* Parsing progress */}
+          {(resumeParsing || parserBusy) ? (
+            <div className="py-6 flex flex-col items-center gap-3">
+              <div className="w-full max-w-xs bg-gray-200 rounded-full h-2 overflow-hidden">
+                <div
+                  className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${parserProgress}%` }}
+                />
+              </div>
+              <p className="text-sm text-gray-600">{progressMessage || 'Analyzing your resume...'}</p>
             </div>
+          ) : (
+            <>
+              <div className="flex flex-col sm:flex-row gap-3">
+                {/* Job Title */}
+                <div className="flex-1 relative">
+                  <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    value={titleInput}
+                    onChange={(e) => setTitleInput(e.target.value)}
+                    placeholder="Job title (e.g. Software Engineer)"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  />
+                </div>
 
-            {/* Country */}
-            <div className="relative sm:w-44">
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-              <select
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                className="w-full appearance-none pl-4 pr-10 py-3 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              >
-                {ADZUNA_COUNTRIES.map((c) => (
-                  <option key={c.code} value={c.code}>{c.label}</option>
-                ))}
-              </select>
-            </div>
+                {/* Location */}
+                <div className="flex-1 relative">
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    value={locationInput}
+                    onChange={(e) => setLocationInput(e.target.value)}
+                    placeholder="City or region (optional)"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  />
+                </div>
 
-            {/* Search Button */}
-            <button
-              type="submit"
-              disabled={loading || !titleInput.trim()}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold text-sm hover:from-indigo-500 hover:to-purple-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
-            >
-              {loading ? (
-                <div className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
-              ) : (
-                <Search className="w-4 h-4" />
-              )}
-              <span>{loading ? 'Searching...' : 'Search'}</span>
-            </button>
-          </div>
+                {/* Country */}
+                <div className="relative sm:w-44">
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                  <select
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    className="w-full appearance-none pl-4 pr-10 py-3 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  >
+                    {ADZUNA_COUNTRIES.map((c) => (
+                      <option key={c.code} value={c.code}>{c.label}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Search Button */}
+                <button
+                  type="submit"
+                  disabled={loading || !titleInput.trim()}
+                  className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold text-sm hover:from-indigo-500 hover:to-purple-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+                >
+                  {loading ? (
+                    <div className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                  ) : (
+                    <Search className="w-4 h-4" />
+                  )}
+                  <span>{loading ? 'Searching...' : 'Search'}</span>
+                </button>
+              </div>
+
+              {/* Drop hint */}
+              <p className="text-xs text-gray-400 text-center mt-2 flex items-center justify-center gap-1">
+                <Upload className="w-3 h-3" />
+                Or drag &amp; drop your resume (PDF/DOCX) for an instant personalized search
+              </p>
+            </>
+          )}
         </form>
 
         {/* Error */}
@@ -288,15 +431,50 @@ export default function JobsPage() {
           </div>
         )}
 
+        {/* Role Suggestions */}
+        {suggestions && suggestions.alternative_roles.length > 0 && !loading && (
+          <div className="mb-6 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles className="w-4 h-4 text-indigo-500" />
+              <h3 className="text-sm font-semibold text-gray-900">Consider these related roles</h3>
+            </div>
+            <p className="text-xs text-gray-500 mb-3">Based on your resume skills and experience</p>
+            <div className="flex flex-wrap gap-2">
+              {suggestions.alternative_roles.map((role) => (
+                <button
+                  key={role}
+                  onClick={() => handlePillClick(role)}
+                  className="px-3 py-1.5 bg-white border border-indigo-200 text-indigo-700 text-sm font-medium rounded-full hover:bg-indigo-100 hover:border-indigo-300 transition-colors shadow-sm"
+                >
+                  {role}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Results Count */}
         {hasSearched && !loading && !error && jobs.length > 0 && (
-          <div className="flex items-baseline gap-2 mb-6">
+          <div className="flex items-baseline gap-2 mb-4">
             <h2 className="text-lg font-bold text-gray-900">
               {totalCount.toLocaleString()} jobs found
             </h2>
             <span className="text-sm text-gray-500">
               for &ldquo;{titleInput}&rdquo;{locationInput ? ` in ${locationInput}` : ''}
             </span>
+          </div>
+        )}
+
+        {/* Tier 3 AI Transparency */}
+        {hasSearched && !loading && aiTermsUsed.length > 0 && (
+          <div className="flex items-center gap-2 mb-6 text-xs text-gray-500">
+            <Info className="w-3.5 h-3.5 flex-shrink-0" />
+            <span>Also searched for:</span>
+            {aiTermsUsed.map((term) => (
+              <span key={term} className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full font-medium">
+                {term}
+              </span>
+            ))}
           </div>
         )}
 
@@ -324,7 +502,7 @@ export default function JobsPage() {
         {!loading && jobs.length > 0 && (
           <>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {jobs.map((job, i) => {
+              {jobs.slice(0, visibleCount).map((job, i) => {
                 const salary = formatSalary(job.salary_min, job.salary_max, searchedCountry);
                 const posted = timeAgo(job.created);
                 const initial = (job.company || job.title || '?')[0].toUpperCase();
@@ -359,6 +537,17 @@ export default function JobsPage() {
                         {[job.company, job.location].filter(Boolean).join(' · ')}
                       </p>
                       <div className="flex items-center gap-2 flex-wrap mb-3">
+                        {job.match_score != null && (
+                          <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
+                            job.match_score >= 70
+                              ? 'bg-emerald-50 text-emerald-700'
+                              : job.match_score >= 40
+                                ? 'bg-amber-50 text-amber-600'
+                                : 'bg-gray-100 text-gray-500'
+                          }`}>
+                            {Math.round(job.match_score)}% match
+                          </span>
+                        )}
                         {salary && (
                           <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
                             job.salary_is_predicted
@@ -388,19 +577,14 @@ export default function JobsPage() {
             </div>
 
             {/* Load More */}
-            {jobs.length < totalCount && page < 5 && (
+            {visibleCount < jobs.length && (
               <div className="text-center mt-6">
                 <button
                   onClick={handleLoadMore}
-                  disabled={loadingMore}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all disabled:opacity-50"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all"
                 >
-                  {loadingMore ? (
-                    <div className="w-4 h-4 rounded-full border-2 border-gray-400 border-t-transparent animate-spin" />
-                  ) : (
-                    <Search className="w-4 h-4" />
-                  )}
-                  {loadingMore ? 'Loading...' : 'Load more jobs'}
+                  <Search className="w-4 h-4" />
+                  Load more jobs ({jobs.length - visibleCount} remaining)
                 </button>
               </div>
             )}
