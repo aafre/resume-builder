@@ -88,6 +88,9 @@ The YAML resume format supports these section types:
 - `POST /api/generate` - Generate PDF from YAML + icons
 - `GET /api/template/{id}/download` - Download template YAML
 
+### Job Search Engine
+The job search uses a 3-tier progressive broadening strategy (Tier 1: primary query → Tier 2: synonym expansion → Tier 3: AI fallback) with 0-100 scoring against the user's resume. Skill queries (e.g. "python") are auto-detected and broadened to search descriptions. See **[docs/features/JOB_SEARCH_FLOW.md](docs/features/JOB_SEARCH_FLOW.md)** for the full flowchart and scoring breakdown.
+
 ### File Structure Notes
 - app.py is the Flask app that serves the React frontend and handles API requests
 - Templates use Jinja2 with custom functions like calculate_columns() for dynamic layouts
