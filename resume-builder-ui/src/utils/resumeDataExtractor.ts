@@ -11,6 +11,7 @@ export interface JobSearchParams {
   location: string;        // From contactInfo.location
   country: string;         // Detected Adzuna country code
   category: string | null; // Adzuna category tag
+  skills: string[];        // Extracted from skills sections for what_or
 }
 
 /**
@@ -40,5 +41,34 @@ export function extractJobSearchParams(
   const country = detectCountryCode(location);
   const searchLocation = sanitizeLocationForSearch(location);
 
-  return { query, displayTitle: rawTitle, location: searchLocation, country, category };
+  const skills = extractSkills(sections);
+
+  return { query, displayTitle: rawTitle, location: searchLocation, country, category, skills };
+}
+
+const SKILL_SECTION_TYPES = new Set(['inline-list', 'dynamic-column-list']);
+const MAX_SKILLS = 10;
+
+/**
+ * Extracts skill keywords from inline-list and dynamic-column-list sections.
+ * Returns up to MAX_SKILLS non-empty string items.
+ */
+export function extractSkills(sections: Section[]): string[] {
+  const skills: string[] = [];
+
+  for (const section of sections) {
+    if (!SKILL_SECTION_TYPES.has(section.type ?? '')) continue;
+
+    const items = section.content;
+    if (!Array.isArray(items)) continue;
+
+    for (const item of items) {
+      if (typeof item === 'string' && item.trim()) {
+        skills.push(item.trim());
+        if (skills.length >= MAX_SKILLS) return skills;
+      }
+    }
+  }
+
+  return skills;
 }

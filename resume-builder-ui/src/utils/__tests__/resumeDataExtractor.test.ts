@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { extractJobSearchParams } from '../resumeDataExtractor';
+import { extractJobSearchParams, extractSkills } from '../resumeDataExtractor';
 import type { ContactInfo, Section } from '../../types';
 
 const makeContact = (location: string): ContactInfo => ({
@@ -33,6 +33,7 @@ describe('extractJobSearchParams', () => {
       location: 'New York, NY',
       country: 'us',
       category: 'it-jobs',
+      skills: [],
     });
   });
 
@@ -48,6 +49,7 @@ describe('extractJobSearchParams', () => {
       location: 'London',
       country: 'gb',
       category: null,
+      skills: [],
     });
   });
 
@@ -90,6 +92,7 @@ describe('extractJobSearchParams', () => {
       location: '',
       country: 'us',
       category: 'it-jobs',
+      skills: [],
     });
   });
 
@@ -117,6 +120,7 @@ describe('extractJobSearchParams', () => {
       location: 'Paris',
       country: 'fr',
       category: 'creative-design-jobs',
+      skills: [],
     });
   });
 
@@ -135,6 +139,75 @@ describe('extractJobSearchParams', () => {
       location: 'Berlin',
       country: 'de',
       category: 'engineering-jobs',
+      skills: [],
     });
+  });
+});
+
+describe('extractSkills', () => {
+  it('extracts from inline-list sections', () => {
+    const sections = [
+      { name: 'Technical Skills', type: 'inline-list' as const, content: ['Python', 'React', 'AWS'] },
+    ];
+    expect(extractSkills(sections as any)).toEqual(['Python', 'React', 'AWS']);
+  });
+
+  it('extracts from dynamic-column-list sections', () => {
+    const sections = [
+      { name: 'Key Skills', type: 'dynamic-column-list' as const, content: ['Docker', 'Kubernetes', 'CI/CD'] },
+    ];
+    expect(extractSkills(sections as any)).toEqual(['Docker', 'Kubernetes', 'CI/CD']);
+  });
+
+  it('combines items from multiple skill sections', () => {
+    const sections = [
+      { name: 'Languages', type: 'inline-list' as const, content: ['Python', 'Go'] },
+      { name: 'Cloud', type: 'dynamic-column-list' as const, content: ['AWS', 'GCP'] },
+    ];
+    expect(extractSkills(sections as any)).toEqual(['Python', 'Go', 'AWS', 'GCP']);
+  });
+
+  it('caps at 10 items', () => {
+    const sections = [
+      {
+        name: 'Skills',
+        type: 'inline-list' as const,
+        content: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
+      },
+    ];
+    expect(extractSkills(sections as any)).toHaveLength(10);
+    expect(extractSkills(sections as any)).toEqual(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']);
+  });
+
+  it('filters out empty items', () => {
+    const sections = [
+      { name: 'Skills', type: 'inline-list' as const, content: ['Python', '', '  ', 'React'] },
+    ];
+    expect(extractSkills(sections as any)).toEqual(['Python', 'React']);
+  });
+
+  it('ignores bulleted-list sections', () => {
+    const sections = [
+      { name: 'Achievements', type: 'bulleted-list' as const, content: ['Led team of 5', 'Shipped product'] },
+    ];
+    expect(extractSkills(sections as any)).toEqual([]);
+  });
+
+  it('returns empty array when no skill sections exist', () => {
+    const sections = [
+      { name: 'Experience', type: 'experience' as const, content: [{ company: 'Co', title: 'Dev', dates: '2024', description: [] }] },
+    ];
+    expect(extractSkills(sections as any)).toEqual([]);
+  });
+
+  it('includes skills in extractJobSearchParams result', () => {
+    const result = extractJobSearchParams(
+      makeContact('New York, NY'),
+      [
+        makeExperienceSection(['Software Engineer']),
+        { name: 'Skills', type: 'inline-list' as const, content: ['TypeScript', 'Node.js'] } as any,
+      ],
+    );
+    expect(result?.skills).toEqual(['TypeScript', 'Node.js']);
   });
 });
