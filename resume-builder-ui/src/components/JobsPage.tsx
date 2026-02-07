@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Briefcase, MapPin, Search, ExternalLink, ChevronDown, Clock, FileText, BookOpen, Target } from 'lucide-react';
 import { searchJobs, AdzunaJob } from '../services/jobs';
 import { normalizeJobTitle } from '../utils/jobTitleNormalizer';
@@ -175,8 +176,17 @@ export default function JobsPage() {
     }, 0);
   };
 
+  const dynamicTitle = hasSearched && titleInput.trim()
+    ? `${titleInput.trim()} Jobs${locationInput.trim() ? ` in ${locationInput.trim()}` : ''} | EasyFreeResume`
+    : null;
+
   return (
     <SEOPageLayout seoConfig={jobsConfig.seo} schemas={schemas}>
+      {dynamicTitle && (
+        <Helmet>
+          <title>{dynamicTitle}</title>
+        </Helmet>
+      )}
       <BreadcrumbsWithSchema breadcrumbs={jobsConfig.breadcrumbs!} />
 
       <div className="max-w-5xl mx-auto">
