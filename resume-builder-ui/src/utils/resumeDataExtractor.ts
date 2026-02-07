@@ -2,12 +2,15 @@
 
 import { ContactInfo, Section, ExperienceItem } from '../types';
 import { isExperienceSection } from './sectionTypeChecker';
-import { detectCountryCode } from './countryDetector';
+import { detectCountryCode, sanitizeLocationForSearch } from './countryDetector';
+import { normalizeJobTitle } from './jobTitleNormalizer';
 
 export interface JobSearchParams {
-  query: string;      // Most recent job title
-  location: string;   // From contactInfo.location
-  country: string;    // Detected Adzuna country code
+  query: string;           // Normalized title for API
+  displayTitle: string;    // Original title for UI display
+  location: string;        // From contactInfo.location
+  country: string;         // Detected Adzuna country code
+  category: string | null; // Adzuna category tag
 }
 
 /**
@@ -28,10 +31,14 @@ export function extractJobSearchParams(
   if (!items || items.length === 0) return null;
 
   // First item is most recent job
-  const query = items[0].title?.trim();
+  const rawTitle = items[0].title?.trim();
+  if (!rawTitle) return null;
+
+  const { query, category } = normalizeJobTitle(rawTitle);
   if (!query) return null;
 
   const country = detectCountryCode(location);
+  const searchLocation = sanitizeLocationForSearch(location);
 
-  return { query, location, country };
+  return { query, displayTitle: rawTitle, location: searchLocation, country, category };
 }

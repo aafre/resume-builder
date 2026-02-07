@@ -25,9 +25,11 @@ export async function searchJobs(
   query: string,
   location: string,
   country: string,
+  category?: string | null,
 ): Promise<JobSearchResult> {
   const params = new URLSearchParams({ query, country });
   if (location) params.set('location', location);
+  if (category) params.set('category', category);
 
   const response = await fetch(`${API_BASE_URL}/jobs/search?${params}`);
   if (!response.ok) {

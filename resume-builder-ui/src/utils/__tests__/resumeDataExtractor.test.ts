@@ -29,8 +29,10 @@ describe('extractJobSearchParams', () => {
 
     expect(result).toEqual({
       query: 'Software Engineer',
+      displayTitle: 'Software Engineer',
       location: 'New York, NY',
       country: 'us',
+      category: 'it-jobs',
     });
   });
 
@@ -42,8 +44,10 @@ describe('extractJobSearchParams', () => {
 
     expect(result).toEqual({
       query: 'Product Manager',
-      location: 'London, UK',
+      displayTitle: 'Product Manager',
+      location: 'London',
       country: 'gb',
+      category: null,
     });
   });
 
@@ -82,8 +86,10 @@ describe('extractJobSearchParams', () => {
 
     expect(result).toEqual({
       query: 'Software Engineer',
+      displayTitle: 'Software Engineer',
       location: '',
       country: 'us',
+      category: 'it-jobs',
     });
   });
 
@@ -107,8 +113,10 @@ describe('extractJobSearchParams', () => {
 
     expect(result).toEqual({
       query: 'Designer',
-      location: 'Paris, France',
+      displayTitle: 'Designer',
+      location: 'Paris',
       country: 'fr',
+      category: 'creative-design-jobs',
     });
   });
 
@@ -123,8 +131,10 @@ describe('extractJobSearchParams', () => {
 
     expect(result).toEqual({
       query: 'Senior Engineer',
+      displayTitle: 'Senior Engineer',
       location: 'Berlin',
       country: 'de',
+      category: 'engineering-jobs',
     });
   });
 });

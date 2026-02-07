@@ -49,6 +49,17 @@ const CITY_TO_COUNTRY: Record<string, string> = {
   'birmingham': 'gb',
   'edinburgh': 'gb',
   'glasgow': 'gb',
+  'brighton': 'gb',
+  'bristol': 'gb',
+  'leeds': 'gb',
+  'liverpool': 'gb',
+  'cambridge': 'gb',
+  'oxford': 'gb',
+  'cardiff': 'gb',
+  'belfast': 'gb',
+  'nottingham': 'gb',
+  'sheffield': 'gb',
+  'newcastle': 'gb',
   'toronto': 'ca',
   'vancouver': 'ca',
   'montreal': 'ca',
@@ -63,6 +74,9 @@ const CITY_TO_COUNTRY: Record<string, string> = {
   'chennai': 'in',
   'pune': 'in',
   'kolkata': 'in',
+  'gurugram': 'in',
+  'gurgaon': 'in',
+  'noida': 'in',
   'sydney': 'au',
   'melbourne': 'au',
   'brisbane': 'au',
@@ -123,6 +137,9 @@ export function detectCountryCode(location: string): string {
     if (US_STATES.has(secondLast)) return 'us';
   }
 
+  // 3b. Check for UK postcode pattern (e.g. "BN1 9JA", "SW1A 1AA", "EC2R 8AH")
+  if (/\b[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}\b/i.test(location)) return 'gb';
+
   // 4. Check for well-known city names (try multi-word first, then single word)
   // Try the full string and substrings for multi-word cities
   for (const [city, code] of Object.entries(CITY_TO_COUNTRY)) {
@@ -131,4 +148,40 @@ export function detectCountryCode(location: string): string {
 
   // 5. Default
   return 'us';
+}
+
+/**
+ * Strips country names / abbreviations from a location string so
+ * that Adzuna's `where` param gets only the city/region/postcode.
+ * The country is already conveyed via the URL path (e.g. /jobs/gb/search).
+ *
+ * "London, UK"            → "London"
+ * "Mumbai, India"         → "Mumbai"
+ * "New York, NY, USA"     → "New York, NY"
+ * "Brighton, BN1 9JA"     → "Brighton, BN1 9JA" (no country to strip)
+ */
+export function sanitizeLocationForSearch(location: string): string {
+  if (!location || !location.trim()) return '';
+
+  let result = location.trim();
+
+  // Strip trailing country abbreviation (", UK" / ", US" / ", USA")
+  for (const abbr of Object.keys(ABBREVIATIONS)) {
+    const re = new RegExp(`[,\\s]+${abbr}\\s*$`, 'i');
+    if (re.test(result)) {
+      result = result.replace(re, '').trim();
+      return result;
+    }
+  }
+
+  // Strip trailing country name (", United Kingdom" / ", India" etc.)
+  for (const name of Object.keys(COUNTRY_NAMES)) {
+    const re = new RegExp(`[,\\s]+${name}\\s*$`, 'i');
+    if (re.test(result)) {
+      result = result.replace(re, '').trim();
+      return result;
+    }
+  }
+
+  return result;
 }

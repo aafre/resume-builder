@@ -107,7 +107,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
     setJobSearchParams(params);
     setJobsLoading(true);
-    searchJobs(params.query, params.location, params.country)
+    searchJobs(params.query, params.location, params.country, params.category)
       .then((result) => setJobs(result.jobs))
       .catch(() => {
         // Silently fail — hide section on error
@@ -287,7 +287,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                   {/* Section header */}
                   {jobSearchParams && (
                     <p className="text-xs font-medium text-gray-500 mb-2">
-                      Jobs matching &ldquo;{jobSearchParams.query}&rdquo;
+                      Jobs matching &ldquo;{jobSearchParams.displayTitle}&rdquo;
                       {jobSearchParams.location && ` near ${jobSearchParams.location}`}
                     </p>
                   )}
