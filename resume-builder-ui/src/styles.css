@@ -463,6 +463,16 @@ footer {
   }
 }
 
+/* Slide-down animation for mobile notification banner */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 /* Custom scrollbar for sidebar */
 .scrollbar-thin {
   scrollbar-width: thin;
