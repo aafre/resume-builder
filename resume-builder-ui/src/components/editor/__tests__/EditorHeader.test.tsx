@@ -1,5 +1,5 @@
 // src/components/editor/__tests__/EditorHeader.test.tsx
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { EditorHeader, EditorHeaderProps } from '../EditorHeader';
 
@@ -7,13 +7,22 @@ describe('EditorHeader', () => {
   const defaultProps: EditorHeaderProps = {
     showIdleTooltip: false,
     onDismissIdleTooltip: vi.fn(),
-    saveStatus: 'saved',
-    lastSaved: new Date(),
     isAuthenticated: true,
+    contactInfo: null,
+    sections: [],
   };
 
   beforeEach(() => {
     vi.clearAllMocks();
+    // Create portal target for job badge
+    const slot = document.createElement('div');
+    slot.id = 'header-job-badge-slot';
+    document.body.appendChild(slot);
+  });
+
+  afterEach(() => {
+    const slot = document.getElementById('header-job-badge-slot');
+    if (slot) slot.remove();
   });
 
   describe('Idle Tooltip', () => {
@@ -57,71 +66,6 @@ describe('EditorHeader', () => {
     });
   });
 
-  describe('Save Status Indicator', () => {
-    it('should show save status for authenticated users', () => {
-      render(
-        <EditorHeader
-          {...defaultProps}
-          isAuthenticated={true}
-          saveStatus="saved"
-        />
-      );
-
-      // SaveStatusIndicator shows "Saved" text
-      expect(screen.getByText(/Saved/)).toBeInTheDocument();
-    });
-
-    it('should show saving status', () => {
-      render(
-        <EditorHeader
-          {...defaultProps}
-          isAuthenticated={true}
-          saveStatus="saving"
-        />
-      );
-
-      expect(screen.getByText('Saving...')).toBeInTheDocument();
-    });
-
-    it('should show error status', () => {
-      render(
-        <EditorHeader
-          {...defaultProps}
-          isAuthenticated={true}
-          saveStatus="error"
-        />
-      );
-
-      expect(screen.getByText('Save failed')).toBeInTheDocument();
-    });
-
-    it('should not show save status for unauthenticated users', () => {
-      render(
-        <EditorHeader
-          {...defaultProps}
-          isAuthenticated={false}
-          saveStatus="saved"
-        />
-      );
-
-      expect(screen.queryByText(/Saved/)).not.toBeInTheDocument();
-    });
-
-    it('should not show save status when status is idle', () => {
-      render(
-        <EditorHeader
-          {...defaultProps}
-          isAuthenticated={true}
-          saveStatus="idle"
-        />
-      );
-
-      expect(screen.queryByText(/Saved/)).not.toBeInTheDocument();
-      expect(screen.queryByText(/Saving/)).not.toBeInTheDocument();
-      expect(screen.queryByText(/Save failed/)).not.toBeInTheDocument();
-    });
-  });
-
   describe('Combined states', () => {
     it('should show idle tooltip for unauthenticated users', () => {
       render(
@@ -135,22 +79,6 @@ describe('EditorHeader', () => {
       expect(
         screen.getByText("Don't forget to save your progress permanently")
       ).toBeInTheDocument();
-    });
-
-    it('should show both idle tooltip and save status for authenticated users', () => {
-      render(
-        <EditorHeader
-          {...defaultProps}
-          showIdleTooltip={true}
-          isAuthenticated={true}
-          saveStatus="saved"
-        />
-      );
-
-      expect(
-        screen.getByText("Don't forget to save your progress permanently")
-      ).toBeInTheDocument();
-      expect(screen.getByText(/Saved/)).toBeInTheDocument();
     });
   });
 });

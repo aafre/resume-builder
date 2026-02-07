@@ -1,12 +1,11 @@
 // src/components/editor/EditorHeader.tsx
-// Header component for Editor with status indicators, idle tooltip, and job match badge
+// Header component for Editor with idle tooltip, job match badge (portaled to header), and mobile banner
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Briefcase, X } from 'lucide-react';
-import { SaveStatus, ContactInfo, Section } from '../../types';
-import { SaveStatusIndicator } from '../SaveStatusIndicator';
+import { ContactInfo, Section } from '../../types';
 import { affiliateConfig } from '../../config/affiliate';
 import { extractJobSearchParams } from '../../utils/resumeDataExtractor';
 import { searchJobs } from '../../services/jobs';
@@ -19,10 +18,6 @@ export interface EditorHeaderProps {
   showIdleTooltip: boolean;
   /** Callback to dismiss idle tooltip */
   onDismissIdleTooltip: () => void;
-  /** Current save status */
-  saveStatus: SaveStatus;
-  /** Last saved timestamp */
-  lastSaved: Date | null;
   /** Whether user is authenticated */
   isAuthenticated: boolean;
   /** Contact info for job matching */
@@ -38,27 +33,29 @@ const MOBILE_BANNER_KEY = 'jobMatchBannerDismissed';
  *
  * Displays status indicators and tooltips for the Editor:
  * - Idle nudge tooltip (portal) for anonymous users
- * - Save status indicator for authenticated users (desktop only)
- * - Job match badge when job search affiliate is enabled
+ * - Job match badge portaled into the sticky header
  * - Mobile job notification banner (once per session)
  */
 export const EditorHeader: React.FC<EditorHeaderProps> = ({
   showIdleTooltip,
   onDismissIdleTooltip,
-  saveStatus,
-  lastSaved,
-  isAuthenticated,
+  isAuthenticated: _isAuthenticated,
   contactInfo,
   sections,
 }) => {
   const [jobCount, setJobCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
-  const [isBouncing, setIsBouncing] = useState(false);
   const [showMobileBanner, setShowMobileBanner] = useState(false);
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastQueryRef = useRef<string>('');
-  const hasAnimatedRef = useRef(false);
   const mobileBannerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Find the portal target after mount
+  useEffect(() => {
+    const el = document.getElementById('header-job-badge-slot');
+    setPortalTarget(el);
+  }, []);
 
   const fetchJobCount = useCallback(async () => {
     if (!affiliateConfig.jobSearch.enabled) return;
@@ -94,17 +91,6 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
   }, [fetchJobCount]);
-
-  // First-appearance bounce animation for desktop badge
-  useEffect(() => {
-    if (hasAnimatedRef.current) return;
-    if (jobCount !== null && jobCount > 0 && !loading) {
-      hasAnimatedRef.current = true;
-      setIsBouncing(true);
-      const timer = setTimeout(() => setIsBouncing(false), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [jobCount, loading]);
 
   // Mobile banner: show once per session when jobCount first loads
   useEffect(() => {
@@ -155,38 +141,33 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
     }
   };
 
+  // Badge element to portal into the header
+  const badgeElement = showBadge ? (
+    <Link
+      to="/jobs"
+      onClick={handleBadgeClick}
+      className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 shadow-md hover:shadow-lg hover:scale-[1.03] transition-all duration-200 animate-[badgeFadeIn_0.4s_ease-out] relative overflow-hidden group"
+    >
+      {/* Shimmer overlay */}
+      <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+      {loading ? (
+        <div className="w-3 h-3 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+      ) : (
+        <Briefcase className="w-3 h-3" />
+      )}
+      <span className="relative">
+        {loading ? 'Checking...' : `${jobCount} matches`}
+      </span>
+      <span className="bg-white/25 backdrop-blur-sm text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full leading-none relative">
+        NEW
+      </span>
+    </Link>
+  ) : null;
+
   return (
     <>
-      {/* Header Bar - Fixed position at top right, hidden on mobile (mobile has MobileActionBar) */}
-      <div className="fixed top-4 right-6 z-[65] hidden lg:flex items-center gap-3">
-        {/* Job Match Badge */}
-        {showBadge && (
-          <Link
-            to="/jobs"
-            onClick={handleBadgeClick}
-            className={`bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 hover:bg-indigo-100 transition-colors shadow-sm border border-indigo-100 ${isBouncing ? 'animate-bounce' : ''}`}
-          >
-            {loading ? (
-              <div className="w-3 h-3 rounded-full border-2 border-indigo-300 border-t-indigo-600 animate-spin" />
-            ) : (
-              <Briefcase className="w-3 h-3" />
-            )}
-            <span>
-              {loading ? 'Checking...' : `${jobCount} matches`}
-            </span>
-            <span className="bg-indigo-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full leading-none">
-              NEW
-            </span>
-          </Link>
-        )}
-
-        {/* Save Status for authenticated users */}
-        {isAuthenticated && saveStatus && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-md border border-gray-200/60">
-            <SaveStatusIndicator status={saveStatus} lastSaved={lastSaved} />
-          </div>
-        )}
-      </div>
+      {/* Job Match Badge - Portaled into header */}
+      {badgeElement && portalTarget && ReactDOM.createPortal(badgeElement, portalTarget)}
 
       {/* Mobile Job Notification Banner */}
       {showMobileBanner && (

@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 interface AutoSaveIndicatorProps {
   lastSaved?: Date | null;
   isSaving?: boolean;
@@ -10,6 +12,15 @@ export default function AutoSaveIndicator({
   isSaving = false,
   hasError = false,
 }: AutoSaveIndicatorProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [, setTick] = useState(0);
+
+  // Tick every 30s to keep relative time fresh
+  useEffect(() => {
+    const interval = setInterval(() => setTick((t) => t + 1), 30_000);
+    return () => clearInterval(interval);
+  }, []);
+
   const formatLastSaved = (date: Date) => {
     const now = new Date();
     const diffInMinutes = Math.floor(
@@ -25,36 +36,52 @@ export default function AutoSaveIndicator({
     return date.toLocaleDateString();
   };
 
-  // Error state
+  const savedText = lastSaved ? `Saved ${formatLastSaved(lastSaved)}` : "Saved";
+
+  // Error state - always expanded
   if (hasError) {
     return (
-      <div className="flex items-center gap-2 text-xs text-red-600">
-        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-        <span className="hidden sm:inline">Save Failed - Retrying...</span>
-        <span className="sm:hidden">Error</span>
+      <div
+        className="flex items-center gap-2 text-xs text-red-600"
+        title="Save failed - retrying..."
+      >
+        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse flex-shrink-0" />
+        <span>Save Failed</span>
       </div>
     );
   }
 
-  // Saving state
+  // Saving state - always expanded
   if (isSaving) {
     return (
-      <div className="flex items-center gap-2 text-xs text-blue-600">
-        <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-        <span className="hidden sm:inline">Saving...</span>
-        <span className="sm:hidden">💾</span>
+      <div
+        className="flex items-center gap-2 text-xs text-blue-600"
+        title="Saving..."
+      >
+        <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse flex-shrink-0" />
+        <span>Saving...</span>
       </div>
     );
   }
 
-  // Static saved state
+  // Saved state - hover to expand
   return (
-    <div className="flex items-center gap-2 text-xs text-green-600">
-      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-      <span className="hidden sm:inline">
-        Auto-Save {lastSaved ? `• ${formatLastSaved(lastSaved)}` : ""}
-      </span>
-      <span className="sm:hidden">✓</span>
+    <div
+      className="flex items-center gap-1.5 text-xs text-green-600 cursor-default"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      title={savedText}
+    >
+      <div className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0" />
+      <div
+        className="overflow-hidden whitespace-nowrap transition-all duration-300 ease-in-out"
+        style={{
+          maxWidth: isHovered ? '150px' : '0px',
+          opacity: isHovered ? 1 : 0,
+        }}
+      >
+        <span className="hidden sm:inline">{savedText}</span>
+      </div>
     </div>
   );
 }

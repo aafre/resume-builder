@@ -444,8 +444,6 @@ const Editor: React.FC = () => {
       <EditorHeader
         showIdleTooltip={tourFlow.showIdleTooltip}
         onDismissIdleTooltip={tourFlow.dismissIdleTooltip}
-        saveStatus={saveStatus}
-        lastSaved={cloudLastSaved}
         isAuthenticated={isAuthenticated}
         contactInfo={contactInfo}
         sections={sections}
