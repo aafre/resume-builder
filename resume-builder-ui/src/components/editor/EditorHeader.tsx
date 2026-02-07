@@ -10,6 +10,7 @@ import { ContactInfo, Section } from '../../types';
 import { affiliateConfig } from '../../config/affiliate';
 import { extractJobSearchParams } from '../../utils/resumeDataExtractor';
 import { searchJobs } from '../../services/jobs';
+import { getSalaryFloor } from '../../utils/salaryFloor';
 
 /**
  * Props for EditorHeader component
@@ -73,7 +74,16 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
 
     setLoading(true);
     try {
-      const result = await searchJobs({ query: params.query, location: params.location, country: params.country, category: params.category, skills: params.skills });
+      const result = await searchJobs({
+        query: params.query,
+        location: params.location,
+        country: params.country,
+        category: params.category,
+        skills: params.skills,
+        titleOnly: true,
+        maxDaysOld: 30,
+        salaryMin: getSalaryFloor(params.country, params.seniorityLevel),
+      });
       setJobCount(result.count);
     } catch {
       setJobCount(null);
@@ -137,6 +147,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
           location: params.location,
           country: params.country,
           skills: params.skills,
+          seniorityLevel: params.seniorityLevel,
         }));
       } catch { /* ignore */ }
     }

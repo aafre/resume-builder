@@ -9,6 +9,8 @@ import { searchJobs, AdzunaJob } from '../services/jobs';
 import { normalizeJobTitle } from '../utils/jobTitleNormalizer';
 import { detectCountryCode, sanitizeLocationForSearch } from '../utils/countryDetector';
 import { formatSalary } from '../utils/currencyFormat';
+import { getSalaryFloor } from '../utils/salaryFloor';
+import type { SeniorityLevel } from '../utils/resumeDataExtractor';
 import { SEO_PAGES } from '../config/seoPages';
 import { usePageSchema } from '../hooks/usePageSchema';
 import SEOPageLayout from './shared/SEOPageLayout';
@@ -86,6 +88,7 @@ export default function JobsPage() {
   const formRef = useRef<HTMLFormElement>(null);
   const shouldAutoSearch = useRef(false);
   const prefillSkillsRef = useRef<string[]>([]);
+  const prefillSeniorityRef = useRef<SeniorityLevel | null>(null);
   const lastSearchParams = useRef<{ query: string; location: string; country: string; category?: string | null; skills?: string[] }>({ query: '', location: '', country: 'us' });
 
   const schemas = usePageSchema({
@@ -104,6 +107,7 @@ export default function JobsPage() {
         if (data.location) setLocationInput(data.location);
         if (data.country) setCountry(data.country);
         if (Array.isArray(data.skills)) prefillSkillsRef.current = data.skills;
+        if (data.seniorityLevel) prefillSeniorityRef.current = data.seniorityLevel;
         sessionStorage.removeItem('jobSearchPrefill');
         if (data.title) shouldAutoSearch.current = true;
       }
@@ -127,12 +131,24 @@ export default function JobsPage() {
         : country;
 
       const searchQuery = query || titleInput.trim();
-      // Use prefilled skills for auto-search (no event), empty for manual search
-      const skills = e ? [] : prefillSkillsRef.current;
+      // Use prefilled skills/seniority for auto-search (no event), empty for manual search
+      const isPrefilled = !e;
+      const skills = isPrefilled ? prefillSkillsRef.current : [];
+      const seniority = isPrefilled ? prefillSeniorityRef.current : null;
       prefillSkillsRef.current = [];
+      prefillSeniorityRef.current = null;
       lastSearchParams.current = { query: searchQuery, location: searchLocation, country: searchCountry, category, skills };
 
-      const result = await searchJobs({ query: searchQuery, location: searchLocation, country: searchCountry, category, skills: skills.length > 0 ? skills : undefined });
+      const result = await searchJobs({
+        query: searchQuery,
+        location: searchLocation,
+        country: searchCountry,
+        category,
+        skills: skills.length > 0 ? skills : undefined,
+        titleOnly: true,
+        maxDaysOld: 30,
+        salaryMin: seniority ? getSalaryFloor(searchCountry, seniority) : undefined,
+      });
       setJobs(result.jobs);
       setTotalCount(result.count);
       setSearchedCountry(searchCountry);
@@ -150,7 +166,7 @@ export default function JobsPage() {
     setLoadingMore(true);
     try {
       const { query, location, country: c, category, skills } = lastSearchParams.current;
-      const result = await searchJobs({ query, location, country: c, category, page: nextPage, skills: skills && skills.length > 0 ? skills : undefined });
+      const result = await searchJobs({ query, location, country: c, category, page: nextPage, skills: skills && skills.length > 0 ? skills : undefined, titleOnly: true, maxDaysOld: 30 });
       setJobs(prev => [...prev, ...result.jobs]);
       setPage(nextPage);
     } catch {

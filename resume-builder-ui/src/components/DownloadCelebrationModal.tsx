@@ -6,6 +6,7 @@ import { ContactInfo, Section } from "../types";
 import { extractJobSearchParams, JobSearchParams } from "../utils/resumeDataExtractor";
 import { searchJobs, AdzunaJob } from "../services/jobs";
 import { formatSalary } from "../utils/currencyFormat";
+import { getSalaryFloor } from "../utils/salaryFloor";
 
 interface DownloadCelebrationModalProps {
   isOpen: boolean;
@@ -100,7 +101,16 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
     setJobSearchParams(params);
     setJobsLoading(true);
-    searchJobs({ query: params.query, location: params.location, country: params.country, category: params.category, skills: params.skills })
+    searchJobs({
+      query: params.query,
+      location: params.location,
+      country: params.country,
+      category: params.category,
+      skills: params.skills,
+      titleOnly: true,
+      maxDaysOld: 30,
+      salaryMin: getSalaryFloor(params.country, params.seniorityLevel),
+    })
       .then((result) => setJobs(result.jobs))
       .catch(() => {
         // Silently fail — hide section on error

@@ -24,7 +24,8 @@ import {
   MdVisibility,
   MdSupport,
 } from "react-icons/md";
-import { PanelRightClose, PanelRightOpen, ShieldCheck, ChevronRight, Briefcase } from "lucide-react";
+import { PanelRightClose, PanelRightOpen, ShieldCheck, ChevronRight } from "lucide-react";
+import { JobSparkleIcon } from "./icons/JobSparkleIcon";
 import { Link } from "react-router-dom";
 import { AdContainer, AD_CONFIG } from "./ads";
 import { affiliateConfig } from "../config/affiliate";
@@ -475,17 +476,24 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                         location: params.location,
                         country: params.country,
                         skills: params.skills,
+                        seniorityLevel: params.seniorityLevel,
                       }));
                     } catch { /* ignore */ }
                   }
                 }}
-                className="w-full flex flex-col items-center gap-1.5 py-2.5 px-1.5 mt-2 rounded-lg hover:bg-purple-50/80 hover:ring-1 hover:ring-purple-200/50 transition-all text-purple-600 group"
-                title="Jobs For You"
+                className="w-full flex flex-col items-center gap-1.5 py-2.5 px-1.5 mt-2 rounded-lg hover:bg-indigo-50/80 hover:ring-1 hover:ring-indigo-200/50 transition-all text-indigo-600 group"
+                title="Job Matches"
               >
-                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-fuchsia-600 transition-colors">
-                  <Briefcase className="w-3.5 h-3.5 text-white" />
+                <div className="relative">
+                  <div className="w-7 h-7 flex items-center justify-center rounded-lg bg-indigo-100 transition-colors">
+                    <JobSparkleIcon className="w-3.5 h-3.5 text-indigo-600" />
+                  </div>
+                  <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                  </span>
                 </div>
-                <span className="text-[11px] font-medium text-center leading-tight text-purple-600">
+                <span className="text-[11px] font-medium text-center leading-tight text-indigo-600">
                   Jobs
                 </span>
               </Link>
@@ -502,25 +510,32 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                         location: params.location,
                         country: params.country,
                         skills: params.skills,
+                        seniorityLevel: params.seniorityLevel,
                       }));
                     } catch { /* ignore */ }
                   }
                 }}
-                className="block mt-2 mx-1 bg-gradient-to-r from-purple-50 via-fuchsia-50 to-purple-50 border border-purple-100/80 rounded-xl p-3 hover:shadow-md hover:shadow-purple-100/50 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
+                className="block mt-2 mx-1 bg-gradient-to-r from-indigo-50/80 to-white border border-indigo-100 rounded-xl p-3 hover:shadow-md hover:shadow-indigo-100/50 hover:border-indigo-200 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
               >
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-fuchsia-600 shadow-sm flex-shrink-0">
-                    <Briefcase className="w-4 h-4 text-white" />
+                  <div className="relative flex-shrink-0">
+                    <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-indigo-100 shadow-sm">
+                      <JobSparkleIcon className="w-4 h-4 text-indigo-600" />
+                    </div>
+                    <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-500"></span>
+                    </span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-900 group-hover:text-purple-700 transition-colors">
-                      Jobs For You
+                    <p className="text-sm font-semibold text-gray-900 group-hover:text-indigo-700 transition-colors">
+                      Job Matches
                     </p>
                     <p className="text-xs text-gray-500 leading-tight mt-0.5">
                       Matched to your resume skills
                     </p>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-purple-300 group-hover:text-purple-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+                  <ChevronRight className="w-4 h-4 text-indigo-300 group-hover:text-indigo-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
                 </div>
               </Link>
             )
