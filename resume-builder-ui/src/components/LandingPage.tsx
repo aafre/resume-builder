@@ -1,23 +1,24 @@
 import React, { useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import CountUp from "react-countup";
 import SEOHead from "./SEOHead";
 import { generateSoftwareApplicationSchema, generateWebSiteSchema, generateFAQPageSchema, wrapInGraph } from "../utils/schemaGenerators";
 import CompanyMarquee from "./CompanyMarquee";
+import RevealSection from "./shared/RevealSection";
 import { useAuth } from "../contexts/AuthContext";
 import { useResumeCount } from "../hooks/useResumeCount";
 import { InContentAd, AD_CONFIG } from "./ads";
 import {
   ArrowRightIcon,
   EyeIcon,
-  CpuChipIcon,
-  CursorArrowRaysIcon,
   ClockIcon,
   CheckBadgeIcon,
   LockClosedIcon,
-  GiftIcon,
   ChevronDownIcon,
   DocumentTextIcon,
 } from "@heroicons/react/24/solid";
+import { ScanSearch, MousePointerClick, Timer, BadgeCheck, ShieldCheck, Gift } from "lucide-react";
+import { FeatureIcon } from "../utils/featureIcons";
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -49,49 +50,55 @@ const LandingPage: React.FC = () => {
     // No auto-redirect for authenticated users - let them see landing page
   }, [searchParams, navigate]);
 
-  const totalUsersFormatted = useMemo(() => {
+  const resumeCountValue = useMemo(() => {
     const launchDate = new Date("2019-01-01T00:00:00Z");
     const now = new Date();
     const msPerDay = 24 * 60 * 60 * 1000;
     const daysSinceLaunch = Math.floor((now.getTime() - launchDate.getTime()) / msPerDay);
-    const count = 52000 + daysSinceLaunch * 28;
-    return count.toLocaleString("en-US");
+    return 52000 + daysSinceLaunch * 28;
   }, []);
+
+  const prefersReducedMotion = useMemo(
+    () =>
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    [],
+  );
 
   // Features data
   const features = [
     {
-      icon: <CpuChipIcon className="w-10 h-10 text-blue-600" />,
+      icon: <ScanSearch size={40} className="text-blue-600" />,
       title: "Beat the ATS",
       description:
         "Get past automated screening systems with templates optimized for Applicant Tracking Systems.",
     },
     {
-      icon: <CursorArrowRaysIcon className="w-10 h-10 text-indigo-600" />,
+      icon: <MousePointerClick size={40} className="text-indigo-600" />,
       title: "Simple & Intuitive",
       description:
         "Build your resume with an easy-to-use editor that shows exactly how your resume will look.",
     },
     {
-      icon: <ClockIcon className="w-10 h-10 text-blue-600" />,
+      icon: <Timer size={40} className="text-blue-600" />,
       title: "Ready in Minutes",
       description:
         "Download your professional PDF resume immediately - no waiting, no registration required.",
     },
     {
-      icon: <CheckBadgeIcon className="w-10 h-10 text-green-600" />,
+      icon: <BadgeCheck size={40} className="text-green-600" />,
       title: "Hiring Manager Approved",
       description:
         "Clean, modern designs that recruiters love and that help you stand out from the crowd.",
     },
     {
-      icon: <LockClosedIcon className="w-10 h-10 text-green-600" />,
+      icon: <ShieldCheck size={40} className="text-green-600" />,
       title: "No Sign-Up, No Data Collection",
       description:
         "Start building immediately without registration. We don't store your personal information - complete privacy guaranteed.",
     },
     {
-      icon: <GiftIcon className="w-10 h-10 text-purple-600" />,
+      icon: <Gift size={40} className="text-purple-600" />,
       title: "100% Free & Unlimited",
       description:
         "Build unlimited resumes at no cost. No hidden fees, no premium upgrades, no catch.",
@@ -170,7 +177,7 @@ const LandingPage: React.FC = () => {
           generateFAQPageSchema(faqs),
         ])}
       />
-      <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-indigo-100/40 text-gray-800 relative overflow-hidden">
+      <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-indigo-100/40 text-gray-800 relative overflow-hidden bg-grain">
         {/* Hero Section */}
         <div className="text-center my-16 px-4 max-w-4xl mx-auto">
           {/* Professional Gradient Title */}
@@ -215,33 +222,43 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-16 my-16 px-4">
-          <div className="group text-center bg-white/95 border border-white/30 rounded-3xl p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:shadow-blue-500/10 transition-shadow duration-500">
+        <RevealSection stagger className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-16 my-16 px-4">
+          <div className="group text-center bg-white/95 card-gradient-border rounded-3xl p-8 shadow-premium shadow-premium-hover">
             <DocumentTextIcon className="w-10 h-10 text-blue-500 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
             <p className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-blue-500 group-hover:to-purple-500 transition-all duration-300">
               <span className="inline-block min-w-[180px] text-center">
-                {totalUsersFormatted}+
+                {prefersReducedMotion ? (
+                  <>{resumeCountValue.toLocaleString("en-US")}+</>
+                ) : (
+                  <CountUp end={resumeCountValue} separator="," suffix="+" duration={2.5} enableScrollSpy scrollSpyOnce />
+                )}
               </span>
             </p>
             <p className="text-gray-600 font-medium tracking-wide">Resumes Created</p>
           </div>
-          <div className="group text-center bg-white/95 border border-white/30 rounded-3xl p-8 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:shadow-indigo-500/10 transition-shadow duration-500">
+          <div className="group text-center bg-white/95 card-gradient-border rounded-3xl p-8 shadow-premium shadow-premium-hover">
             <CheckBadgeIcon className="w-10 h-10 text-indigo-500 mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
             <p className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:from-indigo-500 group-hover:to-purple-500 transition-all duration-300">
-              100%
+              {prefersReducedMotion ? (
+                <>100%</>
+              ) : (
+                <CountUp end={100} suffix="%" duration={2} enableScrollSpy scrollSpyOnce />
+              )}
             </p>
             <p className="text-gray-600 font-medium tracking-wide">ATS Compatible</p>
           </div>
-        </div>
+        </RevealSection>
 
         {/* In-content Ad - Below stats, above fold */}
         <div className="container mx-auto max-w-4xl px-4">
           <InContentAd adSlot={AD_CONFIG.slots.landingIncontent} marginY={32} />
         </div>
 
+        <div className="section-divider my-8" />
+
         {/* Trusted Companies Section */}
         <div className="container mx-auto max-w-6xl my-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
-          <div className="text-center mb-12">
+          <RevealSection className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
               Used by Professionals from Leading Companies
             </h2>
@@ -249,7 +266,7 @@ const LandingPage: React.FC = () => {
               People from these companies trust our resume builder for their
               career advancement
             </p>
-          </div>
+          </RevealSection>
 
           <CompanyMarquee speed={12} pauseOnHover={true} />
 
@@ -264,135 +281,149 @@ const LandingPage: React.FC = () => {
 
         {/* Why Job Seekers Choose Us */}
         <div className="container mx-auto max-w-6xl my-20 px-4 text-center" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 800px' }}>
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
-            Why Job Seekers Choose Our Free Resume Builder
-          </h2>
-          <p className="text-lg text-gray-600 mb-16 max-w-2xl mx-auto">
-            Trusted by job seekers worldwide to create resumes that stand out
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((item, index) => (
-              <div
-                key={index}
-                className="group p-8 bg-white/95 border border-white/40 rounded-3xl shadow-xl hover:shadow-2xl hover:shadow-purple-500/5 transition-[transform,box-shadow] duration-500 transform hover:-translate-y-1"
-              >
-                <div>
-                  <div className="flex items-center justify-center mb-6">
-                    <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 group-hover:from-blue-100/90 group-hover:to-purple-100/90 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-md group-hover:shadow-lg">
-                      {item.icon}
+          <RevealSection>
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
+              Why Job Seekers Choose Our Free Resume Builder
+            </h2>
+            <p className="text-lg text-gray-600 mb-16 max-w-2xl mx-auto">
+              Trusted by job seekers worldwide to create resumes that stand out
+            </p>
+          </RevealSection>
+          <RevealSection stagger>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {features.map((item, index) => (
+                <div
+                  key={index}
+                  className="group p-8 bg-white/95 card-gradient-border rounded-3xl shadow-premium shadow-premium-hover transition-[transform,box-shadow] duration-500 hover:-translate-y-1"
+                >
+                  <div>
+                    <div className="flex items-center justify-center mb-6">
+                      <div className="flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 group-hover:from-blue-100/90 group-hover:to-purple-100/90 group-hover:scale-110 group-hover:rotate-3 transition-[transform,box-shadow,background-color] duration-300 shadow-md group-hover:shadow-lg">
+                        {item.icon}
+                      </div>
                     </div>
+                    <h3 className="text-xl font-bold text-gray-800 mb-4 transition-all duration-300 group-hover:text-purple-700 group-hover:scale-105">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed transition-colors duration-300 group-hover:text-gray-700">
+                      {item.description}
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 transition-all duration-300 group-hover:text-purple-700 group-hover:scale-105">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed transition-colors duration-300 group-hover:text-gray-700">
-                    {item.description}
-                  </p>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </RevealSection>
         </div>
+
+        <div className="section-divider my-8" />
 
         {/* Helpful Resources Section */}
         <div className="container mx-auto max-w-6xl my-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 600px' }}>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-12 text-center">
-            Everything You Need to Succeed
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <a
-              href="/actual-free-resume-builder"
-              className="bg-white/95 border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
-            >
-              <div className="text-4xl mb-4">🎁</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                Actual Free Resume Builder
-              </h3>
-              <p className="text-gray-600">
-                Learn why our builder is truly free - no paywalls, no watermarks, no hidden fees.
-              </p>
-            </a>
+          <RevealSection>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-12 text-center">
+              Everything You Need to Succeed
+            </h2>
+          </RevealSection>
+          <RevealSection stagger>
+            <div className="grid md:grid-cols-3 gap-6">
+              <a
+                href="/actual-free-resume-builder"
+                className="bg-white/95 card-gradient-border rounded-2xl p-6 shadow-premium shadow-premium-hover transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
+              >
+                <div className="flex justify-center mb-5"><FeatureIcon emoji="🎁" index={0} /></div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                  Actual Free Resume Builder
+                </h3>
+                <p className="text-gray-600">
+                  Learn why our builder is truly free - no paywalls, no watermarks, no hidden fees.
+                </p>
+              </a>
 
-            <a
-              href="/free-resume-builder-no-sign-up"
-              className="bg-white/95 border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
-            >
-              <div className="text-4xl mb-4">⚡</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                No Sign Up Required
-              </h3>
-              <p className="text-gray-600">
-                Start building immediately. No registration, no account, just instant access to all features.
-              </p>
-            </a>
+              <a
+                href="/free-resume-builder-no-sign-up"
+                className="bg-white/95 card-gradient-border rounded-2xl p-6 shadow-premium shadow-premium-hover transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
+              >
+                <div className="flex justify-center mb-5"><FeatureIcon emoji="⚡" index={1} /></div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                  No Sign Up Required
+                </h3>
+                <p className="text-gray-600">
+                  Start building immediately. No registration, no account, just instant access to all features.
+                </p>
+              </a>
 
-            <a
-              href="/ats-resume-templates"
-              className="bg-white/95 border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
-            >
-              <div className="text-4xl mb-4">📄</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                ATS-Friendly Templates
-              </h3>
-              <p className="text-gray-600">
-                Download professional templates designed to pass Applicant Tracking Systems.
-              </p>
-            </a>
+              <a
+                href="/ats-resume-templates"
+                className="bg-white/95 card-gradient-border rounded-2xl p-6 shadow-premium shadow-premium-hover transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
+              >
+                <div className="flex justify-center mb-5"><FeatureIcon emoji="📄" index={2} /></div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                  ATS-Friendly Templates
+                </h3>
+                <p className="text-gray-600">
+                  Download professional templates designed to pass Applicant Tracking Systems.
+                </p>
+              </a>
 
-            <a
-              href="/resume-keywords"
-              className="bg-white/95 border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
-            >
-              <div className="text-4xl mb-4">🎯</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                Resume Keywords Guide
-              </h3>
-              <p className="text-gray-600">
-                Industry-specific keywords that help your resume pass ATS and impress recruiters.
-              </p>
-            </a>
+              <a
+                href="/resume-keywords"
+                className="bg-white/95 card-gradient-border rounded-2xl p-6 shadow-premium shadow-premium-hover transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
+              >
+                <div className="flex justify-center mb-5"><FeatureIcon emoji="🎯" index={3} /></div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                  Resume Keywords Guide
+                </h3>
+                <p className="text-gray-600">
+                  Industry-specific keywords that help your resume pass ATS and impress recruiters.
+                </p>
+              </a>
 
-            <a
-              href="/resume-keywords/customer-service"
-              className="bg-white/95 border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
-            >
-              <div className="text-4xl mb-4">🎧</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                Customer Service Keywords
-              </h3>
-              <p className="text-gray-600">
-                Essential keywords for customer service roles including CRM platforms and soft skills.
-              </p>
-            </a>
+              <a
+                href="/resume-keywords/customer-service"
+                className="bg-white/95 card-gradient-border rounded-2xl p-6 shadow-premium shadow-premium-hover transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
+              >
+                <div className="flex justify-center mb-5"><FeatureIcon emoji="🎧" index={4} /></div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                  Customer Service Keywords
+                </h3>
+                <p className="text-gray-600">
+                  Essential keywords for customer service roles including CRM platforms and soft skills.
+                </p>
+              </a>
 
-            <a
-              href="/best-free-resume-builder-reddit"
-              className="bg-white/95 border border-white/40 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
-            >
-              <div className="text-4xl mb-4">💬</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                Reddit Recommended
-              </h3>
-              <p className="text-gray-600">
-                See why Reddit users consistently recommend our builder over paid alternatives.
-              </p>
-            </a>
-          </div>
+              <a
+                href="/best-free-resume-builder-reddit"
+                className="bg-white/95 card-gradient-border rounded-2xl p-6 shadow-premium shadow-premium-hover transition-[transform,box-shadow] duration-300 hover:-translate-y-1 group"
+              >
+                <div className="flex justify-center mb-5"><FeatureIcon emoji="💬" index={5} /></div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                  Reddit Recommended
+                </h3>
+                <p className="text-gray-600">
+                  See why Reddit users consistently recommend our builder over paid alternatives.
+                </p>
+              </a>
+            </div>
+          </RevealSection>
         </div>
+
+        <div className="section-divider my-8" />
 
         {/* FAQ Section */}
         <div className="container mx-auto max-w-4xl my-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 800px' }}>
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4 text-center">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-lg text-gray-600 mb-12 text-center max-w-2xl mx-auto">
-            Everything you need to know about building your free resume
-          </p>
+          <RevealSection>
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4 text-center">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-lg text-gray-600 mb-12 text-center max-w-2xl mx-auto">
+              Everything you need to know about building your free resume
+            </p>
+          </RevealSection>
           <div className="space-y-4">
             {faqs.map((faq, index) => (
               <details
                 key={index}
-                className="bg-white/95 border border-white/40 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-500 group"
+                className="bg-white/95 card-gradient-border rounded-3xl shadow-premium hover:shadow-premium-hover transition-shadow duration-500 group"
               >
                 <summary className="flex items-center justify-between w-full text-left p-6 cursor-pointer list-none [&::-webkit-details-marker]:hidden focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-2xl">
                   <h3 className="text-lg font-semibold text-gray-800 pr-4">
@@ -402,10 +433,12 @@ const LandingPage: React.FC = () => {
                     className="w-6 h-6 text-gray-400 transition-transform duration-300 flex-shrink-0 group-open:rotate-180 group-open:text-blue-600"
                   />
                 </summary>
-                <div className="pb-6">
-                  <p className="text-gray-600 px-6 leading-relaxed">
-                    {faq.answer}
-                  </p>
+                <div className="faq-content">
+                  <div>
+                    <p className="text-gray-600 px-6 pb-6 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
                 </div>
               </details>
             ))}
@@ -414,6 +447,7 @@ const LandingPage: React.FC = () => {
 
         {/* Final CTA Section */}
         <div className="container mx-auto max-w-4xl my-20 px-4 text-center" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+          <RevealSection variant="scale-in">
           <div className="relative bg-gradient-to-br from-blue-700 via-purple-700 to-indigo-800 rounded-3xl shadow-2xl p-12 text-white overflow-hidden">
             {/* Static background pattern — replaces 3 animated blur circles */}
             <div className="absolute inset-0 opacity-10" style={{
@@ -438,6 +472,7 @@ const LandingPage: React.FC = () => {
               </button>
             </div>
           </div>
+          </RevealSection>
         </div>
       </div>
     </>

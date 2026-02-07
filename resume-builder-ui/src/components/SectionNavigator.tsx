@@ -10,7 +10,7 @@ import {
   MdSchool,
   MdStar,
   MdList,
-  MdMenu,
+
   MdFormatListBulleted,
   MdViewColumn,
   MdTextFields,
@@ -24,6 +24,7 @@ import {
   MdVisibility,
   MdSupport,
 } from "react-icons/md";
+import { PanelRightClose, PanelRightOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AdContainer, AD_CONFIG } from "./ads";
 
@@ -93,18 +94,16 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
     return saved === "true";
   });
 
-  // Track header and footer heights dynamically
+  // Track header height and dynamic footer offset
   const [headerHeight, setHeaderHeight] = useState(0);
-  const [footerHeight, setFooterHeight] = useState(0);
+  const [bottomOffset, setBottomOffset] = useState(0);
   const sidebarRef = useRef<HTMLElement>(null);
 
-  // Calculate header and footer heights on mount and resize
+  // Calculate header height on mount and resize
   useEffect(() => {
-    const calculateHeights = () => {
-      // Find the header element
+    const calculateHeaderHeight = () => {
       const header = document.querySelector("header");
       const devBanner = document.querySelector('[class*="bg-red-600"]');
-      const footer = document.querySelector("footer.fixed");
 
       let totalHeaderHeight = 0;
 
@@ -116,29 +115,52 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
         totalHeaderHeight += header.offsetHeight;
       }
 
-      // Get footer height (only when visible/at bottom)
-      let footerH = 0;
-      if (footer && footer instanceof HTMLElement) {
-        footerH = footer.offsetHeight;
-      }
-
-      // Fallback to reasonable defaults if elements not found
       setHeaderHeight(totalHeaderHeight || 72);
-      setFooterHeight(footerH || 60); // Default footer height
     };
 
-    calculateHeights();
+    calculateHeaderHeight();
 
-    // Recalculate on resize
-    window.addEventListener("resize", calculateHeights);
+    window.addEventListener("resize", calculateHeaderHeight);
 
-    // Also observe for DOM changes (e.g., banner visibility, footer visibility)
-    const observer = new MutationObserver(calculateHeights);
+    const observer = new MutationObserver(calculateHeaderHeight);
     observer.observe(document.body, { childList: true, subtree: true, attributes: true });
 
     return () => {
-      window.removeEventListener("resize", calculateHeights);
+      window.removeEventListener("resize", calculateHeaderHeight);
       observer.disconnect();
+    };
+  }, []);
+
+  // Track how much of the footer is visible in the viewport via scroll
+  useEffect(() => {
+    let rafId = 0;
+
+    const updateBottomOffset = () => {
+      const footer = document.querySelector("#app-footer");
+      if (footer && footer instanceof HTMLElement) {
+        const footerTop = footer.getBoundingClientRect().top;
+        const viewportHeight = window.innerHeight;
+        setBottomOffset(Math.max(0, viewportHeight - footerTop));
+      } else {
+        setBottomOffset(0);
+      }
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateBottomOffset);
+    };
+
+    // Initial calculation
+    updateBottomOffset();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, []);
 
@@ -271,7 +293,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
       }`}
       style={{
         top: `${headerHeight}px`,
-        bottom: `${footerHeight}px`
+        bottom: `${bottomOffset}px`
       }}
       aria-label="Section navigation and actions"
     >
@@ -290,7 +312,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           aria-label={isCollapsed ? "Expand sidebar (Ctrl+\\)" : "Collapse sidebar (Ctrl+\\)"}
           title={isCollapsed ? "Expand (Ctrl+\\)" : "Collapse (Ctrl+\\)"}
         >
-          <MdMenu className="text-lg" />
+          {isCollapsed ? <PanelRightOpen size={18} /> : <PanelRightClose size={18} />}
         </button>
       </div>
 
@@ -444,7 +466,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                   ? "..."
                   : "Generating..."
                 : isCollapsed
-                ? "Download"
+                ? "PDF"
                 : "Download Resume"}
             </span>
           </button>
