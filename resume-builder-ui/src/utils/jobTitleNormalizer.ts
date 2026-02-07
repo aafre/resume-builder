@@ -3,6 +3,7 @@
 export interface NormalizedTitle {
   query: string;
   category: string | null;
+  seniority: string | null;
 }
 
 // Category keyword map — order matters: more specific categories first
@@ -76,12 +77,12 @@ function detectCategory(title: string): string | null {
  * 3. Strip executive prefixes (VP, Director of, etc.)
  * 4. Strip noise words (of, for, the, &, and)
  * 5. Strip level indicators (III, Level 2, Grade 3)
- * 6. Conditional seniority trimming (only if > 3 words)
+ * 6. Detect seniority word, conditional trimming (only if > 4 words)
  * 7. Final safety: keep first 3 words if still > 4
  */
 export function normalizeJobTitle(rawTitle: string): NormalizedTitle {
   if (!rawTitle || !rawTitle.trim()) {
-    return { query: '', category: null };
+    return { query: '', category: null, seniority: null };
   }
 
   // 1. Basic cleanup
@@ -130,9 +131,14 @@ export function normalizeJobTitle(rawTitle: string): NormalizedTitle {
   // 5. Strip level indicators
   title = title.replace(LEVEL_SUFFIX, '').trim();
 
-  // 6. Conditional seniority trimming — only if > 3 words
+  // 6. Detect seniority word (before potential stripping)
   words = title.split(/\s+/);
-  while (words.length > 3 && SENIORITY_WORDS.has(words[0].toLowerCase())) {
+  const seniority = words.length > 0 && SENIORITY_WORDS.has(words[0].toLowerCase())
+    ? words[0]
+    : null;
+
+  // Conditional seniority trimming — only if > 4 words
+  while (words.length > 4 && SENIORITY_WORDS.has(words[0].toLowerCase())) {
     words.shift();
   }
 
@@ -143,5 +149,5 @@ export function normalizeJobTitle(rawTitle: string): NormalizedTitle {
 
   const query = words.join(' ');
 
-  return { query, category };
+  return { query, category, seniority };
 }
