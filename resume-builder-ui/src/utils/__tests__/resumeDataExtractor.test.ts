@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { extractJobSearchParams, extractSkills } from '../resumeDataExtractor';
-import type { ContactInfo, Section } from '../../types';
+import { extractJobSearchParams, extractSkills, detectSeniority, estimateYearsExperience } from '../resumeDataExtractor';
+import type { ContactInfo, Section, ExperienceItem } from '../../types';
 
 const makeContact = (location: string): ContactInfo => ({
   name: 'John Doe',
@@ -9,13 +9,13 @@ const makeContact = (location: string): ContactInfo => ({
   phone: '555-1234',
 });
 
-const makeExperienceSection = (titles: string[]): Section => ({
+const makeExperienceSection = (titles: string[], dates?: string[]): Section => ({
   name: 'Experience',
   type: 'experience' as const,
-  content: titles.map((title) => ({
+  content: titles.map((title, i) => ({
     company: 'Company',
     title,
-    dates: '2024 - Present',
+    dates: dates?.[i] ?? 'Recent',
     description: ['Did things'],
   })),
 });
@@ -24,7 +24,7 @@ describe('extractJobSearchParams', () => {
   it('extracts query and location from resume with experience', () => {
     const result = extractJobSearchParams(
       makeContact('New York, NY'),
-      [makeExperienceSection(['Software Engineer', 'Junior Dev'])],
+      [makeExperienceSection(['Software Engineer'])],
     );
 
     expect(result).toEqual({
@@ -34,6 +34,8 @@ describe('extractJobSearchParams', () => {
       country: 'us',
       category: 'it-jobs',
       skills: [],
+      seniorityLevel: 'mid',
+      yearsExperience: 0,
     });
   });
 
@@ -50,6 +52,8 @@ describe('extractJobSearchParams', () => {
       country: 'gb',
       category: null,
       skills: [],
+      seniorityLevel: 'mid',
+      yearsExperience: 0,
     });
   });
 
@@ -93,6 +97,8 @@ describe('extractJobSearchParams', () => {
       country: 'us',
       category: 'it-jobs',
       skills: [],
+      seniorityLevel: 'mid',
+      yearsExperience: 0,
     });
   });
 
@@ -121,6 +127,8 @@ describe('extractJobSearchParams', () => {
       country: 'fr',
       category: 'creative-design-jobs',
       skills: [],
+      seniorityLevel: 'mid',
+      yearsExperience: 0,
     });
   });
 
@@ -140,7 +148,23 @@ describe('extractJobSearchParams', () => {
       country: 'de',
       category: 'engineering-jobs',
       skills: [],
+      seniorityLevel: 'senior',
+      yearsExperience: 0,
     });
+  });
+
+  it('detects seniority and years from full experience data', () => {
+    const result = extractJobSearchParams(
+      makeContact('San Francisco, CA'),
+      [makeExperienceSection(
+        ['Senior Software Engineer', 'Software Engineer', 'Junior Developer'],
+        ['2021 - Present', '2018 - 2021', '2016 - 2018'],
+      )],
+    );
+
+    expect(result).not.toBeNull();
+    expect(result!.seniorityLevel).toBe('senior');
+    expect(result!.yearsExperience).toBeGreaterThanOrEqual(8);
   });
 });
 
@@ -167,7 +191,7 @@ describe('extractSkills', () => {
     expect(extractSkills(sections as any)).toEqual(['Python', 'Go', 'AWS', 'GCP']);
   });
 
-  it('caps at 10 items', () => {
+  it('caps at 5 items', () => {
     const sections = [
       {
         name: 'Skills',
@@ -175,8 +199,8 @@ describe('extractSkills', () => {
         content: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
       },
     ];
-    expect(extractSkills(sections as any)).toHaveLength(10);
-    expect(extractSkills(sections as any)).toEqual(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']);
+    expect(extractSkills(sections as any)).toHaveLength(5);
+    expect(extractSkills(sections as any)).toEqual(['A', 'B', 'C', 'D', 'E']);
   });
 
   it('filters out empty items', () => {
@@ -209,5 +233,83 @@ describe('extractSkills', () => {
       ],
     );
     expect(result?.skills).toEqual(['TypeScript', 'Node.js']);
+  });
+});
+
+describe('detectSeniority', () => {
+  it('returns "senior" for "Senior Software Engineer"', () => {
+    expect(detectSeniority(['Senior Software Engineer'])).toBe('senior');
+  });
+
+  it('returns "lead" for "Lead Developer"', () => {
+    expect(detectSeniority(['Lead Developer'])).toBe('lead');
+  });
+
+  it('returns "entry" for "Junior Developer"', () => {
+    expect(detectSeniority(['Junior Developer'])).toBe('entry');
+  });
+
+  it('returns "lead" for "Principal Engineer"', () => {
+    expect(detectSeniority(['Principal Engineer'])).toBe('lead');
+  });
+
+  it('returns "mid" when no seniority word found', () => {
+    expect(detectSeniority(['Software Engineer'])).toBe('mid');
+  });
+
+  it('uses first title (most recent) for detection', () => {
+    expect(detectSeniority(['Senior Engineer', 'Junior Developer'])).toBe('senior');
+  });
+
+  it('falls back to second title if first has no seniority', () => {
+    expect(detectSeniority(['Software Engineer', 'Senior Developer'])).toBe('senior');
+  });
+
+  it('returns "mid" for empty array', () => {
+    expect(detectSeniority([])).toBe('mid');
+  });
+});
+
+describe('estimateYearsExperience', () => {
+  it('calculates years from date ranges', () => {
+    const items: ExperienceItem[] = [
+      { company: 'Co1', title: 'Dev', dates: '2020 - 2024', description: [] },
+      { company: 'Co2', title: 'Dev', dates: '2018 - 2020', description: [] },
+    ];
+    expect(estimateYearsExperience(items)).toBe(6);
+  });
+
+  it('handles "Present" as current year', () => {
+    const items: ExperienceItem[] = [
+      { company: 'Co', title: 'Dev', dates: '2020 - Present', description: [] },
+    ];
+    const currentYear = new Date().getFullYear();
+    expect(estimateYearsExperience(items)).toBe(currentYear - 2020);
+  });
+
+  it('handles "Current" as current year', () => {
+    const items: ExperienceItem[] = [
+      { company: 'Co', title: 'Dev', dates: '2019 - Current', description: [] },
+    ];
+    const currentYear = new Date().getFullYear();
+    expect(estimateYearsExperience(items)).toBe(currentYear - 2019);
+  });
+
+  it('returns 0 when no dates can be parsed', () => {
+    const items: ExperienceItem[] = [
+      { company: 'Co', title: 'Dev', dates: '', description: [] },
+    ];
+    expect(estimateYearsExperience(items)).toBe(0);
+  });
+
+  it('returns 0 for empty items', () => {
+    expect(estimateYearsExperience([])).toBe(0);
+  });
+
+  it('handles month-year format "Jan 2018 - Dec 2022"', () => {
+    const items: ExperienceItem[] = [
+      { company: 'Co', title: 'Dev', dates: 'Jan 2018 - Dec 2022', description: [] },
+    ];
+    expect(estimateYearsExperience(items)).toBe(4);
   });
 });

@@ -7,6 +7,7 @@ describe('normalizeJobTitle', () => {
     expect(normalizeJobTitle('Software Engineer')).toEqual({
       query: 'Software Engineer',
       category: 'it-jobs',
+      seniority: null,
     });
   });
 
@@ -14,6 +15,7 @@ describe('normalizeJobTitle', () => {
     expect(normalizeJobTitle('Product Manager')).toEqual({
       query: 'Product Manager',
       category: null,
+      seniority: null,
     });
   });
 
@@ -21,6 +23,7 @@ describe('normalizeJobTitle', () => {
     expect(normalizeJobTitle('Financial Analyst')).toEqual({
       query: 'Financial Analyst',
       category: 'accounting-finance-jobs',
+      seniority: null,
     });
   });
 
@@ -66,34 +69,79 @@ describe('normalizeJobTitle', () => {
     expect(normalizeJobTitle('Director')).toEqual({
       query: 'Director',
       category: null,
+      seniority: null,
     });
   });
 
-  // --- Seniority preserved when ≤ 3 words ---
+  // --- Seniority extraction ---
+  it('extracts seniority "Senior" from "Senior Software Engineer"', () => {
+    const result = normalizeJobTitle('Senior Software Engineer');
+    expect(result.seniority).toBe('Senior');
+    expect(result.query).toBe('Senior Software Engineer');
+    expect(result.category).toBe('it-jobs');
+  });
+
+  it('extracts seniority "Lead" from "Lead Data Analyst"', () => {
+    const result = normalizeJobTitle('Lead Data Analyst');
+    expect(result.seniority).toBe('Lead');
+    expect(result.query).toBe('Lead Data Analyst');
+    expect(result.category).toBe('it-jobs');
+  });
+
+  it('extracts seniority "Junior" from "Junior Developer"', () => {
+    const result = normalizeJobTitle('Junior Developer');
+    expect(result.seniority).toBe('Junior');
+    expect(result.query).toBe('Junior Developer');
+    expect(result.category).toBe('it-jobs');
+  });
+
+  it('extracts seniority "Principal" from "Principal Engineer"', () => {
+    const result = normalizeJobTitle('Principal Engineer');
+    expect(result.seniority).toBe('Principal');
+    expect(result.query).toBe('Principal Engineer');
+  });
+
+  it('returns null seniority for non-seniority title', () => {
+    const result = normalizeJobTitle('Data Analyst');
+    expect(result.seniority).toBeNull();
+  });
+
+  // --- Seniority preserved when ≤ 4 words ---
   it('preserves seniority in "Senior Data Analyst" (3 words)', () => {
     const result = normalizeJobTitle('Senior Data Analyst');
     expect(result.query).toBe('Senior Data Analyst');
     expect(result.category).toBe('it-jobs');
+    expect(result.seniority).toBe('Senior');
   });
 
   it('preserves "Lead Software Engineer" (3 words)', () => {
     const result = normalizeJobTitle('Lead Software Engineer');
     expect(result.query).toBe('Lead Software Engineer');
     expect(result.category).toBe('it-jobs');
+    expect(result.seniority).toBe('Lead');
   });
 
-  // --- Seniority trimming when > 3 words ---
-  it('trims seniority from long title', () => {
+  it('preserves seniority in 4-word title "Senior Full Stack Developer"', () => {
+    const result = normalizeJobTitle('Senior Full Stack Developer');
+    expect(result.query).toBe('Senior Full Stack Developer');
+    expect(result.seniority).toBe('Senior');
+  });
+
+  // --- Seniority trimming when > 4 words ---
+  it('trims seniority from long title (> 4 words)', () => {
     const result = normalizeJobTitle('Principal Staff Engineer Platform Infrastructure');
-    expect(result.query.split(' ').length).toBeLessThanOrEqual(3);
+    // "Principal" stripped (5>4), "Staff" stripped (4>4? no), leaves 4 words
+    expect(result.query).toBe('Staff Engineer Platform Infrastructure');
     expect(result.category).toBe('engineering-jobs');
+    expect(result.seniority).toBe('Principal');
   });
 
   it('trims "Senior Associate Software Development Engineer"', () => {
     const result = normalizeJobTitle('Senior Associate Software Development Engineer');
-    // "Senior" and "Associate" stripped (both seniority), leaving 3 words
-    expect(result.query).toBe('Software Development Engineer');
+    // "Senior" stripped (5>4), "Associate" not stripped (4 is not > 4)
+    expect(result.query).toBe('Associate Software Development Engineer');
     expect(result.category).toBe('it-jobs');
+    expect(result.seniority).toBe('Senior');
   });
 
   // --- Roman numerals / level indicators ---
@@ -143,11 +191,11 @@ describe('normalizeJobTitle', () => {
 
   // --- Edge cases ---
   it('returns empty query for empty string', () => {
-    expect(normalizeJobTitle('')).toEqual({ query: '', category: null });
+    expect(normalizeJobTitle('')).toEqual({ query: '', category: null, seniority: null });
   });
 
   it('returns empty query for whitespace-only string', () => {
-    expect(normalizeJobTitle('   ')).toEqual({ query: '', category: null });
+    expect(normalizeJobTitle('   ')).toEqual({ query: '', category: null, seniority: null });
   });
 
   it('collapses extra whitespace', () => {
