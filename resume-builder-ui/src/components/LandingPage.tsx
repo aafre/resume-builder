@@ -11,15 +11,13 @@ import { InContentAd, AD_CONFIG } from "./ads";
 import {
   ArrowRightIcon,
   EyeIcon,
-  CpuChipIcon,
-  CursorArrowRaysIcon,
   ClockIcon,
   CheckBadgeIcon,
   LockClosedIcon,
-  GiftIcon,
   ChevronDownIcon,
   DocumentTextIcon,
 } from "@heroicons/react/24/solid";
+import { ScanSearch, MousePointerClick, Timer, BadgeCheck, ShieldCheck, Gift } from "lucide-react";
 import { FeatureIcon } from "../utils/featureIcons";
 
 const LandingPage: React.FC = () => {
@@ -70,37 +68,37 @@ const LandingPage: React.FC = () => {
   // Features data
   const features = [
     {
-      icon: <CpuChipIcon className="w-10 h-10 text-blue-600" />,
+      icon: <ScanSearch size={40} className="text-blue-600" />,
       title: "Beat the ATS",
       description:
         "Get past automated screening systems with templates optimized for Applicant Tracking Systems.",
     },
     {
-      icon: <CursorArrowRaysIcon className="w-10 h-10 text-indigo-600" />,
+      icon: <MousePointerClick size={40} className="text-indigo-600" />,
       title: "Simple & Intuitive",
       description:
         "Build your resume with an easy-to-use editor that shows exactly how your resume will look.",
     },
     {
-      icon: <ClockIcon className="w-10 h-10 text-blue-600" />,
+      icon: <Timer size={40} className="text-blue-600" />,
       title: "Ready in Minutes",
       description:
         "Download your professional PDF resume immediately - no waiting, no registration required.",
     },
     {
-      icon: <CheckBadgeIcon className="w-10 h-10 text-green-600" />,
+      icon: <BadgeCheck size={40} className="text-green-600" />,
       title: "Hiring Manager Approved",
       description:
         "Clean, modern designs that recruiters love and that help you stand out from the crowd.",
     },
     {
-      icon: <LockClosedIcon className="w-10 h-10 text-green-600" />,
+      icon: <ShieldCheck size={40} className="text-green-600" />,
       title: "No Sign-Up, No Data Collection",
       description:
         "Start building immediately without registration. We don't store your personal information - complete privacy guaranteed.",
     },
     {
-      icon: <GiftIcon className="w-10 h-10 text-purple-600" />,
+      icon: <Gift size={40} className="text-purple-600" />,
       title: "100% Free & Unlimited",
       description:
         "Build unlimited resumes at no cost. No hidden fees, no premium upgrades, no catch.",
