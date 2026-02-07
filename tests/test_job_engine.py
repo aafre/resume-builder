@@ -55,6 +55,21 @@ class TestTitleSynonyms:
         syns = TITLE_SYNONYMS.get("data scientist")
         assert len(syns) >= 2
 
+    def test_python_skill_has_title_synonyms(self):
+        syns = TITLE_SYNONYMS.get("python")
+        assert syns is not None
+        assert "python developer" in syns
+
+    def test_skill_synonym_keys_are_lowercase(self):
+        skill_keys = ["python", "java", "react", "golang", "rust", "aws", "docker", "kubernetes"]
+        for key in skill_keys:
+            assert key in TITLE_SYNONYMS, f"Missing skill synonym: {key}"
+            assert key == key.lower()
+
+    def test_react_skill_has_frontend_titles(self):
+        syns = TITLE_SYNONYMS.get("react")
+        assert "frontend developer" in syns
+
 
 # =============================================================================
 # Skill Alias Table

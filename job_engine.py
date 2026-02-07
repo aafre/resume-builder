@@ -98,6 +98,30 @@ TITLE_SYNONYMS: dict[str, list[str]] = {
     "recruiter": ["talent acquisition specialist", "hr recruiter", "sourcer"],
     "hr manager": ["human resources manager", "people manager", "hr business partner"],
     "hr business partner": ["hrbp", "hr manager", "people partner"],
+
+    # Skills / Languages → job titles (one-way: skill search expands to titles)
+    "python": ["python developer", "python engineer", "backend developer"],
+    "java": ["java developer", "java engineer", "software engineer"],
+    "javascript": ["javascript developer", "frontend developer", "web developer"],
+    "typescript": ["typescript developer", "frontend developer", "full stack developer"],
+    "react": ["react developer", "frontend developer", "frontend engineer"],
+    "angular": ["angular developer", "frontend developer", "frontend engineer"],
+    "vue": ["vue developer", "frontend developer", "frontend engineer"],
+    "node": ["node developer", "backend developer", "full stack developer"],
+    "golang": ["go developer", "golang engineer", "backend engineer"],
+    "go": ["go developer", "golang engineer", "backend engineer"],
+    "rust": ["rust developer", "rust engineer", "systems engineer"],
+    "ruby": ["ruby developer", "ruby on rails developer", "backend developer"],
+    "php": ["php developer", "web developer", "backend developer"],
+    "swift": ["ios developer", "swift developer", "mobile developer"],
+    "kotlin": ["android developer", "kotlin developer", "mobile developer"],
+    "c++": ["c++ developer", "c++ engineer", "systems programmer"],
+    "c#": ["c# developer", ".net developer", "software developer"],
+    "sql": ["database developer", "sql developer", "data analyst"],
+    "aws": ["aws engineer", "cloud engineer", "devops engineer"],
+    "docker": ["devops engineer", "platform engineer", "infrastructure engineer"],
+    "kubernetes": ["devops engineer", "platform engineer", "site reliability engineer"],
+    "terraform": ["devops engineer", "infrastructure engineer", "cloud engineer"],
 }
 
 
