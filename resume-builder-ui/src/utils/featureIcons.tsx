@@ -112,7 +112,7 @@ export function FeatureIcon({ emoji, index }: { emoji: string; index: number }) 
 
   // Fallback: unknown emoji in a neutral container
   return (
-    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gray-50 to-slate-50 shadow-sm flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 motion-reduce:group-hover:scale-100 motion-reduce:group-hover:rotate-0 transition-all duration-300">
+    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gray-50 to-slate-50 shadow-sm flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 motion-reduce:group-hover:scale-100 motion-reduce:group-hover:rotate-0 transition-transform duration-300">
       <span className="text-2xl">{emoji}</span>
     </div>
   );
