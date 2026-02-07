@@ -3,6 +3,7 @@ import { FileText } from "lucide-react";
 import { useEditorContext } from "../contexts/EditorContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useResumeCount } from "../hooks/useResumeCount";
+import { affiliateConfig } from "../config/affiliate";
 import AutoSaveIndicator from "./AutoSaveIndicator";
 import AnonymousWarningBadge from "./AnonymousWarningBadge";
 import UserMenu from "./UserMenu";
@@ -108,6 +109,18 @@ export default function Header() {
               >
                 Templates
               </Link>
+              {affiliateConfig.jobSearch.enabled && (
+                <Link
+                  to="/jobs"
+                  className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+                    location.pathname === '/jobs'
+                      ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white shadow-md'
+                      : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700'
+                  }`}
+                >
+                  Jobs
+                </Link>
+              )}
             </nav>
           )}
 

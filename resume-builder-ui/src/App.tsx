@@ -63,6 +63,7 @@ const StudentTemplatesPage = lazy(() => import("./components/seo/StudentTemplate
 // Job Examples (pSEO)
 const JobExamplesHub = lazy(() => import("./components/seo/JobExamplesHub"));
 const JobExamplePage = lazy(() => import("./components/seo/JobExamplePage"));
+const JobsPage = lazy(() => import("./components/JobsPage"));
 
 // Static pages - lazy loaded
 const AboutUs = lazy(() => import("./components/AboutUs"));
@@ -332,6 +333,16 @@ function AppContent() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <StudentTemplatesPage />
+              </Suspense>
+            }
+          />
+
+          {/* Jobs Page */}
+          <Route
+            path="/jobs"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <JobsPage />
               </Suspense>
             }
           />
