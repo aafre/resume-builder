@@ -7,6 +7,7 @@ import { Briefcase, MapPin, Search, ExternalLink, ChevronDown, Clock, FileText, 
 import { searchJobs, AdzunaJob } from '../services/jobs';
 import { normalizeJobTitle } from '../utils/jobTitleNormalizer';
 import { detectCountryCode, sanitizeLocationForSearch } from '../utils/countryDetector';
+import { formatSalary } from '../utils/currencyFormat';
 import { SEO_PAGES } from '../config/seoPages';
 import { usePageSchema } from '../hooks/usePageSchema';
 import SEOPageLayout from './shared/SEOPageLayout';
@@ -50,14 +51,6 @@ const POPULAR_SEARCHES = [
   'Customer Service',
 ];
 
-const formatSalary = (min: number | null, max: number | null): string | null => {
-  if (!min && !max) return null;
-  const fmt = (n: number) => (n >= 1000 ? `$${Math.round(n / 1000)}K` : `$${n}`);
-  if (min && max) return `${fmt(min)} – ${fmt(max)}`;
-  if (min) return `From ${fmt(min)}`;
-  return `Up to ${fmt(max!)}`;
-};
-
 const timeAgo = (dateStr: string): string => {
   if (!dateStr) return '';
   const now = Date.now();
@@ -88,6 +81,7 @@ export default function JobsPage() {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [searchedCountry, setSearchedCountry] = useState('us');
   const formRef = useRef<HTMLFormElement>(null);
   const shouldAutoSearch = useRef(false);
   const lastSearchParams = useRef<{ query: string; location: string; country: string; category?: string | null }>({ query: '', location: '', country: 'us' });
@@ -135,6 +129,7 @@ export default function JobsPage() {
       const result = await searchJobs(searchQuery, searchLocation, searchCountry, category);
       setJobs(result.jobs);
       setTotalCount(result.count);
+      setSearchedCountry(searchCountry);
     } catch {
       setError('Unable to fetch jobs. Please try again.');
       setJobs([]);
@@ -290,7 +285,7 @@ export default function JobsPage() {
           <>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {jobs.map((job, i) => {
-                const salary = formatSalary(job.salary_min, job.salary_max);
+                const salary = formatSalary(job.salary_min, job.salary_max, searchedCountry);
                 const posted = timeAgo(job.created);
                 return (
                   <a

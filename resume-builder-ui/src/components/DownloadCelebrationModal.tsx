@@ -5,6 +5,7 @@ import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
 import { ContactInfo, Section } from "../types";
 import { extractJobSearchParams, JobSearchParams } from "../utils/resumeDataExtractor";
 import { searchJobs, AdzunaJob } from "../services/jobs";
+import { formatSalary } from "../utils/currencyFormat";
 
 interface DownloadCelebrationModalProps {
   isOpen: boolean;
@@ -14,14 +15,6 @@ interface DownloadCelebrationModalProps {
   contactInfo: ContactInfo | null;
   sections: Section[];
 }
-
-const formatSalary = (min: number | null, max: number | null): string | null => {
-  if (!min && !max) return null;
-  const fmt = (n: number) => (n >= 1000 ? `$${Math.round(n / 1000)}K` : `$${n}`);
-  if (min && max) return `${fmt(min)} – ${fmt(max)}`;
-  if (min) return `From ${fmt(min)}`;
-  return `Up to ${fmt(max!)}`;
-};
 
 const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
   isOpen,
@@ -311,7 +304,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                   {!jobsLoading && jobs.length > 0 && (
                     <div className="space-y-2">
                       {jobs.map((job, i) => {
-                        const salary = formatSalary(job.salary_min, job.salary_max);
+                        const salary = formatSalary(job.salary_min, job.salary_max, jobSearchParams?.country);
                         return (
                           <a
                             key={i}
