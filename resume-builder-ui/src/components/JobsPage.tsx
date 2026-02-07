@@ -275,11 +275,15 @@ export default function JobsPage() {
             {Array.from({ length: 6 }).map((_, i) => (
               <div
                 key={i}
-                className="bg-white border border-gray-200 rounded-xl p-5 animate-pulse"
+                className="bg-white rounded-xl shadow-md overflow-hidden animate-pulse"
               >
-                <div className="h-5 bg-gray-200 rounded w-3/4 mb-3" />
-                <div className="h-4 bg-gray-200 rounded w-1/2 mb-2" />
-                <div className="h-3 bg-gray-200 rounded w-1/3" />
+                <div className="h-10 bg-gray-200" />
+                <div className="p-4">
+                  <div className="h-5 bg-gray-200 rounded w-3/4 mb-2" />
+                  <div className="h-4 bg-gray-200 rounded w-1/2 mb-3" />
+                  <div className="h-4 bg-gray-200 rounded w-1/3 mb-3" />
+                  <div className="h-9 bg-gray-200 rounded-lg" />
+                </div>
               </div>
             ))}
           </div>
@@ -292,6 +296,16 @@ export default function JobsPage() {
               {jobs.map((job, i) => {
                 const salary = formatSalary(job.salary_min, job.salary_max, searchedCountry);
                 const posted = timeAgo(job.created);
+                const initial = (job.company || job.title || '?')[0].toUpperCase();
+                const gradients = [
+                  'from-blue-500 to-indigo-600',
+                  'from-purple-500 to-pink-600',
+                  'from-emerald-500 to-teal-600',
+                  'from-amber-500 to-orange-600',
+                  'from-rose-500 to-red-600',
+                  'from-cyan-500 to-blue-600',
+                ];
+                const gradientIndex = initial.charCodeAt(0) % gradients.length;
                 return (
                   <a
                     key={i}
@@ -299,27 +313,39 @@ export default function JobsPage() {
                     target="_blank"
                     rel="noopener noreferrer nofollow"
                     onClick={() => console.log('[affiliate] click: job-search', { title: job.title, company: job.company })}
-                    className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-indigo-200 transition-all group flex flex-col min-h-[140px]"
+                    className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-200 overflow-hidden group flex flex-col"
                   >
-                    <h3 className="text-sm font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2 mb-2">
-                      {job.title}
-                    </h3>
-                    <p className="text-xs text-gray-500 mb-2">
-                      {[job.company, job.location].filter(Boolean).join(' · ')}
-                    </p>
-                    {salary && (
-                      <span className="inline-flex self-start bg-emerald-50 text-emerald-700 text-xs font-medium px-2.5 py-0.5 rounded-full mb-2">
-                        {salary}
-                      </span>
-                    )}
-                    <div className="mt-auto pt-2 flex items-center justify-between border-t border-gray-100">
-                      {posted && (
-                        <span className="text-[11px] text-gray-400 flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          {posted}
+                    <div className={`h-10 bg-gradient-to-r ${gradients[gradientIndex]} flex items-center px-4`}>
+                      <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                        <span className="text-white text-sm font-bold">{initial}</span>
+                      </div>
+                    </div>
+                    <div className="p-4 flex flex-col flex-1">
+                      <h3 className="text-base font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2 mb-1">
+                        {job.title}
+                      </h3>
+                      <p className="text-sm text-gray-600 mb-2">
+                        {[job.company, job.location].filter(Boolean).join(' · ')}
+                      </p>
+                      <div className="flex items-center gap-2 flex-wrap mb-3">
+                        {salary && (
+                          <span className="bg-emerald-50 text-emerald-700 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                            {salary}
+                          </span>
+                        )}
+                        {posted && (
+                          <span className="text-xs text-gray-400 flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            {posted}
+                          </span>
+                        )}
+                      </div>
+                      <div className="mt-auto pt-2">
+                        <span className="flex items-center justify-center gap-2 w-full py-2 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-semibold group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                          Apply Now
+                          <ExternalLink className="w-3.5 h-3.5" />
                         </span>
-                      )}
-                      <ExternalLink className="w-3.5 h-3.5 text-gray-300 group-hover:text-indigo-500 transition-colors ml-auto" />
+                      </div>
                     </div>
                   </a>
                 );
