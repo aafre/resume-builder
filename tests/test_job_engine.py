@@ -350,7 +350,7 @@ class TestJobMatchEngine:
     @patch("job_engine.get_ai_search_terms")
     @patch.object(JobMatchEngine, "_fetch_adzuna")
     def test_tier3_triggered_when_tier2_insufficient(self, mock_fetch, mock_ai):
-        """When Tier 1 + Tier 2 yield < 3 results, Tier 3 is triggered."""
+        """When Tier 1 + Tier 2 yield < 5 results, Tier 3 is triggered."""
         mock_fetch.side_effect = [
             self._make_jobs(1, "http://t1"),  # Tier 1: 1 result
             self._make_jobs(1, "http://t2"),  # Tier 2: 1 result
@@ -365,6 +365,24 @@ class TestJobMatchEngine:
 
         assert mock_ai.called
         assert len(result["jobs"]) == 6
+
+    @patch("job_engine.get_ai_search_terms")
+    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    def test_tier3_triggered_with_4_results_after_tier2(self, mock_fetch, mock_ai):
+        """3-4 results after Tier 2 should still trigger Tier 3 (threshold=5)."""
+        mock_fetch.side_effect = [
+            self._make_jobs(2, "http://t1"),  # Tier 1: 2 results
+            self._make_jobs(2, "http://t2"),  # Tier 2: 2 results (total=4)
+            self._make_jobs(3, "http://t3"),  # Tier 3
+        ]
+        mock_ai.return_value = ["Developer"]
+
+        engine = self._make_engine()
+        ctx = MatchContext(query="software engineer")
+        result = engine.search_and_rank(ctx)
+
+        assert mock_ai.called
+        assert len(result["jobs"]) == 7
 
     @patch.object(JobMatchEngine, "_fetch_adzuna")
     def test_dedup_by_url(self, mock_fetch):

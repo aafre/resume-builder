@@ -405,7 +405,7 @@ class JobMatchEngine:
     """
 
     TIER1_THRESHOLD = 5
-    TIER2_THRESHOLD = 3
+    TIER2_THRESHOLD = 5
     RESULTS_PER_QUERY = 20
 
     def __init__(self, adzuna_app_id: str, adzuna_app_key: str, supabase=None):
