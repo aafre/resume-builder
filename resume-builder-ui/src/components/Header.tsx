@@ -112,13 +112,19 @@ export default function Header() {
               {affiliateConfig.jobSearch.enabled && (
                 <Link
                   to="/jobs"
-                  className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+                  className={`relative px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
                     location.pathname === '/jobs'
                       ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white shadow-md'
                       : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700'
                   }`}
                 >
                   Jobs
+                  {location.pathname !== '/jobs' && (
+                    <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
+                    </span>
+                  )}
                 </Link>
               )}
             </nav>
@@ -198,8 +204,8 @@ className="flex items-center gap-2 py-2 font-semibold text-sm transition-all dur
               </>
             )}
 
-            {/* CTA Button (only on homepage) */}
-            {location.pathname === "/" && (
+            {/* CTA Button (only on homepage, non-authenticated) */}
+            {location.pathname === "/" && !isAuthenticated && (
               <Link
                 to="/templates"
                 className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white py-2.5 px-5 sm:py-3 sm:px-6 rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl hover:shadow-purple-500/25 hover:scale-[1.02] transition-all duration-300 active:scale-[0.98]"
