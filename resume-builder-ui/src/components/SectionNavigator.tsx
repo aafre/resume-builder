@@ -104,7 +104,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
       // Find the header element
       const header = document.querySelector("header");
       const devBanner = document.querySelector('[class*="bg-red-600"]');
-      const footer = document.querySelector("footer.fixed");
+      const footer = document.querySelector("#app-footer");
 
       let totalHeaderHeight = 0;
 
@@ -444,7 +444,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                   ? "..."
                   : "Generating..."
                 : isCollapsed
-                ? "Download"
+                ? "PDF"
                 : "Download Resume"}
             </span>
           </button>
