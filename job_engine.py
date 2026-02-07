@@ -463,7 +463,7 @@ class JobMatchEngine:
                 "what": query,
                 "results_per_page": self.RESULTS_PER_QUERY,
                 "sort_by": context.sort_by if context.sort_by in ("relevance", "salary", "date") else "relevance",
-                "salary_include_unknown": "0",
+                "salary_include_unknown": "1",
             }
             if context.location:
                 params["where"] = context.location

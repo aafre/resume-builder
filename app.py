@@ -4043,7 +4043,7 @@ def _search_jobs_get():
             "what": query,
             "results_per_page": 10,
             "sort_by": sort_by,
-            "salary_include_unknown": "0",
+            "salary_include_unknown": "1",
         }
         if location:
             params["where"] = location

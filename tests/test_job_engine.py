@@ -427,6 +427,21 @@ class TestJobMatchEngine:
         for job in result["jobs"]:
             assert "_description" not in job
 
+    @patch("requests.get")
+    def test_fetch_adzuna_includes_unknown_salary(self, mock_get):
+        """_fetch_adzuna should send salary_include_unknown=1."""
+        mock_resp = MagicMock()
+        mock_resp.raise_for_status = MagicMock()
+        mock_resp.json.return_value = {"results": []}
+        mock_get.return_value = mock_resp
+
+        engine = self._make_engine()
+        ctx = MatchContext(query="python", country="gb")
+        engine._fetch_adzuna(ctx, "python")
+
+        call_params = mock_get.call_args[1]["params"]
+        assert call_params["salary_include_unknown"] == "1"
+
 
 # =============================================================================
 # Endpoint Integration
