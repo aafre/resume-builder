@@ -1,5 +1,3 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -7,9 +5,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['"Plus Jakarta Sans Variable"', ...defaultTheme.fontFamily.sans],
-      },
       backgroundClip: {
         text: 'text',
         border: 'border-box',
