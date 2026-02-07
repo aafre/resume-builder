@@ -10,7 +10,7 @@ import {
   MdSchool,
   MdStar,
   MdList,
-  MdMenu,
+
   MdFormatListBulleted,
   MdViewColumn,
   MdTextFields,
@@ -24,6 +24,7 @@ import {
   MdVisibility,
   MdSupport,
 } from "react-icons/md";
+import { PanelRightClose, PanelRightOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AdContainer, AD_CONFIG } from "./ads";
 
@@ -311,7 +312,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           aria-label={isCollapsed ? "Expand sidebar (Ctrl+\\)" : "Collapse sidebar (Ctrl+\\)"}
           title={isCollapsed ? "Expand (Ctrl+\\)" : "Collapse (Ctrl+\\)"}
         >
-          <MdMenu className="text-lg" />
+          {isCollapsed ? <PanelRightOpen size={18} /> : <PanelRightClose size={18} />}
         </button>
       </div>
 
