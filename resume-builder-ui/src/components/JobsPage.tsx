@@ -264,9 +264,14 @@ export default function JobsPage() {
 
         {/* Results Count */}
         {hasSearched && !loading && !error && jobs.length > 0 && (
-          <p className="text-sm text-gray-500 mb-4">
-            Found {totalCount.toLocaleString()} matching jobs
-          </p>
+          <div className="flex items-baseline gap-2 mb-6">
+            <h2 className="text-lg font-bold text-gray-900">
+              {totalCount.toLocaleString()} jobs found
+            </h2>
+            <span className="text-sm text-gray-500">
+              for &ldquo;{titleInput}&rdquo;{locationInput ? ` in ${locationInput}` : ''}
+            </span>
+          </div>
         )}
 
         {/* Loading Skeletons */}
