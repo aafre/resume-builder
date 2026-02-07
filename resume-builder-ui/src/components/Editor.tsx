@@ -447,6 +447,8 @@ const Editor: React.FC = () => {
         saveStatus={saveStatus}
         lastSaved={cloudLastSaved}
         isAuthenticated={isAuthenticated}
+        contactInfo={contactInfo}
+        sections={sections}
       />
     </div>
   );
