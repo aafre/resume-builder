@@ -15,6 +15,7 @@ import { extractSearchParamsFromYAML } from '../utils/resumeDataExtractor';
 import type { SeniorityLevel } from '../utils/resumeDataExtractor';
 import { useResumeParser } from '../hooks/useResumeParser';
 import { useAuth } from '../contexts/AuthContext';
+import yaml from 'js-yaml';
 import { isExperienceSection } from '../utils/sectionTypeChecker';
 import { SEO_PAGES } from '../config/seoPages';
 import { usePageSchema } from '../hooks/usePageSchema';
@@ -271,7 +272,7 @@ export default function JobsPage() {
 
       // Extract experience titles for role suggestions (in background)
       try {
-        const parsed = (await import('js-yaml')).default.load(result.yaml) as { sections?: Array<{ type?: string; content?: Array<{ title?: string }> }> };
+        const parsed = yaml.load(result.yaml) as { sections?: Array<{ type?: string; content?: Array<{ title?: string }> }> };
         const expSection = parsed?.sections?.find((s) => isExperienceSection(s as never));
         const expTitles = (expSection?.content || [])
           .map((item) => item.title?.trim())
@@ -284,13 +285,11 @@ export default function JobsPage() {
         // Non-critical — suggestions are optional
       }
     } catch (err) {
-      if (!error) {
-        setError(err instanceof Error ? err.message : 'Failed to parse resume.');
-      }
+      setError(err instanceof Error ? err.message : 'Failed to parse resume.');
     } finally {
       setResumeParsing(false);
     }
-  }, [session, parseResume, error]);
+  }, [session, parseResume]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();

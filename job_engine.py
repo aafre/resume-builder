@@ -8,6 +8,7 @@ Tier 3: AI fallback via Supabase Edge Function (eliminates zero-results for nich
 All tiers feed into JobScorer which ranks results by resume fit.
 """
 
+import json
 import logging
 import time
 import math
@@ -254,10 +255,8 @@ def get_ai_search_terms(title: str, supabase) -> list[str]:
 
         # supabase-py returns bytes or str
         if isinstance(response, bytes):
-            import json
             data = json.loads(response.decode("utf-8"))
         elif isinstance(response, str):
-            import json
             data = json.loads(response)
         elif isinstance(response, dict):
             data = response
@@ -312,7 +311,7 @@ class JobScorer:
         for title, syns in TITLE_SYNONYMS.items():
             if title == self.query:
                 self.synonym_titles.update(s.lower() for s in syns)
-            elif self.query in [s.lower() for s in syns]:
+            elif any(self.query == s.lower() for s in syns):
                 self.synonym_titles.add(title)
 
     def score(self, job: dict) -> float:

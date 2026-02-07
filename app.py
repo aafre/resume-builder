@@ -3972,21 +3972,24 @@ def _search_jobs_post():
     if sort_by not in ("relevance", "salary", "date"):
         sort_by = "relevance"
 
-    context = MatchContext(
-        query=query,
-        location=(body.get("location") or "").strip(),
-        country=country,
-        category=(body.get("category") or "").strip().lower(),
-        skills=body.get("skills") or [],
-        seniority_level=(body.get("seniority_level") or "").strip(),
-        years_experience=int(body.get("years_experience") or 0),
-        salary_min=int(body.get("salary_min") or 0),
-        title_only=bool(body.get("title_only")),
-        max_days_old=int(body.get("max_days_old") or 0),
-        full_time=bool(body.get("full_time")),
-        permanent=bool(body.get("permanent")),
-        sort_by=sort_by,
-    )
+    try:
+        context = MatchContext(
+            query=query,
+            location=(body.get("location") or "").strip(),
+            country=country,
+            category=(body.get("category") or "").strip().lower(),
+            skills=body.get("skills") or [],
+            seniority_level=(body.get("seniority_level") or "").strip(),
+            years_experience=int(body.get("years_experience") or 0),
+            salary_min=int(body.get("salary_min") or 0),
+            title_only=bool(body.get("title_only")),
+            max_days_old=int(body.get("max_days_old") or 0),
+            full_time=bool(body.get("full_time")),
+            permanent=bool(body.get("permanent")),
+            sort_by=sort_by,
+        )
+    except (ValueError, TypeError) as e:
+        return jsonify({"success": False, "error": f"Invalid parameter: {e}"}), 400
 
     try:
         engine = JobMatchEngine(app_id, app_key, supabase=supabase)
