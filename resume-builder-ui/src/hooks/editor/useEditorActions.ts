@@ -267,8 +267,8 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
 
         toast.success('Resume downloaded successfully!');
 
-        // Show celebration modal for anonymous users (first time only)
-        if (isAnonymous && !hasShownDownloadToast) {
+        // Show post-download modal for all users (first time per session)
+        if (!hasShownDownloadToast) {
           markDownloadToastShown();
 
           setTimeout(() => {
@@ -298,7 +298,6 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
     sections,
     templateId,
     iconRegistry,
-    isAnonymous,
     hasShownDownloadToast,
     markDownloadToastShown,
     openDownloadCelebration,

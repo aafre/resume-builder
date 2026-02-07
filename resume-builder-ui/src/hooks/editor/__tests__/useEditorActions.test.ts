@@ -360,7 +360,7 @@ describe('useEditorActions', () => {
       expect(mockOpenDownloadCelebration).not.toHaveBeenCalled();
     });
 
-    it('should not show celebration modal for authenticated users', async () => {
+    it('should show celebration modal for authenticated users on first download', async () => {
       vi.mocked(generateResume).mockResolvedValue({
         pdfBlob: new Blob(['pdf']),
         fileName: 'resume.pdf',
@@ -379,7 +379,7 @@ describe('useEditorActions', () => {
         await vi.runAllTimersAsync();
       });
 
-      expect(mockOpenDownloadCelebration).not.toHaveBeenCalled();
+      expect(mockOpenDownloadCelebration).toHaveBeenCalled();
     });
 
     it('should handle download errors gracefully', async () => {

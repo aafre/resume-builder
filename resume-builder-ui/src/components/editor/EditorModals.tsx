@@ -167,6 +167,7 @@ export const EditorModals: React.FC<EditorModalsProps> = ({
           modalManager.closeDownloadCelebration();
           modalManager.openAuthModal();
         }}
+        isAnonymous={isAnonymous}
       />
 
       {/* Tabbed Help Modal */}

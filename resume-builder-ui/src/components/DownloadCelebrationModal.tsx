@@ -1,16 +1,20 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { ClipboardCheck, ExternalLink } from "lucide-react";
+import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
 
 interface DownloadCelebrationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSignUp: () => void;
+  isAnonymous: boolean;
 }
 
 const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
   isOpen,
   onClose,
   onSignUp,
+  isAnonymous,
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const primaryButtonRef = useRef<HTMLButtonElement>(null);
@@ -83,11 +87,17 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
     }
   };
 
+  const handleAffiliateClick = (provider: string) => {
+    console.log(`[affiliate] click: ${provider}`);
+  };
+
+  const showAffiliate = hasAnyAffiliate();
+
   return createPortal(
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm animate-fade-in"
+        className="fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm animate-dcm-fade-in"
         onClick={handleBackdropClick}
         aria-hidden="true"
       />
@@ -100,15 +110,15 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
           aria-modal="true"
           aria-labelledby="celebration-modal-title"
           aria-describedby="celebration-modal-description"
-          className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto animate-modal-enter"
+          className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto animate-dcm-modal-enter"
         >
           {/* Celebration Icon */}
           <div className="w-20 h-20 mx-auto mb-6 relative">
             {/* Main checkmark circle with gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-green-400 via-emerald-500 to-teal-600 rounded-full flex items-center justify-center animate-scale-in shadow-lg">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-400 via-emerald-500 to-teal-600 rounded-full flex items-center justify-center animate-dcm-scale-in shadow-lg">
               {/* Checkmark SVG */}
               <svg
-                className="w-12 h-12 text-white animate-checkmark-draw"
+                className="w-12 h-12 text-white animate-dcm-checkmark-draw"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -126,8 +136,8 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
               </svg>
             </div>
 
-            {/* Pulsing ring effect */}
-            <div className="absolute inset-0 bg-green-400 rounded-full animate-ping opacity-20" />
+            {/* Pulsing ring effect - runs once */}
+            <div className="absolute inset-0 bg-green-400 rounded-full animate-dcm-ping-once opacity-20" />
           </div>
 
           {/* Title */}
@@ -135,113 +145,202 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
             id="celebration-modal-title"
             className="text-2xl sm:text-3xl font-bold text-center mb-4 text-gray-900"
           >
-            Resume Downloaded Successfully! 🎉
+            Resume Downloaded Successfully!
           </h2>
 
           {/* Success Message */}
-          <p className="text-lg text-gray-700 text-center mb-4">
+          <p
+            id="celebration-modal-description"
+            className="text-lg text-gray-700 text-center mb-4"
+          >
             Your PDF has been saved to your device.
           </p>
 
-          {/* Warning Box */}
-          <div
-            id="celebration-modal-description"
-            className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-4"
-          >
-            <p className="text-sm text-amber-800">
-              <span className="font-semibold">⚠️ Warning:</span> Since you are a guest, this
-              resume is only saved in your browser's temporary cache. If you clear your cache,
-              you will lose this data.
-            </p>
-          </div>
+          {/* Anonymous-only: Warning + Sign-up CTA */}
+          {isAnonymous && (
+            <>
+              {/* Warning Box */}
+              <div className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-4">
+                <p className="text-sm text-amber-800">
+                  <span className="font-semibold">Warning:</span> Since you are a
+                  guest, this resume is only saved in your browser&apos;s temporary
+                  cache. If you clear your cache, you will lose this data.
+                </p>
+              </div>
 
-          {/* Value Proposition */}
-          <p className="text-gray-600 text-center mb-6">
-            Create a free account to save this version securely to the cloud and edit it
-            anytime.
-          </p>
+              {/* Value Proposition */}
+              <p className="text-gray-600 text-center mb-6">
+                Create a free account to save this version securely to the cloud and
+                edit it anytime.
+              </p>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col-reverse sm:flex-row gap-3 justify-center">
-            {/* Secondary Button (Left on desktop) */}
-            <button
-              onClick={onClose}
-              className="bg-gray-100 text-gray-700 font-medium px-8 py-3.5 rounded-xl hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
-            >
-              No thanks, I'll risk it
-            </button>
+              {/* Action Buttons */}
+              <div className="flex flex-col-reverse sm:flex-row gap-3 justify-center">
+                {/* Secondary Button (Left on desktop) */}
+                <button
+                  onClick={onClose}
+                  className="bg-gray-100 text-gray-700 font-medium px-8 py-3.5 rounded-xl cursor-pointer hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+                >
+                  No thanks, I&apos;ll risk it
+                </button>
 
-            {/* Primary Button (Right on desktop) */}
-            <button
-              ref={primaryButtonRef}
-              onClick={onSignUp}
-              className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-            >
-              Save to Cloud (Free)
-            </button>
-          </div>
+                {/* Primary Button (Right on desktop) */}
+                <button
+                  ref={primaryButtonRef}
+                  onClick={onSignUp}
+                  className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg cursor-pointer hover:shadow-xl transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                >
+                  Save to Cloud (Free)
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* Authenticated users: Close button */}
+          {!isAnonymous && !showAffiliate && (
+            <div className="flex justify-center">
+              <button
+                ref={primaryButtonRef}
+                onClick={onClose}
+                className="bg-gray-100 text-gray-700 font-medium px-8 py-3.5 rounded-xl cursor-pointer hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+              >
+                Close
+              </button>
+            </div>
+          )}
+
+          {/* Affiliate "What's Next?" Section */}
+          {showAffiliate && (
+            <div className="mt-6">
+              {/* Divider */}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex-1 h-px bg-gray-200" />
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                  What&apos;s Next?
+                </span>
+                <div className="flex-1 h-px bg-gray-200" />
+              </div>
+
+              {/* Resume Review Card */}
+              {affiliateConfig.resumeReview.enabled &&
+                affiliateConfig.resumeReview.url && (
+                  <a
+                    href={affiliateConfig.resumeReview.url}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    onClick={() => handleAffiliateClick("resume-review")}
+                    className="flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-xl p-4 cursor-pointer hover:bg-indigo-50 hover:border-indigo-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  >
+                    <ClipboardCheck className="w-5 h-5 text-indigo-600 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-900">
+                        {affiliateConfig.resumeReview.label}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {affiliateConfig.resumeReview.description}
+                      </p>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  </a>
+                )}
+
+              {/* Close button for authenticated users when affiliate is shown */}
+              {!isAnonymous && (
+                <div className="flex justify-center mt-4">
+                  <button
+                    ref={!isAnonymous ? primaryButtonRef : undefined}
+                    onClick={onClose}
+                    className="bg-gray-100 text-gray-700 font-medium px-8 py-3.5 rounded-xl cursor-pointer hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+                  >
+                    Close
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
       {/* Inline styles for animations */}
       <style>{`
-        @keyframes scale-in {
-          0% {
-            transform: scale(0);
-            opacity: 0;
+        @media (prefers-reduced-motion: no-preference) {
+          @keyframes dcm-scale-in {
+            0% {
+              transform: scale(0);
+              opacity: 0;
+            }
+            50% {
+              transform: scale(1.1);
+            }
+            100% {
+              transform: scale(1);
+              opacity: 1;
+            }
           }
-          50% {
-            transform: scale(1.1);
-          }
-          100% {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
 
-        @keyframes checkmark-draw {
-          0% {
-            stroke-dashoffset: 24;
+          @keyframes dcm-checkmark-draw {
+            0% {
+              stroke-dashoffset: 24;
+            }
+            100% {
+              stroke-dashoffset: 0;
+            }
           }
-          100% {
-            stroke-dashoffset: 0;
+
+          @keyframes dcm-modal-enter {
+            0% {
+              opacity: 0;
+              transform: scale(0.9) translateY(20px);
+            }
+            100% {
+              opacity: 1;
+              transform: scale(1) translateY(0);
+            }
           }
-        }
 
-        @keyframes modal-enter {
-          0% {
-            opacity: 0;
-            transform: scale(0.9) translateY(20px);
+          @keyframes dcm-fade-in {
+            0% {
+              opacity: 0;
+            }
+            100% {
+              opacity: 1;
+            }
           }
-          100% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
+
+          @keyframes dcm-ping-once {
+            0% {
+              transform: scale(1);
+              opacity: 0.2;
+            }
+            75% {
+              transform: scale(2);
+              opacity: 0;
+            }
+            100% {
+              transform: scale(2);
+              opacity: 0;
+            }
           }
-        }
 
-        @keyframes fade-in {
-          0% {
-            opacity: 0;
+          .animate-dcm-scale-in {
+            animation: dcm-scale-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
           }
-          100% {
-            opacity: 1;
+
+          .animate-dcm-checkmark-draw {
+            animation: dcm-checkmark-draw 0.6s ease-in-out 0.3s forwards;
           }
-        }
 
-        .animate-scale-in {
-          animation: scale-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
+          .animate-dcm-modal-enter {
+            animation: dcm-modal-enter 0.3s ease-out forwards;
+          }
 
-        .animate-checkmark-draw {
-          animation: checkmark-draw 0.6s ease-in-out 0.3s forwards;
-        }
+          .animate-dcm-fade-in {
+            animation: dcm-fade-in 0.2s ease-out forwards;
+          }
 
-        .animate-modal-enter {
-          animation: modal-enter 0.3s ease-out forwards;
-        }
-
-        .animate-fade-in {
-          animation: fade-in 0.2s ease-out forwards;
+          .animate-dcm-ping-once {
+            animation: dcm-ping-once 1s cubic-bezier(0, 0, 0.2, 1) forwards;
+          }
         }
       `}</style>
     </>,
