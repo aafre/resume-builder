@@ -69,13 +69,13 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
       return;
     }
 
-    const cacheKey = `${params.query}|${params.location}|${params.country}`;
+    const cacheKey = `${params.query}|${params.location}|${params.country}|${params.skills.join(',')}`;
     if (cacheKey === lastQueryRef.current) return;
     lastQueryRef.current = cacheKey;
 
     setLoading(true);
     try {
-      const result = await searchJobs(params.query, params.location, params.country, params.category);
+      const result = await searchJobs(params.query, params.location, params.country, params.category, undefined, params.skills);
       setJobCount(result.count);
     } catch {
       setJobCount(null);
@@ -149,6 +149,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
           title: params.displayTitle,
           location: params.location,
           country: params.country,
+          skills: params.skills,
         }));
       } catch { /* ignore */ }
     }

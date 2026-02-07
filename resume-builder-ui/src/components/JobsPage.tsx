@@ -84,7 +84,8 @@ export default function JobsPage() {
   const [searchedCountry, setSearchedCountry] = useState('us');
   const formRef = useRef<HTMLFormElement>(null);
   const shouldAutoSearch = useRef(false);
-  const lastSearchParams = useRef<{ query: string; location: string; country: string; category?: string | null }>({ query: '', location: '', country: 'us' });
+  const prefillSkillsRef = useRef<string[]>([]);
+  const lastSearchParams = useRef<{ query: string; location: string; country: string; category?: string | null; skills?: string[] }>({ query: '', location: '', country: 'us' });
 
   const schemas = usePageSchema({
     type: 'website',
@@ -101,6 +102,7 @@ export default function JobsPage() {
         if (data.title) setTitleInput(data.title);
         if (data.location) setLocationInput(data.location);
         if (data.country) setCountry(data.country);
+        if (Array.isArray(data.skills)) prefillSkillsRef.current = data.skills;
         sessionStorage.removeItem('jobSearchPrefill');
         if (data.title) shouldAutoSearch.current = true;
       }
@@ -124,9 +126,12 @@ export default function JobsPage() {
         : country;
 
       const searchQuery = query || titleInput.trim();
-      lastSearchParams.current = { query: searchQuery, location: searchLocation, country: searchCountry, category };
+      // Use prefilled skills for auto-search (no event), empty for manual search
+      const skills = e ? [] : prefillSkillsRef.current;
+      prefillSkillsRef.current = [];
+      lastSearchParams.current = { query: searchQuery, location: searchLocation, country: searchCountry, category, skills };
 
-      const result = await searchJobs(searchQuery, searchLocation, searchCountry, category);
+      const result = await searchJobs(searchQuery, searchLocation, searchCountry, category, undefined, skills.length > 0 ? skills : undefined);
       setJobs(result.jobs);
       setTotalCount(result.count);
       setSearchedCountry(searchCountry);
@@ -143,8 +148,8 @@ export default function JobsPage() {
     const nextPage = page + 1;
     setLoadingMore(true);
     try {
-      const { query, location, country: c, category } = lastSearchParams.current;
-      const result = await searchJobs(query, location, c, category, nextPage);
+      const { query, location, country: c, category, skills } = lastSearchParams.current;
+      const result = await searchJobs(query, location, c, category, nextPage, skills && skills.length > 0 ? skills : undefined);
       setJobs(prev => [...prev, ...result.jobs]);
       setPage(nextPage);
     } catch {

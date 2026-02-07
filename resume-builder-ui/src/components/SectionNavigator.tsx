@@ -471,6 +471,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                         title: params.displayTitle,
                         location: params.location,
                         country: params.country,
+                        skills: params.skills,
                       }));
                     } catch { /* ignore */ }
                   }
@@ -497,6 +498,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                         title: params.displayTitle,
                         location: params.location,
                         country: params.country,
+                        skills: params.skills,
                       }));
                     } catch { /* ignore */ }
                   }
