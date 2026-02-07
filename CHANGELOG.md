@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.17.0] - 2026-02-07
+
+### 🚀 Features
+
+- **ui:** Add premium CSS system for scroll-reveal, shadows, and cards
+- **ui:** Add scroll-reveal hook and RevealSection component
+- **ui:** Upgrade shared components with premium styling
+- **ui:** Add emoji-to-Lucide icon map and upgrade FeatureGrid
+- **ui:** Revamp landing page with premium icons and animations
+
+### 🐛 Bug Fixes
+
+- **ui:** Prevent flash of unstyled content with opacity guard
+- **ads:** Contain Google Auto Ad wrappers causing mobile overflow
+- **ui:** Replace Bloomberg text SVG with proper vector paths
+- **ui:** Tighten Bloomberg SVG viewBox and remove forced aspect ratio
+- **seo:** Add robots prop to SEOHead component
+- **seo:** Add noindex SEOHead to 404 page
+- **seo:** Add noindex SEOHead to error page
+- **seo:** Replace header logo div with crawlable Link
+- **ads:** Prevent duplicate adsbygoogle.push in StrictMode
+- **editor:** Correct footer selector in sidebar height calculation
+- **editor:** Use scroll-aware bottom offset for sidebar height
+
+### 🚜 Refactor
+
+- **ui:** Use specific transitions, remove redundant motion-reduce classes
+- **ui:** Move marquee keyframes to styles.css
+- **editor:** Replace hamburger icon with contextual panel toggle icons
+- **landing:** Replace feature Heroicons with contextual Lucide icons
+
+### ⚡ Performance
+
+- Remove unused fonts.gstatic.com preconnect
+- **ui:** Use transition-transform on fallback feature icon
+
+### 🧪 Testing
+
+- Wrap ErrorPage tests with HelmetProvider
+
+### ⚙️ Miscellaneous Tasks
+
+- **ui:** Add Plus Jakarta Sans font and update config
+- **ui:** Remove unused Plus Jakarta Sans font dependency
+
 ## [3.16.1] - 2026-02-06
 
 ### 🐛 Bug Fixes
