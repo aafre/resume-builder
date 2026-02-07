@@ -1,10 +1,5 @@
 // src/utils/countryDetector.ts
 
-const ADZUNA_COUNTRIES = new Set([
-  'gb', 'us', 'at', 'au', 'be', 'br', 'ca', 'ch',
-  'de', 'es', 'fr', 'in', 'it', 'mx', 'nl', 'nz', 'pl', 'sg', 'za',
-]);
-
 const COUNTRY_NAMES: Record<string, string> = {
   'united kingdom': 'gb',
   'united states': 'us',
