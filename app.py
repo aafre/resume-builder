@@ -3966,8 +3966,19 @@ def search_jobs():
         logging.warning("Adzuna API credentials not configured")
         return jsonify({"success": False, "error": "Job search not configured"}), 502
 
+    # Optional passthrough params
+    title_only = request.args.get("title_only", "").strip()
+    max_days_old = request.args.get("max_days_old", "").strip()
+    salary_min = request.args.get("salary_min", "").strip()
+    full_time = request.args.get("full_time", "").strip()
+    permanent = request.args.get("permanent", "").strip()
+    sort_by = request.args.get("sort_by", "relevance").strip()
+    if sort_by not in ("relevance", "salary", "date"):
+        sort_by = "relevance"
+
     # Check cache
-    cache_key = (query.lower(), location.lower(), country, category, what_or.lower(), page)
+    cache_key = (query.lower(), location.lower(), country, category, what_or.lower(),
+                 page, title_only, max_days_old, salary_min, full_time, permanent, sort_by)
     now = time.time()
     cached = _adzuna_cache.get(cache_key)
     if cached and (now - cached["ts"]) < _ADZUNA_CACHE_TTL:
@@ -3978,9 +3989,9 @@ def search_jobs():
             "app_id": app_id,
             "app_key": app_key,
             "what": query,
-            "results_per_page": 3,
-            "sort_by": "relevance",
-            "salary_include_unknown": "1",
+            "results_per_page": 10,
+            "sort_by": sort_by,
+            "salary_include_unknown": "0",
         }
         if location:
             params["where"] = location
@@ -3988,6 +3999,16 @@ def search_jobs():
             params["category"] = category
         if what_or:
             params["what_or"] = what_or
+        if title_only:
+            params["title_only"] = title_only
+        if max_days_old:
+            params["max_days_old"] = max_days_old
+        if salary_min:
+            params["salary_min"] = salary_min
+        if full_time:
+            params["full_time"] = full_time
+        if permanent:
+            params["permanent"] = permanent
 
         resp = http_requests.get(
             f"https://api.adzuna.com/v1/api/jobs/{country}/search/{page}",
@@ -4005,6 +4026,7 @@ def search_jobs():
                 "location": (r.get("location", {}) or {}).get("display_name", ""),
                 "salary_min": r.get("salary_min"),
                 "salary_max": r.get("salary_max"),
+                "salary_is_predicted": bool(r.get("salary_is_predicted")),
                 "url": r.get("redirect_url", ""),
                 "created": r.get("created", ""),
             })
