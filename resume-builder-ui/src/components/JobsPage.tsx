@@ -360,8 +360,12 @@ export default function JobsPage() {
                       </p>
                       <div className="flex items-center gap-2 flex-wrap mb-3">
                         {salary && (
-                          <span className="bg-emerald-50 text-emerald-700 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                            {salary}
+                          <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
+                            job.salary_is_predicted
+                              ? 'bg-amber-50 text-amber-600'
+                              : 'bg-emerald-50 text-emerald-700'
+                          }`}>
+                            {salary}{job.salary_is_predicted ? ' est.' : ''}
                           </span>
                         )}
                         {posted && (

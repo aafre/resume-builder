@@ -339,8 +339,10 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                                   .join(" · ")}
                               </p>
                               {salary && (
-                                <p className="text-xs font-medium text-emerald-600 mt-0.5">
-                                  {salary}
+                                <p className={`text-xs font-medium mt-0.5 ${
+                                  job.salary_is_predicted ? 'text-amber-600' : 'text-emerald-600'
+                                }`}>
+                                  {salary}{job.salary_is_predicted ? ' (est.)' : ''}
                                 </p>
                               )}
                             </div>
