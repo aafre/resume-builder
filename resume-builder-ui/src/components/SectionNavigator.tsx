@@ -24,10 +24,12 @@ import {
   MdVisibility,
   MdSupport,
 } from "react-icons/md";
-import { PanelRightClose, PanelRightOpen, ShieldCheck, ChevronRight } from "lucide-react";
+import { PanelRightClose, PanelRightOpen, ShieldCheck, ChevronRight, Briefcase } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AdContainer, AD_CONFIG } from "./ads";
 import { affiliateConfig } from "../config/affiliate";
+import { extractJobSearchParams } from "../utils/resumeDataExtractor";
+import type { ContactInfo, Section as ResumeSection } from "../types";
 
 interface Section {
   name: string;
@@ -56,6 +58,8 @@ interface SectionNavigatorProps {
   onCollapseChange?: (isCollapsed: boolean) => void;
   isAnonymous?: boolean;
   isAuthenticated?: boolean;
+  contactInfo?: ContactInfo | null;
+  resumeSections?: ResumeSection[];
 }
 
 const STORAGE_KEY = "resume-builder-sidebar-collapsed";
@@ -86,6 +90,8 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   onCollapseChange,
   isAnonymous = false,
   isAuthenticated = false,
+  contactInfo,
+  resumeSections,
 }) => {
   // Show loading on button when either opening (save/validate) or generating
   const isPreviewLoading = isOpeningPreview || isGeneratingPreview;
@@ -448,6 +454,70 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                   <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-indigo-500 transition-colors flex-shrink-0" />
                 </div>
               </a>
+            )
+          )}
+
+          {/* Find Matching Jobs Card */}
+          {affiliateConfig.jobSearch.enabled && (
+            isCollapsed ? (
+              <Link
+                to="/jobs"
+                onClick={() => {
+                  console.log('[affiliate] click: sidebar-job-search');
+                  const params = extractJobSearchParams(contactInfo ?? null, resumeSections ?? []);
+                  if (params) {
+                    try {
+                      sessionStorage.setItem('jobSearchPrefill', JSON.stringify({
+                        title: params.displayTitle,
+                        location: params.location,
+                        country: params.country,
+                      }));
+                    } catch { /* ignore */ }
+                  }
+                }}
+                className="w-full flex flex-col items-center gap-1.5 py-2.5 px-1.5 mt-2 rounded-lg hover:bg-purple-50/80 transition-all text-purple-600 group"
+                title="Find Matching Jobs"
+              >
+                <div className="w-7 h-7 flex items-center justify-center rounded-md bg-purple-50 group-hover:bg-purple-100 transition-colors">
+                  <Briefcase className="w-4 h-4" />
+                </div>
+                <span className="text-[11px] font-medium text-center leading-tight text-purple-600">
+                  Jobs
+                </span>
+              </Link>
+            ) : (
+              <Link
+                to="/jobs"
+                onClick={() => {
+                  console.log('[affiliate] click: sidebar-job-search');
+                  const params = extractJobSearchParams(contactInfo ?? null, resumeSections ?? []);
+                  if (params) {
+                    try {
+                      sessionStorage.setItem('jobSearchPrefill', JSON.stringify({
+                        title: params.displayTitle,
+                        location: params.location,
+                        country: params.country,
+                      }));
+                    } catch { /* ignore */ }
+                  }
+                }}
+                className="block mt-2 mx-1 bg-white border border-gray-200 rounded-xl p-3 hover:shadow-md hover:border-purple-200 transition-all cursor-pointer group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className="w-6 h-6 flex items-center justify-center rounded-md bg-purple-50 group-hover:bg-purple-100 transition-colors flex-shrink-0">
+                    <Briefcase className="w-3.5 h-3.5 text-purple-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
+                      Find Matching Jobs
+                    </p>
+                    <p className="text-xs text-gray-500 leading-tight mt-0.5">
+                      Search jobs based on your resume.
+                    </p>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-purple-500 transition-colors flex-shrink-0" />
+                </div>
+              </Link>
             )
           )}
         </div>
