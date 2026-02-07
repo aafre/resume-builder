@@ -36,6 +36,9 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/resume-keywords', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-04' },
   { loc: '/examples', priority: 0.8, changefreq: 'weekly', lastmod: '2026-01-21' },
 
+  // Job Search (0.7)
+  { loc: '/jobs', priority: 0.7, changefreq: 'weekly', lastmod: '2026-02-07' },
+
   // Template Pages (0.7)
   { loc: '/templates/ats-friendly', priority: 0.7, changefreq: 'monthly', lastmod: '2026-02-02' },
   { loc: '/templates/modern-resume-templates', priority: 0.7, changefreq: 'monthly', lastmod: '2026-01-21' },
