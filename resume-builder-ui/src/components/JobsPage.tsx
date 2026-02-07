@@ -132,7 +132,7 @@ export default function JobsPage() {
       prefillSkillsRef.current = [];
       lastSearchParams.current = { query: searchQuery, location: searchLocation, country: searchCountry, category, skills };
 
-      const result = await searchJobs(searchQuery, searchLocation, searchCountry, category, undefined, skills.length > 0 ? skills : undefined);
+      const result = await searchJobs({ query: searchQuery, location: searchLocation, country: searchCountry, category, skills: skills.length > 0 ? skills : undefined });
       setJobs(result.jobs);
       setTotalCount(result.count);
       setSearchedCountry(searchCountry);
@@ -150,7 +150,7 @@ export default function JobsPage() {
     setLoadingMore(true);
     try {
       const { query, location, country: c, category, skills } = lastSearchParams.current;
-      const result = await searchJobs(query, location, c, category, nextPage, skills && skills.length > 0 ? skills : undefined);
+      const result = await searchJobs({ query, location, country: c, category, page: nextPage, skills: skills && skills.length > 0 ? skills : undefined });
       setJobs(prev => [...prev, ...result.jobs]);
       setPage(nextPage);
     } catch {

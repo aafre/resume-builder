@@ -100,7 +100,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
     setJobSearchParams(params);
     setJobsLoading(true);
-    searchJobs(params.query, params.location, params.country, params.category, undefined, params.skills)
+    searchJobs({ query: params.query, location: params.location, country: params.country, category: params.category, skills: params.skills })
       .then((result) => setJobs(result.jobs))
       .catch(() => {
         // Silently fail — hide section on error

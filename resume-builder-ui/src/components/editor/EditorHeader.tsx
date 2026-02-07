@@ -4,7 +4,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { Briefcase, X } from 'lucide-react';
+import { X } from 'lucide-react';
+import { JobSparkleIcon } from '../icons/JobSparkleIcon';
 import { ContactInfo, Section } from '../../types';
 import { affiliateConfig } from '../../config/affiliate';
 import { extractJobSearchParams } from '../../utils/resumeDataExtractor';
@@ -72,7 +73,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
 
     setLoading(true);
     try {
-      const result = await searchJobs(params.query, params.location, params.country, params.category, undefined, params.skills);
+      const result = await searchJobs({ query: params.query, location: params.location, country: params.country, category: params.category, skills: params.skills });
       setJobCount(result.count);
     } catch {
       setJobCount(null);
@@ -146,21 +147,27 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
     <Link
       to="/jobs"
       onClick={handleBadgeClick}
-      className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 shadow-md hover:shadow-lg hover:scale-[1.03] transition-all duration-200 animate-[badgeFadeIn_0.4s_ease-out] relative overflow-hidden group"
+      className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-indigo-200 rounded-full shadow-sm hover:shadow-md hover:border-indigo-300 transition-all duration-300 animate-[badgeFadeIn_0.4s_ease-out] group"
     >
-      {/* Shimmer overlay */}
-      <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
       {loading ? (
-        <div className="w-3 h-3 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+        <div className="w-3.5 h-3.5 rounded-full border-2 border-indigo-200 border-t-indigo-600 animate-spin" />
       ) : (
-        <Briefcase className="w-3 h-3" />
+        <JobSparkleIcon className="w-3.5 h-3.5 text-indigo-600" />
       )}
-      <span className="relative">
-        {loading ? 'Checking...' : `${jobCount} matches`}
-      </span>
-      <span className="bg-white/25 backdrop-blur-sm text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full leading-none relative">
-        NEW
-      </span>
+      <div className="flex flex-col leading-none">
+        <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider group-hover:text-indigo-500 transition-colors">
+          Matches
+        </span>
+        <span className="text-xs font-bold text-gray-900 tabular-nums">
+          {loading ? '...' : jobCount?.toLocaleString()}
+        </span>
+      </div>
+      {!loading && (
+        <span className="relative flex h-2 w-2 ml-0.5">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500" />
+        </span>
+      )}
     </Link>
   ) : null;
 
@@ -181,9 +188,9 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
               }}
               className="flex items-center gap-2 flex-1 min-w-0"
             >
-              <Briefcase className="w-4 h-4 flex-shrink-0" />
+              <JobSparkleIcon className="w-4 h-4 flex-shrink-0" />
               <span className="text-sm font-medium truncate">
-                {jobCount} matching jobs found
+                {jobCount} jobs matched to your skills
               </span>
               <span className="text-xs text-indigo-200 flex-shrink-0">View &rarr;</span>
             </Link>
