@@ -187,6 +187,18 @@ SKILL_ALIASES: dict[str, list[str]] = {
 }
 
 
+# Build set of all known skill/technology terms for skill-query detection
+_SKILL_TERMS: set[str] = set()
+for _k, _v in SKILL_ALIASES.items():
+    _SKILL_TERMS.add(_k.lower())
+    _SKILL_TERMS.update(a.lower() for a in _v)
+
+
+def _is_skill_query(query: str) -> bool:
+    """Check if the query is a known skill/technology term."""
+    return query.lower().strip() in _SKILL_TERMS
+
+
 # =============================================================================
 # Data Classes
 # =============================================================================
@@ -338,15 +350,20 @@ class JobScorer:
 
     def _score_skills(self, description: str) -> float:
         """Skill overlap: 0-30 points. No skills provided = neutral 15."""
-        if not self.skills:
-            return 15
+        skills = self.skills
+        if not skills:
+            # When no resume skills but query is a known skill, use it for matching
+            if _is_skill_query(self.query):
+                skills = [self.query]
+            else:
+                return 15
 
         desc_lower = description.lower()
         if not desc_lower:
             return 0
 
         matched = 0
-        for skill in self.skills:
+        for skill in skills:
             # Direct match
             if skill in desc_lower:
                 matched += 1
@@ -356,7 +373,7 @@ class JobScorer:
             if any(alias in desc_lower for alias in aliases):
                 matched += 1
 
-        return round((matched / len(self.skills)) * 30, 1)
+        return round((matched / len(skills)) * 30, 1)
 
     def _score_salary(self, job: dict) -> float:
         """Salary quality: 0-20 points."""
@@ -442,6 +459,10 @@ class JobMatchEngine:
         Execute 3-tier search and return scored results.
         Returns: { "count": int, "jobs": [...] }
         """
+        # Smart title_only: skill queries need full-text search
+        if context.title_only and _is_skill_query(context.query):
+            context.title_only = False
+
         scorer = JobScorer(context)
         seen_urls: set[str] = set()
         all_jobs: list[dict] = []

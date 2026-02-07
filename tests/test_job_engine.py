@@ -23,6 +23,7 @@ from job_engine import (
     get_ai_search_terms,
     _ai_cache,
     _ALIAS_LOOKUP,
+    _is_skill_query,
 )
 
 
@@ -91,6 +92,33 @@ class TestSkillAliases:
 
     def test_csharp_aliases(self):
         assert "csharp" in SKILL_ALIASES["c#"]
+
+
+# =============================================================================
+# Skill Query Detection
+# =============================================================================
+
+
+class TestSkillQueryDetection:
+    """Tests for _is_skill_query() function."""
+
+    def test_python_is_skill_query(self):
+        assert _is_skill_query("python") is True
+
+    def test_react_is_skill_query(self):
+        assert _is_skill_query("React") is True  # case-insensitive
+
+    def test_k8s_alias_is_skill_query(self):
+        assert _is_skill_query("k8s") is True
+
+    def test_software_engineer_is_not_skill_query(self):
+        assert _is_skill_query("software engineer") is False
+
+    def test_empty_is_not_skill_query(self):
+        assert _is_skill_query("") is False
+
+    def test_job_title_is_not_skill_query(self):
+        assert _is_skill_query("product manager") is False
 
 
 # =============================================================================
@@ -165,6 +193,23 @@ class TestSkillScoring:
     def test_no_description_gets_0(self):
         scorer = JobScorer(MatchContext(query="dev", skills=["python"]))
         assert scorer._score_skills("") == 0
+
+    def test_skill_query_no_skills_uses_query_as_skill(self):
+        """When no skills provided but query is a skill, use query for matching."""
+        scorer = JobScorer(MatchContext(query="python", skills=[]))
+        score = scorer._score_skills("We need python and react experience")
+        assert score == 30  # python found → 1/1 = 30
+
+    def test_skill_query_no_skills_no_match_gets_0(self):
+        """Skill query with no match in description gets 0."""
+        scorer = JobScorer(MatchContext(query="python", skills=[]))
+        score = scorer._score_skills("We need java and spring")
+        assert score == 0
+
+    def test_non_skill_query_no_skills_still_neutral(self):
+        """Non-skill query with no skills still returns neutral 15."""
+        scorer = JobScorer(MatchContext(query="product manager", skills=[]))
+        assert scorer._score_skills("any description") == 15
 
 
 # =============================================================================
@@ -474,6 +519,29 @@ class TestJobMatchEngine:
 
         call_params = mock_get.call_args[1]["params"]
         assert call_params["salary_include_unknown"] == "1"
+
+    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    def test_skill_query_disables_title_only(self, mock_fetch):
+        """Skill queries should override title_only to False."""
+        mock_fetch.return_value = self._make_jobs(6)
+        engine = self._make_engine()
+
+        ctx = MatchContext(query="python", title_only=True)
+        engine.search_and_rank(ctx)
+
+        # title_only should have been overridden to False
+        assert ctx.title_only is False
+
+    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    def test_non_skill_query_keeps_title_only(self, mock_fetch):
+        """Non-skill queries should keep title_only as-is."""
+        mock_fetch.return_value = self._make_jobs(6)
+        engine = self._make_engine()
+
+        ctx = MatchContext(query="software engineer", title_only=True)
+        engine.search_and_rank(ctx)
+
+        assert ctx.title_only is True
 
 
 # =============================================================================
