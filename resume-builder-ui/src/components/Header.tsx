@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { FileText } from "lucide-react";
 import { useEditorContext } from "../contexts/EditorContext";
 import { useAuth } from "../contexts/AuthContext";
@@ -11,7 +11,6 @@ import logo from "/logo-80.webp";
 
 export default function Header() {
   const location = useLocation();
-  const navigate = useNavigate();
   const { isAuthenticated, isAnonymous, loading: authLoading, showAuthModal, hideAuthModal, authModalOpen } = useAuth();
 
   // Get resume count for mobile badge (lightweight count-only query)
@@ -61,12 +60,9 @@ export default function Header() {
       <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-[72px] transition-all duration-200">
           {/* Logo and Home Navigation */}
-          <div
-            className="group flex items-center cursor-pointer transition-all duration-200 relative flex-shrink-0"
-            onClick={() => navigate("/")}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => e.key === "Enter" && navigate("/")}
+          <Link
+            to="/"
+            className="group flex items-center transition-all duration-200 relative flex-shrink-0"
             aria-label="Go to homepage"
           >
             <div className="relative">
@@ -81,7 +77,7 @@ export default function Header() {
             <span className="hidden sm:inline text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent ml-2.5 group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-indigo-600 transition-all duration-300 tracking-tight">
               EasyFreeResume
             </span>
-          </div>
+          </Link>
 
           {/* Navigation Buttons - Centered (Desktop, Authenticated Only) */}
           {isAuthenticated && (
@@ -190,13 +186,13 @@ className="flex items-center gap-2 py-2 font-semibold text-sm transition-all dur
 
             {/* CTA Button (only on homepage) */}
             {location.pathname === "/" && (
-              <button
-                onClick={() => navigate("/templates")}
+              <Link
+                to="/templates"
                 className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white py-2.5 px-5 sm:py-3 sm:px-6 rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl hover:shadow-purple-500/25 hover:scale-[1.02] transition-all duration-300 active:scale-[0.98]"
               >
                 <span className="hidden sm:inline">Get Started</span>
                 <span className="sm:hidden">Start</span>
-              </button>
+              </Link>
             )}
           </div>
         </div>

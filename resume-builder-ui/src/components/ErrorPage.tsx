@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import SEOHead from "./SEOHead";
 
 const ErrorPage: React.FC<{ message?: string }> = ({ message }) => {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ const ErrorPage: React.FC<{ message?: string }> = ({ message }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-indigo-100/40 flex items-center justify-center px-4">
+      <SEOHead title="Error | EasyFreeResume" robots="noindex, follow" />
       <div className="max-w-lg w-full">
         {/* Error Card */}
         <div className="glass glass-hover rounded-3xl p-8 md:p-12 text-center">
