@@ -477,6 +477,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                         country: params.country,
                         skills: params.skills,
                         seniorityLevel: params.seniorityLevel,
+                        yearsExperience: params.yearsExperience,
                       }));
                     } catch { /* ignore */ }
                   }
@@ -511,6 +512,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                         country: params.country,
                         skills: params.skills,
                         seniorityLevel: params.seniorityLevel,
+                        yearsExperience: params.yearsExperience,
                       }));
                     } catch { /* ignore */ }
                   }

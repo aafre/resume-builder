@@ -148,6 +148,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
           country: params.country,
           skills: params.skills,
           seniorityLevel: params.seniorityLevel,
+          yearsExperience: params.yearsExperience,
         }));
       } catch { /* ignore */ }
     }
