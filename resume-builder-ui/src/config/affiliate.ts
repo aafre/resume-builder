@@ -6,8 +6,11 @@ export const affiliateConfig = {
     description:
       "Expert feedback on your resume's ATS compatibility and impact.",
   },
-  // Phase 2: Adzuna job search (dynamic API integration — separate task)
+  jobSearch: {
+    enabled: import.meta.env.VITE_AFFILIATE_JOB_SEARCH_ENABLED === 'true',
+  },
 };
 
 export const hasAnyAffiliate = () =>
-  affiliateConfig.resumeReview.enabled && !!affiliateConfig.resumeReview.url;
+  (affiliateConfig.resumeReview.enabled && !!affiliateConfig.resumeReview.url) ||
+  affiliateConfig.jobSearch.enabled;

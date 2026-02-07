@@ -434,6 +434,7 @@ const Editor: React.FC = () => {
         isAuthenticated={isAuthenticated}
         supportsIcons={supportsIcons}
         sections={sections}
+        contactInfo={contactInfo}
         onAuthSuccess={() => {
           toast.success('Welcome! Your resume will now be saved to the cloud.');
         }}

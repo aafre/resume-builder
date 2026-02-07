@@ -33,6 +33,8 @@ import time
 from typing import Callable, Any
 from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
 
+import requests as http_requests
+
 from flask_cors import CORS
 from flask_compress import Compress
 from supabase import create_client, Client
@@ -3920,6 +3922,96 @@ def update_user_preferences():
     except Exception as e:
         logging.error(f"Error updating user preferences: {e}")
         return jsonify({"success": False, "error": "Failed to update preferences"}), 500
+
+
+# ===== Adzuna Job Search Proxy =====
+
+ADZUNA_SUPPORTED_COUNTRIES = {
+    "gb", "us", "at", "au", "be", "br", "ca", "ch",
+    "de", "es", "fr", "in", "it", "mx", "nl", "nz", "pl", "sg", "za",
+}
+
+# Simple TTL cache for Adzuna responses (15 minutes)
+_adzuna_cache = {}
+_ADZUNA_CACHE_TTL = 900  # seconds
+
+
+@app.route("/api/jobs/search", methods=["GET"])
+def search_jobs():
+    """
+    Proxy endpoint for Adzuna job search API.
+    Hides API credentials from the browser and caches responses.
+
+    Query params:
+        query (required): Job title / keywords
+        location (optional): Location string
+        country (optional): Adzuna country code (default: us)
+    """
+    query = request.args.get("query", "").strip()
+    if not query:
+        return jsonify({"success": False, "error": "query parameter is required"}), 400
+
+    location = request.args.get("location", "").strip()
+    country = request.args.get("country", "us").strip().lower()
+
+    if country not in ADZUNA_SUPPORTED_COUNTRIES:
+        country = "us"
+
+    app_id = os.getenv("ADZUNA_APP_ID")
+    app_key = os.getenv("ADZUNA_APP_KEY")
+    if not app_id or not app_key:
+        logging.warning("Adzuna API credentials not configured")
+        return jsonify({"success": False, "error": "Job search not configured"}), 502
+
+    # Check cache
+    cache_key = (query.lower(), location.lower(), country)
+    now = time.time()
+    cached = _adzuna_cache.get(cache_key)
+    if cached and (now - cached["ts"]) < _ADZUNA_CACHE_TTL:
+        return jsonify({"success": True, "data": cached["data"]})
+
+    try:
+        params = {
+            "app_id": app_id,
+            "app_key": app_key,
+            "what": query,
+            "results_per_page": 3,
+            "sort_by": "relevance",
+            "salary_include_unknown": "1",
+        }
+        if location:
+            params["where"] = location
+
+        resp = http_requests.get(
+            f"https://api.adzuna.com/v1/api/jobs/{country}/search/1",
+            params=params,
+            timeout=5,
+        )
+        resp.raise_for_status()
+        raw = resp.json()
+
+        jobs = []
+        for r in raw.get("results", []):
+            jobs.append({
+                "title": r.get("title", ""),
+                "company": (r.get("company", {}) or {}).get("display_name", ""),
+                "location": (r.get("location", {}) or {}).get("display_name", ""),
+                "salary_min": r.get("salary_min"),
+                "salary_max": r.get("salary_max"),
+                "url": r.get("redirect_url", ""),
+                "created": r.get("created", ""),
+            })
+
+        data = {"count": raw.get("count", 0), "jobs": jobs}
+
+        # Store in cache
+        _adzuna_cache[cache_key] = {"ts": now, "data": data}
+
+        return jsonify({"success": True, "data": data})
+
+    except http_requests.RequestException as e:
+        logging.error(f"Adzuna API error: {e}")
+        return jsonify({"success": False, "error": "Job search temporarily unavailable"}), 502
 
 
 @app.errorhandler(404)

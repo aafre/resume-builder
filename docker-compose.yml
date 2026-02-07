@@ -13,6 +13,8 @@ services:
     environment:
       - SUPABASE_URL=${SUPABASE_URL}
       - SUPABASE_SECRET_KEY=${SUPABASE_SECRET_KEY}
+      - ADZUNA_APP_ID=${ADZUNA_APP_ID}
+      - ADZUNA_APP_KEY=${ADZUNA_APP_KEY}
       - DEBUG_LOGGING=${DEBUG_LOGGING:-false}
 
     ports:

@@ -1,23 +1,42 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ClipboardCheck, ExternalLink } from "lucide-react";
 import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
+import { ContactInfo, Section } from "../types";
+import { extractJobSearchParams, JobSearchParams } from "../utils/resumeDataExtractor";
+import { searchJobs, AdzunaJob } from "../services/jobs";
 
 interface DownloadCelebrationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSignUp: () => void;
   isAnonymous: boolean;
+  contactInfo: ContactInfo | null;
+  sections: Section[];
 }
+
+const formatSalary = (min: number | null, max: number | null): string | null => {
+  if (!min && !max) return null;
+  const fmt = (n: number) => (n >= 1000 ? `$${Math.round(n / 1000)}K` : `$${n}`);
+  if (min && max) return `${fmt(min)} – ${fmt(max)}`;
+  if (min) return `From ${fmt(min)}`;
+  return `Up to ${fmt(max!)}`;
+};
 
 const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
   isOpen,
   onClose,
   onSignUp,
   isAnonymous,
+  contactInfo,
+  sections,
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const primaryButtonRef = useRef<HTMLButtonElement>(null);
+
+  const [jobs, setJobs] = useState<AdzunaJob[]>([]);
+  const [jobsLoading, setJobsLoading] = useState(false);
+  const [jobSearchParams, setJobSearchParams] = useState<JobSearchParams | null>(null);
 
   // Focus management - auto-focus primary button when modal opens
   useEffect(() => {
@@ -79,6 +98,23 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
     return () => modal.removeEventListener("keydown", handleTab);
   }, [isOpen]);
 
+  // Fetch jobs when modal opens
+  useEffect(() => {
+    if (!isOpen || !affiliateConfig.jobSearch.enabled) return;
+
+    const params = extractJobSearchParams(contactInfo, sections);
+    if (!params) return;
+
+    setJobSearchParams(params);
+    setJobsLoading(true);
+    searchJobs(params.query, params.location, params.country)
+      .then((result) => setJobs(result.jobs))
+      .catch(() => {
+        // Silently fail — hide section on error
+      })
+      .finally(() => setJobsLoading(false));
+  }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+
   if (!isOpen) return null;
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -87,11 +123,12 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
     }
   };
 
-  const handleAffiliateClick = (provider: string) => {
-    console.log(`[affiliate] click: ${provider}`);
+  const handleAffiliateClick = (provider: string, meta?: Record<string, string>) => {
+    console.log(`[affiliate] click: ${provider}`, meta);
   };
 
   const showAffiliate = hasAnyAffiliate();
+  const showJobSection = affiliateConfig.jobSearch.enabled && (jobsLoading || jobs.length > 0);
 
   return createPortal(
     <>
@@ -243,6 +280,75 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                     <ExternalLink className="w-4 h-4 text-gray-400 flex-shrink-0" />
                   </a>
                 )}
+
+              {/* Job Listings Section */}
+              {showJobSection && (
+                <div className="mt-4">
+                  {/* Section header */}
+                  {jobSearchParams && (
+                    <p className="text-xs font-medium text-gray-500 mb-2">
+                      Jobs matching &ldquo;{jobSearchParams.query}&rdquo;
+                      {jobSearchParams.location && ` near ${jobSearchParams.location}`}
+                    </p>
+                  )}
+
+                  {/* Loading skeleton */}
+                  {jobsLoading && (
+                    <div className="space-y-2">
+                      {[0, 1, 2].map((i) => (
+                        <div
+                          key={i}
+                          className="bg-gray-50 border border-gray-200 rounded-xl p-3 animate-pulse"
+                        >
+                          <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
+                          <div className="h-3 bg-gray-200 rounded w-1/2" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Job cards */}
+                  {!jobsLoading && jobs.length > 0 && (
+                    <div className="space-y-2">
+                      {jobs.map((job, i) => {
+                        const salary = formatSalary(job.salary_min, job.salary_max);
+                        return (
+                          <a
+                            key={i}
+                            href={job.url}
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                            onClick={() =>
+                              handleAffiliateClick("job-search", {
+                                title: job.title,
+                                company: job.company,
+                              })
+                            }
+                            className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-xl p-3 cursor-pointer hover:bg-indigo-50 hover:border-indigo-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                          >
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-semibold text-gray-900 truncate">
+                                {job.title}
+                              </p>
+                              <p className="text-xs text-gray-500 truncate">
+                                {[job.company, job.location]
+                                  .filter(Boolean)
+                                  .join(" · ")}
+                              </p>
+                              {salary && (
+                                <p className="text-xs font-medium text-emerald-600 mt-0.5">
+                                  {salary}
+                                </p>
+                              )}
+                            </div>
+                            <ExternalLink className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                          </a>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Close button for authenticated users when affiliate is shown */}
               {!isAnonymous && (
