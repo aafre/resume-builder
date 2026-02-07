@@ -24,9 +24,10 @@ import {
   MdVisibility,
   MdSupport,
 } from "react-icons/md";
-import { PanelRightClose, PanelRightOpen } from "lucide-react";
+import { PanelRightClose, PanelRightOpen, ShieldCheck, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AdContainer, AD_CONFIG } from "./ads";
+import { affiliateConfig } from "../config/affiliate";
 
 interface Section {
   name: string;
@@ -402,6 +403,53 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               </span>
             </button>
           ))}
+
+          {/* ATS Health Check Card */}
+          {affiliateConfig.resumeReview.enabled && affiliateConfig.resumeReview.url && (
+            isCollapsed ? (
+              <a
+                href={affiliateConfig.resumeReview.url}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                onClick={() => console.log('[affiliate] click: ats-check')}
+                className="w-full flex flex-col items-center gap-1.5 py-2.5 px-1.5 mt-2 rounded-lg hover:bg-indigo-50/80 transition-all text-indigo-600 group"
+                title="Check ATS Compatibility"
+              >
+                <div className="w-7 h-7 flex items-center justify-center rounded-md bg-indigo-50 group-hover:bg-indigo-100 transition-colors">
+                  <ShieldCheck className="w-4 h-4" />
+                </div>
+                <span className="text-[11px] font-medium text-center leading-tight text-indigo-600">
+                  ATS
+                </span>
+              </a>
+            ) : (
+              <a
+                href={affiliateConfig.resumeReview.url}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                onClick={() => console.log('[affiliate] click: ats-check')}
+                className="block mt-3 mx-1 bg-white border border-gray-200 rounded-xl p-3 hover:shadow-md hover:border-indigo-200 transition-all cursor-pointer group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className="relative flex-shrink-0">
+                    <span className="flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-500"></span>
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">
+                      Check ATS Compat.
+                    </p>
+                    <p className="text-xs text-gray-500 leading-tight mt-0.5">
+                      See if your resume passes ATS filters.
+                    </p>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-indigo-500 transition-colors flex-shrink-0" />
+                </div>
+              </a>
+            )
+          )}
         </div>
 
       {/* Actions Section */}
