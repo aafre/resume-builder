@@ -3953,6 +3953,7 @@ def search_jobs():
 
     location = request.args.get("location", "").strip()
     category = request.args.get("category", "").strip().lower()
+    what_or = request.args.get("what_or", "").strip()
     country = request.args.get("country", "us").strip().lower()
     page = min(max(int(request.args.get("page", "1")), 1), 5)
 
@@ -3966,7 +3967,7 @@ def search_jobs():
         return jsonify({"success": False, "error": "Job search not configured"}), 502
 
     # Check cache
-    cache_key = (query.lower(), location.lower(), country, category, page)
+    cache_key = (query.lower(), location.lower(), country, category, what_or.lower(), page)
     now = time.time()
     cached = _adzuna_cache.get(cache_key)
     if cached and (now - cached["ts"]) < _ADZUNA_CACHE_TTL:
@@ -3985,6 +3986,8 @@ def search_jobs():
             params["where"] = location
         if category:
             params["category"] = category
+        if what_or:
+            params["what_or"] = what_or
 
         resp = http_requests.get(
             f"https://api.adzuna.com/v1/api/jobs/{country}/search/{page}",
