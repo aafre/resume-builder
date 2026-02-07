@@ -543,6 +543,27 @@ class TestJobMatchEngine:
 
         assert ctx.title_only is True
 
+    @patch("requests.get")
+    def test_fallback_tiers_disable_title_only(self, mock_get):
+        """When Tier 1 fails, Tier 2 should search without title_only."""
+        mock_resp = MagicMock()
+        mock_resp.raise_for_status = MagicMock()
+        mock_resp.json.return_value = {"results": []}
+        mock_get.return_value = mock_resp
+
+        engine = self._make_engine()
+        ctx = MatchContext(query="software engineer", title_only=True, country="us")
+        engine.search_and_rank(ctx)
+
+        # Tier 1 call should have title_only=1
+        tier1_params = mock_get.call_args_list[0][1]["params"]
+        assert tier1_params.get("title_only") == "1"
+
+        # Tier 2 call (synonym expansion) should NOT have title_only
+        if len(mock_get.call_args_list) > 1:
+            tier2_params = mock_get.call_args_list[1][1]["params"]
+            assert "title_only" not in tier2_params
+
 
 # =============================================================================
 # Endpoint Integration

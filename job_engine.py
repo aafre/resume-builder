@@ -476,6 +476,9 @@ class JobMatchEngine:
             result["ai_terms_used"] = []
             return result
 
+        # Tier 1 insufficient — relax title_only for broader fallback searches
+        context.title_only = False
+
         # --- Tier 2: Synonym expansion ---
         query_key = context.query.lower().strip()
         synonyms = TITLE_SYNONYMS.get(query_key) or TITLE_SYNONYMS.get(_strip_seniority(query_key), [])
