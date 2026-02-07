@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.17.1] - 2026-02-07
+
+### ⚙️ Miscellaneous Tasks
+
+- Add FlexOffers site verification meta tag
+
 ## [3.17.0] - 2026-02-07
 
 ### 🚀 Features
