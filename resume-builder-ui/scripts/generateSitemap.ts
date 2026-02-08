@@ -1,6 +1,7 @@
 /**
  * Sitemap Generator for Resume Builder
- * Generates sitemap.xml with static pages + programmatic SEO job pages
+ * Generates sitemap-static.xml with static pages + programmatic SEO job pages
+ * Flask wraps this in a sitemap index at /sitemap.xml alongside dynamic job sitemaps
  * Run during build: npm run build
  */
 
@@ -170,13 +171,13 @@ function writeSitemap(): void {
     if (!fs.existsSync(publicDir)) {
       fs.mkdirSync(publicDir, { recursive: true });
     }
-    const publicSitemapPath = path.join(publicDir, 'sitemap.xml');
+    const publicSitemapPath = path.join(publicDir, 'sitemap-static.xml');
     fs.writeFileSync(publicSitemapPath, xml, 'utf8');
     locations.push(publicSitemapPath);
 
     // Also write to dist/ if it exists (for production build)
     if (fs.existsSync(distDir)) {
-      const distSitemapPath = path.join(distDir, 'sitemap.xml');
+      const distSitemapPath = path.join(distDir, 'sitemap-static.xml');
       fs.writeFileSync(distSitemapPath, xml, 'utf8');
       locations.push(distSitemapPath);
     }
