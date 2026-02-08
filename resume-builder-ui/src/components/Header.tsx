@@ -7,7 +7,7 @@ import AutoSaveIndicator from "./AutoSaveIndicator";
 import AnonymousWarningBadge from "./AnonymousWarningBadge";
 import UserMenu from "./UserMenu";
 import AuthModal from "./AuthModal";
-import logo from "/logo-80.webp";
+import LogoMark from "./LogoMark";
 
 export default function Header() {
   const location = useLocation();
@@ -65,15 +65,10 @@ export default function Header() {
             className="group flex items-center transition-all duration-200 relative flex-shrink-0"
             aria-label="Go to homepage"
           >
-            <div className="relative">
-              <img
-                src={logo}
-                alt="EasyFreeResume Logo"
-                className="w-9 h-9 sm:w-10 sm:h-10 group-hover:scale-110 transition-transform duration-200 drop-shadow-sm"
-                width="36"
-                height="36"
-              />
-            </div>
+            <LogoMark
+              size={36}
+              className="w-9 h-9 sm:w-10 sm:h-10 group-hover:scale-110 transition-transform duration-200 drop-shadow-sm"
+            />
             <span className="hidden sm:inline text-lg sm:text-xl font-extrabold text-ink ml-2.5 tracking-tight font-display">
               EasyFreeResume
             </span>
