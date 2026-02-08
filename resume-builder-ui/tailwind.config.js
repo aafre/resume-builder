@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        display: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        sans: ['"Bricolage Grotesque"', '"Bricolage Fallback"', 'system-ui', 'sans-serif'],
+        display: ['"Bricolage Grotesque"', '"Bricolage Fallback"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       colors: {
@@ -22,6 +23,42 @@ module.exports = {
         mist: '#a8a4a0',
         accent: '#00d47e',
       },
+      typography: ({ theme }) => ({
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': theme('colors.ink.DEFAULT'),
+            '--tw-prose-headings': theme('colors.ink.DEFAULT'),
+            '--tw-prose-links': theme('colors.accent'),
+            '--tw-prose-bold': theme('colors.ink.DEFAULT'),
+            '--tw-prose-bullets': theme('colors.accent'),
+            '--tw-prose-quotes': theme('colors.ink.DEFAULT'),
+            '--tw-prose-quote-borders': theme('colors.accent'),
+            '--tw-prose-counters': theme('colors.stone-warm'),
+            '--tw-prose-captions': theme('colors.stone-warm'),
+            '--tw-prose-code': theme('colors.ink.DEFAULT'),
+            '--tw-prose-pre-code': '#e5e7eb',
+            '--tw-prose-pre-bg': theme('colors.ink.DEFAULT'),
+            fontFamily: theme('fontFamily.display').join(', '),
+            a: {
+              color: theme('colors.accent'),
+              textDecoration: 'none',
+              '&:hover': {
+                color: theme('colors.ink.DEFAULT'),
+                textDecoration: 'underline',
+              },
+            },
+            code: {
+              fontFamily: theme('fontFamily.mono').join(', '),
+              backgroundColor: theme('colors.chalk.dark'),
+              borderRadius: '0.25rem',
+              padding: '0.15em 0.35em',
+              fontWeight: '500',
+            },
+            'code::before': { content: 'none' },
+            'code::after': { content: 'none' },
+          },
+        },
+      }),
       backgroundClip: {
         text: 'text',
         border: 'border-box',
@@ -38,6 +75,7 @@ module.exports = {
     },
   },
   plugins: [
+    require('@tailwindcss/typography'),
     function ({ addVariant }) {
       addVariant('touch', '@media (hover: none) and (pointer: coarse)');
     },
