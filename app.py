@@ -33,6 +33,8 @@ import time
 from typing import Callable, Any
 from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
 
+import requests as http_requests
+
 from flask_cors import CORS
 from flask_compress import Compress
 from supabase import create_client, Client
@@ -40,6 +42,9 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
+
+# pSEO imports (lazy — only used in production or when ADZUNA keys present)
+from jobs_pseo import PseoRenderer, PageType, load_vite_manifest
 
 # Configure logging based on environment variable
 # Set DEBUG_LOGGING=true to enable detailed debug logs for troubleshooting
@@ -1242,6 +1247,45 @@ CORS(
 
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB
 
+# =============================================================================
+# Jobs pSEO Renderer — initialized once at startup
+# =============================================================================
+_pseo_renderer = None
+
+def _get_pseo_renderer():
+    """Lazy-init the pSEO renderer on first use."""
+    global _pseo_renderer
+    if _pseo_renderer is not None:
+        return _pseo_renderer
+
+    adzuna_id = os.getenv("ADZUNA_APP_ID")
+    adzuna_key = os.getenv("ADZUNA_APP_KEY")
+    if not adzuna_id or not adzuna_key:
+        logging.warning("pSEO disabled: Adzuna credentials not configured")
+        return None
+
+    matrix_path = os.path.join(os.path.dirname(__file__), "jobs_matrix.json")
+    if not os.path.isfile(matrix_path):
+        logging.warning("pSEO disabled: jobs_matrix.json not found")
+        return None
+
+    with open(matrix_path, "r", encoding="utf-8") as f:
+        matrix = json.load(f)
+
+    vite_manifest = load_vite_manifest(app.static_folder) if app.static_folder else {}
+
+    _pseo_renderer = PseoRenderer(
+        matrix=matrix,
+        adzuna_app_id=adzuna_id,
+        adzuna_app_key=adzuna_key,
+        cache_dir=os.path.join(os.path.dirname(__file__), "cache", "jobs"),
+        vite_manifest=vite_manifest,
+        supabase=supabase,
+    )
+    logging.info(f"pSEO renderer initialized: {matrix['meta']['total_roles']} roles × {matrix['meta']['total_locations']} locations")
+    return _pseo_renderer
+
+
 # Host canonicalization: www -> apex (SEO)
 CANONICAL_HOST = "easyfreeresume.com"
 WWW_HOST = f"www.{CANONICAL_HOST}"
@@ -1483,6 +1527,7 @@ VALID_SPA_ROUTES = {
     "privacy-policy",
     "terms-of-service",
     "error",
+    "jobs",
 }
 
 # Bot user-agent patterns for prerendered HTML serving
@@ -1516,6 +1561,160 @@ def _get_prerendered_path(route_path: str) -> str | None:
     if os.path.isfile(candidate):
         return candidate
     return None
+
+
+# =============================================================================
+# Jobs pSEO Routes — MUST be registered BEFORE the SPA catch-all
+# =============================================================================
+
+@app.route("/jobs/<path:subpath>", methods=["GET"])
+def jobs_pseo(subpath):
+    """
+    Serve SSR pSEO job pages for bots. Regular users get the SPA shell.
+    URL is parsed to determine page type (role/location, hub, filter, etc.).
+    """
+    user_agent = request.headers.get("User-Agent", "")
+
+    # Only serve SSR HTML to bots — humans get the React SPA
+    if not _is_bot(user_agent):
+        if FLASK_ENV == "production" and app.static_folder:
+            return send_from_directory(app.static_folder, "index.html")
+        # Dev mode: let Vite handle it
+        return "<!-- dev mode: use Vite -->" , 200
+
+    renderer = _get_pseo_renderer()
+    if not renderer:
+        # pSEO not configured — serve SPA shell
+        if FLASK_ENV == "production" and app.static_folder:
+            return send_from_directory(app.static_folder, "index.html")
+        return "<!-- pSEO not configured -->", 200
+
+    segments = [s for s in subpath.strip("/").split("/") if s]
+    page_type, params = renderer.resolve_url(segments)
+
+    if page_type is None:
+        # Invalid URL — return 404 with SPA shell so React can show 404 page
+        if FLASK_ENV == "production" and app.static_folder:
+            return send_from_directory(app.static_folder, "index.html"), 404
+        return "<!-- 404 -->", 404
+
+    page_num = request.args.get("page", 1, type=int)
+    html = renderer.get_page(page_type, page=page_num, **params)
+
+    if html is None:
+        if FLASK_ENV == "production" and app.static_folder:
+            return send_from_directory(app.static_folder, "index.html"), 404
+        return "<!-- no data -->", 404
+
+    return html, 200, {"Content-Type": "text/html; charset=utf-8"}
+
+
+@app.route("/jobs", methods=["GET"])
+def jobs_main():
+    """Serve /jobs main hub page."""
+    user_agent = request.headers.get("User-Agent", "")
+    if not _is_bot(user_agent):
+        if FLASK_ENV == "production" and app.static_folder:
+            return send_from_directory(app.static_folder, "index.html")
+        return "<!-- dev mode: use Vite -->", 200
+
+    renderer = _get_pseo_renderer()
+    if not renderer:
+        if FLASK_ENV == "production" and app.static_folder:
+            return send_from_directory(app.static_folder, "index.html")
+        return "<!-- pSEO not configured -->", 200
+
+    html = renderer.get_page(PageType.MAIN_HUB)
+    if html:
+        return html, 200, {"Content-Type": "text/html; charset=utf-8"}
+
+    if FLASK_ENV == "production" and app.static_folder:
+        return send_from_directory(app.static_folder, "index.html")
+    return "<!-- no data -->", 200
+
+
+@app.route("/api/jobs/page/<path:subpath>", methods=["GET"])
+def jobs_pseo_data(subpath):
+    """JSON data for React client-side navigation and pagination."""
+    renderer = _get_pseo_renderer()
+    if not renderer:
+        return jsonify({"success": False, "error": "pSEO not configured"}), 503
+
+    segments = [s for s in subpath.strip("/").split("/") if s]
+    page_type, params = renderer.resolve_url(segments)
+
+    if page_type is None:
+        return jsonify({"success": False, "error": "Invalid URL"}), 404
+
+    page_num = request.args.get("page", 1, type=int)
+    data = renderer.get_page_data(page_type, page=page_num, **params)
+
+    if data is None:
+        return jsonify({"success": False, "error": "No data available"}), 404
+
+    return jsonify({"success": True, "data": data.to_dict()})
+
+
+# =============================================================================
+# Dynamic Sitemap Routes
+# =============================================================================
+
+@app.route("/sitemap.xml", methods=["GET"])
+def sitemap_index():
+    """Sitemap index referencing all sub-sitemaps."""
+    sub_sitemaps = [
+        "sitemap-static.xml",
+        "sitemap-jobs-roles.xml",
+    ]
+    xml_parts = ['<?xml version="1.0" encoding="UTF-8"?>']
+    xml_parts.append('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+    base = "https://easyfreeresume.com"
+    for name in sub_sitemaps:
+        xml_parts.append(f"  <sitemap><loc>{base}/{name}</loc></sitemap>")
+    xml_parts.append("</sitemapindex>")
+    return "\n".join(xml_parts), 200, {"Content-Type": "application/xml; charset=utf-8"}
+
+
+@app.route("/sitemap-static.xml", methods=["GET"])
+def sitemap_static():
+    """Serve the static sitemap generated by the build process."""
+    # Try the build output first, then fallback to public/
+    for name in ("sitemap-static.xml", "sitemap.xml"):
+        path = os.path.join(app.static_folder, name) if app.static_folder else None
+        if path and os.path.isfile(path):
+            return send_file(path, mimetype="application/xml")
+    return "<!-- no static sitemap -->", 404
+
+
+@app.route("/sitemap-jobs-roles.xml", methods=["GET"])
+def sitemap_jobs_roles():
+    """Dynamic sitemap for role×location pSEO pages."""
+    renderer = _get_pseo_renderer()
+    if not renderer:
+        return "<!-- pSEO not configured -->", 404
+
+    base = "https://easyfreeresume.com"
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+    xml_parts = ['<?xml version="1.0" encoding="UTF-8"?>']
+    xml_parts.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+
+    for role in renderer.matrix.get("roles", []):
+        # Role hub
+        xml_parts.append(f"  <url><loc>{base}/jobs/{role['slug']}</loc>"
+                        f"<lastmod>{today}</lastmod><priority>0.7</priority></url>")
+        # Role × location pages
+        for loc in renderer.matrix.get("locations", []):
+            xml_parts.append(f"  <url><loc>{base}/jobs/{role['slug']}/{loc['slug']}</loc>"
+                            f"<lastmod>{today}</lastmod><priority>0.6</priority></url>")
+
+    # Location hubs
+    for loc in renderer.matrix.get("locations", []):
+        xml_parts.append(f"  <url><loc>{base}/jobs/in/{loc['slug']}</loc>"
+                        f"<lastmod>{today}</lastmod><priority>0.7</priority></url>")
+
+    xml_parts.append("</urlset>")
+    return "\n".join(xml_parts), 200, {"Content-Type": "application/xml; charset=utf-8"}
 
 
 @app.route("/", defaults={"path": ""}, methods=["GET"])
@@ -3920,6 +4119,267 @@ def update_user_preferences():
     except Exception as e:
         logging.error(f"Error updating user preferences: {e}")
         return jsonify({"success": False, "error": "Failed to update preferences"}), 500
+
+
+# ===== Adzuna Job Search Proxy =====
+
+ADZUNA_SUPPORTED_COUNTRIES = {
+    "gb", "us", "at", "au", "be", "br", "ca", "ch",
+    "de", "es", "fr", "in", "it", "mx", "nl", "nz", "pl", "sg", "za",
+}
+
+# Simple TTL cache for Adzuna responses (15 minutes)
+_adzuna_cache = {}
+_ADZUNA_CACHE_TTL = 900  # seconds
+
+
+@app.route("/api/jobs/search", methods=["GET", "POST"])
+def search_jobs():
+    """
+    Proxy endpoint for Adzuna job search API.
+
+    GET: Legacy passthrough (backward compat, no re-ranking)
+    POST: 3-tier search with scoring via JobMatchEngine
+    """
+    if request.method == "POST":
+        return _search_jobs_post()
+    return _search_jobs_get()
+
+
+def _search_jobs_post():
+    """POST handler: 3-tier search with resume-context scoring."""
+    from job_engine import MatchContext, JobMatchEngine
+
+    body = request.get_json(silent=True) or {}
+    query = (body.get("query") or "").strip()
+    if not query:
+        return jsonify({"success": False, "error": "query is required"}), 400
+
+    country = (body.get("country") or "us").strip().lower()
+    if country not in ADZUNA_SUPPORTED_COUNTRIES:
+        country = "us"
+
+    app_id = os.getenv("ADZUNA_APP_ID")
+    app_key = os.getenv("ADZUNA_APP_KEY")
+    if not app_id or not app_key:
+        logging.warning("Adzuna API credentials not configured")
+        return jsonify({"success": False, "error": "Job search not configured"}), 502
+
+    sort_by = (body.get("sort_by") or "relevance").strip()
+    if sort_by not in ("relevance", "salary", "date"):
+        sort_by = "relevance"
+
+    try:
+        context = MatchContext(
+            query=query,
+            location=(body.get("location") or "").strip(),
+            country=country,
+            category=(body.get("category") or "").strip().lower(),
+            skills=body.get("skills") or [],
+            seniority_level=(body.get("seniority_level") or "").strip(),
+            years_experience=int(body.get("years_experience") or 0),
+            salary_min=int(body.get("salary_min") or 0),
+            title_only=bool(body.get("title_only")),
+            max_days_old=int(body.get("max_days_old") or 0),
+            full_time=bool(body.get("full_time")),
+            permanent=bool(body.get("permanent")),
+            sort_by=sort_by,
+            # Advanced filters
+            distance=int(body.get("distance") or 0),
+            contract=bool(body.get("contract")),
+            part_time=bool(body.get("part_time")),
+            salary_max=int(body.get("salary_max") or 0),
+            sort_dir=(body.get("sort_dir") or "").strip(),
+            what_exclude=(body.get("what_exclude") or "").strip(),
+            company=(body.get("company") or "").strip(),
+            what_phrase=(body.get("what_phrase") or "").strip(),
+            page=int(body.get("page") or 1),
+            results_per_page=min(max(int(body.get("results_per_page") or 20), 1), 50),
+        )
+    except (ValueError, TypeError) as e:
+        return jsonify({"success": False, "error": f"Invalid parameter: {e}"}), 400
+
+    try:
+        engine = JobMatchEngine(app_id, app_key, supabase=supabase)
+        data = engine.search_and_rank(context)
+        return jsonify({"success": True, "data": data})
+    except Exception as e:
+        logging.error(f"Job match engine error: {e}")
+        return jsonify({"success": False, "error": "Job search temporarily unavailable"}), 502
+
+
+def _search_jobs_get():
+    """GET handler: legacy passthrough (backward compat, no re-ranking)."""
+    query = request.args.get("query", "").strip()
+    if not query:
+        return jsonify({"success": False, "error": "query parameter is required"}), 400
+
+    location = request.args.get("location", "").strip()
+    category = request.args.get("category", "").strip().lower()
+    what_or = request.args.get("what_or", "").strip()
+    country = request.args.get("country", "us").strip().lower()
+    page = min(max(int(request.args.get("page", "1")), 1), 5)
+
+    if country not in ADZUNA_SUPPORTED_COUNTRIES:
+        country = "us"
+
+    app_id = os.getenv("ADZUNA_APP_ID")
+    app_key = os.getenv("ADZUNA_APP_KEY")
+    if not app_id or not app_key:
+        logging.warning("Adzuna API credentials not configured")
+        return jsonify({"success": False, "error": "Job search not configured"}), 502
+
+    # Optional passthrough params
+    title_only = request.args.get("title_only", "").strip()
+    max_days_old = request.args.get("max_days_old", "").strip()
+    salary_min = request.args.get("salary_min", "").strip()
+    full_time = request.args.get("full_time", "").strip()
+    permanent = request.args.get("permanent", "").strip()
+    sort_by = request.args.get("sort_by", "relevance").strip()
+    if sort_by not in ("relevance", "salary", "date"):
+        sort_by = "relevance"
+
+    # Check cache
+    cache_key = (query.lower(), location.lower(), country, category, what_or.lower(),
+                 page, title_only, max_days_old, salary_min, full_time, permanent, sort_by)
+    now = time.time()
+    cached = _adzuna_cache.get(cache_key)
+    if cached and (now - cached["ts"]) < _ADZUNA_CACHE_TTL:
+        return jsonify({"success": True, "data": cached["data"]})
+
+    try:
+        params = {
+            "app_id": app_id,
+            "app_key": app_key,
+            "what": query,
+            "results_per_page": 10,
+            "sort_by": sort_by,
+            "salary_include_unknown": "1",
+        }
+        if location:
+            params["where"] = location
+        if category:
+            params["category"] = category
+        if what_or:
+            params["what_or"] = what_or
+        if title_only:
+            params["title_only"] = title_only
+        if max_days_old:
+            params["max_days_old"] = max_days_old
+        if salary_min:
+            params["salary_min"] = salary_min
+        if full_time:
+            params["full_time"] = full_time
+        if permanent:
+            params["permanent"] = permanent
+
+        resp = http_requests.get(
+            f"https://api.adzuna.com/v1/api/jobs/{country}/search/{page}",
+            params=params,
+            timeout=5,
+        )
+        resp.raise_for_status()
+        raw = resp.json()
+
+        jobs = []
+        for r in raw.get("results", []):
+            jobs.append({
+                "title": r.get("title", ""),
+                "company": (r.get("company", {}) or {}).get("display_name", ""),
+                "location": (r.get("location", {}) or {}).get("display_name", ""),
+                "salary_min": r.get("salary_min"),
+                "salary_max": r.get("salary_max"),
+                "salary_is_predicted": bool(r.get("salary_is_predicted")),
+                "url": r.get("redirect_url", ""),
+                "created": r.get("created", ""),
+            })
+
+        data = {"count": raw.get("count", 0), "jobs": jobs}
+
+        # Store in cache
+        _adzuna_cache[cache_key] = {"ts": now, "data": data}
+
+        return jsonify({"success": True, "data": data})
+
+    except http_requests.RequestException as e:
+        logging.error(f"Adzuna API error: {e}")
+        return jsonify({"success": False, "error": "Job search temporarily unavailable"}), 502
+
+
+# ===== AI Role Suggestions =====
+
+_suggestion_cache: dict[str, tuple[dict, float]] = {}
+_SUGGESTION_CACHE_TTL = 900  # 15 minutes
+
+
+@app.route("/api/jobs/suggest-roles", methods=["POST"])
+def suggest_roles():
+    """
+    Suggest alternative job roles based on title, skills, and career history.
+    Calls the suggest-roles Supabase Edge Function with 15-min in-memory cache.
+    Gracefully returns the original title on any failure.
+    """
+    body = request.get_json(silent=True) or {}
+    title = (body.get("title") or "").strip()
+    if not title:
+        return jsonify({"success": True, "primary_role": "", "alternative_roles": [], "confidence": 0})
+
+    skills = body.get("skills") or []
+    experience_titles = body.get("experience_titles") or []
+
+    # Build cache key from all inputs (lowercase, sorted)
+    cache_key = json.dumps({
+        "title": title.lower(),
+        "skills": sorted(s.lower() for s in skills if isinstance(s, str)),
+        "experience_titles": [t.lower() for t in experience_titles if isinstance(t, str)],
+    }, sort_keys=True)
+
+    now = time.time()
+    cached = _suggestion_cache.get(cache_key)
+    if cached and (now - cached[1]) < _SUGGESTION_CACHE_TTL:
+        return jsonify({"success": True, **cached[0]})
+
+    fallback = {"primary_role": title, "alternative_roles": [], "confidence": 0}
+
+    if not supabase:
+        return jsonify({"success": True, **fallback})
+
+    try:
+        response = supabase.functions.invoke(
+            "suggest-roles",
+            invoke_options={"body": {
+                "title": title,
+                "skills": skills,
+                "experience_titles": experience_titles,
+            }},
+        )
+
+        # supabase-py returns bytes or str or dict
+        if isinstance(response, bytes):
+            data = json.loads(response.decode("utf-8"))
+        elif isinstance(response, str):
+            data = json.loads(response)
+        elif isinstance(response, dict):
+            data = response
+        else:
+            logging.warning(f"Unexpected suggest-roles response type: {type(response)}")
+            return jsonify({"success": True, **fallback})
+
+        if not data.get("success"):
+            logging.warning(f"suggest-roles returned error: {data.get('error')}")
+            return jsonify({"success": True, **fallback})
+
+        result = {
+            "primary_role": data.get("primary_role", title),
+            "alternative_roles": data.get("alternative_roles", []),
+            "confidence": data.get("confidence", 0),
+        }
+        _suggestion_cache[cache_key] = (result, now)
+        return jsonify({"success": True, **result})
+
+    except Exception as e:
+        logging.warning(f"suggest-roles call failed (graceful skip): {e}")
+        return jsonify({"success": True, **fallback})
 
 
 @app.errorhandler(404)

@@ -12,5 +12,6 @@ fastapi[standard]
 supabase
 pyjwt
 python-dotenv
+requests
 pdf2image
 Pillow
