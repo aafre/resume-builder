@@ -15,9 +15,15 @@ interface PageHeroProps {
 export default function PageHero({ config, className = '' }: PageHeroProps) {
   return (
     <div className={`text-center mb-16 ${className}`}>
+      {/* Eyebrow */}
+      {config.eyebrow && (
+        <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">
+          {config.eyebrow}
+        </p>
+      )}
+
       {/* H1 - Most important SEO element */}
-      <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight tracking-tight text-transparent bg-clip-text bg-accent relative">
-        <span className="absolute inset-0 text-ink opacity-10">{config.h1}</span>
+      <h1 className="font-display text-[clamp(2.5rem,5.5vw,4.5rem)] font-extrabold leading-[1.08] tracking-tight text-ink mb-6">
         {config.h1}
       </h1>
 

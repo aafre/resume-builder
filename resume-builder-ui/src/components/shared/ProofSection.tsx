@@ -19,7 +19,7 @@ export default function ProofSection({ metrics, className = '' }: ProofSectionPr
       {metrics.map((metric, index) => (
         <div
           key={index}
-          className="bg-white rounded-xl p-6 text-center shadow-md border border-gray-100"
+          className="bg-white rounded-2xl p-6 text-center shadow-premium border border-black/[0.06]"
         >
           {/* Icon */}
           {metric.icon && (
@@ -35,7 +35,7 @@ export default function ProofSection({ metrics, className = '' }: ProofSectionPr
           </div>
 
           {/* Label */}
-          <div className="text-sm text-gray-600 font-medium">
+          <div className="text-sm text-stone-warm font-medium">
             {metric.label}
           </div>
         </div>

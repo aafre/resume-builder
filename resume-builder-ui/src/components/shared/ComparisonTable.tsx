@@ -22,11 +22,11 @@ export default function ComparisonTable({
   return (
     <div className={`mb-16 ${className}`}>
       {title && (
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+        <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           {title}
         </h2>
       )}
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+      <div className="bg-white rounded-2xl shadow-premium overflow-hidden border border-black/[0.06]">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-accent text-ink">
@@ -53,9 +53,9 @@ export default function ComparisonTable({
               {headers.map((header, rowIndex) => (
                 <tr
                   key={rowIndex}
-                  className={rowIndex % 2 === 0 ? 'bg-gray-50' : 'bg-white'}
+                  className={rowIndex % 2 === 0 ? 'bg-chalk-dark' : 'bg-white'}
                 >
-                  <td className="px-6 py-4 font-medium text-gray-900">
+                  <td className="px-6 py-4 font-medium text-ink">
                     {header}
                   </td>
                   {items.map((item, colIndex) => {
@@ -69,12 +69,12 @@ export default function ComparisonTable({
                       >
                         {typeof value === 'boolean' ? (
                           value ? (
-                            <span className="text-green-600 text-xl">✓</span>
+                            <span className="text-accent text-xl">✓</span>
                           ) : (
                             <span className="text-red-500 text-xl">✗</span>
                           )
                         ) : (
-                          <span className="text-gray-700">{value}</span>
+                          <span className="text-stone-warm">{value}</span>
                         )}
                       </td>
                     );
