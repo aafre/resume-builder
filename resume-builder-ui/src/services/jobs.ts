@@ -18,6 +18,7 @@ export interface JobSearchResult {
   count: number;
   jobs: AdzunaJob[];
   ai_terms_used?: string[];
+  total_available?: number;
 }
 
 export interface RoleSuggestion {
@@ -40,6 +41,17 @@ export interface JobSearchOptions {
   fullTime?: boolean;
   permanent?: boolean;
   sortBy?: 'relevance' | 'salary' | 'date';
+  // Advanced filters
+  distance?: number;
+  contract?: boolean;
+  partTime?: boolean;
+  salaryMax?: number;
+  sortDir?: 'up' | 'down';
+  whatExclude?: string;
+  company?: string;
+  whatPhrase?: string;
+  page?: number;
+  resultsPerPage?: number;
 }
 
 /**
@@ -63,6 +75,17 @@ export async function searchJobs(opts: JobSearchOptions): Promise<JobSearchResul
   if (opts.fullTime) body.full_time = true;
   if (opts.permanent) body.permanent = true;
   if (opts.sortBy && opts.sortBy !== 'relevance') body.sort_by = opts.sortBy;
+  // Advanced filters
+  if (opts.distance) body.distance = opts.distance;
+  if (opts.contract) body.contract = true;
+  if (opts.partTime) body.part_time = true;
+  if (opts.salaryMax) body.salary_max = opts.salaryMax;
+  if (opts.sortDir) body.sort_dir = opts.sortDir;
+  if (opts.whatExclude) body.what_exclude = opts.whatExclude;
+  if (opts.company) body.company = opts.company;
+  if (opts.whatPhrase) body.what_phrase = opts.whatPhrase;
+  if (opts.page && opts.page > 1) body.page = opts.page;
+  if (opts.resultsPerPage) body.results_per_page = opts.resultsPerPage;
 
   const response = await fetch(`${API_BASE_URL}/jobs/search`, {
     method: 'POST',

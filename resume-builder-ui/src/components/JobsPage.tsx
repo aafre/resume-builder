@@ -22,6 +22,9 @@ import { usePageSchema } from '../hooks/usePageSchema';
 import SEOPageLayout from './shared/SEOPageLayout';
 import BreadcrumbsWithSchema from './shared/BreadcrumbsWithSchema';
 import FAQSection from './shared/FAQSection';
+import JobFilters, { FilterState, DEFAULT_FILTERS } from './jobs/JobFilters';
+import FilterChips from './jobs/FilterChips';
+import type { ActiveFilter } from './jobs/FilterChips';
 
 interface ResumeContext {
   fileName: string;
@@ -108,6 +111,20 @@ export default function JobsPage() {
   const prefillSkillsRef = useRef<string[]>([]);
   const prefillSeniorityRef = useRef<SeniorityLevel | null>(null);
   const prefillYearsExpRef = useRef<number>(0);
+  // Advanced filters — synced to URL params
+  const [filters, setFilters] = useState<FilterState>(() => ({
+    ...DEFAULT_FILTERS,
+    contractType: (searchParams.get('type') as FilterState['contractType']) || '',
+    schedule: (searchParams.get('schedule') as FilterState['schedule']) || '',
+    salaryMin: Number(searchParams.get('salary')) || 0,
+    salaryMax: Number(searchParams.get('salary_max')) || 0,
+    maxDaysOld: Number(searchParams.get('days')) || 0,
+    distance: Number(searchParams.get('radius')) || 0,
+    company: searchParams.get('co') || '',
+    whatExclude: searchParams.get('excl') || '',
+    sortBy: (searchParams.get('sort') as FilterState['sortBy']) || 'relevance',
+    sortDir: (searchParams.get('dir') as FilterState['sortDir']) || '',
+  }));
   // Persistent resume context — survives across manual searches and drives UI visibility
   const [resumeContext, setResumeContext] = useState<ResumeContext | null>(null);
   const { session } = useAuth();
@@ -204,8 +221,19 @@ export default function JobsPage() {
         seniorityLevel: seniority || undefined,
         yearsExperience: yearsExp || undefined,
         titleOnly: true,
-        maxDaysOld: 30,
-        salaryMin: seniority ? getSalaryFloor(searchCountry, seniority) : undefined,
+        maxDaysOld: filters.maxDaysOld || 30,
+        salaryMin: filters.salaryMin || (seniority ? getSalaryFloor(searchCountry, seniority) : undefined),
+        // Advanced filters
+        permanent: filters.contractType === 'permanent' || undefined,
+        contract: filters.contractType === 'contract' || undefined,
+        fullTime: filters.schedule === 'full-time' || undefined,
+        partTime: filters.schedule === 'part-time' || undefined,
+        salaryMax: filters.salaryMax || undefined,
+        distance: filters.distance || undefined,
+        company: filters.company || undefined,
+        whatExclude: filters.whatExclude || undefined,
+        sortBy: filters.sortBy || undefined,
+        sortDir: filters.sortDir || undefined,
       });
       setJobs(result.jobs);
       setTotalCount(result.count);
@@ -216,6 +244,16 @@ export default function JobsPage() {
       const params: Record<string, string> = { q: titleInput.trim() };
       if (locationInput.trim()) params.l = locationInput.trim();
       if (searchCountry !== 'us') params.c = searchCountry;
+      if (filters.contractType) params.type = filters.contractType;
+      if (filters.schedule) params.schedule = filters.schedule;
+      if (filters.salaryMin) params.salary = String(filters.salaryMin);
+      if (filters.salaryMax) params.salary_max = String(filters.salaryMax);
+      if (filters.maxDaysOld) params.days = String(filters.maxDaysOld);
+      if (filters.distance) params.radius = String(filters.distance);
+      if (filters.company) params.co = filters.company;
+      if (filters.whatExclude) params.excl = filters.whatExclude;
+      if (filters.sortBy !== 'relevance') params.sort = filters.sortBy;
+      if (filters.sortDir) params.dir = filters.sortDir;
       setSearchParams(params, { replace: true });
     } catch {
       setError('Unable to fetch jobs. Please try again.');
@@ -224,7 +262,7 @@ export default function JobsPage() {
     } finally {
       setLoading(false);
     }
-  }, [titleInput, locationInput, country, resumeContext, setSearchParams]);
+  }, [titleInput, locationInput, country, resumeContext, filters, setSearchParams]);
 
   const handleLoadMore = useCallback(() => {
     setVisibleCount(prev => prev + 10);
@@ -233,6 +271,50 @@ export default function JobsPage() {
   const handleClearResume = useCallback(() => {
     setResumeContext(null);
   }, []);
+
+  const handleFilterChange = useCallback((newFilters: FilterState) => {
+    setFilters(newFilters);
+    // Auto-trigger search if user already searched
+    if (hasSearched && titleInput.trim()) {
+      // Defer so state update settles
+      setTimeout(() => formRef.current?.requestSubmit(), 0);
+    }
+  }, [hasSearched, titleInput]);
+
+  const handleClearAllFilters = useCallback(() => {
+    setFilters(DEFAULT_FILTERS);
+    if (hasSearched && titleInput.trim()) {
+      setTimeout(() => formRef.current?.requestSubmit(), 0);
+    }
+  }, [hasSearched, titleInput]);
+
+  const handleRemoveFilter = useCallback((key: string) => {
+    const reset = { ...filters };
+    switch (key) {
+      case 'contractType': reset.contractType = ''; break;
+      case 'schedule': reset.schedule = ''; break;
+      case 'salaryMin': reset.salaryMin = 0; break;
+      case 'salaryMax': reset.salaryMax = 0; break;
+      case 'maxDaysOld': reset.maxDaysOld = 0; break;
+      case 'distance': reset.distance = 0; break;
+      case 'company': reset.company = ''; break;
+      case 'whatExclude': reset.whatExclude = ''; break;
+      case 'sortBy': reset.sortBy = 'relevance'; reset.sortDir = ''; break;
+    }
+    handleFilterChange(reset);
+  }, [filters, handleFilterChange]);
+
+  // Compute active filter chips for display
+  const activeFilters: ActiveFilter[] = [];
+  if (filters.contractType) activeFilters.push({ key: 'contractType', label: filters.contractType === 'permanent' ? 'Permanent' : 'Contract' });
+  if (filters.schedule) activeFilters.push({ key: 'schedule', label: filters.schedule === 'full-time' ? 'Full-time' : 'Part-time' });
+  if (filters.salaryMin) activeFilters.push({ key: 'salaryMin', label: `${Math.round(filters.salaryMin / 1000)}k+` });
+  if (filters.salaryMax) activeFilters.push({ key: 'salaryMax', label: `Up to ${Math.round(filters.salaryMax / 1000)}k` });
+  if (filters.maxDaysOld && filters.maxDaysOld !== 30) activeFilters.push({ key: 'maxDaysOld', label: filters.maxDaysOld === 1 ? 'Today' : `Last ${filters.maxDaysOld} days` });
+  if (filters.distance) activeFilters.push({ key: 'distance', label: `${filters.distance} km` });
+  if (filters.company) activeFilters.push({ key: 'company', label: filters.company });
+  if (filters.whatExclude) activeFilters.push({ key: 'whatExclude', label: `Excl: ${filters.whatExclude}` });
+  if (filters.sortBy !== 'relevance') activeFilters.push({ key: 'sortBy', label: `Sort: ${filters.sortBy}` });
 
   // Auto-search when pre-filled from editor
   useEffect(() => {
@@ -482,6 +564,22 @@ export default function JobsPage() {
             </>
           )}
         </form>
+
+        {/* Filters */}
+        {hasSearched && !loading && (
+          <JobFilters
+            filters={filters}
+            onChange={handleFilterChange}
+            hasLocation={!!locationInput.trim()}
+          />
+        )}
+
+        {/* Active Filter Chips */}
+        <FilterChips
+          filters={activeFilters}
+          onRemove={handleRemoveFilter}
+          onClearAll={handleClearAllFilters}
+        />
 
         {/* Error */}
         {error && (
