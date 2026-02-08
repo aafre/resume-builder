@@ -184,7 +184,10 @@ _SLUG_RE = re.compile(r"[^a-z0-9]+")
 
 def to_slug(name: str) -> str:
     """Convert a role or location name to a URL-safe slug."""
-    slug = _SLUG_RE.sub("-", name.lower()).strip("-")
+    s = name.lower()
+    s = s.replace("c++", "cplusplus")
+    s = s.replace("c#", "csharp")
+    slug = _SLUG_RE.sub("-", s).strip("-")
     return slug
 
 

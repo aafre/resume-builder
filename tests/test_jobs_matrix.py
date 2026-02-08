@@ -154,8 +154,8 @@ class TestValidation:
 class TestToSlug:
     @pytest.mark.parametrize("input_name,expected", [
         ("Software Engineer", "software-engineer"),
-        ("c++", "c"),  # ++ stripped by regex
-        ("c#", "c"),
+        ("c++", "cplusplus"),
+        ("c#", "csharp"),
         ("QA Engineer", "qa-engineer"),
         ("iOS Developer", "ios-developer"),
         ("full stack developer", "full-stack-developer"),
