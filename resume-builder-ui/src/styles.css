@@ -537,6 +537,21 @@ footer {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
 }
 
+/* Mobile-optimized blog tables */
+@media (max-width: 639px) {
+  .prose table th,
+  .prose table td {
+    padding: 0.5rem 0.625rem;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+}
+
+.prose .overflow-x-auto {
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Isolate ad containers for layout performance and style encapsulation */
 .in-content-ad,
 .ad-container {

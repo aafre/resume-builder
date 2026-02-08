@@ -173,20 +173,20 @@ const BlogCTA = ({ type = 'general' }: BlogCTAProps) => {
         </div>
 
         <div className="mt-8 pt-6 border-t border-black/[0.06]">
-          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-sm">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 md:gap-8 text-xs sm:text-sm">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <svg className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
               </svg>
               <span className="font-display font-extralight text-stone-warm">Completely Free</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <svg className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
               </svg>
               <span className="font-display font-extralight text-stone-warm">No Account Required</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <svg className="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
               </svg>

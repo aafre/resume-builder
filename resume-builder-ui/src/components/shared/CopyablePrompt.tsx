@@ -45,25 +45,26 @@ export default function CopyablePrompt({
         className="group relative bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm cursor-pointer hover:border-accent/30 hover:bg-accent/[0.06] transition-colors"
         onClick={handleCopy}
       >
-        <div className="pr-16">
+        <div className="pr-8 sm:pr-16">
           {children}
         </div>
 
         {/* Copy Button */}
-        <div className="absolute right-3 top-3">
+        <div className="absolute right-2 top-2 sm:right-3 sm:top-3">
           {copied ? (
-            <span className="flex items-center gap-1 text-green-600 text-sm font-medium">
+            <span className="flex items-center gap-1 text-green-600 text-sm font-medium bg-green-50 px-2 py-1 rounded-full sm:bg-transparent sm:px-0 sm:py-0 sm:rounded-none">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              Copied!
+              <span className="text-xs sm:text-sm">Copied!</span>
             </span>
           ) : (
-            <span className="flex items-center gap-1 text-gray-400 group-hover:text-accent text-sm transition-colors">
+            <span className="flex items-center gap-1 text-gray-500 sm:text-gray-400 group-hover:text-accent text-sm transition-colors bg-gray-100 px-2 py-1 rounded-full sm:bg-transparent sm:px-0 sm:py-0 sm:rounded-none">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
-              <span className="hidden group-hover:inline">Copy</span>
+              <span className="text-xs sm:hidden">Copy</span>
+              <span className="hidden group-hover:inline sm:text-sm">Copy</span>
             </span>
           )}
         </div>

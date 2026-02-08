@@ -281,7 +281,7 @@ export default function ResumeGeniusVsEasyFreeResume() {
           </ol>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Escape the Subscription Trap
           </h3>
@@ -298,6 +298,9 @@ export default function ResumeGeniusVsEasyFreeResume() {
 
         <CompareBuildersCrossLinks excludePath="/blog/resume-genius-vs-easy-free-resume" />
       </div>
+
+      {/* Spacer for sticky mobile CTA */}
+      <div className="h-16 md:hidden" aria-hidden="true" />
 
       {/* Sticky CTA Banner */}
       <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-4 shadow-lg z-50 md:hidden">

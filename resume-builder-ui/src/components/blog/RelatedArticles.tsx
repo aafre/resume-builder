@@ -25,11 +25,11 @@ export default function RelatedArticles({ currentSlug, category, maxArticles = 3
   return (
     <section className="mt-10">
       <h2 className="font-display text-2xl font-extrabold text-ink mb-6">Continue Reading</h2>
-      <div className="grid md:grid-cols-3 gap-4">
+      <div className="flex md:grid md:grid-cols-3 gap-4 overflow-x-auto snap-x snap-mandatory md:overflow-visible pb-2 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0">
         {related.map((post) => (
           <article
             key={post.slug}
-            className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
+            className="flex-shrink-0 w-[80vw] sm:w-[45vw] md:w-auto snap-start bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
           >
             <div className="mb-3">
               <span className="font-mono text-[10px] tracking-[0.1em] text-stone-warm uppercase">

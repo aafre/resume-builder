@@ -99,7 +99,7 @@ export default function BlogLayout({
                 <Link to="/blog" className="hover:text-accent transition-colors">Blog</Link>
               </li>
               <li className="text-mist">/</li>
-              <li className="text-ink font-semibold">{title}</li>
+              <li className="text-ink font-semibold truncate max-w-[200px] sm:max-w-none" title={title}>{title}</li>
             </ol>
           </nav>
         )}
@@ -143,16 +143,21 @@ export default function BlogLayout({
             {keywords.map((keyword, index) => (
               <span
                 key={index}
-                className="px-3 py-1 bg-chalk-dark text-stone-warm font-mono text-[10px] tracking-[0.1em] uppercase rounded-full border border-transparent"
+                className={`px-3 py-1 bg-chalk-dark text-stone-warm font-mono text-[10px] tracking-[0.1em] uppercase rounded-full border border-transparent${index >= 5 ? ' hidden sm:inline-flex' : ''}`}
               >
                 {keyword}
               </span>
             ))}
+            {keywords.length > 5 && (
+              <span className="px-3 py-1 text-mist font-mono text-[10px] tracking-[0.1em] sm:hidden">
+                +{keywords.length - 5} more
+              </span>
+            )}
           </div>
         </header>
 
         <div className="prose prose-lg max-w-none">
-          <div className="bg-chalk-dark rounded-2xl p-8 md:p-12 border border-black/[0.04]">
+          <div className="bg-chalk-dark rounded-2xl p-4 sm:p-6 md:p-12 border border-black/[0.04]">
             {children}
           </div>
         </div>

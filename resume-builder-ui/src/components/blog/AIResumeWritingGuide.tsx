@@ -383,7 +383,7 @@ export default function AIResumeWritingGuide() {
           <li><strong>You're highly experienced</strong> – Your expertise speaks better than AI phrasing</li>
         </ul>
 
-        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Create Your Resume?
           </h3>
