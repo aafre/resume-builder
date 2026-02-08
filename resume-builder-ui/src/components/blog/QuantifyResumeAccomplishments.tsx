@@ -26,8 +26,8 @@ const QuantifyResumeAccomplishments = () => {
           Hiring managers scan resumes for just 7.4 seconds on average. During this brief window, quantified accomplishments immediately stand out because they provide concrete proof of your capabilities. Instead of saying you "improved sales," showing you "increased sales by 23% over 6 months" demonstrates real impact.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <p className="text-blue-700"><strong className="text-blue-800">💡 Pro Tip:</strong> Recruiters are trained to look for specific metrics that indicate performance. Quantified accomplishments help your resume pass both ATS systems and human review processes.</p>
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <p className="text-ink/80"><strong className="text-ink">💡 Pro Tip:</strong> Recruiters are trained to look for specific metrics that indicate performance. Quantified accomplishments help your resume pass both ATS systems and human review processes.</p>
         </div>
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Types of Metrics to Include</h2>

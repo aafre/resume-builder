@@ -50,9 +50,9 @@ export default function EasyFreeResumeFreeBlog() {
           high-quality tools to build a professional resume.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-blue-800 mb-4">🎯 Our Core Beliefs</h3>
-          <ul className="list-disc pl-6 space-y-3 text-blue-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-ink mb-4">🎯 Our Core Beliefs</h3>
+          <ul className="list-disc pl-6 space-y-3 text-ink/80">
             <li>
               <strong>Career tools should be accessible to all:</strong> Whether
               you're a recent graduate, career changer, or unemployed job seeker,
@@ -185,11 +185,11 @@ export default function EasyFreeResumeFreeBlog() {
         </p>
 
         <div className="space-y-6">
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-purple-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
               1. 🏗️ Lightweight, Efficient Architecture
             </h3>
-            <div className="text-purple-700">
+            <div className="text-ink/80">
               <p className="mb-3">
                 We built our application to be as simple and efficient as
                 possible:
@@ -265,9 +265,9 @@ export default function EasyFreeResumeFreeBlog() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h4 className="font-bold text-blue-800 mb-3">🚫 What We DON'T Do</h4>
-            <ul className="space-y-2 text-blue-700">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-3">🚫 What We DON'T Do</h4>
+            <ul className="space-y-2 text-ink/80">
               <li className="flex items-start space-x-2">
                 <span className="text-red-500 font-bold">×</span>
                 <span>Require credit card information</span>
@@ -329,12 +329,12 @@ export default function EasyFreeResumeFreeBlog() {
           paying for basic tools like resume building.
         </p>
 
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-indigo-800 mb-4">💪 Focus on What Matters</h3>
-          <p className="text-indigo-700 mb-4">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-ink mb-4">💪 Focus on What Matters</h3>
+          <p className="text-ink/80 mb-4">
             With EasyFreeResume, you can spend your time and energy on:
           </p>
-          <ul className="list-disc pl-6 space-y-2 text-indigo-700">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>Crafting compelling resume content that showcases your skills</li>
             <li>Tailoring your resume for each application</li>
             <li>Preparing for interviews with tools like PrepAI</li>
@@ -353,9 +353,9 @@ export default function EasyFreeResumeFreeBlog() {
         </p>
 
         <div className="space-y-4 my-8">
-          <div className="bg-blue-50 border-l-4 border-blue-500 p-6">
-            <h4 className="font-bold text-blue-800 mb-2">🎨 More Templates</h4>
-            <p className="text-blue-700 text-sm">
+          <div className="bg-accent/[0.06] border-l-4 border-accent p-6">
+            <h4 className="font-bold text-ink mb-2">🎨 More Templates</h4>
+            <p className="text-ink/80 text-sm">
               We're continuously designing new, modern templates based on current
               hiring trends and user feedback.
             </p>
@@ -369,9 +369,9 @@ export default function EasyFreeResumeFreeBlog() {
             </p>
           </div>
 
-          <div className="bg-purple-50 border-l-4 border-purple-500 p-6">
-            <h4 className="font-bold text-purple-800 mb-2">📱 Mobile Experience</h4>
-            <p className="text-purple-700 text-sm">
+          <div className="bg-accent/[0.06] border-l-4 border-accent p-6">
+            <h4 className="font-bold text-ink mb-2">📱 Mobile Experience</h4>
+            <p className="text-ink/80 text-sm">
               We're working on making the mobile resume-building experience even
               smoother and more intuitive.
             </p>
@@ -421,7 +421,7 @@ export default function EasyFreeResumeFreeBlog() {
           </ul>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Build Your Resume?
           </h3>
@@ -431,7 +431,7 @@ export default function EasyFreeResumeFreeBlog() {
           </p>
           <a
             href="/templates"
-            className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building - It's Actually Free!
           </a>

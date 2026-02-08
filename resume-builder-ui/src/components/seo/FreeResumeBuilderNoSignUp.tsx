@@ -60,7 +60,7 @@ export default function FreeResumeBuilderNoSignUp() {
               </ul>
             </div>
             <div>
-              <h3 className="text-xl font-bold text-blue-700 mb-4">✓ We only track:</h3>
+              <h3 className="text-xl font-bold text-ink/80 mb-4">✓ We only track:</h3>
               <ul className="space-y-2 text-gray-700">
                 <li>• Anonymous page views (for analytics)</li>
                 <li>• Error reports (to fix bugs)</li>

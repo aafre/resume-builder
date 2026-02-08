@@ -105,7 +105,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
                 {/* Primary: Sign In to Secure */}
                 <button
                   onClick={onSignInToContinue}
-                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold px-6 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+                  className="w-full flex items-center justify-center gap-2 bg-accent text-ink font-semibold px-6 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
                 >
                   <MdSecurity className="text-xl" />
                   Sign In to Secure & Continue
@@ -136,7 +136,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
                 {/* Primary: Continue Editing */}
                 <button
                   onClick={onContinueAsGuest}
-                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold px-6 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+                  className="w-full flex items-center justify-center gap-2 bg-accent text-ink font-semibold px-6 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
                 >
                   Continue Editing
                 </button>

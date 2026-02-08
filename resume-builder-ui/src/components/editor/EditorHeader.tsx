@@ -60,7 +60,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
       {showIdleTooltip &&
         ReactDOM.createPortal(
           <div
-            className="fixed top-20 right-6 z-[70] bg-blue-600 text-white text-sm px-4 py-3 rounded-lg shadow-xl animate-bounce"
+            className="fixed top-20 right-6 z-[70] bg-accent text-ink text-sm px-4 py-3 rounded-lg shadow-xl animate-bounce"
             role="alert"
             aria-live="polite"
           >

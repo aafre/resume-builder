@@ -21,9 +21,9 @@ export default function ResumeLengthGuide() {
           One of the most common questions job seekers ask is: "How long should my resume be?" The answer isn't one-size-fits-all, but there are clear guidelines based on your experience level, industry, and career goals. In 2026, getting resume length right is more crucial than ever for capturing attention without overwhelming recruiters.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-          <h3 className="text-lg font-bold text-blue-800 mb-2">📊 Quick Facts</h3>
-          <p className="text-blue-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+          <h3 className="text-lg font-bold text-ink mb-2">📊 Quick Facts</h3>
+          <p className="text-ink/80">
             Recruiters spend an average of 6-8 seconds on initial resume review. Studies show that over 77% of recruiters prefer resumes that are 1-2 pages long, regardless of experience level.
           </p>
         </div>
@@ -38,16 +38,16 @@ export default function ResumeLengthGuide() {
               <p className="text-sm">Focus on education, internships, projects, and relevant skills. Quality over quantity.</p>
             </div>
           </div>
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h4 className="font-bold text-blue-800 mb-3">💼 Mid-Level (3-10 Years)</h4>
-            <div className="text-blue-700">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-3">💼 Mid-Level (3-10 Years)</h4>
+            <div className="text-ink/80">
               <p className="font-bold text-2xl mb-2">1-2 Pages</p>
               <p className="text-sm">Highlight career progression, achievements, and specialized skills. Add second page if needed.</p>
             </div>
           </div>
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h4 className="font-bold text-purple-800 mb-3">👑 Senior Level (10+ Years)</h4>
-            <div className="text-purple-700">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-3">👑 Senior Level (10+ Years)</h4>
+            <div className="text-ink/80">
               <p className="font-bold text-2xl mb-2">2-3 Pages</p>
               <p className="text-sm">Showcase leadership, strategic impact, and comprehensive expertise across roles.</p>
             </div>
@@ -83,7 +83,7 @@ export default function ResumeLengthGuide() {
             <h4 className="font-bold text-gray-900 mb-3">🏦 Finance & Banking</h4>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <p className="text-blue-700 font-medium mb-2">✅ Preferred: 1-2 pages</p>
+                <p className="text-ink/80 font-medium mb-2">✅ Preferred: 1-2 pages</p>
                 <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
                   <li>Conservative industry appreciates structured format</li>
                   <li>Emphasize quantifiable achievements and certifications</li>
@@ -102,7 +102,7 @@ export default function ResumeLengthGuide() {
             <h4 className="font-bold text-gray-900 mb-3">🎓 Academia & Research</h4>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <p className="text-purple-700 font-medium mb-2">✅ Preferred: CV format (2+ pages)</p>
+                <p className="text-ink/80 font-medium mb-2">✅ Preferred: CV format (2+ pages)</p>
                 <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
                   <li>Comprehensive publication and research lists expected</li>
                   <li>Include conferences, grants, and academic achievements</li>
@@ -204,9 +204,9 @@ export default function ResumeLengthGuide() {
           Applicant Tracking Systems (ATS) can impact how resume length affects your application success.
         </p>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">🤖 ATS-Friendly Length Guidelines:</h4>
-          <ul className="list-disc pl-6 space-y-2 text-purple-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">🤖 ATS-Friendly Length Guidelines:</h4>
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li><strong>Optimal range:</strong> 1-2 pages for best parsing results</li>
             <li><strong>File size:</strong> Keep under 1MB to prevent upload issues</li>
             <li><strong>Front-load keywords:</strong> Put most important information on page 1</li>
@@ -217,7 +217,7 @@ export default function ResumeLengthGuide() {
 
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">How to Decide Your Ideal Length</h2>
         
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-8 my-12">
+        <div className="bg-ink text-white rounded-xl p-8 my-12">
           <h3 className="text-2xl font-bold mb-4">📋 Resume Length Decision Framework</h3>
           <ol className="list-decimal pl-6 space-y-3 text-lg">
             <li>Start with a one-page draft containing your most impactful achievements</li>
@@ -255,7 +255,7 @@ export default function ResumeLengthGuide() {
             <h4 className="font-bold text-gray-900 mb-3">📈 Career Changer</h4>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <p className="font-medium text-blue-700 mb-2">Recommended: 1-2 pages</p>
+                <p className="font-medium text-ink/80 mb-2">Recommended: 1-2 pages</p>
                 <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
                   <li>Emphasize transferable skills and relevant achievements</li>
                   <li>Include professional development and new certifications</li>
@@ -274,7 +274,7 @@ export default function ResumeLengthGuide() {
             <h4 className="font-bold text-gray-900 mb-3">🏆 Executive Level (15+ years)</h4>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <p className="font-medium text-purple-700 mb-2">Recommended: 2-3 pages</p>
+                <p className="font-medium text-ink/80 mb-2">Recommended: 2-3 pages</p>
                 <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
                   <li>Showcase strategic leadership and business impact</li>
                   <li>Include board positions, speaking engagements, and awards</li>

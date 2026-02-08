@@ -75,14 +75,14 @@ export default function CVTemplatesPage() {
 
       {/* CV vs Resume Explanation */}
       <div className="my-16">
-        <div className="max-w-4xl mx-auto bg-blue-50 border border-blue-200 rounded-xl p-8">
-          <h2 className="text-2xl font-bold text-blue-900 mb-4">
+        <div className="max-w-4xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
+          <h2 className="text-2xl font-bold text-ink mb-4">
             CV or Resume? Which Term Should You Use?
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h3 className="font-bold text-blue-800 mb-2">Use "CV" (Curriculum Vitae)</h3>
-              <ul className="text-blue-700 space-y-1 list-disc pl-5">
+              <h3 className="font-bold text-ink mb-2">Use "CV" (Curriculum Vitae)</h3>
+              <ul className="text-ink/80 space-y-1 list-disc pl-5">
                 <li>United Kingdom</li>
                 <li>Ireland</li>
                 <li>Europe (most countries)</li>
@@ -92,20 +92,20 @@ export default function CVTemplatesPage() {
               </ul>
             </div>
             <div>
-              <h3 className="font-bold text-blue-800 mb-2">Use "Resume"</h3>
-              <ul className="text-blue-700 space-y-1 list-disc pl-5">
+              <h3 className="font-bold text-ink mb-2">Use "Resume"</h3>
+              <ul className="text-ink/80 space-y-1 list-disc pl-5">
                 <li>United States</li>
                 <li>Canada</li>
               </ul>
-              <p className="text-blue-600 text-sm mt-3">
+              <p className="text-accent text-sm mt-3">
                 Looking for US-style resumes?{' '}
-                <Link to="/templates" className="underline hover:text-blue-800">
+                <Link to="/templates" className="underline hover:text-ink">
                   View Resume Templates
                 </Link>
               </p>
             </div>
           </div>
-          <p className="text-blue-700 mt-4 text-sm">
+          <p className="text-ink/80 mt-4 text-sm">
             The document format is essentially the same. Use whichever term is standard in your target country.
             Our templates work for both.
           </p>
@@ -183,7 +183,7 @@ export default function CVTemplatesPage() {
           </h2>
           <div className="flex flex-col md:flex-row items-center justify-center gap-8">
             <div className="text-center">
-              <div className="text-6xl font-bold text-blue-600">2</div>
+              <div className="text-6xl font-bold text-accent">2</div>
               <div className="text-gray-600">Pages Maximum</div>
             </div>
             <div className="text-gray-600 max-w-md">
@@ -237,13 +237,13 @@ export default function CVTemplatesPage() {
         <div className="flex flex-wrap justify-center gap-4">
           <Link
             to="/cv-templates/ats-friendly"
-            className="px-6 py-3 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+            className="px-6 py-3 bg-accent/10 text-ink/80 rounded-lg hover:bg-accent/20 transition-colors"
           >
             ATS-Friendly CV Templates
           </Link>
           <Link
             to="/free-cv-builder-no-sign-up"
-            className="px-6 py-3 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+            className="px-6 py-3 bg-accent/10 text-ink/80 rounded-lg hover:bg-accent/20 transition-colors"
           >
             Free CV Builder
           </Link>

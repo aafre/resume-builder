@@ -31,7 +31,7 @@ export function SaveStatusIndicator({ status, lastSaved }: SaveStatusIndicatorPr
       </svg>
     ),
     saving: (
-      <svg className="w-4 h-4 text-blue-500 animate-spin" fill="none" viewBox="0 0 24 24">
+      <svg className="w-4 h-4 text-accent animate-spin" fill="none" viewBox="0 0 24 24">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
         <path
           className="opacity-75"
@@ -60,7 +60,7 @@ export function SaveStatusIndicator({ status, lastSaved }: SaveStatusIndicatorPr
 
   const colorClasses = {
     saved: 'text-gray-600',
-    saving: 'text-blue-600',
+    saving: 'text-accent',
     error: 'text-red-600'
   };
 

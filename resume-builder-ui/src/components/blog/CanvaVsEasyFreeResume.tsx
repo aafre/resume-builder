@@ -151,7 +151,7 @@ export default function CanvaVsEasyFreeResume() {
               <tr className="bg-gray-50">
                 <th className="px-6 py-4 text-left font-bold text-gray-900">Feature</th>
                 <th className="px-6 py-4 text-center font-bold text-green-600">EasyFreeResume</th>
-                <th className="px-6 py-4 text-center font-bold text-blue-600">Canva</th>
+                <th className="px-6 py-4 text-center font-bold text-accent">Canva</th>
                 <th className="px-6 py-4 text-center font-bold text-gray-600">Winner</th>
               </tr>
             </thead>
@@ -201,7 +201,7 @@ export default function CanvaVsEasyFreeResume() {
                 <td className="px-6 py-4 text-center text-green-600">✅ Professional options</td>
                 <td className="px-6 py-4 text-center text-green-600">✅ Thousands of designs</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-blue-600 text-white">Canva</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-ink">Canva</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
@@ -228,11 +228,11 @@ export default function CanvaVsEasyFreeResume() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-blue-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-ink mb-4">
               Use Canva When:
             </h3>
-            <ul className="space-y-2 text-blue-700">
+            <ul className="space-y-2 text-ink/80">
               <li>✓ Applying to a small company without ATS</li>
               <li>✓ Handing resume directly to someone</li>
               <li>✓ Creative roles where design is evaluated</li>
@@ -259,31 +259,31 @@ export default function CanvaVsEasyFreeResume() {
           How to Switch from Canva
         </h2>
 
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6 my-8">
-          <ol className="space-y-4 text-indigo-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <ol className="space-y-4 text-ink/80">
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">1</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">1</span>
               <div>
                 <p className="font-medium">Copy your content from Canva</p>
                 <p className="text-sm">Open your Canva resume and copy all text sections</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">2</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">2</span>
               <div>
                 <p className="font-medium">Go to EasyFreeResume.com</p>
                 <p className="text-sm">No signup needed—start immediately</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">3</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">3</span>
               <div>
                 <p className="font-medium">Choose an ATS-friendly template</p>
                 <p className="text-sm">All our templates are designed for ATS compatibility</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">4</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">4</span>
               <div>
                 <p className="font-medium">Paste and format your content</p>
                 <p className="text-sm">Download your ATS-ready PDF for free</p>

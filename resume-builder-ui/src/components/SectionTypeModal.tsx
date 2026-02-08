@@ -122,20 +122,20 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
         </h2>
 
         {/* Position Selection - Segmented Control */}
-        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-indigo-50 rounded-xl border border-indigo-100">
-          <label className="block text-sm font-semibold text-indigo-900 mb-3">
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-accent/[0.06] rounded-xl border border-accent/10">
+          <label className="block text-sm font-semibold text-ink mb-3">
             Where should it go?
           </label>
 
           {/* Segmented Control */}
-          <div className="flex gap-2 p-1 bg-white rounded-lg border border-indigo-200 shadow-sm">
+          <div className="flex gap-2 p-1 bg-white rounded-lg border border-accent/20 shadow-sm">
             <button
               type="button"
               onClick={() => handleTopBottomSelect('top')}
               className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-md text-sm font-medium transition-all duration-200
                 ${selectedPosition === 'top'
-                  ? 'bg-indigo-600 text-white shadow-sm'
-                  : 'text-gray-600 hover:bg-indigo-50 hover:text-indigo-700'
+                  ? 'bg-accent text-ink shadow-sm'
+                  : 'text-gray-600 hover:bg-accent/[0.06] hover:text-ink/80'
                 }`}
             >
               <MdVerticalAlignTop className="w-5 h-5" />
@@ -146,8 +146,8 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
               onClick={() => handleTopBottomSelect('bottom')}
               className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-md text-sm font-medium transition-all duration-200
                 ${selectedPosition === 'bottom'
-                  ? 'bg-indigo-600 text-white shadow-sm'
-                  : 'text-gray-600 hover:bg-indigo-50 hover:text-indigo-700'
+                  ? 'bg-accent text-ink shadow-sm'
+                  : 'text-gray-600 hover:bg-accent/[0.06] hover:text-ink/80'
                 }`}
             >
               <MdVerticalAlignBottom className="w-5 h-5" />
@@ -163,8 +163,8 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
                 onClick={() => setShowAfterSection(!showAfterSection)}
                 className={`text-xs font-medium transition-colors ${
                   showAfterSection || !isTopOrBottom
-                    ? 'text-indigo-700'
-                    : 'text-indigo-500 hover:text-indigo-700'
+                    ? 'text-ink/80'
+                    : 'text-accent hover:text-ink/80'
                 }`}
               >
                 {showAfterSection ? '− Hide options' : '+ Insert after a specific section'}
@@ -179,8 +179,8 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
                       onClick={() => handleAfterSectionSelect(index + 1)}
                       className={`px-3 py-1.5 text-xs rounded-full border transition-all duration-200
                         ${selectedPosition === index + 1
-                          ? 'bg-indigo-600 text-white border-indigo-600'
-                          : 'bg-white text-gray-600 border-gray-300 hover:border-indigo-400 hover:text-indigo-700'
+                          ? 'bg-accent text-ink border-accent'
+                          : 'bg-white text-gray-600 border-gray-300 hover:border-accent/40 hover:text-ink/80'
                         }`}
                     >
                       After: {section.name || `Section ${index + 1}`}
@@ -203,20 +203,20 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
                 className={`group flex flex-col text-left bg-white rounded-xl border
                            overflow-hidden shadow-sm transition-all duration-200
                            ${isSelected
-                             ? 'border-blue-500 ring-2 ring-blue-200 shadow-md'
-                             : 'border-gray-200 hover:shadow-md hover:border-blue-400 hover:ring-2 hover:ring-blue-100'
+                             ? 'border-accent ring-2 ring-accent/30 shadow-md'
+                             : 'border-gray-200 hover:shadow-md hover:border-accent/70 hover:ring-2 hover:ring-accent/20'
                            }`}
               >
                 {/* Visual Area */}
                 <div className={`h-28 sm:h-32 p-4 flex items-center justify-center transition-colors
-                                ${isSelected ? 'bg-blue-50' : 'bg-gray-50 group-hover:bg-blue-50/30'}`}>
+                                ${isSelected ? 'bg-accent/[0.06]' : 'bg-gray-50 group-hover:bg-accent/[0.06]'}`}>
                   <section.Visual className="w-full h-full" />
                 </div>
 
                 {/* Content Area */}
                 <div className="p-4">
                   <h3 className={`font-semibold mb-1 transition-colors
-                                 ${isSelected ? 'text-blue-700' : 'text-gray-900 group-hover:text-blue-700'}`}>
+                                 ${isSelected ? 'text-ink/80' : 'text-gray-900 group-hover:text-ink/80'}`}>
                     {section.title}
                   </h3>
                   <p className="text-xs text-gray-500 line-clamp-2">{section.description}</p>
@@ -240,7 +240,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
             disabled={!selectedType}
             className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition-colors
                        ${selectedType
-                         ? 'bg-blue-600 text-white hover:bg-blue-700'
+                         ? 'bg-accent text-ink hover:bg-accent/90'
                          : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                        }`}
           >

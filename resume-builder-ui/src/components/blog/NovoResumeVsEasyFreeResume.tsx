@@ -102,7 +102,7 @@ export default function NovoResumeVsEasyFreeResume() {
               <tr className="bg-gray-50">
                 <th className="px-6 py-4 text-left font-bold text-gray-900">Feature</th>
                 <th className="px-6 py-4 text-center font-bold text-green-600">EasyFreeResume</th>
-                <th className="px-6 py-4 text-center font-bold text-blue-600">NovoResume</th>
+                <th className="px-6 py-4 text-center font-bold text-accent">NovoResume</th>
                 <th className="px-6 py-4 text-center font-bold text-gray-600">Winner</th>
               </tr>
             </thead>
@@ -253,31 +253,31 @@ export default function NovoResumeVsEasyFreeResume() {
           How to Switch from NovoResume
         </h2>
 
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6 my-8">
-          <ol className="space-y-4 text-indigo-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <ol className="space-y-4 text-ink/80">
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">1</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">1</span>
               <div>
                 <p className="font-medium">Export your NovoResume content</p>
                 <p className="text-sm">Download as PDF or copy the text from each section</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">2</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">2</span>
               <div>
                 <p className="font-medium">Cancel premium if subscribed</p>
                 <p className="text-sm">Account Settings → Subscription → Cancel</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">3</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">3</span>
               <div>
                 <p className="font-medium">Visit EasyFreeResume.com</p>
                 <p className="text-sm">Start immediately—no signup required</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">4</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">4</span>
               <div>
                 <p className="font-medium">Choose a template and recreate your resume</p>
                 <p className="text-sm">Download unlimited PDFs with no watermarks</p>

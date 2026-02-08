@@ -82,7 +82,7 @@ export default function TemplatesHub() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Link
             to="/templates/ats-friendly"
-            className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border-2 border-blue-200 hover:border-blue-400"
+            className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border-2 border-accent/20 hover:border-accent/70"
           >
             <div className="aspect-[8.5/11] bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 flex items-center justify-center border border-gray-200">
               <div className="text-center p-4">
@@ -97,7 +97,7 @@ export default function TemplatesHub() {
             <p className="text-gray-600 text-sm mb-3">
               Clean, modern design that passes all ATS systems. Perfect for any industry.
             </p>
-            <div className="text-blue-600 font-semibold text-sm">
+            <div className="text-accent font-semibold text-sm">
               View Template →
             </div>
           </Link>

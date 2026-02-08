@@ -72,7 +72,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 px-6 py-4 flex items-center justify-between flex-shrink-0 rounded-t-2xl">
+        <div className="bg-ink px-6 py-4 flex items-center justify-between flex-shrink-0 rounded-t-2xl">
           <h2 className="text-2xl font-bold text-white">Save Your Resume to the Cloud</h2>
           <button
             onClick={onClose}
@@ -97,7 +97,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                 <button
                   onClick={handleGoogleSignIn}
                   disabled={loading}
-                  className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-accent/70 hover:bg-accent/[0.06] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <FcGoogle size={24} />
                   <span className="font-semibold text-gray-700">Continue with Google</span>
@@ -106,7 +106,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                 <button
                   onClick={handleLinkedInSignIn}
                   disabled={loading}
-                  className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-accent/70 hover:bg-accent/[0.06] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <FaLinkedin size={24} className="text-[#0077B5]" />
                   <span className="font-semibold text-gray-700">Continue with LinkedIn</span>
@@ -137,7 +137,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="you@example.com"
-                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
                       disabled={loading}
                     />
                   </div>
@@ -146,7 +146,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white font-semibold py-3 rounded-lg hover:from-blue-700 hover:via-purple-700 hover:to-indigo-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-accent text-ink font-semibold py-3 rounded-lg hover:bg-accent/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? 'Sending...' : 'Send Magic Link'}
                 </button>

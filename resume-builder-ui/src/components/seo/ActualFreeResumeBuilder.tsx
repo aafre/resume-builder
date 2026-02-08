@@ -134,20 +134,20 @@ export default function ActualFreeResumeBuilder() {
 
       {/* Truth Page Positioning */}
       <div className="mb-16">
-        <div className="max-w-4xl mx-auto bg-blue-50 border border-blue-200 rounded-xl p-8">
-          <h3 className="text-2xl font-bold text-blue-900 mb-4 text-center">
+        <div className="max-w-4xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
+          <h3 className="text-2xl font-bold text-ink mb-4 text-center">
             Why we're transparent about being free
           </h3>
-          <p className="text-blue-800 leading-relaxed mb-4">
+          <p className="text-ink leading-relaxed mb-4">
             We built EasyFreeResume because we were frustrated by "free" resume builders that weren't
             actually free. The dark patterns, the bait-and-switch, the surprise charges after you've
             spent 30 minutes building your resume—it's not right.
           </p>
-          <p className="text-blue-800 leading-relaxed mb-4">
+          <p className="text-ink leading-relaxed mb-4">
             Our model is simple: we're funded by ethical advertising, not by tricking users into
             subscriptions. You get a professional resume, we get ad revenue. Everyone wins.
           </p>
-          <p className="text-blue-800 leading-relaxed font-medium">
+          <p className="text-ink leading-relaxed font-medium">
             No hidden costs. No premium tiers. No "upgrade to unlock" buttons. Just a resume builder
             that does what it says.
           </p>

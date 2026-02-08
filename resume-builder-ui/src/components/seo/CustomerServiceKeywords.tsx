@@ -31,11 +31,11 @@ export default function CustomerServiceKeywords() {
       <PageHero config={config.hero} />
 
       {/* Hub navigation */}
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-12 max-w-4xl mx-auto">
-        <h3 className="font-bold text-blue-800 mb-3">🔗 Part of Our Series</h3>
-        <p className="text-blue-700">
+      <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 mb-12 max-w-4xl mx-auto">
+        <h3 className="font-bold text-ink mb-3">🔗 Part of Our Series</h3>
+        <p className="text-ink/80">
           This article is part of our Resume Keywords series. For a complete overview, see our{' '}
-          <Link to="/resume-keywords" className="text-blue-600 hover:text-blue-800 underline font-medium">
+          <Link to="/resume-keywords" className="text-accent hover:text-ink underline font-medium">
             Resume Keywords Hub
           </Link>.
         </p>
@@ -55,7 +55,7 @@ export default function CustomerServiceKeywords() {
             our{' '}
             <Link
               to="/examples/customer-service-representative"
-              className="text-blue-600 hover:text-blue-800 underline font-medium"
+              className="text-accent hover:text-ink underline font-medium"
             >
               customer service resume example
             </Link>.
@@ -298,11 +298,11 @@ export default function CustomerServiceKeywords() {
             </ul>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h3 className="font-bold text-purple-800 mb-4 text-lg">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="font-bold text-ink mb-4 text-lg">
               🎯 Problem-Solving
             </h3>
-            <ul className="space-y-2 text-purple-700 list-disc list-inside">
+            <ul className="space-y-2 text-ink/80 list-disc list-inside">
               <li>Conflict Resolution</li>
               <li>Problem-Solving</li>
               <li>Critical Thinking</li>
@@ -326,11 +326,11 @@ export default function CustomerServiceKeywords() {
         </p>
 
         <div className="space-y-6">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-blue-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
               CRM & Customer Management Software
             </h3>
-            <div className="grid md:grid-cols-2 gap-4 text-blue-700">
+            <div className="grid md:grid-cols-2 gap-4 text-ink/80">
               <div>
                 <h4 className="font-medium mb-2">Major CRM Platforms:</h4>
                 <p className="text-sm">Salesforce, HubSpot CRM, Zoho CRM, Pipedrive, Microsoft Dynamics, SugarCRM</p>
@@ -342,11 +342,11 @@ export default function CustomerServiceKeywords() {
             </div>
           </div>
 
-          <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-indigo-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
               Communication & Collaboration Tools
             </h3>
-            <div className="grid md:grid-cols-2 gap-4 text-indigo-700">
+            <div className="grid md:grid-cols-2 gap-4 text-ink/80">
               <div>
                 <h4 className="font-medium mb-2">Communication Platforms:</h4>
                 <p className="text-sm">Slack, Microsoft Teams, Zoom, Google Workspace, Skype for Business, Discord</p>
@@ -650,7 +650,7 @@ export default function CustomerServiceKeywords() {
             Want to see a full resume using these keywords?{' '}
             <Link
               to="/examples/customer-service-representative"
-              className="text-blue-600 hover:text-blue-800 underline font-medium"
+              className="text-accent hover:text-ink underline font-medium"
             >
               View our customer service resume example
             </Link>.
@@ -669,7 +669,7 @@ export default function CustomerServiceKeywords() {
         </p>
 
         <div className="max-w-4xl mx-auto space-y-6">
-          <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-blue-500">
+          <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-accent">
             <h3 className="text-lg font-bold text-gray-900 mb-3">
               Step 1: Collect 3–5 job descriptions for your target role
             </h3>
@@ -679,7 +679,7 @@ export default function CustomerServiceKeywords() {
             </p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-blue-500">
+          <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-accent">
             <h3 className="text-lg font-bold text-gray-900 mb-3">
               Step 2: Highlight repeated skills and tools
             </h3>
@@ -690,7 +690,7 @@ export default function CustomerServiceKeywords() {
             </p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-blue-500">
+          <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-accent">
             <h3 className="text-lg font-bold text-gray-900 mb-3">
               Step 3: Match them to your real experience
             </h3>
@@ -701,7 +701,7 @@ export default function CustomerServiceKeywords() {
             </p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-blue-500">
+          <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-accent">
             <h3 className="text-lg font-bold text-gray-900 mb-3">
               Step 4: Weave keywords into your experience bullets
             </h3>
@@ -724,7 +724,7 @@ export default function CustomerServiceKeywords() {
           effectively. For a deeper dive, read our{' '}
           <Link
             to="/blog/how-to-use-resume-keywords"
-            className="text-blue-600 hover:text-blue-800 underline font-medium"
+            className="text-accent hover:text-ink underline font-medium"
           >
             complete guide to using resume keywords
           </Link>.
@@ -786,7 +786,7 @@ export default function CustomerServiceKeywords() {
               and where you need to adjust. Learn more in our{' '}
               <Link
                 to="/blog/ats-resume-optimization"
-                className="text-blue-600 hover:text-blue-800 underline font-medium"
+                className="text-accent hover:text-ink underline font-medium"
               >
                 ATS resume optimization guide
               </Link>.

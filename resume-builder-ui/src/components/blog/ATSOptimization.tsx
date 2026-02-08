@@ -46,11 +46,11 @@ export default function ATSOptimization() {
           candidates before human review.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             How ATS Systems Work:
           </h4>
-          <ol className="list-decimal pl-6 space-y-2 text-blue-700">
+          <ol className="list-decimal pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Parsing:</strong> Extracts information from your resume
               into database fields
@@ -200,11 +200,11 @@ export default function ATSOptimization() {
         <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
           Font and Formatting Guidelines
         </h3>
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             📝 Formatting Best Practices:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-blue-700">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Fonts:</strong> Arial, Calibri, Times New Roman, or other
               standard fonts
@@ -237,18 +237,18 @@ export default function ATSOptimization() {
           Keywords are the foundation of ATS optimization. These systems scan
           for specific terms, skills, and phrases that match job requirements.
           Strategic keyword placement can dramatically improve your ranking.
-          We maintain <Link to="/resume-keywords" className="text-blue-600 hover:underline font-medium">industry-specific keyword lists</Link> for
+          We maintain <Link to="/resume-keywords" className="text-accent hover:underline font-medium">industry-specific keyword lists</Link> for
           17+ job categories to help you find the right terms for your field.
         </p>
 
         <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
           How to Find the Right Keywords
         </h3>
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             🔍 Keyword Research Strategy:
           </h4>
-          <ol className="list-decimal pl-6 space-y-3 text-purple-700">
+          <ol className="list-decimal pl-6 space-y-3 text-ink/80">
             <li>
               <strong>Analyze Job Descriptions:</strong> Identify repeated
               terms, required skills, and qualifications
@@ -407,11 +407,11 @@ export default function ATSOptimization() {
         <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
           Handling Dates and Employment History
         </h3>
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             📅 Date Format Guidelines:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-blue-700">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Use consistent format:</strong> "January 2020 - March
               2023" or "01/2020 - 03/2023"
@@ -474,11 +474,11 @@ export default function ATSOptimization() {
           your information.
         </p>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             🧪 ATS Testing Methods:
           </h4>
-          <ol className="list-decimal pl-6 space-y-2 text-purple-700">
+          <ol className="list-decimal pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Copy-Paste Test:</strong> Copy your resume into a plain
               text editor - if it looks messy, ATS will struggle
@@ -534,7 +534,7 @@ export default function ATSOptimization() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-8 my-12">
+        <div className="bg-ink text-white rounded-xl p-8 my-12">
           <h3 className="text-2xl font-bold mb-4">
             🚀 Your ATS Optimization Action Plan
           </h3>

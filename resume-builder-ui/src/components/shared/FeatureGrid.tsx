@@ -41,7 +41,7 @@ export default function FeatureGrid({
             </div>
 
             {/* Title */}
-            <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-purple-700 transition-colors duration-300">
+            <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-ink/80 transition-colors duration-300">
               {feature.title}
             </h3>
 

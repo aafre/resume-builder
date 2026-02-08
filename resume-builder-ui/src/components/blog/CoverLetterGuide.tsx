@@ -42,8 +42,8 @@ export default function CoverLetterGuide() {
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
           What Makes a Cover Letter Stand Out
         </h2>
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-2 text-blue-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Personalization:</strong> Use the hiring manager's name if
               available and mention the company specifically.

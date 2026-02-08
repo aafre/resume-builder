@@ -110,7 +110,7 @@ export default function BulletPointBank({ categories, jobTitle }: BulletPointBan
                         group relative p-4 rounded-lg cursor-pointer transition-all
                         ${isCopied
                           ? 'bg-green-50 border border-green-300'
-                          : 'bg-gray-50 border border-gray-100 hover:bg-blue-50 hover:border-blue-200'
+                          : 'bg-gray-50 border border-gray-100 hover:bg-accent/[0.06] hover:border-accent/20'
                         }
                       `}
                     >
@@ -133,7 +133,7 @@ export default function BulletPointBank({ categories, jobTitle }: BulletPointBan
                             Copied!
                           </span>
                         ) : (
-                          <span className="flex items-center gap-1 text-gray-400 group-hover:text-blue-600 text-sm">
+                          <span className="flex items-center gap-1 text-gray-400 group-hover:text-accent text-sm">
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                             </svg>
@@ -151,25 +151,25 @@ export default function BulletPointBank({ categories, jobTitle }: BulletPointBan
       </div>
 
       {/* Tips Section */}
-      <div className="mt-8 bg-blue-50 border border-blue-200 rounded-xl p-6">
-        <h3 className="text-lg font-semibold text-blue-900 mb-3">
+      <div className="mt-8 bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+        <h3 className="text-lg font-semibold text-ink mb-3">
           Tips for Using These Bullet Points
         </h3>
-        <ul className="space-y-2 text-blue-800">
+        <ul className="space-y-2 text-ink">
           <li className="flex items-start gap-2">
-            <span className="text-blue-600 mt-1" aria-hidden="true">&#10003;</span>
+            <span className="text-accent mt-1" aria-hidden="true">&#10003;</span>
             <span><strong>Customize the numbers</strong> - Replace percentages and metrics with your actual achievements</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-blue-600 mt-1" aria-hidden="true">&#10003;</span>
+            <span className="text-accent mt-1" aria-hidden="true">&#10003;</span>
             <span><strong>Adapt to your experience</strong> - Modify the scope and scale to match your role</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-blue-600 mt-1" aria-hidden="true">&#10003;</span>
+            <span className="text-accent mt-1" aria-hidden="true">&#10003;</span>
             <span><strong>Match job descriptions</strong> - Use keywords from the job posting you are applying to</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-blue-600 mt-1" aria-hidden="true">&#10003;</span>
+            <span className="text-accent mt-1" aria-hidden="true">&#10003;</span>
             <span><strong>Quantify results</strong> - Always include numbers, percentages, or time frames when possible</span>
           </li>
         </ul>

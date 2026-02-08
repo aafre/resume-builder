@@ -31,11 +31,11 @@ export default function FreeCVBuilder() {
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
           CV vs Resume: which one do I need?
         </h2>
-        <div className="max-w-4xl mx-auto bg-blue-50 border border-blue-200 rounded-xl p-8">
+        <div className="max-w-4xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-xl font-bold text-blue-800 mb-4">Use a CV if you're in:</h3>
-              <ul className="space-y-2 text-blue-700 list-disc pl-5">
+              <h3 className="text-xl font-bold text-ink mb-4">Use a CV if you're in:</h3>
+              <ul className="space-y-2 text-ink/80 list-disc pl-5">
                 <li>United Kingdom</li>
                 <li>Europe (most countries)</li>
                 <li>Australia & New Zealand</li>
@@ -87,7 +87,7 @@ export default function FreeCVBuilder() {
             </p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-blue-500">
+          <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-accent">
             <h3 className="text-xl font-bold text-gray-900 mb-2">
               Personal profile/summary at the top
             </h3>
@@ -97,7 +97,7 @@ export default function FreeCVBuilder() {
             </p>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-purple-500">
+          <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-accent">
             <h3 className="text-xl font-bold text-gray-900 mb-2">
               No photo (unless requested)
             </h3>
@@ -136,7 +136,7 @@ export default function FreeCVBuilder() {
               </ul>
             </div>
             <div>
-              <h3 className="text-xl font-bold text-blue-700 mb-4">We only track:</h3>
+              <h3 className="text-xl font-bold text-ink/80 mb-4">We only track:</h3>
               <ul className="space-y-2 text-gray-700 list-disc pl-5">
                 <li>Anonymous page views (for analytics)</li>
                 <li>Error reports (to fix bugs)</li>

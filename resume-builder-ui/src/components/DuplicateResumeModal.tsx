@@ -40,7 +40,7 @@ export function DuplicateResumeModal({
           <div className="flex items-center gap-3 mb-4">
             <div className="flex-shrink-0">
               <svg
-                className="w-12 h-12 text-blue-500"
+                className="w-12 h-12 text-accent"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -71,7 +71,7 @@ export function DuplicateResumeModal({
                 onChange={(e) => setNewTitle(e.target.value)}
                 disabled={isDuplicating}
                 autoFocus
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent disabled:bg-gray-100 disabled:cursor-not-allowed"
                 placeholder="Enter new title"
                 maxLength={200}
               />
@@ -84,7 +84,7 @@ export function DuplicateResumeModal({
               <button
                 type="submit"
                 disabled={isDuplicating || !newTitle.trim()}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                className="flex-1 bg-accent hover:bg-accent/90 disabled:bg-accent/80 text-white font-medium py-2 px-4 rounded-lg transition-colors"
               >
                 {isDuplicating ? 'Duplicating...' : 'Duplicate'}
               </button>

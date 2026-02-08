@@ -24,11 +24,11 @@ export default function RemoteWorkResume() {
           employers value most.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-          <h3 className="text-lg font-bold text-blue-800 mb-2">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+          <h3 className="text-lg font-bold text-ink mb-2">
             📈 Remote Work Growth
           </h3>
-          <p className="text-blue-700">
+          <p className="text-ink/80">
             Remote jobs have grown by over 200% in the last six years, according
             to FlexJobs. As more companies embrace remote-first policies,
             competition for these roles has intensified significantly.
@@ -153,11 +153,11 @@ export default function RemoteWorkResume() {
         </p>
 
         <div className="grid md:grid-cols-1 gap-6 my-8">
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h4 className="font-bold text-purple-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-3">
               🎯 Remote Achievement Examples:
             </h4>
-            <ul className="list-disc pl-6 space-y-2 text-purple-700">
+            <ul className="list-disc pl-6 space-y-2 text-ink/80">
               <li>
                 "Successfully led a team of five across three time zones to
                 deliver a product launch ahead of schedule"
@@ -203,7 +203,7 @@ export default function RemoteWorkResume() {
               </div>
 
               <div>
-                <p className="font-bold text-blue-600">PROFESSIONAL SUMMARY</p>
+                <p className="font-bold text-accent">PROFESSIONAL SUMMARY</p>
                 <p>
                   Remote-ready project manager with 5+ years experience leading
                   cross-functional teams in fully distributed environments.
@@ -214,7 +214,7 @@ export default function RemoteWorkResume() {
               </div>
 
               <div>
-                <p className="font-bold text-blue-600">REMOTE EXPERIENCE</p>
+                <p className="font-bold text-accent">REMOTE EXPERIENCE</p>
                 <p className="font-medium">
                   Project Manager (Remote) – Acme Inc. – 2022–2026
                 </p>
@@ -235,7 +235,7 @@ export default function RemoteWorkResume() {
               </div>
 
               <div>
-                <p className="font-bold text-blue-600">REMOTE TOOLS & TECH</p>
+                <p className="font-bold text-accent">REMOTE TOOLS & TECH</p>
                 <p>
                   Slack, Zoom, Trello, Notion, Confluence, GitHub, Jira, Miro
                 </p>
@@ -280,7 +280,7 @@ export default function RemoteWorkResume() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-8 my-12">
+        <div className="bg-ink text-white rounded-xl p-8 my-12">
           <h3 className="text-2xl font-bold mb-4">
             🚀 Final Tips to Win Remote Roles
           </h3>

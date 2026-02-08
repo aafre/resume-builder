@@ -299,7 +299,7 @@ export default function MyResumes() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
           <p className="text-gray-600">
             {authLoading ? 'Initializing authentication...' : 'Loading your resumes...'}
           </p>
@@ -329,7 +329,7 @@ export default function MyResumes() {
           <p className="text-gray-600 mb-4">{error?.message || 'Failed to load resumes'}</p>
           <button
             onClick={() => refetch()}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-accent text-ink px-6 py-2 rounded-lg hover:bg-accent/90 transition-colors"
           >
             Try Again
           </button>
@@ -417,7 +417,7 @@ export default function MyResumes() {
       {downloadingId && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-sm mx-4">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
             <p className="text-center text-gray-700">
               Generating PDF...
             </p>

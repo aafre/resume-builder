@@ -75,7 +75,7 @@ export default function FlowCVVsEasyFreeResume() {
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
               <p className="font-bold text-gray-700 text-lg mb-2">FlowCV</p>
               <StarRating rating={4} />
-              <p className="text-2xl font-bold text-blue-600 mt-2">Free + Pro</p>
+              <p className="text-2xl font-bold text-accent mt-2">Free + Pro</p>
               <p className="text-sm text-gray-600">Account required</p>
             </div>
           </div>
@@ -90,11 +90,11 @@ export default function FlowCVVsEasyFreeResume() {
           Let's break down the differences.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-ink mb-3">
             🎯 Both Are Actually Free
           </h3>
-          <p className="text-blue-700">
+          <p className="text-ink/80">
             Unlike most "free" resume builders that lock PDF downloads behind paywalls,
             both FlowCV and EasyFreeResume let you download your resume for free.
             The differences come down to privacy, simplicity, and user experience.
@@ -111,7 +111,7 @@ export default function FlowCVVsEasyFreeResume() {
               <tr className="bg-gray-50">
                 <th className="px-6 py-4 text-left font-bold text-gray-900">Feature</th>
                 <th className="px-6 py-4 text-center font-bold text-green-600">EasyFreeResume</th>
-                <th className="px-6 py-4 text-center font-bold text-blue-600">FlowCV</th>
+                <th className="px-6 py-4 text-center font-bold text-accent">FlowCV</th>
                 <th className="px-6 py-4 text-center font-bold text-gray-600">Winner</th>
               </tr>
             </thead>
@@ -153,7 +153,7 @@ export default function FlowCVVsEasyFreeResume() {
                 <td className="px-6 py-4 text-center text-green-600">✅ Professional</td>
                 <td className="px-6 py-4 text-center text-green-600">✅ More variety</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-blue-600 text-white">FlowCV</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-ink">FlowCV</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
@@ -169,7 +169,7 @@ export default function FlowCVVsEasyFreeResume() {
                 <td className="px-6 py-4 text-center text-yellow-600">⚠️ Guides available</td>
                 <td className="px-6 py-4 text-center text-green-600">✅ Built-in</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-blue-600 text-white">FlowCV</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-ink">FlowCV</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
@@ -213,11 +213,11 @@ export default function FlowCVVsEasyFreeResume() {
               <li>✓ Complete privacy by design</li>
             </ul>
           </div>
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-blue-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-ink mb-4">
               📧 FlowCV
             </h3>
-            <ul className="space-y-2 text-blue-700">
+            <ul className="space-y-2 text-ink/80">
               <li>✓ Account required (email or Google)</li>
               <li>✓ Data stored in the cloud</li>
               <li>✓ Accessible from any device</li>
@@ -244,11 +244,11 @@ export default function FlowCVVsEasyFreeResume() {
               <li>✓ You hate promotional emails</li>
             </ul>
           </div>
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-blue-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-ink mb-4">
               Choose FlowCV If:
             </h3>
-            <ul className="space-y-2 text-blue-700">
+            <ul className="space-y-2 text-ink/80">
               <li>✓ You need cloud sync across devices</li>
               <li>✓ You want more template variety</li>
               <li>✓ You need cover letter builder</li>

@@ -26,13 +26,13 @@ export default function JobInterviewGuide() {
           you need to know to impress your interviewers and land the offer.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-blue-800 mb-3">📝 Need a resume first?</h3>
-          <p className="text-blue-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h3 className="font-bold text-ink mb-3">📝 Need a resume first?</h3>
+          <p className="text-ink/80">
             Check out our{" "}
             <a
               href="/best-free-resume-builder-reddit"
-              className="text-blue-600 hover:text-blue-800 underline font-medium"
+              className="text-accent hover:text-ink underline font-medium"
             >
               best free resume builder
             </a>{" "}
@@ -60,8 +60,8 @@ export default function JobInterviewGuide() {
           answers.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-2 text-blue-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Company Website:</strong> Read the "About Us," "Mission,"
               and "Products/Services" pages.
@@ -185,8 +185,8 @@ export default function JobInterviewGuide() {
           it as follows:
         </p>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <ol className="list-decimal pl-6 space-y-2 text-purple-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <ol className="list-decimal pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Present:</strong> Briefly describe your current role and a
               key accomplishment.
@@ -211,8 +211,8 @@ export default function JobInterviewGuide() {
           parts:
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <ol className="list-decimal pl-6 space-y-2 text-blue-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <ol className="list-decimal pl-6 space-y-2 text-ink/80">
             <li>
               <strong>What you admire about them:</strong> Mention their
               mission, a specific product, or their company culture.
@@ -234,7 +234,7 @@ export default function JobInterviewGuide() {
           stories. For an in-depth look, check out our guide on{" "}
           <a
             href="/blog/behavioral-interview-questions"
-            className="text-blue-600 hover:text-blue-800 underline"
+            className="text-accent hover:text-ink underline"
           >
             15+ Behavioral Interview Questions (and How to Answer with the STAR
             Method)
@@ -244,7 +244,7 @@ export default function JobInterviewGuide() {
 
         <hr className="border-gray-300 my-12" />
 
-        <div className="my-12 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 p-8 rounded-2xl border border-gray-200 text-center">
+        <div className="my-12 bg-gradient-to-r bg-chalk p-8 rounded-2xl border border-gray-200 text-center">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">
             Ready to Practice?
           </h3>
@@ -257,7 +257,7 @@ export default function JobInterviewGuide() {
             href="https://prepai.co.uk/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-accent text-ink px-8 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Your Free Mock Interview
           </a>
@@ -284,12 +284,12 @@ export default function JobInterviewGuide() {
           time. A simple and genuine:
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <p className="text-blue-800 font-medium italic">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <p className="text-ink font-medium italic">
             "Thanks for taking the time to meet with me today. I really enjoyed
             our conversation and learning more about the role and team."
           </p>
-          <p className="text-blue-700 mt-3">
+          <p className="text-ink/80 mt-3">
             <strong>That's usually enough</strong> – no need for elaborate
             post-interview emails.
           </p>
@@ -330,9 +330,9 @@ export default function JobInterviewGuide() {
           you have any questions for us?"
         </p>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">Examples:</h4>
-          <ul className="list-disc pl-6 space-y-2 text-purple-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">Examples:</h4>
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>"What are the next steps in the hiring process?"</li>
             <li>
               "What skills or qualities do you think would help someone thrive

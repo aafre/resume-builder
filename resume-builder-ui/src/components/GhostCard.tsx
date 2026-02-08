@@ -71,11 +71,11 @@ export function GhostCard({ isAtLimit, resumeCount, onCreateNew }: GhostCardProp
   return (
     <div
       onClick={onCreateNew}
-      className="h-full min-h-[320px] border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50/20 transition-all duration-200 group"
+      className="h-full min-h-[320px] border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-accent hover:bg-accent/[0.06]/20 transition-all duration-200 group"
     >
-      <PlusCircle className="w-16 h-16 text-gray-400 mb-4 group-hover:text-blue-500 group-hover:scale-110 transition-all duration-200" />
+      <PlusCircle className="w-16 h-16 text-gray-400 mb-4 group-hover:text-accent group-hover:scale-110 transition-all duration-200" />
 
-      <h3 className="text-lg font-semibold text-gray-700 mb-1 group-hover:text-blue-600 transition-colors">
+      <h3 className="text-lg font-semibold text-gray-700 mb-1 group-hover:text-accent transition-colors">
         Create New Resume
       </h3>
 

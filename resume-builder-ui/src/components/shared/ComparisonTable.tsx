@@ -29,19 +29,19 @@ export default function ComparisonTable({
       <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+            <thead className="bg-accent text-ink">
               <tr>
                 <th className="px-6 py-4 text-left font-bold">Feature</th>
                 {items.map((item, index) => (
                   <th
                     key={index}
                     className={`px-6 py-4 text-center font-bold ${
-                      item.highlight ? 'bg-indigo-700' : ''
+                      item.highlight ? 'bg-accent' : ''
                     }`}
                   >
                     {item.name}
                     {item.highlight && (
-                      <div className="text-xs font-normal mt-1 text-indigo-200">
+                      <div className="text-xs font-normal mt-1 text-white/60">
                         Recommended
                       </div>
                     )}
@@ -64,7 +64,7 @@ export default function ComparisonTable({
                       <td
                         key={colIndex}
                         className={`px-6 py-4 text-center ${
-                          item.highlight ? 'bg-blue-50' : ''
+                          item.highlight ? 'bg-accent/[0.06]' : ''
                         }`}
                       >
                         {typeof value === 'boolean' ? (

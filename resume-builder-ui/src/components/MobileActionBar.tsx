@@ -62,7 +62,7 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
           <div className="flex items-center justify-center gap-2 text-xs">
             {isSaving && (
               <>
-                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-accent"></div>
                 <span className="text-gray-600">Saving...</span>
               </>
             )}
@@ -101,7 +101,7 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
           <button
             onClick={onPreviewClick}
             disabled={isPreviewLoading || isGenerating}
-            className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl shadow-lg transition-all hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed relative"
+            className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-accent text-ink rounded-xl shadow-lg transition-all hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed relative"
             aria-label="Preview resume PDF"
             style={{ WebkitTapHighlightColor: "transparent" }}
           >

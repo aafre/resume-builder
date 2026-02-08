@@ -55,7 +55,7 @@ export default function TabbedHelpModal({
                   className={classNames(
                     'py-3 px-4 font-medium text-sm transition-all border-b-2 -mb-px',
                     selected
-                      ? 'text-blue-600 border-blue-600'
+                      ? 'text-accent border-accent'
                       : 'text-gray-600 border-transparent hover:text-gray-900 hover:border-gray-300'
                   )}
                 >
@@ -69,7 +69,7 @@ export default function TabbedHelpModal({
                   className={classNames(
                     'py-3 px-4 font-medium text-sm transition-all border-b-2 -mb-px',
                     selected
-                      ? 'text-blue-600 border-blue-600'
+                      ? 'text-accent border-accent'
                       : 'text-gray-600 border-transparent hover:text-gray-900 hover:border-gray-300'
                   )}
                 >
@@ -83,7 +83,7 @@ export default function TabbedHelpModal({
                   className={classNames(
                     'py-3 px-4 font-medium text-sm transition-all border-b-2 -mb-px',
                     selected
-                      ? 'text-blue-600 border-blue-600'
+                      ? 'text-accent border-accent'
                       : 'text-gray-600 border-transparent hover:text-gray-900 hover:border-gray-300'
                   )}
                 >
@@ -139,11 +139,11 @@ function EditorGuideContent() {
         <h3 className="text-lg font-semibold text-gray-800 mb-3">Reordering Sections & Items</h3>
         <div className="text-gray-600 space-y-2">
           <p className="flex items-center gap-2">
-            <MdMouse className="text-blue-500 flex-shrink-0" />
+            <MdMouse className="text-accent flex-shrink-0" />
             <span><strong>Desktop:</strong> Hover over any section or item to reveal the ••• handle, then drag to reorder</span>
           </p>
           <p className="flex items-center gap-2">
-            <MdTouchApp className="text-blue-500 flex-shrink-0" />
+            <MdTouchApp className="text-accent flex-shrink-0" />
             <span><strong>Mobile:</strong> Press and hold any section or item, then drag to reorder</span>
           </p>
           <p className="text-sm text-gray-500 mt-2">
@@ -203,7 +203,7 @@ function AnonymousSavingContent({ onSignInClick }: { onSignInClick?: () => void 
       {onSignInClick && (
         <button
           onClick={onSignInClick}
-          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-500 hover:to-indigo-500 transition-all shadow-md hover:shadow-lg"
+          className="w-full bg-accent text-ink font-semibold py-3 px-6 rounded-lg hover:bg-accent/90 transition-all shadow-md hover:shadow-lg"
         >
           Create Free Account (Recommended)
         </button>

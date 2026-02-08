@@ -35,23 +35,23 @@ export default function BestFreeResumeBuilderReddit() {
           </p>
           <ul className="space-y-3 text-gray-700">
             <li className="flex items-start">
-              <span className="text-blue-600 font-bold mr-3 text-xl">1.</span>
+              <span className="text-accent font-bold mr-3 text-xl">1.</span>
               <span><strong>Actually free</strong> – No hidden paywalls, no "free trial" that requires a credit card</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-600 font-bold mr-3 text-xl">2.</span>
+              <span className="text-accent font-bold mr-3 text-xl">2.</span>
               <span><strong>ATS-friendly</strong> – Templates that pass Applicant Tracking Systems</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-600 font-bold mr-3 text-xl">3.</span>
+              <span className="text-accent font-bold mr-3 text-xl">3.</span>
               <span><strong>No watermarks</strong> – Professional downloads without branding</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-600 font-bold mr-3 text-xl">4.</span>
+              <span className="text-accent font-bold mr-3 text-xl">4.</span>
               <span><strong>Privacy-focused</strong> – No account required, no data collection</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-600 font-bold mr-3 text-xl">5.</span>
+              <span className="text-accent font-bold mr-3 text-xl">5.</span>
               <span><strong>No aggressive upselling</strong> – Straightforward tool without constant upgrade prompts</span>
             </li>
           </ul>
@@ -179,7 +179,7 @@ export default function BestFreeResumeBuilderReddit() {
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-blue-500">
+            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-accent">
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 ✓ Reddit Criterion: "ATS compatibility"
               </h3>
@@ -193,7 +193,7 @@ export default function BestFreeResumeBuilderReddit() {
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-purple-500">
+            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-accent">
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 ✓ Reddit Criterion: "Privacy and no signup"
               </h3>
@@ -235,7 +235,7 @@ export default function BestFreeResumeBuilderReddit() {
         <CompareBuildersCrossLinks
           title="See How Specific Builders Compare"
           description="Want a detailed breakdown of a specific resume builder? We've analyzed pricing, features, and hidden costs:"
-          bgColor="bg-blue-50"
+          bgColor="bg-accent/[0.06]"
         />
       </div>
 

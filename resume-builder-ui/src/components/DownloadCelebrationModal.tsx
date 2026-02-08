@@ -175,7 +175,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
             <button
               ref={primaryButtonRef}
               onClick={onSignUp}
-              className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+              className="bg-accent text-ink font-semibold px-8 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
             >
               Save to Cloud (Free)
             </button>

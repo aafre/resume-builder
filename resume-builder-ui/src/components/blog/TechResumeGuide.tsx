@@ -29,11 +29,11 @@ export default function TechResumeGuide() {
           tech resume that truly stands out in 2026.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-          <h3 className="text-lg font-bold text-blue-800 mb-2">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+          <h3 className="text-lg font-bold text-ink mb-2">
             💡 Key Insight
           </h3>
-          <p className="text-blue-700">
+          <p className="text-ink/80">
             For tech roles, recruiters often spend mere seconds scanning
             resumes. They're looking for specific keywords, relevant projects,
             and a clear demonstration of your technical prowess. Make it easy
@@ -51,11 +51,11 @@ export default function TechResumeGuide() {
           tools and methodologies are paramount.
         </p>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             Tech Resume Must-Haves:
           </h4>
-          <ol className="list-decimal pl-6 space-y-2 text-purple-700">
+          <ol className="list-decimal pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Technical Skills Section:</strong> Detailed and
               categorized.
@@ -151,11 +151,11 @@ export default function TechResumeGuide() {
           This is arguably the most critical section for tech roles. Categorize
           your skills for readability and ATS compatibility.
         </p>
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             🛠️ How to Categorize Skills:
           </h4>
-          <div className="text-blue-700 space-y-4">
+          <div className="text-ink/80 space-y-4">
             <div>
               <p className="font-medium">
                 <strong>Programming Languages:</strong>
@@ -275,11 +275,11 @@ export default function TechResumeGuide() {
           Standard academic information, but don't forget relevant tech
           certifications.
         </p>
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             🎓 What to Highlight:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-purple-700">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Degree, Major, University, Graduation Date.</strong>
             </li>
@@ -401,7 +401,7 @@ export default function TechResumeGuide() {
           </li>
         </ul>
 
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-8 my-12">
+        <div className="bg-ink text-white rounded-xl p-8 my-12">
           <h3 className="text-2xl font-bold mb-4">
             🚀 Your Tech Resume Checklist:
           </h3>

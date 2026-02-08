@@ -90,7 +90,7 @@ export function UploadResumeModal({
     <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-indigo-700 px-6 py-4 flex items-center justify-between">
+        <div className="bg-ink px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 p-2 rounded-lg">
               <DocumentArrowUpIcon className="w-6 h-6 text-white" />
@@ -160,7 +160,7 @@ export function UploadResumeModal({
                       Confidence: {(parseResult.confidence * 100).toFixed(0)}%
                     </span>
                     {parseResult.cached && (
-                      <span className="text-blue-600">✓ Cached</span>
+                      <span className="text-accent">✓ Cached</span>
                     )}
                   </div>
                 </div>
@@ -186,7 +186,7 @@ export function UploadResumeModal({
             <div
               className={`border-2 border-dashed rounded-xl p-8 text-center transition-all ${
                 dragActive
-                  ? 'border-blue-500 bg-blue-50'
+                  ? 'border-accent bg-accent/[0.06]'
                   : 'border-gray-300 hover:border-gray-400'
               }`}
               onDragEnter={handleDrag}
@@ -232,7 +232,7 @@ export function UploadResumeModal({
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                 <div
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-300"
+                  className="bg-accent h-2 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>

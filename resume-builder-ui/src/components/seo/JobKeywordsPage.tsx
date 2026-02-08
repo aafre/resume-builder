@@ -95,11 +95,11 @@ export default function JobKeywordsPage() {
       {/* Role Intro Section */}
       {jobData.roleIntro && (
         <div className="mb-12 max-w-4xl mx-auto">
-          <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-8">
-            <h2 className="text-2xl font-bold text-indigo-900 mb-4">
+          <div className="bg-accent/[0.04] border border-accent/20 rounded-xl p-8">
+            <h2 className="text-2xl font-bold text-ink mb-4">
               What hiring teams look for in {jobData.title.toLowerCase()} keywords
             </h2>
-            <p className="text-indigo-800 leading-relaxed">
+            <p className="text-ink leading-relaxed">
               {jobData.roleIntro}
             </p>
           </div>
@@ -107,11 +107,11 @@ export default function JobKeywordsPage() {
       )}
 
       {/* Hub navigation */}
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-12 max-w-4xl mx-auto">
-        <h3 className="font-bold text-blue-800 mb-3">🔗 Part of Our Series</h3>
-        <p className="text-blue-700">
+      <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 mb-12 max-w-4xl mx-auto">
+        <h3 className="font-bold text-ink mb-3">🔗 Part of Our Series</h3>
+        <p className="text-ink/80">
           This article is part of our Resume Keywords series. For a complete overview, see our{' '}
-          <a href="/resume-keywords" className="text-blue-600 hover:text-blue-800 underline font-medium">
+          <a href="/resume-keywords" className="text-accent hover:text-ink underline font-medium">
             Resume Keywords Hub
           </a>
           .
@@ -157,15 +157,15 @@ export default function JobKeywordsPage() {
         {jobData.tools ? (
           <div className="space-y-6">
             {jobData.tools.map((toolCategory, idx) => (
-              <div key={idx} className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-                <h3 className="text-xl font-bold text-blue-800 mb-4">
+              <div key={idx} className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-ink mb-4">
                   {toolCategory.category}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {toolCategory.items.map((tool, toolIdx) => (
                     <span
                       key={toolIdx}
-                      className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+                      className="bg-accent/10 text-ink px-3 py-1 rounded-full text-sm font-medium"
                     >
                       {tool}
                     </span>
@@ -175,15 +175,15 @@ export default function JobKeywordsPage() {
             ))}
           </div>
         ) : (
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="font-bold text-blue-800 mb-4 text-lg">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="font-bold text-ink mb-4 text-lg">
               💻 Key Technical Skills
             </h3>
             <div className="flex flex-wrap gap-2">
               {jobData.keywords.technical.map((skill, idx) => (
                 <span
                   key={idx}
-                  className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+                  className="bg-accent/10 text-ink px-3 py-1 rounded-full text-sm font-medium"
                 >
                   {skill}
                 </span>
@@ -204,11 +204,11 @@ export default function JobKeywordsPage() {
             your ability to work within established frameworks and contribute to team efficiency.
           </p>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h3 className="font-bold text-purple-800 mb-4 text-lg">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="font-bold text-ink mb-4 text-lg">
               ⚙️ Key Processes & Methodologies
             </h3>
-            <div className="grid md:grid-cols-2 gap-4 text-purple-700">
+            <div className="grid md:grid-cols-2 gap-4 text-ink/80">
               {jobData.keywords.processes.map((process, idx) => (
                 <div key={idx} className="flex items-start">
                   <span className="mr-2">•</span>
@@ -231,11 +231,11 @@ export default function JobKeywordsPage() {
             prominently on your resume with completion dates to strengthen your application.
           </p>
 
-          <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6">
-            <h3 className="font-bold text-indigo-800 mb-4 text-lg">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="font-bold text-ink mb-4 text-lg">
               🎓 Industry Certifications
             </h3>
-            <div className="grid md:grid-cols-2 gap-4 text-indigo-700">
+            <div className="grid md:grid-cols-2 gap-4 text-ink/80">
               {jobData.keywords.certifications.map((cert, idx) => (
                 <div key={idx} className="flex items-start">
                   <span className="mr-2">•</span>
@@ -353,7 +353,7 @@ export default function JobKeywordsPage() {
                 className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
               >
                 <p className="text-gray-700">
-                  <span className="text-blue-600 font-bold mr-2">•</span>
+                  <span className="text-accent font-bold mr-2">•</span>
                   {bullet}
                 </p>
               </div>
@@ -399,9 +399,9 @@ export default function JobKeywordsPage() {
       <div className="bg-gray-50 rounded-xl p-6 mt-12 mb-16 max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Related Resources</h2>
         <ul className="space-y-2">
-          <li><Link to="/blog/how-to-use-resume-keywords" className="text-blue-600 hover:underline">How to Use Resume Keywords Effectively</Link></li>
-          <li><Link to="/blog/ats-resume-optimization" className="text-blue-600 hover:underline">ATS Resume Optimization Guide</Link></li>
-          <li><Link to="/resume-keywords" className="text-blue-600 hover:underline">Browse All Resume Keywords by Job Title</Link></li>
+          <li><Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">How to Use Resume Keywords Effectively</Link></li>
+          <li><Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">ATS Resume Optimization Guide</Link></li>
+          <li><Link to="/resume-keywords" className="text-accent hover:underline">Browse All Resume Keywords by Job Title</Link></li>
         </ul>
       </div>
 

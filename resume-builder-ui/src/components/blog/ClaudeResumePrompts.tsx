@@ -30,11 +30,11 @@ export default function ClaudeResumePrompts() {
         </p>
 
         {/* Quick Answer Box */}
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-purple-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-ink mb-3">
             🎯 Why Claude for Resume Writing?
           </h3>
-          <ul className="space-y-2 text-purple-700">
+          <ul className="space-y-2 text-ink/80">
             <li><strong>Professional Tone:</strong> Naturally produces polished, professional language</li>
             <li><strong>Instruction Following:</strong> Excellent at following complex, multi-step prompts</li>
             <li><strong>Long Context:</strong> Can analyze entire resumes and job descriptions together</li>
@@ -245,18 +245,18 @@ export default function ClaudeResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">
-          <h4 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h4 className="font-bold text-ink mb-3">
             💡 Pro Tip: Use Claude's Long Context
           </h4>
-          <p className="text-blue-700">
+          <p className="text-ink/80">
             Claude can process very long documents. Take advantage of this by pasting your
             entire resume AND the full job description in a single prompt. This allows Claude
             to make more intelligent, contextual suggestions.
           </p>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Format Your Claude-Generated Content
           </h3>
@@ -265,7 +265,7 @@ export default function ClaudeResumePrompts() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-purple-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Try Free Templates
           </Link>
@@ -277,17 +277,17 @@ export default function ClaudeResumePrompts() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
           <li>
-            <Link to="/blog/chatgpt-resume-prompts" className="text-blue-600 hover:underline">
+            <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">
               25+ ChatGPT Prompts for Resume Writing
             </Link>
           </li>
           <li>
-            <Link to="/blog/ai-resume-writing-guide" className="text-blue-600 hover:underline">
+            <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
               AI Resume Writing: The Complete Guide
             </Link>
           </li>
           <li>
-            <Link to="/blog/gemini-resume-prompts" className="text-blue-600 hover:underline">
+            <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline">
               Gemini Prompts for Resume Writing
             </Link>
           </li>

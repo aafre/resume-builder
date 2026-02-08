@@ -26,7 +26,7 @@ export default function ResumeMistakesToAvoid() {
         <p className="text-lg leading-relaxed text-gray-700">
           Nothing kills credibility faster than spelling mistakes or poor grammar. These errors signal carelessness and lack of attention to detail – qualities no employer wants in their team.
         </p>
-        <div className="bg-gray-50 border-l-4 border-blue-500 p-6 my-6">
+        <div className="bg-gray-50 border-l-4 border-accent p-6 my-6">
           <h4 className="font-bold text-gray-900 mb-2">Quick Fix:</h4>
           <ul className="list-disc pl-6 space-y-2 text-gray-700">
             <li>Use spell-check tools like Grammarly or Hemingway Editor</li>
@@ -76,9 +76,9 @@ export default function ResumeMistakesToAvoid() {
         <p className="text-lg leading-relaxed text-gray-700">
           Employers know what your job title entails. They want to see what you accomplished in that role. Focus on specific, quantifiable achievements rather than generic responsibilities.
         </p>
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-blue-800 mb-3">The Achievement Formula:</h4>
-          <p className="text-blue-700 font-medium text-lg mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">The Achievement Formula:</h4>
+          <p className="text-ink/80 font-medium text-lg mb-3">
             Action Verb + Specific Task + Quantifiable Result
           </p>
           <div className="space-y-3">
@@ -93,7 +93,7 @@ export default function ResumeMistakesToAvoid() {
         <p className="text-lg leading-relaxed text-gray-700">
           A cluttered, hard-to-read resume creates a poor first impression. Clean, professional formatting helps recruiters quickly find the information they need.
         </p>
-        <div className="bg-gray-50 border-l-4 border-blue-500 p-6 my-6">
+        <div className="bg-gray-50 border-l-4 border-accent p-6 my-6">
           <h4 className="font-bold text-gray-900 mb-2">Formatting Best Practices:</h4>
           <ul className="list-disc pl-6 space-y-2 text-gray-700">
             <li>Use consistent fonts (stick to 1-2 font families)</li>
@@ -151,9 +151,9 @@ export default function ResumeMistakesToAvoid() {
         <p className="text-lg leading-relaxed text-gray-700">
           Resume length should match your experience level. New graduates cramming onto one page often omit important details, while experienced professionals sometimes include every job since high school.
         </p>
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-blue-800 mb-3">📏 Length Guidelines:</h4>
-          <ul className="list-disc pl-6 space-y-2 text-blue-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">📏 Length Guidelines:</h4>
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li><strong>0-5 years experience:</strong> 1 page ideal</li>
             <li><strong>5-15 years experience:</strong> 1-2 pages</li>
             <li><strong>15+ years experience:</strong> 2-3 pages maximum</li>
@@ -165,9 +165,9 @@ export default function ResumeMistakesToAvoid() {
         <p className="text-lg leading-relaxed text-gray-700">
           Over 98% of Fortune 500 companies use Applicant Tracking Systems (ATS) to filter resumes. If your resume isn't ATS-friendly, it may never reach human eyes, regardless of your qualifications.
         </p>
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">🤖 ATS Optimization Tips:</h4>
-          <ul className="list-disc pl-6 space-y-2 text-purple-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">🤖 ATS Optimization Tips:</h4>
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>Use standard section headings (Experience, Education, Skills)</li>
             <li>Include keywords from the job description</li>
             <li>Avoid images, graphics, and complex formatting</li>
@@ -191,7 +191,7 @@ export default function ResumeMistakesToAvoid() {
           </ul>
         </div>
 
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-8 my-12">
+        <div className="bg-ink text-white rounded-xl p-8 my-12">
           <h3 className="text-2xl font-bold mb-4">🎯 Action Plan: Fix Your Resume Today</h3>
           <ol className="list-decimal pl-6 space-y-3 text-lg">
             <li>Print your current resume and review for these 10 mistakes</li>

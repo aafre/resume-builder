@@ -52,29 +52,29 @@ export default function HowToWriteResumeGuide() {
             </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-blue-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-3">
               Functional Format
             </h3>
-            <p className="text-blue-700 mb-3">
+            <p className="text-ink/80 mb-3">
               Focuses on skills and qualifications rather than work history.
               Organized by skill categories instead of job titles.
             </p>
-            <div className="text-blue-700">
+            <div className="text-ink/80">
               <strong>Use when:</strong> You're changing careers, have
               employment gaps, or are a recent graduate
             </div>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-purple-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-3">
               Combination Format
             </h3>
-            <p className="text-purple-700 mb-3">
+            <p className="text-ink/80 mb-3">
               Blends chronological and functional formats, highlighting both
               skills and work history.
             </p>
-            <div className="text-purple-700">
+            <div className="text-ink/80">
               <strong>Use when:</strong> You have strong skills and solid work
               experience, or are targeting a specific role
             </div>
@@ -239,9 +239,9 @@ export default function HowToWriteResumeGuide() {
         </p>
 
         <div className="grid md:grid-cols-3 gap-4">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-            <h4 className="font-bold text-blue-800 mb-2">Leadership</h4>
-            <ul className="text-blue-700 text-sm space-y-1">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-4">
+            <h4 className="font-bold text-ink mb-2">Leadership</h4>
+            <ul className="text-ink/80 text-sm space-y-1">
               <li>• Directed</li>
               <li>• Supervised</li>
               <li>• Mentored</li>
@@ -261,9 +261,9 @@ export default function HowToWriteResumeGuide() {
             </ul>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-4">
-            <h4 className="font-bold text-purple-800 mb-2">Innovation</h4>
-            <ul className="text-purple-700 text-sm space-y-1">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-4">
+            <h4 className="font-bold text-ink mb-2">Innovation</h4>
+            <ul className="text-ink/80 text-sm space-y-1">
               <li>• Developed</li>
               <li>• Created</li>
               <li>• Designed</li>
@@ -278,7 +278,7 @@ export default function HowToWriteResumeGuide() {
           check out our detailed guide on{" "}
           <a
             href="/blog/resume-action-verbs"
-            className="text-blue-600 hover:text-blue-800 underline"
+            className="text-accent hover:text-ink underline"
           >
             Action Verbs for Resumes
           </a>
@@ -289,11 +289,11 @@ export default function HowToWriteResumeGuide() {
           Step 5: Formatting Best Practices
         </h2>
 
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-indigo-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h3 className="font-bold text-ink mb-3">
             Professional Formatting Rules:
           </h3>
-          <ul className="list-disc pl-6 space-y-2 text-indigo-700">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               Use a clean, professional font (Arial, Calibri, or Times New
               Roman)
@@ -339,28 +339,28 @@ export default function HowToWriteResumeGuide() {
             </p>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h4 className="font-bold text-blue-800 mb-2">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               3. Prioritize Relevant Experience
             </h4>
-            <p className="text-blue-700">
+            <p className="text-ink/80">
               Lead with the most relevant bullet points and experiences. You can
               even reorder sections if it makes sense.
             </p>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h4 className="font-bold text-purple-800 mb-2">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               4. Include Relevant Keywords
             </h4>
-            <p className="text-purple-700">
+            <p className="text-ink/80">
               Incorporate industry-specific terms and skills mentioned in the
               job posting to pass ATS screening.
             </p>
           </div>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Build Your Professional Resume?
           </h3>
@@ -369,7 +369,7 @@ export default function HowToWriteResumeGuide() {
           </p>
           <a
             href="/templates"
-            className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Choose Your Template
           </a>
@@ -428,7 +428,7 @@ export default function HowToWriteResumeGuide() {
           our comprehensive guide on{" "}
           <a
             href="/blog/resume-mistakes-to-avoid"
-            className="text-blue-600 hover:text-blue-800 underline"
+            className="text-accent hover:text-ink underline"
           >
             10 Critical Resume Mistakes That Kill Your Job Prospects
           </a>

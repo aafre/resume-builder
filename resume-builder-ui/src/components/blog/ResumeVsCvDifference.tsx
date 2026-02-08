@@ -53,11 +53,11 @@ export default function ResumeVsCvDifference() {
           qualifications to quickly capture a recruiter's interest.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             Key Characteristics of a Resume:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-blue-700">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Length:</strong> Typically 1-2 pages (1 page for
               entry-level/early career, 2 pages for 10+ years of experience).
@@ -169,24 +169,24 @@ export default function ResumeVsCvDifference() {
         </ul>
 
         {/* UK-specific callout */}
-        <div className="bg-blue-50 border-2 border-blue-300 rounded-xl p-6 my-8">
-          <h4 className="text-xl font-bold text-blue-900 mb-3">
+        <div className="bg-accent/[0.06] border-2 border-accent/30 rounded-xl p-6 my-8">
+          <h4 className="text-xl font-bold text-ink mb-3">
             Applying for jobs in the UK, Europe, or Australia?
           </h4>
-          <p className="text-blue-800 mb-4">
+          <p className="text-ink mb-4">
             In these regions, "CV" is the standard term for all job applications—not just academic positions.
             A UK CV is similar to a US resume: 2 pages maximum, focused on relevant experience, and tailored to the role.
           </p>
           <div className="flex flex-wrap gap-4">
             <Link
               to="/free-cv-builder-no-sign-up"
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center px-4 py-2 bg-accent text-ink font-semibold rounded-lg hover:bg-accent/90 transition-colors"
             >
               Build Your CV Free
             </Link>
             <Link
               to="/cv-templates/ats-friendly"
-              className="inline-flex items-center px-4 py-2 bg-white text-blue-600 font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors"
+              className="inline-flex items-center px-4 py-2 bg-white text-accent font-semibold rounded-lg border-2 border-accent hover:bg-accent/[0.06] transition-colors"
             >
               Browse CV Templates
             </Link>
@@ -301,7 +301,7 @@ export default function ResumeVsCvDifference() {
           </li>
         </ul>
 
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-8 my-12">
+        <div className="bg-ink text-white rounded-xl p-8 my-12">
           <h3 className="text-2xl font-bold mb-4">💡 Actionable Advice:</h3>
           <p className="text-lg mb-4">
             If you're unsure, it's safer to have both a resume and a CV
@@ -330,7 +330,7 @@ export default function ResumeVsCvDifference() {
             <p className="text-gray-600 mb-4">Build a professional resume</p>
             <Link
               to="/free-resume-builder-no-sign-up"
-              className="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+              className="inline-block px-6 py-3 bg-accent text-ink font-semibold rounded-lg hover:bg-accent/90 transition-colors"
             >
               Create Resume
             </Link>
@@ -341,7 +341,7 @@ export default function ResumeVsCvDifference() {
             <p className="text-gray-600 mb-4">Build a professional CV</p>
             <Link
               to="/free-cv-builder-no-sign-up"
-              className="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+              className="inline-block px-6 py-3 bg-accent text-ink font-semibold rounded-lg hover:bg-accent/90 transition-colors"
             >
               Create CV
             </Link>

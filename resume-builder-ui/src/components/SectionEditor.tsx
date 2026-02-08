@@ -66,7 +66,7 @@ const SectionEditor: React.FC<{
               {!isFixedSection && (
                 <button
                   onClick={() => setIsEditingName(true)}
-                  className="ml-2 text-blue-500 hover:text-blue-600"
+                  className="ml-2 text-accent hover:text-accent"
                   aria-label="Edit Section Name"
                 >
                   ✏️
@@ -181,7 +181,7 @@ const SectionEditor: React.FC<{
               });
               setSections(updatedSections);
             }}
-            className="bg-blue-500 text-white px-4 py-2 mt-2 rounded hover:bg-blue-600"
+            className="bg-accent text-ink px-4 py-2 mt-2 rounded hover:bg-accent"
           >
             Add Item
           </button>

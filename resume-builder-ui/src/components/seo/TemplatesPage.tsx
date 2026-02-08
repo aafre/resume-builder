@@ -53,29 +53,29 @@ export default function TemplatesPage() {
 
       {/* ATS Compatibility Section */}
       <div className="my-16">
-        <div className="max-w-5xl mx-auto bg-blue-50 border border-blue-200 rounded-xl p-8">
-          <h3 className="text-2xl font-bold text-blue-900 mb-4 text-center">
+        <div className="max-w-5xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
+          <h3 className="text-2xl font-bold text-ink mb-4 text-center">
             ATS-Tested and Approved
           </h3>
-          <p className="text-blue-800 leading-relaxed mb-6 text-center">
+          <p className="text-ink leading-relaxed mb-6 text-center">
             Our templates have been tested with major Applicant Tracking Systems to ensure
             your resume gets through automated screening and into human hands.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div className="bg-white p-4 rounded-lg shadow-sm">
-              <p className="font-semibold text-blue-900">Workday</p>
+              <p className="font-semibold text-ink">Workday</p>
               <p className="text-green-600 text-sm">✓ Compatible</p>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm">
-              <p className="font-semibold text-blue-900">Taleo</p>
+              <p className="font-semibold text-ink">Taleo</p>
               <p className="text-green-600 text-sm">✓ Compatible</p>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm">
-              <p className="font-semibold text-blue-900">iCIMS</p>
+              <p className="font-semibold text-ink">iCIMS</p>
               <p className="text-green-600 text-sm">✓ Compatible</p>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm">
-              <p className="font-semibold text-blue-900">Greenhouse</p>
+              <p className="font-semibold text-ink">Greenhouse</p>
               <p className="text-green-600 text-sm">✓ Compatible</p>
             </div>
           </div>
@@ -89,7 +89,7 @@ export default function TemplatesPage() {
         </h2>
         <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
           <div className="text-center">
-            <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+            <div className="w-16 h-16 bg-accent text-ink rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
               1
             </div>
             <h3 className="text-xl font-semibold mb-2">Choose a Template</h3>
@@ -98,7 +98,7 @@ export default function TemplatesPage() {
             </p>
           </div>
           <div className="text-center">
-            <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+            <div className="w-16 h-16 bg-accent text-ink rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
               2
             </div>
             <h3 className="text-xl font-semibold mb-2">Fill In Your Details</h3>
@@ -107,7 +107,7 @@ export default function TemplatesPage() {
             </p>
           </div>
           <div className="text-center">
-            <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+            <div className="w-16 h-16 bg-accent text-ink rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
               3
             </div>
             <h3 className="text-xl font-semibold mb-2">Download Instantly</h3>

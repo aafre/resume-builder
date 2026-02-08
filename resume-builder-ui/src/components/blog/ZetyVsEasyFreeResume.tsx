@@ -104,11 +104,11 @@ export default function ZetyVsEasyFreeResume() {
           down in a head-to-head comparison.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-ink mb-3">
             🎯 Bottom Line Up Front
           </h3>
-          <p className="text-blue-700">
+          <p className="text-ink/80">
             After testing both platforms extensively, we found that
             EasyFreeResume provides all the essential features you need to
             create a professional, ATS-friendly resume - without the monthly
@@ -135,7 +135,7 @@ export default function ZetyVsEasyFreeResume() {
                 <th className="px-6 py-4 text-center font-bold text-green-600">
                   EasyFreeResume
                 </th>
-                <th className="px-6 py-4 text-center font-bold text-blue-600">
+                <th className="px-6 py-4 text-center font-bold text-accent">
                   Zety
                 </th>
                 <th className="px-6 py-4 text-center font-bold text-gray-600">
@@ -269,11 +269,11 @@ export default function ZetyVsEasyFreeResume() {
         </p>
 
         <div className="space-y-6">
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-purple-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
               🤖 AI-Powered Content Suggestions
             </h3>
-            <div className="text-purple-700">
+            <div className="text-ink/80">
               <p className="mb-3">
                 <strong>Zety offers:</strong> Pre-written bullet points and
                 suggestions for your experience.
@@ -292,14 +292,14 @@ export default function ZetyVsEasyFreeResume() {
                   Use our comprehensive blog guides (like{" "}
                   <Link
                     to="/blog/resume-action-verbs"
-                    className="text-blue-600 underline"
+                    className="text-accent underline"
                   >
                     Action Verbs for Resumes
                   </Link>{" "}
                   or{" "}
                   <Link
                     to="/blog/chatgpt-resume-prompts"
-                    className="text-blue-600 underline"
+                    className="text-accent underline"
                   >
                     ChatGPT Resume Prompts
                   </Link>
@@ -309,11 +309,11 @@ export default function ZetyVsEasyFreeResume() {
             </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-blue-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
               📄 Cover Letter Builder
             </h3>
-            <div className="text-blue-700">
+            <div className="text-ink/80">
               <p className="mb-3">
                 <strong>Zety offers:</strong> A matching cover letter builder
                 with their resume templates.
@@ -331,7 +331,7 @@ export default function ZetyVsEasyFreeResume() {
                   Check out our{" "}
                   <Link
                     to="/blog/cover-letter-guide"
-                    className="text-blue-600 underline"
+                    className="text-accent underline"
                   >
                     Cover Letter Writing Guide
                   </Link>{" "}
@@ -364,14 +364,14 @@ export default function ZetyVsEasyFreeResume() {
                   Use our{" "}
                   <Link
                     to="/blog/ats-resume-optimization"
-                    className="text-blue-600 underline"
+                    className="text-accent underline"
                   >
                     ATS Optimization Guide
                   </Link>{" "}
                   or{" "}
                   <Link
                     to="/blog/ai-resume-review"
-                    className="text-blue-600 underline"
+                    className="text-accent underline"
                   >
                     AI Resume Review Guide
                   </Link>{" "}
@@ -541,38 +541,38 @@ export default function ZetyVsEasyFreeResume() {
           Already using Zety? Here's how to migrate your resume:
         </p>
 
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6 my-8">
-          <ol className="space-y-4 text-indigo-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <ol className="space-y-4 text-ink/80">
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">1</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">1</span>
               <div>
                 <p className="font-medium">Export your content from Zety</p>
                 <p className="text-sm">Download your resume as PDF or copy your text content</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">2</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">2</span>
               <div>
                 <p className="font-medium">Go to EasyFreeResume.com</p>
                 <p className="text-sm">No sign-up needed — start building immediately</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">3</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">3</span>
               <div>
                 <p className="font-medium">Choose an ATS-friendly template</p>
                 <p className="text-sm">All our templates are optimized for applicant tracking systems</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">4</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">4</span>
               <div>
                 <p className="font-medium">Paste your content and customize</p>
                 <p className="text-sm">Our editor makes it easy to format your resume</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">5</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">5</span>
               <div>
                 <p className="font-medium">Download free PDF — no watermark</p>
                 <p className="text-sm">Cancel your Zety subscription and save $71+/year</p>
@@ -586,11 +586,11 @@ export default function ZetyVsEasyFreeResume() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-blue-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-ink mb-4">
               EasyFreeResume Experience
             </h3>
-            <div className="space-y-3 text-blue-700">
+            <div className="space-y-3 text-ink/80">
               <div>
                 <p className="font-medium">✅ Pros:</p>
                 <ul className="text-sm list-disc pl-5 space-y-1">
@@ -612,11 +612,11 @@ export default function ZetyVsEasyFreeResume() {
             </div>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-purple-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-ink mb-4">
               Zety Experience
             </h3>
-            <div className="space-y-3 text-purple-700">
+            <div className="space-y-3 text-ink/80">
               <div>
                 <p className="font-medium">✅ Pros:</p>
                 <ul className="text-sm list-disc pl-5 space-y-1">
@@ -696,11 +696,11 @@ export default function ZetyVsEasyFreeResume() {
           maximize your success:
         </p>
 
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-indigo-800 mb-4">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-ink mb-4">
             🚀 Complete Job Search Stack:
           </h3>
-          <div className="space-y-4 text-indigo-700">
+          <div className="space-y-4 text-ink/80">
             <div>
               <p className="font-medium">
                 1. Professional Resume (EasyFreeResume)
@@ -769,9 +769,9 @@ export default function ZetyVsEasyFreeResume() {
           write far more compelling content than any AI suggestion.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mt-8">
-          <h4 className="font-bold text-blue-800 mb-3">💡 Our Philosophy</h4>
-          <p className="text-blue-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 mt-8">
+          <h4 className="font-bold text-ink mb-3">💡 Our Philosophy</h4>
+          <p className="text-ink/80">
             Your career success shouldn't depend on your ability to pay for
             basic tools. Invest your money in skills development, professional
             certifications, networking events, or interview coaching. Save the

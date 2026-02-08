@@ -102,7 +102,7 @@ export default function JobExamplesHub() {
             onClick={() => handleCategoryClick('all')}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               selectedCategory === 'all'
-                ? 'bg-blue-600 text-white'
+                ? 'bg-accent text-ink'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
@@ -114,7 +114,7 @@ export default function JobExamplesHub() {
               onClick={() => handleCategoryClick(category.id)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 selectedCategory === category.id
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-accent text-ink'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -149,13 +149,13 @@ export default function JobExamplesHub() {
                   <Link
                     key={job.slug}
                     to={`/examples/${job.slug}`}
-                    className="bg-white rounded-xl p-5 border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all group"
+                    className="bg-white rounded-xl p-5 border border-gray-200 hover:border-accent/30 hover:shadow-lg transition-all group"
                   >
                     <div className="flex items-start justify-between">
-                      <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                      <h3 className="font-semibold text-gray-900 group-hover:text-accent transition-colors">
                         {job.title}
                       </h3>
-                      <span className="text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-accent opacity-0 group-hover:opacity-100 transition-opacity">
                         &rarr;
                       </span>
                     </div>
@@ -166,7 +166,7 @@ export default function JobExamplesHub() {
                       <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded">
                         Free Template
                       </span>
-                      <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded">
+                      <span className="text-xs px-2 py-1 bg-accent/10 text-ink/80 rounded">
                         ATS-Friendly
                       </span>
                     </div>
@@ -185,7 +185,7 @@ export default function JobExamplesHub() {
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           <div className="text-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-2xl">1</span>
             </div>
             <h3 className="font-semibold text-gray-900 mb-2">Find Your Job Title</h3>
@@ -194,7 +194,7 @@ export default function JobExamplesHub() {
             </p>
           </div>
           <div className="text-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-2xl">2</span>
             </div>
             <h3 className="font-semibold text-gray-900 mb-2">Copy or Edit</h3>
@@ -203,7 +203,7 @@ export default function JobExamplesHub() {
             </p>
           </div>
           <div className="text-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-2xl">3</span>
             </div>
             <h3 className="font-semibold text-gray-900 mb-2">Customize & Download</h3>
@@ -217,16 +217,16 @@ export default function JobExamplesHub() {
       {/* Stats Section */}
       <section className="my-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 text-center">
-            <p className="text-3xl font-bold text-blue-600">{totalExamples}+</p>
+          <div className="bg-accent/[0.06] rounded-xl p-6 text-center">
+            <p className="text-3xl font-bold text-accent">{totalExamples}+</p>
             <p className="text-gray-700">Resume Examples</p>
           </div>
           <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 text-center">
             <p className="text-3xl font-bold text-green-600">{JOB_CATEGORIES.length}</p>
             <p className="text-gray-700">Industries Covered</p>
           </div>
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 text-center">
-            <p className="text-3xl font-bold text-purple-600">100%</p>
+          <div className="bg-accent/[0.06] rounded-xl p-6 text-center">
+            <p className="text-3xl font-bold text-accent">100%</p>
             <p className="text-gray-700">Free to Use</p>
           </div>
           <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 text-center">
@@ -249,7 +249,7 @@ export default function JobExamplesHub() {
               <Link
                 key={job.slug}
                 to={`/examples/${job.slug}`}
-                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors text-sm"
+                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-accent/10 hover:text-ink/80 transition-colors text-sm"
               >
                 {job.title}
               </Link>
@@ -267,7 +267,7 @@ export default function JobExamplesHub() {
         <div className="flex flex-wrap justify-center gap-4">
           <Link
             to="/templates"
-            className="px-6 py-3 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+            className="px-6 py-3 bg-accent/10 text-ink/80 rounded-lg hover:bg-accent/20 transition-colors"
           >
             Resume Templates
           </Link>

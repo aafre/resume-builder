@@ -56,7 +56,7 @@ export const RichTextArea: React.FC<RichTextAreaProps> = ({
     }
   }, [value, editor]);
 
-  const defaultClassName = "w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200";
+  const defaultClassName = "w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all duration-200";
   const combinedClassName = className || defaultClassName;
   const minHeight = `${rows * 24 + 24}px`; // Approximate height based on rows
 

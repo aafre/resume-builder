@@ -63,7 +63,7 @@ export default function EditorToolbar({
         <button
           onClick={onAddSection}
           disabled={loadingAddSection}
-          className={`bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 sm:p-4 rounded-full border border-blue-500/20 hover:border-blue-400/40 ${buttonClasses} ${
+          className={`bg-accent text-ink p-3 sm:p-4 rounded-full border border-accent/20 hover:border-accent/70/40 ${buttonClasses} ${
             loadingAddSection ? "scale-95 opacity-80" : ""
           }`}
         >
@@ -130,16 +130,16 @@ export default function EditorToolbar({
                   setShowAdvancedMenu(false);
                 }}
                 disabled={loadingSave}
-                className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
+                className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-accent/[0.06] rounded-lg transition-all duration-300 flex items-center gap-3 ${
                   loadingSave
-                    ? "bg-blue-50 cursor-not-allowed animate-pulse"
+                    ? "bg-accent/[0.06] cursor-not-allowed animate-pulse"
                     : ""
                 }`}
               >
                 {loadingSave ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent"></div>
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-accent border-t-transparent"></div>
                 ) : (
-                  <MdFileDownload className="text-blue-600" />
+                  <MdFileDownload className="text-accent" />
                 )}
                 <div>
                   <div className="font-medium">
@@ -190,9 +190,9 @@ export default function EditorToolbar({
                   onToggleHelp();
                   setShowAdvancedMenu(false);
                 }}
-                className="w-full text-left px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-3"
+                className="w-full text-left px-3 py-2 text-gray-700 hover:bg-accent/[0.06] rounded-lg transition-colors flex items-center gap-3"
               >
-                <MdHelpOutline className="text-purple-600" />
+                <MdHelpOutline className="text-accent" />
                 <div>
                   <div className="font-medium">Help & Tips</div>
                   <div className="text-xs text-gray-500">

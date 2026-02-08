@@ -84,25 +84,25 @@ export default function ModernTemplatesPage() {
 
       {/* Industries Section */}
       <div className="my-16">
-        <div className="max-w-5xl mx-auto bg-blue-50 border border-blue-200 rounded-xl p-8">
-          <h3 className="text-2xl font-bold text-blue-900 mb-4 text-center">
+        <div className="max-w-5xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
+          <h3 className="text-2xl font-bold text-ink mb-4 text-center">
             Best Industries for Modern Resume Templates
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mt-6">
             <div className="bg-white p-4 rounded-lg shadow-sm">
-              <p className="font-semibold text-blue-900">Technology</p>
+              <p className="font-semibold text-ink">Technology</p>
               <p className="text-gray-600 text-sm">Software, SaaS, IT</p>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm">
-              <p className="font-semibold text-blue-900">Startups</p>
+              <p className="font-semibold text-ink">Startups</p>
               <p className="text-gray-600 text-sm">Early-stage companies</p>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm">
-              <p className="font-semibold text-blue-900">Marketing</p>
+              <p className="font-semibold text-ink">Marketing</p>
               <p className="text-gray-600 text-sm">Digital, content, growth</p>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm">
-              <p className="font-semibold text-blue-900">Design</p>
+              <p className="font-semibold text-ink">Design</p>
               <p className="text-gray-600 text-sm">UX, product, graphic</p>
             </div>
           </div>

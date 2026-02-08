@@ -37,11 +37,11 @@ export default function BehavioralInterviewQuestions() {
           performance.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h3 className="font-bold text-ink mb-3">
             The STAR Method Breakdown:
           </h3>
-          <ul className="list-disc pl-6 space-y-2 text-blue-700">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Situation:</strong> Set the context with specific details
               about when and where
@@ -66,34 +66,34 @@ export default function BehavioralInterviewQuestions() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h4 className="font-bold text-purple-800 mb-2">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               1. "Tell me about a time when you had to lead a team through a
               difficult situation."
             </h4>
-            <p className="text-purple-700">
+            <p className="text-ink/80">
               <strong>Focus on:</strong> Your leadership style, how you
               motivated others, and the positive outcome you achieved together.
             </p>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h4 className="font-bold text-purple-800 mb-2">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               2. "Describe a time when you had to motivate an underperforming
               team member."
             </h4>
-            <p className="text-purple-700">
+            <p className="text-ink/80">
               <strong>Focus on:</strong> Your coaching approach, how you
               identified the root cause, and the improvement you helped achieve.
             </p>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h4 className="font-bold text-purple-800 mb-2">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               3. "Give me an example of when you had to make a difficult
               decision that affected your team."
             </h4>
-            <p className="text-purple-700">
+            <p className="text-ink/80">
               <strong>Focus on:</strong> Your decision-making process, how you
               communicated with your team, and how you handled the consequences.
             </p>
@@ -223,42 +223,42 @@ export default function BehavioralInterviewQuestions() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6">
-            <h4 className="font-bold text-indigo-800 mb-2">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               13. "Tell me about a time when you had to present to senior
               leadership."
             </h4>
-            <p className="text-indigo-700">
+            <p className="text-ink/80">
               <strong>Focus on:</strong> Your preparation process, how you
               tailored your message, and the positive outcome of your
               presentation.
             </p>
           </div>
 
-          <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6">
-            <h4 className="font-bold text-indigo-800 mb-2">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               14. "Describe a time when you had to persuade someone to see your
               point of view."
             </h4>
-            <p className="text-indigo-700">
+            <p className="text-ink/80">
               <strong>Focus on:</strong> Your persuasion strategy, how you built
               rapport, and the successful outcome of your influence.
             </p>
           </div>
 
-          <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6">
-            <h4 className="font-bold text-indigo-800 mb-2">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               15. "Give me an example of when you had to deliver bad news to a
               team or stakeholder."
             </h4>
-            <p className="text-indigo-700">
+            <p className="text-ink/80">
               <strong>Focus on:</strong> Your communication approach, how you
               managed reactions, and the constructive path forward you provided.
             </p>
           </div>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 p-8 rounded-2xl border border-gray-200 text-center">
+        <div className="my-12 bg-gradient-to-r bg-chalk p-8 rounded-2xl border border-gray-200 text-center">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">
             Practice Makes Perfect
           </h3>
@@ -271,7 +271,7 @@ export default function BehavioralInterviewQuestions() {
             href="https://prepai.co.uk/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-accent text-ink px-8 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Practice with AI Mock Interviews
           </a>

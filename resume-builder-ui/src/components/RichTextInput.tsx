@@ -54,7 +54,7 @@ export const RichTextInput: React.FC<RichTextInputProps> = ({
     }
   }, [value, editor]);
 
-  const defaultClassName = "w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200 min-h-[44px]";
+  const defaultClassName = "w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all duration-200 min-h-[44px]";
   const combinedClassName = className || defaultClassName;
 
   return (

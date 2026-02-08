@@ -60,7 +60,7 @@ function FooterColumn({
             <Link
               to={path}
               onClick={scrollToTop(path)}
-              className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
+              className="text-gray-600 hover:text-accent font-medium transition-colors duration-200 text-sm"
             >
               {label}
             </Link>
@@ -115,9 +115,9 @@ export default function Footer() {
                 <FaShieldAlt className="text-green-600" />
                 <span className="text-green-700 font-medium">GDPR</span>
               </div>
-              <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-full">
-                <FaLock className="text-blue-600" />
-                <span className="text-blue-700 font-medium">SSL</span>
+              <div className="flex items-center gap-2 bg-accent/[0.06] px-3 py-2 rounded-full">
+                <FaLock className="text-accent" />
+                <span className="text-ink/80 font-medium">SSL</span>
               </div>
             </div>
           </div>

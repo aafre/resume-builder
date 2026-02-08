@@ -130,7 +130,7 @@ const queryClient = new QueryClient({
 // Loading components for different contexts
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-[200px]">
-    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
   </div>
 );
 
@@ -153,7 +153,7 @@ const BlogLoadingSkeleton = () => (
 const EditorLoadingSkeleton = () => (
   <div className="h-screen flex items-center justify-center bg-gray-50">
     <div className="text-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
       <p className="text-gray-600">Loading Resume Editor...</p>
     </div>
   </div>

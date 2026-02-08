@@ -5,7 +5,7 @@ export default function AuthorBio() {
     <section className="mt-10">
       <div className="bg-slate-50/80 rounded-2xl border border-gray-200 p-6 md:p-8">
         <div className="flex items-start gap-5">
-          <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+          <div className="w-14 h-14 bg-ink rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
             <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
               <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
             </svg>
@@ -19,14 +19,14 @@ export default function AuthorBio() {
             <div className="flex flex-wrap gap-3">
               <Link
                 to="/blog"
-                className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+                className="text-sm font-medium text-accent hover:text-ink/80 transition-colors"
               >
                 More articles &rarr;
               </Link>
               <span className="text-gray-300">|</span>
               <Link
                 to="/templates"
-                className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+                className="text-sm font-medium text-accent hover:text-ink/80 transition-colors"
               >
                 Browse templates &rarr;
               </Link>

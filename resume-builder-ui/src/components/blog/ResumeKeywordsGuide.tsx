@@ -30,11 +30,11 @@ export default function ResumeKeywordsGuide() {
           before you ever get a chance to interview.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-blue-900 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+          <h3 className="text-lg font-semibold text-ink mb-3">
             This guide will show you:
           </h3>
-          <ul className="list-disc pl-6 space-y-2 text-blue-700">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>✅ What resume keywords are and why they matter in 2026</li>
             <li>
               ✅ How to find the right keywords for <em>your</em> career
@@ -102,11 +102,11 @@ export default function ResumeKeywordsGuide() {
           <strong>already in the job postings you're applying to</strong>.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             🔍 3 Steps to Find Them:
           </h4>
-          <ol className="list-decimal pl-6 space-y-2 text-blue-700">
+          <ol className="list-decimal pl-6 space-y-2 text-ink/80">
             <li>
               Collect <strong>3–5 job ads</strong> for your target role.
             </li>
@@ -143,24 +143,24 @@ export default function ResumeKeywordsGuide() {
           </ul>
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-blue-800 mb-3">🔗 Explore More Keywords</h3>
-          <p className="text-blue-700 mb-4">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-ink mb-3">🔗 Explore More Keywords</h3>
+          <p className="text-ink/80 mb-4">
             Looking for industry-specific keywords? Check out our comprehensive keyword guides:
           </p>
-          <ul className="space-y-2 text-blue-700">
+          <ul className="space-y-2 text-ink/80">
             <li>
-              • <a href="/resume-keywords/customer-service" className="text-blue-600 hover:text-blue-800 underline font-medium">
+              • <a href="/resume-keywords/customer-service" className="text-accent hover:text-ink underline font-medium">
                 Customer Service Resume Keywords
               </a> - CRM platforms, soft skills, and metrics
             </li>
             <li>
-              • <a href="/resume-keywords" className="text-blue-600 hover:text-blue-800 underline font-medium">
+              • <a href="/resume-keywords" className="text-accent hover:text-ink underline font-medium">
                 Resume Keywords Hub
               </a> - Browse all industries
             </li>
             <li>
-              • <a href="/ats-resume-templates" className="text-blue-600 hover:text-blue-800 underline font-medium">
+              • <a href="/ats-resume-templates" className="text-accent hover:text-ink underline font-medium">
                 ATS-Friendly Templates
               </a> - Use keywords with optimized templates
             </li>
@@ -421,11 +421,11 @@ export default function ResumeKeywordsGuide() {
           matters. ATS systems scan specific sections more heavily.
         </p>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-          <h4 className="font-bold text-purple-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+          <h4 className="font-bold text-ink mb-3">
             📍 Placement Strategy:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-purple-700">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Professional Summary:</strong> Use 3–5 primary keywords
               here.
@@ -472,7 +472,7 @@ export default function ResumeKeywordsGuide() {
           </li>
         </ul>
 
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-8 my-12">
+        <div className="bg-ink text-white rounded-xl p-8 my-12">
           <h3 className="text-2xl font-bold mb-4">
             🎯 Action Plan: How to Get Started Today
           </h3>

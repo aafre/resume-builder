@@ -34,16 +34,16 @@ export default function ResumeNoExperience() {
           a free ATS-friendly template you can use with our{" "}
           <a
             href="/actual-free-resume-builder"
-            className="text-blue-600 hover:underline font-semibold"
+            className="text-accent hover:underline font-semibold"
           >
             actual free resume builder
           </a>{" "}
           to generate a polished resume in minutes.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-          <h3 className="text-lg font-bold text-blue-800 mb-2">Key Insight</h3>
-          <p className="text-blue-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+          <h3 className="text-lg font-bold text-ink mb-2">Key Insight</h3>
+          <p className="text-ink/80">
             <strong>You do have experience</strong> – it's just not always paid.
             Use projects, coursework, internships, part-time work, volunteering,
             clubs, and self-initiated learning to prove you can create value.
@@ -61,7 +61,7 @@ export default function ResumeNoExperience() {
           volunteering). It's ATS-friendly and recruiter-friendly.
         </p>
 
-        <div className="bg-gray-50 border-l-4 border-blue-500 p-6">
+        <div className="bg-gray-50 border-l-4 border-accent p-6">
           <h4 className="font-bold text-gray-900 mb-3">Recommended order:</h4>
           <ol className="list-decimal pl-6 space-y-2 text-gray-700">
             <li>
@@ -208,16 +208,16 @@ export default function ResumeNoExperience() {
           Bullet Formula (So Your Points Stand Out)
         </h2>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">Formula:</h4>
-          <p className="text-purple-700 font-medium text-lg mb-4">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">Formula:</h4>
+          <p className="text-ink/80 font-medium text-lg mb-4">
             Action verb + task + tools/skills + outcome (with a number)
           </p>
 
-          <h5 className="font-bold text-purple-800 mb-3">
+          <h5 className="font-bold text-ink mb-3">
             Examples (adapt to your context):
           </h5>
-          <div className="space-y-3 text-purple-700">
+          <div className="space-y-3 text-ink/80">
             <div className="bg-white p-3 rounded-lg text-sm">
               • Built a React/Node web app for course project, implementing auth
               & CRUD; deployed on Render; used Git/GitHub for collaboration.
@@ -240,7 +240,7 @@ export default function ResumeNoExperience() {
             </div>
           </div>
 
-          <p className="text-purple-700 mt-4 font-medium">
+          <p className="text-ink/80 mt-4 font-medium">
             Avoid vague verbs ("helped", "worked on"). Use measurable outcomes
             wherever possible.
           </p>
@@ -254,9 +254,9 @@ export default function ResumeNoExperience() {
           Show 2–4 relevant projects with results and tools.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-blue-800 mb-3">Template:</h4>
-          <div className="text-blue-700 space-y-2">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">Template:</h4>
+          <div className="text-ink/80 space-y-2">
             <p>
               <strong>Project Name</strong> – 1-line value statement
             </p>
@@ -352,21 +352,21 @@ export default function ResumeNoExperience() {
         </p>
 
         <div className="space-y-4">
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
-            <h4 className="font-bold text-blue-900 mb-2">
+          <div className="bg-accent/[0.04] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               Marketing Assistant Keywords
             </h4>
-            <p className="text-blue-800 text-sm">
+            <p className="text-ink text-sm">
               SEO, social media, content calendar, Canva, Google Analytics,
               email campaigns, CTR, engagement, A/B testing, CMS (WordPress)
             </p>
           </div>
 
-          <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-6">
-            <h4 className="font-bold text-purple-900 mb-2">
+          <div className="bg-accent/[0.04] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               Software / Data Intern Keywords
             </h4>
-            <p className="text-purple-800 text-sm">
+            <p className="text-ink text-sm">
               Python, JavaScript, React, Node, SQL, APIs, Git, unit tests, data
               cleaning, Pandas, Jira, Agile/Scrum
             </p>
@@ -671,8 +671,8 @@ export default function ResumeNoExperience() {
                 </ul>
               </div>
             </div>
-            <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-              <p className="text-blue-800 text-sm">
+            <div className="mt-4 p-4 bg-accent/[0.06] rounded-lg">
+              <p className="text-ink text-sm">
                 <strong>Why this works:</strong> Sarah reframes retail skills
                 (scheduling, data entry, training) as admin-relevant
                 transferable skills. She quantifies everything and shows
@@ -683,7 +683,7 @@ export default function ResumeNoExperience() {
         </div>
 
         {/* CTA after examples */}
-        <div className="my-10 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-6 md:p-8 text-center">
+        <div className="my-10 bg-accent text-ink rounded-2xl shadow-xl p-6 md:p-8 text-center">
           <h3 className="text-xl md:text-2xl font-bold mb-3">
             Use These Templates as Your Starting Point
           </h3>
@@ -693,7 +693,7 @@ export default function ResumeNoExperience() {
           </p>
           <a
             href="/templates"
-            className="inline-block bg-white text-blue-600 px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Choose a Template
           </a>

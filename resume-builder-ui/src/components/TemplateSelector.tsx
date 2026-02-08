@@ -10,7 +10,7 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelect }) => {
       </h2>
       <div className="flex justify-center gap-6 mt-6">
         <button
-          className="bg-blue-500 text-white py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition"
+          className="bg-accent text-ink py-3 px-6 rounded-lg shadow-md hover:bg-accent transition"
           onClick={() => onSelect("modern-no-icons")}
         >
           Modern (No Icons)

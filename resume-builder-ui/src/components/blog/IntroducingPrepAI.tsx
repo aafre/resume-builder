@@ -75,7 +75,7 @@ export default function IntroducingPrepAI() {
           unique background and helping you articulate your value effectively.
         </p>
 
-        <div className="my-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Transform Your Interview Skills?
           </h3>
@@ -86,7 +86,7 @@ export default function IntroducingPrepAI() {
             href="https://prepai.co.uk/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Your Free Mock Interview
           </a>
@@ -102,11 +102,11 @@ export default function IntroducingPrepAI() {
         </p>
 
         <div className="space-y-6">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-blue-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-3">
               1. Practice & Record
             </h3>
-            <p className="text-blue-700">
+            <p className="text-ink/80">
               Answer interview questions tailored to your CV and target role,
               just like in a real interview. PrepAI analyzes your actual resume
               content to create personalized scenarios and behavioral questions
@@ -126,11 +126,11 @@ export default function IntroducingPrepAI() {
             </p>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-purple-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-3">
               3. Refine & Improve
             </h3>
-            <p className="text-purple-700">
+            <p className="text-ink/80">
               Review enhanced versions of your answers with strategic
               improvements and better storytelling. Learn to master the STAR
               method for behavioral questions with examples tailored to your
@@ -226,11 +226,11 @@ export default function IntroducingPrepAI() {
           in the door, PrepAI ensures you shine once you're in the room.
         </p>
 
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-indigo-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h3 className="font-bold text-ink mb-3">
             The Winning Combination:
           </h3>
-          <ol className="list-decimal pl-6 space-y-2 text-indigo-700">
+          <ol className="list-decimal pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Build your resume</strong> with EasyFreeResume's
               ATS-friendly templates
@@ -266,7 +266,7 @@ export default function IntroducingPrepAI() {
                 href="https://prepai.co.uk/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 underline"
+                className="text-accent hover:text-ink underline"
               >
                 prepai.co.uk
               </a>{" "}
@@ -291,7 +291,7 @@ export default function IntroducingPrepAI() {
           </ol>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-green-50 via-blue-50 to-purple-50 p-8 rounded-2xl border border-gray-200 text-center">
+        <div className="my-12 bg-accent/[0.04] p-8 rounded-2xl border border-gray-200 text-center">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">
             Don't Just Prepare, PrepAI
           </h3>
@@ -304,7 +304,7 @@ export default function IntroducingPrepAI() {
             href="https://prepai.co.uk/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-accent text-ink px-8 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Try PrepAI Free Today
           </a>

@@ -49,7 +49,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
             onChange={(e) =>
               onUpdate({ ...contactInfo, name: e.target.value })
             }
-            className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+            className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-200"
             placeholder="Enter your name"
             aria-label="Full name"
           />
@@ -68,7 +68,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
             onChange={(e) =>
               onUpdate({ ...contactInfo, location: e.target.value })
             }
-            className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+            className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-200"
             placeholder="Enter your location"
             aria-label="Location"
           />
@@ -87,7 +87,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
             onChange={(e) =>
               onUpdate({ ...contactInfo, email: e.target.value })
             }
-            className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+            className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-200"
             placeholder="Enter your email"
             aria-label="Email address"
           />
@@ -106,7 +106,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
             onChange={(e) =>
               onUpdate({ ...contactInfo, phone: e.target.value })
             }
-            className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+            className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-200"
             placeholder="Enter your phone"
             aria-label="Phone number"
           />
@@ -119,7 +119,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
           <h3 className="text-xl font-bold text-gray-800">Social Links</h3>
           <button
             onClick={onAddSocialLink}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-semibold flex items-center gap-2"
+            className="bg-accent hover:bg-accent text-ink px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-semibold flex items-center gap-2"
             aria-label="Add social link"
           >
             <span>+</span>
@@ -152,7 +152,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
                       onChange={(e) =>
                         onSocialLinkChange(index, "platform", e.target.value)
                       }
-                      className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                      className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-200 bg-white"
                       aria-label={`Platform for social link ${index + 1}`}
                     >
                       <option value="">Select platform...</option>
@@ -176,10 +176,10 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
                       onChange={(e) =>
                         onSocialLinkChange(index, "url", e.target.value)
                       }
-                      className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:border-blue-500 transition-all duration-200 ${
+                      className={`w-full border rounded-lg p-2.5 focus:ring-2 focus:border-accent transition-all duration-200 ${
                         socialLinkErrors[index]
                           ? "border-red-300 focus:ring-red-500 bg-red-50"
-                          : "border-gray-300 focus:ring-blue-500"
+                          : "border-gray-300 focus:ring-accent"
                       }`}
                       placeholder="Enter profile URL"
                       aria-label={`URL for social link ${index + 1}`}
@@ -206,7 +206,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
                         onChange={(e) =>
                           onSocialLinkChange(index, "display_text", e.target.value)
                         }
-                        className="w-full border border-gray-300 rounded-lg p-2.5 pr-10 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                        className="w-full border border-gray-300 rounded-lg p-2.5 pr-10 focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-200"
                         placeholder="How it appears on resume"
                         aria-label={`Display text for social link ${index + 1}`}
                       />

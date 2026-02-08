@@ -107,7 +107,7 @@ export default function CVTemplatesHub() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Link
             to="/templates/ats-friendly"
-            className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border-2 border-blue-200 hover:border-blue-400"
+            className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border-2 border-accent/20 hover:border-accent/70"
           >
             <div className="aspect-[8.5/11] bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-4 flex items-center justify-center border border-gray-200">
               <div className="text-center p-4">
@@ -122,7 +122,7 @@ export default function CVTemplatesHub() {
             <p className="text-gray-600 text-sm mb-3">
               Clean, modern design that passes all ATS systems. Perfect for UK and international applications.
             </p>
-            <div className="text-blue-600 font-semibold text-sm">
+            <div className="text-accent font-semibold text-sm">
               View Template &#8594;
             </div>
           </Link>
@@ -131,20 +131,20 @@ export default function CVTemplatesHub() {
 
       {/* CV vs Resume Callout */}
       <div className="mb-16">
-        <div className="max-w-4xl mx-auto bg-blue-50 border border-blue-200 rounded-xl p-8">
-          <h2 className="text-2xl font-bold text-blue-900 mb-4">
+        <div className="max-w-4xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
+          <h2 className="text-2xl font-bold text-ink mb-4">
             CV or Resume? Which term should I use?
           </h2>
-          <p className="text-blue-800 mb-4">
+          <p className="text-ink mb-4">
             In the <strong>UK, Europe, Australia, and New Zealand</strong>, "CV" (curriculum vitae) is the standard term.
             In the <strong>US and Canada</strong>, "resume" is more common.
           </p>
-          <p className="text-blue-700">
+          <p className="text-ink/80">
             Our templates work for both—the document format is the same. Use whichever term is standard in your target country.
           </p>
           <Link
             to="/blog/resume-vs-cv-difference"
-            className="inline-block mt-4 text-blue-600 hover:text-blue-800 font-semibold"
+            className="inline-block mt-4 text-accent hover:text-ink font-semibold"
           >
             Learn more: CV vs Resume differences &#8594;
           </Link>

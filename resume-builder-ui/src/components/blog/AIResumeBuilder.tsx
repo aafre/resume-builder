@@ -57,8 +57,8 @@ export default function AIResumeBuilder() {
           requirements of job descriptions. Here’s a closer look at their key
           capabilities:
         </p>
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-2 text-blue-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Keyword Optimization:</strong> They scan job descriptions
               for relevant keywords and phrases, suggesting where and how to
@@ -132,8 +132,8 @@ export default function AIResumeBuilder() {
         <p className="text-lg leading-relaxed text-gray-700">
           EasyFreeResume offers:
         </p>
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-2 text-purple-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>ATS-Friendly Templates:</strong> Ensures your AI-generated
               content is presented in a clean, parsable format that works

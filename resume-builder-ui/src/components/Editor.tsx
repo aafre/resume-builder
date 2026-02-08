@@ -30,9 +30,9 @@ const ErrorPage = lazy(() => import("./ErrorPage"));
 
 // Loading component for Suspense fallback
 const LoadingSpinner = () => (
-  <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+  <div className="min-h-screen bg-chalk flex items-center justify-center">
     <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
       <p className="text-xl text-gray-600">Loading...</p>
     </div>
   </div>
@@ -288,9 +288,9 @@ const Editor: React.FC = () => {
   // ===== Loading State =====
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+      <div className="min-h-screen bg-chalk flex items-center justify-center">
         <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
           <p className="text-xl text-gray-600">Loading your resume builder...</p>
         </div>
       </div>
@@ -317,7 +317,7 @@ const Editor: React.FC = () => {
 
   // ===== Main Render =====
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-chalk">
       {/* Editor Content - Main content area */}
       <EditorContent
         contactInfo={contactInfo}

@@ -30,7 +30,7 @@ export default function FAQSection({
         {faqs.map((faq, index) => (
           <details
             key={index}
-            className="group border border-gray-200 rounded-lg overflow-hidden transition-all duration-200 hover:border-blue-300"
+            className="group border border-gray-200 rounded-lg overflow-hidden transition-all duration-200 hover:border-accent/30"
           >
             <summary className="px-6 py-4 text-left flex justify-between items-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden">
               <span className="font-semibold text-gray-900 pr-4">{faq.question}</span>

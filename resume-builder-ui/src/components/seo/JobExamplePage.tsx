@@ -26,7 +26,7 @@ import type { Section } from '../../types';
 
 // Loading skeleton component
 const LoadingSkeleton = () => (
-  <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-100/40">
+  <div className="min-h-screen bg-chalk">
     <div className="container mx-auto px-4 py-12 max-w-7xl">
       <div className="animate-pulse">
         <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
@@ -41,7 +41,7 @@ const LoadingSkeleton = () => (
 
 // Not found component
 const NotFound = ({ slug }: { slug: string }) => (
-  <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-100/40 flex items-center justify-center">
+  <div className="min-h-screen bg-chalk flex items-center justify-center">
     <div className="text-center">
       <h1 className="text-4xl font-bold text-gray-900 mb-4">Resume Example Not Found</h1>
       <p className="text-gray-600 mb-6">
@@ -49,7 +49,7 @@ const NotFound = ({ slug }: { slug: string }) => (
       </p>
       <Link
         to="/examples"
-        className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        className="inline-block px-6 py-3 bg-accent text-ink rounded-lg hover:bg-accent/90 transition-colors"
       >
         Browse All Examples
       </Link>
@@ -245,7 +245,7 @@ export default function JobExamplePage() {
                 {/* Contact Header */}
                 <div className="text-center border-b border-gray-200 pb-6 mb-6">
                   <h3 className="text-2xl font-bold text-gray-900">{data.resume.contact.name}</h3>
-                  <p className="text-lg text-blue-600 mt-1">{data.resume.contact.title}</p>
+                  <p className="text-lg text-accent mt-1">{data.resume.contact.title}</p>
                   <p className="text-gray-600 mt-2 text-sm">
                     {data.resume.contact.email} | {data.resume.contact.phone} | {data.resume.contact.location}
                   </p>
@@ -344,7 +344,7 @@ export default function JobExamplePage() {
               <button
                 onClick={handleEditTemplate}
                 disabled={creating}
-                className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors mb-4 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full px-6 py-3 bg-accent text-ink rounded-lg font-semibold hover:bg-accent/90 transition-colors mb-4 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {creating ? (
                   <>
@@ -409,13 +409,13 @@ export default function JobExamplePage() {
               <Link
                 key={job.slug}
                 to={`/examples/${job.slug}`}
-                className="bg-white rounded-xl p-5 border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all"
+                className="bg-white rounded-xl p-5 border border-gray-200 hover:border-accent/30 hover:shadow-md transition-all"
               >
                 <h3 className="font-semibold text-gray-900 mb-2">{job.title}</h3>
                 <p className="text-sm text-gray-600 line-clamp-2">
                   {job.metaDescription}
                 </p>
-                <span className="inline-block mt-3 text-blue-600 text-sm font-medium">
+                <span className="inline-block mt-3 text-accent text-sm font-medium">
                   View Example &rarr;
                 </span>
               </Link>

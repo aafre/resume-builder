@@ -101,7 +101,7 @@ const TermsOfService = () => {
           For inquiries, please contact us on Github by creating an issue{" "}
           <a
             href="https://github.com/aafre/resume-builder/issues"
-            className="text-blue-500 underline"
+            className="text-accent underline"
           >
             here
           </a>

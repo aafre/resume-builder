@@ -27,7 +27,7 @@ export default function BreadcrumbsWithSchema({
             ) : (
               <Link
                 to={crumb.href}
-                className="hover:text-blue-600 transition-colors"
+                className="hover:text-accent transition-colors"
               >
                 {crumb.label}
               </Link>

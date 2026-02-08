@@ -63,11 +63,11 @@ export default function HowToUseResumeKeywords() {
           rank on Google, your resume needs keywords to rank highly in an ATS.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h3 className="font-bold text-ink mb-3">
             📋 The ATS Process is Simple:
           </h3>
-          <ol className="list-decimal pl-6 space-y-2 text-blue-700">
+          <ol className="list-decimal pl-6 space-y-2 text-ink/80">
             <li>A recruiter posts a job with specific requirements.</li>
             <li>
               The ATS is programmed to search for keywords related to those
@@ -168,11 +168,11 @@ export default function HowToUseResumeKeywords() {
         </h3>
 
         <div className="space-y-6">
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h4 className="font-bold text-purple-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-3">
               📝 Professional Summary
             </h4>
-            <p className="text-purple-700 mb-3">
+            <p className="text-ink/80 mb-3">
               Your summary should be packed with your most important keywords.
               It's the first thing an ATS (and a recruiter) will scan.
             </p>
@@ -189,14 +189,14 @@ export default function HowToUseResumeKeywords() {
             </div>
           </div>
 
-          <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6">
-            <h4 className="font-bold text-indigo-800 mb-3">🛠️ Skills Section</h4>
-            <p className="text-indigo-700 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-3">🛠️ Skills Section</h4>
+            <p className="text-ink/80 mb-3">
               This is the perfect place for a bulleted list of your hard skills.
               For a detailed guide, read our article on{" "}
               <a
                 href="/blog/how-to-list-skills-on-resume"
-                className="text-blue-600 hover:text-blue-800 underline"
+                className="text-accent hover:text-ink underline"
               >
                 How to List Skills on a Resume
               </a>
@@ -251,18 +251,18 @@ export default function HowToUseResumeKeywords() {
           results. For more on this, check out our guide on{" "}
           <a
             href="/blog/quantify-resume-accomplishments"
-            className="text-blue-600 hover:text-blue-800 underline"
+            className="text-accent hover:text-ink underline"
           >
             How to Quantify Your Resume Accomplishments
           </a>
           .
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             🎯 The Perfect Keyword Formula:
           </h4>
-          <p className="text-blue-700 font-medium text-lg mb-3">
+          <p className="text-ink/80 font-medium text-lg mb-3">
             Keyword + Action + Context + Quantifiable Result
           </p>
           <div className="bg-white p-4 rounded-lg text-sm">
@@ -285,7 +285,7 @@ export default function HowToUseResumeKeywords() {
           of them on our{" "}
           <Link
             to="/resume-keywords"
-            className="text-blue-600 hover:text-blue-800 underline"
+            className="text-accent hover:text-ink underline"
           >
             Resume Keywords by Industry
           </Link>{" "}
@@ -299,7 +299,7 @@ export default function HowToUseResumeKeywords() {
               Dive into our list of{" "}
               <Link
                 to="/resume-keywords/software-engineer"
-                className="text-blue-600 hover:text-blue-800 underline"
+                className="text-accent hover:text-ink underline"
               >
                 120+ Software Engineer Resume Keywords
               </Link>
@@ -318,7 +318,7 @@ export default function HowToUseResumeKeywords() {
               Check out our{" "}
               <Link
                 to="/resume-keywords/customer-service"
-                className="text-blue-600 hover:text-blue-800 underline"
+                className="text-accent hover:text-ink underline"
               >
                 100+ Customer Service Resume Keywords
               </Link>
@@ -423,11 +423,11 @@ export default function HowToUseResumeKeywords() {
           add more relevant keywords.
         </p>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             🎯 Keyword Checklist Template:
           </h4>
-          <div className="text-purple-700 space-y-2 text-sm">
+          <div className="text-ink/80 space-y-2 text-sm">
             <p>□ Primary skill mentioned 2-3 times in different contexts</p>
             <p>□ Job title keywords included in summary and experience</p>
             <p>□ Industry-specific terminology used naturally</p>
@@ -494,9 +494,9 @@ export default function HowToUseResumeKeywords() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h4 className="font-bold text-blue-800 mb-3">📊 Relevance Score</h4>
-            <p className="text-blue-700 text-sm">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-3">📊 Relevance Score</h4>
+            <p className="text-ink/80 text-sm">
               ATS systems calculate how closely your experience matches the job
               requirements. Focus on relevant experience and quantifiable
               achievements.
@@ -511,9 +511,9 @@ export default function HowToUseResumeKeywords() {
             </p>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h4 className="font-bold text-purple-800 mb-3">🎓 Education Match</h4>
-            <p className="text-purple-700 text-sm">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-3">🎓 Education Match</h4>
+            <p className="text-ink/80 text-sm">
               If the job requires specific degrees or certifications, make sure
               they're prominently featured and use exact terminology.
             </p>
@@ -528,7 +528,7 @@ export default function HowToUseResumeKeywords() {
           </div>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Beat the ATS?
           </h3>
@@ -538,7 +538,7 @@ export default function HowToUseResumeKeywords() {
           </p>
           <a
             href="/templates"
-            className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Your Resume
           </a>

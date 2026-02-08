@@ -58,7 +58,7 @@ export const ActionIcon: React.FC<ActionIconProps> = ({
       disabled={disabled}
       className={`
         inline-flex items-center justify-center rounded-md transition-colors duration-150
-        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1
+        focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-1
         disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent
         ${variantStyles[variant]}
         ${sizeStyles[size]}

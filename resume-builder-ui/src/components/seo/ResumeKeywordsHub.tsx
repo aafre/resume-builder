@@ -34,9 +34,9 @@ export default function ResumeKeywordsHub() {
       title: '💻 Technology',
       jobs: technologyJobs,
       colorScheme: {
-        border: 'border-blue-200',
-        hoverBorder: 'hover:border-blue-400',
-        text: 'text-blue-600',
+        border: 'border-accent/20',
+        hoverBorder: 'hover:border-accent/70',
+        text: 'text-accent',
       },
     },
     {
@@ -44,9 +44,9 @@ export default function ResumeKeywordsHub() {
       title: '🎨 Design',
       jobs: creativeJobs,
       colorScheme: {
-        border: 'border-purple-200',
-        hoverBorder: 'hover:border-purple-400',
-        text: 'text-purple-600',
+        border: 'border-accent/20',
+        hoverBorder: 'hover:border-accent/40',
+        text: 'text-accent',
       },
     },
     {
@@ -169,7 +169,7 @@ export default function ResumeKeywordsHub() {
           {/* Table of contents */}
           <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
             <h3 className="font-bold text-gray-900 mb-3">On this page</h3>
-            <ul className="space-y-2 text-blue-600">
+            <ul className="space-y-2 text-accent">
               <li><a href="#popular-keywords" className="hover:underline">Most Popular Keywords Across All Industries</a></li>
               <li><a href="#quick-reference" className="hover:underline">Quick-Reference Lists by Job Title</a></li>
               <li><a href="#technology" className="hover:underline">Technology &amp; Engineering Keywords</a></li>
@@ -220,9 +220,9 @@ export default function ResumeKeywordsHub() {
             for almost any role.
           </p>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-blue-50 rounded-lg p-5 border border-blue-100">
-              <h3 className="font-bold text-blue-900 mb-3">Action Verbs</h3>
-              <ul className="space-y-1 text-blue-800 text-sm">
+            <div className="bg-accent/[0.06] rounded-lg p-5 border border-accent/10">
+              <h3 className="font-bold text-ink mb-3">Action Verbs</h3>
+              <ul className="space-y-1 text-ink text-sm">
                 <li>Managed</li>
                 <li>Developed</li>
                 <li>Implemented</li>
@@ -246,9 +246,9 @@ export default function ResumeKeywordsHub() {
                 <li>Attention to detail</li>
               </ul>
             </div>
-            <div className="bg-purple-50 rounded-lg p-5 border border-purple-100">
-              <h3 className="font-bold text-purple-900 mb-3">Business Terms</h3>
-              <ul className="space-y-1 text-purple-800 text-sm">
+            <div className="bg-accent/[0.06] rounded-lg p-5 border border-accent/10">
+              <h3 className="font-bold text-ink mb-3">Business Terms</h3>
+              <ul className="space-y-1 text-ink text-sm">
                 <li>KPIs / Metrics</li>
                 <li>ROI</li>
                 <li>Stakeholder management</li>
@@ -279,13 +279,13 @@ export default function ResumeKeywordsHub() {
             {/* Software Engineer */}
             <div className="border border-gray-200 rounded-lg p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-3">
-                <Link to="/resume-keywords/software-engineer" className="text-blue-600 hover:underline">
+                <Link to="/resume-keywords/software-engineer" className="text-accent hover:underline">
                   Software Engineer
                 </Link>
               </h3>
               <div className="flex flex-wrap gap-2">
                 {['Python', 'JavaScript', 'React', 'AWS', 'CI/CD', 'Microservices', 'REST APIs', 'Agile / Scrum', 'Git', 'System Design'].map(kw => (
-                  <span key={kw} className="bg-blue-50 text-blue-800 text-sm px-3 py-1 rounded-full border border-blue-200">{kw}</span>
+                  <span key={kw} className="bg-accent/[0.06] text-ink text-sm px-3 py-1 rounded-full border border-accent/20">{kw}</span>
                 ))}
               </div>
             </div>
@@ -293,7 +293,7 @@ export default function ResumeKeywordsHub() {
             {/* Product Manager */}
             <div className="border border-gray-200 rounded-lg p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-3">
-                <Link to="/resume-keywords/product-manager" className="text-blue-600 hover:underline">
+                <Link to="/resume-keywords/product-manager" className="text-accent hover:underline">
                   Product Manager
                 </Link>
               </h3>
@@ -307,7 +307,7 @@ export default function ResumeKeywordsHub() {
             {/* Data Analyst */}
             <div className="border border-gray-200 rounded-lg p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-3">
-                <Link to="/resume-keywords/data-analyst" className="text-blue-600 hover:underline">
+                <Link to="/resume-keywords/data-analyst" className="text-accent hover:underline">
                   Data Analyst
                 </Link>
               </h3>
@@ -321,7 +321,7 @@ export default function ResumeKeywordsHub() {
             {/* Customer Service */}
             <div className="border border-gray-200 rounded-lg p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-3">
-                <Link to="/resume-keywords/customer-service" className="text-blue-600 hover:underline">
+                <Link to="/resume-keywords/customer-service" className="text-accent hover:underline">
                   Customer Service
                 </Link>
               </h3>
@@ -335,13 +335,13 @@ export default function ResumeKeywordsHub() {
             {/* Marketing Manager */}
             <div className="border border-gray-200 rounded-lg p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-3">
-                <Link to="/resume-keywords/marketing-manager" className="text-blue-600 hover:underline">
+                <Link to="/resume-keywords/marketing-manager" className="text-accent hover:underline">
                   Marketing Manager
                 </Link>
               </h3>
               <div className="flex flex-wrap gap-2">
                 {['SEO / SEM', 'Google Analytics', 'Content Strategy', 'Marketing Automation', 'HubSpot', 'Demand Generation', 'Brand Management', 'Campaign ROI', 'Social Media Marketing', 'Lead Nurturing'].map(kw => (
-                  <span key={kw} className="bg-purple-50 text-purple-800 text-sm px-3 py-1 rounded-full border border-purple-200">{kw}</span>
+                  <span key={kw} className="bg-accent/[0.06] text-ink text-sm px-3 py-1 rounded-full border border-accent/20">{kw}</span>
                 ))}
               </div>
             </div>
@@ -358,11 +358,11 @@ export default function ResumeKeywordsHub() {
         </h2>
         <Link
           to="/resume-keywords/customer-service"
-          className="block max-w-4xl mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 hover:border-blue-400 rounded-xl p-8 shadow-md hover:shadow-xl transition-all"
+          className="block max-w-4xl mx-auto bg-accent/[0.04] border-2 border-accent/20 hover:border-accent/70 rounded-xl p-8 shadow-md hover:shadow-xl transition-all"
         >
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <span className="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full mb-3">
+              <span className="inline-block bg-accent/10 text-ink text-xs font-bold px-3 py-1 rounded-full mb-3">
                 FEATURED
               </span>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">
@@ -373,7 +373,7 @@ export default function ResumeKeywordsHub() {
                 and before/after resume examples for 5 different customer service roles.
               </p>
             </div>
-            <div className="text-blue-600 font-semibold whitespace-nowrap text-lg">
+            <div className="text-accent font-semibold whitespace-nowrap text-lg">
               View Guide →
             </div>
           </div>

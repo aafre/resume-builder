@@ -50,27 +50,27 @@ export default function AtsFriendlyTemplate() {
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Template Specifications</h3>
               <ul className="space-y-3 text-gray-700">
                 <li className="flex items-start">
-                  <span className="text-blue-600 font-bold mr-3">✓</span>
+                  <span className="text-accent font-bold mr-3">✓</span>
                   <span><strong>Font:</strong> Calibri 11pt (easily parseable)</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-blue-600 font-bold mr-3">✓</span>
+                  <span className="text-accent font-bold mr-3">✓</span>
                   <span><strong>Layout:</strong> Single-column design</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-blue-600 font-bold mr-3">✓</span>
+                  <span className="text-accent font-bold mr-3">✓</span>
                   <span><strong>Margins:</strong> 1-inch on all sides</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-blue-600 font-bold mr-3">✓</span>
+                  <span className="text-accent font-bold mr-3">✓</span>
                   <span><strong>Size:</strong> US Letter (8.5" x 11")</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-blue-600 font-bold mr-3">✓</span>
+                  <span className="text-accent font-bold mr-3">✓</span>
                   <span><strong>Sections:</strong> Summary, Experience, Education, Skills</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-blue-600 font-bold mr-3">✓</span>
+                  <span className="text-accent font-bold mr-3">✓</span>
                   <span><strong>Formats:</strong> DOCX, PDF available</span>
                 </li>
               </ul>
@@ -85,28 +85,28 @@ export default function AtsFriendlyTemplate() {
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
           How to use this template
         </h2>
-        <div className="max-w-4xl mx-auto bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-8">
+        <div className="max-w-4xl mx-auto bg-chalk rounded-xl p-8">
           <ol className="space-y-4 text-gray-800">
             <li className="flex items-start">
-              <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold mr-4">1</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold mr-4">1</span>
               <div>
                 <strong>Click "Use This Template"</strong> to open the editor with this template pre-loaded.
               </div>
             </li>
             <li className="flex items-start">
-              <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold mr-4">2</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold mr-4">2</span>
               <div>
                 <strong>Fill in your information</strong> in each section. Use the provided examples as guidance.
               </div>
             </li>
             <li className="flex items-start">
-              <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold mr-4">3</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold mr-4">3</span>
               <div>
                 <strong>Customize as needed</strong> - adjust sections, reorder items, but maintain the clean formatting.
               </div>
             </li>
             <li className="flex items-start">
-              <span className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold mr-4">4</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold mr-4">4</span>
               <div>
                 <strong>Download as DOCX or PDF</strong> when complete. DOCX is recommended for ATS compatibility.
               </div>

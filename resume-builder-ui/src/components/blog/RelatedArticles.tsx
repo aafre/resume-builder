@@ -40,7 +40,7 @@ export default function RelatedArticles({ currentSlug, category, maxArticles = 3
             <h3 className="text-lg font-bold mb-2 leading-tight">
               <Link
                 to={`/blog/${post.slug}`}
-                className="text-gray-900 hover:text-blue-600 transition-colors"
+                className="text-gray-900 hover:text-accent transition-colors"
               >
                 {post.title}
               </Link>

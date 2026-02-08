@@ -37,9 +37,9 @@ export default function RelatedJobsSection({ job, limit = 6 }: RelatedJobsSectio
             <Link
               key={relatedJob.slug}
               to={`/resume-keywords/${relatedJob.slug}`}
-              className="block bg-white border border-gray-200 rounded-xl p-6 hover:border-blue-500 hover:shadow-lg transition-all duration-200 group"
+              className="block bg-white border border-gray-200 rounded-xl p-6 hover:border-accent hover:shadow-lg transition-all duration-200 group"
             >
-              <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-3">
+              <h3 className="text-xl font-bold text-gray-900 group-hover:text-accent transition-colors mb-3">
                 {relatedJob.title}
               </h3>
 
@@ -49,7 +49,7 @@ export default function RelatedJobsSection({ job, limit = 6 }: RelatedJobsSectio
                   ` including ${relatedJob.keywords.technical.slice(0, 2).join(', ')}${relatedJob.keywords.technical.length > 2 ? ', and more' : ''}`}
               </p>
 
-              <div className="flex items-center text-blue-600 font-medium text-sm group-hover:text-blue-700">
+              <div className="flex items-center text-accent font-medium text-sm group-hover:text-ink/80">
                 View Keywords
                 <svg
                   className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"

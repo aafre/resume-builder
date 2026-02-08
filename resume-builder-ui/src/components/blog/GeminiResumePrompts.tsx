@@ -30,11 +30,11 @@ export default function GeminiResumePrompts() {
         </p>
 
         {/* Quick Answer Box */}
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-ink mb-3">
             🎯 Gemini's Strengths for Resume Writing
           </h3>
-          <ul className="space-y-2 text-blue-700">
+          <ul className="space-y-2 text-ink/80">
             <li><strong>Research & Analysis:</strong> Excellent at extracting insights from job descriptions</li>
             <li><strong>Long Context:</strong> Can process extensive documents like multi-page resumes</li>
             <li><strong>Web Integration:</strong> Can access current information about companies and roles</li>
@@ -194,7 +194,7 @@ export default function GeminiResumePrompts() {
           </p>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Build Your Resume?
           </h3>
@@ -203,7 +203,7 @@ export default function GeminiResumePrompts() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -215,17 +215,17 @@ export default function GeminiResumePrompts() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
           <li>
-            <Link to="/blog/chatgpt-resume-prompts" className="text-blue-600 hover:underline">
+            <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">
               25+ ChatGPT Prompts for Resume Writing
             </Link>
           </li>
           <li>
-            <Link to="/blog/claude-resume-prompts" className="text-blue-600 hover:underline">
+            <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">
               Claude Prompts for Resume Writing
             </Link>
           </li>
           <li>
-            <Link to="/blog/ai-resume-writing-guide" className="text-blue-600 hover:underline">
+            <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
               AI Resume Writing: The Complete Guide
             </Link>
           </li>

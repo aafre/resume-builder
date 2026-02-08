@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import SEOHead from "./SEOHead";
 import { InFeedAd, InContentAd, AD_CONFIG } from "./ads";
 import { blogPosts } from "../data/blogPosts";
+import RevealSection from "./shared/RevealSection";
 
 export default function BlogIndex() {
   const featuredPost = blogPosts.find((post) => post.featured);
@@ -26,52 +27,57 @@ export default function BlogIndex() {
           },
         }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-        <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <div className="min-h-screen bg-chalk">
+        <div className="container mx-auto px-4 py-12 md:py-20 max-w-6xl">
           {/* Header */}
-          <header className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Resume & Career Blog
-            </h1>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
-              Expert advice, tips, and strategies to help you create outstanding
-              resumes, navigate your career, and land your dream job.
-            </p>
-          </header>
+          <RevealSection variant="fade-up">
+            <header className="text-center mb-12 md:mb-16">
+              <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">
+                Career Insights
+              </span>
+              <h1 className="font-display text-4xl md:text-5xl font-extrabold text-ink tracking-tight mt-3 mb-4">
+                Resume & Career Blog
+              </h1>
+              <p className="font-display text-lg font-extralight text-stone-warm max-w-3xl mx-auto leading-relaxed">
+                Expert advice, tips, and strategies to help you create outstanding
+                resumes, navigate your career, and land your dream job.
+              </p>
+            </header>
+          </RevealSection>
 
-          {/* Featured Post */}
+          {/* Featured Post — dark premium card */}
           {featuredPost && (
-            <section className="mb-16">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                Featured Article
-              </h2>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-gray-200 hover:shadow-2xl transition-all duration-300">
-                <div className="flex flex-col lg:flex-row gap-8">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-4">
-                      <span className="px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded-full">
+            <RevealSection variant="scale-in" className="mb-16">
+              <section>
+                <div className="bg-ink rounded-3xl p-8 md:p-12 relative overflow-hidden">
+                  {/* Radial accent glow */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-accent/[0.07] blur-3xl pointer-events-none" />
+
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-6">
+                      <span className="px-3 py-1 bg-accent text-ink text-sm font-bold rounded-full">
                         Featured
                       </span>
-                      <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-full">
+                      <span className="font-mono text-xs tracking-[0.15em] text-mist uppercase">
                         {featuredPost.category}
                       </span>
                     </div>
 
-                    <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">
+                    <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-extrabold text-white mb-4 leading-tight">
                       <Link
                         to={`/blog/${featuredPost.slug}`}
-                        className="hover:text-blue-600 transition-colors"
+                        className="hover:text-accent transition-colors"
                       >
                         {featuredPost.title}
                       </Link>
-                    </h3>
+                    </h2>
 
-                    <p className="text-gray-700 text-lg mb-6 leading-relaxed">
+                    <p className="font-display font-extralight text-mist text-lg mb-8 leading-relaxed max-w-3xl">
                       {featuredPost.description}
                     </p>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-sm text-gray-600">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div className="flex items-center gap-4 text-sm text-mist font-mono">
                         <time dateTime={featuredPost.publishDate}>
                           {new Date(
                             featuredPost.publishDate
@@ -81,17 +87,17 @@ export default function BlogIndex() {
                             day: "numeric",
                           })}
                         </time>
-                        <span>•</span>
+                        <span>&middot;</span>
                         <span>{featuredPost.readTime} read</span>
                       </div>
 
                       <Link
                         to={`/blog/${featuredPost.slug}`}
-                        className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+                        className="btn-primary py-3.5 px-8"
                       >
                         Read Article
                         <svg
-                          className="w-4 h-4"
+                          className="w-4 h-4 ml-2"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                         >
@@ -105,8 +111,8 @@ export default function BlogIndex() {
                     </div>
                   </div>
                 </div>
-              </div>
-            </section>
+              </section>
+            </RevealSection>
           )}
 
           {/* In-content ad between featured and grid */}
@@ -118,105 +124,117 @@ export default function BlogIndex() {
 
           {/* All Articles Grid */}
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">
+            <h2 className="font-display text-2xl md:text-3xl font-extrabold text-ink mb-8">
               All Articles
             </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {regularPosts.map((post, index) => (
-                <React.Fragment key={post.slug}>
-                  <article
-                    className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                  >
-                    <div className="mb-4 flex items-center gap-2">
-                      <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-full">
-                        {post.category}
-                      </span>
-                      {post.comingSoon && (
-                        <span className="px-3 py-1 bg-orange-100 text-orange-700 text-sm font-medium rounded-full">
-                          Coming Soon
+            <RevealSection variant="fade-up" stagger>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {regularPosts.map((post, index) => (
+                  <React.Fragment key={post.slug}>
+                    <article
+                      className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
+                    >
+                      <div className="mb-4 flex items-center gap-2">
+                        <span className="font-mono text-[10px] tracking-[0.1em] text-stone-warm uppercase">
+                          {post.category}
                         </span>
-                      )}
-                    </div>
-
-                    <h3 className="text-xl font-bold mb-3 leading-tight">
-                      {post.comingSoon ? (
-                        <span className="text-gray-500 cursor-not-allowed">
-                          {post.title}
-                        </span>
-                      ) : (
-                        <Link
-                          to={`/blog/${post.slug}`}
-                          className="text-gray-900 hover:text-blue-600 transition-colors"
-                        >
-                          {post.title}
-                        </Link>
-                      )}
-                    </h3>
-
-                    <p className="text-gray-700 mb-4 leading-relaxed">
-                      {post.description}
-                    </p>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3 text-sm text-gray-600">
-                        <time dateTime={post.publishDate}>
-                          {new Date(post.publishDate).toLocaleDateString(
-                            "en-US",
-                            {
-                              month: "short",
-                              day: "numeric",
-                            }
-                          )}
-                        </time>
-                        <span>•</span>
-                        <span>{post.readTime}</span>
+                        {post.comingSoon && (
+                          <span className="px-2.5 py-0.5 bg-accent/20 text-ink text-xs font-medium rounded-full">
+                            Coming Soon
+                          </span>
+                        )}
                       </div>
 
-                      {post.comingSoon ? (
-                        <span className="text-gray-400 font-medium cursor-not-allowed">
-                          Coming Soon
-                        </span>
-                      ) : (
-                        <Link
-                          to={`/blog/${post.slug}`}
-                          className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
-                        >
-                          Read more →
-                        </Link>
-                      )}
-                    </div>
-                  </article>
-                  {/* Insert in-feed ad after every 4 posts, starting from position 3 (0-indexed) */}
-                  {(index + 1) % 4 === 0 && index >= 3 && (
-                    <InFeedAd
-                      adSlot={AD_CONFIG.slots.blogInfeed}
-                      layout="card"
-                      className="rounded-2xl"
-                    />
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
+                      <h3 className="font-display text-lg font-extrabold mb-3 leading-tight">
+                        {post.comingSoon ? (
+                          <span className="text-mist cursor-not-allowed">
+                            {post.title}
+                          </span>
+                        ) : (
+                          <Link
+                            to={`/blog/${post.slug}`}
+                            className="text-ink hover:text-accent transition-colors"
+                          >
+                            {post.title}
+                          </Link>
+                        )}
+                      </h3>
+
+                      <p className="font-display font-extralight text-stone-warm text-sm mb-4 leading-relaxed">
+                        {post.description}
+                      </p>
+
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3 text-xs text-mist font-mono">
+                          <time dateTime={post.publishDate}>
+                            {new Date(post.publishDate).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "numeric",
+                              }
+                            )}
+                          </time>
+                          <span>&middot;</span>
+                          <span>{post.readTime}</span>
+                        </div>
+
+                        {post.comingSoon ? (
+                          <span className="text-mist text-sm font-medium cursor-not-allowed">
+                            Coming Soon
+                          </span>
+                        ) : (
+                          <Link
+                            to={`/blog/${post.slug}`}
+                            className="text-accent hover:text-ink text-sm font-medium transition-colors"
+                          >
+                            Read more &rarr;
+                          </Link>
+                        )}
+                      </div>
+                    </article>
+                    {/* Insert in-feed ad after every 4 posts, starting from position 3 (0-indexed) */}
+                    {(index + 1) % 4 === 0 && index >= 3 && (
+                      <InFeedAd
+                        adSlot={AD_CONFIG.slots.blogInfeed}
+                        layout="card"
+                        className="rounded-2xl"
+                      />
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+            </RevealSection>
           </section>
 
-          {/* CTA Section */}
-          <section className="mt-16 text-center">
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                Ready to Put These Tips into Action?
-              </h2>
-              <p className="text-xl mb-6 opacity-90">
-                Create a professional resume in minutes with our free resume
-                builder
-              </p>
-              <Link
-                to="/templates"
-                className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
-              >
-                Start Building Your Resume
-              </Link>
-            </div>
-          </section>
+          {/* Bottom CTA — dark card */}
+          <RevealSection variant="scale-in" className="mt-16">
+            <section className="text-center">
+              <div className="bg-ink rounded-3xl py-16 md:py-20 px-6 relative overflow-hidden">
+                {/* Radial accent glow */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-accent/[0.07] blur-3xl pointer-events-none" />
+
+                <div className="relative">
+                  <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">
+                    Ready?
+                  </span>
+                  <h2 className="font-display text-2xl md:text-3xl font-extrabold text-white mt-3 mb-4">
+                    Ready to Put These Tips into Action?
+                  </h2>
+                  <p className="font-display text-lg font-extralight text-mist mb-8 max-w-2xl mx-auto">
+                    Create a professional resume in minutes with our free resume
+                    builder
+                  </p>
+                  <Link
+                    to="/templates"
+                    className="btn-primary py-4 px-10 text-lg"
+                  >
+                    Start Building Your Resume
+                  </Link>
+                </div>
+              </div>
+            </section>
+          </RevealSection>
         </div>
       </div>
     </>

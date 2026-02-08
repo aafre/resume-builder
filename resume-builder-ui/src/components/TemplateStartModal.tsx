@@ -145,9 +145,9 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
 
           {/* LEFT SECTION: Import Your Data */}
-          <div className="border-2 border-purple-200 rounded-xl p-6 bg-gradient-to-br from-purple-50 to-white">
+          <div className="border-2 border-accent/20 rounded-xl p-6 bg-accent/[0.04]">
             <div className="flex items-center gap-2 mb-3">
-              <DocumentArrowUpIcon className="w-6 h-6 text-purple-600" />
+              <DocumentArrowUpIcon className="w-6 h-6 text-accent" />
               <h3 className="font-bold text-xl text-gray-900">Import Your Data</h3>
             </div>
             <p className="text-sm text-gray-600 mb-4">
@@ -162,13 +162,13 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                 onDragLeave={handleDragLeave}
                 className={`border-2 border-dashed rounded-lg p-8 text-center transition-all cursor-pointer ${
                   isDragging
-                    ? 'border-purple-500 bg-purple-100'
-                    : 'border-gray-300 hover:border-purple-400 hover:bg-purple-50'
+                    ? 'border-accent bg-accent/10'
+                    : 'border-gray-300 hover:border-accent/40 hover:bg-accent/[0.06]'
                 }`}
                 onClick={() => fileInputRef.current?.click()}
               >
                 <DocumentArrowUpIcon className={`w-12 h-12 mx-auto mb-3 ${
-                  isDragging ? 'text-purple-600' : 'text-gray-400'
+                  isDragging ? 'text-accent' : 'text-gray-400'
                 }`} />
                 <p className="text-sm font-semibold text-gray-700 mb-1">
                   Drop your PDF or DOCX here
@@ -199,16 +199,16 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
 
             {/* State C: Parsing - Progress Bar */}
             {parsing && (
-              <div className="border-2 border-purple-200 rounded-lg p-6 bg-white">
+              <div className="border-2 border-accent/20 rounded-lg p-6 bg-white">
                 <div className="flex items-center justify-center mb-4">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
                 </div>
                 <p className="text-center text-sm font-semibold text-gray-700 mb-3">
                   Reading your resume...
                 </p>
                 <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
                   <div
-                    className="bg-gradient-to-r from-purple-500 to-purple-600 h-2.5 transition-all duration-300 ease-out"
+                    className="bg-accent h-2.5 transition-all duration-300 ease-out"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
@@ -237,14 +237,14 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
 
                 {parseResult.cached && (
                   <div className="flex items-center gap-1 text-xs text-gray-600 mb-4">
-                    <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Previously imported</span>
+                    <span className="bg-accent/10 text-ink/80 px-2 py-0.5 rounded">Previously imported</span>
                   </div>
                 )}
 
                 {parseResult.confidence < 0.9 && (
                   <button
                     onClick={handleContinueWithImport}
-                    className="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold px-4 py-2.5 rounded-lg hover:shadow-lg transition-all"
+                    className="w-full bg-ink text-white font-semibold px-4 py-2.5 rounded-lg hover:shadow-lg transition-all"
                   >
                     Continue to Editor
                   </button>
@@ -277,9 +277,9 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
           </div>
 
           {/* RIGHT SECTION: Manual Options */}
-          <div className="border-2 border-blue-200 rounded-xl p-6 bg-gradient-to-br from-blue-50 to-white">
+          <div className="border-2 border-accent/20 rounded-xl p-6 bg-accent/[0.04]">
             <div className="flex items-center gap-2 mb-3">
-              <MdEditNote className="text-2xl text-blue-600" />
+              <MdEditNote className="text-2xl text-accent" />
               <h3 className="font-bold text-xl text-gray-900">Manual Options</h3>
             </div>
             <p className="text-sm text-gray-600 mb-4">
@@ -320,14 +320,14 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                 onClick={() => setSelectedOption('example')}
                 className={`group relative w-full p-4 border-2 rounded-lg transition-all duration-200 text-left ${
                   selectedOption === 'example'
-                    ? 'border-blue-400 bg-blue-50 shadow-md'
-                    : 'border-gray-200 hover:border-blue-400 hover:bg-blue-50'
+                    ? 'border-accent/70 bg-accent/[0.06] shadow-md'
+                    : 'border-gray-200 hover:border-accent/70 hover:bg-accent/[0.06]'
                 }`}
                 aria-pressed={selectedOption === 'example'}
               >
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <MdPreview className="text-2xl text-blue-600" />
+                  <div className="p-2 bg-accent/10 rounded-lg">
+                    <MdPreview className="text-2xl text-accent" />
                   </div>
                   <div className="flex-1">
                     <h4 className="font-bold text-base mb-1 text-gray-900">
@@ -338,7 +338,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                     </p>
                   </div>
                   {selectedOption === 'example' && (
-                    <MdCheckCircle className="text-xl text-blue-600" />
+                    <MdCheckCircle className="text-xl text-accent" />
                   )}
                 </div>
               </button>
@@ -346,7 +346,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
 
             {/* Continue Button */}
             <button
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold px-4 py-3 rounded-lg transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-400"
+              className="w-full bg-accent text-ink font-semibold px-4 py-3 rounded-lg transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-400"
               onClick={handleContinue}
               disabled={!selectedOption}
             >

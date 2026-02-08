@@ -40,7 +40,7 @@ export default function CompareBuildersCrossLinks({
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {links.map((link) => (
           <li key={link.path}>
-            <Link to={link.path} className="text-blue-600 hover:underline">
+            <Link to={link.path} className="text-accent hover:underline">
               {link.label}
             </Link>
           </li>

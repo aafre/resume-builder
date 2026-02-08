@@ -102,7 +102,7 @@ export default function ResumeIOVsEasyFreeResume() {
               <tr className="bg-gray-50">
                 <th className="px-6 py-4 text-left font-bold text-gray-900">Feature</th>
                 <th className="px-6 py-4 text-center font-bold text-green-600">EasyFreeResume</th>
-                <th className="px-6 py-4 text-center font-bold text-blue-600">Resume.io</th>
+                <th className="px-6 py-4 text-center font-bold text-accent">Resume.io</th>
                 <th className="px-6 py-4 text-center font-bold text-gray-600">Winner</th>
               </tr>
             </thead>
@@ -263,31 +263,31 @@ export default function ResumeIOVsEasyFreeResume() {
           How to Switch from Resume.io
         </h2>
 
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6 my-8">
-          <ol className="space-y-4 text-indigo-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <ol className="space-y-4 text-ink/80">
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">1</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">1</span>
               <div>
                 <p className="font-medium">Export your Resume.io content</p>
                 <p className="text-sm">Download as PDF or copy text from your resume</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">2</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">2</span>
               <div>
                 <p className="font-medium">Cancel your subscription</p>
                 <p className="text-sm">Go to Resume.io account settings → Cancel subscription</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">3</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">3</span>
               <div>
                 <p className="font-medium">Visit EasyFreeResume.com</p>
                 <p className="text-sm">No signup needed—start building immediately</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">4</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">4</span>
               <div>
                 <p className="font-medium">Recreate your resume with our templates</p>
                 <p className="text-sm">Download unlimited PDFs—no watermarks, no payment</p>

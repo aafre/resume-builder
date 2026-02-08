@@ -33,11 +33,11 @@ export default function AIResumeWritingGuide() {
         </p>
 
         {/* Quick Answer Box */}
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-ink mb-3">
             🚀 Quick Answer: Best AI Tools for Resume Writing
           </h3>
-          <ul className="space-y-2 text-blue-700">
+          <ul className="space-y-2 text-ink/80">
             <li><strong>Best Overall:</strong> Claude – Superior at nuanced, professional writing</li>
             <li><strong>Most Accessible:</strong> ChatGPT – Widest adoption, free tier available</li>
             <li><strong>Best for Research:</strong> Gemini – Strong at analyzing job descriptions</li>
@@ -231,7 +231,7 @@ export default function AIResumeWritingGuide() {
             </h3>
             <p className="text-gray-700">
               Use an{" "}
-              <Link to="/templates" className="text-blue-600 underline">
+              <Link to="/templates" className="text-accent underline">
                 ATS-friendly resume template
               </Link>{" "}
               to format your AI-generated content. Proper formatting ensures your resume
@@ -245,51 +245,51 @@ export default function AIResumeWritingGuide() {
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="font-bold text-blue-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="font-bold text-ink mb-3">
               1. Use Specific Prompts
             </h3>
-            <p className="text-blue-700">
+            <p className="text-ink/80">
               Generic prompts give generic results. Always include your job title, years of experience,
               industry, and the specific task you need help with.
             </p>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="font-bold text-blue-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="font-bold text-ink mb-3">
               2. Iterate and Refine
             </h3>
-            <p className="text-blue-700">
+            <p className="text-ink/80">
               Don't accept the first output. Ask AI to revise, shorten, make more specific,
               or adjust the tone. The best results come from back-and-forth refinement.
             </p>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="font-bold text-blue-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="font-bold text-ink mb-3">
               3. Provide Context
             </h3>
-            <p className="text-blue-700">
+            <p className="text-ink/80">
               The more context you give, the better the output. Share the job description,
               your current resume, and what you're trying to accomplish.
             </p>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="font-bold text-blue-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="font-bold text-ink mb-3">
               4. Maintain Your Voice
             </h3>
-            <p className="text-blue-700">
+            <p className="text-ink/80">
               Recruiters can spot generic AI content. Edit the output to sound like you,
               not like a template. Your unique perspective is what sets you apart.
             </p>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="font-bold text-blue-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="font-bold text-ink mb-3">
               5. Fact-Check Everything
             </h3>
-            <p className="text-blue-700">
+            <p className="text-ink/80">
               AI may suggest achievements or metrics you didn't actually accomplish.
               Never include anything you can't back up in an interview.
             </p>
@@ -383,7 +383,7 @@ export default function AIResumeWritingGuide() {
           <li><strong>You're highly experienced</strong> – Your expertise speaks better than AI phrasing</li>
         </ul>
 
-        <div className="my-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Create Your Resume?
           </h3>
@@ -392,7 +392,7 @@ export default function AIResumeWritingGuide() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -404,22 +404,22 @@ export default function AIResumeWritingGuide() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
           <li>
-            <Link to="/blog/chatgpt-resume-prompts" className="text-blue-600 hover:underline">
+            <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">
               25+ ChatGPT Prompts for Resume Writing
             </Link>
           </li>
           <li>
-            <Link to="/blog/claude-resume-prompts" className="text-blue-600 hover:underline">
+            <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">
               Claude Prompts for Resume Writing
             </Link>
           </li>
           <li>
-            <Link to="/blog/gemini-resume-prompts" className="text-blue-600 hover:underline">
+            <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline">
               Gemini Prompts for Resume Writing
             </Link>
           </li>
           <li>
-            <Link to="/blog/ai-resume-builder" className="text-blue-600 hover:underline">
+            <Link to="/blog/ai-resume-builder" className="text-accent hover:underline">
               AI Resume Builders: Are They Worth It?
             </Link>
           </li>

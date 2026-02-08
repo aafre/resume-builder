@@ -25,11 +25,11 @@ export default function ProfessionalSummaryExamples() {
           help you craft a summary that opens doors.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-          <h3 className="text-lg font-bold text-blue-800 mb-2">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+          <h3 className="text-lg font-bold text-ink mb-2">
             🎯 Quick Impact
           </h3>
-          <p className="text-blue-700">
+          <p className="text-ink/80">
             Studies show that recruiters spend just 6-8 seconds scanning a
             resume initially. Your professional summary must immediately
             communicate your value proposition and make them want to learn more.
@@ -77,11 +77,11 @@ export default function ProfessionalSummaryExamples() {
         <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
           Professional Summary Formula
         </h2>
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             📐 The Winning Formula:
           </h4>
-          <div className="text-purple-700 space-y-3 text-lg">
+          <div className="text-ink/80 space-y-3 text-lg">
             <p>
               <strong>[Experience Level] + [Job Title/Field]</strong> with{" "}
               <strong>[Key Skills/Specializations]</strong> and a proven track
@@ -93,15 +93,15 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-indigo-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             60-Second Fill-in-the-Blank Template
           </h4>
-          <p className="text-indigo-700 mb-4">
+          <p className="text-ink/80 mb-4">
             Copy this template and replace each bracket with your own details.
             You will have a polished summary in under a minute:
           </p>
-          <div className="bg-white border border-indigo-200 rounded-lg p-5 font-mono text-sm leading-relaxed text-gray-800">
+          <div className="bg-white border border-accent/20 rounded-lg p-5 font-mono text-sm leading-relaxed text-gray-800">
             <p>
               [Job title] with [X years] of experience in [industry/skill].
               Known for [key achievement, ideally with a number]. Passionate
@@ -110,8 +110,8 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
           <div className="mt-4 space-y-3">
-            <p className="text-indigo-700 font-semibold">Filled-in example:</p>
-            <div className="bg-white border border-indigo-200 rounded-lg p-5 text-sm leading-relaxed text-gray-700 italic">
+            <p className="text-ink/80 font-semibold">Filled-in example:</p>
+            <div className="bg-white border border-accent/20 rounded-lg p-5 text-sm leading-relaxed text-gray-700 italic">
               <p>
                 &ldquo;Marketing Manager with 6 years of experience in B2B
                 SaaS growth marketing. Known for launching campaigns that
@@ -453,7 +453,7 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-8 my-12">
+        <div className="bg-ink text-white rounded-xl p-8 my-12">
           <h3 className="text-2xl font-bold mb-4">
             🎯 Your Professional Summary Action Plan
           </h3>
@@ -528,11 +528,11 @@ export default function ProfessionalSummaryExamples() {
           integration is essential for passing initial screening.
         </p>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             🤖 ATS Optimization Tips:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-purple-700">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Mirror job description language:</strong> Use exact terms
               and phrases from target job postings

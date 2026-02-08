@@ -112,7 +112,7 @@ export default function ResumeGeniusVsEasyFreeResume() {
               <tr className="bg-gray-50">
                 <th className="px-6 py-4 text-left font-bold text-gray-900">Feature</th>
                 <th className="px-6 py-4 text-center font-bold text-green-600">EasyFreeResume</th>
-                <th className="px-6 py-4 text-center font-bold text-blue-600">Resume Genius</th>
+                <th className="px-6 py-4 text-center font-bold text-accent">Resume Genius</th>
                 <th className="px-6 py-4 text-center font-bold text-gray-600">Winner</th>
               </tr>
             </thead>
@@ -162,7 +162,7 @@ export default function ResumeGeniusVsEasyFreeResume() {
                 <td className="px-6 py-4 text-center text-yellow-600">⚠️ Guides available</td>
                 <td className="px-6 py-4 text-center text-green-600">✅ Included (paid)</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-blue-600 text-white">Resume Genius</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-ink">Resume Genius</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
@@ -248,31 +248,31 @@ export default function ResumeGeniusVsEasyFreeResume() {
           How to Switch from Resume Genius
         </h2>
 
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6 my-8">
-          <ol className="space-y-4 text-indigo-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <ol className="space-y-4 text-ink/80">
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">1</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">1</span>
               <div>
                 <p className="font-medium">Cancel your Resume Genius subscription first</p>
                 <p className="text-sm">Contact support or go to account settings (may require calling)</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">2</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">2</span>
               <div>
                 <p className="font-medium">Copy your resume content</p>
                 <p className="text-sm">Download as PDF if subscribed, or copy text manually</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">3</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">3</span>
               <div>
                 <p className="font-medium">Go to EasyFreeResume.com</p>
                 <p className="text-sm">No signup, no credit card, no trial period</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">4</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">4</span>
               <div>
                 <p className="font-medium">Build and download—completely free</p>
                 <p className="text-sm">Professional PDF, no watermark, unlimited downloads</p>

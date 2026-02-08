@@ -96,12 +96,12 @@ export default function Contact() {
         }}
       />
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <div className="min-h-screen bg-chalk">
         <div className="container mx-auto px-4 py-12 max-w-4xl">
           <nav className="mb-8" aria-label="breadcrumb">
             <ol className="flex items-center space-x-2 text-sm text-gray-600">
               <li>
-                <Link to="/" className="hover:text-blue-600 transition-colors">
+                <Link to="/" className="hover:text-accent transition-colors">
                   Home
                 </Link>
               </li>
@@ -153,7 +153,7 @@ export default function Contact() {
                         submitting another one, or email us directly at{" "}
                         <a
                           href="mailto:support@easyfreeresume.com"
-                          className="text-blue-600 underline hover:text-blue-700"
+                          className="text-accent underline hover:text-ink/80"
                         >
                           support@easyfreeresume.com
                         </a>
@@ -274,7 +274,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={isSubmitting || formDisabled}
-                  className={`w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg ${
+                  className={`w-full bg-accent text-ink py-4 px-6 rounded-xl font-semibold shadow-lg ${
                     isSubmitting || formDisabled
                       ? "opacity-60 cursor-not-allowed"
                       : "hover:shadow-xl"
@@ -295,9 +295,9 @@ export default function Contact() {
 
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="bg-blue-100 rounded-full p-3">
+                    <div className="bg-accent/10 rounded-full p-3">
                       <svg
-                        className="w-6 h-6 text-blue-600"
+                        className="w-6 h-6 text-accent"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -319,7 +319,7 @@ export default function Contact() {
                       </p>
                       <a
                         href="mailto:support@easyfreeresume.com"
-                        className="text-blue-600 hover:text-blue-700 transition-colors"
+                        className="text-accent hover:text-ink/80 transition-colors"
                       >
                         support@easyfreeresume.com
                       </a>
@@ -356,9 +356,9 @@ export default function Contact() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="bg-purple-100 rounded-full p-3">
+                    <div className="bg-accent/10 rounded-full p-3">
                       <svg
-                        className="w-6 h-6 text-purple-600"
+                        className="w-6 h-6 text-accent"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -380,7 +380,7 @@ export default function Contact() {
                       </p>
                       <Link
                         to="/blog"
-                        className="text-blue-600 hover:text-blue-700 transition-colors"
+                        className="text-accent hover:text-ink/80 transition-colors"
                       >
                         Browse Career Resources →
                       </Link>
@@ -443,7 +443,7 @@ export default function Contact() {
                 <div className="mt-6 pt-6 border-t border-gray-200">
                   <p className="text-sm text-gray-600">
                     Don't see your question?{" "}
-                    <button className="text-blue-600 hover:text-blue-700 transition-colors">
+                    <button className="text-accent hover:text-ink/80 transition-colors">
                       Send us a message
                     </button>{" "}
                     and we'll help you out.
@@ -452,7 +452,7 @@ export default function Contact() {
               </div>
 
               {/* Office Information */}
-              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-lg p-8">
+              <div className="bg-accent text-ink rounded-2xl shadow-lg p-8">
                 <h2 className="text-2xl font-bold mb-4">Our Commitment</h2>
                 <p className="text-lg leading-relaxed opacity-90 mb-6">
                   We're dedicated to helping you succeed in your career journey.

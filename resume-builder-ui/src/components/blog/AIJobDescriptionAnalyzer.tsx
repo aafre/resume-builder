@@ -27,11 +27,11 @@ export default function AIJobDescriptionAnalyzer() {
         </p>
 
         {/* Quick Answer Box */}
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-ink mb-3">
             🎯 What AI Can Extract from Job Descriptions
           </h3>
-          <ul className="space-y-2 text-blue-700">
+          <ul className="space-y-2 text-ink/80">
             <li><strong>Hard Skills:</strong> Technical requirements and tools</li>
             <li><strong>Soft Skills:</strong> Communication, leadership, teamwork expectations</li>
             <li><strong>Keywords:</strong> Exact phrases for ATS optimization</li>
@@ -212,7 +212,7 @@ export default function AIJobDescriptionAnalyzer() {
           </ul>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Apply Your Analysis?
           </h3>
@@ -221,7 +221,7 @@ export default function AIJobDescriptionAnalyzer() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -233,17 +233,17 @@ export default function AIJobDescriptionAnalyzer() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
           <li>
-            <Link to="/blog/how-to-use-resume-keywords" className="text-blue-600 hover:underline">
+            <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">
               How to Use Resume Keywords to Beat the ATS
             </Link>
           </li>
           <li>
-            <Link to="/blog/ats-resume-optimization" className="text-blue-600 hover:underline">
+            <Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">
               ATS Resume Optimization Guide
             </Link>
           </li>
           <li>
-            <Link to="/blog/chatgpt-resume-prompts" className="text-blue-600 hover:underline">
+            <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">
               25+ ChatGPT Prompts for Resume Writing
             </Link>
           </li>

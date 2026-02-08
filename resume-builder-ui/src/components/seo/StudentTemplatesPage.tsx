@@ -168,31 +168,31 @@ export default function StudentTemplatesPage() {
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-4">
           <Link
             to="/blog/resume-no-experience"
-            className="block p-4 bg-blue-50 border border-blue-200 rounded-xl hover:bg-blue-100 transition-colors"
+            className="block p-4 bg-accent/[0.06] border border-accent/20 rounded-xl hover:bg-accent/10 transition-colors"
           >
-            <p className="font-semibold text-blue-800">Writing a Resume With No Experience</p>
-            <p className="text-blue-600 text-sm">Complete guide for first-time job seekers</p>
+            <p className="font-semibold text-ink">Writing a Resume With No Experience</p>
+            <p className="text-accent text-sm">Complete guide for first-time job seekers</p>
           </Link>
           <Link
             to="/blog/resume-action-verbs"
-            className="block p-4 bg-blue-50 border border-blue-200 rounded-xl hover:bg-blue-100 transition-colors"
+            className="block p-4 bg-accent/[0.06] border border-accent/20 rounded-xl hover:bg-accent/10 transition-colors"
           >
-            <p className="font-semibold text-blue-800">200+ Action Verbs for Resumes</p>
-            <p className="text-blue-600 text-sm">Powerful words to describe your achievements</p>
+            <p className="font-semibold text-ink">200+ Action Verbs for Resumes</p>
+            <p className="text-accent text-sm">Powerful words to describe your achievements</p>
           </Link>
           <Link
             to="/blog/how-to-list-skills"
-            className="block p-4 bg-blue-50 border border-blue-200 rounded-xl hover:bg-blue-100 transition-colors"
+            className="block p-4 bg-accent/[0.06] border border-accent/20 rounded-xl hover:bg-accent/10 transition-colors"
           >
-            <p className="font-semibold text-blue-800">How to List Skills on Your Resume</p>
-            <p className="text-blue-600 text-sm">Showcase your abilities effectively</p>
+            <p className="font-semibold text-ink">How to List Skills on Your Resume</p>
+            <p className="text-accent text-sm">Showcase your abilities effectively</p>
           </Link>
           <Link
             to="/blog/job-interview-guide"
-            className="block p-4 bg-blue-50 border border-blue-200 rounded-xl hover:bg-blue-100 transition-colors"
+            className="block p-4 bg-accent/[0.06] border border-accent/20 rounded-xl hover:bg-accent/10 transition-colors"
           >
-            <p className="font-semibold text-blue-800">Job Interview Guide</p>
-            <p className="text-blue-600 text-sm">Nail your first professional interview</p>
+            <p className="font-semibold text-ink">Job Interview Guide</p>
+            <p className="text-accent text-sm">Nail your first professional interview</p>
           </Link>
         </div>
       </div>

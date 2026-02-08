@@ -167,12 +167,12 @@ export default function GrokResumePrompts() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
           <li>
-            <Link to="/blog/chatgpt-resume-prompts" className="text-blue-600 hover:underline">
+            <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">
               25+ ChatGPT Prompts for Resume Writing
             </Link>
           </li>
           <li>
-            <Link to="/blog/ai-resume-writing-guide" className="text-blue-600 hover:underline">
+            <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
               AI Resume Writing: The Complete Guide
             </Link>
           </li>

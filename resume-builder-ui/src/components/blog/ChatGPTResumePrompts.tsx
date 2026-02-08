@@ -61,13 +61,13 @@ export default function ChatGPTResumePrompts() {
           <li><strong>Iterate:</strong> Ask ChatGPT to revise and improve its output</li>
         </ul>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">
-          <h4 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h4 className="font-bold text-ink mb-3">
             💡 Pro Tip: Use These Prompts with EasyFreeResume
           </h4>
-          <p className="text-blue-700 mb-4">
+          <p className="text-ink/80 mb-4">
             After generating content with ChatGPT, paste it directly into our{" "}
-            <Link to="/templates" className="text-blue-600 underline font-medium">
+            <Link to="/templates" className="text-accent underline font-medium">
               free resume builder
             </Link>
             . Our ATS-friendly templates ensure your AI-generated content is formatted correctly for applicant tracking systems.
@@ -393,13 +393,13 @@ export default function ChatGPTResumePrompts() {
           </li>
           <li>
             <strong>Format properly</strong> using an{" "}
-            <Link to="/templates" className="text-blue-600 underline">
+            <Link to="/templates" className="text-accent underline">
               ATS-friendly resume template
             </Link>
           </li>
         </ol>
 
-        <div className="my-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Build Your AI-Powered Resume?
           </h3>
@@ -408,7 +408,7 @@ export default function ChatGPTResumePrompts() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -420,22 +420,22 @@ export default function ChatGPTResumePrompts() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
           <li>
-            <Link to="/blog/resume-action-verbs" className="text-blue-600 hover:underline">
+            <Link to="/blog/resume-action-verbs" className="text-accent hover:underline">
               200+ Action Verbs for Resumes
             </Link>
           </li>
           <li>
-            <Link to="/blog/how-to-use-resume-keywords" className="text-blue-600 hover:underline">
+            <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">
               How to Use Resume Keywords to Beat the ATS
             </Link>
           </li>
           <li>
-            <Link to="/blog/professional-summary-examples" className="text-blue-600 hover:underline">
+            <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
               Professional Summary Examples
             </Link>
           </li>
           <li>
-            <Link to="/blog/quantify-resume-accomplishments" className="text-blue-600 hover:underline">
+            <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
               How to Quantify Your Resume Accomplishments
             </Link>
           </li>

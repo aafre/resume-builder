@@ -23,12 +23,12 @@ export default function AboutUs() {
           },
         }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <div className="min-h-screen bg-chalk">
         <div className="container mx-auto px-4 py-12 max-w-4xl">
           <nav className="mb-8" aria-label="breadcrumb">
             <ol className="flex items-center space-x-2 text-sm text-gray-600">
               <li>
-                <Link to="/" className="hover:text-blue-600 transition-colors">
+                <Link to="/" className="hover:text-accent transition-colors">
                   Home
                 </Link>
               </li>
@@ -81,7 +81,7 @@ export default function AboutUs() {
                     href="https://github.com/aafre/resume-builder"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 underline hover:text-blue-800"
+                    className="text-accent underline hover:text-ink"
                   >
                     GitHub repository
                   </a>
@@ -91,7 +91,7 @@ export default function AboutUs() {
             </section>
 
             {/* Our Mission */}
-            <section className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12">
+            <section className="bg-ink text-white rounded-2xl shadow-xl p-8 md:p-12">
               <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
               <div className="space-y-6 text-lg leading-relaxed">
                 <p>
@@ -118,7 +118,7 @@ export default function AboutUs() {
             {/* Our Values */}
             <section className="grid md:grid-cols-2 gap-8">
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-gray-200">
-                <div className="text-blue-600 text-3xl mb-4">🎯</div>
+                <div className="text-accent text-3xl mb-4">🎯</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
                   Accessibility First
                 </h3>
@@ -142,7 +142,7 @@ export default function AboutUs() {
               </div>
 
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-gray-200">
-                <div className="text-purple-600 text-3xl mb-4">⚡</div>
+                <div className="text-accent text-3xl mb-4">⚡</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
                   Simplicity & Power
                 </h3>
@@ -174,7 +174,7 @@ export default function AboutUs() {
 
               <div className="grid md:grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <div className="bg-accent/10 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                     <span className="text-2xl">💰</span>
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-3">
@@ -200,7 +200,7 @@ export default function AboutUs() {
                 </div>
 
                 <div className="text-center">
-                  <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <div className="bg-accent/10 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                     <span className="text-2xl">📚</span>
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-3">
@@ -228,7 +228,7 @@ export default function AboutUs() {
                   <p className="text-gray-700">User Satisfaction</p>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-purple-600 mb-2">
+                  <div className="text-3xl font-bold text-accent mb-2">
                     $0
                   </div>
                   <p className="text-gray-700">Cost to Users</p>
@@ -267,7 +267,7 @@ export default function AboutUs() {
 
             {/* Contact CTA */}
             <section className="text-center">
-              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12">
+              <div className="bg-ink text-white rounded-2xl shadow-xl p-8 md:p-12">
                 <h2 className="text-2xl md:text-3xl font-bold mb-4">
                   Ready to Build Your Professional Resume?
                 </h2>
@@ -275,7 +275,7 @@ export default function AboutUs() {
                   Join thousands of successful job seekers who've landed their
                   dream roles with our <Link
                     to="/"
-                    className="text-white underline hover:text-blue-100 font-medium"
+                    className="text-white underline hover:text-white/80 font-medium"
                   >
                     easy-to-use resume builder
                   </Link>
@@ -283,13 +283,13 @@ export default function AboutUs() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link
                     to="/templates"
-                    className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+                    className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
                   >
                     Start Building Now
                   </Link>
                   <Link
                     to="/blog"
-                    className="inline-block border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-blue-600 transition-all duration-300"
+                    className="inline-block border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-accent transition-all duration-300"
                   >
                     Read Career Tips
                   </Link>

@@ -29,15 +29,15 @@ const TipCard: React.FC<TipCardProps> = ({
   secondaryTips,
 }) => (
   <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
-    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mb-3">
-      <Icon className="text-blue-600 text-2xl" aria-hidden="true" />
+    <div className="w-12 h-12 rounded-xl bg-chalk flex items-center justify-center mb-3">
+      <Icon className="text-accent text-2xl" aria-hidden="true" />
     </div>
     <h4 className="text-base font-semibold text-gray-900 mb-2">{title}</h4>
     <div className="mb-2">{primaryTip}</div>
     <ul className="space-y-1">
       {secondaryTips.map((tip) => (
         <li key={tip} className="text-xs text-gray-500 flex items-start gap-1.5">
-          <span className="text-blue-400 mt-0.5">•</span>
+          <span className="text-accent/80 mt-0.5">•</span>
           <span>{tip}</span>
         </li>
       ))}
@@ -60,27 +60,27 @@ const FormattingHelp: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-blue-50/50 backdrop-blur-sm rounded-xl border border-blue-200/60 mb-6 overflow-hidden transition-all duration-200">
+    <div className="bg-accent/[0.06] backdrop-blur-sm rounded-xl border border-accent/20 mb-6 overflow-hidden transition-all duration-200">
       {/* Header - Always visible */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between p-4 hover:bg-blue-100/50 transition-colors text-left"
+        className="w-full flex items-center justify-between p-4 hover:bg-accent/10/50 transition-colors text-left"
         aria-expanded={isExpanded}
         aria-label={isExpanded ? "Collapse help guide" : "Expand help guide"}
       >
         <div className="flex items-center gap-3">
           <MdHelpOutline
-            className="text-blue-600 text-xl flex-shrink-0"
+            className="text-accent text-xl flex-shrink-0"
             aria-hidden="true"
           />
-          <span className="text-blue-900 font-medium text-sm">
+          <span className="text-ink font-medium text-sm">
             Quick Start Guide
           </span>
         </div>
         {isExpanded ? (
-          <MdExpandLess className="text-blue-600 text-xl" aria-hidden="true" />
+          <MdExpandLess className="text-accent text-xl" aria-hidden="true" />
         ) : (
-          <MdExpandMore className="text-blue-600 text-xl" aria-hidden="true" />
+          <MdExpandMore className="text-accent text-xl" aria-hidden="true" />
         )}
       </button>
 
@@ -93,24 +93,24 @@ const FormattingHelp: React.FC = () => {
               icon={MdMoreHoriz}
               title="Drag & Organize"
               primaryTip={
-                <div className="bg-blue-50/80 rounded-lg px-3 py-2 flex items-center gap-2">
+                <div className="bg-accent/[0.06]/80 rounded-lg px-3 py-2 flex items-center gap-2">
                   {isTouchDevice ? (
                     <>
                       <MdTouchApp
-                        className="text-blue-600 flex-shrink-0"
+                        className="text-accent flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-sm text-blue-800">
+                      <span className="text-sm text-ink">
                         Press & hold, then drag
                       </span>
                     </>
                   ) : (
                     <>
                       <MdMouse
-                        className="text-blue-600 flex-shrink-0"
+                        className="text-accent flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-sm text-blue-800">
+                      <span className="text-sm text-ink">
                         Hover to reveal the ••• handle
                       </span>
                     </>

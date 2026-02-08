@@ -298,17 +298,17 @@ export default function AIResumeReview() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
           <li>
-            <Link to="/blog/chatgpt-resume-prompts" className="text-blue-600 hover:underline">
+            <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">
               25+ ChatGPT Prompts for Resume Writing
             </Link>
           </li>
           <li>
-            <Link to="/blog/ai-resume-writing-guide" className="text-blue-600 hover:underline">
+            <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
               AI Resume Writing: The Complete Guide
             </Link>
           </li>
           <li>
-            <Link to="/blog/resume-mistakes-to-avoid" className="text-blue-600 hover:underline">
+            <Link to="/blog/resume-mistakes-to-avoid" className="text-accent hover:underline">
               10 Critical Resume Mistakes to Avoid
             </Link>
           </li>
