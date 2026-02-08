@@ -63,6 +63,7 @@ export default function EditorToolbar({
         <button
           onClick={onAddSection}
           disabled={loadingAddSection}
+          aria-label="Add new section"
           className={`bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 sm:p-4 rounded-full border border-blue-500/20 hover:border-blue-400/40 ${buttonClasses} ${
             loadingAddSection ? "scale-95 opacity-80" : ""
           }`}
@@ -84,6 +85,7 @@ export default function EditorToolbar({
       {/* Download Resume - Primary Action */}
       <button
         onClick={onGenerateResume}
+        aria-label="Download resume"
         className={`bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 sm:px-8 py-3 sm:py-4 rounded-full border border-green-500/20 hover:border-green-400/40 font-semibold text-sm sm:text-lg flex items-center gap-2 sm:gap-3 ${buttonClasses} ${
           generating ? "opacity-75 cursor-not-allowed scale-95" : ""
         }`}
@@ -106,6 +108,7 @@ export default function EditorToolbar({
       <div className="relative group advanced-menu-container">
         <button
           onClick={() => setShowAdvancedMenu(!showAdvancedMenu)}
+          aria-label="More options"
           className={`bg-gradient-to-r from-gray-600 to-gray-700 text-white p-3 sm:p-4 rounded-full border border-gray-500/20 hover:border-gray-400/40 ${buttonClasses}`}
         >
           <MdMoreVert className="text-lg sm:text-xl" />
