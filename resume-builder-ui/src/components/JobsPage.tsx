@@ -2,7 +2,7 @@
 // Full-page job search experience with SEO infrastructure
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Briefcase, MapPin, Search, ExternalLink, ChevronDown, Clock, FileText, BookOpen, Target, Upload, Sparkles, Info } from 'lucide-react';
 import { searchJobs, suggestRoles, AdzunaJob } from '../services/jobs';
@@ -80,9 +80,10 @@ const timeAgo = (dateStr: string): string => {
 };
 
 export default function JobsPage() {
-  const [titleInput, setTitleInput] = useState('');
-  const [locationInput, setLocationInput] = useState('');
-  const [country, setCountry] = useState('us');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [titleInput, setTitleInput] = useState(searchParams.get('q') || '');
+  const [locationInput, setLocationInput] = useState(searchParams.get('l') || '');
+  const [country, setCountry] = useState(searchParams.get('c') || 'us');
   const [jobs, setJobs] = useState<AdzunaJob[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -112,8 +113,16 @@ export default function JobsPage() {
     breadcrumbs: jobsConfig.breadcrumbs,
   });
 
-  // Try to pre-fill from sessionStorage (set by editor badge click)
+  // Restore search state from URL params or sessionStorage on mount
   useEffect(() => {
+    // URL params take priority (page reload / shared link)
+    const urlQuery = searchParams.get('q');
+    if (urlQuery) {
+      shouldAutoSearch.current = true;
+      return;
+    }
+
+    // Fallback: pre-fill from sessionStorage (set by editor badge click)
     try {
       const stored = sessionStorage.getItem('jobSearchPrefill');
       if (stored) {
@@ -128,7 +137,7 @@ export default function JobsPage() {
         if (data.title) shouldAutoSearch.current = true;
       }
     } catch { /* ignore */ }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSearch = useCallback(async (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -190,6 +199,12 @@ export default function JobsPage() {
       setTotalCount(result.count);
       setSearchedCountry(searchCountry);
       setAiTermsUsed(result.ai_terms_used || []);
+
+      // Sync search state to URL params (survives reload)
+      const params: Record<string, string> = { q: titleInput.trim() };
+      if (locationInput.trim()) params.l = locationInput.trim();
+      if (searchCountry !== 'us') params.c = searchCountry;
+      setSearchParams(params, { replace: true });
     } catch {
       setError('Unable to fetch jobs. Please try again.');
       setJobs([]);
@@ -197,7 +212,7 @@ export default function JobsPage() {
     } finally {
       setLoading(false);
     }
-  }, [titleInput, locationInput, country]);
+  }, [titleInput, locationInput, country, setSearchParams]);
 
   const handleLoadMore = useCallback(() => {
     setVisibleCount(prev => prev + 10);
