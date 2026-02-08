@@ -23,7 +23,7 @@ export default function ClaudeResumePrompts() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Claude by Anthropic is known for nuanced, professional writing that avoids the "AI sound"
           many other tools produce. Its ability to follow detailed instructions makes it excellent
           for resume writing tasks that require precision.
@@ -42,7 +42,7 @@ export default function ClaudeResumePrompts() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Professional Summary Prompts for Claude
         </h2>
 
@@ -69,7 +69,7 @@ export default function ClaudeResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Experience Bullet Prompts
         </h2>
 
@@ -107,7 +107,7 @@ export default function ClaudeResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Job Description Analysis Prompts
         </h2>
 
@@ -138,7 +138,7 @@ export default function ClaudeResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Skills Section Prompts
         </h2>
 
@@ -160,7 +160,7 @@ export default function ClaudeResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Tailoring and Optimization Prompts
         </h2>
 
@@ -193,7 +193,7 @@ export default function ClaudeResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Polish and Review Prompts
         </h2>
 
@@ -271,11 +271,11 @@ export default function ClaudeResumePrompts() {
           </Link>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
+        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
           <li>
             <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">
               25+ ChatGPT Prompts for Resume Writing

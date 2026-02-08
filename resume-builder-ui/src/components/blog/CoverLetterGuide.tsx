@@ -17,29 +17,29 @@ export default function CoverLetterGuide() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Writing a cover letter in 2026 is no longer a formality - it's a
           strategic tool that can tip the scales in your favor. Done right, your
           cover letter can spark interest, show personality, and explain exactly
           why you belong at the company.
         </p>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Why Cover Letters Still Matter in 2026
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           According to a recent survey by ResumeLab, 83% of hiring managers say
           a strong cover letter can land you an interview even if your resume
           isn't perfect. While some recruiters skim or skip them, many still
           expect one - especially for roles in marketing, communications,
           education, and leadership.
         </p>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Even in a world of LinkedIn profiles and AI screening, a well-crafted
           cover letter shows effort, interest, and professionalism.
         </p>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           What Makes a Cover Letter Stand Out
         </h2>
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
@@ -66,11 +66,11 @@ export default function CoverLetterGuide() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           How to Structure Your Cover Letter
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <ol className="list-decimal pl-6 space-y-2 text-green-700">
+          <ol className="list-decimal pl-6 space-y-2 text-accent">
             <li>
               <strong>Header:</strong> Include your contact info, date, and the
               hiring manager's details.
@@ -98,10 +98,10 @@ export default function CoverLetterGuide() {
           </ol>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Cover Letter Template (2026-Optimized)
         </h2>
-        <pre className="whitespace-pre-wrap bg-gray-100 rounded-md p-4 text-sm overflow-x-auto font-mono text-gray-800 border border-gray-200">
+        <pre className="whitespace-pre-wrap bg-chalk-dark rounded-md p-4 text-sm overflow-x-auto font-mono text-ink border border-black/[0.06]">
           {`Dear [Hiring Manager's Name],
 
 I’m writing to express my interest in the [Job Title] role at [Company Name]. With [X years] of experience in [Relevant Skill/Industry], I’ve developed a track record of [Impressive Result or Achievement].
@@ -116,7 +116,7 @@ Sincerely,
 [Your Name]`}
         </pre>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Common Cover Letter Mistakes to Avoid
         </h2>
         <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-6">
@@ -129,16 +129,16 @@ Sincerely,
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Final Thoughts
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           A good cover letter shows that you’ve done your homework, care about
           the role, and know how to communicate - all qualities employers value.
           Even if the company doesn’t require one, it can be a strategic
           advantage that sets you apart.
         </p>
-        <p className="text-lg leading-relaxed text-gray-700 mt-6">
+        <p className="text-lg leading-relaxed text-stone-warm mt-6">
           Use your cover letter to tell the story your resume can’t. With a
           little time and the right strategy, yours can make a lasting
           impression in a noisy hiring world.

@@ -20,7 +20,7 @@ export default function GrokResumePrompts() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Grok, developed by xAI, brings a conversational and fast approach to AI interactions.
           Its speed and willingness to iterate quickly make it useful for brainstorming and
           rapid resume refinement.
@@ -39,7 +39,7 @@ export default function GrokResumePrompts() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Quick Iteration Prompts
         </h2>
 
@@ -64,7 +64,7 @@ export default function GrokResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Brainstorming Prompts
         </h2>
 
@@ -85,7 +85,7 @@ export default function GrokResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Honest Feedback Prompts
         </h2>
 
@@ -113,7 +113,7 @@ export default function GrokResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Quick Fix Prompts
         </h2>
 
@@ -146,7 +146,7 @@ export default function GrokResumePrompts() {
           </p>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Format Your Resume Properly
           </h3>
@@ -155,17 +155,17 @@ export default function GrokResumePrompts() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-gray-800 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-ink px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Try Free Templates
           </Link>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
+        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
           <li>
             <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">
               25+ ChatGPT Prompts for Resume Writing

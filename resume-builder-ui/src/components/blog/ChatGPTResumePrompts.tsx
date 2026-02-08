@@ -21,7 +21,7 @@ export default function ChatGPTResumePrompts() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           ChatGPT can be a powerful tool for writing your resume, but only if you know how to prompt it correctly.
           Generic prompts give generic results. These carefully crafted prompts will help you create compelling,
           personalized resume content that actually stands out.
@@ -32,7 +32,7 @@ export default function ChatGPTResumePrompts() {
           <h3 className="font-bold text-green-800 mb-3">
             🎯 Top 3 ChatGPT Resume Prompts (Quick Start)
           </h3>
-          <ol className="list-decimal list-inside space-y-3 text-green-700">
+          <ol className="list-decimal list-inside space-y-3 text-accent">
             <li>
               <strong>Professional Summary:</strong> "Write a 3-sentence professional summary for a [job title] with [X years] experience in [industry]. Highlight expertise in [skill 1], [skill 2], and [skill 3]. Make it confident but not arrogant."
             </li>
@@ -45,15 +45,15 @@ export default function ChatGPTResumePrompts() {
           </ol>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           How to Get the Best Results from ChatGPT
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Before diving into specific prompts, here are the key principles that make ChatGPT prompts work for resume writing:
         </p>
 
-        <ul className="list-disc list-inside space-y-3 text-gray-700 text-lg">
+        <ul className="list-disc list-inside space-y-3 text-stone-warm text-lg">
           <li><strong>Be specific:</strong> Include your actual job title, years of experience, and industry</li>
           <li><strong>Provide context:</strong> Paste the job description you're targeting</li>
           <li><strong>Set the tone:</strong> Specify "professional," "confident," or "conversational"</li>
@@ -74,7 +74,7 @@ export default function ChatGPTResumePrompts() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Professional Summary Prompts
         </h2>
 
@@ -108,7 +108,7 @@ export default function ChatGPTResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Work Experience Bullet Point Prompts
         </h2>
 
@@ -155,7 +155,7 @@ export default function ChatGPTResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Skills Section Prompts
         </h2>
 
@@ -190,7 +190,7 @@ export default function ChatGPTResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Tailoring Your Resume Prompts
         </h2>
 
@@ -220,7 +220,7 @@ export default function ChatGPTResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Industry-Specific Prompts
         </h2>
 
@@ -261,7 +261,7 @@ export default function ChatGPTResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Advanced Optimization Prompts
         </h2>
 
@@ -301,7 +301,7 @@ export default function ChatGPTResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Revision and Polish Prompts
         </h2>
 
@@ -326,7 +326,7 @@ export default function ChatGPTResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Special Situations Prompts
         </h2>
 
@@ -370,15 +370,15 @@ export default function ChatGPTResumePrompts() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Next Steps: Put These Prompts to Work
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Now that you have these prompts, here's how to put them into action:
         </p>
 
-        <ol className="list-decimal list-inside space-y-4 text-lg text-gray-700 mt-4">
+        <ol className="list-decimal list-inside space-y-4 text-lg text-stone-warm mt-4">
           <li>
             <strong>Choose 3-5 prompts</strong> that match your current needs (summary, experience, skills)
           </li>
@@ -414,11 +414,11 @@ export default function ChatGPTResumePrompts() {
           </Link>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
+        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
           <li>
             <Link to="/blog/resume-action-verbs" className="text-accent hover:underline">
               200+ Action Verbs for Resumes

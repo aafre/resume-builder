@@ -19,7 +19,7 @@ export default function ResumeKeywordsGuide() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Your resume isn't just read by people anymore.{" "}
           <strong>
             Over 98% of Fortune 500 companies use applicant tracking systems
@@ -47,11 +47,11 @@ export default function ResumeKeywordsGuide() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           What Are Resume Keywords?
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           <strong>Resume keywords</strong> are the skills, job titles, tools,
           certifications, and industry terms hiring managers (and ATS software)
           look for in resumes. They often match the language used directly in
@@ -62,7 +62,7 @@ export default function ResumeKeywordsGuide() {
           <h4 className="font-bold text-green-800 mb-3">
             💡 Example keyword categories:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-green-700">
+          <ul className="list-disc pl-6 space-y-2 text-accent">
             <li>
               <strong>Job Titles:</strong>{" "}
               <em>Project Manager, Data Analyst, UX Designer</em>
@@ -93,11 +93,11 @@ export default function ResumeKeywordsGuide() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           How to Identify the Right Resume Keywords
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           The most powerful keywords are{" "}
           <strong>already in the job postings you're applying to</strong>.
         </p>
@@ -124,7 +124,7 @@ export default function ResumeKeywordsGuide() {
           <h4 className="font-bold text-green-800 mb-3">
             🛠️ Tools to speed up keyword research:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-green-700">
+          <ul className="list-disc pl-6 space-y-2 text-accent">
             <li>
               <strong>LinkedIn Job Search</strong> (scan multiple postings
               quickly)
@@ -167,11 +167,11 @@ export default function ResumeKeywordsGuide() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Top Resume Keywords by Industry (2026 Edition)
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700 mb-8">
+        <p className="text-lg leading-relaxed text-stone-warm mb-8">
           Below are the <strong>must-have keywords</strong> for major industries
           in 2026. Use these as a starting point, then tailor based on your
           target job posting.
@@ -179,36 +179,36 @@ export default function ResumeKeywordsGuide() {
 
         <div className="space-y-8">
           {/* Technology & Software Development */}
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h3 className="text-xl font-bold text-ink mb-4">
               💻 Technology & Software Development
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-2 font-semibold text-gray-900">
+                  <tr className="border-b border-black/[0.06]">
+                    <th className="text-left py-2 font-semibold text-ink">
                       Category
                     </th>
-                    <th className="text-left py-2 font-semibold text-gray-900">
+                    <th className="text-left py-2 font-semibold text-ink">
                       Keywords
                     </th>
                   </tr>
                 </thead>
-                <tbody className="text-gray-700">
-                  <tr className="border-b border-gray-100">
+                <tbody className="text-stone-warm">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">Programming</td>
                     <td className="py-2">
                       Python, JavaScript, React, Node.js, SQL
                     </td>
                   </tr>
-                  <tr className="border-b border-gray-100">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">Cloud</td>
                     <td className="py-2">
                       AWS, Azure, Google Cloud, Kubernetes, Docker
                     </td>
                   </tr>
-                  <tr className="border-b border-gray-100">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">Methodologies</td>
                     <td className="py-2">
                       Agile, Scrum, CI/CD, DevOps, Microservices
@@ -226,34 +226,34 @@ export default function ResumeKeywordsGuide() {
           </div>
 
           {/* Finance & Accounting */}
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h3 className="text-xl font-bold text-ink mb-4">
               📊 Finance & Accounting
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-2 font-semibold text-gray-900">
+                  <tr className="border-b border-black/[0.06]">
+                    <th className="text-left py-2 font-semibold text-ink">
                       Category
                     </th>
-                    <th className="text-left py-2 font-semibold text-gray-900">
+                    <th className="text-left py-2 font-semibold text-ink">
                       Keywords
                     </th>
                   </tr>
                 </thead>
-                <tbody className="text-gray-700">
-                  <tr className="border-b border-gray-100">
+                <tbody className="text-stone-warm">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">Core Skills</td>
                     <td className="py-2">
                       Financial Analysis, Forecasting, Variance Reporting
                     </td>
                   </tr>
-                  <tr className="border-b border-gray-100">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">Standards</td>
                     <td className="py-2">GAAP, IFRS, SOX Compliance</td>
                   </tr>
-                  <tr className="border-b border-gray-100">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">Tools</td>
                     <td className="py-2">
                       SAP, Oracle, QuickBooks, Excel Advanced Functions
@@ -271,36 +271,36 @@ export default function ResumeKeywordsGuide() {
           </div>
 
           {/* Marketing & Sales */}
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h3 className="text-xl font-bold text-ink mb-4">
               📈 Marketing & Sales
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-2 font-semibold text-gray-900">
+                  <tr className="border-b border-black/[0.06]">
+                    <th className="text-left py-2 font-semibold text-ink">
                       Category
                     </th>
-                    <th className="text-left py-2 font-semibold text-gray-900">
+                    <th className="text-left py-2 font-semibold text-ink">
                       Keywords
                     </th>
                   </tr>
                 </thead>
-                <tbody className="text-gray-700">
-                  <tr className="border-b border-gray-100">
+                <tbody className="text-stone-warm">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">Digital</td>
                     <td className="py-2">
                       SEO, SEM, Google Analytics, Paid Social Advertising
                     </td>
                   </tr>
-                  <tr className="border-b border-gray-100">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">CRM</td>
                     <td className="py-2">
                       Salesforce, HubSpot, Customer Segmentation
                     </td>
                   </tr>
-                  <tr className="border-b border-gray-100">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">Campaigns</td>
                     <td className="py-2">
                       Lead Generation, Conversion Rate Optimization, Email
@@ -319,37 +319,37 @@ export default function ResumeKeywordsGuide() {
           </div>
 
           {/* Healthcare & Life Sciences */}
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h3 className="text-xl font-bold text-ink mb-4">
               🏥 Healthcare & Life Sciences
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-2 font-semibold text-gray-900">
+                  <tr className="border-b border-black/[0.06]">
+                    <th className="text-left py-2 font-semibold text-ink">
                       Category
                     </th>
-                    <th className="text-left py-2 font-semibold text-gray-900">
+                    <th className="text-left py-2 font-semibold text-ink">
                       Keywords
                     </th>
                   </tr>
                 </thead>
-                <tbody className="text-gray-700">
-                  <tr className="border-b border-gray-100">
+                <tbody className="text-stone-warm">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">Clinical</td>
                     <td className="py-2">
                       Patient Care, Medication Administration, Vital Signs
                       Monitoring
                     </td>
                   </tr>
-                  <tr className="border-b border-gray-100">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">Compliance</td>
                     <td className="py-2">
                       HIPAA, Infection Control, Quality Assurance
                     </td>
                   </tr>
-                  <tr className="border-b border-gray-100">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">Systems</td>
                     <td className="py-2">
                       Electronic Health Records (EHR), Epic, Cerner
@@ -368,34 +368,34 @@ export default function ResumeKeywordsGuide() {
           </div>
 
           {/* Operations & Project Management */}
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h3 className="text-xl font-bold text-ink mb-4">
               🏗️ Operations & Project Management
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-2 font-semibold text-gray-900">
+                  <tr className="border-b border-black/[0.06]">
+                    <th className="text-left py-2 font-semibold text-ink">
                       Category
                     </th>
-                    <th className="text-left py-2 font-semibold text-gray-900">
+                    <th className="text-left py-2 font-semibold text-ink">
                       Keywords
                     </th>
                   </tr>
                 </thead>
-                <tbody className="text-gray-700">
-                  <tr className="border-b border-gray-100">
+                <tbody className="text-stone-warm">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">Methods</td>
                     <td className="py-2">
                       Agile Project Management, Waterfall, Lean Six Sigma
                     </td>
                   </tr>
-                  <tr className="border-b border-gray-100">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">Tools</td>
                     <td className="py-2">MS Project, Trello, Asana, Jira</td>
                   </tr>
-                  <tr className="border-b border-gray-100">
+                  <tr className="border-b border-black/[0.06]">
                     <td className="py-2 font-medium">Skills</td>
                     <td className="py-2">
                       Risk Management, Stakeholder Engagement, Resource
@@ -412,11 +412,11 @@ export default function ResumeKeywordsGuide() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Where to Place Keywords in Your Resume
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+        <p className="text-lg leading-relaxed text-stone-warm mb-6">
           It's not enough to <em>have</em> the right keywords – placement
           matters. ATS systems scan specific sections more heavily.
         </p>
@@ -450,10 +450,10 @@ export default function ResumeKeywordsGuide() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Final Tips for Resume Keyword Optimization
         </h2>
-        <ul className="list-disc pl-6 space-y-3 text-lg text-gray-700">
+        <ul className="list-disc pl-6 space-y-3 text-lg text-stone-warm">
           <li>
             ✨ <strong>Keep a "master resume"</strong> with all possible
             keywords; tailor it for each job.
@@ -487,10 +487,10 @@ export default function ResumeKeywordsGuide() {
           </ol>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           The Bottom Line
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           <strong>
             Resume keywords are the bridge between your experience and what
             employers are searching for.
@@ -499,7 +499,7 @@ export default function ResumeKeywordsGuide() {
           managers you're the perfect fit.
         </p>
 
-        <p className="text-lg leading-relaxed text-gray-700 mt-4">
+        <p className="text-lg leading-relaxed text-stone-warm mt-4">
           Don't guess which words to use – let the job description guide you.
         </p>
       </div>

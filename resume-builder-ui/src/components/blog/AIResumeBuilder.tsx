@@ -19,7 +19,7 @@ export default function AIResumeBuilder() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           In the rapidly evolving job market of 2026, getting noticed by
           recruiters and Applicant Tracking Systems (ATS) is more challenging
           than ever. Enter AI resume builders – powerful tools that promise to
@@ -29,10 +29,10 @@ export default function AIResumeBuilder() {
           like EasyFreeResume? Let's dive in.
         </p>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           The Rise of AI in Resume Building
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           AI-powered tools are no longer just a futuristic concept; they are an
           integral part of many industries, and job searching is no exception.
           These builders utilize advanced algorithms and Natural Language
@@ -41,16 +41,16 @@ export default function AIResumeBuilder() {
           real-time feedback, suggest improvements, and ensure your resume is
           formatted to bypass ATS filters.
         </p>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           From drafting compelling summaries to rephrasing bullet points for
           maximum impact, AI can act as your personal resume assistant, cutting
           down hours of manual effort.
         </p>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           How AI Resume Builders Work Their Magic
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           At their core, AI resume builders function by taking your input
           (skills, experience, education) and comparing it against vast
           databases of successful resumes and, more importantly, the specific
@@ -89,11 +89,11 @@ export default function AIResumeBuilder() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Benefits of Using AI in Your Resume Strategy
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-2 text-green-700">
+          <ul className="list-disc pl-6 space-y-2 text-accent">
             <li>
               <strong>Efficiency & Speed:</strong> Drastically reduce the time
               it takes to create or tailor a resume for each application.
@@ -119,17 +119,17 @@ export default function AIResumeBuilder() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           The Human Touch: Why EasyFreeResume Completes the AI Picture
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           While AI is a powerful content engine, it’s not a magic bullet. This
           is where a platform like EasyFreeResume becomes indispensable. Think
           of AI as providing the raw, optimized material, and EasyFreeResume as
           the expert craftsman who assembles it into a polished, human-readable
           masterpiece.
         </p>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           EasyFreeResume offers:
         </p>
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
@@ -166,10 +166,10 @@ export default function AIResumeBuilder() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Best Practices for Smart AI Integration
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           To truly make AI your secret weapon, don't just copy and paste. Here's
           how to use it smartly:
         </p>
@@ -220,10 +220,10 @@ export default function AIResumeBuilder() {
           </ol>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Ethical Considerations and Avoiding Pitfalls
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           While powerful, AI resume builders come with ethical considerations:
         </p>
         <div className="bg-red-50 border border-red-200 rounded-xl p-6 my-6">
@@ -251,16 +251,16 @@ export default function AIResumeBuilder() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Final Thoughts: AI as Your Co-Pilot, Not Auto-Pilot
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           In 2026, AI resume builders are undoubtedly a game-changer for job
           seekers. They offer unprecedented efficiency and optimization
           capabilities, helping you navigate the complexities of ATS and stand
           out to human recruiters.
         </p>
-        <p className="text-lg leading-relaxed text-gray-700 mt-6">
+        <p className="text-lg leading-relaxed text-stone-warm mt-6">
           However, the key to success lies in smart integration. Use AI as a
           powerful co-pilot to generate and refine content, and then leverage
           platforms like EasyFreeResume to ensure that content is presented in a

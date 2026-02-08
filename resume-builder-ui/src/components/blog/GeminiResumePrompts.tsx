@@ -23,7 +23,7 @@ export default function GeminiResumePrompts() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Google Gemini excels at research and analysis tasks, making it particularly useful for
           analyzing job descriptions, extracting keywords, and understanding what companies are
           looking for. These prompts leverage Gemini's strengths for resume writing.
@@ -42,7 +42,7 @@ export default function GeminiResumePrompts() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Job Description Analysis Prompts
         </h2>
 
@@ -83,7 +83,7 @@ export default function GeminiResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Resume Content Prompts
         </h2>
 
@@ -126,7 +126,7 @@ export default function GeminiResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Optimization Prompts
         </h2>
 
@@ -165,7 +165,7 @@ export default function GeminiResumePrompts() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Review and Polish Prompts
         </h2>
 
@@ -188,7 +188,7 @@ export default function GeminiResumePrompts() {
           <h4 className="font-bold text-green-800 mb-3">
             💡 Gemini Integration Tip
           </h4>
-          <p className="text-green-700">
+          <p className="text-accent">
             Gemini can access current web information. Ask it to research specific companies,
             industry trends, or salary data to better inform your resume strategy.
           </p>
@@ -209,11 +209,11 @@ export default function GeminiResumePrompts() {
           </Link>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
+        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
           <li>
             <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">
               25+ ChatGPT Prompts for Resume Writing
