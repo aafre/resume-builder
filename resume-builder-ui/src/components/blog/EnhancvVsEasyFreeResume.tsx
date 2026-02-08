@@ -16,7 +16,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
           ★
         </span>
       ))}
-      <span className="ml-2 text-sm font-medium text-gray-600">
+      <span className="ml-2 text-sm font-medium text-stone-warm">
         {rating}/{max}
       </span>
     </div>
@@ -69,16 +69,16 @@ export default function EnhancvVsEasyFreeResume() {
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-green-700 text-lg mb-2">EasyFreeResume</p>
+              <p className="font-bold text-accent text-lg mb-2">EasyFreeResume</p>
               <StarRating rating={5} />
-              <p className="text-3xl font-bold text-green-600 mt-2">$0</p>
-              <p className="text-sm text-gray-600">Everything free</p>
+              <p className="text-3xl font-bold text-accent mt-2">$0</p>
+              <p className="text-sm text-stone-warm">Everything free</p>
             </div>
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-gray-700 text-lg mb-2">Enhancv</p>
+              <p className="font-bold text-stone-warm text-lg mb-2">Enhancv</p>
               <StarRating rating={4} />
               <p className="text-3xl font-bold text-red-600 mt-2">$120</p>
-              <p className="text-sm text-gray-600">Per year (Pro)</p>
+              <p className="text-sm text-stone-warm">Per year (Pro)</p>
             </div>
           </div>
           <p className="text-green-800 mt-4 text-center font-medium">
@@ -86,79 +86,79 @@ export default function EnhancvVsEasyFreeResume() {
           </p>
         </div>
 
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Enhancv is known for its modern, visually distinctive templates and content
           coaching features. It's popular among creative professionals and tech workers.
           But does it justify the $120/year price tag?
         </p>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Feature Comparison
         </h2>
 
         <div className="overflow-x-auto my-8">
-          <table className="w-full bg-white border border-gray-200 rounded-xl shadow-sm">
+          <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="px-6 py-4 text-left font-bold text-gray-900">Feature</th>
-                <th className="px-6 py-4 text-center font-bold text-green-600">EasyFreeResume</th>
+              <tr className="bg-chalk-dark">
+                <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
+                <th className="px-6 py-4 text-center font-bold text-accent">EasyFreeResume</th>
                 <th className="px-6 py-4 text-center font-bold text-accent">Enhancv</th>
-                <th className="px-6 py-4 text-center font-bold text-gray-600">Winner</th>
+                <th className="px-6 py-4 text-center font-bold text-stone-warm">Winner</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-black/[0.06]">
               <tr className="bg-green-50">
-                <td className="px-6 py-4 font-medium text-gray-900">Cost</td>
-                <td className="px-6 py-4 text-center text-green-600 font-bold">100% Free</td>
+                <td className="px-6 py-4 font-medium text-ink">Cost</td>
+                <td className="px-6 py-4 text-center text-accent font-bold">100% Free</td>
                 <td className="px-6 py-4 text-center text-red-600">$9.99-$24.99/month</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 font-medium text-gray-900">PDF Downloads</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ Unlimited, Free</td>
+                <td className="px-6 py-4 font-medium text-ink">PDF Downloads</td>
+                <td className="px-6 py-4 text-center text-accent">✅ Unlimited, Free</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Paid plans only</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
-                <td className="px-6 py-4 font-medium text-gray-900">Account Required</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ No</td>
+                <td className="px-6 py-4 font-medium text-ink">Account Required</td>
+                <td className="px-6 py-4 text-center text-accent">✅ No</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Yes</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 font-medium text-gray-900">ATS Compatibility</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ All templates</td>
+                <td className="px-6 py-4 font-medium text-ink">ATS Compatibility</td>
+                <td className="px-6 py-4 text-center text-accent">✅ All templates</td>
                 <td className="px-6 py-4 text-center text-yellow-600">⚠️ Some templates</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
-                <td className="px-6 py-4 font-medium text-gray-900">Privacy</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ Local storage</td>
+                <td className="px-6 py-4 font-medium text-ink">Privacy</td>
+                <td className="px-6 py-4 text-center text-accent">✅ Local storage</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Cloud storage</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 font-medium text-gray-900">Content Analyzer</td>
+                <td className="px-6 py-4 font-medium text-ink">Content Analyzer</td>
                 <td className="px-6 py-4 text-center text-yellow-600">⚠️ Blog guides</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ Built-in</td>
+                <td className="px-6 py-4 text-center text-accent">✅ Built-in</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-ink">Enhancv</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
-                <td className="px-6 py-4 font-medium text-gray-900">Template Creativity</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ Professional</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ More creative options</td>
+                <td className="px-6 py-4 font-medium text-ink">Template Creativity</td>
+                <td className="px-6 py-4 text-center text-accent">✅ Professional</td>
+                <td className="px-6 py-4 text-center text-accent">✅ More creative options</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-ink">Enhancv</span>
                 </td>
@@ -174,7 +174,7 @@ export default function EnhancvVsEasyFreeResume() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Enhancv Pricing Breakdown
         </h2>
 
@@ -223,34 +223,34 @@ export default function EnhancvVsEasyFreeResume() {
             💚 EasyFreeResume Cost
             <WinnerBadge />
           </h3>
-          <div className="text-green-700 text-center">
+          <div className="text-accent text-center">
             <p className="text-6xl font-bold mb-2">$0</p>
             <p className="text-xl">PDF downloads included. Always.</p>
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           When Enhancv Might Make Sense
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700 mb-4">
+        <p className="text-lg leading-relaxed text-stone-warm mb-4">
           To be fair, Enhancv could be worth it if:
         </p>
 
-        <ul className="list-disc list-inside space-y-2 text-gray-700 mb-8">
+        <ul className="list-disc list-inside space-y-2 text-stone-warm mb-8">
           <li>You're in a creative field where visual design matters more</li>
           <li>You want built-in content coaching and suggestions</li>
           <li>You need multiple creative template options</li>
           <li>Your target companies use modern ATS that handles graphics well</li>
         </ul>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           However, for most job seekers—especially those applying to corporate jobs
           or through online portals—a clean, ATS-optimized template is what you need.
           And you can get that for free.
         </p>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           How to Switch from Enhancv
         </h2>
 
@@ -296,7 +296,7 @@ export default function EnhancvVsEasyFreeResume() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-green-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -314,7 +314,7 @@ export default function EnhancvVsEasyFreeResume() {
           </div>
           <Link
             to="/templates"
-            className="bg-white text-green-600 px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
+            className="bg-white text-accent px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
           >
             Try Free
           </Link>

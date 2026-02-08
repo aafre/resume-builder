@@ -16,7 +16,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
           ★
         </span>
       ))}
-      <span className="ml-2 text-sm font-medium text-gray-600">
+      <span className="ml-2 text-sm font-medium text-stone-warm">
         {rating}/{max}
       </span>
     </div>
@@ -69,16 +69,16 @@ export default function NovoResumeVsEasyFreeResume() {
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-green-700 text-lg mb-2">EasyFreeResume</p>
+              <p className="font-bold text-accent text-lg mb-2">EasyFreeResume</p>
               <StarRating rating={5} />
-              <p className="text-3xl font-bold text-green-600 mt-2">$0</p>
-              <p className="text-sm text-gray-600">All features free</p>
+              <p className="text-3xl font-bold text-accent mt-2">$0</p>
+              <p className="text-sm text-stone-warm">All features free</p>
             </div>
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-gray-700 text-lg mb-2">NovoResume</p>
+              <p className="font-bold text-stone-warm text-lg mb-2">NovoResume</p>
               <StarRating rating={4} />
               <p className="text-3xl font-bold text-red-600 mt-2">$99</p>
-              <p className="text-sm text-gray-600">Per year (Premium)</p>
+              <p className="text-sm text-stone-warm">Per year (Premium)</p>
             </div>
           </div>
           <p className="text-green-800 mt-4 text-center font-medium">
@@ -86,79 +86,79 @@ export default function NovoResumeVsEasyFreeResume() {
           </p>
         </div>
 
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           NovoResume has gained popularity for its clean, modern templates—especially among
           European job seekers. But the best templates require a premium subscription.
           Here's how it compares to a completely free alternative.
         </p>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Feature Comparison
         </h2>
 
         <div className="overflow-x-auto my-8">
-          <table className="w-full bg-white border border-gray-200 rounded-xl shadow-sm">
+          <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="px-6 py-4 text-left font-bold text-gray-900">Feature</th>
-                <th className="px-6 py-4 text-center font-bold text-green-600">EasyFreeResume</th>
+              <tr className="bg-chalk-dark">
+                <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
+                <th className="px-6 py-4 text-center font-bold text-accent">EasyFreeResume</th>
                 <th className="px-6 py-4 text-center font-bold text-accent">NovoResume</th>
-                <th className="px-6 py-4 text-center font-bold text-gray-600">Winner</th>
+                <th className="px-6 py-4 text-center font-bold text-stone-warm">Winner</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-black/[0.06]">
               <tr className="bg-green-50">
-                <td className="px-6 py-4 font-medium text-gray-900">Cost</td>
-                <td className="px-6 py-4 text-center text-green-600 font-bold">100% Free</td>
+                <td className="px-6 py-4 font-medium text-ink">Cost</td>
+                <td className="px-6 py-4 text-center text-accent font-bold">100% Free</td>
                 <td className="px-6 py-4 text-center text-red-600">Free tier / $16-$99/yr premium</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 font-medium text-gray-900">PDF Downloads</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ Unlimited, Free</td>
+                <td className="px-6 py-4 font-medium text-ink">PDF Downloads</td>
+                <td className="px-6 py-4 text-center text-accent">✅ Unlimited, Free</td>
                 <td className="px-6 py-4 text-center text-yellow-600">⚠️ Limited free, unlimited premium</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
-                <td className="px-6 py-4 font-medium text-gray-900">Premium Templates</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ All templates free</td>
+                <td className="px-6 py-4 font-medium text-ink">Premium Templates</td>
+                <td className="px-6 py-4 text-center text-accent">✅ All templates free</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Best locked behind paywall</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 font-medium text-gray-900">ATS Compatibility</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ All templates</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ Yes</td>
+                <td className="px-6 py-4 font-medium text-ink">ATS Compatibility</td>
+                <td className="px-6 py-4 text-center text-accent">✅ All templates</td>
+                <td className="px-6 py-4 text-center text-accent">✅ Yes</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">Tie</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
-                <td className="px-6 py-4 font-medium text-gray-900">Account Required</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ No</td>
+                <td className="px-6 py-4 font-medium text-ink">Account Required</td>
+                <td className="px-6 py-4 text-center text-accent">✅ No</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Yes</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 font-medium text-gray-900">Privacy</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ Local storage</td>
+                <td className="px-6 py-4 font-medium text-ink">Privacy</td>
+                <td className="px-6 py-4 text-center text-accent">✅ Local storage</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Cloud storage</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
-                <td className="px-6 py-4 font-medium text-gray-900">European CV Format</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ Supported</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ Specialized</td>
+                <td className="px-6 py-4 font-medium text-ink">European CV Format</td>
+                <td className="px-6 py-4 text-center text-accent">✅ Supported</td>
+                <td className="px-6 py-4 text-center text-accent">✅ Specialized</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">Tie</span>
                 </td>
@@ -174,7 +174,7 @@ export default function NovoResumeVsEasyFreeResume() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           NovoResume Pricing Breakdown
         </h2>
 
@@ -223,33 +223,33 @@ export default function NovoResumeVsEasyFreeResume() {
             💚 EasyFreeResume Cost
             <WinnerBadge />
           </h3>
-          <div className="text-green-700 text-center">
+          <div className="text-accent text-center">
             <p className="text-6xl font-bold mb-2">$0</p>
             <p className="text-xl">All templates. No branding. No limits.</p>
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           What NovoResume Does Well
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700 mb-4">
+        <p className="text-lg leading-relaxed text-stone-warm mb-4">
           To be fair, NovoResume has some strengths:
         </p>
 
-        <ul className="list-disc list-inside space-y-2 text-gray-700 mb-8">
+        <ul className="list-disc list-inside space-y-2 text-stone-warm mb-8">
           <li>Clean, modern template designs</li>
           <li>Good support for European CV formats (Europass)</li>
           <li>Cover letter builder included</li>
           <li>Website builder for online portfolios</li>
         </ul>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           However, these extra features come at a cost. If you just need a professional,
           ATS-friendly resume, you can get that for free elsewhere.
         </p>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           How to Switch from NovoResume
         </h2>
 
@@ -295,7 +295,7 @@ export default function NovoResumeVsEasyFreeResume() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-green-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -313,7 +313,7 @@ export default function NovoResumeVsEasyFreeResume() {
           </div>
           <Link
             to="/templates"
-            className="bg-white text-green-600 px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
+            className="bg-white text-accent px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
           >
             Try Free
           </Link>
