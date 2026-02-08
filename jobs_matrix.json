@@ -1,0 +1,1469 @@
+{
+  "version": 1,
+  "roles": [
+    {
+      "key": "software engineer",
+      "slug": "software-engineer",
+      "display_name": "Software Engineer",
+      "category": "engineering",
+      "related_roles": [
+        "software-developer",
+        "application-developer",
+        "programmer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "backend-engineer",
+        "full-stack-developer"
+      ]
+    },
+    {
+      "key": "software developer",
+      "slug": "software-developer",
+      "display_name": "Software Developer",
+      "category": "engineering",
+      "related_roles": [
+        "software-engineer",
+        "application-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "backend-engineer",
+        "full-stack-developer",
+        "full-stack-engineer"
+      ]
+    },
+    {
+      "key": "frontend developer",
+      "slug": "frontend-developer",
+      "display_name": "Frontend Developer",
+      "category": "engineering",
+      "related_roles": [
+        "front-end-developer",
+        "react-developer",
+        "ui-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "frontend engineer",
+      "slug": "frontend-engineer",
+      "display_name": "Frontend Engineer",
+      "category": "engineering",
+      "related_roles": [
+        "front-end-engineer",
+        "ui-engineer",
+        "react-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "backend-developer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "backend developer",
+      "slug": "backend-developer",
+      "display_name": "Backend Developer",
+      "category": "engineering",
+      "related_roles": [
+        "back-end-developer",
+        "server-side-developer",
+        "api-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "backend engineer",
+      "slug": "backend-engineer",
+      "display_name": "Backend Engineer",
+      "category": "engineering",
+      "related_roles": [
+        "back-end-engineer",
+        "server-side-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "full-stack-developer"
+      ]
+    },
+    {
+      "key": "full stack developer",
+      "slug": "full-stack-developer",
+      "display_name": "Full Stack Developer",
+      "category": "engineering",
+      "related_roles": [
+        "fullstack-developer",
+        "full-stack-engineer",
+        "web-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "full stack engineer",
+      "slug": "full-stack-engineer",
+      "display_name": "Full Stack Engineer",
+      "category": "engineering",
+      "related_roles": [
+        "fullstack-engineer",
+        "full-stack-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "web developer",
+      "slug": "web-developer",
+      "display_name": "Web Developer",
+      "category": "engineering",
+      "related_roles": [
+        "frontend-developer",
+        "full-stack-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "backend-engineer",
+        "full-stack-engineer"
+      ]
+    },
+    {
+      "key": "devops engineer",
+      "slug": "devops-engineer",
+      "display_name": "Devops Engineer",
+      "category": "engineering",
+      "related_roles": [
+        "site-reliability-engineer",
+        "platform-engineer",
+        "infrastructure-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "sre",
+      "slug": "sre",
+      "display_name": "SRE",
+      "category": "engineering",
+      "related_roles": [
+        "site-reliability-engineer",
+        "devops-engineer",
+        "platform-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "site reliability engineer",
+      "slug": "site-reliability-engineer",
+      "display_name": "Site Reliability Engineer",
+      "category": "engineering",
+      "related_roles": [
+        "sre",
+        "devops-engineer",
+        "platform-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "platform engineer",
+      "slug": "platform-engineer",
+      "display_name": "Platform Engineer",
+      "category": "engineering",
+      "related_roles": [
+        "devops-engineer",
+        "infrastructure-engineer",
+        "cloud-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "cloud engineer",
+      "slug": "cloud-engineer",
+      "display_name": "Cloud Engineer",
+      "category": "engineering",
+      "related_roles": [
+        "cloud-architect",
+        "devops-engineer",
+        "infrastructure-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "mobile developer",
+      "slug": "mobile-developer",
+      "display_name": "Mobile Developer",
+      "category": "engineering",
+      "related_roles": [
+        "ios-developer",
+        "android-developer",
+        "mobile-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "ios developer",
+      "slug": "ios-developer",
+      "display_name": "IOS Developer",
+      "category": "engineering",
+      "related_roles": [
+        "mobile-developer",
+        "swift-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "android developer",
+      "slug": "android-developer",
+      "display_name": "Android Developer",
+      "category": "engineering",
+      "related_roles": [
+        "mobile-developer",
+        "kotlin-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "embedded engineer",
+      "slug": "embedded-engineer",
+      "display_name": "Embedded Engineer",
+      "category": "engineering",
+      "related_roles": [
+        "embedded-software-engineer",
+        "firmware-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "firmware engineer",
+      "slug": "firmware-engineer",
+      "display_name": "Firmware Engineer",
+      "category": "engineering",
+      "related_roles": [
+        "embedded-engineer",
+        "embedded-software-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "qa engineer",
+      "slug": "qa-engineer",
+      "display_name": "Qa Engineer",
+      "category": "qa",
+      "related_roles": [
+        "quality-assurance-engineer",
+        "test-engineer",
+        "sdet"
+      ]
+    },
+    {
+      "key": "sdet",
+      "slug": "sdet",
+      "display_name": "SDET",
+      "category": "qa",
+      "related_roles": [
+        "qa-engineer",
+        "test-automation-engineer",
+        "quality-engineer"
+      ]
+    },
+    {
+      "key": "security engineer",
+      "slug": "security-engineer",
+      "display_name": "Security Engineer",
+      "category": "security",
+      "related_roles": [
+        "cybersecurity-engineer",
+        "infosec-engineer",
+        "application-security-engineer"
+      ]
+    },
+    {
+      "key": "machine learning engineer",
+      "slug": "machine-learning-engineer",
+      "display_name": "Machine Learning Engineer",
+      "category": "engineering",
+      "related_roles": [
+        "ml-engineer",
+        "ai-engineer",
+        "deep-learning-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "ml engineer",
+      "slug": "ml-engineer",
+      "display_name": "Ml Engineer",
+      "category": "engineering",
+      "related_roles": [
+        "machine-learning-engineer",
+        "ai-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "ai engineer",
+      "slug": "ai-engineer",
+      "display_name": "Ai Engineer",
+      "category": "engineering",
+      "related_roles": [
+        "machine-learning-engineer",
+        "ml-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "data scientist",
+      "slug": "data-scientist",
+      "display_name": "Data Scientist",
+      "category": "data",
+      "related_roles": [
+        "machine-learning-engineer",
+        "data-analyst",
+        "research-scientist",
+        "data-engineer",
+        "business-analyst",
+        "business-intelligence-analyst",
+        "sql"
+      ]
+    },
+    {
+      "key": "data analyst",
+      "slug": "data-analyst",
+      "display_name": "Data Analyst",
+      "category": "data",
+      "related_roles": [
+        "business-analyst",
+        "data-scientist",
+        "analytics-engineer",
+        "data-engineer",
+        "business-intelligence-analyst",
+        "sql"
+      ]
+    },
+    {
+      "key": "data engineer",
+      "slug": "data-engineer",
+      "display_name": "Data Engineer",
+      "category": "data",
+      "related_roles": [
+        "etl-developer",
+        "analytics-engineer",
+        "big-data-engineer",
+        "data-scientist",
+        "data-analyst",
+        "business-analyst",
+        "business-intelligence-analyst",
+        "sql"
+      ]
+    },
+    {
+      "key": "business analyst",
+      "slug": "business-analyst",
+      "display_name": "Business Analyst",
+      "category": "data",
+      "related_roles": [
+        "data-analyst",
+        "business-intelligence-analyst",
+        "systems-analyst",
+        "data-scientist",
+        "data-engineer",
+        "sql"
+      ]
+    },
+    {
+      "key": "business intelligence analyst",
+      "slug": "business-intelligence-analyst",
+      "display_name": "Business Intelligence Analyst",
+      "category": "data",
+      "related_roles": [
+        "bi-analyst",
+        "data-analyst",
+        "reporting-analyst",
+        "data-scientist",
+        "data-engineer",
+        "business-analyst",
+        "sql"
+      ]
+    },
+    {
+      "key": "product manager",
+      "slug": "product-manager",
+      "display_name": "Product Manager",
+      "category": "management",
+      "related_roles": [
+        "product-owner",
+        "program-manager",
+        "project-manager",
+        "scrum-master",
+        "operations-manager"
+      ]
+    },
+    {
+      "key": "product owner",
+      "slug": "product-owner",
+      "display_name": "Product Owner",
+      "category": "management",
+      "related_roles": [
+        "product-manager",
+        "scrum-master",
+        "program-manager",
+        "project-manager",
+        "operations-manager"
+      ]
+    },
+    {
+      "key": "program manager",
+      "slug": "program-manager",
+      "display_name": "Program Manager",
+      "category": "management",
+      "related_roles": [
+        "project-manager",
+        "product-manager",
+        "technical-program-manager",
+        "product-owner",
+        "scrum-master",
+        "operations-manager"
+      ]
+    },
+    {
+      "key": "project manager",
+      "slug": "project-manager",
+      "display_name": "Project Manager",
+      "category": "management",
+      "related_roles": [
+        "program-manager",
+        "project-coordinator",
+        "product-manager",
+        "product-owner",
+        "scrum-master",
+        "operations-manager"
+      ]
+    },
+    {
+      "key": "scrum master",
+      "slug": "scrum-master",
+      "display_name": "Scrum Master",
+      "category": "management",
+      "related_roles": [
+        "agile-coach",
+        "product-owner",
+        "product-manager",
+        "program-manager",
+        "project-manager",
+        "operations-manager"
+      ]
+    },
+    {
+      "key": "ux designer",
+      "slug": "ux-designer",
+      "display_name": "Ux Designer",
+      "category": "design",
+      "related_roles": [
+        "ui-designer",
+        "product-designer",
+        "user-experience-designer",
+        "graphic-designer"
+      ]
+    },
+    {
+      "key": "ui designer",
+      "slug": "ui-designer",
+      "display_name": "Ui Designer",
+      "category": "design",
+      "related_roles": [
+        "ux-designer",
+        "visual-designer",
+        "product-designer",
+        "graphic-designer"
+      ]
+    },
+    {
+      "key": "product designer",
+      "slug": "product-designer",
+      "display_name": "Product Designer",
+      "category": "design",
+      "related_roles": [
+        "ux-designer",
+        "ui-designer",
+        "graphic-designer"
+      ]
+    },
+    {
+      "key": "graphic designer",
+      "slug": "graphic-designer",
+      "display_name": "Graphic Designer",
+      "category": "design",
+      "related_roles": [
+        "visual-designer",
+        "creative-designer",
+        "brand-designer",
+        "ux-designer",
+        "ui-designer",
+        "product-designer"
+      ]
+    },
+    {
+      "key": "marketing manager",
+      "slug": "marketing-manager",
+      "display_name": "Marketing Manager",
+      "category": "marketing",
+      "related_roles": [
+        "digital-marketing-manager",
+        "marketing-director",
+        "growth-manager",
+        "content-writer",
+        "copywriter",
+        "seo-specialist",
+        "sales-representative",
+        "account-executive"
+      ]
+    },
+    {
+      "key": "digital marketing manager",
+      "slug": "digital-marketing-manager",
+      "display_name": "Digital Marketing Manager",
+      "category": "marketing",
+      "related_roles": [
+        "marketing-manager",
+        "online-marketing-manager",
+        "content-writer",
+        "copywriter",
+        "seo-specialist",
+        "sales-representative",
+        "account-executive",
+        "business-development-representative"
+      ]
+    },
+    {
+      "key": "content writer",
+      "slug": "content-writer",
+      "display_name": "Content Writer",
+      "category": "marketing",
+      "related_roles": [
+        "copywriter",
+        "content-creator",
+        "content-strategist",
+        "marketing-manager",
+        "digital-marketing-manager",
+        "seo-specialist",
+        "sales-representative",
+        "account-executive"
+      ]
+    },
+    {
+      "key": "copywriter",
+      "slug": "copywriter",
+      "display_name": "Copywriter",
+      "category": "marketing",
+      "related_roles": [
+        "content-writer",
+        "creative-writer",
+        "marketing-manager",
+        "digital-marketing-manager",
+        "seo-specialist",
+        "sales-representative",
+        "account-executive",
+        "business-development-representative"
+      ]
+    },
+    {
+      "key": "seo specialist",
+      "slug": "seo-specialist",
+      "display_name": "Seo Specialist",
+      "category": "marketing",
+      "related_roles": [
+        "seo-analyst",
+        "seo-manager",
+        "digital-marketing-specialist",
+        "marketing-manager",
+        "digital-marketing-manager",
+        "content-writer",
+        "copywriter",
+        "sales-representative"
+      ]
+    },
+    {
+      "key": "sales representative",
+      "slug": "sales-representative",
+      "display_name": "Sales Representative",
+      "category": "marketing",
+      "related_roles": [
+        "account-executive",
+        "sales-associate",
+        "business-development-representative",
+        "marketing-manager",
+        "digital-marketing-manager",
+        "content-writer",
+        "copywriter",
+        "seo-specialist"
+      ]
+    },
+    {
+      "key": "account executive",
+      "slug": "account-executive",
+      "display_name": "Account Executive",
+      "category": "marketing",
+      "related_roles": [
+        "sales-representative",
+        "account-manager",
+        "marketing-manager",
+        "digital-marketing-manager",
+        "content-writer",
+        "copywriter",
+        "seo-specialist",
+        "business-development-representative"
+      ]
+    },
+    {
+      "key": "business development representative",
+      "slug": "business-development-representative",
+      "display_name": "Business Development Representative",
+      "category": "marketing",
+      "related_roles": [
+        "bdr",
+        "sales-development-representative",
+        "sdr",
+        "marketing-manager",
+        "digital-marketing-manager",
+        "content-writer",
+        "copywriter",
+        "seo-specialist"
+      ]
+    },
+    {
+      "key": "customer service representative",
+      "slug": "customer-service-representative",
+      "display_name": "Customer Service Representative",
+      "category": "support",
+      "related_roles": [
+        "customer-support-specialist",
+        "customer-success-associate",
+        "customer-success-manager",
+        "office-manager",
+        "executive-assistant"
+      ]
+    },
+    {
+      "key": "customer success manager",
+      "slug": "customer-success-manager",
+      "display_name": "Customer Success Manager",
+      "category": "support",
+      "related_roles": [
+        "account-manager",
+        "client-success-manager",
+        "customer-service-representative",
+        "office-manager",
+        "executive-assistant"
+      ]
+    },
+    {
+      "key": "operations manager",
+      "slug": "operations-manager",
+      "display_name": "Operations Manager",
+      "category": "management",
+      "related_roles": [
+        "operations-director",
+        "operations-coordinator",
+        "product-manager",
+        "product-owner",
+        "program-manager",
+        "project-manager",
+        "scrum-master"
+      ]
+    },
+    {
+      "key": "office manager",
+      "slug": "office-manager",
+      "display_name": "Office Manager",
+      "category": "support",
+      "related_roles": [
+        "administrative-manager",
+        "office-coordinator",
+        "customer-service-representative",
+        "customer-success-manager",
+        "executive-assistant"
+      ]
+    },
+    {
+      "key": "executive assistant",
+      "slug": "executive-assistant",
+      "display_name": "Executive Assistant",
+      "category": "support",
+      "related_roles": [
+        "administrative-assistant",
+        "personal-assistant",
+        "customer-service-representative",
+        "customer-success-manager",
+        "office-manager"
+      ]
+    },
+    {
+      "key": "accountant",
+      "slug": "accountant",
+      "display_name": "Accountant",
+      "category": "finance",
+      "related_roles": [
+        "staff-accountant",
+        "accounting-specialist",
+        "bookkeeper",
+        "financial-analyst",
+        "controller"
+      ]
+    },
+    {
+      "key": "financial analyst",
+      "slug": "financial-analyst",
+      "display_name": "Financial Analyst",
+      "category": "finance",
+      "related_roles": [
+        "finance-analyst",
+        "investment-analyst",
+        "accountant",
+        "controller"
+      ]
+    },
+    {
+      "key": "controller",
+      "slug": "controller",
+      "display_name": "Controller",
+      "category": "finance",
+      "related_roles": [
+        "accounting-manager",
+        "finance-manager",
+        "accountant",
+        "financial-analyst"
+      ]
+    },
+    {
+      "key": "registered nurse",
+      "slug": "registered-nurse",
+      "display_name": "Registered Nurse",
+      "category": "healthcare",
+      "related_roles": [
+        "rn",
+        "staff-nurse",
+        "clinical-nurse",
+        "nurse-practitioner",
+        "medical-assistant"
+      ]
+    },
+    {
+      "key": "nurse practitioner",
+      "slug": "nurse-practitioner",
+      "display_name": "Nurse Practitioner",
+      "category": "healthcare",
+      "related_roles": [
+        "np",
+        "advanced-practice-nurse",
+        "arnp",
+        "registered-nurse",
+        "medical-assistant"
+      ]
+    },
+    {
+      "key": "medical assistant",
+      "slug": "medical-assistant",
+      "display_name": "Medical Assistant",
+      "category": "healthcare",
+      "related_roles": [
+        "clinical-assistant",
+        "healthcare-assistant",
+        "registered-nurse",
+        "nurse-practitioner"
+      ]
+    },
+    {
+      "key": "recruiter",
+      "slug": "recruiter",
+      "display_name": "Recruiter",
+      "category": "hr",
+      "related_roles": [
+        "talent-acquisition-specialist",
+        "hr-recruiter",
+        "sourcer",
+        "hr-manager",
+        "hr-business-partner"
+      ]
+    },
+    {
+      "key": "hr manager",
+      "slug": "hr-manager",
+      "display_name": "Hr Manager",
+      "category": "hr",
+      "related_roles": [
+        "human-resources-manager",
+        "people-manager",
+        "hr-business-partner",
+        "recruiter"
+      ]
+    },
+    {
+      "key": "hr business partner",
+      "slug": "hr-business-partner",
+      "display_name": "Hr Business Partner",
+      "category": "hr",
+      "related_roles": [
+        "hrbp",
+        "hr-manager",
+        "people-partner",
+        "recruiter"
+      ]
+    },
+    {
+      "key": "python",
+      "slug": "python",
+      "display_name": "Python",
+      "category": "engineering",
+      "related_roles": [
+        "python-developer",
+        "python-engineer",
+        "backend-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "java",
+      "slug": "java",
+      "display_name": "Java",
+      "category": "engineering",
+      "related_roles": [
+        "java-developer",
+        "java-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "javascript",
+      "slug": "javascript",
+      "display_name": "Javascript",
+      "category": "engineering",
+      "related_roles": [
+        "javascript-developer",
+        "frontend-developer",
+        "web-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "typescript",
+      "slug": "typescript",
+      "display_name": "Typescript",
+      "category": "engineering",
+      "related_roles": [
+        "typescript-developer",
+        "frontend-developer",
+        "full-stack-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-engineer",
+        "backend-developer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "react",
+      "slug": "react",
+      "display_name": "React",
+      "category": "engineering",
+      "related_roles": [
+        "react-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "software-engineer",
+        "software-developer",
+        "backend-developer",
+        "backend-engineer",
+        "full-stack-developer"
+      ]
+    },
+    {
+      "key": "angular",
+      "slug": "angular",
+      "display_name": "Angular",
+      "category": "engineering",
+      "related_roles": [
+        "angular-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "software-engineer",
+        "software-developer",
+        "backend-developer",
+        "backend-engineer",
+        "full-stack-developer"
+      ]
+    },
+    {
+      "key": "vue",
+      "slug": "vue",
+      "display_name": "Vue",
+      "category": "engineering",
+      "related_roles": [
+        "vue-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "software-engineer",
+        "software-developer",
+        "backend-developer",
+        "backend-engineer",
+        "full-stack-developer"
+      ]
+    },
+    {
+      "key": "node",
+      "slug": "node",
+      "display_name": "Node",
+      "category": "engineering",
+      "related_roles": [
+        "node-developer",
+        "backend-developer",
+        "full-stack-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "golang",
+      "slug": "golang",
+      "display_name": "Golang",
+      "category": "engineering",
+      "related_roles": [
+        "go-developer",
+        "golang-engineer",
+        "backend-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "go",
+      "slug": "go",
+      "display_name": "Go",
+      "category": "engineering",
+      "related_roles": [
+        "go-developer",
+        "golang-engineer",
+        "backend-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "rust",
+      "slug": "rust",
+      "display_name": "Rust",
+      "category": "engineering",
+      "related_roles": [
+        "rust-developer",
+        "rust-engineer",
+        "systems-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "ruby",
+      "slug": "ruby",
+      "display_name": "Ruby",
+      "category": "engineering",
+      "related_roles": [
+        "ruby-developer",
+        "ruby-on-rails-developer",
+        "backend-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "php",
+      "slug": "php",
+      "display_name": "PHP",
+      "category": "engineering",
+      "related_roles": [
+        "php-developer",
+        "web-developer",
+        "backend-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-engineer"
+      ]
+    },
+    {
+      "key": "swift",
+      "slug": "swift",
+      "display_name": "Swift",
+      "category": "engineering",
+      "related_roles": [
+        "ios-developer",
+        "swift-developer",
+        "mobile-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "kotlin",
+      "slug": "kotlin",
+      "display_name": "Kotlin",
+      "category": "engineering",
+      "related_roles": [
+        "android-developer",
+        "kotlin-developer",
+        "mobile-developer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "c++",
+      "slug": "c",
+      "display_name": "c++",
+      "category": "engineering",
+      "related_roles": [
+        "c-developer",
+        "c-engineer",
+        "systems-programmer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "sql",
+      "slug": "sql",
+      "display_name": "SQL",
+      "category": "data",
+      "related_roles": [
+        "database-developer",
+        "sql-developer",
+        "data-analyst",
+        "data-scientist",
+        "data-engineer",
+        "business-analyst",
+        "business-intelligence-analyst"
+      ]
+    },
+    {
+      "key": "aws",
+      "slug": "aws",
+      "display_name": "AWS",
+      "category": "engineering",
+      "related_roles": [
+        "aws-engineer",
+        "cloud-engineer",
+        "devops-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "docker",
+      "slug": "docker",
+      "display_name": "Docker",
+      "category": "engineering",
+      "related_roles": [
+        "devops-engineer",
+        "platform-engineer",
+        "infrastructure-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "kubernetes",
+      "slug": "kubernetes",
+      "display_name": "Kubernetes",
+      "category": "engineering",
+      "related_roles": [
+        "devops-engineer",
+        "platform-engineer",
+        "site-reliability-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    },
+    {
+      "key": "terraform",
+      "slug": "terraform",
+      "display_name": "Terraform",
+      "category": "engineering",
+      "related_roles": [
+        "devops-engineer",
+        "infrastructure-engineer",
+        "cloud-engineer",
+        "software-engineer",
+        "software-developer",
+        "frontend-developer",
+        "frontend-engineer",
+        "backend-developer"
+      ]
+    }
+  ],
+  "locations": [
+    {
+      "name": "London",
+      "slug": "london",
+      "region": "south-east",
+      "nearby": [
+        "reading",
+        "cambridge",
+        "brighton"
+      ]
+    },
+    {
+      "name": "Manchester",
+      "slug": "manchester",
+      "region": "north-west",
+      "nearby": [
+        "liverpool",
+        "leeds",
+        "sheffield"
+      ]
+    },
+    {
+      "name": "Birmingham",
+      "slug": "birmingham",
+      "region": "west-midlands",
+      "nearby": [
+        "coventry",
+        "nottingham",
+        "leicester"
+      ]
+    },
+    {
+      "name": "Leeds",
+      "slug": "leeds",
+      "region": "yorkshire",
+      "nearby": [
+        "manchester",
+        "sheffield",
+        "york"
+      ]
+    },
+    {
+      "name": "Glasgow",
+      "slug": "glasgow",
+      "region": "scotland",
+      "nearby": [
+        "edinburgh"
+      ]
+    },
+    {
+      "name": "Edinburgh",
+      "slug": "edinburgh",
+      "region": "scotland",
+      "nearby": [
+        "glasgow"
+      ]
+    },
+    {
+      "name": "Bristol",
+      "slug": "bristol",
+      "region": "south-west",
+      "nearby": [
+        "cardiff",
+        "bath"
+      ]
+    },
+    {
+      "name": "Liverpool",
+      "slug": "liverpool",
+      "region": "north-west",
+      "nearby": [
+        "manchester"
+      ]
+    },
+    {
+      "name": "Sheffield",
+      "slug": "sheffield",
+      "region": "yorkshire",
+      "nearby": [
+        "leeds",
+        "manchester",
+        "nottingham"
+      ]
+    },
+    {
+      "name": "Newcastle",
+      "slug": "newcastle",
+      "region": "north-east",
+      "nearby": []
+    },
+    {
+      "name": "Nottingham",
+      "slug": "nottingham",
+      "region": "east-midlands",
+      "nearby": [
+        "birmingham",
+        "sheffield",
+        "leicester"
+      ]
+    },
+    {
+      "name": "Cardiff",
+      "slug": "cardiff",
+      "region": "wales",
+      "nearby": [
+        "bristol"
+      ]
+    },
+    {
+      "name": "Belfast",
+      "slug": "belfast",
+      "region": "northern-ireland",
+      "nearby": []
+    },
+    {
+      "name": "Leicester",
+      "slug": "leicester",
+      "region": "east-midlands",
+      "nearby": [
+        "nottingham",
+        "birmingham",
+        "coventry"
+      ]
+    },
+    {
+      "name": "Coventry",
+      "slug": "coventry",
+      "region": "west-midlands",
+      "nearby": [
+        "birmingham",
+        "leicester"
+      ]
+    },
+    {
+      "name": "Cambridge",
+      "slug": "cambridge",
+      "region": "east",
+      "nearby": [
+        "london"
+      ]
+    },
+    {
+      "name": "Reading",
+      "slug": "reading",
+      "region": "south-east",
+      "nearby": [
+        "london"
+      ]
+    },
+    {
+      "name": "Brighton",
+      "slug": "brighton",
+      "region": "south-east",
+      "nearby": [
+        "london"
+      ]
+    },
+    {
+      "name": "York",
+      "slug": "york",
+      "region": "yorkshire",
+      "nearby": [
+        "leeds"
+      ]
+    },
+    {
+      "name": "Bath",
+      "slug": "bath",
+      "region": "south-west",
+      "nearby": [
+        "bristol"
+      ]
+    },
+    {
+      "name": "Remote",
+      "slug": "remote",
+      "region": "remote",
+      "nearby": []
+    }
+  ],
+  "categories": [
+    "data",
+    "design",
+    "engineering",
+    "finance",
+    "healthcare",
+    "hr",
+    "management",
+    "marketing",
+    "qa",
+    "security",
+    "support"
+  ],
+  "filter_modifiers": {
+    "permanent": {
+      "adzuna_param": "permanent",
+      "adzuna_value": 1,
+      "label": "Permanent"
+    },
+    "contract": {
+      "adzuna_param": "contract",
+      "adzuna_value": 1,
+      "label": "Contract"
+    },
+    "full-time": {
+      "adzuna_param": "full_time",
+      "adzuna_value": 1,
+      "label": "Full-time"
+    },
+    "part-time": {
+      "adzuna_param": "part_time",
+      "adzuna_value": 1,
+      "label": "Part-time"
+    },
+    "posted-today": {
+      "adzuna_param": "max_days_old",
+      "adzuna_value": 1,
+      "label": "Posted Today"
+    },
+    "posted-this-week": {
+      "adzuna_param": "max_days_old",
+      "adzuna_value": 7,
+      "label": "Posted This Week"
+    }
+  },
+  "seniority_prefixes": [
+    "junior",
+    "mid",
+    "senior",
+    "lead"
+  ],
+  "salary_bands": {
+    "20k-plus": 20000,
+    "30k-plus": 30000,
+    "40k-plus": 40000,
+    "50k-plus": 50000,
+    "60k-plus": 60000,
+    "80k-plus": 80000,
+    "100k-plus": 100000
+  },
+  "combinations_count": 1722,
+  "meta": {
+    "total_roles": 82,
+    "total_locations": 21,
+    "total_categories": 11
+  }
+}
