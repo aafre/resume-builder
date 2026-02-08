@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Section, IconListItem } from '../../types';
 import { EditorContentIconRegistry } from './EditorContent';
 import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
@@ -46,6 +46,10 @@ const SectionRenderer: React.FC<SectionRendererProps> = React.memo(({
   supportsIcons,
   iconRegistry,
 }) => {
+  // Keep track of latest section in a ref to avoid unstable callbacks
+  const sectionRef = useRef(section);
+  sectionRef.current = section;
+
   // Create stable callbacks for this specific section index
   // These use only stable props (handlers and index), so they remain stable across renders
 
@@ -64,8 +68,9 @@ const SectionRenderer: React.FC<SectionRendererProps> = React.memo(({
     // Pass-through wrapper: content type varies by section and is enforced
     // by each child component's own prop types. We just wrap it into the
     // section object and forward to the parent handler.
-    handleUpdateSection(index, { ...section, content: updatedContent } as Section);
-  }, [handleUpdateSection, index, section]);
+    // Use ref to access latest section data without breaking callback stability
+    handleUpdateSection(index, { ...sectionRef.current, content: updatedContent } as Section);
+  }, [handleUpdateSection, index]);
 
   const onGenericUpdate = useCallback((updatedSection: Section) => {
     handleUpdateSection(index, updatedSection);
