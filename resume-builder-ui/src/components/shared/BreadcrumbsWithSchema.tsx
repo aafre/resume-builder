@@ -18,12 +18,12 @@ export default function BreadcrumbsWithSchema({
 }: BreadcrumbsWithSchemaProps) {
   return (
     <nav aria-label="Breadcrumb" className={`mb-8 ${className}`}>
-      <ol className="flex items-center space-x-2 text-sm text-gray-600">
+      <ol className="flex items-center space-x-2 text-sm text-stone-warm">
         {breadcrumbs.map((crumb, index) => (
           <li key={index} className="flex items-center">
-            {index > 0 && <span className="mx-2 text-gray-400">/</span>}
+            {index > 0 && <span className="mx-2 text-mist">/</span>}
             {index === breadcrumbs.length - 1 ? (
-              <span className="font-medium text-gray-900">{crumb.label}</span>
+              <span className="font-medium text-ink">{crumb.label}</span>
             ) : (
               <Link
                 to={crumb.href}
