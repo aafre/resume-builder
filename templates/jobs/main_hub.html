@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+{# Main hub is primarily React-driven (interactive search).
+   This template provides minimal SSR structure for bots. #}
+<header class="max-w-5xl mx-auto px-4 py-8 text-center">
+  <h1 class="text-3xl font-bold text-gray-900 mb-2">Find Your Next Job</h1>
+  <p class="text-gray-600 text-lg">
+    Search thousands of UK jobs. Filter by role, location, salary, and contract type.
+  </p>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 pb-8">
+  {# Search form placeholder — React hydrates the full interactive version #}
+  <div id="jobs-search-form" class="mb-8">
+    <noscript>
+      <p class="text-gray-500 text-center">Enable JavaScript to use the interactive job search.</p>
+    </noscript>
+  </div>
+</main>
+{% endblock %}

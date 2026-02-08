@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<nav aria-label="Breadcrumb" class="max-w-5xl mx-auto px-4 pt-4">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList" class="flex items-center gap-1 text-sm text-gray-500">
+    {% for crumb in data.breadcrumbs %}
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      {% if crumb.url %}
+      <a itemprop="item" href="{{ crumb.url }}">
+        <span itemprop="name">{{ crumb.name }}</span>
+      </a>
+      <meta itemprop="position" content="{{ loop.index }}" />
+      <span class="mx-1">/</span>
+      {% else %}
+      <span itemprop="name">{{ crumb.name }}</span>
+      <meta itemprop="position" content="{{ loop.index }}" />
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ol>
+</nav>
+
+<header class="max-w-5xl mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">
+    {{ data.category | replace('-', ' ') | title }} Jobs
+    {% if data.location_display and data.location_display != 'the UK' %} in {{ data.location_display }}{% endif %}
+  </h1>
+  <p class="text-gray-600">
+    {{ data.total_count }}+ {{ data.category | replace('-', ' ') }} jobs available.
+  </p>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 pb-8">
+  {# Roles in Category #}
+  {% if data.related_roles %}
+  <h2 class="text-lg font-semibold text-gray-900 mb-4">Roles in This Category</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+    {% for role in data.related_roles %}
+    <a href="{{ role.url }}"
+       class="bg-white rounded-lg border border-gray-200 px-3 py-2 hover:border-indigo-300 transition-colors text-sm font-medium text-gray-900">
+      {{ role.name }}
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {# Recent Jobs #}
+  {% if data.jobs %}
+  <h2 class="text-lg font-semibold text-gray-900 mt-8 mb-4">Latest {{ data.category | replace('-', ' ') | title }} Jobs</h2>
+  <div class="space-y-3" id="job-listings">
+    {% for job in data.jobs[:15] %}
+    <article class="bg-white rounded-lg border border-gray-200 p-4 hover:border-indigo-200 transition-colors">
+      <div class="flex justify-between items-start gap-4">
+        <div class="min-w-0 flex-1">
+          <h3 class="font-semibold text-gray-900 text-base">
+            <a href="{{ job.url }}" target="_blank" rel="noopener noreferrer nofollow" class="hover:text-indigo-600">
+              {{ job.title }}
+            </a>
+          </h3>
+          <p class="text-sm text-gray-600 mt-0.5">{{ job.company }}</p>
+          <p class="text-sm text-gray-500 mt-0.5">{{ job.location }}</p>
+        </div>
+        <div class="text-right flex-shrink-0">
+          {% if job.salary_min and job.salary_max and not job.salary_is_predicted %}
+          <p class="text-sm font-medium text-green-700">
+            £{{ "{:,}".format(job.salary_min) }} – £{{ "{:,}".format(job.salary_max) }}
+          </p>
+          {% endif %}
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="mt-8 text-center">
+    <a href="/templates"
+       class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+      Build your resume
+    </a>
+  </div>
+</main>
+{% endblock %}
