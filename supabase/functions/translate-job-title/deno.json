@@ -1,0 +1,9 @@
+{
+  "imports": {
+    "openai": "npm:openai@4.20.1"
+  },
+  "compilerOptions": {
+    "lib": ["deno.window"],
+    "strict": true
+  }
+}
