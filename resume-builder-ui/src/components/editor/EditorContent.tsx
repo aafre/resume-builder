@@ -502,6 +502,8 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         onCollapseChange={navigation.setIsSidebarCollapsed}
         isAnonymous={isAnonymous}
         isAuthenticated={isAuthenticated}
+        contactInfo={contactInfo}
+        resumeSections={sections}
       />
 
       {/* Hidden file input */}

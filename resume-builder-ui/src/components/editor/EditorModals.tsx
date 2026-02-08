@@ -4,7 +4,7 @@
 import { UseModalManagerReturn } from '../../hooks/editor/useModalManager';
 import { UseTourFlowReturn } from '../../types/editor';
 import { SectionType } from '../../services/sectionService';
-import { Section } from '../../types';
+import { ContactInfo, Section } from '../../types';
 import AuthModal from '../AuthModal';
 import DownloadCelebrationModal from '../DownloadCelebrationModal';
 import TabbedHelpModal from '../TabbedHelpModal';
@@ -72,6 +72,8 @@ export interface EditorModalsProps {
   supportsIcons: boolean;
   /** Current sections for position selection */
   sections: Section[];
+  /** Contact info for job search in download modal */
+  contactInfo: ContactInfo | null;
   /** Callback when auth completes successfully (from actions auth modal) */
   onAuthSuccess?: () => void;
 }
@@ -122,6 +124,7 @@ export const EditorModals: React.FC<EditorModalsProps> = ({
   isAuthenticated,
   supportsIcons,
   sections,
+  contactInfo,
   onAuthSuccess,
 }) => {
   return (
@@ -167,6 +170,9 @@ export const EditorModals: React.FC<EditorModalsProps> = ({
           modalManager.closeDownloadCelebration();
           modalManager.openAuthModal();
         }}
+        isAnonymous={isAnonymous}
+        contactInfo={contactInfo}
+        sections={sections}
       />
 
       {/* Tabbed Help Modal */}
