@@ -11,6 +11,7 @@ import BreadcrumbsWithSchema from '../shared/BreadcrumbsWithSchema';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import HighlightedText from '../shared/HighlightedText';
+import RevealSection from '../shared/RevealSection';
 import RelatedJobsSection from './RelatedJobsSection';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { getJobBySlug } from '../../data/jobKeywords';
@@ -94,16 +95,18 @@ export default function JobKeywordsPage() {
 
       {/* Role Intro Section */}
       {jobData.roleIntro && (
-        <div className="mb-12 max-w-4xl mx-auto">
-          <div className="bg-accent/[0.04] border border-accent/20 rounded-xl p-8">
-            <h2 className="text-2xl font-bold text-ink mb-4">
-              What hiring teams look for in {jobData.title.toLowerCase()} keywords
-            </h2>
-            <p className="text-ink leading-relaxed">
-              {jobData.roleIntro}
-            </p>
+        <RevealSection>
+          <div className="mb-12 max-w-4xl mx-auto">
+            <div className="bg-accent/[0.04] border border-accent/20 rounded-2xl p-8">
+              <h2 className="text-2xl font-extrabold text-ink tracking-tight mb-4">
+                What hiring teams look for in {jobData.title.toLowerCase()} keywords
+              </h2>
+              <p className="text-stone-warm font-extralight leading-relaxed">
+                {jobData.roleIntro}
+              </p>
+            </div>
           </div>
-        </div>
+        </RevealSection>
       )}
 
       {/* Hub navigation */}
@@ -119,276 +122,298 @@ export default function JobKeywordsPage() {
       </div>
 
       {/* Core Skills Section */}
-      <div className="mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
-          Core {jobData.title.toLowerCase()} skills (soft skills)
-        </h2>
-        <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-          These keywords describe essential interpersonal and professional abilities that employers look for
-          in {jobData.title.toLowerCase()} roles. Include these throughout your work experience to demonstrate
-          your competencies.
-        </p>
+      <RevealSection>
+        <div className="mb-16">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Core Skills</span>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
+            Core {jobData.title.toLowerCase()} skills (soft skills)
+          </h2>
+          <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+            These keywords describe essential interpersonal and professional abilities that employers look for
+            in {jobData.title.toLowerCase()} roles. Include these throughout your work experience to demonstrate
+            your competencies.
+          </p>
 
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-          <h3 className="font-bold text-green-800 mb-4 text-lg">
-            🎯 Essential Core Skills
-          </h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-green-700">
-            {jobData.keywords.core.map((skill, idx) => (
-              <div key={idx} className="flex items-start">
-                <span className="mr-2">•</span>
-                <span>{skill}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Technical Skills Section */}
-      <div className="mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
-          Technical skills & tools (hard skills)
-        </h2>
-        <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-          Listing specific technologies and tools you've used is critical for ATS optimization. These keywords
-          demonstrate your technical expertise and readiness to contribute immediately.
-        </p>
-
-        {jobData.tools ? (
-          <div className="space-y-6">
-            {jobData.tools.map((toolCategory, idx) => (
-              <div key={idx} className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-                <h3 className="text-xl font-bold text-ink mb-4">
-                  {toolCategory.category}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {toolCategory.items.map((tool, toolIdx) => (
-                    <span
-                      key={toolIdx}
-                      className="bg-accent/10 text-ink px-3 py-1 rounded-full text-sm font-medium"
-                    >
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+          <div className="bg-white rounded-2xl p-6 card-gradient-border shadow-premium">
             <h3 className="font-bold text-ink mb-4 text-lg">
-              💻 Key Technical Skills
+              🎯 Essential Core Skills
             </h3>
-            <div className="flex flex-wrap gap-2">
-              {jobData.keywords.technical.map((skill, idx) => (
-                <span
-                  key={idx}
-                  className="bg-accent/10 text-ink px-3 py-1 rounded-full text-sm font-medium"
-                >
-                  {skill}
-                </span>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-ink/80">
+              {jobData.keywords.core.map((skill, idx) => (
+                <div key={idx} className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>{skill}</span>
+                </div>
               ))}
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      </RevealSection>
+
+      {/* Technical Skills Section */}
+      <RevealSection stagger>
+        <div className="mb-16">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
+            Technical skills & tools (hard skills)
+          </h2>
+          <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+            Listing specific technologies and tools you've used is critical for ATS optimization. These keywords
+            demonstrate your technical expertise and readiness to contribute immediately.
+          </p>
+
+          {jobData.tools ? (
+            <div className="space-y-6">
+              {jobData.tools.map((toolCategory, idx) => (
+                <div key={idx} className="bg-accent/[0.06] border border-accent/20 rounded-2xl p-6 shadow-sm">
+                  <h3 className="text-xl font-bold text-ink mb-4">
+                    {toolCategory.category}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {toolCategory.items.map((tool, toolIdx) => (
+                      <span
+                        key={toolIdx}
+                        className="bg-accent/10 text-ink px-3 py-1 rounded-full text-sm font-medium"
+                      >
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-accent/[0.06] border border-accent/20 rounded-2xl p-6">
+              <h3 className="font-bold text-ink mb-4 text-lg">
+                💻 Key Technical Skills
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {jobData.keywords.technical.map((skill, idx) => (
+                  <span
+                    key={idx}
+                    className="bg-accent/10 text-ink px-3 py-1 rounded-full text-sm font-medium"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </RevealSection>
 
       {/* Processes Section */}
       {jobData.keywords.processes && jobData.keywords.processes.length > 0 && (
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
-            Methodologies and processes
-          </h2>
-          <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-            These keywords show you understand industry-standard workflows and best practices. They demonstrate
-            your ability to work within established frameworks and contribute to team efficiency.
-          </p>
+        <RevealSection>
+          <div className="mb-16">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
+              Methodologies and processes
+            </h2>
+            <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+              These keywords show you understand industry-standard workflows and best practices. They demonstrate
+              your ability to work within established frameworks and contribute to team efficiency.
+            </p>
 
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="font-bold text-ink mb-4 text-lg">
-              ⚙️ Key Processes & Methodologies
-            </h3>
-            <div className="grid md:grid-cols-2 gap-4 text-ink/80">
-              {jobData.keywords.processes.map((process, idx) => (
-                <div key={idx} className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>{process}</span>
-                </div>
-              ))}
+            <div className="bg-accent/[0.06] border border-accent/20 rounded-2xl p-6">
+              <h3 className="font-bold text-ink mb-4 text-lg">
+                ⚙️ Key Processes & Methodologies
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4 text-ink/80">
+                {jobData.keywords.processes.map((process, idx) => (
+                  <div key={idx} className="flex items-start">
+                    <span className="mr-2">•</span>
+                    <span>{process}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        </RevealSection>
       )}
 
       {/* Certifications Section */}
       {jobData.keywords.certifications && jobData.keywords.certifications.length > 0 && (
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
-            Relevant certifications
-          </h2>
-          <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-            Certifications validate your expertise and commitment to professional development. Include these
-            prominently on your resume with completion dates to strengthen your application.
-          </p>
+        <RevealSection>
+          <div className="mb-16">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
+              Relevant certifications
+            </h2>
+            <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+              Certifications validate your expertise and commitment to professional development. Include these
+              prominently on your resume with completion dates to strengthen your application.
+            </p>
 
-          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="font-bold text-ink mb-4 text-lg">
-              🎓 Industry Certifications
-            </h3>
-            <div className="grid md:grid-cols-2 gap-4 text-ink/80">
-              {jobData.keywords.certifications.map((cert, idx) => (
-                <div key={idx} className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>{cert}</span>
-                </div>
-              ))}
+            <div className="bg-accent/[0.06] border border-accent/20 rounded-2xl p-6">
+              <h3 className="font-bold text-ink mb-4 text-lg">
+                🎓 Industry Certifications
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4 text-ink/80">
+                {jobData.keywords.certifications.map((cert, idx) => (
+                  <div key={idx} className="flex items-start">
+                    <span className="mr-2">•</span>
+                    <span>{cert}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        </RevealSection>
       )}
 
       {/* Metrics Section */}
       {jobData.keywords.metrics && jobData.keywords.metrics.length > 0 && (
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
-            Metrics and KPIs
-          </h2>
-          <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-            Quantifying your achievements with specific metrics makes your resume stand out. Use these KPIs
-            to demonstrate the measurable impact you've made in previous roles.
-          </p>
+        <RevealSection>
+          <div className="mb-16">
+            <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Metrics</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
+              Metrics and KPIs
+            </h2>
+            <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+              Quantifying your achievements with specific metrics makes your resume stand out. Use these KPIs
+              to demonstrate the measurable impact you've made in previous roles.
+            </p>
 
-          <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
-            <h3 className="font-bold text-orange-800 mb-4 text-lg">
-              📊 Key Performance Indicators
-            </h3>
-            <div className="grid md:grid-cols-2 gap-4 text-orange-700">
-              {jobData.keywords.metrics.map((metric, idx) => (
-                <div key={idx} className="flex items-start">
-                  <span className="mr-2">•</span>
-                  <span>{metric}</span>
-                </div>
-              ))}
+            <div className="bg-white rounded-2xl p-6 card-gradient-border shadow-premium">
+              <h3 className="font-bold text-ink mb-4 text-lg">
+                📊 Key Performance Indicators
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4 text-ink/80">
+                {jobData.keywords.metrics.map((metric, idx) => (
+                  <div key={idx} className="flex items-start">
+                    <span className="mr-2">•</span>
+                    <span>{metric}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        </RevealSection>
       )}
 
       {/* Example Section */}
-      <div className="mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
-          How to use these keywords: examples
-        </h2>
-        <p className="text-lg text-gray-700 mb-8 leading-relaxed text-center max-w-3xl mx-auto">
-          Compare these two resume bullets to see how incorporating specific keywords transforms a generic
-          statement into an ATS-optimized, impactful achievement.
-        </p>
-        <div className="space-y-6 max-w-4xl mx-auto">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-800 mb-4">
-              ❌ Generic (Before)
-            </h4>
-            <p className="text-gray-600 mb-4">
-              {example.before}
-            </p>
-            <h4 className="font-bold text-green-800 mb-4">
-              ✅ Optimized (After)
-            </h4>
-            <HighlightedText
-              text={example.after}
-              keywords={[
-                ...jobData.keywords.technical.slice(0, 5),
-                ...(jobData.keywords.processes?.slice(0, 2) || []),
-              ]}
-              className="text-gray-700"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Keyword Phrases Section */}
-      {jobData.phrases && jobData.phrases.length > 0 && (
+      <RevealSection>
         <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
-            Keyword phrases for {jobData.title.toLowerCase()} resumes
+          <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 text-center">
+            How to use these keywords: examples
           </h2>
-          <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-            ATS systems don't just look for single words—they scan for multi-word phrases that
-            indicate specific expertise. Include these 2-5 word combinations naturally in your resume.
+          <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed text-center max-w-3xl mx-auto">
+            Compare these two resume bullets to see how incorporating specific keywords transforms a generic
+            statement into an ATS-optimized, impactful achievement.
           </p>
-
-          <div className="bg-teal-50 border border-teal-200 rounded-xl p-6">
-            <h3 className="font-bold text-teal-800 mb-4 text-lg">
-              🔗 High-Impact Keyword Phrases
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {jobData.phrases.map((phrase, idx) => (
-                <span
-                  key={idx}
-                  className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-medium"
-                >
-                  {phrase}
-                </span>
-              ))}
+          <div className="space-y-6 max-w-4xl mx-auto">
+            <div className="bg-white rounded-2xl border border-black/[0.06] shadow-premium p-6">
+              <h4 className="font-bold text-ink mb-4">
+                ❌ Generic (Before)
+              </h4>
+              <p className="text-stone-warm mb-4">
+                {example.before}
+              </p>
+              <h4 className="font-bold text-accent mb-4">
+                ✅ Optimized (After)
+              </h4>
+              <HighlightedText
+                text={example.after}
+                keywords={[
+                  ...jobData.keywords.technical.slice(0, 5),
+                  ...(jobData.keywords.processes?.slice(0, 2) || []),
+                ]}
+                className="text-ink/80"
+              />
             </div>
           </div>
         </div>
+      </RevealSection>
+
+      {/* Keyword Phrases Section */}
+      {jobData.phrases && jobData.phrases.length > 0 && (
+        <RevealSection>
+          <div className="mb-16">
+            <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Key Phrases</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
+              Keyword phrases for {jobData.title.toLowerCase()} resumes
+            </h2>
+            <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+              ATS systems don't just look for single words—they scan for multi-word phrases that
+              indicate specific expertise. Include these 2-5 word combinations naturally in your resume.
+            </p>
+
+            <div className="bg-white rounded-2xl p-6 card-gradient-border shadow-premium">
+              <h3 className="font-bold text-ink mb-4 text-lg">
+                🔗 High-Impact Keyword Phrases
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {jobData.phrases.map((phrase, idx) => (
+                  <span
+                    key={idx}
+                    className="bg-accent/[0.06] text-ink px-3 py-1 rounded-full text-sm font-medium border border-accent/20"
+                  >
+                    {phrase}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </RevealSection>
       )}
 
       {/* Example Bullets Section */}
       {jobData.exampleBullets && jobData.exampleBullets.length > 0 && (
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
-            Ready-to-adapt resume bullets
-          </h2>
-          <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-            Here are real resume bullets that incorporate keywords naturally while demonstrating
-            measurable impact. Adapt these to your own experience.
-          </p>
+        <RevealSection>
+          <div className="mb-16">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
+              Ready-to-adapt resume bullets
+            </h2>
+            <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+              Here are real resume bullets that incorporate keywords naturally while demonstrating
+              measurable impact. Adapt these to your own experience.
+            </p>
 
-          <div className="space-y-3 max-w-4xl mx-auto">
-            {jobData.exampleBullets.map((bullet, idx) => (
-              <div
-                key={idx}
-                className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
-              >
-                <p className="text-gray-700">
-                  <span className="text-accent font-bold mr-2">•</span>
-                  {bullet}
-                </p>
-              </div>
-            ))}
+            <div className="space-y-3 max-w-4xl mx-auto">
+              {jobData.exampleBullets.map((bullet, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white border border-black/[0.06] rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300"
+                >
+                  <p className="text-ink/80">
+                    <span className="text-accent font-bold mr-2">•</span>
+                    {bullet}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        </RevealSection>
       )}
 
       {/* Common Mistakes Section */}
       {jobData.commonMistakes && jobData.commonMistakes.length > 0 && (
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
-            Common {jobData.title.toLowerCase()} resume mistakes
-          </h2>
-          <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-            Avoid these pitfalls that can hurt your chances of getting past the ATS or impressing
-            hiring managers.
-          </p>
+        <RevealSection>
+          <div className="mb-16">
+            <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Common Mistakes</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
+              Common {jobData.title.toLowerCase()} resume mistakes
+            </h2>
+            <p className="text-lg text-stone-warm font-extralight mb-8 leading-relaxed">
+              Avoid these pitfalls that can hurt your chances of getting past the ATS or impressing
+              hiring managers.
+            </p>
 
-          <div className="space-y-4 max-w-4xl mx-auto">
-            {jobData.commonMistakes.map((item, idx) => (
-              <div
-                key={idx}
-                className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg"
-              >
-                <h4 className="font-bold text-gray-900 mb-1">
-                  <span aria-hidden="true">❌</span> {item.mistake}
-                </h4>
-                <p className="text-green-700 text-sm">
-                  → {item.fix}
-                </p>
-              </div>
-            ))}
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {jobData.commonMistakes.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-xl p-5 border border-black/[0.06] border-l-4 border-l-ink/20 shadow-sm"
+                >
+                  <h4 className="font-bold text-ink mb-1">
+                    <span aria-hidden="true">❌</span> {item.mistake}
+                  </h4>
+                  <p className="text-accent text-sm">
+                    → {item.fix}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        </RevealSection>
       )}
 
       <FAQSection faqs={faqs} />
@@ -396,14 +421,16 @@ export default function JobKeywordsPage() {
       <RelatedJobsSection job={jobData} />
 
       {/* Related Resources */}
-      <div className="bg-gray-50 rounded-xl p-6 mt-12 mb-16 max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Related Resources</h2>
-        <ul className="space-y-2">
-          <li><Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">How to Use Resume Keywords Effectively</Link></li>
-          <li><Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">ATS Resume Optimization Guide</Link></li>
-          <li><Link to="/resume-keywords" className="text-accent hover:underline">Browse All Resume Keywords by Job Title</Link></li>
-        </ul>
-      </div>
+      <RevealSection>
+        <div className="bg-chalk-dark rounded-2xl p-6 border border-black/[0.06] mt-12 mb-16 max-w-4xl mx-auto">
+          <h2 className="text-2xl font-extrabold text-ink tracking-tight mb-4">Related Resources</h2>
+          <ul className="space-y-2">
+            <li><Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">How to Use Resume Keywords Effectively</Link></li>
+            <li><Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">ATS Resume Optimization Guide</Link></li>
+            <li><Link to="/resume-keywords" className="text-accent hover:underline">Browse All Resume Keywords by Job Title</Link></li>
+          </ul>
+        </div>
+      </RevealSection>
 
       <DownloadCTA
         title={`Ready to Build Your ${jobData.title} Resume?`}
