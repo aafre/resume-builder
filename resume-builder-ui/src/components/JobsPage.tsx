@@ -99,6 +99,10 @@ export default function JobsPage() {
   const prefillSkillsRef = useRef<string[]>([]);
   const prefillSeniorityRef = useRef<SeniorityLevel | null>(null);
   const prefillYearsExpRef = useRef<number>(0);
+  // Persistent resume context — survives across manual searches
+  const resumeSkillsRef = useRef<string[]>([]);
+  const resumeSeniorityRef = useRef<SeniorityLevel | null>(null);
+  const resumeYearsExpRef = useRef<number>(0);
   const { session } = useAuth();
   const { parseResume, parsing: parserBusy, progress: parserProgress, progressMessage } = useResumeParser();
 
@@ -145,14 +149,30 @@ export default function JobsPage() {
         : country;
 
       const searchQuery = query || titleInput.trim();
-      // Use prefilled skills/seniority for auto-search (no event), empty for manual search
+      // Use prefilled skills on first auto-search, then persist for manual searches
       const isPrefilled = !e;
-      const skills = isPrefilled ? prefillSkillsRef.current : [];
-      const seniority = isPrefilled ? prefillSeniorityRef.current : null;
-      const yearsExp = isPrefilled ? prefillYearsExpRef.current : 0;
-      prefillSkillsRef.current = [];
-      prefillSeniorityRef.current = null;
-      prefillYearsExpRef.current = 0;
+      let skills: string[];
+      let seniority: SeniorityLevel | null;
+      let yearsExp: number;
+
+      if (isPrefilled && prefillSkillsRef.current.length > 0) {
+        // Auto-search right after resume upload / editor prefill
+        skills = prefillSkillsRef.current;
+        seniority = prefillSeniorityRef.current;
+        yearsExp = prefillYearsExpRef.current;
+        // Persist for future manual searches
+        resumeSkillsRef.current = skills;
+        resumeSeniorityRef.current = seniority;
+        resumeYearsExpRef.current = yearsExp;
+        prefillSkillsRef.current = [];
+        prefillSeniorityRef.current = null;
+        prefillYearsExpRef.current = 0;
+      } else {
+        // Manual search — use persisted resume context if available
+        skills = resumeSkillsRef.current;
+        seniority = resumeSeniorityRef.current;
+        yearsExp = resumeYearsExpRef.current;
+      }
 
       const result = await searchJobs({
         query: searchQuery,
