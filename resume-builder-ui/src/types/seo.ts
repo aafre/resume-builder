@@ -22,7 +22,6 @@ export interface HeroConfig {
   h1: string;
   subtitle: string;
   description?: string;
-  eyebrow?: string;
   primaryCTA?: CTAConfig;
   secondaryCTA?: CTAConfig;
 }

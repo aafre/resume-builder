@@ -80,11 +80,11 @@ const emojiToIcon: Record<string, LucideIcon> = {
 
 /** 6-color rotation: each index mod 6 gets a unique gradient theme */
 const colorThemes = [
-  { bg: 'from-accent/[0.06] to-accent/[0.03]', icon: 'text-accent' },
-  { bg: 'from-accent/[0.08] to-accent/[0.04]', icon: 'text-accent' },
+  { bg: 'from-blue-50 to-indigo-50', icon: 'text-blue-600' },
+  { bg: 'from-purple-50 to-fuchsia-50', icon: 'text-purple-600' },
   { bg: 'from-emerald-50 to-teal-50', icon: 'text-emerald-600' },
   { bg: 'from-amber-50 to-orange-50', icon: 'text-amber-600' },
-  { bg: 'from-accent/[0.05] to-accent/[0.02]', icon: 'text-accent' },
+  { bg: 'from-indigo-50 to-violet-50', icon: 'text-indigo-600' },
   { bg: 'from-rose-50 to-pink-50', icon: 'text-rose-600' },
 ] as const;
 

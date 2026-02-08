@@ -760,6 +760,66 @@ export const SEO_PAGES: Record<string, PageConfig> = {
     ],
   },
 
+  // /jobs (Adzuna-powered job search)
+  jobs: {
+    seo: {
+      title: `Job Search | Find Jobs That Match Your Resume ${CURRENT_YEAR} | EasyFreeResume`,
+      description:
+        'Search thousands of job openings across 19 countries with salary information. Find jobs that match your resume, compare salaries, and apply directly. Free job search powered by Adzuna.',
+      keywords: [
+        'job search',
+        'find jobs',
+        'job openings near me',
+        'salary information',
+        'apply for jobs online',
+        'resume job search',
+      ],
+      canonicalUrl: '/jobs',
+    },
+    breadcrumbs: [
+      { label: 'Home', href: '/' },
+      { label: 'Job Search', href: '/jobs' },
+    ],
+    hero: {
+      h1: 'Find Jobs That Match Your Resume',
+      subtitle: 'Search thousands of open positions with salary info across 19 countries',
+      description:
+        'Use our free job search to find openings that match your skills and experience. Get salary information, filter by location, and apply directly to employers.',
+    },
+    faqs: [
+      {
+        question: 'How does the job search work?',
+        answer:
+          'Our job search is powered by Adzuna, which aggregates listings from thousands of job boards and company websites. Enter a job title and optional location to find matching openings with salary information. Click any listing to apply directly on the employer\'s site.',
+      },
+      {
+        question: 'Is the job search free?',
+        answer:
+          'Yes, completely free. You can search for jobs, view salary information, and apply to positions without creating an account or paying anything. There are no limits on searches.',
+      },
+      {
+        question: 'Which countries are supported?',
+        answer:
+          'We support job search across 19 countries including the United States, United Kingdom, Canada, Australia, India, Germany, France, Netherlands, Italy, Spain, Brazil, Mexico, Poland, New Zealand, Singapore, South Africa, Austria, Belgium, and Switzerland.',
+      },
+      {
+        question: 'How accurate is the salary information?',
+        answer:
+          'Salary data comes directly from job postings aggregated by Adzuna. Some listings include employer-provided salary ranges, while others show estimated ranges based on similar roles. Use salary figures as a general guide and verify during the application process.',
+      },
+      {
+        question: 'Can I search using my resume information?',
+        answer:
+          'Yes! When you build a resume in our editor, the job match badge automatically searches for relevant openings based on your job title and location. Click it to see matching jobs pre-filled with your resume details.',
+      },
+      {
+        question: 'How can I improve my chances of getting hired?',
+        answer:
+          'Start with a strong, ATS-friendly resume using our free resume builder. Use industry-specific keywords from our Resume Keywords guide. Tailor your resume for each application and apply to jobs where your skills match the requirements.',
+      },
+    ],
+  },
+
   // /resume-keywords (hub)
   keywordsHub: {
     seo: {

@@ -39,7 +39,7 @@ export const renderMarkdownLinks = (text: string | null | undefined): React.Reac
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-accent hover:text-ink underline"
+        className="text-blue-600 hover:text-blue-800 underline"
       >
         {linkText}
       </a>
