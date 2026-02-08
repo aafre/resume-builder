@@ -65,6 +65,10 @@ const JobExamplesHub = lazy(() => import("./components/seo/JobExamplesHub"));
 const JobExamplePage = lazy(() => import("./components/seo/JobExamplePage"));
 const JobsPage = lazy(() => import("./components/JobsPage"));
 
+// Jobs pSEO hydration pages
+const JobsLandingPage = lazy(() => import("./components/jobs/JobsLandingPage"));
+const JobsRoleHub = lazy(() => import("./components/jobs/JobsRoleHub"));
+
 // Static pages - lazy loaded
 const AboutUs = lazy(() => import("./components/AboutUs"));
 const Contact = lazy(() => import("./components/Contact"));
@@ -343,6 +347,48 @@ function AppContent() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <JobsPage />
+              </Suspense>
+            }
+          />
+
+          {/* Jobs pSEO Pages */}
+          <Route
+            path="/jobs/in/:locationSlug"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <JobsLandingPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/jobs/:roleSlug"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <JobsRoleHub />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/jobs/:roleSlug/:locationSlug"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <JobsLandingPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/jobs/:roleSlug/:locationSlug/:modifier"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <JobsLandingPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/jobs/:seniority/:roleSlug/:locationSlug"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <JobsLandingPage />
               </Suspense>
             }
           />
