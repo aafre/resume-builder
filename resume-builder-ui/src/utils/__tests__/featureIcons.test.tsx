@@ -26,25 +26,25 @@ describe('FeatureIcon', () => {
     expect(wrapper.className).toContain('to-slate-50');
   });
 
-  it('applies accent theme for index 0', () => {
+  it('applies blue theme for index 0', () => {
     const { container } = render(<FeatureIcon emoji="✅" index={0} />);
     const wrapper = container.firstElementChild as HTMLElement;
-    expect(wrapper.className).toContain('from-accent/[0.06]');
-    expect(wrapper.className).toContain('to-accent/[0.03]');
+    expect(wrapper.className).toContain('from-blue-50');
+    expect(wrapper.className).toContain('to-indigo-50');
     const svg = container.querySelector('svg');
-    expect(svg?.getAttribute('class')).toContain('text-accent');
+    expect(svg?.getAttribute('class')).toContain('text-blue-600');
   });
 
-  it('applies accent theme for index 1', () => {
+  it('applies purple theme for index 1', () => {
     const { container } = render(<FeatureIcon emoji="🎨" index={1} />);
     const wrapper = container.firstElementChild as HTMLElement;
-    expect(wrapper.className).toContain('from-accent/[0.08]');
+    expect(wrapper.className).toContain('from-purple-50');
   });
 
-  it('cycles colors: index 6 === index 0 (accent)', () => {
+  it('cycles colors: index 6 === index 0 (blue)', () => {
     const { container } = render(<FeatureIcon emoji="📥" index={6} />);
     const wrapper = container.firstElementChild as HTMLElement;
-    expect(wrapper.className).toContain('from-accent/[0.06]');
+    expect(wrapper.className).toContain('from-blue-50');
   });
 
   it('uses transition-transform instead of transition-all', () => {
