@@ -43,6 +43,9 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+# pSEO imports (lazy — only used in production or when ADZUNA keys present)
+from jobs_pseo import PseoRenderer, PageType, load_vite_manifest
+
 # Configure logging based on environment variable
 # Set DEBUG_LOGGING=true to enable detailed debug logs for troubleshooting
 # Default: INFO level (production-ready logging)
@@ -1244,6 +1247,45 @@ CORS(
 
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB
 
+# =============================================================================
+# Jobs pSEO Renderer — initialized once at startup
+# =============================================================================
+_pseo_renderer = None
+
+def _get_pseo_renderer():
+    """Lazy-init the pSEO renderer on first use."""
+    global _pseo_renderer
+    if _pseo_renderer is not None:
+        return _pseo_renderer
+
+    adzuna_id = os.getenv("ADZUNA_APP_ID")
+    adzuna_key = os.getenv("ADZUNA_APP_KEY")
+    if not adzuna_id or not adzuna_key:
+        logging.warning("pSEO disabled: Adzuna credentials not configured")
+        return None
+
+    matrix_path = os.path.join(os.path.dirname(__file__), "jobs_matrix.json")
+    if not os.path.isfile(matrix_path):
+        logging.warning("pSEO disabled: jobs_matrix.json not found")
+        return None
+
+    with open(matrix_path, "r", encoding="utf-8") as f:
+        matrix = json.load(f)
+
+    vite_manifest = load_vite_manifest(app.static_folder) if app.static_folder else {}
+
+    _pseo_renderer = PseoRenderer(
+        matrix=matrix,
+        adzuna_app_id=adzuna_id,
+        adzuna_app_key=adzuna_key,
+        cache_dir=os.path.join(os.path.dirname(__file__), "cache", "jobs"),
+        vite_manifest=vite_manifest,
+        supabase=supabase,
+    )
+    logging.info(f"pSEO renderer initialized: {matrix['meta']['total_roles']} roles × {matrix['meta']['total_locations']} locations")
+    return _pseo_renderer
+
+
 # Host canonicalization: www -> apex (SEO)
 CANONICAL_HOST = "easyfreeresume.com"
 WWW_HOST = f"www.{CANONICAL_HOST}"
@@ -1485,6 +1527,7 @@ VALID_SPA_ROUTES = {
     "privacy-policy",
     "terms-of-service",
     "error",
+    "jobs",
 }
 
 # Bot user-agent patterns for prerendered HTML serving
@@ -1518,6 +1561,160 @@ def _get_prerendered_path(route_path: str) -> str | None:
     if os.path.isfile(candidate):
         return candidate
     return None
+
+
+# =============================================================================
+# Jobs pSEO Routes — MUST be registered BEFORE the SPA catch-all
+# =============================================================================
+
+@app.route("/jobs/<path:subpath>", methods=["GET"])
+def jobs_pseo(subpath):
+    """
+    Serve SSR pSEO job pages for bots. Regular users get the SPA shell.
+    URL is parsed to determine page type (role/location, hub, filter, etc.).
+    """
+    user_agent = request.headers.get("User-Agent", "")
+
+    # Only serve SSR HTML to bots — humans get the React SPA
+    if not _is_bot(user_agent):
+        if FLASK_ENV == "production" and app.static_folder:
+            return send_from_directory(app.static_folder, "index.html")
+        # Dev mode: let Vite handle it
+        return "<!-- dev mode: use Vite -->" , 200
+
+    renderer = _get_pseo_renderer()
+    if not renderer:
+        # pSEO not configured — serve SPA shell
+        if FLASK_ENV == "production" and app.static_folder:
+            return send_from_directory(app.static_folder, "index.html")
+        return "<!-- pSEO not configured -->", 200
+
+    segments = [s for s in subpath.strip("/").split("/") if s]
+    page_type, params = renderer.resolve_url(segments)
+
+    if page_type is None:
+        # Invalid URL — return 404 with SPA shell so React can show 404 page
+        if FLASK_ENV == "production" and app.static_folder:
+            return send_from_directory(app.static_folder, "index.html"), 404
+        return "<!-- 404 -->", 404
+
+    page_num = request.args.get("page", 1, type=int)
+    html = renderer.get_page(page_type, page=page_num, **params)
+
+    if html is None:
+        if FLASK_ENV == "production" and app.static_folder:
+            return send_from_directory(app.static_folder, "index.html"), 404
+        return "<!-- no data -->", 404
+
+    return html, 200, {"Content-Type": "text/html; charset=utf-8"}
+
+
+@app.route("/jobs", methods=["GET"])
+def jobs_main():
+    """Serve /jobs main hub page."""
+    user_agent = request.headers.get("User-Agent", "")
+    if not _is_bot(user_agent):
+        if FLASK_ENV == "production" and app.static_folder:
+            return send_from_directory(app.static_folder, "index.html")
+        return "<!-- dev mode: use Vite -->", 200
+
+    renderer = _get_pseo_renderer()
+    if not renderer:
+        if FLASK_ENV == "production" and app.static_folder:
+            return send_from_directory(app.static_folder, "index.html")
+        return "<!-- pSEO not configured -->", 200
+
+    html = renderer.get_page(PageType.MAIN_HUB)
+    if html:
+        return html, 200, {"Content-Type": "text/html; charset=utf-8"}
+
+    if FLASK_ENV == "production" and app.static_folder:
+        return send_from_directory(app.static_folder, "index.html")
+    return "<!-- no data -->", 200
+
+
+@app.route("/api/jobs/page/<path:subpath>", methods=["GET"])
+def jobs_pseo_data(subpath):
+    """JSON data for React client-side navigation and pagination."""
+    renderer = _get_pseo_renderer()
+    if not renderer:
+        return jsonify({"success": False, "error": "pSEO not configured"}), 503
+
+    segments = [s for s in subpath.strip("/").split("/") if s]
+    page_type, params = renderer.resolve_url(segments)
+
+    if page_type is None:
+        return jsonify({"success": False, "error": "Invalid URL"}), 404
+
+    page_num = request.args.get("page", 1, type=int)
+    data = renderer.get_page_data(page_type, page=page_num, **params)
+
+    if data is None:
+        return jsonify({"success": False, "error": "No data available"}), 404
+
+    return jsonify({"success": True, "data": data.to_dict()})
+
+
+# =============================================================================
+# Dynamic Sitemap Routes
+# =============================================================================
+
+@app.route("/sitemap.xml", methods=["GET"])
+def sitemap_index():
+    """Sitemap index referencing all sub-sitemaps."""
+    sub_sitemaps = [
+        "sitemap-static.xml",
+        "sitemap-jobs-roles.xml",
+    ]
+    xml_parts = ['<?xml version="1.0" encoding="UTF-8"?>']
+    xml_parts.append('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+    base = "https://easyfreeresume.com"
+    for name in sub_sitemaps:
+        xml_parts.append(f"  <sitemap><loc>{base}/{name}</loc></sitemap>")
+    xml_parts.append("</sitemapindex>")
+    return "\n".join(xml_parts), 200, {"Content-Type": "application/xml; charset=utf-8"}
+
+
+@app.route("/sitemap-static.xml", methods=["GET"])
+def sitemap_static():
+    """Serve the static sitemap generated by the build process."""
+    # Try the build output first, then fallback to public/
+    for name in ("sitemap-static.xml", "sitemap.xml"):
+        path = os.path.join(app.static_folder, name) if app.static_folder else None
+        if path and os.path.isfile(path):
+            return send_file(path, mimetype="application/xml")
+    return "<!-- no static sitemap -->", 404
+
+
+@app.route("/sitemap-jobs-roles.xml", methods=["GET"])
+def sitemap_jobs_roles():
+    """Dynamic sitemap for role×location pSEO pages."""
+    renderer = _get_pseo_renderer()
+    if not renderer:
+        return "<!-- pSEO not configured -->", 404
+
+    base = "https://easyfreeresume.com"
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+    xml_parts = ['<?xml version="1.0" encoding="UTF-8"?>']
+    xml_parts.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+
+    for role in renderer.matrix.get("roles", []):
+        # Role hub
+        xml_parts.append(f"  <url><loc>{base}/jobs/{role['slug']}</loc>"
+                        f"<lastmod>{today}</lastmod><priority>0.7</priority></url>")
+        # Role × location pages
+        for loc in renderer.matrix.get("locations", []):
+            xml_parts.append(f"  <url><loc>{base}/jobs/{role['slug']}/{loc['slug']}</loc>"
+                            f"<lastmod>{today}</lastmod><priority>0.6</priority></url>")
+
+    # Location hubs
+    for loc in renderer.matrix.get("locations", []):
+        xml_parts.append(f"  <url><loc>{base}/jobs/in/{loc['slug']}</loc>"
+                        f"<lastmod>{today}</lastmod><priority>0.7</priority></url>")
+
+    xml_parts.append("</urlset>")
+    return "\n".join(xml_parts), 200, {"Content-Type": "application/xml; charset=utf-8"}
 
 
 @app.route("/", defaults={"path": ""}, methods=["GET"])
