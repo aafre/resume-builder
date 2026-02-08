@@ -10,6 +10,7 @@ import StepByStep from '../shared/StepByStep';
 import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
+import RevealSection from '../shared/RevealSection';
 import { InContentAd, AD_CONFIG } from '../ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
@@ -30,28 +31,31 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {config.steps && <StepByStep steps={config.steps} />}
 
+      <RevealSection variant="fade-up">
       <div className="mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+        <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Edit instantly: open the builder
         </h2>
-        <p className="text-lg text-gray-700 max-w-4xl mx-auto text-center leading-relaxed mb-8">
+        <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-8">
           Start building immediately. The editor opens in seconds with no barriers. No email
           verification, no password creation, no waiting. Just click and start creating your
           professional resume right now.
         </p>
       </div>
+      </RevealSection>
 
       {config.features && <FeatureGrid features={config.features} />}
 
+      <RevealSection variant="fade-up">
       <div className="mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+        <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Privacy-first mode: what is and isn't logged
         </h2>
-        <div className="max-w-4xl mx-auto bg-white rounded-xl p-8 shadow-md">
+        <div className="max-w-4xl mx-auto bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06]">
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-xl font-bold text-green-700 mb-4">✓ We DO NOT store:</h3>
-              <ul className="space-y-2 text-gray-700">
+              <h3 className="font-display text-xl font-bold text-accent mb-4">✓ We DO NOT store:</h3>
+              <ul className="space-y-2 text-stone-warm">
                 <li>• Your resume content</li>
                 <li>• Your personal information</li>
                 <li>• Your email address</li>
@@ -61,7 +65,7 @@ export default function FreeResumeBuilderNoSignUp() {
             </div>
             <div>
               <h3 className="text-xl font-bold text-ink/80 mb-4">✓ We only track:</h3>
-              <ul className="space-y-2 text-gray-700">
+              <ul className="space-y-2 text-stone-warm">
                 <li>• Anonymous page views (for analytics)</li>
                 <li>• Error reports (to fix bugs)</li>
                 <li>• Nothing that identifies you personally</li>
@@ -70,6 +74,7 @@ export default function FreeResumeBuilderNoSignUp() {
           </div>
         </div>
       </div>
+      </RevealSection>
 
       <FAQSection faqs={config.faqs} />
 

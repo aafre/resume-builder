@@ -10,6 +10,7 @@ import ProofSection from '../shared/ProofSection';
 import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
+import RevealSection from '../shared/RevealSection';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 
@@ -26,30 +27,33 @@ export default function ActualFreeResumeBuilder() {
 
       {config.metrics && <ProofSection metrics={config.metrics} />}
 
+      <RevealSection variant="fade-up">
       <div className="mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+        <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           What "actual free" means: no paywall, no watermark, no trials
         </h2>
-        <p className="text-lg text-gray-700 max-w-4xl mx-auto text-center leading-relaxed mb-12">
+        <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-12">
           Unlike other resume builders that advertise as "free" but lock features behind paywalls,
           EasyFreeResume is completely free forever. No trial periods, no credit card required,
           no watermarks on your downloads. Every feature is accessible to everyone, always.
         </p>
       </div>
+      </RevealSection>
 
       {config.features && <FeatureGrid features={config.features} />}
 
       {/* Competitor Comparison Table */}
+      <RevealSection variant="fade-up">
       <div className="mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+        <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           "Free" resume builders: what they actually charge for
         </h2>
         <div className="max-w-5xl mx-auto overflow-x-auto">
-          <table className="w-full bg-white shadow-lg rounded-xl overflow-hidden">
-            <thead className="bg-gray-800 text-white">
+          <table className="w-full bg-white shadow-premium rounded-2xl overflow-hidden">
+            <thead className="bg-ink text-white">
               <tr>
                 <th className="px-4 py-4 text-left font-semibold">Feature</th>
-                <th className="px-4 py-4 text-center font-semibold text-green-400">
+                <th className="px-4 py-4 text-center font-semibold text-accent">
                   EasyFreeResume
                 </th>
                 <th className="px-4 py-4 text-center font-semibold">
@@ -57,23 +61,23 @@ export default function ActualFreeResumeBuilder() {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-black/[0.06]">
               <tr>
-                <td className="px-4 py-4 font-medium text-gray-900">
+                <td className="px-4 py-4 font-medium text-ink">
                   PDF Download
                 </td>
-                <td className="px-4 py-4 text-center text-green-600 font-bold">
+                <td className="px-4 py-4 text-center text-accent font-bold">
                   ✓ Free
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
                   $5-25 per download
                 </td>
               </tr>
-              <tr className="bg-gray-50">
-                <td className="px-4 py-4 font-medium text-gray-900">
+              <tr className="bg-chalk-dark">
+                <td className="px-4 py-4 font-medium text-ink">
                   DOCX Download
                 </td>
-                <td className="px-4 py-4 text-center text-green-600 font-bold">
+                <td className="px-4 py-4 text-center text-accent font-bold">
                   ✓ Free
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
@@ -81,21 +85,21 @@ export default function ActualFreeResumeBuilder() {
                 </td>
               </tr>
               <tr>
-                <td className="px-4 py-4 font-medium text-gray-900">
+                <td className="px-4 py-4 font-medium text-ink">
                   No Watermark
                 </td>
-                <td className="px-4 py-4 text-center text-green-600 font-bold">
+                <td className="px-4 py-4 text-center text-accent font-bold">
                   ✓ Always
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
                   Premium only
                 </td>
               </tr>
-              <tr className="bg-gray-50">
-                <td className="px-4 py-4 font-medium text-gray-900">
+              <tr className="bg-chalk-dark">
+                <td className="px-4 py-4 font-medium text-ink">
                   All Templates
                 </td>
-                <td className="px-4 py-4 text-center text-green-600 font-bold">
+                <td className="px-4 py-4 text-center text-accent font-bold">
                   ✓ Access all
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
@@ -103,21 +107,21 @@ export default function ActualFreeResumeBuilder() {
                 </td>
               </tr>
               <tr>
-                <td className="px-4 py-4 font-medium text-gray-900">
+                <td className="px-4 py-4 font-medium text-ink">
                   No Account Required
                 </td>
-                <td className="px-4 py-4 text-center text-green-600 font-bold">
+                <td className="px-4 py-4 text-center text-accent font-bold">
                   ✓ Optional
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
                   Mandatory signup
                 </td>
               </tr>
-              <tr className="bg-gray-50">
-                <td className="px-4 py-4 font-medium text-gray-900">
+              <tr className="bg-chalk-dark">
+                <td className="px-4 py-4 font-medium text-ink">
                   Unlimited Downloads
                 </td>
-                <td className="px-4 py-4 text-center text-green-600 font-bold">
+                <td className="px-4 py-4 text-center text-accent font-bold">
                   ✓ Yes
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
@@ -126,13 +130,15 @@ export default function ActualFreeResumeBuilder() {
               </tr>
             </tbody>
           </table>
-          <p className="text-sm text-gray-500 mt-4 text-center">
+          <p className="text-sm text-mist mt-4 text-center">
             Comparison based on publicly available pricing from popular resume builders (Jan 2026)
           </p>
         </div>
       </div>
+      </RevealSection>
 
       {/* Truth Page Positioning */}
+      <RevealSection variant="fade-up">
       <div className="mb-16">
         <div className="max-w-4xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
           <h3 className="text-2xl font-bold text-ink mb-4 text-center">
@@ -153,6 +159,7 @@ export default function ActualFreeResumeBuilder() {
           </p>
         </div>
       </div>
+      </RevealSection>
 
       <FAQSection faqs={config.faqs} />
 
