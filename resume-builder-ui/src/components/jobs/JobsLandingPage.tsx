@@ -305,6 +305,11 @@ function capitalize(s: string): string {
 }
 
 function buildApiPath(params: Record<string, string | undefined>): string {
+  // Location hub: /jobs/in/:locationSlug → API path "in/london"
+  if (params.locationSlug && !params.roleSlug && !params.seniority) {
+    return `in/${params.locationSlug}`;
+  }
+
   const parts: string[] = [];
 
   if (params.seniority) parts.push(params.seniority);
