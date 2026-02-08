@@ -5,6 +5,23 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+      },
+      colors: {
+        ink: {
+          DEFAULT: '#0c0c0c',
+          light: '#1a1a1a',
+        },
+        chalk: {
+          DEFAULT: '#fafaf8',
+          dark: '#f0efe9',
+        },
+        'stone-warm': '#8a8680',
+        mist: '#a8a4a0',
+        accent: '#00d47e',
+      },
       backgroundClip: {
         text: 'text',
         border: 'border-box',

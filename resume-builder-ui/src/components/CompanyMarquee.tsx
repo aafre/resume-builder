@@ -50,8 +50,8 @@ export default function CompanyMarquee({
   return (
     <div className={`relative overflow-hidden h-24 ${className}`}>
       {/* Gradient overlays for fade effect */}
-      <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white via-white/90 to-transparent z-10 pointer-events-none" />
+      <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-chalk via-chalk/90 to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-chalk via-chalk/90 to-transparent z-10 pointer-events-none" />
 
       <div
         className={`flex space-x-6 ${
@@ -65,12 +65,12 @@ export default function CompanyMarquee({
         {duplicatedCompanies.map((company, index) => (
           <div
             key={`${company.name}-${index}`}
-            className="flex-shrink-0 w-36 h-16 flex items-center justify-center bg-white/95 rounded-xl border border-gray-200/60 shadow-sm hover:shadow-md transition-shadow duration-300 group cursor-default"
+            className="flex-shrink-0 w-36 h-16 flex items-center justify-center group cursor-default"
           >
             <img
               src={company.logo}
               alt={company.alt}
-              className="max-w-28 max-h-10 object-contain transition-all duration-300 opacity-80 group-hover:opacity-100 group-hover:scale-105"
+              className="max-w-28 max-h-10 object-contain transition-all duration-500 grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100"
               width="112"
               height="40"
               onError={(e) => {
@@ -79,7 +79,7 @@ export default function CompanyMarquee({
                 const container = target.parentElement;
                 if (container) {
                   container.innerHTML = `
-                    <div class="text-sm font-semibold text-gray-600 group-hover:text-gray-800 transition-colors px-3 text-center leading-tight">
+                    <div class="text-sm font-semibold text-stone-warm group-hover:text-ink transition-colors px-3 text-center leading-tight font-display">
                       ${company.name}
                     </div>
                   `;

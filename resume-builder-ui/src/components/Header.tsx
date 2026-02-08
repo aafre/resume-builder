@@ -53,9 +53,9 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white/90 backdrop-blur-xl border-b border-white/50 shadow-lg shadow-purple-500/5 sticky top-0 z-50 relative">
-      {/* Modern gradient accent line at top */}
-      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700" />
+    <header className="bg-white/95 backdrop-blur-xl border-b border-black/[0.06] sticky top-0 z-50 relative">
+      {/* Accent line at top */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-accent" />
 
       <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-[72px] transition-all duration-200">
@@ -74,7 +74,7 @@ export default function Header() {
                 height="36"
               />
             </div>
-            <span className="hidden sm:inline text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent ml-2.5 group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-indigo-600 transition-all duration-300 tracking-tight">
+            <span className="hidden sm:inline text-lg sm:text-xl font-extrabold text-ink ml-2.5 tracking-tight font-display">
               EasyFreeResume
             </span>
           </Link>
@@ -87,13 +87,13 @@ export default function Header() {
                 id="tour-my-resumes-link"
                 className={`relative px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
                   location.pathname === '/my-resumes'
-                    ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white shadow-md'
-                    : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700'
+                    ? 'bg-ink text-white shadow-sm'
+                    : 'text-gray-600 hover:bg-black/5 hover:text-ink'
                 }`}
               >
                 My Resumes
                 {resumeCount > 0 && (
-                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-amber-500 rounded-full flex items-center justify-center ring-2 ring-white text-white text-[10px] font-bold px-1">
+                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-accent rounded-full flex items-center justify-center ring-2 ring-white text-ink text-[10px] font-bold px-1">
                     {resumeCount > 99 ? '99+' : resumeCount}
                   </span>
                 )}
@@ -102,8 +102,8 @@ export default function Header() {
                 to="/templates"
                 className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
                   location.pathname === '/templates'
-                    ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white shadow-md'
-                    : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700'
+                    ? 'bg-ink text-white shadow-sm'
+                    : 'text-gray-600 hover:bg-black/5 hover:text-ink'
                 }`}
               >
                 Templates
@@ -114,7 +114,7 @@ export default function Header() {
           {/* Dynamic Page Title - Centered (Desktop, Non-Authenticated) */}
           {!isAuthenticated && getPageTitle() && (
             <div className="hidden lg:flex flex-col items-center absolute left-1/2 transform -translate-x-1/2">
-              <h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent tracking-tight">
+              <h1 className="text-lg font-extrabold text-ink tracking-tight font-display">
                 {getPageTitle()}
               </h1>
               {getPageSubtitle() && (
@@ -134,14 +134,14 @@ export default function Header() {
                 {/* My Resumes Icon with Badge */}
                 <Link
                   to="/my-resumes"
-                  className="relative p-2 rounded-lg hover:bg-purple-50/50 transition-all duration-200"
+                  className="relative p-2 rounded-lg hover:bg-black/5 transition-all duration-200"
                   aria-label={`My Resumes${resumeCount > 0 ? ` (${resumeCount})` : ''}`}
                 >
                   <div className="relative">
                     <FileText className="w-6 h-6 text-gray-700" />
                     {resumeCount > 0 && (
-                      <div className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-amber-500 rounded-full flex items-center justify-center ring-2 ring-white">
-                        <span className="text-white text-[10px] font-bold px-1">
+                      <div className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-accent rounded-full flex items-center justify-center ring-2 ring-white">
+                        <span className="text-ink text-[10px] font-bold px-1">
                           {resumeCount > 99 ? '99+' : resumeCount}
                         </span>
                       </div>
@@ -176,7 +176,7 @@ export default function Header() {
                   <button
                     id="tour-sign-in-button"
                     onClick={showAuthModal}
-className="flex items-center gap-2 py-2 font-semibold text-sm transition-all duration-300 text-purple-600 hover:text-purple-700 hover:underline lg:hover:no-underline lg:py-2.5 lg:px-5 lg:bg-gradient-to-r lg:from-blue-600 lg:via-purple-600 lg:to-indigo-700 lg:text-white lg:rounded-xl lg:shadow-md lg:hover:shadow-xl lg:hover:shadow-purple-500/20 lg:hover:scale-[1.02]"
+                    className="flex items-center gap-2 py-2 font-semibold text-sm transition-all duration-300 text-ink hover:text-accent hover:underline lg:hover:no-underline lg:py-2.5 lg:px-5 lg:bg-ink lg:text-white lg:rounded-xl lg:shadow-sm lg:hover:shadow-md lg:hover:scale-[1.02]"
                   >
                     <span>Sign In</span>
                   </button>
@@ -184,11 +184,11 @@ className="flex items-center gap-2 py-2 font-semibold text-sm transition-all dur
               </>
             )}
 
-            {/* CTA Button (only on homepage) */}
-            {location.pathname === "/" && (
+            {/* CTA Button (only on homepage, non-authenticated) */}
+            {location.pathname === "/" && !isAuthenticated && (
               <Link
                 to="/templates"
-                className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white py-2.5 px-5 sm:py-3 sm:px-6 rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl hover:shadow-purple-500/25 hover:scale-[1.02] transition-all duration-300 active:scale-[0.98]"
+                className="bg-accent text-ink py-2.5 px-5 sm:py-3 sm:px-6 rounded-xl text-sm font-bold shadow-sm hover:shadow-md hover:shadow-accent/20 hover:scale-[1.02] transition-all duration-300 active:scale-[0.98]"
               >
                 <span className="hidden sm:inline">Get Started</span>
                 <span className="sm:hidden">Start</span>
@@ -201,7 +201,7 @@ className="flex items-center gap-2 py-2 font-semibold text-sm transition-all dur
         {getPageTitle() && (
           <div className="lg:hidden pb-3 -mt-1">
             <div className="flex flex-col items-center">
-              <h1 className="text-base font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent tracking-tight">
+              <h1 className="text-base font-extrabold text-ink tracking-tight font-display">
                 {getPageTitle()}
               </h1>
               {getPageSubtitle() && (
