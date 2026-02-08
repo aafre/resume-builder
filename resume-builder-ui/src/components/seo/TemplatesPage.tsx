@@ -9,6 +9,7 @@ import PageHero from '../shared/PageHero';
 import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
+import RevealSection from '../shared/RevealSection';
 import TemplateCarousel from '../TemplateCarousel';
 import { InContentAd, AD_CONFIG } from '../ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
@@ -38,16 +39,18 @@ export default function TemplatesPage() {
       <InContentAd adSlot={AD_CONFIG.slots.templatesIncontent} marginY={32} />
 
       {/* Why Our Templates Section */}
-      <div className="my-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
-          Why Choose Our Free Resume Templates?
-        </h2>
-        <p className="text-lg text-gray-700 max-w-4xl mx-auto text-center leading-relaxed mb-12">
-          Unlike other resume builders that charge for premium templates or add watermarks,
-          EasyFreeResume offers all templates completely free. Every design has been tested
-          for ATS compatibility and created by professional designers.
-        </p>
-      </div>
+      <RevealSection variant="fade-up">
+        <div className="my-16">
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
+            Why Choose Our Free Resume Templates?
+          </h2>
+          <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-12">
+            Unlike other resume builders that charge for premium templates or add watermarks,
+            EasyFreeResume offers all templates completely free. Every design has been tested
+            for ATS compatibility and created by professional designers.
+          </p>
+        </div>
+      </RevealSection>
 
       {config.features && <FeatureGrid features={config.features} />}
 
@@ -64,59 +67,61 @@ export default function TemplatesPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <p className="font-semibold text-ink">Workday</p>
-              <p className="text-green-600 text-sm">✓ Compatible</p>
+              <p className="text-accent text-sm">✓ Compatible</p>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <p className="font-semibold text-ink">Taleo</p>
-              <p className="text-green-600 text-sm">✓ Compatible</p>
+              <p className="text-accent text-sm">✓ Compatible</p>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <p className="font-semibold text-ink">iCIMS</p>
-              <p className="text-green-600 text-sm">✓ Compatible</p>
+              <p className="text-accent text-sm">✓ Compatible</p>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <p className="font-semibold text-ink">Greenhouse</p>
-              <p className="text-green-600 text-sm">✓ Compatible</p>
+              <p className="text-accent text-sm">✓ Compatible</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* How to Use Section with implicit HowTo schema */}
-      <div className="my-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
-          How to Create Your Resume
-        </h2>
-        <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-accent text-ink rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-              1
+      <RevealSection variant="fade-up">
+        <div className="my-16">
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
+            How to Create Your Resume
+          </h2>
+          <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-accent text-ink rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                1
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Choose a Template</h3>
+              <p className="text-stone-warm">
+                Browse our collection and select the design that fits your industry and style.
+              </p>
             </div>
-            <h3 className="text-xl font-semibold mb-2">Choose a Template</h3>
-            <p className="text-gray-600">
-              Browse our collection and select the design that fits your industry and style.
-            </p>
-          </div>
-          <div className="text-center">
-            <div className="w-16 h-16 bg-accent text-ink rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-              2
+            <div className="text-center">
+              <div className="w-16 h-16 bg-accent text-ink rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                2
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Fill In Your Details</h3>
+              <p className="text-stone-warm">
+                Add your experience, education, and skills using our intuitive editor.
+              </p>
             </div>
-            <h3 className="text-xl font-semibold mb-2">Fill In Your Details</h3>
-            <p className="text-gray-600">
-              Add your experience, education, and skills using our intuitive editor.
-            </p>
-          </div>
-          <div className="text-center">
-            <div className="w-16 h-16 bg-accent text-ink rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-              3
+            <div className="text-center">
+              <div className="w-16 h-16 bg-accent text-ink rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                3
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Download Instantly</h3>
+              <p className="text-stone-warm">
+                Export your professional resume as PDF. No watermarks, no sign-up required.
+              </p>
             </div>
-            <h3 className="text-xl font-semibold mb-2">Download Instantly</h3>
-            <p className="text-gray-600">
-              Export your professional resume as PDF. No watermarks, no sign-up required.
-            </p>
           </div>
         </div>
-      </div>
+      </RevealSection>
 
       <FAQSection faqs={config.faqs} />
 
