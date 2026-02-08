@@ -163,21 +163,18 @@ const LandingPage: React.FC = () => {
         ])}
       />
 
-      {/* ═══════════ HERO — dark, full-viewport ═══════════ */}
-      <section className="relative bg-ink min-h-[90vh] flex items-center overflow-hidden">
-        {/* Subtle radial glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-accent/5 blur-3xl pointer-events-none" />
-
-        <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      {/* ═══════════ HERO — light, asymmetric ═══════════ */}
+      <section className="relative pt-12 pb-20 md:pt-20 md:pb-28">
+        <div className="max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left: text */}
           <div>
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-6 block">
               FREE FOREVER. NO SIGN-UP.
             </span>
-            <h1 className="font-display text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[1.05] tracking-tight text-white mb-6">
+            <h1 className="font-display text-[clamp(2.5rem,5.5vw,4.5rem)] font-extrabold leading-[1.08] tracking-tight text-ink mb-6">
               Build resumes that actually get you hired.
             </h1>
-            <p className="font-display text-lg md:text-xl font-extralight text-mist max-w-lg leading-relaxed mb-8">
+            <p className="font-display text-lg md:text-xl font-extralight text-stone-warm max-w-lg leading-relaxed mb-8">
               Create ATS-optimized, professionally designed resumes in minutes. No watermarks, no paywalls — ever.
             </p>
 
@@ -190,14 +187,14 @@ const LandingPage: React.FC = () => {
                 <ArrowRightIcon className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
               <button
-                className="group inline-flex items-center justify-center border border-white/20 text-white py-3.5 px-8 rounded-xl text-base font-semibold hover:border-white/40 hover:bg-white/5 transition-all duration-300 active:scale-95 font-display"
+                className="group inline-flex items-center justify-center border border-ink/15 text-ink py-3.5 px-8 rounded-xl text-base font-semibold hover:border-ink/30 hover:bg-ink/[0.03] transition-all duration-300 active:scale-95 font-display"
                 onClick={() => navigate("/templates")}
               >
                 View Templates
               </button>
             </div>
 
-            <p className="font-mono text-xs tracking-wide text-mist">
+            <p className="font-mono text-xs tracking-wide text-stone-warm">
               100% free · No sign-up · {prefersReducedMotion ? (
                 <>{resumeCountValue.toLocaleString("en-US")}+</>
               ) : (
@@ -211,15 +208,16 @@ const LandingPage: React.FC = () => {
             <div className="relative" style={{ perspective: '1000px' }}>
               {/* Shadow copy behind */}
               <div
-                className="absolute top-4 left-4 w-[280px] h-[380px] bg-white/[0.08] rounded-xl"
+                className="absolute top-4 left-4 w-[280px] h-[380px] bg-ink/[0.04] rounded-xl"
                 style={{ transform: 'rotateY(-3deg)' }}
               />
               {/* Main mockup */}
               <div
-                className="hero-mockup relative w-[280px] h-[380px] bg-white rounded-xl shadow-2xl p-6 flex flex-col gap-3"
+                className="hero-mockup relative w-[280px] h-[380px] bg-white rounded-xl p-6 flex flex-col gap-3 border border-black/[0.06]"
                 style={{
                   animation: prefersReducedMotion ? 'none' : 'float 4s ease-in-out infinite',
                   transform: 'rotateY(-3deg)',
+                  boxShadow: '0 8px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)',
                 }}
               >
                 {/* Name bar */}
@@ -254,37 +252,35 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ═══════════ STATS — dark continuation ═══════════ */}
-      <section className="bg-ink py-16">
-        <RevealSection stagger className="max-w-4xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-0 sm:divide-x sm:divide-white/20">
+      {/* ═══════════ STATS ═══════════ */}
+      <section className="py-12">
+        <RevealSection stagger className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-0 sm:divide-x sm:divide-ink/10">
           <div className="text-center sm:px-16">
-            <p className="font-mono text-3xl md:text-4xl font-normal text-white mb-1">
+            <p className="font-mono text-3xl md:text-4xl font-normal text-ink mb-1">
               {prefersReducedMotion ? (
                 <>{resumeCountValue.toLocaleString("en-US")}+</>
               ) : (
                 <CountUp end={resumeCountValue} separator="," suffix="+" duration={2.5} enableScrollSpy scrollSpyOnce />
               )}
             </p>
-            <p className="font-display text-sm font-extralight text-mist tracking-wide">Resumes Created</p>
+            <p className="font-display text-sm font-extralight text-stone-warm tracking-wide">Resumes Created</p>
           </div>
           <div className="text-center sm:px-16">
-            <p className="font-mono text-3xl md:text-4xl font-normal text-white mb-1">
+            <p className="font-mono text-3xl md:text-4xl font-normal text-ink mb-1">
               {prefersReducedMotion ? (
                 <>100%</>
               ) : (
                 <CountUp end={100} suffix="%" duration={2} enableScrollSpy scrollSpyOnce />
               )}
             </p>
-            <p className="font-display text-sm font-extralight text-mist tracking-wide">ATS Compatible</p>
+            <p className="font-display text-sm font-extralight text-stone-warm tracking-wide">ATS Compatible</p>
           </div>
         </RevealSection>
       </section>
 
       {/* ═══════════ AD SLOT ═══════════ */}
-      <div className="bg-chalk">
-        <div className="container mx-auto max-w-4xl px-4">
-          <InContentAd adSlot={AD_CONFIG.slots.landingIncontent} marginY={32} />
-        </div>
+      <div className="container mx-auto max-w-4xl px-4">
+        <InContentAd adSlot={AD_CONFIG.slots.landingIncontent} marginY={32} />
       </div>
 
       {/* ═══════════ COMPANY MARQUEE — light ═══════════ */}
@@ -348,14 +344,14 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ═══════════ INTERACTIVE DEMO — dark ═══════════ */}
-      <section className="bg-ink py-24 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 600px' }}>
+      {/* ═══════════ INTERACTIVE DEMO ═══════════ */}
+      <section className="bg-chalk py-24 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 600px' }}>
         <div className="max-w-5xl mx-auto">
           <RevealSection className="text-center mb-16">
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block">
               HOW IT WORKS
             </span>
-            <h2 className="font-display text-3xl md:text-5xl font-extrabold text-white tracking-tight">
+            <h2 className="font-display text-3xl md:text-5xl font-extrabold text-ink tracking-tight">
               From blank page to polished PDF.
             </h2>
           </RevealSection>
@@ -570,30 +566,36 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ═══════════ FINAL CTA — dark ═══════════ */}
-      <section className="bg-ink py-32 px-4 relative overflow-hidden" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
-        {/* Subtle radial accent glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-accent/[0.07] blur-3xl pointer-events-none" />
+      {/* ═══════════ FINAL CTA ═══════════ */}
+      <section className="bg-chalk py-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+        <div className="max-w-4xl mx-auto">
+          <RevealSection variant="scale-in">
+            <div className="relative bg-ink rounded-3xl py-20 px-6 md:py-24 md:px-12 overflow-hidden text-center">
+              {/* Subtle radial accent glow */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-accent/[0.07] blur-3xl pointer-events-none" />
 
-        <RevealSection variant="scale-in" className="relative z-10 max-w-3xl mx-auto text-center">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-6 block">
-            READY?
-          </span>
-          <h2 className="font-display text-3xl md:text-[3.5rem] font-extrabold text-white mb-6 tracking-tight leading-tight">
-            Ready to Land Your Dream Job?
-          </h2>
-          <p className="font-display text-lg font-extralight text-mist mb-10 max-w-xl mx-auto leading-relaxed">
-            Join thousands of job seekers who've successfully created
-            professional resumes with our free builder.
-          </p>
-          <button
-            className="group inline-flex items-center justify-center bg-accent text-ink py-4 px-10 rounded-xl text-lg font-bold shadow-lg hover:shadow-accent/25 hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-300 active:scale-95 font-display"
-            onClick={() => navigate(hasResumes ? "/my-resumes" : "/templates")}
-          >
-            {hasResumes ? "Go to My Resumes" : "Start Building Your Resume"}
-            <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
-          </button>
-        </RevealSection>
+              <div className="relative z-10">
+                <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-6 block">
+                  READY?
+                </span>
+                <h2 className="font-display text-3xl md:text-[3.5rem] font-extrabold text-white mb-6 tracking-tight leading-tight">
+                  Ready to Land Your Dream Job?
+                </h2>
+                <p className="font-display text-lg font-extralight text-mist mb-10 max-w-xl mx-auto leading-relaxed">
+                  Join thousands of job seekers who've successfully created
+                  professional resumes with our free builder.
+                </p>
+                <button
+                  className="group inline-flex items-center justify-center bg-accent text-ink py-4 px-10 rounded-xl text-lg font-bold shadow-lg hover:shadow-accent/25 hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-300 active:scale-95 font-display"
+                  onClick={() => navigate(hasResumes ? "/my-resumes" : "/templates")}
+                >
+                  {hasResumes ? "Go to My Resumes" : "Start Building Your Resume"}
+                  <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
+                </button>
+              </div>
+            </div>
+          </RevealSection>
+        </div>
       </section>
     </>
   );
