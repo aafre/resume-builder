@@ -50,7 +50,7 @@ jobs:
 
       - name: Install wkhtmltopdf
         run: |
-          sudo apt-get update
+          sudo apt-get update || true
           sudo apt-get install -y wkhtmltopdf
 
       - name: Install Python dependencies
