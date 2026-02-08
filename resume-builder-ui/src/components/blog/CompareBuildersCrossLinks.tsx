@@ -27,7 +27,7 @@ export default function CompareBuildersCrossLinks({
   excludePath,
   title = 'Compare Other Resume Builders',
   description = 'See how other popular resume builders compare on pricing, features, and hidden costs:',
-  bgColor = 'bg-gray-50',
+  bgColor = 'bg-chalk-dark',
 }: CompareBuildersCrossLinksProps) {
   const links = excludePath
     ? ALL_COMPARISONS.filter((c) => c.path !== excludePath)
@@ -35,8 +35,8 @@ export default function CompareBuildersCrossLinks({
 
   return (
     <div className={`${bgColor} rounded-xl p-6 mt-12`}>
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">{title}</h2>
-      <p className="text-gray-600 mb-4">{description}</p>
+      <h2 className="font-display text-2xl font-extrabold text-ink mb-4">{title}</h2>
+      <p className="font-display font-extralight text-stone-warm mb-4">{description}</p>
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {links.map((link) => (
           <li key={link.path}>

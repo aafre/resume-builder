@@ -24,33 +24,33 @@ export default function RelatedArticles({ currentSlug, category, maxArticles = 3
 
   return (
     <section className="mt-10">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Continue Reading</h2>
-      <div className="grid md:grid-cols-3 gap-6">
+      <h2 className="font-display text-2xl font-extrabold text-ink mb-6">Continue Reading</h2>
+      <div className="grid md:grid-cols-3 gap-4">
         {related.map((post) => (
           <article
             key={post.slug}
-            className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
           >
             <div className="mb-3">
-              <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-full">
+              <span className="font-mono text-[10px] tracking-[0.1em] text-stone-warm uppercase">
                 {post.category}
               </span>
             </div>
 
-            <h3 className="text-lg font-bold mb-2 leading-tight">
+            <h3 className="font-display text-base font-extrabold mb-2 leading-tight">
               <Link
                 to={`/blog/${post.slug}`}
-                className="text-gray-900 hover:text-accent transition-colors"
+                className="text-ink hover:text-accent transition-colors"
               >
                 {post.title}
               </Link>
             </h3>
 
-            <p className="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-2">
+            <p className="font-display font-extralight text-stone-warm text-sm mb-4 leading-relaxed line-clamp-2">
               {post.description}
             </p>
 
-            <div className="flex items-center gap-3 text-xs text-gray-500">
+            <div className="flex items-center gap-3 text-[11px] text-mist font-mono">
               <time dateTime={post.publishDate}>
                 {new Date(post.publishDate).toLocaleDateString('en-US', {
                   month: 'short',

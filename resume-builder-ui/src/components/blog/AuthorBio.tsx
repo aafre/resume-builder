@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 export default function AuthorBio() {
   return (
     <section className="mt-10">
-      <div className="bg-slate-50/80 rounded-2xl border border-gray-200 p-6 md:p-8">
+      <div className="bg-chalk-dark rounded-2xl border border-black/[0.04] p-6 md:p-8">
         <div className="flex items-start gap-5">
           <div className="w-14 h-14 bg-ink rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
             <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -11,22 +11,22 @@ export default function AuthorBio() {
             </svg>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">Written by</p>
-            <h3 className="text-lg font-bold text-gray-900 mb-2">The EasyFreeResume Team</h3>
-            <p className="text-gray-600 leading-relaxed mb-4">
+            <p className="font-mono text-[10px] tracking-[0.15em] text-stone-warm uppercase mb-1">Written by</p>
+            <h3 className="font-display text-lg font-extrabold text-ink mb-2">The EasyFreeResume Team</h3>
+            <p className="font-display font-extralight text-stone-warm leading-relaxed mb-4">
               We're a team of career coaches, HR professionals, and developers dedicated to making professional resume building accessible to everyone — completely free, no strings attached.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
                 to="/blog"
-                className="text-sm font-medium text-accent hover:text-ink/80 transition-colors"
+                className="text-sm font-medium text-accent hover:text-ink transition-colors"
               >
                 More articles &rarr;
               </Link>
-              <span className="text-gray-300">|</span>
+              <span className="text-mist">|</span>
               <Link
                 to="/templates"
-                className="text-sm font-medium text-accent hover:text-ink/80 transition-colors"
+                className="text-sm font-medium text-accent hover:text-ink transition-colors"
               >
                 Browse templates &rarr;
               </Link>
