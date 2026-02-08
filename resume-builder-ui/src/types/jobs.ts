@@ -16,6 +16,7 @@ export interface SalaryStats {
   median: number;
   sample_size: number;
   currency: string;
+  source: 'verified' | 'estimated' | 'none';
 }
 
 export interface RelatedLink {
@@ -50,6 +51,7 @@ export interface PseoJob {
   salary_is_predicted: boolean;
   url: string;
   created: string;
+  description?: string;
 }
 
 export interface PseoPageData {

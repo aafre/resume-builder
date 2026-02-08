@@ -42,7 +42,7 @@
     </span>
     {% if data.salary_stats.median %}
     <span class="inline-flex items-center gap-1 text-gray-600">
-      Median salary: {{ data.salary_stats.currency }}{{ "{:,}".format(data.salary_stats.median) }}
+      Median salary: {{ data.salary_stats.currency }}{{ "{:,}".format(data.salary_stats.median) }}{% if data.salary_stats.source == 'estimated' %} (est.){% endif %}
     </span>
     {% endif %}
     {% if data.top_skills %}
@@ -67,6 +67,9 @@
           </h2>
           <p class="text-sm text-gray-600 mt-0.5">{{ job.company }}</p>
           <p class="text-sm text-gray-500 mt-0.5">{{ job.location }}</p>
+          {% if job.description %}
+          <p class="text-sm text-gray-500 mt-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ job.description }}</p>
+          {% endif %}
         </div>
         <div class="text-right flex-shrink-0">
           {% if job.salary_min and job.salary_max and not job.salary_is_predicted %}

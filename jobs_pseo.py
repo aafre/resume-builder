@@ -94,6 +94,7 @@ class SalaryStats:
     median: int = 0
     sample_size: int = 0
     currency: str = "£"
+    source: str = "none"  # "verified", "estimated", or "none"
 
     def to_dict(self) -> dict:
         return {
@@ -102,6 +103,7 @@ class SalaryStats:
             "median": self.median,
             "sample_size": self.sample_size,
             "currency": self.currency,
+            "source": self.source,
         }
 
 
@@ -182,6 +184,7 @@ class PseoRenderer:
 
     RESULTS_PER_PAGE = 20
     MIN_RESULTS_FOR_INDEX = 5
+    MAX_PER_COMPANY = 3
 
     CACHE_TTL = {
         "default": 6 * 3600,        # 6 hours
@@ -383,7 +386,7 @@ class PseoRenderer:
             location_slug=location_slug,
             location_display=loc["name"],
             category=role["category"],
-            jobs=self._clean_jobs(jobs),
+            jobs=self._diversify_jobs(self._clean_jobs(jobs)),
             total_count=total,
             salary_stats=self._aggregate_salary_stats(jobs),
             top_skills=self._aggregate_top_skills(jobs),
@@ -391,7 +394,7 @@ class PseoRenderer:
             cached_at=datetime.now(timezone.utc).isoformat(),
         )
 
-        # Strip descriptions from jobs now that skills are extracted
+        # Strip internal descriptions now that skills are extracted
         for job in page_data.jobs:
             job.pop("_description", None)
 
@@ -451,7 +454,7 @@ class PseoRenderer:
             role_slug=role_slug,
             role_display=role["display_name"],
             category=role["category"],
-            jobs=self._clean_jobs(jobs),
+            jobs=self._diversify_jobs(self._clean_jobs(jobs)),
             total_count=total,
             salary_stats=self._aggregate_salary_stats(jobs),
             top_skills=self._aggregate_top_skills(jobs),
@@ -592,7 +595,7 @@ class PseoRenderer:
             modifier=modifier,
             modifier_label=modifier_label,
             category=role["category"],
-            jobs=self._clean_jobs(jobs),
+            jobs=self._diversify_jobs(self._clean_jobs(jobs)),
             total_count=total,
             salary_stats=self._aggregate_salary_stats(jobs),
             top_skills=self._aggregate_top_skills(jobs),
@@ -662,7 +665,7 @@ class PseoRenderer:
             location_display=loc["name"],
             seniority=seniority,
             category=role["category"],
-            jobs=self._clean_jobs(jobs),
+            jobs=self._diversify_jobs(self._clean_jobs(jobs)),
             total_count=total,
             salary_stats=self._aggregate_salary_stats(jobs),
             top_skills=self._aggregate_top_skills(jobs),
@@ -840,6 +843,12 @@ class PseoRenderer:
         """Clean job data for rendering (keep _description temporarily for skill extraction)."""
         cleaned = []
         for j in jobs:
+            desc_raw = j.get("_description", "") or ""
+            # Strip HTML tags for clean snippet
+            desc_clean = re.sub(r"<[^>]+>", " ", desc_raw).strip()
+            desc_clean = re.sub(r"\s+", " ", desc_clean)
+            snippet = (desc_clean[:200] + "...") if len(desc_clean) > 200 else desc_clean
+
             cleaned.append({
                 "title": j.get("title", ""),
                 "company": j.get("company", ""),
@@ -849,22 +858,53 @@ class PseoRenderer:
                 "salary_is_predicted": j.get("salary_is_predicted", True),
                 "url": j.get("url", ""),
                 "created": j.get("created", ""),
-                "_description": j.get("_description", ""),
+                "description": snippet,
+                "_description": desc_raw,  # internal, stripped later
             })
         return cleaned
+
+    def _diversify_jobs(self, jobs: list[dict]) -> list[dict]:
+        """Cap jobs per company. Excess pushed to end, not removed."""
+        company_count: dict[str, int] = {}
+        primary = []
+        overflow = []
+
+        for job in jobs:
+            company = (job.get("company") or "").strip().lower()
+            count = company_count.get(company, 0)
+            if count < self.MAX_PER_COMPANY:
+                primary.append(job)
+                company_count[company] = count + 1
+            else:
+                overflow.append(job)
+
+        return primary + overflow
 
     # ---- Aggregation -------------------------------------------------------
 
     def _aggregate_salary_stats(self, jobs: list[dict]) -> SalaryStats:
-        """Compute salary stats from non-predicted salaries."""
-        salaries = []
+        """Compute salary stats with two-tier approach: verified (non-predicted) preferred, estimated fallback."""
+        verified = []
+        estimated = []
         for j in jobs:
-            if not j.get("salary_is_predicted") and j.get("salary_min") and j.get("salary_max"):
-                avg = (j["salary_min"] + j["salary_max"]) / 2
+            sal_min = j.get("salary_min")
+            sal_max = j.get("salary_max")
+            if sal_min and sal_max:
+                avg = (sal_min + sal_max) / 2
                 if 10000 < avg < 500000:  # sanity bounds
-                    salaries.append(int(avg))
+                    if not j.get("salary_is_predicted"):
+                        verified.append(int(avg))
+                    else:
+                        estimated.append(int(avg))
 
-        if len(salaries) < 3:
+        # Prefer verified, fall back to estimated
+        if len(verified) >= 3:
+            salaries = verified
+            source = "verified"
+        elif len(verified) + len(estimated) >= 3:
+            salaries = verified + estimated
+            source = "estimated"
+        else:
             return SalaryStats()
 
         return SalaryStats(
@@ -872,6 +912,7 @@ class PseoRenderer:
             max=max(salaries),
             median=int(statistics.median(salaries)),
             sample_size=len(salaries),
+            source=source,
         )
 
     def _aggregate_top_skills(self, jobs: list[dict]) -> list[str]:
@@ -1062,6 +1103,9 @@ class PseoRenderer:
             "url": job.get("url", ""),
             "datePosted": job.get("created", ""),
         }
+
+        if job.get("description"):
+            posting["description"] = job["description"]
 
         # validThrough: +30 days from created
         if job.get("created"):

@@ -137,6 +137,7 @@ export default function JobsLandingPage() {
             <span className="text-gray-600">
               Median salary: {data.salary_stats.currency}
               {data.salary_stats.median.toLocaleString()}
+              {data.salary_stats.source === 'estimated' && ' (est.)'}
             </span>
           )}
           {data.top_skills?.length > 0 && (
@@ -266,6 +267,9 @@ function JobCard({ job }: { job: PseoJob }) {
           </h2>
           <p className="text-sm text-gray-600 mt-0.5">{job.company}</p>
           <p className="text-sm text-gray-500 mt-0.5">{job.location}</p>
+          {job.description && (
+            <p className="text-sm text-gray-500 mt-1 line-clamp-2">{job.description}</p>
+          )}
         </div>
         <div className="text-right flex-shrink-0">
           {job.salary_min && job.salary_max && !job.salary_is_predicted && (

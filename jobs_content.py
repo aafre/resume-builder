@@ -406,17 +406,25 @@ def format_salary_insight(salary_stats: dict | None, role_display: str, location
     median = salary_stats.get("median", 0)
     low = salary_stats.get("min", 0)
     high = salary_stats.get("max", 0)
+    source = salary_stats.get("source", "none")
+
+    basis = (
+        "Based on estimated salary data from current listings"
+        if source == "estimated"
+        else "Based on current listings"
+    )
 
     if median and low and high:
         return (
-            f"Based on current listings, {role_display} salaries in {location} range "
+            f"{basis}, {role_display} salaries in {location} range "
             f"from {currency}{low:,} to {currency}{high:,}, with a median of "
             f"{currency}{median:,} per year."
         )
     if median:
         return (
             f"The median salary for {role_display} roles in {location} is "
-            f"approximately {currency}{median:,} per year based on current listings."
+            f"approximately {currency}{median:,} per year based on "
+            f"{'estimated data from ' if source == 'estimated' else ''}current listings."
         )
     return f"Salary data for {role_display} roles in {location} varies by experience and employer."
 
