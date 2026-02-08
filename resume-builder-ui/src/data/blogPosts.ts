@@ -1,0 +1,321 @@
+export const CURRENT_YEAR = new Date().getFullYear();
+
+export interface BlogPost {
+  slug: string;
+  title: string;
+  description: string;
+  publishDate: string;
+  readTime: string;
+  category: string;
+  featured?: boolean;
+  comingSoon?: boolean;
+}
+
+export const blogPosts: BlogPost[] = [
+  // New AI Blog Content (Featured)
+  {
+    slug: "chatgpt-resume-prompts",
+    title: "25+ ChatGPT Prompts for Resume Writing (Copy & Paste Ready)",
+    description: "Get the best ChatGPT prompts for writing resume summaries, experience bullets, skills sections, and more. Copy-paste ready prompts that actually work in 2026.",
+    publishDate: "2026-01-21",
+    readTime: "12 min",
+    category: "AI & Tools",
+    featured: true,
+  },
+  {
+    slug: "ai-resume-writing-guide",
+    title: "AI Resume Writing: The Complete 2026 Guide (ChatGPT, Claude, Gemini & More)",
+    description: "Master AI-powered resume writing with ChatGPT, Claude, Gemini, and Grok. Learn the best tools, prompts, and strategies for creating resumes that get interviews.",
+    publishDate: "2026-01-21",
+    readTime: "15 min",
+    category: "AI & Tools",
+  },
+  {
+    slug: "claude-resume-prompts",
+    title: "15+ Claude AI Prompts for Resume Writing (2026)",
+    description: "Get the best Claude prompts for writing professional resumes. Claude excels at nuanced, professional writing. Copy-paste these prompts for better results.",
+    publishDate: "2026-01-21",
+    readTime: "10 min",
+    category: "AI & Tools",
+  },
+  {
+    slug: "gemini-resume-prompts",
+    title: "Google Gemini Prompts for Resume Writing (2026)",
+    description: "Best Gemini AI prompts for resume writing. Leverage Google's AI for job description analysis, keyword extraction, and resume optimization.",
+    publishDate: "2026-01-21",
+    readTime: "8 min",
+    category: "AI & Tools",
+  },
+  {
+    slug: "grok-resume-prompts",
+    title: "Grok AI Prompts for Resume Writing (2026)",
+    description: "Use Grok AI (xAI) for fast resume writing with a conversational approach. Best prompts for quick iterations and real-time resume feedback.",
+    publishDate: "2026-01-21",
+    readTime: "7 min",
+    category: "AI & Tools",
+  },
+  {
+    slug: "ai-job-description-analyzer",
+    title: "How to Use AI to Analyze Job Descriptions (Extract Keywords & Requirements)",
+    description: "Learn to use AI tools like ChatGPT and Claude to extract keywords, identify requirements, and decode what employers really want from job descriptions.",
+    publishDate: "2026-01-21",
+    readTime: "9 min",
+    category: "AI & Tools",
+  },
+  {
+    slug: "ai-resume-review",
+    title: "How to Use AI to Review Your Resume (Get Feedback Before Applying)",
+    description: "Learn to use ChatGPT, Claude, and other AI tools to review your resume for errors, improvements, and ATS optimization before submitting applications.",
+    publishDate: "2026-01-21",
+    readTime: "8 min",
+    category: "AI & Tools",
+  },
+  // Existing posts
+  {
+    slug: "job-interview-guide",
+    title: "The Ultimate Guide to Nailing Your Next Job Interview",
+    description: "A comprehensive guide covering everything from pre-interview research and common questions to post-interview follow-up etiquette.",
+    publishDate: "2025-09-05",
+    readTime: "7 min",
+    category: "Interview Prep",
+  },
+  {
+    slug: "behavioral-interview-questions",
+    title: "15+ Behavioral Interview Questions (and How to Answer with the STAR Method)",
+    description: "Prepare for tough behavioral questions by mastering the STAR method with these common examples and answer frameworks.",
+    publishDate: "2025-09-02",
+    readTime: "6 min",
+    category: "Interview Prep",
+  },
+  {
+    slug: "introducing-prepai-ai-interview-coach",
+    title: "Don't Just Prepare, PrepAI: Introducing Your AI Interview Coach",
+    description: "Move beyond standard interview advice. Discover how PrepAI, our new AI-powered tool, provides instant, personalized feedback to help you ace your next interview.",
+    publishDate: "2025-08-30",
+    readTime: "6 min",
+    category: "AI & Tools",
+  },
+  {
+    slug: "how-to-write-a-resume-guide",
+    title: `How to Write a Resume in ${CURRENT_YEAR}: The Complete Step-by-Step Guide`,
+    description: "From a blank page to a finished, professional resume, this guide covers every section, formatting rule, and writing tip you need to know.",
+    publishDate: "2025-08-25",
+    readTime: "8 min",
+    category: "Resume Writing",
+  },
+  {
+    slug: "resume-action-verbs",
+    title: "Action Verbs for Resumes: 200+ Words to Boost Your Impact",
+    description: "Replace boring words with powerful action verbs that grab recruiters' attention and showcase your accomplishments.",
+    publishDate: "2025-08-20",
+    readTime: "9 min",
+    category: "Resume Sections",
+  },
+  {
+    slug: "ai-resume-builder",
+    title: `AI Resume Builders: Your Secret Weapon for Job Search in ${CURRENT_YEAR}?`,
+    description:
+      "Explore how AI can revolutionize your resume writing, from drafting content to optimizing for ATS, and learn best practices for smart usage in today's job market.",
+    publishDate: "2025-07-27",
+    readTime: "11 min",
+    category: "AI & Tools",
+  },
+  {
+    slug: "resume-mistakes-to-avoid",
+    title: "10 Critical Resume Mistakes That Kill Your Job Prospects",
+    description:
+      "Discover the most common resume errors that send your application straight to the rejection pile and learn how to avoid them.",
+    publishDate: "2025-07-25",
+    readTime: "7 min",
+    category: "Resume Tips",
+  },
+  {
+    slug: "ats-resume-optimization",
+    title: "ATS Resume Optimization: Beat the Bots and Land Interviews",
+    description:
+      "Master the art of creating ATS-friendly resumes that pass automated screening systems and reach human recruiters.",
+    publishDate: "2025-07-22",
+    readTime: "8 min",
+    category: "ATS Optimization",
+    featured: false,
+  },
+  {
+    slug: "resume-no-experience",
+    title: "Resume with No Experience: Real Examples + Free Template",
+    description:
+      "How to write an ATS-friendly, confidence-boosting resume when you're just starting out. Includes copy-paste examples and free template.",
+    publishDate: "2025-07-20",
+    readTime: "10\u201314 min",
+    category: "Entry Level",
+  },
+  {
+    slug: "professional-summary-examples",
+    title: "Professional Summary Examples: 20+ Winning Templates",
+    description:
+      "Craft a compelling professional summary that grabs attention with these proven examples and templates.",
+    publishDate: "2025-07-18",
+    readTime: "12 min",
+    category: "Resume Sections",
+    featured: false,
+  },
+  {
+    slug: "resume-keywords-guide",
+    title: `Resume Keywords by Industry: The Complete ${CURRENT_YEAR} Guide`,
+    description:
+      `The definitive guide to resume keywords recruiters and ATS systems are scanning for in ${CURRENT_YEAR}.`,
+    publishDate: "2025-07-15",
+    readTime: "9\u201311 min",
+    category: "Keywords",
+  },
+  {
+    slug: "cover-letter-guide",
+    title: `How to Write a Cover Letter That Gets Read in ${CURRENT_YEAR}`,
+    description:
+      "Master the art of writing cover letters that stand out, get noticed, and support your resume in the modern job market.",
+    publishDate: "2025-07-12",
+    readTime: "7 min",
+    category: "Job Applications",
+    featured: false,
+  },
+  {
+    slug: "remote-work-resume",
+    title: "Remote Work Resume: Stand Out in the Digital Job Market",
+    description:
+      "Optimize your resume for remote positions and showcase the skills that remote employers value most.",
+    publishDate: "2025-07-10",
+    readTime: "7 min",
+    category: "Remote Work",
+  },
+  {
+    slug: "resume-length-guide",
+    title: `Resume Length: How Long Should Your Resume Be in ${CURRENT_YEAR}?`,
+    description:
+      "Discover the optimal resume length for your experience level and industry, with specific guidelines.",
+    publishDate: "2025-07-08",
+    readTime: "6 min",
+    category: "Resume Format",
+  },
+  {
+    slug: "tech-resume-guide",
+    title: `Tech Resume Guide: Land Your Dream Developer Job in ${CURRENT_YEAR}`,
+    description:
+      "Create a standout tech resume with industry-specific tips, project showcases, and skill presentations.",
+    publishDate: "2025-07-05",
+    readTime: "9 min",
+    category: "Tech Industry",
+  },
+  {
+    slug: "resume-vs-cv-difference",
+    title: "Resume vs CV: Understanding the Key Differences",
+    description:
+      "Learn when to use a resume versus a CV, and how to format each document for maximum impact.",
+    publishDate: "2025-07-02",
+    readTime: "5 min",
+    category: "Resume Basics",
+  },
+  {
+    slug: "how-to-use-resume-keywords",
+    title: `How to Use Resume Keywords to Beat the ATS (The Ultimate ${CURRENT_YEAR} Guide)`,
+    description: "A deep dive into finding and using the right keywords to ensure your resume gets past applicant tracking systems and into human hands. Your master guide to ATS optimization.",
+    publishDate: "2025-08-15",
+    readTime: "11 min",
+    category: "Keywords",
+    featured: false,
+  },
+  {
+    slug: "software-engineer-resume-keywords",
+    title: "50+ Essential Keywords for a Software Engineer Resume",
+    description: "From programming languages to agile methodologies, these are the must-have keywords that will get your software engineering resume noticed by top tech companies.",
+    publishDate: "2025-08-10",
+    readTime: "9 min",
+    category: "Tech Industry",
+  },
+  {
+    slug: "customer-service-resume-keywords",
+    title: "Top Keywords for Customer Service Resumes (with Examples)",
+    description: "Elevate your customer service resume by including the keywords recruiters are searching for, from CRM platforms to conflict resolution skills.",
+    publishDate: "2025-08-05",
+    readTime: "9 min",
+    category: "Keywords",
+  },
+  {
+    slug: "how-why-easyfreeresume-completely-free",
+    title: "How (and Why) is EasyFreeResume Completely Free?",
+    description: "No paywalls, no hidden fees, no premium upgrades. We break down why we built a truly free resume builder and how we are committed to keeping it that way.",
+    publishDate: "2025-08-01",
+    readTime: "8 min",
+    category: "Company",
+  },
+  {
+    slug: "zety-vs-easy-free-resume",
+    title: "Zety Pricing 2026: Why Pay? Use This 100% Free Alternative Instead",
+    description: "Looking for Zety pricing? Don't get locked into a $5.95-$23.95/month subscription. EasyFreeResume offers the same ATS templates for $0. No hidden fees, no watermarks.",
+    publishDate: "2025-07-28",
+    readTime: "9 min",
+    category: "Comparisons",
+  },
+  {
+    slug: "resume-io-vs-easy-free-resume",
+    title: "Resume.io Pricing 2026: Free Alternative That Does More",
+    description: "Resume.io costs $2.95-$24.95/month for downloads. EasyFreeResume offers the same ATS templates for $0. Compare features, privacy, and see why free wins.",
+    publishDate: "2026-01-21",
+    readTime: "8 min",
+    category: "Comparisons",
+  },
+  {
+    slug: "resume-genius-vs-easy-free-resume",
+    title: "Resume Genius Pricing 2026: Is $7.95/Month Worth It? (Free Alternative)",
+    description: "Resume Genius charges $7.95-$39.95/month for PDF downloads. See how EasyFreeResume offers the same ATS templates completely free with better privacy.",
+    publishDate: "2026-01-21",
+    readTime: "8 min",
+    category: "Comparisons",
+  },
+  {
+    slug: "novoresume-vs-easy-free-resume",
+    title: "NovoResume Pricing 2026: Premium Templates Free Alternative",
+    description: "NovoResume's premium plans cost $16-$99/year. Compare features with EasyFreeResume, a 100% free alternative with ATS-friendly templates and better privacy.",
+    publishDate: "2026-01-21",
+    readTime: "7 min",
+    category: "Comparisons",
+  },
+  {
+    slug: "enhancv-vs-easy-free-resume",
+    title: "Enhancv Pricing 2026: Is $9.99/Month Worth It? Free Alternative Compared",
+    description: "Enhancv costs $9.99-$24.99/month for premium features. Compare with EasyFreeResume, a free alternative with ATS-friendly templates and complete privacy.",
+    publishDate: "2026-01-21",
+    readTime: "7 min",
+    category: "Comparisons",
+  },
+  {
+    slug: "canva-resume-vs-easy-free-resume",
+    title: "Canva Resume Templates 2026: Why They Fail ATS (Better Alternative)",
+    description: "Canva's free resume templates look great but often fail ATS scans. Learn why and discover EasyFreeResume, a free alternative designed for ATS compatibility.",
+    publishDate: "2026-01-21",
+    readTime: "8 min",
+    category: "Comparisons",
+  },
+  {
+    slug: "flowcv-vs-easy-free-resume",
+    title: "FlowCV vs EasyFreeResume 2026: Which Free Resume Builder is Better?",
+    description: "Both FlowCV and EasyFreeResume offer free resume building. Compare features, privacy, and templates to see which free option is truly better for your job search.",
+    publishDate: "2026-01-21",
+    readTime: "7 min",
+    category: "Comparisons",
+  },
+  {
+    slug: "how-to-list-skills",
+    title: "How to List Skills on a Resume: A Step-by-Step Guide (100+ Examples)",
+    description: "Master the art of creating a powerful skills section. Learn what to include, how to format it, and get inspired with over 100 examples for any industry.",
+    publishDate: "2025-07-23",
+    readTime: "12 min",
+    category: "Resume Sections",
+  },
+  {
+    slug: "quantify-resume-accomplishments",
+    title: "How to Quantify Your Resume Accomplishments (Even If You're Not a Numbers Person)",
+    description: "Learn simple formulas and strategies to turn your job duties into powerful, data-driven achievements that impress recruiters and demonstrate your true impact.",
+    publishDate: "2025-07-16",
+    readTime: "7 min",
+    category: "Resume Writing",
+  },
+];
