@@ -55,8 +55,8 @@ export default function JobsRoleHub() {
   if (!data) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-12 text-center">
-        <p className="text-gray-500">No data available.</p>
-        <Link to="/jobs" className="text-indigo-600 hover:underline mt-2 inline-block">
+        <p className="text-mist">No data available.</p>
+        <Link to="/jobs" className="text-accent hover:underline mt-2 inline-block">
           Back to Jobs
         </Link>
       </div>
@@ -82,14 +82,14 @@ export default function JobsRoleHub() {
       )}
 
       <header className="py-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">{data.role_display} Jobs</h1>
+        <h1 className="text-2xl font-bold text-ink mb-2">{data.role_display} Jobs</h1>
         {data.intro_copy && (
-          <p className="text-gray-600 text-base leading-relaxed mb-4">{data.intro_copy}</p>
+          <p className="text-stone-warm text-base leading-relaxed mb-4">{data.intro_copy}</p>
         )}
         <div className="flex flex-wrap gap-4 text-sm">
-          <span className="text-indigo-700 font-medium">{data.total_count}+ jobs across the UK</span>
+          <span className="text-accent font-medium">{data.total_count}+ jobs across the UK</span>
           {data.salary_stats?.median > 0 && (
-            <span className="text-gray-600">
+            <span className="text-stone-warm">
               Median salary: {data.salary_stats.currency}
               {data.salary_stats.median.toLocaleString()}
             </span>
@@ -98,16 +98,16 @@ export default function JobsRoleHub() {
       </header>
 
       {/* Location Grid */}
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">Browse by Location</h2>
+      <h2 className="text-lg font-semibold text-ink mb-4">Browse by Location</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         {data.related_locations?.map((loc) => (
           <Link
             key={loc.slug}
             to={loc.url}
-            className="bg-white rounded-lg border border-gray-200 p-3 hover:border-indigo-300 hover:shadow-sm transition-all text-center"
+            className="bg-white rounded-2xl border border-black/[0.06] p-3 hover:border-accent/30 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 text-center"
           >
-            <span className="block text-sm font-medium text-gray-900">{loc.name}</span>
-            <span className="block text-xs text-gray-500 mt-0.5">View jobs &rarr;</span>
+            <span className="block text-sm font-medium text-ink">{loc.name}</span>
+            <span className="block text-xs text-mist mt-0.5">View jobs &rarr;</span>
           </Link>
         ))}
       </div>
@@ -115,12 +115,12 @@ export default function JobsRoleHub() {
       {/* Top Skills */}
       {data.top_skills?.length > 0 && (
         <section className="mt-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Key Skills</h2>
+          <h2 className="text-lg font-semibold text-ink mb-3">Key Skills</h2>
           <div className="flex flex-wrap gap-2">
             {data.top_skills.map((skill) => (
               <span
                 key={skill}
-                className="inline-block px-3 py-1 text-xs bg-indigo-50 text-indigo-700 rounded-full font-medium"
+                className="inline-block px-3 py-1 text-xs bg-accent/10 text-accent rounded-full font-medium"
               >
                 {skill}
               </span>
@@ -132,13 +132,13 @@ export default function JobsRoleHub() {
       {/* Related Roles */}
       {data.related_roles?.length > 0 && (
         <section className="mt-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">Related Roles</h2>
+          <h2 className="text-lg font-semibold text-ink mb-3">Related Roles</h2>
           <div className="flex flex-wrap gap-2">
             {data.related_roles.slice(0, 8).map((role) => (
               <Link
                 key={role.slug}
                 to={role.url}
-                className="inline-block px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-indigo-50 hover:text-indigo-700 transition-colors"
+                className="inline-block px-3 py-1.5 text-sm bg-chalk-dark text-ink rounded-full hover:bg-accent/10 hover:text-accent transition-colors"
               >
                 {role.name}
               </Link>
@@ -160,7 +160,7 @@ export default function JobsRoleHub() {
       <div className="mt-8 text-center">
         <Link
           to="/templates"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+          className="btn-primary"
         >
           Build your resume
         </Link>

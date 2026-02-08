@@ -8,6 +8,6 @@ interface JobSparkleIconProps {
 export const JobSparkleIcon: React.FC<JobSparkleIconProps> = ({ className }) => (
   <span className={`relative inline-flex ${className ?? ''}`}>
     <Briefcase className="w-full h-full" />
-    <Sparkle className="absolute -top-[3px] -right-[3px] w-[55%] h-[55%] text-amber-400 fill-amber-400" />
+    <Sparkle className="absolute -top-[3px] -right-[3px] w-[55%] h-[55%] text-accent fill-accent" />
   </span>
 );

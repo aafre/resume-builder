@@ -141,7 +141,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
           <SlidersHorizontal className="w-3.5 h-3.5" />
           More
           {activeFilterCount > 0 && (
-            <span className="bg-indigo-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+            <span className="bg-accent text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
               {activeFilterCount}
             </span>
           )}
@@ -158,7 +158,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
               <select
                 value={filters.distance}
                 onChange={(e) => updateFilter('distance', Number(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               >
                 {DISTANCE_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>{o.label}</option>
@@ -174,7 +174,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
               value={filters.company}
               onChange={(e) => updateFilter('company', e.target.value)}
               placeholder="e.g. Google"
-              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </FilterField>
 
@@ -185,7 +185,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
               value={filters.whatExclude}
               onChange={(e) => updateFilter('whatExclude', e.target.value)}
               placeholder="e.g. senior, manager"
-              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </FilterField>
 
@@ -194,7 +194,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
             <select
               value={filters.salaryMax}
               onChange={(e) => updateFilter('salaryMax', Number(e.target.value))}
-              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             >
               <option value={0}>No max</option>
               {SALARY_PRESETS.map((p) => (
@@ -209,7 +209,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
               <select
                 value={filters.sortDir}
                 onChange={(e) => updateFilter('sortDir', e.target.value as FilterState['sortDir'])}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               >
                 <option value="">Default</option>
                 <option value="down">Highest first</option>
@@ -245,7 +245,7 @@ function QuickSelect({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="px-2.5 py-1.5 border border-gray-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none cursor-pointer hover:border-gray-300 transition-colors"
+      className="px-2.5 py-1.5 border border-gray-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-accent appearance-none cursor-pointer hover:border-gray-300 transition-colors"
     >
       {options.map((o) => (
         <option key={o.value} value={o.value}>{o.label}</option>

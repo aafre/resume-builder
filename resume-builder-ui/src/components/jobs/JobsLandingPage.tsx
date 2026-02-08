@@ -82,8 +82,8 @@ export default function JobsLandingPage() {
   if (!data) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-12 text-center">
-        <p className="text-gray-500">No job data available for this page.</p>
-        <Link to="/jobs" className="text-indigo-600 hover:underline mt-2 inline-block">
+        <p className="text-mist">No job data available for this page.</p>
+        <Link to="/jobs" className="text-accent hover:underline mt-2 inline-block">
           Back to Jobs
         </Link>
       </div>
@@ -116,7 +116,7 @@ export default function JobsLandingPage() {
 
       {/* Header */}
       <header className="py-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <h1 className="text-2xl font-bold text-ink mb-2">
           {data.seniority && `${capitalize(data.seniority)} `}
           {data.modifier_label &&
             !['posted-today', 'posted-this-week'].includes(data.modifier ?? '') &&
@@ -128,20 +128,20 @@ export default function JobsLandingPage() {
         </h1>
 
         {data.intro_copy && (
-          <p className="text-gray-600 text-base leading-relaxed mb-4">{data.intro_copy}</p>
+          <p className="text-stone-warm text-base leading-relaxed mb-4">{data.intro_copy}</p>
         )}
 
         <div className="flex flex-wrap gap-4 text-sm">
-          <span className="text-indigo-700 font-medium">{data.total_count}+ jobs found</span>
+          <span className="text-accent font-medium">{data.total_count}+ jobs found</span>
           {data.salary_stats?.median > 0 && (
-            <span className="text-gray-600">
+            <span className="text-stone-warm">
               Median salary: {data.salary_stats.currency}
               {data.salary_stats.median.toLocaleString()}
               {data.salary_stats.source === 'estimated' && ' (est.)'}
             </span>
           )}
           {data.top_skills?.length > 0 && (
-            <span className="text-gray-600">Top skills: {data.top_skills.slice(0, 5).join(', ')}</span>
+            <span className="text-stone-warm">Top skills: {data.top_skills.slice(0, 5).join(', ')}</span>
           )}
         </div>
       </header>
@@ -160,7 +160,7 @@ export default function JobsLandingPage() {
             type="button"
             onClick={loadMore}
             disabled={loading}
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="btn-secondary disabled:opacity-50"
           >
             {loading ? 'Loading...' : 'Load More Jobs'}
             <ChevronDown className="w-4 h-4" />
@@ -172,11 +172,11 @@ export default function JobsLandingPage() {
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
         {data.related_roles?.length > 0 && (
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Related Roles</h3>
+            <h3 className="text-lg font-semibold text-ink mb-3">Related Roles</h3>
             <ul className="space-y-1">
               {data.related_roles.slice(0, 6).map((role) => (
                 <li key={role.slug}>
-                  <Link to={role.url} className="text-indigo-600 hover:text-indigo-800 text-sm">
+                  <Link to={role.url} className="text-accent hover:text-accent/80 text-sm">
                     {role.name} jobs
                     {data.location_display && ` in ${data.location_display}`}
                   </Link>
@@ -188,11 +188,11 @@ export default function JobsLandingPage() {
 
         {data.related_locations?.length > 0 && (
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Other Locations</h3>
+            <h3 className="text-lg font-semibold text-ink mb-3">Other Locations</h3>
             <ul className="space-y-1">
               {data.related_locations.slice(0, 6).map((loc) => (
                 <li key={loc.slug}>
-                  <Link to={loc.url} className="text-indigo-600 hover:text-indigo-800 text-sm">
+                  <Link to={loc.url} className="text-accent hover:text-accent/80 text-sm">
                     {data.role_display} jobs in {loc.name}
                   </Link>
                 </li>
@@ -208,7 +208,7 @@ export default function JobsLandingPage() {
           {data.internal_links.parent && (
             <Link
               to={data.internal_links.parent.url}
-              className="text-sm text-indigo-600 hover:underline mr-4"
+              className="text-sm text-accent hover:underline mr-4"
             >
               &larr; {data.internal_links.parent.label}
             </Link>
@@ -216,7 +216,7 @@ export default function JobsLandingPage() {
           {data.internal_links.siblings && (
             <div className="flex flex-wrap gap-2 mt-2">
               {data.internal_links.siblings.map((sib) => (
-                <Link key={sib.url} to={sib.url} className="text-sm text-indigo-600 hover:underline">
+                <Link key={sib.url} to={sib.url} className="text-sm text-accent hover:underline">
                   {sib.label}
                 </Link>
               ))}
@@ -239,7 +239,7 @@ export default function JobsLandingPage() {
         <div className="mt-8 text-center">
           <Link
             to={data.internal_links.cta.url}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+            className="btn-primary"
           >
             {data.internal_links.cta.label}
           </Link>
@@ -251,29 +251,29 @@ export default function JobsLandingPage() {
 
 function JobCard({ job }: { job: PseoJob }) {
   return (
-    <article className="bg-white rounded-lg border border-gray-200 p-4 hover:border-indigo-200 transition-colors">
+    <article className="bg-white rounded-2xl border border-black/[0.06] p-4 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
       <div className="flex justify-between items-start gap-4">
         <div className="min-w-0 flex-1">
-          <h2 className="font-semibold text-gray-900 text-base">
+          <h2 className="font-display font-bold text-ink text-base">
             <a
               href={job.url}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              className="hover:text-indigo-600 inline-flex items-center gap-1"
+              className="hover:text-accent inline-flex items-center gap-1 transition-colors"
             >
               {job.title}
               <ExternalLink className="w-3 h-3 flex-shrink-0" />
             </a>
           </h2>
-          <p className="text-sm text-gray-600 mt-0.5">{job.company}</p>
-          <p className="text-sm text-gray-500 mt-0.5">{job.location}</p>
+          <p className="text-sm text-stone-warm mt-0.5">{job.company}</p>
+          <p className="text-sm text-mist mt-0.5">{job.location}</p>
           {job.description && (
-            <p className="text-sm text-gray-500 mt-1 line-clamp-2">{job.description}</p>
+            <p className="text-sm text-mist mt-1 line-clamp-2">{job.description}</p>
           )}
         </div>
         <div className="text-right flex-shrink-0">
           {job.salary_min && job.salary_max && !job.salary_is_predicted && (
-            <p className="text-sm font-medium text-green-700">
+            <p className="text-sm font-medium text-accent">
               {formatSalary(job.salary_min, job.salary_max, 'gb')}
             </p>
           )}
@@ -290,7 +290,7 @@ function LoadingSkeleton() {
       <div className="h-4 bg-gray-200 rounded w-full mb-2" />
       <div className="h-4 bg-gray-200 rounded w-3/4 mb-8" />
       {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} className="bg-white rounded-lg border border-gray-200 p-4 mb-3">
+        <div key={i} className="bg-white rounded-lg border border-black/[0.06] p-4 mb-3">
           <div className="h-5 bg-gray-200 rounded w-3/4 mb-2" />
           <div className="h-4 bg-gray-100 rounded w-1/2 mb-1" />
           <div className="h-4 bg-gray-100 rounded w-1/3" />
