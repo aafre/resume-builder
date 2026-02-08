@@ -21,6 +21,7 @@ export interface SEOConfig {
 export interface HeroConfig {
   h1: string;
   subtitle: string;
+  eyebrow?: string;
   description?: string;
   primaryCTA?: CTAConfig;
   secondaryCTA?: CTAConfig;

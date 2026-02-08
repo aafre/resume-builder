@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { SlidersHorizontal, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { SlidersHorizontal, ChevronDown, ChevronUp } from 'lucide-react';
 
 export interface FilterState {
   contractType: '' | 'permanent' | 'contract';
