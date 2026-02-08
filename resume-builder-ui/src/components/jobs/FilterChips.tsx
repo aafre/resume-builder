@@ -18,6 +18,7 @@ export default function FilterChips({ filters, onRemove, onClearAll }: FilterChi
     <div className="flex items-center gap-2 flex-wrap mb-4">
       {filters.map((f) => (
         <button
+          type="button"
           key={f.key}
           onClick={() => onRemove(f.key)}
           className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-full hover:bg-indigo-100 transition-colors"
@@ -28,6 +29,7 @@ export default function FilterChips({ filters, onRemove, onClearAll }: FilterChi
       ))}
       {filters.length > 1 && (
         <button
+          type="button"
           onClick={onClearAll}
           className="text-xs text-gray-500 hover:text-gray-700 underline"
         >

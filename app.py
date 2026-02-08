@@ -3997,7 +3997,7 @@ def _search_jobs_post():
             company=(body.get("company") or "").strip(),
             what_phrase=(body.get("what_phrase") or "").strip(),
             page=int(body.get("page") or 1),
-            results_per_page=min(int(body.get("results_per_page") or 20), 50),
+            results_per_page=min(max(int(body.get("results_per_page") or 20), 1), 50),
         )
     except (ValueError, TypeError) as e:
         return jsonify({"success": False, "error": f"Invalid parameter: {e}"}), 400

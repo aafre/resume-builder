@@ -134,6 +134,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
 
         {/* Expand toggle */}
         <button
+          type="button"
           onClick={() => setExpanded(!expanded)}
           className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors ml-auto"
         >
