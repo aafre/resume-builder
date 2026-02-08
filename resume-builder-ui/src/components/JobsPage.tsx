@@ -308,8 +308,8 @@ export default function JobsPage() {
   const activeFilters: ActiveFilter[] = [];
   if (filters.contractType) activeFilters.push({ key: 'contractType', label: filters.contractType === 'permanent' ? 'Permanent' : 'Contract' });
   if (filters.schedule) activeFilters.push({ key: 'schedule', label: filters.schedule === 'full-time' ? 'Full-time' : 'Part-time' });
-  if (filters.salaryMin) activeFilters.push({ key: 'salaryMin', label: `${Math.round(filters.salaryMin / 1000)}k+` });
-  if (filters.salaryMax) activeFilters.push({ key: 'salaryMax', label: `Up to ${Math.round(filters.salaryMax / 1000)}k` });
+  if (filters.salaryMin) activeFilters.push({ key: 'salaryMin', label: `${formatSalary(filters.salaryMin, null, searchedCountry)?.replace('From ', '') || `${Math.round(filters.salaryMin / 1000)}k`}+` });
+  if (filters.salaryMax) activeFilters.push({ key: 'salaryMax', label: formatSalary(null, filters.salaryMax, searchedCountry) || `Up to ${Math.round(filters.salaryMax / 1000)}k` });
   if (filters.maxDaysOld && filters.maxDaysOld !== 30) activeFilters.push({ key: 'maxDaysOld', label: filters.maxDaysOld === 1 ? 'Today' : `Last ${filters.maxDaysOld} days` });
   if (filters.distance) activeFilters.push({ key: 'distance', label: `${filters.distance} km` });
   if (filters.company) activeFilters.push({ key: 'company', label: filters.company });
