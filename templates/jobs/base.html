@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{{ data.title }}</title>
+  <meta name="description" content="{{ data.meta_description }}" />
+
+  {# Canonical and pagination #}
+  {% if data.page_num > 1 %}
+  <link rel="canonical" href="{{ data.canonical_url }}?page={{ data.page_num }}" />
+  {% else %}
+  <link rel="canonical" href="{{ data.canonical_url }}" />
+  {% endif %}
+  {% if data.prev_url %}
+  <link rel="prev" href="{{ data.prev_url }}" />
+  {% endif %}
+  {% if data.next_url %}
+  <link rel="next" href="{{ data.next_url }}" />
+  {% endif %}
+
+  {# Robots #}
+  {% if data.noindex %}
+  <meta name="robots" content="noindex, follow" />
+  {% endif %}
+
+  {# Open Graph #}
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{ data.title }}" />
+  <meta property="og:description" content="{{ data.meta_description }}" />
+  <meta property="og:url" content="{{ data.canonical_url }}" />
+  <meta property="og:site_name" content="EasyFreeResume" />
+  <meta property="og:locale" content="en_GB" />
+
+  {# Twitter #}
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="{{ data.title }}" />
+  <meta name="twitter:description" content="{{ data.meta_description }}" />
+
+  {# Vite CSS — load from manifest #}
+  {% if vite_manifest and vite_manifest.get('index.html') %}
+  <link rel="stylesheet" href="/{{ vite_manifest['index.html'].get('css', [''])[0] }}" />
+  {% endif %}
+
+  {# Structured Data #}
+  {% for schema in structured_data %}
+  <script type="application/ld+json">{{ schema | tojson }}</script>
+  {% endfor %}
+
+  {# Favicon #}
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
+  {# AdSense #}
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8976874751886843" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root">
+    {# Server-rendered content for bots — React hydrates over this #}
+    {% block content %}{% endblock %}
+  </div>
+
+  {# Hydration data for React #}
+  <script id="__PSEO_DATA__" type="application/json">{{ page_data_json }}</script>
+
+  {# Vite JS — load from manifest #}
+  {% if vite_manifest and vite_manifest.get('index.html') %}
+  <script type="module" src="/{{ vite_manifest['index.html'].get('file', '') }}"></script>
+  {% endif %}
+</body>
+</html>
