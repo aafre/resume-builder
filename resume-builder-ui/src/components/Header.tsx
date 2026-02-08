@@ -8,6 +8,7 @@ import AnonymousWarningBadge from "./AnonymousWarningBadge";
 import UserMenu from "./UserMenu";
 import AuthModal from "./AuthModal";
 import LogoMark from "./LogoMark";
+import { affiliateConfig } from "../config/affiliate";
 
 export default function Header() {
   const location = useLocation();
@@ -103,6 +104,24 @@ export default function Header() {
               >
                 Templates
               </Link>
+              {affiliateConfig.jobSearch.enabled && (
+                <Link
+                  to="/jobs"
+                  className={`relative px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+                    location.pathname === '/jobs'
+                      ? 'bg-ink text-white shadow-sm'
+                      : 'text-gray-600 hover:bg-black/5 hover:text-ink'
+                  }`}
+                >
+                  Jobs
+                  {location.pathname !== '/jobs' && (
+                    <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent" />
+                    </span>
+                  )}
+                </Link>
+              )}
             </nav>
           )}
 
@@ -148,7 +167,8 @@ export default function Header() {
 
             {/* Auto-Save Indicator (authenticated) or Warning Badge (anonymous) - only on editor page */}
             {isEditorPage && editorContext && (
-              <div id="header-auth-status" className="flex items-center">
+              <div id="header-auth-status" className="flex items-center gap-3">
+                <div id="header-job-badge-slot" />
                 {isAuthenticated && (
                   <AutoSaveIndicator
                     lastSaved={editorContext.lastSaved}
