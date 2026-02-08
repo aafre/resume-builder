@@ -12,6 +12,7 @@ import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import BulletPointBank from '../shared/BulletPointBank';
 import BreadcrumbsWithSchema from '../shared/BreadcrumbsWithSchema';
+import RevealSection from '../shared/RevealSection';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { loadJobExample, convertToEditorFormat } from '../../utils/yamlLoader';
 import { getRelatedJobs, JOB_CATEGORIES } from '../../data/jobExamples';
@@ -29,11 +30,11 @@ const LoadingSkeleton = () => (
   <div className="min-h-screen bg-chalk">
     <div className="container mx-auto px-4 py-12 max-w-7xl">
       <div className="animate-pulse">
-        <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
-        <div className="h-12 bg-gray-200 rounded w-2/3 mb-4"></div>
-        <div className="h-6 bg-gray-200 rounded w-1/2 mb-8"></div>
-        <div className="h-96 bg-gray-200 rounded mb-8"></div>
-        <div className="h-48 bg-gray-200 rounded"></div>
+        <div className="h-8 bg-chalk-dark rounded w-1/3 mb-4"></div>
+        <div className="h-12 bg-chalk-dark rounded w-2/3 mb-4"></div>
+        <div className="h-6 bg-chalk-dark rounded w-1/2 mb-8"></div>
+        <div className="h-96 bg-chalk-dark rounded mb-8"></div>
+        <div className="h-48 bg-chalk-dark rounded"></div>
       </div>
     </div>
   </div>
@@ -43,13 +44,13 @@ const LoadingSkeleton = () => (
 const NotFound = ({ slug }: { slug: string }) => (
   <div className="min-h-screen bg-chalk flex items-center justify-center">
     <div className="text-center">
-      <h1 className="text-4xl font-bold text-gray-900 mb-4">Resume Example Not Found</h1>
-      <p className="text-gray-600 mb-6">
+      <h1 className="text-4xl font-extrabold text-ink mb-4">Resume Example Not Found</h1>
+      <p className="text-stone-warm mb-6">
         We could not find a resume example for "{slug}".
       </p>
       <Link
         to="/examples"
-        className="inline-block px-6 py-3 bg-accent text-ink rounded-lg hover:bg-accent/90 transition-colors"
+        className="btn-primary py-3 px-8 inline-block"
       >
         Browse All Examples
       </Link>
@@ -228,166 +229,168 @@ export default function JobExamplePage() {
       <PageHero config={heroConfig} />
 
       {/* Resume Preview Section */}
-      <section className="my-12">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Resume Preview */}
-          <div className="flex-1">
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-              <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                <h2 className="font-semibold text-gray-900">Resume Preview</h2>
-                <span className="text-sm text-gray-500">
-                  Template: {data.resume.template.charAt(0).toUpperCase() + data.resume.template.slice(1)}
-                </span>
-              </div>
-
-              {/* Simplified Resume Display */}
-              <div className="p-6 lg:p-8 bg-white">
-                {/* Contact Header */}
-                <div className="text-center border-b border-gray-200 pb-6 mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900">{data.resume.contact.name}</h3>
-                  <p className="text-lg text-accent mt-1">{data.resume.contact.title}</p>
-                  <p className="text-gray-600 mt-2 text-sm">
-                    {data.resume.contact.email} | {data.resume.contact.phone} | {data.resume.contact.location}
-                  </p>
+      <RevealSection>
+        <section className="my-12">
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Resume Preview */}
+            <div className="flex-1">
+              <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] overflow-hidden">
+                <div className="bg-chalk px-6 py-4 border-b border-black/[0.06] flex items-center justify-between">
+                  <h2 className="font-bold text-ink">Resume Preview</h2>
+                  <span className="text-sm text-mist">
+                    Template: {data.resume.template.charAt(0).toUpperCase() + data.resume.template.slice(1)}
+                  </span>
                 </div>
 
-                {/* Summary */}
-                <div className="mb-6">
-                  <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
-                    Professional Summary
-                  </h4>
-                  <p className="text-gray-700 text-sm leading-relaxed">{data.resume.summary}</p>
-                </div>
+                {/* Simplified Resume Display */}
+                <div className="p-6 lg:p-8 bg-white">
+                  {/* Contact Header */}
+                  <div className="text-center border-b border-black/[0.06] pb-6 mb-6">
+                    <h3 className="text-2xl font-bold text-ink">{data.resume.contact.name}</h3>
+                    <p className="text-lg text-accent mt-1">{data.resume.contact.title}</p>
+                    <p className="text-stone-warm mt-2 text-sm">
+                      {data.resume.contact.email} | {data.resume.contact.phone} | {data.resume.contact.location}
+                    </p>
+                  </div>
 
-                {/* Experience */}
-                <div className="mb-6">
-                  <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">
-                    Work Experience
-                  </h4>
-                  {data.resume.experience.map((exp, index) => (
-                    <div key={index} className="mb-4">
-                      <div className="flex justify-between items-start mb-1">
-                        <div>
-                          <p className="font-semibold text-gray-900">{exp.title}</p>
-                          <p className="text-gray-600">{exp.company}</p>
+                  {/* Summary */}
+                  <div className="mb-6">
+                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">
+                      Professional Summary
+                    </h4>
+                    <p className="text-ink/80 text-sm leading-relaxed">{data.resume.summary}</p>
+                  </div>
+
+                  {/* Experience */}
+                  <div className="mb-6">
+                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-3">
+                      Work Experience
+                    </h4>
+                    {data.resume.experience.map((exp, index) => (
+                      <div key={index} className="mb-4">
+                        <div className="flex justify-between items-start mb-1">
+                          <div>
+                            <p className="font-semibold text-ink">{exp.title}</p>
+                            <p className="text-stone-warm">{exp.company}</p>
+                          </div>
+                          <p className="text-mist text-sm">{exp.dates}</p>
                         </div>
-                        <p className="text-gray-500 text-sm">{exp.dates}</p>
+                        <ul className="mt-2 space-y-1">
+                          {exp.bullets.slice(0, 3).map((bullet, bIndex) => (
+                            <li key={bIndex} className="text-ink/80 text-sm pl-4 relative">
+                              <span className="absolute left-0 text-mist">&bull;</span>
+                              {bullet}
+                            </li>
+                          ))}
+                          {exp.bullets.length > 3 && (
+                            <li className="text-mist text-sm pl-4 italic">
+                              +{exp.bullets.length - 3} more bullet points...
+                            </li>
+                          )}
+                        </ul>
                       </div>
-                      <ul className="mt-2 space-y-1">
-                        {exp.bullets.slice(0, 3).map((bullet, bIndex) => (
-                          <li key={bIndex} className="text-gray-700 text-sm pl-4 relative">
-                            <span className="absolute left-0 text-gray-400">&bull;</span>
-                            {bullet}
-                          </li>
-                        ))}
-                        {exp.bullets.length > 3 && (
-                          <li className="text-gray-500 text-sm pl-4 italic">
-                            +{exp.bullets.length - 3} more bullet points...
-                          </li>
-                        )}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Education */}
-                <div className="mb-6">
-                  <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
-                    Education
-                  </h4>
-                  {data.resume.education.map((edu, index) => (
-                    <div key={index} className="flex justify-between items-start">
-                      <div>
-                        <p className="font-semibold text-gray-900">{edu.degree}</p>
-                        <p className="text-gray-600">{edu.school}</p>
-                      </div>
-                      <p className="text-gray-500 text-sm">{edu.year}</p>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Skills */}
-                <div>
-                  <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
-                    Skills
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {data.resume.skills.slice(0, 8).map((skill, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 bg-gray-100 text-gray-700 text-sm rounded"
-                      >
-                        {skill}
-                      </span>
                     ))}
-                    {data.resume.skills.length > 8 && (
-                      <span className="px-2 py-1 text-gray-500 text-sm">
-                        +{data.resume.skills.length - 8} more
-                      </span>
-                    )}
+                  </div>
+
+                  {/* Education */}
+                  <div className="mb-6">
+                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">
+                      Education
+                    </h4>
+                    {data.resume.education.map((edu, index) => (
+                      <div key={index} className="flex justify-between items-start">
+                        <div>
+                          <p className="font-semibold text-ink">{edu.degree}</p>
+                          <p className="text-stone-warm">{edu.school}</p>
+                        </div>
+                        <p className="text-mist text-sm">{edu.year}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Skills */}
+                  <div>
+                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">
+                      Skills
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {data.resume.skills.slice(0, 8).map((skill, index) => (
+                        <span
+                          key={index}
+                          className="px-2 py-1 bg-chalk-dark text-ink text-sm rounded"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                      {data.resume.skills.length > 8 && (
+                        <span className="px-2 py-1 text-mist text-sm">
+                          +{data.resume.skills.length - 8} more
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Sidebar with CTA */}
-          <div className="lg:w-80">
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 sticky top-24">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Use This Template
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Click below to open this resume in our free editor. Customize the content with your own experience.
-              </p>
+            {/* Sidebar with CTA */}
+            <div className="lg:w-80">
+              <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] p-8 sticky top-24">
+                <h3 className="text-xl font-extrabold text-ink mb-4">
+                  Use This Template
+                </h3>
+                <p className="text-stone-warm font-extralight mb-6">
+                  Click below to open this resume in our free editor. Customize the content with your own experience.
+                </p>
 
-              <button
-                onClick={handleEditTemplate}
-                disabled={creating}
-                className="w-full px-6 py-3 bg-accent text-ink rounded-lg font-semibold hover:bg-accent/90 transition-colors mb-4 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                {creating ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                    Creating...
-                  </>
-                ) : (
-                  'Edit This Template'
-                )}
-              </button>
+                <button
+                  onClick={handleEditTemplate}
+                  disabled={creating}
+                  className="btn-primary w-full py-3 mb-4 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {creating ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      Creating...
+                    </>
+                  ) : (
+                    'Edit This Template'
+                  )}
+                </button>
 
-              <Link
-                to="/templates"
-                className="block w-full px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium text-center hover:bg-gray-200 transition-colors"
-              >
-                Browse All Templates
-              </Link>
+                <Link
+                  to="/templates"
+                  className="btn-secondary w-full py-3 block text-center"
+                >
+                  Browse All Templates
+                </Link>
 
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <h4 className="font-semibold text-gray-900 mb-3">What you get:</h4>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-center gap-2">
-                    <span className="text-green-500">&#10003;</span>
-                    ATS-optimized format
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-green-500">&#10003;</span>
-                    Pre-written bullet points
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-green-500">&#10003;</span>
-                    Professional layout
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-green-500">&#10003;</span>
-                    Free PDF download
-                  </li>
-                </ul>
+                <div className="mt-6 pt-6 border-t border-black/[0.06]">
+                  <h4 className="font-bold text-ink mb-3">What you get:</h4>
+                  <ul className="space-y-2 text-sm text-stone-warm">
+                    <li className="flex items-center gap-2">
+                      <span className="text-accent">&#10003;</span>
+                      ATS-optimized format
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-accent">&#10003;</span>
+                      Pre-written bullet points
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-accent">&#10003;</span>
+                      Professional layout
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-accent">&#10003;</span>
+                      Free PDF download
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </RevealSection>
 
       {/* Bullet Point Bank */}
       <BulletPointBank
@@ -400,28 +403,31 @@ export default function JobExamplePage() {
 
       {/* Related Jobs Section */}
       {relatedJobs.length > 0 && (
-        <section className="my-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
-            Related Resume Examples
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {relatedJobs.map((job) => (
-              <Link
-                key={job.slug}
-                to={`/examples/${job.slug}`}
-                className="bg-white rounded-xl p-5 border border-gray-200 hover:border-accent/30 hover:shadow-md transition-all"
-              >
-                <h3 className="font-semibold text-gray-900 mb-2">{job.title}</h3>
-                <p className="text-sm text-gray-600 line-clamp-2">
-                  {job.metaDescription}
-                </p>
-                <span className="inline-block mt-3 text-accent text-sm font-medium">
-                  View Example &rarr;
-                </span>
-              </Link>
-            ))}
-          </div>
-        </section>
+        <RevealSection stagger>
+          <section className="my-16">
+            <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">Related Examples</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-6 text-center">
+              Related Resume Examples
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {relatedJobs.map((job) => (
+                <Link
+                  key={job.slug}
+                  to={`/examples/${job.slug}`}
+                  className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all duration-300"
+                >
+                  <h3 className="font-bold text-ink mb-2">{job.title}</h3>
+                  <p className="text-sm text-stone-warm line-clamp-2">
+                    {job.metaDescription}
+                  </p>
+                  <span className="inline-block mt-3 text-accent text-sm font-medium">
+                    View Example &rarr;
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        </RevealSection>
       )}
 
       {/* CTA */}
