@@ -4,7 +4,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Briefcase, MapPin, Search, ExternalLink, ChevronDown, Clock, FileText, BookOpen, Target, Upload, Sparkles, Info } from 'lucide-react';
+import { Briefcase, MapPin, Search, ExternalLink, ChevronDown, Clock, FileText, BookOpen, Target, Upload, Sparkles, Info, X } from 'lucide-react';
 import { searchJobs, suggestRoles, AdzunaJob } from '../services/jobs';
 import type { RoleSuggestion } from '../services/jobs';
 import { normalizeJobTitle } from '../utils/jobTitleNormalizer';
@@ -22,6 +22,14 @@ import { usePageSchema } from '../hooks/usePageSchema';
 import SEOPageLayout from './shared/SEOPageLayout';
 import BreadcrumbsWithSchema from './shared/BreadcrumbsWithSchema';
 import FAQSection from './shared/FAQSection';
+
+interface ResumeContext {
+  fileName: string;
+  displayTitle: string;
+  skills: string[];
+  seniorityLevel: SeniorityLevel;
+  yearsExperience: number;
+}
 
 const jobsConfig = SEO_PAGES.jobs;
 
@@ -100,10 +108,8 @@ export default function JobsPage() {
   const prefillSkillsRef = useRef<string[]>([]);
   const prefillSeniorityRef = useRef<SeniorityLevel | null>(null);
   const prefillYearsExpRef = useRef<number>(0);
-  // Persistent resume context — survives across manual searches
-  const resumeSkillsRef = useRef<string[]>([]);
-  const resumeSeniorityRef = useRef<SeniorityLevel | null>(null);
-  const resumeYearsExpRef = useRef<number>(0);
+  // Persistent resume context — survives across manual searches and drives UI visibility
+  const [resumeContext, setResumeContext] = useState<ResumeContext | null>(null);
   const { session } = useAuth();
   const { parseResume, parsing: parserBusy, progress: parserProgress, progressMessage } = useResumeParser();
 
@@ -133,6 +139,16 @@ export default function JobsPage() {
         if (Array.isArray(data.skills)) prefillSkillsRef.current = data.skills;
         if (data.seniorityLevel) prefillSeniorityRef.current = data.seniorityLevel;
         if (data.yearsExperience) prefillYearsExpRef.current = data.yearsExperience;
+        // Restore resume context for UI display
+        if (Array.isArray(data.skills) && data.skills.length > 0) {
+          setResumeContext({
+            fileName: 'Current resume',
+            displayTitle: data.title || '',
+            skills: data.skills,
+            seniorityLevel: data.seniorityLevel || 'mid',
+            yearsExperience: data.yearsExperience || 0,
+          });
+        }
         sessionStorage.removeItem('jobSearchPrefill');
         if (data.title) shouldAutoSearch.current = true;
       }
@@ -169,18 +185,14 @@ export default function JobsPage() {
         skills = prefillSkillsRef.current;
         seniority = prefillSeniorityRef.current;
         yearsExp = prefillYearsExpRef.current;
-        // Persist for future manual searches
-        resumeSkillsRef.current = skills;
-        resumeSeniorityRef.current = seniority;
-        resumeYearsExpRef.current = yearsExp;
         prefillSkillsRef.current = [];
         prefillSeniorityRef.current = null;
         prefillYearsExpRef.current = 0;
       } else {
         // Manual search — use persisted resume context if available
-        skills = resumeSkillsRef.current;
-        seniority = resumeSeniorityRef.current;
-        yearsExp = resumeYearsExpRef.current;
+        skills = resumeContext?.skills ?? [];
+        seniority = resumeContext?.seniorityLevel ?? null;
+        yearsExp = resumeContext?.yearsExperience ?? 0;
       }
 
       const result = await searchJobs({
@@ -212,10 +224,14 @@ export default function JobsPage() {
     } finally {
       setLoading(false);
     }
-  }, [titleInput, locationInput, country, setSearchParams]);
+  }, [titleInput, locationInput, country, resumeContext, setSearchParams]);
 
   const handleLoadMore = useCallback(() => {
     setVisibleCount(prev => prev + 10);
+  }, []);
+
+  const handleClearResume = useCallback(() => {
+    setResumeContext(null);
   }, []);
 
   // Auto-search when pre-filled from editor
@@ -304,6 +320,15 @@ export default function JobsPage() {
       prefillSeniorityRef.current = params.seniorityLevel;
       prefillYearsExpRef.current = params.yearsExperience;
       shouldAutoSearch.current = true;
+
+      // Set resume context for UI display (match badges, context banner)
+      setResumeContext({
+        fileName: file.name,
+        displayTitle: params.displayTitle,
+        skills: params.skills,
+        seniorityLevel: params.seniorityLevel,
+        yearsExperience: params.yearsExperience,
+      });
 
       // Extract experience titles for role suggestions (in background)
       try {
@@ -512,6 +537,61 @@ export default function JobsPage() {
           </div>
         )}
 
+        {/* Resume Context Banner */}
+        {hasSearched && !loading && jobs.length > 0 && resumeContext && (
+          <div className="mb-6 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100 rounded-xl p-4">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2 min-w-0">
+                <FileText className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                <span className="text-sm font-medium text-gray-900 truncate">
+                  Matching against: {resumeContext.fileName}
+                </span>
+              </div>
+              <button
+                onClick={handleClearResume}
+                className="p-1 rounded-md hover:bg-emerald-100 text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
+                aria-label="Clear resume context"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="flex items-center gap-3 mt-2 text-xs text-gray-600 flex-wrap">
+              {resumeContext.displayTitle && (
+                <span className="font-medium">{resumeContext.displayTitle}</span>
+              )}
+              {resumeContext.displayTitle && resumeContext.skills.length > 0 && (
+                <span className="text-gray-300">|</span>
+              )}
+              {resumeContext.skills.length > 0 && (
+                <span className="flex items-center gap-1 flex-wrap">
+                  {resumeContext.skills.slice(0, 3).map((skill) => (
+                    <span key={skill} className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">
+                      {skill}
+                    </span>
+                  ))}
+                  {resumeContext.skills.length > 3 && (
+                    <span className="text-gray-400">+{resumeContext.skills.length - 3}</span>
+                  )}
+                </span>
+              )}
+              {resumeContext.yearsExperience > 0 && (
+                <>
+                  <span className="text-gray-300">|</span>
+                  <span>{resumeContext.yearsExperience}yr exp</span>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Nudge Banner — when no resume */}
+        {hasSearched && !loading && jobs.length > 0 && !resumeContext && (
+          <div className="flex items-center gap-2 mb-6 text-xs text-gray-500">
+            <Upload className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />
+            <span>Drop your resume on the search box for personalized match scores</span>
+          </div>
+        )}
+
         {/* Loading Skeletons */}
         {loading && (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -571,7 +651,7 @@ export default function JobsPage() {
                         {[job.company, job.location].filter(Boolean).join(' · ')}
                       </p>
                       <div className="flex items-center gap-2 flex-wrap mb-3">
-                        {job.match_score != null && (
+                        {job.match_score != null && resumeContext && (
                           <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
                             job.match_score >= 70
                               ? 'bg-emerald-50 text-emerald-700'
