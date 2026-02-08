@@ -16,7 +16,7 @@ export default function SoftwareEngineerResumeKeywords() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           In the competitive tech industry, your resume needs to be optimized
           for both human recruiters and the Applicant Tracking Systems (ATS)
           that screen applications. Updated for 2026, including the right
@@ -40,11 +40,11 @@ export default function SoftwareEngineerResumeKeywords() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Programming Languages
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           This is the most critical section. List the languages you know, and
           be honest about your proficiency level (e.g., Expert, Proficient).
         </p>
@@ -55,8 +55,8 @@ export default function SoftwareEngineerResumeKeywords() {
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
             <div>
-              <h4 className="font-medium text-green-700 mb-2">Web Development</h4>
-              <ul className="text-green-600 text-sm space-y-1">
+              <h4 className="font-medium text-accent mb-2">Web Development</h4>
+              <ul className="text-accent text-sm space-y-1">
                 <li>• JavaScript</li>
                 <li>• TypeScript</li>
                 <li>• Python</li>
@@ -66,8 +66,8 @@ export default function SoftwareEngineerResumeKeywords() {
               </ul>
             </div>
             <div>
-              <h4 className="font-medium text-green-700 mb-2">Mobile Development</h4>
-              <ul className="text-green-600 text-sm space-y-1">
+              <h4 className="font-medium text-accent mb-2">Mobile Development</h4>
+              <ul className="text-accent text-sm space-y-1">
                 <li>• Swift</li>
                 <li>• Kotlin</li>
                 <li>• Dart (Flutter)</li>
@@ -76,8 +76,8 @@ export default function SoftwareEngineerResumeKeywords() {
               </ul>
             </div>
             <div>
-              <h4 className="font-medium text-green-700 mb-2">Systems & Performance</h4>
-              <ul className="text-green-600 text-sm space-y-1">
+              <h4 className="font-medium text-accent mb-2">Systems & Performance</h4>
+              <ul className="text-accent text-sm space-y-1">
                 <li>• C++</li>
                 <li>• C</li>
                 <li>• Rust</li>
@@ -98,11 +98,11 @@ export default function SoftwareEngineerResumeKeywords() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Frameworks and Libraries
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Listing relevant frameworks shows you can build real-world
           applications efficiently. Organize by technology stack or
           specialization.
@@ -183,11 +183,11 @@ export default function SoftwareEngineerResumeKeywords() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Databases and Cloud Technologies
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Modern software engineering is deeply tied to data and the cloud.
           These keywords are essential for most roles.
         </p>
@@ -240,11 +240,11 @@ export default function SoftwareEngineerResumeKeywords() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Development Methodologies & Tools
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           These keywords demonstrate how you work and collaborate with a team.
           They're crucial for showing you understand modern software development
           practices.
@@ -320,19 +320,19 @@ export default function SoftwareEngineerResumeKeywords() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Software Engineering Concepts
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           These keywords show a deeper understanding of computer science
           principles and software engineering best practices.
         </p>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 my-6">
-          <div className="grid md:grid-cols-2 gap-6 text-gray-700">
+        <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
+          <div className="grid md:grid-cols-2 gap-6 text-stone-warm">
             <div>
-              <h4 className="font-bold text-gray-800 mb-3">Core CS Concepts:</h4>
+              <h4 className="font-bold text-ink mb-3">Core CS Concepts:</h4>
               <ul className="text-sm space-y-1">
                 <li>• Data Structures</li>
                 <li>• Algorithms</li>
@@ -345,7 +345,7 @@ export default function SoftwareEngineerResumeKeywords() {
               </ul>
             </div>
             <div>
-              <h4 className="font-bold text-gray-800 mb-3">Software Architecture:</h4>
+              <h4 className="font-bold text-ink mb-3">Software Architecture:</h4>
               <ul className="text-sm space-y-1">
                 <li>• RESTful APIs</li>
                 <li>• GraphQL</li>
@@ -360,13 +360,13 @@ export default function SoftwareEngineerResumeKeywords() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Testing and Quality Assurance
         </h2>
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
           <h3 className="font-bold text-green-800 mb-4">Testing Keywords:</h3>
-          <div className="grid md:grid-cols-2 gap-4 text-green-700">
+          <div className="grid md:grid-cols-2 gap-4 text-accent">
             <div>
               <h4 className="font-medium mb-2">Testing Types:</h4>
               <ul className="text-sm space-y-1">
@@ -392,7 +392,7 @@ export default function SoftwareEngineerResumeKeywords() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           How to Use These Keywords Effectively
         </h2>
 
@@ -407,8 +407,8 @@ export default function SoftwareEngineerResumeKeywords() {
               and parse your skills.
             </p>
             <div className="bg-white p-4 rounded-lg text-sm">
-              <p className="font-medium text-gray-800 mb-2">Example Format:</p>
-              <div className="text-gray-700 space-y-1">
+              <p className="font-medium text-ink mb-2">Example Format:</p>
+              <div className="text-stone-warm space-y-1">
                 <p><strong>Programming Languages:</strong> Python (Expert), JavaScript (Advanced), Java (Intermediate)</p>
                 <p><strong>Frameworks:</strong> React, Django, Node.js, Spring Boot</p>
                 <p><strong>Databases:</strong> PostgreSQL, MongoDB, Redis</p>
@@ -433,7 +433,7 @@ export default function SoftwareEngineerResumeKeywords() {
               </div>
               <div className="bg-green-100 border-l-4 border-green-500 p-3 rounded">
                 <p className="font-medium text-green-800 mb-1">✅ Write:</p>
-                <p className="text-green-700 text-sm">
+                <p className="text-accent text-sm">
                   "Developed a full-stack e-commerce application using <strong>React</strong> and <strong>Node.js</strong>, deployed on <strong>AWS EC2</strong> with <strong>PostgreSQL</strong> database, serving 10,000+ daily active users."
                 </p>
               </div>
@@ -461,7 +461,7 @@ export default function SoftwareEngineerResumeKeywords() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Industry-Specific Keyword Variations
         </h2>
 
@@ -486,8 +486,8 @@ export default function SoftwareEngineerResumeKeywords() {
             <h3 className="text-lg font-bold text-green-800 mb-3">
               🏢 Enterprise/Corporate Focus
             </h3>
-            <p className="text-green-700 mb-3">Emphasize:</p>
-            <ul className="text-green-600 text-sm space-y-1">
+            <p className="text-accent mb-3">Emphasize:</p>
+            <ul className="text-accent text-sm space-y-1">
               <li>• Enterprise architecture</li>
               <li>• Legacy system integration</li>
               <li>• Compliance (SOX, GDPR)</li>
@@ -515,54 +515,54 @@ export default function SoftwareEngineerResumeKeywords() {
           </a>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Common Software Engineer Resume Mistakes
         </h2>
 
         <div className="space-y-6">
           <div className="bg-red-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">
+            <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Listing every technology you've ever touched
             </h4>
-            <p className="text-gray-700 mb-2">
+            <p className="text-stone-warm mb-2">
               Including technologies you used once in a tutorial dilutes your
               actual expertise
             </p>
-            <p className="text-green-700">
+            <p className="text-accent">
               <strong>Better:</strong> Focus on technologies you're comfortable
               discussing in an interview
             </p>
           </div>
 
           <div className="bg-red-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">
+            <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Using outdated technology keywords
             </h4>
-            <p className="text-gray-700 mb-2">
+            <p className="text-stone-warm mb-2">
               Technologies like Flash, Internet Explorer-specific CSS, or very
               old framework versions
             </p>
-            <p className="text-green-700">
+            <p className="text-accent">
               <strong>Better:</strong> Research current industry standards and
               emphasize modern, in-demand skills
             </p>
           </div>
 
           <div className="bg-red-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">
+            <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Forgetting to include proficiency levels
             </h4>
-            <p className="text-gray-700 mb-2">
+            <p className="text-stone-warm mb-2">
               Just listing "Python" doesn't tell recruiters your skill level
             </p>
-            <p className="text-green-700">
+            <p className="text-accent">
               <strong>Better:</strong> Use "Python (Expert, 5+ years)" or
               similar descriptors
             </p>
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Your Next Steps
         </h2>
 
@@ -590,7 +590,7 @@ export default function SoftwareEngineerResumeKeywords() {
           </ol>
         </div>
 
-        <p className="text-lg leading-relaxed text-gray-700 mt-8">
+        <p className="text-lg leading-relaxed text-stone-warm mt-8">
           By strategically including these keywords and backing them up with
           concrete examples of your work, you'll create a powerful software
           engineer resume that is optimized for ATS scans and impressive to

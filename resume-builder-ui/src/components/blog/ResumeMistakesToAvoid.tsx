@@ -11,7 +11,7 @@ export default function ResumeMistakesToAvoid() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Updated for 2026: Your resume is your first impression with potential employers. A single mistake can mean the difference between landing an interview and having your application dismissed. After reviewing thousands of resumes, we've identified the most critical errors that consistently hurt job seekers' chances.
         </p>
 
@@ -22,13 +22,13 @@ export default function ResumeMistakesToAvoid() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">1. Typos and Grammatical Errors</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">1. Typos and Grammatical Errors</h2>
+        <p className="text-lg leading-relaxed text-stone-warm">
           Nothing kills credibility faster than spelling mistakes or poor grammar. These errors signal carelessness and lack of attention to detail – qualities no employer wants in their team.
         </p>
-        <div className="bg-gray-50 border-l-4 border-accent p-6 my-6">
-          <h4 className="font-bold text-gray-900 mb-2">Quick Fix:</h4>
-          <ul className="list-disc pl-6 space-y-2 text-gray-700">
+        <div className="bg-chalk-dark border-l-4 border-accent p-6 my-6">
+          <h4 className="font-bold text-ink mb-2">Quick Fix:</h4>
+          <ul className="list-disc pl-6 space-y-2 text-stone-warm">
             <li>Use spell-check tools like Grammarly or Hemingway Editor</li>
             <li>Read your resume aloud to catch awkward phrasing</li>
             <li>Have a friend or family member proofread it</li>
@@ -36,16 +36,16 @@ export default function ResumeMistakesToAvoid() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">2. Generic, One-Size-Fits-All Resumes</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">2. Generic, One-Size-Fits-All Resumes</h2>
+        <p className="text-lg leading-relaxed text-stone-warm">
           Sending the same resume to every job posting is like using a master key that opens no doors. Modern hiring requires customization to match specific job requirements and company culture.
         </p>
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
           <h4 className="font-bold text-green-800 mb-3">✅ Best Practice:</h4>
-          <p className="text-green-700 mb-3">
+          <p className="text-accent mb-3">
             Tailor your resume for each application by:
           </p>
-          <ul className="list-disc pl-6 space-y-2 text-green-700">
+          <ul className="list-disc pl-6 space-y-2 text-accent">
             <li>Matching keywords from the job description</li>
             <li>Highlighting relevant experience for the specific role</li>
             <li>Adjusting your professional summary for the target position</li>
@@ -53,8 +53,8 @@ export default function ResumeMistakesToAvoid() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">3. Weak or Missing Professional Summary</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">3. Weak or Missing Professional Summary</h2>
+        <p className="text-lg leading-relaxed text-stone-warm">
           Your professional summary is prime real estate – the first thing recruiters read. A weak summary like "Hard-working professional seeking opportunities" wastes this valuable space.
         </p>
         <div className="grid md:grid-cols-2 gap-6 my-8">
@@ -66,14 +66,14 @@ export default function ResumeMistakesToAvoid() {
           </div>
           <div className="bg-green-50 border border-green-200 rounded-xl p-6">
             <h4 className="font-bold text-green-800 mb-3">✅ Strong Example:</h4>
-            <p className="text-green-700 italic">
+            <p className="text-accent italic">
               "Results-driven digital marketing specialist with 5+ years driving 200%+ ROI growth for B2B SaaS companies. Expert in SEO, PPC, and marketing automation with proven track record of increasing qualified leads by 150%."
             </p>
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">4. Listing Job Duties Instead of Achievements</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">4. Listing Job Duties Instead of Achievements</h2>
+        <p className="text-lg leading-relaxed text-stone-warm">
           Employers know what your job title entails. They want to see what you accomplished in that role. Focus on specific, quantifiable achievements rather than generic responsibilities.
         </p>
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
@@ -84,18 +84,18 @@ export default function ResumeMistakesToAvoid() {
           <div className="space-y-3">
             <div>
               <p className="text-red-700 font-medium">❌ Weak: "Responsible for managing social media accounts"</p>
-              <p className="text-green-700 font-medium">✅ Strong: "Managed 5 social media accounts, increasing engagement by 85% and driving 300+ monthly website visits"</p>
+              <p className="text-accent font-medium">✅ Strong: "Managed 5 social media accounts, increasing engagement by 85% and driving 300+ monthly website visits"</p>
             </div>
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">5. Poor Formatting and Design</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">5. Poor Formatting and Design</h2>
+        <p className="text-lg leading-relaxed text-stone-warm">
           A cluttered, hard-to-read resume creates a poor first impression. Clean, professional formatting helps recruiters quickly find the information they need.
         </p>
-        <div className="bg-gray-50 border-l-4 border-accent p-6 my-6">
-          <h4 className="font-bold text-gray-900 mb-2">Formatting Best Practices:</h4>
-          <ul className="list-disc pl-6 space-y-2 text-gray-700">
+        <div className="bg-chalk-dark border-l-4 border-accent p-6 my-6">
+          <h4 className="font-bold text-ink mb-2">Formatting Best Practices:</h4>
+          <ul className="list-disc pl-6 space-y-2 text-stone-warm">
             <li>Use consistent fonts (stick to 1-2 font families)</li>
             <li>Maintain proper white space and margins</li>
             <li>Use bullet points for easy scanning</li>
@@ -104,8 +104,8 @@ export default function ResumeMistakesToAvoid() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">6. Including Irrelevant Personal Information</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">6. Including Irrelevant Personal Information</h2>
+        <p className="text-lg leading-relaxed text-stone-warm">
           Your resume should focus on professional qualifications. Personal details like age, marital status, religious beliefs, or hobbies (unless job-relevant) take up valuable space and can introduce unconscious bias.
         </p>
         <div className="grid md:grid-cols-2 gap-6 my-8">
@@ -122,7 +122,7 @@ export default function ResumeMistakesToAvoid() {
           </div>
           <div className="bg-green-50 border border-green-200 rounded-xl p-6">
             <h4 className="font-bold text-green-800 mb-3">✅ Do Include:</h4>
-            <ul className="list-disc pl-6 space-y-1 text-green-700">
+            <ul className="list-disc pl-6 space-y-1 text-accent">
               <li>Professional email address</li>
               <li>LinkedIn profile URL</li>
               <li>City and state (no full address needed)</li>
@@ -133,8 +133,8 @@ export default function ResumeMistakesToAvoid() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">7. Using an Unprofessional Email Address</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">7. Using an Unprofessional Email Address</h2>
+        <p className="text-lg leading-relaxed text-stone-warm">
           Your email address is often the first thing recruiters see. Addresses like "partyboy123@email.com" or "sexykitten@email.com" immediately undermine your professionalism.
         </p>
         <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
@@ -147,8 +147,8 @@ export default function ResumeMistakesToAvoid() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">8. Excessive Length or Too Brief</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">8. Excessive Length or Too Brief</h2>
+        <p className="text-lg leading-relaxed text-stone-warm">
           Resume length should match your experience level. New graduates cramming onto one page often omit important details, while experienced professionals sometimes include every job since high school.
         </p>
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
@@ -161,8 +161,8 @@ export default function ResumeMistakesToAvoid() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">9. Neglecting ATS Optimization</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">9. Neglecting ATS Optimization</h2>
+        <p className="text-lg leading-relaxed text-stone-warm">
           Over 98% of Fortune 500 companies use Applicant Tracking Systems (ATS) to filter resumes. If your resume isn't ATS-friendly, it may never reach human eyes, regardless of your qualifications.
         </p>
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
@@ -176,13 +176,13 @@ export default function ResumeMistakesToAvoid() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">10. Outdated or Missing Contact Information</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">10. Outdated or Missing Contact Information</h2>
+        <p className="text-lg leading-relaxed text-stone-warm">
           It sounds basic, but you'd be surprised how often great candidates are unreachable due to outdated contact information or missing LinkedIn profiles.
         </p>
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
           <h4 className="font-bold text-green-800 mb-3">📞 Contact Info Checklist:</h4>
-          <ul className="list-disc pl-6 space-y-2 text-green-700">
+          <ul className="list-disc pl-6 space-y-2 text-accent">
             <li>Current phone number with professional voicemail</li>
             <li>Professional email address you check regularly</li>
             <li>Updated LinkedIn profile URL</li>
@@ -202,12 +202,12 @@ export default function ResumeMistakesToAvoid() {
           </ol>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">The Bottom Line</h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">The Bottom Line</h2>
+        <p className="text-lg leading-relaxed text-stone-warm">
           Your resume is a marketing document designed to get you interviews, not jobs. Every word, format choice, and section should work toward that goal. By avoiding these common mistakes, you'll create a resume that stands out for the right reasons and gets you in front of hiring managers.
         </p>
 
-        <p className="text-lg leading-relaxed text-gray-700 mt-6">
+        <p className="text-lg leading-relaxed text-stone-warm mt-6">
           Remember: even small improvements can have big impacts. A single typo fix or better formatting can be the difference between your resume being discarded or moving to the interview pile.
         </p>
 

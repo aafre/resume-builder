@@ -19,7 +19,7 @@ export default function JobInterviewGuide() {
       ctaType="interview"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Updated for 2026: Your resume did its job - you've landed the
           interview. Now it's time to prepare for the most critical step in your
           job search. This comprehensive guide will walk you through everything
@@ -40,21 +40,21 @@ export default function JobInterviewGuide() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Part 1: The Foundation - Pre-Interview Preparation
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Success in an interview begins long before you walk into the room.
           Proper preparation is what separates a good candidate from a great
           one.
         </p>
 
-        <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-10 mb-4">
           Research the Company and Role Thoroughly
         </h3>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           You must understand the company's mission, products, culture, and
           recent news. This shows genuine interest and helps you tailor your
           answers.
@@ -85,18 +85,18 @@ export default function JobInterviewGuide() {
           </ul>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-10 mb-4">
           Prepare Your Stories with the STAR Method
         </h3>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           For almost any question, especially "Tell me about a time when...",
           the STAR method is your best friend. It provides a clear, concise, and
           compelling structure for your answers.
         </p>
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-2 text-green-700">
+          <ul className="list-disc pl-6 space-y-2 text-accent">
             <li>
               <strong>S - Situation:</strong> Briefly describe the context.
               (e.g., "In my previous role as a project manager...")
@@ -129,11 +129,11 @@ export default function JobInterviewGuide() {
           </p>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-10 mb-4">
           Prepare Intelligent Questions to Ask Them
         </h3>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           An interview is a two-way street. Asking thoughtful questions shows
           your engagement and helps you determine if the company is the right
           fit for you.
@@ -141,7 +141,7 @@ export default function JobInterviewGuide() {
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
           <h4 className="font-bold text-green-800 mb-2">Good Questions:</h4>
-          <ul className="list-disc pl-6 space-y-1 text-green-700">
+          <ul className="list-disc pl-6 space-y-1 text-accent">
             <li>
               "What does success look like in this role in the first 90 days?"
             </li>
@@ -165,22 +165,22 @@ export default function JobInterviewGuide() {
           </ul>
         </div>
 
-        <hr className="border-gray-300 my-12" />
+        <hr className="border-black/[0.06] my-12" />
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Part 2: The Main Event - Common Interview Questions
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           While every interview is different, most will include a mix of these
           common questions.
         </p>
 
-        <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-10 mb-4">
           "Tell Me About Yourself"
         </h3>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           This is your elevator pitch. It's not about your life story. Structure
           it as follows:
         </p>
@@ -202,11 +202,11 @@ export default function JobInterviewGuide() {
           </ol>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-10 mb-4">
           "Why Do You Want to Work Here?"
         </h3>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           This is where your research pays off. Your answer should have two
           parts:
         </p>
@@ -224,11 +224,11 @@ export default function JobInterviewGuide() {
           </ol>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-10 mb-4">
           Behavioral Questions
         </h3>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           These are questions that start with "Tell me about a time when..." or
           "Give me an example of...". This is where you use your prepared STAR
           stories. For an in-depth look, check out our guide on{" "}
@@ -242,13 +242,13 @@ export default function JobInterviewGuide() {
           .
         </p>
 
-        <hr className="border-gray-300 my-12" />
+        <hr className="border-black/[0.06] my-12" />
 
-        <div className="my-12 bg-gradient-to-r bg-chalk p-8 rounded-2xl border border-gray-200 text-center">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
+        <div className="my-12 bg-gradient-to-r bg-chalk p-8 rounded-2xl border border-black/[0.06] text-center">
+          <h3 className="text-2xl font-bold text-ink mb-4">
             Ready to Practice?
           </h3>
-          <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-6">
+          <p className="text-lg text-stone-warm max-w-2xl mx-auto mb-6">
             Reading is great, but practice is what makes you perfect. Use{" "}
             <strong>PrepAI</strong>, an AI-powered interview coach, to run mock
             interviews and get instant feedback on your answers.
@@ -263,23 +263,23 @@ export default function JobInterviewGuide() {
           </a>
         </div>
 
-        <hr className="border-gray-300 my-12" />
+        <hr className="border-black/[0.06] my-12" />
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Part 3: The Follow-Up – Leaving a Lasting Impression
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Your interview doesn't end the moment you step out of the room (or
           leave the call). How you close the conversation – and what you do if
           the employer follows up – can leave a lasting impression.
         </p>
 
-        <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-10 mb-4">
           1. Thank Them in the Moment
         </h3>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           At the end of the interview, always thank your interviewers for their
           time. A simple and genuine:
         </p>
@@ -295,16 +295,16 @@ export default function JobInterviewGuide() {
           </p>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-10 mb-4">
           2. Respond Professionally if They Reach Out
         </h3>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           If the recruiter or hiring manager follows up by email:
         </p>
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-2 text-green-700">
+          <ul className="list-disc pl-6 space-y-2 text-accent">
             <li>
               <strong>Reply promptly.</strong>
             </li>
@@ -320,11 +320,11 @@ export default function JobInterviewGuide() {
           </ul>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-10 mb-4">
           3. Keep Asking Questions Until the End
         </h3>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           One of the best ways to stand out is to ask thoughtful questions
           during the interview, especially toward the close when they say, "Do
           you have any questions for us?"
@@ -344,11 +344,11 @@ export default function JobInterviewGuide() {
           </ul>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-10 mb-4">
           4. Stay Patient and Balanced
         </h3>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Hiring processes often take longer than expected. If they gave you a
           timeline and it passes, it's fine to check in once with the recruiter.
           Otherwise, avoid chasing – and keep applying for other opportunities
@@ -364,7 +364,7 @@ export default function JobInterviewGuide() {
           </p>
         </div>
 
-        <p className="text-lg leading-relaxed text-gray-700 mt-8">
+        <p className="text-lg leading-relaxed text-stone-warm mt-8">
           Remember: interviews are conversations, not performances. The
           companies that are right for you will appreciate authenticity over
           perfection. Focus on being prepared, professional, and genuinely

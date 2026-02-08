@@ -19,18 +19,18 @@ export default function BehavioralInterviewQuestions() {
       ctaType="interview"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Behavioral interview questions are designed to reveal how you've
           handled situations in the past, giving employers insight into how
           you'll perform in the future. Updated for 2026, this guide helps you master these questions using the STAR
           method to showcase your skills and experience effectively.
         </p>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           What Are Behavioral Interview Questions?
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Behavioral questions typically start with phrases like "Tell me about
           a time when..." or "Give me an example of..." They're based on the
           premise that past behavior is the best predictor of future
@@ -61,7 +61,7 @@ export default function BehavioralInterviewQuestions() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Leadership & Management Questions
         </h2>
 
@@ -100,7 +100,7 @@ export default function BehavioralInterviewQuestions() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Problem-Solving & Critical Thinking
         </h2>
 
@@ -110,7 +110,7 @@ export default function BehavioralInterviewQuestions() {
               4. "Tell me about a time when you solved a complex problem at
               work."
             </h4>
-            <p className="text-green-700">
+            <p className="text-accent">
               <strong>Focus on:</strong> Your analytical approach, the steps you
               took to investigate, and the creative solution you implemented.
             </p>
@@ -120,7 +120,7 @@ export default function BehavioralInterviewQuestions() {
             <h4 className="font-bold text-green-800 mb-2">
               5. "Describe a situation where you had to think outside the box."
             </h4>
-            <p className="text-green-700">
+            <p className="text-accent">
               <strong>Focus on:</strong> The constraints you faced, your
               creative thinking process, and the innovative solution you
               developed.
@@ -132,14 +132,14 @@ export default function BehavioralInterviewQuestions() {
               6. "Give me an example of when you had to learn something new
               quickly to solve a problem."
             </h4>
-            <p className="text-green-700">
+            <p className="text-accent">
               <strong>Focus on:</strong> Your learning strategy,
               resourcefulness, and how you successfully applied new knowledge.
             </p>
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Teamwork & Collaboration
         </h2>
 
@@ -179,7 +179,7 @@ export default function BehavioralInterviewQuestions() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Handling Pressure & Challenges
         </h2>
 
@@ -218,7 +218,7 @@ export default function BehavioralInterviewQuestions() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Communication & Influence
         </h2>
 
@@ -258,11 +258,11 @@ export default function BehavioralInterviewQuestions() {
           </div>
         </div>
 
-        <div className="my-12 bg-gradient-to-r bg-chalk p-8 rounded-2xl border border-gray-200 text-center">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
+        <div className="my-12 bg-gradient-to-r bg-chalk p-8 rounded-2xl border border-black/[0.06] text-center">
+          <h3 className="text-2xl font-bold text-ink mb-4">
             Practice Makes Perfect
           </h3>
-          <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-6">
+          <p className="text-lg text-stone-warm max-w-2xl mx-auto mb-6">
             Don't just memorize these questions - practice your STAR responses
             out loud. Try using <strong>PrepAI</strong> for realistic mock
             interviews that help you refine your answers and build confidence.
@@ -277,12 +277,12 @@ export default function BehavioralInterviewQuestions() {
           </a>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Pro Tips for STAR Responses
         </h2>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-3 text-gray-700">
+        <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
+          <ul className="list-disc pl-6 space-y-3 text-stone-warm">
             <li>
               <strong>Keep it concise:</strong> Aim for 1-2 minutes per answer
             </li>
@@ -309,7 +309,7 @@ export default function BehavioralInterviewQuestions() {
           </ul>
         </div>
 
-        <p className="text-lg leading-relaxed text-gray-700 mt-8">
+        <p className="text-lg leading-relaxed text-stone-warm mt-8">
           Remember, behavioral interview questions are your opportunity to
           showcase your experience and demonstrate your potential. By preparing
           strong STAR responses, you'll walk into your interview with confidence

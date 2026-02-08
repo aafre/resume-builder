@@ -18,7 +18,7 @@ export default function IntroducingPrepAI() {
       ctaType="interview"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           You've perfected your resume, researched the company, and prepared
           your STAR stories. But there's one crucial step missing: realistic
           interview practice with personalized feedback based on your actual CV
@@ -27,11 +27,11 @@ export default function IntroducingPrepAI() {
           practice sessions to help you land your next role faster.
         </p>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           The Problem with Traditional Interview Prep
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Most job seekers prepare for interviews by reading articles,
           memorizing answers, and maybe practicing in front of a mirror. While
           these methods have their place, they fall short in several critical
@@ -63,11 +63,11 @@ export default function IntroducingPrepAI() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Enter PrepAI: Your Personal Interview Coach
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           PrepAI bridges the gap between basic preparation and expensive
           coaching by providing personalized interview questions and real-time
           AI feedback based on your actual CV and job description. Think of it
@@ -92,11 +92,11 @@ export default function IntroducingPrepAI() {
           </a>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Your AI-Powered Success Loop
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700 mb-8">
+        <p className="text-lg leading-relaxed text-stone-warm mb-8">
           PrepAI transforms your interview skills through a proven 4-step
           feedback system that builds lasting confidence:
         </p>
@@ -118,7 +118,7 @@ export default function IntroducingPrepAI() {
             <h3 className="text-xl font-bold text-green-800 mb-3">
               2. Get Smart Feedback
             </h3>
-            <p className="text-green-700">
+            <p className="text-accent">
               Receive instant, actionable analysis on your answer's clarity,
               structure, and impact. Our AI coach, trained on thousands of
               successful interviews, provides specific insights on how to
@@ -150,76 +150,76 @@ export default function IntroducingPrepAI() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Key Features That Set PrepAI Apart
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-800 mb-2">
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               🎯 Tailored to Your Profile
             </h4>
-            <p className="text-gray-700">
+            <p className="text-stone-warm">
               Questions and scenarios based on your actual resume and the
               specific job you're applying for. No generic practice - everything
               is personalized to your background.
             </p>
           </div>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-800 mb-2">
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               🎤 Voice-Enabled Practice
             </h4>
-            <p className="text-gray-700">
+            <p className="text-stone-warm">
               Practice with voice-enabled mock interviews that adapt to your
               responses and skill level, just like real interviews.
             </p>
           </div>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-800 mb-2">
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               📊 Detailed Analytics
             </h4>
-            <p className="text-gray-700">
+            <p className="text-stone-warm">
               Track your improvement with detailed analytics on communication,
               content, and confidence levels across multiple practice sessions.
             </p>
           </div>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-800 mb-2">
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               ⏰ Practice on Your Schedule
             </h4>
-            <p className="text-gray-700">
+            <p className="text-stone-warm">
               PrepAI is available 24/7, so you can prepare whenever works best
               for you. No scheduling, no waiting - just instant practice.
             </p>
           </div>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-800 mb-2">
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">
               💡 Instant Feedback
             </h4>
-            <p className="text-gray-700">
+            <p className="text-stone-warm">
               Get immediate, actionable feedback on your answers with specific
               tips you can use to improve your storytelling and presentation.
             </p>
           </div>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-800 mb-2">🔒 Privacy First</h4>
-            <p className="text-gray-700">
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-2">🔒 Privacy First</h4>
+            <p className="text-stone-warm">
               Your resume and practice data are encrypted and never shared.
               Practice with complete confidence in your privacy.
             </p>
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Perfect Complement to Your Resume Building
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Your journey from job search to job offer has two critical components:
           a standout resume and interview skills that wow employers. While tools
           like EasyFreeResume help you create ATS-friendly resumes that get you
@@ -249,17 +249,17 @@ export default function IntroducingPrepAI() {
           </ol>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Getting Started with PrepAI
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Ready to transform your interview preparation? Getting started with
           PrepAI is simple:
         </p>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 my-6">
-          <ol className="list-decimal pl-6 space-y-3 text-gray-700">
+        <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
+          <ol className="list-decimal pl-6 space-y-3 text-stone-warm">
             <li>
               <strong>Visit PrepAI:</strong> Head to{" "}
               <a
@@ -291,11 +291,11 @@ export default function IntroducingPrepAI() {
           </ol>
         </div>
 
-        <div className="my-12 bg-accent/[0.04] p-8 rounded-2xl border border-gray-200 text-center">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
+        <div className="my-12 bg-accent/[0.04] p-8 rounded-2xl border border-black/[0.06] text-center">
+          <h3 className="text-2xl font-bold text-ink mb-4">
             Don't Just Prepare, PrepAI
           </h3>
-          <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-6">
+          <p className="text-lg text-stone-warm max-w-2xl mx-auto mb-6">
             Join thousands of job seekers who have transformed their interview
             skills and landed their dream jobs with PrepAI's intelligent
             coaching.
@@ -310,7 +310,7 @@ export default function IntroducingPrepAI() {
           </a>
         </div>
 
-        <p className="text-lg leading-relaxed text-gray-700 mt-8">
+        <p className="text-lg leading-relaxed text-stone-warm mt-8">
           The 2026 job market remains competitive, but with the right tools and
           preparation, you can stand out from the crowd. Combine a
           professionally crafted resume with the confidence that comes from
