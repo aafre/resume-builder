@@ -220,6 +220,17 @@ class MatchContext:
     full_time: bool = False
     permanent: bool = False
     sort_by: str = "relevance"
+    # Advanced filters
+    distance: int = 0              # km radius around location
+    contract: bool = False         # contract=1
+    part_time: bool = False        # part_time=1
+    salary_max: int = 0            # salary_max ceiling
+    sort_dir: str = ""             # sort_dir=up/down
+    what_exclude: str = ""         # excluded keywords
+    company: str = ""              # company name filter
+    what_phrase: str = ""          # exact phrase search (multi-word titles)
+    page: int = 1                  # pagination page number
+    results_per_page: int = 20     # results per page
 
 
 # =============================================================================
@@ -228,7 +239,7 @@ class MatchContext:
 
 # Cache for AI-generated search terms (key=title, value=(terms, timestamp))
 _ai_cache: dict[str, tuple[list[str], float]] = {}
-_AI_CACHE_TTL = 900  # 15 minutes
+_AI_CACHE_TTL = 86400  # 24 hours
 
 
 def get_ai_search_terms(title: str, supabase) -> list[str]:
@@ -453,11 +464,16 @@ class JobMatchEngine:
         self.app_key = adzuna_app_key
         self.supabase = supabase
 
-    def search_and_rank(self, context: MatchContext) -> dict:
+    def search_and_rank(self, context: MatchContext, keep_description: bool = False) -> dict:
         """
         Execute 3-tier search and return scored results.
-        Returns: { "count": int, "jobs": [...] }
+        Returns: { "count": int, "jobs": [...], "total_available": int }
+
+        Args:
+            keep_description: If True, preserve _description field (for pSEO skill aggregation).
         """
+        self._last_total = 0
+
         # Smart title_only: skill queries need full-text search
         if context.title_only and _is_skill_query(context.query):
             context.title_only = False
@@ -468,11 +484,13 @@ class JobMatchEngine:
 
         # --- Tier 1: Primary query ---
         tier1 = self._fetch_adzuna(context, context.query)
+        total_available = self._last_total
         all_jobs = self._merge(all_jobs, tier1, seen_urls)
 
         if len(all_jobs) >= self.TIER1_THRESHOLD:
-            result = self._finalize(all_jobs, scorer)
+            result = self._finalize(all_jobs, scorer, keep_description=keep_description)
             result["ai_terms_used"] = []
+            result["total_available"] = total_available
             return result
 
         # Tier 1 insufficient — relax title_only for broader fallback searches
@@ -487,8 +505,9 @@ class JobMatchEngine:
             all_jobs = self._merge(all_jobs, tier2, seen_urls)
 
         if len(all_jobs) >= self.TIER2_THRESHOLD:
-            result = self._finalize(all_jobs, scorer)
+            result = self._finalize(all_jobs, scorer, keep_description=keep_description)
             result["ai_terms_used"] = []
+            result["total_available"] = total_available
             return result
 
         # --- Tier 3: AI fallback ---
@@ -497,43 +516,77 @@ class JobMatchEngine:
             tier3 = self._fetch_adzuna(context, term)
             all_jobs = self._merge(all_jobs, tier3, seen_urls)
 
-        result = self._finalize(all_jobs, scorer)
+        result = self._finalize(all_jobs, scorer, keep_description=keep_description)
         result["ai_terms_used"] = ai_terms
+        result["total_available"] = total_available
         return result
 
-    def _fetch_adzuna(self, context: MatchContext, query: str) -> list[dict]:
-        """Fetch raw results from Adzuna API."""
-        try:
+    def _build_adzuna_params(self, context: MatchContext, query: str) -> dict:
+        """Build Adzuna API query params from MatchContext."""
+        # Use what_phrase for multi-word exact match, what for single-word/skill
+        if context.what_phrase:
+            params = {
+                "app_id": self.app_id,
+                "app_key": self.app_key,
+                "what_phrase": context.what_phrase,
+                "results_per_page": context.results_per_page or self.RESULTS_PER_QUERY,
+                "sort_by": context.sort_by if context.sort_by in ("relevance", "salary", "date") else "relevance",
+                "salary_include_unknown": "1",
+            }
+        else:
             params = {
                 "app_id": self.app_id,
                 "app_key": self.app_key,
                 "what": query,
-                "results_per_page": self.RESULTS_PER_QUERY,
+                "results_per_page": context.results_per_page or self.RESULTS_PER_QUERY,
                 "sort_by": context.sort_by if context.sort_by in ("relevance", "salary", "date") else "relevance",
                 "salary_include_unknown": "1",
             }
-            if context.location:
-                params["where"] = context.location
-            if context.category:
-                params["category"] = context.category
-            if context.title_only:
-                params["title_only"] = "1"
-            if context.max_days_old:
-                params["max_days_old"] = str(context.max_days_old)
-            if context.salary_min:
-                params["salary_min"] = str(context.salary_min)
-            if context.full_time:
-                params["full_time"] = "1"
-            if context.permanent:
-                params["permanent"] = "1"
+        if context.location:
+            params["where"] = context.location
+        if context.category:
+            params["category"] = context.category
+        if context.title_only:
+            params["title_only"] = "1"
+        if context.max_days_old:
+            params["max_days_old"] = str(context.max_days_old)
+        if context.salary_min:
+            params["salary_min"] = str(context.salary_min)
+        if context.salary_max:
+            params["salary_max"] = str(context.salary_max)
+        if context.full_time:
+            params["full_time"] = "1"
+        if context.permanent:
+            params["permanent"] = "1"
+        if context.contract:
+            params["contract"] = "1"
+        if context.part_time:
+            params["part_time"] = "1"
+        if context.distance:
+            params["distance"] = str(context.distance)
+        if context.sort_dir and context.sort_dir in ("up", "down"):
+            params["sort_dir"] = context.sort_dir
+        if context.what_exclude:
+            params["what_exclude"] = context.what_exclude
+        if context.company:
+            params["company"] = context.company
+        return params
+
+    def _fetch_adzuna(self, context: MatchContext, query: str) -> list[dict]:
+        """Fetch raw results from Adzuna API."""
+        try:
+            params = self._build_adzuna_params(context, query)
+            page = max(context.page, 1)
 
             resp = http_requests.get(
-                f"https://api.adzuna.com/v1/api/jobs/{context.country}/search/1",
+                f"https://api.adzuna.com/v1/api/jobs/{context.country}/search/{page}",
                 params=params,
                 timeout=5,
             )
             resp.raise_for_status()
             raw = resp.json()
+
+            self._last_total = raw.get("count", 0)
 
             jobs = []
             for r in raw.get("results", []):
@@ -563,15 +616,16 @@ class JobMatchEngine:
                 existing.append(job)
         return existing
 
-    def _finalize(self, jobs: list[dict], scorer: JobScorer) -> dict:
-        """Score all jobs, sort by score desc, strip description."""
+    def _finalize(self, jobs: list[dict], scorer: JobScorer, keep_description: bool = False) -> dict:
+        """Score all jobs, sort by score desc, optionally strip description."""
         for job in jobs:
             job["match_score"] = scorer.score(job)
 
         jobs.sort(key=lambda j: j["match_score"], reverse=True)
 
-        # Strip internal description field
-        for job in jobs:
-            job.pop("_description", None)
+        # Strip internal description field unless caller needs it
+        if not keep_description:
+            for job in jobs:
+                job.pop("_description", None)
 
         return {"count": len(jobs), "jobs": jobs}

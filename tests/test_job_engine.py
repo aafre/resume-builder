@@ -22,6 +22,7 @@ from job_engine import (
     JobMatchEngine,
     get_ai_search_terms,
     _ai_cache,
+    _AI_CACHE_TTL,
     _ALIAS_LOOKUP,
     _is_skill_query,
 )
@@ -685,3 +686,204 @@ class TestSearchEndpoint:
         for job in data["data"]["jobs"]:
             assert "_description" not in job
             assert "description" not in job
+
+
+# =============================================================================
+# Advanced Filters — MatchContext fields & Adzuna param mapping
+# =============================================================================
+
+
+class TestAdvancedFilters:
+    """Tests for advanced filter fields on MatchContext and _build_adzuna_params."""
+
+    def _make_engine(self):
+        return JobMatchEngine("test_id", "test_key")
+
+    def test_contract_param(self):
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev", contract=True)
+        params = engine._build_adzuna_params(ctx, "dev")
+        assert params["contract"] == "1"
+
+    def test_part_time_param(self):
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev", part_time=True)
+        params = engine._build_adzuna_params(ctx, "dev")
+        assert params["part_time"] == "1"
+
+    def test_distance_param(self):
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev", location="London", distance=25)
+        params = engine._build_adzuna_params(ctx, "dev")
+        assert params["distance"] == "25"
+
+    def test_salary_max_param(self):
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev", salary_max=80000)
+        params = engine._build_adzuna_params(ctx, "dev")
+        assert params["salary_max"] == "80000"
+
+    def test_sort_dir_param(self):
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev", sort_by="salary", sort_dir="down")
+        params = engine._build_adzuna_params(ctx, "dev")
+        assert params["sort_dir"] == "down"
+
+    def test_what_exclude_param(self):
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev", what_exclude="senior manager")
+        params = engine._build_adzuna_params(ctx, "dev")
+        assert params["what_exclude"] == "senior manager"
+
+    def test_company_param(self):
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev", company="Google")
+        params = engine._build_adzuna_params(ctx, "dev")
+        assert params["company"] == "Google"
+
+    def test_what_phrase_param(self):
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev", what_phrase="software engineer")
+        params = engine._build_adzuna_params(ctx, "dev")
+        assert params["what_phrase"] == "software engineer"
+        assert "what" not in params  # what_phrase replaces what
+
+    def test_what_used_when_no_phrase(self):
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev")
+        params = engine._build_adzuna_params(ctx, "dev")
+        assert params["what"] == "dev"
+        assert "what_phrase" not in params
+
+    def test_salary_include_unknown_always_sent(self):
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev")
+        params = engine._build_adzuna_params(ctx, "dev")
+        assert params["salary_include_unknown"] == "1"
+
+    def test_results_per_page_param(self):
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev", results_per_page=50)
+        params = engine._build_adzuna_params(ctx, "dev")
+        assert params["results_per_page"] == 50
+
+    def test_default_results_per_page(self):
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev")
+        params = engine._build_adzuna_params(ctx, "dev")
+        assert params["results_per_page"] == 20  # engine.RESULTS_PER_QUERY default
+
+    def test_zero_distance_not_sent(self):
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev", distance=0)
+        params = engine._build_adzuna_params(ctx, "dev")
+        assert "distance" not in params
+
+    def test_invalid_sort_dir_not_sent(self):
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev", sort_dir="invalid")
+        params = engine._build_adzuna_params(ctx, "dev")
+        assert "sort_dir" not in params
+
+
+class TestPaginationAndTotalAvailable:
+    """Tests for pagination and total_available in search results."""
+
+    def _make_engine(self):
+        return JobMatchEngine("test_id", "test_key")
+
+    def _make_jobs(self, n, url_prefix="http://job"):
+        from datetime import datetime, timezone
+        return [
+            {
+                "title": f"Software Engineer {i}",
+                "company": "TestCo",
+                "location": "Remote",
+                "salary_min": 80000,
+                "salary_max": 120000,
+                "salary_is_predicted": False,
+                "url": f"{url_prefix}/{i}",
+                "created": datetime.now(timezone.utc).isoformat(),
+                "_description": "python react javascript aws",
+            }
+            for i in range(n)
+        ]
+
+    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    def test_total_available_in_result(self, mock_fetch):
+        """search_and_rank should return total_available."""
+        mock_fetch.return_value = self._make_jobs(6)
+        engine = self._make_engine()
+        engine._last_total = 150
+
+        ctx = MatchContext(query="software engineer")
+        result = engine.search_and_rank(ctx)
+
+        assert "total_available" in result
+
+    @patch("requests.get")
+    def test_page_param_in_api_url(self, mock_get):
+        """_fetch_adzuna should use page number in the URL."""
+        mock_resp = MagicMock()
+        mock_resp.raise_for_status = MagicMock()
+        mock_resp.json.return_value = {"results": [], "count": 0}
+        mock_get.return_value = mock_resp
+
+        engine = self._make_engine()
+        ctx = MatchContext(query="dev", page=3, country="gb")
+        engine._fetch_adzuna(ctx, "dev")
+
+        # Check the URL contains /search/3
+        call_url = mock_get.call_args[0][0]
+        assert "/search/3" in call_url
+
+
+class TestKeepDescription:
+    """Tests for keep_description option."""
+
+    def _make_engine(self):
+        return JobMatchEngine("test_id", "test_key")
+
+    def _make_jobs(self, n):
+        from datetime import datetime, timezone
+        return [
+            {
+                "title": f"Dev {i}",
+                "company": "Co",
+                "location": "Remote",
+                "salary_min": 80000,
+                "salary_max": 120000,
+                "salary_is_predicted": False,
+                "url": f"http://job/{i}",
+                "created": datetime.now(timezone.utc).isoformat(),
+                "_description": "python",
+            }
+            for i in range(n)
+        ]
+
+    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    def test_keep_description_preserves_field(self, mock_fetch):
+        mock_fetch.return_value = self._make_jobs(6)
+        engine = self._make_engine()
+
+        ctx = MatchContext(query="dev")
+        result = engine.search_and_rank(ctx, keep_description=True)
+
+        assert all("_description" in j for j in result["jobs"])
+
+    @patch.object(JobMatchEngine, "_fetch_adzuna")
+    def test_default_strips_description(self, mock_fetch):
+        mock_fetch.return_value = self._make_jobs(6)
+        engine = self._make_engine()
+
+        ctx = MatchContext(query="dev")
+        result = engine.search_and_rank(ctx)
+
+        assert all("_description" not in j for j in result["jobs"])
+
+
+class TestAICacheTTL:
+    """Test AI cache TTL is 24 hours."""
+
+    def test_ai_cache_ttl_is_24_hours(self):
+        assert _AI_CACHE_TTL == 86400

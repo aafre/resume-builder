@@ -3987,6 +3987,17 @@ def _search_jobs_post():
             full_time=bool(body.get("full_time")),
             permanent=bool(body.get("permanent")),
             sort_by=sort_by,
+            # Advanced filters
+            distance=int(body.get("distance") or 0),
+            contract=bool(body.get("contract")),
+            part_time=bool(body.get("part_time")),
+            salary_max=int(body.get("salary_max") or 0),
+            sort_dir=(body.get("sort_dir") or "").strip(),
+            what_exclude=(body.get("what_exclude") or "").strip(),
+            company=(body.get("company") or "").strip(),
+            what_phrase=(body.get("what_phrase") or "").strip(),
+            page=int(body.get("page") or 1),
+            results_per_page=min(int(body.get("results_per_page") or 20), 50),
         )
     except (ValueError, TypeError) as e:
         return jsonify({"success": False, "error": f"Invalid parameter: {e}"}), 400
