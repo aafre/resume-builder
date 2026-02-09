@@ -104,19 +104,29 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
         className="bg-white p-6 rounded-xl shadow-2xl max-w-md w-full"
         onClick={(e) => e.stopPropagation()}
         onKeyDown={handleKeyDown}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="link-modal-title"
       >
-        <h3 className="text-xl font-semibold mb-4 text-gray-800">
+        <h3
+          id="link-modal-title"
+          className="text-xl font-semibold mb-4 text-gray-800"
+        >
           {isEditMode ? 'Edit Link' : 'Insert Link'}
         </h3>
 
         <div className="space-y-4">
           {/* Link Text Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="link-text-input"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Link Text
               <span className="text-gray-500 font-normal ml-1">(what users will see)</span>
             </label>
             <input
+              id="link-text-input"
               type="text"
               value={linkText}
               onChange={(e) => setLinkText(e.target.value)}
@@ -128,11 +138,15 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
 
           {/* URL Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="link-url-input"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               URL
               <span className="text-red-500">*</span>
             </label>
             <input
+              id="link-url-input"
               type="text"
               value={url}
               onChange={(e) => {
@@ -143,9 +157,17 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
               className={`w-full border ${
                 urlError ? 'border-red-500' : 'border-gray-300'
               } rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+              aria-invalid={!!urlError}
+              aria-describedby={urlError ? "link-url-error" : undefined}
             />
             {urlError && (
-              <p className="text-red-500 text-sm mt-1">{urlError}</p>
+              <p
+                id="link-url-error"
+                className="text-red-500 text-sm mt-1"
+                role="alert"
+              >
+                {urlError}
+              </p>
             )}
           </div>
 
