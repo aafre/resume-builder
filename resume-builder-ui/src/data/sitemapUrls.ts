@@ -27,6 +27,9 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/zety-free-alternative', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/best-free-resume-builder-reddit', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-04' },
 
+  // ATS Keyword Scanner Tool (0.8)
+  { loc: '/resume-keyword-scanner', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
+
   // Audience Landing Pages (0.8)
   { loc: '/free-resume-builder-for-students', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/free-resume-builder-for-veterans', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },

@@ -1540,6 +1540,7 @@ VALID_SPA_ROUTES = {
     "zety-free-alternative",
     "easyfreeresume-vs-zety",
     "easyfreeresume-vs-indeed-resume-builder",
+    "resume-keyword-scanner",
     "free-resume-builder-for-students",
     "free-resume-builder-for-veterans",
     "free-resume-builder-for-it-professionals",

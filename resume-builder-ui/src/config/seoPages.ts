@@ -1794,4 +1794,33 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       { question: 'What are the most important keywords for a nursing resume?', answer: 'Patient care, patient assessment, medication administration, vital signs, IV therapy, wound care, care planning, patient education, infection control, HIPAA compliance, and your specific specialty area (ICU, ER, OR, L&D, pediatrics). Always include the exact unit types and patient populations from the job description.' },
     ],
   },
+
+  // ── ATS Keyword Scanner Tool ──────────────────────────────────────────
+  keywordScanner: {
+    seo: {
+      title: `Free ATS Resume Keyword Scanner (${CURRENT_YEAR}) | Check Your Match Score`,
+      description: 'Free ATS resume keyword scanner. Paste your resume and job description to see your keyword match score, missing keywords, and placement suggestions. No sign-up required.',
+      keywords: ['resume keyword scanner', 'ATS keyword checker', 'resume keyword match', 'ATS score checker', 'resume scanner free', 'keyword match tool', 'ATS resume checker'],
+      canonicalUrl: '/resume-keyword-scanner',
+    },
+    hero: {
+      title: 'Free ATS Resume Keyword Scanner',
+      subtitle: 'Paste your resume and a job description to instantly see which keywords you are missing — and where to add them.',
+      primaryCTA: { text: 'Scan Now', href: '#resume-text' },
+      secondaryCTA: { text: 'Browse Keywords', href: '/resume-keywords' },
+    },
+    breadcrumbs: [
+      { label: 'Home', url: '/' },
+      { label: 'Resume Keywords', url: '/resume-keywords' },
+      { label: 'Keyword Scanner' },
+    ],
+    faqs: [
+      { question: 'How does the ATS keyword scanner work?', answer: 'The scanner extracts important keywords and phrases from the job description you provide, then checks whether those same terms appear in your resume text. It calculates a match percentage and shows you exactly which keywords are missing, along with suggestions for where to add them.' },
+      { question: 'Is this keyword scanner free?', answer: 'Yes, completely free. There is no sign-up, no account required, and no limit on how many scans you can run. Your text is processed entirely in your browser — nothing is sent to a server.' },
+      { question: 'What is a good keyword match score?', answer: 'Aim for 70% or higher. A score above 70% means your resume covers most of the key terms from the job description, which significantly improves your chances of passing ATS screening. Below 40% suggests your resume needs substantial tailoring for this specific role.' },
+      { question: 'Does this tool store my resume or job description?', answer: 'No. All processing happens locally in your browser using JavaScript. Your resume text and job description are never uploaded to any server. When you close the page, all data is gone.' },
+      { question: 'Should I add every missing keyword to my resume?', answer: 'Not necessarily. Focus on keywords that are genuinely relevant to your experience. Adding keywords you cannot back up in an interview will hurt you. Prioritize technical skills, tools, and certifications that you actually possess. For softer terms, weave them naturally into your experience bullet points.' },
+      { question: 'How often should I scan my resume?', answer: 'Every time you apply to a new job. Each job description contains different keywords, so a resume that scores 80% for one role might score 40% for another. Spend 10 minutes tailoring your resume for each application.' },
+    ],
+  },
 };

@@ -57,6 +57,7 @@ const FreeResumeBuilderNoPayment = lazy(() => import("./components/seo/FreeResum
 const AIResumeBuilderFree = lazy(() => import("./components/seo/AIResumeBuilderFree"));
 const ZetyFreeAlternative = lazy(() => import("./components/seo/ZetyFreeAlternative"));
 const BestFreeResumeBuilderReddit = lazy(() => import("./components/seo/BestFreeResumeBuilderReddit"));
+const ResumeKeywordScanner = lazy(() => import("./components/tools/ResumeKeywordScanner"));
 const ResumeBuilderForStudents = lazy(() => import("./components/seo/ResumeBuilderForStudents"));
 const ResumeBuilderForVeterans = lazy(() => import("./components/seo/ResumeBuilderForVeterans"));
 const ResumeBuilderForITProfessionals = lazy(() => import("./components/seo/ResumeBuilderForITProfessionals"));
@@ -271,6 +272,14 @@ function AppContent() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <ZetyFreeAlternative />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/resume-keyword-scanner"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ResumeKeywordScanner />
               </Suspense>
             }
           />
