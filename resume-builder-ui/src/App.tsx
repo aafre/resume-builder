@@ -57,6 +57,10 @@ const FreeResumeBuilderNoPayment = lazy(() => import("./components/seo/FreeResum
 const AIResumeBuilderFree = lazy(() => import("./components/seo/AIResumeBuilderFree"));
 const ZetyFreeAlternative = lazy(() => import("./components/seo/ZetyFreeAlternative"));
 const BestFreeResumeBuilderReddit = lazy(() => import("./components/seo/BestFreeResumeBuilderReddit"));
+const ResumeBuilderForStudents = lazy(() => import("./components/seo/ResumeBuilderForStudents"));
+const ResumeBuilderForVeterans = lazy(() => import("./components/seo/ResumeBuilderForVeterans"));
+const ResumeBuilderForITProfessionals = lazy(() => import("./components/seo/ResumeBuilderForITProfessionals"));
+const ResumeBuilderForNurses = lazy(() => import("./components/seo/ResumeBuilderForNurses"));
 const FreeCVBuilder = lazy(() => import("./components/seo/FreeCVBuilder"));
 const CVTemplatesHub = lazy(() => import("./components/seo/CVTemplatesHub"));
 const CVTemplatesPage = lazy(() => import("./components/seo/CVTemplatesPage"));
@@ -267,6 +271,38 @@ function AppContent() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <ZetyFreeAlternative />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-resume-builder-for-students"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ResumeBuilderForStudents />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-resume-builder-for-veterans"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ResumeBuilderForVeterans />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-resume-builder-for-it-professionals"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ResumeBuilderForITProfessionals />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-resume-builder-for-nurses"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ResumeBuilderForNurses />
               </Suspense>
             }
           />

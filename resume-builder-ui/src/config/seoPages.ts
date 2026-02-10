@@ -1653,4 +1653,145 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       { question: 'What do I lose by switching from Zety to EasyFreeResume?', answer: 'Honestly, Zety has a larger template library and a more polished AI writing assistant. What you gain is genuinely free downloads, no account requirement, no subscription, and no payment surprises. For most job seekers, that trade-off is worth it.' },
     ],
   },
+
+  // /free-resume-builder-for-students
+  forStudents: {
+    seo: {
+      title: `Free Resume Builder for Students (${CURRENT_YEAR}) | No Sign Up Required`,
+      description: 'Build a professional student resume for free. ATS-friendly templates designed for college students, new graduates, and interns. No sign-up, no payment.',
+      keywords: ['student resume builder', 'resume builder for college students', 'free student resume', 'new graduate resume builder', 'internship resume builder', 'entry level resume builder'],
+      canonicalUrl: '/free-resume-builder-for-students',
+    },
+    breadcrumbs: [
+      { label: 'Home', href: '/' },
+      { label: 'Free Resume Builder for Students', href: '/free-resume-builder-for-students' },
+    ],
+    hero: {
+      h1: 'Free Resume Builder for Students',
+      subtitle: 'Build a professional resume even with no work experience',
+      description: 'ATS-friendly templates designed for college students, new graduates, and interns. Emphasize projects, coursework, and skills — not just job history.',
+      primaryCTA: { text: 'Build My Student Resume', href: '/templates' },
+      secondaryCTA: { text: 'View Student Templates', href: '/templates/resume-templates-for-students' },
+    },
+    features: [
+      { icon: '🎓', title: 'Student-Focused Layout', description: 'Templates that highlight education, projects, and skills over work history — perfect when you are just starting your career.' },
+      { icon: '📋', title: 'ATS-Optimized', description: 'Every template passes Applicant Tracking Systems used by Fortune 500 companies and major employers.' },
+      { icon: '✏️', title: 'Easy to Fill In', description: 'Guided sections for education, coursework, internships, volunteering, and projects. No guesswork.' },
+      { icon: '📥', title: 'Free PDF Download', description: 'Download your resume instantly as a clean PDF. No sign-up, no payment, no watermarks.' },
+      { icon: '🤖', title: 'AI Writing Help', description: 'Use AI to write compelling bullet points even when your experience is limited.' },
+      { icon: '💰', title: '100% Free Forever', description: 'Unlike other "free" builders, we never lock features behind a paywall. Students deserve free tools.' },
+    ],
+    faqs: [
+      { question: 'How do I write a resume with no work experience?', answer: 'Focus on education, academic projects, coursework, volunteering, clubs, and personal projects. Our student templates are designed to showcase these sections prominently. Use specific metrics where possible: "Led 5-person team for capstone project" or "Maintained 3.8 GPA."' },
+      { question: 'Should I include my GPA on my student resume?', answer: 'Include your GPA if it is 3.5 or above (on a 4.0 scale). If your major GPA is higher than your overall GPA, list the major GPA instead. If neither is strong, leave it off and focus on projects and skills.' },
+      { question: 'How long should a student resume be?', answer: 'One page is ideal for students and recent graduates. Employers expect concise resumes from candidates with limited experience. Focus on quality over quantity — every line should demonstrate a relevant skill or achievement.' },
+      { question: 'What template should a college student use?', answer: 'Use a clean, single-column template that puts education and skills near the top. Avoid overly creative designs that may confuse ATS. Our student resume templates are specifically designed for this use case.' },
+      { question: 'Can I use this for internship applications?', answer: 'Absolutely. Our templates work for internships, part-time jobs, full-time entry-level positions, and graduate school applications. Tailor the content for each application by adjusting your summary and highlighting relevant coursework.' },
+    ],
+  },
+
+  // /free-resume-builder-for-veterans
+  forVeterans: {
+    seo: {
+      title: `Free Resume Builder for Veterans (${CURRENT_YEAR}) | Military to Civilian`,
+      description: 'Translate military experience into civilian resume language. Free ATS-friendly templates for veterans, service members, and military spouses. No sign-up required.',
+      keywords: ['veteran resume builder', 'military resume builder', 'military to civilian resume', 'free resume builder for veterans', 'veteran resume template', 'military transition resume'],
+      canonicalUrl: '/free-resume-builder-for-veterans',
+    },
+    breadcrumbs: [
+      { label: 'Home', href: '/' },
+      { label: 'Free Resume Builder for Veterans', href: '/free-resume-builder-for-veterans' },
+    ],
+    hero: {
+      h1: 'Free Resume Builder for Veterans',
+      subtitle: 'Translate your military experience into civilian career success',
+      description: 'ATS-friendly templates and guidance designed for veterans and transitioning service members. Translate military skills, MOS codes, and DD-214 experience into language civilian employers understand.',
+      primaryCTA: { text: 'Build My Veteran Resume', href: '/templates' },
+    },
+    features: [
+      { icon: '🎖️', title: 'Military-to-Civilian Translation', description: 'Guidance on converting military jargon, MOS codes, and acronyms into civilian-friendly language that recruiters understand.' },
+      { icon: '📋', title: 'ATS-Optimized Templates', description: 'Clean, professional templates that pass Applicant Tracking Systems at major civilian employers.' },
+      { icon: '🔒', title: 'Security Clearance Highlighting', description: 'Properly formatted sections for active/inactive security clearances — a major asset for defense and government contractor roles.' },
+      { icon: '📥', title: 'Free PDF Download', description: 'Download your resume instantly. No sign-up, no payment, no subscription. Completely free for those who served.' },
+      { icon: '🤖', title: 'AI Writing Assistance', description: 'Use AI to rewrite military accomplishments in civilian terms and generate tailored bullet points for target roles.' },
+      { icon: '💼', title: 'Transferable Skills Focus', description: 'Templates designed to highlight leadership, operations, logistics, security, and technical skills that translate to civilian roles.' },
+    ],
+    faqs: [
+      { question: 'How do I translate military experience to a civilian resume?', answer: 'Replace military jargon with civilian equivalents: "platoon leader" becomes "team leader of 40+ personnel," "logistics NCO" becomes "supply chain coordinator." Focus on transferable skills: leadership, project management, operations, training, and security. Always quantify with metrics: budget managed, personnel supervised, processes improved.' },
+      { question: 'Should I include my MOS or military job code?', answer: 'Include the civilian-friendly translation, not just the MOS code. Write "Combat Medic (68W)" or "IT Specialist (25B)" so civilian recruiters understand the role. In your experience bullets, describe what you actually did in terms any employer would recognize.' },
+      { question: 'How do I list a security clearance on my resume?', answer: 'Add a "Security Clearance" section near the top of your resume. Include the clearance level (Secret, Top Secret, TS/SCI), status (Active/Inactive), and investigation date if active. An active security clearance is highly valuable for defense and government contractor positions.' },
+      { question: 'Is this resume builder really free for veterans?', answer: 'Yes, 100% free for everyone including veterans. There are no premium tiers, no hidden fees, and no subscription. We believe tools for career transition should be accessible to all, especially those who have served.' },
+    ],
+  },
+
+  // /free-resume-builder-for-it-professionals
+  forITProfessionals: {
+    seo: {
+      title: `Free Resume Builder for IT Professionals (${CURRENT_YEAR}) | Tech Resume Templates`,
+      description: 'Build a professional IT resume for free. ATS-optimized templates for software engineers, DevOps, cybersecurity, data analysts, and IT support. No sign-up required.',
+      keywords: ['IT resume builder', 'tech resume builder', 'software engineer resume builder', 'IT professional resume template', 'free tech resume builder', 'developer resume builder'],
+      canonicalUrl: '/free-resume-builder-for-it-professionals',
+    },
+    breadcrumbs: [
+      { label: 'Home', href: '/' },
+      { label: 'Free Resume Builder for IT Professionals', href: '/free-resume-builder-for-it-professionals' },
+    ],
+    hero: {
+      h1: 'Free Resume Builder for IT Professionals',
+      subtitle: 'Templates and tools designed for the tech industry',
+      description: 'ATS-optimized templates for software engineers, DevOps engineers, data analysts, cybersecurity professionals, and IT support specialists. Showcase your technical skills effectively.',
+      primaryCTA: { text: 'Build My Tech Resume', href: '/templates' },
+      secondaryCTA: { text: 'View ATS Templates', href: '/templates/ats-friendly' },
+    },
+    features: [
+      { icon: '💻', title: 'Tech-Focused Templates', description: 'Layouts designed to showcase technical skills, certifications, and project experience in a format that tech recruiters expect.' },
+      { icon: '📋', title: 'ATS-Optimized', description: 'Pass Applicant Tracking Systems at Google, Amazon, Microsoft, and thousands of other tech employers.' },
+      { icon: '🔧', title: 'Skills Section Optimized', description: 'Structured skills sections for programming languages, frameworks, cloud platforms, tools, and methodologies.' },
+      { icon: '📥', title: 'Free PDF Download', description: 'Download your polished IT resume instantly. No sign-up, no payment, no limitations.' },
+      { icon: '🤖', title: 'AI-Powered Bullets', description: 'Generate impactful bullet points with metrics: latency reduced, uptime achieved, users served.' },
+      { icon: '🔑', title: 'Keyword Guidance', description: 'Built-in guidance for industry-specific keywords like CI/CD, Docker, Kubernetes, AWS, and more.' },
+    ],
+    faqs: [
+      { question: 'What should an IT professional put on their resume?', answer: 'Lead with a technical skills section organized by category (languages, frameworks, cloud, tools). Follow with experience bullets that combine technology names with measurable impact: "Reduced API latency by 60% using Redis caching on AWS." Include certifications (AWS, Azure, Google Cloud) prominently.' },
+      { question: 'How should I list programming languages on my resume?', answer: 'Group by proficiency or relevance, not alphabetically. Lead with languages in the job description. Show depth: "Python (5 years, production)" is better than just listing "Python." Alternatively, demonstrate proficiency through bullet points rather than a standalone list.' },
+      { question: 'Should I include personal projects or GitHub on my IT resume?', answer: 'Yes, especially if they demonstrate skills relevant to the target role. Include a Projects section with the tech stack, your role, and measurable outcomes. Link to your GitHub profile if your repos show consistent, quality contributions.' },
+      { question: 'How long should a tech resume be?', answer: 'One page for less than 10 years of experience, two pages maximum for senior engineers and architects. Focus on recent, relevant experience. A 15-year veteran does not need to list every technology they touched in 2010.' },
+      { question: 'What resume keywords do IT recruiters look for?', answer: 'It depends on the role. For software engineers: specific languages, frameworks, cloud platforms, CI/CD, and system design. For DevOps: Terraform, Kubernetes, Docker, monitoring tools. For data: SQL, Python, Spark, machine learning. Always mirror the exact terms from the job description.' },
+    ],
+  },
+
+  // /free-resume-builder-for-nurses
+  forNurses: {
+    seo: {
+      title: `Free Resume Builder for Nurses (${CURRENT_YEAR}) | Nursing Resume Templates`,
+      description: 'Build a professional nursing resume for free. ATS-friendly templates for RNs, LPNs, nurse practitioners, and nursing students. Highlight certifications and clinical skills.',
+      keywords: ['nursing resume builder', 'nurse resume builder', 'RN resume builder', 'free nursing resume template', 'nurse resume template', 'nursing resume'],
+      canonicalUrl: '/free-resume-builder-for-nurses',
+    },
+    breadcrumbs: [
+      { label: 'Home', href: '/' },
+      { label: 'Free Resume Builder for Nurses', href: '/free-resume-builder-for-nurses' },
+    ],
+    hero: {
+      h1: 'Free Resume Builder for Nurses',
+      subtitle: 'Professional templates designed for healthcare careers',
+      description: 'ATS-friendly templates for registered nurses, LPNs, nurse practitioners, and nursing students. Properly showcase certifications (BLS, ACLS, PALS), clinical skills, and EHR experience.',
+      primaryCTA: { text: 'Build My Nursing Resume', href: '/templates' },
+    },
+    features: [
+      { icon: '🏥', title: 'Healthcare-Focused Layout', description: 'Templates designed for nursing professionals with dedicated sections for certifications, licensure, and clinical rotations.' },
+      { icon: '📋', title: 'ATS-Optimized', description: 'Pass Applicant Tracking Systems at hospitals, health systems, and staffing agencies.' },
+      { icon: '🎓', title: 'Certification Showcase', description: 'Properly formatted sections for BLS, ACLS, PALS, TNCC, and specialty certifications that hiring managers scan for first.' },
+      { icon: '📥', title: 'Free PDF Download', description: 'Download your nursing resume instantly. No sign-up, no payment, no watermarks.' },
+      { icon: '💊', title: 'EHR Skills Section', description: 'Highlight experience with Epic, Cerner, MEDITECH, and other electronic health record systems employers require.' },
+      { icon: '🤖', title: 'AI Writing Help', description: 'Generate nursing-specific bullet points with patient outcomes, unit metrics, and clinical competencies.' },
+    ],
+    faqs: [
+      { question: 'What certifications should a nurse list on their resume?', answer: 'Always include your active nursing license (RN, LPN/LVN) with state and license number. Add BLS (Basic Life Support) and ACLS (Advanced Cardiac Life Support) as these are required for most positions. Include specialty certifications: PALS, TNCC, CCRN, CEN, or wound care certification. List the certification body and expiration date.' },
+      { question: 'How should a new graduate nurse write a resume?', answer: 'Lead with education and clinical rotations. List each clinical rotation with the unit type, facility, patient population, and skills practiced. Include capstone or preceptorship details, relevant coursework, and any certifications. Our student-focused templates are designed for exactly this situation.' },
+      { question: 'Should I list EHR systems on my nursing resume?', answer: 'Absolutely. Most hospitals require proficiency in specific EHR systems. List every system you have used: Epic, Cerner, MEDITECH, Allscripts, or eClinicalWorks. If you are certified in Epic modules, include those certifications prominently.' },
+      { question: 'How long should a nursing resume be?', answer: 'One page for new graduates and nurses with less than 5 years of experience. Two pages are acceptable for experienced nurses with extensive certifications, specializations, or leadership roles. Never exceed two pages.' },
+      { question: 'What are the most important keywords for a nursing resume?', answer: 'Patient care, patient assessment, medication administration, vital signs, IV therapy, wound care, care planning, patient education, infection control, HIPAA compliance, and your specific specialty area (ICU, ER, OR, L&D, pediatrics). Always include the exact unit types and patient populations from the job description.' },
+    ],
+  },
 };
