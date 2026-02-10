@@ -11,8 +11,8 @@ import {
 
 describe('jobKeywords index (data access helpers)', () => {
   describe('JOBS_DATABASE', () => {
-    it('should have 15 jobs', () => {
-      expect(JOBS_DATABASE).toHaveLength(15);
+    it('should have 20 jobs', () => {
+      expect(JOBS_DATABASE).toHaveLength(20);
     });
 
     it('should have all jobs with required fields', () => {
@@ -86,10 +86,10 @@ describe('jobKeywords index (data access helpers)', () => {
   });
 
   describe('getAllJobSlugs', () => {
-    it('should return array of 15 slugs', () => {
+    it('should return array of 20 slugs', () => {
       const slugs = getAllJobSlugs();
 
-      expect(slugs).toHaveLength(15);
+      expect(slugs).toHaveLength(20);
       expect(Array.isArray(slugs)).toBe(true);
     });
 
@@ -111,6 +111,11 @@ describe('jobKeywords index (data access helpers)', () => {
       expect(slugs).toContain('financial-analyst');
       expect(slugs).toContain('teacher');
       expect(slugs).toContain('sales-representative');
+      expect(slugs).toContain('sales');
+      expect(slugs).toContain('marketing');
+      expect(slugs).toContain('business-analyst');
+      expect(slugs).toContain('nursing');
+      expect(slugs).toContain('administrative-assistant');
     });
 
     it('should return strings', () => {
@@ -152,10 +157,10 @@ describe('jobKeywords index (data access helpers)', () => {
   });
 
   describe('getTotalJobCount', () => {
-    it('should return 15', () => {
+    it('should return 20', () => {
       const count = getTotalJobCount();
 
-      expect(count).toBe(15);
+      expect(count).toBe(20);
     });
 
     it('should match JOBS_DATABASE length', () => {

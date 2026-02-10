@@ -4,36 +4,33 @@ import { describe, expect, it } from "vitest";
 import CompareBuildersCrossLinks, { ALL_COMPARISONS } from "../components/blog/CompareBuildersCrossLinks";
 
 describe("CompareBuildersCrossLinks", () => {
-  it("renders all 7 comparison links when no excludePath is given", () => {
+  it("renders all comparison links when no excludePath is given", () => {
     render(
       <MemoryRouter>
         <CompareBuildersCrossLinks />
       </MemoryRouter>
     );
 
-    expect(screen.getByText("Zety Pricing Breakdown")).toBeInTheDocument();
-    expect(screen.getByText("Resume.io Pricing Breakdown")).toBeInTheDocument();
-    expect(screen.getByText("Resume Genius Pricing")).toBeInTheDocument();
-    expect(screen.getByText("Novoresume Pricing")).toBeInTheDocument();
-    expect(screen.getByText("Enhancv Pricing")).toBeInTheDocument();
-    expect(screen.getByText("Canva Resume Builder Review")).toBeInTheDocument();
-    expect(screen.getByText("FlowCV Review")).toBeInTheDocument();
+    ALL_COMPARISONS.forEach((c) => {
+      expect(screen.getByText(c.label)).toBeInTheDocument();
+    });
 
     const links = screen.getAllByRole("link");
-    expect(links).toHaveLength(7);
+    expect(links).toHaveLength(ALL_COMPARISONS.length);
   });
 
   it("excludes the current page when excludePath is provided", () => {
+    const excludePath = ALL_COMPARISONS[0].path;
     render(
       <MemoryRouter>
-        <CompareBuildersCrossLinks excludePath="/blog/zety-vs-easy-free-resume" />
+        <CompareBuildersCrossLinks excludePath={excludePath} />
       </MemoryRouter>
     );
 
-    expect(screen.queryByText("Zety Pricing Breakdown")).not.toBeInTheDocument();
+    expect(screen.queryByText(ALL_COMPARISONS[0].label)).not.toBeInTheDocument();
 
     const links = screen.getAllByRole("link");
-    expect(links).toHaveLength(6);
+    expect(links).toHaveLength(ALL_COMPARISONS.length - 1);
   });
 
   it("renders default heading and description", () => {
