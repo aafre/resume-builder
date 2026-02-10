@@ -51,10 +51,10 @@ const JOB_FILLER = new Set([
 
 // Placement suggestions based on keyword type
 const PLACEMENT_RULES: Array<{ pattern: RegExp; placement: string }> = [
-  { pattern: /^(python|java|javascript|typescript|c\+\+|ruby|go|rust|php|swift|kotlin|scala|r|matlab|sql|html|css|sass|less)$/i, placement: 'Skills section — Technical Skills' },
-  { pattern: /^(react|angular|vue|node|express|django|flask|spring|rails|next\.?js|nuxt|svelte|laravel|asp\.net)$/i, placement: 'Skills section — Frameworks' },
-  { pattern: /^(aws|azure|gcp|docker|kubernetes|terraform|jenkins|ci\/cd|git|linux|nginx|apache)$/i, placement: 'Skills section — Tools & Infrastructure' },
-  { pattern: /^(excel|powerpoint|word|salesforce|hubspot|jira|confluence|slack|figma|sketch|photoshop|tableau|power\s?bi)$/i, placement: 'Skills section — Software' },
+  { pattern: /\b(python|java|javascript|typescript|c\+\+|ruby|go|rust|php|swift|kotlin|scala|r|matlab|sql|html|css|sass|less)\b/i, placement: 'Skills section — Technical Skills' },
+  { pattern: /\b(react|angular|vue|node|express|django|flask|spring|rails|next\.?js|nuxt|svelte|laravel|asp\.net)\b/i, placement: 'Skills section — Frameworks' },
+  { pattern: /\b(aws|azure|gcp|docker|kubernetes|terraform|jenkins|ci\/cd|git|linux|nginx|apache)\b/i, placement: 'Skills section — Tools & Infrastructure' },
+  { pattern: /\b(excel|powerpoint|word|salesforce|hubspot|jira|confluence|slack|figma|sketch|photoshop|tableau|power\s?bi)\b/i, placement: 'Skills section — Software' },
   { pattern: /(certified|certification|license|cpa|pmp|scrum|cissp|aws\s+certified)/i, placement: 'Certifications section' },
   { pattern: /(managed|led|directed|oversaw|coordinated|supervised|mentored)/i, placement: 'Experience section — action verbs in bullet points' },
   { pattern: /(increased|decreased|improved|reduced|grew|achieved|delivered|generated|saved)/i, placement: 'Experience section — accomplishment bullets' },
@@ -173,10 +173,11 @@ export function extractKeywords(jobDescription: string): string[] {
 function countOccurrences(keyword: string, text: string): number {
   // Escape special regex chars
   const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  // Use word boundary for single words, looser match for phrases
+  // Use lookaround for single words to handle C++, C#, .NET etc.
+  // \b fails when keywords end with non-word characters like + or #
   const pattern = keyword.includes(' ')
     ? new RegExp(escaped, 'gi')
-    : new RegExp(`\\b${escaped}\\b`, 'gi');
+    : new RegExp(`(?<=^|\\W)${escaped}(?=\\W|$)`, 'gi');
   const matches = text.match(pattern);
   return matches ? matches.length : 0;
 }
