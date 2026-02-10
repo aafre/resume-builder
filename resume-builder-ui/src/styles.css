@@ -293,6 +293,11 @@ footer {
   width: 100%;
 }
 
+#app-footer {
+  contain: layout style paint;
+  overflow: clip;
+}
+
 
 .carousel {
   display: flex;
@@ -549,6 +554,15 @@ footer {
 }
 .prose code {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Dark CTA boxes inside prose: override typography heading/body color */
+.prose .text-white h2,
+.prose .text-white h3,
+.prose .text-white h4,
+.prose .text-white p,
+.prose .text-white li {
+  color: inherit;
 }
 
 /* Mobile-optimized blog tables */

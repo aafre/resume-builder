@@ -62,6 +62,7 @@ const JOB_FILLER = new Set([
   'particularly', 'concepts', 'tools', 'development', 'implement',
   'implementing', 'utilizing', 'various', 'multiple', 'develop',
   'developing', 'like', 'manage', 'managing', 'support', 'supporting',
+  'needed', 'maintain', 'current'
 ]);
 
 // Connector words — bigrams containing these are almost always noise
