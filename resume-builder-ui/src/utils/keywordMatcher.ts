@@ -39,7 +39,7 @@ const STOP_WORDS = new Set([
   'here', 'there', 'only', 'own', 'my', 'me', 'i',
 ]);
 
-// Generic job posting filler words
+// Generic job posting filler words — expanded to reduce noise
 const JOB_FILLER = new Set([
   'experience', 'required', 'preferred', 'ability', 'skills', 'including',
   'work', 'working', 'position', 'role', 'company', 'team', 'opportunity',
@@ -47,7 +47,30 @@ const JOB_FILLER = new Set([
   'apply', 'job', 'description', 'employment', 'equal', 'employer',
   'benefits', 'salary', 'competitive', 'full-time', 'part-time',
   'minimum', 'years', 'degree', 'bachelor', 'master', 'education',
+  // Expanded: recruiter language
+  'looking', 'seeking', 'ideal', 'someone', 'strong', 'excellent',
+  'good', 'great', 'solid', 'knowledge', 'understanding', 'familiarity',
+  'needs', 'plus', 'bonus', 'leading', 'firm', 'services',
+  'include', 'includes', 'environment', 'culture', 'dynamic', 'fast-paced',
+  'collaborate', 'collaboration', 'demonstrate', 'demonstrated', 'proven',
+  'track', 'record', 'ensure', 'ensuring', 'responsible', 'well', 'based',
+  'proficiency', 'proficient', 'relevant', 'related', 'across', 'within',
+  // Benefits / admin noise
+  'health', 'insurance', '401k', 'matching', 'dental', 'vision',
+  'paid', 'time', 'off', 'pto', 'remote', 'hybrid', 'office', 'location',
 ]);
+
+// Connector words — bigrams containing these are almost always noise
+const CONNECTORS = new Set([
+  'with', 'and', 'for', 'in', 'to', 'or', 'the', 'a', 'an',
+  'at', 'on', 'by', 'from', 'of', 'as', 'is', 'are',
+]);
+
+// Known tech terms with special characters that normal tokenization destroys
+const TECH_TERMS_PATTERN = /(?<=^|\W)(c\+\+|c#|\.net|node\.js|next\.js|vue\.js|react\.js|asp\.net|vb\.net|f#)(?=\W|$)/gi;
+
+// Section headers that signal the start of requirements (signal) vs company blurb (noise)
+const REQUIREMENTS_HEADER = /\b(requirements|qualifications|what you.ll need|what we.re looking for|must.have|key skills|responsibilities|your background)\b/i;
 
 // Placement suggestions based on keyword type
 const PLACEMENT_RULES: Array<{ pattern: RegExp; placement: string }> = [
@@ -78,15 +101,40 @@ function normalize(text: string): string {
 }
 
 /**
+ * Extract the requirements/qualifications portion of a JD.
+ * If a section header is found, return text from that header onward.
+ * Otherwise return the full text (best effort).
+ */
+function extractRequirementsSection(text: string): string {
+  const match = REQUIREMENTS_HEADER.exec(text);
+  if (match && match.index !== undefined) {
+    // Use everything from the first requirements header onward
+    return text.slice(match.index);
+  }
+  return text;
+}
+
+/**
  * Extract meaningful keyword phrases from job description text.
- * Uses a combination of single words and 2-3 word phrases (bigrams/trigrams).
+ * Uses single words and bigrams, with pre-processing for special tech terms.
  */
 export function extractKeywords(jobDescription: string): string[] {
-  const text = normalize(jobDescription);
+  const fullText = normalize(jobDescription);
+
+  // Fix 5: Focus on requirements section when possible
+  const text = extractRequirementsSection(fullText);
+
+  const keywordSet = new Map<string, number>();
+
+  // Fix 4: Pre-extract known tech terms before general tokenization
+  const techMatches = text.match(TECH_TERMS_PATTERN) || [];
+  for (const term of techMatches) {
+    const lower = term.toLowerCase();
+    keywordSet.set(lower, (keywordSet.get(lower) || 0) + 1);
+  }
 
   // Split into sentences, then words
   const sentences = text.split(/[.!?;]\s+/);
-  const keywordSet = new Map<string, number>();
 
   for (const sentence of sentences) {
     const words = sentence
@@ -102,37 +150,23 @@ export function extractKeywords(jobDescription: string): string[] {
       }
     }
 
-    // Bigrams (2-word phrases)
+    // Bigrams only (trigrams removed — too noisy)
     for (let i = 0; i < words.length - 1; i++) {
       const a = words[i].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
       const b = words[i + 1].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
       if (a.length > 1 && b.length > 1) {
-        const bigram = `${a} ${b}`;
-        // Only keep bigrams where at least one word is not a stop word
-        if (!STOP_WORDS.has(a) || !STOP_WORDS.has(b)) {
-          if (!STOP_WORDS.has(a) && !STOP_WORDS.has(b)) {
-            keywordSet.set(bigram, (keywordSet.get(bigram) || 0) + 1);
-          }
-        }
-      }
-    }
+        // Fix 3: Skip bigrams with connector words, stop words, or filler
+        if (CONNECTORS.has(a) || CONNECTORS.has(b)) continue;
+        if (STOP_WORDS.has(a) || STOP_WORDS.has(b)) continue;
+        if (JOB_FILLER.has(a) || JOB_FILLER.has(b)) continue;
 
-    // Trigrams (3-word phrases)
-    for (let i = 0; i < words.length - 2; i++) {
-      const a = words[i].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
-      const b = words[i + 1].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
-      const c = words[i + 2].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
-      if (a.length > 1 && b.length > 1 && c.length > 1) {
-        if (!STOP_WORDS.has(a) && !STOP_WORDS.has(c)) {
-          const trigram = `${a} ${b} ${c}`;
-          keywordSet.set(trigram, (keywordSet.get(trigram) || 0) + 1);
-        }
+        const bigram = `${a} ${b}`;
+        keywordSet.set(bigram, (keywordSet.get(bigram) || 0) + 1);
       }
     }
   }
 
-  // Filter: keep keywords that appear 2+ times (for single words) or 1+ for phrases
-  // Also deduplicate: if a bigram contains a frequent single word, prefer the bigram
+  // Filter and rank keywords
   const results: string[] = [];
   const sorted = [...keywordSet.entries()].sort((a, b) => b[1] - a[1]);
 
