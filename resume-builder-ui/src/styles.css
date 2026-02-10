@@ -293,6 +293,11 @@ footer {
   width: 100%;
 }
 
+#app-footer {
+  contain: layout style paint;
+  overflow: hidden;
+}
+
 
 .carousel {
   display: flex;
