@@ -8,7 +8,8 @@ const footerLinks = {
     { path: '/free-resume-builder-no-sign-up', label: 'Free Resume Builder' },
     { path: '/actual-free-resume-builder', label: '100% Free Builder' },
     { path: '/best-free-resume-builder-reddit', label: 'Best Free Builder' },
-    { path: '/free-cv-builder-no-sign-up', label: 'Free CV Builder (UK)' },
+    { path: '/free-resume-builder-for-students', label: 'Resume Builder for Students' },
+    { path: '/free-resume-builder-for-nurses', label: 'Resume Builder for Nurses' },
     { path: '/ats-resume-templates', label: 'ATS Resume Templates' },
   ],
   resumeTemplates: [
@@ -27,6 +28,7 @@ const footerLinks = {
   ],
   resources: [
     { path: '/resume-keywords', label: 'Resume Keywords' },
+    { path: '/resume-keyword-scanner', label: 'ATS Keyword Scanner' },
     { path: '/jobs', label: 'Job Search' },
     { path: '/blog', label: 'Career Blog' },
     { path: '/blog/chatgpt-resume-prompts', label: 'ChatGPT Resume Prompts' },

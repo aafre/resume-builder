@@ -4,6 +4,7 @@
  * Target keyword: "free resume builder no sign up"
  */
 
+import { Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import StepByStep from '../shared/StepByStep';
@@ -74,6 +75,33 @@ export default function FreeResumeBuilderNoSignUp() {
           </div>
         </div>
       </div>
+      </RevealSection>
+
+      {/* Audience links */}
+      <RevealSection>
+        <div className="mb-16 max-w-4xl mx-auto">
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
+            Built for Every Career Stage
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Link to="/free-resume-builder-for-students" className="bg-chalk-dark rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04] text-center">
+              <h3 className="font-bold text-ink mb-1">Students</h3>
+              <p className="text-stone-warm text-xs">No experience? No problem.</p>
+            </Link>
+            <Link to="/free-resume-builder-for-veterans" className="bg-chalk-dark rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04] text-center">
+              <h3 className="font-bold text-ink mb-1">Veterans</h3>
+              <p className="text-stone-warm text-xs">Military-to-civilian translation.</p>
+            </Link>
+            <Link to="/free-resume-builder-for-it-professionals" className="bg-chalk-dark rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04] text-center">
+              <h3 className="font-bold text-ink mb-1">IT Professionals</h3>
+              <p className="text-stone-warm text-xs">Tech stack, scale, impact.</p>
+            </Link>
+            <Link to="/free-resume-builder-for-nurses" className="bg-chalk-dark rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04] text-center">
+              <h3 className="font-bold text-ink mb-1">Nurses</h3>
+              <p className="text-stone-warm text-xs">Certifications, EHR, clinical skills.</p>
+            </Link>
+          </div>
+        </div>
       </RevealSection>
 
       <FAQSection faqs={config.faqs} />

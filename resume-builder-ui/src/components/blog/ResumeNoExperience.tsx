@@ -6,8 +6,8 @@ export default function ResumeNoExperience() {
       title="How to Write a Resume With No Experience (2026 Guide)"
       description="Step-by-step guide to writing a resume with no work experience. 5+ copy-paste examples, ATS-friendly template, and what to put instead of job history."
       publishDate="2026-01-20"
-      lastUpdated="2026-01-25"
-      readTime="12–16 min"
+      lastUpdated="2026-02-10"
+      readTime="14–18 min"
       keywords={[
         "entry level resume",
         "no experience resume",
@@ -780,6 +780,114 @@ export default function ResumeNoExperience() {
             </p>
           </div>
         </div>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          What to Put on a Resume With No Work Experience
+        </h2>
+
+        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+          The biggest mistake entry-level candidates make is thinking "no work
+          experience" means "nothing to put on a resume." In reality, employers
+          hiring for entry-level roles expect candidates to draw from a range of
+          non-traditional experiences. Here's what to include:
+        </p>
+
+        <div className="space-y-4">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-2">Academic Projects & Coursework</h4>
+            <p className="text-stone-warm text-sm">
+              Capstone projects, research papers, lab work, and relevant
+              coursework all count. Format them like work experience: what
+              you did, what tools you used, and what the outcome was.
+              "Analyzed 2,000 survey responses using SPSS for consumer
+              behavior research project" is far stronger than "Completed
+              coursework in market research."
+            </p>
+          </div>
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-2">Volunteering & Community Work</h4>
+            <p className="text-stone-warm text-sm">
+              Volunteer roles demonstrate initiative, reliability, and
+              real-world skills. Organizing events, managing social media
+              for a charity, tutoring, or leading a team of volunteers —
+              all translate directly to workplace competencies.
+            </p>
+          </div>
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-2">Personal Projects & Freelance Work</h4>
+            <p className="text-stone-warm text-sm">
+              Built a website? Started a blog? Created an app? Sold items
+              online? These demonstrate self-motivation and practical
+              skills. Include metrics where possible: "Grew Etsy shop to
+              50+ sales in 3 months" or "Built portfolio site with 500+
+              monthly visitors."
+            </p>
+          </div>
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-2">Clubs, Societies & Leadership Roles</h4>
+            <p className="text-stone-warm text-sm">
+              Holding a position in a student club (treasurer, president,
+              event coordinator) shows leadership and organizational skills.
+              Even membership in relevant societies signals genuine interest
+              in a field.
+            </p>
+          </div>
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-2">Certifications & Online Courses</h4>
+            <p className="text-stone-warm text-sm">
+              Google Analytics Certification, HubSpot Inbound Marketing,
+              AWS Cloud Practitioner, Microsoft Office Specialist — free or
+              low-cost certifications prove you can learn independently and
+              have up-to-date skills.
+            </p>
+          </div>
+        </div>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Recommended Templates for Entry-Level Resumes
+        </h2>
+
+        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+          Not all resume templates work well when you have limited experience.
+          Look for templates that emphasize skills and projects over long work
+          histories. Here are our top picks:
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-6 my-8">
+          <a
+            href="/templates/resume-templates-for-students"
+            className="bg-accent/[0.04] border border-accent/20 rounded-xl p-6 hover:shadow-lg transition-all duration-300 block"
+          >
+            <h4 className="font-bold text-ink mb-2">Student Resume Templates</h4>
+            <p className="text-stone-warm text-sm">
+              Designed with prominent skills and projects sections.
+              ATS-friendly layouts that work great with limited work history.
+            </p>
+          </a>
+          <a
+            href="/templates/ats-friendly"
+            className="bg-accent/[0.04] border border-accent/20 rounded-xl p-6 hover:shadow-lg transition-all duration-300 block"
+          >
+            <h4 className="font-bold text-ink mb-2">ATS-Friendly Templates</h4>
+            <p className="text-stone-warm text-sm">
+              Clean, machine-readable formats that ensure your resume passes
+              automated screening — critical for entry-level candidates competing
+              against experienced applicants.
+            </p>
+          </a>
+        </div>
+
+        <p className="text-lg leading-relaxed text-stone-warm">
+          All templates are 100% free to use and download — no sign-up required.
+          Start building with our{' '}
+          <a
+            href="/free-resume-builder-for-students"
+            className="text-accent hover:underline font-semibold"
+          >
+            free resume builder for students
+          </a>{' '}
+          and have a polished PDF ready in minutes.
+        </p>
       </div>
     </BlogLayout>
   );

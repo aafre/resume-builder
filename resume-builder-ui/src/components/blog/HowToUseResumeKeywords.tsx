@@ -4,10 +4,11 @@ import BlogLayout from "../BlogLayout";
 export default function HowToUseResumeKeywords() {
   return (
     <BlogLayout
-      title="How to Use Resume Keywords to Beat the ATS (The Ultimate 2026 Guide)"
-      description="A deep dive into finding and using the right keywords to ensure your resume gets past applicant tracking systems and into human hands. Your master guide to ATS optimization."
+      title="How to Use Resume Keywords to Beat ATS Systems (2026 Guide)"
+      description="Step-by-step guide to finding, placing, and testing resume keywords to pass Applicant Tracking Systems. Includes a worked example with real job posting analysis."
       publishDate="2026-01-25"
-      readTime="11 min"
+      lastUpdated="2026-02-10"
+      readTime="14 min"
       keywords={[
         "resume keywords",
         "ats optimization",
@@ -542,6 +543,142 @@ export default function HowToUseResumeKeywords() {
           >
             Start Building Your Resume
           </a>
+        </div>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Worked Example: Job Posting → Keywords → Resume Bullet
+        </h2>
+
+        <p className="text-lg leading-relaxed text-stone-warm">
+          Let's walk through a real workflow. Imagine you're applying for a
+          Marketing Manager role. Here's how to extract and use keywords step by step.
+        </p>
+
+        <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">Sample Job Posting (excerpt):</h4>
+          <p className="text-stone-warm text-sm italic">
+            "We're looking for a Marketing Manager experienced in <strong>SEO</strong>,{' '}
+            <strong>Google Analytics</strong>, and <strong>social media marketing</strong>.
+            You'll manage <strong>paid advertising campaigns</strong>, develop{' '}
+            <strong>content strategy</strong>, and report on <strong>KPIs</strong> including{' '}
+            <strong>conversion rate</strong> and <strong>ROAS</strong>. Experience with{' '}
+            <strong>HubSpot</strong> and <strong>A/B testing</strong> preferred."
+          </p>
+        </div>
+
+        <div className="space-y-4 my-6">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-2">Step 1: Extract Keywords</h4>
+            <p className="text-stone-warm text-sm mb-2">
+              Highlighted terms from above: SEO, Google Analytics, social media marketing,
+              paid advertising campaigns, content strategy, KPIs, conversion rate, ROAS,
+              HubSpot, A/B testing.
+            </p>
+            <p className="text-ink/80 text-sm font-medium">
+              Result: 10 target keywords from a single paragraph.
+            </p>
+          </div>
+
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-2">Step 2: Before (Generic Resume Bullet)</h4>
+            <p className="text-stone-warm text-sm italic">
+              "Managed digital marketing campaigns and analyzed results."
+            </p>
+            <p className="text-red-600 text-xs mt-1">Keywords matched: 0/10</p>
+          </div>
+
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-2">Step 3: After (Keyword-Optimized)</h4>
+            <p className="text-ink/80 text-sm italic">
+              "Led <strong>paid advertising campaigns</strong> across Google and Meta,
+              managing $120K monthly budget. Used <strong>Google Analytics</strong> and{' '}
+              <strong>HubSpot</strong> to track <strong>KPIs</strong> including{' '}
+              <strong>conversion rate</strong> (+28%) and <strong>ROAS</strong> (4.2x).
+              Ran <strong>A/B tests</strong> on landing pages as part of broader{' '}
+              <strong>content strategy</strong>, improving <strong>SEO</strong> organic
+              traffic by 35%."
+            </p>
+            <p className="text-accent text-xs mt-1 font-medium">Keywords matched: 8/10</p>
+          </div>
+        </div>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Browse Keywords by Industry
+        </h2>
+
+        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+          We've created detailed keyword guides for specific industries and roles.
+          Each page includes 50–150+ curated keywords, before/after examples, and
+          tools lists organized by category.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-4 my-6">
+          <Link to="/resume-keywords/customer-service" className="block bg-chalk-dark border border-black/[0.06] rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300">
+            <h4 className="font-bold text-ink mb-1">Customer Service Keywords</h4>
+            <p className="text-stone-warm text-sm">CRM, CSAT, conflict resolution, Zendesk</p>
+          </Link>
+          <Link to="/resume-keywords/software-engineer" className="block bg-chalk-dark border border-black/[0.06] rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300">
+            <h4 className="font-bold text-ink mb-1">Software Engineer Keywords</h4>
+            <p className="text-stone-warm text-sm">Python, React, AWS, CI/CD, microservices</p>
+          </Link>
+          <Link to="/resume-keywords/product-manager" className="block bg-chalk-dark border border-black/[0.06] rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300">
+            <h4 className="font-bold text-ink mb-1">Product Manager Keywords</h4>
+            <p className="text-stone-warm text-sm">Roadmap, OKRs, A/B testing, user research</p>
+          </Link>
+          <Link to="/resume-keywords/sales" className="block bg-chalk-dark border border-black/[0.06] rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300">
+            <h4 className="font-bold text-ink mb-1">Sales Keywords</h4>
+            <p className="text-stone-warm text-sm">Pipeline, quota, CRM, lead generation</p>
+          </Link>
+          <Link to="/resume-keywords/marketing" className="block bg-chalk-dark border border-black/[0.06] rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300">
+            <h4 className="font-bold text-ink mb-1">Marketing Keywords</h4>
+            <p className="text-stone-warm text-sm">SEO, Google Analytics, content strategy</p>
+          </Link>
+          <Link to="/resume-keywords/nursing" className="block bg-chalk-dark border border-black/[0.06] rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300">
+            <h4 className="font-bold text-ink mb-1">Nursing Keywords</h4>
+            <p className="text-stone-warm text-sm">BLS, ACLS, Epic, patient assessment</p>
+          </Link>
+        </div>
+
+        <p className="text-lg leading-relaxed text-stone-warm">
+          See the full list on our{' '}
+          <Link to="/resume-keywords" className="text-accent hover:text-ink underline">
+            Resume Keywords Hub
+          </Link>, or use our free{' '}
+          <Link to="/resume-keyword-scanner" className="text-accent hover:text-ink underline">
+            ATS Keyword Scanner
+          </Link>{' '}
+          to check your resume against a specific job description.
+        </p>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Frequently Asked Questions
+        </h2>
+
+        <div className="space-y-4 my-6">
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+            <h4 className="font-bold text-ink mb-2">How many keywords should I include on my resume?</h4>
+            <p className="text-stone-warm text-sm">
+              Aim for 15–25 unique keywords from the job description, used naturally across your summary, skills, and experience sections. You don't need to include every keyword — focus on the ones you genuinely have experience with and that appear most frequently in the posting.
+            </p>
+          </div>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+            <h4 className="font-bold text-ink mb-2">Should I use the exact keywords from the job description?</h4>
+            <p className="text-stone-warm text-sm">
+              Yes. ATS systems often do literal string matching. If the job says "Project Management," include that exact phrase — not just "managed projects." Include both the full term and common abbreviations (e.g., "Search Engine Optimization (SEO)").
+            </p>
+          </div>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+            <h4 className="font-bold text-ink mb-2">Where should I place the most important keywords?</h4>
+            <p className="text-stone-warm text-sm">
+              The professional summary is scanned first — put your top 3–5 keywords there. Then place them in context within your experience bullet points with metrics. Your skills section acts as a keyword safety net for terms that don't fit naturally in bullet points.
+            </p>
+          </div>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+            <h4 className="font-bold text-ink mb-2">Is keyword stuffing penalized by ATS?</h4>
+            <p className="text-stone-warm text-sm">
+              Modern ATS systems like Greenhouse, Lever, and Workday can flag resumes with unnatural keyword density. More importantly, once your resume passes ATS, a human recruiter will read it — and keyword-stuffed resumes look unprofessional. Write naturally and let keywords appear in context.
+            </p>
+          </div>
         </div>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">

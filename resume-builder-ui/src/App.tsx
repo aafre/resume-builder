@@ -52,7 +52,16 @@ const AtsFriendlyTemplate = lazy(() => import("./components/seo/AtsFriendlyTempl
 const ResumeKeywordsHub = lazy(() => import("./components/seo/ResumeKeywordsHub"));
 const CustomerServiceKeywords = lazy(() => import("./components/seo/CustomerServiceKeywords"));
 const JobKeywordsPage = lazy(() => import("./components/seo/JobKeywordsPage"));
+const FreeResumeBuilderDownload = lazy(() => import("./components/seo/FreeResumeBuilderDownload"));
+const FreeResumeBuilderNoPayment = lazy(() => import("./components/seo/FreeResumeBuilderNoPayment"));
+const AIResumeBuilderFree = lazy(() => import("./components/seo/AIResumeBuilderFree"));
+const ZetyFreeAlternative = lazy(() => import("./components/seo/ZetyFreeAlternative"));
 const BestFreeResumeBuilderReddit = lazy(() => import("./components/seo/BestFreeResumeBuilderReddit"));
+const ResumeKeywordScanner = lazy(() => import("./components/tools/ResumeKeywordScanner"));
+const ResumeBuilderForStudents = lazy(() => import("./components/seo/ResumeBuilderForStudents"));
+const ResumeBuilderForVeterans = lazy(() => import("./components/seo/ResumeBuilderForVeterans"));
+const ResumeBuilderForITProfessionals = lazy(() => import("./components/seo/ResumeBuilderForITProfessionals"));
+const ResumeBuilderForNurses = lazy(() => import("./components/seo/ResumeBuilderForNurses"));
 const FreeCVBuilder = lazy(() => import("./components/seo/FreeCVBuilder"));
 const CVTemplatesHub = lazy(() => import("./components/seo/CVTemplatesHub"));
 const CVTemplatesPage = lazy(() => import("./components/seo/CVTemplatesPage"));
@@ -116,6 +125,7 @@ const NovoResumeVsEasyFreeResume = lazy(() => import("./components/blog/NovoResu
 const EnhancvVsEasyFreeResume = lazy(() => import("./components/blog/EnhancvVsEasyFreeResume"));
 const CanvaVsEasyFreeResume = lazy(() => import("./components/blog/CanvaVsEasyFreeResume"));
 const FlowCVVsEasyFreeResume = lazy(() => import("./components/blog/FlowCVVsEasyFreeResume"));
+const IndeedVsEasyFreeResume = lazy(() => import("./components/blog/IndeedVsEasyFreeResume"));
 
 // Error pages - lazy loaded
 const NotFound = lazy(() => import("./components/NotFound"));
@@ -230,6 +240,78 @@ function AppContent() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <FreeResumeBuilderNoSignUp />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-resume-builder-download"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <FreeResumeBuilderDownload />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-resume-builder-no-payment"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <FreeResumeBuilderNoPayment />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/ai-resume-builder-free"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <AIResumeBuilderFree />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/zety-free-alternative"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ZetyFreeAlternative />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/resume-keyword-scanner"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ResumeKeywordScanner />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-resume-builder-for-students"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ResumeBuilderForStudents />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-resume-builder-for-veterans"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ResumeBuilderForVeterans />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-resume-builder-for-it-professionals"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ResumeBuilderForITProfessionals />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-resume-builder-for-nurses"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ResumeBuilderForNurses />
               </Suspense>
             }
           />
@@ -594,6 +676,7 @@ function AppContent() {
             { from: "/blog/customer-service-resume-keywords", to: "/resume-keywords/customer-service" },
             { from: "/blog/how-to-use-resume-keywords-to-beat-ats", to: "/blog/how-to-use-resume-keywords" },
             { from: "/blog/how-to-list-skills-on-resume", to: "/blog/how-to-list-skills" },
+            { from: "/blog/zety-vs-easy-free-resume", to: "/easyfreeresume-vs-zety" },
             { from: "/blog/career-change-resume", to: "/blog" },
             { from: "/privacy", to: "/privacy-policy" },
             { from: "/terms", to: "/terms-of-service" },
@@ -609,7 +692,7 @@ function AppContent() {
             }
           />
           <Route
-            path="/blog/zety-vs-easy-free-resume"
+            path="/easyfreeresume-vs-zety"
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <ZetyVsEasyFreeResume />
@@ -737,6 +820,14 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <FlowCVVsEasyFreeResume />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/easyfreeresume-vs-indeed-resume-builder"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <IndeedVsEasyFreeResume />
               </Suspense>
             }
           />
