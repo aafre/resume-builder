@@ -1488,6 +1488,12 @@ def redirect_list_skills_on_resume():
     return redirect("/blog/how-to-list-skills", code=301)
 
 
+@app.route("/blog/zety-vs-easy-free-resume")
+def redirect_zety_comparison():
+    """Redirect old Zety comparison URL to new canonical URL"""
+    return redirect("/easyfreeresume-vs-zety", code=301)
+
+
 @app.route("/blog/career-change-resume")
 def redirect_career_change_resume():
     """Redirect old blog URL to blog index (no equivalent exists)"""
@@ -1528,6 +1534,11 @@ VALID_SPA_ROUTES = {
     "terms-of-service",
     "error",
     "jobs",
+    "free-resume-builder-download",
+    "free-resume-builder-no-payment",
+    "ai-resume-builder-free",
+    "zety-free-alternative",
+    "easyfreeresume-vs-zety",
 }
 
 # Bot user-agent patterns for prerendered HTML serving

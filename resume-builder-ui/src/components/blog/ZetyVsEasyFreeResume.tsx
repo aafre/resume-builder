@@ -37,7 +37,7 @@ export default function ZetyVsEasyFreeResume() {
   const schema = generateComparisonSchema(
     EASY_FREE_RESUME_PRODUCT,
     { name: "Zety", price: "71.40", description: "Online resume builder with templates and cover letters, offering monthly and quarterly subscription plans." },
-    "2026-02-03"
+    "2026-02-10"
   );
 
   return (
@@ -46,10 +46,10 @@ export default function ZetyVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
     <BlogLayout
-      title="Zety Pricing 2026: Is It Free? (Real Costs Revealed)"
-      description="Zety charges $5.95-$23.95/month with auto-renewing plans. Full 2026 pricing breakdown, hidden costs, and a 100% free alternative. No tricks, no paywalls."
+      title="EasyFreeResume vs Zety (2026) — Which Is Actually Free?"
+      description="Zety charges $2.70-$24.70 to download your resume. EasyFreeResume is 100% free. Full pricing breakdown, feature comparison, and honest recommendation."
       publishDate="2026-01-28"
-      lastUpdated="2026-02-02"
+      lastUpdated="2026-02-10"
       readTime="9 min"
       keywords={[
         "zety pricing",
@@ -752,6 +752,116 @@ export default function ZetyVsEasyFreeResume() {
         </div>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Is Zety Actually Free?
+        </h2>
+
+        <p className="text-lg leading-relaxed text-stone-warm">
+          No. Zety uses what is called a "freemium bait" model. You can use the Zety resume builder
+          to write and format your resume entirely for free. The editor, templates, and content
+          suggestions all work without payment. However, when you click "Download" to get your
+          finished resume as a PDF, you hit a paywall.
+        </p>
+
+        <p className="text-lg leading-relaxed text-stone-warm mt-4">
+          The minimum cost to download a single resume from Zety is $2.70 for a 7-day trial — which
+          automatically renews at $24.70/month unless you cancel in time. Many users report discovering
+          this only after spending 30-60 minutes building their resume, at which point the sunk-cost
+          fallacy pushes them to pay rather than start over on another platform. This is by design.
+        </p>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          ATS Friendliness: Zety vs EasyFreeResume
+        </h2>
+
+        <p className="text-lg leading-relaxed text-stone-warm">
+          Both platforms produce ATS-compatible resumes. Applicant Tracking Systems parse resumes by
+          reading text, heading structure, and formatting — not by recognizing which builder made them.
+          What matters is the output format: clean HTML structure, standard fonts, proper heading
+          hierarchy, and parseable text.
+        </p>
+
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-ink mb-3">🎯 ATS Compatibility Checklist</h3>
+          <p className="text-ink/80 mb-4">
+            Both Zety and EasyFreeResume resumes meet these ATS requirements:
+          </p>
+          <ul className="grid md:grid-cols-2 gap-2 text-ink/80">
+            {[
+              'Standard fonts (Arial, Calibri, Helvetica)',
+              'Proper heading hierarchy (H1 → H2 → H3)',
+              'Single-column layouts (no multi-column tricks)',
+              'No embedded images for text content',
+              'Clean PDF export without JavaScript',
+              'Machine-readable contact information',
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2">
+                <span className="text-accent font-bold">✓</span>
+                <span className="text-sm">{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-ink/80 mt-4 text-sm">
+            Want to verify your resume passes ATS? Check our{' '}
+            <Link to="/resume-keywords" className="text-accent underline">
+              resume keywords guide
+            </Link>{' '}
+            for optimization tips.
+          </p>
+        </div>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Is Zety Legit and Safe?
+        </h2>
+
+        <p className="text-lg leading-relaxed text-stone-warm">
+          Yes, Zety is a legitimate business. It is operated by Bold LLC (formerly Uptowork), a company
+          based in the US. Your resume data is stored on their servers, and they have a standard
+          privacy policy. They are not a scam — they are a real company offering a real product.
+        </p>
+
+        <p className="text-lg leading-relaxed text-stone-warm mt-4">
+          The controversy around Zety is not about legitimacy but about transparency. Common complaints include:
+        </p>
+
+        <ul className="list-disc pl-6 space-y-2 text-stone-warm mt-4 mb-8">
+          <li>The free builder creates an expectation of free downloads that does not match reality</li>
+          <li>The $2.70 trial auto-renews at $24.70/month, catching many users off guard</li>
+          <li>Cancellation processes can be frustrating and time-consuming</li>
+          <li>Some users report difficulty getting refunds for unexpected charges</li>
+        </ul>
+
+        <p className="text-lg leading-relaxed text-stone-warm">
+          These are pricing and UX decisions, not safety issues. Your data is as safe with Zety as
+          with any major SaaS platform. That said, if you prefer maximum privacy,{' '}
+          <Link to="/free-resume-builder-no-sign-up" className="text-accent underline">
+            EasyFreeResume stores nothing on servers
+          </Link>{' '}
+          — your resume data stays entirely in your browser.
+        </p>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Frequently Asked Questions
+        </h2>
+
+        <div className="space-y-4 mb-12">
+          {[
+            { q: 'Is Zety free to use?', a: 'Zety is free to use for building a resume, but downloading your resume as PDF requires a paid plan starting at $2.70 for a 7-day trial. EasyFreeResume is free for both building and downloading.' },
+            { q: 'How much does Zety cost per month?', a: 'Zety costs $5.95/month on an annual plan (billed as $71.40/year upfront), $11.95/month on a quarterly plan, or $23.95 for a single month. The $2.70 introductory trial auto-renews at $24.70/month.' },
+            { q: 'Can I cancel my Zety subscription?', a: 'Yes, but you must cancel before the trial period ends to avoid charges. Contact Zety support directly. Some users report the cancellation process is not straightforward.' },
+            { q: 'Is EasyFreeResume really completely free?', a: 'Yes. EasyFreeResume is 100% free — no sign-up, no payment, no watermarks. We sustain the service through non-intrusive advertising.' },
+            { q: 'Does EasyFreeResume have the same templates as Zety?', a: 'Not identical templates, but our templates are professionally designed and ATS-optimized. Zety has more variety, but our core templates cover the most popular styles used across industries.' },
+            { q: 'Is Zety or EasyFreeResume better for ATS?', a: 'Both produce ATS-compatible resumes. The format and structure both platforms use passes major ATS systems. The content (your keywords and achievements) matters far more than the builder you use.' },
+            { q: 'Can I switch from Zety to EasyFreeResume?', a: 'Yes. Choose a similar template on EasyFreeResume and paste your content from Zety. The process takes about 3 minutes. You can then download your resume for free.' },
+            { q: 'Why should I use EasyFreeResume instead of Zety?', a: 'The main reason is cost. EasyFreeResume provides free downloads, no sign-up, no subscription, and strong privacy. You save $71-$287/year and avoid the risk of unexpected charges.' },
+          ].map(({ q, a }) => (
+            <div key={q} className="bg-chalk-dark rounded-xl p-5">
+              <h3 className="font-bold text-ink mb-2">{q}</h3>
+              <p className="text-stone-warm text-sm leading-relaxed">{a}</p>
+            </div>
+          ))}
+        </div>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Final Recommendation
         </h2>
 
@@ -787,7 +897,7 @@ export default function ZetyVsEasyFreeResume() {
           subscription fee.
         </p>
 
-        <CompareBuildersCrossLinks excludePath="/blog/zety-vs-easy-free-resume" />
+        <CompareBuildersCrossLinks excludePath="/easyfreeresume-vs-zety" />
       </div>
 
       {/* Spacer for sticky mobile CTA */}

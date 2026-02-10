@@ -630,6 +630,7 @@ function AppContent() {
             { from: "/blog/customer-service-resume-keywords", to: "/resume-keywords/customer-service" },
             { from: "/blog/how-to-use-resume-keywords-to-beat-ats", to: "/blog/how-to-use-resume-keywords" },
             { from: "/blog/how-to-list-skills-on-resume", to: "/blog/how-to-list-skills" },
+            { from: "/blog/zety-vs-easy-free-resume", to: "/easyfreeresume-vs-zety" },
             { from: "/blog/career-change-resume", to: "/blog" },
             { from: "/privacy", to: "/privacy-policy" },
             { from: "/terms", to: "/terms-of-service" },
@@ -645,7 +646,7 @@ function AppContent() {
             }
           />
           <Route
-            path="/blog/zety-vs-easy-free-resume"
+            path="/easyfreeresume-vs-zety"
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <ZetyVsEasyFreeResume />
