@@ -16,7 +16,7 @@ export interface SitemapUrl {
  */
 export const STATIC_URLS: SitemapUrl[] = [
   // High Priority Landing Pages (1.0)
-  { loc: '/', priority: 1.0, changefreq: 'weekly', lastmod: '2026-01-25' },
+  { loc: '/', priority: 1.0, changefreq: 'weekly', lastmod: '2026-02-10' },
 
   // New SEO Landing Pages (0.9) - updated footer links today
   { loc: '/actual-free-resume-builder', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-02' },
