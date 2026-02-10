@@ -58,6 +58,10 @@ const JOB_FILLER = new Set([
   // Benefits / admin noise
   'health', 'insurance', '401k', 'matching', 'dental', 'vision',
   'paid', 'time', 'off', 'pto', 'remote', 'hybrid', 'office', 'location',
+  // Generic verbs and vague terms that inflate noise
+  'particularly', 'concepts', 'tools', 'development', 'implement',
+  'implementing', 'utilizing', 'various', 'multiple', 'develop',
+  'developing', 'like', 'manage', 'managing', 'support', 'supporting',
 ]);
 
 // Connector words — bigrams containing these are almost always noise
@@ -167,12 +171,17 @@ export function extractKeywords(jobDescription: string): string[] {
   }
 
   // Filter and rank keywords
-  const results: string[] = [];
   const sorted = [...keywordSet.entries()].sort((a, b) => b[1] - a[1]);
 
+  // First pass: collect candidates
+  const candidates: string[] = [];
   const added = new Set<string>();
   for (const [keyword, count] of sorted) {
     const wordCount = keyword.split(' ').length;
+
+    // (A) Bigrams must appear 2+ times to be included — single-occurrence
+    // bigrams are almost always noise (adjacent words, not real phrases)
+    if (wordCount === 2 && count < 2) continue;
 
     // Single words need count >= 2 to be included (unless they look technical)
     if (wordCount === 1 && count < 2) {
@@ -193,10 +202,25 @@ export function extractKeywords(jobDescription: string): string[] {
     }
 
     added.add(keyword);
-    results.push(keyword);
+    candidates.push(keyword);
 
-    if (results.length >= 40) break; // Cap at 40 keywords
+    if (candidates.length >= 40) break; // Cap at 40 keywords
   }
+
+  // (B) Bidirectional subsumption: if bigram "machine learning" is in the
+  // list, remove standalone "machine" and "learning" even if they ranked
+  // higher. The first pass only catches lower-ranked singles.
+  const bigrams = candidates.filter((k) => k.includes(' '));
+  const subsumedWords = new Set<string>();
+  for (const bigram of bigrams) {
+    for (const word of bigram.split(' ')) {
+      subsumedWords.add(word);
+    }
+  }
+  const results = candidates.filter((k) => {
+    if (k.includes(' ')) return true; // keep all bigrams
+    return !subsumedWords.has(k);
+  });
 
   return results;
 }
