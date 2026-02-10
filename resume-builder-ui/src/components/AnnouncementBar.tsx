@@ -113,6 +113,7 @@ export default function AnnouncementBar() {
 
           {/* Close Button - Absolute positioned to right */}
           <button
+            type="button"
             onClick={handleDismiss}
             className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-md text-white/50 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
             aria-label={`Dismiss announcement: ${activeAnnouncement.message}`}
@@ -165,6 +166,7 @@ export default function AnnouncementBar() {
 
           {/* Fixed right side: Close button */}
           <button
+            type="button"
             onClick={handleDismiss}
             className="p-1 rounded text-white/50 hover:text-white hover:bg-white/10 transition-all flex-shrink-0 z-[2] cursor-pointer"
             aria-label="Dismiss"
