@@ -47,7 +47,7 @@ export default function CanvaVsEasyFreeResume() {
       title="Canva Resume Builder 2026: Limitations & Free Alternative"
       description="Canva resume templates look great but often fail ATS scans. See how EasyFreeResume compares: ATS pass rates, PDF export, and which free builder gets more interviews."
       publishDate="2026-01-21"
-      lastUpdated="2026-02-04"
+      lastUpdated="2026-02-10"
       readTime="8 min"
       keywords={[
         "canva resume template",
@@ -315,6 +315,31 @@ export default function CanvaVsEasyFreeResume() {
           >
             Build Your ATS Resume
           </Link>
+        </div>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          FAQ: Canva Resume Builder
+        </h2>
+
+        <div className="space-y-4 my-8">
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+            <h4 className="font-bold text-ink mb-2">Are Canva resumes ATS-friendly?</h4>
+            <p className="text-stone-warm text-sm">
+              Most Canva resume templates are not ATS-friendly. They use graphics, multi-column layouts, text boxes, and non-standard fonts that ATS systems struggle to parse. If you're applying through online job portals, use a purpose-built resume builder with ATS-optimized templates instead.
+            </p>
+          </div>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+            <h4 className="font-bold text-ink mb-2">Is Canva resume builder free?</h4>
+            <p className="text-stone-warm text-sm">
+              Canva offers a free tier with basic resume templates. However, many of the best-looking templates, premium elements, and features like background removal require Canva Pro ($12.99/month). EasyFreeResume provides all templates and features for free with no upsells.
+            </p>
+          </div>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+            <h4 className="font-bold text-ink mb-2">Can I download a Canva resume as PDF?</h4>
+            <p className="text-stone-warm text-sm">
+              Yes, Canva allows PDF downloads on the free tier. However, the PDF format may not be ATS-parseable due to how Canva renders text and graphics. For ATS-compatible PDFs, use a dedicated resume builder that generates clean, machine-readable PDF output.
+            </p>
+          </div>
         </div>
 
         <CompareBuildersCrossLinks excludePath="/blog/canva-resume-vs-easy-free-resume" />

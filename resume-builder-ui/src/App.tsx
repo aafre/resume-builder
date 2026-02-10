@@ -120,6 +120,7 @@ const NovoResumeVsEasyFreeResume = lazy(() => import("./components/blog/NovoResu
 const EnhancvVsEasyFreeResume = lazy(() => import("./components/blog/EnhancvVsEasyFreeResume"));
 const CanvaVsEasyFreeResume = lazy(() => import("./components/blog/CanvaVsEasyFreeResume"));
 const FlowCVVsEasyFreeResume = lazy(() => import("./components/blog/FlowCVVsEasyFreeResume"));
+const IndeedVsEasyFreeResume = lazy(() => import("./components/blog/IndeedVsEasyFreeResume"));
 
 // Error pages - lazy loaded
 const NotFound = lazy(() => import("./components/NotFound"));
@@ -774,6 +775,14 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <FlowCVVsEasyFreeResume />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/easyfreeresume-vs-indeed-resume-builder"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <IndeedVsEasyFreeResume />
               </Suspense>
             }
           />

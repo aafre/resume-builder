@@ -13,6 +13,7 @@ export const ALL_COMPARISONS: ComparisonLink[] = [
   { path: '/blog/enhancv-vs-easy-free-resume', label: 'Enhancv Pricing' },
   { path: '/blog/canva-resume-vs-easy-free-resume', label: 'Canva Resume Builder Review' },
   { path: '/blog/flowcv-vs-easy-free-resume', label: 'FlowCV Review' },
+  { path: '/easyfreeresume-vs-indeed-resume-builder', label: 'Indeed Resume Builder Review' },
 ];
 
 interface CompareBuildersCrossLinksProps {

@@ -47,7 +47,7 @@ export default function NovoResumeVsEasyFreeResume() {
       title="Novoresume Pricing 2026: Plans, Costs & Free Alternative"
       description="Novoresume premium costs $16-$99/yr. Compare Novoresume vs EasyFreeResume: free ATS templates, download formats, privacy, and which builder is worth your time."
       publishDate="2026-01-21"
-      lastUpdated="2026-02-04"
+      lastUpdated="2026-02-10"
       readTime="7 min"
       keywords={[
         "novoresume pricing",
@@ -299,6 +299,31 @@ export default function NovoResumeVsEasyFreeResume() {
           >
             Start Building Free
           </Link>
+        </div>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          FAQ: NovoResume Pricing & Features
+        </h2>
+
+        <div className="space-y-4 my-8">
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+            <h4 className="font-bold text-ink mb-2">Is NovoResume actually free?</h4>
+            <p className="text-stone-warm text-sm">
+              NovoResume offers a limited free tier with basic templates and restricted downloads. The best templates, full customization, and unlimited PDF exports require a premium plan starting at $16/month or $99/year. EasyFreeResume offers all templates and unlimited downloads for free.
+            </p>
+          </div>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+            <h4 className="font-bold text-ink mb-2">Does NovoResume put a watermark on free resumes?</h4>
+            <p className="text-stone-warm text-sm">
+              NovoResume's free tier includes NovoResume branding on exported PDFs. To remove the branding and get a clean, professional PDF, you need a premium subscription. EasyFreeResume never adds watermarks or branding to your downloads.
+            </p>
+          </div>
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+            <h4 className="font-bold text-ink mb-2">Is NovoResume good for ATS?</h4>
+            <p className="text-stone-warm text-sm">
+              Yes, NovoResume templates are generally ATS-compatible. Their templates use clean formatting that most ATS systems can parse correctly. However, some of the more design-heavy premium templates may have minor ATS issues. Both NovoResume and EasyFreeResume produce ATS-friendly output.
+            </p>
+          </div>
         </div>
 
         <CompareBuildersCrossLinks excludePath="/blog/novoresume-vs-easy-free-resume" />

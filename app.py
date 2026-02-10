@@ -1539,6 +1539,7 @@ VALID_SPA_ROUTES = {
     "ai-resume-builder-free",
     "zety-free-alternative",
     "easyfreeresume-vs-zety",
+    "easyfreeresume-vs-indeed-resume-builder",
 }
 
 # Bot user-agent patterns for prerendered HTML serving
