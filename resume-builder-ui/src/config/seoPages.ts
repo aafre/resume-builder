@@ -1804,15 +1804,15 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       canonicalUrl: '/resume-keyword-scanner',
     },
     hero: {
-      title: 'Free ATS Resume Keyword Scanner',
+      h1: 'Free ATS Resume Keyword Scanner',
       subtitle: 'Paste your resume and a job description to instantly see which keywords you are missing — and where to add them.',
       primaryCTA: { text: 'Scan Now', href: '#resume-text' },
       secondaryCTA: { text: 'Browse Keywords', href: '/resume-keywords' },
     },
     breadcrumbs: [
-      { label: 'Home', url: '/' },
-      { label: 'Resume Keywords', url: '/resume-keywords' },
-      { label: 'Keyword Scanner' },
+      { label: 'Home', href: '/' },
+      { label: 'Resume Keywords', href: '/resume-keywords' },
+      { label: 'Keyword Scanner', href: '/resume-keyword-scanner' },
     ],
     faqs: [
       { question: 'How does the ATS keyword scanner work?', answer: 'The scanner extracts important keywords and phrases from the job description you provide, then checks whether those same terms appear in your resume text. It calculates a match percentage and shows you exactly which keywords are missing, along with suggestions for where to add them.' },
