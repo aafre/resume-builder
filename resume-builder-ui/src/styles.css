@@ -295,7 +295,7 @@ footer {
 
 #app-footer {
   contain: layout style paint;
-  overflow: hidden;
+  overflow: clip;
 }
 
 

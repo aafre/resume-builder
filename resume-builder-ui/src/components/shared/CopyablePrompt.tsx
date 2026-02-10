@@ -42,7 +42,7 @@ export default function CopyablePrompt({
     <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
       <h4 className="font-bold text-gray-900 mb-3">{title}</h4>
       <div
-        className="group relative bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm cursor-pointer hover:border-accent/30 hover:bg-accent/[0.06] transition-colors"
+        className="group relative bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm cursor-pointer hover:border-accent/30 hover:bg-accent/[0.06] transition-colors overflow-x-auto"
         onClick={handleCopy}
       >
         <div className="pr-8 sm:pr-16">
@@ -63,8 +63,7 @@ export default function CopyablePrompt({
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
-              <span className="text-xs sm:hidden">Copy</span>
-              <span className="hidden group-hover:inline sm:text-sm">Copy</span>
+              <span className="text-xs sm:text-sm">Copy</span>
             </span>
           )}
         </div>
