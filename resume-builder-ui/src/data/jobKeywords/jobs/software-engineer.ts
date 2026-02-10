@@ -177,5 +177,15 @@ export const softwareEngineer: JobKeywordsData = {
       answer:
         'Yes. Modern SWE roles expect familiarity with CI/CD, Docker, Kubernetes, and at least one cloud provider (AWS, GCP, or Azure). Include these in your skills section and, more importantly, in your bullet points: "Deployed services to AWS ECS using Terraform and GitHub Actions." Even if you are not a DevOps specialist, showing you can own the full lifecycle from code to production is a strong signal to hiring teams.',
     },
+    {
+      question: 'What is the difference between Software Engineer, Software Developer, and DevOps Engineer keywords?',
+      answer:
+        'Software Engineer resumes emphasize system design, algorithms, data structures, scalability, and production-level code. Software Developer resumes often lean toward application-level skills — CRUD operations, UI development, API integration, and business logic. DevOps Engineer resumes focus on infrastructure-as-code (Terraform, CloudFormation), CI/CD pipelines (Jenkins, GitHub Actions), container orchestration (Kubernetes, ECS), monitoring (Datadog, Prometheus, Grafana), and cloud architecture. If a job title says "Full-Stack Engineer," blend frontend frameworks (React, Vue) with backend (Node.js, Python) and infrastructure keywords.',
+    },
+    {
+      question: 'What framework and library keywords should I include for frontend vs backend roles?',
+      answer:
+        'Frontend roles: React, Vue, Angular, Next.js, TypeScript, Tailwind CSS, Webpack/Vite, responsive design, accessibility (WCAG), state management (Redux, Zustand), component testing (Jest, Testing Library). Backend roles: Node.js, Express, Django, FastAPI, Spring Boot, PostgreSQL, Redis, message queues (Kafka, RabbitMQ), REST API design, GraphQL, authentication (OAuth, JWT), and ORM tools (Prisma, SQLAlchemy). Always match the specific frameworks listed in the job description — a React job cares about React, not Angular.',
+    },
   ],
 };

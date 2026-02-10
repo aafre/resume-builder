@@ -823,6 +823,38 @@ export default function CustomerServiceKeywords() {
 
       <FAQSection faqs={config.faqs} />
 
+      {/* Related keyword pages */}
+      <RevealSection>
+        <div className="mb-16">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-6">
+            Explore more resume keywords by industry
+          </h2>
+          <p className="text-lg text-stone-warm font-extralight mb-6 leading-relaxed">
+            Browse keyword guides for other industries and roles on our{' '}
+            <Link to="/resume-keywords" className="text-accent hover:text-ink underline font-medium">
+              Resume Keywords Hub
+            </Link>. For a deeper dive on how to weave keywords naturally into your bullet points, read our{' '}
+            <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:text-ink underline font-medium">
+              complete guide to using resume keywords
+            </Link>.
+          </p>
+          <div className="grid md:grid-cols-3 gap-4">
+            <Link to="/resume-keywords/sales" className="bg-chalk-dark rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Sales Keywords</h3>
+              <p className="text-stone-warm text-sm">Pipeline, quota attainment, CRM</p>
+            </Link>
+            <Link to="/resume-keywords/administrative-assistant" className="bg-chalk-dark rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Admin Assistant Keywords</h3>
+              <p className="text-stone-warm text-sm">Office management, scheduling, Microsoft 365</p>
+            </Link>
+            <Link to="/resume-keywords/nursing" className="bg-chalk-dark rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Nursing Keywords</h3>
+              <p className="text-stone-warm text-sm">BLS, ACLS, Epic, patient care</p>
+            </Link>
+          </div>
+        </div>
+      </RevealSection>
+
       <DownloadCTA
         title="Ready to Build Your Customer Service Resume?"
         description="Use these keywords with our professional templates to showcase your expertise."

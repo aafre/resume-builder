@@ -50,14 +50,14 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/templates/resume-templates-for-students', priority: 0.7, changefreq: 'monthly', lastmod: '2026-01-21' },
 
   // Manually-curated keyword page (0.7)
-  { loc: '/resume-keywords/customer-service', priority: 0.85, changefreq: 'monthly', lastmod: '2026-02-04' },
+  { loc: '/resume-keywords/customer-service', priority: 0.85, changefreq: 'monthly', lastmod: '2026-02-10' },
 
   // Blog Hub (0.6)
   { loc: '/blog', priority: 0.6, changefreq: 'weekly', lastmod: '2026-01-25' },
 
   // Blog Posts (0.5) - being updated with content refreshes
   { loc: '/blog/resume-keywords-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
-  { loc: '/blog/resume-no-experience', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
+  { loc: '/blog/resume-no-experience', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/blog/job-interview-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/ats-resume-optimization', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/resume-mistakes-to-avoid', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
@@ -72,7 +72,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/introducing-prepai-ai-interview-coach', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/how-to-write-a-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/resume-action-verbs', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
-  { loc: '/blog/how-to-use-resume-keywords', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/how-to-use-resume-keywords', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/blog/how-why-easyfreeresume-completely-free', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/easyfreeresume-vs-zety', priority: 0.7, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/blog/how-to-list-skills', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
