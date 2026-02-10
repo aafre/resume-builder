@@ -881,10 +881,10 @@ export default function ResumeNoExperience() {
           All templates are 100% free to use and download — no sign-up required.
           Start building with our{' '}
           <a
-            href="/free-resume-builder-no-sign-up"
+            href="/free-resume-builder-for-students"
             className="text-accent hover:underline font-semibold"
           >
-            free resume builder
+            free resume builder for students
           </a>{' '}
           and have a polished PDF ready in minutes.
         </p>
