@@ -1402,4 +1402,255 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       },
     ],
   },
+
+  // /free-resume-builder-download
+  freeDownload: {
+    seo: {
+      title: `Free Resume Builder & Download | No Sign Up, No Payment | EasyFreeResume`,
+      description:
+        'Build your resume online and download as PDF or DOCX for free. No sign-up, no payment, no watermarks. ATS-friendly templates ready in minutes.',
+      keywords: [
+        'free resume builder download',
+        'free resume download',
+        'resume builder free download',
+        'free resume builder pdf',
+        'download resume free',
+        'free resume maker download',
+        `free resume builder ${CURRENT_YEAR}`,
+      ],
+      canonicalUrl: '/free-resume-builder-download',
+    },
+    hero: {
+      h1: 'Free Resume Builder — Download PDF & DOCX Instantly',
+      eyebrow: 'Free Download',
+      subtitle: 'Build and download your professional resume in minutes',
+      description:
+        'Create an ATS-friendly resume with our free builder and download it instantly as PDF or DOCX. No payment, no sign-up, no watermarks — ever.',
+      primaryCTA: { text: 'Build My Free Resume', href: '/templates' },
+      secondaryCTA: { text: 'See Templates', href: '/ats-resume-templates', variant: 'outline' },
+    },
+    steps: [
+      { number: 1, title: 'Pick a Template', description: 'Choose from our collection of ATS-optimized, professional resume templates. Every design is free.' },
+      { number: 2, title: 'Add Your Content', description: 'Fill in your experience, skills, and education using our intuitive editor. AI suggestions help you write better.' },
+      { number: 3, title: 'Download Instantly', description: 'Download your finished resume as PDF or DOCX. No payment, no email — it is yours immediately.' },
+    ],
+    features: [
+      { icon: '💰', title: 'No Payment Required', description: 'Download your resume completely free. No credit card, no hidden fees, no trial periods.' },
+      { icon: '📧', title: 'No Sign-Up Needed', description: 'Start building immediately without creating an account, verifying email, or filling out any forms.' },
+      { icon: '📄', title: 'PDF & DOCX Formats', description: 'Download in PDF for applications or DOCX for further editing in Word or Google Docs.' },
+      { icon: '🚫', title: 'No Watermarks', description: 'Your download is clean and professional. No branding, no watermarks, no "made with" badges.' },
+      { icon: '✅', title: 'ATS-Friendly Templates', description: 'Every template passes Applicant Tracking Systems used by Fortune 500 companies.' },
+      { icon: '♾️', title: 'Unlimited Downloads', description: 'Download as many resumes as you need. Create different versions for different jobs — all free.' },
+    ],
+    faqs: [
+      { question: 'Is this resume builder really free to download?', answer: 'Yes, 100% free. You can build and download your resume as PDF or DOCX without paying anything. There is no trial period, no premium tier, and no credit card required. We sustain our service through ethical advertising, not by charging users.' },
+      { question: 'Do I need to create an account to download my resume?', answer: 'No. You can build and download your resume without creating an account, providing an email, or signing up. Just pick a template, add your content, and download. Your data stays in your browser.' },
+      { question: 'What file formats can I download my resume in?', answer: 'You can download your resume as PDF (recommended for job applications) or DOCX (for editing in Microsoft Word or Google Docs). Both formats are free with no watermarks.' },
+      { question: 'Will my downloaded resume have any watermarks or branding?', answer: 'No. Your downloaded resume is completely clean — no watermarks, no "made with EasyFreeResume" badges, no branding of any kind. It looks like a professionally designed resume, because it is one.' },
+      { question: 'Are the resume templates ATS-friendly?', answer: 'Yes. Every template is designed to pass Applicant Tracking Systems (ATS) used by companies like Amazon, Google, and major corporations. They use proper heading hierarchy, standard fonts, and clean formatting that ATS software can parse correctly.' },
+      { question: 'How many resumes can I download for free?', answer: 'Unlimited. You can create and download as many resumes as you need. Many job seekers create multiple versions tailored to different positions — all completely free.' },
+    ],
+  },
+
+  // /free-resume-builder-no-payment
+  noPayment: {
+    seo: {
+      title: `Free Resume Builder — No Payment, No Sign Up, No Catch | EasyFreeResume`,
+      description:
+        '100% free resume builder with no payment, no sign-up, and no hidden charges. See why other builders charge and how EasyFreeResume stays free.',
+      keywords: [
+        'free resume builder no payment',
+        'resume builder no charge',
+        'free resume builder no credit card',
+        'truly free resume builder',
+        'free resume builder no hidden fees',
+        'free resume builder no catch',
+        `free resume builder ${CURRENT_YEAR}`,
+      ],
+      canonicalUrl: '/free-resume-builder-no-payment',
+    },
+    hero: {
+      h1: '100% Free Resume Builder — No Payment, No Charge, No Catch',
+      eyebrow: 'Truly Free',
+      subtitle: 'What you see is what you get — a professional resume builder with zero cost',
+      description:
+        'Most "free" resume builders charge $2-$25 to download your resume. EasyFreeResume is different. Build, customize, and download your resume without ever entering payment information.',
+      primaryCTA: { text: 'Build My Free Resume', href: '/templates' },
+      secondaryCTA: { text: 'How We Stay Free', href: '/blog/how-why-easyfreeresume-completely-free', variant: 'outline' },
+    },
+    steps: [
+      { number: 1, title: 'Choose a Template', description: 'Browse our full library of ATS-optimized templates. Every single template is available for free — no "premium" locks.' },
+      { number: 2, title: 'Build Your Resume', description: 'Use our editor to add your experience, skills, and education. No feature is hidden behind a paywall.' },
+      { number: 3, title: 'Download for Free', description: 'Download your polished resume as PDF. No surprise charges, no credit card pop-ups, no "upgrade to download" prompts.' },
+    ],
+    features: [
+      { icon: '💳', title: 'No Credit Card Needed', description: 'We never ask for payment information. No credit card fields, no checkout pages, no billing forms.' },
+      { icon: '🔓', title: 'All Features Unlocked', description: 'Every template, every format, every feature is available to everyone. There is no premium tier.' },
+      { icon: '📥', title: 'Free Downloads Forever', description: 'Download unlimited resumes in PDF and DOCX. The download button works — no paywall surprise.' },
+      { icon: '🚫', title: 'No "Freemium" Trap', description: 'Unlike Zety, Resume.io, and others, we will never let you build a resume then charge to download it.' },
+      { icon: '🔒', title: 'No Data Monetization', description: 'We do not sell your personal data. Your resume content stays in your browser and is never stored on our servers.' },
+      { icon: '📢', title: 'Ad-Supported Model', description: 'We keep the service free through non-intrusive advertising. You get a professional resume, we keep the lights on.' },
+    ],
+    comparison: [
+      {
+        name: 'EasyFreeResume',
+        highlight: true,
+        features: {
+          'Truly Free': true,
+          'No Sign-Up': true,
+          'No Credit Card': true,
+          'PDF Download': true,
+          'All Templates Free': true,
+          'No Watermarks': true,
+          'ATS-Optimized': true,
+        },
+      },
+      {
+        name: 'Typical "Free" Builders',
+        features: {
+          'Truly Free': false,
+          'No Sign-Up': false,
+          'No Credit Card': false,
+          'PDF Download': '$2-$25',
+          'All Templates Free': false,
+          'No Watermarks': false,
+          'ATS-Optimized': 'Premium only',
+        },
+      },
+    ],
+    faqs: [
+      { question: 'Why do most resume builders charge for downloads?', answer: 'Most resume builders use a "freemium" model: they let you build a resume for free, then charge $2-$25 to download it as PDF. They rely on the sunk-cost fallacy — after spending 30 minutes building your resume, you are more likely to pay. EasyFreeResume does not use this tactic.' },
+      { question: 'How does EasyFreeResume stay free without charging?', answer: 'We use non-intrusive advertising to sustain the service. This lets us offer every feature, every template, and unlimited downloads for free. We believe a resume builder should not be a barrier to getting a job.' },
+      { question: 'Is there a catch or hidden cost?', answer: 'No catch. No hidden cost. No premium tier. No trial period. No credit card. You build a resume, you download it, and you use it to get a job. That is it.' },
+      { question: 'Will I be charged later or auto-subscribed?', answer: 'No. We never collect payment information, so there is nothing to charge. There are no subscriptions, no auto-renewals, and no surprise fees. Once you download your resume, it is yours forever.' },
+      { question: 'How does this compare to Zety, Resume.io, and Resume Genius?', answer: 'Zety charges $2.70-$24.70 to download. Resume.io charges $2.95/week. Resume Genius charges $2.95-$7.95/month. EasyFreeResume charges nothing. All templates, all formats, unlimited downloads — genuinely free.' },
+      { question: 'Do free resumes look less professional than paid ones?', answer: 'No. Our templates are designed by professionals and are ATS-optimized. The quality matches or exceeds paid alternatives. The "free" does not mean "lesser" — it means we chose a different business model.' },
+    ],
+  },
+
+  // /ai-resume-builder-free
+  aiResumeBuilder: {
+    seo: {
+      title: `Free AI Resume Builder | Use ChatGPT, Claude & Gemini | EasyFreeResume`,
+      description:
+        'Build a better resume with AI. Use ChatGPT, Claude, and Gemini with our free resume builder. AI-powered suggestions, prompts, and optimization tips.',
+      keywords: [
+        'ai resume builder free',
+        'ai resume builder',
+        'chatgpt resume builder',
+        'free ai resume maker',
+        'ai resume writer',
+        'ai powered resume builder',
+        `ai resume builder ${CURRENT_YEAR}`,
+      ],
+      canonicalUrl: '/ai-resume-builder-free',
+    },
+    hero: {
+      h1: 'Free AI Resume Builder — Powered by ChatGPT, Claude & Gemini',
+      eyebrow: 'AI-Powered',
+      subtitle: 'Combine AI intelligence with professional templates for a standout resume',
+      description:
+        'Use the most powerful AI models — ChatGPT, Claude, and Gemini — alongside our free resume builder. Get AI-written bullet points, keyword optimization, and professional formatting without paying a cent.',
+      primaryCTA: { text: 'Build My AI Resume', href: '/templates' },
+      secondaryCTA: { text: 'See AI Prompts', href: '/blog/chatgpt-resume-prompts', variant: 'outline' },
+    },
+    steps: [
+      { number: 1, title: 'Choose Your AI', description: 'Pick from ChatGPT, Claude, or Gemini. Each has unique strengths for different resume tasks — or use all three.' },
+      { number: 2, title: 'Generate Content', description: 'Use our proven prompts to generate bullet points, summaries, and skills sections tailored to your target role.' },
+      { number: 3, title: 'Build & Download', description: 'Paste AI-generated content into our free resume builder, pick a template, and download your polished resume instantly.' },
+    ],
+    features: [
+      { icon: '🤖', title: 'ChatGPT Integration', description: 'Use ChatGPT to write compelling bullet points, professional summaries, and tailored cover letters for any role.' },
+      { icon: '🧠', title: 'Claude for Analysis', description: 'Claude excels at analyzing job descriptions, extracting keywords, and matching your experience to requirements.' },
+      { icon: '✨', title: 'Gemini for Research', description: 'Google Gemini can research industry-specific keywords and optimize your resume for specific companies and roles.' },
+      { icon: '🎯', title: 'ATS Keyword Optimization', description: 'AI helps identify and incorporate the exact keywords ATS systems scan for in your target industry.' },
+      { icon: '💰', title: 'Completely Free', description: 'Our resume builder is free. ChatGPT, Claude, and Gemini all offer free tiers. Professional resume building at zero cost.' },
+      { icon: '📄', title: 'Professional Templates', description: 'AI-generated content goes into our ATS-optimized templates. The combination produces resumes that get interviews.' },
+    ],
+    faqs: [
+      { question: 'What is an AI resume builder?', answer: 'An AI resume builder combines artificial intelligence (like ChatGPT, Claude, or Gemini) with a resume formatting tool. The AI generates and optimizes your content — bullet points, summaries, skills — while the builder provides professional templates and formatting. EasyFreeResume provides the builder; you bring the AI of your choice.' },
+      { question: 'Which AI is best for writing a resume?', answer: 'Each AI has strengths. ChatGPT (GPT-4) is excellent for writing compelling bullet points and professional summaries. Claude excels at analyzing job descriptions and extracting keywords. Gemini is strong at researching industry trends and company-specific optimization. For the best results, use multiple AIs for different tasks.' },
+      { question: 'Can I use ChatGPT to write my entire resume?', answer: 'You can, but the best results come from using AI as a writing partner, not a replacement. Give ChatGPT your real experience and target job description, then edit its output to sound authentic. Hiring managers can often detect fully AI-written resumes, so personalization is key.' },
+      { question: 'Is using AI for resume writing considered cheating?', answer: 'No. Using AI for resume writing is widely accepted and increasingly expected. It is similar to using spell-check or grammar tools. The key is that your resume should accurately represent your real experience and qualifications — AI just helps you present them more effectively.' },
+      { question: 'How do I use AI prompts with EasyFreeResume?', answer: 'Visit our AI prompt guides (ChatGPT, Claude, or Gemini) and copy the proven prompts. Paste them into your preferred AI along with your experience and target job description. Then copy the AI-generated content into our free resume builder, choose a template, and download your finished resume.' },
+      { question: 'Do I need to pay for ChatGPT to use this?', answer: 'No. ChatGPT, Claude, and Gemini all offer free tiers that are sufficient for resume writing. Combined with our free resume builder, you can create an AI-optimized, professionally formatted resume at zero cost.' },
+    ],
+  },
+
+  // /zety-free-alternative
+  zetyAlternative: {
+    seo: {
+      title: `Free Alternative to Zety — Download Without Paying | EasyFreeResume`,
+      description:
+        'Frustrated with Zety paywall? EasyFreeResume is a free alternative to Zety. Download your resume as PDF without paying. Switch in 3 minutes.',
+      keywords: [
+        'zety free alternative',
+        'zety alternative free',
+        'free alternative to zety',
+        'zety resume builder free',
+        'like zety but free',
+        'zety free download alternative',
+      ],
+      canonicalUrl: '/zety-free-alternative',
+    },
+    hero: {
+      h1: 'Free Alternative to Zety — Download Your Resume Without Paying',
+      eyebrow: 'Zety Alternative',
+      subtitle: 'Frustrated by the Zety paywall? You are not alone',
+      description:
+        'Thousands of job seekers build their resume on Zety only to discover they need to pay $2.70-$24.70 to download it. EasyFreeResume lets you build, customize, and download your resume completely free — no payment, no sign-up, no catch.',
+      primaryCTA: { text: 'Switch to Free', href: '/templates' },
+      secondaryCTA: { text: 'See Comparison', href: '/easyfreeresume-vs-zety', variant: 'outline' },
+    },
+    steps: [
+      { number: 1, title: 'Pick a Template', description: 'Choose from our ATS-optimized templates. All are free — no "premium" locks like Zety.' },
+      { number: 2, title: 'Add Your Content', description: 'Paste your existing resume content or type it fresh. Our editor is just as intuitive as Zety.' },
+      { number: 3, title: 'Download Free', description: 'Download your resume as PDF. No credit card prompt, no paywall surprise — just a clean download.' },
+    ],
+    features: [
+      { icon: '💰', title: 'Actually Free Downloads', description: 'Zety charges $2.70-$24.70 to download. We charge nothing. Your download button actually works without a paywall.' },
+      { icon: '📧', title: 'No Account Required', description: 'Zety requires an account and email. We do not. Start building immediately with zero friction.' },
+      { icon: '✅', title: 'Same ATS Compatibility', description: 'Our templates pass the same ATS systems as Zety. Professional formatting, proper heading hierarchy, standard fonts.' },
+      { icon: '🎨', title: 'Professional Templates', description: 'Clean, modern designs comparable to Zety. Multiple styles for different industries and career levels.' },
+      { icon: '🔒', title: 'No Subscription Trap', description: 'Zety auto-enrolls you in a subscription. We have no subscriptions, no auto-renewals, no billing surprises.' },
+      { icon: '⚡', title: 'Switch in 3 Minutes', description: 'Already built a resume on Zety? Pick a similar template here and paste your content. Done.' },
+    ],
+    comparison: [
+      {
+        name: 'EasyFreeResume',
+        highlight: true,
+        features: {
+          'Price': 'Free',
+          'PDF Download': 'Free',
+          'Sign-Up Required': false,
+          'Credit Card Required': false,
+          'All Templates Free': true,
+          'No Watermarks': true,
+          'Auto-Subscription': false,
+          'ATS-Optimized': true,
+        },
+      },
+      {
+        name: 'Zety',
+        features: {
+          'Price': '$2.70-$24.70',
+          'PDF Download': 'Paid only',
+          'Sign-Up Required': true,
+          'Credit Card Required': true,
+          'All Templates Free': false,
+          'No Watermarks': 'Paid only',
+          'Auto-Subscription': true,
+          'ATS-Optimized': true,
+        },
+      },
+    ],
+    faqs: [
+      { question: 'Why is Zety not free?', answer: 'Zety uses a freemium model: it lets you build a resume for free, then charges $2.70 for a 7-day trial or up to $24.70/month to download it as PDF. Many users do not realize this until they click "Download." EasyFreeResume is an alternative where downloading is always free.' },
+      { question: 'Is EasyFreeResume as good as Zety?', answer: 'For most users, yes. Our templates are ATS-optimized, professionally designed, and comparable in quality. The main difference is the price: Zety charges for downloads, we do not. Zety does have more template variety, but our core templates cover the most popular styles.' },
+      { question: 'Can I transfer my Zety resume to EasyFreeResume?', answer: 'Yes. Choose a similar template on EasyFreeResume, then copy and paste your content from Zety. The whole process takes about 3 minutes. You will have a professionally formatted resume you can download for free.' },
+      { question: 'Does Zety automatically charge my credit card?', answer: 'Zety offers a $2.70 7-day trial that auto-renews at $24.70/month if not cancelled. Many users report unexpected charges. EasyFreeResume never collects payment information, so there is nothing to cancel or worry about.' },
+      { question: 'Are EasyFreeResume templates ATS-friendly like Zety?', answer: 'Yes. Our templates use proper heading hierarchy, standard fonts, and clean HTML formatting that ATS systems can parse correctly. They pass the same Applicant Tracking Systems (Workday, Taleo, iCIMS) as Zety templates.' },
+      { question: 'What do I lose by switching from Zety to EasyFreeResume?', answer: 'Honestly, Zety has a larger template library and a more polished AI writing assistant. What you gain is genuinely free downloads, no account requirement, no subscription, and no payment surprises. For most job seekers, that trade-off is worth it.' },
+    ],
+  },
 };

@@ -52,6 +52,10 @@ const AtsFriendlyTemplate = lazy(() => import("./components/seo/AtsFriendlyTempl
 const ResumeKeywordsHub = lazy(() => import("./components/seo/ResumeKeywordsHub"));
 const CustomerServiceKeywords = lazy(() => import("./components/seo/CustomerServiceKeywords"));
 const JobKeywordsPage = lazy(() => import("./components/seo/JobKeywordsPage"));
+const FreeResumeBuilderDownload = lazy(() => import("./components/seo/FreeResumeBuilderDownload"));
+const FreeResumeBuilderNoPayment = lazy(() => import("./components/seo/FreeResumeBuilderNoPayment"));
+const AIResumeBuilderFree = lazy(() => import("./components/seo/AIResumeBuilderFree"));
+const ZetyFreeAlternative = lazy(() => import("./components/seo/ZetyFreeAlternative"));
 const BestFreeResumeBuilderReddit = lazy(() => import("./components/seo/BestFreeResumeBuilderReddit"));
 const FreeCVBuilder = lazy(() => import("./components/seo/FreeCVBuilder"));
 const CVTemplatesHub = lazy(() => import("./components/seo/CVTemplatesHub"));
@@ -230,6 +234,38 @@ function AppContent() {
             element={
               <Suspense fallback={<LoadingSpinner />}>
                 <FreeResumeBuilderNoSignUp />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-resume-builder-download"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <FreeResumeBuilderDownload />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/free-resume-builder-no-payment"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <FreeResumeBuilderNoPayment />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/ai-resume-builder-free"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <AIResumeBuilderFree />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/zety-free-alternative"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <ZetyFreeAlternative />
               </Suspense>
             }
           />
