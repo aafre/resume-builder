@@ -551,6 +551,15 @@ footer {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
 }
 
+/* Dark CTA boxes inside prose: override typography heading/body color */
+.prose .text-white h2,
+.prose .text-white h3,
+.prose .text-white h4,
+.prose .text-white p,
+.prose .text-white li {
+  color: inherit;
+}
+
 /* Mobile-optimized blog tables */
 @media (max-width: 639px) {
   .prose table th,
