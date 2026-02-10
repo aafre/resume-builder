@@ -836,7 +836,11 @@ export default function CustomerServiceKeywords() {
             </Link>. For a deeper dive on how to weave keywords naturally into your bullet points, read our{' '}
             <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:text-ink underline font-medium">
               complete guide to using resume keywords
-            </Link>.
+            </Link>. You can also use our free{' '}
+            <Link to="/resume-keyword-scanner" className="text-accent hover:text-ink underline font-medium">
+              ATS Keyword Scanner
+            </Link>{' '}
+            to check your resume against a specific job description.
           </p>
           <div className="grid md:grid-cols-3 gap-4">
             <Link to="/resume-keywords/sales" className="bg-chalk-dark rounded-xl p-4 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">

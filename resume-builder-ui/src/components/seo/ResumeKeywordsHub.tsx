@@ -374,6 +374,31 @@ export default function ResumeKeywordsHub() {
         </div>
       </RevealSection>
 
+      {/* Keyword Scanner CTA */}
+      <RevealSection>
+        <div className="mb-16 max-w-4xl mx-auto">
+          <Link
+            to="/resume-keyword-scanner"
+            className="block bg-ink rounded-2xl p-8 text-center relative overflow-hidden hover:shadow-2xl transition-all duration-300"
+          >
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] rounded-full bg-accent/[0.07] blur-3xl pointer-events-none" />
+            <div className="relative">
+              <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-3 block">FREE TOOL</span>
+              <h2 className="font-display text-2xl md:text-3xl font-extrabold text-white mb-3">
+                ATS Resume Keyword Scanner
+              </h2>
+              <p className="text-white/70 font-extralight max-w-xl mx-auto mb-4 leading-relaxed">
+                Paste your resume and a job description to instantly see your keyword match score, missing keywords,
+                and exactly where to add them.
+              </p>
+              <span className="inline-block btn-primary px-6 py-3">
+                Scan Your Resume →
+              </span>
+            </div>
+          </Link>
+        </div>
+      </RevealSection>
+
       <div className="mb-16" id="how-to-find">
         <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">The Process</span>
         <StepByStep steps={howToSteps} title="How to find keywords for your resume" />

@@ -27,6 +27,7 @@ const footerLinks = {
   ],
   resources: [
     { path: '/resume-keywords', label: 'Resume Keywords' },
+    { path: '/resume-keyword-scanner', label: 'ATS Keyword Scanner' },
     { path: '/jobs', label: 'Job Search' },
     { path: '/blog', label: 'Career Blog' },
     { path: '/blog/chatgpt-resume-prompts', label: 'ChatGPT Resume Prompts' },

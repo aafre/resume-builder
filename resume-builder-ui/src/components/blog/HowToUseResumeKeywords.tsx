@@ -643,7 +643,11 @@ export default function HowToUseResumeKeywords() {
           See the full list on our{' '}
           <Link to="/resume-keywords" className="text-accent hover:text-ink underline">
             Resume Keywords Hub
-          </Link>.
+          </Link>, or use our free{' '}
+          <Link to="/resume-keyword-scanner" className="text-accent hover:text-ink underline">
+            ATS Keyword Scanner
+          </Link>{' '}
+          to check your resume against a specific job description.
         </p>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">

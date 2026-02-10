@@ -162,7 +162,7 @@ const LandingPage: React.FC = () => {
     {
       question: "What are resume keywords and why do they matter?",
       answer:
-        "Resume keywords are specific terms and phrases that Applicant Tracking Systems (ATS) scan for when filtering candidates. Including the right keywords from the job description significantly increases your chances of passing the automated screening. Our Resume Keywords tool helps you find the best keywords for your industry.",
+        "Resume keywords are specific terms and phrases that Applicant Tracking Systems (ATS) scan for when filtering candidates. Including the right keywords from the job description significantly increases your chances of passing the automated screening. Our Resume Keywords tool helps you find the best keywords for your industry, and our free ATS Keyword Scanner lets you check your resume against any job description instantly.",
     },
     {
       question: "How does EasyFreeResume make money if it's free?",

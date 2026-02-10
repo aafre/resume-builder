@@ -426,6 +426,7 @@ export default function JobKeywordsPage() {
           <h2 className="text-2xl font-extrabold text-ink tracking-tight mb-4">Related Resources</h2>
           <ul className="space-y-2">
             <li><Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">How to Use Resume Keywords Effectively</Link></li>
+            <li><Link to="/resume-keyword-scanner" className="text-accent hover:underline">ATS Keyword Scanner — Check Your Match Score</Link></li>
             <li><Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">ATS Resume Optimization Guide</Link></li>
             <li><Link to="/resume-keywords" className="text-accent hover:underline">Browse All Resume Keywords by Job Title</Link></li>
           </ul>
