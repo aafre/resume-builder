@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaShieldAlt, FaLock } from "react-icons/fa";
+import { affiliateConfig } from "../config/affiliate";
 
 // Footer link definitions for maintainability
 const footerLinks = {
@@ -29,7 +30,9 @@ const footerLinks = {
   resources: [
     { path: '/resume-keywords', label: 'Resume Keywords' },
     { path: '/resume-keyword-scanner', label: 'ATS Keyword Scanner' },
-    { path: '/jobs', label: 'Job Search' },
+    ...(affiliateConfig.jobSearch.enabled
+      ? [{ path: '/jobs', label: 'Job Search' }]
+      : []),
     { path: '/blog', label: 'Career Blog' },
     { path: '/blog/chatgpt-resume-prompts', label: 'ChatGPT Resume Prompts' },
     { path: '/blog/ats-resume-optimization', label: 'ATS Optimization Guide' },
