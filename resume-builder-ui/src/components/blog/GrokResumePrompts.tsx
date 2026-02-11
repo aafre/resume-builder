@@ -21,9 +21,9 @@ export default function GrokResumePrompts() {
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
-          Grok, developed by xAI, brings a conversational and fast approach to AI interactions.
-          Its speed and willingness to iterate quickly make it useful for brainstorming and
-          rapid resume refinement.
+          Grok, developed by xAI, brings a conversational and fast approach to
+          AI interactions. Its speed and willingness to iterate quickly make it
+          useful for brainstorming and rapid resume refinement.
         </p>
 
         {/* Quick Answer Box */}
@@ -32,10 +32,19 @@ export default function GrokResumePrompts() {
             🎯 Grok's Strengths for Resume Writing
           </h3>
           <ul className="space-y-2 text-orange-700">
-            <li><strong>Speed:</strong> Fast responses for quick iterations</li>
-            <li><strong>Conversational:</strong> Natural back-and-forth refinement</li>
-            <li><strong>Direct:</strong> Tends to give straightforward feedback</li>
-            <li><strong>Current:</strong> Access to recent information via X integration</li>
+            <li>
+              <strong>Speed:</strong> Fast responses for quick iterations
+            </li>
+            <li>
+              <strong>Conversational:</strong> Natural back-and-forth refinement
+            </li>
+            <li>
+              <strong>Direct:</strong> Tends to give straightforward feedback
+            </li>
+            <li>
+              <strong>Current:</strong> Access to recent information via X
+              integration
+            </li>
           </ul>
         </div>
 
@@ -45,22 +54,35 @@ export default function GrokResumePrompts() {
 
         <div className="space-y-6">
           <CopyablePrompt title="Prompt #1: Rapid Bullet Improvement">
-              Make this resume bullet more impactful in 3 different ways:<br /><br />
-              "[YOUR BULLET]"<br /><br />
-              Give me:<br />
-              1. More action-oriented version<br />
-              2. More metrics-focused version<br />
-              3. More concise version
+            Make this resume bullet more impactful in 3 different ways:
+            <br />
+            <br />
+            "[YOUR BULLET]"
+            <br />
+            <br />
+            Give me:
+            <br />
+            1. More action-oriented version
+            <br />
+            2. More metrics-focused version
+            <br />
+            3. More concise version
           </CopyablePrompt>
 
           <CopyablePrompt title="Prompt #2: Quick Summary Generator">
-              Write a punchy 2-sentence professional summary for a [JOB TITLE] with [X] years experience. Key skills: [LIST 3]. Make it memorable, not generic.
+            Write a punchy 2-sentence professional summary for a [JOB TITLE]
+            with [X] years experience. Key skills: [LIST 3]. Make it memorable,
+            not generic.
           </CopyablePrompt>
 
           <CopyablePrompt title="Prompt #3: Verb Swap">
-              These bullets start with weak verbs. Give me stronger alternatives:<br /><br />
-              [PASTE BULLETS]<br /><br />
-              Just show me the improved verbs, I'll handle the rest.
+            These bullets start with weak verbs. Give me stronger alternatives:
+            <br />
+            <br />
+            [PASTE BULLETS]
+            <br />
+            <br />
+            Just show me the improved verbs, I'll handle the rest.
           </CopyablePrompt>
         </div>
 
@@ -70,18 +92,28 @@ export default function GrokResumePrompts() {
 
         <div className="space-y-6">
           <CopyablePrompt title="Prompt #4: Achievement Mining">
-              I was a [JOB TITLE] at a [COMPANY TYPE]. My main job was [BRIEF DESCRIPTION].<br /><br />
-              Help me identify 5 potential achievements I might have had that would look good on a resume. Ask me questions to dig deeper.
+            I was a [JOB TITLE] at a [COMPANY TYPE]. My main job was [BRIEF
+            DESCRIPTION].
+            <br />
+            <br />
+            Help me identify 5 potential achievements I might have had that
+            would look good on a resume. Ask me questions to dig deeper.
           </CopyablePrompt>
 
           <CopyablePrompt title="Prompt #5: Skills Brainstorm">
-              I'm a [JOB TITLE] applying for [TARGET ROLE].<br /><br />
-              What skills should I definitely include? What skills would make me stand out? What skills should I skip? Be direct.
+            I'm a [JOB TITLE] applying for [TARGET ROLE].
+            <br />
+            <br />
+            What skills should I definitely include? What skills would make me
+            stand out? What skills should I skip? Be direct.
           </CopyablePrompt>
 
           <CopyablePrompt title="Prompt #6: Unique Value Proposition">
-              Here's my background: [BRIEF SUMMARY]<br /><br />
-              What makes me different from other [JOB TITLE] candidates? Help me find my unique angle for my resume.
+            Here's my background: [BRIEF SUMMARY]
+            <br />
+            <br />
+            What makes me different from other [JOB TITLE] candidates? Help me
+            find my unique angle for my resume.
           </CopyablePrompt>
         </div>
 
@@ -91,25 +123,41 @@ export default function GrokResumePrompts() {
 
         <div className="space-y-6">
           <CopyablePrompt title="Prompt #7: Brutal Review">
-              Be honest and direct about this resume. What's weak? What's missing? What would make a recruiter pass?<br /><br />
-              [PASTE RESUME]<br /><br />
-              I can take criticism. Don't hold back.
+            Be honest and direct about this resume. What's weak? What's missing?
+            What would make a recruiter pass?
+            <br />
+            <br />
+            [PASTE RESUME]
+            <br />
+            <br />I can take criticism. Don't hold back.
           </CopyablePrompt>
 
           <CopyablePrompt title="Prompt #8: Red Flag Check">
-              Look at my resume and tell me any red flags a recruiter might see:<br /><br />
-              [PASTE RESUME]<br /><br />
-              - Employment gaps?<br />
-              - Job hopping?<br />
-              - Missing information?<br />
-              - Anything else concerning?
+            Look at my resume and tell me any red flags a recruiter might see:
+            <br />
+            <br />
+            [PASTE RESUME]
+            <br />
+            <br />
+            - Employment gaps?
+            <br />
+            - Job hopping?
+            <br />
+            - Missing information?
+            <br />- Anything else concerning?
           </CopyablePrompt>
 
           <CopyablePrompt title="Prompt #9: Competitive Reality Check">
-              Realistically, how competitive am I for this role?<br /><br />
-              My resume: [PASTE]<br /><br />
-              Target job: [PASTE JD]<br /><br />
-              Give me the honest truth and what I'd need to change.
+            Realistically, how competitive am I for this role?
+            <br />
+            <br />
+            My resume: [PASTE]
+            <br />
+            <br />
+            Target job: [PASTE JD]
+            <br />
+            <br />
+            Give me the honest truth and what I'd need to change.
           </CopyablePrompt>
         </div>
 
@@ -119,30 +167,39 @@ export default function GrokResumePrompts() {
 
         <div className="space-y-6">
           <CopyablePrompt title="Prompt #10: Cut the Fluff">
-              Remove all the fluff, buzzwords, and clichés from this text. Keep only what's concrete and meaningful:<br /><br />
-              [PASTE TEXT]
+            Remove all the fluff, buzzwords, and clichés from this text. Keep
+            only what's concrete and meaningful:
+            <br />
+            <br />
+            [PASTE TEXT]
           </CopyablePrompt>
 
           <CopyablePrompt title="Prompt #11: Quick Keyword Inject">
-              Add these keywords naturally into my bullets without making them sound forced:<br /><br />
-              Keywords: [LIST]<br /><br />
-              Bullets: [PASTE]
+            Add these keywords naturally into my bullets without making them
+            sound forced:
+            <br />
+            <br />
+            Keywords: [LIST]
+            <br />
+            <br />
+            Bullets: [PASTE]
           </CopyablePrompt>
 
           <CopyablePrompt title="Prompt #12: Tone Shift">
-              This sounds too [humble/boring/aggressive]. Make it sound more [confident/interesting/professional]:<br /><br />
-              [PASTE TEXT]
+            This sounds too [humble / boring / aggressive]. Make it sound more
+            [confident / interesting / professional]:
+            <br />
+            <br />
+            [PASTE TEXT]
           </CopyablePrompt>
         </div>
 
         <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-8">
-          <h4 className="font-bold text-yellow-800 mb-3">
-            ⚡ Speed Tip
-          </h4>
+          <h4 className="font-bold text-yellow-800 mb-3">⚡ Speed Tip</h4>
           <p className="text-yellow-700">
-            Grok's strength is rapid iteration. Use short prompts, get quick responses,
-            and keep refining. It's great for brainstorming sessions where you want to
-            explore multiple directions quickly.
+            Grok's strength is rapid iteration. Use short prompts, get quick
+            responses, and keep refining. It's great for brainstorming sessions
+            where you want to explore multiple directions quickly.
           </p>
         </div>
 
@@ -167,12 +224,18 @@ export default function GrokResumePrompts() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
           <li>
-            <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">
+            <Link
+              to="/blog/chatgpt-resume-prompts"
+              className="text-accent hover:underline"
+            >
               25+ ChatGPT Prompts for Resume Writing
             </Link>
           </li>
           <li>
-            <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
+            <Link
+              to="/blog/ai-resume-writing-guide"
+              className="text-accent hover:underline"
+            >
               AI Resume Writing: The Complete Guide
             </Link>
           </li>
