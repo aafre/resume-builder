@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.18.2] - 2026-02-11
+
+### 🐛 Bug Fixes
+
+- **cls:** Reduce CLS 0.101 by deferring Auto Ads and sizing marquee logos
+- **cls:** Guard ad resume callback to run only once
+
 ## [3.18.1] - 2026-02-11
 
 ### 🐛 Bug Fixes
