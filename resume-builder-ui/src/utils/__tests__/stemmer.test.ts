@@ -14,13 +14,13 @@ describe('stem', () => {
   });
 
   it('strips -ment suffix', () => {
-    expect(stem('management')).toBe('manage');
+    expect(stem('management')).toBe('manag');
     expect(stem('deployment')).toBe('deploy');
   });
 
   it('strips -ments suffix', () => {
     expect(stem('deployments')).toBe('deploy');
-    expect(stem('requirements')).toBe('require');
+    expect(stem('requirements')).toBe('requir');
   });
 
   it('strips -tion suffix', () => {
@@ -61,7 +61,7 @@ describe('stem', () => {
   });
 
   it('strips -ly suffix', () => {
-    expect(stem('effectively')).toBe('effective');
+    expect(stem('effectively')).toBe('effectiv');
   });
 
   it('strips -ies suffix to -y', () => {
@@ -123,11 +123,8 @@ describe('morphological pair matching', () => {
     expect(stem('development')).toBe(stem('developing'));
   });
 
-  it('management and managing produce close but not identical stems', () => {
-    // -ment → "manage", -ing → "manag" — trailing "e" difference is a stemmer limitation
-    // Both still match in practice since stem matching uses regex on stemmed text
-    expect(stem('management')).toBe('manage');
-    expect(stem('managing')).toBe('manag');
+  it('management ↔ managing produce same stem', () => {
+    expect(stem('management')).toBe(stem('managing'));
   });
 
   it('testing ↔ tests produce same stem', () => {

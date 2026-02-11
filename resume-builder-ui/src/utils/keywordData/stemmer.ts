@@ -87,16 +87,24 @@ export function stem(word: string): string {
   // Don't stem very short words
   if (lower.length <= 4) return lower;
 
+  let result = lower;
   for (const [suffix, minStem, replacement] of SUFFIX_RULES) {
     if (lower.endsWith(suffix)) {
       const stemPart = lower.slice(0, -suffix.length);
       if (stemPart.length >= minStem) {
-        return stemPart + replacement;
+        result = stemPart + replacement;
+        break;
       }
     }
   }
 
-  return lower;
+  // Normalize trailing 'e' to align stems: management → manage → manag
+  // matches managing → manag. Standard step in suffix-stripping stemmers.
+  if (result !== lower && result.endsWith('e') && result.length > 4) {
+    result = result.slice(0, -1);
+  }
+
+  return result;
 }
 
 /**
