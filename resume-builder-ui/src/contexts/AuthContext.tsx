@@ -126,14 +126,16 @@ function findAllLegacyResumes(): FoundLegacyResume[] {
   }
 }
 
+const CONTACT_INFO_VALID_KEYS = ['name', 'email', 'phone', 'location', 'linkedin', 'linkedin_display', 'social_links'];
+const LEGACY_RESUME_LIMIT = 5;
+
 /** Schema validation helper for resume data */
 function validateResumeData(data: any): boolean {
   try {
     // Validate contactInfo structure
     if (data.contactInfo) {
-      const validKeys = ['name', 'email', 'phone', 'location', 'linkedin', 'linkedin_display', 'social_links'];
       const hasValidStructure = Object.keys(data.contactInfo).every((key: string) =>
-        validKeys.includes(key)
+        CONTACT_INFO_VALID_KEYS.includes(key)
       );
       if (!hasValidStructure) {
         console.warn('Invalid contactInfo structure');
@@ -171,9 +173,8 @@ async function migrateAllLegacyResumes(session: Session, legacyResumes: FoundLeg
   try {
     console.log(`🚀 Migrating ${legacyResumes.length} legacy resumes to cloud...`);
 
-    const RESUME_LIMIT = 5;
-    const resumesToMigrate = legacyResumes.slice(0, RESUME_LIMIT);
-    const skippedCount = Math.max(0, legacyResumes.length - RESUME_LIMIT);
+    const resumesToMigrate = legacyResumes.slice(0, LEGACY_RESUME_LIMIT);
+    const skippedCount = Math.max(0, legacyResumes.length - LEGACY_RESUME_LIMIT);
 
     let successCount = 0;
     let failedCount = 0;
@@ -237,7 +238,7 @@ async function migrateAllLegacyResumes(session: Session, legacyResumes: FoundLeg
     }
 
     if (skippedCount > 0) {
-      toast(`We migrated your ${RESUME_LIMIT} most recent resumes. ${skippedCount} older drafts were not migrated.`, {
+      toast(`We migrated your ${LEGACY_RESUME_LIMIT} most recent resumes. ${skippedCount} older drafts were not migrated.`, {
         duration: 7000,
         icon: 'ℹ️'
       });
