@@ -2,6 +2,108 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.18.0] - 2026-02-11
+
+### 🚀 Features
+
+- **ui:** Revamp landing page with premium dark/light design
+- **blog:** Add AuthorBio and RelatedArticles components
+- **blog:** Integrate author bio, related articles, and reading time badge
+- **fonts:** Make Bricolage Grotesque the app-wide default sans font
+- **ui:** Landing page revamp with 2026 design system
+- **blog:** Retheme CTA, AuthorBio, RelatedArticles, and CrossLinks to design system
+- **seo:** Revamp JobExamplesHub with 2026 design system
+- **seo:** Revamp JobExamplePage with 2026 design system
+- **seo:** Revamp ResumeKeywordsHub with 2026 design system
+- **seo:** Revamp JobKeywordsPage with 2026 design system
+- **seo:** Revamp CustomerServiceKeywords with 2026 design system
+- **ui:** Add LogoMark SVG component and use in Header
+- **jobs:** Add job engine with 3-tier search and scoring
+- **jobs:** Add pSEO rendering engine and content generation
+- **jobs:** Add matrix generator and seed data
+- **jobs:** Add Supabase edge functions for AI role translation
+- **jobs:** Integrate Jobs routes into Flask app
+- **jobs:** Add job types, services, and utility modules
+- **jobs:** Add JobsPage with 2026 design system
+- **jobs:** Add Jobs routes, sitemap entry, and icon component
+- **jobs:** Add Jobs nav link to Header/Footer and animation keyframes
+- **jobs:** Integrate Jobs into editor sidebar, header badge, and download modal
+- **seo:** Add 5 new keyword pages (sales, marketing, BA, nursing, admin)
+- **seo:** Add 4 new SEO landing pages with routes and sitemap
+- **seo:** Move Zety comparison to /easyfreeresume-vs-zety with 301 redirect
+- **seo:** Add keyword-rich sections and FAQs to homepage
+- **seo:** Expand existing pages with new sections and FAQs (Items 13-17)
+- **seo:** Add Indeed comparison page and FAQ sections to Canva/NovoResume
+- **seo:** Add audience landing pages for students, veterans, IT, and nurses
+- **seo:** Add client-side ATS keyword scanner tool
+- **seo:** Add internal links to ATS keyword scanner across site
+- **seo:** Add internal links to audience landing pages
+- **marquee:** Show company logos in full color
+- **keywordMatcher:** Add skill dictionary, synonyms, and stemmer modules
+- **keywordMatcher:** Integrate synonyms, stemming, skill dictionary, and categorization
+- **keywordScanner:** Add category grouping toggle to keyword results
+- **jobs:** Gate footer link and routes behind jobSearch feature flag
+
+### 🐛 Bug Fixes
+
+- **landing:** Convert dark full-bleed sections to light
+- **ui:** Lower scroll-reveal threshold to fix invisible content on mobile
+- **blog:** Improve mobile UX across all blog pages
+- **jobs:** Remove unused import and add eyebrow field to HeroConfig
+- **seo:** Improve keyword matcher regex for special chars and phrases
+- **seo:** Reduce noise in keyword extraction for accurate ATS scores
+- **seo:** Improve keyword matcher signal-to-noise ratio
+- **seo:** Add missing filler words to keyword matcher noise filter
+- **ui:** Add type="button" to AnnouncementBar dismiss buttons
+- **seo:** Correct HeroConfig and BreadcrumbConfig types in keyword scanner page
+- **ui:** Prevent prose typography from overriding white text in dark CTA sections
+- **ui:** Add CSS containment to footer to prevent Auto Ads injection
+- **ui:** Add CSS containment to footer to prevent Auto Ads injection
+- **ui:** Remove redundant nested SVG wrappers in favicon
+- **test:** Update tests for new comparisons and job entries
+- **keywordMatcher:** Reduce noise with stricter frequency filter, expanded filler, and section detection
+- Address PR review — remove unnecessary casts, fix incomplete tests
+- **AuthContext:** Cache Supabase import promise to prevent race condition
+- **stemmer:** Normalize trailing 'e' so management/managing produce same stem
+
+### 🚜 Refactor
+
+- **blog:** Extract blog post data to shared module
+- **shared:** Update PageHero, FAQSection, BulletPointBank to design tokens
+- **seo:** Update JobCategorySection and RelatedJobsSection to design tokens
+- **shared:** Finish migrating shared components to 2026 design tokens
+- **seo:** Migrate template SEO pages to 2026 design tokens
+- **templates:** Update TemplateCarousel to 2026 design tokens
+- **seo:** Migrate free builder SEO pages to 2026 design tokens
+- **blog:** Migrate guide articles to 2026 design tokens
+- **blog:** Migrate comparison articles to 2026 design tokens
+- **blog:** Migrate AI/prompt and remaining articles to 2026 design tokens
+- **ui:** Update AboutUs and Contact pages to 2026 design tokens
+- **jobs:** Restyle filter and pSEO components to 2026 design tokens
+- **ui:** Migrate AnnouncementBar from inline styles to Tailwind
+- **AuthContext:** Move pure helper functions outside component
+- **AuthContext:** Hoist constants to module level
+
+### 📚 Documentation
+
+- Add 2026 design system reference to CLAUDE.md
+- **jobs:** Add PRD and search flow docs
+
+### ⚡ Performance
+
+- Self-host fonts, remove FOUC guard, lazy-load Supabase SDK
+
+### 🧪 Testing
+
+- **jobs:** Add utility tests for job modules
+- **seo:** Add comprehensive keyword matcher test suite
+
+### ⚙️ Miscellaneous Tasks
+
+- **jobs:** Add affiliate env variables to frontend .env.example
+- **docker:** Add Jobs feature files and affiliate build args
+- **ui:** Update favicons and app icons to match new logo
+
 ## [3.17.1] - 2026-02-07
 
 ### ⚙️ Miscellaneous Tasks
