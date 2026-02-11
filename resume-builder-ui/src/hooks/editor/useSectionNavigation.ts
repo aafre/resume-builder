@@ -1,7 +1,7 @@
 // src/hooks/editor/useSectionNavigation.ts
 // Section navigation hook (Layer 2) - manages section navigation and scroll detection
 
-import { useState, useEffect, useCallback, useMemo, RefObject } from 'react';
+import { useState, useEffect, useCallback, RefObject } from 'react';
 import { Section } from '../../types';
 import { UseSectionNavigationReturn } from '../../types/editor';
 
@@ -136,20 +136,11 @@ export const useSectionNavigation = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [sections.length, contactInfoRef, sectionRefs]);
 
-  return useMemo(
-    () => ({
-      activeSectionIndex,
-      setActiveSectionIndex,
-      isSidebarCollapsed,
-      setIsSidebarCollapsed,
-      scrollToSection,
-    }),
-    [
-      activeSectionIndex,
-      setActiveSectionIndex,
-      isSidebarCollapsed,
-      setIsSidebarCollapsed,
-      scrollToSection,
-    ]
-  );
+  return {
+    activeSectionIndex,
+    setActiveSectionIndex,
+    isSidebarCollapsed,
+    setIsSidebarCollapsed,
+    scrollToSection,
+  };
 };
