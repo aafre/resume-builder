@@ -43,7 +43,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
   // Default button styles based on action type
   const defaultConfirmClass = isDestructive
     ? "bg-red-600 hover:bg-red-700 text-white"
-    : "bg-blue-600 hover:bg-blue-700 text-white";
+    : "bg-accent hover:bg-accent/90 text-white";
 
   const confirmClass = confirmButtonClass || defaultConfirmClass;
 

@@ -24,9 +24,13 @@ import {
   MdVisibility,
   MdSupport,
 } from "react-icons/md";
-import { PanelRightClose, PanelRightOpen } from "lucide-react";
+import { PanelRightClose, PanelRightOpen, ShieldCheck, ChevronRight } from "lucide-react";
+import { JobSparkleIcon } from "./icons/JobSparkleIcon";
 import { Link } from "react-router-dom";
 import { AdContainer, AD_CONFIG } from "./ads";
+import { affiliateConfig } from "../config/affiliate";
+import { extractJobSearchParams } from "../utils/resumeDataExtractor";
+import type { ContactInfo, Section as ResumeSection } from "../types";
 
 interface Section {
   name: string;
@@ -55,6 +59,8 @@ interface SectionNavigatorProps {
   onCollapseChange?: (isCollapsed: boolean) => void;
   isAnonymous?: boolean;
   isAuthenticated?: boolean;
+  contactInfo?: ContactInfo | null;
+  resumeSections?: ResumeSection[];
 }
 
 const STORAGE_KEY = "resume-builder-sidebar-collapsed";
@@ -85,6 +91,8 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   onCollapseChange,
   isAnonymous = false,
   isAuthenticated = false,
+  contactInfo,
+  resumeSections,
 }) => {
   // Show loading on button when either opening (save/validate) or generating
   const isPreviewLoading = isOpeningPreview || isGeneratingPreview;
@@ -330,13 +338,13 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             onClick={() => onSectionClick(-1)}
             className={`w-full flex items-center transition-all rounded-lg group ${
               isCollapsed
-                ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-blue-50/80"
+                ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-accent/[0.06]/80"
                 : "flex-row gap-3 px-3 py-2.5 hover:bg-gray-100/80"
             } ${
               activeSectionIndex === -1
                 ? isCollapsed
-                  ? "bg-blue-50 text-blue-700"
-                  : "bg-blue-50/80 border-l-[3px] border-blue-600 text-blue-800 font-medium"
+                  ? "bg-accent/[0.06] text-ink/80"
+                  : "bg-accent/[0.06]/80 border-l-[3px] border-accent text-ink font-medium"
                 : "text-gray-700 hover:text-gray-900"
             }`}
           >
@@ -345,7 +353,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                 isCollapsed ? "w-7 h-7" : "w-6 h-6"
               } rounded-md ${
                 activeSectionIndex === -1
-                  ? "bg-blue-100 text-blue-600"
+                  ? "bg-accent/10 text-accent"
                   : "bg-gray-100/80 text-gray-500 group-hover:bg-gray-200/80 group-hover:text-gray-700"
               }`}
             >
@@ -369,13 +377,13 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               onClick={() => onSectionClick(index)}
               className={`w-full flex items-center transition-all rounded-lg group ${
                 isCollapsed
-                  ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-blue-50/80 mt-1"
+                  ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-accent/[0.06]/80 mt-1"
                   : "flex-row gap-3 px-3 py-2.5 hover:bg-gray-100/80 mt-0.5"
               } ${
                 activeSectionIndex === index
                   ? isCollapsed
-                    ? "bg-blue-50 text-blue-700"
-                    : "bg-blue-50/80 border-l-[3px] border-blue-600 text-blue-800 font-medium"
+                    ? "bg-accent/[0.06] text-ink/80"
+                    : "bg-accent/[0.06]/80 border-l-[3px] border-accent text-ink font-medium"
                   : "text-gray-700 hover:text-gray-900"
               }`}
             >
@@ -384,7 +392,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                   isCollapsed ? "w-7 h-7" : "w-6 h-6"
                 } rounded-md ${
                   activeSectionIndex === index
-                    ? "bg-blue-100 text-blue-600"
+                    ? "bg-accent/10 text-accent"
                     : "bg-gray-100/80 text-gray-500 group-hover:bg-gray-200/80 group-hover:text-gray-700"
                 }`}
               >
@@ -402,6 +410,134 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               </span>
             </button>
           ))}
+
+          {/* ATS Health Check Card */}
+          {affiliateConfig.resumeReview.enabled && affiliateConfig.resumeReview.url && (
+            isCollapsed ? (
+              <a
+                href={affiliateConfig.resumeReview.url}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                className="w-full flex flex-col items-center gap-1.5 py-2.5 px-1.5 mt-2 rounded-lg hover:bg-accent/[0.06] transition-all text-accent group"
+                title="Check ATS Compatibility"
+              >
+                <div className="w-7 h-7 flex items-center justify-center rounded-full bg-accent/10 transition-colors">
+                  <ShieldCheck className="w-3.5 h-3.5 text-accent" />
+                </div>
+                <span className="text-[11px] font-medium text-center leading-tight text-accent">
+                  ATS
+                </span>
+              </a>
+            ) : (
+              <a
+                href={affiliateConfig.resumeReview.url}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                className="block mt-3 mx-1 bg-chalk-dark border border-black/[0.06] rounded-xl p-3 hover:bg-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className="relative flex-shrink-0">
+                    <div className="w-8 h-8 flex items-center justify-center rounded-full bg-accent/10 shadow-sm">
+                      <ShieldCheck className="w-4 h-4 text-accent" />
+                    </div>
+                    <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-ink group-hover:text-accent transition-colors">
+                      ATS Compatibility
+                    </p>
+                    <p className="text-xs text-stone-warm leading-tight mt-0.5">
+                      Will your resume pass the filter?
+                    </p>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-mist group-hover:text-accent group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+                </div>
+              </a>
+            )
+          )}
+
+          {/* Find Matching Jobs Card */}
+          {affiliateConfig.jobSearch.enabled && (
+            isCollapsed ? (
+              <Link
+                to="/jobs"
+                onClick={() => {
+                  const params = extractJobSearchParams(contactInfo ?? null, resumeSections ?? []);
+                  if (params) {
+                    try {
+                      sessionStorage.setItem('jobSearchPrefill', JSON.stringify({
+                        title: params.displayTitle,
+                        location: params.location,
+                        country: params.country,
+                        skills: params.skills,
+                        seniorityLevel: params.seniorityLevel,
+                        yearsExperience: params.yearsExperience,
+                      }));
+                    } catch { /* ignore */ }
+                  }
+                }}
+                className="w-full flex flex-col items-center gap-1.5 py-2.5 px-1.5 mt-2 rounded-lg hover:bg-accent/[0.06] transition-all text-accent group"
+                title="Job Matches"
+              >
+                <div className="relative">
+                  <div className="w-7 h-7 flex items-center justify-center rounded-lg bg-accent/10 transition-colors">
+                    <JobSparkleIcon className="w-3.5 h-3.5 text-accent" />
+                  </div>
+                  <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+                  </span>
+                </div>
+                <span className="text-[11px] font-medium text-center leading-tight text-accent">
+                  Jobs
+                </span>
+              </Link>
+            ) : (
+              <Link
+                to="/jobs"
+                onClick={() => {
+                  const params = extractJobSearchParams(contactInfo ?? null, resumeSections ?? []);
+                  if (params) {
+                    try {
+                      sessionStorage.setItem('jobSearchPrefill', JSON.stringify({
+                        title: params.displayTitle,
+                        location: params.location,
+                        country: params.country,
+                        skills: params.skills,
+                        seniorityLevel: params.seniorityLevel,
+                        yearsExperience: params.yearsExperience,
+                      }));
+                    } catch { /* ignore */ }
+                  }
+                }}
+                className="block mt-2 mx-1 bg-chalk-dark border border-black/[0.06] rounded-xl p-3 hover:bg-white hover:shadow-lg hover:border-accent/20 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className="relative flex-shrink-0">
+                    <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-accent/10 shadow-sm">
+                      <JobSparkleIcon className="w-4 h-4 text-accent" />
+                    </div>
+                    <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-ink group-hover:text-accent transition-colors">
+                      Job Matches
+                    </p>
+                    <p className="text-xs text-stone-warm leading-tight mt-0.5">
+                      Matched to your resume skills
+                    </p>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-mist group-hover:text-accent group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+                </div>
+              </Link>
+            )
+          )}
         </div>
 
       {/* Actions Section */}
@@ -419,7 +555,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               id="tour-preview-button"
               onClick={onPreviewResume}
               disabled={isPreviewLoading}
-              className={`w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-blue-500 hover:to-indigo-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative ${
+              className={`w-full flex items-center justify-center bg-accent text-ink font-semibold rounded-lg shadow-md hover:shadow-lg hover:bg-accent/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative ${
                 isCollapsed
                   ? "flex-col gap-1 py-2.5 px-1 mb-2"
                   : "flex-row gap-2 px-4 py-2.5 mb-2.5"
@@ -474,7 +610,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           {/* Secondary Action: Add Section */}
           <button
             onClick={onAddSection}
-            className={`w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg shadow-sm hover:shadow-md hover:from-blue-500 hover:to-indigo-500 transition-all active:scale-[0.98] ${
+            className={`w-full flex items-center justify-center bg-accent text-ink font-medium rounded-lg shadow-sm hover:shadow-md hover:bg-accent/90 transition-all active:scale-[0.98] ${
               isCollapsed
                 ? "flex-col gap-1 py-2 px-1 mt-2"
                 : "flex-row gap-2 px-4 py-2 mb-3"
@@ -495,12 +631,12 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               disabled={loadingSave}
               className={`w-full flex items-center transition-all rounded-md disabled:opacity-50 ${
                 isCollapsed
-                  ? "flex-col gap-1 py-2 px-1 hover:bg-blue-50/80"
-                  : "flex-row gap-3 px-3 py-2 hover:bg-blue-50/80 text-gray-700 hover:text-blue-700"
+                  ? "flex-col gap-1 py-2 px-1 hover:bg-accent/[0.06]/80"
+                  : "flex-row gap-3 px-3 py-2 hover:bg-accent/[0.06]/80 text-gray-700 hover:text-ink/80"
               }`}
             >
               <MdFileDownload
-                className={`text-blue-600 ${isCollapsed ? "text-base" : "text-base"}`}
+                className={`text-accent ${isCollapsed ? "text-base" : "text-base"}`}
               />
               <div className={`flex flex-col ${isCollapsed ? "items-center" : "items-start flex-1"}`}>
                 <span
@@ -584,12 +720,12 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               onClick={onHelp}
               className={`w-full flex items-center transition-all rounded-md ${
                 isCollapsed
-                  ? "flex-col gap-1 py-2 px-1 hover:bg-purple-50/80"
-                  : "flex-row gap-3 px-3 py-2 hover:bg-purple-50/80 text-gray-700 hover:text-purple-700"
+                  ? "flex-col gap-1 py-2 px-1 hover:bg-accent/[0.06]/80"
+                  : "flex-row gap-3 px-3 py-2 hover:bg-accent/[0.06]/80 text-gray-700 hover:text-ink/80"
               }`}
             >
               <MdHelpOutline
-                className={`text-purple-600 ${isCollapsed ? "text-base" : "text-base"}`}
+                className={`text-accent ${isCollapsed ? "text-base" : "text-base"}`}
               />
               <span
                 className={`${

@@ -96,33 +96,33 @@ export default function Contact() {
         }}
       />
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-        <div className="container mx-auto px-4 py-12 max-w-4xl">
+      <div className="min-h-screen bg-chalk">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
           <nav className="mb-8" aria-label="breadcrumb">
-            <ol className="flex items-center space-x-2 text-sm text-gray-600">
+            <ol className="flex items-center space-x-2 text-sm text-stone-warm">
               <li>
-                <Link to="/" className="hover:text-blue-600 transition-colors">
+                <Link to="/" className="hover:text-accent transition-colors">
                   Home
                 </Link>
               </li>
-              <li className="text-gray-400">/</li>
-              <li className="text-gray-800 font-medium">Contact</li>
+              <li className="text-mist">/</li>
+              <li className="text-ink font-medium">Contact</li>
             </ol>
           </nav>
 
           <header className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h1 className="font-display text-4xl md:text-5xl font-extrabold tracking-tight text-ink mb-6">
               Get in Touch
             </h1>
-            <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl font-extralight text-stone-warm leading-relaxed max-w-2xl mx-auto">
               Have questions, feedback, or need help with your resume? We're
               here to support your career journey every step of the way.
             </p>
           </header>
 
           <div className="grid lg:grid-cols-2 gap-12">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-premium p-8 border border-black/[0.06]">
+              <h2 className="font-display text-2xl font-extrabold tracking-tight text-ink mb-6">
                 Send us a Message
               </h2>
 
@@ -153,7 +153,7 @@ export default function Contact() {
                         submitting another one, or email us directly at{" "}
                         <a
                           href="mailto:support@easyfreeresume.com"
-                          className="text-blue-600 underline hover:text-blue-700"
+                          className="text-accent underline hover:text-ink/80"
                         >
                           support@easyfreeresume.com
                         </a>
@@ -188,7 +188,7 @@ export default function Contact() {
                   <div>
                     <label
                       htmlFor="name"
-                      className="block text-sm font-medium text-gray-700 mb-2"
+                      className="block text-sm font-medium text-stone-warm mb-2"
                     >
                       Full Name *
                     </label>
@@ -207,7 +207,7 @@ export default function Contact() {
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-sm font-medium text-gray-700 mb-2"
+                      className="block text-sm font-medium text-stone-warm mb-2"
                     >
                       Email *
                     </label>
@@ -228,7 +228,7 @@ export default function Contact() {
                 <div>
                   <label
                     htmlFor="subject"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-medium text-stone-warm mb-2"
                   >
                     Subject *
                   </label>
@@ -254,7 +254,7 @@ export default function Contact() {
                 <div>
                   <label
                     htmlFor="message"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-medium text-stone-warm mb-2"
                   >
                     Message *
                   </label>
@@ -274,7 +274,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={isSubmitting || formDisabled}
-                  className={`w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg ${
+                  className={`w-full bg-accent text-ink py-4 px-6 rounded-xl font-semibold shadow-lg ${
                     isSubmitting || formDisabled
                       ? "opacity-60 cursor-not-allowed"
                       : "hover:shadow-xl"
@@ -288,16 +288,16 @@ export default function Contact() {
             {/* Contact Information & FAQ */}
             <div className="space-y-8">
               {/* Quick Contact */}
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-gray-200">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-premium p-8 border border-black/[0.06]">
+                <h2 className="font-display text-2xl font-extrabold tracking-tight text-ink mb-6">
                   Quick Contact
                 </h2>
 
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="bg-blue-100 rounded-full p-3">
+                    <div className="bg-accent/10 rounded-full p-3">
                       <svg
-                        className="w-6 h-6 text-blue-600"
+                        className="w-6 h-6 text-accent"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -311,15 +311,15 @@ export default function Contact() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-1">
+                      <h3 className="font-semibold text-ink mb-1">
                         Email Support
                       </h3>
-                      <p className="text-gray-700 mb-2">
+                      <p className="text-stone-warm mb-2">
                         For technical help and general inquiries
                       </p>
                       <a
                         href="mailto:support@easyfreeresume.com"
-                        className="text-blue-600 hover:text-blue-700 transition-colors"
+                        className="text-accent hover:text-ink/80 transition-colors"
                       >
                         support@easyfreeresume.com
                       </a>
@@ -327,9 +327,9 @@ export default function Contact() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="bg-green-100 rounded-full p-3">
+                    <div className="bg-accent/10 rounded-full p-3">
                       <svg
-                        className="w-6 h-6 text-green-600"
+                        className="w-6 h-6 text-accent"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -343,22 +343,22 @@ export default function Contact() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-1">
+                      <h3 className="font-semibold text-ink mb-1">
                         Response Time
                       </h3>
-                      <p className="text-gray-700">
+                      <p className="text-stone-warm">
                         We typically respond within 24 hours
                       </p>
-                      <p className="text-sm text-gray-600 mt-1">
+                      <p className="text-sm text-mist mt-1">
                         Monday - Friday, 9 AM - 6 PM EST
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="bg-purple-100 rounded-full p-3">
+                    <div className="bg-accent/10 rounded-full p-3">
                       <svg
-                        className="w-6 h-6 text-purple-600"
+                        className="w-6 h-6 text-accent"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -372,15 +372,15 @@ export default function Contact() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-1">
+                      <h3 className="font-semibold text-ink mb-1">
                         Help Center
                       </h3>
-                      <p className="text-gray-700 mb-2">
+                      <p className="text-stone-warm mb-2">
                         Find answers to common questions
                       </p>
                       <Link
                         to="/blog"
-                        className="text-blue-600 hover:text-blue-700 transition-colors"
+                        className="text-accent hover:text-ink/80 transition-colors"
                       >
                         Browse Career Resources →
                       </Link>
@@ -390,17 +390,17 @@ export default function Contact() {
               </div>
 
               {/* FAQ */}
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-gray-200">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-premium p-8 border border-black/[0.06]">
+                <h2 className="font-display text-2xl font-extrabold tracking-tight text-ink mb-6">
                   Frequently Asked Questions
                 </h2>
 
                 <div className="space-y-6">
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">
+                    <h3 className="font-semibold text-ink mb-2">
                       Is EasyFreeResume really free?
                     </h3>
-                    <p className="text-gray-700 text-sm">
+                    <p className="text-stone-warm text-sm">
                       Yes! Our resume builder is completely free with no hidden
                       costs, subscriptions, or premium tiers. You can create and
                       download unlimited resumes.
@@ -408,10 +408,10 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">
+                    <h3 className="font-semibold text-ink mb-2">
                       Do you store my personal information?
                     </h3>
-                    <p className="text-gray-700 text-sm">
+                    <p className="text-stone-warm text-sm">
                       No. We don't store your resume data on our servers.
                       Everything stays local to your device, ensuring complete
                       privacy and security.
@@ -419,10 +419,10 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">
+                    <h3 className="font-semibold text-ink mb-2">
                       Are your templates ATS-friendly?
                     </h3>
-                    <p className="text-gray-700 text-sm">
+                    <p className="text-stone-warm text-sm">
                       Absolutely! All our templates are designed to pass
                       Applicant Tracking Systems (ATS) used by most employers
                       today.
@@ -430,20 +430,20 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">
+                    <h3 className="font-semibold text-ink mb-2">
                       Can I edit my resume after downloading?
                     </h3>
-                    <p className="text-gray-700 text-sm">
+                    <p className="text-stone-warm text-sm">
                       Yes! You can save your work and return to edit anytime. We
                       also provide guidance on editing downloaded files.
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <p className="text-sm text-gray-600">
+                <div className="mt-6 pt-6 border-t border-black/[0.06]">
+                  <p className="text-sm text-stone-warm">
                     Don't see your question?{" "}
-                    <button className="text-blue-600 hover:text-blue-700 transition-colors">
+                    <button className="text-accent hover:text-ink/80 transition-colors">
                       Send us a message
                     </button>{" "}
                     and we'll help you out.
@@ -452,7 +452,7 @@ export default function Contact() {
               </div>
 
               {/* Office Information */}
-              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-lg p-8">
+              <div className="bg-accent text-ink rounded-2xl shadow-lg p-8">
                 <h2 className="text-2xl font-bold mb-4">Our Commitment</h2>
                 <p className="text-lg leading-relaxed opacity-90 mb-6">
                   We're dedicated to helping you succeed in your career journey.

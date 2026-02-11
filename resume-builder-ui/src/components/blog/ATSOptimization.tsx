@@ -17,7 +17,7 @@ export default function ATSOptimization() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Updated for 2026: In today's digital hiring landscape, your resume
           must first impress a robot before it reaches human eyes. Applicant
           Tracking Systems (ATS) act as digital gatekeepers, filtering out over
@@ -36,21 +36,21 @@ export default function ATSOptimization() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           What is an Applicant Tracking System (ATS)?
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           An Applicant Tracking System is software that automatically scans,
           parses, and ranks resumes based on specific criteria. These systems
           help employers manage high volumes of applications by filtering
           candidates before human review.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             How ATS Systems Work:
           </h4>
-          <ol className="list-decimal pl-6 space-y-2 text-blue-700">
+          <ol className="list-decimal pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Parsing:</strong> Extracts information from your resume
               into database fields
@@ -74,62 +74,62 @@ export default function ATSOptimization() {
           </ol>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Common ATS Systems in 2026
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-2">Workday</h4>
-            <p className="text-gray-700 text-sm">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-2">Workday</h4>
+            <p className="text-stone-warm text-sm">
               Used by many large enterprises. Modern interface but strict
               formatting requirements.
             </p>
           </div>
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-2">Greenhouse</h4>
-            <p className="text-gray-700 text-sm">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-2">Greenhouse</h4>
+            <p className="text-stone-warm text-sm">
               Popular with tech companies. Good at parsing modern resume
               formats.
             </p>
           </div>
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-2">Lever</h4>
-            <p className="text-gray-700 text-sm">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-2">Lever</h4>
+            <p className="text-stone-warm text-sm">
               Used by growth-stage companies. Focuses on candidate experience.
             </p>
           </div>
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-2">iCIMS</h4>
-            <p className="text-gray-700 text-sm">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-2">iCIMS</h4>
+            <p className="text-stone-warm text-sm">
               Enterprise-focused system. Traditional parsing approach.
             </p>
           </div>
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-2">BambooHR</h4>
-            <p className="text-gray-700 text-sm">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-2">BambooHR</h4>
+            <p className="text-stone-warm text-sm">
               SMB-focused platform. Generally ATS-friendly.
             </p>
           </div>
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-2">Taleo</h4>
-            <p className="text-gray-700 text-sm">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-2">Taleo</h4>
+            <p className="text-stone-warm text-sm">
               Oracle's system. Widely used but older parsing technology.
             </p>
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           ATS-Friendly Formatting Rules
         </h2>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           File Format Best Practices
         </h3>
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
           <h4 className="font-bold text-green-800 mb-3">
             ✅ Recommended Formats:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-green-700">
+          <ul className="list-disc pl-6 space-y-2 text-accent">
             <li>
               <strong>PDF:</strong> Preserves formatting, widely accepted (use
               if system allows)
@@ -156,10 +156,10 @@ export default function ATSOptimization() {
           </ul>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Section Headers and Structure
         </h3>
-        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+        <p className="text-lg leading-relaxed text-stone-warm mb-6">
           Use standard section headers that ATS systems recognize. Creative
           headers may confuse parsing algorithms.
         </p>
@@ -169,7 +169,7 @@ export default function ATSOptimization() {
             <h4 className="font-bold text-green-800 mb-3">
               ✅ ATS-Friendly Headers:
             </h4>
-            <ul className="list-disc pl-6 space-y-1 text-green-700">
+            <ul className="list-disc pl-6 space-y-1 text-accent">
               <li>Contact Information</li>
               <li>Professional Summary</li>
               <li>Work Experience</li>
@@ -197,14 +197,14 @@ export default function ATSOptimization() {
           </div>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Font and Formatting Guidelines
         </h3>
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             📝 Formatting Best Practices:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-blue-700">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Fonts:</strong> Arial, Calibri, Times New Roman, or other
               standard fonts
@@ -230,25 +230,25 @@ export default function ATSOptimization() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           The Science of ATS Keywords
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Keywords are the foundation of ATS optimization. These systems scan
           for specific terms, skills, and phrases that match job requirements.
           Strategic keyword placement can dramatically improve your ranking.
-          We maintain <Link to="/resume-keywords" className="text-blue-600 hover:underline font-medium">industry-specific keyword lists</Link> for
+          We maintain <Link to="/resume-keywords" className="text-accent hover:underline font-medium">industry-specific keyword lists</Link> for
           17+ job categories to help you find the right terms for your field.
         </p>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           How to Find the Right Keywords
         </h3>
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             🔍 Keyword Research Strategy:
           </h4>
-          <ol className="list-decimal pl-6 space-y-3 text-purple-700">
+          <ol className="list-decimal pl-6 space-y-3 text-ink/80">
             <li>
               <strong>Analyze Job Descriptions:</strong> Identify repeated
               terms, required skills, and qualifications
@@ -272,14 +272,14 @@ export default function ATSOptimization() {
           </ol>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Types of Keywords to Include
         </h3>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">🛠️ Hard Skills</h4>
-            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">🛠️ Hard Skills</h4>
+            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
               <li>Technical skills</li>
               <li>Software proficiency</li>
               <li>Programming languages</li>
@@ -288,9 +288,9 @@ export default function ATSOptimization() {
               <li>Methodologies</li>
             </ul>
           </div>
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">🤝 Soft Skills</h4>
-            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">🤝 Soft Skills</h4>
+            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
               <li>Leadership</li>
               <li>Communication</li>
               <li>Problem-solving</li>
@@ -299,9 +299,9 @@ export default function ATSOptimization() {
               <li>Critical thinking</li>
             </ul>
           </div>
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">🏢 Industry Terms</h4>
-            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">🏢 Industry Terms</h4>
+            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
               <li>Industry-specific jargon</li>
               <li>Compliance standards</li>
               <li>Regulatory requirements</li>
@@ -310,9 +310,9 @@ export default function ATSOptimization() {
               <li>Market terminology</li>
             </ul>
           </div>
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">🎯 Action Words</h4>
-            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">🎯 Action Words</h4>
+            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
               <li>Managed, led, developed</li>
               <li>Implemented, executed</li>
               <li>Improved, optimized</li>
@@ -323,7 +323,7 @@ export default function ATSOptimization() {
           </div>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Strategic Keyword Placement
         </h3>
         <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
@@ -354,14 +354,14 @@ export default function ATSOptimization() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Advanced ATS Optimization Techniques
         </h2>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Contact Information Best Practices
         </h3>
-        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+        <p className="text-lg leading-relaxed text-stone-warm mb-6">
           Even basic contact information can trip up ATS systems if not
           formatted correctly.
         </p>
@@ -371,7 +371,7 @@ export default function ATSOptimization() {
             <h4 className="font-bold text-green-800 mb-3">
               ✅ ATS-Friendly Format:
             </h4>
-            <div className="text-green-700 space-y-2 text-sm font-mono">
+            <div className="text-accent space-y-2 text-sm font-mono">
               <p>
                 John Smith
                 <br />
@@ -404,14 +404,14 @@ export default function ATSOptimization() {
           </div>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Handling Dates and Employment History
         </h3>
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             📅 Date Format Guidelines:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-blue-700">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Use consistent format:</strong> "January 2020 - March
               2023" or "01/2020 - 03/2023"
@@ -431,10 +431,10 @@ export default function ATSOptimization() {
           </ul>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Skills Section Optimization
         </h3>
-        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+        <p className="text-lg leading-relaxed text-stone-warm mb-6">
           The skills section is critical for ATS matching. Structure it for both
           human readers and automated systems.
         </p>
@@ -443,7 +443,7 @@ export default function ATSOptimization() {
           <h4 className="font-bold text-green-800 mb-3">
             ✅ Effective Skills Section Structure:
           </h4>
-          <div className="text-green-700 space-y-4">
+          <div className="text-accent space-y-4">
             <div>
               <p className="font-medium">Technical Skills:</p>
               <p className="text-sm">
@@ -466,19 +466,19 @@ export default function ATSOptimization() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Testing Your ATS Compatibility
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Before submitting your resume, test how well ATS systems can parse
           your information.
         </p>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             🧪 ATS Testing Methods:
           </h4>
-          <ol className="list-decimal pl-6 space-y-2 text-purple-700">
+          <ol className="list-decimal pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Copy-Paste Test:</strong> Copy your resume into a plain
               text editor - if it looks messy, ATS will struggle
@@ -498,43 +498,43 @@ export default function ATSOptimization() {
           </ol>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Common ATS Myths Debunked
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-gray-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">
+          <div className="bg-chalk-dark border-l-4 border-red-500 p-6">
+            <h4 className="font-bold text-ink mb-2">
               ❌ Myth: "White text keywords will boost my ranking"
             </h4>
-            <p className="text-gray-700">
+            <p className="text-stone-warm">
               <strong>Reality:</strong> Modern ATS systems detect and penalize
               hidden text. This tactic can get you blacklisted.
             </p>
           </div>
 
-          <div className="bg-gray-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">
+          <div className="bg-chalk-dark border-l-4 border-red-500 p-6">
+            <h4 className="font-bold text-ink mb-2">
               ❌ Myth: "More keywords = better ranking"
             </h4>
-            <p className="text-gray-700">
+            <p className="text-stone-warm">
               <strong>Reality:</strong> Keyword stuffing reduces readability.
               Quality and context matter more than quantity.
             </p>
           </div>
 
-          <div className="bg-gray-50 border-l-4 border-green-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">
+          <div className="bg-chalk-dark border-l-4 border-green-500 p-6">
+            <h4 className="font-bold text-ink mb-2">
               ✅ Truth: "ATS systems are getting smarter"
             </h4>
-            <p className="text-gray-700">
+            <p className="text-stone-warm">
               <strong>Reality:</strong> Modern systems use AI and machine
               learning to better understand context and semantic meaning.
             </p>
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-8 my-12">
+        <div className="bg-ink text-white rounded-xl p-8 my-12">
           <h3 className="text-2xl font-bold mb-4">
             🚀 Your ATS Optimization Action Plan
           </h3>
@@ -557,10 +557,10 @@ export default function ATSOptimization() {
           </ol>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           The Future of ATS Technology
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           ATS systems continue evolving with artificial intelligence and machine
           learning. Future systems will better understand context, evaluate soft
           skills, and provide more nuanced candidate assessment. However, the
@@ -581,17 +581,17 @@ export default function ATSOptimization() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Key Takeaways
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           ATS optimization isn't about gaming the system – it's about presenting
           your qualifications in a format that both humans and machines can
           understand. Focus on clear formatting, strategic keyword usage, and
           authentic representation of your skills and experience.
         </p>
 
-        <p className="text-lg leading-relaxed text-gray-700 mt-6">
+        <p className="text-lg leading-relaxed text-stone-warm mt-6">
           Remember that passing ATS screening is just the first step. Once your
           resume reaches human recruiters, it must still tell a compelling story
           about your career and potential value to the organization.

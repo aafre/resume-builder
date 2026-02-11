@@ -12,8 +12,8 @@ interface ScrollRevealOptions {
  * React state, no re-renders.
  */
 export function useScrollReveal<T extends HTMLElement = HTMLDivElement>({
-  threshold = 0.15,
-  rootMargin = '0px 0px -80px 0px',
+  threshold = 0,
+  rootMargin = '0px 0px -60px 0px',
   once = true,
 }: ScrollRevealOptions = {}) {
   const ref = useRef<T>(null);

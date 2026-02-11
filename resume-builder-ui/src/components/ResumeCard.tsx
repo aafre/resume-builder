@@ -180,11 +180,11 @@ export function ResumeCard({
             autoFocus
             disabled={isSaving}
             maxLength={200}
-            className="font-bold text-xl text-gray-900 w-full bg-white border-2 border-blue-500 rounded px-2 py-1 focus:outline-none disabled:opacity-50 mb-2"
+            className="font-bold text-xl text-gray-900 w-full bg-white border-2 border-accent rounded px-2 py-1 focus:outline-none disabled:opacity-50 mb-2"
           />
         ) : (
           <h3
-            className="font-bold text-xl text-gray-900 truncate mb-2 cursor-text hover:bg-gray-50 rounded px-2 py-1 -mx-2 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="font-bold text-xl text-gray-900 truncate mb-2 cursor-text hover:bg-gray-50 rounded px-2 py-1 -mx-2 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             role="button"
             tabIndex={0}
             aria-label={`Rename ${resume.title}`}
@@ -222,10 +222,10 @@ export function ResumeCard({
               onEdit(resume.id);
             }}
             disabled={isEditButtonLoading}
-            className={`flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
+            className={`flex-1 bg-accent text-ink py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
               isEditButtonLoading
                 ? 'opacity-75 cursor-not-allowed'
-                : 'hover:bg-blue-700 active:scale-[0.98]'
+                : 'hover:bg-accent/90 active:scale-[0.98]'
             }`}
           >
             {isEditButtonLoading ? (

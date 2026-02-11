@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaShieldAlt, FaLock } from "react-icons/fa";
+import { affiliateConfig } from "../config/affiliate";
 
 // Footer link definitions for maintainability
 const footerLinks = {
@@ -8,7 +9,8 @@ const footerLinks = {
     { path: '/free-resume-builder-no-sign-up', label: 'Free Resume Builder' },
     { path: '/actual-free-resume-builder', label: '100% Free Builder' },
     { path: '/best-free-resume-builder-reddit', label: 'Best Free Builder' },
-    { path: '/free-cv-builder-no-sign-up', label: 'Free CV Builder (UK)' },
+    { path: '/free-resume-builder-for-students', label: 'Resume Builder for Students' },
+    { path: '/free-resume-builder-for-nurses', label: 'Resume Builder for Nurses' },
     { path: '/ats-resume-templates', label: 'ATS Resume Templates' },
   ],
   resumeTemplates: [
@@ -27,6 +29,10 @@ const footerLinks = {
   ],
   resources: [
     { path: '/resume-keywords', label: 'Resume Keywords' },
+    { path: '/resume-keyword-scanner', label: 'ATS Keyword Scanner' },
+    ...(affiliateConfig.jobSearch.enabled
+      ? [{ path: '/jobs', label: 'Job Search' }]
+      : []),
     { path: '/blog', label: 'Career Blog' },
     { path: '/blog/chatgpt-resume-prompts', label: 'ChatGPT Resume Prompts' },
     { path: '/blog/ats-resume-optimization', label: 'ATS Optimization Guide' },
@@ -60,7 +66,7 @@ function FooterColumn({
             <Link
               to={path}
               onClick={scrollToTop(path)}
-              className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200 text-sm"
+              className="text-gray-600 hover:text-accent font-medium transition-colors duration-200 text-sm"
             >
               {label}
             </Link>
@@ -115,9 +121,9 @@ export default function Footer() {
                 <FaShieldAlt className="text-green-600" />
                 <span className="text-green-700 font-medium">GDPR</span>
               </div>
-              <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-full">
-                <FaLock className="text-blue-600" />
-                <span className="text-blue-700 font-medium">SSL</span>
+              <div className="flex items-center gap-2 bg-accent/[0.06] px-3 py-2 rounded-full">
+                <FaLock className="text-accent" />
+                <span className="text-ink/80 font-medium">SSL</span>
               </div>
             </div>
           </div>

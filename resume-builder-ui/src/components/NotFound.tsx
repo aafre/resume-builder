@@ -5,7 +5,7 @@ const NotFound: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-indigo-100/40 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-chalk flex items-center justify-center px-4">
       <SEOHead title="Page Not Found | EasyFreeResume" robots="noindex, follow" />
       <div className="max-w-lg w-full">
         {/* 404 Card */}

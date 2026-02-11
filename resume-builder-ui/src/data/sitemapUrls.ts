@@ -16,12 +16,25 @@ export interface SitemapUrl {
  */
 export const STATIC_URLS: SitemapUrl[] = [
   // High Priority Landing Pages (1.0)
-  { loc: '/', priority: 1.0, changefreq: 'weekly', lastmod: '2026-01-25' },
+  { loc: '/', priority: 1.0, changefreq: 'weekly', lastmod: '2026-02-10' },
 
   // New SEO Landing Pages (0.9) - updated footer links today
   { loc: '/actual-free-resume-builder', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-02' },
   { loc: '/free-resume-builder-no-sign-up', priority: 0.9, changefreq: 'monthly', lastmod: '2026-01-01' },
+  { loc: '/free-resume-builder-download', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
+  { loc: '/free-resume-builder-no-payment', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
+  { loc: '/ai-resume-builder-free', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
+  { loc: '/zety-free-alternative', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/best-free-resume-builder-reddit', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-04' },
+
+  // ATS Keyword Scanner Tool (0.8)
+  { loc: '/resume-keyword-scanner', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
+
+  // Audience Landing Pages (0.8)
+  { loc: '/free-resume-builder-for-students', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
+  { loc: '/free-resume-builder-for-veterans', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
+  { loc: '/free-resume-builder-for-it-professionals', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
+  { loc: '/free-resume-builder-for-nurses', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
 
   // UK CV Market Pages (0.9)
   { loc: '/free-cv-builder-no-sign-up', priority: 0.9, changefreq: 'monthly', lastmod: '2026-01-18' },
@@ -36,6 +49,9 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/resume-keywords', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-04' },
   { loc: '/examples', priority: 0.8, changefreq: 'weekly', lastmod: '2026-01-21' },
 
+  // Job Search (0.7)
+  { loc: '/jobs', priority: 0.7, changefreq: 'weekly', lastmod: '2026-02-08' },
+
   // Template Pages (0.7)
   { loc: '/templates/ats-friendly', priority: 0.7, changefreq: 'monthly', lastmod: '2026-02-02' },
   { loc: '/templates/modern-resume-templates', priority: 0.7, changefreq: 'monthly', lastmod: '2026-01-21' },
@@ -43,14 +59,14 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/templates/resume-templates-for-students', priority: 0.7, changefreq: 'monthly', lastmod: '2026-01-21' },
 
   // Manually-curated keyword page (0.7)
-  { loc: '/resume-keywords/customer-service', priority: 0.85, changefreq: 'monthly', lastmod: '2026-02-04' },
+  { loc: '/resume-keywords/customer-service', priority: 0.85, changefreq: 'monthly', lastmod: '2026-02-10' },
 
   // Blog Hub (0.6)
   { loc: '/blog', priority: 0.6, changefreq: 'weekly', lastmod: '2026-01-25' },
 
   // Blog Posts (0.5) - being updated with content refreshes
   { loc: '/blog/resume-keywords-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
-  { loc: '/blog/resume-no-experience', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
+  { loc: '/blog/resume-no-experience', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/blog/job-interview-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/ats-resume-optimization', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/resume-mistakes-to-avoid', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
@@ -65,9 +81,9 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/introducing-prepai-ai-interview-coach', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/how-to-write-a-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/resume-action-verbs', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
-  { loc: '/blog/how-to-use-resume-keywords', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/how-to-use-resume-keywords', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/blog/how-why-easyfreeresume-completely-free', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
-  { loc: '/blog/zety-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
+  { loc: '/easyfreeresume-vs-zety', priority: 0.7, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/blog/how-to-list-skills', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/quantify-resume-accomplishments', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
 
@@ -83,10 +99,11 @@ export const STATIC_URLS: SitemapUrl[] = [
   // Competitor Comparison Posts (0.5) - recently created
   { loc: '/blog/resume-io-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
   { loc: '/blog/resume-genius-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
-  { loc: '/blog/novoresume-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
+  { loc: '/blog/novoresume-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/blog/enhancv-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
-  { loc: '/blog/canva-resume-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
+  { loc: '/blog/canva-resume-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/blog/flowcv-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
+  { loc: '/easyfreeresume-vs-indeed-resume-builder', priority: 0.7, changefreq: 'monthly', lastmod: '2026-02-10' },
 
   // Static Pages (0.3)
   { loc: '/about', priority: 0.3, changefreq: 'yearly', lastmod: '2026-02-02' },

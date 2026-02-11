@@ -154,9 +154,9 @@ const IconManager: React.FC<IconManagerProps> = ({
   return (
     <div className={`icon-manager relative w-12 h-12 ${className}`}>
       <label className={`cursor-pointer relative group ${disabled ? 'pointer-events-none opacity-50' : ''}`}>
-        <div className="w-12 h-12 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 group-hover:border-blue-500 group-hover:bg-blue-50 transition-all duration-200">
+        <div className="w-12 h-12 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 group-hover:border-accent group-hover:bg-accent/[0.06] transition-all duration-200">
           {isUploading ? (
-            <div className="animate-spin w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full" />
+            <div className="animate-spin w-4 h-4 border-2 border-accent border-t-transparent rounded-full" />
           ) : iconPreview ? (
             <img
               src={iconPreview}

@@ -126,8 +126,8 @@ export const InlineTextEditor: React.FC<InlineTextEditorProps> = ({
         onBlur={handleBlur}
         placeholder={placeholder}
         className={`
-          bg-white border border-blue-400 rounded px-2 py-1
-          focus:outline-none focus:ring-2 focus:ring-blue-500
+          bg-white border border-accent/70 rounded px-2 py-1
+          focus:outline-none focus:ring-2 focus:ring-accent
           ${textClassName}
           ${inputClassName}
           ${className}
@@ -153,7 +153,7 @@ export const InlineTextEditor: React.FC<InlineTextEditorProps> = ({
         cursor-pointer rounded px-2 py-1 -mx-2 -my-1
         border border-transparent
         hover:border-gray-300 hover:bg-gray-50
-        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+        focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent
         transition-colors duration-150
         ${disabled ? 'cursor-default hover:border-transparent hover:bg-transparent' : ''}
         ${!value ? 'text-gray-400 italic' : ''}

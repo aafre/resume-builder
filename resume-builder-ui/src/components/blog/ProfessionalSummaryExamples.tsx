@@ -16,7 +16,7 @@ export default function ProfessionalSummaryExamples() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Updated for 2026: Your professional summary is the most important
           section of your resume-it's the first thing recruiters read and often
           determines whether they'll continue reading. A compelling summary can
@@ -25,21 +25,21 @@ export default function ProfessionalSummaryExamples() {
           help you craft a summary that opens doors.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-          <h3 className="text-lg font-bold text-blue-800 mb-2">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+          <h3 className="text-lg font-bold text-ink mb-2">
             🎯 Quick Impact
           </h3>
-          <p className="text-blue-700">
+          <p className="text-ink/80">
             Studies show that recruiters spend just 6-8 seconds scanning a
             resume initially. Your professional summary must immediately
             communicate your value proposition and make them want to learn more.
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           What Makes a Professional Summary Effective?
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           An effective professional summary is a 3-4 sentence paragraph that
           combines your years of experience, key skills, notable achievements,
           and the value you bring to employers. It should be tailored to your
@@ -50,7 +50,7 @@ export default function ProfessionalSummaryExamples() {
           <h4 className="font-bold text-green-800 mb-3">
             ✅ Essential Elements of a Strong Summary:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-green-700">
+          <ul className="list-disc pl-6 space-y-2 text-accent">
             <li>
               <strong>Years of Experience:</strong> Establish your experience
               level upfront
@@ -74,14 +74,14 @@ export default function ProfessionalSummaryExamples() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Professional Summary Formula
         </h2>
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             📐 The Winning Formula:
           </h4>
-          <div className="text-purple-700 space-y-3 text-lg">
+          <div className="text-ink/80 space-y-3 text-lg">
             <p>
               <strong>[Experience Level] + [Job Title/Field]</strong> with{" "}
               <strong>[Key Skills/Specializations]</strong> and a proven track
@@ -93,15 +93,15 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-indigo-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             60-Second Fill-in-the-Blank Template
           </h4>
-          <p className="text-indigo-700 mb-4">
+          <p className="text-ink/80 mb-4">
             Copy this template and replace each bracket with your own details.
             You will have a polished summary in under a minute:
           </p>
-          <div className="bg-white border border-indigo-200 rounded-lg p-5 font-mono text-sm leading-relaxed text-gray-800">
+          <div className="bg-white border border-accent/20 rounded-lg p-5 font-mono text-sm leading-relaxed text-ink">
             <p>
               [Job title] with [X years] of experience in [industry/skill].
               Known for [key achievement, ideally with a number]. Passionate
@@ -110,8 +110,8 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
           <div className="mt-4 space-y-3">
-            <p className="text-indigo-700 font-semibold">Filled-in example:</p>
-            <div className="bg-white border border-indigo-200 rounded-lg p-5 text-sm leading-relaxed text-gray-700 italic">
+            <p className="text-ink/80 font-semibold">Filled-in example:</p>
+            <div className="bg-white border border-accent/20 rounded-lg p-5 text-sm leading-relaxed text-stone-warm italic">
               <p>
                 &ldquo;Marketing Manager with 6 years of experience in B2B
                 SaaS growth marketing. Known for launching campaigns that
@@ -124,22 +124,22 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Professional Summary Examples by Experience Level
         </h2>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Entry-Level Professional Summaries
         </h3>
-        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+        <p className="text-lg leading-relaxed text-stone-warm mb-6">
           For new graduates and career changers, focus on relevant education,
           internships, projects, and transferable skills.
         </p>
 
         <div className="grid md:grid-cols-1 gap-6 my-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">Marketing Graduate</h4>
-            <p className="text-gray-700 italic leading-relaxed">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">Marketing Graduate</h4>
+            <p className="text-stone-warm italic leading-relaxed">
               "Recent Marketing graduate with strong analytical and creative
               problem-solving skills demonstrated through academic projects and
               internship experience. Proficient in digital marketing tools
@@ -151,11 +151,11 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">
               Computer Science Graduate
             </h4>
-            <p className="text-gray-700 italic leading-relaxed">
+            <p className="text-stone-warm italic leading-relaxed">
               "Motivated Computer Science graduate with hands-on experience in
               Python, Java, and full-stack web development through academic
               projects and freelance work. Built 5+ web applications using React
@@ -166,11 +166,11 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">
               Career Changer (Sales to HR)
             </h4>
-            <p className="text-gray-700 italic leading-relaxed">
+            <p className="text-stone-warm italic leading-relaxed">
               "Results-driven professional with 6+ years in sales and customer
               relationship management, transitioning to Human Resources. Proven
               ability to build rapport, communicate effectively, and resolve
@@ -182,18 +182,18 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Mid-Level Professional Summaries
         </h3>
-        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+        <p className="text-lg leading-relaxed text-stone-warm mb-6">
           For professionals with 3-10 years of experience, emphasize career
           progression, leadership experience, and significant achievements.
         </p>
 
         <div className="grid md:grid-cols-1 gap-6 my-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">Marketing Manager</h4>
-            <p className="text-gray-700 italic leading-relaxed">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">Marketing Manager</h4>
+            <p className="text-stone-warm italic leading-relaxed">
               "Strategic Marketing Manager with 7+ years driving brand growth
               and customer acquisition for B2B SaaS companies. Led campaigns
               that generated $2.5M in pipeline revenue and increased qualified
@@ -204,9 +204,9 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">Software Engineer</h4>
-            <p className="text-gray-700 italic leading-relaxed">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">Software Engineer</h4>
+            <p className="text-stone-warm italic leading-relaxed">
               "Full-Stack Software Engineer with 5+ years developing scalable
               web applications for fintech and healthcare industries.
               Architected microservices handling 10M+ daily transactions and
@@ -218,9 +218,9 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">Financial Analyst</h4>
-            <p className="text-gray-700 italic leading-relaxed">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">Financial Analyst</h4>
+            <p className="text-stone-warm italic leading-relaxed">
               "Detail-oriented Financial Analyst with 6+ years supporting
               strategic decision-making through comprehensive financial modeling
               and analysis. Developed forecasting models that improved budget
@@ -232,20 +232,20 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Senior-Level Professional Summaries
         </h3>
-        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+        <p className="text-lg leading-relaxed text-stone-warm mb-6">
           For senior professionals and executives, focus on leadership impact,
           strategic achievements, and industry expertise.
         </p>
 
         <div className="grid md:grid-cols-1 gap-6 my-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">
               Senior Product Manager
             </h4>
-            <p className="text-gray-700 italic leading-relaxed">
+            <p className="text-stone-warm italic leading-relaxed">
               "Strategic Product Manager with 10+ years leading product
               development for consumer technology companies. Launched 15+
               products generating $50M+ in cumulative revenue and managed
@@ -257,11 +257,11 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">
               Director of Operations
             </h4>
-            <p className="text-gray-700 italic leading-relaxed">
+            <p className="text-stone-warm italic leading-relaxed">
               "Operations Director with 12+ years optimizing business processes
               and leading high-performing teams in manufacturing and logistics.
               Reduced operational costs by 30% while improving efficiency
@@ -273,9 +273,9 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">VP of Sales</h4>
-            <p className="text-gray-700 italic leading-relaxed">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">VP of Sales</h4>
+            <p className="text-stone-warm italic leading-relaxed">
               "Results-driven Sales Executive with 15+ years building and
               scaling revenue organizations for B2B technology companies. Grew
               annual recurring revenue from $5M to $25M over 3 years while
@@ -288,17 +288,17 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Industry-Specific Professional Summary Examples
         </h2>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Technology Industry
         </h3>
         <div className="grid md:grid-cols-1 gap-6 my-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">DevOps Engineer</h4>
-            <p className="text-gray-700 italic leading-relaxed">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">DevOps Engineer</h4>
+            <p className="text-stone-warm italic leading-relaxed">
               "DevOps Engineer with 6+ years automating infrastructure and
               streamlining deployment processes for high-traffic applications.
               Reduced deployment time by 75% and improved system uptime to 99.9%
@@ -309,9 +309,9 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">Data Scientist</h4>
-            <p className="text-gray-700 italic leading-relaxed">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">Data Scientist</h4>
+            <p className="text-stone-warm italic leading-relaxed">
               "Data Scientist with 5+ years applying machine learning and
               statistical analysis to solve complex business problems in retail
               and finance. Built predictive models that increased customer
@@ -323,13 +323,13 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Healthcare Industry
         </h3>
         <div className="grid md:grid-cols-1 gap-6 my-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">Registered Nurse</h4>
-            <p className="text-gray-700 italic leading-relaxed">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">Registered Nurse</h4>
+            <p className="text-stone-warm italic leading-relaxed">
               "Compassionate Registered Nurse with 8+ years providing
               exceptional patient care in acute care and emergency settings.
               Demonstrated expertise in critical care, patient education, and
@@ -340,11 +340,11 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">
               Healthcare Administrator
             </h4>
-            <p className="text-gray-700 italic leading-relaxed">
+            <p className="text-stone-warm italic leading-relaxed">
               "Healthcare Administrator with 10+ years optimizing operations and
               improving patient care delivery in hospital and clinic settings.
               Reduced patient wait times by 40% and increased operational
@@ -356,13 +356,13 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
+        <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           Finance Industry
         </h3>
         <div className="grid md:grid-cols-1 gap-6 my-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">Investment Advisor</h4>
-            <p className="text-gray-700 italic leading-relaxed">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">Investment Advisor</h4>
+            <p className="text-stone-warm italic leading-relaxed">
               "Licensed Investment Advisor with 7+ years helping high-net-worth
               individuals and families achieve their financial goals. Managed
               $50M+ in client assets with average portfolio performance
@@ -374,11 +374,11 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">
               Corporate Controller
             </h4>
-            <p className="text-gray-700 italic leading-relaxed">
+            <p className="text-stone-warm italic leading-relaxed">
               "CPA-qualified Corporate Controller with 12+ years overseeing
               financial operations and reporting for mid-market companies. Led
               implementation of new ERP system that reduced month-end close by 5
@@ -390,20 +390,20 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Common Professional Summary Mistakes to Avoid
         </h2>
 
         <div className="space-y-6">
           <div className="bg-red-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">
+            <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Generic, one-size-fits-all summaries
             </h4>
-            <p className="text-gray-700 mb-2">
+            <p className="text-stone-warm mb-2">
               <strong>Example:</strong> "Hardworking professional with excellent
               communication skills seeking new opportunities for growth."
             </p>
-            <p className="text-green-700">
+            <p className="text-accent">
               <strong>Fix:</strong> Customize your summary for each application
               with specific skills, achievements, and keywords relevant to the
               target role.
@@ -411,49 +411,49 @@ export default function ProfessionalSummaryExamples() {
           </div>
 
           <div className="bg-red-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">
+            <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Focusing on what you want instead of what you offer
             </h4>
-            <p className="text-gray-700 mb-2">
+            <p className="text-stone-warm mb-2">
               <strong>Example:</strong> "Seeking a challenging position where I
               can grow my skills and advance my career."
             </p>
-            <p className="text-green-700">
+            <p className="text-accent">
               <strong>Fix:</strong> Lead with the value you bring to employers:
               your skills, experience, and proven results.
             </p>
           </div>
 
           <div className="bg-red-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">
+            <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Using vague buzzwords without context
             </h4>
-            <p className="text-gray-700 mb-2">
+            <p className="text-stone-warm mb-2">
               <strong>Example:</strong> "Dynamic, results-oriented professional
               with exceptional leadership capabilities."
             </p>
-            <p className="text-green-700">
+            <p className="text-accent">
               <strong>Fix:</strong> Support claims with specific examples and
               quantifiable achievements that demonstrate these qualities.
             </p>
           </div>
 
           <div className="bg-red-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">
+            <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Writing in first person or using personal pronouns
             </h4>
-            <p className="text-gray-700 mb-2">
+            <p className="text-stone-warm mb-2">
               <strong>Example:</strong> "I am a marketing professional with 5
               years of experience in digital marketing."
             </p>
-            <p className="text-green-700">
+            <p className="text-accent">
               <strong>Fix:</strong> Write in third person without pronouns for a
               more professional, concise tone.
             </p>
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-8 my-12">
+        <div className="bg-ink text-white rounded-xl p-8 my-12">
           <h3 className="text-2xl font-bold mb-4">
             🎯 Your Professional Summary Action Plan
           </h3>
@@ -470,10 +470,10 @@ export default function ProfessionalSummaryExamples() {
           </ol>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Professional Summary vs. Objective Statement
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700 mb-4">
+        <p className="text-lg leading-relaxed text-stone-warm mb-4">
           A professional summary and an objective statement both appear at the
           top of a resume, but they serve different purposes. A{" "}
           <strong>professional summary</strong> highlights your qualifications,
@@ -483,7 +483,7 @@ export default function ProfessionalSummaryExamples() {
           because they answer the question &ldquo;Why should we hire this
           person?&rdquo; rather than &ldquo;What does this person want?&rdquo;
         </p>
-        <p className="text-lg leading-relaxed text-gray-700 mb-6">
+        <p className="text-lg leading-relaxed text-stone-warm mb-6">
           <strong>When to use an objective statement:</strong> An objective can
           still work if you are making a dramatic career change and need to
           explain why you are applying to a different field, or if you are a
@@ -495,7 +495,7 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-green-800 mb-3">
               ✅ Professional Summary
             </h4>
-            <ul className="list-disc pl-6 space-y-2 text-green-700 text-sm">
+            <ul className="list-disc pl-6 space-y-2 text-accent text-sm">
               <li>Focuses on what you offer employers</li>
               <li>Highlights achievements and quantifiable results</li>
               <li>Demonstrates your value proposition</li>
@@ -519,20 +519,20 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Optimizing Your Summary for ATS
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Applicant Tracking Systems (ATS) scan your professional summary for
           keywords and phrases that match job requirements. Strategic keyword
           integration is essential for passing initial screening.
         </p>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-purple-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">
             🤖 ATS Optimization Tips:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-purple-700">
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Mirror job description language:</strong> Use exact terms
               and phrases from target job postings
@@ -556,24 +556,24 @@ export default function ProfessionalSummaryExamples() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Final Tips for Professional Summary Success
         </h2>
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">
               📏 Length Guidelines
             </h4>
-            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
               <li>3-4 sentences maximum</li>
               <li>50-150 words total</li>
               <li>2-3 lines when formatted</li>
               <li>Concise but comprehensive</li>
             </ul>
           </div>
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-3">🎨 Formatting Tips</h4>
-            <ul className="list-disc pl-6 space-y-1 text-gray-700 text-sm">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">🎨 Formatting Tips</h4>
+            <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
               <li>Place immediately after contact info</li>
               <li>Use standard fonts and formatting</li>
               <li>Maintain consistent paragraph style</li>
@@ -592,10 +592,10 @@ export default function ProfessionalSummaryExamples() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Key Takeaways
         </h2>
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           A compelling professional summary can significantly impact your job
           search success. It should immediately communicate your value
           proposition, highlight your most relevant qualifications, and
@@ -604,7 +604,7 @@ export default function ProfessionalSummaryExamples() {
           summary for each specific opportunity.
         </p>
 
-        <p className="text-lg leading-relaxed text-gray-700 mt-6">
+        <p className="text-lg leading-relaxed text-stone-warm mt-6">
           Remember that your professional summary is often the first-and
           sometimes only-section recruiters read. Make those few seconds count
           by crafting a summary that positions you as the ideal candidate for

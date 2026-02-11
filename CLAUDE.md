@@ -155,6 +155,123 @@ When modifying a blog page (especially comparison/competitor pages), update the 
 
 The sitemap is regenerated during `npm run build`, but the source dates in `sitemapUrls.ts` are manual.
 
+## Design System (2026 Revamp)
+
+The landing page, header, and footer have been revamped with a modern design language. **All other pages should be migrated to match.** Reference the landing page (`LandingPage.tsx`) and shared components (`components/shared/`) as the source of truth.
+
+### Design Philosophy
+- **Light-dominant minimalism** — chalk backgrounds, generous whitespace, no visual clutter
+- **Extreme type contrast** — `font-extrabold` (800) headings vs `font-extralight` (200) body text
+- **Accent sparingly** — green (`#00d47e`) only for CTAs, hover states, and highlights — never for large surfaces
+- **Soft depth** — multi-layer shadows and subtle borders (`black/[0.06]`) instead of hard lines
+- **Rounded everywhere** — minimum `rounded-lg`, cards use `rounded-2xl` or `rounded-3xl`
+- **Hover lifts** — interactive elements lift (`-translate-y-0.5` buttons, `-translate-y-1` cards)
+- **Scroll-triggered reveals** — all below-fold sections fade in via `<RevealSection>`
+
+### Color Tokens (tailwind.config.js)
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `ink` | `#0c0c0c` | Primary text, headings |
+| `ink-light` | `#1a1a1a` | Dark surfaces (demo chrome) |
+| `chalk` | `#fafaf8` | Page/section backgrounds |
+| `chalk-dark` | `#f0efe9` | Alternate surface (cards, footer) |
+| `stone-warm` | `#8a8680` | Body text, subtitles |
+| `mist` | `#a8a4a0` | Tertiary/muted text |
+| `accent` | `#00d47e` | CTAs, highlights, badges |
+
+Standard Tailwind `gray-{200,300,600}` for borders and secondary text. Avoid introducing new brand colors.
+
+### Typography
+
+| Element | Classes |
+|---------|---------|
+| **Hero H1** | `font-display text-[clamp(2.5rem,5.5vw,4.5rem)] font-extrabold leading-[1.08] tracking-tight text-ink` |
+| **Section H2** | `font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink` |
+| **Card H3** | `font-display text-xl font-bold text-ink` |
+| **Body paragraph** | `font-display text-lg md:text-xl font-extralight text-stone-warm leading-relaxed` |
+| **Mono label** (section eyebrow) | `font-mono text-xs tracking-[0.15em] text-accent uppercase` |
+| **Meta/small text** | `text-sm text-stone-warm` |
+
+### Button System (defined in styles.css)
+
+| Class | Style | Usage |
+|-------|-------|-------|
+| `.btn-primary` | Green bg, bold, rounded-xl, shimmer hover, shadow-lg | Primary CTAs |
+| `.btn-secondary` | White bg, gray border, rounded-xl, shadow-sm | Secondary actions |
+| `.btn-ghost` | No bg, hover:bg-black/5, rounded-lg | Tertiary/nav links |
+
+Sizes: `py-3.5 px-8` (default), `py-4 px-10` (hero), `py-2.5 px-5` (compact/header).
+
+### Card Patterns
+
+- **Feature card:** `bg-white rounded-2xl p-8 card-gradient-border shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300`
+- **Resource card:** `bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300`
+- **Template card:** `bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl border-2 border-gray-200 hover:border-accent/30`
+
+### Visual Effects (defined in styles.css)
+
+- **`.glass`** — `bg-white/80 backdrop-blur-xl border-white/40 shadow-xl` (header, overlays)
+- **`.card-gradient-border`** — subtle accent gradient border via mask composite
+- **`.shadow-premium`** — 4-layer shadow for realistic depth; hover adds accent glow
+- **`.bg-grain`** — optional subtle dot texture overlay
+
+### Scroll-Reveal System
+
+Wrap below-fold sections with `<RevealSection variant="fade-up">`. Options: `fade-up`, `fade-in`, `scale-in`, `fade-left`. Add `stagger` prop for grids. CSS in `styles.css`, hook in `useScrollReveal.ts`. Observer: 15% threshold, fires once.
+
+### Layout Patterns
+
+| Pattern | Classes |
+|---------|---------|
+| **Section outer** | `py-12 md:py-20 px-4 sm:px-6 lg:px-8` |
+| **Section inner** | `max-w-6xl mx-auto` (wide) / `max-w-4xl mx-auto` (narrow) / `max-w-3xl mx-auto` (text-focused) |
+| **Section heading block** | Mono eyebrow label → H2 → subtitle paragraph → `mb-12 md:mb-16` gap to content |
+| **Grid** | `grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12` |
+| **Stats row** | Flex with `sm:divide-x sm:divide-ink/10` dividers |
+
+### Dark Accent Section (Final CTA pattern)
+```jsx
+<div className="bg-ink rounded-3xl py-20 px-6 text-center relative overflow-hidden">
+  {/* Radial accent glow */}
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-accent/[0.07] blur-3xl pointer-events-none" />
+  {/* White text, accent CTA button */}
+</div>
+```
+
+### Shared Components (components/shared/)
+
+Use these instead of building one-off equivalents:
+- `PageHero` — H1 hero with breadcrumbs, subtitle, CTA
+- `RevealSection` — scroll-triggered entrance animation wrapper
+- `FAQSection` — animated accordion with grid expand
+- `FeatureGrid` — numbered feature list with gradient borders
+- `StepByStep` — numbered step-by-step walkthrough
+- `ProofSection` — social proof / stats display
+- `SEOPageLayout` — standard layout shell for SEO landing pages
+- `ComparisonTable` — feature comparison table
+- `DownloadCTA` — call-to-action block for downloads
+- `BreadcrumbsWithSchema` — breadcrumbs with JSON-LD
+
+### Transition Defaults
+- **Standard:** `transition-all duration-300`
+- **Slow glass:** `transition-all duration-500`
+- **Easing:** `cubic-bezier(0.16, 1, 0.3, 1)` for scroll-reveal and premium shadows
+- **Reduced motion:** All animations/transitions disabled via `@media (prefers-reduced-motion: reduce)` in styles.css
+
+### Page Revamp Checklist
+
+When revamping a page to the new design system:
+1. Replace hardcoded `font-family` / system font stacks with `font-display` or default (now Bricolage Grotesque via `font-sans`)
+2. Replace color literals with design tokens (`text-ink`, `bg-chalk`, `text-stone-warm`, `text-accent`)
+3. Replace button styles with `.btn-primary` / `.btn-secondary` / `.btn-ghost`
+4. Use `<RevealSection>` for below-fold sections
+5. Use shared components (`PageHero`, `FAQSection`, etc.) where applicable
+6. Follow section structure: mono eyebrow → H2 → subtitle → content
+7. Ensure `rounded-xl`+ on all cards/containers (no sharp corners)
+8. Add hover lifts and transitions to interactive elements
+9. Test reduced motion — verify content is visible without animation
+
 # Repo workflow
 
 ## Git commit style

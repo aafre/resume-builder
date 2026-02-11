@@ -22,6 +22,11 @@ import { marketingManager } from './jobs/marketing-manager';
 import { financialAnalyst } from './jobs/financial-analyst';
 import { teacher } from './jobs/teacher';
 import { salesRepresentative } from './jobs/sales-representative';
+import { sales } from './jobs/sales';
+import { marketing } from './jobs/marketing';
+import { businessAnalyst } from './jobs/business-analyst';
+import { nursing } from './jobs/nursing';
+import { administrativeAssistant } from './jobs/administrative-assistant';
 import type { JobKeywordsData } from './types';
 
 /**
@@ -45,6 +50,11 @@ export const JOBS_DATABASE: JobKeywordsData[] = [
   financialAnalyst,
   teacher,
   salesRepresentative,
+  sales,
+  marketing,
+  businessAnalyst,
+  nursing,
+  administrativeAssistant,
 ];
 
 /**

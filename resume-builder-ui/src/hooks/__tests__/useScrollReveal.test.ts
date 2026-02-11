@@ -59,8 +59,8 @@ describe('useScrollReveal', () => {
       return ref;
     });
 
-    expect(observerOptions?.threshold).toBe(0.15);
-    expect(observerOptions?.rootMargin).toBe('0px 0px -80px 0px');
+    expect(observerOptions?.threshold).toBe(0);
+    expect(observerOptions?.rootMargin).toBe('0px 0px -60px 0px');
     expect(mockObserve).toHaveBeenCalledWith(div);
 
     unmount();

@@ -46,7 +46,7 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
       style={style}
       className={`relative group rounded-2xl ${
         isDragging
-          ? 'border-2 border-dashed border-blue-300 bg-blue-50/50 min-h-[60px]'
+          ? 'border-2 border-dashed border-accent/30 bg-accent/[0.06] min-h-[60px]'
           : 'transition-all duration-200 ease-out'
       } ${showDropIndicator ? 'mt-3' : ''}`}
       {...attributes}
@@ -54,11 +54,11 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
       {/* Drop indicator line - shows where section will be placed */}
       {showDropIndicator && (
         <div className="absolute -top-2 left-0 right-0 flex items-center gap-2 z-40 px-2">
-          <div className="w-4 h-4 rounded-full bg-blue-500 shadow-lg flex items-center justify-center">
+          <div className="w-4 h-4 rounded-full bg-accent shadow-lg flex items-center justify-center">
             <div className="w-2 h-0.5 bg-white rounded-full" />
           </div>
-          <div className="flex-1 h-1 bg-blue-500 rounded-full shadow-md" />
-          <div className="w-4 h-4 rounded-full bg-blue-500 shadow-lg flex items-center justify-center">
+          <div className="flex-1 h-1 bg-accent rounded-full shadow-md" />
+          <div className="w-4 h-4 rounded-full bg-accent shadow-lg flex items-center justify-center">
             <div className="w-2 h-0.5 bg-white rounded-full" />
           </div>
         </div>
@@ -72,7 +72,7 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
             group/handle touch-none
             w-full h-4 md:h-2 min-h-[44px] md:min-h-0 rounded-t-2xl cursor-grab active:cursor-grabbing
             ${isDragging
-              ? 'bg-blue-50'
+              ? 'bg-accent/[0.06]'
               : 'bg-transparent'
             }
             transition-all duration-150 ease-out

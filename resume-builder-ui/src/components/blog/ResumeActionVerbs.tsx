@@ -17,16 +17,16 @@ export default function ResumeActionVerbs() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           The difference between a good resume and a great one often comes down
           to word choice. Updated for 2026, action verbs remain powerful tools
           that transform passive job descriptions into dynamic achievements that
           capture recruiters' attention and demonstrate your impact.
         </p>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-blue-800 mb-3">💡 Quick Impact Check</h3>
-          <p className="text-blue-700 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
+          <h3 className="font-bold text-ink mb-3">💡 Quick Impact Check</h3>
+          <p className="text-ink/80 mb-3">
             Compare these two descriptions of the same job:
           </p>
           <div className="space-y-3">
@@ -46,11 +46,11 @@ export default function ResumeActionVerbs() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Why Action Verbs Matter on Your Resume
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Action verbs serve multiple purposes on your resume. They help you
           pass ATS screening, grab human attention, and demonstrate your
           proactive approach to work.
@@ -59,7 +59,7 @@ export default function ResumeActionVerbs() {
         <div className="grid md:grid-cols-2 gap-6 my-8">
           <div className="bg-green-50 border border-green-200 rounded-xl p-6">
             <h4 className="font-bold text-green-800 mb-3">✅ Benefits of Strong Action Verbs</h4>
-            <ul className="list-disc pl-6 space-y-2 text-green-700 text-sm">
+            <ul className="list-disc pl-6 space-y-2 text-accent text-sm">
               <li>Show ownership and initiative</li>
               <li>Quantify your achievements</li>
               <li>Pass ATS keyword scanning</li>
@@ -82,21 +82,21 @@ export default function ResumeActionVerbs() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           200+ Action Verbs by Category
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Choose verbs that align with your industry and the specific job you're
           targeting. Here are powerful action verbs organized by skill area:
         </p>
 
         <div className="space-y-8 mt-8">
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-purple-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
               👑 Leadership & Management
             </h3>
-            <div className="grid md:grid-cols-4 gap-4 text-purple-700">
+            <div className="grid md:grid-cols-4 gap-4 text-ink/80">
               <div>
                 <ul className="space-y-1 text-sm">
                   <li>• Directed</li>
@@ -144,7 +144,7 @@ export default function ResumeActionVerbs() {
             <h3 className="text-xl font-bold text-green-800 mb-4">
               🎯 Achievement & Results
             </h3>
-            <div className="grid md:grid-cols-4 gap-4 text-green-700">
+            <div className="grid md:grid-cols-4 gap-4 text-accent">
               <div>
                 <ul className="space-y-1 text-sm">
                   <li>• Achieved</li>
@@ -188,11 +188,11 @@ export default function ResumeActionVerbs() {
             </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-blue-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
               🚀 Innovation & Problem-Solving
             </h3>
-            <div className="grid md:grid-cols-4 gap-4 text-blue-700">
+            <div className="grid md:grid-cols-4 gap-4 text-ink/80">
               <div>
                 <ul className="space-y-1 text-sm">
                   <li>• Innovated</li>
@@ -284,11 +284,11 @@ export default function ResumeActionVerbs() {
             </div>
           </div>
 
-          <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-indigo-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
               📊 Analysis & Research
             </h3>
-            <div className="grid md:grid-cols-4 gap-4 text-indigo-700">
+            <div className="grid md:grid-cols-4 gap-4 text-ink/80">
               <div>
                 <ul className="space-y-1 text-sm">
                   <li>• Researched</li>
@@ -429,19 +429,19 @@ export default function ResumeActionVerbs() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           How to Use Action Verbs Effectively
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-blue-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-ink mb-3">
               1. Match Verbs to Your Industry
             </h3>
-            <p className="text-blue-700 mb-3">
+            <p className="text-ink/80 mb-3">
               Different industries favor different types of action verbs:
             </p>
-            <div className="grid md:grid-cols-3 gap-4 text-blue-700">
+            <div className="grid md:grid-cols-3 gap-4 text-ink/80">
               <div>
                 <p className="font-medium mb-2">Tech/Engineering:</p>
                 <p className="text-sm">Developed, Architected, Optimized, Debugged</p>
@@ -461,10 +461,10 @@ export default function ResumeActionVerbs() {
             <h3 className="text-lg font-bold text-green-800 mb-3">
               2. Pair Verbs with Quantifiable Results
             </h3>
-            <p className="text-green-700 mb-3">
+            <p className="text-accent mb-3">
               Action verbs become powerful when combined with specific metrics:
             </p>
-            <div className="space-y-2 text-green-700">
+            <div className="space-y-2 text-accent">
               <div className="bg-white p-3 rounded text-sm">
                 <strong>Formula:</strong> Action Verb + Specific Task + Quantifiable Result
               </div>
@@ -492,7 +492,7 @@ export default function ResumeActionVerbs() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Action Verbs by Experience Level
         </h2>
 
@@ -501,10 +501,10 @@ export default function ResumeActionVerbs() {
             <h3 className="text-lg font-bold text-green-800 mb-3">
               🌱 Entry-Level Power Words
             </h3>
-            <p className="text-green-700 mb-3">
+            <p className="text-accent mb-3">
               Emphasize learning, contribution, and potential:
             </p>
-            <div className="text-green-700 text-sm space-y-1">
+            <div className="text-accent text-sm space-y-1">
               <p>• Contributed to team success by...</p>
               <p>• Supported operations through...</p>
               <p>• Assisted in developing...</p>
@@ -514,14 +514,14 @@ export default function ResumeActionVerbs() {
             </div>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-purple-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-ink mb-3">
               🚀 Senior-Level Power Words
             </h3>
-            <p className="text-purple-700 mb-3">
+            <p className="text-ink/80 mb-3">
               Highlight leadership, strategy, and impact:
             </p>
-            <div className="text-purple-700 text-sm space-y-1">
+            <div className="text-ink/80 text-sm space-y-1">
               <p>• Spearheaded organization-wide...</p>
               <p>• Orchestrated cross-functional...</p>
               <p>• Pioneered innovative...</p>
@@ -532,7 +532,7 @@ export default function ResumeActionVerbs() {
           </div>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Transform Your Resume?
           </h3>
@@ -542,19 +542,19 @@ export default function ResumeActionVerbs() {
           </p>
           <a
             href="/templates"
-            className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Build Your Resume Now
           </a>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Before and After: Resume Transformation Examples
         </h2>
 
         <div className="space-y-8">
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-800 mb-4">
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-4">
               Marketing Professional Makeover
             </h4>
             <div className="grid md:grid-cols-2 gap-4">
@@ -567,7 +567,7 @@ export default function ResumeActionVerbs() {
               </div>
               <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
                 <p className="font-medium text-green-800 mb-2">✅ After:</p>
-                <p className="text-green-700 text-sm">
+                <p className="text-accent text-sm">
                   "<strong>Orchestrated</strong> integrated social media strategy across 5
                   platforms. <strong>Spearheaded</strong> multi-channel marketing campaigns
                   that <strong>generated</strong> 300+ qualified leads monthly. <strong>Amplified</strong> brand
@@ -577,8 +577,8 @@ export default function ResumeActionVerbs() {
             </div>
           </div>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <h4 className="font-bold text-gray-800 mb-4">
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h4 className="font-bold text-ink mb-4">
               Software Engineer Enhancement
             </h4>
             <div className="grid md:grid-cols-2 gap-4">
@@ -591,7 +591,7 @@ export default function ResumeActionVerbs() {
               </div>
               <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
                 <p className="font-medium text-green-800 mb-2">✅ After:</p>
-                <p className="text-green-700 text-sm">
+                <p className="text-accent text-sm">
                   "<strong>Architected</strong> scalable web applications serving 50K+ users.
                   <strong>Debugged</strong> critical system issues, <strong>reducing</strong> downtime by 40%.
                   <strong>Streamlined</strong> code review processes and <strong>optimized</strong> system
@@ -602,15 +602,15 @@ export default function ResumeActionVerbs() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Quick Reference: Top 50 Universal Action Verbs
         </h2>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-          <p className="text-gray-700 mb-4">
+        <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+          <p className="text-stone-warm mb-4">
             Keep this list handy when writing your resume:
           </p>
-          <div className="grid md:grid-cols-5 gap-4 text-gray-700 text-sm">
+          <div className="grid md:grid-cols-5 gap-4 text-stone-warm text-sm">
             <div>
               <ol className="space-y-1">
                 <li>1. Achieved</li>
@@ -684,9 +684,9 @@ export default function ResumeActionVerbs() {
           </div>
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-blue-800 mb-3">💡 Pro Tips for Maximum Impact</h3>
-          <ul className="list-disc pl-6 space-y-2 text-blue-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-ink mb-3">💡 Pro Tips for Maximum Impact</h3>
+          <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Start every bullet point</strong> with a different action verb
             </li>
@@ -705,12 +705,12 @@ export default function ResumeActionVerbs() {
           </ul>
         </div>
 
-        <p className="text-lg leading-relaxed text-gray-700 mt-8">
+        <p className="text-lg leading-relaxed text-stone-warm mt-8">
           Remember, action verbs are just one element of a powerful resume in 2026.
           For a complete guide on writing compelling resume content, check out our{" "}
           <a
             href="/blog/how-to-write-a-resume-guide"
-            className="text-blue-600 hover:text-blue-800 underline"
+            className="text-accent hover:text-ink underline"
           >
             step-by-step resume writing guide
           </a>

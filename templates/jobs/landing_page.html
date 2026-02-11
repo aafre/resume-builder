@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block content %}
+{# Breadcrumbs #}
+<nav aria-label="Breadcrumb" class="max-w-5xl mx-auto px-4 pt-4">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList" class="flex items-center gap-1 text-sm text-gray-500">
+    {% for crumb in data.breadcrumbs %}
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      {% if crumb.url %}
+      <a itemprop="item" href="{{ crumb.url }}">
+        <span itemprop="name">{{ crumb.name }}</span>
+      </a>
+      <meta itemprop="position" content="{{ loop.index }}" />
+      <span class="mx-1">/</span>
+      {% else %}
+      <span itemprop="name">{{ crumb.name }}</span>
+      <meta itemprop="position" content="{{ loop.index }}" />
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ol>
+</nav>
+
+{# Page Header #}
+<header class="max-w-5xl mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">
+    {% if data.seniority %}{{ data.seniority | title }} {% endif %}
+    {% if data.modifier_label and data.modifier not in ('posted-today', 'posted-this-week') %}{{ data.modifier_label }} {% endif %}
+    {{ data.role_display }} Jobs
+    {% if data.location_display %} in {{ data.location_display }}{% endif %}
+    {% if data.modifier in ('posted-today',) %} — Posted Today{% endif %}
+    {% if data.modifier in ('posted-this-week',) %} — This Week{% endif %}
+  </h1>
+
+  {# Intro Copy #}
+  <p class="text-gray-600 text-base leading-relaxed mb-4">{{ data.intro_copy }}</p>
+
+  {# Stats Bar #}
+  <div class="flex flex-wrap gap-4 text-sm">
+    <span class="inline-flex items-center gap-1 text-indigo-700 font-medium">
+      {{ data.total_count }}+ jobs found
+    </span>
+    {% if data.salary_stats.median %}
+    <span class="inline-flex items-center gap-1 text-gray-600">
+      Median salary: {{ data.salary_stats.currency }}{{ "{:,}".format(data.salary_stats.median) }}{% if data.salary_stats.source == 'estimated' %} (est.){% endif %}
+    </span>
+    {% endif %}
+    {% if data.top_skills %}
+    <span class="text-gray-600">
+      Top skills: {{ data.top_skills[:5] | join(', ') }}
+    </span>
+    {% endif %}
+  </div>
+</header>
+
+{# Job Listings #}
+<main class="max-w-5xl mx-auto px-4 pb-8">
+  <div class="space-y-3" id="job-listings">
+    {% for job in data.jobs[:20] %}
+    <article class="bg-white rounded-lg border border-gray-200 p-4 hover:border-indigo-200 transition-colors">
+      <div class="flex justify-between items-start gap-4">
+        <div class="min-w-0 flex-1">
+          <h2 class="font-semibold text-gray-900 text-base">
+            <a href="{{ job.url }}" target="_blank" rel="noopener noreferrer nofollow" class="hover:text-indigo-600">
+              {{ job.title }}
+            </a>
+          </h2>
+          <p class="text-sm text-gray-600 mt-0.5">{{ job.company }}</p>
+          <p class="text-sm text-gray-500 mt-0.5">{{ job.location }}</p>
+          {% if job.description %}
+          <p class="text-sm text-gray-500 mt-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ job.description }}</p>
+          {% endif %}
+        </div>
+        <div class="text-right flex-shrink-0">
+          {% if job.salary_min and job.salary_max and not job.salary_is_predicted %}
+          <p class="text-sm font-medium text-green-700">
+            £{{ "{:,}".format(job.salary_min) }} – £{{ "{:,}".format(job.salary_max) }}
+          </p>
+          {% elif job.salary_min and job.salary_max %}
+          <p class="text-sm text-gray-400" title="Estimated salary">
+            ~£{{ "{:,}".format(job.salary_min) }} – £{{ "{:,}".format(job.salary_max) }}
+          </p>
+          {% endif %}
+        </div>
+      </div>
+    </article>
+
+    {# In-feed ad every 5th card #}
+    {% if loop.index == 5 %}
+    <div class="min-h-[90px]" data-ad-slot="infeed"></div>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  {# Internal Links #}
+  <aside class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+    {# Related Roles #}
+    {% if data.related_roles %}
+    <div>
+      <h3 class="text-lg font-semibold text-gray-900 mb-3">Related Roles</h3>
+      <ul class="space-y-1">
+        {% for role in data.related_roles[:6] %}
+        <li>
+          <a href="{{ role.url }}" class="text-indigo-600 hover:text-indigo-800 text-sm">
+            {{ role.name }} jobs{% if data.location_display %} in {{ data.location_display }}{% endif %}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    {# Other Locations #}
+    {% if data.related_locations %}
+    <div>
+      <h3 class="text-lg font-semibold text-gray-900 mb-3">Other Locations</h3>
+      <ul class="space-y-1">
+        {% for loc in data.related_locations[:6] %}
+        <li>
+          <a href="{{ loc.url }}" class="text-indigo-600 hover:text-indigo-800 text-sm">
+            {{ data.role_display }} jobs in {{ loc.name }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </aside>
+
+  {# Filter Variant Links #}
+  {% if data.internal_links %}
+  <nav class="mt-6">
+    {% if data.internal_links.get('parent') %}
+    <a href="{{ data.internal_links.parent.url }}" class="text-sm text-indigo-600 hover:underline mr-4">
+      ← {{ data.internal_links.parent.label }}
+    </a>
+    {% endif %}
+    {% if data.internal_links.get('siblings') %}
+    <div class="flex flex-wrap gap-2 mt-2">
+      {% for sib in data.internal_links.siblings %}
+      <a href="{{ sib.url }}" class="text-sm text-indigo-600 hover:underline">{{ sib.label }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </nav>
+  {% endif %}
+
+  {# FAQ Section #}
+  {% if data.faqs %}
+  <section class="mt-10">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Frequently Asked Questions</h2>
+    {% for faq in data.faqs %}
+    <details class="border-b border-gray-200 py-3 group">
+      <summary class="cursor-pointer text-base font-medium text-gray-800 flex justify-between items-center">
+        {{ faq.question }}
+        <span class="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
+      </summary>
+      <p class="mt-2 text-sm text-gray-600 leading-relaxed">{{ faq.answer }}</p>
+    </details>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {# CTA #}
+  {% if data.internal_links and data.internal_links.get('cta') %}
+  <div class="mt-8 text-center">
+    <a href="{{ data.internal_links.cta.url }}"
+       class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+      {{ data.internal_links.cta.label }}
+    </a>
+  </div>
+  {% endif %}
+</main>
+{% endblock %}

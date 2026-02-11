@@ -39,8 +39,8 @@ export default function AutoSaveIndicator({
   // Saving state
   if (isSaving) {
     return (
-      <div className="flex items-center gap-2 text-xs text-blue-600">
-        <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+      <div className="flex items-center gap-2 text-xs text-accent">
+        <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
         <span className="hidden sm:inline">Saving...</span>
         <span className="sm:hidden">💾</span>
       </div>

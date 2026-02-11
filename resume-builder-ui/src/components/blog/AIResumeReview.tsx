@@ -20,7 +20,7 @@ export default function AIResumeReview() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Before submitting your resume, get a second opinion. AI can catch errors you've missed,
           suggest improvements, and identify issues that might cause your application to be rejected.
           Here's how to use AI effectively for resume review.
@@ -31,7 +31,7 @@ export default function AIResumeReview() {
           <h3 className="font-bold text-green-800 mb-3">
             🎯 What AI Can Check in Your Resume
           </h3>
-          <ul className="space-y-2 text-green-700">
+          <ul className="space-y-2 text-accent">
             <li><strong>Grammar & Spelling:</strong> Catch typos and errors</li>
             <li><strong>Consistency:</strong> Tense, punctuation, formatting</li>
             <li><strong>Impact:</strong> Weak vs. strong language</li>
@@ -41,11 +41,11 @@ export default function AIResumeReview() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           The Complete Resume Review Prompt
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700 mb-4">
+        <p className="text-lg leading-relaxed text-stone-warm mb-4">
           Use this comprehensive prompt for a full review:
         </p>
 
@@ -76,7 +76,7 @@ export default function AIResumeReview() {
             Be specific. For each issue, show me the problem and the fix.
         </CopyablePrompt>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Specific Review Prompts
         </h2>
 
@@ -146,18 +146,18 @@ export default function AIResumeReview() {
           </CopyablePrompt>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Review Checklist
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700 mb-4">
+        <p className="text-lg leading-relaxed text-stone-warm mb-4">
           Before submitting, make sure you've checked these areas:
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Technical Check</h3>
-            <ul className="space-y-2 text-gray-700">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h3 className="text-lg font-bold text-ink mb-4">Technical Check</h3>
+            <ul className="space-y-2 text-stone-warm">
               <li className="flex items-start gap-2">
                 <span className="text-gray-400">□</span>
                 <span>No spelling errors</span>
@@ -185,9 +185,9 @@ export default function AIResumeReview() {
             </ul>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Content Check</h3>
-            <ul className="space-y-2 text-gray-700">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h3 className="text-lg font-bold text-ink mb-4">Content Check</h3>
+            <ul className="space-y-2 text-stone-warm">
               <li className="flex items-start gap-2">
                 <span className="text-gray-400">□</span>
                 <span>Achievements, not just duties</span>
@@ -216,44 +216,44 @@ export default function AIResumeReview() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Common Issues AI Catches
         </h2>
 
         <div className="overflow-x-auto my-8">
-          <table className="w-full bg-white border border-gray-200 rounded-xl shadow-sm">
+          <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="px-4 py-4 text-left font-bold text-gray-900">Issue</th>
-                <th className="px-4 py-4 text-left font-bold text-gray-900">Example</th>
-                <th className="px-4 py-4 text-left font-bold text-gray-900">Fix</th>
+              <tr className="bg-chalk-dark">
+                <th className="px-4 py-4 text-left font-bold text-ink">Issue</th>
+                <th className="px-4 py-4 text-left font-bold text-ink">Example</th>
+                <th className="px-4 py-4 text-left font-bold text-ink">Fix</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-black/[0.06]">
               <tr>
-                <td className="px-4 py-4 font-medium text-gray-900">Weak Verbs</td>
-                <td className="px-4 py-4 text-gray-700">"Helped with customer issues"</td>
-                <td className="px-4 py-4 text-green-700">"Resolved 50+ customer issues daily"</td>
+                <td className="px-4 py-4 font-medium text-ink">Weak Verbs</td>
+                <td className="px-4 py-4 text-stone-warm">"Helped with customer issues"</td>
+                <td className="px-4 py-4 text-accent">"Resolved 50+ customer issues daily"</td>
               </tr>
-              <tr className="bg-gray-50">
-                <td className="px-4 py-4 font-medium text-gray-900">No Metrics</td>
-                <td className="px-4 py-4 text-gray-700">"Increased sales significantly"</td>
-                <td className="px-4 py-4 text-green-700">"Increased sales by 35% in Q2 2025"</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-4 font-medium text-gray-900">Duty-Focused</td>
-                <td className="px-4 py-4 text-gray-700">"Responsible for managing team"</td>
-                <td className="px-4 py-4 text-green-700">"Led 8-person team that delivered $2M project on time"</td>
-              </tr>
-              <tr className="bg-gray-50">
-                <td className="px-4 py-4 font-medium text-gray-900">Vague Claims</td>
-                <td className="px-4 py-4 text-gray-700">"Excellent communication skills"</td>
-                <td className="px-4 py-4 text-green-700">"Presented quarterly results to 200+ stakeholders"</td>
+              <tr className="bg-chalk-dark">
+                <td className="px-4 py-4 font-medium text-ink">No Metrics</td>
+                <td className="px-4 py-4 text-stone-warm">"Increased sales significantly"</td>
+                <td className="px-4 py-4 text-accent">"Increased sales by 35% in Q2 2025"</td>
               </tr>
               <tr>
-                <td className="px-4 py-4 font-medium text-gray-900">Tense Issues</td>
-                <td className="px-4 py-4 text-gray-700">"Manage team" (past job)</td>
-                <td className="px-4 py-4 text-green-700">"Managed team" (past tense for past roles)</td>
+                <td className="px-4 py-4 font-medium text-ink">Duty-Focused</td>
+                <td className="px-4 py-4 text-stone-warm">"Responsible for managing team"</td>
+                <td className="px-4 py-4 text-accent">"Led 8-person team that delivered $2M project on time"</td>
+              </tr>
+              <tr className="bg-chalk-dark">
+                <td className="px-4 py-4 font-medium text-ink">Vague Claims</td>
+                <td className="px-4 py-4 text-stone-warm">"Excellent communication skills"</td>
+                <td className="px-4 py-4 text-accent">"Presented quarterly results to 200+ stakeholders"</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-4 font-medium text-ink">Tense Issues</td>
+                <td className="px-4 py-4 text-stone-warm">"Manage team" (past job)</td>
+                <td className="px-4 py-4 text-accent">"Managed team" (past tense for past roles)</td>
               </tr>
             </tbody>
           </table>
@@ -277,7 +277,7 @@ export default function AIResumeReview() {
           </p>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Create a Polished Resume?
           </h3>
@@ -286,29 +286,29 @@ export default function AIResumeReview() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-green-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
+        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
           <li>
-            <Link to="/blog/chatgpt-resume-prompts" className="text-blue-600 hover:underline">
+            <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">
               25+ ChatGPT Prompts for Resume Writing
             </Link>
           </li>
           <li>
-            <Link to="/blog/ai-resume-writing-guide" className="text-blue-600 hover:underline">
+            <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
               AI Resume Writing: The Complete Guide
             </Link>
           </li>
           <li>
-            <Link to="/blog/resume-mistakes-to-avoid" className="text-blue-600 hover:underline">
+            <Link to="/blog/resume-mistakes-to-avoid" className="text-accent hover:underline">
               10 Critical Resume Mistakes to Avoid
             </Link>
           </li>

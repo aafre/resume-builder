@@ -16,7 +16,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
           ★
         </span>
       ))}
-      <span className="ml-2 text-sm font-medium text-gray-600">
+      <span className="ml-2 text-sm font-medium text-stone-warm">
         {rating}/{max}
       </span>
     </div>
@@ -69,16 +69,16 @@ export default function ResumeGeniusVsEasyFreeResume() {
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-green-700 text-lg mb-2">EasyFreeResume</p>
+              <p className="font-bold text-accent text-lg mb-2">EasyFreeResume</p>
               <StarRating rating={5} />
-              <p className="text-3xl font-bold text-green-600 mt-2">$0</p>
-              <p className="text-sm text-gray-600">Forever free</p>
+              <p className="text-3xl font-bold text-accent mt-2">$0</p>
+              <p className="text-sm text-stone-warm">Forever free</p>
             </div>
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-gray-700 text-lg mb-2">Resume Genius</p>
+              <p className="font-bold text-stone-warm text-lg mb-2">Resume Genius</p>
               <StarRating rating={3} />
               <p className="text-3xl font-bold text-red-600 mt-2">$95+</p>
-              <p className="text-sm text-gray-600">Per year</p>
+              <p className="text-sm text-stone-warm">Per year</p>
             </div>
           </div>
           <p className="text-green-800 mt-4 text-center font-medium">
@@ -86,7 +86,7 @@ export default function ResumeGeniusVsEasyFreeResume() {
           </p>
         </div>
 
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Resume Genius promises to help you build a professional resume in minutes. What they
           don't advertise loudly: you can't actually download your resume without paying.
           Let's compare it to a truly free option.
@@ -102,72 +102,72 @@ export default function ResumeGeniusVsEasyFreeResume() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Feature Comparison
         </h2>
 
         <div className="overflow-x-auto my-8">
-          <table className="w-full bg-white border border-gray-200 rounded-xl shadow-sm">
+          <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="px-6 py-4 text-left font-bold text-gray-900">Feature</th>
-                <th className="px-6 py-4 text-center font-bold text-green-600">EasyFreeResume</th>
-                <th className="px-6 py-4 text-center font-bold text-blue-600">Resume Genius</th>
-                <th className="px-6 py-4 text-center font-bold text-gray-600">Winner</th>
+              <tr className="bg-chalk-dark">
+                <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
+                <th className="px-6 py-4 text-center font-bold text-accent">EasyFreeResume</th>
+                <th className="px-6 py-4 text-center font-bold text-accent">Resume Genius</th>
+                <th className="px-6 py-4 text-center font-bold text-stone-warm">Winner</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-black/[0.06]">
               <tr className="bg-green-50">
-                <td className="px-6 py-4 font-medium text-gray-900">Cost</td>
-                <td className="px-6 py-4 text-center text-green-600 font-bold">100% Free</td>
+                <td className="px-6 py-4 font-medium text-ink">Cost</td>
+                <td className="px-6 py-4 text-center text-accent font-bold">100% Free</td>
                 <td className="px-6 py-4 text-center text-red-600">$7.95-$39.95/month</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 font-medium text-gray-900">PDF Downloads</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ Unlimited, Free</td>
+                <td className="px-6 py-4 font-medium text-ink">PDF Downloads</td>
+                <td className="px-6 py-4 text-center text-accent">✅ Unlimited, Free</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Paid only</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
-                <td className="px-6 py-4 font-medium text-gray-900">Account Required</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ No</td>
+                <td className="px-6 py-4 font-medium text-ink">Account Required</td>
+                <td className="px-6 py-4 text-center text-accent">✅ No</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Yes</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 font-medium text-gray-900">ATS Compatibility</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ All templates</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ Yes</td>
+                <td className="px-6 py-4 font-medium text-ink">ATS Compatibility</td>
+                <td className="px-6 py-4 text-center text-accent">✅ All templates</td>
+                <td className="px-6 py-4 text-center text-accent">✅ Yes</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">Tie</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
-                <td className="px-6 py-4 font-medium text-gray-900">Privacy</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ Local storage</td>
+                <td className="px-6 py-4 font-medium text-ink">Privacy</td>
+                <td className="px-6 py-4 text-center text-accent">✅ Local storage</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Cloud storage</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 font-medium text-gray-900">Cover Letter Builder</td>
+                <td className="px-6 py-4 font-medium text-ink">Cover Letter Builder</td>
                 <td className="px-6 py-4 text-center text-yellow-600">⚠️ Guides available</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ Included (paid)</td>
+                <td className="px-6 py-4 text-center text-accent">✅ Included (paid)</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-blue-600 text-white">Resume Genius</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-ink">Resume Genius</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
-                <td className="px-6 py-4 font-medium text-gray-900">Cancellation Hassle</td>
-                <td className="px-6 py-4 text-center text-green-600">✅ Nothing to cancel</td>
+                <td className="px-6 py-4 font-medium text-ink">Cancellation Hassle</td>
+                <td className="px-6 py-4 text-center text-accent">✅ Nothing to cancel</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Hard to cancel</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -184,7 +184,7 @@ export default function ResumeGeniusVsEasyFreeResume() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Resume Genius Pricing Breakdown
         </h2>
 
@@ -238,41 +238,41 @@ export default function ResumeGeniusVsEasyFreeResume() {
             💚 EasyFreeResume Cost
             <WinnerBadge />
           </h3>
-          <div className="text-green-700 text-center">
+          <div className="text-accent text-center">
             <p className="text-6xl font-bold mb-2">$0</p>
             <p className="text-xl">No trial traps. No auto-renewals. Ever.</p>
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           How to Switch from Resume Genius
         </h2>
 
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6 my-8">
-          <ol className="space-y-4 text-indigo-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <ol className="space-y-4 text-ink/80">
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">1</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">1</span>
               <div>
                 <p className="font-medium">Cancel your Resume Genius subscription first</p>
                 <p className="text-sm">Contact support or go to account settings (may require calling)</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">2</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">2</span>
               <div>
                 <p className="font-medium">Copy your resume content</p>
                 <p className="text-sm">Download as PDF if subscribed, or copy text manually</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">3</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">3</span>
               <div>
                 <p className="font-medium">Go to EasyFreeResume.com</p>
                 <p className="text-sm">No signup, no credit card, no trial period</p>
               </div>
             </li>
             <li className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">4</span>
+              <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">4</span>
               <div>
                 <p className="font-medium">Build and download—completely free</p>
                 <p className="text-sm">Professional PDF, no watermark, unlimited downloads</p>
@@ -281,7 +281,7 @@ export default function ResumeGeniusVsEasyFreeResume() {
           </ol>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Escape the Subscription Trap
           </h3>
@@ -290,7 +290,7 @@ export default function ResumeGeniusVsEasyFreeResume() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-green-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -298,6 +298,9 @@ export default function ResumeGeniusVsEasyFreeResume() {
 
         <CompareBuildersCrossLinks excludePath="/blog/resume-genius-vs-easy-free-resume" />
       </div>
+
+      {/* Spacer for sticky mobile CTA */}
+      <div className="h-16 md:hidden" aria-hidden="true" />
 
       {/* Sticky CTA Banner */}
       <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-4 shadow-lg z-50 md:hidden">
@@ -308,7 +311,7 @@ export default function ResumeGeniusVsEasyFreeResume() {
           </div>
           <Link
             to="/templates"
-            className="bg-white text-green-600 px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
+            className="bg-white text-accent px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
           >
             Try Free
           </Link>

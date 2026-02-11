@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Back page: accent green, rotated 6deg for dynamism -->
+  <rect x="17" y="9" width="34" height="46" rx="9" fill="#00d47e" transform="rotate(6 34 32)"/>
+  <!-- Front page: dark ink -->
+  <rect x="10" y="5" width="34" height="46" rx="9" fill="#0c0c0c"/>
+  <!-- Name/header bar -->
+  <rect x="17" y="15" width="20" height="5" rx="2.5" fill="#fff"/>
+  <!-- Content skeleton lines -->
+  <rect x="17" y="26" width="22" height="3" rx="1.5" fill="#fff" fill-opacity=".35"/>
+  <rect x="17" y="34" width="15" height="3" rx="1.5" fill="#fff" fill-opacity=".2"/>
+</svg>

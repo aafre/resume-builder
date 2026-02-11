@@ -99,7 +99,7 @@ export const FormattingBubbleMenu: React.FC<FormattingBubbleMenuProps> = ({ edit
           type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={`p-2 rounded transition-all hover:bg-gray-100 ${
-            editor.isActive('bold') ? 'bg-blue-100 text-blue-700' : 'text-gray-700'
+            editor.isActive('bold') ? 'bg-accent/10 text-ink/80' : 'text-gray-700'
           }`}
           title="Bold (Ctrl+B)"
         >
@@ -114,7 +114,7 @@ export const FormattingBubbleMenu: React.FC<FormattingBubbleMenuProps> = ({ edit
           type="button"
           onClick={() => editor.chain().focus().toggleItalic().run()}
           className={`p-2 rounded transition-all hover:bg-gray-100 ${
-            editor.isActive('italic') ? 'bg-blue-100 text-blue-700' : 'text-gray-700'
+            editor.isActive('italic') ? 'bg-accent/10 text-ink/80' : 'text-gray-700'
           }`}
           title="Italic (Ctrl+I)"
         >
@@ -130,7 +130,7 @@ export const FormattingBubbleMenu: React.FC<FormattingBubbleMenuProps> = ({ edit
           type="button"
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           className={`p-2 rounded transition-all hover:bg-gray-100 ${
-            editor.isActive('underline') ? 'bg-blue-100 text-blue-700' : 'text-gray-700'
+            editor.isActive('underline') ? 'bg-accent/10 text-ink/80' : 'text-gray-700'
           }`}
           title="Underline (Ctrl+U)"
         >
@@ -145,7 +145,7 @@ export const FormattingBubbleMenu: React.FC<FormattingBubbleMenuProps> = ({ edit
           type="button"
           onClick={() => editor.chain().focus().toggleStrike().run()}
           className={`p-2 rounded transition-all hover:bg-gray-100 ${
-            editor.isActive('strike') ? 'bg-blue-100 text-blue-700' : 'text-gray-700'
+            editor.isActive('strike') ? 'bg-accent/10 text-ink/80' : 'text-gray-700'
           }`}
           title="Strikethrough (Ctrl+Shift+S)"
         >
@@ -162,7 +162,7 @@ export const FormattingBubbleMenu: React.FC<FormattingBubbleMenuProps> = ({ edit
           type="button"
           onClick={handleOpenLinkModal}
           className={`p-2 rounded transition-all hover:bg-gray-100 ${
-            editor.isActive('link') ? 'bg-blue-100 text-blue-700' : 'text-blue-600'
+            editor.isActive('link') ? 'bg-accent/10 text-ink/80' : 'text-accent'
           }`}
           title="Insert Link (Ctrl+K)"
         >

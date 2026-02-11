@@ -49,7 +49,7 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
           <div className="flex gap-3">
             <button
               onClick={handleManageResumes}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 bg-accent hover:bg-accent/90 text-white font-medium py-2 px-4 rounded-lg transition-colors"
             >
               Manage Resumes
             </button>

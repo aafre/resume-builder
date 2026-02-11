@@ -177,7 +177,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
               data-testid="template-selection-loading"
             >
               <div className="text-center">
-                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto mb-3"></div>
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-accent mx-auto mb-3"></div>
                 <p className="text-gray-600">Loading templates...</p>
               </div>
             </div>
@@ -186,7 +186,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
               <p className="text-red-600 mb-4">{error}</p>
               <button
                 onClick={handleRetry}
-                className="text-blue-600 hover:text-blue-700 font-medium"
+                className="text-accent hover:text-ink/80 font-medium"
               >
                 Try Again
               </button>
@@ -206,8 +206,8 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
                     onClick={() => setSelectedTemplateId(template.id)}
                     className={`group relative bg-white rounded-xl border-2 overflow-hidden transition-all duration-200 text-left active:scale-[0.98] flex flex-row lg:flex-col ${
                       isSelected
-                        ? 'border-blue-500 ring-2 ring-blue-200'
-                        : 'border-gray-200 hover:border-blue-300'
+                        ? 'border-accent ring-2 ring-accent/30'
+                        : 'border-gray-200 hover:border-accent/30'
                     }`}
                     data-testid={`template-option-${template.id}`}
                     aria-pressed={isSelected}
@@ -223,7 +223,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
                       {/* Selection indicator */}
                       {isSelected && (
                         <div
-                          className="absolute top-2 right-2 bg-blue-600 text-white p-1.5 rounded-full shadow-lg"
+                          className="absolute top-2 right-2 bg-accent text-ink p-1.5 rounded-full shadow-lg"
                           data-testid={`template-selected-${template.id}`}
                         >
                           <MdCheck size={16} />
@@ -235,7 +235,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
                     <div className="flex-1 p-3 lg:p-4 flex flex-col justify-center">
                       <h3
                         className={`font-semibold text-sm lg:text-base ${
-                          isSelected ? 'text-blue-600' : 'text-gray-800'
+                          isSelected ? 'text-accent' : 'text-gray-800'
                         }`}
                       >
                         {template.name}
@@ -268,7 +268,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
             type="button"
             onClick={handleContinue}
             disabled={!selectedTemplateId || loading}
-            className="w-full lg:w-auto lg:ml-auto lg:block px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="w-full lg:w-auto lg:ml-auto lg:block px-6 py-2.5 bg-accent text-ink font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             data-testid="template-selection-continue"
           >
             Use This Style

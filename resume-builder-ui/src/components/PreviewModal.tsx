@@ -150,7 +150,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
             {/* Skeleton Loader - fades out when PDF loaded */}
             {loadingState === 'loading' && (
               <div className="absolute inset-0 bg-white flex flex-col items-center justify-center z-10 transition-opacity duration-300">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mb-4"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-accent border-t-transparent mb-4"></div>
                 <p className="text-gray-700 font-medium mb-2">Generating PDF preview...</p>
                 <p className="text-gray-500 text-sm">This usually takes 2-5 seconds</p>
               </div>
@@ -169,7 +169,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                   <p className="text-gray-600 mb-6 max-w-md">{error}</p>
                   <button
                     onClick={onRefresh}
-                    className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors mx-auto"
+                    className="flex items-center gap-2 px-6 py-3 bg-accent text-ink rounded-lg font-medium hover:bg-accent/90 transition-colors mx-auto"
                   >
                     <MdRefresh className="text-lg" />
                     Try Again
@@ -182,8 +182,8 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
             {loadingState === 'idle' && !previewUrl && (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-white">
                 <div className="text-center p-8">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <MdFileDownload className="text-3xl text-blue-600" />
+                  <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <MdFileDownload className="text-3xl text-accent" />
                   </div>
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">
                     No Preview Available
@@ -193,7 +193,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                   </p>
                   <button
                     onClick={onRefresh}
-                    className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors mx-auto"
+                    className="flex items-center gap-2 px-6 py-3 bg-accent text-ink rounded-lg font-medium hover:bg-accent/90 transition-colors mx-auto"
                   >
                     Generate Preview
                   </button>
@@ -206,7 +206,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
               isMobile ? (
                 <Suspense fallback={
                   <div className="absolute inset-0 bg-white flex flex-col items-center justify-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mb-4"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-accent border-t-transparent mb-4"></div>
                     <p className="text-gray-700 font-medium">Loading PDF viewer...</p>
                   </div>
                 }>

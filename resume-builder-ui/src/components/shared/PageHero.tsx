@@ -15,20 +15,26 @@ interface PageHeroProps {
 export default function PageHero({ config, className = '' }: PageHeroProps) {
   return (
     <div className={`text-center mb-16 ${className}`}>
-      {/* H1 - Most important SEO element with gradient text like landing page */}
-      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 relative">
-        <span className="absolute inset-0 text-gray-800 opacity-10">{config.h1}</span>
+      {/* Eyebrow */}
+      {config.eyebrow && (
+        <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">
+          {config.eyebrow}
+        </p>
+      )}
+
+      {/* H1 - Most important SEO element */}
+      <h1 className="font-display text-[clamp(2.5rem,5.5vw,4.5rem)] font-extrabold leading-[1.08] tracking-tight text-ink mb-6">
         {config.h1}
       </h1>
 
       {/* Subtitle */}
-      <p className="text-xl md:text-2xl text-gray-700 mb-4 max-w-4xl mx-auto font-medium">
+      <p className="text-xl md:text-2xl text-stone-warm mb-4 max-w-4xl mx-auto font-extralight">
         {config.subtitle}
       </p>
 
       {/* Optional description */}
       {config.description && (
-        <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+        <p className="text-lg md:text-xl text-stone-warm mb-8 max-w-3xl mx-auto leading-relaxed font-extralight">
           {config.description}
         </p>
       )}
@@ -39,12 +45,10 @@ export default function PageHero({ config, className = '' }: PageHeroProps) {
           {config.primaryCTA && (
             <Link
               to={config.primaryCTA.href}
-              className={`px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 ${
-                config.primaryCTA.variant === 'primary'
-                  ? 'bg-blue-600 text-white hover:bg-blue-700'
-                  : config.primaryCTA.variant === 'secondary'
-                  ? 'bg-indigo-600 text-white hover:bg-indigo-700'
-                  : 'bg-white text-blue-600 border-2 border-blue-600 hover:bg-blue-50'
+              className={`${
+                config.primaryCTA.variant === 'outline'
+                  ? 'btn-secondary py-4 px-10'
+                  : 'btn-primary py-4 px-10'
               }`}
               target={config.primaryCTA.openInNewTab ? '_blank' : undefined}
               rel={config.primaryCTA.openInNewTab ? 'noopener noreferrer' : undefined}
@@ -55,12 +59,10 @@ export default function PageHero({ config, className = '' }: PageHeroProps) {
           {config.secondaryCTA && (
             <Link
               to={config.secondaryCTA.href}
-              className={`px-8 py-4 rounded-xl font-bold text-lg shadow-md hover:shadow-lg transition-all duration-300 ${
-                config.secondaryCTA.variant === 'primary'
-                  ? 'bg-blue-600 text-white hover:bg-blue-700'
-                  : config.secondaryCTA.variant === 'secondary'
-                  ? 'bg-indigo-600 text-white hover:bg-indigo-700'
-                  : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+              className={`${
+                config.secondaryCTA.variant === 'primary' || config.secondaryCTA.variant === 'secondary'
+                  ? 'btn-primary py-4 px-10'
+                  : 'btn-secondary py-4 px-10'
               }`}
               target={config.secondaryCTA.openInNewTab ? '_blank' : undefined}
               rel={config.secondaryCTA.openInNewTab ? 'noopener noreferrer' : undefined}

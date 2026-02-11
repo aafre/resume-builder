@@ -79,10 +79,10 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
         </button>
 
         {/* Header */}
-        <div className="bg-gradient-to-br from-blue-100 via-indigo-50 to-white px-6 py-4 rounded-t-2xl border-b border-blue-200/60">
+        <div className="bg-accent/10 px-6 py-4 rounded-t-2xl border-b border-accent/20">
           <div className="flex items-center gap-3">
-            <div className="bg-blue-200/40 p-2 rounded-full">
-              <MdSecurity className="text-3xl text-blue-600" />
+            <div className="bg-accent/20 p-2 rounded-full">
+              <MdSecurity className="text-3xl text-accent" />
             </div>
             <h2 id="conversion-modal-title" className="text-2xl font-bold text-gray-800">
               Save Your Work
@@ -100,8 +100,8 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
           </p>
 
           {/* Info box */}
-          <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 mb-6">
-            <p className="text-sm text-blue-800 flex items-start gap-2">
+          <div className="bg-accent/[0.06] border-2 border-accent/20 rounded-lg p-4 mb-6">
+            <p className="text-sm text-ink flex items-start gap-2">
               <MdInfo className="text-lg mt-0.5 flex-shrink-0" />
               <span>
                 <strong>Why sign in?</strong> Guest data is stored temporarily and may be lost if you clear cookies or switch devices. Signing in keeps your resume safe.
@@ -116,7 +116,7 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
               type="button"
               onClick={onSignIn}
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold px-6 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full flex items-center justify-center gap-2 bg-accent text-ink font-semibold px-6 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               <MdSecurity className="text-xl" />
               Sign In to Save Permanently

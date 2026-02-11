@@ -13,6 +13,8 @@ import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
+import StepByStep from '../shared/StepByStep';
+import RevealSection from '../shared/RevealSection';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import {
   getJobExamplesByCategory,
@@ -91,36 +93,57 @@ export default function JobExamplesHub() {
     ? JOB_CATEGORIES
     : JOB_CATEGORIES.filter(c => c.id === selectedCategory);
 
+  // Steps for "How to Use" section
+  const howToSteps = [
+    {
+      number: 1,
+      title: 'Find Your Job Title',
+      description: 'Browse by category or search for your specific role. Each example is tailored to industry standards.',
+    },
+    {
+      number: 2,
+      title: 'Copy or Edit',
+      description: 'Copy bullet points to your resume, or click "Edit This Template" to open directly in our builder.',
+    },
+    {
+      number: 3,
+      title: 'Customize & Download',
+      description: 'Personalize with your experience and achievements. Download as PDF when ready.',
+    },
+  ];
+
   return (
     <SEOPageLayout seoConfig={seoConfig} schemas={schemas}>
       <PageHero config={heroConfig} />
 
       {/* Category Filter */}
       <section className="my-8">
-        <div className="flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => handleCategoryClick('all')}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-              selectedCategory === 'all'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            All Examples ({totalExamples})
-          </button>
-          {JOB_CATEGORIES.map(category => (
+        <div className="p-2 bg-white/50 rounded-2xl border border-black/[0.06]">
+          <div className="flex flex-wrap justify-center gap-2">
             <button
-              key={category.id}
-              onClick={() => handleCategoryClick(category.id)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                selectedCategory === category.id
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              onClick={() => handleCategoryClick('all')}
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                selectedCategory === 'all'
+                  ? 'bg-accent text-ink'
+                  : 'bg-chalk-dark text-stone-warm hover:bg-white hover:shadow-sm'
               }`}
             >
-              {category.icon} {category.title.split(' & ')[0]} ({jobsByCategory[category.id].length})
+              All Examples ({totalExamples})
             </button>
-          ))}
+            {JOB_CATEGORIES.map(category => (
+              <button
+                key={category.id}
+                onClick={() => handleCategoryClick(category.id)}
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  selectedCategory === category.id
+                    ? 'bg-accent text-ink'
+                    : 'bg-chalk-dark text-stone-warm hover:bg-white hover:shadow-sm'
+                }`}
+              >
+                {category.icon} {category.title.split(' & ')[0]} ({jobsByCategory[category.id].length})
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -131,166 +154,148 @@ export default function JobExamplesHub() {
           if (jobs.length === 0) return null;
 
           return (
-            <div key={category.id} className="mb-12" id={category.id}>
-              {/* Category Header */}
-              <div className="flex items-center gap-3 mb-6">
-                <span className="text-3xl">{category.icon}</span>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    {category.title} Resumes
-                  </h2>
-                  <p className="text-gray-600">{category.description}</p>
+            <RevealSection key={category.id}>
+              <div className="mb-12" id={category.id}>
+                {/* Category Header */}
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="text-3xl">{category.icon}</span>
+                  <div>
+                    <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight">
+                      {category.title} Resumes
+                    </h2>
+                    <p className="text-stone-warm font-extralight">{category.description}</p>
+                  </div>
+                </div>
+
+                {/* Job Cards Grid */}
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {jobs.map(job => (
+                    <Link
+                      key={job.slug}
+                      to={`/examples/${job.slug}`}
+                      className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all duration-300 group"
+                    >
+                      <div className="flex items-start justify-between">
+                        <h3 className="font-bold text-ink group-hover:text-accent transition-colors">
+                          {job.title}
+                        </h3>
+                        <span className="text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+                          &rarr;
+                        </span>
+                      </div>
+                      <p className="text-sm text-stone-warm mt-2 line-clamp-2">
+                        {job.metaDescription}
+                      </p>
+                      <div className="mt-3 flex items-center gap-2">
+                        <span className="text-xs px-2 py-1 bg-accent/[0.06] text-ink/80 rounded">
+                          Free Template
+                        </span>
+                        <span className="text-xs px-2 py-1 bg-accent/10 text-ink/80 rounded">
+                          ATS-Friendly
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               </div>
-
-              {/* Job Cards Grid */}
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {jobs.map(job => (
-                  <Link
-                    key={job.slug}
-                    to={`/examples/${job.slug}`}
-                    className="bg-white rounded-xl p-5 border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all group"
-                  >
-                    <div className="flex items-start justify-between">
-                      <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                        {job.title}
-                      </h3>
-                      <span className="text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
-                        &rarr;
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-600 mt-2 line-clamp-2">
-                      {job.metaDescription}
-                    </p>
-                    <div className="mt-3 flex items-center gap-2">
-                      <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded">
-                        Free Template
-                      </span>
-                      <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded">
-                        ATS-Friendly
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
+            </RevealSection>
           );
         })}
       </section>
 
       {/* How to Use Section */}
-      <section className="my-16 bg-white rounded-xl p-8 border border-gray-200 shadow-sm">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-          How to Use These Resume Examples
-        </h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="text-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">1</span>
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-2">Find Your Job Title</h3>
-            <p className="text-gray-600 text-sm">
-              Browse by category or search for your specific role. Each example is tailored to industry standards.
-            </p>
-          </div>
-          <div className="text-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">2</span>
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-2">Copy or Edit</h3>
-            <p className="text-gray-600 text-sm">
-              Copy bullet points to your resume, or click "Edit This Template" to open directly in our builder.
-            </p>
-          </div>
-          <div className="text-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">3</span>
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-2">Customize & Download</h3>
-            <p className="text-gray-600 text-sm">
-              Personalize with your experience and achievements. Download as PDF when ready.
-            </p>
-          </div>
+      <RevealSection>
+        <div className="my-16">
+          <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">How It Works</span>
+          <StepByStep steps={howToSteps} title="" />
         </div>
-      </section>
+      </RevealSection>
 
       {/* Stats Section */}
-      <section className="my-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 text-center">
-            <p className="text-3xl font-bold text-blue-600">{totalExamples}+</p>
-            <p className="text-gray-700">Resume Examples</p>
+      <RevealSection stagger>
+        <section className="my-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
+              <p className="text-3xl font-extrabold text-accent">{totalExamples}+</p>
+              <p className="text-stone-warm">Resume Examples</p>
+            </div>
+            <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
+              <p className="text-3xl font-extrabold text-accent">{JOB_CATEGORIES.length}</p>
+              <p className="text-stone-warm">Industries Covered</p>
+            </div>
+            <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
+              <p className="text-3xl font-extrabold text-accent">100%</p>
+              <p className="text-stone-warm">Free to Use</p>
+            </div>
+            <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
+              <p className="text-3xl font-extrabold text-accent">ATS</p>
+              <p className="text-stone-warm">Optimized</p>
+            </div>
           </div>
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 text-center">
-            <p className="text-3xl font-bold text-green-600">{JOB_CATEGORIES.length}</p>
-            <p className="text-gray-700">Industries Covered</p>
-          </div>
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 text-center">
-            <p className="text-3xl font-bold text-purple-600">100%</p>
-            <p className="text-gray-700">Free to Use</p>
-          </div>
-          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 text-center">
-            <p className="text-3xl font-bold text-orange-600">ATS</p>
-            <p className="text-gray-700">Optimized</p>
-          </div>
-        </div>
-      </section>
+        </section>
+      </RevealSection>
 
       {/* Quick Links by Popular Jobs */}
-      <section className="my-16">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-          Most Popular Resume Examples
-        </h2>
-        <div className="flex flex-wrap justify-center gap-3">
-          {JOB_EXAMPLES_DATABASE
-            .filter(job => job.priority >= 0.8)
-            .slice(0, 12)
-            .map(job => (
-              <Link
-                key={job.slug}
-                to={`/examples/${job.slug}`}
-                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors text-sm"
-              >
-                {job.title}
-              </Link>
-            ))}
-        </div>
-      </section>
+      <RevealSection>
+        <section className="my-16">
+          <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">Popular</span>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight mb-6 text-center">
+            Most Popular Resume Examples
+          </h2>
+          <div className="flex flex-wrap justify-center gap-3">
+            {JOB_EXAMPLES_DATABASE
+              .filter(job => job.priority >= 0.8)
+              .slice(0, 12)
+              .map(job => (
+                <Link
+                  key={job.slug}
+                  to={`/examples/${job.slug}`}
+                  className="px-4 py-2 bg-chalk-dark text-ink rounded-xl hover:bg-white hover:shadow-sm transition-all duration-300 text-sm"
+                >
+                  {job.title}
+                </Link>
+              ))}
+          </div>
+        </section>
+      </RevealSection>
 
       <FAQSection faqs={FAQS} />
 
       {/* Related Resources */}
-      <section className="my-16">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-          More Resume Resources
-        </h2>
-        <div className="flex flex-wrap justify-center gap-4">
-          <Link
-            to="/templates"
-            className="px-6 py-3 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
-          >
-            Resume Templates
-          </Link>
-          <Link
-            to="/resume-keywords"
-            className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            Resume Keywords by Industry
-          </Link>
-          <Link
-            to="/blog/how-to-write-a-resume-guide"
-            className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            How to Write a Resume
-          </Link>
-          <Link
-            to="/cv-templates"
-            className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            CV Templates (UK)
-          </Link>
-        </div>
-      </section>
+      <RevealSection>
+        <section className="my-16">
+          <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">Resources</span>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight mb-6 text-center">
+            More Resume Resources
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Link
+              to="/templates"
+              className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 text-center"
+            >
+              <span className="text-ink font-medium">Resume Templates</span>
+            </Link>
+            <Link
+              to="/resume-keywords"
+              className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 text-center"
+            >
+              <span className="text-ink font-medium">Resume Keywords by Industry</span>
+            </Link>
+            <Link
+              to="/blog/how-to-write-a-resume-guide"
+              className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 text-center"
+            >
+              <span className="text-ink font-medium">How to Write a Resume</span>
+            </Link>
+            <Link
+              to="/cv-templates"
+              className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 text-center"
+            >
+              <span className="text-ink font-medium">CV Templates (UK)</span>
+            </Link>
+          </div>
+        </section>
+      </RevealSection>
 
       <DownloadCTA
         title="Ready to Build Your Resume?"

@@ -22,27 +22,30 @@ export default function DownloadCTA({
   primaryHref = '/templates',
   className = '',
 }: DownloadCTAProps) {
-  const buttonClassName = "inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300";
-
   // Use native anchor for hash links (same-page scroll), Link for routes
   const isHashLink = primaryHref.startsWith('#');
 
   return (
     <RevealSection variant="scale-in">
       <div
-        className={`my-16 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center ${className}`}
+        className={`my-16 bg-ink text-white rounded-3xl py-20 px-6 md:px-12 text-center relative overflow-hidden ${className}`}
       >
-        <h3 className="text-2xl md:text-3xl font-bold mb-4">{title}</h3>
-        <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">{description}</p>
-        {isHashLink ? (
-          <a href={primaryHref} className={buttonClassName}>
-            {primaryText}
-          </a>
-        ) : (
-          <Link to={primaryHref} className={buttonClassName}>
-            {primaryText}
-          </Link>
-        )}
+        {/* Radial accent glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-accent/[0.07] blur-3xl pointer-events-none" />
+
+        <div className="relative">
+          <h3 className="font-display text-2xl md:text-3xl font-extrabold mb-4">{title}</h3>
+          <p className="text-lg md:text-xl font-extralight text-white/70 mb-8 max-w-2xl mx-auto">{description}</p>
+          {isHashLink ? (
+            <a href={primaryHref} className="btn-primary py-4 px-10">
+              {primaryText}
+            </a>
+          ) : (
+            <Link to={primaryHref} className="btn-primary py-4 px-10">
+              {primaryText}
+            </Link>
+          )}
+        </div>
       </div>
     </RevealSection>
   );

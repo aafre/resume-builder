@@ -66,7 +66,7 @@ const SortableItem: React.FC<SortableItemProps> = ({
       style={style}
       className={`
         relative group
-        ${isDragging ? 'border-2 border-dashed border-blue-300 bg-blue-50/50 rounded-xl min-h-[40px]' : 'transition-all duration-200 ease-out'}
+        ${isDragging ? 'border-2 border-dashed border-accent/30 bg-accent/[0.06] rounded-xl min-h-[40px]' : 'transition-all duration-200 ease-out'}
         ${showDropIndicator ? 'mt-2' : ''}
         ${className}
       `}
@@ -75,9 +75,9 @@ const SortableItem: React.FC<SortableItemProps> = ({
       {/* Drop indicator line - shows where item will be placed */}
       {showDropIndicator && (
         <div className="absolute -top-1 left-0 right-0 flex items-center gap-2 z-40">
-          <div className="w-3 h-3 rounded-full bg-blue-500 shadow-md" />
-          <div className="flex-1 h-0.5 bg-blue-500 rounded-full shadow-sm" />
-          <div className="w-3 h-3 rounded-full bg-blue-500 shadow-md" />
+          <div className="w-3 h-3 rounded-full bg-accent shadow-md" />
+          <div className="flex-1 h-0.5 bg-accent rounded-full shadow-sm" />
+          <div className="w-3 h-3 rounded-full bg-accent shadow-md" />
         </div>
       )}
 
@@ -89,7 +89,7 @@ const SortableItem: React.FC<SortableItemProps> = ({
             group/handle touch-none
             w-full h-5 md:h-3 min-h-[44px] md:min-h-0 -mb-1 rounded-t-xl
             cursor-grab active:cursor-grabbing
-            ${isDragging ? 'bg-blue-50' : 'bg-transparent'}
+            ${isDragging ? 'bg-accent/[0.06]' : 'bg-transparent'}
             transition-all duration-150 ease-out
             flex items-center justify-center
             relative

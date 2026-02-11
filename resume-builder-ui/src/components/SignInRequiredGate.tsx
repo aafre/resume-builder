@@ -65,14 +65,14 @@ export default function SignInRequiredGate({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-chalk flex items-center justify-center px-4 py-8">
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
         {!emailSent ? (
           <>
             {/* Lock Icon */}
             <div className="flex justify-center mb-6">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center">
-                <Lock className="w-10 h-10 text-blue-600" />
+              <div className="w-20 h-20 bg-gradient-to-br from-accent/10 to-accent/[0.06] rounded-full flex items-center justify-center">
+                <Lock className="w-10 h-10 text-accent" />
               </div>
             </div>
 
@@ -91,7 +91,7 @@ export default function SignInRequiredGate({
               <button
                 onClick={handleGoogleSignIn}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
+                className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-accent/70 hover:bg-accent/[0.06] transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
               >
                 <FcGoogle size={24} />
                 <span className="font-semibold text-gray-700">Continue with Google</span>
@@ -100,7 +100,7 @@ export default function SignInRequiredGate({
               <button
                 onClick={handleLinkedInSignIn}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
+                className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-accent/70 hover:bg-accent/[0.06] transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
               >
                 <FaLinkedin size={24} className="text-[#0077B5]" />
                 <span className="font-semibold text-gray-700">Continue with LinkedIn</span>
@@ -131,7 +131,7 @@ export default function SignInRequiredGate({
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com"
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent"
                     disabled={loading}
                   />
                 </div>
@@ -140,7 +140,7 @@ export default function SignInRequiredGate({
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white font-semibold py-3 rounded-lg hover:from-blue-700 hover:via-purple-700 hover:to-indigo-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
+                className="w-full bg-accent text-ink font-semibold py-3 rounded-lg hover:bg-accent/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
               >
                 {loading ? 'Sending...' : 'Send Magic Link'}
               </button>
@@ -148,8 +148,8 @@ export default function SignInRequiredGate({
 
             {/* Footer Note */}
             {showLocalNote && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
-                <p className="text-xs text-blue-800 text-center">
+              <div className="bg-accent/[0.06] border border-accent/20 rounded-lg p-4 mt-6">
+                <p className="text-xs text-ink text-center">
                   <strong>Note:</strong> Your current resume is saved locally on this device
                 </p>
               </div>
@@ -171,8 +171,8 @@ export default function SignInRequiredGate({
             </p>
 
             {/* Info Note */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <p className="text-sm text-blue-800">
+            <div className="bg-accent/[0.06] border border-accent/20 rounded-lg p-4 mb-6">
+              <p className="text-sm text-ink">
                 You'll be signed in automatically when you click the link, and your resumes will be available here.
               </p>
             </div>

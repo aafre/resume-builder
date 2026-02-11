@@ -173,5 +173,20 @@ export const productManager: JobKeywordsData = {
       answer:
         'Highlight transferable PM activities from any role: defining requirements, prioritizing features, coordinating across teams, analyzing user data, or leading a product launch. Use PM-specific language—say "owned the product roadmap for X" instead of "managed the project." If you led cross-functional initiatives, ran experiments, or made prioritization decisions backed by data, frame those as product management accomplishments with measurable outcomes.',
     },
+    {
+      question: 'What is the difference between Product Manager and Project Manager resume keywords?',
+      answer:
+        'Product Managers focus on "what" and "why" — keywords include product roadmap, product strategy, user research, A/B testing, feature prioritization, OKRs, product-market fit, and customer empathy. Project Managers focus on "how" and "when" — their keywords include Gantt chart, critical path, risk register, resource allocation, milestone tracking, PMP certification, and budget management. If your experience blends both, include the keywords matching the job description and specify whether you owned the product vision or the execution plan.',
+    },
+    {
+      question: 'What keywords should a Growth PM use on their resume?',
+      answer:
+        'Growth PMs should emphasize experimentation and metrics-driven keywords: A/B testing, conversion rate optimization, funnel analysis, cohort analysis, retention metrics, activation rate, AARRR framework, growth loops, viral coefficient, feature adoption, in-app engagement, freemium-to-paid conversion, and acquisition channels. Highlight specific tools like Amplitude, Mixpanel, Optimizely, and LaunchDarkly. Lead with outcomes — "Grew DAU by 35%" is stronger than "Ran growth experiments."',
+    },
+    {
+      question: 'What keywords should an Enterprise or Platform PM use?',
+      answer:
+        'Enterprise PMs should highlight keywords like API design, developer experience, platform scalability, enterprise sales enablement, compliance (SOC 2, GDPR, HIPAA), multi-tenant architecture, SLA management, and partner integrations. Include terms like customer advisory board, professional services, migration planning, and uptime/reliability metrics. Platform PMs should add internal developer tools, self-serve capabilities, extensibility, and ecosystem growth.',
+    },
   ],
 };

@@ -2,11 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- FOUC guard: hide body until external CSS loads and overrides opacity to 1 -->
+    <!-- Metric-matched fallback font: available before external CSS loads, prevents CLS -->
     <style>
-      body { opacity: 0 }
-      @keyframes fouc-reveal { to { opacity: 1 } }
-      body { animation: fouc-reveal 0s 5s forwards }
+      @font-face {
+        font-family: 'Bricolage Fallback';
+        src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial');
+        size-adjust: 104%;
+        ascent-override: 96%;
+        descent-override: 24%;
+        line-gap-override: 0%;
+      }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name='impact-site-verification' value='9e4dbb7d-2722-4101-a53b-081932d0f330'>
@@ -57,14 +62,18 @@
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Favicon Links -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- Self-hosted fonts: preload for immediate parallel download -->
+    <link rel="preload" href="/fonts/BricolageGrotesque-Variable-Latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/JetBrainsMono-Regular-Latin.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Theme Color -->
-    <meta name="theme-color" content="#2563eb" />
-    <meta name="msapplication-TileColor" content="#2563eb" />
+    <meta name="theme-color" content="#fafaf8" />
+    <meta name="msapplication-TileColor" content="#fafaf8" />
 
     <!-- LLM-readable site description (llmstxt.org) -->
     <link rel="author" type="text/plain" href="/llms.txt" />
@@ -83,11 +92,11 @@
     <script>if(location.pathname!=="/")document.documentElement.classList.add("not-home")</script>
     <div id="root">
       <!-- App Shell: matches React layout so the H1 (LCP) paints without shift -->
-      <div style="display:flex;flex-direction:column;min-height:100vh;background:#f9fafb">
+      <div style="display:flex;flex-direction:column;min-height:100vh;background:#fafaf8">
         <!-- AnnouncementBar placeholder (matches ~43px banner for unauthenticated landing) -->
-        <div class="shell-announcement" style="background:linear-gradient(to right,rgb(147,51,234),rgb(59,130,246));padding:10px 12px;min-height:43px"></div>
+        <div class="shell-announcement" style="background:#0c0c0c;color:#fff;padding:10px 12px;min-height:43px"></div>
         <!-- Header placeholder (matches sticky header height) -->
-        <div style="height:64px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1)"></div>
+        <div style="height:64px;background:#fff;border-bottom:1px solid #e5e7eb"></div>
         <!-- Main content area matching LandingPage layout -->
         <!-- Hide mobile-top ad placeholder on desktop (matches Tailwind md:hidden) -->
         <style>
@@ -110,35 +119,29 @@
                 </div>
               </div>
               <!-- Landing page content (hidden on non-home routes) -->
-              <div id="shell-landing" style="display:flex;flex-direction:column;align-items:center;min-height:100vh;background:linear-gradient(to bottom right,#f8fafc,rgba(243,232,255,.3),rgba(224,231,255,.4));position:relative;overflow:hidden">
-                <div style="text-align:center;margin:4rem 0;padding:0 1rem;max-width:56rem;margin-left:auto;margin-right:auto">
-                  <h1 style="font-size:2.25rem;font-weight:800;margin-bottom:2rem;padding-bottom:.5rem;line-height:1.375;letter-spacing:-.025em;background:linear-gradient(to right,#2563eb,#9333ea,#4338ca);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
-                    The Truly Free Resume Builder
+              <div id="shell-landing" style="display:flex;flex-direction:column;min-height:100vh;background:#fafaf8;position:relative">
+                <div style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;width:100%">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.1em;color:#00d47e;margin-bottom:1.5rem;text-transform:uppercase">
+                    FREE FOREVER. NO SIGN-UP.
+                  </div>
+                  <h1 style="font-family:'Bricolage Grotesque','Bricolage Fallback',system-ui,sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:800;line-height:1.05;color:#0c0c0c;margin-bottom:1.5rem;letter-spacing:-.02em;max-width:48rem">
+                    Build resumes that actually get you hired.
                   </h1>
-                  <p style="font-size:1.25rem;max-width:48rem;margin:0 auto;color:#1f2937;margin-bottom:1rem;line-height:2">
+                  <p style="font-family:'Bricolage Grotesque','Bricolage Fallback',system-ui,sans-serif;font-size:1.25rem;font-weight:200;color:#8a8680;max-width:36rem;line-height:1.6;margin-bottom:2.5rem">
                     Create ATS-optimized resumes that get you noticed by hiring managers.
                   </p>
-                  <!-- Pill badges matching React -->
-                  <div style="display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:2.5rem">
-                    <div style="display:flex;align-items:center;background:rgba(255,255,255,.95);padding:.5rem 1rem;border-radius:9999px;box-shadow:0 1px 2px rgba(0,0,0,.05);font-size:.875rem;font-weight:500;color:#374151">
-                      100% Free
-                    </div>
-                    <div style="display:flex;align-items:center;background:rgba(255,255,255,.95);padding:.5rem 1rem;border-radius:9999px;box-shadow:0 1px 2px rgba(0,0,0,.05);font-size:.875rem;font-weight:500;color:#374151">
-                      No Sign-up
-                    </div>
-                  </div>
-                  <div style="display:flex;flex-direction:column;justify-content:center;gap:1rem;margin-top:2rem">
-                    <a href="/templates" style="display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(to right,#2563eb,#9333ea,#4338ca);color:white;padding:1rem 2rem;border-radius:.75rem;font-size:1.125rem;font-weight:600;text-decoration:none">
+                  <div style="display:flex;gap:1rem;flex-wrap:wrap">
+                    <a href="/templates" style="display:inline-flex;align-items:center;justify-content:center;background:#00d47e;color:#0c0c0c;padding:.875rem 2rem;border-radius:.75rem;font-size:1rem;font-weight:700;text-decoration:none;font-family:'Bricolage Grotesque','Bricolage Fallback',system-ui,sans-serif">
                       Start Building Now &rarr;
                     </a>
-                    <a href="/templates" style="display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.5);color:#374151;padding:1rem 2rem;border-radius:.75rem;font-size:1.125rem;font-weight:600;text-decoration:none;box-shadow:0 4px 6px -1px rgba(0,0,0,.1)">
+                    <a href="/templates" style="display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(12,12,12,.15);color:#0c0c0c;padding:.875rem 2rem;border-radius:.75rem;font-size:1rem;font-weight:600;text-decoration:none;font-family:'Bricolage Grotesque','Bricolage Fallback',system-ui,sans-serif">
                       View Templates
                     </a>
                   </div>
                 </div>
               </div>
               <!-- Generic page placeholder (shown on non-home routes) -->
-              <div id="shell-generic" style="min-height:1200px;background:linear-gradient(to bottom right,#f8fafc,rgba(219,234,254,.3),rgba(199,210,254,.4))">
+              <div id="shell-generic" style="min-height:1200px;background:#fafaf8;font-family:'Bricolage Grotesque','Bricolage Fallback',system-ui,sans-serif">
                 <div style="max-width:80rem;margin:0 auto;padding:3rem 1rem">
                   <!-- Breadcrumb skeleton -->
                   <div style="height:20px;width:12rem;background:#e5e7eb;border-radius:6px;margin-bottom:2rem"></div>
@@ -163,7 +166,7 @@
             <div style="min-height:250px"></div>
           </div>
         </div>
-        <footer style="background:#f3f4f6;color:#374151;border-top:1px solid #e5e7eb;margin-top:auto">
+        <footer style="background:#f0efe9;color:#8a8680;border-top:1px solid rgba(0,0,0,.06);margin-top:auto;contain:layout style paint;overflow:clip">
           <div style="padding:3rem 1rem;min-height:450px"></div>
         </footer>
       </div>

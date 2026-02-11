@@ -120,7 +120,7 @@ export default function ContextAwareTour({
             {/* Badge (if applicable) */}
             {showBadge && (
               <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium mb-4 ${
-                step.badge!.type === 'info' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
+                step.badge!.type === 'info' ? 'bg-accent/[0.06] text-ink/80 border border-accent/20' :
                 step.badge!.type === 'warning' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
                 'bg-green-50 text-green-700 border border-green-200'
               }`}>
@@ -167,7 +167,7 @@ export default function ContextAwareTour({
             {showCTA && (
               <button
                 onClick={handleCTAClick}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-500 hover:to-indigo-500 transition-all shadow-md hover:shadow-lg mb-4"
+                className="w-full bg-accent text-ink font-semibold py-3 px-6 rounded-lg hover:bg-accent/90 transition-all shadow-md hover:shadow-lg mb-4"
               >
                 {step.ctaButton!.text}
               </button>
@@ -181,7 +181,7 @@ export default function ContextAwareTour({
                   onClick={() => setCurrentStep(index)}
                   className={`transition-all rounded-full ${
                     index === currentStep
-                      ? 'bg-blue-600 w-8 h-2'
+                      ? 'bg-accent w-8 h-2'
                       : 'bg-gray-300 hover:bg-gray-400 w-2 h-2'
                   }`}
                   aria-label={`Go to step ${index + 1} of ${filteredSteps.length}`}
@@ -207,7 +207,7 @@ export default function ContextAwareTour({
               {/* Next/Get Started Button */}
               <button
                 onClick={handleNext}
-                className="px-6 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-500 transition-all shadow-sm hover:shadow-md"
+                className="px-6 py-2.5 bg-accent text-ink rounded-lg font-medium hover:bg-accent transition-all shadow-sm hover:shadow-md"
               >
                 {isLastStep ? 'Get Started' : 'Next'}
               </button>

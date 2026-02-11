@@ -19,7 +19,7 @@ const ErrorPage = lazy(() => import("./ErrorPage"));
 // Loading component for Suspense fallback
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center min-h-[200px]">
-    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
   </div>
 );
 
@@ -292,10 +292,10 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
   // Show loader if processing recovery redirect (prevents template page flash after sign-in)
   if (processingRecoveryRedirect || (anonMigrationInProgress && localStorage.getItem('resume-recovery-intent'))) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+      <div className="min-h-screen bg-chalk flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-xl text-gray-600">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
+          <p className="text-xl text-stone-warm">
             Redirecting to your resume...
           </p>
         </div>
@@ -306,10 +306,10 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
   // Loading state for template fetch
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+      <div className="min-h-screen bg-chalk flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-xl text-gray-600">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
+          <p className="text-xl text-stone-warm">
             Loading beautiful templates...
           </p>
         </div>
@@ -336,14 +336,14 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
   }
 
   return (
-    <div className={showHeader ? "min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50" : ""}>
+    <div className={showHeader ? "min-h-screen bg-chalk" : ""}>
       {/* Header Section - only shown when used standalone */}
       {showHeader && (
         <div className="text-center py-16 px-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-ink mb-6">
             Free Resume Templates
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl font-extralight text-stone-warm max-w-2xl mx-auto">
             Professional, ATS-friendly designs that get you interviews. Choose a template and start building in minutes.
           </p>
         </div>
@@ -365,12 +365,12 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                   <div
                     className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 ${
                       isSelected
-                        ? "border-blue-500 ring-4 ring-blue-200/50"
-                        : "border-gray-200 hover:border-blue-300"
+                        ? "border-accent ring-4 ring-accent/20"
+                        : "border-gray-200/80 hover:border-accent/30"
                     }`}
                   >
                     {/* Template Preview - Larger Image */}
-                    <div className="relative overflow-hidden bg-gray-50">
+                    <div className="relative overflow-hidden bg-chalk-dark">
                       <img
                         src={template.image_url}
                         alt={template.name}
@@ -379,7 +379,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                         height="500"
                       />
                       {isSelected && (
-                        <div className="absolute top-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-xl">
+                        <div className="absolute top-6 right-6 bg-accent text-ink p-3 rounded-full shadow-xl">
                           <CheckCircleIcon className="w-7 h-7" />
                         </div>
                       )}
@@ -398,10 +398,10 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                     <div className="p-6 lg:p-8">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
-                          <h3 className="text-2xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
+                          <h3 className="font-display text-2xl font-bold text-ink mb-2 group-hover:text-accent transition-colors">
                             {template.name}
                           </h3>
-                          <p className="text-gray-600 leading-relaxed">
+                          <p className="text-stone-warm leading-relaxed">
                             {template.description}
                           </p>
                         </div>
@@ -412,7 +412,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                         {isSelected ? (
                           <>
                             <button
-                              className="flex-1 inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="flex-1 inline-flex items-center justify-center bg-accent text-ink py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleUseTemplate(template.id);

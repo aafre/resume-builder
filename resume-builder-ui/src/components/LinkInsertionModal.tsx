@@ -121,7 +121,7 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
               value={linkText}
               onChange={(e) => setLinkText(e.target.value)}
               placeholder="e.g., Visit our website"
-              className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+              className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all"
               autoFocus
             />
           </div>
@@ -142,7 +142,7 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
               placeholder="e.g., https://example.com"
               className={`w-full border ${
                 urlError ? 'border-red-500' : 'border-gray-300'
-              } rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+              } rounded-lg p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all`}
             />
             {urlError && (
               <p className="text-red-500 text-sm mt-1">{urlError}</p>
@@ -164,7 +164,7 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
         <div className="flex gap-3 mt-6">
           <button
             onClick={handleInsert}
-            className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-200"
+            className="flex-1 bg-accent text-ink px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-200"
           >
             {isEditMode ? 'Update Link' : 'Insert Link'}
           </button>

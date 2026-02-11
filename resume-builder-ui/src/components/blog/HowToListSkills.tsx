@@ -17,14 +17,14 @@ export default function HowToListSkills() {
       ]}
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Updated for 2026: The skills section remains one of the most important
           parts of your resume. It's a quick snapshot that tells recruiters and
           Applicant Tracking Systems (ATS) whether you have the qualifications
           for the job.
         </p>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           But many job seekers struggle with it. What skills should you include?
           How should you format them? This guide will walk you through
           everything you need to know to create a skills section that gets
@@ -41,22 +41,22 @@ export default function HowToListSkills() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Step 1: Understand Hard Skills vs. Soft Skills
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Your skills section should include a strategic mix of both hard and
           soft skills to give recruiters a complete picture of your
           capabilities.
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-blue-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
               🔧 Hard Skills (Technical Skills)
             </h3>
-            <div className="text-blue-700">
+            <div className="text-ink/80">
               <p className="mb-3">
                 Teachable, technical abilities that are easy to quantify. Often
                 specific to a job or industry.
@@ -77,7 +77,7 @@ export default function HowToListSkills() {
             <h3 className="text-xl font-bold text-green-800 mb-4">
               🤝 Soft Skills (Interpersonal Skills)
             </h3>
-            <div className="text-green-700">
+            <div className="text-accent">
               <p className="mb-3">
                 Personal attributes that describe your work style and how you
                 interact with others. Harder to quantify but equally important.
@@ -95,31 +95,31 @@ export default function HowToListSkills() {
           </div>
         </div>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 my-6">
-          <h4 className="font-bold text-gray-800 mb-3">📊 The Right Balance</h4>
-          <p className="text-gray-700">
+        <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
+          <h4 className="font-bold text-ink mb-3">📊 The Right Balance</h4>
+          <p className="text-stone-warm">
             <strong>Ideal ratio:</strong> 60-70% hard skills, 30-40% soft skills.
             Hard skills get you past ATS filters, while soft skills show you'll
             fit well with the team and company culture.
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Step 2: Brainstorm a Master List of Your Skills
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Before you start writing, create a comprehensive inventory of every
           skill you possess. Think about your experience from previous jobs,
           education, projects, and even hobbies. Don't filter yourself at this
           stage.
         </p>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-purple-800 mb-4">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-ink mb-4">
             🧠 Skills Discovery Questions:
           </h3>
-          <div className="space-y-4 text-purple-700">
+          <div className="space-y-4 text-ink/80">
             <div>
               <p className="font-medium">From Your Work Experience:</p>
               <ul className="text-sm list-disc pl-5 space-y-1">
@@ -148,11 +148,11 @@ export default function HowToListSkills() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Step 3: Tailor Your Skills to the Job Description
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           This is the most critical step.{" "}
           <strong>
             Do not use the same generic skills list for every application.
@@ -185,9 +185,9 @@ export default function HowToListSkills() {
           </ol>
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">
-          <h4 className="font-bold text-blue-800 mb-3">💡 Pro Tip: Keyword Matching</h4>
-          <p className="text-blue-700">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h4 className="font-bold text-ink mb-3">💡 Pro Tip: Keyword Matching</h4>
+          <p className="text-ink/80">
             Copy the job description into a word cloud generator (like
             WordArt.com) to visually identify the most frequently mentioned
             skills. These should be your priority keywords if you have the
@@ -195,11 +195,11 @@ export default function HowToListSkills() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Step 4: Choose the Right Format
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           There are several ways to format your skills section. The best choice
           depends on your industry, experience level, and the specific role
           you're targeting.
@@ -210,14 +210,14 @@ export default function HowToListSkills() {
             <h3 className="text-xl font-bold text-green-800 mb-4">
               Option 1: The Simple Bulleted List
             </h3>
-            <div className="text-green-700">
+            <div className="text-accent">
               <p className="mb-3">
                 This is the most common and ATS-friendly format. It's clean,
                 easy to read, and effective for most roles.
               </p>
               <div className="bg-white p-4 rounded-lg border">
-                <h4 className="font-bold text-gray-800 mb-2">Skills</h4>
-                <ul className="text-sm space-y-1 text-gray-700">
+                <h4 className="font-bold text-ink mb-2">Skills</h4>
+                <ul className="text-sm space-y-1 text-stone-warm">
                   <li>• JavaScript, React, Node.js</li>
                   <li>• Agile Methodology & Scrum</li>
                   <li>• Data Analysis & Visualization</li>
@@ -233,18 +233,18 @@ export default function HowToListSkills() {
             </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-blue-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
               Option 2: Grouped by Category
             </h3>
-            <div className="text-blue-700">
+            <div className="text-ink/80">
               <p className="mb-3">
                 This is a great option if you have a wide range of skills,
                 especially in technical fields.
               </p>
               <div className="bg-white p-4 rounded-lg border">
-                <h4 className="font-bold text-gray-800 mb-3">Technical Skills</h4>
-                <div className="text-sm space-y-2 text-gray-700">
+                <h4 className="font-bold text-ink mb-3">Technical Skills</h4>
+                <div className="text-sm space-y-2 text-stone-warm">
                   <p><strong>Languages:</strong> Python, JavaScript, SQL, Java</p>
                   <p><strong>Frameworks:</strong> React, Django, Node.js, Express.js</p>
                   <p><strong>Cloud & DevOps:</strong> AWS, Docker, Kubernetes, Jenkins</p>
@@ -252,24 +252,24 @@ export default function HowToListSkills() {
                 </div>
               </div>
               <div className="mt-3">
-                <p className="font-medium text-blue-800">Best for:</p>
+                <p className="font-medium text-ink">Best for:</p>
                 <p className="text-sm">Technical roles, senior positions, career changers</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-purple-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
               Option 3: Skills with Proficiency Levels
             </h3>
-            <div className="text-purple-700">
+            <div className="text-ink/80">
               <p className="mb-3">
                 Useful when you want to indicate your experience level,
                 especially for technical skills.
               </p>
               <div className="bg-white p-4 rounded-lg border">
-                <h4 className="font-bold text-gray-800 mb-3">Core Competencies</h4>
-                <div className="text-sm space-y-1 text-gray-700">
+                <h4 className="font-bold text-ink mb-3">Core Competencies</h4>
+                <div className="text-sm space-y-1 text-stone-warm">
                   <p>• Python (Expert, 5+ years)</p>
                   <p>• React & JavaScript (Advanced, 3+ years)</p>
                   <p>• Machine Learning (Intermediate, 2 years)</p>
@@ -278,7 +278,7 @@ export default function HowToListSkills() {
                 </div>
               </div>
               <div className="mt-3">
-                <p className="font-medium text-purple-800">Best for:</p>
+                <p className="font-medium text-ink">Best for:</p>
                 <p className="text-sm">Technical roles, consultant positions, freelancers</p>
               </div>
             </div>
@@ -294,9 +294,9 @@ export default function HowToListSkills() {
                 clarity.
               </p>
               <div className="bg-white p-4 rounded-lg border">
-                <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-700">
+                <div className="grid md:grid-cols-2 gap-4 text-sm text-stone-warm">
                   <div>
-                    <h4 className="font-bold text-gray-800 mb-2">Technical Skills</h4>
+                    <h4 className="font-bold text-ink mb-2">Technical Skills</h4>
                     <ul className="space-y-1">
                       <li>• Salesforce CRM</li>
                       <li>• Google Analytics</li>
@@ -305,7 +305,7 @@ export default function HowToListSkills() {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-800 mb-2">Core Strengths</h4>
+                    <h4 className="font-bold text-ink mb-2">Core Strengths</h4>
                     <ul className="space-y-1">
                       <li>• Strategic Planning</li>
                       <li>• Cross-functional Leadership</li>
@@ -323,21 +323,21 @@ export default function HowToListSkills() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           100+ Skills Examples by Industry
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700">
+        <p className="text-lg leading-relaxed text-stone-warm">
           Here are comprehensive lists of in-demand skills across various
           industries to help you brainstorm and identify relevant keywords.
         </p>
 
         <div className="space-y-6">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-blue-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
               💻 Technology & Software Development
             </h3>
-            <div className="grid md:grid-cols-3 gap-4 text-blue-700 text-sm">
+            <div className="grid md:grid-cols-3 gap-4 text-ink/80 text-sm">
               <div>
                 <h4 className="font-medium mb-2">Programming Languages:</h4>
                 <ul className="space-y-1">
@@ -390,7 +390,7 @@ export default function HowToListSkills() {
             <h3 className="text-xl font-bold text-green-800 mb-4">
               📊 Marketing & Sales
             </h3>
-            <div className="grid md:grid-cols-3 gap-4 text-green-700 text-sm">
+            <div className="grid md:grid-cols-3 gap-4 text-accent text-sm">
               <div>
                 <h4 className="font-medium mb-2">Digital Marketing:</h4>
                 <ul className="space-y-1">
@@ -439,11 +439,11 @@ export default function HowToListSkills() {
             </div>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-purple-800 mb-4">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
               🎨 Design & Creative
             </h3>
-            <div className="grid md:grid-cols-3 gap-4 text-purple-700 text-sm">
+            <div className="grid md:grid-cols-3 gap-4 text-ink/80 text-sm">
               <div>
                 <h4 className="font-medium mb-2">Design Software:</h4>
                 <ul className="space-y-1">
@@ -599,7 +599,7 @@ export default function HowToListSkills() {
           </div>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Build Your Skills-Optimized Resume?
           </h3>
@@ -608,89 +608,89 @@ export default function HowToListSkills() {
           </p>
           <a
             href="/templates"
-            className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Your Resume
           </a>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Common Skills Section Mistakes to Avoid
         </h2>
 
         <div className="space-y-6">
           <div className="bg-red-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">
+            <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Including outdated or irrelevant skills
             </h4>
-            <p className="text-gray-700 mb-2">
+            <p className="text-stone-warm mb-2">
               <strong>Example:</strong> Listing "Microsoft Word" as a key skill
               for a senior developer role
             </p>
-            <p className="text-green-700">
+            <p className="text-accent">
               <strong>Better:</strong> Focus on current, relevant skills that
               match the job requirements
             </p>
           </div>
 
           <div className="bg-red-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">
+            <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Being too vague or generic
             </h4>
-            <p className="text-gray-700 mb-2">
+            <p className="text-stone-warm mb-2">
               <strong>Example:</strong> "Good communication skills" or "Team
               player"
             </p>
-            <p className="text-green-700">
+            <p className="text-accent">
               <strong>Better:</strong> "Public Speaking & Presentation" or
               "Cross-functional Team Leadership"
             </p>
           </div>
 
           <div className="bg-red-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">
+            <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Lying about your skill level
             </h4>
-            <p className="text-gray-700 mb-2">
+            <p className="text-stone-warm mb-2">
               <strong>Example:</strong> Claiming "Expert in Python" when you've
               only completed online tutorials
             </p>
-            <p className="text-green-700">
+            <p className="text-accent">
               <strong>Better:</strong> Be honest about your level - "Python
               (Intermediate)" or "Python (1 year experience)"
             </p>
           </div>
 
           <div className="bg-red-50 border-l-4 border-red-500 p-6">
-            <h4 className="font-bold text-gray-900 mb-2">
+            <h4 className="font-bold text-ink mb-2">
               ❌ Mistake: Making the skills section too long
             </h4>
-            <p className="text-gray-700 mb-2">
+            <p className="text-stone-warm mb-2">
               <strong>Example:</strong> Listing 20+ skills without
               prioritization
             </p>
-            <p className="text-green-700">
+            <p className="text-accent">
               <strong>Better:</strong> Curate 8-12 most relevant skills for each
               application
             </p>
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Advanced Skills Section Strategies
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-blue-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-ink mb-3">
               1. Include Skills from the Entire Job Posting
             </h3>
-            <p className="text-blue-700 mb-3">
+            <p className="text-ink/80 mb-3">
               Don't just focus on the "Requirements" section. Look at the job
               title, company description, and "Nice to Have" sections for
               additional relevant skills.
             </p>
-            <div className="bg-white p-3 rounded text-sm text-blue-700">
+            <div className="bg-white p-3 rounded text-sm text-ink/80">
               <strong>Tip:</strong> If the job mentions "fast-paced environment,"
               include "Ability to Work Under Pressure" or "Rapid Adaptation"
             </div>
@@ -700,39 +700,39 @@ export default function HowToListSkills() {
             <h3 className="text-lg font-bold text-green-800 mb-3">
               2. Use Industry-Specific Terminology
             </h3>
-            <p className="text-green-700 mb-3">
+            <p className="text-accent mb-3">
               Each industry has its own language. Use the specific terms and
               acronyms that professionals in your field would recognize.
             </p>
-            <div className="bg-white p-3 rounded text-sm text-green-700">
+            <div className="bg-white p-3 rounded text-sm text-accent">
               <strong>Example:</strong> Instead of "Customer Service," use "Client
               Relations" in consulting or "Customer Success" in SaaS companies
             </div>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-purple-800 mb-3">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-ink mb-3">
               3. Balance Popular and Niche Skills
             </h3>
-            <p className="text-purple-700 mb-3">
+            <p className="text-ink/80 mb-3">
               Include both widely-demanded skills (like "Project Management") and
               specialized skills that make you unique (like specific software or
               methodologies).
             </p>
-            <div className="bg-white p-3 rounded text-sm text-purple-700">
+            <div className="bg-white p-3 rounded text-sm text-ink/80">
               <strong>Strategy:</strong> 70% popular skills + 30% specialized
               skills = Well-rounded candidate
             </div>
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Your Next Steps: Building Your Perfect Skills Section
         </h2>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-          <h3 className="font-bold text-gray-800 mb-4">🎯 Action Plan:</h3>
-          <ol className="list-decimal pl-6 space-y-3 text-gray-700">
+        <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+          <h3 className="font-bold text-ink mb-4">🎯 Action Plan:</h3>
+          <ol className="list-decimal pl-6 space-y-3 text-stone-warm">
             <li>
               <strong>Create your master skills inventory</strong> using the
               discovery questions above
@@ -766,7 +766,7 @@ export default function HowToListSkills() {
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 mt-8">
           <h4 className="font-bold text-green-800 mb-3">🚀 Remember</h4>
-          <p className="text-green-700">
+          <p className="text-accent">
             Your skills section is prime real estate on your resume. Every word
             should be intentional and relevant to the role you're targeting. When
             done right, it can be the difference between getting filtered out by
@@ -774,7 +774,7 @@ export default function HowToListSkills() {
           </p>
         </div>
 
-        <p className="text-lg leading-relaxed text-gray-700 mt-8">
+        <p className="text-lg leading-relaxed text-stone-warm mt-8">
           Ready to create a standout skills section? Use our free resume builder
           to implement these strategies and create a professional resume that
           gets results. Your perfect skills section is just a few clicks away.

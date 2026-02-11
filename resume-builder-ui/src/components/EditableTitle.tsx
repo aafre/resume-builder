@@ -73,7 +73,7 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
           value={temporaryTitle}
           onChange={(e) => onTitleChange(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="border border-gray-300 rounded-lg p-2 w-full text-xl font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-gray-300 rounded-lg p-2 w-full text-xl font-semibold focus:outline-none focus:ring-2 focus:ring-accent"
           autoFocus
           placeholder="Enter section title..."
         />
@@ -110,7 +110,7 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
         ✏️
       </button>
       {title.startsWith("New ") && showHint && (
-        <span className="ml-2 text-sm text-blue-500 font-normal">
+        <span className="ml-2 text-sm text-accent font-normal">
           (Click ✏️ to rename)
         </span>
       )}

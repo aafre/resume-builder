@@ -19,7 +19,7 @@ export default function ProofSection({ metrics, className = '' }: ProofSectionPr
       {metrics.map((metric, index) => (
         <div
           key={index}
-          className="bg-white rounded-xl p-6 text-center shadow-md border border-gray-100"
+          className="bg-white rounded-2xl p-6 text-center shadow-premium border border-black/[0.06]"
         >
           {/* Icon */}
           {metric.icon && (
@@ -27,7 +27,7 @@ export default function ProofSection({ metrics, className = '' }: ProofSectionPr
           )}
 
           {/* Value */}
-          <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
+          <div className="text-3xl md:text-4xl font-bold text-accent mb-2">
             {metric.value}
             {metric.suffix && (
               <span className="text-2xl">{metric.suffix}</span>
@@ -35,7 +35,7 @@ export default function ProofSection({ metrics, className = '' }: ProofSectionPr
           </div>
 
           {/* Label */}
-          <div className="text-sm text-gray-600 font-medium">
+          <div className="text-sm text-stone-warm font-medium">
             {metric.label}
           </div>
         </div>

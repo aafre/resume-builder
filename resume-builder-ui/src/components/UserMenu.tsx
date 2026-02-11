@@ -67,7 +67,7 @@ const UserMenu: React.FC = () => {
           <img
             src={avatarUrl}
             alt={displayName}
-            className="w-8 h-8 rounded-full object-cover ring-2 ring-purple-100"
+            className="w-8 h-8 rounded-full object-cover ring-2 ring-accent/20"
             width="32"
             height="32"
             onError={handleError}
@@ -75,7 +75,7 @@ const UserMenu: React.FC = () => {
             crossOrigin="anonymous"
           />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 flex items-center justify-center shadow-md">
+          <div className="w-8 h-8 rounded-full bg-ink flex items-center justify-center shadow-md">
             <span className="text-white font-semibold text-sm">
               {displayName.charAt(0).toUpperCase()}
             </span>
@@ -87,7 +87,7 @@ const UserMenu: React.FC = () => {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-3 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl shadow-purple-500/10 border border-white/50 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 mt-3 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl shadow-accent/10 border border-white/50 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
           {/* Navigation Links - Mobile Only */}
           {!isAnonymous && (
             <div className="lg:hidden border-b border-gray-100/50 pb-2">
@@ -96,11 +96,11 @@ const UserMenu: React.FC = () => {
                 onClick={() => setIsOpen(false)}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg mx-2 my-1 transition-all duration-200 ${
                   location.pathname === '/my-resumes'
-                    ? 'bg-purple-50 text-purple-700 font-semibold'
-                    : 'text-gray-700 hover:bg-purple-50/50'
+                    ? 'bg-accent/[0.06] text-ink/80 font-semibold'
+                    : 'text-gray-700 hover:bg-accent/[0.06]'
                 }`}
               >
-                <MdFolder size={18} className={location.pathname === '/my-resumes' ? 'text-purple-600' : 'text-gray-500'} />
+                <MdFolder size={18} className={location.pathname === '/my-resumes' ? 'text-accent' : 'text-gray-500'} />
                 <span>My Resumes</span>
               </Link>
               <Link
@@ -108,11 +108,11 @@ const UserMenu: React.FC = () => {
                 onClick={() => setIsOpen(false)}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg mx-2 my-1 transition-all duration-200 ${
                   location.pathname === '/templates'
-                    ? 'bg-purple-50 text-purple-700 font-semibold'
-                    : 'text-gray-700 hover:bg-purple-50/50'
+                    ? 'bg-accent/[0.06] text-ink/80 font-semibold'
+                    : 'text-gray-700 hover:bg-accent/[0.06]'
                 }`}
               >
-                <MdViewModule size={18} className={location.pathname === '/templates' ? 'text-purple-600' : 'text-gray-500'} />
+                <MdViewModule size={18} className={location.pathname === '/templates' ? 'text-accent' : 'text-gray-500'} />
                 <span>Templates</span>
               </Link>
             </div>
@@ -131,9 +131,9 @@ const UserMenu: React.FC = () => {
           {!isAnonymous && (
             <button
               onClick={handleMyResumes}
-              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50/50 rounded-lg mx-2 my-1 transition-all duration-200"
+              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-accent/[0.06] rounded-lg mx-2 my-1 transition-all duration-200"
             >
-              <MdFolder size={18} className="text-purple-600" />
+              <MdFolder size={18} className="text-accent" />
               <span>My Resumes</span>
             </button>
           )}

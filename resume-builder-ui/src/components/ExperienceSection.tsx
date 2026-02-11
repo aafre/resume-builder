@@ -186,7 +186,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                             value={experience.company}
                             onChange={(value) => handleUpdateField(index, "company", value)}
                             placeholder="Enter company name"
-                            className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
+                            className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all duration-200"
                           />
                         </div>
                         <div>
@@ -197,7 +197,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                             value={experience.title}
                             onChange={(value) => handleUpdateField(index, "title", value)}
                             placeholder="Enter job title"
-                            className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
+                            className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all duration-200"
                           />
                         </div>
                         <div>
@@ -210,7 +210,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                             onChange={(e) =>
                               handleUpdateField(index, "dates", e.target.value)
                             }
-                            className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                            className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-200"
                             placeholder="e.g., Jan 2020 - Present"
                           />
                         </div>
@@ -262,7 +262,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                                               onUpdate(updatedExperiences);
                                             }}
                                             placeholder="Describe your responsibilities, achievements, or key projects..."
-                                            className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all duration-200"
+                                            className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all duration-200"
                                           />
                                         </div>
                                         <button
@@ -290,7 +290,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                             updatedExperiences[index].description.push("");
                             onUpdate(updatedExperiences);
                           }}
-                          className="mt-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
+                          className="mt-3 bg-accent text-ink px-4 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
                         >
                           + Add Description Point
                         </button>

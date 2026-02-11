@@ -20,18 +20,18 @@ export default function AIJobDescriptionAnalyzer() {
       ctaType="resume"
     >
       <div className="space-y-8">
-        <p className="text-xl leading-relaxed text-gray-700 font-medium">
+        <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Job descriptions contain more information than meets the eye. Between the lines are
           clues about company culture, real priorities, and exactly what keywords your resume needs.
           AI can help you decode all of this in minutes.
         </p>
 
         {/* Quick Answer Box */}
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-blue-800 mb-3">
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
+          <h3 className="font-bold text-ink mb-3">
             🎯 What AI Can Extract from Job Descriptions
           </h3>
-          <ul className="space-y-2 text-blue-700">
+          <ul className="space-y-2 text-ink/80">
             <li><strong>Hard Skills:</strong> Technical requirements and tools</li>
             <li><strong>Soft Skills:</strong> Communication, leadership, teamwork expectations</li>
             <li><strong>Keywords:</strong> Exact phrases for ATS optimization</li>
@@ -40,11 +40,11 @@ export default function AIJobDescriptionAnalyzer() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Step 1: Initial Analysis Prompt
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700 mb-4">
+        <p className="text-lg leading-relaxed text-stone-warm mb-4">
           Start with this comprehensive prompt to get a full breakdown:
         </p>
 
@@ -71,11 +71,11 @@ export default function AIJobDescriptionAnalyzer() {
             - Anything unusual or potentially concerning
         </CopyablePrompt>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Step 2: Keyword Extraction
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700 mb-4">
+        <p className="text-lg leading-relaxed text-stone-warm mb-4">
           For ATS optimization, you need exact keyword matches. Use this prompt:
         </p>
 
@@ -93,11 +93,11 @@ export default function AIJobDescriptionAnalyzer() {
             Include frequency count if terms appear multiple times.
         </CopyablePrompt>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Step 3: Decode Hidden Expectations
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700 mb-4">
+        <p className="text-lg leading-relaxed text-stone-warm mb-4">
           What they write isn't always what they mean. This prompt helps decode the subtext:
         </p>
 
@@ -114,11 +114,11 @@ export default function AIJobDescriptionAnalyzer() {
             What is this employer really looking for? What's the work culture likely to be?
         </CopyablePrompt>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Step 4: Match Analysis
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700 mb-4">
+        <p className="text-lg leading-relaxed text-stone-warm mb-4">
           Once you've analyzed the JD, compare it against your background:
         </p>
 
@@ -137,11 +137,11 @@ export default function AIJobDescriptionAnalyzer() {
             For each gap, suggest how I might address it on my resume.
         </CopyablePrompt>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Step 5: Create Tailored Content
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700 mb-4">
+        <p className="text-lg leading-relaxed text-stone-warm mb-4">
           Now turn your analysis into resume content:
         </p>
 
@@ -157,43 +157,43 @@ export default function AIJobDescriptionAnalyzer() {
             Make sure keywords appear naturally, not forced.
         </CopyablePrompt>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Example Analysis Walkthrough
         </h2>
 
-        <p className="text-lg leading-relaxed text-gray-700 mb-4">
+        <p className="text-lg leading-relaxed text-stone-warm mb-4">
           Here's what a sample analysis might reveal from a typical JD phrase:
         </p>
 
         <div className="overflow-x-auto my-8">
-          <table className="w-full bg-white border border-gray-200 rounded-xl shadow-sm">
+          <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="px-4 py-4 text-left font-bold text-gray-900">JD Says</th>
-                <th className="px-4 py-4 text-left font-bold text-gray-900">What It Means</th>
-                <th className="px-4 py-4 text-left font-bold text-gray-900">Keywords to Use</th>
+              <tr className="bg-chalk-dark">
+                <th className="px-4 py-4 text-left font-bold text-ink">JD Says</th>
+                <th className="px-4 py-4 text-left font-bold text-ink">What It Means</th>
+                <th className="px-4 py-4 text-left font-bold text-ink">Keywords to Use</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-black/[0.06]">
               <tr>
-                <td className="px-4 py-4 text-gray-700">"Drive cross-functional initiatives"</td>
-                <td className="px-4 py-4 text-gray-700">Lead projects involving multiple teams</td>
-                <td className="px-4 py-4 text-gray-700">Cross-functional, stakeholder management, collaboration</td>
+                <td className="px-4 py-4 text-stone-warm">"Drive cross-functional initiatives"</td>
+                <td className="px-4 py-4 text-stone-warm">Lead projects involving multiple teams</td>
+                <td className="px-4 py-4 text-stone-warm">Cross-functional, stakeholder management, collaboration</td>
               </tr>
-              <tr className="bg-gray-50">
-                <td className="px-4 py-4 text-gray-700">"Experience with Agile methodologies"</td>
-                <td className="px-4 py-4 text-gray-700">Worked on Scrum/Kanban teams</td>
-                <td className="px-4 py-4 text-gray-700">Agile, Scrum, sprints, standups, retrospectives</td>
+              <tr className="bg-chalk-dark">
+                <td className="px-4 py-4 text-stone-warm">"Experience with Agile methodologies"</td>
+                <td className="px-4 py-4 text-stone-warm">Worked on Scrum/Kanban teams</td>
+                <td className="px-4 py-4 text-stone-warm">Agile, Scrum, sprints, standups, retrospectives</td>
               </tr>
               <tr>
-                <td className="px-4 py-4 text-gray-700">"Data-driven decision making"</td>
-                <td className="px-4 py-4 text-gray-700">Uses metrics to inform choices</td>
-                <td className="px-4 py-4 text-gray-700">Analytics, KPIs, data analysis, insights</td>
+                <td className="px-4 py-4 text-stone-warm">"Data-driven decision making"</td>
+                <td className="px-4 py-4 text-stone-warm">Uses metrics to inform choices</td>
+                <td className="px-4 py-4 text-stone-warm">Analytics, KPIs, data analysis, insights</td>
               </tr>
-              <tr className="bg-gray-50">
-                <td className="px-4 py-4 text-gray-700">"Own end-to-end delivery"</td>
-                <td className="px-4 py-4 text-gray-700">Full responsibility from start to finish</td>
-                <td className="px-4 py-4 text-gray-700">End-to-end, ownership, delivery, accountability</td>
+              <tr className="bg-chalk-dark">
+                <td className="px-4 py-4 text-stone-warm">"Own end-to-end delivery"</td>
+                <td className="px-4 py-4 text-stone-warm">Full responsibility from start to finish</td>
+                <td className="px-4 py-4 text-stone-warm">End-to-end, ownership, delivery, accountability</td>
               </tr>
             </tbody>
           </table>
@@ -203,7 +203,7 @@ export default function AIJobDescriptionAnalyzer() {
           <h3 className="font-bold text-green-800 mb-3">
             ✅ Best Practices
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-green-700">
+          <ul className="list-disc list-inside space-y-2 text-accent">
             <li>Analyze 3-5 similar job descriptions to find common patterns</li>
             <li>Use exact keyword phrases, not synonyms (ATS matches exactly)</li>
             <li>Prioritize keywords that appear multiple times in the JD</li>
@@ -212,7 +212,7 @@ export default function AIJobDescriptionAnalyzer() {
           </ul>
         </div>
 
-        <div className="my-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+        <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Apply Your Analysis?
           </h3>
@@ -221,29 +221,29 @@ export default function AIJobDescriptionAnalyzer() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Related Resources
         </h2>
 
-        <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
+        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
           <li>
-            <Link to="/blog/how-to-use-resume-keywords" className="text-blue-600 hover:underline">
+            <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">
               How to Use Resume Keywords to Beat the ATS
             </Link>
           </li>
           <li>
-            <Link to="/blog/ats-resume-optimization" className="text-blue-600 hover:underline">
+            <Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">
               ATS Resume Optimization Guide
             </Link>
           </li>
           <li>
-            <Link to="/blog/chatgpt-resume-prompts" className="text-blue-600 hover:underline">
+            <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">
               25+ ChatGPT Prompts for Resume Writing
             </Link>
           </li>

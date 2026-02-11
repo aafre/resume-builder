@@ -94,7 +94,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           <button
             type="button"
             onClick={onToggleCollapse}
-            className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors flex-shrink-0"
+            className="p-2 text-gray-600 hover:text-accent hover:bg-accent/[0.06] rounded-lg transition-colors flex-shrink-0"
             aria-label={isCollapsed ? "Expand section" : "Collapse section"}
             title={isCollapsed ? "Expand section" : "Collapse section"}
           >

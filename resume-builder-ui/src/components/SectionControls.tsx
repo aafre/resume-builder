@@ -24,7 +24,7 @@ const SectionControls: React.FC<{
         className={`px-2 py-1 rounded ${
           sectionIndex === 0
             ? "bg-gray-300 cursor-not-allowed"
-            : "bg-blue-500 hover:bg-blue-600 text-white"
+            : "bg-accent hover:bg-accent text-ink"
         }`}
       >
         ↑
@@ -35,7 +35,7 @@ const SectionControls: React.FC<{
         className={`px-2 py-1 rounded ${
           sectionIndex === sections.length - 1
             ? "bg-gray-300 cursor-not-allowed"
-            : "bg-blue-500 hover:bg-blue-600 text-white"
+            : "bg-accent hover:bg-accent text-ink"
         }`}
       >
         ↓

@@ -76,13 +76,13 @@ export default function AnonymousWarningBadge({ onSignInClick }: AnonymousWarnin
                 onClick={onSignInClick}
                 className="
                   w-full
-                  bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700
+                  bg-accent
                   text-white text-sm font-semibold
                   py-2.5 px-4 rounded-lg
-                  hover:from-blue-500 hover:via-purple-500 hover:to-indigo-600
+                  hover:bg-accent/90
                   hover:shadow-md
                   transition-all duration-300
-                  focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2
+                  focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2
                 "
               >
                 Create Free Account

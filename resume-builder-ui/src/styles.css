@@ -1,3 +1,38 @@
+/* ── Self-hosted Google Fonts ── */
+/* font-display: optional — uses font only if cached (<100ms), zero CLS */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 200 800;
+  font-stretch: 100%;
+  font-display: optional;
+  src: url('/fonts/BricolageGrotesque-Variable-Latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: optional;
+  src: url('/fonts/JetBrainsMono-Regular-Latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Metric-matched fallback — prevents CLS during font swap */
+@font-face {
+  font-family: 'Bricolage Fallback';
+  src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial');
+  size-adjust: 104%;
+  ascent-override: 96%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -20,14 +55,14 @@
 
 /* 2026 Modern Button System */
 .btn-primary {
-  @apply relative inline-flex items-center justify-center bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl hover:shadow-purple-500/25 transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 active:scale-95 overflow-hidden;
+  @apply relative inline-flex items-center justify-center bg-accent text-ink font-bold rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-300 active:scale-95 overflow-hidden;
 }
 
 .btn-primary::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
   transform: translateX(-100%);
   transition: transform 0.7s ease-out;
 }
@@ -37,18 +72,17 @@
 }
 
 .btn-secondary {
-  @apply relative inline-flex items-center justify-center bg-white/90 backdrop-blur-md border border-white/50 text-gray-700 font-semibold rounded-xl shadow-md hover:shadow-xl hover:bg-white/95 hover:border-purple-200/50 transition-all duration-300 hover:scale-105 active:scale-95;
+  @apply relative inline-flex items-center justify-center bg-white border border-gray-200 text-ink font-semibold rounded-xl shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-300 active:scale-95;
 }
 
 .btn-ghost {
-  @apply relative text-gray-700 hover:text-purple-600 transition-all duration-300 font-medium px-3 py-2 rounded-lg hover:bg-purple-50/80 hover:scale-105;
+  @apply relative text-gray-700 hover:text-ink transition-all duration-300 font-medium px-3 py-2 rounded-lg hover:bg-black/5;
 }
 
 .btn-ghost::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, rgba(59, 130, 246, 0.05), rgba(147, 51, 234, 0.05));
   border-radius: 0.5rem;
   opacity: 0;
   transition: opacity 0.3s;
@@ -79,6 +113,7 @@
 [data-reveal="fade-up"]   { transform: translateY(40px) scale(0.97); }
 [data-reveal="fade-in"]   { transform: scale(0.97); }
 [data-reveal="scale-in"]  { transform: scale(0.92); }
+[data-reveal="fade-left"]  { transform: translateX(-40px) scale(0.97); }
 
 /* Revealed state — shared transition */
 [data-reveal].revealed {
@@ -109,7 +144,7 @@
   border-radius: inherit;
   padding: 1px;
   background: linear-gradient(135deg,
-    rgba(59,130,246,0.2), rgba(147,51,234,0.15), rgba(99,102,241,0.2));
+    rgba(0,212,126,0.2), rgba(0,212,126,0.12), rgba(0,212,126,0.2));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -130,7 +165,7 @@
     0 2px 4px rgba(0,0,0,0.04),
     0 8px 16px rgba(0,0,0,0.06),
     0 20px 40px rgba(0,0,0,0.08),
-    0 40px 80px rgba(147,51,234,0.06);
+    0 40px 80px rgba(0,212,126,0.06);
   transition: box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -150,7 +185,7 @@ details .faq-content > div {
 /* ── Section Divider ── */
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(147,51,234,0.15), rgba(59,130,246,0.15), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.06), transparent);
   margin: 0 auto;
   max-width: 80%;
 }
@@ -183,6 +218,27 @@ details .faq-content > div {
   animation-play-state: paused;
 }
 
+/* ── Landing Page Keyframes ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotateY(-3deg); }
+  50%      { transform: translateY(-12px) rotateY(-3deg); }
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@keyframes blink-caret {
+  0%, 100% { border-color: #00d47e; }
+  50%      { border-color: transparent; }
+}
+
+@keyframes pulse-accent {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,126,0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(0,212,126,0); }
+}
+
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -205,6 +261,12 @@ details .faq-content > div {
   .btn-primary::before,
   .btn-ghost::before {
     display: none !important;
+  }
+
+  /* Landing page animations: disable */
+  .hero-mockup,
+  .demo-typing {
+    animation: none !important;
   }
 
   /* Scroll-reveal: instantly visible */
@@ -236,9 +298,6 @@ body {
    overflow:visible — no scroll container is created, so flex-grow still works. */
 body {
   overflow-x: hidden;
-  opacity: 1;
-  animation: none;
-  transition: opacity 0.1s ease-out;
 }
 
 #root {
@@ -254,6 +313,11 @@ main {
 footer {
   margin-top: auto;
   width: 100%;
+}
+
+#app-footer {
+  contain: layout style paint;
+  overflow: clip;
 }
 
 
@@ -347,9 +411,9 @@ footer {
 }
 
 .Toastify__toast--info .custom-toast {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(96, 165, 250, 0.05)) !important;
-  border: 1px solid rgba(59, 130, 246, 0.3) !important;
-  border-left: 4px solid #3b82f6 !important;
+  background: linear-gradient(135deg, rgba(0, 212, 126, 0.1), rgba(0, 212, 126, 0.05)) !important;
+  border: 1px solid rgba(0, 212, 126, 0.3) !important;
+  border-left: 4px solid #00d47e !important;
 }
 
 .Toastify__toast--info .custom-toast::before {
@@ -384,7 +448,7 @@ footer {
 }
 
 .Toastify__progress-bar--info {
-  background: linear-gradient(90deg, #3b82f6, #60a5fa) !important;
+  background: linear-gradient(90deg, #00d47e, #34d399) !important;
 }
 
 .Toastify__progress-bar--warning {
@@ -416,14 +480,14 @@ footer {
 .drag-overlay {
   opacity: 0.8;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  border: 2px solid rgba(59, 130, 246, 0.5);
+  border: 2px solid rgba(0, 212, 126, 0.5);
   border-radius: 16px; /* matches rounded-2xl */
   transform: scale(1.02);
 }
 
 .drop-indicator {
   height: 4px;
-  background: linear-gradient(90deg, #3b82f6, #6366f1);
+  background: linear-gradient(90deg, #00d47e, #34d399);
   border-radius: 2px;
   margin: 8px 0;
   opacity: 0.8;
@@ -463,6 +527,20 @@ footer {
   }
 }
 
+/* Job badge animations */
+@keyframes badgeFadeIn {
+  from { opacity: 0; transform: translateY(-4px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+.animate-badgeFadeIn { animation: badgeFadeIn 0.4s ease-out; }
+.animate-slideDown { animation: slideDown 0.3s ease-out; }
+
 /* Custom scrollbar for sidebar */
 .scrollbar-thin {
   scrollbar-width: thin;
@@ -485,6 +563,44 @@ footer {
   background-color: rgba(156, 163, 175, 0.7);
 }
 
+
+/* ── Blog Prose Overrides ── */
+/* Harmonize @tailwindcss/typography with design system */
+.prose a {
+  color: #00d47e;
+  text-decoration: none;
+}
+.prose a:hover {
+  color: #0c0c0c;
+  text-decoration: underline;
+}
+.prose code {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Dark CTA boxes inside prose: override typography heading/body color */
+.prose .text-white h2,
+.prose .text-white h3,
+.prose .text-white h4,
+.prose .text-white p,
+.prose .text-white li {
+  color: inherit;
+}
+
+/* Mobile-optimized blog tables */
+@media (max-width: 639px) {
+  .prose table th,
+  .prose table td {
+    padding: 0.5rem 0.625rem;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+}
+
+.prose .overflow-x-auto {
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
 
 /* Isolate ad containers for layout performance and style encapsulation */
 .in-content-ad,
