@@ -3,6 +3,7 @@ import tempfile
 import shutil
 import hashlib
 import json
+import io
 from flask import (
     Flask,
     request,
@@ -1114,7 +1115,6 @@ def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
     try:
         from pdf2image import convert_from_path
         from PIL import Image
-        import tempfile
 
         # Convert first page of PDF to image at 150 DPI
         logging.debug(f"Converting PDF to thumbnail: {pdf_path}")
@@ -1137,52 +1137,42 @@ def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
             (target_width, target_height), Image.Resampling.LANCZOS
         )
 
-        # Save to temporary file
-        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_file:
-            thumbnail.save(tmp_file.name, "PNG", optimize=True, quality=85)
-            tmp_path = tmp_file.name
+        # Save to in-memory buffer
+        with io.BytesIO() as output:
+            thumbnail.save(output, format="PNG", optimize=True, quality=85)
+            thumbnail_data = output.getvalue()
 
-        try:
-            # Read the thumbnail data
-            with open(tmp_path, "rb") as f:
-                thumbnail_data = f.read()
+        # Upload to Supabase Storage: resume-thumbnails/{user_id}/{resume_id}/thumbnail.png
+        storage_path = f"{user_id}/{resume_id}/thumbnail.png"
 
-            # Upload to Supabase Storage: resume-thumbnails/{user_id}/{resume_id}/thumbnail.png
-            storage_path = f"{user_id}/{resume_id}/thumbnail.png"
+        logging.debug(f"Uploading thumbnail to storage: {storage_path}")
+        supabase.storage.from_("resume-thumbnails").upload(
+            storage_path,
+            thumbnail_data,
+            file_options={
+                "content-type": "image/png",
+                "upsert": "true",
+                "cacheControl": "public, max-age=31536000, immutable",
+            },
+        )
 
-            logging.debug(f"Uploading thumbnail to storage: {storage_path}")
-            supabase.storage.from_("resume-thumbnails").upload(
-                storage_path,
-                thumbnail_data,
-                file_options={
-                    "content-type": "image/png",
-                    "upsert": "true",
-                    "cacheControl": "public, max-age=31536000, immutable",
-                },
-            )
+        # Get public URL and add cache-busting timestamp
+        thumbnail_url = supabase.storage.from_("resume-thumbnails").get_public_url(
+            storage_path
+        )
 
-            # Get public URL and add cache-busting timestamp
-            thumbnail_url = supabase.storage.from_("resume-thumbnails").get_public_url(
-                storage_path
-            )
+        # Add cache-busting parameter to force browser to fetch new thumbnails
+        timestamp = int(time.time() * 1000)  # Unix timestamp in milliseconds
+        url_parts = list(urlparse(thumbnail_url))
+        query = parse_qs(url_parts[4])
+        query["v"] = [str(timestamp)]
+        url_parts[4] = urlencode(query, doseq=True)
+        thumbnail_url = urlunparse(url_parts)
 
-            # Add cache-busting parameter to force browser to fetch new thumbnails
-            timestamp = int(time.time() * 1000)  # Unix timestamp in milliseconds
-            url_parts = list(urlparse(thumbnail_url))
-            query = parse_qs(url_parts[4])
-            query["v"] = [str(timestamp)]
-            url_parts[4] = urlencode(query, doseq=True)
-            thumbnail_url = urlunparse(url_parts)
-
-            logging.info(
-                f"Successfully generated and uploaded thumbnail: {storage_path}"
-            )
-            return thumbnail_url
-
-        finally:
-            # Clean up temporary file
-            if os.path.exists(tmp_path):
-                os.unlink(tmp_path)
+        logging.info(
+            f"Successfully generated and uploaded thumbnail: {storage_path}"
+        )
+        return thumbnail_url
 
     except ImportError as e:
         logging.error(f"Missing dependencies for thumbnail generation: {e}")
