@@ -140,6 +140,22 @@ describe('extractKeywords', () => {
       expect(kw).not.toContain('develop');
       expect(kw).not.toContain('manage');
     });
+
+    it('filters UK/international JD filler words', () => {
+      const jd =
+        'Essential criteria. Essential requirements. ' +
+        'Please apply. Please submit. ' +
+        'Important days. Important annual review. ' +
+        'Desirable level. Desirable highly.';
+      const kw = extractKeywords(jd);
+      expect(kw).not.toContain('essential');
+      expect(kw).not.toContain('please');
+      expect(kw).not.toContain('days');
+      expect(kw).not.toContain('annual');
+      expect(kw).not.toContain('important');
+      expect(kw).not.toContain('desirable');
+      expect(kw).not.toContain('highly');
+    });
   });
 
   // ---------------------------------------------------------------------------
@@ -241,6 +257,49 @@ describe('extractKeywords', () => {
       const kw = extractKeywords(jd);
       expect(kw).toContain('python');
       expect(kw).toContain('react');
+    });
+
+    it('truncates at "Benefits" section, excluding perks noise', () => {
+      const jd =
+        'Requirements:\n' +
+        '- Python experience. Python scripting.\n' +
+        '- React frontend. React components.\n' +
+        '\nBenefits:\n' +
+        '- Pension scheme. Pension contributions.\n' +
+        '- Shopping discounts. Shopping vouchers.\n' +
+        '- Travel allowance. Travel expenses.';
+      const kw = extractKeywords(jd);
+      expect(kw).toContain('python');
+      expect(kw).toContain('react');
+      expect(kw).not.toContain('pension');
+      expect(kw).not.toContain('shopping');
+      expect(kw).not.toContain('travel');
+    });
+
+    it('truncates at "What we offer" section', () => {
+      const jd =
+        'Key Skills:\n' +
+        '- Docker containers. Docker images.\n' +
+        '- Kubernetes clusters. Kubernetes orchestration.\n' +
+        '\nWhat we offer:\n' +
+        '- Holidays allowance. Holidays flexibility.\n' +
+        '- Gym membership. Gym access.';
+      const kw = extractKeywords(jd);
+      expect(kw).toContain('docker');
+      expect(kw).toContain('kubernetes');
+      expect(kw).not.toContain('holidays');
+      expect(kw).not.toContain('gym');
+    });
+
+    it('truncates at "About us" section', () => {
+      const jd =
+        'Requirements:\n' +
+        '- Terraform modules. Terraform configurations.\n' +
+        '\nAbout us:\n' +
+        '- Guinness Partnership is a housing association. Guinness builds homes.';
+      const kw = extractKeywords(jd);
+      expect(kw).toContain('terraform');
+      expect(kw).not.toContain('guinness');
     });
   });
 
@@ -904,11 +963,14 @@ describe('scanResume', () => {
       expect(kw).toContain('redis');
     });
 
-    it('still filters unknown single-mention short words', () => {
-      const jd = 'Requirements: Python experience. The foo bar process.';
+    it('filters unknown single-mention words regardless of length', () => {
+      const jd = 'Requirements: Python experience. The foo bar process. Specialized conveyance procedures.';
       const kw = extractKeywords(jd);
       expect(kw).not.toContain('foo');
       expect(kw).not.toContain('bar');
+      // Long unknown words with count=1 are also filtered (no length exemption)
+      expect(kw).not.toContain('specialized');
+      expect(kw).not.toContain('procedures');
     });
 
     it('"development" and "tools" and "support" are no longer filtered as filler', () => {
@@ -917,6 +979,27 @@ describe('scanResume', () => {
       expect(kw).toContain('development');
       expect(kw).toContain('tools');
       expect(kw).toContain('support');
+    });
+
+    it('filters soft skills with count=1 (self-motivated, flexibility)', () => {
+      const jd = 'Requirements: Python scripting. Python backend. Self-motivated individual. Flexibility appreciated.';
+      const kw = extractKeywords(jd);
+      expect(kw).toContain('python');
+      expect(kw).not.toContain('self-motivated');
+      expect(kw).not.toContain('flexibility');
+    });
+
+    it('keeps soft skills with count >= 2', () => {
+      const jd = 'Leadership skills. Strong leadership. Communication required. Excellent communication.';
+      const kw = extractKeywords(jd);
+      expect(kw).toContain('leadership');
+      expect(kw).toContain('communication');
+    });
+
+    it('still keeps hard known skills with count=1 (terraform)', () => {
+      const jd = 'Requirements: Python experience. Python scripts. Terraform for infrastructure.';
+      const kw = extractKeywords(jd);
+      expect(kw).toContain('terraform');
     });
   });
 

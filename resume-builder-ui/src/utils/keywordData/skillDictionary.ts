@@ -87,6 +87,15 @@ const hardSkillEntries: Array<[string, KeywordCategory]> = uniqueLower([
   'plc programming', 'scada', 'hvac', 'electrical wiring',
   'welding', 'cnc machining', 'quality control', 'iso 9001',
   'lean manufacturing', 'six sigma',
+  // Finance / Legal / Housing
+  'conveyancing', 'treasury', 'loan security', 'valuations', 'leasehold',
+  'freehold', 'land registry', 'title deeds', 'mortgage', 'remortgage',
+  'debt recovery', 'credit control', 'arrears management',
+  'housing management', 'social housing', 'housing association',
+  'tenancy management', 'property management',
+  'legal compliance', 'due diligence', 'contract management',
+  'underwriting', 'portfolio management', 'asset management',
+  'financial reporting', 'management accounts', 'cost control',
 ]).map((s) => [s, 'hard-skill']);
 
 const toolEntries: Array<[string, KeywordCategory]> = uniqueLower([
@@ -132,6 +141,8 @@ const certificationEntries: Array<[string, KeywordCategory]> = uniqueLower([
   'rn', 'bsn', 'msn', 'np',
   'pe', 'eit', 'leed',
   'servsafe', 'osha',
+  // UK finance / legal certifications
+  'lpc', 'cilex', 'cii', 'acca', 'cima',
 ]).map((s) => [s, 'certification']);
 
 const methodologyEntries: Array<[string, KeywordCategory]> = uniqueLower([
@@ -162,6 +173,7 @@ const softSkillEntries: Array<[string, KeywordCategory]> = uniqueLower([
   'strategic thinking', 'decision making', 'initiative',
   'self-motivated', 'detail-oriented', 'results-driven',
   'cross-functional', 'stakeholder management',
+  'flexibility', 'goal-oriented', 'proactive', 'resilience',
 ]).map((s) => [s, 'soft-skill']);
 
 // --- Build the lookup structures ---

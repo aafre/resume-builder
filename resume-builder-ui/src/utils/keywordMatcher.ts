@@ -82,7 +82,21 @@ const JOB_FILLER = new Set([
   'particularly', 'concepts', 'implement',
   'implementing', 'utilizing', 'various', 'multiple', 'develop',
   'developing', 'like', 'manage', 'managing', 'supporting',
-  'needed', 'maintain', 'current'
+  'needed', 'maintain', 'current',
+  // UK/international JD filler and benefits noise
+  'essential', 'desirable', 'criteria', 'please', 'able', 'demonstrable',
+  'help', 'important', 'additional', 'interviews', 'highly', 'things',
+  'hold', 'level', 'appropriate', 'suitable', 'key', 'right',
+  'offer', 'providing', 'provided', 'effectively', 'expect', 'expected',
+  'delivery', 'delivering', 'day', 'days', 'annual', 'per', 'new',
+  'range', 'take', 'part', 'high', 'making', 'way',
+  // Generic adjectives, verbs, and recruiter language (round 2)
+  'experienced', 'successful', 'educated', 'qualified', 'qualification',
+  'preferably', 'previous', 'interested', 'agreed', 'varied',
+  'practice', 'respect', 'finding', 'review', 'meet',
+  'deadline', 'deadlines', 'workload', 'sector', 'public',
+  'prioritise', 'prioritize', 'liaising', 'liaise',
+  'ongoing', 'forthcoming', 'particular', 'using', 'used',
 ]);
 
 // Connector words — bigrams containing these are almost always noise
@@ -96,6 +110,9 @@ const TECH_TERMS_PATTERN = /(?<=^|\W)(c\+\+|c#|\.net|node\.js|next\.js|vue\.js|r
 
 // Section headers that signal the start of requirements (signal) vs company blurb (noise)
 const REQUIREMENTS_HEADER = /\b(requirements|qualifications|what you.ll need|what we.re looking for|must.have|key skills|responsibilities|your background)\b/i;
+
+// Section headers that signal END of requirements — benefits, perks, company info
+const NON_REQUIREMENTS_HEADER = /\b(benefits|what we offer|perks|about us|about the company|salary|compensation|our offer|why join|equal opportunity|how to apply|application process|diversity|the role offers)\b/i;
 
 // Placement suggestions based on keyword type
 const PLACEMENT_RULES: Array<{ pattern: RegExp; placement: string }> = [
@@ -132,10 +149,18 @@ function normalize(text: string): string {
  */
 function extractRequirementsSection(text: string): string {
   const match = REQUIREMENTS_HEADER.exec(text);
+  let section = text;
   if (match && match.index !== undefined) {
-    return text.slice(match.index);
+    section = text.slice(match.index);
   }
-  return text;
+
+  // Truncate at the first non-requirements header (benefits, perks, etc.)
+  const endMatch = NON_REQUIREMENTS_HEADER.exec(section);
+  if (endMatch && endMatch.index !== undefined && endMatch.index > 0) {
+    section = section.slice(0, endMatch.index);
+  }
+
+  return section;
 }
 
 /**
@@ -232,9 +257,13 @@ export function extractKeywords(jobDescription: string): string[] {
     // (A) Bigrams must appear 2+ times
     if (wordCount === 2 && count < 2) continue;
 
-    // (4b) Single words: need count >= 2 UNLESS they are in KNOWN_SKILLS or look technical
+    // (4b) Single words: need count >= 2 UNLESS they are a hard known skill or look technical
+    // Only dictionary-recognized hard skills bypass the frequency gate at count=1.
+    // Unknown words (even long ones like "experienced") must appear 2+ times.
     if (wordCount === 1 && count < 2) {
-      if (!isKnownSkill(keyword) && !/[+#\/.]/.test(keyword) && keyword.length < 5) continue;
+      const cat = getSkillCategory(keyword);
+      if (cat === 'soft-skill') continue;
+      if (!isKnownSkill(keyword) && !/[+#\/.]/.test(keyword)) continue;
     }
 
     // Skip single word if it is already part of a higher-ranked phrase
