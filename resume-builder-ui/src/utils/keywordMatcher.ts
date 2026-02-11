@@ -3,6 +3,23 @@
  * Extracts keywords from a job description and matches them against resume text.
  */
 
+import {
+  type KeywordCategory,
+  KNOWN_SKILLS,
+  KNOWN_PHRASES,
+  isKnownSkill,
+  getSkillCategory,
+  registerSkipTerms,
+  stem,
+  stemPhrase,
+  normalizeSynonym,
+  applyMultiWordSynonyms,
+  applyAllSynonyms,
+} from './keywordData';
+
+// Register known skills with the stemmer so they're never mangled
+registerSkipTerms(KNOWN_SKILLS as Set<string>);
+
 /** A single matched or missing keyword with metadata */
 export interface KeywordResult {
   keyword: string;
@@ -11,6 +28,8 @@ export interface KeywordResult {
   count: number;
   /** Suggested section to place the keyword */
   suggestedPlacement?: string;
+  /** Category of the keyword (hard-skill, tool, certification, etc.) */
+  category?: KeywordCategory;
 }
 
 /** Full scan result */
@@ -39,7 +58,8 @@ const STOP_WORDS = new Set([
   'here', 'there', 'only', 'own', 'my', 'me', 'i',
 ]);
 
-// Generic job posting filler words — expanded to reduce noise
+// Generic job posting filler words
+// (4c) Removed 'development', 'tools', 'support' — meaningful when repeated in requirements
 const JOB_FILLER = new Set([
   'experience', 'required', 'preferred', 'ability', 'skills', 'including',
   'work', 'working', 'position', 'role', 'company', 'team', 'opportunity',
@@ -59,9 +79,9 @@ const JOB_FILLER = new Set([
   'health', 'insurance', '401k', 'matching', 'dental', 'vision',
   'paid', 'time', 'off', 'pto', 'remote', 'hybrid', 'office', 'location',
   // Generic verbs and vague terms that inflate noise
-  'particularly', 'concepts', 'tools', 'development', 'implement',
+  'particularly', 'concepts', 'implement',
   'implementing', 'utilizing', 'various', 'multiple', 'develop',
-  'developing', 'like', 'manage', 'managing', 'support', 'supporting',
+  'developing', 'like', 'manage', 'managing', 'supporting',
   'needed', 'maintain', 'current'
 ]);
 
@@ -113,7 +133,6 @@ function normalize(text: string): string {
 function extractRequirementsSection(text: string): string {
   const match = REQUIREMENTS_HEADER.exec(text);
   if (match && match.index !== undefined) {
-    // Use everything from the first requirements header onward
     return text.slice(match.index);
   }
   return text;
@@ -121,21 +140,35 @@ function extractRequirementsSection(text: string): string {
 
 /**
  * Extract meaningful keyword phrases from job description text.
- * Uses single words and bigrams, with pre-processing for special tech terms.
+ * Uses single words, bigrams, and targeted trigrams (known phrases),
+ * with synonym normalization and skill dictionary integration.
  */
 export function extractKeywords(jobDescription: string): string[] {
-  const fullText = normalize(jobDescription);
+  let fullText = normalize(jobDescription);
 
-  // Fix 5: Focus on requirements section when possible
+  // (4a) Apply multi-word synonym normalization before tokenization
+  fullText = applyMultiWordSynonyms(fullText);
+
+  // Focus on requirements section when possible
   const text = extractRequirementsSection(fullText);
 
   const keywordSet = new Map<string, number>();
 
-  // Fix 4: Pre-extract known tech terms before general tokenization
+  // Pre-extract known tech terms before general tokenization
   const techMatches = text.match(TECH_TERMS_PATTERN) || [];
   for (const term of techMatches) {
     const lower = term.toLowerCase();
     keywordSet.set(lower, (keywordSet.get(lower) || 0) + 1);
+  }
+
+  // (4e) Known-phrase trigram extraction — scan for 3+ word terms from KNOWN_PHRASES
+  for (const phrase of KNOWN_PHRASES) {
+    const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const pattern = new RegExp(`(?<=^|\\W)${escaped}(?=\\W|$)`, 'gi');
+    const matches = text.match(pattern);
+    if (matches && matches.length > 0) {
+      keywordSet.set(phrase, matches.length);
+    }
   }
 
   // Split into sentences, then words
@@ -149,21 +182,28 @@ export function extractKeywords(jobDescription: string): string[] {
 
     // Single words (skip stop words and filler)
     for (const word of words) {
-      const clean = word.replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
-      if (clean.length > 2 && !STOP_WORDS.has(clean) && !JOB_FILLER.has(clean)) {
+      let clean = word.replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
+      if (clean.length <= 2) continue;
+      // (4a) Apply single-word synonym normalization
+      clean = normalizeSynonym(clean);
+      if (!STOP_WORDS.has(clean) && !JOB_FILLER.has(clean)) {
         keywordSet.set(clean, (keywordSet.get(clean) || 0) + 1);
       }
     }
 
-    // Bigrams only (trigrams removed — too noisy)
+    // Bigrams
     for (let i = 0; i < words.length - 1; i++) {
-      const a = words[i].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
-      const b = words[i + 1].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
+      let a = words[i].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
+      let b = words[i + 1].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
       if (a.length > 1 && b.length > 1) {
-        // Fix 3: Skip bigrams with connector words, stop words, or filler
+        // Skip bigrams with connector words, stop words, or filler
         if (CONNECTORS.has(a) || CONNECTORS.has(b)) continue;
         if (STOP_WORDS.has(a) || STOP_WORDS.has(b)) continue;
         if (JOB_FILLER.has(a) || JOB_FILLER.has(b)) continue;
+
+        // (4a) Normalize synonym parts in bigrams
+        a = normalizeSynonym(a);
+        b = normalizeSynonym(b);
 
         const bigram = `${a} ${b}`;
         keywordSet.set(bigram, (keywordSet.get(bigram) || 0) + 1);
@@ -175,19 +215,26 @@ export function extractKeywords(jobDescription: string): string[] {
   const sorted = [...keywordSet.entries()].sort((a, b) => b[1] - a[1]);
 
   // First pass: collect candidates
-  const candidates: string[] = [];
+  const candidates: Array<{ keyword: string; count: number }> = [];
   const added = new Set<string>();
   for (const [keyword, count] of sorted) {
     const wordCount = keyword.split(' ').length;
 
-    // (A) Bigrams must appear 2+ times to be included — single-occurrence
-    // bigrams are almost always noise (adjacent words, not real phrases)
+    // Trigrams (from KNOWN_PHRASES) are always included if they appeared
+    if (wordCount >= 3) {
+      // Already appeared at least once (from KNOWN_PHRASES scan)
+      added.add(keyword);
+      candidates.push({ keyword, count });
+      if (candidates.length >= 40) break;
+      continue;
+    }
+
+    // (A) Bigrams must appear 2+ times
     if (wordCount === 2 && count < 2) continue;
 
-    // Single words need count >= 2 to be included (unless they look technical)
+    // (4b) Single words: need count >= 2 UNLESS they are in KNOWN_SKILLS or look technical
     if (wordCount === 1 && count < 2) {
-      // Allow technical-looking terms even with count 1
-      if (!/[+#\/.]/.test(keyword) && keyword.length < 5) continue;
+      if (!isKnownSkill(keyword) && !/[+#\/.]/.test(keyword) && keyword.length < 5) continue;
     }
 
     // Skip single word if it is already part of a higher-ranked phrase
@@ -203,25 +250,39 @@ export function extractKeywords(jobDescription: string): string[] {
     }
 
     added.add(keyword);
-    candidates.push(keyword);
+    candidates.push({ keyword, count });
 
-    if (candidates.length >= 40) break; // Cap at 40 keywords
+    if (candidates.length >= 40) break;
   }
 
-  // (B) Bidirectional subsumption: if bigram "machine learning" is in the
-  // list, remove standalone "machine" and "learning" even if they ranked
-  // higher. The first pass only catches lower-ranked singles.
-  const bigrams = candidates.filter((k) => k.includes(' '));
+  // (4d) Improved bidirectional subsumption: only subsume a standalone word
+  // if its frequency <= 1.5x the containing bigram's frequency.
+  // This preserves "data" (8x) when "data science" only appears 2x.
+  const multiWordCandidates = candidates.filter((c) => c.keyword.includes(' '));
   const subsumedWords = new Set<string>();
-  for (const bigram of bigrams) {
+  for (const { keyword: bigram, count: bigramCount } of multiWordCandidates) {
     for (const word of bigram.split(' ')) {
-      subsumedWords.add(word);
+      // Find the standalone word's count
+      const standalone = candidates.find(
+        (c) => c.keyword === word && !c.keyword.includes(' ')
+      );
+      if (standalone) {
+        // Only subsume if standalone frequency is ≤ 1.5x the bigram frequency
+        if (standalone.count <= bigramCount * 1.5) {
+          subsumedWords.add(word);
+        }
+      } else {
+        // Word not in candidates as standalone — mark it subsumed (safe)
+        subsumedWords.add(word);
+      }
     }
   }
-  const results = candidates.filter((k) => {
-    if (k.includes(' ')) return true; // keep all bigrams
-    return !subsumedWords.has(k);
-  });
+  const results = candidates
+    .filter((c) => {
+      if (c.keyword.includes(' ')) return true; // keep all multi-word
+      return !subsumedWords.has(c.keyword);
+    })
+    .map((c) => c.keyword);
 
   return results;
 }
@@ -242,25 +303,72 @@ function countOccurrences(keyword: string, text: string): number {
 }
 
 /**
+ * (4f) Stem-aware occurrence counting. Stems each word in the keyword
+ * and searches for the stemmed forms in pre-stemmed resume text.
+ */
+function countStemOccurrences(keyword: string, stemmedText: string): number {
+  const stemmedKeyword = stemPhrase(keyword);
+  if (stemmedKeyword === keyword) return 0; // No stemming change, skip
+  const escaped = stemmedKeyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const pattern = stemmedKeyword.includes(' ')
+    ? new RegExp(escaped, 'gi')
+    : new RegExp(`(?<=^|\\W)${escaped}(?=\\W|$)`, 'gi');
+  const matches = stemmedText.match(pattern);
+  return matches ? matches.length : 0;
+}
+
+/**
+ * Stem full text — stem each word independently, preserving structure.
+ * Used to create a stemmed version of resume text for fallback matching.
+ */
+function stemText(text: string): string {
+  return text.replace(/[a-z]+/gi, (word) => stem(word));
+}
+
+/**
  * Scan resume text against extracted job description keywords
  */
 export function scanResume(resumeText: string, jobDescription: string): ScanResult {
   const keywords = extractKeywords(jobDescription);
-  const normalizedResume = normalize(resumeText);
+
+  // (4a) Normalize resume through full synonym pipeline (multi-word + single-word)
+  let normalizedResume = normalize(resumeText);
+  normalizedResume = applyAllSynonyms(normalizedResume);
+
+  // (4f) Pre-stem resume text once for fallback stem matching
+  const stemmedResume = stemText(normalizedResume);
 
   const matched: KeywordResult[] = [];
   const missing: KeywordResult[] = [];
 
   for (const keyword of keywords) {
-    const count = countOccurrences(keyword, normalizedResume);
+    // (4a) Also normalize the keyword through synonyms for resume matching
+    const normalizedKeyword = normalizeSynonym(keyword);
+    const category = getSkillCategory(keyword) || getSkillCategory(normalizedKeyword) || 'hard-skill';
+
+    // Try exact match first
+    let count = countOccurrences(keyword, normalizedResume);
+
+    // Also try with the synonym-normalized form if different
+    if (count === 0 && normalizedKeyword !== keyword) {
+      count = countOccurrences(normalizedKeyword, normalizedResume);
+    }
+
+    // (4f) Stem fallback: only if exact match found nothing AND keyword is NOT a known skill
+    // (known skills like "React", "Docker" should match exactly, not via stems)
+    if (count === 0 && !isKnownSkill(keyword)) {
+      count = countStemOccurrences(keyword, stemmedResume);
+    }
+
     if (count > 0) {
-      matched.push({ keyword, found: true, count });
+      matched.push({ keyword, found: true, count, category });
     } else {
       missing.push({
         keyword,
         found: false,
         count: 0,
         suggestedPlacement: getSuggestedPlacement(keyword),
+        category,
       });
     }
   }
