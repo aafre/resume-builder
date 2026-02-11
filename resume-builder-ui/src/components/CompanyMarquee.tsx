@@ -70,7 +70,7 @@ export default function CompanyMarquee({
             <img
               src={company.logo}
               alt={company.alt}
-              className="max-w-28 max-h-10 object-contain transition-all duration-500 grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100"
+              className="max-w-28 max-h-10 object-contain transition-all duration-500"
               width="112"
               height="40"
               onError={(e) => {
