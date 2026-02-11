@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.18.1] - 2026-02-11
+
+### 🐛 Bug Fixes
+
+- **sitemap:** Exclude jobs URLs until feature flag is enabled
+- Untrack sitemap-static.xml dev artifact from repo
+
+### ⚙️ Miscellaneous Tasks
+
+- Remove FlexOffers verification meta tag
+
 ## [3.18.0] - 2026-02-11
 
 ### 🚀 Features
