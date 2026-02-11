@@ -70,7 +70,7 @@ export default function CompanyMarquee({
             <img
               src={company.logo}
               alt={company.alt}
-              className="max-w-28 max-h-10 object-contain transition-all duration-500"
+              className="w-28 h-10 object-contain transition-all duration-500"
               width="112"
               height="40"
               onError={(e) => {
