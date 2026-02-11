@@ -338,14 +338,15 @@ describe('extractKeywords', () => {
     });
 
     it('subsumes singles when frequency is close to bigram frequency', () => {
-      // "data" (3x) vs "data science" (3x) — ratio 1.0 ≤ 1.5 → subsumed
+      // "data" appears 6x, "data science" appears 3x → ratio 2.0 > 1.5 → data preserved
+      // "science" appears 3x, "data science" appears 3x → ratio 1.0 ≤ 1.5 → science subsumed
       const jd =
         'Data science projects. Data science models. Data science leadership. ' +
         'Data engineering. Data analysis. Data visualization.';
       const kw = extractKeywords(jd);
       expect(kw).toContain('data science');
-      // data appears 6x but data science appears 3x, so 6/3 = 2.0 > 1.5 → NOT subsumed
-      // However with other bigrams like "data engineering" etc, data gets subsumed
+      expect(kw).toContain('data');
+      expect(kw).not.toContain('science');
     });
 
     it('keeps singles NOT in any bigram', () => {
@@ -908,11 +909,12 @@ describe('scanResume', () => {
   // 14. Stem-Aware Matching
   // ---------------------------------------------------------------------------
   describe('stem-aware matching', () => {
-    it('"managing" in JD matches "management" in resume', () => {
-      const jd = 'Managing projects. Managing teams. Managing budgets.';
-      const resume = 'Extensive project management experience. Team management.';
+    it('"configuring" in JD matches "configuration" in resume', () => {
+      const jd = 'Configuring servers. Configuring networks. Configuring firewalls.';
+      const resume = 'Extensive server configuration and network configuration experience.';
       const result = scanResume(resume, jd);
-      // "managing" is in JOB_FILLER so it won't be extracted. Let's use a non-filler term.
+      const matched = result.matched.map((m) => m.keyword);
+      expect(matched).toContain('configuring');
     });
 
     it('"optimization" in JD matches "optimizing" in resume', () => {

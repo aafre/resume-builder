@@ -18,7 +18,7 @@ import {
 } from './keywordData';
 
 // Register known skills with the stemmer so they're never mangled
-registerSkipTerms(KNOWN_SKILLS as Set<string>);
+registerSkipTerms(KNOWN_SKILLS);
 
 /** A single matched or missing keyword with metadata */
 export interface KeywordResult {

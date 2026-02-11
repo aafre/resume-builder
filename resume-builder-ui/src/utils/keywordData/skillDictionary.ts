@@ -53,8 +53,8 @@ const hardSkillEntries: Array<[string, KeywordCategory]> = uniqueLower([
   ...flattenValues(CLOUD_PLATFORMS),
   ...flattenValues(DATA_TOOLS),
   ...flattenValues(TESTING_PRACTICES),
-  ...(SECURITY_PRACTICES as unknown as string[]).map((s) => s.toLowerCase()),
-  ...(SE_PRACTICES as unknown as string[]).map((s) => s.toLowerCase()),
+  ...SECURITY_PRACTICES.map((s) => s.toLowerCase()),
+  ...SE_PRACTICES.map((s) => s.toLowerCase()),
   // Additional hard skills not in common/skills.ts
   'machine learning', 'deep learning', 'natural language processing',
   'computer vision', 'data engineering', 'data analysis', 'data science',

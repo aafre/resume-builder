@@ -10,10 +10,10 @@
  */
 
 /** Set of lowercase terms that must never be stemmed */
-let skipSet: Set<string> | null = null;
+let skipSet: ReadonlySet<string> | null = null;
 
 /** Register known skills so the stemmer can skip them */
-export function registerSkipTerms(terms: Set<string>): void {
+export function registerSkipTerms(terms: ReadonlySet<string>): void {
   skipSet = terms;
 }
 
