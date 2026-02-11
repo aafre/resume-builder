@@ -223,6 +223,7 @@
     <!-- AdSense — deferred load to free bandwidth for LCP -->
     <script>
       window.adsbygoogle = window.adsbygoogle || [];
+      window.adsbygoogle.pauseAdRequests = 1;
       (function loadAdSense() {
         function inject() {
           var s = document.createElement('script');
@@ -236,6 +237,18 @@
         } else {
           setTimeout(inject, 2000);
         }
+      })();
+      (function() {
+        var resumed = false;
+        function resume() {
+          if (resumed) return;
+          resumed = true;
+          window.adsbygoogle.pauseAdRequests = 0;
+        }
+        setTimeout(resume, 4000);
+        ['scroll', 'click', 'touchstart', 'keydown'].forEach(function(e) {
+          document.addEventListener(e, resume, { once: true, passive: true });
+        });
       })();
     </script>
   </body>
