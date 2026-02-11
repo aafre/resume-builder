@@ -4,14 +4,20 @@ import { toast } from 'react-hot-toast';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { User, Session } from '@supabase/supabase-js';
 
-// Lazy singleton — Supabase SDK (41KB) only loads when auth is first needed
-let _supabase: SupabaseClient | null | undefined;
+// Lazy singleton — Supabase SDK (41KB) only loads when auth is first needed.
+// Cache the promise (not the result) to prevent concurrent callers from
+// triggering multiple dynamic imports.
+let supabasePromise: Promise<SupabaseClient | null> | undefined;
 async function getSupabase(): Promise<SupabaseClient | null> {
-  if (_supabase === undefined) {
-    const { supabase } = await import('../lib/supabase');
-    _supabase = supabase;
+  if (supabasePromise === undefined) {
+    supabasePromise = import('../lib/supabase')
+      .then(({ supabase }) => supabase)
+      .catch(err => {
+        console.error('Failed to load Supabase SDK:', err);
+        return null;
+      });
   }
-  return _supabase;
+  return supabasePromise;
 }
 
 
