@@ -1,8 +1,18 @@
 import React, { createContext, useContext, useEffect, useState, useRef, useCallback, ReactNode } from 'react';
-import { supabase } from '../lib/supabase';
 import { apiClient, ApiError } from '../lib/api-client';
 import { toast } from 'react-hot-toast';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import type { User, Session } from '@supabase/supabase-js';
+
+// Lazy singleton — Supabase SDK (41KB) only loads when auth is first needed
+let _supabase: SupabaseClient | null | undefined;
+async function getSupabase(): Promise<SupabaseClient | null> {
+  if (_supabase === undefined) {
+    const { supabase } = await import('../lib/supabase');
+    _supabase = supabase;
+  }
+  return _supabase;
+}
 
 
 interface AuthContextType {
@@ -308,170 +318,173 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    // If Supabase is not configured, skip auth
-    if (!supabase) {
-      setLoading(false);
-      return;
-    }
+    let subscription: { unsubscribe: () => void } | null = null;
 
-    // Listen for auth state changes - Supabase handles everything
-    // This is the ONLY initialization logic - no separate initializeAuth function
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        console.log('🔔 Auth event:', event, session?.user?.is_anonymous ? 'anonymous' : session?.user?.id || 'none');
+    (async () => {
+      const supabase = await getSupabase();
 
-        // Update session state and cache
-        setSessionAndRef(session);
-        setUser(session?.user ?? null);
-        apiClient.setSession(session);
+      // If Supabase is not configured, skip auth
+      if (!supabase) {
+        setLoading(false);
+        return;
+      }
 
-        // Event-driven initialization - no timeouts, no race conditions
-        // INITIAL_SESSION fires once when Supabase completes session restoration check
-        if (event === 'INITIAL_SESSION') {
-          if (session) {
-            // Session restored from localStorage
-            console.log('✅ Session restored:', session.user?.is_anonymous ? 'anonymous' : session.user?.id);
-            setLoading(false);
-          } else {
-            // No session found - create anonymous session
-            console.log('📝 No session found, creating anonymous session...');
-            // Set loading=false immediately to unblock UI
-            // Anonymous session will be created in background
-            setLoading(false);
+      // Listen for auth state changes - Supabase handles everything
+      // This is the ONLY initialization logic - no separate initializeAuth function
+      const { data: { subscription: sub } } = supabase.auth.onAuthStateChange(
+        (event, session) => {
+          console.log('🔔 Auth event:', event, session?.user?.is_anonymous ? 'anonymous' : session?.user?.id || 'none');
 
-            // Defer async operation to avoid blocking Web Lock
-            setTimeout(async () => {
-              try {
-                const { data, error } = await supabase!.auth.signInAnonymously();
-                if (error) {
-                  console.error('❌ Failed to create anonymous session:', error);
+          // Update session state and cache
+          setSessionAndRef(session);
+          setUser(session?.user ?? null);
+          apiClient.setSession(session);
+
+          // Event-driven initialization - no timeouts, no race conditions
+          // INITIAL_SESSION fires once when Supabase completes session restoration check
+          if (event === 'INITIAL_SESSION') {
+            if (session) {
+              // Session restored from localStorage
+              console.log('✅ Session restored:', session.user?.is_anonymous ? 'anonymous' : session.user?.id);
+              setLoading(false);
+            } else {
+              // No session found - create anonymous session
+              console.log('📝 No session found, creating anonymous session...');
+              // Set loading=false immediately to unblock UI
+              // Anonymous session will be created in background
+              setLoading(false);
+
+              // Defer async operation to avoid blocking Web Lock
+              setTimeout(async () => {
+                try {
+                  const { data, error } = await supabase.auth.signInAnonymously();
+                  if (error) {
+                    console.error('❌ Failed to create anonymous session:', error);
+                    toast.error('Failed to initialize. Please refresh the page.');
+                  } else {
+                    console.log('✅ Anonymous session created:', data.user?.id);
+                  }
+                } catch (error) {
+                  console.error('❌ Anonymous sign-in error:', error);
                   toast.error('Failed to initialize. Please refresh the page.');
+                }
+              }, 0);
+            }
+            return; // Exit early - no further processing needed for INITIAL_SESSION
+          }
+
+          // SIGNED_IN fires when OAuth/magic link callback completes
+          if (event === 'SIGNED_IN') {
+            console.log('✅ Sign-in completed');
+            setLoading(false);
+            setAuthInProgress(false);
+          }
+
+          // Store anonymous user_id for migration later
+          if (session?.user?.is_anonymous) {
+            localStorage.setItem('anonymous-user-id', session.user.id);
+          }
+
+          // IMPORTANT: Migrate localStorage data for BOTH anonymous and authenticated users
+          // This handles the upgrade scenario where old app (main branch) used localStorage
+          if (session && !hasMigrated && !migrationAttempted.current) {
+            migrationAttempted.current = true;
+
+            const legacyResumes = findAllLegacyResumes();
+
+            if (legacyResumes.length > 0) {
+              console.log(`📦 Found ${legacyResumes.length} legacy resumes to migrate`);
+
+              // Show migration UI
+              setMigrationInProgress(true);
+
+              // Defer async migration to avoid blocking Web Lock
+              setTimeout(async () => {
+                const migrated = await migrateAllLegacyResumes(session, legacyResumes);
+                if (migrated) {
+                  setHasMigrated(true);
+                  setMigratedResumeCount(legacyResumes.length);
+                  setMigrationInProgress(false);
+
+                  // Redirect to my-resumes after short delay to show success toast
+                  setTimeout(() => {
+                    window.location.href = '/my-resumes';
+                  }, 1500);
                 } else {
-                  console.log('✅ Anonymous session created:', data.user?.id);
+                  setMigrationInProgress(false);
+                }
+              }, 0);
+            }
+          }
+
+          // Trigger migration when user signs in (from anonymous to authenticated)
+          if (event === 'SIGNED_IN' && session?.user && !session.user.is_anonymous) {
+            // Check if migration is needed FIRST, before any other operations
+            const oldAnonUserId = localStorage.getItem('anonymous-user-id');
+            const needsMigration = oldAnonUserId && oldAnonUserId !== session.user.id && !anonMigrationAttempted.current;
+
+            // Set migration flag IMMEDIATELY to prevent race conditions
+            // This blocks Editor from loading resume with wrong user_id
+            if (needsMigration) {
+              anonMigrationAttempted.current = true; // Prevent duplicate calls in StrictMode
+              setAnonMigrationInProgress(true);
+              console.log('👤 Starting migration process - blocking UI loads...');
+            }
+
+            // Show welcome toast on successful sign-in (only once per session)
+            const hasShownToast = sessionStorage.getItem('login-toast-shown');
+            if (!hasShownToast) {
+              toast.success('Signed in successfully');
+              sessionStorage.setItem('login-toast-shown', 'true');
+            }
+
+            // Defer async operations to avoid blocking Web Lock
+            setTimeout(async () => {
+              // Refresh user metadata to ensure avatar_url is populated from OAuth provider
+              try {
+                const { data: { user: refreshedUser }, error } = await supabase.auth.getUser();
+                if (!error && refreshedUser) {
+                  setUser(refreshedUser);
+                  console.log('User metadata refreshed after OAuth sign-in');
                 }
               } catch (error) {
-                console.error('❌ Anonymous sign-in error:', error);
-                toast.error('Failed to initialize. Please refresh the page.');
+                console.error('Failed to refresh user metadata:', error);
+                // Non-critical error - continue with existing metadata
               }
-            }, 0);
-          }
-          return; // Exit early - no further processing needed for INITIAL_SESSION
-        }
 
-        // SIGNED_IN fires when OAuth/magic link callback completes
-        if (event === 'SIGNED_IN') {
-          console.log('✅ Sign-in completed');
-          setLoading(false);
-          setAuthInProgress(false);
-        }
+              // Migrate anonymous user's cloud resumes to authenticated account
+              if (needsMigration) {
+                console.log('👤 Migrating anonymous cloud resumes to authenticated account...');
 
-        // Store anonymous user_id for migration later
-        if (session?.user?.is_anonymous) {
-          localStorage.setItem('anonymous-user-id', session.user.id);
-        }
-
-        // IMPORTANT: Migrate localStorage data for BOTH anonymous and authenticated users
-        // This handles the upgrade scenario where old app (main branch) used localStorage
-        if (session && !hasMigrated && !migrationAttempted.current) {
-          migrationAttempted.current = true;
-
-          const legacyResumes = findAllLegacyResumes();
-
-          if (legacyResumes.length > 0) {
-            console.log(`📦 Found ${legacyResumes.length} legacy resumes to migrate`);
-
-            // Show migration UI
-            setMigrationInProgress(true);
-
-            // Defer async migration to avoid blocking Web Lock
-            setTimeout(async () => {
-              const migrated = await migrateAllLegacyResumes(session, legacyResumes);
-              if (migrated) {
-                setHasMigrated(true);
-                setMigratedResumeCount(legacyResumes.length);
-                setMigrationInProgress(false);
-
-                // Redirect to my-resumes after short delay to show success toast
-                setTimeout(() => {
-                  window.location.href = '/my-resumes';
-                }, 1500);
+                try {
+                  await migrateAnonResumes(session, oldAnonUserId);
+                  localStorage.removeItem('anonymous-user-id');
+                } catch (error) {
+                  console.error('Migration failed:', error);
+                } finally {
+                  setAnonMigrationInProgress(false);
+                  console.log('✅ Anonymous migration complete, UI can proceed');
+                }
               } else {
-                setMigrationInProgress(false);
+                // No migration needed - ensure flag is false
+                setAnonMigrationInProgress(false);
               }
             }, 0);
           }
         }
+      );
 
-        // Trigger migration when user signs in (from anonymous to authenticated)
-        if (event === 'SIGNED_IN' && session?.user && !session.user.is_anonymous) {
-          // Check if migration is needed FIRST, before any other operations
-          const oldAnonUserId = localStorage.getItem('anonymous-user-id');
-          const needsMigration = oldAnonUserId && oldAnonUserId !== session.user.id && !anonMigrationAttempted.current;
-
-          // Set migration flag IMMEDIATELY to prevent race conditions
-          // This blocks Editor from loading resume with wrong user_id
-          if (needsMigration) {
-            anonMigrationAttempted.current = true; // Prevent duplicate calls in StrictMode
-            setAnonMigrationInProgress(true);
-            console.log('👤 Starting migration process - blocking UI loads...');
-          }
-
-          // Show welcome toast on successful sign-in (only once per session)
-          const hasShownToast = sessionStorage.getItem('login-toast-shown');
-          if (!hasShownToast) {
-            toast.success('Signed in successfully');
-            sessionStorage.setItem('login-toast-shown', 'true');
-          }
-
-          // Defer async operations to avoid blocking Web Lock
-          setTimeout(async () => {
-            // Refresh user metadata to ensure avatar_url is populated from OAuth provider
-            try {
-              const { data: { user: refreshedUser }, error } = await supabase!.auth.getUser();
-              if (!error && refreshedUser) {
-                setUser(refreshedUser);
-                console.log('User metadata refreshed after OAuth sign-in');
-              }
-            } catch (error) {
-              console.error('Failed to refresh user metadata:', error);
-              // Non-critical error - continue with existing metadata
-            }
-
-            // Migrate anonymous user's cloud resumes to authenticated account
-            if (needsMigration) {
-              console.log('👤 Migrating anonymous cloud resumes to authenticated account...');
-
-              try {
-                await migrateAnonResumes(session, oldAnonUserId);
-                localStorage.removeItem('anonymous-user-id');
-              } catch (error) {
-                console.error('Migration failed:', error);
-              } finally {
-                setAnonMigrationInProgress(false);
-                console.log('✅ Anonymous migration complete, UI can proceed');
-              }
-            } else {
-              // No migration needed - ensure flag is false
-              setAnonMigrationInProgress(false);
-            }
-          }, 0);
-        }
-      }
-    );
+      subscription = sub;
+    })();
 
     // Cleanup on unmount
     return () => {
-      subscription.unsubscribe();
+      subscription?.unsubscribe();
     };
   }, []);
 
   // Proactive token refresh when tab regains focus
   useEffect(() => {
-    if (!supabase) return;
-
-    // Capture supabase in closure to satisfy TypeScript
-    const supabaseClient = supabase;
-
     const handleVisibilityChange = async () => {
       if (document.visibilityState === 'visible' && sessionRef.current) {
         const expiresAt = sessionRef.current.expires_at;
@@ -480,7 +493,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         if (expiresAt && (expiresAt - now) < fiveMinutes) {
           try {
-            const { data: { session: newSession }, error } = await supabaseClient.auth.refreshSession();
+            const supabase = await getSupabase();
+            if (!supabase) return;
+            const { data: { session: newSession }, error } = await supabase.auth.refreshSession();
             if (!error && newSession) {
               setSessionAndRef(newSession);
               apiClient.setSession(newSession);
@@ -494,7 +509,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [setSessionAndRef, supabase]);
+  }, [setSessionAndRef]);
 
   const showAuthModal = () => {
     setAuthModalOpen(true);
@@ -505,6 +520,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const initiateOAuthSignIn = async (provider: 'google' | 'linkedin_oidc') => {
+    const supabase = await getSupabase();
     if (!supabase) throw new Error('Supabase not configured');
 
     // Store current path for redirect after auth
@@ -542,6 +558,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const signInWithEmail = async (email: string) => {
+    const supabase = await getSupabase();
     if (!supabase) throw new Error('Supabase not configured');
 
     console.log('🔵 Attempting to send magic link to:', email);
@@ -567,6 +584,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const signOut = async () => {
+    const supabase = await getSupabase();
     if (!supabase || signingOut) return; // Prevent double-clicks
 
     try {
