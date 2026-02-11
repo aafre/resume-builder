@@ -15,7 +15,8 @@ import DownloadCTA from '../shared/DownloadCTA';
 import RevealSection from '../shared/RevealSection';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
-import { scanResume, type ScanResult } from '../../utils/keywordMatcher';
+import { scanResume, type ScanResult, type KeywordResult } from '../../utils/keywordMatcher';
+import type { KeywordCategory } from '../../utils/keywordData';
 
 function ScoreRing({ percentage }: { percentage: number }) {
   const radius = 54;
@@ -73,6 +74,56 @@ function KeywordBadge({
   );
 }
 
+const CATEGORY_LABELS: Record<KeywordCategory, string> = {
+  'hard-skill': 'Hard Skills',
+  'soft-skill': 'Soft Skills',
+  'tool': 'Tools',
+  'certification': 'Certifications',
+  'methodology': 'Methodologies',
+};
+
+const CATEGORY_ORDER: KeywordCategory[] = [
+  'hard-skill', 'tool', 'methodology', 'certification', 'soft-skill',
+];
+
+function CategoryGroupedKeywords({
+  keywords,
+  found,
+}: {
+  keywords: KeywordResult[];
+  found: boolean;
+}) {
+  const grouped = new Map<KeywordCategory, KeywordResult[]>();
+  for (const kw of keywords) {
+    const cat = kw.category || 'hard-skill';
+    const arr = grouped.get(cat);
+    if (arr) arr.push(kw);
+    else grouped.set(cat, [kw]);
+  }
+
+  return (
+    <div className="space-y-5 mb-6">
+      {CATEGORY_ORDER.filter((cat) => grouped.has(cat)).map((cat) => (
+        <div key={cat}>
+          <span className="font-mono text-xs tracking-[0.12em] text-stone-warm uppercase mb-2 block">
+            {CATEGORY_LABELS[cat]}
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {grouped.get(cat)!.map((kw) => (
+              <KeywordBadge
+                key={kw.keyword}
+                keyword={kw.keyword}
+                found={found}
+                count={kw.count}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function ResumeKeywordScanner() {
   const config = SEO_PAGES.keywordScanner;
   const schemas = usePageSchema({
@@ -85,6 +136,7 @@ export default function ResumeKeywordScanner() {
   const [jobDescription, setJobDescription] = useState('');
   const [result, setResult] = useState<ScanResult | null>(null);
   const [showMissing, setShowMissing] = useState(true);
+  const [groupByType, setGroupByType] = useState(false);
 
   const handleScan = useCallback(() => {
     if (!resumeText.trim() || !jobDescription.trim()) return;
@@ -212,26 +264,38 @@ export default function ResumeKeywordScanner() {
 
             {/* Keyword Tabs */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-black/[0.06]">
-              <div className="flex gap-2 mb-6">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setShowMissing(true)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      showMissing
+                        ? 'bg-red-50 text-red-600 border border-red-200'
+                        : 'text-stone-warm hover:bg-chalk-dark'
+                    }`}
+                  >
+                    Missing ({result.missingCount})
+                  </button>
+                  <button
+                    onClick={() => setShowMissing(false)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      !showMissing
+                        ? 'bg-accent/10 text-accent border border-accent/20'
+                        : 'text-stone-warm hover:bg-chalk-dark'
+                    }`}
+                  >
+                    Matched ({result.matchedCount})
+                  </button>
+                </div>
                 <button
-                  onClick={() => setShowMissing(true)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    showMissing
-                      ? 'bg-red-50 text-red-600 border border-red-200'
-                      : 'text-stone-warm hover:bg-chalk-dark'
+                  onClick={() => setGroupByType((v) => !v)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                    groupByType
+                      ? 'bg-ink/5 text-ink border border-ink/10'
+                      : 'text-mist hover:text-stone-warm hover:bg-chalk-dark'
                   }`}
                 >
-                  Missing ({result.missingCount})
-                </button>
-                <button
-                  onClick={() => setShowMissing(false)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    !showMissing
-                      ? 'bg-accent/10 text-accent border border-accent/20'
-                      : 'text-stone-warm hover:bg-chalk-dark'
-                  }`}
-                >
-                  Matched ({result.matchedCount})
+                  Group by Type
                 </button>
               </div>
 
@@ -243,16 +307,20 @@ export default function ResumeKeywordScanner() {
                     </p>
                   ) : (
                     <>
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        {result.missing.map((kw) => (
-                          <KeywordBadge
-                            key={kw.keyword}
-                            keyword={kw.keyword}
-                            found={false}
-                            count={0}
-                          />
-                        ))}
-                      </div>
+                      {groupByType ? (
+                        <CategoryGroupedKeywords keywords={result.missing} found={false} />
+                      ) : (
+                        <div className="flex flex-wrap gap-2 mb-6">
+                          {result.missing.map((kw) => (
+                            <KeywordBadge
+                              key={kw.keyword}
+                              keyword={kw.keyword}
+                              found={false}
+                              count={0}
+                            />
+                          ))}
+                        </div>
+                      )}
                       {/* Placement suggestions */}
                       <div className="border-t border-black/[0.06] pt-4">
                         <h3 className="font-display text-sm font-bold text-ink mb-3">
@@ -284,6 +352,8 @@ export default function ResumeKeywordScanner() {
                     <p className="text-stone-warm text-center py-8">
                       No matched keywords yet. Consider tailoring your resume to this job description.
                     </p>
+                  ) : groupByType ? (
+                    <CategoryGroupedKeywords keywords={result.matched} found={true} />
                   ) : (
                     <div className="flex flex-wrap gap-2">
                       {result.matched.map((kw) => (

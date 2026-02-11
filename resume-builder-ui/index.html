@@ -2,11 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- FOUC guard: hide body until external CSS loads and overrides opacity to 1 -->
+    <!-- Metric-matched fallback font: available before external CSS loads, prevents CLS -->
     <style>
-      body { opacity: 0 }
-      @keyframes fouc-reveal { to { opacity: 1 } }
-      body { animation: fouc-reveal 0s 5s forwards }
+      @font-face {
+        font-family: 'Bricolage Fallback';
+        src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial');
+        size-adjust: 104%;
+        ascent-override: 96%;
+        descent-override: 24%;
+        line-gap-override: 0%;
+      }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name='impact-site-verification' value='9e4dbb7d-2722-4101-a53b-081932d0f330'>
@@ -62,10 +67,9 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- Google Fonts: Bricolage Grotesque + JetBrains Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+    <!-- Self-hosted fonts: preload for immediate parallel download -->
+    <link rel="preload" href="/fonts/BricolageGrotesque-Variable-Latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/JetBrainsMono-Regular-Latin.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Theme Color -->
     <meta name="theme-color" content="#fafaf8" />
@@ -120,24 +124,24 @@
                   <div style="font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.1em;color:#00d47e;margin-bottom:1.5rem;text-transform:uppercase">
                     FREE FOREVER. NO SIGN-UP.
                   </div>
-                  <h1 style="font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:800;line-height:1.05;color:#0c0c0c;margin-bottom:1.5rem;letter-spacing:-.02em;max-width:48rem">
+                  <h1 style="font-family:'Bricolage Grotesque','Bricolage Fallback',system-ui,sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:800;line-height:1.05;color:#0c0c0c;margin-bottom:1.5rem;letter-spacing:-.02em;max-width:48rem">
                     Build resumes that actually get you hired.
                   </h1>
-                  <p style="font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:1.25rem;font-weight:200;color:#8a8680;max-width:36rem;line-height:1.6;margin-bottom:2.5rem">
+                  <p style="font-family:'Bricolage Grotesque','Bricolage Fallback',system-ui,sans-serif;font-size:1.25rem;font-weight:200;color:#8a8680;max-width:36rem;line-height:1.6;margin-bottom:2.5rem">
                     Create ATS-optimized resumes that get you noticed by hiring managers.
                   </p>
                   <div style="display:flex;gap:1rem;flex-wrap:wrap">
-                    <a href="/templates" style="display:inline-flex;align-items:center;justify-content:center;background:#00d47e;color:#0c0c0c;padding:.875rem 2rem;border-radius:.75rem;font-size:1rem;font-weight:700;text-decoration:none;font-family:'Bricolage Grotesque',system-ui,sans-serif">
+                    <a href="/templates" style="display:inline-flex;align-items:center;justify-content:center;background:#00d47e;color:#0c0c0c;padding:.875rem 2rem;border-radius:.75rem;font-size:1rem;font-weight:700;text-decoration:none;font-family:'Bricolage Grotesque','Bricolage Fallback',system-ui,sans-serif">
                       Start Building Now &rarr;
                     </a>
-                    <a href="/templates" style="display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(12,12,12,.15);color:#0c0c0c;padding:.875rem 2rem;border-radius:.75rem;font-size:1rem;font-weight:600;text-decoration:none;font-family:'Bricolage Grotesque',system-ui,sans-serif">
+                    <a href="/templates" style="display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(12,12,12,.15);color:#0c0c0c;padding:.875rem 2rem;border-radius:.75rem;font-size:1rem;font-weight:600;text-decoration:none;font-family:'Bricolage Grotesque','Bricolage Fallback',system-ui,sans-serif">
                       View Templates
                     </a>
                   </div>
                 </div>
               </div>
               <!-- Generic page placeholder (shown on non-home routes) -->
-              <div id="shell-generic" style="min-height:1200px;background:#fafaf8;font-family:'Bricolage Grotesque',system-ui,sans-serif">
+              <div id="shell-generic" style="min-height:1200px;background:#fafaf8;font-family:'Bricolage Grotesque','Bricolage Fallback',system-ui,sans-serif">
                 <div style="max-width:80rem;margin:0 auto;padding:3rem 1rem">
                   <!-- Breadcrumb skeleton -->
                   <div style="height:20px;width:12rem;background:#e5e7eb;border-radius:6px;margin-bottom:2rem"></div>
