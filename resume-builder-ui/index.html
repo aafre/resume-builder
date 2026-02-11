@@ -239,7 +239,10 @@
         }
       })();
       (function() {
+        var resumed = false;
         function resume() {
+          if (resumed) return;
+          resumed = true;
           window.adsbygoogle.pauseAdRequests = 0;
         }
         setTimeout(resume, 4000);
