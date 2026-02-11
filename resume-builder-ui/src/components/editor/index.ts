@@ -17,17 +17,13 @@ export type {
   EditorContentProps,
   EditorContentContactFormProps,
   EditorContentDragDropProps,
+  EditorContentSectionManagementProps,
   EditorContentNavigationProps,
   EditorContentModalProps,
   EditorContentFileOperationsProps,
   EditorContentEditorActionsProps,
   EditorContentPreviewProps,
   EditorContentSaveStatusProps,
+  EditorContentIconRegistry,
   EditorContentRefs,
 } from './EditorContent';
-
-// Re-export types that were moved to types/editor.ts but used to be in EditorContent
-export type {
-  EditorContentSectionManagementProps,
-  EditorContentIconRegistry,
-} from '../../types/editor';

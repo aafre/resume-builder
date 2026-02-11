@@ -235,34 +235,3 @@ export interface UseEditorActionsReturn {
   handleStartFresh: () => void;
   confirmStartFresh: () => Promise<void>;
 }
-
-// --- EditorContent Props Interfaces ---
-
-/**
- * Props for section management functionality
- */
-export interface EditorContentSectionManagementProps {
-  editingTitleIndex: number | null;
-  temporaryTitle: string;
-  setTemporaryTitle: React.Dispatch<React.SetStateAction<string>>;
-  handleUpdateSection: (index: number, updatedSection: Section) => void;
-  handleDeleteSection: (index: number) => void;
-  handleDeleteEntry: (sectionIndex: number, entryIndex: number) => void;
-  handleReorderEntry: (sectionIndex: number, oldIndex: number, newIndex: number) => void;
-  handleTitleEdit: (index: number) => void;
-  handleTitleSave: () => void;
-  handleTitleCancel: () => void;
-}
-
-/**
- * Icon registry interface (subset of useIconRegistry return)
- */
-export interface EditorContentIconRegistry {
-  registerIcon: (file: File) => string;
-  registerIconWithFilename: (file: File, filename: string) => void;
-  getIconFile: (filename: string) => File | null;
-  removeIcon: (filename: string) => void;
-  clearRegistry: () => void;
-  getRegisteredFilenames: () => string[];
-  getRegistrySize: () => number;
-}
