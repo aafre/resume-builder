@@ -17,6 +17,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import { EditorProvider } from "./contexts/EditorContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { SideRailLayout, InContentAd, AD_CONFIG, isExplicitAdsEnabled } from "./components/ads";
+import { affiliateConfig } from "./config/affiliate";
 import { ConversionProvider } from "./contexts/ConversionContext";
 import usePreferencePersistence from "./hooks/usePreferencePersistence";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -441,55 +442,59 @@ function AppContent() {
             }
           />
 
-          {/* Jobs feature routes */}
-          <Route
-            path="/jobs"
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <JobsPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/jobs/in/:locationSlug"
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <JobsLandingPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/jobs/:roleSlug"
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <JobsRoleHub />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/jobs/:roleSlug/:locationSlug"
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <JobsLandingPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/jobs/:roleSlug/:locationSlug/:modifier"
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <JobsLandingPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/jobs/:seniority/:roleSlug/:locationSlug"
-            element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <JobsLandingPage />
-              </Suspense>
-            }
-          />
+          {/* Jobs feature routes (behind feature flag) */}
+          {affiliateConfig.jobSearch.enabled && (
+            <>
+              <Route
+                path="/jobs"
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <JobsPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/jobs/in/:locationSlug"
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <JobsLandingPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/jobs/:roleSlug"
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <JobsRoleHub />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/jobs/:roleSlug/:locationSlug"
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <JobsLandingPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/jobs/:roleSlug/:locationSlug/:modifier"
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <JobsLandingPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/jobs/:seniority/:roleSlug/:locationSlug"
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <JobsLandingPage />
+                  </Suspense>
+                }
+              />
+            </>
+          )}
 
           {/* Auth callback route - must be before catch-all */}
           <Route
