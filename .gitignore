@@ -220,6 +220,7 @@ SEO-plan.md
 
 # Generated files (build artifacts)
 resume-builder-ui/public/sitemap.xml
+resume-builder-ui/public/sitemap-static.xml
 
 cold-reachouts/
 local_files/

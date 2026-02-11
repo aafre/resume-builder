@@ -1681,8 +1681,9 @@ def sitemap_index():
     """Sitemap index referencing all sub-sitemaps."""
     sub_sitemaps = [
         "sitemap-static.xml",
-        "sitemap-jobs-roles.xml",
     ]
+    if _get_pseo_renderer():
+        sub_sitemaps.append("sitemap-jobs-roles.xml")
     xml_parts = ['<?xml version="1.0" encoding="UTF-8"?>']
     xml_parts.append('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
     base = "https://easyfreeresume.com"
