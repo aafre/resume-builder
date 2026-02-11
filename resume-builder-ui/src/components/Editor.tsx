@@ -306,6 +306,15 @@ const Editor: React.FC = () => {
     );
   }
 
+  // ===== Resume Not Found (invalid resume ID in URL) =====
+  if (resumeLoader.resumeNotFound) {
+    return (
+      <Suspense fallback={<LoadingSpinner />}>
+        <NotFound />
+      </Suspense>
+    );
+  }
+
   // ===== 404 State =====
   if (!templateId && !resumeIdFromUrl) {
     return (

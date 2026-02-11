@@ -155,6 +155,7 @@ export interface UseResumeLoaderReturn {
   isLoadingFromUrl: boolean;
   setIsLoadingFromUrl: React.Dispatch<React.SetStateAction<boolean>>;
   hasLoadedFromUrl: boolean;
+  resumeNotFound: boolean;
   cloudResumeId: string | null;
   setCloudResumeId: (id: string | null) => void;
   loadResumeFromCloud: (resumeId: string) => Promise<void>;

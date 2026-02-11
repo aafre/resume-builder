@@ -110,6 +110,7 @@ export const useResumeLoader = ({
   // Track loading state
   const [isLoadingFromUrl, setIsLoadingFromUrl] = useState<boolean>(!!resumeIdFromUrl);
   const [hasLoadedFromUrl, setHasLoadedFromUrl] = useState<boolean>(false);
+  const [resumeNotFound, setResumeNotFound] = useState<boolean>(false);
   const [cloudResumeId, setCloudResumeId] = useState<string | null>(resumeIdFromUrl || null);
 
   // Ref to prevent concurrent cloud load calls (guards against re-renders during async operation)
@@ -188,7 +189,9 @@ export const useResumeLoader = ({
 
         // Use session from AuthContext instead of calling getSession()
         if (!session) {
-          toast.error('Please sign in to load saved resumes');
+          setResumeNotFound(true);
+          setHasLoadedFromUrl(true);
+          setIsLoadingFromUrl(false);
           return;
         }
 
@@ -293,14 +296,14 @@ export const useResumeLoader = ({
         const canRecover = templateId || hasTemplateParam || hasEditorState;
 
         if (!canRecover) {
-          // Only show toast if we can't recover - this is a true error
-          toast.error(error instanceof Error ? error.message : 'Failed to load resume');
+          // No recovery path — this resume ID simply doesn't exist
+          setResumeNotFound(true);
+          setHasLoadedFromUrl(true);
         } else {
           console.log('Resume not found in database, will recover from template or existing editor state');
         }
 
         setIsLoadingFromUrl(false);
-        // Don't set hasLoadedFromUrl on error - allow retry after migration completes
       } finally {
         setLoading(false);
         isLoadingCloudResumeRef.current = false;
@@ -365,6 +368,7 @@ export const useResumeLoader = ({
     isLoadingFromUrl,
     setIsLoadingFromUrl,
     hasLoadedFromUrl,
+    resumeNotFound,
     cloudResumeId,
     setCloudResumeId,
     loadResumeFromCloud,
