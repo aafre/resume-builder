@@ -320,6 +320,19 @@ footer {
   overflow: clip;
 }
 
+/* Suppress Google Auto Ads injected inside the footer.
+   Placement control only — ads elsewhere on the page are unaffected. */
+#app-footer .google-auto-placed,
+#app-footer ins.adsbygoogle,
+#app-footer div[data-google-query-id] {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+}
+
 
 .carousel {
   display: flex;
