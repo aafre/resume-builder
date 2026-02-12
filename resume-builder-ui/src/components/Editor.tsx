@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams, Navigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useIconRegistry } from "../hooks/useIconRegistry";
 import { usePreview } from "../hooks/usePreview";
@@ -269,6 +269,13 @@ const Editor: React.FC = () => {
     }
   }, [searchParams, resumeIdFromUrl, setTemplateId, setLoadingError, setLoading]);
 
+  // Show toast and redirect when resume ID in URL doesn't exist
+  useEffect(() => {
+    if (resumeLoader.resumeNotFound) {
+      toast.error("Resume not found. Pick a template to start fresh.");
+    }
+  }, [resumeLoader.resumeNotFound]);
+
   // ===== Editor Effects (click outside, keyboard shortcuts, save lifecycle) =====
   useEditorEffects({
     showAdvancedMenu: modalManager.showAdvancedMenu,
@@ -308,11 +315,7 @@ const Editor: React.FC = () => {
 
   // ===== Resume Not Found (invalid resume ID in URL) =====
   if (resumeLoader.resumeNotFound) {
-    return (
-      <Suspense fallback={<LoadingSpinner />}>
-        <NotFound />
-      </Suspense>
-    );
+    return <Navigate to="/templates" replace />;
   }
 
   // ===== 404 State =====

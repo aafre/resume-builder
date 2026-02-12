@@ -396,6 +396,8 @@ sections:
       // Should not show error toast because we can recover
       expect(toast.error).not.toHaveBeenCalled();
       expect(result.current.isLoadingFromUrl).toBe(false);
+      // Recovery path: resumeNotFound stays false so Editor can continue with template
+      expect(result.current.resumeNotFound).toBe(false);
     });
 
     it('should set resumeNotFound when no session', async () => {
