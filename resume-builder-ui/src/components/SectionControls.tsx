@@ -1,3 +1,6 @@
+import React from "react";
+import { ArrowUp, ArrowDown, Trash2 } from "lucide-react";
+
 const SectionControls: React.FC<{
   sectionIndex: number;
   sections: any[];
@@ -19,32 +22,41 @@ const SectionControls: React.FC<{
   return (
     <div className="absolute top-4 right-4 flex gap-2">
       <button
+        type="button"
         onClick={() => moveSection(sectionIndex, sectionIndex - 1)}
         disabled={sectionIndex === 0}
-        className={`px-2 py-1 rounded ${
+        aria-label="Move section up"
+        title="Move section up"
+        className={`p-1.5 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
           sectionIndex === 0
-            ? "bg-gray-300 cursor-not-allowed"
-            : "bg-accent hover:bg-accent text-ink"
+            ? "bg-gray-300 cursor-not-allowed text-gray-500"
+            : "bg-accent hover:opacity-90 text-ink"
         }`}
       >
-        ↑
+        <ArrowUp size={16} />
       </button>
       <button
+        type="button"
         onClick={() => moveSection(sectionIndex, sectionIndex + 1)}
         disabled={sectionIndex === sections.length - 1}
-        className={`px-2 py-1 rounded ${
+        aria-label="Move section down"
+        title="Move section down"
+        className={`p-1.5 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
           sectionIndex === sections.length - 1
-            ? "bg-gray-300 cursor-not-allowed"
-            : "bg-accent hover:bg-accent text-ink"
+            ? "bg-gray-300 cursor-not-allowed text-gray-500"
+            : "bg-accent hover:opacity-90 text-ink"
         }`}
       >
-        ↓
+        <ArrowDown size={16} />
       </button>
       <button
+        type="button"
         onClick={deleteSection}
-        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+        aria-label="Delete section"
+        title="Delete section"
+        className="bg-red-500 hover:bg-red-600 text-white p-1.5 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1"
       >
-        🗑
+        <Trash2 size={16} />
       </button>
     </div>
   );
