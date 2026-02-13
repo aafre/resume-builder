@@ -98,12 +98,14 @@ export const FormattingBubbleMenu: React.FC<FormattingBubbleMenuProps> = ({ edit
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
-          className={`p-2 rounded transition-all hover:bg-gray-100 ${
+          className={`p-2 rounded transition-all hover:bg-gray-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1 focus:outline-none ${
             editor.isActive('bold') ? 'bg-accent/10 text-ink/80' : 'text-gray-700'
           }`}
           title="Bold (Ctrl+B)"
+          aria-label="Bold"
+          aria-pressed={editor.isActive('bold')}
         >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
             <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z" />
             <path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z" />
           </svg>
@@ -113,12 +115,14 @@ export const FormattingBubbleMenu: React.FC<FormattingBubbleMenuProps> = ({ edit
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={`p-2 rounded transition-all hover:bg-gray-100 ${
+          className={`p-2 rounded transition-all hover:bg-gray-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1 focus:outline-none ${
             editor.isActive('italic') ? 'bg-accent/10 text-ink/80' : 'text-gray-700'
           }`}
           title="Italic (Ctrl+I)"
+          aria-label="Italic"
+          aria-pressed={editor.isActive('italic')}
         >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
             <line x1="19" y1="4" x2="10" y2="4" />
             <line x1="14" y1="20" x2="5" y2="20" />
             <line x1="15" y1="4" x2="9" y2="20" />
@@ -129,12 +133,14 @@ export const FormattingBubbleMenu: React.FC<FormattingBubbleMenuProps> = ({ edit
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleUnderline().run()}
-          className={`p-2 rounded transition-all hover:bg-gray-100 ${
+          className={`p-2 rounded transition-all hover:bg-gray-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1 focus:outline-none ${
             editor.isActive('underline') ? 'bg-accent/10 text-ink/80' : 'text-gray-700'
           }`}
           title="Underline (Ctrl+U)"
+          aria-label="Underline"
+          aria-pressed={editor.isActive('underline')}
         >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
             <path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3" />
             <line x1="4" y1="21" x2="20" y2="21" />
           </svg>
@@ -144,12 +150,14 @@ export const FormattingBubbleMenu: React.FC<FormattingBubbleMenuProps> = ({ edit
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleStrike().run()}
-          className={`p-2 rounded transition-all hover:bg-gray-100 ${
+          className={`p-2 rounded transition-all hover:bg-gray-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1 focus:outline-none ${
             editor.isActive('strike') ? 'bg-accent/10 text-ink/80' : 'text-gray-700'
           }`}
           title="Strikethrough (Ctrl+Shift+S)"
+          aria-label="Strikethrough"
+          aria-pressed={editor.isActive('strike')}
         >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
             <path d="M17.3 14c0 1.3-.5 2.3-1.6 3-.9.7-2.2 1-3.7 1-2.8 0-4.8-1.2-6-3.6M6.2 9c0-1.3.6-2.3 1.7-3 1-.7 2.2-1 3.6-1 2.7 0 4.7 1.2 5.9 3.6M4 12h16" />
           </svg>
         </button>
@@ -161,10 +169,12 @@ export const FormattingBubbleMenu: React.FC<FormattingBubbleMenuProps> = ({ edit
         <button
           type="button"
           onClick={handleOpenLinkModal}
-          className={`p-2 rounded transition-all hover:bg-gray-100 ${
+          className={`p-2 rounded transition-all hover:bg-gray-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1 focus:outline-none ${
             editor.isActive('link') ? 'bg-accent/10 text-ink/80' : 'text-accent'
           }`}
           title="Insert Link (Ctrl+K)"
+          aria-label="Insert Link"
+          aria-pressed={editor.isActive('link')}
         >
           <svg
             className="h-4 w-4"
@@ -172,6 +182,7 @@ export const FormattingBubbleMenu: React.FC<FormattingBubbleMenuProps> = ({ edit
             viewBox="0 0 24 24"
             stroke="currentColor"
             strokeWidth={2}
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
