@@ -91,6 +91,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
       <div
         className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998] transition-opacity duration-200"
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* Modal Container - Bottom sheet on mobile, centered on desktop */}
@@ -102,11 +103,14 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
           className="bg-white rounded-t-2xl lg:rounded-2xl shadow-2xl w-full lg:max-w-5xl lg:mx-4 h-[95vh] lg:h-[90vh] flex flex-col animate-slide-up lg:animate-scale-in"
           onClick={(e) => e.stopPropagation()}
           data-testid="preview-modal-content"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="preview-modal-title"
         >
           {/* Header */}
           <div className="flex items-center justify-between p-4 lg:p-6 border-b border-gray-200 flex-shrink-0">
             <div className="flex items-center gap-3">
-              <h2 className="text-lg lg:text-xl font-semibold text-gray-800">
+              <h2 id="preview-modal-title" className="text-lg lg:text-xl font-semibold text-gray-800">
                 PDF Preview
               </h2>
               {isStale && !isGenerating && (
@@ -121,6 +125,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
               onClick={onClose}
               className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
               title="Close (ESC)"
+              aria-label="Close preview"
             >
               <MdClose className="text-xl" />
             </button>

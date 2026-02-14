@@ -34,6 +34,25 @@ describe("PreviewModal", () => {
     expect(screen.getByText("PDF Preview")).toBeInTheDocument();
   });
 
+  it("has accessible dialog role and label", () => {
+    render(<PreviewModal {...defaultProps} />);
+    const dialog = screen.getByRole("dialog");
+    expect(dialog).toBeInTheDocument();
+    expect(dialog).toHaveAttribute("aria-modal", "true");
+    expect(dialog).toHaveAttribute("aria-labelledby", "preview-modal-title");
+
+    // Check that the title id matches
+    const title = screen.getByText("PDF Preview");
+    expect(title).toHaveAttribute("id", "preview-modal-title");
+  });
+
+  it("has accessible close button", () => {
+    render(<PreviewModal {...defaultProps} />);
+    // Should be findable by aria-label "Close preview"
+    const closeButton = screen.getByRole("button", { name: /close preview/i });
+    expect(closeButton).toBeInTheDocument();
+  });
+
   it("shows loading state when isGenerating is true", () => {
     render(<PreviewModal {...defaultProps} isGenerating={true} />);
 
