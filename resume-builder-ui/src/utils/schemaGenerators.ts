@@ -26,6 +26,13 @@ export function generateSoftwareApplicationSchema(): StructuredDataConfig {
       priceCurrency: 'USD',
     },
     url: BASE_URL,
+    sameAs: [
+      'https://www.linkedin.com/company/easyfreeresume/',
+      'https://www.youtube.com/@EasyFreeResume',
+      'https://github.com/aafre/resume-builder',
+      'https://www.crunchbase.com/organization/easyfreeresume',
+      'https://www.trustpilot.com/review/easyfreeresume.com',
+    ],
   };
 }
 

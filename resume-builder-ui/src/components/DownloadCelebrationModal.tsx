@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { ClipboardCheck, ExternalLink } from "lucide-react";
+import { ClipboardCheck, ExternalLink, ShieldAlert } from "lucide-react";
 import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
 import { ContactInfo, Section } from "../types";
 import { extractJobSearchParams, JobSearchParams } from "../utils/resumeDataExtractor";
@@ -146,7 +146,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
           aria-modal="true"
           aria-labelledby="celebration-modal-title"
           aria-describedby="celebration-modal-description"
-          className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto animate-dcm-modal-enter"
+          className="bg-white rounded-2xl shadow-premium max-w-lg w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto animate-dcm-modal-enter"
         >
           {/* Celebration Icon */}
           <div className="w-20 h-20 mx-auto mb-6 relative">
@@ -174,33 +174,42 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
             {/* Pulsing ring effect - runs once */}
             <div className="absolute inset-0 bg-green-400 rounded-full animate-dcm-ping-once opacity-20" />
+
+            {/* Celebration particles */}
+            <div className="dcm-particle dcm-particle-1" />
+            <div className="dcm-particle dcm-particle-2" />
+            <div className="dcm-particle dcm-particle-3" />
+            <div className="dcm-particle dcm-particle-4" />
           </div>
 
-          {/* Title */}
-          <h2
-            id="celebration-modal-title"
-            className="text-2xl sm:text-3xl font-bold text-center mb-4 text-ink"
-          >
-            Resume Downloaded Successfully!
-          </h2>
-
-          {/* Success Message */}
-          <p
-            id="celebration-modal-description"
-            className="text-lg text-stone-warm text-center mb-4"
-          >
-            Your PDF has been saved to your device.
-          </p>
+          {/* Title + Subtitle */}
+          <div className="animate-dcm-content-fade-up" style={{ animationDelay: '75ms' }}>
+            <h2
+              id="celebration-modal-title"
+              className="text-2xl sm:text-3xl font-bold text-center mb-4 text-ink"
+            >
+              Resume Downloaded Successfully!
+            </h2>
+            <p
+              id="celebration-modal-description"
+              className="text-lg text-stone-warm text-center mb-4"
+            >
+              Your PDF has been saved to your device.
+            </p>
+          </div>
 
           {/* Anonymous-only: Warning + Sign-up CTA */}
           {isAnonymous && (
-            <>
+            <div className="animate-dcm-content-fade-up" style={{ animationDelay: '150ms' }}>
               {/* Warning Box */}
-              <div className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-4">
-                <p className="text-sm text-amber-800">
-                  <span className="font-semibold">Warning:</span> Since you are a
-                  guest, this resume is only saved in your browser&apos;s temporary
-                  cache. If you clear your cache, you will lose this data.
+              <div className="bg-amber-50/80 border border-amber-200/60 rounded-xl p-4 mb-4">
+                <p className="text-sm text-amber-800 flex items-start gap-2">
+                  <ShieldAlert className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
+                  <span>
+                    <span className="font-semibold">Warning:</span> Since you are a
+                    guest, this resume is only saved in your browser&apos;s temporary
+                    cache. If you clear your cache, you will lose this data.
+                  </span>
                 </p>
               </div>
 
@@ -226,12 +235,12 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                   Save to Cloud (Free)
                 </button>
               </div>
-            </>
+            </div>
           )}
 
           {/* Authenticated users: Close button */}
           {!isAnonymous && !showAffiliate && (
-            <div className="flex justify-center">
+            <div className="animate-dcm-content-fade-up flex justify-center" style={{ animationDelay: '150ms' }}>
               <button
                 ref={primaryButtonRef}
                 onClick={onClose}
@@ -244,7 +253,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
           {/* Affiliate "What's Next?" Section */}
           {showAffiliate && (
-            <div className="mt-6">
+            <div className="mt-6 animate-dcm-content-fade-up" style={{ animationDelay: '225ms' }}>
               {/* Divider */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex-1 h-px bg-black/[0.06]" />
@@ -261,7 +270,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                     href={affiliateConfig.resumeReview.url}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
-                    className="flex items-center gap-4 bg-chalk-dark border border-black/[0.06] rounded-xl p-4 cursor-pointer hover:bg-white hover:shadow-lg hover:border-accent/20 transition-all duration-200"
+                    className="flex items-center gap-4 bg-chalk-dark border border-black/[0.06] rounded-xl p-4 cursor-pointer hover:bg-white hover:shadow-lg hover:border-accent/20 hover:-translate-y-0.5 transition-all duration-200"
                   >
                     <ClipboardCheck className="w-5 h-5 text-accent flex-shrink-0" />
                     <div className="flex-1 min-w-0">
@@ -313,7 +322,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                             href={job.url}
                             target="_blank"
                             rel="noopener noreferrer nofollow"
-                            className="flex items-center gap-3 bg-chalk-dark border border-black/[0.06] rounded-xl p-3 cursor-pointer hover:bg-white hover:shadow-lg hover:border-accent/20 transition-all duration-200"
+                            className="flex items-center gap-3 bg-chalk-dark border border-black/[0.06] rounded-xl p-3 cursor-pointer hover:bg-white hover:shadow-lg hover:border-accent/20 hover:-translate-y-0.5 transition-all duration-200"
                           >
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-semibold text-ink truncate">
@@ -355,91 +364,37 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
               )}
             </div>
           )}
+
+          {/* Trustpilot Review Prompt */}
+          <div className="mt-6 animate-dcm-content-fade-up" style={{ animationDelay: '225ms' }}>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex-1 h-px bg-black/[0.06]" />
+              <span className="text-xs font-semibold text-mist uppercase tracking-wider">
+                One more thing
+              </span>
+              <div className="flex-1 h-px bg-black/[0.06]" />
+            </div>
+
+            <div className="bg-accent/[0.04] border border-accent/10 rounded-xl p-4 text-center">
+              <p className="text-sm font-semibold text-ink mb-1">
+                Did we save you from a paywall? 🎉
+              </p>
+              <p className="text-xs text-stone-warm mb-3">
+                Most &ldquo;free&rdquo; resume builders charge you at the last step. We didn&apos;t.
+                Help other job seekers find us — leave a quick review on Trustpilot.
+              </p>
+              <a
+                href="https://www.trustpilot.com/evaluate/easyfreeresume.com?utm_source=modal_download"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 bg-accent/10 text-accent px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-accent/20 transition-all duration-200"
+              >
+                ⭐ Leave a Review
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Inline styles for animations */}
-      <style>{`
-        @media (prefers-reduced-motion: no-preference) {
-          @keyframes dcm-scale-in {
-            0% {
-              transform: scale(0);
-              opacity: 0;
-            }
-            50% {
-              transform: scale(1.1);
-            }
-            100% {
-              transform: scale(1);
-              opacity: 1;
-            }
-          }
-
-          @keyframes dcm-checkmark-draw {
-            0% {
-              stroke-dashoffset: 24;
-            }
-            100% {
-              stroke-dashoffset: 0;
-            }
-          }
-
-          @keyframes dcm-modal-enter {
-            0% {
-              opacity: 0;
-              transform: scale(0.9) translateY(20px);
-            }
-            100% {
-              opacity: 1;
-              transform: scale(1) translateY(0);
-            }
-          }
-
-          @keyframes dcm-fade-in {
-            0% {
-              opacity: 0;
-            }
-            100% {
-              opacity: 1;
-            }
-          }
-
-          @keyframes dcm-ping-once {
-            0% {
-              transform: scale(1);
-              opacity: 0.2;
-            }
-            75% {
-              transform: scale(2);
-              opacity: 0;
-            }
-            100% {
-              transform: scale(2);
-              opacity: 0;
-            }
-          }
-
-          .animate-dcm-scale-in {
-            animation: dcm-scale-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-          }
-
-          .animate-dcm-checkmark-draw {
-            animation: dcm-checkmark-draw 0.6s ease-in-out 0.3s forwards;
-          }
-
-          .animate-dcm-modal-enter {
-            animation: dcm-modal-enter 0.3s ease-out forwards;
-          }
-
-          .animate-dcm-fade-in {
-            animation: dcm-fade-in 0.2s ease-out forwards;
-          }
-
-          .animate-dcm-ping-once {
-            animation: dcm-ping-once 1s cubic-bezier(0, 0, 0.2, 1) forwards;
-          }
-        }
-      `}</style>
     </>,
     document.body
   );

@@ -239,6 +239,89 @@ details .faq-content > div {
   50%      { box-shadow: 0 0 0 8px rgba(0,212,126,0); }
 }
 
+/* ── Download Celebration Modal ── */
+@keyframes dcm-scale-in {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes dcm-checkmark-draw {
+  0% { stroke-dashoffset: 24; }
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes dcm-modal-enter {
+  0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes dcm-fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes dcm-ping-once {
+  0% { transform: scale(1); opacity: 0.2; }
+  75% { transform: scale(2); opacity: 0; }
+  100% { transform: scale(2); opacity: 0; }
+}
+@keyframes dcm-content-fade-up {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes dcm-particle-burst {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(0); }
+  50% { opacity: 1; transform: translate(var(--px), var(--py)) scale(1); }
+  100% { opacity: 0; transform: translate(calc(var(--px) * 1.4), calc(var(--py) * 1.4)) scale(0.4); }
+}
+
+.animate-dcm-scale-in {
+  animation: dcm-scale-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.animate-dcm-checkmark-draw {
+  animation: dcm-checkmark-draw 0.6s ease-in-out 0.3s forwards;
+}
+.animate-dcm-modal-enter {
+  animation: dcm-modal-enter 0.3s ease-out forwards;
+}
+.animate-dcm-fade-in {
+  animation: dcm-fade-in 0.2s ease-out forwards;
+}
+.animate-dcm-ping-once {
+  animation: dcm-ping-once 1s cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+.animate-dcm-content-fade-up {
+  opacity: 0;
+  animation: dcm-content-fade-up 0.4s ease-out forwards;
+}
+
+.dcm-particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+}
+.dcm-particle-1 {
+  --px: 24px; --py: -18px;
+  width: 5px; height: 5px; background: #00d47e;
+  animation: dcm-particle-burst 0.7s ease-out 0.3s forwards;
+}
+.dcm-particle-2 {
+  --px: -22px; --py: -20px;
+  width: 4px; height: 4px; background: #34d399;
+  animation: dcm-particle-burst 0.7s ease-out 0.4s forwards;
+}
+.dcm-particle-3 {
+  --px: 20px; --py: 18px;
+  width: 4px; height: 4px; background: #2dd4bf;
+  animation: dcm-particle-burst 0.7s ease-out 0.35s forwards;
+}
+.dcm-particle-4 {
+  --px: -18px; --py: 22px;
+  width: 5px; height: 5px; background: #00d47e;
+  animation: dcm-particle-burst 0.7s ease-out 0.45s forwards;
+}
+
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -275,6 +358,15 @@ details .faq-content > div {
     transform: none !important;
     transition: none !important;
     will-change: auto !important;
+  }
+
+  /* Download Celebration Modal: content visible immediately */
+  .animate-dcm-content-fade-up {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  .dcm-particle {
+    display: none !important;
   }
 
   /* Background grain: disable */
@@ -318,6 +410,19 @@ footer {
 #app-footer {
   contain: layout style paint;
   overflow: clip;
+}
+
+/* Suppress Google Auto Ads injected inside the footer.
+   Placement control only — ads elsewhere on the page are unaffected. */
+#app-footer .google-auto-placed,
+#app-footer ins.adsbygoogle,
+#app-footer div[data-google-query-id] {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
 }
 
 

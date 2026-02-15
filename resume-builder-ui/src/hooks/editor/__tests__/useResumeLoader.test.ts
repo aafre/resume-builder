@@ -90,6 +90,7 @@ describe('useResumeLoader', () => {
 
       expect(result.current.isLoadingFromUrl).toBe(false);
       expect(result.current.hasLoadedFromUrl).toBe(false);
+      expect(result.current.resumeNotFound).toBe(false);
       expect(result.current.cloudResumeId).toBe(null);
     });
 
@@ -373,9 +374,9 @@ sections:
         await result.current.loadResumeFromCloud('resume-123');
       });
 
-      expect(toast.error).toHaveBeenCalled();
       expect(result.current.isLoadingFromUrl).toBe(false);
-      expect(result.current.hasLoadedFromUrl).toBe(false); // Don't mark as loaded on error
+      expect(result.current.resumeNotFound).toBe(true);
+      expect(result.current.hasLoadedFromUrl).toBe(true); // Prevents retry loop
     });
 
     it('should recover gracefully when resume not found but template available', async () => {
@@ -395,9 +396,11 @@ sections:
       // Should not show error toast because we can recover
       expect(toast.error).not.toHaveBeenCalled();
       expect(result.current.isLoadingFromUrl).toBe(false);
+      // Recovery path: resumeNotFound stays false so Editor can continue with template
+      expect(result.current.resumeNotFound).toBe(false);
     });
 
-    it('should show error when no session', async () => {
+    it('should set resumeNotFound when no session', async () => {
       const props = createMockProps({ session: null });
       const { result } = renderHook(() => useResumeLoader(props));
 
@@ -405,8 +408,10 @@ sections:
         await result.current.loadResumeFromCloud('resume-123');
       });
 
-      expect(toast.error).toHaveBeenCalledWith('Please sign in to load saved resumes');
       expect(apiClientModule.apiClient.get).not.toHaveBeenCalled();
+      expect(result.current.resumeNotFound).toBe(true);
+      expect(result.current.hasLoadedFromUrl).toBe(true);
+      expect(result.current.isLoadingFromUrl).toBe(false);
     });
 
     it('should handle invalid resume structure from API', async () => {
@@ -428,10 +433,9 @@ sections:
         await result.current.loadResumeFromCloud('resume-123');
       });
 
-      // Should show error toast
-      expect(toast.error).toHaveBeenCalled();
       expect(result.current.isLoadingFromUrl).toBe(false);
-      expect(result.current.hasLoadedFromUrl).toBe(false); // Don't mark as loaded on error
+      expect(result.current.resumeNotFound).toBe(true);
+      expect(result.current.hasLoadedFromUrl).toBe(true); // Prevents retry loop
     });
 
     it('should load resume automatically when resumeIdFromUrl is present', async () => {
@@ -515,6 +519,34 @@ sections:
       });
 
       // Rerender should not trigger another load
+      rerender();
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      expect(apiClientModule.apiClient.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not retry after 404 when hasLoadedFromUrl is set', async () => {
+      vi.spyOn(apiClientModule.apiClient, 'get').mockRejectedValue(new Error('Resume not found'));
+
+      const props = createMockProps({
+        resumeIdFromUrl: 'nonexistent-id',
+        templateId: null,
+        contactInfo: null,
+        sections: [],
+      });
+      const { result, rerender } = renderHook(() => useResumeLoader(props));
+
+      // Wait for the first (and only) API call
+      await waitFor(() => {
+        expect(apiClientModule.apiClient.get).toHaveBeenCalledTimes(1);
+      });
+
+      expect(result.current.resumeNotFound).toBe(true);
+      expect(result.current.hasLoadedFromUrl).toBe(true);
+
+      // Rerender multiple times — should NOT trigger additional API calls
+      rerender();
       rerender();
 
       await new Promise((resolve) => setTimeout(resolve, 100));

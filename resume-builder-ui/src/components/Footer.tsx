@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FaShieldAlt, FaLock } from "react-icons/fa";
+import { FaShieldAlt, FaLock, FaStar } from "react-icons/fa";
 import { affiliateConfig } from "../config/affiliate";
 
 // Footer link definitions for maintainability
@@ -44,6 +44,7 @@ const footerLinks = {
     { path: '/contact', label: 'Contact' },
     { path: '/privacy-policy', label: 'Privacy Policy' },
     { path: '/terms-of-service', label: 'Terms of Service' },
+    { path: 'https://www.crunchbase.com/organization/easyfreeresume', label: 'Crunchbase', external: true },
   ],
 };
 
@@ -54,22 +55,34 @@ function FooterColumn({
   scrollToTop
 }: {
   title: string;
-  links: { path: string; label: string }[];
+  links: { path: string; label: string; external?: boolean }[];
   scrollToTop: (path: string) => () => void;
 }) {
+  const linkClass = "text-gray-600 hover:text-accent font-medium transition-colors duration-200 text-sm";
   return (
     <nav aria-label={title}>
       <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">{title}</h3>
       <ul className="flex flex-col gap-2">
-        {links.map(({ path, label }) => (
+        {links.map(({ path, label, external }) => (
           <li key={path}>
-            <Link
-              to={path}
-              onClick={scrollToTop(path)}
-              className="text-gray-600 hover:text-accent font-medium transition-colors duration-200 text-sm"
-            >
-              {label}
-            </Link>
+            {external ? (
+              <a
+                href={path}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass}
+              >
+                {label}
+              </a>
+            ) : (
+              <Link
+                to={path}
+                onClick={scrollToTop(path)}
+                className={linkClass}
+              >
+                {label}
+              </Link>
+            )}
           </li>
         ))}
       </ul>
@@ -90,7 +103,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-transparent border-t border-gray-200/60 mt-16">
+    <div className="bg-transparent">
       <div className="container mx-auto px-4 py-12">
         {/* Main Footer Content - Responsive Grid Layout */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 mb-8">
@@ -125,10 +138,19 @@ export default function Footer() {
                 <FaLock className="text-accent" />
                 <span className="text-ink/80 font-medium">SSL</span>
               </div>
+              <a
+                href="https://www.trustpilot.com/review/easyfreeresume.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-emerald-50 px-3 py-2 rounded-full hover:bg-emerald-100 transition-colors duration-200"
+              >
+                <FaStar className="text-emerald-600" />
+                <span className="text-emerald-700 font-medium">Trustpilot</span>
+              </a>
             </div>
           </div>
         </div>
       </div>
-    </footer>
+    </div>
   );
 }
