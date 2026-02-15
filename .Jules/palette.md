@@ -1,0 +1,3 @@
+## 2026-02-15 - Keyboard Accessibility in @dnd-kit
+**Learning:** In `@dnd-kit`, the element that receives keyboard focus must also be the one that has the event listeners attached. If `attributes` (providing `tabIndex`) are on a parent container but `listeners` (providing `onKeyDown`) are on a child handle, keyboard events on the focused parent bubble *up* and miss the listeners on the child, breaking keyboard accessibility.
+**Action:** Always spread `{...attributes}` and `{...listeners}` on the same element (the interactive handle), or ensure the listeners are attached to the element that receives focus.
