@@ -69,7 +69,7 @@ function FooterColumn({
               <a
                 href={path}
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
                 className={linkClass}
               >
                 {label}
