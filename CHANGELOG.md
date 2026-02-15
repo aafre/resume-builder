@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.19.0] - 2026-02-15
+
+### 🚀 Features
+
+- **header:** Show "Create Free Resume" CTA on all non-editor pages
+- **seo:** Harden brand signals with title-first tags and schema sameAs
+- **seo:** Add sameAs to SoftwareApplication schema
+- **seo:** Add Trustpilot and Crunchbase links for entity cross-referencing
+- **seo:** Add Crunchbase to sameAs in SoftwareApplication schema
+- **seo:** Add Trustpilot to sameAs in SoftwareApplication schema
+- **seo:** Add Crunchbase and Trustpilot to sameAs in index.html schemas
+- **modal:** Polish DownloadCelebrationModal with design system upgrades
+
+### 🐛 Bug Fixes
+
+- **editor:** Prevent infinite API loop when visiting /editor/<non-existent-id>
+- **editor:** Toast + redirect to /templates for non-existent resume IDs
+- **footer:** Prevent Google Auto Ads from breaking footer layout
+- **seo:** Align static title in index.html with React landing page title
+- **header:** Hide CTA button on /templates page to avoid redundant link
+- Address PR #323 review feedback from Gemini
+- **footer:** Add noreferrer to external links rel attribute
+
+### 🚜 Refactor
+
+- **footer:** Move Crunchbase to Company column for SEO entity link
+
 ## [3.18.2] - 2026-02-11
 
 ### 🐛 Bug Fixes
