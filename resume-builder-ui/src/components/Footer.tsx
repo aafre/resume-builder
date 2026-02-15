@@ -44,6 +44,7 @@ const footerLinks = {
     { path: '/contact', label: 'Contact' },
     { path: '/privacy-policy', label: 'Privacy Policy' },
     { path: '/terms-of-service', label: 'Terms of Service' },
+    { path: 'https://www.crunchbase.com/organization/easyfreeresume', label: 'Crunchbase', external: true },
   ],
 };
 
@@ -54,22 +55,34 @@ function FooterColumn({
   scrollToTop
 }: {
   title: string;
-  links: { path: string; label: string }[];
+  links: { path: string; label: string; external?: boolean }[];
   scrollToTop: (path: string) => () => void;
 }) {
+  const linkClass = "text-gray-600 hover:text-accent font-medium transition-colors duration-200 text-sm";
   return (
     <nav aria-label={title}>
       <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">{title}</h3>
       <ul className="flex flex-col gap-2">
-        {links.map(({ path, label }) => (
+        {links.map(({ path, label, external }) => (
           <li key={path}>
-            <Link
-              to={path}
-              onClick={scrollToTop(path)}
-              className="text-gray-600 hover:text-accent font-medium transition-colors duration-200 text-sm"
-            >
-              {label}
-            </Link>
+            {external ? (
+              <a
+                href={path}
+                target="_blank"
+                rel="noopener"
+                className={linkClass}
+              >
+                {label}
+              </a>
+            ) : (
+              <Link
+                to={path}
+                onClick={scrollToTop(path)}
+                className={linkClass}
+              >
+                {label}
+              </Link>
+            )}
           </li>
         ))}
       </ul>
@@ -133,17 +146,6 @@ export default function Footer() {
               >
                 <FaStar className="text-emerald-600" />
                 <span className="text-emerald-700 font-medium">Trustpilot</span>
-              </a>
-              <a
-                href="https://www.crunchbase.com/organization/easyfreeresume"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-full hover:bg-blue-100 transition-colors duration-200"
-              >
-                <svg className="w-3.5 h-3.5 text-blue-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M21.6 0H2.4A2.41 2.41 0 0 0 0 2.4v19.2A2.41 2.41 0 0 0 2.4 24h19.2a2.41 2.41 0 0 0 2.4-2.4V2.4A2.41 2.41 0 0 0 21.6 0zM7.045 14.465A2.11 2.11 0 0 0 9.84 13.42h1.86a3.97 3.97 0 1 1 0-2.85H9.84a2.11 2.11 0 1 0-2.795 3.895zm7.809 2.55a3.96 3.96 0 0 1-1.975-3.415V12a3.96 3.96 0 1 1 5.934 3.424V17h-1.8v-1.11a3.98 3.98 0 0 1-2.159 1.125zm2.159-3.96a2.16 2.16 0 1 0-4.32 0 2.16 2.16 0 0 0 4.32 0z" />
-                </svg>
-                <span className="text-blue-700 font-medium">Crunchbase</span>
               </a>
             </div>
           </div>
