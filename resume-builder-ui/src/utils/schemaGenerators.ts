@@ -31,6 +31,7 @@ export function generateSoftwareApplicationSchema(): StructuredDataConfig {
       'https://www.youtube.com/@EasyFreeResume',
       'https://github.com/aafre/resume-builder',
       'https://www.crunchbase.com/organization/easyfreeresume',
+      'https://www.trustpilot.com/review/easyfreeresume.com',
     ],
   };
 }
