@@ -174,7 +174,7 @@ const LandingPage: React.FC = () => {
   return (
     <>
       <SEOHead
-        title="Free Resume Builder Online | No Sign Up, No Payment | EasyFreeResume"
+        title="EasyFreeResume — 100% Free Resume Builder (No Paywall, No Sign-Up)"
         description="Build your resume for free online with ATS-friendly templates. Download PDF instantly — no sign up, no payment, no watermarks. Trusted by 100K+ job seekers."
         structuredData={wrapInGraph([
           generateSoftwareApplicationSchema(),
