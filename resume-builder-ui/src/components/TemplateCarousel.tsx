@@ -377,6 +377,9 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                         className="w-full h-96 sm:h-[500px] object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                         width="400"
                         height="500"
+                        /* Optimization: Eager load first 2 templates (LCP), lazy load the rest */
+                        loading={index < 2 ? "eager" : "lazy"}
+                        decoding="async"
                       />
                       {isSelected && (
                         <div className="absolute top-6 right-6 bg-accent text-ink p-3 rounded-full shadow-xl">
