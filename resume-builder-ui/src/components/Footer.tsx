@@ -103,7 +103,7 @@ export default function Footer() {
   };
 
   return (
-    <div className="bg-transparent border-t border-gray-200/60 mt-16">
+    <div className="bg-transparent">
       <div className="container mx-auto px-4 py-12">
         {/* Main Footer Content - Responsive Grid Layout */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 mb-8">

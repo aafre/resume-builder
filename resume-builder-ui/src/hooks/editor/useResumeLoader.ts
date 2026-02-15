@@ -298,11 +298,11 @@ export const useResumeLoader = ({
         if (!canRecover) {
           // No recovery path — this resume ID simply doesn't exist
           setResumeNotFound(true);
-          setHasLoadedFromUrl(true);
         } else {
           console.log('Resume not found in database, will recover from template or existing editor state');
         }
 
+        setHasLoadedFromUrl(true);
         setIsLoadingFromUrl(false);
       } finally {
         setLoading(false);
