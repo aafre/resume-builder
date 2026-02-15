@@ -49,7 +49,6 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
           ? 'border-2 border-dashed border-accent/30 bg-accent/[0.06] min-h-[60px]'
           : 'transition-all duration-200 ease-out'
       } ${showDropIndicator ? 'mt-3' : ''}`}
-      {...attributes}
     >
       {/* Drop indicator line - shows where section will be placed */}
       {showDropIndicator && (
@@ -67,6 +66,7 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
       {/* Drag handle bar - invisible by default, reveals on item hover */}
       {!disabled && (
         <div
+          {...attributes}
           {...listeners}
           className={`
             group/handle touch-none
@@ -80,6 +80,8 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
             relative
           `}
           aria-label="Drag to reorder section"
+          role="button"
+          tabIndex={0}
         >
           <GripDots isDragging={isDragging} />
           <DragTooltip visible={!isDragging && !isSorting} />
