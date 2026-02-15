@@ -267,8 +267,8 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
 
         toast.success('Resume downloaded successfully!');
 
-        // Show celebration modal for anonymous users (first time only)
-        if (isAnonymous && !hasShownDownloadToast) {
+        // Show celebration modal on first download (all users)
+        if (!hasShownDownloadToast) {
           markDownloadToastShown();
 
           setTimeout(() => {

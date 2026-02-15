@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FaShieldAlt, FaLock } from "react-icons/fa";
+import { FaShieldAlt, FaLock, FaStar } from "react-icons/fa";
 import { affiliateConfig } from "../config/affiliate";
 
 // Footer link definitions for maintainability
@@ -125,6 +125,26 @@ export default function Footer() {
                 <FaLock className="text-accent" />
                 <span className="text-ink/80 font-medium">SSL</span>
               </div>
+              <a
+                href="https://www.trustpilot.com/review/easyfreeresume.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-emerald-50 px-3 py-2 rounded-full hover:bg-emerald-100 transition-colors duration-200"
+              >
+                <FaStar className="text-emerald-600" />
+                <span className="text-emerald-700 font-medium">Trustpilot</span>
+              </a>
+              <a
+                href="https://www.crunchbase.com/organization/easyfreeresume"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-full hover:bg-blue-100 transition-colors duration-200"
+              >
+                <svg className="w-3.5 h-3.5 text-blue-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M21.6 0H2.4A2.41 2.41 0 0 0 0 2.4v19.2A2.41 2.41 0 0 0 2.4 24h19.2a2.41 2.41 0 0 0 2.4-2.4V2.4A2.41 2.41 0 0 0 21.6 0zM7.045 14.465A2.11 2.11 0 0 0 9.84 13.42h1.86a3.97 3.97 0 1 1 0-2.85H9.84a2.11 2.11 0 1 0-2.795 3.895zm7.809 2.55a3.96 3.96 0 0 1-1.975-3.415V12a3.96 3.96 0 1 1 5.934 3.424V17h-1.8v-1.11a3.98 3.98 0 0 1-2.159 1.125zm2.159-3.96a2.16 2.16 0 1 0-4.32 0 2.16 2.16 0 0 0 4.32 0z" />
+                </svg>
+                <span className="text-blue-700 font-medium">Crunchbase</span>
+              </a>
             </div>
           </div>
         </div>

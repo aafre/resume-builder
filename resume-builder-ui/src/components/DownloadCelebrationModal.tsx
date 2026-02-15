@@ -355,6 +355,34 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
               )}
             </div>
           )}
+          {/* Trustpilot Review Prompt */}
+          <div className="mt-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex-1 h-px bg-black/[0.06]" />
+              <span className="text-xs font-semibold text-mist uppercase tracking-wider">
+                One more thing
+              </span>
+              <div className="flex-1 h-px bg-black/[0.06]" />
+            </div>
+
+            <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-4 text-center">
+              <p className="text-sm font-semibold text-ink mb-1">
+                Did we save you from a paywall? 🎉
+              </p>
+              <p className="text-xs text-stone-warm mb-3">
+                Most &ldquo;free&rdquo; resume builders charge you at the last step. We didn&apos;t.
+                Help other job seekers find us — leave a quick review on Trustpilot.
+              </p>
+              <a
+                href="https://www.trustpilot.com/evaluate/easyfreeresume.com?utm_source=modal_download"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:text-accent/80 transition-colors duration-200"
+              >
+                ⭐ Leave a Review
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
