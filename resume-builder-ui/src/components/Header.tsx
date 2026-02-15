@@ -200,7 +200,7 @@ export default function Header() {
             )}
 
             {/* CTA Button (all pages except editor, non-authenticated) */}
-            {!isEditorPage && !isAuthenticated && (
+            {!isEditorPage && !isAuthenticated && location.pathname !== "/templates" && (
               <Link
                 to="/templates"
                 className="bg-accent text-ink py-2.5 px-5 sm:py-3 sm:px-6 rounded-xl text-sm font-bold shadow-sm hover:shadow-md hover:shadow-accent/20 hover:scale-[1.02] transition-all duration-300 active:scale-[0.98]"
