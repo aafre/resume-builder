@@ -1,4 +1,5 @@
 import { ResumeListItem } from '../types';
+import { useEffect, useRef } from 'react';
 
 interface DeleteResumeModalProps {
   resume: ResumeListItem | null;
@@ -15,15 +16,56 @@ export function DeleteResumeModal({
   onCancel,
   isDeleting = false
 }: DeleteResumeModalProps) {
+  const cancelButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Focus management
+  useEffect(() => {
+    if (isOpen) {
+      // Small timeout to ensure DOM is ready and prevent potential focus stealing issues
+      const timer = setTimeout(() => {
+        cancelButtonRef.current?.focus();
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  // Handle Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isOpen && e.key === 'Escape') {
+        onCancel();
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onCancel]);
+
   if (!isOpen || !resume) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-2xl shadow-xl max-w-md w-full mx-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={onCancel}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-resume-title"
+        aria-describedby="delete-resume-desc"
+        className="bg-white rounded-2xl shadow-xl max-w-md w-full mx-4"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex-shrink-0">
               <svg
+                aria-hidden="true"
                 className="w-12 h-12 text-red-500"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -38,12 +80,12 @@ export function DeleteResumeModal({
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Delete Resume?</h2>
+              <h2 id="delete-resume-title" className="text-xl font-bold text-gray-900">Delete Resume?</h2>
               <p className="text-sm text-gray-500 mt-1">This action cannot be undone</p>
             </div>
           </div>
 
-          <p className="text-gray-700 mb-6">
+          <p id="delete-resume-desc" className="text-gray-700 mb-6">
             Are you sure you want to delete <strong className="text-gray-900">{resume.title}</strong>?
             This will permanently remove the resume and all its data.
           </p>
@@ -52,14 +94,15 @@ export function DeleteResumeModal({
             <button
               onClick={onConfirm}
               disabled={isDeleting}
-              className="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white font-medium py-2 px-4 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500 outline-none"
             >
               {isDeleting ? 'Deleting...' : 'Delete'}
             </button>
             <button
+              ref={cancelButtonRef}
               onClick={onCancel}
               disabled={isDeleting}
-              className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-500 outline-none"
             >
               Cancel
             </button>
