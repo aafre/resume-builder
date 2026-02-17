@@ -30,7 +30,8 @@ COPY resume-builder-ui/ ./
 
 # Build React app with embedded environment variables and prerender
 # SEO-critical routes to static HTML for bot user-agents (Googlebot, etc.)
-RUN npx playwright install --with-deps chromium && \
+RUN --mount=type=cache,target=/root/.cache/ms-playwright \
+    npx playwright install --with-deps chromium && \
     npm run build:prerender
 
 
