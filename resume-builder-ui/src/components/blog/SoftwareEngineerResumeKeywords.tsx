@@ -1,42 +1,33 @@
 import BlogLayout from "../BlogLayout";
+import { Link } from "react-router-dom";
 
 export default function SoftwareEngineerResumeKeywords() {
   return (
     <BlogLayout
-      title="50+ Essential Keywords for a Software Engineer Resume"
-      description="From programming languages to agile methodologies, these are the must-have keywords that will get your software engineering resume noticed by top tech companies."
+      title="75+ Essential Keywords for a Software Engineer Resume (2026)"
+      description="The complete list of software engineer resume keywords for 2026: programming languages, AI/ML, cloud, DevOps, security, and more. Organized by category with ATS tips."
       publishDate="2026-01-25"
-      readTime="9 min"
+      lastUpdated="2026-02-17"
+      readTime="14 min"
       keywords={[
         "software engineer resume keywords",
-        "tech resume",
+        "software developer resume keywords",
+        "tech resume keywords",
         "it resume keywords",
-        "developer resume",
+        "developer resume keywords",
         "programming languages resume",
+        "software engineering skills resume",
       ]}
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
-          In the competitive tech industry, your resume needs to be optimized
-          for both human recruiters and the Applicant Tracking Systems (ATS)
-          that screen applications. Updated for 2026, including the right
-          keywords is more crucial than ever. This guide covers the essential
-          keywords you need to include in your software engineer resume to
-          get noticed.
+          In 2026, over 75% of tech companies use Applicant Tracking Systems to screen resumes before a human ever reads them. If your software engineer resume doesn't include the right keywords, it gets filtered out — regardless of your skills. This guide lists 75+ essential keywords organized by category, with tips on how to use them naturally.
         </p>
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-ink mb-3">🔗 Part of Our Series</h3>
+          <h3 className="font-bold text-ink mb-3">Part of Our Keywords Series</h3>
           <p className="text-ink/80">
-            This article is a cluster post supporting our main pillar guide:{" "}
-            <a
-              href="/blog/ats-resume-optimization"
-              className="text-accent hover:text-ink underline font-medium"
-            >
-              How to Use Resume Keywords to Beat the ATS
-            </a>
-            . For the complete strategy on finding and using keywords
-            effectively, be sure to read the main guide.
+            This guide focuses on software engineering keywords. For the complete strategy on finding and using keywords effectively, read our pillar guide: <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:text-ink underline font-medium">How to Use Resume Keywords to Beat the ATS</Link>. You can also scan your resume instantly with our <Link to="/resume-keyword-scanner" className="text-accent hover:text-ink underline font-medium">free ATS keyword scanner</Link>.
           </p>
         </div>
 
@@ -393,6 +384,100 @@ export default function SoftwareEngineerResumeKeywords() {
         </div>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          AI and Machine Learning Keywords
+        </h2>
+
+        <p className="text-lg leading-relaxed text-stone-warm">
+          AI/ML skills are the fastest-growing keyword category in software engineering job postings. Even if you're not applying for a dedicated ML role, mentioning AI-adjacent skills shows you're current with industry trends.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-6 mt-6">
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
+              AI/ML Frameworks & Tools
+            </h3>
+            <div className="text-ink/80">
+              <ul className="text-sm space-y-1">
+                <li>• TensorFlow</li>
+                <li>• PyTorch</li>
+                <li>• scikit-learn</li>
+                <li>• Hugging Face Transformers</li>
+                <li>• LangChain</li>
+                <li>• OpenAI API</li>
+                <li>• Anthropic API (Claude)</li>
+                <li>• Jupyter Notebooks</li>
+                <li>• MLflow</li>
+                <li>• Pandas / NumPy</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-4">
+              AI/ML Concepts
+            </h3>
+            <div className="text-ink/80">
+              <ul className="text-sm space-y-1">
+                <li>• Large Language Models (LLMs)</li>
+                <li>• Natural Language Processing (NLP)</li>
+                <li>• Computer Vision</li>
+                <li>• Retrieval-Augmented Generation (RAG)</li>
+                <li>• Fine-tuning / Transfer Learning</li>
+                <li>• Prompt Engineering</li>
+                <li>• Vector Databases (Pinecone, Weaviate)</li>
+                <li>• Model Deployment / MLOps</li>
+                <li>• Data Pipelines / ETL</li>
+                <li>• A/B Testing</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 my-6">
+          <h4 className="font-bold text-yellow-800 mb-3">2026 Trend Alert</h4>
+          <p className="text-yellow-700">
+            Job postings mentioning "LLM," "RAG," or "prompt engineering" have increased 300%+ since 2024. If you've built anything with AI APIs, chatbots, or automated workflows, include those keywords — even if it wasn't your primary responsibility.
+          </p>
+        </div>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Security and Compliance Keywords
+        </h2>
+
+        <p className="text-lg leading-relaxed text-stone-warm">
+          Security is no longer just for dedicated security engineers. Most software engineering roles now expect some security awareness. Including these keywords shows you write secure code by default.
+        </p>
+
+        <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-6">
+          <div className="grid md:grid-cols-2 gap-6 text-stone-warm">
+            <div>
+              <h4 className="font-bold text-ink mb-3">Security Practices:</h4>
+              <ul className="text-sm space-y-1">
+                <li>• OWASP Top 10</li>
+                <li>• Input Validation / Sanitization</li>
+                <li>• Authentication / Authorization (OAuth, JWT)</li>
+                <li>• Encryption (AES, TLS/SSL)</li>
+                <li>• Secure Code Review</li>
+                <li>• Penetration Testing</li>
+                <li>• Dependency Scanning (Snyk, Dependabot)</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-ink mb-3">Compliance & Standards:</h4>
+              <ul className="text-sm space-y-1">
+                <li>• SOC 2</li>
+                <li>• GDPR</li>
+                <li>• HIPAA</li>
+                <li>• PCI DSS</li>
+                <li>• ISO 27001</li>
+                <li>• RBAC (Role-Based Access Control)</li>
+                <li>• Zero Trust Architecture</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           How to Use These Keywords Effectively
         </h2>
 
@@ -592,12 +677,43 @@ export default function SoftwareEngineerResumeKeywords() {
 
         <p className="text-lg leading-relaxed text-stone-warm mt-8">
           By strategically including these keywords and backing them up with
-          concrete examples of your work, you'll create a powerful software
-          engineer resume that is optimized for ATS scans and impressive to
-          hiring managers. Remember, in 2026 the goal isn't just to pass the ATS
-          filter - it's to clearly communicate your technical expertise and
-          potential value to the engineering team.
+          concrete examples of your work, you'll create a software
+          engineer resume that passes ATS screens and impresses hiring managers.
+          The goal isn't keyword stuffing — it's clearly communicating your
+          technical expertise using the exact terms recruiters search for.
         </p>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Related Resources
+        </h2>
+
+        <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
+          <li>
+            <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">
+              How to Use Resume Keywords to Beat the ATS
+            </Link>
+          </li>
+          <li>
+            <Link to="/blog/tech-resume-guide" className="text-accent hover:underline">
+              Tech Resume Guide: Land Your Dream Developer Job
+            </Link>
+          </li>
+          <li>
+            <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+              Free ATS Keyword Scanner — Check Your Resume Now
+            </Link>
+          </li>
+          <li>
+            <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+              How to List Skills on a Resume (100+ Examples)
+            </Link>
+          </li>
+          <li>
+            <Link to="/blog/resume-action-verbs" className="text-accent hover:underline">
+              200+ Action Verbs for Resumes
+            </Link>
+          </li>
+        </ul>
       </div>
     </BlogLayout>
   );
