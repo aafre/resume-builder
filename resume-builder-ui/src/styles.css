@@ -729,8 +729,13 @@ ins.adsbygoogle {
   overflow: hidden !important;
 }
 
-/* Contain Google Auto Ad wrapper divs that can be wider than viewport */
-.google-auto-placed,
+/* Contain Google Auto Ad wrapper divs that can be wider than viewport. */
+.google-auto-placed {
+  contain: layout style;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
 div[data-google-query-id] {
   contain: layout style;
   max-width: 100% !important;

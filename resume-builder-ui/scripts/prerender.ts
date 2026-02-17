@@ -105,6 +105,20 @@ const ROUTES_TO_PRERENDER = [
   '/blog/resume-no-experience',
   '/blog/resume-vs-cv-difference',
 
+  // Blog - additional guides (previously crawled but not indexed)
+  '/blog/quantify-resume-accomplishments',
+  '/blog/tech-resume-guide',
+  '/blog/how-to-list-skills',
+  '/blog/career-change-resume',
+  '/blog/resume-action-verbs',
+  '/blog/resume-length-guide',
+  '/blog/remote-work-resume',
+  '/blog/behavioral-interview-questions',
+  '/blog/job-interview-guide',
+  '/blog/cover-letter-guide',
+  '/blog/resume-mistakes-to-avoid',
+  '/blog/grok-resume-prompts',
+
   // Info pages
   '/about',
   '/contact',
