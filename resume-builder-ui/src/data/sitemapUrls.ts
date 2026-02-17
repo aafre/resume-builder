@@ -82,7 +82,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/how-to-write-a-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/resume-action-verbs', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/how-to-use-resume-keywords', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
-  { loc: '/resume-keywords/software-engineer', priority: 0.7, changefreq: 'monthly', lastmod: '2026-02-17' },
+  // /resume-keywords/software-engineer is auto-generated from JOBS_DATABASE (priority 0.9)
   { loc: '/blog/customer-service-resume-keywords-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-17' },
   { loc: '/blog/resume-keywords-by-industry', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-17' },
   { loc: '/blog/how-why-easyfreeresume-completely-free', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
