@@ -90,51 +90,135 @@ function ScoreRing({ result }: { result: EnhancedScanResult }) {
   );
 }
 
+const NLP_WORDS = ['PARSING', 'TOKENIZING', 'EMBEDDING', 'CALIBRATING'] as const;
+const NODE_THRESHOLDS = [0, 17, 33, 50, 67, 83] as const;
+
 function ModelStatusIndicator({
   status,
   progress,
-  statusText,
 }: {
   status: string;
   progress: number;
   statusText: string;
 }) {
-  if (status === 'idle') return null;
+  const prevStatusRef = useRef(status);
+  const [showCascade, setShowCascade] = useState(false);
+  const [wordIndex, setWordIndex] = useState(0);
 
-  if (status === 'ready') {
-    return (
-      <span className="inline-flex items-center gap-1.5 text-xs text-accent font-medium">
-        <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-        AI-Powered
-      </span>
-    );
-  }
+  // Rotate NLP words during loading
+  useEffect(() => {
+    if (status !== 'loading') return;
+    const id = setInterval(() => setWordIndex((i) => (i + 1) % NLP_WORDS.length), 2500);
+    return () => clearInterval(id);
+  }, [status]);
 
-  if (status === 'loading') {
+  // Detect loading→ready transition for cascade
+  useEffect(() => {
+    if (prevStatusRef.current === 'loading' && status === 'ready') {
+      setShowCascade(true);
+      const timer = setTimeout(() => setShowCascade(false), 600);
+      return () => clearTimeout(timer);
+    }
+    prevStatusRef.current = status;
+  }, [status]);
+
+  const litCount = NODE_THRESHOLDS.filter((t) => progress >= t).length;
+
+  // idle
+  if (status === 'idle') {
     return (
-      <div className="w-64 space-y-1">
-        <span className="text-xs text-mist">
-          {statusText || 'Loading AI model...'} {progress > 0 ? `${progress}%` : ''}
+      <div className="min-h-[32px] flex items-center gap-2">
+        <span className="w-1.5 h-1.5 rounded-full bg-mist/40" />
+        <span className="font-mono text-xs tracking-[0.15em] text-mist uppercase">
+          AI Engine
         </span>
-        <div className="w-full h-1 bg-black/[0.06] rounded-full overflow-hidden">
-          <div
-            className="h-full bg-accent rounded-full transition-all duration-300"
-            style={{ width: `${Math.max(progress, 2)}%` }}
-          />
-        </div>
       </div>
     );
   }
 
-  if (status === 'error') {
+  // loading
+  if (status === 'loading') {
     return (
-      <span className="text-xs text-red-500">
-        Model failed to load. Click Scan to retry.
-      </span>
+      <div className="min-h-[32px] flex items-center gap-3">
+        <span
+          className="w-2 h-2 rounded-full bg-accent"
+          style={{ animation: 'ks-breathe 2s ease-in-out infinite' }}
+        />
+        <span
+          key={wordIndex}
+          className="font-mono text-xs tracking-[0.15em] text-accent uppercase"
+          style={{ animation: 'fadeIn 0.3s ease-out' }}
+        >
+          {NLP_WORDS[wordIndex]}...
+        </span>
+        <span className="flex items-center gap-0.5">
+          {NODE_THRESHOLDS.map((_, i) => (
+            <span
+              key={i}
+              className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                i < litCount ? 'bg-accent' : 'bg-mist/30'
+              }`}
+              style={
+                i === litCount - 1 && litCount > 0
+                  ? { animation: 'pulse-accent 1.5s ease-in-out infinite' }
+                  : undefined
+              }
+            />
+          ))}
+        </span>
+        {progress > 0 && (
+          <span className="font-mono text-[10px] text-mist tabular-nums">
+            {progress}%
+          </span>
+        )}
+      </div>
     );
   }
 
-  return null;
+  // ready — cascade then badge
+  if (status === 'ready') {
+    if (showCascade) {
+      return (
+        <div className="min-h-[32px] flex items-center gap-2">
+          <span className="flex items-center gap-0.5">
+            {NODE_THRESHOLDS.map((_, i) => (
+              <span
+                key={i}
+                className="w-1.5 h-1.5 rounded-full bg-accent"
+                style={{
+                  animation: `ks-node-lit 0.35s ease-out ${i * 30}ms both`,
+                }}
+              />
+            ))}
+          </span>
+          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">
+            Ready
+          </span>
+        </div>
+      );
+    }
+    return (
+      <div className="min-h-[32px] flex items-center" style={{ animation: 'fadeIn 0.3s ease-out' }}>
+        <span className="inline-flex items-center gap-1.5 text-xs text-accent font-medium">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+          AI-Powered
+        </span>
+      </div>
+    );
+  }
+
+  // error
+  if (status === 'error') {
+    return (
+      <div className="min-h-[32px] flex items-center">
+        <span className="text-xs text-red-500">
+          Model failed to load. Click Scan to retry.
+        </span>
+      </div>
+    );
+  }
+
+  return <div className="min-h-[32px]" />;
 }
 
 function LoadingSkeleton() {
@@ -313,6 +397,25 @@ export default function ResumeKeywordScanner() {
     }
   }, [modelStatus, initModel]);
 
+  // Viewport-triggered model init
+  const scannerSectionRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = scannerSectionRef.current;
+    if (!el || modelStatus !== 'idle') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasInitRef.current && modelStatus === 'idle') {
+          hasInitRef.current = true;
+          initModel();
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [modelStatus, initModel]);
+
   // Idle fallback: start loading after 5s if user hasn't interacted
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -353,7 +456,7 @@ export default function ResumeKeywordScanner() {
 
       {/* Scanner Tool */}
       <RevealSection variant="fade-up">
-        <div className="mb-16">
+        <div ref={scannerSectionRef} className="mb-16">
           {/* Privacy trust signal */}
           <div className="flex items-center justify-center gap-2 mb-6 text-xs text-mist">
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
