@@ -95,12 +95,17 @@
         <!-- AnnouncementBar placeholder (matches ~43px banner for unauthenticated landing) -->
         <div class="shell-announcement" style="background:#0c0c0c;color:#fff;padding:10px 12px;min-height:43px"></div>
         <!-- Header placeholder (matches sticky header height) -->
-        <div style="height:64px;background:#fff;border-bottom:1px solid #e5e7eb"></div>
+        <div class="shell-header" style="background:#fff;border-bottom:1px solid rgba(0,0,0,.06);position:relative">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00d47e"></div>
+        </div>
         <!-- Main content area matching LandingPage layout -->
         <!-- Hide mobile-top ad placeholder on desktop (matches Tailwind md:hidden) -->
         <style>
           .shell-mobile-ad{display:block}
           @media(min-width:768px){.shell-mobile-ad{display:none}}
+          /* Shell header: responsive height matching React Header (h-16 sm:h-[72px]) */
+          .shell-header{height:64px}
+          @media(min-width:640px){.shell-header{height:72px}}
           /* Route-aware shell visibility */
           .not-home #shell-landing{display:none}
           #shell-generic{display:none}
@@ -164,7 +169,7 @@
           </div>
         </main>
         <footer id="app-footer" data-nosnippet style="background:#f0efe9;color:#8a8680;border-top:1px solid rgba(0,0,0,.06);margin-top:auto;contain:layout style paint;overflow:clip">
-          <div style="padding:3rem 1rem;min-height:450px"></div>
+          <div style="padding:3rem 1rem;min-height:550px"></div>
         </footer>
       </div>
     </div>

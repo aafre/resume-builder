@@ -212,7 +212,7 @@ function AppContent() {
       <EnvironmentBanner />
       <AnnouncementBar />
       {/* Header */}
-      <header className="bg-white shadow-md sticky top-0 z-50">
+      <header className="bg-white sticky top-0 z-50">
         <Header />
       </header>
 
@@ -900,7 +900,7 @@ function AppContent() {
       )}
 
       {/* Footer - Always visible, static positioning */}
-      <footer id="app-footer" data-nosnippet className="bg-gray-100 text-gray-700 border-t shadow-sm mt-auto">
+      <footer id="app-footer" data-nosnippet className="bg-chalk-dark text-stone-warm border-t border-black/[0.06] mt-auto">
         <Footer />
       </footer>
     </div>
