@@ -2,6 +2,58 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.20.0] - 2026-02-17
+
+### 🚀 Features
+
+- **scanner:** Add shared types for semantic matcher worker protocol
+- **scanner:** Add Web Worker for AI-powered semantic keyword matching
+- **scanner:** Add useSemanticMatcher hook for worker lifecycle
+- **scanner:** Redesign UI with AI-powered semantic matching
+- **seo:** Enable prerendering in production Docker build
+- **scanner:** Add neural-node AI model loading indicator
+- Add PS1 script for local docker build
+- **seo:** Improvements
+
+### 🐛 Bug Fixes
+
+- **cwv:** Reduce CLS from Suspense fallback height mismatch and ads
+- **seo:** Add trailing-slash 301 redirect to prevent duplicate URLs
+- **cwv:** Align app shell hero with React LandingPage to eliminate CLS
+- **cwv:** Align shell header/footer with React to eliminate CLS
+- **cwv:** Remove min-h-screen and ad min-height to reduce mobile CLS/TBT
+- **build:** Resolve TS errors in semanticMatcher worker
+- **sitemap:** List canonical URL for software-engineer keywords page
+- **keyword-scanner:** Remove redundant Scan Now hero button
+- **blog:** Replace text bullets with semantic list-disc markup
+- **sitemap:** Update software-engineer lastmod and deduplicate entry
+
+### 🚜 Refactor
+
+- **scanner:** Replace embedding pipeline with generative LLM
+
+### 📚 Documentation
+
+- **claude:** Add SEO governance workflow
+- **claude:** Strengthen SEO governance with brand defense rules
+
+### ⚡ Performance
+
+- **docker:** Cache Playwright browser download across builds
+
+### 🧪 Testing
+
+- **scanner:** Add tests for semantic matcher hook and worker
+
+### ⚙️ Miscellaneous Tasks
+
+- Add @huggingface/transformers and configure Vite for Web Worker
+- Gitignore seo-tracking directory
+
+### ◀️ Revert
+
+- **scanner:** Restore embedding pipeline over generative LLM
+
 ## [3.19.0] - 2026-02-15
 
 ### 🚀 Features
