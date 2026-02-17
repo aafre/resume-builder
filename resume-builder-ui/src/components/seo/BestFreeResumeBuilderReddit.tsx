@@ -228,11 +228,11 @@ export default function BestFreeResumeBuilderReddit() {
           <p className="text-lg text-stone-warm leading-relaxed">
             We believe in being honest. Paid resume services can be worth it if you need:
           </p>
-          <ul className="mt-4 space-y-2 text-stone-warm">
-            <li>• Professional resume writing (human expert feedback)</li>
-            <li>• Cover letter writing services</li>
-            <li>• LinkedIn profile optimization</li>
-            <li>• Career coaching or interview prep</li>
+          <ul className="list-disc pl-5 mt-4 space-y-2 text-stone-warm">
+            <li>Professional resume writing (human expert feedback)</li>
+            <li>Cover letter writing services</li>
+            <li>LinkedIn profile optimization</li>
+            <li>Career coaching or interview prep</li>
           </ul>
           <p className="mt-4 text-stone-warm">
             But for <strong>creating and formatting a resume yourself</strong>, free tools like

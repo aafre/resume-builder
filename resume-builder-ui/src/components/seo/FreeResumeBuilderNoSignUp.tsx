@@ -94,20 +94,20 @@ export default function FreeResumeBuilderNoSignUp() {
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="font-display text-xl font-bold text-accent mb-4">We DO NOT store:</h3>
-              <ul className="space-y-2 text-stone-warm">
-                <li>• Your resume content</li>
-                <li>• Your personal information</li>
-                <li>• Your email address</li>
-                <li>• Your browsing history</li>
-                <li>• Any identifying data</li>
+              <ul className="list-disc pl-5 space-y-2 text-stone-warm">
+                <li>Your resume content</li>
+                <li>Your personal information</li>
+                <li>Your email address</li>
+                <li>Your browsing history</li>
+                <li>Any identifying data</li>
               </ul>
             </div>
             <div>
               <h3 className="text-xl font-bold text-ink/80 mb-4">We only track:</h3>
-              <ul className="space-y-2 text-stone-warm">
-                <li>• Anonymous page views (for analytics)</li>
-                <li>• Error reports (to fix bugs)</li>
-                <li>• Nothing that identifies you personally</li>
+              <ul className="list-disc pl-5 space-y-2 text-stone-warm">
+                <li>Anonymous page views (for analytics)</li>
+                <li>Error reports (to fix bugs)</li>
+                <li>Nothing that identifies you personally</li>
               </ul>
             </div>
           </div>

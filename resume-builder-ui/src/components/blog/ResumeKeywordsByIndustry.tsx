@@ -66,28 +66,28 @@ export default function ResumeKeywordsByIndustry() {
         <div className="grid md:grid-cols-2 gap-6 mt-6">
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Technical Keywords</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Python, JavaScript, TypeScript, Java, C++, Go, Rust</li>
-              <li>• React, Angular, Vue.js, Next.js, Node.js</li>
-              <li>• AWS, Azure, Google Cloud Platform (GCP)</li>
-              <li>• Docker, Kubernetes, CI/CD, Jenkins</li>
-              <li>• PostgreSQL, MongoDB, Redis, Elasticsearch</li>
-              <li>• REST APIs, GraphQL, Microservices</li>
-              <li>• Machine Learning, LLMs, TensorFlow, PyTorch</li>
-              <li>• Git, GitHub Actions, Terraform, Infrastructure as Code</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Python, JavaScript, TypeScript, Java, C++, Go, Rust</li>
+              <li>React, Angular, Vue.js, Next.js, Node.js</li>
+              <li>AWS, Azure, Google Cloud Platform (GCP)</li>
+              <li>Docker, Kubernetes, CI/CD, Jenkins</li>
+              <li>PostgreSQL, MongoDB, Redis, Elasticsearch</li>
+              <li>REST APIs, GraphQL, Microservices</li>
+              <li>Machine Learning, LLMs, TensorFlow, PyTorch</li>
+              <li>Git, GitHub Actions, Terraform, Infrastructure as Code</li>
             </ul>
           </div>
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Process & Methodology</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Agile, Scrum, Kanban, Sprint Planning</li>
-              <li>• Test-Driven Development (TDD)</li>
-              <li>• Code Review, Pair Programming</li>
-              <li>• System Design, Architecture</li>
-              <li>• DevOps, Site Reliability Engineering (SRE)</li>
-              <li>• SDLC (Software Development Life Cycle)</li>
-              <li>• Performance Optimization, Scalability</li>
-              <li>• Security (OWASP, SOC 2, GDPR)</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Agile, Scrum, Kanban, Sprint Planning</li>
+              <li>Test-Driven Development (TDD)</li>
+              <li>Code Review, Pair Programming</li>
+              <li>System Design, Architecture</li>
+              <li>DevOps, Site Reliability Engineering (SRE)</li>
+              <li>SDLC (Software Development Life Cycle)</li>
+              <li>Performance Optimization, Scalability</li>
+              <li>Security (OWASP, SOC 2, GDPR)</li>
             </ul>
           </div>
         </div>
@@ -108,28 +108,28 @@ export default function ResumeKeywordsByIndustry() {
         <div className="grid md:grid-cols-2 gap-6 mt-6">
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Clinical & Technical</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Patient assessment / triage</li>
-              <li>• Electronic Health Records (EHR) — Epic, Cerner, Meditech</li>
-              <li>• HIPAA compliance</li>
-              <li>• Medication administration</li>
-              <li>• Vital signs monitoring</li>
-              <li>• Wound care / IV therapy</li>
-              <li>• Clinical documentation</li>
-              <li>• Infection control / sterile technique</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Patient assessment / triage</li>
+              <li>Electronic Health Records (EHR) — Epic, Cerner, Meditech</li>
+              <li>HIPAA compliance</li>
+              <li>Medication administration</li>
+              <li>Vital signs monitoring</li>
+              <li>Wound care / IV therapy</li>
+              <li>Clinical documentation</li>
+              <li>Infection control / sterile technique</li>
             </ul>
           </div>
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Certifications & Soft Skills</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• BLS, ACLS, PALS certification</li>
-              <li>• RN, LPN, CNA, NP licensure</li>
-              <li>• Patient advocacy / patient education</li>
-              <li>• Interdisciplinary collaboration</li>
-              <li>• Care coordination / discharge planning</li>
-              <li>• Evidence-based practice</li>
-              <li>• Cultural competency</li>
-              <li>• Patient satisfaction (HCAHPS scores)</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>BLS, ACLS, PALS certification</li>
+              <li>RN, LPN, CNA, NP licensure</li>
+              <li>Patient advocacy / patient education</li>
+              <li>Interdisciplinary collaboration</li>
+              <li>Care coordination / discharge planning</li>
+              <li>Evidence-based practice</li>
+              <li>Cultural competency</li>
+              <li>Patient satisfaction (HCAHPS scores)</li>
             </ul>
           </div>
         </div>
@@ -146,28 +146,28 @@ export default function ResumeKeywordsByIndustry() {
         <div className="grid md:grid-cols-2 gap-6 mt-6">
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Technical & Analytical</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Financial modeling / forecasting</li>
-              <li>• Excel (VLOOKUP, pivot tables, macros)</li>
-              <li>• Bloomberg Terminal / Reuters</li>
-              <li>• QuickBooks, SAP, Oracle Financials</li>
-              <li>• GAAP / IFRS compliance</li>
-              <li>• Budgeting and variance analysis</li>
-              <li>• Risk assessment / management</li>
-              <li>• Portfolio management</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Financial modeling / forecasting</li>
+              <li>Excel (VLOOKUP, pivot tables, macros)</li>
+              <li>Bloomberg Terminal / Reuters</li>
+              <li>QuickBooks, SAP, Oracle Financials</li>
+              <li>GAAP / IFRS compliance</li>
+              <li>Budgeting and variance analysis</li>
+              <li>Risk assessment / management</li>
+              <li>Portfolio management</li>
             </ul>
           </div>
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Regulatory & Certifications</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• CPA, CFA, CFP, Series 7/63</li>
-              <li>• SOX compliance (Sarbanes-Oxley)</li>
-              <li>• AML (Anti-Money Laundering)</li>
-              <li>• KYC (Know Your Customer)</li>
-              <li>• Audit preparation / internal audit</li>
-              <li>• Tax preparation / tax planning</li>
-              <li>• Accounts payable / receivable</li>
-              <li>• Financial reporting / SEC filings</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>CPA, CFA, CFP, Series 7/63</li>
+              <li>SOX compliance (Sarbanes-Oxley)</li>
+              <li>AML (Anti-Money Laundering)</li>
+              <li>KYC (Know Your Customer)</li>
+              <li>Audit preparation / internal audit</li>
+              <li>Tax preparation / tax planning</li>
+              <li>Accounts payable / receivable</li>
+              <li>Financial reporting / SEC filings</li>
             </ul>
           </div>
         </div>
@@ -184,28 +184,28 @@ export default function ResumeKeywordsByIndustry() {
         <div className="grid md:grid-cols-2 gap-6 mt-6">
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Digital Marketing Skills</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• SEO / SEM / PPC (Google Ads, Meta Ads)</li>
-              <li>• Content marketing / content strategy</li>
-              <li>• Email marketing (Mailchimp, HubSpot, Klaviyo)</li>
-              <li>• Social media management (Hootsuite, Sprout Social)</li>
-              <li>• Marketing automation (HubSpot, Marketo, Pardot)</li>
-              <li>• Google Analytics 4 / Google Tag Manager</li>
-              <li>• A/B testing / conversion rate optimization (CRO)</li>
-              <li>• Influencer marketing / brand partnerships</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>SEO / SEM / PPC (Google Ads, Meta Ads)</li>
+              <li>Content marketing / content strategy</li>
+              <li>Email marketing (Mailchimp, HubSpot, Klaviyo)</li>
+              <li>Social media management (Hootsuite, Sprout Social)</li>
+              <li>Marketing automation (HubSpot, Marketo, Pardot)</li>
+              <li>Google Analytics 4 / Google Tag Manager</li>
+              <li>A/B testing / conversion rate optimization (CRO)</li>
+              <li>Influencer marketing / brand partnerships</li>
             </ul>
           </div>
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Metrics & Strategy</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• ROI / ROAS (Return on Ad Spend)</li>
-              <li>• CAC (Customer Acquisition Cost)</li>
-              <li>• LTV (Lifetime Value)</li>
-              <li>• Lead generation / demand generation</li>
-              <li>• Brand positioning / brand awareness</li>
-              <li>• Go-to-market (GTM) strategy</li>
-              <li>• Customer segmentation / persona development</li>
-              <li>• Attribution modeling</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>ROI / ROAS (Return on Ad Spend)</li>
+              <li>CAC (Customer Acquisition Cost)</li>
+              <li>LTV (Lifetime Value)</li>
+              <li>Lead generation / demand generation</li>
+              <li>Brand positioning / brand awareness</li>
+              <li>Go-to-market (GTM) strategy</li>
+              <li>Customer segmentation / persona development</li>
+              <li>Attribution modeling</li>
             </ul>
           </div>
         </div>
@@ -218,28 +218,28 @@ export default function ResumeKeywordsByIndustry() {
         <div className="grid md:grid-cols-2 gap-6 mt-6">
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Sales Skills & Tools</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Salesforce / HubSpot CRM / Pipedrive</li>
-              <li>• Pipeline management / forecasting</li>
-              <li>• Cold calling / outbound prospecting</li>
-              <li>• Solution selling / consultative selling</li>
-              <li>• SaaS sales / B2B sales / B2C sales</li>
-              <li>• Account management / key accounts</li>
-              <li>• Territory management</li>
-              <li>• Contract negotiation / closing</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Salesforce / HubSpot CRM / Pipedrive</li>
+              <li>Pipeline management / forecasting</li>
+              <li>Cold calling / outbound prospecting</li>
+              <li>Solution selling / consultative selling</li>
+              <li>SaaS sales / B2B sales / B2C sales</li>
+              <li>Account management / key accounts</li>
+              <li>Territory management</li>
+              <li>Contract negotiation / closing</li>
             </ul>
           </div>
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Metrics & Results</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Quota attainment (% of target)</li>
-              <li>• Revenue growth / YoY growth</li>
-              <li>• Deal size / average contract value (ACV)</li>
-              <li>• Win rate / conversion rate</li>
-              <li>• Customer retention / churn reduction</li>
-              <li>• Upselling / cross-selling</li>
-              <li>• Lead qualification (BANT, MEDDIC)</li>
-              <li>• New business development</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Quota attainment (% of target)</li>
+              <li>Revenue growth / YoY growth</li>
+              <li>Deal size / average contract value (ACV)</li>
+              <li>Win rate / conversion rate</li>
+              <li>Customer retention / churn reduction</li>
+              <li>Upselling / cross-selling</li>
+              <li>Lead qualification (BANT, MEDDIC)</li>
+              <li>New business development</li>
             </ul>
           </div>
         </div>
@@ -252,28 +252,28 @@ export default function ResumeKeywordsByIndustry() {
         <div className="grid md:grid-cols-2 gap-6 mt-6">
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Teaching & Curriculum</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Lesson planning / curriculum development</li>
-              <li>• Differentiated instruction</li>
-              <li>• Classroom management</li>
-              <li>• Student assessment / formative assessment</li>
-              <li>• IEP (Individualized Education Program)</li>
-              <li>• STEM education / project-based learning</li>
-              <li>• Blended learning / hybrid instruction</li>
-              <li>• State standards alignment (Common Core)</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Lesson planning / curriculum development</li>
+              <li>Differentiated instruction</li>
+              <li>Classroom management</li>
+              <li>Student assessment / formative assessment</li>
+              <li>IEP (Individualized Education Program)</li>
+              <li>STEM education / project-based learning</li>
+              <li>Blended learning / hybrid instruction</li>
+              <li>State standards alignment (Common Core)</li>
             </ul>
           </div>
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Technology & Development</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Google Classroom / Canvas / Blackboard</li>
-              <li>• Educational technology (EdTech)</li>
-              <li>• Parent communication / conferences</li>
-              <li>• Professional development</li>
-              <li>• Mentoring / coaching</li>
-              <li>• Special education / ESL/ELL</li>
-              <li>• Student engagement strategies</li>
-              <li>• Data-driven instruction</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Google Classroom / Canvas / Blackboard</li>
+              <li>Educational technology (EdTech)</li>
+              <li>Parent communication / conferences</li>
+              <li>Professional development</li>
+              <li>Mentoring / coaching</li>
+              <li>Special education / ESL/ELL</li>
+              <li>Student engagement strategies</li>
+              <li>Data-driven instruction</li>
             </ul>
           </div>
         </div>
@@ -286,28 +286,28 @@ export default function ResumeKeywordsByIndustry() {
         <div className="grid md:grid-cols-2 gap-6 mt-6">
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Technical & Process</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Lean Manufacturing / Six Sigma (Green Belt, Black Belt)</li>
-              <li>• Kaizen / continuous improvement</li>
-              <li>• CAD/CAM (AutoCAD, SolidWorks, CATIA)</li>
-              <li>• Quality control / quality assurance (QA/QC)</li>
-              <li>• ISO 9001 / ISO 14001 certification</li>
-              <li>• Supply chain management</li>
-              <li>• Bill of Materials (BOM)</li>
-              <li>• Root cause analysis (5 Whys, Fishbone)</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Lean Manufacturing / Six Sigma (Green Belt, Black Belt)</li>
+              <li>Kaizen / continuous improvement</li>
+              <li>CAD/CAM (AutoCAD, SolidWorks, CATIA)</li>
+              <li>Quality control / quality assurance (QA/QC)</li>
+              <li>ISO 9001 / ISO 14001 certification</li>
+              <li>Supply chain management</li>
+              <li>Bill of Materials (BOM)</li>
+              <li>Root cause analysis (5 Whys, Fishbone)</li>
             </ul>
           </div>
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Safety & Compliance</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• OSHA compliance / safety regulations</li>
-              <li>• GMP (Good Manufacturing Practices)</li>
-              <li>• ERP systems (SAP, Oracle)</li>
-              <li>• Process optimization / cycle time reduction</li>
-              <li>• Production scheduling / capacity planning</li>
-              <li>• Inventory management / JIT</li>
-              <li>• Preventive maintenance</li>
-              <li>• Cross-functional team leadership</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>OSHA compliance / safety regulations</li>
+              <li>GMP (Good Manufacturing Practices)</li>
+              <li>ERP systems (SAP, Oracle)</li>
+              <li>Process optimization / cycle time reduction</li>
+              <li>Production scheduling / capacity planning</li>
+              <li>Inventory management / JIT</li>
+              <li>Preventive maintenance</li>
+              <li>Cross-functional team leadership</li>
             </ul>
           </div>
         </div>
@@ -320,28 +320,28 @@ export default function ResumeKeywordsByIndustry() {
         <div className="grid md:grid-cols-2 gap-6 mt-6">
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Service Skills</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• CRM platforms (Zendesk, Salesforce, HubSpot)</li>
-              <li>• Conflict resolution / de-escalation</li>
-              <li>• First call resolution (FCR)</li>
-              <li>• Customer satisfaction (CSAT / NPS)</li>
-              <li>• Multi-channel support (phone, email, chat)</li>
-              <li>• Ticket management / SLA compliance</li>
-              <li>• Upselling / cross-selling</li>
-              <li>• Customer retention</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>CRM platforms (Zendesk, Salesforce, HubSpot)</li>
+              <li>Conflict resolution / de-escalation</li>
+              <li>First call resolution (FCR)</li>
+              <li>Customer satisfaction (CSAT / NPS)</li>
+              <li>Multi-channel support (phone, email, chat)</li>
+              <li>Ticket management / SLA compliance</li>
+              <li>Upselling / cross-selling</li>
+              <li>Customer retention</li>
             </ul>
           </div>
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Retail Specific</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• POS systems / cash handling</li>
-              <li>• Visual merchandising</li>
-              <li>• Inventory management / stock replenishment</li>
-              <li>• Loss prevention</li>
-              <li>• Store operations</li>
-              <li>• Customer loyalty programs</li>
-              <li>• Sales floor management</li>
-              <li>• Product knowledge / consultative selling</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>POS systems / cash handling</li>
+              <li>Visual merchandising</li>
+              <li>Inventory management / stock replenishment</li>
+              <li>Loss prevention</li>
+              <li>Store operations</li>
+              <li>Customer loyalty programs</li>
+              <li>Sales floor management</li>
+              <li>Product knowledge / consultative selling</li>
             </ul>
           </div>
         </div>
@@ -358,28 +358,28 @@ export default function ResumeKeywordsByIndustry() {
         <div className="grid md:grid-cols-2 gap-6 mt-6">
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Core HR Skills</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Talent acquisition / recruitment</li>
-              <li>• HRIS (Workday, BambooHR, ADP)</li>
-              <li>• Employee onboarding / offboarding</li>
-              <li>• Performance management</li>
-              <li>• Compensation and benefits administration</li>
-              <li>• Employee relations / labor relations</li>
-              <li>• Diversity, Equity & Inclusion (DEI)</li>
-              <li>• Succession planning</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Talent acquisition / recruitment</li>
+              <li>HRIS (Workday, BambooHR, ADP)</li>
+              <li>Employee onboarding / offboarding</li>
+              <li>Performance management</li>
+              <li>Compensation and benefits administration</li>
+              <li>Employee relations / labor relations</li>
+              <li>Diversity, Equity & Inclusion (DEI)</li>
+              <li>Succession planning</li>
             </ul>
           </div>
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Compliance & Strategy</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• FMLA, ADA, EEO, FLSA compliance</li>
-              <li>• Payroll processing (ADP, Paychex)</li>
-              <li>• Training and development / L&D</li>
-              <li>• Organizational development</li>
-              <li>• Employee engagement surveys</li>
-              <li>• Workforce planning / headcount management</li>
-              <li>• SHRM-CP / PHR certification</li>
-              <li>• Change management</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>FMLA, ADA, EEO, FLSA compliance</li>
+              <li>Payroll processing (ADP, Paychex)</li>
+              <li>Training and development / L&D</li>
+              <li>Organizational development</li>
+              <li>Employee engagement surveys</li>
+              <li>Workforce planning / headcount management</li>
+              <li>SHRM-CP / PHR certification</li>
+              <li>Change management</li>
             </ul>
           </div>
         </div>
@@ -392,28 +392,28 @@ export default function ResumeKeywordsByIndustry() {
         <div className="grid md:grid-cols-2 gap-6 mt-6">
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Methodologies & Tools</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• PMP / CAPM / Scrum Master certification</li>
-              <li>• Agile / Scrum / Waterfall / Hybrid</li>
-              <li>• Jira, Asana, Monday.com, Microsoft Project</li>
-              <li>• Risk management / mitigation</li>
-              <li>• Scope management / change control</li>
-              <li>• Resource allocation / capacity planning</li>
-              <li>• Gantt charts / WBS (Work Breakdown Structure)</li>
-              <li>• Stakeholder management</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>PMP / CAPM / Scrum Master certification</li>
+              <li>Agile / Scrum / Waterfall / Hybrid</li>
+              <li>Jira, Asana, Monday.com, Microsoft Project</li>
+              <li>Risk management / mitigation</li>
+              <li>Scope management / change control</li>
+              <li>Resource allocation / capacity planning</li>
+              <li>Gantt charts / WBS (Work Breakdown Structure)</li>
+              <li>Stakeholder management</li>
             </ul>
           </div>
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Delivery & Results</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• On-time / on-budget delivery</li>
-              <li>• Cross-functional team leadership</li>
-              <li>• Vendor management / procurement</li>
-              <li>• Budget tracking / cost optimization</li>
-              <li>• Status reporting / executive communication</li>
-              <li>• Process improvement / efficiency gains</li>
-              <li>• Sprint velocity / burndown tracking</li>
-              <li>• Post-mortem / lessons learned</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>On-time / on-budget delivery</li>
+              <li>Cross-functional team leadership</li>
+              <li>Vendor management / procurement</li>
+              <li>Budget tracking / cost optimization</li>
+              <li>Status reporting / executive communication</li>
+              <li>Process improvement / efficiency gains</li>
+              <li>Sprint velocity / burndown tracking</li>
+              <li>Post-mortem / lessons learned</li>
             </ul>
           </div>
         </div>
@@ -431,32 +431,32 @@ export default function ResumeKeywordsByIndustry() {
           <div className="grid md:grid-cols-3 gap-6 text-stone-warm">
             <div>
               <h4 className="font-bold text-ink mb-3">Leadership:</h4>
-              <ul className="text-sm space-y-1">
-                <li>• Team leadership / management</li>
-                <li>• Mentoring / coaching</li>
-                <li>• Cross-functional collaboration</li>
-                <li>• Strategic planning</li>
-                <li>• Decision making</li>
+              <ul className="list-disc pl-5 text-sm space-y-1">
+                <li>Team leadership / management</li>
+                <li>Mentoring / coaching</li>
+                <li>Cross-functional collaboration</li>
+                <li>Strategic planning</li>
+                <li>Decision making</li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold text-ink mb-3">Communication:</h4>
-              <ul className="text-sm space-y-1">
-                <li>• Stakeholder management</li>
-                <li>• Presentation skills</li>
-                <li>• Written / verbal communication</li>
-                <li>• Client relationship management</li>
-                <li>• Executive reporting</li>
+              <ul className="list-disc pl-5 text-sm space-y-1">
+                <li>Stakeholder management</li>
+                <li>Presentation skills</li>
+                <li>Written / verbal communication</li>
+                <li>Client relationship management</li>
+                <li>Executive reporting</li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold text-ink mb-3">Results:</h4>
-              <ul className="text-sm space-y-1">
-                <li>• Process improvement</li>
-                <li>• Cost reduction / optimization</li>
-                <li>• Revenue growth</li>
-                <li>• Data-driven decision making</li>
-                <li>• KPI achievement</li>
+              <ul className="list-disc pl-5 text-sm space-y-1">
+                <li>Process improvement</li>
+                <li>Cost reduction / optimization</li>
+                <li>Revenue growth</li>
+                <li>Data-driven decision making</li>
+                <li>KPI achievement</li>
               </ul>
             </div>
           </div>

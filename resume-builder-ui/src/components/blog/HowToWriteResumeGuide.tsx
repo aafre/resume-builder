@@ -241,34 +241,34 @@ export default function HowToWriteResumeGuide() {
         <div className="grid md:grid-cols-3 gap-4">
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-4">
             <h4 className="font-bold text-ink mb-2">Leadership</h4>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Directed</li>
-              <li>• Supervised</li>
-              <li>• Mentored</li>
-              <li>• Coordinated</li>
-              <li>• Facilitated</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Directed</li>
+              <li>Supervised</li>
+              <li>Mentored</li>
+              <li>Coordinated</li>
+              <li>Facilitated</li>
             </ul>
           </div>
 
           <div className="bg-green-50 border border-green-200 rounded-xl p-4">
             <h4 className="font-bold text-green-800 mb-2">Achievement</h4>
-            <ul className="text-accent text-sm space-y-1">
-              <li>• Achieved</li>
-              <li>• Exceeded</li>
-              <li>• Delivered</li>
-              <li>• Improved</li>
-              <li>• Optimized</li>
+            <ul className="list-disc pl-5 text-accent text-sm space-y-1">
+              <li>Achieved</li>
+              <li>Exceeded</li>
+              <li>Delivered</li>
+              <li>Improved</li>
+              <li>Optimized</li>
             </ul>
           </div>
 
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-4">
             <h4 className="font-bold text-ink mb-2">Innovation</h4>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Developed</li>
-              <li>• Created</li>
-              <li>• Designed</li>
-              <li>• Implemented</li>
-              <li>• Pioneered</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Developed</li>
+              <li>Created</li>
+              <li>Designed</li>
+              <li>Implemented</li>
+              <li>Pioneered</li>
             </ul>
           </div>
         </div>

@@ -70,28 +70,28 @@ export default function CustomerServiceResumeKeywordsGuide() {
         <div className="grid md:grid-cols-2 gap-6 mt-6">
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-4">CRM Platforms</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Salesforce / Salesforce Service Cloud</li>
-              <li>• Zendesk</li>
-              <li>• HubSpot CRM</li>
-              <li>• Freshdesk / Freshservice</li>
-              <li>• Intercom</li>
-              <li>• ServiceNow</li>
-              <li>• Microsoft Dynamics 365</li>
-              <li>• Zoho CRM</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Salesforce / Salesforce Service Cloud</li>
+              <li>Zendesk</li>
+              <li>HubSpot CRM</li>
+              <li>Freshdesk / Freshservice</li>
+              <li>Intercom</li>
+              <li>ServiceNow</li>
+              <li>Microsoft Dynamics 365</li>
+              <li>Zoho CRM</li>
             </ul>
           </div>
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-4">Support & Communication Tools</h3>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Live chat software (Drift, Olark)</li>
-              <li>• Help desk / ticketing systems</li>
-              <li>• IVR (Interactive Voice Response)</li>
-              <li>• Omnichannel support platforms</li>
-              <li>• Knowledge base management</li>
-              <li>• Call center software (Five9, Genesys)</li>
-              <li>• Slack / Microsoft Teams</li>
-              <li>• Screen sharing / remote support tools</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Live chat software (Drift, Olark)</li>
+              <li>Help desk / ticketing systems</li>
+              <li>IVR (Interactive Voice Response)</li>
+              <li>Omnichannel support platforms</li>
+              <li>Knowledge base management</li>
+              <li>Call center software (Five9, Genesys)</li>
+              <li>Slack / Microsoft Teams</li>
+              <li>Screen sharing / remote support tools</li>
             </ul>
           </div>
         </div>
@@ -115,35 +115,35 @@ export default function CustomerServiceResumeKeywordsGuide() {
           <div className="grid md:grid-cols-3 gap-6 text-stone-warm">
             <div>
               <h4 className="font-bold text-ink mb-3">Communication:</h4>
-              <ul className="text-sm space-y-1">
-                <li>• Active listening</li>
-                <li>• Verbal communication</li>
-                <li>• Written communication</li>
-                <li>• Clear and concise</li>
-                <li>• Professional tone</li>
-                <li>• Bilingual / multilingual</li>
+              <ul className="list-disc pl-5 text-sm space-y-1">
+                <li>Active listening</li>
+                <li>Verbal communication</li>
+                <li>Written communication</li>
+                <li>Clear and concise</li>
+                <li>Professional tone</li>
+                <li>Bilingual / multilingual</li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold text-ink mb-3">Problem-Solving:</h4>
-              <ul className="text-sm space-y-1">
-                <li>• Conflict resolution</li>
-                <li>• De-escalation</li>
-                <li>• Root cause analysis</li>
-                <li>• Critical thinking</li>
-                <li>• Decision making</li>
-                <li>• Troubleshooting</li>
+              <ul className="list-disc pl-5 text-sm space-y-1">
+                <li>Conflict resolution</li>
+                <li>De-escalation</li>
+                <li>Root cause analysis</li>
+                <li>Critical thinking</li>
+                <li>Decision making</li>
+                <li>Troubleshooting</li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold text-ink mb-3">Interpersonal:</h4>
-              <ul className="text-sm space-y-1">
-                <li>• Empathy</li>
-                <li>• Patience</li>
-                <li>• Adaptability</li>
-                <li>• Team collaboration</li>
-                <li>• Relationship building</li>
-                <li>• Emotional intelligence</li>
+              <ul className="list-disc pl-5 text-sm space-y-1">
+                <li>Empathy</li>
+                <li>Patience</li>
+                <li>Adaptability</li>
+                <li>Team collaboration</li>
+                <li>Relationship building</li>
+                <li>Emotional intelligence</li>
               </ul>
             </div>
           </div>
@@ -160,14 +160,14 @@ export default function CustomerServiceResumeKeywordsGuide() {
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
           <h3 className="font-bold text-green-800 mb-4">Key Metrics to Include:</h3>
           <div className="grid md:grid-cols-2 gap-4 text-green-800">
-            <ul className="text-sm space-y-2">
+            <ul className="list-disc pl-5 text-sm space-y-2">
               <li><strong>CSAT (Customer Satisfaction Score)</strong> — Overall satisfaction rating</li>
               <li><strong>NPS (Net Promoter Score)</strong> — Customer loyalty measure</li>
               <li><strong>FCR (First Call Resolution)</strong> — Resolved on first contact</li>
               <li><strong>AHT (Average Handle Time)</strong> — Efficiency per interaction</li>
               <li><strong>Customer Retention Rate</strong> — Keeping customers active</li>
             </ul>
-            <ul className="text-sm space-y-2">
+            <ul className="list-disc pl-5 text-sm space-y-2">
               <li><strong>Response Time / SLA Compliance</strong> — Meeting service targets</li>
               <li><strong>Ticket Volume</strong> — Throughput capacity</li>
               <li><strong>Escalation Rate</strong> — Self-sufficiency indicator</li>
@@ -189,17 +189,17 @@ export default function CustomerServiceResumeKeywordsGuide() {
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Retail / E-Commerce</h3>
             <div className="grid md:grid-cols-2 gap-4 text-ink/80 text-sm">
-              <ul className="space-y-1">
-                <li>• POS (Point of Sale) systems</li>
-                <li>• Returns and exchanges</li>
-                <li>• Inventory management</li>
-                <li>• Visual merchandising</li>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>POS (Point of Sale) systems</li>
+                <li>Returns and exchanges</li>
+                <li>Inventory management</li>
+                <li>Visual merchandising</li>
               </ul>
-              <ul className="space-y-1">
-                <li>• Order fulfillment</li>
-                <li>• Shopify / WooCommerce</li>
-                <li>• Loss prevention</li>
-                <li>• Customer loyalty programs</li>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Order fulfillment</li>
+                <li>Shopify / WooCommerce</li>
+                <li>Loss prevention</li>
+                <li>Customer loyalty programs</li>
               </ul>
             </div>
           </div>
@@ -207,17 +207,17 @@ export default function CustomerServiceResumeKeywordsGuide() {
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Healthcare</h3>
             <div className="grid md:grid-cols-2 gap-4 text-ink/80 text-sm">
-              <ul className="space-y-1">
-                <li>• Patient registration / intake</li>
-                <li>• HIPAA compliance</li>
-                <li>• Insurance verification</li>
-                <li>• Medical terminology</li>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Patient registration / intake</li>
+                <li>HIPAA compliance</li>
+                <li>Insurance verification</li>
+                <li>Medical terminology</li>
               </ul>
-              <ul className="space-y-1">
-                <li>• EHR / EMR systems (Epic, Cerner)</li>
-                <li>• Appointment scheduling</li>
-                <li>• Patient satisfaction</li>
-                <li>• Billing and coding</li>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>EHR / EMR systems (Epic, Cerner)</li>
+                <li>Appointment scheduling</li>
+                <li>Patient satisfaction</li>
+                <li>Billing and coding</li>
               </ul>
             </div>
           </div>
@@ -225,17 +225,17 @@ export default function CustomerServiceResumeKeywordsGuide() {
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">Financial Services / Banking</h3>
             <div className="grid md:grid-cols-2 gap-4 text-ink/80 text-sm">
-              <ul className="space-y-1">
-                <li>• Account management</li>
-                <li>• KYC (Know Your Customer)</li>
-                <li>• Fraud detection / prevention</li>
-                <li>• Regulatory compliance</li>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Account management</li>
+                <li>KYC (Know Your Customer)</li>
+                <li>Fraud detection / prevention</li>
+                <li>Regulatory compliance</li>
               </ul>
-              <ul className="space-y-1">
-                <li>• Financial products knowledge</li>
-                <li>• Dispute resolution</li>
-                <li>• Wire transfers / ACH</li>
-                <li>• Cross-selling financial products</li>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Financial products knowledge</li>
+                <li>Dispute resolution</li>
+                <li>Wire transfers / ACH</li>
+                <li>Cross-selling financial products</li>
               </ul>
             </div>
           </div>
@@ -243,17 +243,17 @@ export default function CustomerServiceResumeKeywordsGuide() {
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-xl font-bold text-ink mb-3">SaaS / Technology</h3>
             <div className="grid md:grid-cols-2 gap-4 text-ink/80 text-sm">
-              <ul className="space-y-1">
-                <li>• Technical support / troubleshooting</li>
-                <li>• Bug reporting / Jira</li>
-                <li>• Product demos / walkthroughs</li>
-                <li>• Customer onboarding</li>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Technical support / troubleshooting</li>
+                <li>Bug reporting / Jira</li>
+                <li>Product demos / walkthroughs</li>
+                <li>Customer onboarding</li>
               </ul>
-              <ul className="space-y-1">
-                <li>• SaaS metrics (churn, MRR, ARR)</li>
-                <li>• API support</li>
-                <li>• User adoption / training</li>
-                <li>• Feature requests / feedback loops</li>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>SaaS metrics (churn, MRR, ARR)</li>
+                <li>API support</li>
+                <li>User adoption / training</li>
+                <li>Feature requests / feedback loops</li>
               </ul>
             </div>
           </div>
@@ -314,40 +314,40 @@ export default function CustomerServiceResumeKeywordsGuide() {
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-lg font-bold text-ink mb-3">Entry Level</h3>
             <p className="text-ink/80 text-sm mb-3">Focus on foundational skills:</p>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Customer-facing experience</li>
-              <li>• Communication skills</li>
-              <li>• Problem solving</li>
-              <li>• Team collaboration</li>
-              <li>• Cash handling / POS</li>
-              <li>• Multitasking</li>
-              <li>• Attention to detail</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Customer-facing experience</li>
+              <li>Communication skills</li>
+              <li>Problem solving</li>
+              <li>Team collaboration</li>
+              <li>Cash handling / POS</li>
+              <li>Multitasking</li>
+              <li>Attention to detail</li>
             </ul>
           </div>
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-lg font-bold text-ink mb-3">Mid-Level (2-5 years)</h3>
             <p className="text-ink/80 text-sm mb-3">Add metrics and tools:</p>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Specific CRM platforms</li>
-              <li>• CSAT / NPS improvement</li>
-              <li>• First call resolution</li>
-              <li>• Process improvement</li>
-              <li>• Training new hires</li>
-              <li>• Quality assurance</li>
-              <li>• Escalation management</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Specific CRM platforms</li>
+              <li>CSAT / NPS improvement</li>
+              <li>First call resolution</li>
+              <li>Process improvement</li>
+              <li>Training new hires</li>
+              <li>Quality assurance</li>
+              <li>Escalation management</li>
             </ul>
           </div>
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-lg font-bold text-ink mb-3">Senior / Manager</h3>
             <p className="text-ink/80 text-sm mb-3">Emphasize leadership and strategy:</p>
-            <ul className="text-ink/80 text-sm space-y-1">
-              <li>• Team management / coaching</li>
-              <li>• KPI optimization</li>
-              <li>• Budget management</li>
-              <li>• Workforce planning</li>
-              <li>• Customer experience strategy</li>
-              <li>• Vendor management</li>
-              <li>• Change management</li>
+            <ul className="list-disc pl-5 text-ink/80 text-sm space-y-1">
+              <li>Team management / coaching</li>
+              <li>KPI optimization</li>
+              <li>Budget management</li>
+              <li>Workforce planning</li>
+              <li>Customer experience strategy</li>
+              <li>Vendor management</li>
+              <li>Change management</li>
             </ul>
           </div>
         </div>
