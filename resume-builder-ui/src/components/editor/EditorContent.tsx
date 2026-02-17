@@ -26,11 +26,10 @@ import { UnifiedDndContext, UnifiedDndContextValue, DraggedItemInfo } from '../.
 import { DragLevel } from '../../hooks/editor/useUnifiedDragDrop';
 import ContactInfoSection from '../ContactInfoSection';
 import FormattingHelp from '../FormattingHelp';
-import SectionRenderer from './SectionRenderer';
 import MobileActionBar from '../MobileActionBar';
 import MobileNavigationDrawer from '../MobileNavigationDrawer';
 import SectionNavigator from '../SectionNavigator';
-import DragHandle from '../DragHandle';
+import SectionItem from './SectionItem';
 
 /**
  * Props for contact form functionality
@@ -321,33 +320,25 @@ export const EditorContent: React.FC<EditorContentProps> = ({
           strategy={verticalListSortingStrategy}
         >
           {sections.map((section, index) => (
-            <DragHandle key={section.id || index} id={section.id || `section-${index}`} disabled={false}>
-              <div
-                ref={(el) => {
-                  refs.sectionRefs.current[index] = el;
-                  if (index === sections.length - 1) {
-                    refs.newSectionRef.current = el;
-                  }
-                }}
-              >
-                <SectionRenderer
-                  section={section}
-                  index={index}
-                  handleUpdateSection={sectionManagement.handleUpdateSection}
-                  handleDeleteSection={sectionManagement.handleDeleteSection}
-                  handleDeleteEntry={sectionManagement.handleDeleteEntry}
-                  handleReorderEntry={sectionManagement.handleReorderEntry}
-                  handleTitleEdit={sectionManagement.handleTitleEdit}
-                  handleTitleSave={sectionManagement.handleTitleSave}
-                  handleTitleCancel={sectionManagement.handleTitleCancel}
-                  isEditingTitle={sectionManagement.editingTitleIndex === index}
-                  temporaryTitle={sectionManagement.editingTitleIndex === index ? sectionManagement.temporaryTitle : ''}
-                  setTemporaryTitle={sectionManagement.setTemporaryTitle}
-                  supportsIcons={supportsIcons}
-                  iconRegistry={iconRegistry}
-                />
-              </div>
-            </DragHandle>
+            <SectionItem
+              key={section.id || index}
+              section={section}
+              index={index}
+              isLast={index === sections.length - 1}
+              supportsIcons={supportsIcons}
+              iconRegistry={iconRegistry}
+              refs={refs}
+              handleUpdateSection={sectionManagement.handleUpdateSection}
+              handleDeleteSection={sectionManagement.handleDeleteSection}
+              handleDeleteEntry={sectionManagement.handleDeleteEntry}
+              handleReorderEntry={sectionManagement.handleReorderEntry}
+              handleTitleEdit={sectionManagement.handleTitleEdit}
+              handleTitleSave={sectionManagement.handleTitleSave}
+              handleTitleCancel={sectionManagement.handleTitleCancel}
+              isEditingTitle={sectionManagement.editingTitleIndex === index}
+              temporaryTitle={sectionManagement.editingTitleIndex === index ? sectionManagement.temporaryTitle : ''}
+              setTemporaryTitle={sectionManagement.setTemporaryTitle}
+            />
           ))}
         </SortableContext>
 
