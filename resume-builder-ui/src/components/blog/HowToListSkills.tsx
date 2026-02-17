@@ -217,13 +217,13 @@ export default function HowToListSkills() {
               </p>
               <div className="bg-white p-4 rounded-lg border">
                 <h4 className="font-bold text-ink mb-2">Skills</h4>
-                <ul className="text-sm space-y-1 text-stone-warm">
-                  <li>• JavaScript, React, Node.js</li>
-                  <li>• Agile Methodology & Scrum</li>
-                  <li>• Data Analysis & Visualization</li>
-                  <li>• Team Leadership & Mentoring</li>
-                  <li>• Project Management</li>
-                  <li>• Problem-Solving & Critical Thinking</li>
+                <ul className="list-disc pl-5 text-sm space-y-1 text-stone-warm">
+                  <li>JavaScript, React, Node.js</li>
+                  <li>Agile Methodology & Scrum</li>
+                  <li>Data Analysis & Visualization</li>
+                  <li>Team Leadership & Mentoring</li>
+                  <li>Project Management</li>
+                  <li>Problem-Solving & Critical Thinking</li>
                 </ul>
               </div>
               <div className="mt-3">
@@ -297,20 +297,20 @@ export default function HowToListSkills() {
                 <div className="grid md:grid-cols-2 gap-4 text-sm text-stone-warm">
                   <div>
                     <h4 className="font-bold text-ink mb-2">Technical Skills</h4>
-                    <ul className="space-y-1">
-                      <li>• Salesforce CRM</li>
-                      <li>• Google Analytics</li>
-                      <li>• SQL & Data Analysis</li>
-                      <li>• Adobe Creative Suite</li>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>Salesforce CRM</li>
+                      <li>Google Analytics</li>
+                      <li>SQL & Data Analysis</li>
+                      <li>Adobe Creative Suite</li>
                     </ul>
                   </div>
                   <div>
                     <h4 className="font-bold text-ink mb-2">Core Strengths</h4>
-                    <ul className="space-y-1">
-                      <li>• Strategic Planning</li>
-                      <li>• Cross-functional Leadership</li>
-                      <li>• Client Relationship Management</li>
-                      <li>• Process Optimization</li>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>Strategic Planning</li>
+                      <li>Cross-functional Leadership</li>
+                      <li>Client Relationship Management</li>
+                      <li>Process Optimization</li>
                     </ul>
                   </div>
                 </div>
@@ -340,47 +340,47 @@ export default function HowToListSkills() {
             <div className="grid md:grid-cols-3 gap-4 text-ink/80 text-sm">
               <div>
                 <h4 className="font-medium mb-2">Programming Languages:</h4>
-                <ul className="space-y-1">
-                  <li>• Python</li>
-                  <li>• JavaScript</li>
-                  <li>• Java</li>
-                  <li>• C++</li>
-                  <li>• C#</li>
-                  <li>• PHP</li>
-                  <li>• Ruby</li>
-                  <li>• Swift</li>
-                  <li>• Kotlin</li>
-                  <li>• Go</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Python</li>
+                  <li>JavaScript</li>
+                  <li>Java</li>
+                  <li>C++</li>
+                  <li>C#</li>
+                  <li>PHP</li>
+                  <li>Ruby</li>
+                  <li>Swift</li>
+                  <li>Kotlin</li>
+                  <li>Go</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-medium mb-2">Frameworks & Tools:</h4>
-                <ul className="space-y-1">
-                  <li>• React</li>
-                  <li>• Angular</li>
-                  <li>• Vue.js</li>
-                  <li>• Node.js</li>
-                  <li>• Django</li>
-                  <li>• Spring Boot</li>
-                  <li>• Docker</li>
-                  <li>• Kubernetes</li>
-                  <li>• Git</li>
-                  <li>• Jenkins</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>React</li>
+                  <li>Angular</li>
+                  <li>Vue.js</li>
+                  <li>Node.js</li>
+                  <li>Django</li>
+                  <li>Spring Boot</li>
+                  <li>Docker</li>
+                  <li>Kubernetes</li>
+                  <li>Git</li>
+                  <li>Jenkins</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-medium mb-2">Specializations:</h4>
-                <ul className="space-y-1">
-                  <li>• Cloud Computing (AWS, Azure)</li>
-                  <li>• DevOps</li>
-                  <li>• Machine Learning</li>
-                  <li>• Data Science</li>
-                  <li>• Cybersecurity</li>
-                  <li>• Mobile Development</li>
-                  <li>• API Development</li>
-                  <li>• Database Management</li>
-                  <li>• Agile Methodology</li>
-                  <li>• Test-Driven Development</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Cloud Computing (AWS, Azure)</li>
+                  <li>DevOps</li>
+                  <li>Machine Learning</li>
+                  <li>Data Science</li>
+                  <li>Cybersecurity</li>
+                  <li>Mobile Development</li>
+                  <li>API Development</li>
+                  <li>Database Management</li>
+                  <li>Agile Methodology</li>
+                  <li>Test-Driven Development</li>
                 </ul>
               </div>
             </div>
@@ -393,47 +393,47 @@ export default function HowToListSkills() {
             <div className="grid md:grid-cols-3 gap-4 text-accent text-sm">
               <div>
                 <h4 className="font-medium mb-2">Digital Marketing:</h4>
-                <ul className="space-y-1">
-                  <li>• Search Engine Optimization (SEO)</li>
-                  <li>• Google Ads & PPC</li>
-                  <li>• Social Media Marketing</li>
-                  <li>• Content Marketing</li>
-                  <li>• Email Marketing</li>
-                  <li>• Marketing Automation</li>
-                  <li>• Conversion Rate Optimization</li>
-                  <li>• Google Analytics</li>
-                  <li>• A/B Testing</li>
-                  <li>• Growth Hacking</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Search Engine Optimization (SEO)</li>
+                  <li>Google Ads & PPC</li>
+                  <li>Social Media Marketing</li>
+                  <li>Content Marketing</li>
+                  <li>Email Marketing</li>
+                  <li>Marketing Automation</li>
+                  <li>Conversion Rate Optimization</li>
+                  <li>Google Analytics</li>
+                  <li>A/B Testing</li>
+                  <li>Growth Hacking</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-medium mb-2">Sales Skills:</h4>
-                <ul className="space-y-1">
-                  <li>• B2B Sales</li>
-                  <li>• B2C Sales</li>
-                  <li>• Lead Generation</li>
-                  <li>• CRM Management (Salesforce)</li>
-                  <li>• Sales Forecasting</li>
-                  <li>• Negotiation</li>
-                  <li>• Account Management</li>
-                  <li>• Cold Calling</li>
-                  <li>• Pipeline Management</li>
-                  <li>• Customer Retention</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>B2B Sales</li>
+                  <li>B2C Sales</li>
+                  <li>Lead Generation</li>
+                  <li>CRM Management (Salesforce)</li>
+                  <li>Sales Forecasting</li>
+                  <li>Negotiation</li>
+                  <li>Account Management</li>
+                  <li>Cold Calling</li>
+                  <li>Pipeline Management</li>
+                  <li>Customer Retention</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-medium mb-2">Analytics & Strategy:</h4>
-                <ul className="space-y-1">
-                  <li>• Market Research</li>
-                  <li>• Competitive Analysis</li>
-                  <li>• Brand Strategy</li>
-                  <li>• Campaign Management</li>
-                  <li>• ROI Analysis</li>
-                  <li>• Customer Segmentation</li>
-                  <li>• Marketing Mix Modeling</li>
-                  <li>• Attribution Analysis</li>
-                  <li>• Customer Journey Mapping</li>
-                  <li>• Performance Marketing</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Market Research</li>
+                  <li>Competitive Analysis</li>
+                  <li>Brand Strategy</li>
+                  <li>Campaign Management</li>
+                  <li>ROI Analysis</li>
+                  <li>Customer Segmentation</li>
+                  <li>Marketing Mix Modeling</li>
+                  <li>Attribution Analysis</li>
+                  <li>Customer Journey Mapping</li>
+                  <li>Performance Marketing</li>
                 </ul>
               </div>
             </div>
@@ -446,47 +446,47 @@ export default function HowToListSkills() {
             <div className="grid md:grid-cols-3 gap-4 text-ink/80 text-sm">
               <div>
                 <h4 className="font-medium mb-2">Design Software:</h4>
-                <ul className="space-y-1">
-                  <li>• Adobe Creative Suite</li>
-                  <li>• Photoshop</li>
-                  <li>• Illustrator</li>
-                  <li>• InDesign</li>
-                  <li>• After Effects</li>
-                  <li>• Figma</li>
-                  <li>• Sketch</li>
-                  <li>• Adobe XD</li>
-                  <li>• Canva</li>
-                  <li>• Procreate</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Adobe Creative Suite</li>
+                  <li>Photoshop</li>
+                  <li>Illustrator</li>
+                  <li>InDesign</li>
+                  <li>After Effects</li>
+                  <li>Figma</li>
+                  <li>Sketch</li>
+                  <li>Adobe XD</li>
+                  <li>Canva</li>
+                  <li>Procreate</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-medium mb-2">Design Specializations:</h4>
-                <ul className="space-y-1">
-                  <li>• UI/UX Design</li>
-                  <li>• Web Design</li>
-                  <li>• Graphic Design</li>
-                  <li>• Brand Identity</li>
-                  <li>• Logo Design</li>
-                  <li>• Print Design</li>
-                  <li>• Motion Graphics</li>
-                  <li>• 3D Modeling</li>
-                  <li>• Typography</li>
-                  <li>• Color Theory</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>UI/UX Design</li>
+                  <li>Web Design</li>
+                  <li>Graphic Design</li>
+                  <li>Brand Identity</li>
+                  <li>Logo Design</li>
+                  <li>Print Design</li>
+                  <li>Motion Graphics</li>
+                  <li>3D Modeling</li>
+                  <li>Typography</li>
+                  <li>Color Theory</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-medium mb-2">Process & Strategy:</h4>
-                <ul className="space-y-1">
-                  <li>• Design thinking</li>
-                  <li>• User Research</li>
-                  <li>• Wireframing</li>
-                  <li>• Prototyping</li>
-                  <li>• Usability Testing</li>
-                  <li>• Design Systems</li>
-                  <li>• Creative Direction</li>
-                  <li>• Brand Guidelines</li>
-                  <li>• Client Presentations</li>
-                  <li>• Project Management</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Design thinking</li>
+                  <li>User Research</li>
+                  <li>Wireframing</li>
+                  <li>Prototyping</li>
+                  <li>Usability Testing</li>
+                  <li>Design Systems</li>
+                  <li>Creative Direction</li>
+                  <li>Brand Guidelines</li>
+                  <li>Client Presentations</li>
+                  <li>Project Management</li>
                 </ul>
               </div>
             </div>
@@ -499,47 +499,47 @@ export default function HowToListSkills() {
             <div className="grid md:grid-cols-3 gap-4 text-orange-700 text-sm">
               <div>
                 <h4 className="font-medium mb-2">Financial Analysis:</h4>
-                <ul className="space-y-1">
-                  <li>• Financial Modeling</li>
-                  <li>• Budgeting & Forecasting</li>
-                  <li>• Variance Analysis</li>
-                  <li>• Excel & Advanced Formulas</li>
-                  <li>• PowerBI</li>
-                  <li>• Tableau</li>
-                  <li>• SQL</li>
-                  <li>• Risk Assessment</li>
-                  <li>• Cost Analysis</li>
-                  <li>• Investment Analysis</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Financial Modeling</li>
+                  <li>Budgeting & Forecasting</li>
+                  <li>Variance Analysis</li>
+                  <li>Excel & Advanced Formulas</li>
+                  <li>PowerBI</li>
+                  <li>Tableau</li>
+                  <li>SQL</li>
+                  <li>Risk Assessment</li>
+                  <li>Cost Analysis</li>
+                  <li>Investment Analysis</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-medium mb-2">Business Operations:</h4>
-                <ul className="space-y-1">
-                  <li>• Process Improvement</li>
-                  <li>• Project Management</li>
-                  <li>• Strategic Planning</li>
-                  <li>• Business Development</li>
-                  <li>• Market Analysis</li>
-                  <li>• Vendor Management</li>
-                  <li>• Contract Negotiation</li>
-                  <li>• Supply Chain Management</li>
-                  <li>• Quality Assurance</li>
-                  <li>• Change Management</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Process Improvement</li>
+                  <li>Project Management</li>
+                  <li>Strategic Planning</li>
+                  <li>Business Development</li>
+                  <li>Market Analysis</li>
+                  <li>Vendor Management</li>
+                  <li>Contract Negotiation</li>
+                  <li>Supply Chain Management</li>
+                  <li>Quality Assurance</li>
+                  <li>Change Management</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-medium mb-2">Compliance & Governance:</h4>
-                <ul className="space-y-1">
-                  <li>• Regulatory Compliance</li>
-                  <li>• Audit & Internal Controls</li>
-                  <li>• Financial Reporting</li>
-                  <li>• GAAP Knowledge</li>
-                  <li>• SOX Compliance</li>
-                  <li>• Risk Management</li>
-                  <li>• Policy Development</li>
-                  <li>• Due Diligence</li>
-                  <li>• Corporate Governance</li>
-                  <li>• Data Privacy (GDPR)</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Regulatory Compliance</li>
+                  <li>Audit & Internal Controls</li>
+                  <li>Financial Reporting</li>
+                  <li>GAAP Knowledge</li>
+                  <li>SOX Compliance</li>
+                  <li>Risk Management</li>
+                  <li>Policy Development</li>
+                  <li>Due Diligence</li>
+                  <li>Corporate Governance</li>
+                  <li>Data Privacy (GDPR)</li>
                 </ul>
               </div>
             </div>
@@ -552,47 +552,47 @@ export default function HowToListSkills() {
             <div className="grid md:grid-cols-3 gap-4 text-teal-700 text-sm">
               <div>
                 <h4 className="font-medium mb-2">Communication:</h4>
-                <ul className="space-y-1">
-                  <li>• Public Speaking</li>
-                  <li>• Written Communication</li>
-                  <li>• Active Listening</li>
-                  <li>• Presentation Skills</li>
-                  <li>• Cross-cultural Communication</li>
-                  <li>• Conflict Resolution</li>
-                  <li>• Interpersonal Skills</li>
-                  <li>• Storytelling</li>
-                  <li>• Technical Writing</li>
-                  <li>• Multilingual</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Public Speaking</li>
+                  <li>Written Communication</li>
+                  <li>Active Listening</li>
+                  <li>Presentation Skills</li>
+                  <li>Cross-cultural Communication</li>
+                  <li>Conflict Resolution</li>
+                  <li>Interpersonal Skills</li>
+                  <li>Storytelling</li>
+                  <li>Technical Writing</li>
+                  <li>Multilingual</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-medium mb-2">Leadership & Management:</h4>
-                <ul className="space-y-1">
-                  <li>• Team Leadership</li>
-                  <li>• People Management</li>
-                  <li>• Coaching & Mentoring</li>
-                  <li>• Delegation</li>
-                  <li>• Performance Management</li>
-                  <li>• Strategic Thinking</li>
-                  <li>• Decision Making</li>
-                  <li>• Vision Setting</li>
-                  <li>• Change Leadership</li>
-                  <li>• Emotional Intelligence</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Team Leadership</li>
+                  <li>People Management</li>
+                  <li>Coaching & Mentoring</li>
+                  <li>Delegation</li>
+                  <li>Performance Management</li>
+                  <li>Strategic Thinking</li>
+                  <li>Decision Making</li>
+                  <li>Vision Setting</li>
+                  <li>Change Leadership</li>
+                  <li>Emotional Intelligence</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-medium mb-2">Personal Effectiveness:</h4>
-                <ul className="space-y-1">
-                  <li>• Time Management</li>
-                  <li>• Organization</li>
-                  <li>• Adaptability</li>
-                  <li>• Problem-Solving</li>
-                  <li>• Critical Thinking</li>
-                  <li>• Creativity</li>
-                  <li>• Attention to Detail</li>
-                  <li>• Self-Motivation</li>
-                  <li>• Stress Management</li>
-                  <li>• Continuous Learning</li>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Time Management</li>
+                  <li>Organization</li>
+                  <li>Adaptability</li>
+                  <li>Problem-Solving</li>
+                  <li>Critical Thinking</li>
+                  <li>Creativity</li>
+                  <li>Attention to Detail</li>
+                  <li>Self-Motivation</li>
+                  <li>Stress Management</li>
+                  <li>Continuous Learning</li>
                 </ul>
               </div>
             </div>

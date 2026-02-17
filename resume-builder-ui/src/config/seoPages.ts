@@ -354,6 +354,26 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         question: 'Are exports branded?',
         answer: 'No. No logos or watermarks appear on your resume. It is 100% your own professional document.',
       },
+      {
+        question: 'What file formats can I download?',
+        answer:
+          'You can download your resume as PDF (recommended for job applications) or DOCX (if the employer specifically requests a Word document). Both formats are free and unlimited.',
+      },
+      {
+        question: 'How does this compare to paid resume builders?',
+        answer:
+          'Most paid builders like Zety, Resume.io, and Resume Genius charge $5-$25/month for PDF downloads. EasyFreeResume offers the same ATS-friendly templates, PDF/DOCX exports, and customization options at zero cost. We are funded by non-intrusive ads instead of subscriptions.',
+      },
+      {
+        question: 'Can I create multiple resumes without an account?',
+        answer:
+          'Yes. You can create as many resumes as you need in guest mode. Each resume can be downloaded as a YAML data file and re-uploaded later. For managing multiple resumes in one place, create a free account to access the My Resumes Dashboard.',
+      },
+      {
+        question: 'Is my resume data safe without an account?',
+        answer:
+          'Your resume data is processed entirely in your browser and on our servers only during PDF generation. We do not store your resume content, personal information, or any identifying data. Once your PDF is generated, the data is discarded.',
+      },
     ],
   },
 
@@ -653,6 +673,26 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         question: 'Do two-page resumes hurt ATS performance?',
         answer:
           'No. Length does not affect parsing if structure is clean. Use two pages if you have substantial experience.',
+      },
+      {
+        question: 'How do I know if my resume is ATS-friendly?',
+        answer:
+          'Use our free ATS keyword scanner to check your resume against a job description. It shows your keyword match rate and identifies missing terms. You can also copy your resume text into a plain text editor — if the content is still readable and organized, the ATS can parse it.',
+      },
+      {
+        question: 'Are free ATS templates as good as paid ones?',
+        answer:
+          'Yes. ATS compatibility is about structure and formatting, not design complexity. A clean, free template with standard fonts and clear section headers will perform identically to a paid template in ATS parsing. Paid templates mainly offer more visual design options, which ATS systems ignore anyway.',
+      },
+      {
+        question: 'What ATS systems do employers use most in 2026?',
+        answer:
+          'The most common ATS platforms are Workday, iCIMS, Greenhouse, Lever, Taleo (Oracle), BambooHR, and JazzHR. Our templates are tested against all of these. If a job application uses any of these systems, our templates will parse correctly.',
+      },
+      {
+        question: 'Should I use the same template for every application?',
+        answer:
+          'Yes, use the same ATS-friendly template structure, but tailor the content for each application. Change your keywords, reorder skills, and adjust your summary to match each job description. The template formatting stays consistent while the content changes.',
       },
     ],
   },
@@ -1010,7 +1050,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       h1: `Best Free Resume Builder ${CURRENT_YEAR} - Reddit Recommended`,
       subtitle: `See why Reddit users consistently recommend EasyFreeResume in ${CURRENT_YEAR}`,
       description:
-        `We analyzed top Reddit threads in r/resumes, r/jobs, and r/cscareerquestions (updated Jan ${CURRENT_YEAR}). Users value truly free exports, ATS compatibility, no watermarks, and privacy. Here is how we meet every criteria.`,
+        `We analyzed top Reddit threads in r/resumes, r/jobs, and r/cscareerquestions (updated Feb ${CURRENT_YEAR}). Users value truly free exports, ATS compatibility, no watermarks, and privacy. Here is how we meet every criteria.`,
       primaryCTA: {
         text: 'Try It Free',
         href: '/templates',
@@ -1090,6 +1130,16 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         question: 'Can I import my existing resume?',
         answer:
           'Yes. You can export a data file for a resume you have created or worked on before. Upload it to continue editing without starting from scratch.',
+      },
+      {
+        question: 'What subreddits discuss resume builders?',
+        answer:
+          'The most active subreddits for resume advice are r/resumes (resume reviews and feedback), r/jobs (general job search), r/cscareerquestions (tech careers), and r/careerguidance (career transitions). Each community has strong opinions on which tools are genuinely free.',
+      },
+      {
+        question: 'Do I need a different resume for each job application?',
+        answer:
+          'Yes, tailoring your resume for each application significantly improves your chances. Focus on matching keywords from the job description. Use our free ATS keyword scanner to check your match rate before submitting.',
       },
     ],
   },
@@ -1806,7 +1856,6 @@ export const SEO_PAGES: Record<string, PageConfig> = {
     hero: {
       h1: 'Free ATS Resume Keyword Scanner',
       subtitle: 'Paste your resume and a job description to instantly see which keywords you are missing — and where to add them.',
-      primaryCTA: { text: 'Scan Now', href: '#resume-text' },
       secondaryCTA: { text: 'Browse Keywords', href: '/resume-keywords' },
     },
     breadcrumbs: [
