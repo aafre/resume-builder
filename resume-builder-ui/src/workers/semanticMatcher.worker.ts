@@ -46,6 +46,7 @@ async function ensureModel(): Promise<void> {
   modelLoadPromise = (async () => {
     post({ type: 'init:progress', progress: 0, status: 'Downloading AI model...' });
 
+    // @ts-expect-error — pipeline() overload union too complex for TS
     extractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
       dtype: 'q8',
       progress_callback: (data: { status: string; progress?: number }) => {
@@ -164,7 +165,7 @@ function extractCandidates(text: string): Map<string, number> {
 /** Cluster embeddings by cosine similarity and return representative indices */
 function clusterEmbeddings(
   embeddings: number[][],
-  labels: string[],
+  _labels: string[],
   freqs: number[],
   threshold: number
 ): number[] {
