@@ -720,13 +720,11 @@ ins.adsbygoogle {
   overflow: hidden !important;
 }
 
-/* Contain Google Auto Ad wrapper divs that can be wider than viewport.
-   Reserve min-height to reduce CLS when Auto Ads inject into the page. */
+/* Contain Google Auto Ad wrapper divs that can be wider than viewport. */
 .google-auto-placed {
   contain: layout style;
   max-width: 100% !important;
   overflow: hidden !important;
-  min-height: 250px;
 }
 
 div[data-google-query-id] {
