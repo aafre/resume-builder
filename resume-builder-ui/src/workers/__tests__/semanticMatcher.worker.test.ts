@@ -3,7 +3,44 @@ import type { EnhancedScanResult, WorkerOutMessage } from '../../types/semanticM
 
 // --- Mock @huggingface/transformers ---
 
-const mockGenerator = vi.fn();
+// Fake embeddings: simple deterministic vectors for testing
+// Each "embedding" is a 4-dim normalized vector derived from text hash
+function fakeEmbedding(text: string): number[] {
+  // Simple hash → 4-dim vector for deterministic tests
+  let h = 0;
+  for (let i = 0; i < text.length; i++) {
+    h = ((h << 5) - h + text.charCodeAt(i)) | 0;
+  }
+  const raw = [
+    Math.sin(h),
+    Math.cos(h),
+    Math.sin(h * 2),
+    Math.cos(h * 2),
+  ];
+  // Normalize
+  const norm = Math.sqrt(raw.reduce((s, v) => s + v * v, 0));
+  return raw.map(v => v / norm);
+}
+
+// Make specific terms produce similar embeddings to test matching
+const SIMILAR_PAIRS: Record<string, string> = {
+  // These will share embeddings so cosine sim = 1.0
+  'python': '__python_embed__',
+  'react': '__react_embed__',
+  'typescript': '__typescript_embed__',
+};
+
+function embedForText(text: string): number[] {
+  const key = text.toLowerCase().trim();
+  // If text contains a similar pair key, use that embedding
+  for (const [term, embedKey] of Object.entries(SIMILAR_PAIRS)) {
+    if (key === term || key.includes(term)) {
+      return fakeEmbedding(embedKey);
+    }
+  }
+  return fakeEmbedding(key);
+}
+
 const mockPipeline = vi.fn();
 
 vi.mock('@huggingface/transformers', () => ({
@@ -14,28 +51,10 @@ vi.mock('@huggingface/transformers', () => ({
 // Capture postMessage calls
 const postedMessages: WorkerOutMessage[] = [];
 
-// Worker handler reference
+// We need to capture the onmessage handler from the worker
 let workerHandler: ((e: MessageEvent) => Promise<void>) | null = null;
 
-// Default mock response: valid JSON keyword analysis
-function mockGeneratorResponse(keywords: unknown[]) {
-  return [{
-    generated_text: [
-      { role: 'system', content: '...' },
-      { role: 'user', content: '...' },
-      { role: 'assistant', content: JSON.stringify(keywords) },
-    ],
-  }];
-}
-
-const SAMPLE_KEYWORDS = [
-  { keyword: 'python', match: 'exact', score: 0.95, context: 'Senior Python developer with 5 years experience', placement: '' },
-  { keyword: 'react', match: 'semantic', score: 0.78, context: 'Built frontend applications using React and TypeScript', placement: '' },
-  { keyword: 'kubernetes', match: 'partial', score: 0.52, context: 'Deployed services using Docker containers', placement: '' },
-  { keyword: 'terraform', match: 'none', score: 0.15, context: '', placement: 'Skills section — Tools & Infrastructure' },
-];
-
-describe('semanticMatcher.worker (generative LLM)', () => {
+describe('semanticMatcher.worker', () => {
   beforeEach(async () => {
     postedMessages.length = 0;
     vi.clearAllMocks();
@@ -45,16 +64,19 @@ describe('semanticMatcher.worker (generative LLM)', () => {
       postedMessages.push(msg);
     });
 
-    // Mock navigator.gpu for WebGPU detection
-    vi.stubGlobal('navigator', { gpu: { requestAdapter: () => Promise.resolve(null) } });
+    // Set up mock pipeline that returns fake embeddings
+    const mockExtractor = vi.fn(async (texts: string[], _opts?: unknown) => ({
+      tolist: () => texts.map(t => embedForText(t)),
+    }));
 
-    // Set up mock pipeline → mock generator
-    mockGenerator.mockResolvedValue(mockGeneratorResponse(SAMPLE_KEYWORDS));
-    mockPipeline.mockResolvedValue(mockGenerator);
+    mockPipeline.mockResolvedValue(mockExtractor);
 
-    // Fresh import each test
+    // Dynamically import the worker (re-imports fresh each test)
+    // The worker module sets self.onmessage on load
     vi.resetModules();
     await import('../semanticMatcher.worker');
+
+    // Capture the handler that was set on self/globalThis
     workerHandler = (self as unknown as { onmessage: typeof workerHandler }).onmessage;
   });
 
@@ -62,6 +84,7 @@ describe('semanticMatcher.worker (generative LLM)', () => {
     vi.unstubAllGlobals();
   });
 
+  // Helper to send a message to the worker handler
   async function sendMessage(data: unknown) {
     if (!workerHandler) throw new Error('Worker handler not set');
     await workerHandler({ data } as MessageEvent);
@@ -74,28 +97,19 @@ describe('semanticMatcher.worker (generative LLM)', () => {
 
   // --- Init ---
 
-  it('loads text-generation pipeline on init', async () => {
-    await sendMessage({ type: 'init' });
-
-    expect(mockPipeline).toHaveBeenCalledWith(
-      'text-generation',
-      'onnx-community/Qwen2.5-0.5B-Instruct',
-      expect.objectContaining({ device: 'wasm' }),
-    );
-
-    const readyMsgs = getMessages('init:ready');
-    expect(readyMsgs).toHaveLength(1);
-  });
-
-  it('reports progress during model download', async () => {
+  it('reports progress and ready on init', async () => {
     await sendMessage({ type: 'init' });
 
     const progressMsgs = getMessages('init:progress');
-    expect(progressMsgs.length).toBeGreaterThanOrEqual(1);
+    const readyMsgs = getMessages('init:ready');
 
-    // First message should be GPU detection
-    const first = progressMsgs[0] as { type: 'init:progress'; status: string };
-    expect(first.status).toContain('Detecting GPU');
+    expect(progressMsgs.length).toBeGreaterThanOrEqual(1);
+    expect(readyMsgs).toHaveLength(1);
+    expect(mockPipeline).toHaveBeenCalledWith(
+      'feature-extraction',
+      'Xenova/all-MiniLM-L6-v2',
+      expect.objectContaining({ dtype: 'q8' })
+    );
   });
 
   it('does not reload model on second init', async () => {
@@ -106,38 +120,7 @@ describe('semanticMatcher.worker (generative LLM)', () => {
     expect(mockPipeline).not.toHaveBeenCalled();
   });
 
-  it('uses webgpu device when GPU is available', async () => {
-    vi.resetModules();
-    vi.stubGlobal('navigator', {
-      gpu: { requestAdapter: () => Promise.resolve({ features: new Set() }) },
-    });
-
-    mockPipeline.mockResolvedValue(mockGenerator);
-    await import('../semanticMatcher.worker');
-    workerHandler = (self as unknown as { onmessage: typeof workerHandler }).onmessage;
-    postedMessages.length = 0;
-
-    await sendMessage({ type: 'init' });
-
-    expect(mockPipeline).toHaveBeenCalledWith(
-      'text-generation',
-      'onnx-community/Qwen2.5-0.5B-Instruct',
-      expect.objectContaining({ device: 'webgpu', dtype: 'q4f16' }),
-    );
-  });
-
-  it('falls back to wasm with q4 when GPU unavailable', async () => {
-    // Default mock has requestAdapter returning null
-    await sendMessage({ type: 'init' });
-
-    expect(mockPipeline).toHaveBeenCalledWith(
-      'text-generation',
-      'onnx-community/Qwen2.5-0.5B-Instruct',
-      expect.objectContaining({ device: 'wasm', dtype: 'q4' }),
-    );
-  });
-
-  // --- Match ---
+  // --- Match with empty JD ---
 
   it('returns empty result for empty job description', async () => {
     await sendMessage({ type: 'match', resumeText: 'Some resume', jobDescription: '' });
@@ -148,33 +131,18 @@ describe('semanticMatcher.worker (generative LLM)', () => {
     const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
     expect(result.totalKeywords).toBe(0);
     expect(result.matchPercentage).toBe(0);
+    expect(result.matched).toHaveLength(0);
+    expect(result.partial).toHaveLength(0);
+    expect(result.missing).toHaveLength(0);
   });
 
-  it('sends resume and JD to the model as chat messages', async () => {
-    await sendMessage({
-      type: 'match',
-      resumeText: 'My resume text',
-      jobDescription: 'Need python developer',
-    });
-
-    expect(mockGenerator).toHaveBeenCalledWith(
-      expect.arrayContaining([
-        expect.objectContaining({ role: 'system' }),
-        expect.objectContaining({
-          role: 'user',
-          content: expect.stringContaining('Need python developer'),
-        }),
-      ]),
-      expect.objectContaining({ max_new_tokens: 2048, do_sample: false }),
-    );
-  });
+  // --- Match produces structured result ---
 
   it('returns structured result with matched/partial/missing buckets', async () => {
-    await sendMessage({
-      type: 'match',
-      resumeText: 'Python developer with React experience',
-      jobDescription: 'Need python react kubernetes terraform',
-    });
+    const jd = 'We need python python python. Experience with react react. Must know kubernetes kubernetes. Docker docker required.';
+    const resume = 'Experienced python developer. Built applications with react and typescript. Deployed services using docker containers.';
+
+    await sendMessage({ type: 'match', resumeText: resume, jobDescription: jd });
 
     const results = getMessages('match:result');
     expect(results).toHaveLength(1);
@@ -182,10 +150,27 @@ describe('semanticMatcher.worker (generative LLM)', () => {
     const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
 
     // Verify structure
-    expect(result.totalKeywords).toBe(4);
-    expect(result.matchedCount).toBe(2); // python (exact) + react (semantic)
-    expect(result.partialCount).toBe(1); // kubernetes (partial)
-    expect(result.missingCount).toBe(1); // terraform (none)
+    expect(result).toHaveProperty('matchPercentage');
+    expect(result).toHaveProperty('totalKeywords');
+    expect(result).toHaveProperty('matchedCount');
+    expect(result).toHaveProperty('partialCount');
+    expect(result).toHaveProperty('missingCount');
+    expect(result).toHaveProperty('matched');
+    expect(result).toHaveProperty('partial');
+    expect(result).toHaveProperty('missing');
+
+    // All keyword results have required fields
+    const allKeywords = [...result.matched, ...result.partial, ...result.missing];
+    for (const kw of allKeywords) {
+      expect(kw).toHaveProperty('keyword');
+      expect(kw).toHaveProperty('found');
+      expect(kw).toHaveProperty('similarity');
+      expect(kw).toHaveProperty('matchType');
+      expect(typeof kw.keyword).toBe('string');
+      expect(typeof kw.similarity).toBe('number');
+      expect(kw.similarity).toBeGreaterThanOrEqual(0);
+      expect(kw.similarity).toBeLessThanOrEqual(1);
+    }
 
     // Counts add up
     expect(result.matchedCount + result.partialCount + result.missingCount).toBe(result.totalKeywords);
@@ -194,192 +179,87 @@ describe('semanticMatcher.worker (generative LLM)', () => {
     expect(result.missing).toHaveLength(result.missingCount);
   });
 
-  it('classifies exact and semantic as matched (found=true)', async () => {
-    await sendMessage({ type: 'match', resumeText: 'text', jobDescription: 'text' });
+  it('caps keywords at 40', async () => {
+    // Generate JD with many distinct terms repeated 3x each
+    const terms = Array.from({ length: 60 }, (_, i) => `techterm${i}`);
+    const jd = terms.map(t => `${t} ${t} ${t}`).join('. ');
 
-    const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+    await sendMessage({ type: 'match', resumeText: 'Empty resume', jobDescription: jd });
+
+    const results = getMessages('match:result');
+    const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+
+    expect(result.totalKeywords).toBeLessThanOrEqual(40);
+  });
+
+  // --- Keyword results have correct matchType classification ---
+
+  it('classifies matched keywords as found=true', async () => {
+    await sendMessage({
+      type: 'match',
+      resumeText: 'python react docker typescript node.js',
+      jobDescription: 'python python python. react react react. docker docker docker.',
+    });
+
+    const results = getMessages('match:result');
+    const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
 
     for (const kw of result.matched) {
       expect(kw.found).toBe(true);
       expect(['exact', 'semantic']).toContain(kw.matchType);
+      expect(kw.similarity).toBeGreaterThanOrEqual(0.65);
     }
   });
 
-  it('classifies none as missing with suggestedPlacement', async () => {
-    await sendMessage({ type: 'match', resumeText: 'text', jobDescription: 'text' });
+  it('classifies missing keywords with suggested placement', async () => {
+    await sendMessage({
+      type: 'match',
+      resumeText: 'Experienced with HTML and CSS only.',
+      jobDescription: 'terraform terraform terraform. kubernetes kubernetes kubernetes.',
+    });
 
-    const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+    const results = getMessages('match:result');
+    const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
 
     for (const kw of result.missing) {
       expect(kw.found).toBe(false);
       expect(kw.matchType).toBe('none');
+      expect(kw.similarity).toBeLessThan(0.45);
       expect(kw.suggestedPlacement).toBeTruthy();
     }
   });
 
-  it('includes bestMatchContext for matched keywords', async () => {
-    await sendMessage({ type: 'match', resumeText: 'text', jobDescription: 'text' });
+  // --- bestMatchContext ---
 
-    const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+  it('includes bestMatchContext for keywords', async () => {
+    const resume = 'Built microservices with Python and Flask. Deployed to AWS using Docker containers. Led a team of five engineers.';
+    const jd = 'python python python. docker docker docker.';
 
-    for (const kw of result.matched) {
+    await sendMessage({ type: 'match', resumeText: resume, jobDescription: jd });
+
+    const results = getMessages('match:result');
+    const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+
+    const allKeywords = [...result.matched, ...result.partial, ...result.missing];
+    for (const kw of allKeywords) {
       expect(kw.bestMatchContext).toBeDefined();
       expect(typeof kw.bestMatchContext).toBe('string');
+      // Context should be a substring of the resume or a truncated version
+      expect(kw.bestMatchContext!.length).toBeGreaterThan(0);
       expect(kw.bestMatchContext!.length).toBeLessThanOrEqual(150);
     }
-  });
-
-  it('sorts matched keywords by similarity descending', async () => {
-    await sendMessage({ type: 'match', resumeText: 'text', jobDescription: 'text' });
-
-    const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
-
-    for (const bucket of [result.matched, result.partial, result.missing]) {
-      for (let i = 1; i < bucket.length; i++) {
-        expect(bucket[i].similarity).toBeLessThanOrEqual(bucket[i - 1].similarity);
-      }
-    }
-  });
-
-  it('calculates match percentage correctly', async () => {
-    await sendMessage({ type: 'match', resumeText: 'text', jobDescription: 'text' });
-
-    const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
-
-    const expectedPct = Math.round((result.matchedCount / result.totalKeywords) * 100);
-    expect(result.matchPercentage).toBe(expectedPct);
-  });
-
-  // --- JSON extraction robustness ---
-
-  it('parses JSON wrapped in markdown code blocks', async () => {
-    mockGenerator.mockResolvedValueOnce([{
-      generated_text: [
-        { role: 'system', content: '...' },
-        { role: 'user', content: '...' },
-        { role: 'assistant', content: '```json\n[{"keyword":"python","match":"exact","score":0.9,"context":"Python dev","placement":""}]\n```' },
-      ],
-    }]);
-
-    await sendMessage({ type: 'match', resumeText: 'text', jobDescription: 'text' });
-
-    const results = getMessages('match:result');
-    expect(results).toHaveLength(1);
-    const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
-    expect(result.totalKeywords).toBe(1);
-    expect(result.matched[0].keyword).toBe('python');
-  });
-
-  it('extracts JSON array from surrounding text', async () => {
-    mockGenerator.mockResolvedValueOnce([{
-      generated_text: [
-        { role: 'system', content: '...' },
-        { role: 'user', content: '...' },
-        { role: 'assistant', content: 'Here are the keywords:\n[{"keyword":"react","match":"semantic","score":0.8,"context":"React apps","placement":""}]\nDone!' },
-      ],
-    }]);
-
-    await sendMessage({ type: 'match', resumeText: 'text', jobDescription: 'text' });
-
-    const results = getMessages('match:result');
-    expect(results).toHaveLength(1);
-    const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
-    expect(result.totalKeywords).toBe(1);
-    expect(result.matched[0].keyword).toBe('react');
-  });
-
-  it('handles alternative field names (matchType, similarity, bestMatchContext)', async () => {
-    mockGenerator.mockResolvedValueOnce([{
-      generated_text: [
-        { role: 'system', content: '...' },
-        { role: 'user', content: '...' },
-        { role: 'assistant', content: JSON.stringify([
-          { keyword: 'docker', matchType: 'exact', similarity: 0.9, bestMatchContext: 'Used Docker', suggestedPlacement: '' },
-        ]) },
-      ],
-    }]);
-
-    await sendMessage({ type: 'match', resumeText: 'text', jobDescription: 'text' });
-
-    const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
-    expect(result.matched[0].keyword).toBe('docker');
-    expect(result.matched[0].similarity).toBe(0.9);
-  });
-
-  it('clamps scores to 0-1 range', async () => {
-    mockGenerator.mockResolvedValueOnce([{
-      generated_text: [
-        { role: 'system', content: '...' },
-        { role: 'user', content: '...' },
-        { role: 'assistant', content: JSON.stringify([
-          { keyword: 'test1', match: 'exact', score: 1.5, context: '', placement: '' },
-          { keyword: 'test2', match: 'none', score: -0.5, context: '', placement: 'Skills' },
-        ]) },
-      ],
-    }]);
-
-    await sendMessage({ type: 'match', resumeText: 'text', jobDescription: 'text' });
-
-    const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
-    const allKw = [...result.matched, ...result.partial, ...result.missing];
-    for (const kw of allKw) {
-      expect(kw.similarity).toBeGreaterThanOrEqual(0);
-      expect(kw.similarity).toBeLessThanOrEqual(1);
-    }
-  });
-
-  it('skips entries with empty keyword', async () => {
-    mockGenerator.mockResolvedValueOnce([{
-      generated_text: [
-        { role: 'system', content: '...' },
-        { role: 'user', content: '...' },
-        { role: 'assistant', content: JSON.stringify([
-          { keyword: '', match: 'exact', score: 0.9, context: '', placement: '' },
-          { keyword: 'python', match: 'exact', score: 0.9, context: '', placement: '' },
-          null,
-          'invalid',
-        ]) },
-      ],
-    }]);
-
-    await sendMessage({ type: 'match', resumeText: 'text', jobDescription: 'text' });
-
-    const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
-    expect(result.totalKeywords).toBe(1);
-    expect(result.matched[0].keyword).toBe('python');
-  });
-
-  it('falls back to score-based classification for invalid match type', async () => {
-    mockGenerator.mockResolvedValueOnce([{
-      generated_text: [
-        { role: 'system', content: '...' },
-        { role: 'user', content: '...' },
-        { role: 'assistant', content: JSON.stringify([
-          { keyword: 'python', match: 'high', score: 0.85, context: 'Python dev', placement: '' },
-          { keyword: 'java', match: 'low', score: 0.3, context: '', placement: 'Skills' },
-        ]) },
-      ],
-    }]);
-
-    await sendMessage({ type: 'match', resumeText: 'text', jobDescription: 'text' });
-
-    const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
-    // score 0.85 → semantic (>= 0.65), score 0.3 → none (< 0.45)
-    expect(result.matched[0].matchType).toBe('semantic');
-    expect(result.missing[0].matchType).toBe('none');
   });
 
   // --- Error handling ---
 
   it('posts error if model loading fails', async () => {
     vi.resetModules();
-    vi.stubGlobal('navigator', { gpu: { requestAdapter: () => Promise.resolve(null) } });
     mockPipeline.mockRejectedValueOnce(new Error('Network timeout'));
 
     await import('../semanticMatcher.worker');
     workerHandler = (self as unknown as { onmessage: typeof workerHandler }).onmessage;
-    postedMessages.length = 0;
 
+    postedMessages.length = 0;
     await sendMessage({ type: 'init' });
 
     const errors = getMessages('error');
@@ -387,47 +267,20 @@ describe('semanticMatcher.worker (generative LLM)', () => {
     expect((errors[0] as { type: 'error'; error: string }).error).toBe('Network timeout');
   });
 
-  it('posts error when model returns empty response', async () => {
-    mockGenerator.mockResolvedValueOnce([{
-      generated_text: [
-        { role: 'system', content: '...' },
-        { role: 'user', content: '...' },
-        { role: 'assistant', content: '' },
-      ],
-    }]);
-
-    await sendMessage({ type: 'match', resumeText: 'resume', jobDescription: 'jd text' });
-
-    const errors = getMessages('error');
-    expect(errors).toHaveLength(1);
-    expect((errors[0] as { type: 'error'; error: string }).error).toContain('empty response');
-  });
-
-  it('posts error when JSON cannot be parsed', async () => {
-    mockGenerator.mockResolvedValueOnce([{
-      generated_text: [
-        { role: 'system', content: '...' },
-        { role: 'user', content: '...' },
-        { role: 'assistant', content: 'Sorry, I cannot analyze this resume.' },
-      ],
-    }]);
-
-    await sendMessage({ type: 'match', resumeText: 'resume', jobDescription: 'jd text' });
-
-    const errors = getMessages('error');
-    expect(errors).toHaveLength(1);
-    expect((errors[0] as { type: 'error'; error: string }).error).toContain('parse');
-  });
-
   it('allows retry after model loading failure', async () => {
     vi.resetModules();
-    vi.stubGlobal('navigator', { gpu: { requestAdapter: () => Promise.resolve(null) } });
 
+    // First call fails
     mockPipeline.mockRejectedValueOnce(new Error('Network error'));
-    mockPipeline.mockResolvedValueOnce(mockGenerator);
+    // Second call succeeds
+    const mockExtractor = vi.fn(async (texts: string[]) => ({
+      tolist: () => texts.map(t => embedForText(t)),
+    }));
+    mockPipeline.mockResolvedValueOnce(mockExtractor);
 
     await import('../semanticMatcher.worker');
     workerHandler = (self as unknown as { onmessage: typeof workerHandler }).onmessage;
+
     postedMessages.length = 0;
 
     // First attempt fails
@@ -439,80 +292,120 @@ describe('semanticMatcher.worker (generative LLM)', () => {
     // Retry succeeds
     await sendMessage({ type: 'init' });
     expect(getMessages('init:ready')).toHaveLength(1);
+    expect(getMessages('error')).toHaveLength(0);
   });
 
-  it('preserves model on match error (no re-download needed)', async () => {
-    // Init succeeds
-    await sendMessage({ type: 'init' });
-    expect(getMessages('init:ready')).toHaveLength(1);
+  // --- Special tech terms extraction ---
 
-    // Match fails (bad JSON)
-    mockGenerator.mockResolvedValueOnce([{
-      generated_text: [
-        { role: 'system', content: '...' },
-        { role: 'user', content: '...' },
-        { role: 'assistant', content: 'not json at all' },
-      ],
-    }]);
+  it('extracts special tech terms like C++, C#, .NET', async () => {
+    const jd = 'Must know C++ and C#. Experience with .NET framework. C++ skills required. C# development. .NET core.';
+    const resume = 'Expert in C++ and C# development. Built applications using .NET framework.';
 
-    postedMessages.length = 0;
-    await sendMessage({ type: 'match', resumeText: 'resume', jobDescription: 'jd' });
-    expect(getMessages('error')).toHaveLength(1);
+    await sendMessage({ type: 'match', resumeText: resume, jobDescription: jd });
 
-    // Next match should work without re-downloading model
-    mockPipeline.mockClear();
-    mockGenerator.mockResolvedValueOnce(mockGeneratorResponse(SAMPLE_KEYWORDS));
+    const results = getMessages('match:result');
+    const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
 
-    postedMessages.length = 0;
-    await sendMessage({ type: 'match', resumeText: 'resume', jobDescription: 'jd' });
-
-    expect(getMessages('match:result')).toHaveLength(1);
-    expect(mockPipeline).not.toHaveBeenCalled(); // model NOT reloaded
+    const allKeywords = [...result.matched, ...result.partial, ...result.missing].map(k => k.keyword);
+    // At least some tech terms should be extracted
+    expect(result.totalKeywords).toBeGreaterThan(0);
+    // Check that special chars are preserved
+    const hasSpecialTerms = allKeywords.some(k => k.includes('+') || k.includes('#') || k.includes('.'));
+    expect(hasSpecialTerms).toBe(true);
   });
 
-  // --- Auto-loads model on match ---
+  it('extracts slash-compound terms like CI/CD', async () => {
+    const jd = 'CI/CD pipeline experience. Must know CI/CD. UI/UX design skills.';
+    const resume = 'Implemented CI/CD pipelines.';
+
+    await sendMessage({ type: 'match', resumeText: resume, jobDescription: jd });
+
+    const results = getMessages('match:result');
+    const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+
+    const allKeywords = [...result.matched, ...result.partial, ...result.missing].map(k => k.keyword);
+    const hasSlashTerms = allKeywords.some(k => k.includes('/'));
+    expect(hasSlashTerms).toBe(true);
+  });
+
+  // --- Filler/stop word filtering ---
+
+  it('filters out generic filler words', async () => {
+    const jd = 'Experience required. Strong candidate preferred. Excellent communication skills. Looking for someone with ability.';
+    const resume = 'Experienced developer.';
+
+    await sendMessage({ type: 'match', resumeText: resume, jobDescription: jd });
+
+    const results = getMessages('match:result');
+    const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+
+    const allKeywords = [...result.matched, ...result.partial, ...result.missing].map(k => k.keyword);
+    const fillerWords = ['experience', 'required', 'preferred', 'candidate', 'skills', 'looking', 'someone', 'ability'];
+    for (const filler of fillerWords) {
+      expect(allKeywords).not.toContain(filler);
+    }
+  });
+
+  // --- Match percentage calculation ---
+
+  it('calculates match percentage correctly', async () => {
+    await sendMessage({
+      type: 'match',
+      resumeText: 'python developer with react experience',
+      jobDescription: 'python python python. react react react. golang golang golang.',
+    });
+
+    const results = getMessages('match:result');
+    const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+
+    if (result.totalKeywords > 0) {
+      const expectedPct = Math.round((result.matchedCount / result.totalKeywords) * 100);
+      expect(result.matchPercentage).toBe(expectedPct);
+    }
+  });
+
+  // --- Sorted results ---
+
+  it('sorts matched keywords by similarity descending', async () => {
+    const jd = 'python python python. react react react. docker docker docker. kubernetes kubernetes kubernetes.';
+    const resume = 'Built python apps with react. Used docker for deployment. Some kubernetes experience.';
+
+    await sendMessage({ type: 'match', resumeText: resume, jobDescription: jd });
+
+    const results = getMessages('match:result');
+    const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+
+    // Each bucket should be sorted by similarity descending
+    for (const bucket of [result.matched, result.partial, result.missing]) {
+      for (let i = 1; i < bucket.length; i++) {
+        expect(bucket[i].similarity).toBeLessThanOrEqual(bucket[i - 1].similarity);
+      }
+    }
+  });
+
+  // --- Auto-loads model on match if not initialized ---
 
   it('auto-loads model when match is sent without prior init', async () => {
     vi.resetModules();
-    vi.stubGlobal('navigator', { gpu: { requestAdapter: () => Promise.resolve(null) } });
-    mockPipeline.mockResolvedValue(mockGenerator);
-    mockGenerator.mockResolvedValue(mockGeneratorResponse(SAMPLE_KEYWORDS));
+    const mockExtractor = vi.fn(async (texts: string[]) => ({
+      tolist: () => texts.map(t => embedForText(t)),
+    }));
+    mockPipeline.mockResolvedValue(mockExtractor);
 
     await import('../semanticMatcher.worker');
     workerHandler = (self as unknown as { onmessage: typeof workerHandler }).onmessage;
     postedMessages.length = 0;
 
-    await sendMessage({ type: 'match', resumeText: 'Python dev', jobDescription: 'Need python' });
+    // Send match directly (no init first)
+    await sendMessage({
+      type: 'match',
+      resumeText: 'python developer',
+      jobDescription: 'python python python',
+    });
 
+    // Model should have been loaded
     expect(mockPipeline).toHaveBeenCalled();
+    // Should have both progress/ready AND result messages
     expect(getMessages('match:result')).toHaveLength(1);
-  });
-
-  // --- Input truncation ---
-
-  it('truncates very long inputs to 3000 chars each', async () => {
-    const longText = 'a'.repeat(5000);
-
-    await sendMessage({ type: 'match', resumeText: longText, jobDescription: longText });
-
-    const callArgs = mockGenerator.mock.calls[0][0];
-    const userMessage = callArgs.find((m: { role: string }) => m.role === 'user');
-    // Each input truncated to 3000, plus labels
-    expect(userMessage.content.length).toBeLessThan(7000);
-  });
-
-  // --- Output format: string response ---
-
-  it('handles plain string generated_text format', async () => {
-    mockGenerator.mockResolvedValueOnce([{
-      generated_text: JSON.stringify(SAMPLE_KEYWORDS),
-    }]);
-
-    await sendMessage({ type: 'match', resumeText: 'text', jobDescription: 'text' });
-
-    const results = getMessages('match:result');
-    expect(results).toHaveLength(1);
-    const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
-    expect(result.totalKeywords).toBe(4);
   });
 });
