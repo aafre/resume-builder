@@ -1,11 +1,12 @@
 /**
- * Web Worker for semantic keyword matching using Transformers.js.
+ * Web Worker for AI-powered keyword matching using Transformers.js.
  *
- * Loads the MiniLM-L6-v2 sentence-transformer model (q8, ~23 MB ONNX)
- * and performs all embedding + similarity computation off the main thread.
+ * Uses a generative LLM (Qwen2.5-0.5B-Instruct) to extract keywords from
+ * a job description, match them against a resume, and return structured results.
+ * Runs entirely in-browser via WebGPU (with WASM fallback).
  */
 
-import { pipeline, env, type FeatureExtractionPipeline } from '@huggingface/transformers';
+import { pipeline, env, type TextGenerationPipeline } from '@huggingface/transformers';
 import type {
   WorkerInMessage,
   WorkerOutMessage,
@@ -13,47 +14,60 @@ import type {
   EnhancedScanResult,
 } from '../types/semanticMatcher';
 
-// Use remote models from HuggingFace Hub, allow local caching via Cache API
 env.allowLocalModels = false;
 
-let extractor: FeatureExtractionPipeline | null = null;
+let generator: TextGenerationPipeline | null = null;
 let modelLoadPromise: Promise<void> | null = null;
-
-// --- Utility helpers ---
 
 function post(msg: WorkerOutMessage) {
   self.postMessage(msg);
 }
 
-/** Cosine similarity between two normalized vectors (dot product) */
-function cosineSim(a: Float32Array | number[], b: Float32Array | number[]): number {
-  let dot = 0;
-  for (let i = 0; i < a.length; i++) {
-    dot += a[i] * b[i];
+// --- WebGPU detection ---
+
+async function detectDevice(): Promise<'webgpu' | 'wasm'> {
+  if (typeof navigator !== 'undefined' && 'gpu' in navigator) {
+    try {
+      const adapter = await (navigator as unknown as { gpu: { requestAdapter(): Promise<unknown | null> } }).gpu.requestAdapter();
+      if (adapter) return 'webgpu';
+    } catch { /* fall through */ }
   }
-  return dot;
+  return 'wasm';
 }
 
 // --- Model loading (deduplicated) ---
 
 async function ensureModel(): Promise<void> {
-  if (extractor) return;
+  if (generator) return;
   if (modelLoadPromise) {
     await modelLoadPromise;
     return;
   }
 
   modelLoadPromise = (async () => {
-    post({ type: 'init:progress', progress: 0, status: 'Downloading AI model...' });
+    post({ type: 'init:progress', progress: 0, status: 'Detecting GPU...' });
+    const device = await detectDevice();
+    const accel = device === 'webgpu' ? 'GPU-accelerated' : 'CPU';
 
-    extractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
-      dtype: 'q8',
-      progress_callback: (data: { status: string; progress?: number }) => {
-        if (data.status === 'progress' && data.progress != null) {
-          post({ type: 'init:progress', progress: Math.round(data.progress), status: 'Downloading AI model...' });
-        }
-      },
-    }) as FeatureExtractionPipeline;
+    post({ type: 'init:progress', progress: 2, status: `Downloading AI model (${accel})...` });
+
+    generator = (await pipeline(
+      'text-generation',
+      'onnx-community/Qwen2.5-0.5B-Instruct',
+      {
+        dtype: device === 'webgpu' ? 'q4f16' : 'q4',
+        device,
+        progress_callback: (data: { status: string; progress?: number }) => {
+          if (data.status === 'progress' && data.progress != null) {
+            post({
+              type: 'init:progress',
+              progress: 2 + Math.round(data.progress * 0.93),
+              status: `Downloading AI model (${accel})...`,
+            });
+          }
+        },
+      }
+    )) as TextGenerationPipeline;
 
     post({ type: 'init:ready' });
   })();
@@ -61,309 +75,113 @@ async function ensureModel(): Promise<void> {
   await modelLoadPromise;
 }
 
-// --- Batch embedding ---
+// --- Prompt ---
 
-async function embed(texts: string[]): Promise<number[][]> {
-  if (!extractor) throw new Error('Model not loaded');
-  const output = await extractor(texts, { pooling: 'mean', normalize: true });
-  // output.tolist() returns number[][] (one embedding per input text)
-  return output.tolist() as number[][];
+const SYSTEM_PROMPT = `You are a resume keyword analyzer. Extract the most important technical skills, tools, qualifications, and domain terms from the job description. Then check if each keyword appears in the resume.
+
+Return ONLY a valid JSON array. No markdown, no explanation, no text before or after. Each element:
+{"keyword":"term","match":"exact","score":0.95,"context":"resume excerpt","placement":""}
+
+match values:
+- "exact": keyword found verbatim in resume
+- "semantic": synonym or equivalent concept found in resume
+- "partial": loosely related content exists in resume
+- "none": keyword not found in resume
+
+Rules:
+- score: confidence 0.0 to 1.0
+- context: most relevant resume sentence (max 120 chars), empty string if none found
+- placement: where to add missing keywords (e.g. "Skills section"), empty string if matched
+- Return 15-30 keywords, most important first
+- Focus on technical skills, tools, frameworks, methodologies, certifications
+- Skip generic words like "team", "communication", "experience", "strong"`;
+
+// --- JSON extraction with fallback ---
+
+function extractJSON(text: string): unknown[] | null {
+  // 1. Direct parse
+  try {
+    const parsed = JSON.parse(text);
+    if (Array.isArray(parsed)) return parsed;
+  } catch { /* continue */ }
+
+  // 2. Extract from markdown code block
+  const codeBlock = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (codeBlock) {
+    try {
+      const parsed = JSON.parse(codeBlock[1].trim());
+      if (Array.isArray(parsed)) return parsed;
+    } catch { /* continue */ }
+  }
+
+  // 3. Find first JSON array in text
+  const arrayMatch = text.match(/\[[\s\S]*\]/);
+  if (arrayMatch) {
+    try {
+      const parsed = JSON.parse(arrayMatch[0]);
+      if (Array.isArray(parsed)) return parsed;
+    } catch { /* continue */ }
+  }
+
+  return null;
 }
 
-// --- Candidate phrase extraction from JD ---
+// --- Map raw LLM output to typed result ---
 
-/** Extract candidate keyword phrases from job description text */
-function extractCandidates(text: string): Map<string, number> {
-  const lower = text.toLowerCase();
-  const candidates = new Map<string, number>();
-
-  // 1) Special tech terms (C++, C#, .NET, etc.) — extract before normalizing
-  const techPattern = /(?<=^|\W)(c\+\+|c#|\.net|f#|node\.js|next\.js|vue\.js|react\.js|asp\.net|vb\.net|three\.js)(?=\W|$)/gi;
-  for (const m of lower.matchAll(techPattern)) {
-    const term = m[0];
-    candidates.set(term, (candidates.get(term) || 0) + 1);
-  }
-
-  // 2) Slash-compound terms (CI/CD, UI/UX, etc.)
-  const slashPattern = /\b([a-z]+\/[a-z]+)\b/gi;
-  for (const m of lower.matchAll(slashPattern)) {
-    const term = m[1];
-    candidates.set(term, (candidates.get(term) || 0) + 1);
-  }
-
-  // 3) Split into sentences, then extract n-grams
-  const sentences = lower.split(/[.!?;:\n]+/).filter(s => s.trim().length > 5);
-  const stopWords = new Set([
-    'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
-    'of', 'with', 'by', 'from', 'is', 'are', 'was', 'were', 'be', 'been',
-    'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would',
-    'could', 'should', 'may', 'might', 'shall', 'can', 'need', 'must',
-    'that', 'which', 'who', 'whom', 'this', 'these', 'those', 'it', 'its',
-    'we', 'our', 'you', 'your', 'they', 'their', 'he', 'she', 'him', 'her',
-    'not', 'no', 'nor', 'as', 'if', 'then', 'than', 'too', 'very', 'just',
-    'about', 'all', 'also', 'am', 'any', 'because', 'both', 'each',
-    'more', 'most', 'other', 'so', 'some', 'such', 'up', 'what', 'when',
-    'where', 'while', 'how', 'out', 'into', 'my', 'me', 'i',
-  ]);
-
-  const fillerWords = new Set([
-    'experience', 'required', 'preferred', 'ability', 'skills', 'including',
-    'work', 'working', 'position', 'role', 'company', 'team', 'opportunity',
-    'responsibilities', 'requirements', 'qualifications', 'candidate',
-    'apply', 'job', 'description', 'employment', 'equal', 'employer',
-    'benefits', 'salary', 'competitive', 'minimum', 'years', 'degree',
-    'bachelor', 'master', 'education', 'looking', 'seeking', 'ideal',
-    'someone', 'strong', 'excellent', 'good', 'great', 'solid',
-    'knowledge', 'understanding', 'familiarity', 'plus', 'bonus',
-    'demonstrated', 'proven', 'ensuring', 'responsible', 'proficient',
-    'relevant', 'related',
-  ]);
-
-  for (const sentence of sentences) {
-    const words = sentence
-      .replace(/[^a-z0-9\s/+#.'-]/g, ' ')
-      .split(/\s+/)
-      .filter(w => w.length > 1);
-
-    // Unigrams
-    for (const word of words) {
-      const clean = word.replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
-      if (clean.length <= 2 || stopWords.has(clean) || fillerWords.has(clean)) continue;
-      candidates.set(clean, (candidates.get(clean) || 0) + 1);
-    }
-
-    // Bigrams — both words must not be filler
-    for (let i = 0; i < words.length - 1; i++) {
-      const a = words[i].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
-      const b = words[i + 1].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
-      if (a.length < 2 || b.length < 2) continue;
-      if (stopWords.has(a) || stopWords.has(b)) continue;
-      if (fillerWords.has(a) || fillerWords.has(b)) continue;
-      const bigram = `${a} ${b}`;
-      candidates.set(bigram, (candidates.get(bigram) || 0) + 1);
-    }
-
-    // Trigrams — first and last words must not be stop/filler
-    for (let i = 0; i < words.length - 2; i++) {
-      const a = words[i].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
-      const b = words[i + 1].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
-      const c = words[i + 2].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
-      if (a.length < 2 || b.length < 2 || c.length < 2) continue;
-      if (stopWords.has(a) || stopWords.has(c)) continue;
-      if (fillerWords.has(a) || fillerWords.has(c)) continue;
-      const trigram = `${a} ${b} ${c}`;
-      candidates.set(trigram, (candidates.get(trigram) || 0) + 1);
-    }
-  }
-
-  return candidates;
-}
-
-// --- Semantic deduplication ---
-
-/** Cluster embeddings by cosine similarity and return representative indices */
-function clusterEmbeddings(
-  embeddings: number[][],
-  labels: string[],
-  freqs: number[],
-  threshold: number
-): number[] {
-  const n = embeddings.length;
-  const assigned = new Array<number>(n).fill(-1);
-  const representatives: number[] = [];
-  let clusterId = 0;
-
-  // Sort by frequency descending — highest-freq candidates become cluster reps
-  const order = Array.from({ length: n }, (_, i) => i).sort((a, b) => freqs[b] - freqs[a]);
-
-  for (const idx of order) {
-    if (assigned[idx] >= 0) continue;
-    assigned[idx] = clusterId;
-    representatives.push(idx);
-
-    // Absorb similar candidates into this cluster
-    for (const other of order) {
-      if (assigned[other] >= 0) continue;
-      const sim = cosineSim(embeddings[idx], embeddings[other]);
-      if (sim >= threshold) {
-        assigned[other] = clusterId;
-      }
-    }
-    clusterId++;
-  }
-
-  return representatives;
-}
-
-// --- Generic-term filtering (cached) ---
-
-const GENERIC_PHRASES = [
-  'experience required preferred ability',
-  'strong communication skills teamwork',
-  'responsible for managing overseeing',
-];
-
-let cachedGenericEmbeddings: number[][] | null = null;
-
-async function filterGenericTerms(
-  embeddings: number[][]
-): Promise<boolean[]> {
-  if (!cachedGenericEmbeddings) {
-    cachedGenericEmbeddings = await embed(GENERIC_PHRASES);
-  }
-  return embeddings.map((emb) => {
-    for (const ge of cachedGenericEmbeddings!) {
-      if (cosineSim(emb, ge) > 0.72) return true;
-    }
-    return false;
-  });
-}
-
-// --- Resume chunking ---
-
-function chunkResume(text: string): string[] {
-  // Split into sentences, then create overlapping windows
-  const sentences = text
-    .replace(/\n+/g, '. ')
-    .split(/(?<=[.!?])\s+/)
-    .filter(s => s.trim().length > 10);
-
-  if (sentences.length === 0) return [text];
-
-  const chunks: string[] = [];
-  for (let i = 0; i < sentences.length; i++) {
-    // Single sentence
-    chunks.push(sentences[i].trim());
-    // Two-sentence window
-    if (i < sentences.length - 1) {
-      const window = `${sentences[i].trim()} ${sentences[i + 1].trim()}`;
-      if (window.length <= 300) {
-        chunks.push(window);
-      }
-    }
-  }
-  return chunks;
-}
-
-// --- Placement suggestion (copied from keywordMatcher.ts) ---
-
-const PLACEMENT_RULES: Array<{ pattern: RegExp; placement: string }> = [
-  { pattern: /\b(python|java|javascript|typescript|c\+\+|ruby|go|rust|php|swift|kotlin|scala|r|matlab|sql|html|css|sass|less)\b/i, placement: 'Skills section — Technical Skills' },
-  { pattern: /\b(react|angular|vue|node|express|django|flask|spring|rails|next\.?js|nuxt|svelte|laravel|asp\.net)\b/i, placement: 'Skills section — Frameworks' },
-  { pattern: /\b(aws|azure|gcp|docker|kubernetes|terraform|jenkins|ci\/cd|git|linux|nginx|apache)\b/i, placement: 'Skills section — Tools & Infrastructure' },
-  { pattern: /\b(excel|powerpoint|word|salesforce|hubspot|jira|confluence|slack|figma|sketch|photoshop|tableau|power\s?bi)\b/i, placement: 'Skills section — Software' },
-  { pattern: /(certified|certification|license|cpa|pmp|scrum|cissp|aws\s+certified)/i, placement: 'Certifications section' },
-  { pattern: /(agile|scrum|kanban|waterfall|lean|six\s+sigma|sdlc)/i, placement: 'Skills section — Methodologies' },
-];
-
-function getSuggestedPlacement(keyword: string): string {
-  for (const rule of PLACEMENT_RULES) {
-    if (rule.pattern.test(keyword)) {
-      return rule.placement;
-    }
-  }
-  return 'Skills section or Experience bullet points';
-}
-
-// --- Main matching pipeline ---
-
-async function runMatch(resumeText: string, jobDescription: string): Promise<EnhancedScanResult> {
-  // 1. Extract candidate phrases from JD
-  const candidateMap = extractCandidates(jobDescription);
-  const allCandidates = [...candidateMap.entries()]
-    .sort((a, b) => b[1] - a[1]);
-  const candidateLabels = allCandidates.map(([label]) => label);
-  const candidateFreqs = allCandidates.map(([, freq]) => freq);
-
-  if (candidateLabels.length === 0) {
-    return { matchPercentage: 0, totalKeywords: 0, matchedCount: 0, partialCount: 0, missingCount: 0, matched: [], partial: [], missing: [] };
-  }
-
-  // 2. Batch-embed all candidates
-  const candidateEmbeddings = await embed(candidateLabels);
-
-  // 3. Filter generic terms
-  const isGeneric = await filterGenericTerms(candidateEmbeddings);
-
-  // 4. Semantic deduplication — cluster candidates with similarity > 0.85
-  const nonGenericIndices = candidateLabels
-    .map((_, i) => i)
-    .filter(i => !isGeneric[i]);
-
-  const filteredLabels = nonGenericIndices.map(i => candidateLabels[i]);
-  const filteredEmbeddings = nonGenericIndices.map(i => candidateEmbeddings[i]);
-  const filteredFreqs = nonGenericIndices.map(i => candidateFreqs[i]);
-
-  const repIndices = clusterEmbeddings(filteredEmbeddings, filteredLabels, filteredFreqs, 0.85);
-
-  // Keep top 40 keywords by frequency, then subsume single words covered by multi-word phrases
-  let keywords = repIndices.map(i => ({
-    label: filteredLabels[i],
-    embedding: filteredEmbeddings[i],
-    freq: filteredFreqs[i],
-  }));
-  keywords.sort((a, b) => b.freq - a.freq);
-
-  // Subsume single words that are part of a higher-frequency multi-word keyword
-  const multiWord = keywords.filter(k => k.label.includes(' '));
-  keywords = keywords.filter(k => {
-    if (k.label.includes(' ')) return true;
-    return !multiWord.some(mw => mw.freq >= k.freq && mw.label.includes(k.label));
-  });
-
-  keywords = keywords.slice(0, 40);
-
-  if (keywords.length === 0) {
-    return { matchPercentage: 0, totalKeywords: 0, matchedCount: 0, partialCount: 0, missingCount: 0, matched: [], partial: [], missing: [] };
-  }
-
-  // 5. Chunk resume and batch-embed
-  const chunks = chunkResume(resumeText);
-  const chunkEmbeddings = await embed(chunks);
-
-  // 6. For each keyword, find max similarity across chunks
+function mapToResult(rawKeywords: unknown[]): EnhancedScanResult {
   const matched: EnhancedKeywordResult[] = [];
   const partial: EnhancedKeywordResult[] = [];
   const missing: EnhancedKeywordResult[] = [];
 
-  for (const kw of keywords) {
-    let maxSim = 0;
-    let bestChunkIdx = 0;
+  for (const raw of rawKeywords) {
+    if (!raw || typeof raw !== 'object') continue;
+    const r = raw as Record<string, unknown>;
 
-    for (let j = 0; j < chunkEmbeddings.length; j++) {
-      const sim = cosineSim(kw.embedding, chunkEmbeddings[j]);
-      if (sim > maxSim) {
-        maxSim = sim;
-        bestChunkIdx = j;
-      }
-    }
+    const keyword = String(r.keyword || '').trim();
+    if (!keyword) continue;
+
+    // Accept both "match" and "matchType" field names
+    const matchStr = String(r.match || r.matchType || 'none').toLowerCase();
+    // Accept both "score" and "similarity" field names
+    const score = typeof r.score === 'number' ? Math.max(0, Math.min(1, r.score))
+      : typeof r.similarity === 'number' ? Math.max(0, Math.min(1, r.similarity))
+      : 0;
+    const context = String(r.context || r.bestMatchContext || '').slice(0, 150);
+    const placement = String(r.placement || r.suggestedPlacement || '');
+
+    // Normalize matchType — fall back to score-based classification if invalid
+    const matchType = (['exact', 'semantic', 'partial', 'none'] as const).includes(
+      matchStr as 'exact' | 'semantic' | 'partial' | 'none'
+    )
+      ? (matchStr as EnhancedKeywordResult['matchType'])
+      : score >= 0.65 ? 'semantic' : score >= 0.45 ? 'partial' : 'none';
+
+    const found = matchType === 'exact' || matchType === 'semantic';
 
     const result: EnhancedKeywordResult = {
-      keyword: kw.label,
-      found: maxSim >= 0.65,
-      similarity: Math.round(maxSim * 100) / 100,
-      matchType: maxSim >= 0.65
-        ? (maxSim >= 0.85 ? 'exact' : 'semantic')
-        : (maxSim >= 0.45 ? 'partial' : 'none'),
-      bestMatchContext: chunks[bestChunkIdx]?.slice(0, 150),
+      keyword,
+      found,
+      similarity: Math.round(score * 100) / 100,
+      matchType,
+      bestMatchContext: context || undefined,
+      suggestedPlacement: !found && placement ? placement : undefined,
     };
 
-    if (maxSim >= 0.65) {
+    if (found) {
       matched.push(result);
-    } else if (maxSim >= 0.45) {
+    } else if (matchType === 'partial') {
       partial.push(result);
     } else {
-      result.suggestedPlacement = getSuggestedPlacement(kw.label);
       missing.push(result);
     }
   }
 
-  // Sort each bucket
+  // Sort each bucket by similarity descending
   matched.sort((a, b) => b.similarity - a.similarity);
   partial.sort((a, b) => b.similarity - a.similarity);
   missing.sort((a, b) => b.similarity - a.similarity);
 
-  const total = keywords.length;
+  const total = matched.length + partial.length + missing.length;
   const matchPercentage = total > 0 ? Math.round((matched.length / total) * 100) : 0;
 
   return {
@@ -376,6 +194,53 @@ async function runMatch(resumeText: string, jobDescription: string): Promise<Enh
     partial,
     missing,
   };
+}
+
+// --- Main matching pipeline ---
+
+async function runMatch(resumeText: string, jobDescription: string): Promise<EnhancedScanResult> {
+  if (!generator) throw new Error('Model not loaded');
+
+  if (!jobDescription.trim()) {
+    return { matchPercentage: 0, totalKeywords: 0, matchedCount: 0, partialCount: 0, missingCount: 0, matched: [], partial: [], missing: [] };
+  }
+
+  const messages = [
+    { role: 'system', content: SYSTEM_PROMPT },
+    {
+      role: 'user',
+      content: `JOB DESCRIPTION:\n${jobDescription.slice(0, 3000)}\n\nRESUME:\n${resumeText.slice(0, 3000)}`,
+    },
+  ];
+
+  const output = await generator(messages, {
+    max_new_tokens: 2048,
+    do_sample: false,
+  });
+
+  // Extract assistant's response from chat output
+  let generatedText = '';
+  if (output?.[0]) {
+    const gen = (output[0] as Record<string, unknown>).generated_text;
+    if (typeof gen === 'string') {
+      generatedText = gen;
+    } else if (Array.isArray(gen)) {
+      // Chat format: array of messages, last is assistant
+      const last = gen[gen.length - 1] as Record<string, unknown> | undefined;
+      generatedText = String(last?.content || '');
+    }
+  }
+
+  if (!generatedText.trim()) {
+    throw new Error('Model returned empty response');
+  }
+
+  const keywords = extractJSON(generatedText);
+  if (!keywords || keywords.length === 0) {
+    throw new Error('Could not parse keywords from model response');
+  }
+
+  return mapToResult(keywords);
 }
 
 // --- Message handler ---
@@ -396,8 +261,10 @@ self.onmessage = async (e: MessageEvent<WorkerInMessage>) => {
         break;
     }
   } catch (err) {
-    // Reset loading state so retry is possible
-    modelLoadPromise = null;
+    // Only reset model promise if model itself failed to load
+    if (!generator) {
+      modelLoadPromise = null;
+    }
     post({ type: 'error', error: err instanceof Error ? err.message : String(err) });
   }
 };
