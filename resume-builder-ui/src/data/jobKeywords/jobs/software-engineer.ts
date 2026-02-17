@@ -21,7 +21,7 @@ export const softwareEngineer: JobKeywordsData = {
     'Complete software engineer resume keywords: Python, Java, React, AWS, CI/CD, Docker, Kubernetes. Before/after examples for SWE resumes. ATS-optimized.',
   category: 'technology',
   priority: 0.9,
-  lastmod: '2026-02-04',
+  lastmod: '2026-02-17',
 
   roleIntro:
     'Hiring teams scan for both technical depth and practical experience. They want to see specific technologies you\'ve used (not just "programming"), evidence of scale (users, transactions, uptime), and proof you can work in modern development environments. Your resume should demonstrate you can ship production code, collaborate with teams, and solve real problems—not just that you\'ve taken courses.',

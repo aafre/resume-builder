@@ -646,6 +646,26 @@ footer {
 .animate-badgeFadeIn { animation: badgeFadeIn 0.4s ease-out; }
 .animate-slideDown { animation: slideDown 0.3s ease-out; }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ks-node-lit {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+@keyframes ks-breathe {
+  0%, 100% { opacity: 0.4; box-shadow: 0 0 0 0 rgba(0,212,126,0); }
+  50%      { opacity: 1; box-shadow: 0 0 0 4px rgba(0,212,126,0.15); }
+}
+
+/* Hide scrollbar for tab overflow */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
 /* Custom scrollbar for sidebar */
 .scrollbar-thin {
   scrollbar-width: thin;

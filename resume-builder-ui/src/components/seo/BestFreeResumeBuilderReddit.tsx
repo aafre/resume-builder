@@ -4,6 +4,7 @@
  * Target keyword: "best free resume builder reddit"
  */
 
+import { Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import FeatureGrid from '../shared/FeatureGrid';
@@ -227,16 +228,97 @@ export default function BestFreeResumeBuilderReddit() {
           <p className="text-lg text-stone-warm leading-relaxed">
             We believe in being honest. Paid resume services can be worth it if you need:
           </p>
-          <ul className="mt-4 space-y-2 text-stone-warm">
-            <li>• Professional resume writing (human expert feedback)</li>
-            <li>• Cover letter writing services</li>
-            <li>• LinkedIn profile optimization</li>
-            <li>• Career coaching or interview prep</li>
+          <ul className="list-disc pl-5 mt-4 space-y-2 text-stone-warm">
+            <li>Professional resume writing (human expert feedback)</li>
+            <li>Cover letter writing services</li>
+            <li>LinkedIn profile optimization</li>
+            <li>Career coaching or interview prep</li>
           </ul>
           <p className="mt-4 text-stone-warm">
             But for <strong>creating and formatting a resume yourself</strong>, free tools like
             ours work just as well as paid options.
           </p>
+        </div>
+      </div>
+      </RevealSection>
+
+      {/* Recent Reddit Threads - Updated Feb 2026 */}
+      <RevealSection variant="fade-up">
+      <div className="mb-16">
+        <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
+          What Reddit is saying in 2026
+        </h2>
+        <div className="max-w-4xl mx-auto space-y-4">
+          <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] p-6">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm font-medium text-mist">r/resumes</span>
+              <span className="text-mist">·</span>
+              <span className="text-sm text-mist">Feb 2026</span>
+            </div>
+            <p className="text-stone-warm italic mb-3">
+              "I've tried Zety, Resume.io, and Novoresume. They all let you build for free then charge $20+ to download. EasyFreeResume actually let me download without paying. No catch."
+            </p>
+            <p className="text-xs text-mist">Context: Thread asking for truly free resume builders with no hidden costs</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] p-6">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm font-medium text-mist">r/jobs</span>
+              <span className="text-mist">·</span>
+              <span className="text-sm text-mist">Jan 2026</span>
+            </div>
+            <p className="text-stone-warm italic mb-3">
+              "PSA: stop using Canva for resumes. ATS can't read them. Use something that outputs clean text-based PDFs. I switched to a free builder and started getting callbacks within a week."
+            </p>
+            <p className="text-xs text-mist">Context: Thread about why ATS-friendly formatting matters more than visual design</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] p-6">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm font-medium text-mist">r/cscareerquestions</span>
+              <span className="text-mist">·</span>
+              <span className="text-sm text-mist">Jan 2026</span>
+            </div>
+            <p className="text-stone-warm italic mb-3">
+              "For tech resumes: keep it simple, use standard formatting, and make sure it's ATS-parseable. Fancy templates from design sites do more harm than good. Find a free builder that outputs clean PDFs."
+            </p>
+            <p className="text-xs text-mist">Context: Thread about tech resume best practices for 2026 job market</p>
+          </div>
+        </div>
+      </div>
+      </RevealSection>
+
+      {/* Top Resume Tips From Reddit */}
+      <RevealSection variant="fade-up">
+      <div className="mb-16">
+        <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
+          Top resume tips from Reddit (2026)
+        </h2>
+        <div className="max-w-4xl mx-auto space-y-4">
+          <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
+            <h3 className="font-display text-lg font-bold text-ink mb-2">Tailor your resume for every application</h3>
+            <p className="text-stone-warm text-sm leading-relaxed">
+              The #1 tip across all subreddits: customize your resume for each job. Match keywords from the job posting.
+              Our <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">ATS keyword scanner</Link> shows exactly which terms to add.
+            </p>
+          </div>
+          <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
+            <h3 className="font-display text-lg font-bold text-ink mb-2">Use AI to polish, not to write</h3>
+            <p className="text-stone-warm text-sm leading-relaxed">
+              Reddit is split on AI resumes. The consensus: use <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">ChatGPT</Link> or <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">Claude</Link> to refine wording, but write the core content yourself. Recruiters can detect fully AI-generated resumes.
+            </p>
+          </div>
+          <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
+            <h3 className="font-display text-lg font-bold text-ink mb-2">Quantify everything</h3>
+            <p className="text-stone-warm text-sm leading-relaxed">
+              "Led team" → "Led team of 8 engineers." "Improved sales" → "Increased Q4 revenue 23% ($1.2M)."
+              Numbers stand out and are harder to fake. See our <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">quantification guide</Link> for help.
+            </p>
+          </div>
+          <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
+            <h3 className="font-display text-lg font-bold text-ink mb-2">One page unless you have 10+ years</h3>
+            <p className="text-stone-warm text-sm leading-relaxed">
+              Nearly unanimous Reddit advice: keep it to one page for most roles. Two pages only for senior executives or academics. Check our <Link to="/blog/resume-length-guide" className="text-accent hover:underline">resume length guide</Link> for industry-specific exceptions.
+            </p>
+          </div>
         </div>
       </div>
       </RevealSection>

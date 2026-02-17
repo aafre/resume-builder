@@ -37,7 +37,7 @@ export default function AIResumeWritingGuide() {
           <h3 className="font-bold text-ink mb-3">
             🚀 Quick Answer: Best AI Tools for Resume Writing
           </h3>
-          <ul className="space-y-2 text-ink/80">
+          <ul className="list-disc pl-5 space-y-2 text-ink/80">
             <li><strong>Best Overall:</strong> Claude – Superior at nuanced, professional writing</li>
             <li><strong>Most Accessible:</strong> ChatGPT – Widest adoption, free tier available</li>
             <li><strong>Best for Research:</strong> Gemini – Strong at analyzing job descriptions</li>
@@ -59,13 +59,13 @@ export default function AIResumeWritingGuide() {
             <h3 className="text-lg font-bold text-green-800 mb-4">
               ✅ AI Excels At
             </h3>
-            <ul className="space-y-2 text-accent">
-              <li>• Generating multiple variations quickly</li>
-              <li>• Transforming duties into achievements</li>
-              <li>• Identifying relevant keywords from job descriptions</li>
-              <li>• Improving grammar and clarity</li>
-              <li>• Suggesting stronger action verbs</li>
-              <li>• Creating professional summaries</li>
+            <ul className="list-disc pl-5 space-y-2 text-accent">
+              <li>Generating multiple variations quickly</li>
+              <li>Transforming duties into achievements</li>
+              <li>Identifying relevant keywords from job descriptions</li>
+              <li>Improving grammar and clarity</li>
+              <li>Suggesting stronger action verbs</li>
+              <li>Creating professional summaries</li>
             </ul>
           </div>
 
@@ -73,13 +73,13 @@ export default function AIResumeWritingGuide() {
             <h3 className="text-lg font-bold text-red-800 mb-4">
               ❌ AI Struggles With
             </h3>
-            <ul className="space-y-2 text-red-700">
-              <li>• Knowing your actual accomplishments</li>
-              <li>• Understanding company culture nuances</li>
-              <li>• Maintaining your authentic voice</li>
-              <li>• Fact-checking claims</li>
-              <li>• Strategic career positioning</li>
-              <li>• Knowing what to emphasize vs. omit</li>
+            <ul className="list-disc pl-5 space-y-2 text-red-700">
+              <li>Knowing your actual accomplishments</li>
+              <li>Understanding company culture nuances</li>
+              <li>Maintaining your authentic voice</li>
+              <li>Fact-checking claims</li>
+              <li>Strategic career positioning</li>
+              <li>Knowing what to emphasize vs. omit</li>
             </ul>
           </div>
         </div>

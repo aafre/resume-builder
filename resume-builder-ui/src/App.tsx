@@ -118,6 +118,8 @@ const GeminiResumePrompts = lazy(() => import("./components/blog/GeminiResumePro
 const GrokResumePrompts = lazy(() => import("./components/blog/GrokResumePrompts"));
 const AIJobDescriptionAnalyzer = lazy(() => import("./components/blog/AIJobDescriptionAnalyzer"));
 const AIResumeReview = lazy(() => import("./components/blog/AIResumeReview"));
+const CustomerServiceResumeKeywordsGuide = lazy(() => import("./components/blog/CustomerServiceResumeKeywordsGuide"));
+const ResumeKeywordsByIndustry = lazy(() => import("./components/blog/ResumeKeywordsByIndustry"));
 
 // Competitor comparison blog posts
 const ResumeIOVsEasyFreeResume = lazy(() => import("./components/blog/ResumeIOVsEasyFreeResume"));
@@ -775,6 +777,22 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <AIResumeReview />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/customer-service-resume-keywords-guide"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <CustomerServiceResumeKeywordsGuide />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/resume-keywords-by-industry"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ResumeKeywordsByIndustry />
               </Suspense>
             }
           />

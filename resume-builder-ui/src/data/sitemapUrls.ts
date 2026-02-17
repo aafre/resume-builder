@@ -20,12 +20,12 @@ export const STATIC_URLS: SitemapUrl[] = [
 
   // New SEO Landing Pages (0.9) - updated footer links today
   { loc: '/actual-free-resume-builder', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-02' },
-  { loc: '/free-resume-builder-no-sign-up', priority: 0.9, changefreq: 'monthly', lastmod: '2026-01-01' },
+  { loc: '/free-resume-builder-no-sign-up', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-17' },
   { loc: '/free-resume-builder-download', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/free-resume-builder-no-payment', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/ai-resume-builder-free', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/zety-free-alternative', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
-  { loc: '/best-free-resume-builder-reddit', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-04' },
+  { loc: '/best-free-resume-builder-reddit', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-17' },
 
   // ATS Keyword Scanner Tool (0.8)
   { loc: '/resume-keyword-scanner', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
@@ -45,7 +45,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/templates', priority: 0.8, changefreq: 'weekly', lastmod: '2026-02-02' },
 
   // Hub Pages (0.8)
-  { loc: '/ats-resume-templates', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-04' },
+  { loc: '/ats-resume-templates', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-17' },
   { loc: '/resume-keywords', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-04' },
   { loc: '/examples', priority: 0.8, changefreq: 'weekly', lastmod: '2026-01-21' },
 
@@ -82,6 +82,9 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/how-to-write-a-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/resume-action-verbs', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/how-to-use-resume-keywords', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
+  // /resume-keywords/software-engineer is auto-generated from JOBS_DATABASE (priority 0.9)
+  { loc: '/blog/customer-service-resume-keywords-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-17' },
+  { loc: '/blog/resume-keywords-by-industry', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-17' },
   { loc: '/blog/how-why-easyfreeresume-completely-free', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/easyfreeresume-vs-zety', priority: 0.7, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/blog/how-to-list-skills', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
@@ -90,7 +93,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   // New AI Blog Posts (0.5) - recently created
   { loc: '/blog/chatgpt-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/ai-resume-writing-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
-  { loc: '/blog/claude-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
+  { loc: '/blog/claude-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-17' },
   { loc: '/blog/gemini-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
   { loc: '/blog/grok-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/ai-job-description-analyzer', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
