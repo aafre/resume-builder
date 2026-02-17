@@ -272,6 +272,48 @@ When revamping a page to the new design system:
 8. Add hover lifts and transitions to interactive elements
 9. Test reduced motion — verify content is visible without animation
 
+## SEO Governance
+
+### SEO Tracking Directory
+
+All SEO/GEO tracking lives in `seo-tracking/` at the repo root (gitignored, not committed).
+
+**Files:**
+- `changelog.md` — Running log of every SEO change (read before making changes)
+- `gsc-snapshots.md` — Weekly GSC stats snapshots
+- `protected-pages.md` — Pages that must NOT be changed without explicit approval
+- `strategy.md` — SEO/GEO priorities and planned work
+- `mistakes-learned.md` — SEO mistakes log; check before repeating past errors
+
+### Before Any SEO Change
+
+1. Read `seo-tracking/protected-pages.md` — if the page is listed, confirm with user first
+2. Read `seo-tracking/changelog.md` — understand recent history of the page
+3. Note current GSC stats from `gsc-snapshots.md` for pages being modified
+4. Check `seo-tracking/mistakes-learned.md` for relevant past mistakes
+
+### After Any SEO Change
+
+1. Add entry to `seo-tracking/changelog.md` (date, branch, type, pages, rationale, GSC ref)
+2. If a protected page was modified, log it in the protected-pages change log
+3. If you made a mistake, add it to `mistakes-learned.md`
+
+### Sitemap Rules
+
+When editing `sitemapUrls.ts`:
+- Cross-check new URLs against the redirect list in `App.tsx` (~line 680-692) and `app.py` redirects
+- If the URL is a redirect source, use the destination URL instead
+- Update `lastmod` to today's date for any URL whose content was modified
+- Never remove a URL from the sitemap without checking its GSC performance first
+
+### Weekly SEO Review Protocol
+
+1. Export GSC data to `SearchConsole/{YYYY-MM-DD}/`
+2. Add snapshot to `gsc-snapshots.md`
+3. Compare to prior week — flag pages that dropped >5 positions
+4. Update `protected-pages.md` if new pages crossed threshold
+5. Review open items in `strategy.md`
+
 # Repo workflow
 
 ## Git commit style
