@@ -272,7 +272,20 @@ When revamping a page to the new design system:
 8. Add hover lifts and transitions to interactive elements
 9. Test reduced motion — verify content is visible without animation
 
-## SEO Governance
+## SEO/GEO Governance
+
+Before making ANY change that affects SEO (titles, meta tags, schema, URLs, H1s, new pages, page deletions, route changes):
+
+1. Read `seo-tracking/strategy.md` for current priorities (P0-P4)
+2. Check `seo-tracking/protected-pages.md` — Tier 1 pages require owner sign-off before modification
+3. Check `seo-tracking/changelog.md` — do not modify pages with recent changes that haven't activated yet (allow 2-4 weeks)
+4. Check `seo-tracking/mistakes-learned.md` — avoid repeating past errors
+5. Log all changes in `seo-tracking/changelog.md` with: date, what changed, files modified, reason, GSC stats at time of change
+6. If adding/changing a URL: verify it's in the sitemap, not a redirect source, and accessible via direct server request
+7. Entity signals (sameAs arrays) must stay in sync across: index.html (WebApplication + Organization), schemaGenerators.ts (SoftwareApplication), Footer.tsx
+8. Brand name "EasyFreeResume" must always appear first in title tags — never at the end
+
+The `seo-tracking/` directory is the single source of truth. Do not rely on memory.
 
 ### SEO Tracking Directory
 
@@ -284,19 +297,6 @@ All SEO/GEO tracking lives in `seo-tracking/` at the repo root (gitignored, not 
 - `protected-pages.md` — Pages that must NOT be changed without explicit approval
 - `strategy.md` — SEO/GEO priorities and planned work
 - `mistakes-learned.md` — SEO mistakes log; check before repeating past errors
-
-### Before Any SEO Change
-
-1. Read `seo-tracking/protected-pages.md` — if the page is listed, confirm with user first
-2. Read `seo-tracking/changelog.md` — understand recent history of the page
-3. Note current GSC stats from `gsc-snapshots.md` for pages being modified
-4. Check `seo-tracking/mistakes-learned.md` for relevant past mistakes
-
-### After Any SEO Change
-
-1. Add entry to `seo-tracking/changelog.md` (date, branch, type, pages, rationale, GSC ref)
-2. If a protected page was modified, log it in the protected-pages change log
-3. If you made a mistake, add it to `mistakes-learned.md`
 
 ### Sitemap Rules
 
