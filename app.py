@@ -1749,6 +1749,12 @@ def serve(path):
     to execute JavaScript.
     """
     try:
+        # Redirect trailing-slash URLs to non-trailing-slash (SEO canonical)
+        # e.g. /examples/ → /examples, /blog/some-post/ → /blog/some-post
+        if path and path.endswith("/"):
+            clean = path.rstrip("/")
+            return redirect(f"/{clean}" if clean else "/", code=301)
+
         # If the requested path exists in the static folder, serve it
         # (skip the prerendered directory itself — it's for bot serving only)
         if path != "" and not path.startswith("prerendered/"):
