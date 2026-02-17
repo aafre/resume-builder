@@ -1856,7 +1856,6 @@ export const SEO_PAGES: Record<string, PageConfig> = {
     hero: {
       h1: 'Free ATS Resume Keyword Scanner',
       subtitle: 'Paste your resume and a job description to instantly see which keywords you are missing — and where to add them.',
-      primaryCTA: { text: 'Scan Now', href: '#resume-text' },
       secondaryCTA: { text: 'Browse Keywords', href: '/resume-keywords' },
     },
     breadcrumbs: [
