@@ -118,6 +118,8 @@ const GeminiResumePrompts = lazy(() => import("./components/blog/GeminiResumePro
 const GrokResumePrompts = lazy(() => import("./components/blog/GrokResumePrompts"));
 const AIJobDescriptionAnalyzer = lazy(() => import("./components/blog/AIJobDescriptionAnalyzer"));
 const AIResumeReview = lazy(() => import("./components/blog/AIResumeReview"));
+const CustomerServiceResumeKeywordsGuide = lazy(() => import("./components/blog/CustomerServiceResumeKeywordsGuide"));
+const ResumeKeywordsByIndustry = lazy(() => import("./components/blog/ResumeKeywordsByIndustry"));
 
 // Competitor comparison blog posts
 const ResumeIOVsEasyFreeResume = lazy(() => import("./components/blog/ResumeIOVsEasyFreeResume"));
@@ -145,13 +147,13 @@ const queryClient = new QueryClient({
 
 // Loading components for different contexts
 const LoadingSpinner = () => (
-  <div className="flex items-center justify-center min-h-[200px]">
+  <div className="flex items-center justify-center min-h-[1200px]">
     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
   </div>
 );
 
 const BlogLoadingSkeleton = () => (
-  <div className="max-w-4xl mx-auto px-4 py-8">
+  <div className="max-w-4xl mx-auto px-4 py-8 min-h-[1200px]">
     <div className="animate-pulse">
       <div className="h-8 bg-gray-200 rounded-md mb-4"></div>
       <div className="h-4 bg-gray-200 rounded-md mb-2"></div>
@@ -212,7 +214,7 @@ function AppContent() {
       <EnvironmentBanner />
       <AnnouncementBar />
       {/* Header */}
-      <header className="bg-white shadow-md sticky top-0 z-50">
+      <header className="bg-white sticky top-0 z-50">
         <Header />
       </header>
 
@@ -778,6 +780,22 @@ function AppContent() {
               </Suspense>
             }
           />
+          <Route
+            path="/blog/customer-service-resume-keywords-guide"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <CustomerServiceResumeKeywordsGuide />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/resume-keywords-by-industry"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ResumeKeywordsByIndustry />
+              </Suspense>
+            }
+          />
 
           {/* Competitor Comparison Blog Posts */}
           <Route
@@ -900,7 +918,7 @@ function AppContent() {
       )}
 
       {/* Footer - Always visible, static positioning */}
-      <footer id="app-footer" data-nosnippet className="bg-gray-100 text-gray-700 border-t shadow-sm mt-auto">
+      <footer id="app-footer" data-nosnippet className="bg-chalk-dark text-stone-warm border-t border-black/[0.06] mt-auto">
         <Footer />
       </footer>
     </div>

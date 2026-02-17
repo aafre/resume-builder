@@ -272,6 +272,48 @@ When revamping a page to the new design system:
 8. Add hover lifts and transitions to interactive elements
 9. Test reduced motion — verify content is visible without animation
 
+## SEO/GEO Governance
+
+Before making ANY change that affects SEO (titles, meta tags, schema, URLs, H1s, new pages, page deletions, route changes):
+
+1. Read `seo-tracking/strategy.md` for current priorities (P0-P4)
+2. Check `seo-tracking/protected-pages.md` — Tier 1 pages require owner sign-off before modification
+3. Check `seo-tracking/changelog.md` — do not modify pages with recent changes that haven't activated yet (allow 2-4 weeks)
+4. Check `seo-tracking/mistakes-learned.md` — avoid repeating past errors
+5. Log all changes in `seo-tracking/changelog.md` with: date, what changed, files modified, reason, GSC stats at time of change
+6. If adding/changing a URL: verify it's in the sitemap, not a redirect source, and accessible via direct server request
+7. Entity signals (sameAs arrays) must stay in sync across: index.html (WebApplication + Organization), schemaGenerators.ts (SoftwareApplication), Footer.tsx
+8. Brand name "EasyFreeResume" must always appear first in title tags — never at the end
+
+The `seo-tracking/` directory is the single source of truth. Do not rely on memory.
+
+### SEO Tracking Directory
+
+All SEO/GEO tracking lives in `seo-tracking/` at the repo root (gitignored, not committed).
+
+**Files:**
+- `changelog.md` — Running log of every SEO change (read before making changes)
+- `gsc-snapshots.md` — Weekly GSC stats snapshots
+- `protected-pages.md` — Pages that must NOT be changed without explicit approval
+- `strategy.md` — SEO/GEO priorities and planned work
+- `mistakes-learned.md` — SEO mistakes log; check before repeating past errors
+
+### Sitemap Rules
+
+When editing `sitemapUrls.ts`:
+- Cross-check new URLs against the redirect list in `App.tsx` (~line 680-692) and `app.py` redirects
+- If the URL is a redirect source, use the destination URL instead
+- Update `lastmod` to today's date for any URL whose content was modified
+- Never remove a URL from the sitemap without checking its GSC performance first
+
+### Weekly SEO Review Protocol
+
+1. Export GSC data to `SearchConsole/{YYYY-MM-DD}/`
+2. Add snapshot to `gsc-snapshots.md`
+3. Compare to prior week — flag pages that dropped >5 positions
+4. Update `protected-pages.md` if new pages crossed threshold
+5. Review open items in `strategy.md`
+
 # Repo workflow
 
 ## Git commit style

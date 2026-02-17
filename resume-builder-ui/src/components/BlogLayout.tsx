@@ -86,7 +86,7 @@ export default function BlogLayout({
           "keywords": keywords
         }}
       />
-      <article className="min-h-screen bg-chalk">
+      <article className="bg-chalk">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {showBreadcrumbs && (
           <nav className="mb-6" aria-label="breadcrumb">

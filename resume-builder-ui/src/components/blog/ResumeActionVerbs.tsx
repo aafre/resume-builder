@@ -98,43 +98,43 @@ export default function ResumeActionVerbs() {
             </h3>
             <div className="grid md:grid-cols-4 gap-4 text-ink/80">
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Directed</li>
-                  <li>• Led</li>
-                  <li>• Supervised</li>
-                  <li>• Managed</li>
-                  <li>• Orchestrated</li>
-                  <li>• Coordinated</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Directed</li>
+                  <li>Led</li>
+                  <li>Supervised</li>
+                  <li>Managed</li>
+                  <li>Orchestrated</li>
+                  <li>Coordinated</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Spearheaded</li>
-                  <li>• Championed</li>
-                  <li>• Facilitated</li>
-                  <li>• Mentored</li>
-                  <li>• Delegated</li>
-                  <li>• Empowered</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Spearheaded</li>
+                  <li>Championed</li>
+                  <li>Facilitated</li>
+                  <li>Mentored</li>
+                  <li>Delegated</li>
+                  <li>Empowered</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Guided</li>
-                  <li>• Inspired</li>
-                  <li>• Motivated</li>
-                  <li>• Cultivated</li>
-                  <li>• Mobilized</li>
-                  <li>• Unified</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Guided</li>
+                  <li>Inspired</li>
+                  <li>Motivated</li>
+                  <li>Cultivated</li>
+                  <li>Mobilized</li>
+                  <li>Unified</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Appointed</li>
-                  <li>• Authorized</li>
-                  <li>• Chaired</li>
-                  <li>• Commissioned</li>
-                  <li>• Elected</li>
-                  <li>• Established</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Appointed</li>
+                  <li>Authorized</li>
+                  <li>Chaired</li>
+                  <li>Commissioned</li>
+                  <li>Elected</li>
+                  <li>Established</li>
                 </ul>
               </div>
             </div>
@@ -146,43 +146,43 @@ export default function ResumeActionVerbs() {
             </h3>
             <div className="grid md:grid-cols-4 gap-4 text-accent">
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Achieved</li>
-                  <li>• Accomplished</li>
-                  <li>• Exceeded</li>
-                  <li>• Surpassed</li>
-                  <li>• Delivered</li>
-                  <li>• Completed</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Achieved</li>
+                  <li>Accomplished</li>
+                  <li>Exceeded</li>
+                  <li>Surpassed</li>
+                  <li>Delivered</li>
+                  <li>Completed</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Generated</li>
-                  <li>• Produced</li>
-                  <li>• Increased</li>
-                  <li>• Boosted</li>
-                  <li>• Maximized</li>
-                  <li>• Amplified</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Generated</li>
+                  <li>Produced</li>
+                  <li>Increased</li>
+                  <li>Boosted</li>
+                  <li>Maximized</li>
+                  <li>Amplified</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Expanded</li>
-                  <li>• Enhanced</li>
-                  <li>• Improved</li>
-                  <li>• Optimized</li>
-                  <li>• Strengthened</li>
-                  <li>• Advanced</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Expanded</li>
+                  <li>Enhanced</li>
+                  <li>Improved</li>
+                  <li>Optimized</li>
+                  <li>Strengthened</li>
+                  <li>Advanced</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Won</li>
-                  <li>• Earned</li>
-                  <li>• Secured</li>
-                  <li>• Captured</li>
-                  <li>• Attained</li>
-                  <li>• Realized</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Won</li>
+                  <li>Earned</li>
+                  <li>Secured</li>
+                  <li>Captured</li>
+                  <li>Attained</li>
+                  <li>Realized</li>
                 </ul>
               </div>
             </div>
@@ -194,43 +194,43 @@ export default function ResumeActionVerbs() {
             </h3>
             <div className="grid md:grid-cols-4 gap-4 text-ink/80">
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Innovated</li>
-                  <li>• Created</li>
-                  <li>• Developed</li>
-                  <li>• Designed</li>
-                  <li>• Invented</li>
-                  <li>• Pioneered</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Innovated</li>
+                  <li>Created</li>
+                  <li>Developed</li>
+                  <li>Designed</li>
+                  <li>Invented</li>
+                  <li>Pioneered</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Revolutionized</li>
-                  <li>• Transformed</li>
-                  <li>• Revitalized</li>
-                  <li>• Modernized</li>
-                  <li>• Restructured</li>
-                  <li>• Reimagined</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Revolutionized</li>
+                  <li>Transformed</li>
+                  <li>Revitalized</li>
+                  <li>Modernized</li>
+                  <li>Restructured</li>
+                  <li>Reimagined</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Solved</li>
-                  <li>• Resolved</li>
-                  <li>• Diagnosed</li>
-                  <li>• Troubleshot</li>
-                  <li>• Debugged</li>
-                  <li>• Rectified</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Solved</li>
+                  <li>Resolved</li>
+                  <li>Diagnosed</li>
+                  <li>Troubleshot</li>
+                  <li>Debugged</li>
+                  <li>Rectified</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Streamlined</li>
-                  <li>• Simplified</li>
-                  <li>• Automated</li>
-                  <li>• Integrated</li>
-                  <li>• Synthesized</li>
-                  <li>• Consolidated</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Streamlined</li>
+                  <li>Simplified</li>
+                  <li>Automated</li>
+                  <li>Integrated</li>
+                  <li>Synthesized</li>
+                  <li>Consolidated</li>
                 </ul>
               </div>
             </div>
@@ -242,43 +242,43 @@ export default function ResumeActionVerbs() {
             </h3>
             <div className="grid md:grid-cols-4 gap-4 text-yellow-700">
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Strategized</li>
-                  <li>• Planned</li>
-                  <li>• Forecasted</li>
-                  <li>• Projected</li>
-                  <li>• Analyzed</li>
-                  <li>• Evaluated</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Strategized</li>
+                  <li>Planned</li>
+                  <li>Forecasted</li>
+                  <li>Projected</li>
+                  <li>Analyzed</li>
+                  <li>Evaluated</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Negotiated</li>
-                  <li>• Persuaded</li>
-                  <li>• Influenced</li>
-                  <li>• Consulted</li>
-                  <li>• Advised</li>
-                  <li>• Recommended</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Negotiated</li>
+                  <li>Persuaded</li>
+                  <li>Influenced</li>
+                  <li>Consulted</li>
+                  <li>Advised</li>
+                  <li>Recommended</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Budgeted</li>
-                  <li>• Allocated</li>
-                  <li>• Invested</li>
-                  <li>• Financed</li>
-                  <li>• Audited</li>
-                  <li>• Calculated</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Budgeted</li>
+                  <li>Allocated</li>
+                  <li>Invested</li>
+                  <li>Financed</li>
+                  <li>Audited</li>
+                  <li>Calculated</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Partnered</li>
-                  <li>• Collaborated</li>
-                  <li>• Aligned</li>
-                  <li>• Leveraged</li>
-                  <li>• Sourced</li>
-                  <li>• Procured</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Partnered</li>
+                  <li>Collaborated</li>
+                  <li>Aligned</li>
+                  <li>Leveraged</li>
+                  <li>Sourced</li>
+                  <li>Procured</li>
                 </ul>
               </div>
             </div>
@@ -290,43 +290,43 @@ export default function ResumeActionVerbs() {
             </h3>
             <div className="grid md:grid-cols-4 gap-4 text-ink/80">
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Researched</li>
-                  <li>• Investigated</li>
-                  <li>• Examined</li>
-                  <li>• Studied</li>
-                  <li>• Surveyed</li>
-                  <li>• Explored</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Researched</li>
+                  <li>Investigated</li>
+                  <li>Examined</li>
+                  <li>Studied</li>
+                  <li>Surveyed</li>
+                  <li>Explored</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Measured</li>
-                  <li>• Tracked</li>
-                  <li>• Monitored</li>
-                  <li>• Assessed</li>
-                  <li>• Tested</li>
-                  <li>• Validated</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Measured</li>
+                  <li>Tracked</li>
+                  <li>Monitored</li>
+                  <li>Assessed</li>
+                  <li>Tested</li>
+                  <li>Validated</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Interpreted</li>
-                  <li>• Decoded</li>
-                  <li>• Identified</li>
-                  <li>• Discovered</li>
-                  <li>• Uncovered</li>
-                  <li>• Revealed</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Interpreted</li>
+                  <li>Decoded</li>
+                  <li>Identified</li>
+                  <li>Discovered</li>
+                  <li>Uncovered</li>
+                  <li>Revealed</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Compiled</li>
-                  <li>• Synthesized</li>
-                  <li>• Summarized</li>
-                  <li>• Documented</li>
-                  <li>• Reported</li>
-                  <li>• Presented</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Compiled</li>
+                  <li>Synthesized</li>
+                  <li>Summarized</li>
+                  <li>Documented</li>
+                  <li>Reported</li>
+                  <li>Presented</li>
                 </ul>
               </div>
             </div>
@@ -338,43 +338,43 @@ export default function ResumeActionVerbs() {
             </h3>
             <div className="grid md:grid-cols-4 gap-4 text-teal-700">
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Communicated</li>
-                  <li>• Articulated</li>
-                  <li>• Conveyed</li>
-                  <li>• Expressed</li>
-                  <li>• Presented</li>
-                  <li>• Delivered</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Communicated</li>
+                  <li>Articulated</li>
+                  <li>Conveyed</li>
+                  <li>Expressed</li>
+                  <li>Presented</li>
+                  <li>Delivered</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Trained</li>
-                  <li>• Educated</li>
-                  <li>• Taught</li>
-                  <li>• Instructed</li>
-                  <li>• Coached</li>
-                  <li>• Developed</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Trained</li>
+                  <li>Educated</li>
+                  <li>Taught</li>
+                  <li>Instructed</li>
+                  <li>Coached</li>
+                  <li>Developed</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Engaged</li>
-                  <li>• Connected</li>
-                  <li>• Networked</li>
-                  <li>• Built</li>
-                  <li>• Established</li>
-                  <li>• Fostered</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Engaged</li>
+                  <li>Connected</li>
+                  <li>Networked</li>
+                  <li>Built</li>
+                  <li>Established</li>
+                  <li>Fostered</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Influenced</li>
-                  <li>• Convinced</li>
-                  <li>• Persuaded</li>
-                  <li>• Promoted</li>
-                  <li>• Advocated</li>
-                  <li>• Championed</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Influenced</li>
+                  <li>Convinced</li>
+                  <li>Persuaded</li>
+                  <li>Promoted</li>
+                  <li>Advocated</li>
+                  <li>Championed</li>
                 </ul>
               </div>
             </div>
@@ -386,43 +386,43 @@ export default function ResumeActionVerbs() {
             </h3>
             <div className="grid md:grid-cols-4 gap-4 text-orange-700">
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Implemented</li>
-                  <li>• Deployed</li>
-                  <li>• Executed</li>
-                  <li>• Launched</li>
-                  <li>• Installed</li>
-                  <li>• Configured</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Implemented</li>
+                  <li>Deployed</li>
+                  <li>Executed</li>
+                  <li>Launched</li>
+                  <li>Installed</li>
+                  <li>Configured</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Maintained</li>
-                  <li>• Operated</li>
-                  <li>• Administered</li>
-                  <li>• Managed</li>
-                  <li>• Supported</li>
-                  <li>• Upgraded</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Maintained</li>
+                  <li>Operated</li>
+                  <li>Administered</li>
+                  <li>Managed</li>
+                  <li>Supported</li>
+                  <li>Upgraded</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Programmed</li>
-                  <li>• Coded</li>
-                  <li>• Built</li>
-                  <li>• Engineered</li>
-                  <li>• Architected</li>
-                  <li>• Designed</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Programmed</li>
+                  <li>Coded</li>
+                  <li>Built</li>
+                  <li>Engineered</li>
+                  <li>Architected</li>
+                  <li>Designed</li>
                 </ul>
               </div>
               <div>
-                <ul className="space-y-1 text-sm">
-                  <li>• Customized</li>
-                  <li>• Adapted</li>
-                  <li>• Modified</li>
-                  <li>• Refined</li>
-                  <li>• Calibrated</li>
-                  <li>• Fine-tuned</li>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li>Customized</li>
+                  <li>Adapted</li>
+                  <li>Modified</li>
+                  <li>Refined</li>
+                  <li>Calibrated</li>
+                  <li>Fine-tuned</li>
                 </ul>
               </div>
             </div>

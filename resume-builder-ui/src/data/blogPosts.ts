@@ -32,10 +32,10 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "claude-resume-prompts",
-    title: "15+ Claude AI Prompts for Resume Writing (2026)",
-    description: "Get the best Claude prompts for writing professional resumes. Claude excels at nuanced, professional writing. Copy-paste these prompts for better results.",
+    title: "25+ Claude AI Resume Prompts (Copy-Paste Ready) 2026",
+    description: "Best Claude prompts for resume writing: professional summary, experience bullets, cover letters, career change, ATS optimization. Copy-paste ready for Claude 3.5 Sonnet and Opus.",
     publishDate: "2026-01-21",
-    readTime: "10 min",
+    readTime: "18 min",
     category: "AI & Tools",
   },
   {
@@ -224,10 +224,10 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "software-engineer-resume-keywords",
-    title: "50+ Essential Keywords for a Software Engineer Resume",
-    description: "From programming languages to agile methodologies, these are the must-have keywords that will get your software engineering resume noticed by top tech companies.",
+    title: "75+ Essential Keywords for a Software Engineer Resume (2026)",
+    description: "The complete list of software engineer resume keywords for 2026: programming languages, AI/ML, cloud, DevOps, security, and more. Organized by category with ATS tips.",
     publishDate: "2025-08-10",
-    readTime: "9 min",
+    readTime: "14 min",
     category: "Tech Industry",
   },
   {
@@ -236,6 +236,22 @@ export const blogPosts: BlogPost[] = [
     description: "Elevate your customer service resume by including the keywords recruiters are searching for, from CRM platforms to conflict resolution skills.",
     publishDate: "2025-08-05",
     readTime: "9 min",
+    category: "Keywords",
+  },
+  {
+    slug: "customer-service-resume-keywords-guide",
+    title: "Customer Service Resume Keywords: The Complete 2026 Guide",
+    description: "Customer service resume keywords that get you hired: CRM platforms, soft skills, industry terms, and ATS-optimized phrases. Includes examples for every experience level.",
+    publishDate: "2026-02-17",
+    readTime: "14 min",
+    category: "Keywords",
+  },
+  {
+    slug: "resume-keywords-by-industry",
+    title: "Resume Keywords by Industry: Complete 2026 List",
+    description: "The definitive list of resume keywords organized by industry: tech, healthcare, finance, marketing, education, and more. ATS-optimized with real examples.",
+    publishDate: "2026-02-17",
+    readTime: "16 min",
     category: "Keywords",
   },
   {

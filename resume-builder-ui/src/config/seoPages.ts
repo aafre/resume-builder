@@ -354,6 +354,26 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         question: 'Are exports branded?',
         answer: 'No. No logos or watermarks appear on your resume. It is 100% your own professional document.',
       },
+      {
+        question: 'What file formats can I download?',
+        answer:
+          'You can download your resume as PDF (recommended for job applications) or DOCX (if the employer specifically requests a Word document). Both formats are free and unlimited.',
+      },
+      {
+        question: 'How does this compare to paid resume builders?',
+        answer:
+          'Most paid builders like Zety, Resume.io, and Resume Genius charge $5-$25/month for PDF downloads. EasyFreeResume offers the same ATS-friendly templates, PDF/DOCX exports, and customization options at zero cost. We are funded by non-intrusive ads instead of subscriptions.',
+      },
+      {
+        question: 'Can I create multiple resumes without an account?',
+        answer:
+          'Yes. You can create as many resumes as you need in guest mode. Each resume can be downloaded as a YAML data file and re-uploaded later. For managing multiple resumes in one place, create a free account to access the My Resumes Dashboard.',
+      },
+      {
+        question: 'Is my resume data safe without an account?',
+        answer:
+          'Your resume data is processed entirely in your browser and on our servers only during PDF generation. We do not store your resume content, personal information, or any identifying data. Once your PDF is generated, the data is discarded.',
+      },
     ],
   },
 
@@ -653,6 +673,26 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         question: 'Do two-page resumes hurt ATS performance?',
         answer:
           'No. Length does not affect parsing if structure is clean. Use two pages if you have substantial experience.',
+      },
+      {
+        question: 'How do I know if my resume is ATS-friendly?',
+        answer:
+          'Use our free ATS keyword scanner to check your resume against a job description. It shows your keyword match rate and identifies missing terms. You can also copy your resume text into a plain text editor — if the content is still readable and organized, the ATS can parse it.',
+      },
+      {
+        question: 'Are free ATS templates as good as paid ones?',
+        answer:
+          'Yes. ATS compatibility is about structure and formatting, not design complexity. A clean, free template with standard fonts and clear section headers will perform identically to a paid template in ATS parsing. Paid templates mainly offer more visual design options, which ATS systems ignore anyway.',
+      },
+      {
+        question: 'What ATS systems do employers use most in 2026?',
+        answer:
+          'The most common ATS platforms are Workday, iCIMS, Greenhouse, Lever, Taleo (Oracle), BambooHR, and JazzHR. Our templates are tested against all of these. If a job application uses any of these systems, our templates will parse correctly.',
+      },
+      {
+        question: 'Should I use the same template for every application?',
+        answer:
+          'Yes, use the same ATS-friendly template structure, but tailor the content for each application. Change your keywords, reorder skills, and adjust your summary to match each job description. The template formatting stays consistent while the content changes.',
       },
     ],
   },
@@ -1010,7 +1050,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       h1: `Best Free Resume Builder ${CURRENT_YEAR} - Reddit Recommended`,
       subtitle: `See why Reddit users consistently recommend EasyFreeResume in ${CURRENT_YEAR}`,
       description:
-        `We analyzed top Reddit threads in r/resumes, r/jobs, and r/cscareerquestions (updated Jan ${CURRENT_YEAR}). Users value truly free exports, ATS compatibility, no watermarks, and privacy. Here is how we meet every criteria.`,
+        `We analyzed top Reddit threads in r/resumes, r/jobs, and r/cscareerquestions (updated Feb ${CURRENT_YEAR}). Users value truly free exports, ATS compatibility, no watermarks, and privacy. Here is how we meet every criteria.`,
       primaryCTA: {
         text: 'Try It Free',
         href: '/templates',
@@ -1090,6 +1130,16 @@ export const SEO_PAGES: Record<string, PageConfig> = {
         question: 'Can I import my existing resume?',
         answer:
           'Yes. You can export a data file for a resume you have created or worked on before. Upload it to continue editing without starting from scratch.',
+      },
+      {
+        question: 'What subreddits discuss resume builders?',
+        answer:
+          'The most active subreddits for resume advice are r/resumes (resume reviews and feedback), r/jobs (general job search), r/cscareerquestions (tech careers), and r/careerguidance (career transitions). Each community has strong opinions on which tools are genuinely free.',
+      },
+      {
+        question: 'Do I need a different resume for each job application?',
+        answer:
+          'Yes, tailoring your resume for each application significantly improves your chances. Focus on matching keywords from the job description. Use our free ATS keyword scanner to check your match rate before submitting.',
       },
     ],
   },
@@ -1806,7 +1856,6 @@ export const SEO_PAGES: Record<string, PageConfig> = {
     hero: {
       h1: 'Free ATS Resume Keyword Scanner',
       subtitle: 'Paste your resume and a job description to instantly see which keywords you are missing — and where to add them.',
-      primaryCTA: { text: 'Scan Now', href: '#resume-text' },
       secondaryCTA: { text: 'Browse Keywords', href: '/resume-keywords' },
     },
     breadcrumbs: [
@@ -1815,10 +1864,10 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       { label: 'Keyword Scanner', href: '/resume-keyword-scanner' },
     ],
     faqs: [
-      { question: 'How does the ATS keyword scanner work?', answer: 'The scanner extracts important keywords and phrases from the job description you provide, then checks whether those same terms appear in your resume text. It calculates a match percentage and shows you exactly which keywords are missing, along with suggestions for where to add them.' },
-      { question: 'Is this keyword scanner free?', answer: 'Yes, completely free. There is no sign-up, no account required, and no limit on how many scans you can run. Your text is processed entirely in your browser — nothing is sent to a server.' },
-      { question: 'What is a good keyword match score?', answer: 'Aim for 70% or higher. A score above 70% means your resume covers most of the key terms from the job description, which significantly improves your chances of passing ATS screening. Below 40% suggests your resume needs substantial tailoring for this specific role.' },
-      { question: 'Does this tool store my resume or job description?', answer: 'No. All processing happens locally in your browser using JavaScript. Your resume text and job description are never uploaded to any server. When you close the page, all data is gone.' },
+      { question: 'How does the ATS keyword scanner work?', answer: 'Our scanner uses an AI language model (MiniLM) that runs entirely in your browser. It extracts important keywords from the job description, then uses semantic similarity to check how well your resume covers each term — catching synonyms, related concepts, and phrasing variations that simple text matching would miss. Results are categorized as matched, partial match, or missing.' },
+      { question: 'Is this keyword scanner free?', answer: 'Yes, completely free. There is no sign-up, no account required, and no limit on how many scans you can run. The AI model downloads once (~23 MB) and is cached by your browser for instant future use.' },
+      { question: 'What is a good keyword match score?', answer: 'Aim for 70% or higher. A score above 70% means your resume covers most of the key terms from the job description, which significantly improves your chances of passing ATS screening. Below 40% suggests your resume needs substantial tailoring for this specific role. Pay special attention to "partial matches" — these are terms your resume nearly covers and are the easiest wins.' },
+      { question: 'Does this tool store my resume or job description?', answer: 'No. The AI model and all processing run locally in your browser. Your resume text and job description are never uploaded to any server. When you close the page, all data is gone.' },
       { question: 'Should I add every missing keyword to my resume?', answer: 'Not necessarily. Focus on keywords that are genuinely relevant to your experience. Adding keywords you cannot back up in an interview will hurt you. Prioritize technical skills, tools, and certifications that you actually possess. For softer terms, weave them naturally into your experience bullet points.' },
       { question: 'How often should I scan my resume?', answer: 'Every time you apply to a new job. Each job description contains different keywords, so a resume that scores 80% for one role might score 40% for another. Spend 10 minutes tailoring your resume for each application.' },
     ],
