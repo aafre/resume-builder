@@ -28,8 +28,10 @@ RUN --mount=type=cache,target=/root/.npm \
 
 COPY resume-builder-ui/ ./
 
-# Build React app with embedded environment variables
-RUN npm run build
+# Build React app with embedded environment variables and prerender
+# SEO-critical routes to static HTML for bot user-agents (Googlebot, etc.)
+RUN npx playwright install --with-deps chromium && \
+    npm run build:prerender
 
 
 # Step 2: Set up Flask with Python 3.13 on Bookworm (LaTeX-friendly)
