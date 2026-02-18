@@ -1,8 +1,15 @@
-const SectionControls: React.FC<{
+import React from 'react';
+import { ArrowUp, ArrowDown, Trash2 } from 'lucide-react';
+
+interface SectionControlsProps {
   sectionIndex: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sections: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setSections: (sections: any[]) => void;
-}> = ({ sectionIndex, sections, setSections }) => {
+}
+
+const SectionControls: React.FC<SectionControlsProps> = ({ sectionIndex, sections, setSections }) => {
   const moveSection = (fromIndex: number, toIndex: number) => {
     const newSections = [...sections];
     const [removedSection] = newSections.splice(fromIndex, 1);
@@ -19,32 +26,41 @@ const SectionControls: React.FC<{
   return (
     <div className="absolute top-4 right-4 flex gap-2">
       <button
+        type="button"
         onClick={() => moveSection(sectionIndex, sectionIndex - 1)}
         disabled={sectionIndex === 0}
-        className={`px-2 py-1 rounded ${
+        aria-label="Move section up"
+        title="Move section up"
+        className={`p-1.5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
           sectionIndex === 0
-            ? "bg-gray-300 cursor-not-allowed"
-            : "bg-accent hover:bg-accent text-ink"
+            ? "text-gray-300 cursor-not-allowed bg-gray-50"
+            : "text-gray-600 hover:text-accent hover:bg-accent/10"
         }`}
       >
-        ↑
+        <ArrowUp className="w-4 h-4" />
       </button>
       <button
+        type="button"
         onClick={() => moveSection(sectionIndex, sectionIndex + 1)}
         disabled={sectionIndex === sections.length - 1}
-        className={`px-2 py-1 rounded ${
+        aria-label="Move section down"
+        title="Move section down"
+        className={`p-1.5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
           sectionIndex === sections.length - 1
-            ? "bg-gray-300 cursor-not-allowed"
-            : "bg-accent hover:bg-accent text-ink"
+            ? "text-gray-300 cursor-not-allowed bg-gray-50"
+            : "text-gray-600 hover:text-accent hover:bg-accent/10"
         }`}
       >
-        ↓
+        <ArrowDown className="w-4 h-4" />
       </button>
       <button
+        type="button"
         onClick={deleteSection}
-        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+        aria-label="Delete section"
+        title="Delete section"
+        className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
       >
-        🗑
+        <Trash2 className="w-4 h-4" />
       </button>
     </div>
   );
