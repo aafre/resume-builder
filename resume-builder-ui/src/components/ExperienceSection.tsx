@@ -3,7 +3,7 @@ import IconManager from "./IconManager";
 import { SectionHeader } from "./SectionHeader";
 import { MarkdownHint } from "./MarkdownLinkPreview";
 import { RichTextInput } from "./RichTextInput";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdClose } from "react-icons/md";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
 import { arrayMove } from "@dnd-kit/sortable";
@@ -266,6 +266,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                                           />
                                         </div>
                                         <button
+                                          type="button"
                                           onClick={() => {
                                             const updatedExperiences = [...experiences];
                                             updatedExperiences[index].description.splice(descIndex, 1);
@@ -273,8 +274,9 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                                           }}
                                           className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
                                           title="Remove description point"
+                                          aria-label="Remove description point"
                                         >
-                                          ✕
+                                          <MdClose className="text-lg" />
                                         </button>
                                       </div>
                                     </SortableItem>
