@@ -3,6 +3,7 @@ import { SectionHeader } from "./SectionHeader";
 import { MarkdownHint } from "./MarkdownLinkPreview";
 import { RichTextInput } from "./RichTextInput";
 import { RichTextArea } from "./RichTextArea";
+import { MdClose } from "react-icons/md";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
 import { GhostButton } from "./shared/GhostButton";
@@ -152,11 +153,13 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                               />
                             </div>
                             <button
+                              type="button"
                               onClick={() => handleRemoveItem(index)}
-                              className="text-red-600 hover:text-red-800 flex-shrink-0"
+                              className="text-red-600 hover:text-red-800 flex-shrink-0 p-1 hover:bg-red-50 rounded-md transition-colors"
                               title="Remove Item"
+                              aria-label="Remove Item"
                             >
-                              ✕
+                              <MdClose className="text-lg" />
                             </button>
                           </div>
                         </div>
@@ -212,11 +215,13 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                                 />
                               </div>
                               <button
+                                type="button"
                                 onClick={() => handleRemoveItem(index)}
-                                className="text-red-500 hover:text-red-700 text-sm flex-shrink-0"
+                                className="text-red-500 hover:text-red-700 text-sm flex-shrink-0 p-1 hover:bg-red-50 rounded-md transition-colors"
                                 title="Remove Item"
+                                aria-label="Remove Item"
                               >
-                                ✕
+                                <MdClose className="text-lg" />
                               </button>
                             </div>
                           </div>
@@ -272,11 +277,13 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                                 />
                               </div>
                               <button
+                                type="button"
                                 onClick={() => handleRemoveItem(index)}
-                                className="text-red-500 hover:text-red-700 text-sm flex-shrink-0"
+                                className="text-red-500 hover:text-red-700 text-sm flex-shrink-0 p-1 hover:bg-red-50 rounded-md transition-colors"
                                 title="Remove Item"
+                                aria-label="Remove Item"
                               >
-                                ✕
+                                <MdClose className="text-lg" />
                               </button>
                             </div>
                           </div>
