@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { SectionHeader } from "./SectionHeader";
 import IconManager from "./IconManager";
 import { MarkdownHint } from "./MarkdownLinkPreview";
@@ -22,6 +22,91 @@ interface IconRegistryMethods {
   getIconFile: (filename: string) => File | null;
   removeIcon: (filename: string) => void;
 }
+
+interface IconListItemProps {
+  item: Certification;
+  index: number;
+  onUpdate: (index: number, field: keyof Certification, value: string | File | null) => void;
+  onRemove: (index: number) => void;
+  onIconChange: (index: number, filename: string | null, file: File | null) => void;
+  iconRegistry?: IconRegistryMethods;
+}
+
+const IconListItem = React.memo(({
+  item,
+  index,
+  onUpdate,
+  onRemove,
+  onIconChange,
+  iconRegistry
+}: IconListItemProps) => {
+  return (
+    <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
+      <div>
+        {iconRegistry && (
+          <div className="mb-4">
+            <IconManager
+              value={item.icon || null}
+              onChange={(filename, file) => onIconChange(index, filename, file)}
+              registerIcon={iconRegistry.registerIcon}
+              getIconFile={iconRegistry.getIconFile}
+              removeIcon={iconRegistry.removeIcon}
+            />
+          </div>
+        )}
+        <div>
+          <MarkdownHint className="mb-2" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Certification
+              </label>
+              <RichTextInput
+                value={item.certification}
+                onChange={(value) =>
+                  onUpdate(index, "certification", value)
+                }
+                placeholder="e.g., AWS Certified Solutions Architect"
+                className="w-full border border-gray-300 rounded-lg p-2"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Issuer
+              </label>
+              <RichTextInput
+                value={item.issuer}
+                onChange={(value) => onUpdate(index, "issuer", value)}
+                placeholder="e.g., Amazon Web Services"
+                className="w-full border border-gray-300 rounded-lg p-2"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Date
+              </label>
+              <RichTextInput
+                value={item.date}
+                onChange={(value) => onUpdate(index, "date", value)}
+                placeholder="e.g., 2024"
+                className="w-full border border-gray-300 rounded-lg p-2"
+              />
+            </div>
+          </div>
+          <div className="flex justify-end mt-4">
+            <button
+              onClick={() => onRemove(index)}
+              className="text-red-600 hover:text-red-800 text-lg"
+              title="Remove Certification"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
 
 interface IconListSectionProps {
   data: Certification[];
@@ -77,28 +162,41 @@ const IconListSection: React.FC<IconListSectionProps> = ({
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
-  const handleUpdateItem = (
+
+  // Refs for stable callbacks
+  const dataRef = useRef(data);
+  const onUpdateRef = useRef(onUpdate);
+  const onDeleteEntryRef = useRef(onDeleteEntry);
+
+  // Update refs when props change
+  useEffect(() => {
+    dataRef.current = data;
+    onUpdateRef.current = onUpdate;
+    onDeleteEntryRef.current = onDeleteEntry;
+  }, [data, onUpdate, onDeleteEntry]);
+
+  const handleUpdateItem = useCallback((
     index: number,
     field: keyof Certification,
     value: string | File | null
   ) => {
-    const updatedData = [...data];
+    const updatedData = [...dataRef.current];
     updatedData[index] = { ...updatedData[index], [field]: value };
-    onUpdate(updatedData);
-  };
+    onUpdateRef.current(updatedData);
+  }, []);
 
   // Handle icon changes from IconManager
-  const handleIconChange = (index: number, filename: string | null, file: File | null) => {
+  const handleIconChange = useCallback((index: number, filename: string | null, file: File | null) => {
     // Single atomic update - IconManager handles file storage
-    const updatedData = [...data];
+    const updatedData = [...dataRef.current];
     updatedData[index] = {
       ...updatedData[index],
       icon: filename,
       iconFile: file, // Keep for transition compatibility
       iconBase64: null, // Clear any old base64 data
     };
-    onUpdate(updatedData);
-  };
+    onUpdateRef.current(updatedData);
+  }, []);
 
   const handleAddItem = () => {
     const newItem: Certification = {
@@ -112,16 +210,16 @@ const IconListSection: React.FC<IconListSectionProps> = ({
     onUpdate([...data, newItem]);
   };
 
-  const handleRemoveItem = (index: number) => {
-    if (onDeleteEntry) {
+  const handleRemoveItem = useCallback((index: number) => {
+    if (onDeleteEntryRef.current) {
       // Trigger confirmation dialog
-      onDeleteEntry(index);
+      onDeleteEntryRef.current(index);
     } else {
       // Fallback: direct delete (backward compatibility)
-      const updatedData = data.filter((_, i) => i !== index);
-      onUpdate(updatedData);
+      const updatedData = dataRef.current.filter((_, i) => i !== index);
+      onUpdateRef.current(updatedData);
     }
-  };
+  }, []);
 
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
@@ -156,70 +254,14 @@ const IconListSection: React.FC<IconListSectionProps> = ({
             <>
               {data.map((item, index) => (
                 <SortableItem key={itemIds[index]} id={itemIds[index]}>
-                  <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
-                    <div>
-                      {iconRegistry && (
-                        <div className="mb-4">
-                          <IconManager
-                            value={item.icon || null}
-                            onChange={(filename, file) => handleIconChange(index, filename, file)}
-                            registerIcon={iconRegistry.registerIcon}
-                            getIconFile={iconRegistry.getIconFile}
-                            removeIcon={iconRegistry.removeIcon}
-                          />
-                        </div>
-                      )}
-                      <div>
-                        <MarkdownHint className="mb-2" />
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div>
-                            <label className="block text-gray-700 font-medium mb-1">
-                              Certification
-                            </label>
-                            <RichTextInput
-                              value={item.certification}
-                              onChange={(value) =>
-                                handleUpdateItem(index, "certification", value)
-                              }
-                              placeholder="e.g., AWS Certified Solutions Architect"
-                              className="w-full border border-gray-300 rounded-lg p-2"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-gray-700 font-medium mb-1">
-                              Issuer
-                            </label>
-                            <RichTextInput
-                              value={item.issuer}
-                              onChange={(value) => handleUpdateItem(index, "issuer", value)}
-                              placeholder="e.g., Amazon Web Services"
-                              className="w-full border border-gray-300 rounded-lg p-2"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-gray-700 font-medium mb-1">
-                              Date
-                            </label>
-                            <RichTextInput
-                              value={item.date}
-                              onChange={(value) => handleUpdateItem(index, "date", value)}
-                              placeholder="e.g., 2024"
-                              className="w-full border border-gray-300 rounded-lg p-2"
-                            />
-                          </div>
-                        </div>
-                        <div className="flex justify-end mt-4">
-                          <button
-                            onClick={() => handleRemoveItem(index)}
-                            className="text-red-600 hover:text-red-800 text-lg"
-                            title="Remove Certification"
-                          >
-                            ✕
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <IconListItem
+                    item={item}
+                    index={index}
+                    onUpdate={handleUpdateItem}
+                    onRemove={handleRemoveItem}
+                    onIconChange={handleIconChange}
+                    iconRegistry={iconRegistry}
+                  />
                 </SortableItem>
               ))}
             </>
