@@ -1,4 +1,5 @@
 import React from "react";
+import { MdAdd, MdDeleteOutline } from "react-icons/md";
 import { ContactInfo, SocialLink } from "../types";
 import { PLATFORM_OPTIONS } from "../constants/socialPlatforms";
 
@@ -118,11 +119,12 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-bold text-gray-800">Social Links</h3>
           <button
+            type="button"
             onClick={onAddSocialLink}
-            className="bg-accent hover:bg-accent text-ink px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-semibold flex items-center gap-2"
+            className="bg-accent hover:bg-accent/90 text-ink px-4 py-2 rounded-lg transition-all duration-200 text-sm font-semibold flex items-center gap-2 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
             aria-label="Add social link"
           >
-            <span>+</span>
+            <MdAdd className="text-lg" />
             Add Social Link
           </button>
         </div>
@@ -226,10 +228,13 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
                 {/* Remove Button */}
                 <div className="mt-3 flex justify-end">
                   <button
+                    type="button"
                     onClick={() => onRemoveSocialLink(index)}
-                    className="text-red-600 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors duration-200 text-sm font-semibold"
+                    className="flex items-center gap-1.5 text-red-600 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all duration-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
                     aria-label={`Remove social link ${index + 1}`}
+                    title="Remove social link"
                   >
+                    <MdDeleteOutline className="text-lg" />
                     Remove
                   </button>
                 </div>
