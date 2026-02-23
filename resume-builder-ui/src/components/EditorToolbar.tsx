@@ -63,6 +63,7 @@ export default function EditorToolbar({
         <button
           onClick={onAddSection}
           disabled={loadingAddSection}
+          aria-label="Add New Section"
           className={`bg-accent text-ink p-3 sm:p-4 rounded-full border border-accent/20 hover:border-accent/70/40 ${buttonClasses} ${
             loadingAddSection ? "scale-95 opacity-80" : ""
           }`}
@@ -84,6 +85,7 @@ export default function EditorToolbar({
       {/* Download Resume - Primary Action */}
       <button
         onClick={onGenerateResume}
+        aria-label="Download My Resume"
         className={`bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 sm:px-8 py-3 sm:py-4 rounded-full border border-green-500/20 hover:border-green-400/40 font-semibold text-sm sm:text-lg flex items-center gap-2 sm:gap-3 ${buttonClasses} ${
           generating ? "opacity-75 cursor-not-allowed scale-95" : ""
         }`}
@@ -106,6 +108,7 @@ export default function EditorToolbar({
       <div className="relative group advanced-menu-container">
         <button
           onClick={() => setShowAdvancedMenu(!showAdvancedMenu)}
+          aria-label="More options"
           className={`bg-gradient-to-r from-gray-600 to-gray-700 text-white p-3 sm:p-4 rounded-full border border-gray-500/20 hover:border-gray-400/40 ${buttonClasses}`}
         >
           <MdMoreVert className="text-lg sm:text-xl" />
@@ -130,6 +133,7 @@ export default function EditorToolbar({
                   setShowAdvancedMenu(false);
                 }}
                 disabled={loadingSave}
+                aria-label="Save My Work"
                 className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-accent/[0.06] rounded-lg transition-all duration-300 flex items-center gap-3 ${
                   loadingSave
                     ? "bg-accent/[0.06] cursor-not-allowed animate-pulse"
@@ -153,6 +157,7 @@ export default function EditorToolbar({
                 </div>
               </button>
               <label
+                aria-label="Load Previous Work"
                 className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-green-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
                   loadingLoad
                     ? "bg-green-50 cursor-not-allowed animate-pulse"
@@ -190,6 +195,7 @@ export default function EditorToolbar({
                   onToggleHelp();
                   setShowAdvancedMenu(false);
                 }}
+                aria-label="Help & Tips"
                 className="w-full text-left px-3 py-2 text-gray-700 hover:bg-accent/[0.06] rounded-lg transition-colors flex items-center gap-3"
               >
                 <MdHelpOutline className="text-accent" />
@@ -206,6 +212,7 @@ export default function EditorToolbar({
                   setShowAdvancedMenu(false);
                 }}
                 disabled={loadingSave}
+                aria-label="Clear Template"
                 className={`w-full text-left px-3 py-2 text-gray-700 hover:bg-orange-50 rounded-lg transition-all duration-300 flex items-center gap-3 ${
                   loadingSave
                     ? "bg-orange-50 cursor-not-allowed animate-pulse"
