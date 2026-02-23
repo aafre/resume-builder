@@ -245,7 +245,7 @@ async function prerender() {
 
       // Validate: reject prerendered pages that accidentally contain noindex
       // (Only ErrorPage and NotFound should have noindex, never valid pages)
-      if (html.includes('content="noindex') && !html.includes('<!-- prerender-noindex-ok -->')) {
+      if (/<meta\s+name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(html) && !html.includes('<!-- prerender-noindex-ok -->')) {
         throw new Error('Prerendered HTML contains noindex meta tag — page likely rendered ErrorPage or NotFound');
       }
 
