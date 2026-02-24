@@ -5,7 +5,7 @@
             <div class="company-header">
                 <div class="company-details">
                     {% if job.icon %}
-                        <img src="{{ icon_path }}/{{ job.icon }}" alt="Company Icon" class="company-icon">
+                        <img src="{{ get_icon_path(job.icon) }}" alt="Company Icon" class="company-icon">
                     {% endif %}
                     <div class="text-container">
                         <span class="company-name">{{ job.company | markdown_links | markdown_formatting | safe }}</span>

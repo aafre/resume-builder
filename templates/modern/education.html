@@ -4,7 +4,7 @@
         <div class="education-item">
             <p>
                 {% if edu.icon %}
-                    <img src="{{ icon_path }}/{{ edu.icon }}" alt="School Icon" class="school-icon">
+                    <img src="{{ get_icon_path(edu.icon) }}" alt="School Icon" class="school-icon">
                 {% endif %}
                 <strong>{{ edu.degree | markdown_links | markdown_formatting | safe }}</strong>, {{ edu.school | markdown_links | markdown_formatting | safe }} - {{ edu.year | markdown_links | markdown_formatting | safe }}
             </p>

@@ -3,7 +3,7 @@
     <ul class="icon-list">
         {% for cert in section.content %}
             <li>
-                <img src="{{ icon_path }}/{{ cert.icon }}" alt="{{ cert.certification }} Icon" class="certification-icon">
+                <img src="{{ get_icon_path(cert.icon) }}" alt="{{ cert.certification }} Icon" class="certification-icon">
                 <strong>{{ cert.certification | markdown_links | markdown_formatting | safe }}</strong>, {{ cert.issuer | markdown_links | markdown_formatting | safe }} ({{ cert.date | markdown_links | markdown_formatting | safe }})
             </li>
         {% endfor %}

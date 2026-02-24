@@ -182,6 +182,21 @@ def generate_pdf(
 
     css_file = template_dir / "styles.css"
 
+    # Helper to resolve icon paths (session override > default)
+    def get_icon_path(icon_name):
+        if not icon_name:
+            return ""
+
+        # Check session-specific icon first
+        if session_icons_dir:
+            session_icon = Path(session_icons_dir) / icon_name
+            if session_icon.exists():
+                return f"file://{session_icon.as_posix()}"
+
+        # Fallback to default icon
+        default_icon = default_icons_dir / icon_name
+        return f"file://{default_icon.as_posix()}"
+
     # Use session icons directory if provided, otherwise default icons
     if session_icons_dir and Path(session_icons_dir).exists():
         icon_base_path = Path(session_icons_dir)
@@ -189,15 +204,17 @@ def generate_pdf(
         icon_base_path = default_icons_dir
 
     # Define paths in data dictionary for Jinja rendering - use file:// URLs for wkhtmltopdf
+    # NOTE: icon_path is kept for backward compatibility but templates should use get_icon_path()
     data["icon_path"] = f"file://{icon_base_path.as_posix()}"
     data["css_path"] = f"file://{css_file.as_posix()}"
 
     # Set up Jinja2 environment
     env = Environment(loader=FileSystemLoader(template_dir))
 
-    # Register custom filters for markdown links and formatting
+    # Register custom filters and globals
     env.filters['markdown_links'] = convert_markdown_links_to_html
     env.filters['markdown_formatting'] = convert_markdown_formatting_to_html
+    env.globals['get_icon_path'] = get_icon_path
 
     # Process sections and dynamically calculate column count for dynamic-column-list
     sections = data.get("sections", [])
