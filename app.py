@@ -1972,60 +1972,9 @@ def generate_resume():
                 template == "modern-with-icons"
             )  # Only modern-with-icons template needs icons
 
-            # Always copy base contact icons that are hardcoded in templates
-            # Include all social platform icons for new social_links feature
-            base_contact_icons = [
-                "location.png",
-                "email.png",
-                "phone.png",
-                "linkedin.png",
-                "github.png",
-                "twitter.png",
-                "website.png",
-                "pinterest.png",
-                "medium.png",
-                "youtube.png",
-                "stackoverflow.png",
-                "behance.png",
-                "dribbble.png",
-            ]
-            for icon_name in base_contact_icons:
-                default_icon_path = ICONS_DIR / icon_name
-                if default_icon_path.exists():
-                    session_icon_path = session_icons_dir / icon_name
-                    shutil.copy2(default_icon_path, session_icon_path)
-                    logging.debug(
-                        f"Copied base contact icon: {icon_name} to session directory"
-                    )
-                else:
-                    logging.warning(
-                        f"Base contact icon not found: {icon_name} at {default_icon_path}"
-                    )
-
-            # Copy additional icons referenced in YAML content (only for icon-supporting templates)
-            if uses_icons:
-                referenced_icons = extract_icons_from_yaml(yaml_data)
-                logging.debug(
-                    f"Found {len(referenced_icons)} referenced icons: {referenced_icons}"
-                )
-                for icon_name in referenced_icons:
-                    # Skip if already copied as base contact icon
-                    if icon_name in base_contact_icons:
-                        continue
-
-                    default_icon_path = ICONS_DIR / icon_name
-                    if default_icon_path.exists():
-                        session_icon_path = session_icons_dir / icon_name
-                        shutil.copy2(default_icon_path, session_icon_path)
-                        logging.debug(
-                            f"Copied default icon: {icon_name} to session directory"
-                        )
-                    else:
-                        logging.warning(
-                            f"Default icon not found: {icon_name} at {default_icon_path}"
-                        )
-            else:
-                logging.debug("Skipping referenced icons for no-icons template variant")
+            # Optimization: Skip copying base/default icons.
+            # They are now resolved dynamically from ICONS_DIR by get_icon_path() helper in resume_generator.py
+            # session_icons_dir is only used for user-uploaded icons.
 
             # Handle icon files if provided - save to session directory (only for icon-supporting templates)
             if uses_icons:
@@ -3535,32 +3484,9 @@ def generate_pdf_for_saved_resume(resume_id):
             template_id = resume.get("template_id", "modern")
             uses_icons = template_id == "modern-with-icons"
 
-            # Always copy base contact icons that are hardcoded in templates
-            # These are required for all modern template variants (with and without content icons)
-            base_contact_icons = [
-                "location.png",
-                "email.png",
-                "phone.png",
-                "linkedin.png",
-                "github.png",
-                "twitter.png",
-                "website.png",
-                "pinterest.png",
-                "medium.png",
-                "youtube.png",
-                "stackoverflow.png",
-                "behance.png",
-                "dribbble.png",
-            ]
-
-            for icon_name in base_contact_icons:
-                default_icon_path = ICONS_DIR / icon_name
-                if default_icon_path.exists():
-                    session_icon_path = session_icons_dir / icon_name
-                    shutil.copy2(default_icon_path, session_icon_path)
-                    logging.debug(f"Copied base contact icon: {icon_name}")
-                else:
-                    logging.warning(f"Base contact icon not found: {icon_name}")
+            # Optimization: Skip copying base/default icons.
+            # They are resolved dynamically by get_icon_path() helper.
+            # We only validate existence here.
 
             # Extract content icons (from Experience, Education, Certifications, etc.) only for icon-supporting templates
             if uses_icons:
@@ -3569,29 +3495,14 @@ def generate_pdf_for_saved_resume(resume_id):
                     f"Found {len(referenced_icons)} referenced icons in resume data"
                 )
 
-                # Validate and copy default icons
+                # Validate icon existence (in session or default dir)
                 missing_icons = []
                 for icon_name in referenced_icons:
-                    # Skip if already copied as base contact icon
-                    if icon_name in base_contact_icons:
-                        continue
+                    # Check if icon exists in session (user uploaded) or default dir
+                    is_in_session = (session_icons_dir / icon_name).exists()
+                    is_in_default = (ICONS_DIR / icon_name).exists()
 
-                    # Check if user uploaded this icon (already downloaded from storage above)
-                    user_icon_path = session_icons_dir / icon_name
-                    if user_icon_path.exists():
-                        logging.debug(
-                            f"Icon already in session: {icon_name} (user-uploaded)"
-                        )
-                        continue
-
-                    # Try to copy from default icons directory
-                    default_icon_path = ICONS_DIR / icon_name
-                    if default_icon_path.exists():
-                        session_icon_path = session_icons_dir / icon_name
-                        shutil.copy2(default_icon_path, session_icon_path)
-                        logging.debug(f"Copied default icon: {icon_name}")
-                    else:
-                        # Icon not found in storage or /icons/ directory
+                    if not is_in_session and not is_in_default:
                         missing_icons.append(icon_name)
                         logging.error(
                             f"Icon not found: {icon_name} (not in storage or /icons/)"
@@ -3820,32 +3731,9 @@ def generate_thumbnail_for_resume(resume_id):
             template_id = resume.get("template_id", "modern")
             uses_icons = template_id == "modern-with-icons"
 
-            # Always copy base contact icons that are hardcoded in templates
-            # These are required for all modern template variants (with and without content icons)
-            base_contact_icons = [
-                "location.png",
-                "email.png",
-                "phone.png",
-                "linkedin.png",
-                "github.png",
-                "twitter.png",
-                "website.png",
-                "pinterest.png",
-                "medium.png",
-                "youtube.png",
-                "stackoverflow.png",
-                "behance.png",
-                "dribbble.png",
-            ]
-
-            for icon_name in base_contact_icons:
-                default_icon_path = ICONS_DIR / icon_name
-                if default_icon_path.exists():
-                    session_icon_path = session_icons_dir / icon_name
-                    shutil.copy2(default_icon_path, session_icon_path)
-                    logging.debug(f"Copied base contact icon: {icon_name}")
-                else:
-                    logging.warning(f"Base contact icon not found: {icon_name}")
+            # Optimization: Skip copying base/default icons.
+            # They are resolved dynamically by get_icon_path() helper.
+            # We only validate existence here.
 
             # Extract content icons (from Experience, Education, Certifications, etc.) only for icon-supporting templates
             if uses_icons:
@@ -3854,29 +3742,14 @@ def generate_thumbnail_for_resume(resume_id):
                     f"Found {len(referenced_icons)} referenced icons in resume data"
                 )
 
-                # Validate and copy default icons
+                # Validate icon existence (in session or default dir)
                 missing_icons = []
                 for icon_name in referenced_icons:
-                    # Skip if already copied as base contact icon
-                    if icon_name in base_contact_icons:
-                        continue
+                    # Check if icon exists in session (user uploaded) or default dir
+                    is_in_session = (session_icons_dir / icon_name).exists()
+                    is_in_default = (ICONS_DIR / icon_name).exists()
 
-                    # Check if user uploaded this icon (already downloaded from storage above)
-                    user_icon_path = session_icons_dir / icon_name
-                    if user_icon_path.exists():
-                        logging.debug(
-                            f"Icon already in session: {icon_name} (user-uploaded)"
-                        )
-                        continue
-
-                    # Try to copy from default icons directory
-                    default_icon_path = ICONS_DIR / icon_name
-                    if default_icon_path.exists():
-                        session_icon_path = session_icons_dir / icon_name
-                        shutil.copy2(default_icon_path, session_icon_path)
-                        logging.debug(f"Copied default icon: {icon_name}")
-                    else:
-                        # Icon not found in storage or /icons/ directory
+                    if not is_in_session and not is_in_default:
                         missing_icons.append(icon_name)
                         logging.error(
                             f"Icon not found: {icon_name} (not in storage or /icons/)"
