@@ -194,7 +194,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
     render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
 
     // For the first experience, click the Add Description Point button.
-    const addDescButton = screen.getAllByText("+ Add Description Point")[0];
+    const addDescButton = screen.getAllByTestId("add-description-btn")[0];
     fireEvent.click(addDescButton);
 
     expect(onUpdateMock).toHaveBeenCalledTimes(1);
@@ -216,7 +216,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
     render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
 
     // For the first experience, click the delete button for the first description.
-    const deleteButtons = screen.getAllByTitle("Remove description point");
+    const deleteButtons = screen.getAllByTestId("remove-description-btn");
     fireEvent.click(deleteButtons[0]);
 
     expect(onUpdateMock).toHaveBeenCalledTimes(1);
@@ -269,5 +269,29 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
     render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
 
     expect(screen.getByText("Work History")).toBeInTheDocument();
+  });
+
+  it("has correct accessibility attributes", () => {
+    const props = createDefaultProps();
+    render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
+
+    // Check delete description buttons (using data-testid)
+    const deleteButtons = screen.getAllByTestId("remove-description-btn");
+    expect(deleteButtons.length).toBeGreaterThan(0);
+    deleteButtons.forEach((btn) => {
+      expect(btn).toHaveAttribute("type", "button");
+      expect(btn).toHaveAttribute("aria-label", "Remove description point");
+    });
+
+    // Check Add Description Point buttons
+    const addButtons = screen.getAllByTestId("add-description-btn");
+    addButtons.forEach((btn) => {
+      expect(btn).toHaveAttribute("type", "button");
+    });
+
+    // Check Dates input label association (by finding input via label text)
+    // getAllByLabelText because there are multiple experiences
+    const datesInputs = screen.getAllByLabelText("Dates");
+    expect(datesInputs.length).toBe(baseMockExperiences.length);
   });
 });

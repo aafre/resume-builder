@@ -3,7 +3,7 @@ import IconManager from "./IconManager";
 import { SectionHeader } from "./SectionHeader";
 import { MarkdownHint } from "./MarkdownLinkPreview";
 import { RichTextInput } from "./RichTextInput";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdDeleteOutline, MdAdd } from "react-icons/md";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
 import { arrayMove } from "@dnd-kit/sortable";
@@ -147,6 +147,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                     <div className="flex justify-between items-center">
                       <h3 className="text-lg font-medium">Experience #{index + 1}</h3>
                       <button
+                        type="button"
                         onClick={() => {
                           if (onDeleteEntry) {
                             onDeleteEntry(index);
@@ -201,10 +202,14 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                           />
                         </div>
                         <div>
-                          <label className="block text-gray-700 font-medium mb-1">
+                          <label
+                            htmlFor={`experience-${index}-dates`}
+                            className="block text-gray-700 font-medium mb-1"
+                          >
                             Dates
                           </label>
                           <input
+                            id={`experience-${index}-dates`}
                             type="text"
                             value={experience.dates}
                             onChange={(e) =>
@@ -266,15 +271,18 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                                           />
                                         </div>
                                         <button
+                                          type="button"
+                                          data-testid="remove-description-btn"
                                           onClick={() => {
                                             const updatedExperiences = [...experiences];
                                             updatedExperiences[index].description.splice(descIndex, 1);
                                             onUpdate(updatedExperiences);
                                           }}
-                                          className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
+                                          className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                                          aria-label="Remove description point"
                                           title="Remove description point"
                                         >
-                                          ✕
+                                          <MdDeleteOutline className="text-xl" />
                                         </button>
                                       </div>
                                     </SortableItem>
@@ -285,6 +293,8 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                           )}
                         </div>
                         <button
+                          type="button"
+                          data-testid="add-description-btn"
                           onClick={() => {
                             const updatedExperiences = [...experiences];
                             updatedExperiences[index].description.push("");
@@ -292,7 +302,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                           }}
                           className="mt-3 bg-accent text-ink px-4 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
                         >
-                          + Add Description Point
+                          <MdAdd className="text-lg" /> Add Description Point
                         </button>
                       </div>
                     </div>
