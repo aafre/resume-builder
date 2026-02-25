@@ -162,6 +162,21 @@ function createStaticServer(distDir: string, port: number): Promise<http.Server>
         return;
       }
 
+      // Mock API: /api/templates — TemplateCarousel needs this during prerender
+      if (urlPath === '/api/templates') {
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({
+          success: true,
+          templates: [
+            { id: 'classic-alex-rivera', name: 'Professional', description: 'Clean, structured layout with traditional formatting and excellent space utilization.', image_url: '/docs/templates/alex_rivera.png' },
+            { id: 'classic-jane-doe', name: 'Elegant', description: 'Refined design with sophisticated typography and organized section layout.', image_url: '/docs/templates/jane_doe.png' },
+            { id: 'modern-no-icons', name: 'Minimalist', description: 'Clean and simple design focused on content clarity and easy readability.', image_url: '/docs/templates/modern-no-icons.png' },
+            { id: 'modern-with-icons', name: 'Modern', description: 'Contemporary design enhanced with visual icons and dynamic styling elements.', image_url: '/docs/templates/modern-with-icons.png' },
+          ]
+        }));
+        return;
+      }
+
       // SPA fallback: serve index.html
       const indexPath = path.join(distDir, 'index.html');
       res.setHeader('Content-Type', 'text/html');
@@ -228,6 +243,12 @@ async function prerender() {
         `<head>\n    <!-- Prerendered: ${new Date().toISOString()} -->`
       );
 
+      // Validate: reject prerendered pages that accidentally contain noindex
+      // (Only ErrorPage and NotFound should have noindex, never valid pages)
+      if (/<meta\s+name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(html) && !html.includes('<!-- prerender-noindex-ok -->')) {
+        throw new Error('Prerendered HTML contains noindex meta tag — page likely rendered ErrorPage or NotFound');
+      }
+
       // Save to file
       const outputPath = route === '/'
         ? path.join(PRERENDER_DIR, 'index.html')
@@ -236,6 +257,10 @@ async function prerender() {
       const outputDir = path.dirname(outputPath);
       fs.mkdirSync(outputDir, { recursive: true });
       fs.writeFileSync(outputPath, html, 'utf-8');
+
+      const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+      const pageTitle = titleMatch ? titleMatch[1] : '(no title)';
+      console.log(`  ✓ ${route} → "${pageTitle}"`);
 
       successCount++;
     } catch (error) {
