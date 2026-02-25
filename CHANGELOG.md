@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.20.1] - 2026-02-25
+
+### 🐛 Bug Fixes
+
+- **prerender:** Mock /api/templates to prevent noindex on template pages
+- **prerender:** Use precise regex for noindex validation
+
 ## [3.20.0] - 2026-02-17
 
 ### 🚀 Features
