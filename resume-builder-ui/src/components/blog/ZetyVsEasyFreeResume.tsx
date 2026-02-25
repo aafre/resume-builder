@@ -37,7 +37,7 @@ export default function ZetyVsEasyFreeResume() {
   const schema = generateComparisonSchema(
     EASY_FREE_RESUME_PRODUCT,
     { name: "Zety", price: "71.40", description: "Online resume builder with templates and cover letters, offering monthly and quarterly subscription plans." },
-    "2026-02-10"
+    "2026-02-25"
   );
 
   return (
@@ -46,10 +46,10 @@ export default function ZetyVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
     <BlogLayout
-      title="EasyFreeResume vs Zety (2026) — Which Is Actually Free?"
-      description="Zety charges $2.70-$24.70 to download your resume. EasyFreeResume is 100% free. Full pricing breakdown, feature comparison, and honest recommendation."
+      title="Is Zety Free? Real Pricing & Download Costs (2026)"
+      description="Zety charges $2.70–$24.70 to download your resume. Full breakdown of Zety plans, hidden costs, and a 100% free alternative — no paywall, no sign-up required."
       publishDate="2026-01-28"
-      lastUpdated="2026-02-10"
+      lastUpdated="2026-02-25"
       readTime="9 min"
       keywords={[
         "zety pricing",
