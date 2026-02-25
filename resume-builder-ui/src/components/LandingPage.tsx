@@ -215,11 +215,7 @@ const LandingPage: React.FC = () => {
             </div>
 
             <p className="font-mono text-xs tracking-wide text-stone-warm">
-              100% free · No sign-up · {prefersReducedMotion ? (
-                <>{resumeCountValue.toLocaleString("en-US")}+</>
-              ) : (
-                <CountUp end={resumeCountValue} separator="," suffix="+" duration={2.5} enableScrollSpy scrollSpyOnce />
-              )} resumes created
+              100% free · No sign-up · No paywall
             </p>
           </div>
 
