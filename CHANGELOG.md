@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.20.2] - 2026-02-25
+
+### 🐛 Bug Fixes
+
+- **seo:** Rewrite Zety comparison meta title/description for CTR
+- **landing:** Remove duplicate 'resumes created' from hero
+
 ## [3.20.1] - 2026-02-25
 
 ### 🐛 Bug Fixes
