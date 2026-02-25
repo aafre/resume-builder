@@ -81,7 +81,7 @@ const ROUTES_TO_PRERENDER = [
   '/blog',
 
   // Blog - comparison posts (high impression, low CTR)
-  '/blog/zety-vs-easy-free-resume',
+  '/easyfreeresume-vs-zety',
   '/blog/resume-io-vs-easy-free-resume',
   '/blog/resume-genius-vs-easy-free-resume',
   '/blog/novoresume-vs-easy-free-resume',
