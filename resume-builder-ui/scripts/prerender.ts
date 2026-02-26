@@ -88,6 +88,7 @@ const ROUTES_TO_PRERENDER = [
   '/blog/enhancv-vs-easy-free-resume',
   '/blog/canva-resume-vs-easy-free-resume',
   '/blog/flowcv-vs-easy-free-resume',
+  '/easyfreeresume-vs-indeed-resume-builder',
 
   // Blog - AI prompt posts (gaining traction)
   '/blog/chatgpt-resume-prompts',
