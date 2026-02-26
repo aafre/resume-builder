@@ -266,15 +266,17 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                                           />
                                         </div>
                                         <button
+                                          type="button"
                                           onClick={() => {
                                             const updatedExperiences = [...experiences];
                                             updatedExperiences[index].description.splice(descIndex, 1);
                                             onUpdate(updatedExperiences);
                                           }}
-                                          className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
+                                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
                                           title="Remove description point"
+                                          aria-label="Remove description point"
                                         >
-                                          ✕
+                                          <MdDelete className="text-xl" />
                                         </button>
                                       </div>
                                     </SortableItem>
