@@ -6,6 +6,7 @@ import { RichTextArea } from "./RichTextArea";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
 import { GhostButton } from "./shared/GhostButton";
+import { MdDelete } from "react-icons/md";
 
 interface Section {
   name: string;
@@ -152,11 +153,13 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                               />
                             </div>
                             <button
+                              type="button"
                               onClick={() => handleRemoveItem(index)}
-                              className="text-red-600 hover:text-red-800 flex-shrink-0"
+                              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
                               title="Remove Item"
+                              aria-label="Remove item"
                             >
-                              ✕
+                              <MdDelete className="text-xl" />
                             </button>
                           </div>
                         </div>
@@ -212,11 +215,13 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                                 />
                               </div>
                               <button
+                                type="button"
                                 onClick={() => handleRemoveItem(index)}
-                                className="text-red-500 hover:text-red-700 text-sm flex-shrink-0"
+                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
                                 title="Remove Item"
+                                aria-label="Remove item"
                               >
-                                ✕
+                                <MdDelete className="text-xl" />
                               </button>
                             </div>
                           </div>
@@ -272,11 +277,13 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                                 />
                               </div>
                               <button
+                                type="button"
                                 onClick={() => handleRemoveItem(index)}
-                                className="text-red-500 hover:text-red-700 text-sm flex-shrink-0"
+                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
                                 title="Remove Item"
+                                aria-label="Remove item"
                               >
-                                ✕
+                                <MdDelete className="text-xl" />
                               </button>
                             </div>
                           </div>
