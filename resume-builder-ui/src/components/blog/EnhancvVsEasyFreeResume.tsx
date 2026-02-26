@@ -256,28 +256,28 @@ export default function EnhancvVsEasyFreeResume() {
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
           <ol className="space-y-4 text-ink/80">
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">1</span>
               <div>
                 <p className="font-medium">Export your Enhancv content</p>
                 <p className="text-sm">Use the share link to view, then copy text (or download PDF if subscribed)</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">2</span>
               <div>
                 <p className="font-medium">Cancel your Pro subscription</p>
                 <p className="text-sm">Account Settings → Billing → Cancel subscription</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">3</span>
               <div>
                 <p className="font-medium">Visit EasyFreeResume.com</p>
                 <p className="text-sm">No account needed—start building right away</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">4</span>
               <div>
                 <p className="font-medium">Build and download your ATS-optimized resume</p>
