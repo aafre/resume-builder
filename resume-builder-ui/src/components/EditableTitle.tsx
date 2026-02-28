@@ -1,6 +1,7 @@
 // src/components/EditableTitle.tsx
 
 import React from "react";
+import { MdCheck, MdClose, MdEdit } from "react-icons/md";
 
 /**
  * Props for the EditableTitle component.
@@ -78,18 +79,22 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
           placeholder="Enter section title..."
         />
         <button
+          type="button"
           onClick={onSave}
-          className="text-green-600 hover:text-green-800 transition-colors"
+          className="text-green-600 hover:text-green-800 transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
           title="Save Title (Enter)"
+          aria-label="Save Title"
         >
-          ✅
+          <MdCheck size={24} />
         </button>
         <button
+          type="button"
           onClick={onCancel}
-          className="text-red-600 hover:text-red-800 transition-colors"
+          className="text-red-600 hover:text-red-800 transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
           title="Cancel (Esc)"
+          aria-label="Cancel Editing"
         >
-          ✕
+          <MdClose size={24} />
         </button>
       </div>
     );
@@ -103,11 +108,13 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
     >
       {title}
       <button
+        type="button"
         onClick={onEdit}
-        className="ml-2 text-gray-500 hover:text-gray-700 transition-colors"
+        className="ml-2 text-gray-500 hover:text-gray-700 transition-colors focus-visible:ring-2 focus-visible:ring-accent rounded-sm inline-flex items-center"
         title="Edit Title"
+        aria-label="Edit Title"
       >
-        ✏️
+        <MdEdit size={20} />
       </button>
       {title.startsWith("New ") && showHint && (
         <span className="ml-2 text-sm text-accent font-normal">
