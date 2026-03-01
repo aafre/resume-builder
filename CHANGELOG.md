@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.21.0] - 2026-03-01
+
+### 🚀 Features
+
+- **seo:** Add VideoObject schema generator for YouTube embeds
+- **landing:** Embed YouTube tutorial in HOW IT WORKS section
+- **seo:** Embed YouTube tutorial on free-resume-builder-no-sign-up
+- **about:** Embed YouTube tutorial in Built by Career Advocates section
+- **footer:** Add YouTube channel link to Company column
+- **footer:** Add LinkedIn company page link to Company column
+- **trustpilot:** Integrate TrustBox Review Collector widget
+
+### 🐛 Bug Fixes
+
+- **blog:** Align numbered steps and update prerender for canonical URL
+- **prerender:** Add missing Indeed comparison page to prerender list
+- **types:** Add AboutPage to SchemaType union
+
+### 🚜 Refactor
+
+- **video:** Extract shared video constants to config/videoContent.ts
+
+### ⚙️ Miscellaneous Tasks
+
+- **prerender:** Sort comparison routes alphabetically
+
 ## [3.20.2] - 2026-02-25
 
 ### 🐛 Bug Fixes
