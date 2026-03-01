@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import CountUp from "react-countup";
 import SEOHead from "./SEOHead";
-import { generateSoftwareApplicationSchema, generateWebSiteSchema, generateFAQPageSchema, wrapInGraph } from "../utils/schemaGenerators";
+import { generateSoftwareApplicationSchema, generateWebSiteSchema, generateFAQPageSchema, generateVideoObjectSchema, wrapInGraph } from "../utils/schemaGenerators";
 import CompanyMarquee from "./CompanyMarquee";
 import RevealSection from "./shared/RevealSection";
 import { useAuth } from "../contexts/AuthContext";
@@ -180,6 +180,13 @@ const LandingPage: React.FC = () => {
           generateSoftwareApplicationSchema(),
           generateWebSiteSchema(),
           generateFAQPageSchema(faqs),
+          generateVideoObjectSchema(
+            'This Free Resume Builder Shouldn\'t Exist',
+            'See how EasyFreeResume lets you build a professional, ATS-friendly resume in minutes — completely free, no sign-up required.',
+            'https://img.youtube.com/vi/JU3QgmXpfQg/maxresdefault.jpg',
+            '2026-02-28',
+            'https://www.youtube.com/embed/JU3QgmXpfQg'
+          ),
         ])}
       />
 
@@ -373,9 +380,9 @@ const LandingPage: React.FC = () => {
           </RevealSection>
 
           <RevealSection variant="fade-in">
-            {/* Browser chrome mockup */}
+            {/* YouTube video embed */}
             <div className="bg-ink-light rounded-2xl border border-white/10 overflow-hidden shadow-2xl max-w-3xl mx-auto">
-              {/* Title bar */}
+              {/* Browser-style title bar */}
               <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
                 <div className="flex gap-1.5">
                   <div className="w-3 h-3 rounded-full bg-white/10" />
@@ -384,93 +391,19 @@ const LandingPage: React.FC = () => {
                 </div>
                 <div className="flex-1 flex justify-center">
                   <div className="bg-white/5 rounded-md px-4 py-1">
-                    <span className="font-mono text-[11px] text-mist">easyfreeresume.com/editor</span>
+                    <span className="font-mono text-[11px] text-mist">youtube.com/@EasyFreeResume</span>
                   </div>
                 </div>
               </div>
-
-              {/* Content area: two-panel */}
-              <div className="grid md:grid-cols-2 divide-x divide-white/10">
-                {/* Left: form panel */}
-                <div className="p-6 space-y-4">
-                  <div>
-                    <span className="font-mono text-[10px] text-mist uppercase tracking-wider">Full Name</span>
-                    <div className="mt-1 bg-white/5 rounded-lg px-3 py-2 overflow-hidden">
-                      <span
-                        className="demo-typing font-display text-sm text-white inline-block whitespace-nowrap overflow-hidden border-r-2 border-accent"
-                        style={{
-                          animation: prefersReducedMotion
-                            ? 'none'
-                            : 'typewriter 2s steps(14) 0.5s forwards, blink-caret 0.8s steps(1) infinite',
-                          width: prefersReducedMotion ? 'auto' : '0',
-                        }}
-                      >
-                        Sarah Johnson
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="font-mono text-[10px] text-mist uppercase tracking-wider">Job Title</span>
-                    <div className="mt-1 bg-white/5 rounded-lg px-3 py-2 overflow-hidden">
-                      <span
-                        className="demo-typing font-display text-sm text-white inline-block whitespace-nowrap overflow-hidden border-r-2 border-transparent"
-                        style={{
-                          animation: prefersReducedMotion
-                            ? 'none'
-                            : 'typewriter 2.5s steps(17) 3s forwards, blink-caret 0.8s steps(1) 3s infinite',
-                          width: prefersReducedMotion ? 'auto' : '0',
-                        }}
-                      >
-                        Product Designer
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="font-mono text-[10px] text-mist uppercase tracking-wider">Company</span>
-                    <div className="mt-1 bg-white/5 rounded-lg px-3 py-2 overflow-hidden">
-                      <span
-                        className="demo-typing font-display text-sm text-white inline-block whitespace-nowrap overflow-hidden border-r-2 border-transparent"
-                        style={{
-                          animation: prefersReducedMotion
-                            ? 'none'
-                            : 'typewriter 1.5s steps(10) 6s forwards, blink-caret 0.8s steps(1) 6s infinite',
-                          width: prefersReducedMotion ? 'auto' : '0',
-                        }}
-                      >
-                        Stripe Inc
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right: mini resume preview */}
-                <div className="p-6 flex items-center justify-center">
-                  <div className="w-full max-w-[180px] bg-white rounded-lg shadow-lg p-4 flex flex-col gap-2">
-                    <div className="h-3 w-20 bg-ink rounded-sm" />
-                    <div className="h-1.5 w-14 bg-accent/50 rounded-sm" />
-                    <div className="h-px w-full bg-gray-200 my-0.5" />
-                    <div className="space-y-1">
-                      <div className="h-1 w-full bg-gray-200 rounded-sm" />
-                      <div className="h-1 w-[85%] bg-gray-200 rounded-sm" />
-                      <div className="h-1 w-[70%] bg-gray-200 rounded-sm" />
-                    </div>
-                    <div className="flex gap-1 mt-1">
-                      <div className="h-2.5 w-8 bg-accent/15 rounded-full" />
-                      <div className="h-2.5 w-10 bg-accent/15 rounded-full" />
-                      <div className="h-2.5 w-6 bg-accent/15 rounded-full" />
-                    </div>
-                    <button
-                      className="mt-2 bg-accent text-ink text-[9px] font-bold py-1 px-2 rounded font-mono"
-                      style={{
-                        animation: prefersReducedMotion ? 'none' : 'pulse-accent 2s ease-in-out 8s 3',
-                      }}
-                      tabIndex={-1}
-                      aria-hidden="true"
-                    >
-                      Download PDF
-                    </button>
-                  </div>
-                </div>
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src="https://www.youtube.com/embed/JU3QgmXpfQg"
+                  title="This Free Resume Builder Shouldn't Exist — EasyFreeResume Tutorial"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  loading="lazy"
+                />
               </div>
             </div>
           </RevealSection>

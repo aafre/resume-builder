@@ -44,7 +44,9 @@ const footerLinks = {
     { path: '/contact', label: 'Contact' },
     { path: '/privacy-policy', label: 'Privacy Policy' },
     { path: '/terms-of-service', label: 'Terms of Service' },
+    { path: 'https://www.linkedin.com/company/easyfreeresume/', label: 'LinkedIn', external: true },
     { path: 'https://www.crunchbase.com/organization/easyfreeresume', label: 'Crunchbase', external: true },
+    { path: 'https://www.youtube.com/@EasyFreeResume', label: 'YouTube', external: true },
   ],
 };
 
