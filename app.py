@@ -596,9 +596,7 @@ def convert_markdown_formatting_to_html(text):
 def convert_markdown_formatting_to_latex(text):
     r"""Convert Markdown-style formatting to LaTeX commands (\textbf, \textit, \sout, \underline)."""
     text = _apply_markdown_formatting(text, 2)
-    if text and isinstance(text, str):
-        text = _escape_remaining_latex_chars(text)
-
+    text = _escape_remaining_latex_chars(text)
     return text
 
 
