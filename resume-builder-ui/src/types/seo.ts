@@ -116,7 +116,8 @@ export type SchemaType =
   | 'WebSite'
   | 'HowTo'
   | 'Product'
-  | 'VideoObject';
+  | 'VideoObject'
+  | 'AboutPage';
 
 export interface StructuredDataConfig {
   '@context': string;
