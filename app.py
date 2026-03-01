@@ -604,79 +604,71 @@ def _prepare_latex_data(data):
 
     prepared_data = apply_escaping_recursive(prepared_data)
 
-    # Process contact info and social links
     contact_info = prepared_data.get("contact_info", {})
     if contact_info:
-        # Migrate old LinkedIn format to new social_links array (backward compatibility)
-        contact_info = migrate_linkedin_to_social_links(contact_info)
-
-        # Process social_links array
-        social_links = contact_info.get("social_links", [])
-        if social_links:
-            for link in social_links:
-                platform = link.get("platform", "")
-                url = link.get("url", "")
-
-                if not url or not url.strip():
-                    continue
-
-                # Add https:// if not present
-                if not url.startswith("https://") and not url.startswith("http://"):
-                    url = "https://" + url
-                    link["url"] = url
-
-                # Extract handle for display
-                link["handle"] = get_social_media_handle(url, platform)
-
-                # Generate display_text if not provided
-                if not link.get("display_text") or not link.get("display_text").strip():
-                    if platform == "linkedin":
-                        link["display_text"] = generate_linkedin_display_text(
-                            url, contact_info.get("name", "")
-                        )
-                    elif platform == "github":
-                        link["display_text"] = link["handle"]
-                    elif platform == "twitter":
-                        link["display_text"] = link["handle"]
-                    elif platform == "website":
-                        # Extract domain from URL
-                        try:
-                            from urllib.parse import urlparse
-
-                            parsed = urlparse(url)
-                            link["display_text"] = (
-                                parsed.hostname.replace("www.", "")
-                                if parsed.hostname
-                                else "Website"
-                            )
-                        except:
-                            link["display_text"] = "Website"
-                    else:
-                        # Default: use handle or platform name
-                        link["display_text"] = link["handle"] or platform.capitalize()
-
-                    logging.info(
-                        f"Generated {platform} display text: {link['display_text']}"
-                    )
-
-        # Store processed social_links back in contact_info
-        contact_info["social_links"] = social_links
-
-        # Maintain backward compatibility: keep linkedin fields for old templates
-        linkedin_link = next(
-            (link for link in social_links if link.get("platform") == "linkedin"), None
-        )
-        if linkedin_link:
-            contact_info["linkedin"] = linkedin_link.get("url", "")
-            contact_info["linkedin_handle"] = linkedin_link.get("handle", "")
-            contact_info["linkedin_display"] = linkedin_link.get("display_text", "")
-        else:
-            contact_info["linkedin"] = ""
-            contact_info["linkedin_handle"] = ""
-            contact_info["linkedin_display"] = ""
-
+        contact_info = _process_social_links(contact_info)
     prepared_data["contact_info"] = contact_info
     return prepared_data
+
+
+def _process_social_links(contact_info):
+    """Process social_links in contact_info: normalize URLs, extract handles, generate display text."""
+    contact_info = migrate_linkedin_to_social_links(contact_info)
+
+    social_links = contact_info.get("social_links", [])
+    for link in social_links:
+        platform = link.get("platform", "")
+        url = link.get("url", "")
+
+        if not url or not url.strip():
+            continue
+
+        if not url.startswith("https://") and not url.startswith("http://"):
+            url = "https://" + url
+            link["url"] = url
+
+        link["handle"] = get_social_media_handle(url, platform)
+
+        if not link.get("display_text") or not link.get("display_text").strip():
+            if platform == "linkedin":
+                link["display_text"] = generate_linkedin_display_text(
+                    url, contact_info.get("name", "")
+                )
+            elif platform in ("github", "twitter"):
+                link["display_text"] = link["handle"]
+            elif platform == "website":
+                try:
+                    parsed = urlparse(url)
+                    link["display_text"] = (
+                        parsed.hostname.replace("www.", "")
+                        if parsed.hostname
+                        else "Website"
+                    )
+                except Exception:
+                    link["display_text"] = "Website"
+            else:
+                link["display_text"] = link["handle"] or platform.capitalize()
+
+            logging.info(
+                f"Generated {platform} display text: {link['display_text']}"
+            )
+
+    contact_info["social_links"] = social_links
+
+    # Maintain backward compatibility: keep linkedin fields for old templates
+    linkedin_link = next(
+        (link for link in social_links if link.get("platform") == "linkedin"), None
+    )
+    if linkedin_link:
+        contact_info["linkedin"] = linkedin_link.get("url", "")
+        contact_info["linkedin_handle"] = linkedin_link.get("handle", "")
+        contact_info["linkedin_display"] = linkedin_link.get("display_text", "")
+    else:
+        contact_info["linkedin"] = ""
+        contact_info["linkedin_handle"] = ""
+        contact_info["linkedin_display"] = ""
+
+    return contact_info
 
 
 def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic"):
