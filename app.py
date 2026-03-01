@@ -54,7 +54,7 @@ log_level = logging.DEBUG if DEBUG_LOGGING else logging.INFO
 logging.basicConfig(level=log_level, format="%(asctime)s [%(levelname)s] %(message)s")
 
 
-TRANSIENT_ERROR_KEYWORDS = ["server disconnected", "connection", "timeout", "reset", "network"]
+TRANSIENT_ERROR_KEYWORDS = ("server disconnected", "connection", "timeout", "reset", "network")
 
 
 def is_transient_error(error_msg: str) -> bool:
@@ -2035,6 +2035,10 @@ def _validate_and_serve_file(filename, base_dir, file_type="file"):
     Returns:
         (file_path, None) on success, or (None, error_response) on failure.
     """
+    if ".." in filename or filename.startswith("/"):
+        logging.warning(f"Path traversal attempt in {file_type} request: {filename}")
+        return None, (jsonify({"success": False, "error": "Invalid path"}), 400)
+
     safe_filename = secure_filename(filename)
     if not safe_filename or safe_filename != filename:
         logging.warning(f"Invalid {file_type} filename attempt: {filename}")
@@ -2105,10 +2109,6 @@ def serve_templates(filename):
     - Rejects paths containing '..' or starting with '/'
     """
     try:
-        if ".." in filename or filename.startswith("/"):
-            logging.warning(f"Path traversal attempt in template request: {filename}")
-            return jsonify({"success": False, "error": "Invalid path"}), 400
-
         template_image_dir = PROJECT_ROOT / "docs" / "templates"
         file_path, error = _validate_and_serve_file(filename, template_image_dir, "image")
         if error:
