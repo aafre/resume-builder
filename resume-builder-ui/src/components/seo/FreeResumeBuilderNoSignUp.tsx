@@ -16,6 +16,7 @@ import { InContentAd, AD_CONFIG } from '../ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { generateVideoObjectSchema } from '../../utils/schemaGenerators';
 import { SEO_PAGES } from '../../config/seoPages';
+import { TUTORIAL_VIDEO } from '../../config/videoContent';
 
 export default function FreeResumeBuilderNoSignUp() {
   const config = SEO_PAGES.noSignUp;
@@ -26,11 +27,11 @@ export default function FreeResumeBuilderNoSignUp() {
   const schemas = [
     ...baseSchemas,
     generateVideoObjectSchema(
-      'This Free Resume Builder Shouldn\'t Exist',
-      'See how EasyFreeResume lets you build a professional, ATS-friendly resume in minutes — completely free, no sign-up required.',
-      'https://img.youtube.com/vi/JU3QgmXpfQg/maxresdefault.jpg',
-      '2026-02-28',
-      'https://www.youtube.com/embed/JU3QgmXpfQg'
+      TUTORIAL_VIDEO.name,
+      TUTORIAL_VIDEO.description,
+      TUTORIAL_VIDEO.thumbnailUrl,
+      TUTORIAL_VIDEO.uploadDate,
+      TUTORIAL_VIDEO.embedUrl
     ),
   ];
 
@@ -58,8 +59,8 @@ export default function FreeResumeBuilderNoSignUp() {
           <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
             <iframe
               className="absolute inset-0 w-full h-full"
-              src="https://www.youtube.com/embed/JU3QgmXpfQg"
-              title="This Free Resume Builder Shouldn't Exist — EasyFreeResume Tutorial"
+              src={TUTORIAL_VIDEO.embedUrl}
+              title={TUTORIAL_VIDEO.iframeTitle}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               loading="lazy"
