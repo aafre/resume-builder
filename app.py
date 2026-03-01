@@ -2170,6 +2170,33 @@ def generate_resume():
             )
 
 
+def _validate_and_serve_file(filename, base_dir, file_type="file"):
+    """Validate filename against path traversal and check existence.
+
+    Returns:
+        (file_path, None) on success, or (None, error_response) on failure.
+    """
+    safe_filename = secure_filename(filename)
+    if not safe_filename or safe_filename != filename:
+        logging.warning(f"Invalid {file_type} filename attempt: {filename}")
+        return None, (jsonify({"success": False, "error": "Invalid filename"}), 400)
+
+    file_path = base_dir / safe_filename
+
+    try:
+        if not file_path.resolve().is_relative_to(base_dir.resolve()):
+            logging.warning(f"{file_type.capitalize()} path traversal attempt: {filename}")
+            return None, (jsonify({"success": False, "error": "Access denied"}), 403)
+    except ValueError:
+        logging.warning(f"{file_type.capitalize()} path validation failed for: {filename}")
+        return None, (jsonify({"success": False, "error": "Access denied"}), 403)
+
+    if not file_path.exists():
+        return None, (jsonify({"success": False, "error": f"{file_type.capitalize()} not found"}), 404)
+
+    return file_path, None
+
+
 @app.route("/download/<filename>")
 @require_auth
 def download_file(filename):
@@ -2181,28 +2208,9 @@ def download_file(filename):
     - Validates filename to prevent path traversal attacks
     - Ensures file is within OUTPUT_DIR
     """
-    # Validate filename - prevent path traversal
-    safe_filename = secure_filename(filename)
-    if not safe_filename or safe_filename != filename:
-        logging.warning(f"Invalid filename attempt: {filename}")
-        return jsonify({"success": False, "error": "Invalid filename"}), 400
-
-    # Construct file path
-    file_path = OUTPUT_DIR / safe_filename
-
-    # Verify file is within OUTPUT_DIR (prevent directory traversal)
-    try:
-        if not file_path.resolve().is_relative_to(OUTPUT_DIR.resolve()):
-            logging.warning(f"Path traversal attempt: {filename}")
-            return jsonify({"success": False, "error": "Access denied"}), 403
-    except ValueError:
-        # is_relative_to can raise ValueError in some edge cases
-        logging.warning(f"Path validation failed for: {filename}")
-        return jsonify({"success": False, "error": "Access denied"}), 403
-
-    # Check if file exists
-    if not file_path.exists():
-        return jsonify({"success": False, "error": "File not found"}), 404
+    file_path, error = _validate_and_serve_file(filename, OUTPUT_DIR, "file")
+    if error:
+        return error
 
     return send_file(file_path, as_attachment=True)
 
@@ -2217,29 +2225,11 @@ def serve_icon(filename):
     - Ensures file is within ICONS_DIR
     """
     try:
-        # Validate filename - prevent path traversal
-        safe_filename = secure_filename(filename)
-        if not safe_filename or safe_filename != filename:
-            logging.warning(f"Invalid icon filename attempt: {filename}")
-            return jsonify({"success": False, "error": "Invalid filename"}), 400
+        file_path, error = _validate_and_serve_file(filename, ICONS_DIR, "icon")
+        if error:
+            return error
 
-        # Construct icon path
-        icon_path = ICONS_DIR / safe_filename
-
-        # Verify file is within ICONS_DIR (prevent directory traversal)
-        try:
-            if not icon_path.resolve().is_relative_to(ICONS_DIR.resolve()):
-                logging.warning(f"Icon path traversal attempt: {filename}")
-                return jsonify({"success": False, "error": "Access denied"}), 403
-        except ValueError:
-            logging.warning(f"Icon path validation failed for: {filename}")
-            return jsonify({"success": False, "error": "Access denied"}), 403
-
-        # Check if file exists
-        if not icon_path.exists():
-            return jsonify({"success": False, "error": "Icon not found"}), 404
-
-        return send_file(icon_path)
+        return send_file(file_path)
     except Exception as e:
         logging.error(f"Error serving icon {filename}: {e}")
         return jsonify({"success": False, "error": "Icon not found"}), 404
@@ -2256,33 +2246,14 @@ def serve_templates(filename):
     - Rejects paths containing '..' or starting with '/'
     """
     try:
-        # Validate filename - prevent path traversal
         if ".." in filename or filename.startswith("/"):
             logging.warning(f"Path traversal attempt in template request: {filename}")
             return jsonify({"success": False, "error": "Invalid path"}), 400
 
-        # Sanitize filename
-        safe_filename = secure_filename(filename)
-        if not safe_filename:
-            logging.warning(f"Invalid template filename: {filename}")
-            return jsonify({"success": False, "error": "Invalid filename"}), 400
-
-        # Construct template image path
         template_image_dir = PROJECT_ROOT / "docs" / "templates"
-        file_path = template_image_dir / safe_filename
-
-        # Verify file is within template directory (prevent directory traversal)
-        try:
-            if not file_path.resolve().is_relative_to(template_image_dir.resolve()):
-                logging.warning(f"Template path traversal attempt: {filename}")
-                return jsonify({"success": False, "error": "Access denied"}), 403
-        except ValueError:
-            logging.warning(f"Template path validation failed for: {filename}")
-            return jsonify({"success": False, "error": "Access denied"}), 403
-
-        # Check if file exists
-        if not file_path.exists():
-            return jsonify({"success": False, "error": "Image not found"}), 404
+        file_path, error = _validate_and_serve_file(filename, template_image_dir, "image")
+        if error:
+            return error
 
         return send_file(file_path)
     except Exception as e:
