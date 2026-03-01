@@ -12,6 +12,7 @@ import {
   ArrowRightIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
+import { TUTORIAL_VIDEO } from "../config/videoContent";
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -181,11 +182,11 @@ const LandingPage: React.FC = () => {
           generateWebSiteSchema(),
           generateFAQPageSchema(faqs),
           generateVideoObjectSchema(
-            'This Free Resume Builder Shouldn\'t Exist',
-            'See how EasyFreeResume lets you build a professional, ATS-friendly resume in minutes — completely free, no sign-up required.',
-            'https://img.youtube.com/vi/JU3QgmXpfQg/maxresdefault.jpg',
-            '2026-02-28',
-            'https://www.youtube.com/embed/JU3QgmXpfQg'
+            TUTORIAL_VIDEO.name,
+            TUTORIAL_VIDEO.description,
+            TUTORIAL_VIDEO.thumbnailUrl,
+            TUTORIAL_VIDEO.uploadDate,
+            TUTORIAL_VIDEO.embedUrl
           ),
         ])}
       />
@@ -398,8 +399,8 @@ const LandingPage: React.FC = () => {
               <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                 <iframe
                   className="absolute inset-0 w-full h-full"
-                  src="https://www.youtube.com/embed/JU3QgmXpfQg"
-                  title="This Free Resume Builder Shouldn't Exist — EasyFreeResume Tutorial"
+                  src={TUTORIAL_VIDEO.embedUrl}
+                  title={TUTORIAL_VIDEO.iframeTitle}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   loading="lazy"
