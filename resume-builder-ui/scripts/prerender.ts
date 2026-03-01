@@ -80,15 +80,15 @@ const ROUTES_TO_PRERENDER = [
   // Blog index
   '/blog',
 
-  // Blog - comparison posts (high impression, low CTR)
-  '/easyfreeresume-vs-zety',
-  '/blog/resume-io-vs-easy-free-resume',
-  '/blog/resume-genius-vs-easy-free-resume',
-  '/blog/novoresume-vs-easy-free-resume',
-  '/blog/enhancv-vs-easy-free-resume',
+  // Blog - comparison posts (high impression, low CTR) — sorted alphabetically
   '/blog/canva-resume-vs-easy-free-resume',
+  '/blog/enhancv-vs-easy-free-resume',
   '/blog/flowcv-vs-easy-free-resume',
+  '/blog/novoresume-vs-easy-free-resume',
+  '/blog/resume-genius-vs-easy-free-resume',
+  '/blog/resume-io-vs-easy-free-resume',
   '/easyfreeresume-vs-indeed-resume-builder',
+  '/easyfreeresume-vs-zety',
 
   // Blog - AI prompt posts (gaining traction)
   '/blog/chatgpt-resume-prompts',
