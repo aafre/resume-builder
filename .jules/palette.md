@@ -1,0 +1,3 @@
+## 2024-05-24 - Interactive Element Focus Rings
+**Learning:** Found that custom layout buttons (like the collapse and delete actions in `SectionHeader`) frequently miss standard focus rings since they build upon raw `<button>` elements rather than using design system components. Without `focus-visible`, screen reader and keyboard-only users have no visual indication of their current location.
+**Action:** Always verify that naked `<button>` tags or icon-only buttons apply explicit `focus-visible:ring-2 focus-visible:ring-accent` utility classes (and include `aria-label` or `aria-hidden` when appropriate).
