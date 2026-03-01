@@ -54,6 +54,15 @@ log_level = logging.DEBUG if DEBUG_LOGGING else logging.INFO
 logging.basicConfig(level=log_level, format="%(asctime)s [%(levelname)s] %(message)s")
 
 
+TRANSIENT_ERROR_KEYWORDS = ["server disconnected", "connection", "timeout", "reset", "network"]
+
+
+def is_transient_error(error_msg: str) -> bool:
+    """Check if an error message indicates a transient/retryable failure."""
+    error_lower = error_msg.lower()
+    return any(kw in error_lower for kw in TRANSIENT_ERROR_KEYWORDS)
+
+
 def retry_on_connection_error(max_retries=3, backoff_factor=0.5):
     """
     Retry decorator for handling transient Supabase connection errors.
@@ -80,19 +89,8 @@ def retry_on_connection_error(max_retries=3, backoff_factor=0.5):
                     return func(*args, **kwargs)
                 except Exception as e:
                     last_exception = e
-                    error_msg = str(e).lower()
 
-                    # Only retry on connection-related errors
-                    is_retryable = any(
-                        [
-                            "server disconnected" in error_msg,
-                            "connection" in error_msg,
-                            "timeout" in error_msg,
-                            "reset" in error_msg,
-                        ]
-                    )
-
-                    if not is_retryable or attempt == max_retries:
+                    if not is_transient_error(str(e)) or attempt == max_retries:
                         raise
 
                     wait_time = backoff_factor * (2**attempt)
@@ -135,14 +133,7 @@ def classify_thumbnail_error(error):
         }
 
     # Connection/network errors - retryable
-    transient_keywords = [
-        "server disconnected",
-        "connection",
-        "timeout",
-        "reset",
-        "network",
-    ]
-    if any(keyword in error_msg for keyword in transient_keywords):
+    if is_transient_error(str(error)):
         return {"retryable": True, "error_type": "network", "user_message": None}
 
     # Storage errors - retryable (may be transient auth token)
@@ -1384,19 +1375,8 @@ def require_auth(f):
                 return f(*args, **kwargs)
             except Exception as e:
                 error_msg = str(e)
-                error_lower = error_msg.lower()
 
-                # Same keywords as retry_on_connection_error decorator
-                is_connection_error = any(
-                    [
-                        "server disconnected" in error_lower,
-                        "connection" in error_lower,
-                        "timeout" in error_lower,
-                        "reset" in error_lower,
-                    ]
-                )
-
-                if is_connection_error and auth_attempt < max_auth_attempts - 1:
+                if is_transient_error(error_msg) and auth_attempt < max_auth_attempts - 1:
                     logging.warning(
                         f"Auth retry {auth_attempt + 1}/{max_auth_attempts - 1} | "
                         f"endpoint={request.path} | error={error_msg}"
@@ -2781,12 +2761,8 @@ def list_resumes():
         logging.error(f"Error listing resumes: {e}", exc_info=True)
         error_msg = "Failed to list resumes"
 
-        # Provide more specific error message for common issues
-        error_str = str(e).lower()
-        if "server disconnected" in error_str or "connection" in error_str:
+        if is_transient_error(str(e)):
             error_msg = "Connection to database failed. Please try again."
-        elif "timeout" in error_str:
-            error_msg = "Request timed out. Please try again."
 
         return jsonify({"success": False, "error": error_msg}), 500
 
@@ -2829,12 +2805,8 @@ def get_resume_count():
         logging.error(f"Error getting resume count: {e}", exc_info=True)
         error_msg = "Failed to get resume count"
 
-        # Specific error messages for common issues
-        error_str = str(e).lower()
-        if "server disconnected" in error_str or "connection" in error_str:
+        if is_transient_error(str(e)):
             error_msg = "Connection to database failed. Please try again."
-        elif "timeout" in error_str:
-            error_msg = "Request timed out. Please try again."
 
         return jsonify({"success": False, "error": error_msg}), 500
 
