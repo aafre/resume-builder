@@ -14,14 +14,26 @@ import DownloadCTA from '../shared/DownloadCTA';
 import RevealSection from '../shared/RevealSection';
 import { InContentAd, AD_CONFIG } from '../ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
+import { generateVideoObjectSchema } from '../../utils/schemaGenerators';
 import { SEO_PAGES } from '../../config/seoPages';
+import { TUTORIAL_VIDEO } from '../../config/videoContent';
 
 export default function FreeResumeBuilderNoSignUp() {
   const config = SEO_PAGES.noSignUp;
-  const schemas = usePageSchema({
+  const baseSchemas = usePageSchema({
     type: 'software',
     faqs: config.faqs,
   });
+  const schemas = [
+    ...baseSchemas,
+    generateVideoObjectSchema(
+      TUTORIAL_VIDEO.name,
+      TUTORIAL_VIDEO.description,
+      TUTORIAL_VIDEO.thumbnailUrl,
+      TUTORIAL_VIDEO.uploadDate,
+      TUTORIAL_VIDEO.embedUrl
+    ),
+  ];
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
@@ -42,6 +54,19 @@ export default function FreeResumeBuilderNoSignUp() {
           verification, no password creation, no waiting. Just click and start creating your
           professional resume right now.
         </p>
+        {/* YouTube tutorial embed */}
+        <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl border border-black/[0.06]">
+          <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src={TUTORIAL_VIDEO.embedUrl}
+              title={TUTORIAL_VIDEO.iframeTitle}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              loading="lazy"
+            />
+          </div>
+        </div>
       </div>
       </RevealSection>
 

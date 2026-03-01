@@ -265,28 +265,28 @@ export default function ResumeIOVsEasyFreeResume() {
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
           <ol className="space-y-4 text-ink/80">
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">1</span>
               <div>
                 <p className="font-medium">Export your Resume.io content</p>
                 <p className="text-sm">Download as PDF or copy text from your resume</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">2</span>
               <div>
                 <p className="font-medium">Cancel your subscription</p>
                 <p className="text-sm">Go to Resume.io account settings → Cancel subscription</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">3</span>
               <div>
                 <p className="font-medium">Visit EasyFreeResume.com</p>
                 <p className="text-sm">No signup needed—start building immediately</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">4</span>
               <div>
                 <p className="font-medium">Recreate your resume with our templates</p>

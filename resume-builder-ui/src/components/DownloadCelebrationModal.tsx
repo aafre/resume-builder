@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { ClipboardCheck, ExternalLink, ShieldAlert } from "lucide-react";
 import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
@@ -117,6 +117,13 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
       })
       .finally(() => setJobsLoading(false));
   }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Ref callback to initialize the TrustBox widget when mounted
+  const trustboxRef = useCallback((node: HTMLDivElement | null) => {
+    if (node && (window as any).Trustpilot) {
+      (window as any).Trustpilot.loadFromElement(node);
+    }
+  }, []);
 
   if (!isOpen) return null;
 
@@ -377,20 +384,31 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
             <div className="bg-accent/[0.04] border border-accent/10 rounded-xl p-4 text-center">
               <p className="text-sm font-semibold text-ink mb-1">
-                Did we save you from a paywall? 🎉
+                Did we save you from a paywall?
               </p>
               <p className="text-xs text-stone-warm mb-3">
                 Most &ldquo;free&rdquo; resume builders charge you at the last step. We didn&apos;t.
                 Help other job seekers find us — leave a quick review on Trustpilot.
               </p>
-              <a
-                href="https://www.trustpilot.com/evaluate/easyfreeresume.com?utm_source=modal_download"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 bg-accent/10 text-accent px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-accent/20 transition-all duration-200"
+              {/* TrustBox Review Collector widget */}
+              <div
+                ref={trustboxRef}
+                className="trustpilot-widget"
+                data-locale="en-US"
+                data-template-id="56278e9abfbbba0bdcd568bc"
+                data-businessunit-id="6991965ec479215d80d8e4b7"
+                data-style-height="52px"
+                data-style-width="100%"
+                data-token="71af434a-ffb1-44a9-b616-8f3320d34897"
               >
-                ⭐ Leave a Review
-              </a>
+                <a
+                  href="https://www.trustpilot.com/review/easyfreeresume.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Trustpilot
+                </a>
+              </div>
             </div>
           </div>
         </div>

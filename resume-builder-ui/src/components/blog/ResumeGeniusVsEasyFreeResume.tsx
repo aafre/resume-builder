@@ -250,28 +250,28 @@ export default function ResumeGeniusVsEasyFreeResume() {
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
           <ol className="space-y-4 text-ink/80">
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">1</span>
               <div>
                 <p className="font-medium">Cancel your Resume Genius subscription first</p>
                 <p className="text-sm">Contact support or go to account settings (may require calling)</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">2</span>
               <div>
                 <p className="font-medium">Copy your resume content</p>
                 <p className="text-sm">Download as PDF if subscribed, or copy text manually</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">3</span>
               <div>
                 <p className="font-medium">Go to EasyFreeResume.com</p>
                 <p className="text-sm">No signup, no credit card, no trial period</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">4</span>
               <div>
                 <p className="font-medium">Build and download—completely free</p>

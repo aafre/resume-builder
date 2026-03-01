@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import SEOHead from "./SEOHead";
+import { generateVideoObjectSchema, wrapInGraph } from "../utils/schemaGenerators";
+import { TUTORIAL_VIDEO } from "../config/videoContent";
 
 export default function AboutUs() {
   return (
@@ -7,21 +9,30 @@ export default function AboutUs() {
       <SEOHead
         title="About EasyFreeResume | Our Mission to Democratize Career Success"
         description="Learn about EasyFreeResume's mission to provide completely free, professional-quality resume tools. Discover our values, impact, and commitment to your career success."
-        structuredData={{
-          "@context": "https://schema.org",
-          "@type": "AboutPage",
-          name: "About EasyFreeResume",
-          description:
-            "Learn about our mission to democratize career opportunities",
-          mainEntity: {
-            "@type": "Organization",
-            name: "EasyFreeResume",
-            description: "Free professional resume builder platform",
-            foundingDate: "2019",
-            mission:
-              "Democratize career opportunities by providing free professional resume tools",
+        structuredData={wrapInGraph([
+          {
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            name: "About EasyFreeResume",
+            description:
+              "Learn about our mission to democratize career opportunities",
+            mainEntity: {
+              "@type": "Organization",
+              name: "EasyFreeResume",
+              description: "Free professional resume builder platform",
+              foundingDate: "2019",
+              mission:
+                "Democratize career opportunities by providing free professional resume tools",
+            },
           },
-        }}
+          generateVideoObjectSchema(
+            TUTORIAL_VIDEO.name,
+            TUTORIAL_VIDEO.description,
+            TUTORIAL_VIDEO.thumbnailUrl,
+            TUTORIAL_VIDEO.uploadDate,
+            TUTORIAL_VIDEO.embedUrl
+          ),
+        ])}
       />
       <div className="min-h-screen bg-chalk">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
@@ -257,11 +268,25 @@ export default function AboutUs() {
                   what both candidates and employers need.
                 </p>
 
-                <p className="text-lg leading-relaxed text-stone-warm">
+                <p className="text-lg leading-relaxed text-stone-warm mb-8">
                   Every feature we build is tested with real job seekers and
                   validated against current hiring practices. We're not just
                   building software-we're building bridges to career success.
                 </p>
+
+                {/* YouTube tutorial embed */}
+                <div className="rounded-2xl overflow-hidden shadow-2xl border border-black/[0.06]">
+                  <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                    <iframe
+                      className="absolute inset-0 w-full h-full"
+                      src={TUTORIAL_VIDEO.embedUrl}
+                      title={TUTORIAL_VIDEO.iframeTitle}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
               </div>
             </section>
 

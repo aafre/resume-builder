@@ -261,28 +261,28 @@ export default function CanvaVsEasyFreeResume() {
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
           <ol className="space-y-4 text-ink/80">
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">1</span>
               <div>
                 <p className="font-medium">Copy your content from Canva</p>
                 <p className="text-sm">Open your Canva resume and copy all text sections</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">2</span>
               <div>
                 <p className="font-medium">Go to EasyFreeResume.com</p>
                 <p className="text-sm">No signup needed—start immediately</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">3</span>
               <div>
                 <p className="font-medium">Choose an ATS-friendly template</p>
                 <p className="text-sm">All our templates are designed for ATS compatibility</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">4</span>
               <div>
                 <p className="font-medium">Paste and format your content</p>

@@ -255,28 +255,28 @@ export default function NovoResumeVsEasyFreeResume() {
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
           <ol className="space-y-4 text-ink/80">
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">1</span>
               <div>
                 <p className="font-medium">Export your NovoResume content</p>
                 <p className="text-sm">Download as PDF or copy the text from each section</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">2</span>
               <div>
                 <p className="font-medium">Cancel premium if subscribed</p>
                 <p className="text-sm">Account Settings → Subscription → Cancel</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">3</span>
               <div>
                 <p className="font-medium">Visit EasyFreeResume.com</p>
                 <p className="text-sm">Start immediately—no signup required</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex items-start gap-4">
               <span className="flex-shrink-0 w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center font-bold">4</span>
               <div>
                 <p className="font-medium">Choose a template and recreate your resume</p>
