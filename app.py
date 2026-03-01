@@ -240,6 +240,50 @@ def pdf_generation_worker(
         return {"success": False, "error": error_msg}
 
 
+def _dispatch_html_pdf_generation(
+    template, yaml_path, output_path, icons_dir, session_id, timeout=60
+):
+    """Dispatch HTML-based PDF generation via thread pool or direct subprocess fallback."""
+    if PDF_THREAD_POOL is None:
+        logging.warning("Thread pool not available, falling back to direct subprocess")
+        cmd = [
+            "python",
+            "resume_generator.py",
+            "--template",
+            template,
+            "--input",
+            str(yaml_path),
+            "--output",
+            str(output_path),
+            "--session-icons-dir",
+            str(icons_dir),
+            "--session-id",
+            session_id,
+        ]
+
+        result = subprocess.run(
+            cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT)
+        )
+
+        if result.returncode != 0:
+            logging.error(f"PDF generation subprocess error: {result.stderr}")
+            raise RuntimeError("Failed to generate PDF")
+    else:
+        future = PDF_THREAD_POOL.submit(
+            pdf_generation_worker,
+            template,
+            yaml_path,
+            output_path,
+            icons_dir,
+            session_id,
+        )
+
+        result = future.result(timeout=timeout)
+
+        if not result["success"]:
+            raise RuntimeError(f"Failed to generate PDF: {result['error']}")
+
+
 # Initialize thread pool for PDF generation dispatch
 #
 # Architecture: ThreadPoolExecutor dispatches to subprocess.run() calls
@@ -1940,86 +1984,15 @@ def generate_resume():
             # Use the mapped template directory
             actual_template = TEMPLATE_DIR_MAP[template]
 
-            # Use subprocess for PDF generation to avoid Qt state issues
             if actual_template == "classic":
-                # LaTeX path: Use XeLaTeX compilation for classic templates
-                logging.info(
-                    f"Using direct LaTeX generation for template: {actual_template}"
-                )
                 generate_latex_pdf(
                     yaml_data, str(session_icons_dir), str(output_path), actual_template
                 )
             else:
-                # HTML path: Use thread pool to dispatch subprocess for PDF generation
-                # Subprocess provides process isolation (fresh Python + Qt state)
-                # Thread pool provides backpressure and timeout handling
-                logging.info(
-                    f"Using thread pool HTML generation for template: {actual_template}"
+                _dispatch_html_pdf_generation(
+                    actual_template, yaml_path, output_path,
+                    session_icons_dir, session_id,
                 )
-
-                if PDF_THREAD_POOL is None:
-                    # Fallback to direct subprocess if pool not available
-                    logging.warning(
-                        "Thread pool not available, falling back to direct subprocess"
-                    )
-                    cmd = [
-                        "python",
-                        "resume_generator.py",
-                        "--template",
-                        actual_template,
-                        "--input",
-                        str(yaml_path),
-                        "--output",
-                        str(output_path),
-                        "--session-icons-dir",
-                        str(session_icons_dir),
-                        "--session-id",
-                        session_id,
-                    ]
-
-                    result = subprocess.run(
-                        cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT)
-                    )
-
-                    if result.returncode != 0:
-                        logging.error(f"Subprocess error: {result.stderr}")
-                        raise RuntimeError("Failed to generate the resume")
-                else:
-                    # Use thread pool with timeout handling
-                    logging.debug("Submitting PDF generation task to thread pool")
-                    future = PDF_THREAD_POOL.submit(
-                        pdf_generation_worker,
-                        actual_template,
-                        yaml_path,
-                        output_path,
-                        session_icons_dir,
-                        session_id,
-                    )
-
-                    # Wait for result with timeout
-                    try:
-                        result = future.result(timeout=60)  # 60 second timeout
-
-                        if not result["success"]:
-                            logging.error(
-                                f"Process pool worker failed: {result['error']}"
-                            )
-                            logging.error(f"Failed template: {actual_template}")
-                            logging.error(f"Failed session: {session_id}")
-                            logging.error(f"YAML data for reproduction: {yaml_data}")
-                            raise RuntimeError(
-                                f"Failed to generate the resume: {result['error']}"
-                            )
-
-                        logging.info(
-                            "Process pool PDF generation completed successfully"
-                        )
-                    except Exception as e:
-                        logging.error(f"Process pool execution failed: {e}")
-                        logging.error(f"Failed template: {actual_template}")
-                        logging.error(f"Failed session: {session_id}")
-                        logging.error(f"YAML data for reproduction: {yaml_data}")
-                        raise RuntimeError(f"Failed to generate the resume: {str(e)}")
 
             if not output_path.exists():
                 logging.error(f"Expected output file at: {output_path}")
@@ -3475,44 +3448,10 @@ def generate_pdf_for_saved_resume(resume_id):
                     yaml_data, str(session_icons_dir), str(output_path), actual_template
                 )
             else:
-                # Use thread pool or direct subprocess
-                if PDF_THREAD_POOL is None:
-                    cmd = [
-                        "python",
-                        "resume_generator.py",
-                        "--template",
-                        actual_template,
-                        "--input",
-                        str(yaml_path),
-                        "--output",
-                        str(output_path),
-                        "--session-icons-dir",
-                        str(session_icons_dir),
-                        "--session-id",
-                        session_id,
-                    ]
-
-                    result = subprocess.run(
-                        cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT)
-                    )
-
-                    if result.returncode != 0:
-                        logging.error(f"PDF generation error: {result.stderr}")
-                        raise RuntimeError("Failed to generate PDF")
-                else:
-                    future = PDF_THREAD_POOL.submit(
-                        pdf_generation_worker,
-                        actual_template,
-                        yaml_path,
-                        output_path,
-                        session_icons_dir,
-                        session_id,
-                    )
-
-                    result = future.result(timeout=60)
-
-                    if not result["success"]:
-                        raise RuntimeError(f"Failed to generate PDF: {result['error']}")
+                _dispatch_html_pdf_generation(
+                    actual_template, yaml_path, output_path,
+                    session_icons_dir, session_id,
+                )
 
             if not output_path.exists():
                 raise FileNotFoundError("PDF file was not generated")
@@ -3760,44 +3699,10 @@ def generate_thumbnail_for_resume(resume_id):
                     yaml_data, str(session_icons_dir), str(output_path), actual_template
                 )
             else:
-                # Use thread pool or direct subprocess
-                if PDF_THREAD_POOL is None:
-                    cmd = [
-                        "python",
-                        "resume_generator.py",
-                        "--template",
-                        actual_template,
-                        "--input",
-                        str(yaml_path),
-                        "--output",
-                        str(output_path),
-                        "--session-icons-dir",
-                        str(session_icons_dir),
-                        "--session-id",
-                        session_id,
-                    ]
-
-                    result = subprocess.run(
-                        cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT)
-                    )
-
-                    if result.returncode != 0:
-                        logging.error(f"PDF generation error: {result.stderr}")
-                        raise RuntimeError("Failed to generate PDF")
-                else:
-                    future = PDF_THREAD_POOL.submit(
-                        pdf_generation_worker,
-                        actual_template,
-                        yaml_path,
-                        output_path,
-                        session_icons_dir,
-                        session_id,
-                    )
-
-                    result = future.result(timeout=60)
-
-                    if not result["success"]:
-                        raise RuntimeError(f"Failed to generate PDF: {result['error']}")
+                _dispatch_html_pdf_generation(
+                    actual_template, yaml_path, output_path,
+                    session_icons_dir, session_id,
+                )
 
             if not output_path.exists():
                 raise FileNotFoundError("PDF file was not generated")
