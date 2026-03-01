@@ -212,6 +212,36 @@ export function generateProductSchema(
   };
 }
 
+/**
+ * Generate VideoObject schema
+ * Used for: pages with embedded YouTube videos
+ */
+export function generateVideoObjectSchema(
+  name: string,
+  description: string,
+  thumbnailUrl: string,
+  uploadDate: string,
+  embedUrl: string,
+  duration?: string
+): StructuredDataConfig {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name,
+    description,
+    thumbnailUrl,
+    uploadDate,
+    embedUrl,
+    contentUrl: embedUrl.replace('/embed/', '/watch?v='),
+    ...(duration && { duration }),
+    publisher: {
+      '@type': 'Organization',
+      name: 'EasyFreeResume',
+      url: BASE_URL,
+    },
+  };
+}
+
 export interface ComparisonProduct {
   name: string;
   price: string;

@@ -115,7 +115,8 @@ export type SchemaType =
   | 'BreadcrumbList'
   | 'WebSite'
   | 'HowTo'
-  | 'Product';
+  | 'Product'
+  | 'VideoObject';
 
 export interface StructuredDataConfig {
   '@context': string;
