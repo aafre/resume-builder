@@ -520,8 +520,6 @@ def convert_markdown_links_to_html(text):
         return text
 
     # Regex to match [text](url) pattern
-    import re
-
     pattern = r"\[([^\]]+)\]\(([^\)]+)\)"
 
     # Replace with HTML anchor tag
@@ -547,8 +545,6 @@ def convert_markdown_links_to_latex(text):
         return text
 
     # Regex to match [text](url) pattern
-    import re
-
     pattern = r"\[([^\]]+)\]\(([^\)]+)\)"
 
     # Replace with LaTeX href command
@@ -578,8 +574,6 @@ def convert_markdown_formatting_to_html(text):
     """
     if not text or not isinstance(text, str):
         return text
-
-    import re
 
     # Process in specific order to avoid conflicts
     # 1. Bold with ** (must come before single *)
@@ -624,8 +618,6 @@ def convert_markdown_formatting_to_latex(text):
     """
     if not text or not isinstance(text, str):
         return text
-
-    import re
 
     # Process in specific order to avoid conflicts
     # 1. Bold with ** (must come before single *)
