@@ -278,10 +278,19 @@ def _dispatch_html_pdf_generation(
             session_id,
         )
 
-        result = future.result(timeout=timeout)
+        try:
+            result = future.result(timeout=timeout)
 
-        if not result["success"]:
-            raise RuntimeError(f"Failed to generate PDF: {result['error']}")
+            if not result["success"]:
+                logging.error(f"Process pool worker failed: {result['error']}")
+                logging.error(f"Failed template: {template}, session: {session_id}")
+                raise RuntimeError(f"Failed to generate PDF: {result['error']}")
+        except RuntimeError:
+            raise
+        except Exception as e:
+            logging.error(f"Process pool execution failed: {e}")
+            logging.error(f"Failed template: {template}, session: {session_id}")
+            raise RuntimeError(f"Failed to generate PDF: {str(e)}") from e
 
 
 # Initialize thread pool for PDF generation dispatch
