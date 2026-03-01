@@ -494,143 +494,57 @@ def normalize_sections(data):
     return data
 
 
-def convert_markdown_links_to_html(text):
-    """
-    Convert Markdown-style links [text](url) to HTML <a> tags.
+_MARKDOWN_LINK_PATTERN = r"\[([^\]]+)\]\(([^\)]+)\)"
 
-    Args:
-        text: String that may contain markdown links
 
-    Returns:
-        String with markdown links converted to HTML anchor tags
-
-    Example:
-        "Visit [Google](https://google.com)" -> "Visit <a href=\"https://google.com\">Google</a>"
-    """
+def _convert_markdown_links(text, replacement):
+    """Apply markdown link conversion using the given replacement template."""
     if not text or not isinstance(text, str):
         return text
+    return re.sub(_MARKDOWN_LINK_PATTERN, replacement, text)
 
-    # Regex to match [text](url) pattern
-    pattern = r"\[([^\]]+)\]\(([^\)]+)\)"
 
-    # Replace with HTML anchor tag
-    html_text = re.sub(pattern, r'<a href="\2">\1</a>', text)
-
-    return html_text
+def convert_markdown_links_to_html(text):
+    """Convert Markdown-style links [text](url) to HTML <a> tags."""
+    return _convert_markdown_links(text, r'<a href="\2">\1</a>')
 
 
 def convert_markdown_links_to_latex(text):
-    """
-    Convert Markdown-style links [text](url) to LaTeX \\href{url}{text} commands.
+    r"""Convert Markdown-style links [text](url) to LaTeX \href{url}{text} commands."""
+    return _convert_markdown_links(text, r"\\href{\2}{\1}")
 
-    Args:
-        text: String that may contain markdown links
 
-    Returns:
-        String with markdown links converted to LaTeX href commands
+# Markdown formatting rules: (pattern, html_replacement, latex_replacement)
+# Order matters — double-char patterns (**,__,~~,++) must precede single-char (*,_).
+_MARKDOWN_FORMATTING_RULES = [
+    (r"\*\*(.+?)\*\*", r"<strong>\1</strong>", r"\\textbf{\1}"),
+    (r"__(.+?)__", r"<strong>\1</strong>", r"\\textbf{\1}"),
+    (r"\*(.+?)\*", r"<em>\1</em>", r"\\textit{\1}"),
+    (r"_(.+?)_", r"<em>\1</em>", r"\\textit{\1}"),
+    (r"~~(.+?)~~", r"<s>\1</s>", r"\\sout{\1}"),
+    (r"\+\+(.+?)\+\+", r"<u>\1</u>", r"\\underline{\1}"),
+]
 
-    Example:
-        "Visit [Google](https://google.com)" -> "Visit \\href{https://google.com}{Google}"
-    """
+
+def _apply_markdown_formatting(text, rule_index):
+    """Apply markdown formatting rules using the given rule column index (1=HTML, 2=LaTeX)."""
     if not text or not isinstance(text, str):
         return text
-
-    # Regex to match [text](url) pattern
-    pattern = r"\[([^\]]+)\]\(([^\)]+)\)"
-
-    # Replace with LaTeX href command
-    latex_text = re.sub(pattern, r"\\href{\2}{\1}", text)
-
-    return latex_text
-
-
-def convert_markdown_formatting_to_html(text):
-    """
-    Convert Markdown-style formatting to HTML tags.
-
-    Supports:
-    - Bold: **text** or __text__ → <strong>text</strong>
-    - Italic: *text* or _text_ → <em>text</em>
-    - Strikethrough: ~~text~~ → <s>text</s>
-    - Underline: ++text++ → <u>text</u> (custom syntax, not standard markdown)
-
-    Args:
-        text: String that may contain markdown formatting
-
-    Returns:
-        String with markdown formatting converted to HTML tags
-
-    Example:
-        "This is **bold** and *italic*" -> "This is <strong>bold</strong> and <em>italic</em>"
-    """
-    if not text or not isinstance(text, str):
-        return text
-
-    # Process in specific order to avoid conflicts
-    # 1. Bold with ** (must come before single *)
-    text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
-
-    # 2. Bold with __ (must come before single _)
-    text = re.sub(r"__(.+?)__", r"<strong>\1</strong>", text)
-
-    # 3. Italic with * (after ** is processed)
-    text = re.sub(r"\*(.+?)\*", r"<em>\1</em>", text)
-
-    # 4. Italic with _ (after __ is processed)
-    text = re.sub(r"_(.+?)_", r"<em>\1</em>", text)
-
-    # 5. Strikethrough with ~~
-    text = re.sub(r"~~(.+?)~~", r"<s>\1</s>", text)
-
-    # 6. Underline with ++ (custom syntax)
-    text = re.sub(r"\+\+(.+?)\+\+", r"<u>\1</u>", text)
-
+    for pattern, *replacements in _MARKDOWN_FORMATTING_RULES:
+        text = re.sub(pattern, replacements[rule_index - 1], text)
     return text
 
 
+def convert_markdown_formatting_to_html(text):
+    """Convert Markdown-style formatting (**bold**, *italic*, ~~strike~~, ++underline++) to HTML tags."""
+    return _apply_markdown_formatting(text, 1)
+
+
 def convert_markdown_formatting_to_latex(text):
-    """
-    Convert Markdown-style formatting to LaTeX commands.
-
-    Supports:
-    - Bold: **text** or __text__ → \\textbf{text}
-    - Italic: *text* or _text_ → \\textit{text}
-    - Strikethrough: ~~text~~ → \\sout{text}
-    - Underline: ++text++ → \\underline{text} (custom syntax, not standard markdown)
-
-    Args:
-        text: String that may contain markdown formatting
-
-    Returns:
-        String with markdown formatting converted to LaTeX commands
-
-    Example:
-        "This is **bold** and *italic*" -> "This is \\textbf{bold} and \\textit{italic}"
-    """
-    if not text or not isinstance(text, str):
-        return text
-
-    # Process in specific order to avoid conflicts
-    # 1. Bold with ** (must come before single *)
-    text = re.sub(r"\*\*(.+?)\*\*", r"\\textbf{\1}", text)
-
-    # 2. Bold with __ (must come before single _)
-    text = re.sub(r"__(.+?)__", r"\\textbf{\1}", text)
-
-    # 3. Italic with * (after ** is processed)
-    text = re.sub(r"\*(.+?)\*", r"\\textit{\1}", text)
-
-    # 4. Italic with _ (after __ is processed)
-    text = re.sub(r"_(.+?)_", r"\\textit{\1}", text)
-
-    # 5. Strikethrough with ~~
-    text = re.sub(r"~~(.+?)~~", r"\\sout{\1}", text)
-
-    # 6. Underline with ++ (custom syntax)
-    text = re.sub(r"\+\+(.+?)\+\+", r"\\underline{\1}", text)
-
-    # 7. Escape remaining dangerous characters that weren't consumed by markdown
-    text = _escape_remaining_latex_chars(text)
+    r"""Convert Markdown-style formatting to LaTeX commands (\textbf, \textit, \sout, \underline)."""
+    text = _apply_markdown_formatting(text, 2)
+    if text and isinstance(text, str):
+        text = _escape_remaining_latex_chars(text)
 
     return text
 
