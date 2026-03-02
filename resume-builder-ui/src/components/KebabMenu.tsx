@@ -57,13 +57,15 @@ export function KebabMenu({
   return (
     <div className="relative" ref={dropdownRef}>
       <button
+        type="button"
         onClick={(e) => {
           e.stopPropagation();
           setIsOpen(!isOpen);
         }}
-        className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+        className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         title="More options"
         aria-label="More options"
+        aria-expanded={isOpen}
       >
         <MoreVertical className="w-5 h-5" />
       </button>
@@ -71,16 +73,18 @@ export function KebabMenu({
       {isOpen && (
         <div className="absolute right-0 top-full mt-1 w-48 bg-white/95 backdrop-blur-xl rounded-lg shadow-xl border border-gray-200 py-1 z-50">
           <button
+            type="button"
             onClick={handleRename}
-            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors focus:outline-none focus-visible:bg-gray-50 focus-visible:ring-2 focus-visible:ring-accent"
           >
             <Edit2 className="w-4 h-4" />
             <span>Rename</span>
           </button>
 
           <button
+            type="button"
             onClick={handleDuplicate}
-            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors focus:outline-none focus-visible:bg-gray-50 focus-visible:ring-2 focus-visible:ring-accent"
           >
             <Copy className="w-4 h-4" />
             <span>Duplicate</span>
@@ -89,8 +93,9 @@ export function KebabMenu({
           <div className="border-t border-gray-100 my-1" />
 
           <button
+            type="button"
             onClick={handleDelete}
-            className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-3 transition-colors"
+            className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-3 transition-colors focus:outline-none focus-visible:bg-red-50 focus-visible:ring-2 focus-visible:ring-red-500"
           >
             <Trash2 className="w-4 h-4" />
             <span>Delete</span>
