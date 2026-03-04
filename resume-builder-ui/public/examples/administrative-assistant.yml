@@ -51,14 +51,19 @@ resume:
       dates: Aug 2016 - May 2018
       location: Austin, TX
       bullets:
-        - Scheduled patient appointments and managed physician calendars
-        - Processed insurance verifications and maintained patient records
+        - Scheduled patient appointments and managed physician calendars for 6 providers
+        - Processed insurance verifications and maintained patient records in compliance with HIPAA
         - Greeted and assisted 75+ patients daily in busy medical office
+        - Managed incoming referrals and coordinated with external providers for specialist appointments
+        - Maintained electronic filing system with 3,000+ patient records ensuring accuracy
 
   education:
     - school: Austin Community College
       degree: Associate Degree in Office Administration
       year: "2016"
+    - school: University of Texas at Austin (Extension)
+      degree: Certificate in Business Communications
+      year: "2019"
 
   skills:
     - Microsoft Office Suite (Excel, Word, PowerPoint, Outlook)
@@ -71,6 +76,15 @@ resume:
     - Document Management
     - QuickBooks
     - SAP
+    - Concur Travel & Expense
+    - Presentation Design
+    - Office Organization
+    - Confidentiality & Discretion
+
+  certifications:
+    - Certified Administrative Professional (CAP)
+    - Microsoft Office Specialist (MOS)
+    - Notary Public - State of Texas
 
 bulletBank:
   - category: Executive Support

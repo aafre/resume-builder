@@ -52,14 +52,19 @@ resume:
       dates: Sep 2017 - May 2019
       location: New York, NY
       bullets:
-        - Launched and grew Instagram account from 0 to 15K followers
-        - Photographed products and created lifestyle content for posts and stories
-        - Engaged with community through comments, DMs, and user-generated content
+        - Launched and grew Instagram account from 0 to 15K followers in 18 months
+        - Photographed products and created lifestyle content for posts and stories generating 500K+ impressions
+        - Engaged with community through comments, DMs, and user-generated content campaigns
+        - Coordinated influencer collaborations with 10 local micro-influencers driving 2K+ website visits
+        - Managed social content calendar maintaining consistent 5-posts-per-week publishing schedule
 
   education:
     - school: New York University
       degree: B.A. Communications, Minor in Marketing
       year: "2019"
+    - school: Fashion Institute of Technology
+      degree: Certificate in Digital Marketing
+      year: "2020"
 
   skills:
     - Content Strategy
@@ -74,6 +79,15 @@ resume:
     - Analytics
     - Sprout Social
     - Adobe Creative Suite
+    - Video Editing
+    - Brand Voice Development
+    - Crisis Communication
+    - Social Listening Tools
+
+  certifications:
+    - Meta Certified Community Manager
+    - Hootsuite Social Marketing Certification
+    - Google Analytics Individual Qualification
 
 bulletBank:
   - category: Growth & Engagement

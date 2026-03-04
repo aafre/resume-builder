@@ -55,6 +55,8 @@ resume:
         - Planned and executed campus events with attendance of 100-500 students
         - Managed event budgets totaling $15,000 across academic year
         - Collaborated with vendors, campus facilities, and student organizations
+        - Created promotional materials and social media campaigns for each event
+        - Collected post-event feedback surveys and presented improvement recommendations
 
   education:
     - school: Boston University
@@ -62,6 +64,9 @@ resume:
       year: Expected May 2025
       gpa: "3.6"
       honors: Dean's List (4 semesters)
+    - school: Bunker Hill Community College (Dual Enrollment)
+      degree: General Education Credits
+      year: "2021"
 
   skills:
     - Social Media Marketing
@@ -74,6 +79,15 @@ resume:
     - Event Planning
     - Customer Service
     - Team Collaboration
+    - Email Marketing
+    - Market Research
+    - Copywriting
+    - Public Speaking
+
+  certifications:
+    - Google Analytics Individual Qualification
+    - HubSpot Content Marketing Certification
+    - Meta Social Media Marketing Certificate
 
 bulletBank:
   - category: Academic Projects

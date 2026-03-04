@@ -52,9 +52,11 @@ resume:
       dates: Jul 2017 - May 2019
       location: Newark, NJ
       bullets:
-        - Created weekly performance reports for 15 client accounts
-        - Analyzed campaign data to optimize ad spend and improve ROI
-        - Maintained data integrity in CRM systems with 100K+ records
+        - Created weekly performance reports for 15 client accounts tracking 30+ KPIs
+        - Analyzed campaign data to optimize ad spend and improve ROI by 18%
+        - Maintained data integrity in CRM systems with 100K+ records ensuring 99% accuracy
+        - Built Excel dashboards automating client reporting and saving 8 hours weekly
+        - Cleaned and transformed raw datasets using Python scripts for analysis readiness
 
   education:
     - school: New York University
@@ -77,6 +79,16 @@ resume:
     - Data Visualization
     - ETL Processes
     - BigQuery
+    - Apache Airflow
+    - Jupyter Notebooks
+    - Data Modeling
+    - Looker
+
+  certifications:
+    - Google Data Analytics Professional Certificate
+    - Tableau Desktop Certified Associate
+    - AWS Certified Cloud Practitioner
+    - IBM Data Science Professional Certificate
 
 bulletBank:
   - category: Data Analysis

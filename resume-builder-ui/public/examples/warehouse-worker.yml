@@ -52,14 +52,19 @@ resume:
       dates: Jun 2017 - Feb 2019
       location: Columbus, IN
       bullets:
-        - Received incoming shipments and verified against purchase orders
-        - Organized inventory in designated bin locations using WMS system
-        - Prepared outbound shipments including palletizing and shrink wrapping
+        - Received incoming shipments and verified against purchase orders with 99% accuracy
+        - Organized inventory in designated bin locations using WMS system for 5,000+ SKUs
+        - Prepared outbound shipments including palletizing and shrink wrapping for 100+ daily orders
+        - Conducted weekly cycle counts identifying and resolving inventory discrepancies
+        - Operated pallet jack and hand truck safely in high-traffic warehouse environment
 
   education:
     - school: Ivy Tech Community College
       degree: Certificate, Supply Chain Management
       year: "2020"
+    - school: Ivy Tech Community College
+      degree: Associate of Applied Science, Logistics Management
+      year: "2022"
 
   skills:
     - Order Fulfillment
@@ -74,11 +79,16 @@ resume:
     - Team Collaboration
     - Physical Stamina
     - Attention to Detail
+    - Cycle Counting
+    - Hazmat Handling
+    - Loading Dock Operations
+    - Lean Warehousing
 
   certifications:
     - OSHA Forklift Certified
     - Reach Truck Certified
     - Order Picker Certified
+    - Hazmat Awareness Certified
 
 bulletBank:
   - category: Productivity

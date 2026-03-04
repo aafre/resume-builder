@@ -53,15 +53,20 @@ resume:
       dates: Jan 2017 - May 2018
       location: San Diego, CA
       bullets:
-        - Built portfolio of 50+ clients through freelance design services
-        - Designed logos, business cards, and marketing materials for small businesses
-        - Managed client relationships and project timelines independently
+        - Built portfolio of 50+ clients through freelance design services and referrals
+        - Designed logos, business cards, and marketing materials for small businesses and startups
+        - Managed client relationships and project timelines independently across 10+ concurrent projects
+        - Created social media templates and brand style guides for e-commerce businesses
+        - Generated $60K+ annual revenue through word-of-mouth referrals and online portfolio
 
   education:
     - school: Art Center College of Design
       degree: BFA Graphic Design
       year: "2017"
       honors: Cum Laude
+    - school: Santa Monica College
+      degree: Associate of Arts, Visual Communications
+      year: "2015"
 
   skills:
     - Adobe Photoshop
@@ -76,6 +81,15 @@ resume:
     - Motion Graphics
     - Color Theory
     - Layout Design
+    - After Effects
+    - Packaging Design
+    - Photo Retouching
+    - Presentation Design
+
+  certifications:
+    - Adobe Certified Professional in Visual Design
+    - Google UX Design Certificate
+    - HubSpot Content Marketing Certification
 
 bulletBank:
   - category: Design Projects
