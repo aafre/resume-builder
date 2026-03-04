@@ -22,6 +22,8 @@ import tempfile
 from pathlib import Path
 
 import yaml
+from pdf2image import convert_from_path
+from PIL import Image
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 
@@ -159,9 +161,6 @@ def convert_flat_to_template_yaml(resume: dict) -> dict:
 
 def generate_preview_images(slug: str, pdf_path: str) -> None:
     """Convert first page of PDF to desktop + mobile WebP images."""
-    from pdf2image import convert_from_path
-    from PIL import Image
-
     images = convert_from_path(pdf_path, first_page=1, last_page=1, dpi=PDF_DPI)
     if not images:
         raise RuntimeError(f"No images generated from PDF for {slug}")
