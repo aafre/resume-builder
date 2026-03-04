@@ -42,16 +42,33 @@ export function useCloudSave({
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const previousDataRef = useRef<string>('');
 
+  // ⚡ Bolt: Cache for icon base64 strings to prevent redundant conversions during frequent auto-saves.
+  // Converting File to base64 via FileReader is expensive and can block the main thread.
+  // Caching the result prevents regenerating the string for unchanged files.
+  const iconCacheRef = useRef<Record<string, string>>({});
+
   // Function to convert File or base64 to base64 string
   const iconToBase64 = async (icon: File | string): Promise<string> => {
     if (typeof icon === 'string') {
       return icon; // Already base64
     }
 
-    // Convert File to base64
+    // Generate cache key for File
+    const cacheKey = `${icon.name}-${icon.size}-${icon.lastModified}`;
+
+    // Return cached base64 string if it exists
+    if (iconCacheRef.current[cacheKey]) {
+      return iconCacheRef.current[cacheKey];
+    }
+
+    // Convert File to base64 and cache it
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result as string);
+      reader.onloadend = () => {
+        const result = reader.result as string;
+        iconCacheRef.current[cacheKey] = result;
+        resolve(result);
+      };
       reader.onerror = reject;
       reader.readAsDataURL(icon);
     });
