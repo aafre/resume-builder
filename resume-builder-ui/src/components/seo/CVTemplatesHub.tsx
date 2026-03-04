@@ -115,12 +115,15 @@ export default function CVTemplatesHub() {
             to="/templates/ats-friendly"
             className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border-2 border-accent/20 hover:border-accent/70"
           >
-            <div className="aspect-[8.5/11] bg-gradient-to-br from-chalk to-chalk-dark rounded-xl mb-4 flex items-center justify-center border border-black/[0.06]">
-              <div className="text-center p-4">
-                <div className="text-4xl mb-2">&#128196;</div>
-                <div className="text-sm font-bold text-stone-warm">ATS-Friendly</div>
-                <div className="text-xs text-mist">Professional CV</div>
-              </div>
+            <div className="aspect-[8.5/11] rounded-xl mb-4 overflow-hidden border border-black/[0.06]">
+              <img
+                src="/docs/templates/modern-no-icons.png"
+                alt="ATS-friendly CV template preview"
+                className="w-full h-full object-contain bg-chalk-dark p-2"
+                width={400}
+                height={566}
+                loading="lazy"
+              />
             </div>
             <h3 className="font-display text-lg font-bold text-ink mb-2">
               Professional ATS CV Template
