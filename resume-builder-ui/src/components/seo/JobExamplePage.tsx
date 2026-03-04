@@ -25,6 +25,9 @@ import type { JobExampleData } from '../../data/jobExamples/types';
 import type { FAQConfig } from '../../types/seo';
 import type { Section } from '../../types';
 
+// Supabase Storage CDN base URL for pre-generated resume preview images
+const PREVIEW_BASE_URL = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/template-previews`;
+
 // Loading skeleton component
 const LoadingSkeleton = () => (
   <div className="min-h-screen bg-chalk">
@@ -138,7 +141,7 @@ export default function JobExamplePage() {
     {
       '@context': 'https://schema.org',
       '@type': 'ImageObject',
-      contentUrl: `https://easyfreeresume.com/docs/templates/examples/${slug}.webp`,
+      contentUrl: `${PREVIEW_BASE_URL}/${slug}.webp`,
       name: `${data.meta.title} Resume Example`,
       description: data.meta.metaDescription,
       width: 800,
@@ -264,8 +267,8 @@ export default function JobExamplePage() {
                 {/* Real Template Preview Image */}
                 <div className="p-4 lg:p-6 bg-white flex justify-center">
                   <img
-                    src={`/docs/templates/examples/${slug}.webp`}
-                    srcSet={`/docs/templates/examples/${slug}-sm.webp 400w, /docs/templates/examples/${slug}.webp 800w`}
+                    src={`${PREVIEW_BASE_URL}/${slug}.webp`}
+                    srcSet={`${PREVIEW_BASE_URL}/${slug}-sm.webp 400w, ${PREVIEW_BASE_URL}/${slug}.webp 800w`}
                     sizes="(max-width: 768px) 400px, 550px"
                     alt={`${data.meta.title} resume example - professional ATS-friendly template`}
                     className="w-full max-w-[550px] rounded-lg shadow-lg border border-black/[0.06]"
