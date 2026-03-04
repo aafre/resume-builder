@@ -277,55 +277,94 @@ export default function JobExamplePage() {
                     loading="eager"
                     fetchPriority="high"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/docs/templates/modern-no-icons.png';
+                      const img = e.target as HTMLImageElement;
+                      img.onerror = null;
+                      img.src = '/docs/templates/modern-no-icons.png';
                     }}
                   />
                 </div>
 
-                {/* Visible resume text for SEO keyword signals */}
-                <div className="px-6 lg:px-8 pb-6 lg:pb-8 bg-white border-t border-black/[0.06] mt-2 pt-4">
-                  <p className="text-ink/80 text-sm leading-relaxed mb-4">{data.resume.summary}</p>
+                {/* Full HTML-styled resume text for SEO */}
+                <div className="px-6 lg:px-8 pb-6 lg:pb-8 bg-white border-t border-black/[0.06] mt-2 pt-6">
+                  {/* Contact Header */}
+                  <div className="text-center border-b border-black/[0.06] pb-6 mb-6">
+                    <h3 className="text-2xl font-bold text-ink">{data.resume.contact.name}</h3>
+                    <p className="text-lg text-accent mt-1">{data.resume.contact.title}</p>
+                    <p className="text-stone-warm mt-2 text-sm">
+                      {data.resume.contact.email} | {data.resume.contact.phone} | {data.resume.contact.location}
+                    </p>
+                  </div>
 
-                  {data.resume.experience.slice(0, 2).map((exp, index) => (
-                    <div key={index} className="mb-3">
-                      <p className="text-sm font-semibold text-ink">
-                        {exp.title} — {exp.company}
-                        <span className="font-normal text-mist ml-2">{exp.dates}</span>
-                      </p>
-                      <ul className="mt-1 space-y-0.5">
-                        {exp.bullets.slice(0, 2).map((bullet, bIndex) => (
-                          <li key={bIndex} className="text-ink/70 text-xs pl-3 relative">
+                  {/* Summary */}
+                  <div className="mb-6">
+                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">Professional Summary</h4>
+                    <p className="text-ink/80 text-sm leading-relaxed">{data.resume.summary}</p>
+                  </div>
+
+                  {/* Experience — ALL entries, ALL bullets */}
+                  <div className="mb-6">
+                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-3">Work Experience</h4>
+                    {data.resume.experience.map((exp, index) => (
+                      <div key={index} className="mb-4">
+                        <div className="flex justify-between items-start mb-1">
+                          <div>
+                            <p className="font-semibold text-ink">{exp.title}</p>
+                            <p className="text-stone-warm">{exp.company}</p>
+                          </div>
+                          <p className="text-mist text-sm">{exp.dates}</p>
+                        </div>
+                        <ul className="mt-2 space-y-1">
+                          {exp.bullets.map((bullet, bIndex) => (
+                            <li key={bIndex} className="text-ink/80 text-sm pl-4 relative">
+                              <span className="absolute left-0 text-mist">&bull;</span>
+                              {bullet}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Education */}
+                  <div className="mb-6">
+                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">Education</h4>
+                    {data.resume.education.map((edu, index) => (
+                      <div key={index} className="flex justify-between items-start mb-1">
+                        <div>
+                          <p className="font-semibold text-ink">{edu.degree}</p>
+                          <p className="text-stone-warm">{edu.school}</p>
+                        </div>
+                        <p className="text-mist text-sm">{edu.year}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Skills — ALL skills, no truncation */}
+                  <div className={data.resume.certifications?.length ? 'mb-6' : ''}>
+                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">Skills</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {data.resume.skills.map((skill, index) => (
+                        <span key={index} className="px-2 py-1 bg-chalk-dark text-ink text-sm rounded">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Certifications (if present) */}
+                  {data.resume.certifications && data.resume.certifications.length > 0 && (
+                    <div>
+                      <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">Certifications</h4>
+                      <ul className="space-y-1">
+                        {data.resume.certifications.map((cert, index) => (
+                          <li key={index} className="text-ink/80 text-sm pl-4 relative">
                             <span className="absolute left-0 text-mist">&bull;</span>
-                            {bullet}
+                            {cert}
                           </li>
                         ))}
                       </ul>
                     </div>
-                  ))}
-
-                  <div className="flex items-baseline gap-4 mb-2">
-                    {data.resume.education.map((edu, index) => (
-                      <p key={index} className="text-xs text-stone-warm">
-                        {edu.degree} — {edu.school}
-                      </p>
-                    ))}
-                  </div>
-
-                  <div className="flex flex-wrap gap-1.5">
-                    {data.resume.skills.slice(0, 8).map((skill, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-0.5 bg-chalk-dark text-ink text-xs rounded"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                    {data.resume.skills.length > 8 && (
-                      <span className="text-mist text-xs py-0.5">
-                        +{data.resume.skills.length - 8} more
-                      </span>
-                    )}
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
