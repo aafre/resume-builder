@@ -104,6 +104,14 @@ export const blogPosts: BlogPost[] = [
     category: "Resume Writing",
   },
   {
+    slug: "best-free-resume-builders-2026",
+    title: "9 Best Free Resume Builders in 2026 (Honestly Reviewed)",
+    description: "We tested 9 free resume builders so you don't have to. Real pricing, actual free tiers, ATS compatibility, and export formats — no affiliate bias.",
+    publishDate: "2026-03-05",
+    readTime: "14 min",
+    category: "Comparisons",
+  },
+  {
     slug: "resume-action-verbs",
     title: "Action Verbs for Resumes: 200+ Words to Boost Your Impact",
     description: "Replace boring words with powerful action verbs that grab recruiters' attention and showcase your accomplishments.",

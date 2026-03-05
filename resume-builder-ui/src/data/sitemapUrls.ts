@@ -80,6 +80,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/behavioral-interview-questions', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/introducing-prepai-ai-interview-coach', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/how-to-write-a-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/best-free-resume-builders-2026', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
   { loc: '/blog/resume-action-verbs', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/how-to-use-resume-keywords', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
   // /resume-keywords/software-engineer is auto-generated from JOBS_DATABASE (priority 0.9)
