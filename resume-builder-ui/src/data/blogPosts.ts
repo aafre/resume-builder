@@ -55,6 +55,14 @@ export const blogPosts: BlogPost[] = [
     category: "AI & Tools",
   },
   {
+    slug: "career-change-resume-guide",
+    title: "How to Write a Career Change Resume (2026 Guide + Examples)",
+    description: "Career change resume guide: how to write a resume when switching careers. Transferable skills framework, functional vs hybrid formats, real examples, and common mistakes to avoid.",
+    publishDate: "2026-03-05",
+    readTime: "12 min",
+    category: "Resume Writing",
+  },
+  {
     slug: "ai-cover-letter-prompts",
     title: "25+ AI Cover Letter Prompts (Copy-Paste Ready for Any AI Tool)",
     description: "AI cover letter prompts that actually work: tailored cover letters, opening hooks, career changes, follow-ups, and thank-you notes. Copy-paste ready for ChatGPT, Claude, Copilot, and Gemini.",
