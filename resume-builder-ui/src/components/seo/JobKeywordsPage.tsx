@@ -15,6 +15,7 @@ import RevealSection from '../shared/RevealSection';
 import RelatedJobsSection from './RelatedJobsSection';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { getJobBySlug } from '../../data/jobKeywords';
+import { getMatchingExampleSlug } from '../../utils/crossLinkHelpers';
 import { generateJobFAQs, getTotalKeywordCount } from '../../utils/jobKeywordHelpers';
 import { generateJobPageTitle, generateJobPageDescription } from '../../utils/seoHelpers';
 import type { BreadcrumbConfig, HeroConfig } from '../../types/seo';
@@ -32,6 +33,9 @@ export default function JobKeywordsPage() {
 
   // Generate FAQs (use custom if provided, otherwise auto-generate)
   const faqs = jobData.customFaqs || generateJobFAQs(jobData);
+
+  // Cross-link to matching example page
+  const matchingExampleSlug = getMatchingExampleSlug(jobData.slug);
 
   // Get before/after example from job data
   const example = jobData.example;
@@ -425,6 +429,9 @@ export default function JobKeywordsPage() {
         <div className="bg-chalk-dark rounded-2xl p-6 border border-black/[0.06] mt-12 mb-16 max-w-4xl mx-auto">
           <h2 className="text-2xl font-extrabold text-ink tracking-tight mb-4">Related Resources</h2>
           <ul className="space-y-2">
+            {matchingExampleSlug && (
+              <li><Link to={`/examples/${matchingExampleSlug}`} className="text-accent hover:underline font-medium">Free {jobData.title} Resume Example — Ready to Customize</Link></li>
+            )}
             <li><Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">How to Use Resume Keywords Effectively</Link></li>
             <li><Link to="/resume-keyword-scanner" className="text-accent hover:underline">ATS Keyword Scanner — Check Your Match Score</Link></li>
             <li><Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">ATS Resume Optimization Guide</Link></li>
