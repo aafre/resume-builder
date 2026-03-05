@@ -122,6 +122,7 @@ const CopilotResumePrompts = lazy(() => import("./components/blog/CopilotResumeP
 const AICoverLetterPrompts = lazy(() => import("./components/blog/AICoverLetterPrompts"));
 const CareerChangeResumeGuide = lazy(() => import("./components/blog/CareerChangeResumeGuide"));
 const ResumeEmploymentGaps = lazy(() => import("./components/blog/ResumeEmploymentGaps"));
+const ReturnToWorkPrograms = lazy(() => import("./components/blog/ReturnToWorkPrograms"));
 const AIJobDescriptionAnalyzer = lazy(() => import("./components/blog/AIJobDescriptionAnalyzer"));
 const AIResumeReview = lazy(() => import("./components/blog/AIResumeReview"));
 const CustomerServiceResumeKeywordsGuide = lazy(() => import("./components/blog/CustomerServiceResumeKeywordsGuide"));
@@ -815,6 +816,14 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <ResumeEmploymentGaps />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/return-to-work-programs"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ReturnToWorkPrograms />
               </Suspense>
             }
           />

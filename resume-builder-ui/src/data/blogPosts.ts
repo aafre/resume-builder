@@ -55,6 +55,14 @@ export const blogPosts: BlogPost[] = [
     category: "AI & Tools",
   },
   {
+    slug: "return-to-work-programs",
+    title: "Return to Work Programs: 13 Top Companies Hiring Career Returners (2026)",
+    description: "Return to work programs and returnships at JP Morgan, Goldman Sachs, Amazon, Microsoft, Meta, and more. Paid programs, eligibility, how to apply, and resume tips for career returners.",
+    publishDate: "2026-03-05",
+    readTime: "14 min",
+    category: "Job Applications",
+  },
+  {
     slug: "resume-employment-gaps",
     title: "How to Explain Employment Gaps on Your Resume (2026 Guide)",
     description: "How to explain employment gaps on your resume: honest framing for layoffs, caregiving, health, travel, and career changes. Format strategies, example language, and what not to do.",
