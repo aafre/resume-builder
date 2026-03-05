@@ -1,4 +1,5 @@
 import BlogLayout from "../BlogLayout";
+import { Link } from "react-router-dom";
 
 export default function HowToWriteResumeGuide() {
   return (
@@ -184,6 +185,13 @@ export default function HowToWriteResumeGuide() {
                 <strong>Tools:</strong> Git, Docker, AWS, Jenkins
               </div>
             </div>
+            <p className="text-stone-warm text-sm mt-3">
+              See a complete{' '}
+              <Link to="/examples/software-engineer" className="text-accent hover:underline">software engineer resume example</Link>
+              {' '}or browse{' '}
+              <Link to="/resume-keywords/software-engineer" className="text-accent hover:underline">software engineer ATS keywords</Link>
+              {' '}for more role-specific guidance.
+            </p>
           </div>
         </div>
 

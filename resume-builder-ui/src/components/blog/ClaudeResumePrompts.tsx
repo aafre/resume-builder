@@ -246,13 +246,21 @@ export default function ClaudeResumePrompts() {
           </CopyablePrompt>
         </div>
 
+        <p className="text-lg leading-relaxed text-stone-warm">
+          Need role-specific keywords to include? Browse our{' '}
+          <Link to="/resume-keywords" className="text-accent hover:underline">ATS keywords by job title</Link>
+          {' '}pages for curated keyword lists, or see a{' '}
+          <Link to="/examples/software-engineer" className="text-accent hover:underline">software engineer resume example</Link>
+          {' '}to see these skills in context.
+        </p>
+
         {/* Tailoring and Optimization */}
         <h2 id="tailoring" className="text-3xl font-bold text-ink mt-12 mb-6">
           Tailoring and ATS Optimization Prompts
         </h2>
 
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
-          Tailoring your resume to each job application is the single most effective way to improve your callback rate. Claude excels here because it can hold your entire resume and the full job description in context simultaneously. Learn more in our <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">ATS keyword optimization guide</Link>.
+          Tailoring your resume to each job application is the single most effective way to improve your callback rate. Claude excels here because it can hold your entire resume and the full job description in context simultaneously. Learn more in our <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">ATS keyword optimization guide</Link>, or browse our <Link to="/resume-keywords" className="text-accent hover:underline">resume keywords by job title</Link> for role-specific keyword lists.
         </p>
 
         <div className="space-y-6">
