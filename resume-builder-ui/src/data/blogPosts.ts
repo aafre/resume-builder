@@ -55,6 +55,14 @@ export const blogPosts: BlogPost[] = [
     category: "AI & Tools",
   },
   {
+    slug: "ai-cover-letter-prompts",
+    title: "25+ AI Cover Letter Prompts (Copy-Paste Ready for Any AI Tool)",
+    description: "AI cover letter prompts that actually work: tailored cover letters, opening hooks, career changes, follow-ups, and thank-you notes. Copy-paste ready for ChatGPT, Claude, Copilot, and Gemini.",
+    publishDate: "2026-03-05",
+    readTime: "16 min",
+    category: "AI & Tools",
+  },
+  {
     slug: "copilot-resume-prompts",
     title: "20+ Microsoft Copilot Prompts for Resume Writing (2026)",
     description: "Best Microsoft Copilot prompts for resume writing: professional summaries, experience bullets, ATS keywords, skills, and cover letters. Copy-paste ready for Copilot in Bing, Edge, and Microsoft 365.",
