@@ -55,6 +55,14 @@ export const blogPosts: BlogPost[] = [
     category: "AI & Tools",
   },
   {
+    slug: "resume-employment-gaps",
+    title: "How to Explain Employment Gaps on Your Resume (2026 Guide)",
+    description: "How to explain employment gaps on your resume: honest framing for layoffs, caregiving, health, travel, and career changes. Format strategies, example language, and what not to do.",
+    publishDate: "2026-03-05",
+    readTime: "10 min",
+    category: "Resume Tips",
+  },
+  {
     slug: "career-change-resume-guide",
     title: "How to Write a Career Change Resume (2026 Guide + Examples)",
     description: "Career change resume guide: how to write a resume when switching careers. Transferable skills framework, functional vs hybrid formats, real examples, and common mistakes to avoid.",
