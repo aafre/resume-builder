@@ -99,6 +99,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/grok-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/ai-job-description-analyzer', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/ai-resume-review', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/deepseek-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
 
   // Competitor Comparison Posts (0.5) - recently created
   { loc: '/blog/resume-io-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },

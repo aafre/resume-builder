@@ -55,6 +55,14 @@ export const blogPosts: BlogPost[] = [
     category: "AI & Tools",
   },
   {
+    slug: "deepseek-resume-prompts",
+    title: "20+ DeepSeek Prompts for Resume Writing (Copy & Paste Ready) 2026",
+    description: "Best DeepSeek prompts for resume writing: professional summaries, experience bullets, ATS keywords, skills optimization, and cover letters. Copy-paste ready for DeepSeek V3 and R1.",
+    publishDate: "2026-03-05",
+    readTime: "14 min",
+    category: "AI & Tools",
+  },
+  {
     slug: "ai-job-description-analyzer",
     title: "How to Use AI to Analyze Job Descriptions (Extract Keywords & Requirements)",
     description: "Learn to use AI tools like ChatGPT and Claude to extract keywords, identify requirements, and decode what employers really want from job descriptions.",
