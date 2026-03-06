@@ -41,6 +41,7 @@ export function useCloudSave({
   const [currentResumeId, setCurrentResumeId] = useState<string | null>(resumeId);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const previousDataRef = useRef<string>('');
+  const base64Cache = useRef<Record<string, string>>({});
 
   // Function to convert File or base64 to base64 string
   const iconToBase64 = async (icon: File | string): Promise<string> => {
@@ -48,10 +49,21 @@ export function useCloudSave({
       return icon; // Already base64
     }
 
+    // ⚡ Bolt: Cache FileReader base64 conversions to prevent redundantly
+    // blocking the main thread with expensive I/O operations on frequent saves.
+    const cacheKey = `${icon.name}-${icon.size}-${icon.lastModified}`;
+    if (base64Cache.current[cacheKey]) {
+      return base64Cache.current[cacheKey];
+    }
+
     // Convert File to base64
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result as string);
+      reader.onloadend = () => {
+        const result = reader.result as string;
+        base64Cache.current[cacheKey] = result;
+        resolve(result);
+      };
       reader.onerror = reject;
       reader.readAsDataURL(icon);
     });
