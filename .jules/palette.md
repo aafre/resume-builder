@@ -1,0 +1,3 @@
+## 2024-05-18 - Ensure Keyboard Usability and Screen Reader Support on Custom Dropdowns
+**Learning:** For custom dropdown components (like KebabMenu), visual cues for keyboard focus are crucial, especially within dropdown options. Furthermore, without `aria-expanded` and `role="menu"`, screen readers cannot interpret the menu structure or whether the menu is open/closed.
+**Action:** When creating or modifying custom dropdowns or modals, ensure correct ARIA roles (`menu`, `menuitem`, `dialog`, `aria-modal`) and apply distinct `focus-visible` styles with sufficient contrast (e.g. `focus:outline-none focus-visible:ring-2`) to all interactive elements.

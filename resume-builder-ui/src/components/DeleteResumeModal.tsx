@@ -19,7 +19,12 @@ export function DeleteResumeModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-2xl shadow-xl max-w-md w-full mx-4">
+      <div
+        className="bg-white rounded-2xl shadow-xl max-w-md w-full mx-4"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-resume-title"
+      >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex-shrink-0">
@@ -38,7 +43,7 @@ export function DeleteResumeModal({
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Delete Resume?</h2>
+              <h2 id="delete-resume-title" className="text-xl font-bold text-gray-900">Delete Resume?</h2>
               <p className="text-sm text-gray-500 mt-1">This action cannot be undone</p>
             </div>
           </div>
@@ -52,14 +57,14 @@ export function DeleteResumeModal({
             <button
               onClick={onConfirm}
               disabled={isDeleting}
-              className="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white font-medium py-2 px-4 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
             >
               {isDeleting ? 'Deleting...' : 'Delete'}
             </button>
             <button
               onClick={onCancel}
               disabled={isDeleting}
-              className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2"
             >
               Cancel
             </button>
