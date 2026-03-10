@@ -76,7 +76,7 @@ export default function CVTemplatesPage() {
 
       {/* CV vs Resume Explanation */}
       <RevealSection variant="fade-up">
-      <div className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+      <div className="my-16 cv-auto cv-h-400">
         <div className="max-w-4xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
           <h2 className="text-2xl font-bold text-ink mb-4">
             CV or Resume? Which Term Should You Use?
@@ -117,7 +117,7 @@ export default function CVTemplatesPage() {
 
       {/* UK CV Format Guide */}
       <RevealSection variant="fade-up">
-      <div className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
+      <div className="my-16 cv-auto cv-h-500">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           UK CV Format Essentials
         </h2>
@@ -182,7 +182,7 @@ export default function CVTemplatesPage() {
 
       {/* Length Guidelines */}
       <RevealSection variant="fade-up">
-      <div className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 300px' }}>
+      <div className="my-16 cv-auto cv-h-300">
         <div className="max-w-4xl mx-auto bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06]">
           <h2 className="font-display text-2xl font-bold text-ink mb-4 text-center">
             How Long Should a UK CV Be?
@@ -210,7 +210,7 @@ export default function CVTemplatesPage() {
 
       {/* Date Format Section */}
       <RevealSection variant="fade-up">
-      <div className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 300px' }}>
+      <div className="my-16 cv-auto cv-h-300">
         <div className="max-w-4xl mx-auto bg-amber-50 border border-amber-200 rounded-xl p-8">
           <h3 className="text-2xl font-bold text-amber-900 mb-4">
             UK Date Format for CVs
@@ -240,7 +240,7 @@ export default function CVTemplatesPage() {
 
       {/* Related Pages */}
       <RevealSection variant="fade-up">
-      <div className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 200px' }}>
+      <div className="my-16 cv-auto cv-h-200">
         <h3 className="font-display text-2xl font-bold text-ink mb-6 text-center">
           Explore More CV Resources
         </h3>

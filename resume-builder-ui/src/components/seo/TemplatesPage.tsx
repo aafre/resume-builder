@@ -40,7 +40,7 @@ export default function TemplatesPage() {
 
       {/* Why Our Templates Section */}
       <RevealSection variant="fade-up">
-        <div className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+        <div className="my-16 cv-auto cv-h-400">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             Why Choose Our Free Resume Templates?
           </h2>
@@ -87,7 +87,7 @@ export default function TemplatesPage() {
 
       {/* How to Use Section with implicit HowTo schema */}
       <RevealSection variant="fade-up">
-        <div className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+        <div className="my-16 cv-auto cv-h-400">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             How to Create Your Resume
           </h2>

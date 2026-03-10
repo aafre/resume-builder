@@ -755,6 +755,20 @@ div[data-google-query-id] {
   overflow: hidden !important;
 }
 
+/* ── Content-visibility utilities ──
+   Defer rendering of off-screen sections until scrolled into view.
+   Pair .cv-auto with an .cv-h-{size} class to reserve estimated height. */
+.cv-auto { content-visibility: auto; }
+.cv-h-200 { contain-intrinsic-size: auto 200px; }
+.cv-h-250 { contain-intrinsic-size: auto 250px; }
+.cv-h-300 { contain-intrinsic-size: auto 300px; }
+.cv-h-350 { contain-intrinsic-size: auto 350px; }
+.cv-h-400 { contain-intrinsic-size: auto 400px; }
+.cv-h-500 { contain-intrinsic-size: auto 500px; }
+.cv-h-600 { contain-intrinsic-size: auto 600px; }
+.cv-h-700 { contain-intrinsic-size: auto 700px; }
+.cv-h-800 { contain-intrinsic-size: auto 800px; }
+
 /* Force Google Funding Choices consent modal to overlay (prevents CLS) */
 .fc-consent-root,
 .fc-dialog-container {

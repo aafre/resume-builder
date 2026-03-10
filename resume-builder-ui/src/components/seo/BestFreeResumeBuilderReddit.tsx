@@ -66,7 +66,7 @@ export default function BestFreeResumeBuilderReddit() {
 
       {/* What Reddit Complains About section */}
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
+      <div className="mb-16 cv-auto cv-h-500">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           What Reddit users complain about (avoid these red flags)
         </h2>
@@ -124,7 +124,7 @@ export default function BestFreeResumeBuilderReddit() {
 
       {/* Verification Checklist */}
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+      <div className="mb-16 cv-auto cv-h-400">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           How to verify a builder is actually free
         </h2>
@@ -169,7 +169,7 @@ export default function BestFreeResumeBuilderReddit() {
       </RevealSection>
 
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 600px' }}>
+      <div className="mb-16 cv-auto cv-h-600">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Evaluation criteria: how we meet Reddit's standards
         </h2>
@@ -220,7 +220,7 @@ export default function BestFreeResumeBuilderReddit() {
       </RevealSection>
 
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 300px' }}>
+      <div className="mb-16 cv-auto cv-h-300">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           When a paid tool makes sense
         </h2>
@@ -244,7 +244,7 @@ export default function BestFreeResumeBuilderReddit() {
 
       {/* Recent Reddit Threads - Updated Feb 2026 */}
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
+      <div className="mb-16 cv-auto cv-h-500">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           What Reddit is saying in 2026
         </h2>
@@ -288,7 +288,7 @@ export default function BestFreeResumeBuilderReddit() {
 
       {/* Top Resume Tips From Reddit */}
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
+      <div className="mb-16 cv-auto cv-h-500">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Top resume tips from Reddit (2026)
         </h2>
@@ -325,7 +325,7 @@ export default function BestFreeResumeBuilderReddit() {
 
       {/* See How Specific Builders Compare */}
       <RevealSection variant="fade-up">
-      <div className="mb-16 max-w-4xl mx-auto" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 300px' }}>
+      <div className="mb-16 max-w-4xl mx-auto cv-auto cv-h-300">
         <CompareBuildersCrossLinks
           title="See How Specific Builders Compare"
           description="Want a detailed breakdown of a specific resume builder? We've analyzed pricing, features, and hidden costs:"
