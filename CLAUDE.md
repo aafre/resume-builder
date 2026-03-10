@@ -76,6 +76,12 @@ The YAML resume format supports these section types:
 - `experience`: Job history with company, title, dates, description
 - `education`: Academic qualifications with degree, school, year
 
+### Job Example Preview Images
+- 26 job example pages show real template preview images served from Supabase Storage CDN
+- See `docs/templates/PREVIEW-IMAGES.md` for the full runbook (generate, upload, add new examples)
+- Scripts: `scripts/generate_example_previews.py` (YAML → PDF → WebP) and `scripts/upload_previews_to_supabase.py` (WebP → CDN)
+- Images are in `docs/templates/examples/` (gitignored)
+
 ### Icon System
 - Icons stored in icons/ directory
 - Supported formats: PNG, JPG, SVG

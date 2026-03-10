@@ -12,7 +12,6 @@ import { Toaster } from "react-hot-toast";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import EnvironmentBanner from "./components/EnvironmentBanner";
-import AnnouncementBar from "./components/AnnouncementBar";
 import ScrollToTop from "./components/ScrollToTop";
 import { EditorProvider } from "./contexts/EditorContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
@@ -102,6 +101,7 @@ const JobInterviewGuide = lazy(() => import("./components/blog/JobInterviewGuide
 const BehavioralInterviewQuestions = lazy(() => import("./components/blog/BehavioralInterviewQuestions"));
 const IntroducingPrepAI = lazy(() => import("./components/blog/IntroducingPrepAI"));
 const HowToWriteResumeGuide = lazy(() => import("./components/blog/HowToWriteResumeGuide"));
+const BestFreeResumeBuilders2026 = lazy(() => import("./components/blog/BestFreeResumeBuilders2026"));
 const ResumeActionVerbs = lazy(() => import("./components/blog/ResumeActionVerbs"));
 const HowToUseResumeKeywords = lazy(() => import("./components/blog/HowToUseResumeKeywords"));
 // SoftwareEngineerResumeKeywords removed - route now redirects to /resume-keywords/software-engineer
@@ -116,6 +116,12 @@ const AIResumeWritingGuide = lazy(() => import("./components/blog/AIResumeWritin
 const ClaudeResumePrompts = lazy(() => import("./components/blog/ClaudeResumePrompts"));
 const GeminiResumePrompts = lazy(() => import("./components/blog/GeminiResumePrompts"));
 const GrokResumePrompts = lazy(() => import("./components/blog/GrokResumePrompts"));
+const DeepSeekResumePrompts = lazy(() => import("./components/blog/DeepSeekResumePrompts"));
+const CopilotResumePrompts = lazy(() => import("./components/blog/CopilotResumePrompts"));
+const AICoverLetterPrompts = lazy(() => import("./components/blog/AICoverLetterPrompts"));
+const CareerChangeResumeGuide = lazy(() => import("./components/blog/CareerChangeResumeGuide"));
+const ResumeEmploymentGaps = lazy(() => import("./components/blog/ResumeEmploymentGaps"));
+const ReturnToWorkPrograms = lazy(() => import("./components/blog/ReturnToWorkPrograms"));
 const AIJobDescriptionAnalyzer = lazy(() => import("./components/blog/AIJobDescriptionAnalyzer"));
 const AIResumeReview = lazy(() => import("./components/blog/AIResumeReview"));
 const CustomerServiceResumeKeywordsGuide = lazy(() => import("./components/blog/CustomerServiceResumeKeywordsGuide"));
@@ -212,7 +218,6 @@ function AppContent() {
    <ScrollToTop/>
     <div className="flex flex-col min-h-screen bg-gray-50">
       <EnvironmentBanner />
-      <AnnouncementBar />
       {/* Header */}
       <header className="bg-white sticky top-0 z-50">
         <Header />
@@ -662,6 +667,14 @@ function AppContent() {
             }
           />
           <Route
+            path="/blog/best-free-resume-builders-2026"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <BestFreeResumeBuilders2026 />
+              </Suspense>
+            }
+          />
+          <Route
             path="/blog/resume-action-verbs"
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
@@ -761,6 +774,54 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <GrokResumePrompts />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/deepseek-resume-prompts"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <DeepSeekResumePrompts />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/copilot-resume-prompts"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <CopilotResumePrompts />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/ai-cover-letter-prompts"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <AICoverLetterPrompts />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/career-change-resume-guide"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <CareerChangeResumeGuide />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/resume-employment-gaps"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ResumeEmploymentGaps />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/return-to-work-programs"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ReturnToWorkPrograms />
               </Suspense>
             }
           />

@@ -55,9 +55,11 @@ export default function AnnouncementBar() {
   };
 
   if (!shouldShow || !activeAnnouncement) {
-    // On the landing page, render an invisible placeholder ONLY while auth/preferences
-    // are still loading. Once resolved, return null to avoid empty space for logged-in users.
-    if (location.pathname === '/' && (authLoading || isLoading)) {
+    // On the landing page, ALWAYS reserve 43px to match the shell placeholder.
+    // Returning null here would cause a ~43px CLS when auth resolves and hides the bar.
+    // The invisible placeholder keeps layout stable; 43px of blank space is negligible.
+    // Non-home routes are fine: the shell already hides .shell-announcement via display:none.
+    if (location.pathname === '/') {
       return (
         <div className="bg-ink" style={{ minHeight: '43px', visibility: 'hidden' }} />
       );

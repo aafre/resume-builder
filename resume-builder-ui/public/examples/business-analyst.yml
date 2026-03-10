@@ -52,9 +52,11 @@ resume:
       dates: Jun 2016 - Jun 2018
       location: Indianapolis, IN
       bullets:
-        - Documented business requirements for inventory management system upgrade
-        - Supported UAT testing and created test cases for new features
-        - Generated weekly reports analyzing sales trends and KPIs
+        - Documented business requirements for inventory management system upgrade serving 200 stores
+        - Supported UAT testing and created 150+ test cases for new system features
+        - Generated weekly reports analyzing sales trends and KPIs for regional leadership
+        - Facilitated training sessions for 50+ end users on new inventory management system
+        - Created data dictionaries and process documentation for knowledge management
 
   education:
     - school: Northwestern University
@@ -77,10 +79,16 @@ resume:
     - Visio
     - Excel (Advanced)
     - Tableau
+    - Power BI
+    - UAT Testing
+    - Gap Analysis
+    - Change Management
 
   certifications:
     - Certified Business Analysis Professional (CBAP)
     - Certified Scrum Product Owner (CSPO)
+    - Lean Six Sigma Green Belt
+    - Tableau Desktop Specialist
 
 bulletBank:
   - category: Requirements & Analysis

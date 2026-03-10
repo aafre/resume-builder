@@ -41,7 +41,7 @@ export default function TemplatesHub() {
       <InContentAd adSlot={AD_CONFIG.slots.templatesIncontent} marginY={32} />
 
       <RevealSection variant="fade-up">
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-500">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             What makes a resume ATS-friendly
           </h2>
@@ -82,7 +82,7 @@ export default function TemplatesHub() {
 
       {/* ATS vs Non-ATS Comparison */}
       <RevealSection variant="fade-up">
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-500">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             ATS-friendly vs. non-ATS templates: what happens
           </h2>
@@ -119,7 +119,7 @@ export default function TemplatesHub() {
       </RevealSection>
 
       <RevealSection variant="fade-up">
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-600">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             Free ATS-friendly templates
           </h2>
@@ -128,12 +128,15 @@ export default function TemplatesHub() {
               to="/templates/ats-friendly"
               className="bg-white rounded-2xl p-6 shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300 border-2 border-accent/20 hover:border-accent/70"
             >
-              <div className="aspect-[8.5/11] bg-gradient-to-br from-chalk to-chalk-dark rounded-xl mb-4 flex items-center justify-center border border-black/[0.06]">
-                <div className="text-center p-4">
-                  <div className="text-4xl mb-2">📄</div>
-                  <div className="text-sm font-bold text-stone-warm">ATS-Friendly</div>
-                  <div className="text-xs text-mist">Modern Template</div>
-                </div>
+              <div className="aspect-[8.5/11] rounded-xl mb-4 overflow-hidden border border-black/[0.06]">
+                <img
+                  src="/docs/templates/modern-no-icons.png"
+                  alt="ATS-friendly resume template preview"
+                  className="w-full h-full object-contain bg-chalk-dark p-2"
+                  width={400}
+                  height={566}
+                  loading="lazy"
+                />
               </div>
               <h3 className="font-display text-lg font-bold text-ink mb-2">
                 Professional ATS Template
@@ -151,7 +154,7 @@ export default function TemplatesHub() {
 
       {/* Which ATS Systems */}
       <RevealSection variant="fade-up">
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-400">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             Tested on the ATS systems employers actually use
           </h2>
@@ -191,7 +194,7 @@ export default function TemplatesHub() {
 
       {/* How to Use ATS Templates */}
       <RevealSection variant="fade-up">
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-500">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             How to use an ATS template effectively
           </h2>
@@ -237,7 +240,7 @@ export default function TemplatesHub() {
 
       {/* Common ATS Mistakes */}
       <RevealSection variant="fade-up">
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-400">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             Common mistakes that get resumes rejected by ATS
           </h2>
@@ -276,7 +279,7 @@ export default function TemplatesHub() {
 
       {/* Related Resources */}
       <RevealSection variant="fade-up">
-        <div className="mb-16 max-w-4xl mx-auto">
+        <div className="mb-16 max-w-4xl mx-auto cv-auto cv-h-300">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             Resume resources
           </h2>

@@ -52,9 +52,11 @@ resume:
       dates: Jan 2018 - May 2019
       location: Tempe, AZ
       bullets:
-        - Recorded patient vital signs and prepared examination rooms
+        - Recorded patient vital signs and prepared examination rooms for 30+ daily appointments
         - Scheduled appointments and managed front desk operations during peak hours
-        - Filed medical records and ensured HIPAA compliance in documentation
+        - Filed medical records and ensured HIPAA compliance in all documentation
+        - Assisted with patient check-in/check-out and co-payment collection
+        - Maintained clean and stocked exam rooms following infection control protocols
 
   education:
     - school: Phoenix College
@@ -77,11 +79,16 @@ resume:
     - Patient Education
     - Appointment Scheduling
     - Insurance Verification
+    - Prior Authorization
+    - Wound Care
+    - Point-of-Care Testing
+    - Medical Coding Basics
 
   certifications:
     - Certified Medical Assistant (CMA-AAMA)
     - BLS/CPR Certified
     - Phlebotomy Technician
+    - OSHA Bloodborne Pathogens Certified
 
 bulletBank:
   - category: Clinical Skills

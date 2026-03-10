@@ -52,14 +52,19 @@ resume:
       dates: Aug 2016 - May 2018
       location: Fort Lauderdale, FL
       bullets:
-        - Assisted with front desk coverage and administrative tasks
-        - Managed conference room scheduling for 50-person office
-        - Ordered office supplies and maintained inventory
+        - Assisted with front desk coverage and administrative tasks for 50-person office
+        - Managed conference room scheduling coordinating 20+ meetings weekly
+        - Ordered office supplies and maintained inventory reducing costs by 10% through bulk purchasing
+        - Sorted and distributed incoming mail and packages to appropriate departments
+        - Created and maintained spreadsheets for office expense tracking and vendor contacts
 
   education:
     - school: Miami Dade College
       degree: Associate Degree in Business Administration
       year: "2016"
+    - school: Florida International University (Extension)
+      degree: Certificate in Office Management
+      year: "2018"
 
   skills:
     - Customer Service
@@ -72,6 +77,15 @@ resume:
     - Cash Handling
     - Professional Communication
     - Calendar Management
+    - Medical Terminology
+    - Conflict Resolution
+    - Bilingual (English/Spanish)
+    - Office Equipment Operation
+
+  certifications:
+    - Microsoft Office Specialist (MOS)
+    - Certified Front Desk Representative (CFDR)
+    - HIPAA Privacy Certification
 
 bulletBank:
   - category: Customer Service

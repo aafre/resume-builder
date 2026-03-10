@@ -53,8 +53,10 @@ resume:
       location: Chicago, IL
       bullets:
         - Sold advertising space to local businesses generating $15K annual revenue
-        - Designed ad layouts and worked with clients on messaging and creative
-        - Built relationships with 30+ local business advertisers
+        - Designed ad layouts and worked with clients on messaging and creative direction
+        - Built relationships with 30+ local business advertisers achieving 80% renewal rate
+        - Trained 3 new advertising sales representatives on client outreach and proposal process
+        - Created media kit increasing advertising inquiries by 25%
 
   education:
     - school: Northwestern University
@@ -62,6 +64,9 @@ resume:
       year: "2024"
       gpa: "3.6"
       honors: Marketing Honors Society, Dean's List
+    - school: College of DuPage
+      degree: Associate of Arts, General Studies
+      year: "2022"
 
   skills:
     - Digital Marketing
@@ -76,6 +81,14 @@ resume:
     - Campaign Analysis
     - HubSpot
     - Adobe Creative Suite
+    - SEO Basics
+    - Influencer Outreach
+    - A/B Testing
+
+  certifications:
+    - Google Analytics Individual Qualification
+    - HubSpot Inbound Marketing Certification
+    - Meta Blueprint Digital Marketing Associate
 
 bulletBank:
   - category: Digital Marketing

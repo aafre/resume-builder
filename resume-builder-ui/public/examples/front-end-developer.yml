@@ -53,9 +53,11 @@ resume:
       dates: Jun 2019 - Dec 2019
       location: San Francisco, CA
       bullets:
-        - Built landing pages and marketing site components using HTML, CSS, JavaScript
-        - Learned React fundamentals and contributed to component library
-        - Fixed bugs and improved cross-browser compatibility
+        - Built landing pages and marketing site components using HTML, CSS, and JavaScript
+        - Learned React fundamentals and contributed 12 components to shared component library
+        - Fixed 40+ bugs and improved cross-browser compatibility across Chrome, Firefox, and Safari
+        - Optimized images and assets reducing average page load time by 35%
+        - Participated in code reviews and daily standups gaining Agile development experience
 
   education:
     - school: UC Berkeley Extension
@@ -78,6 +80,15 @@ resume:
     - Jest
     - Webpack
     - Accessibility (WCAG)
+    - Storybook
+    - Next.js
+    - Performance Optimization
+    - Responsive Design
+
+  certifications:
+    - Meta Front-End Developer Professional Certificate
+    - AWS Certified Cloud Practitioner
+    - Google UX Design Certificate
 
 bulletBank:
   - category: Development Skills

@@ -117,6 +117,7 @@ export type SchemaType =
   | 'HowTo'
   | 'Product'
   | 'VideoObject'
+  | 'ImageObject'
   | 'AboutPage';
 
 export interface StructuredDataConfig {
