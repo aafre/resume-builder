@@ -27,7 +27,10 @@ import type { FAQConfig } from '../../types/seo';
 import type { Section } from '../../types';
 
 // Supabase Storage CDN base URL for pre-generated resume preview images
-const PREVIEW_BASE_URL = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/template-previews`;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const PREVIEW_BASE_URL = SUPABASE_URL
+  ? `${SUPABASE_URL}/storage/v1/object/public/template-previews`
+  : '';
 
 // Loading skeleton component
 const LoadingSkeleton = () => (
