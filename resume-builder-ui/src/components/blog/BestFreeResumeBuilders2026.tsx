@@ -43,12 +43,12 @@ export default function BestFreeResumeBuilders2026() {
           <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm">
             <thead>
               <tr className="bg-chalk-dark">
-                <th className="px-4 py-4 text-left font-bold text-ink">Builder</th>
-                <th className="px-4 py-4 text-center font-bold text-ink">Free PDF</th>
-                <th className="px-4 py-4 text-center font-bold text-ink">Sign-Up Required</th>
-                <th className="px-4 py-4 text-center font-bold text-ink">ATS-Friendly</th>
-                <th className="px-4 py-4 text-center font-bold text-ink">Templates</th>
-                <th className="px-4 py-4 text-center font-bold text-ink">Paid Price</th>
+                <th scope="col" className="px-4 py-4 text-left font-bold text-ink">Builder</th>
+                <th scope="col" className="px-4 py-4 text-center font-bold text-ink">Free PDF</th>
+                <th scope="col" className="px-4 py-4 text-center font-bold text-ink">Sign-Up Required</th>
+                <th scope="col" className="px-4 py-4 text-center font-bold text-ink">ATS-Friendly</th>
+                <th scope="col" className="px-4 py-4 text-center font-bold text-ink">Templates</th>
+                <th scope="col" className="px-4 py-4 text-center font-bold text-ink">Paid Price</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.06]">
