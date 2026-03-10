@@ -143,7 +143,7 @@ export default function JobExamplePage() {
     ...baseSchemas,
     {
       '@context': 'https://schema.org',
-      '@type': 'ImageObject',
+      '@type': 'ImageObject' as const,
       contentUrl: `${PREVIEW_BASE_URL}/${slug}.webp`,
       name: `${data.meta.title} Resume Example`,
       description: data.meta.metaDescription,
