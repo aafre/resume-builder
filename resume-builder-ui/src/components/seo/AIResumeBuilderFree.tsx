@@ -30,7 +30,7 @@ export default function AIResumeBuilderFree() {
 
       {/* Why Use AI */}
       <RevealSection variant="fade-up">
-        <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
+        <div className="mb-16 cv-auto cv-h-500">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             Why Use AI for Your Resume?
           </h2>
@@ -56,7 +56,7 @@ export default function AIResumeBuilderFree() {
 
       {/* AI Model Sections */}
       <RevealSection variant="fade-up">
-        <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 800px' }}>
+        <div className="mb-16 cv-auto cv-h-800">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-10 text-center">
             Choose Your AI Writing Partner
           </h2>
@@ -124,7 +124,7 @@ export default function AIResumeBuilderFree() {
 
       {/* Pro tips */}
       <RevealSection variant="fade-up">
-        <div className="mb-16 max-w-3xl mx-auto" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
+        <div className="mb-16 max-w-3xl mx-auto cv-auto cv-h-500">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             Pro Tips for AI Resume Writing
           </h2>

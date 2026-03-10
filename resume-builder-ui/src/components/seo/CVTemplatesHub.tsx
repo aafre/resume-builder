@@ -74,7 +74,7 @@ export default function CVTemplatesHub() {
 
       {/* UK CV Format Guide */}
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+      <div className="mb-16 cv-auto cv-h-400">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           UK CV format essentials
         </h2>
@@ -106,7 +106,7 @@ export default function CVTemplatesHub() {
       {config.features && <FeatureGrid features={config.features} />}
 
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
+      <div className="mb-16 cv-auto cv-h-500">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Free ATS-friendly CV templates
         </h2>
@@ -138,7 +138,7 @@ export default function CVTemplatesHub() {
 
       {/* CV vs Resume Callout */}
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 300px' }}>
+      <div className="mb-16 cv-auto cv-h-300">
         <div className="max-w-4xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
           <h2 className="text-2xl font-bold text-ink mb-4">
             CV or Resume? Which term should I use?

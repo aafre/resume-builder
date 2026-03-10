@@ -56,7 +56,7 @@ export default function ResumeBuilderForStudents() {
 
       {/* Related resources */}
       <RevealSection>
-        <div className="mb-16 max-w-4xl mx-auto" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 300px' }}>
+        <div className="mb-16 max-w-4xl mx-auto cv-auto cv-h-300">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6">
             Student Resume Resources
           </h2>

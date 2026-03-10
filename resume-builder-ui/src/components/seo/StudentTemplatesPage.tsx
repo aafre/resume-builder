@@ -114,7 +114,7 @@ export default function StudentTemplatesPage() {
 
       {/* Section-Specific Tips */}
       <RevealSection variant="fade-up">
-        <div className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 700px' }}>
+        <div className="my-16 cv-auto cv-h-700">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             How to Write Each Section
           </h2>
@@ -166,14 +166,14 @@ export default function StudentTemplatesPage() {
       </RevealSection>
 
       <RevealSection variant="fade-up">
-        <div style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
+        <div className="cv-auto cv-h-500">
           <FAQSection faqs={config.faqs} />
         </div>
       </RevealSection>
 
       {/* Related Resources */}
       <RevealSection variant="fade-up">
-        <div className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 300px' }}>
+        <div className="my-16 cv-auto cv-h-300">
           <h3 className="font-display text-2xl font-bold text-ink mb-6 text-center">
             Helpful Resources for Students
           </h3>
@@ -212,7 +212,7 @@ export default function StudentTemplatesPage() {
 
       {/* Related Templates */}
       <RevealSection variant="fade-up">
-        <div className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 200px' }}>
+        <div className="my-16 cv-auto cv-h-200">
           <h3 className="font-display text-2xl font-bold text-ink mb-6 text-center">
             Explore Other Template Styles
           </h3>
@@ -240,7 +240,7 @@ export default function StudentTemplatesPage() {
       </RevealSection>
 
       <RevealSection variant="fade-up">
-        <div style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 300px' }}>
+        <div className="cv-auto cv-h-300">
           <DownloadCTA
             title="Ready to Land Your First Job?"
             description="Build a professional resume that showcases your potential. Free for students, always."

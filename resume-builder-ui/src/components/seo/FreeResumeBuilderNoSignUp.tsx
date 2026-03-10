@@ -52,7 +52,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* Video section — moved below features to keep LCP content above fold */}
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
+      <div className="mb-16 cv-auto cv-h-500">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Edit instantly: open the builder
         </h2>
@@ -104,7 +104,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* Why No-Sign-Up Matters */}
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+      <div className="mb-16 cv-auto cv-h-400">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Why no-sign-up matters for job seekers
         </h2>
@@ -141,7 +141,7 @@ export default function FreeResumeBuilderNoSignUp() {
       </RevealSection>
 
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 350px' }}>
+      <div className="mb-16 cv-auto cv-h-350">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Privacy-first mode: what is and isn't logged
         </h2>
@@ -172,7 +172,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* Comparison with Paid Builders */}
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
+      <div className="mb-16 cv-auto cv-h-500">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Free no-sign-up vs. paid builders: what you actually get
         </h2>
@@ -228,7 +228,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* What's Included */}
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+      <div className="mb-16 cv-auto cv-h-400">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Everything included, no paywall
         </h2>
@@ -261,7 +261,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* ATS Keyword Scanner */}
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+      <div className="mb-16 cv-auto cv-h-400">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Built-in ATS keyword scanner
         </h2>
@@ -292,7 +292,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* Audience links */}
       <RevealSection>
-        <div className="mb-16 max-w-4xl mx-auto" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 250px' }}>
+        <div className="mb-16 max-w-4xl mx-auto cv-auto cv-h-250">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             Built for Every Career Stage
           </h2>
@@ -319,7 +319,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* Resume Tips Quick Guide */}
       <RevealSection variant="fade-up">
-      <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 600px' }}>
+      <div className="mb-16 cv-auto cv-h-600">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Quick resume tips before you start
         </h2>

@@ -30,7 +30,7 @@ export default function FreeResumeBuilderDownload() {
 
       {/* Objection-busting section */}
       <RevealSection variant="fade-up">
-        <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
+        <div className="mb-16 cv-auto cv-h-500">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             What "Free" Actually Means Here
           </h2>
@@ -60,7 +60,7 @@ export default function FreeResumeBuilderDownload() {
 
       {/* Internal linking section */}
       <RevealSection variant="fade-up">
-        <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+        <div className="mb-16 cv-auto cv-h-400">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             Explore More Free Resources
           </h2>

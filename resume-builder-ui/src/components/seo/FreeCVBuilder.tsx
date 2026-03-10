@@ -29,7 +29,7 @@ export default function FreeCVBuilder() {
 
       {/* UK-specific content */}
       <RevealSection variant="fade-up">
-        <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+        <div className="mb-16 cv-auto cv-h-400">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             CV vs Resume: which one do I need?
           </h2>
@@ -62,7 +62,7 @@ export default function FreeCVBuilder() {
       </RevealSection>
 
       <RevealSection variant="fade-up">
-        <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 300px' }}>
+        <div className="mb-16 cv-auto cv-h-300">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             Build your CV instantly—no sign-up required
           </h2>
@@ -78,7 +78,7 @@ export default function FreeCVBuilder() {
 
       {/* UK employer considerations */}
       <RevealSection variant="fade-up">
-        <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
+        <div className="mb-16 cv-auto cv-h-500">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             What UK employers expect in a CV
           </h2>
@@ -127,7 +127,7 @@ export default function FreeCVBuilder() {
       </RevealSection>
 
       <RevealSection variant="fade-up">
-        <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+        <div className="mb-16 cv-auto cv-h-400">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             Privacy-first: what we store (and don't)
           </h2>
