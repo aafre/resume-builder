@@ -1,3 +1,3 @@
-## 2025-02-17 - Editor Re-render Optimization
-**Learning:** In a list of complex components, inline callbacks in `.map` cause all items to re-render when one updates. Extracting the item renderer into a `React.memo` component and ensuring the parent passes stable callbacks (using `useRef` for state access if needed) effectively isolates updates.
-**Action:** Always extract list items to memoized components when they have complex sub-trees and editing capabilities.
+## 2024-03-10 - Smart Icon Sync
+**Learning:** N+1 query patterns can emerge when batching updates if developers fallback to full table replacements to avoid complex diffing logic. The initial icon sync logic in `save_resume` identified icons to delete, deleted them one by one, but then performed a redundant table-wide wipe anyway. This caused unnecessary database churn and generated new IDs for unmodified rows.
+**Action:** Use `.in_()` for batch deletions and only insert the exact diff (`icon_records`) to preserve IDs and avoid redundant network roundtrips.
