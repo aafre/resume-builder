@@ -471,6 +471,25 @@ export default function CareerChangeResumeGuide() {
           ))}
         </div>
 
+        {/* Related Guides */}
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 mt-12">
+          <h3 className="font-bold text-ink mb-3">Related Guides</h3>
+          <ul className="space-y-2 text-ink/80">
+            <li>
+              <Link to="/blog/resume-employment-gaps" className="text-accent hover:underline">
+                How to Explain Employment Gaps on Your Resume
+              </Link>{' '}
+              &mdash; detailed strategies for every type of gap
+            </li>
+            <li>
+              <Link to="/blog/return-to-work-programs" className="text-accent hover:underline">
+                Return to Work Programs Guide
+              </Link>{' '}
+              &mdash; paid returnships at top companies for career returners
+            </li>
+          </ul>
+        </div>
+
       </div>
     </BlogLayout>
   );
