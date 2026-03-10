@@ -1,3 +1,3 @@
-## 2024-05-18 - Ensure Keyboard Usability and Screen Reader Support on Custom Dropdowns
-**Learning:** For custom dropdown components (like KebabMenu), visual cues for keyboard focus are crucial, especially within dropdown options. Furthermore, without `aria-expanded` and `role="menu"`, screen readers cannot interpret the menu structure or whether the menu is open/closed.
-**Action:** When creating or modifying custom dropdowns or modals, ensure correct ARIA roles (`menu`, `menuitem`, `dialog`, `aria-modal`) and apply distinct `focus-visible` styles with sufficient contrast (e.g. `focus:outline-none focus-visible:ring-2`) to all interactive elements.
+## 2024-05-23 - Destructive Action Patterns
+**Learning:** Destructive icon-only actions (like remove buttons) in this codebase benefit from using `text-red-600` with `hover:bg-red-50` and `rounded` classes. This provides clear visual feedback and consistency.
+**Action:** When implementing delete/remove actions, use this color palette and ensure `aria-label` is present.
