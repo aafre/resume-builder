@@ -124,7 +124,10 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
             onClick={onDelete}
             className="flex items-center gap-1.5 text-gray-500 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
             title="Remove Section"
-            aria-label="Remove Section"
+
+
+            aria-label={`Remove ${title || 'Section'}`}
+
           >
             <MdDeleteOutline className="text-lg" aria-hidden="true" />
             <span className="hidden sm:inline">Remove</span>
