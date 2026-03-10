@@ -128,12 +128,15 @@ export default function TemplatesHub() {
               to="/templates/ats-friendly"
               className="bg-white rounded-2xl p-6 shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300 border-2 border-accent/20 hover:border-accent/70"
             >
-              <div className="bg-gradient-to-br from-chalk to-chalk-dark rounded-xl mb-4 flex items-center justify-center border border-black/[0.06]" style={{ aspectRatio: '8.5/11' }}>
-                <div className="text-center p-4">
-                  <div className="text-4xl mb-2">📄</div>
-                  <div className="text-sm font-bold text-stone-warm">ATS-Friendly</div>
-                  <div className="text-xs text-mist">Modern Template</div>
-                </div>
+              <div className="aspect-[8.5/11] rounded-xl mb-4 overflow-hidden border border-black/[0.06]">
+                <img
+                  src="/docs/templates/modern-no-icons.png"
+                  alt="ATS-friendly resume template preview"
+                  className="w-full h-full object-contain bg-chalk-dark p-2"
+                  width={400}
+                  height={566}
+                  loading="lazy"
+                />
               </div>
               <h3 className="font-display text-lg font-bold text-ink mb-2">
                 Professional ATS Template

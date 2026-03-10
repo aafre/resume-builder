@@ -52,14 +52,19 @@ resume:
       dates: Aug 2016 - May 2018
       location: Denver, CO
       bullets:
-        - Screened resumes and scheduled interviews for 100+ candidates monthly
-        - Posted job openings across multiple platforms and managed applicant tracking system
+        - Screened resumes and scheduled interviews for 100+ candidates monthly across 15 open roles
+        - Posted job openings across multiple platforms and managed applicant tracking system (iCIMS)
         - Conducted reference checks and background screenings for final candidates
+        - Organized career fairs and recruitment events attracting 200+ potential candidates
+        - Created offer letters and coordinated pre-employment paperwork for new hires
 
   education:
     - school: University of Colorado Denver
       degree: B.A. Human Resource Management
       year: "2016"
+    - school: Colorado State University Global
+      degree: Certificate in Employment Law
+      year: "2019"
 
   skills:
     - Recruitment
@@ -74,10 +79,16 @@ resume:
     - Training & Development
     - ADP Workforce Now
     - Workday
+    - Compensation Analysis
+    - Policy Development
+    - FMLA/ADA Compliance
+    - Talent Acquisition
 
   certifications:
     - SHRM-CP (Certified Professional)
     - PHR (Professional in Human Resources)
+    - Certified Diversity & Inclusion Recruiter
+    - ADP Workforce Now Administrator
 
 bulletBank:
   - category: Recruitment

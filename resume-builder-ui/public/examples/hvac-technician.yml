@@ -52,14 +52,19 @@ resume:
       dates: Jun 2016 - Apr 2018
       location: Tempe, AZ
       bullets:
-        - Completed HVAC apprenticeship program learning installation and service fundamentals
-        - Assisted senior technicians with equipment installation and ductwork fabrication
-        - Learned to read blueprints and perform load calculations
+        - Completed HVAC apprenticeship program with 4,000+ hours of hands-on training
+        - Assisted senior technicians with equipment installation and ductwork fabrication on 150+ jobs
+        - Learned to read blueprints, perform Manual J load calculations, and size equipment properly
+        - Maintained tool inventory and organized job site materials for efficient workflow
+        - Passed EPA 608 Universal certification exam on first attempt
 
   education:
     - school: Gateway Community College
       degree: Certificate, HVAC Technology
       year: "2016"
+    - school: Mesa Community College
+      degree: Associate of Applied Science, Refrigeration Technology
+      year: "2018"
 
   skills:
     - HVAC Installation
@@ -74,6 +79,10 @@ resume:
     - EPA Regulations
     - Building Codes
     - Energy Efficiency
+    - VRF Systems
+    - Brazing & Soldering
+    - Sheet Metal Fabrication
+    - Thermostat Programming
 
   certifications:
     - EPA 608 Universal Certification

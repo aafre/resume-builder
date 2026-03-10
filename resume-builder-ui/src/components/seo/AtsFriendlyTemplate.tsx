@@ -38,13 +38,16 @@ export default function AtsFriendlyTemplate() {
           </h2>
           <div className="max-w-4xl mx-auto bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06]">
             <div className="grid md:grid-cols-2 gap-8">
-              {/* Template preview placeholder */}
-              <div className="aspect-[8.5/11] bg-gradient-to-br from-chalk to-chalk-dark rounded-xl border-2 border-black/[0.06] flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="text-6xl mb-4">📄</div>
-                  <div className="text-xl font-bold text-stone-warm">ATS-Friendly Template</div>
-                  <div className="text-sm text-mist mt-2">Preview</div>
-                </div>
+              {/* Template preview */}
+              <div className="aspect-[8.5/11] rounded-xl border-2 border-black/[0.06] overflow-hidden">
+                <img
+                  src="/docs/templates/modern-no-icons.png"
+                  alt="ATS-friendly resume template preview - clean professional format"
+                  className="w-full h-full object-contain bg-chalk-dark p-2"
+                  width={400}
+                  height={566}
+                  loading="eager"
+                />
               </div>
 
               {/* Template info */}

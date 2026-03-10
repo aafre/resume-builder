@@ -26,6 +26,9 @@ import type { JobExampleData } from '../../data/jobExamples/types';
 import type { FAQConfig } from '../../types/seo';
 import type { Section } from '../../types';
 
+// Supabase Storage CDN base URL for pre-generated resume preview images
+const PREVIEW_BASE_URL = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/template-previews`;
+
 // Loading skeleton component
 const LoadingSkeleton = () => (
   <div className="min-h-screen bg-chalk">
@@ -125,7 +128,7 @@ export default function JobExamplePage() {
   };
 
   // Create schema (must be called unconditionally to maintain hook order)
-  const schemas = usePageSchema({
+  const baseSchemas = usePageSchema({
     type: 'itemList',
     faqs,
     breadcrumbs: [
@@ -134,6 +137,25 @@ export default function JobExamplePage() {
       { label: data?.meta.title || 'Example', href: `/examples/${slug || ''}` },
     ],
   });
+
+  // Add ImageObject schema for Google Images traffic on resume example queries
+  const schemas = data ? [
+    ...baseSchemas,
+    {
+      '@context': 'https://schema.org',
+      '@type': 'ImageObject',
+      contentUrl: `${PREVIEW_BASE_URL}/${slug}.webp`,
+      name: `${data.meta.title} Resume Example`,
+      description: data.meta.metaDescription,
+      width: 800,
+      height: 1131,
+      encodingFormat: 'image/webp',
+      creator: {
+        '@type': 'Organization',
+        name: 'EasyFreeResume',
+      },
+    },
+  ] : baseSchemas;
 
   // Create resume from job example data
   const doCreateResume = async (templateIdOverride?: string) => {
@@ -245,8 +267,28 @@ export default function JobExamplePage() {
                   </span>
                 </div>
 
-                {/* Simplified Resume Display */}
-                <div className="p-6 lg:p-8 bg-white">
+                {/* Real Template Preview Image */}
+                <div className="p-4 lg:p-6 bg-white flex justify-center">
+                  <img
+                    src={`${PREVIEW_BASE_URL}/${slug}.webp`}
+                    srcSet={`${PREVIEW_BASE_URL}/${slug}-sm.webp 400w, ${PREVIEW_BASE_URL}/${slug}.webp 800w`}
+                    sizes="(max-width: 768px) 400px, 550px"
+                    alt={`${data.meta.title} resume example - professional ATS-friendly template`}
+                    className="w-full max-w-[550px] rounded-lg shadow-lg border border-black/[0.06]"
+                    width={800}
+                    height={1131}
+                    loading="eager"
+                    fetchPriority="high"
+                    onError={(e) => {
+                      const img = e.target as HTMLImageElement;
+                      img.onerror = null;
+                      img.src = '/docs/templates/modern-no-icons.png';
+                    }}
+                  />
+                </div>
+
+                {/* Full HTML-styled resume text for SEO */}
+                <div className="px-6 lg:px-8 pb-6 lg:pb-8 bg-white border-t border-black/[0.06] mt-2 pt-6">
                   {/* Contact Header */}
                   <div className="text-center border-b border-black/[0.06] pb-6 mb-6">
                     <h3 className="text-2xl font-bold text-ink">{data.resume.contact.name}</h3>
@@ -258,17 +300,13 @@ export default function JobExamplePage() {
 
                   {/* Summary */}
                   <div className="mb-6">
-                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">
-                      Professional Summary
-                    </h4>
+                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">Professional Summary</h4>
                     <p className="text-ink/80 text-sm leading-relaxed">{data.resume.summary}</p>
                   </div>
 
-                  {/* Experience */}
+                  {/* Experience — ALL entries, ALL bullets */}
                   <div className="mb-6">
-                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-3">
-                      Work Experience
-                    </h4>
+                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-3">Work Experience</h4>
                     {data.resume.experience.map((exp, index) => (
                       <div key={index} className="mb-4">
                         <div className="flex justify-between items-start mb-1">
@@ -279,17 +317,12 @@ export default function JobExamplePage() {
                           <p className="text-mist text-sm">{exp.dates}</p>
                         </div>
                         <ul className="mt-2 space-y-1">
-                          {exp.bullets.slice(0, 3).map((bullet, bIndex) => (
+                          {exp.bullets.map((bullet, bIndex) => (
                             <li key={bIndex} className="text-ink/80 text-sm pl-4 relative">
                               <span className="absolute left-0 text-mist">&bull;</span>
                               {bullet}
                             </li>
                           ))}
-                          {exp.bullets.length > 3 && (
-                            <li className="text-mist text-sm pl-4 italic">
-                              +{exp.bullets.length - 3} more bullet points...
-                            </li>
-                          )}
                         </ul>
                       </div>
                     ))}
@@ -297,11 +330,9 @@ export default function JobExamplePage() {
 
                   {/* Education */}
                   <div className="mb-6">
-                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">
-                      Education
-                    </h4>
+                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">Education</h4>
                     {data.resume.education.map((edu, index) => (
-                      <div key={index} className="flex justify-between items-start">
+                      <div key={index} className="flex justify-between items-start mb-1">
                         <div>
                           <p className="font-semibold text-ink">{edu.degree}</p>
                           <p className="text-stone-warm">{edu.school}</p>
@@ -311,27 +342,32 @@ export default function JobExamplePage() {
                     ))}
                   </div>
 
-                  {/* Skills */}
-                  <div>
-                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">
-                      Skills
-                    </h4>
+                  {/* Skills — ALL skills, no truncation */}
+                  <div className={data.resume.certifications?.length ? 'mb-6' : ''}>
+                    <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">Skills</h4>
                     <div className="flex flex-wrap gap-2">
-                      {data.resume.skills.slice(0, 8).map((skill, index) => (
-                        <span
-                          key={index}
-                          className="px-2 py-1 bg-chalk-dark text-ink text-sm rounded"
-                        >
+                      {data.resume.skills.map((skill, index) => (
+                        <span key={index} className="px-2 py-1 bg-chalk-dark text-ink text-sm rounded">
                           {skill}
                         </span>
                       ))}
-                      {data.resume.skills.length > 8 && (
-                        <span className="px-2 py-1 text-mist text-sm">
-                          +{data.resume.skills.length - 8} more
-                        </span>
-                      )}
                     </div>
                   </div>
+
+                  {/* Certifications (if present) */}
+                  {data.resume.certifications && data.resume.certifications.length > 0 && (
+                    <div>
+                      <h4 className="font-mono text-xs tracking-[0.15em] text-ink uppercase mb-2">Certifications</h4>
+                      <ul className="space-y-1">
+                        {data.resume.certifications.map((cert, index) => (
+                          <li key={index} className="text-ink/80 text-sm pl-4 relative">
+                            <span className="absolute left-0 text-mist">&bull;</span>
+                            {cert}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

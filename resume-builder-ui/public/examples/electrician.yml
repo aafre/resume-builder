@@ -52,14 +52,19 @@ resume:
       dates: Jan 2015 - May 2017
       location: Dallas, TX
       bullets:
-        - Completed 4-year electrical apprenticeship program with classroom and on-the-job training
-        - Assisted journeymen with wiring, conduit installation, and panel work
-        - Learned to read blueprints and follow electrical codes
+        - Completed 4-year electrical apprenticeship program with 8,000+ hours of on-the-job training
+        - Assisted journeymen with wiring, conduit installation, and panel upgrades on 100+ projects
+        - Learned to read blueprints, perform load calculations, and follow NEC code requirements
+        - Installed outlets, switches, lighting fixtures, and breaker panels in residential settings
+        - Passed journeyman licensing exam on first attempt with 92% score
 
   education:
     - school: Dallas County Community College
       degree: Certificate, Electrical Technology
       year: "2015"
+    - school: Texas State Technical College
+      degree: Associate of Applied Science, Electrical Technology
+      year: "2017"
 
   skills:
     - Electrical Installation
@@ -74,11 +79,16 @@ resume:
     - Crew Leadership
     - Customer Service
     - Project Estimation
+    - Load Calculations
+    - Fire Alarm Systems
+    - Energy-Efficient Lighting
+    - Thermal Imaging
 
   certifications:
     - Texas Journeyman Electrician License
     - OSHA 30-Hour Construction Safety
     - First Aid/CPR Certified
+    - NFPA 70E Arc Flash Safety
 
 bulletBank:
   - category: Installation

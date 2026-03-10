@@ -52,9 +52,11 @@ resume:
       dates: Jun 2015 - Feb 2018
       location: Portland, OR
       bullets:
-        - Supported delivery of 12 client projects with combined value of $2M
-        - Managed project schedules, budgets, and resource allocation
-        - Facilitated sprint planning and retrospective sessions for Agile teams
+        - Supported delivery of 12 client projects with combined value of $2M across healthcare and finance
+        - Managed project schedules, budgets, and resource allocation for teams of 5-10 members
+        - Facilitated sprint planning and retrospective sessions for 3 Agile development teams
+        - Created weekly status reports and risk registers for client stakeholder meetings
+        - Earned PMP certification while managing full project workload
 
   education:
     - school: University of Washington
@@ -77,11 +79,16 @@ resume:
     - Resource Planning
     - Change Management
     - Vendor Management
+    - Program Management
+    - Earned Value Management
+    - Business Case Development
+    - Process Optimization
 
   certifications:
     - Project Management Professional (PMP)
     - Certified Scrum Master (CSM)
     - ITIL Foundation
+    - SAFe Agilist (Scaled Agile)
 
 bulletBank:
   - category: Project Delivery
