@@ -217,13 +217,12 @@ export function ResumeCard({
         {/* Actions */}
         <div className="flex gap-2 items-center">
           <button
-            type="button"
             onClick={(e) => {
               e.stopPropagation();
               onEdit(resume.id);
             }}
             disabled={isEditButtonLoading}
-            className={`flex-1 bg-accent text-ink py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+            className={`flex-1 bg-accent text-ink py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
               isEditButtonLoading
                 ? 'opacity-75 cursor-not-allowed'
                 : 'hover:bg-accent/90 active:scale-[0.98]'
@@ -240,12 +239,11 @@ export function ResumeCard({
           </button>
 
           <button
-            type="button"
             onClick={(e) => {
               e.stopPropagation();
               onDownload(resume.id);
             }}
-            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
             title="Download PDF"
             aria-label="Download PDF"
           >
