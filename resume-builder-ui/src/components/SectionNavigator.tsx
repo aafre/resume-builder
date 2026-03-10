@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   MdAdd,
   MdFileDownload,
@@ -71,7 +71,7 @@ const STORAGE_KEY = "resume-builder-sidebar-collapsed";
  * Expanded: Full labels with icons
  * Collapsed: Icons with short labels (like YouTube sidebar)
  */
-const SectionNavigator: React.FC<SectionNavigatorProps> = React.memo(({
+const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   sections,
   onSectionClick,
   activeSectionIndex,
@@ -195,21 +195,19 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = React.memo(({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isCollapsed]);
 
-  const handleToggle = useCallback(() => {
-    setIsCollapsed(prev => {
-      const newState = !prev;
-      onCollapseChange?.(newState);
-      return newState;
-    });
-  }, [onCollapseChange]);
+  const handleToggle = () => {
+    const newState = !isCollapsed;
+    setIsCollapsed(newState);
+    onCollapseChange?.(newState);
+  };
 
   // Handle Start Fresh - confirmation dialog is handled by parent (Editor.tsx)
-  const handleStartFresh = useCallback(() => {
+  const handleStartFresh = () => {
     onStartFresh();
-  }, [onStartFresh]);
+  };
 
   // Get icon for section based on type or name
-  const getSectionIcon = useCallback((section: Section) => {
+  const getSectionIcon = (section: Section) => {
     const type = section.type?.toLowerCase() || "";
     const name = section.name.toLowerCase();
 
@@ -270,10 +268,10 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = React.memo(({
 
     // Default fallback
     return <MdList className="text-base" />;
-  }, []);
+  };
 
   // Get short label for collapsed state
-  const getShortLabel = useCallback((section: Section): string => {
+  const getShortLabel = (section: Section): string => {
     const name = section.name.toLowerCase();
 
     // Check more specific patterns first, then broader ones
@@ -293,7 +291,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = React.memo(({
     // Truncate to first word or first 8 chars
     const firstWord = section.name.split(" ")[0];
     return firstWord.length > 8 ? firstWord.substring(0, 7) + "." : firstWord;
-  }, []);
+  };
 
   return (
     <nav
@@ -802,6 +800,6 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = React.memo(({
       </div>
     </nav>
   );
-});
+};
 
 export default SectionNavigator;
