@@ -1,3 +1,3 @@
-## 2026-02-15 - Keyboard Accessibility in @dnd-kit
-**Learning:** In `@dnd-kit`, the element that receives keyboard focus must also be the one that has the event listeners attached. If `attributes` (providing `tabIndex`) are on a parent container but `listeners` (providing `onKeyDown`) are on a child handle, keyboard events on the focused parent bubble *up* and miss the listeners on the child, breaking keyboard accessibility.
-**Action:** Always spread `{...attributes}` and `{...listeners}` on the same element (the interactive handle), or ensure the listeners are attached to the element that receives focus.
+## 2025-02-14 - ResponsiveConfirmDialog for Destructive Actions
+**Learning:** Destructive actions (like Delete) implemented with custom hardcoded modals lack standard accessibility attributes (`role="dialog"`, `aria-modal`, etc.) and mobile responsiveness (like bottom sheets). This app has a `ResponsiveConfirmDialog` component designed specifically for this purpose, but it was not being utilized uniformly.
+**Action:** Always use `ResponsiveConfirmDialog` for destructive confirmation prompts (such as `DeleteResumeModal`) to ensure a consistent, accessible, and mobile-friendly UX that prevents accidental data loss.
