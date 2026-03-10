@@ -85,7 +85,7 @@ export default function AtsFriendlyTemplate() {
       {config.features && <FeatureGrid features={config.features} />}
 
       <RevealSection variant="fade-up">
-        <div className="mb-16">
+        <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             How to use this template
           </h2>
