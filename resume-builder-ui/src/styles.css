@@ -740,9 +740,11 @@ ins.adsbygoogle {
   overflow: hidden !important;
 }
 
-/* Contain Google Auto Ad wrapper divs that can be wider than viewport. */
+/* Contain Google Auto Ad wrapper divs that can be wider than viewport.
+   'size' containment prevents unfilled ad slots from reserving height that
+   shifts surrounding content (desktop CLS fix). */
 .google-auto-placed {
-  contain: layout style;
+  contain: layout style paint size;
   max-width: 100% !important;
   overflow: hidden !important;
 }
