@@ -5,8 +5,8 @@ import CopyablePrompt from '../shared/CopyablePrompt';
 export default function DeepSeekResumePrompts() {
   return (
     <BlogLayout
-      title="20+ DeepSeek Resume Prompts (Copy-Paste Ready) 2026"
-      description="Best DeepSeek prompts for resume writing: professional summaries, experience bullets, ATS keywords, cover letters. Copy-paste ready for DeepSeek-V3 and DeepSeek-R1."
+      title="20+ DeepSeek Prompts for Resume Writing (Copy & Paste Ready) 2026"
+      description="Best DeepSeek prompts for resume writing: professional summaries, experience bullets, ATS keywords, skills optimization, and cover letters. Copy-paste ready for DeepSeek V3 and R1."
       publishDate="2026-03-05"
       readTime="15 min"
       keywords={[
