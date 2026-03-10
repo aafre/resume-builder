@@ -4,6 +4,7 @@
  * Target keyword: "free resume builder no sign up"
  */
 
+import { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
@@ -20,6 +21,9 @@ import { TUTORIAL_VIDEO } from '../../config/videoContent';
 
 export default function FreeResumeBuilderNoSignUp() {
   const config = SEO_PAGES.noSignUp;
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const handlePlayVideo = useCallback(() => setVideoPlaying(true), []);
+
   const baseSchemas = usePageSchema({
     type: 'software',
     faqs: config.faqs,
@@ -44,8 +48,11 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {config.steps && <StepByStep steps={config.steps} />}
 
+      {config.features && <FeatureGrid features={config.features} />}
+
+      {/* Video section — moved below features to keep LCP content above fold */}
       <RevealSection variant="fade-up">
-      <div className="mb-16">
+      <div className="mb-16 cv-auto cv-h-500">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Edit instantly: open the builder
         </h2>
@@ -54,27 +61,50 @@ export default function FreeResumeBuilderNoSignUp() {
           verification, no password creation, no waiting. Just click and start creating your
           professional resume right now.
         </p>
-        {/* YouTube tutorial embed */}
+        {/* YouTube lite-embed: static thumbnail + play button, loads iframe on click */}
         <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl border border-black/[0.06]">
           <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-            <iframe
-              className="absolute inset-0 w-full h-full"
-              src={TUTORIAL_VIDEO.embedUrl}
-              title={TUTORIAL_VIDEO.iframeTitle}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              loading="lazy"
-            />
+            {videoPlaying ? (
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src={`${TUTORIAL_VIDEO.embedUrl}?autoplay=1`}
+                title={TUTORIAL_VIDEO.iframeTitle}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            ) : (
+              <button
+                type="button"
+                className="absolute inset-0 w-full h-full cursor-pointer group bg-black"
+                onClick={handlePlayVideo}
+                aria-label={`Play video: ${TUTORIAL_VIDEO.name}`}
+              >
+                <img
+                  src={TUTORIAL_VIDEO.thumbnailUrl}
+                  alt={TUTORIAL_VIDEO.name}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                  width={1280}
+                  height={720}
+                />
+                {/* Play button overlay */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:bg-red-700 group-hover:scale-110 transition-all duration-300">
+                    <svg className="w-7 h-7 md:w-9 md:h-9 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
+              </button>
+            )}
           </div>
         </div>
       </div>
       </RevealSection>
 
-      {config.features && <FeatureGrid features={config.features} />}
-
       {/* Why No-Sign-Up Matters */}
       <RevealSection variant="fade-up">
-      <div className="mb-16">
+      <div className="mb-16 cv-auto cv-h-400">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Why no-sign-up matters for job seekers
         </h2>
@@ -111,7 +141,7 @@ export default function FreeResumeBuilderNoSignUp() {
       </RevealSection>
 
       <RevealSection variant="fade-up">
-      <div className="mb-16">
+      <div className="mb-16 cv-auto cv-h-350">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Privacy-first mode: what is and isn't logged
         </h2>
@@ -142,7 +172,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* Comparison with Paid Builders */}
       <RevealSection variant="fade-up">
-      <div className="mb-16">
+      <div className="mb-16 cv-auto cv-h-500">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Free no-sign-up vs. paid builders: what you actually get
         </h2>
@@ -198,7 +228,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* What's Included */}
       <RevealSection variant="fade-up">
-      <div className="mb-16">
+      <div className="mb-16 cv-auto cv-h-400">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Everything included, no paywall
         </h2>
@@ -231,7 +261,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* ATS Keyword Scanner */}
       <RevealSection variant="fade-up">
-      <div className="mb-16">
+      <div className="mb-16 cv-auto cv-h-400">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Built-in ATS keyword scanner
         </h2>
@@ -262,7 +292,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* Audience links */}
       <RevealSection>
-        <div className="mb-16 max-w-4xl mx-auto">
+        <div className="mb-16 max-w-4xl mx-auto cv-auto cv-h-250">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             Built for Every Career Stage
           </h2>
@@ -289,7 +319,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* Resume Tips Quick Guide */}
       <RevealSection variant="fade-up">
-      <div className="mb-16">
+      <div className="mb-16 cv-auto cv-h-600">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Quick resume tips before you start
         </h2>

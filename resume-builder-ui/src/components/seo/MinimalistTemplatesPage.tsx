@@ -88,7 +88,7 @@ export default function MinimalistTemplatesPage() {
 
       {/* Minimalist vs Complex Comparison */}
       <RevealSection variant="fade-up">
-      <div className="my-16">
+      <div className="my-16 cv-auto cv-h-500">
         <div className="max-w-4xl mx-auto">
           <h3 className="font-display text-2xl font-bold text-ink mb-6 text-center">
             Minimalist vs. Complex Resume Designs
@@ -134,7 +134,7 @@ export default function MinimalistTemplatesPage() {
 
       {/* Related Templates */}
       <RevealSection variant="fade-up">
-      <div className="my-16">
+      <div className="my-16 cv-auto cv-h-200">
         <h3 className="font-display text-2xl font-bold text-ink mb-6 text-center">
           Explore Other Template Styles
         </h3>

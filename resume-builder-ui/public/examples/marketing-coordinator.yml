@@ -52,14 +52,19 @@ resume:
       dates: Jan 2020 - May 2020
       location: Miami, FL
       bullets:
-        - Assisted with destination marketing campaigns promoting local attractions
-        - Created blog content and social media posts highlighting visitor experiences
-        - Compiled competitive research and market analysis reports
+        - Assisted with destination marketing campaigns promoting local attractions to 1M+ visitors
+        - Created blog content and social media posts highlighting visitor experiences and reviews
+        - Compiled competitive research and market analysis reports for tourism board leadership
+        - Designed email newsletters distributed to 15K+ subscribers with 28% open rate
+        - Coordinated photo shoots and content creation with local hospitality partners
 
   education:
     - school: Florida International University
       degree: B.S. Marketing
       year: "2020"
+    - school: Miami Dade College
+      degree: Associate of Arts, Business Administration
+      year: "2018"
 
   skills:
     - Campaign Management
@@ -74,6 +79,15 @@ resume:
     - Canva
     - SEO/SEM
     - Project Management
+    - A/B Testing
+    - Brand Management
+    - Vendor Relations
+    - Marketing Automation
+
+  certifications:
+    - Google Analytics Individual Qualification
+    - HubSpot Marketing Software Certification
+    - Meta Certified Digital Marketing Associate
 
 bulletBank:
   - category: Digital Marketing

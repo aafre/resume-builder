@@ -2121,7 +2121,9 @@ def serve_templates(filename):
         if error:
             return error
 
-        return send_file(file_path)
+        response = send_file(file_path)
+        response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        return response
     except Exception as e:
         logging.error(f"Error serving template image {filename}: {e}")
         return jsonify({"success": False, "error": "Image not found"}), 404

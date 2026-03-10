@@ -44,16 +44,19 @@ resume:
       bullets:
         - Lead weekly lab sessions helping 30 students with Python programming assignments
         - Hold office hours providing one-on-one assistance with debugging and concepts
-        - Grade assignments and provide constructive feedback on code quality
+        - Grade assignments and provide constructive feedback on code quality and best practices
+        - Created supplemental study guides improving average exam scores by 12%
 
     - company: Local Nonprofit
       title: Web Development Volunteer
       dates: May 2023 - Aug 2023
       location: Austin, TX
       bullets:
-        - Redesigned organization website using WordPress improving mobile responsiveness
-        - Created donation page increasing online contributions by 40%
-        - Trained staff on content management system for ongoing updates
+        - Redesigned organization website using WordPress improving mobile responsiveness and load speed
+        - Created donation page increasing online contributions by 40% in first quarter
+        - Trained 5 staff members on content management system for ongoing updates
+        - Built custom contact form reducing email inquiries by 30% through self-service FAQ section
+        - Implemented Google Analytics tracking providing data-driven insights on visitor behavior
 
   education:
     - school: University of Texas at Austin
@@ -75,6 +78,15 @@ resume:
     - Linux
     - Agile
     - Problem Solving
+    - Node.js
+    - MongoDB
+    - Docker
+    - REST APIs
+
+  certifications:
+    - AWS Cloud Practitioner
+    - freeCodeCamp Responsive Web Design
+    - Google IT Support Professional Certificate
 
   projects:
     - name: Task Management App

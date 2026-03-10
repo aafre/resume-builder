@@ -63,6 +63,9 @@ resume:
       year: "2021"
       gpa: "3.8"
       honors: Magna Cum Laude
+    - school: UCLA Extension
+      degree: Certificate in Teaching English as a Second Language
+      year: "2022"
 
   skills:
     - Mathematics
@@ -77,6 +80,15 @@ resume:
     - Learning Management Systems
     - Progress Tracking
     - Study Skills
+    - Differentiated Instruction
+    - Parent Communication
+    - Curriculum Alignment
+    - Educational Technology
+
+  certifications:
+    - National Tutoring Association Certified Tutor
+    - College Board SAT/AP Prep Instructor
+    - First Aid/CPR Certified
 
 bulletBank:
   - category: Student Success

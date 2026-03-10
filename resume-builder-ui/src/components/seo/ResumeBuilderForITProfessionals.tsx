@@ -55,7 +55,7 @@ export default function ResumeBuilderForITProfessionals() {
 
       {/* Role-specific keyword links */}
       <RevealSection>
-        <div className="mb-16 max-w-4xl mx-auto">
+        <div className="mb-16 max-w-4xl mx-auto cv-auto cv-h-300">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6">
             Resume Keywords by IT Role
           </h2>

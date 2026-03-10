@@ -47,10 +47,23 @@ resume:
         - Managed escalated complaints, turning 85% of negative experiences into positive outcomes
         - Maintained product knowledge across 500+ SKUs to assist customers effectively
 
+    - company: CallCenter Pro
+      title: Customer Service Representative
+      dates: Aug 2017 - May 2019
+      location: Chicago, IL
+      bullets:
+        - Handled 60+ inbound calls daily assisting customers with billing, orders, and account inquiries
+        - Documented customer interactions and resolutions in Zendesk ticketing system
+        - Achieved 95% first-call resolution rate exceeding team average by 12%
+        - Participated in product launch training sessions to maintain up-to-date knowledge
+
   education:
     - school: City Community College
       degree: Associate Degree in Business Administration
       year: "2019"
+    - school: DePaul University
+      degree: Certificate in Customer Experience Management
+      year: "2022"
 
   skills:
     - Customer Relationship Management (CRM)
@@ -63,6 +76,15 @@ resume:
     - Bilingual (English/Spanish)
     - Data Entry
     - Time Management
+    - Live Chat Support
+    - Quality Assurance
+    - Call Center Operations
+    - Upselling & Cross-selling
+
+  certifications:
+    - Certified Customer Service Professional (CCSP)
+    - HDI Customer Service Representative
+    - Zendesk Support Administrator
 
 bulletBank:
   - category: Customer Interaction

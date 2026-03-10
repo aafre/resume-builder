@@ -52,9 +52,19 @@ resume:
       location: Austin, TX
       bullets:
         - Built client base of 8 regular customers through quality service and reliability
-        - Provide lawn mowing, edging, and yard maintenance services
-        - Schedule appointments and manage billing independently
-        - Earned $2,000+ through entrepreneurial initiative
+        - Provide lawn mowing, edging, and yard maintenance services weekly
+        - Schedule appointments and manage billing independently using Square invoicing
+        - Earned $2,000+ through entrepreneurial initiative and word-of-mouth referrals
+
+    - company: Lincoln High School Environmental Club
+      title: Founder & President
+      dates: Sep 2023 - Present
+      location: Austin, TX
+      bullets:
+        - Founded environmental awareness club growing membership to 25 active students
+        - Organized campus recycling drive collecting 500+ pounds of recyclable materials
+        - Coordinated community park cleanup events with 40+ volunteers per event
+        - Presented sustainability proposals to school administration resulting in new recycling bins
 
   education:
     - school: Lincoln High School
@@ -62,6 +72,9 @@ resume:
       year: Expected May 2026
       gpa: "3.7"
       honors: Honor Roll, National Honor Society
+    - school: Austin Community College (Dual Enrollment)
+      degree: College Credits in English Composition and Psychology
+      year: "2025"
 
   skills:
     - Customer Service
@@ -74,6 +87,10 @@ resume:
     - Organization
     - Problem Solving
     - Reliability
+    - Canva Design
+    - Public Speaking
+    - Event Coordination
+    - Cash Handling
 
 bulletBank:
   - category: Academic Achievements
