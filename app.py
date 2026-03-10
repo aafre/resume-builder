@@ -28,7 +28,7 @@ import copy
 from jinja2 import Environment, FileSystemLoader
 from concurrent.futures import ThreadPoolExecutor
 import atexit
-from functools import wraps, partial
+from functools import wraps, partial, lru_cache
 import time
 from typing import Callable, Any
 from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
@@ -844,6 +844,22 @@ def load_resume_data(yaml_file_path):
         raise ValueError("Invalid YAML format: Root must be a dictionary")
 
     return data
+
+@lru_cache(maxsize=32)
+def _load_yaml_file_cached(yaml_path_str: str) -> dict:
+    """Internal cached helper to load YAML files from disk."""
+    with open(yaml_path_str, "r", encoding="utf-8") as file:
+        data = yaml.safe_load(file)
+    return data
+
+def get_template_config(yaml_path) -> dict:
+    """
+    Load a static YAML template with caching to prevent redundant disk I/O and parsing.
+    Returns a deepcopy to prevent 'cache poisoning' if the caller mutates the dictionary.
+    """
+    # Use string representation of path for caching
+    data = _load_yaml_file_cached(str(yaml_path))
+    return copy.deepcopy(data)
 
 
 def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
@@ -1775,9 +1791,8 @@ def get_template_data(template_id):
             logging.warning(f"Template file not found: {template_path}")
             return jsonify({"success": False, "error": "Template not found"}), 404
 
-        # Read the YAML content
-        with open(template_path, "r") as file:
-            yaml_content = yaml.safe_load(file)
+        # Read the YAML content using cached function
+        yaml_content = get_template_config(template_path)
 
         # Determine icon support based on template ID
         # Only 'modern-with-icons' template supports icons
@@ -2182,8 +2197,8 @@ def create_resume():
         if not template_path.exists():
             return jsonify({"success": False, "error": "Template not found"}), 404
 
-        with open(template_path, "r") as file:
-            template_data = yaml.safe_load(file)
+        # Load template data using cached function
+        template_data = get_template_config(template_path)
 
         # Initialize resume with template data
         contact_info = template_data.get("contact_info", {})
