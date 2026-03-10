@@ -78,6 +78,8 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
           placeholder="Enter section title..."
         />
         <button
+          type="button"
+          aria-label="Save Section Title"
           onClick={onSave}
           className="text-green-600 hover:text-green-800 transition-colors"
           title="Save Title (Enter)"
@@ -85,6 +87,8 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
           ✅
         </button>
         <button
+          type="button"
+          aria-label="Cancel Editing Title"
           onClick={onCancel}
           className="text-red-600 hover:text-red-800 transition-colors"
           title="Cancel (Esc)"
@@ -103,6 +107,8 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
     >
       {title}
       <button
+        type="button"
+        aria-label="Edit Section Title"
         onClick={onEdit}
         className="ml-2 text-gray-500 hover:text-gray-700 transition-colors"
         title="Edit Title"
