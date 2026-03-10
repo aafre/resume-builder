@@ -89,7 +89,7 @@ export default function ModernTemplatesPage() {
 
       {/* Industries Section */}
       <RevealSection variant="fade-up">
-        <div className="my-16">
+        <div className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 300px' }}>
           <div className="max-w-5xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
             <h3 className="text-2xl font-bold text-ink mb-4 text-center">
               Best Industries for Modern Resume Templates
@@ -120,7 +120,7 @@ export default function ModernTemplatesPage() {
 
       {/* Related Templates */}
       <RevealSection variant="fade-up">
-        <div className="my-16">
+        <div className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 200px' }}>
           <h3 className="font-display text-2xl font-bold text-ink mb-6 text-center">
             Explore Other Template Styles
           </h3>

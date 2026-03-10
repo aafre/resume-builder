@@ -155,7 +155,7 @@ export default function JobExamplesHub() {
 
           return (
             <RevealSection key={category.id}>
-              <div className="mb-12" id={category.id}>
+              <div className="mb-12" id={category.id} style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
                 {/* Category Header */}
                 <div className="flex items-center gap-3 mb-6">
                   <span className="text-3xl">{category.icon}</span>
@@ -205,7 +205,7 @@ export default function JobExamplesHub() {
 
       {/* How to Use Section */}
       <RevealSection>
-        <div className="my-16">
+        <div className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 300px' }}>
           <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">How It Works</span>
           <StepByStep steps={howToSteps} title="" />
         </div>
@@ -213,7 +213,7 @@ export default function JobExamplesHub() {
 
       {/* Stats Section */}
       <RevealSection stagger>
-        <section className="my-16">
+        <section className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 200px' }}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
               <p className="text-3xl font-extrabold text-accent">{totalExamples}+</p>
@@ -237,7 +237,7 @@ export default function JobExamplesHub() {
 
       {/* Quick Links by Popular Jobs */}
       <RevealSection>
-        <section className="my-16">
+        <section className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 300px' }}>
           <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">Popular</span>
           <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight mb-6 text-center">
             Most Popular Resume Examples
@@ -263,7 +263,7 @@ export default function JobExamplesHub() {
 
       {/* Related Resources */}
       <RevealSection>
-        <section className="my-16">
+        <section className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 300px' }}>
           <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">Resources</span>
           <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight mb-6 text-center">
             More Resume Resources

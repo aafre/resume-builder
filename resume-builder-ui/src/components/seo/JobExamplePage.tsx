@@ -407,7 +407,7 @@ export default function JobExamplePage() {
       {/* Cross-link to Keywords Page */}
       {matchingKeywordSlug && matchingKeywordTitle && (
         <RevealSection>
-          <div className="bg-accent/[0.04] border border-accent/20 rounded-2xl p-6 my-12 max-w-4xl mx-auto">
+          <div className="bg-accent/[0.04] border border-accent/20 rounded-2xl p-6 my-12 max-w-4xl mx-auto" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 200px' }}>
             <h2 className="text-xl font-bold text-ink mb-2">
               Optimize Your Resume With the Right Keywords
             </h2>
@@ -427,7 +427,7 @@ export default function JobExamplePage() {
       {/* Related Jobs Section */}
       {relatedJobs.length > 0 && (
         <RevealSection stagger>
-          <section className="my-16">
+          <section className="my-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
             <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">Related Examples</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-6 text-center">
               Related Resume Examples

@@ -75,7 +75,7 @@ export default function ResumeBuilderForVeterans() {
 
       {/* Security clearance section */}
       <RevealSection>
-        <div className="mb-16 max-w-4xl mx-auto">
+        <div className="mb-16 max-w-4xl mx-auto" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 300px' }}>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6">
             How to List Security Clearances
           </h2>
@@ -99,7 +99,7 @@ export default function ResumeBuilderForVeterans() {
 
       {/* Related resources */}
       <RevealSection>
-        <div className="mb-16 max-w-4xl mx-auto">
+        <div className="mb-16 max-w-4xl mx-auto" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 200px' }}>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6">
             Veteran Resume Resources
           </h2>
