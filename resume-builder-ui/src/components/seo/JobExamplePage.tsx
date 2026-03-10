@@ -16,6 +16,7 @@ import RevealSection from '../shared/RevealSection';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { loadJobExample, convertToEditorFormat } from '../../utils/yamlLoader';
 import { getRelatedJobs, JOB_CATEGORIES } from '../../data/jobExamples';
+import { getMatchingKeywordSlug, getKeywordJobTitle } from '../../utils/crossLinkHelpers';
 import { useAuth } from '../../contexts/AuthContext';
 import { useResumeCreate } from '../../hooks/useResumeCreate';
 import ConversionPromptModal from '../ConversionPromptModal';
@@ -105,6 +106,8 @@ export default function JobExamplePage() {
   const relatedJobs = slug ? getRelatedJobs(slug, 4) : [];
   const categoryInfo = data ? JOB_CATEGORIES.find(c => c.id === data.meta.category) : null;
   const faqs: FAQConfig[] = data?.customFaqs || (data ? generateFAQs(data) : []);
+  const matchingKeywordSlug = slug ? getMatchingKeywordSlug(slug) : null;
+  const matchingKeywordTitle = matchingKeywordSlug ? getKeywordJobTitle(matchingKeywordSlug) : null;
 
   // Create SEO config (with defaults for loading/error states)
   const seoConfig = data ? {
@@ -437,10 +440,30 @@ export default function JobExamplePage() {
       {/* FAQs */}
       <FAQSection faqs={faqs} />
 
+      {/* Cross-link to Keywords Page */}
+      {matchingKeywordSlug && matchingKeywordTitle && (
+        <RevealSection>
+          <div className="bg-accent/[0.04] border border-accent/20 rounded-2xl p-6 my-12 max-w-4xl mx-auto cv-auto cv-h-200">
+            <h2 className="text-xl font-bold text-ink mb-2">
+              Optimize Your Resume With the Right Keywords
+            </h2>
+            <p className="text-stone-warm font-extralight mb-4">
+              Pair this resume example with our curated list of ATS-optimized keywords for {matchingKeywordTitle.toLowerCase()} roles to maximize your interview chances.
+            </p>
+            <Link
+              to={`/resume-keywords/${matchingKeywordSlug}`}
+              className="btn-secondary inline-flex items-center gap-2 text-sm"
+            >
+              View {matchingKeywordTitle} Keywords &rarr;
+            </Link>
+          </div>
+        </RevealSection>
+      )}
+
       {/* Related Jobs Section */}
       {relatedJobs.length > 0 && (
         <RevealSection stagger>
-          <section className="my-16">
+          <section className="my-16 cv-auto cv-h-400">
             <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">Related Examples</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-6 text-center">
               Related Resume Examples

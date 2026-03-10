@@ -179,7 +179,7 @@ export default function ResumeKeywordsHub() {
 
       {/* Most Popular Keywords Across All Industries */}
       <RevealSection>
-        <div className="mb-16 max-w-4xl mx-auto" id="popular-keywords">
+        <div className="mb-16 max-w-4xl mx-auto cv-auto cv-h-500" id="popular-keywords">
           <div className="bg-white rounded-2xl p-8 md:p-10 shadow-premium border border-black/[0.06]">
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Universal Keywords</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-6 mt-2">
@@ -237,7 +237,7 @@ export default function ResumeKeywordsHub() {
 
       {/* Quick-Reference Lists by Job Title */}
       <RevealSection>
-        <div className="mb-16 max-w-4xl mx-auto" id="quick-reference">
+        <div className="mb-16 max-w-4xl mx-auto cv-auto cv-h-800" id="quick-reference">
           <div className="bg-white rounded-2xl p-8 md:p-10 shadow-premium border border-black/[0.06]">
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-4">
               Quick-Reference: Top 10 Keywords by Job Title
@@ -327,7 +327,7 @@ export default function ResumeKeywordsHub() {
 
       {/* Featured: Customer Service Keywords */}
       <RevealSection>
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-300">
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 text-center">
             Most popular keyword guide
           </h2>
@@ -357,7 +357,7 @@ export default function ResumeKeywordsHub() {
       </RevealSection>
 
       <RevealSection>
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-800">
           <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">By Industry</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-12 text-center">
             Browse keywords by industry
@@ -376,7 +376,7 @@ export default function ResumeKeywordsHub() {
 
       {/* Keyword Scanner CTA */}
       <RevealSection>
-        <div className="mb-16 max-w-4xl mx-auto">
+        <div className="mb-16 max-w-4xl mx-auto cv-auto cv-h-300">
           <Link
             to="/resume-keyword-scanner"
             className="block bg-ink rounded-2xl p-8 text-center relative overflow-hidden hover:shadow-2xl transition-all duration-300"

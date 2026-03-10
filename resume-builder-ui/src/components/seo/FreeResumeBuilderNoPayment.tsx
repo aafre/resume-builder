@@ -48,7 +48,7 @@ export default function FreeResumeBuilderNoPayment() {
 
       {/* Why others charge */}
       <RevealSection variant="fade-up">
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-500">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             Why Other Builders Are Not Really Free
           </h2>
@@ -80,7 +80,7 @@ export default function FreeResumeBuilderNoPayment() {
 
       {/* How we stay free */}
       <RevealSection variant="fade-up">
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-400">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             How We Stay Free — Honestly
           </h2>
@@ -118,7 +118,7 @@ export default function FreeResumeBuilderNoPayment() {
 
       {/* Internal links */}
       <RevealSection variant="fade-up">
-        <div className="mb-16 text-center">
+        <div className="mb-16 text-center cv-auto cv-h-200">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6">
             More Free Resume Resources
           </h2>

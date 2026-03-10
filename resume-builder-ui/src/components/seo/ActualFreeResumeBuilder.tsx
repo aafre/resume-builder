@@ -28,7 +28,7 @@ export default function ActualFreeResumeBuilder() {
       {config.metrics && <ProofSection metrics={config.metrics} />}
 
       <RevealSection variant="fade-up">
-      <div className="mb-16">
+      <div className="mb-16 cv-auto cv-h-300">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           What "actual free" means: no paywall, no watermark, no trials
         </h2>
@@ -44,7 +44,7 @@ export default function ActualFreeResumeBuilder() {
 
       {/* Competitor Comparison Table */}
       <RevealSection variant="fade-up">
-      <div className="mb-16">
+      <div className="mb-16 cv-auto cv-h-600">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           "Free" resume builders: what they actually charge for
         </h2>
@@ -139,7 +139,7 @@ export default function ActualFreeResumeBuilder() {
 
       {/* Truth Page Positioning */}
       <RevealSection variant="fade-up">
-      <div className="mb-16">
+      <div className="mb-16 cv-auto cv-h-400">
         <div className="max-w-4xl mx-auto bg-accent/[0.06] border border-accent/20 rounded-xl p-8">
           <h3 className="text-2xl font-bold text-ink mb-4 text-center">
             Why we're transparent about being free

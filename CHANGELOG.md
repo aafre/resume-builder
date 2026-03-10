@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.21.1] - 2026-03-01
+
+### 🐛 Bug Fixes
+
+- **seo:** Use full ISO 8601 datetime for VideoObject uploadDate
+
 ## [3.21.0] - 2026-03-01
 
 ### 🚀 Features
