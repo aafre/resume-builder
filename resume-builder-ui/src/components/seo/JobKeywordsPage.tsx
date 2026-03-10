@@ -100,7 +100,7 @@ export default function JobKeywordsPage() {
       {/* Role Intro Section */}
       {jobData.roleIntro && (
         <RevealSection>
-          <div className="mb-12 max-w-4xl mx-auto">
+          <div className="mb-12 max-w-4xl mx-auto" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 200px' }}>
             <div className="bg-accent/[0.04] border border-accent/20 rounded-2xl p-8">
               <h2 className="text-2xl font-extrabold text-ink tracking-tight mb-4">
                 What hiring teams look for in {jobData.title.toLowerCase()} keywords
@@ -127,7 +127,7 @@ export default function JobKeywordsPage() {
 
       {/* Core Skills Section */}
       <RevealSection>
-        <div className="mb-16">
+        <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
           <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Core Skills</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
             Core {jobData.title.toLowerCase()} skills (soft skills)
@@ -156,7 +156,7 @@ export default function JobKeywordsPage() {
 
       {/* Technical Skills Section */}
       <RevealSection stagger>
-        <div className="mb-16">
+        <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
             Technical skills & tools (hard skills)
           </h2>
@@ -208,7 +208,7 @@ export default function JobKeywordsPage() {
       {/* Processes Section */}
       {jobData.keywords.processes && jobData.keywords.processes.length > 0 && (
         <RevealSection>
-          <div className="mb-16">
+          <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
               Methodologies and processes
             </h2>
@@ -237,7 +237,7 @@ export default function JobKeywordsPage() {
       {/* Certifications Section */}
       {jobData.keywords.certifications && jobData.keywords.certifications.length > 0 && (
         <RevealSection>
-          <div className="mb-16">
+          <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
               Relevant certifications
             </h2>
@@ -266,7 +266,7 @@ export default function JobKeywordsPage() {
       {/* Metrics Section */}
       {jobData.keywords.metrics && jobData.keywords.metrics.length > 0 && (
         <RevealSection>
-          <div className="mb-16">
+          <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Metrics</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
               Metrics and KPIs
@@ -295,7 +295,7 @@ export default function JobKeywordsPage() {
 
       {/* Example Section */}
       <RevealSection>
-        <div className="mb-16">
+        <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 text-center">
             How to use these keywords: examples
           </h2>
@@ -330,7 +330,7 @@ export default function JobKeywordsPage() {
       {/* Keyword Phrases Section */}
       {jobData.phrases && jobData.phrases.length > 0 && (
         <RevealSection>
-          <div className="mb-16">
+          <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Key Phrases</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
               Keyword phrases for {jobData.title.toLowerCase()} resumes
@@ -362,7 +362,7 @@ export default function JobKeywordsPage() {
       {/* Example Bullets Section */}
       {jobData.exampleBullets && jobData.exampleBullets.length > 0 && (
         <RevealSection>
-          <div className="mb-16">
+          <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
               Ready-to-adapt resume bullets
             </h2>
@@ -391,7 +391,7 @@ export default function JobKeywordsPage() {
       {/* Common Mistakes Section */}
       {jobData.commonMistakes && jobData.commonMistakes.length > 0 && (
         <RevealSection>
-          <div className="mb-16">
+          <div className="mb-16" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Common Mistakes</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
               Common {jobData.title.toLowerCase()} resume mistakes
@@ -426,7 +426,7 @@ export default function JobKeywordsPage() {
 
       {/* Related Resources */}
       <RevealSection>
-        <div className="bg-chalk-dark rounded-2xl p-6 border border-black/[0.06] mt-12 mb-16 max-w-4xl mx-auto">
+        <div className="bg-chalk-dark rounded-2xl p-6 border border-black/[0.06] mt-12 mb-16 max-w-4xl mx-auto" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 250px' }}>
           <h2 className="text-2xl font-extrabold text-ink tracking-tight mb-4">Related Resources</h2>
           <ul className="space-y-2">
             {matchingExampleSlug && (
