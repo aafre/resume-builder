@@ -17,6 +17,7 @@ interface UseCloudSaveOptions {
   resumeData: ResumeData;
   icons: IconRegistry;
   enabled: boolean; // Only save if user is authenticated
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   session: any | null; // Session from AuthContext
 }
 
@@ -41,6 +42,7 @@ export function useCloudSave({
   const [currentResumeId, setCurrentResumeId] = useState<string | null>(resumeId);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const previousDataRef = useRef<string>('');
+  const base64CacheRef = useRef<Record<string, string>>({});
 
   // Function to convert File or base64 to base64 string
   const iconToBase64 = async (icon: File | string): Promise<string> => {
@@ -48,10 +50,19 @@ export function useCloudSave({
       return icon; // Already base64
     }
 
+    const cacheKey = `${icon.name}-${icon.size}-${icon.lastModified}`;
+    if (base64CacheRef.current[cacheKey]) {
+      return base64CacheRef.current[cacheKey];
+    }
+
     // Convert File to base64
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result as string);
+      reader.onloadend = () => {
+        const result = reader.result as string;
+        base64CacheRef.current[cacheKey] = result;
+        resolve(result);
+      };
       reader.onerror = reject;
       reader.readAsDataURL(icon);
     });
