@@ -27,7 +27,6 @@
     "@supabase/supabase-js": "^2.89.0",
     "@tanstack/react-query": "^5.90.12",
     "@tanstack/react-query-devtools": "^5.91.1",
-    "@tiptap/core": "^3.20.1",
     "@tiptap/extension-bold": "^3.10.7",
     "@tiptap/extension-bubble-menu": "^3.10.7",
     "@tiptap/extension-hard-break": "^3.10.7",
