@@ -1,6 +1,11 @@
+import React from 'react';
+import { MdArrowUpward, MdArrowDownward, MdDelete } from 'react-icons/md';
+
 const SectionControls: React.FC<{
   sectionIndex: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sections: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setSections: (sections: any[]) => void;
 }> = ({ sectionIndex, sections, setSections }) => {
   const moveSection = (fromIndex: number, toIndex: number) => {
@@ -19,32 +24,41 @@ const SectionControls: React.FC<{
   return (
     <div className="absolute top-4 right-4 flex gap-2">
       <button
+        type="button"
         onClick={() => moveSection(sectionIndex, sectionIndex - 1)}
         disabled={sectionIndex === 0}
-        className={`px-2 py-1 rounded ${
+        aria-label="Move section up"
+        title="Move section up"
+        className={`p-1.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
           sectionIndex === 0
-            ? "bg-gray-300 cursor-not-allowed"
-            : "bg-accent hover:bg-accent text-ink"
+            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+            : "bg-accent hover:bg-accent/90 text-ink"
         }`}
       >
-        ↑
+        <MdArrowUpward className="w-5 h-5" aria-hidden="true" />
       </button>
       <button
+        type="button"
         onClick={() => moveSection(sectionIndex, sectionIndex + 1)}
         disabled={sectionIndex === sections.length - 1}
-        className={`px-2 py-1 rounded ${
+        aria-label="Move section down"
+        title="Move section down"
+        className={`p-1.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
           sectionIndex === sections.length - 1
-            ? "bg-gray-300 cursor-not-allowed"
-            : "bg-accent hover:bg-accent text-ink"
+            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+            : "bg-accent hover:bg-accent/90 text-ink"
         }`}
       >
-        ↓
+        <MdArrowDownward className="w-5 h-5" aria-hidden="true" />
       </button>
       <button
+        type="button"
         onClick={deleteSection}
-        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+        aria-label="Delete section"
+        title="Delete section"
+        className="p-1.5 text-red-600 hover:bg-red-50 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-red-600"
       >
-        🗑
+        <MdDelete className="w-5 h-5" aria-hidden="true" />
       </button>
     </div>
   );
