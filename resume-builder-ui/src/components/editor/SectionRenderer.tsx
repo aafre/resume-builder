@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { Section, IconListItem } from '../../types';
 import { EditorContentIconRegistry } from './EditorContent';
+import { ChangeableSectionType } from '../../services/sectionService';
 import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
 import ExperienceSection from '../ExperienceSection';
 import EducationSection from '../EducationSection';
@@ -16,6 +17,7 @@ interface SectionRendererProps {
   handleDeleteSection: (index: number) => void;
   handleDeleteEntry: (sectionIndex: number, entryIndex: number) => void;
   handleReorderEntry: (sectionIndex: number, oldIndex: number, newIndex: number) => void;
+  handleChangeSectionType: (index: number, targetType: ChangeableSectionType) => void;
   handleTitleEdit: (index: number) => void;
   handleTitleSave: (newTitle?: string) => void;
   handleTitleCancel: () => void;
@@ -37,6 +39,7 @@ const SectionRenderer: React.FC<SectionRendererProps> = React.memo(({
   handleDeleteSection,
   handleDeleteEntry,
   handleReorderEntry,
+  handleChangeSectionType,
   handleTitleEdit,
   handleTitleSave,
   handleTitleCancel,
@@ -59,6 +62,10 @@ const SectionRenderer: React.FC<SectionRendererProps> = React.memo(({
   const onReorder = useCallback((oldIndex: number, newIndex: number) => {
     handleReorderEntry(index, oldIndex, newIndex);
   }, [handleReorderEntry, index]);
+
+  const onChangeType = useCallback((targetType: ChangeableSectionType) => {
+    handleChangeSectionType(index, targetType);
+  }, [handleChangeSectionType, index]);
 
   const onUpdate = useCallback((updatedContent: unknown) => {
     // Pass-through wrapper: content type varies by section and is enforced
@@ -141,6 +148,7 @@ const SectionRenderer: React.FC<SectionRendererProps> = React.memo(({
         isEditing={isEditingTitle}
         temporaryTitle={temporaryTitle}
         setTemporaryTitle={setTemporaryTitle}
+        onChangeType={onChangeType}
       />
     );
   }

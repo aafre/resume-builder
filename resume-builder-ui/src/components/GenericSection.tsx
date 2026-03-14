@@ -7,6 +7,7 @@ import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
 import { GhostButton } from "./shared/GhostButton";
 import { MdDelete } from "react-icons/md";
+import { ChangeableSectionType } from "../services/sectionService";
 
 interface Section {
   name: string;
@@ -26,6 +27,7 @@ interface GenericSectionProps {
   isEditing: boolean;
   temporaryTitle: string;
   setTemporaryTitle: (title: string) => void;
+  onChangeType?: (targetType: ChangeableSectionType) => void;
 }
 
 const GenericSection: React.FC<GenericSectionProps> = ({
@@ -40,6 +42,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
   isEditing,
   temporaryTitle,
   setTemporaryTitle,
+  onChangeType,
 }) => {
   // Collapse state - default to collapsed on mobile, expanded on desktop
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -104,6 +107,8 @@ const GenericSection: React.FC<GenericSectionProps> = ({
         onDelete={onDelete}
         isCollapsed={isCollapsed}
         onToggleCollapse={handleToggleCollapse}
+        sectionType={section.type}
+        onChangeType={onChangeType}
       />
 
       {!isCollapsed && (

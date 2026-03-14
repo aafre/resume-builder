@@ -337,6 +337,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
                   handleDeleteSection={sectionManagement.handleDeleteSection}
                   handleDeleteEntry={sectionManagement.handleDeleteEntry}
                   handleReorderEntry={sectionManagement.handleReorderEntry}
+                  handleChangeSectionType={sectionManagement.handleChangeSectionType}
                   handleTitleEdit={sectionManagement.handleTitleEdit}
                   handleTitleSave={sectionManagement.handleTitleSave}
                   handleTitleCancel={sectionManagement.handleTitleCancel}
