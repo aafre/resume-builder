@@ -251,7 +251,7 @@ export const convertSectionType = (
   if (sourceType === 'text') {
     // string → string[]
     const text = (section.content as string) || '';
-    newContent = text.split('\n').filter(line => line.trim() !== '');
+    newContent = text.split(/\r?\n/).filter(line => line.trim() !== '');
   } else if (targetType === 'text') {
     // string[] → string
     const items = (Array.isArray(section.content) ? section.content : []) as string[];

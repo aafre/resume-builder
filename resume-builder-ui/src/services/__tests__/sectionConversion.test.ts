@@ -109,9 +109,13 @@ describe('convertSectionType', () => {
     it('handles text with \\r\\n (Windows line endings)', () => {
       const section = makeSection('text', 'Line A\r\nLine B');
       const result = convertSectionType(section, 'bulleted-list');
-      // \r\n splits on \n, leaving \r on Line A — this is expected behavior
-      // The important thing is it doesn't break
-      expect(result.content).toHaveLength(2);
+      expect(result.content).toEqual(['Line A', 'Line B']);
+    });
+
+    it('handles mixed line endings (\\n and \\r\\n)', () => {
+      const section = makeSection('text', 'Line 1\nLine 2\r\nLine 3');
+      const result = convertSectionType(section, 'bulleted-list');
+      expect(result.content).toEqual(['Line 1', 'Line 2', 'Line 3']);
     });
   });
 
