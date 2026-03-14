@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { ResumeListItem } from '../types';
 import { ResumeCard } from '../components/ResumeCard';
 import { GhostCard } from '../components/GhostCard';
-import { DeleteResumeModal } from '../components/DeleteResumeModal';
+import ResponsiveConfirmDialog from '../components/ResponsiveConfirmDialog';
 import { DuplicateResumeModal } from '../components/DuplicateResumeModal';
 import PreviewModal from '../components/PreviewModal';
 import SignInRequiredGate from '../components/SignInRequiredGate';
@@ -64,7 +64,6 @@ export default function MyResumes() {
 
   // Thumbnail refresh hook - manages auto-triggering and silent retries
   const {
-    generatingIds: _generatingIds,
     triggerRefresh
   } = useThumbnailRefresh({
     session,
@@ -377,15 +376,18 @@ export default function MyResumes() {
       </div>
 
       {/* Delete Modal */}
-      <DeleteResumeModal
-        resume={resumeToDelete}
+      <ResponsiveConfirmDialog
         isOpen={deleteModalOpen}
-        onConfirm={confirmDelete}
-        onCancel={() => {
+        onClose={() => {
           setDeleteModalOpen(false);
           setResumeToDelete(null);
         }}
-        isDeleting={isDeleting}
+        onConfirm={confirmDelete}
+        title="Delete Resume?"
+        message={`Are you sure you want to delete ${resumeToDelete?.title}? This will permanently remove the resume and all its data.`}
+        confirmText="Delete"
+        isDestructive={true}
+        isLoading={isDeleting}
       />
 
       {/* Duplicate Modal */}
