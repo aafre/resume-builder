@@ -1,8 +1,10 @@
 // src/components/SectionHeader.tsx
 
-import React, { useCallback } from "react";
-import { MdExpandMore, MdExpandLess, MdDeleteOutline } from "react-icons/md";
+import React, { useState, useCallback } from "react";
+import { MdExpandMore, MdExpandLess, MdDeleteOutline, MdSwapHoriz } from "react-icons/md";
 import { InlineTextEditor } from "./shared/InlineTextEditor";
+import { ChangeableSectionType, isChangeableType } from "../services/sectionService";
+import SectionTypePopover from "./SectionTypePopover";
 
 /**
  * Props for the SectionHeader component.
@@ -41,6 +43,12 @@ export interface SectionHeaderProps {
   isCollapsed?: boolean;
   /** Callback when collapse is toggled */
   onToggleCollapse?: () => void;
+
+  // === Type Switching Props ===
+  /** Current section type (used to show/hide Change Type button) */
+  sectionType?: string;
+  /** Callback when section type is changed */
+  onChangeType?: (targetType: ChangeableSectionType) => void;
 }
 
 /**
@@ -50,6 +58,7 @@ export interface SectionHeaderProps {
  * - Inline editable title (click to edit, blur/enter to save)
  * - Optional delete button
  * - Optional collapse/expand toggle
+ * - Optional change type button (for changeable section types)
  *
  * Supports both new simplified API and legacy controlled API for backwards compatibility.
  */
@@ -66,9 +75,16 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   onDelete,
   isCollapsed = false,
   onToggleCollapse,
+  // Type switching props
+  sectionType,
+  onChangeType,
 }) => {
+  const [showTypePopover, setShowTypePopover] = useState(false);
+
   // Detect if using legacy API
   const isLegacyMode = legacyIsEditing !== undefined || legacyOnTitleEdit !== undefined;
+
+  const canChangeType = sectionType && isChangeableType(sectionType) && onChangeType;
 
   // Handle title save - pass the new title directly to bypass async state update issues
   const handleTitleSave = useCallback((newTitle: string) => {
@@ -117,21 +133,44 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         />
       </div>
 
-      {onDelete && (
+      {(onDelete || canChangeType) && (
         <div className="flex items-center gap-2 flex-shrink-0 ml-4">
-          <button
-            type="button"
-            onClick={onDelete}
-            className="flex items-center gap-1.5 text-gray-500 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
-            title="Remove Section"
-
-
-            aria-label={`Remove ${title || 'Section'}`}
-
-          >
-            <MdDeleteOutline className="text-lg" aria-hidden="true" />
-            <span className="hidden sm:inline">Remove</span>
-          </button>
+          {canChangeType && (
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setShowTypePopover(!showTypePopover)}
+                className="flex items-center gap-1.5 text-gray-500 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:text-accent hover:border-accent/40 hover:bg-accent/[0.06] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
+                title="Change Section Type"
+                aria-label="Change section type"
+              >
+                <MdSwapHoriz className="text-lg" aria-hidden="true" />
+                <span className="hidden sm:inline">Change Type</span>
+              </button>
+              {showTypePopover && (
+                <SectionTypePopover
+                  currentType={sectionType}
+                  onSelect={(type) => {
+                    onChangeType(type);
+                    setShowTypePopover(false);
+                  }}
+                  onClose={() => setShowTypePopover(false)}
+                />
+              )}
+            </div>
+          )}
+          {onDelete && (
+            <button
+              type="button"
+              onClick={onDelete}
+              className="flex items-center gap-1.5 text-gray-500 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
+              title="Remove Section"
+              aria-label={`Remove ${title || 'Section'}`}
+            >
+              <MdDeleteOutline className="text-lg" aria-hidden="true" />
+              <span className="hidden sm:inline">Remove</span>
+            </button>
+          )}
         </div>
       )}
     </div>
