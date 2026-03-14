@@ -1,15 +1,7 @@
 import { useState } from 'react';
 import { MdVerticalAlignTop, MdVerticalAlignBottom } from 'react-icons/md';
 import { SectionType } from '../services/sectionService';
-import {
-  ExperienceVisual,
-  EducationVisual,
-  TextVisual,
-  BulletedListVisual,
-  InlineListVisual,
-  SmartTableVisual,
-  CertificationVisual,
-} from './sectionVisuals';
+import { ALL_SECTION_TYPE_OPTIONS } from './sectionTypeConfig';
 
 // Position types for section insertion
 export type InsertPosition = 'top' | 'bottom' | number;
@@ -26,13 +18,6 @@ interface SectionTypeModalProps {
   sections?: Section[];
 }
 
-interface SectionTypeOption {
-  type: SectionType;
-  title: string;
-  description: string;
-  Visual: React.FC<{ className?: string }>;
-}
-
 const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   onClose,
   onSelect,
@@ -43,55 +28,10 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   const [showAfterSection, setShowAfterSection] = useState(false);
   const [selectedType, setSelectedType] = useState<SectionType | null>(null);
 
-  const allSectionTypes: SectionTypeOption[] = [
-    {
-      type: "experience",
-      title: "Experience",
-      description: "Work history with company, title, dates, and achievements.",
-      Visual: ExperienceVisual,
-    },
-    {
-      type: "education",
-      title: "Education",
-      description: "Academic qualifications with degree, school, and year.",
-      Visual: EducationVisual,
-    },
-    {
-      type: "text",
-      title: "Text Block",
-      description: "Simple paragraph for summaries or statements.",
-      Visual: TextVisual,
-    },
-    {
-      type: "bulleted-list",
-      title: "Bulleted List",
-      description: "Traditional vertical list with bullet points.",
-      Visual: BulletedListVisual,
-    },
-    {
-      type: "inline-list",
-      title: "Inline List",
-      description: "Items displayed horizontally, flowing like tags.",
-      Visual: InlineListVisual,
-    },
-    {
-      type: "dynamic-column-list",
-      title: "Smart Table",
-      description: "Auto-arranges items in columns for space efficiency.",
-      Visual: SmartTableVisual,
-    },
-    {
-      type: "icon-list",
-      title: "Certifications",
-      description: "Professional certifications with issuer and dates.",
-      Visual: CertificationVisual,
-    },
-  ];
-
   // Filter out icon-list if template doesn't support icons
   const sectionTypes = supportsIcons
-    ? allSectionTypes
-    : allSectionTypes.filter(section => section.type !== "icon-list");
+    ? ALL_SECTION_TYPE_OPTIONS
+    : ALL_SECTION_TYPE_OPTIONS.filter(section => section.type !== "icon-list");
 
   const handleTopBottomSelect = (position: 'top' | 'bottom') => {
     setSelectedPosition(position);

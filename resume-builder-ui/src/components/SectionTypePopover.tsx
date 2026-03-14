@@ -1,25 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { ChangeableSectionType, CHANGEABLE_TYPES, TYPE_DISPLAY_NAMES } from '../services/sectionService';
-import {
-  TextVisual,
-  BulletedListVisual,
-  InlineListVisual,
-  SmartTableVisual,
-} from './sectionVisuals';
-
-const TYPE_VISUALS: Record<ChangeableSectionType, React.FC<{ className?: string }>> = {
-  'text': TextVisual,
-  'bulleted-list': BulletedListVisual,
-  'inline-list': InlineListVisual,
-  'dynamic-column-list': SmartTableVisual,
-};
-
-const TYPE_DESCRIPTIONS: Record<ChangeableSectionType, string> = {
-  'text': 'Simple paragraph',
-  'bulleted-list': 'Vertical bullet points',
-  'inline-list': 'Horizontal flowing tags',
-  'dynamic-column-list': 'Auto-arranged columns',
-};
+import { ChangeableSectionType, CHANGEABLE_TYPES } from '../services/sectionService';
+import { ALL_SECTION_TYPE_OPTIONS } from './sectionTypeConfig';
 
 interface SectionTypePopoverProps {
   currentType: string;
@@ -60,7 +41,11 @@ const SectionTypePopover: React.FC<SectionTypePopoverProps> = ({
     return () => document.removeEventListener('keydown', handleKey);
   }, [onClose]);
 
-  const options = CHANGEABLE_TYPES.filter(t => t !== currentType);
+  // Show only changeable types, excluding the current one
+  const changeableSet = new Set<string>(CHANGEABLE_TYPES);
+  const options = ALL_SECTION_TYPE_OPTIONS.filter(
+    o => changeableSet.has(o.type) && o.type !== currentType
+  );
 
   return (
     <div
@@ -74,26 +59,23 @@ const SectionTypePopover: React.FC<SectionTypePopoverProps> = ({
           Change Type
         </span>
       </div>
-      {options.map(type => {
-        const Visual = TYPE_VISUALS[type];
-        return (
-          <button
-            key={type}
-            type="button"
-            role="option"
-            onClick={() => onSelect(type)}
-            className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-accent/[0.06] transition-colors text-left"
-          >
-            <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-gray-50 rounded-lg">
-              <Visual className="w-7 h-7" />
-            </div>
-            <div className="min-w-0">
-              <div className="text-sm font-medium text-ink">{TYPE_DISPLAY_NAMES[type]}</div>
-              <div className="text-xs text-stone-warm">{TYPE_DESCRIPTIONS[type]}</div>
-            </div>
-          </button>
-        );
-      })}
+      {options.map(({ type, title, description, Visual }) => (
+        <button
+          key={type}
+          type="button"
+          role="option"
+          onClick={() => onSelect(type as ChangeableSectionType)}
+          className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-accent/[0.06] transition-colors text-left"
+        >
+          <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-gray-50 rounded-lg">
+            <Visual className="w-7 h-7" />
+          </div>
+          <div className="min-w-0">
+            <div className="text-sm font-medium text-ink">{title}</div>
+            <div className="text-xs text-stone-warm">{description}</div>
+          </div>
+        </button>
+      ))}
     </div>
   );
 };
