@@ -4,7 +4,7 @@
 import React from 'react';
 import { ContactInfo, Section, SocialLink } from '../types';
 import { DragEndEvent, DragStartEvent, useSensors } from '@dnd-kit/core';
-import { SectionType } from '../services/sectionService';
+import { SectionType, ChangeableSectionType } from '../services/sectionService';
 import { InsertPosition } from '../components/SectionTypeModal';
 
 // --- Editor State Types ---
@@ -188,6 +188,7 @@ export interface UseSectionManagementReturn {
   handleDeleteSection: (index: number) => void;
   handleDeleteEntry: (sectionIndex: number, entryIndex: number) => void;
   handleReorderEntry: (sectionIndex: number, oldIndex: number, newIndex: number) => void;
+  handleChangeSectionType: (index: number, targetType: ChangeableSectionType) => void;
   confirmDelete: () => void;
 
   // Title editing

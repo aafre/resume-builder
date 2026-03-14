@@ -5,7 +5,7 @@ import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { Section } from '../../types';
 import { DeleteTarget, UseSectionManagementReturn } from '../../types/editor';
-import { createDefaultSection, deleteSectionItem, reorderSectionItems, SectionType } from '../../services/sectionService';
+import { createDefaultSection, deleteSectionItem, reorderSectionItems, convertSectionType, SectionType, ChangeableSectionType, TYPE_DISPLAY_NAMES } from '../../services/sectionService';
 import { InsertPosition } from '../../components/SectionTypeModal';
 
 /**
@@ -200,6 +200,26 @@ export const useSectionManagement = ({
   );
 
   /**
+   * Change a section's type in-place, converting content intelligently.
+   */
+  const handleChangeSectionType = useCallback(
+    (index: number, targetType: ChangeableSectionType) => {
+      setSections((currentSections) => {
+        const section = currentSections[index];
+        if (!section) return currentSections;
+
+        const converted = convertSectionType(section, targetType);
+        const newSections = [...currentSections];
+        newSections[index] = converted;
+        return newSections;
+      });
+
+      toast.success(`Changed to ${TYPE_DISPLAY_NAMES[targetType]}`);
+    },
+    [setSections]
+  );
+
+  /**
    * Confirm and execute the pending delete operation.
    * Handles both section deletion and entry deletion within sections.
    */
@@ -294,6 +314,7 @@ export const useSectionManagement = ({
       handleDeleteSection,
       handleDeleteEntry,
       handleReorderEntry,
+      handleChangeSectionType,
       confirmDelete,
 
       // Title editing
@@ -310,6 +331,7 @@ export const useSectionManagement = ({
       handleDeleteSection,
       handleDeleteEntry,
       handleReorderEntry,
+      handleChangeSectionType,
       confirmDelete,
       editingTitleIndex,
       temporaryTitle,
