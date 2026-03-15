@@ -55,7 +55,7 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
   };
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg" data-testid="mobile-action-bar">
       {/* Auto-save status bar (subtle, above buttons) - only for authenticated users */}
       {isAuthenticated && (isSaving || lastSaved || saveError) && (
         <div className="px-4 py-1 bg-gray-50 border-b border-gray-100">
@@ -103,6 +103,7 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
             disabled={isPreviewLoading || isGenerating}
             className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-accent text-ink rounded-xl shadow-lg transition-all hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed relative"
             aria-label="Preview resume PDF"
+            data-testid="preview-button-mobile"
             style={{ WebkitTapHighlightColor: "transparent" }}
           >
             {/* Staleness indicator */}
@@ -129,6 +130,7 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
           disabled={isGenerating || isGeneratingPreview}
           className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-xl shadow-lg transition-all hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Download resume as PDF"
+          data-testid="download-button-mobile"
           style={{ WebkitTapHighlightColor: "transparent" }}
         >
           {isGenerating ? (

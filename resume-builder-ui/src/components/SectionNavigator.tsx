@@ -335,6 +335,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
 
           {/* Contact Info */}
           <button
+            data-testid="section-item-contact"
             onClick={() => onSectionClick(-1)}
             className={`w-full flex items-center transition-all rounded-lg group ${
               isCollapsed
@@ -374,6 +375,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           {sections.map((section, index) => (
             <button
               key={index}
+              data-testid={`section-item-${index}`}
               onClick={() => onSectionClick(index)}
               className={`w-full flex items-center transition-all rounded-lg group ${
                 isCollapsed
@@ -553,6 +555,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           {onPreviewResume && (
             <button
               id="tour-preview-button"
+              data-testid="preview-button"
               onClick={onPreviewResume}
               disabled={isPreviewLoading}
               className={`w-full flex items-center justify-center bg-accent text-ink font-semibold rounded-lg shadow-md hover:shadow-lg hover:bg-accent/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative ${
@@ -587,6 +590,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           {/* Primary Action: Download Resume */}
           <button
             id="tour-download-button"
+            data-testid="download-button"
             onClick={onDownloadResume}
             disabled={isGenerating}
             className={`w-full flex items-center justify-center bg-gradient-to-r from-emerald-600 to-green-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-emerald-500 hover:to-green-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${
@@ -609,6 +613,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
 
           {/* Secondary Action: Add Section */}
           <button
+            data-testid="add-section-button"
             onClick={onAddSection}
             className={`w-full flex items-center justify-center bg-accent text-ink font-medium rounded-lg shadow-sm hover:shadow-md hover:bg-accent/90 transition-all active:scale-[0.98] ${
               isCollapsed
@@ -664,6 +669,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
 
             {/* Import from File (authenticated) / Load My Work (anonymous) */}
             <button
+              data-testid="import-yaml-button"
               onClick={onImportYAML}
               disabled={loadingLoad}
               className={`w-full flex items-center transition-all rounded-md disabled:opacity-50 ${
