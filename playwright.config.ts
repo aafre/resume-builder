@@ -1,109 +1,60 @@
 import { defineConfig, devices } from '@playwright/test';
-import * as dotenv from 'dotenv';
-import * as path from 'path';
-
-// Load test environment variables
-dotenv.config({ path: path.resolve(__dirname, '.env.test') });
 
 /**
  * Playwright E2E Testing Configuration for Resume Builder
  *
- * Tests critical user flows:
- * - Authentication (OAuth, magic links, anonymous sessions)
- * - Cloud save/load (auto-save, manual save, resume management)
- * - AI resume parser (PDF/DOCX upload → YAML)
- * - /my-resumes page (list, duplicate, delete, edit)
- * - PDF generation (download, preview)
+ * Tier 1: Anonymous critical path tests (no auth, no Supabase)
+ * Tier 2: Auth flows (future - requires Supabase test project)
  *
- * NOTE: E2E tests are currently DISABLED (testMatch: ['DISABLED_*.spec.ts'])
- * Re-enable by changing testMatch to ['**/*.spec.ts'] when ready to fix/run tests
+ * Tests use ?__test=1 flag to disable tour/animations in the app.
  */
 export default defineConfig({
   testDir: './e2e/tests',
-  testMatch: ['DISABLED_*.spec.ts'], // Temporarily disabled - no files match this pattern
+  testMatch: ['**/*.spec.ts'],
+  // Sitemap tests run separately via: npx playwright test --project=sitemap
+  testIgnore: ['**/sitemap-validation.spec.ts'],
 
-  // Run tests in parallel for faster execution
   fullyParallel: true,
-
-  // Fail build on CI if tests are focused
   forbidOnly: !!process.env.CI,
-
-  // Retry failed tests in CI (flakiness protection)
-  retries: process.env.CI ? 2 : 0,
-
-  // Limit workers in CI to avoid overwhelming resources
+  retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 2 : undefined,
 
-  // Reporter configuration
   reporter: [
-    ['html', { outputFolder: 'playwright-report' }],
-    ['junit', { outputFile: 'test-results/junit.xml' }],
-    ...(process.env.CI ? [['github'] as const] : []), // GitHub Actions annotations
+    ['html', { outputFolder: 'playwright-report', open: 'never' }],
+    ...(process.env.CI ? [['github'] as const] : []),
   ],
 
-  // Shared settings for all tests
   use: {
-    // Base URL for tests
-    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:5173',
-
-    // Collect trace on first retry (for debugging failures)
+    baseURL: 'http://localhost:5173',
     trace: 'on-first-retry',
-
-    // Screenshot on failure
     screenshot: 'only-on-failure',
-
-    // Video retention
     video: 'retain-on-failure',
-
-    // Browser viewport
     viewport: { width: 1280, height: 720 },
-
-    // Test timeout
-    actionTimeout: 10000,
+    actionTimeout: 10_000,
   },
 
-  // Global timeout for entire test run
-  timeout: 60000, // 60 seconds per test
+  timeout: 30_000,
+  expect: { timeout: 5_000 },
 
-  // Expect timeout
-  expect: {
-    timeout: 5000,
-  },
-
-  // Test projects (browsers)
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-
-    // Sitemap validation tests - enabled separately from main E2E tests
+    // Sitemap validation - run separately: npx playwright test --project=sitemap
     {
       name: 'sitemap',
       testMatch: 'sitemap-validation.spec.ts',
+      testIgnore: [],
       use: { ...devices['Desktop Chrome'] },
     },
-
-    // Uncomment for cross-browser testing
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
   ],
 
-  // Web server configuration (starts dev server automatically)
   webServer: {
     command: 'npm run dev',
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
     cwd: './resume-builder-ui',
-    timeout: 120000, // 2 minutes to start
+    timeout: 60_000,
   },
-
-  // Global setup (create test users, seed data)
-  globalSetup: './e2e/global-setup.ts',
 });
