@@ -1,6 +1,8 @@
 const SectionControls: React.FC<{
   sectionIndex: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sections: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setSections: (sections: any[]) => void;
 }> = ({ sectionIndex, sections, setSections }) => {
   const moveSection = (fromIndex: number, toIndex: number) => {
@@ -21,6 +23,8 @@ const SectionControls: React.FC<{
       <button
         onClick={() => moveSection(sectionIndex, sectionIndex - 1)}
         disabled={sectionIndex === 0}
+        aria-label="Move section up"
+        title="Move section up"
         className={`px-2 py-1 rounded ${
           sectionIndex === 0
             ? "bg-gray-300 cursor-not-allowed"
@@ -32,6 +36,8 @@ const SectionControls: React.FC<{
       <button
         onClick={() => moveSection(sectionIndex, sectionIndex + 1)}
         disabled={sectionIndex === sections.length - 1}
+        aria-label="Move section down"
+        title="Move section down"
         className={`px-2 py-1 rounded ${
           sectionIndex === sections.length - 1
             ? "bg-gray-300 cursor-not-allowed"
@@ -42,6 +48,8 @@ const SectionControls: React.FC<{
       </button>
       <button
         onClick={deleteSection}
+        aria-label="Delete section"
+        title="Delete section"
         className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
       >
         🗑
