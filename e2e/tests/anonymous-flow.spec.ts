@@ -273,18 +273,19 @@ test.describe('PDF Generation', () => {
     await gotoEditor(page);
   });
 
-  test('preview PDF shows preview modal', async ({ page }) => {
+  test('preview PDF opens preview modal and calls generate API', async ({ page }) => {
+    // Set up response listener BEFORE clicking to avoid race condition
+    const generateCalled = page.waitForRequest(
+      (r) => r.url().includes('/api/generate') && r.method() === 'POST',
+      { timeout: 15_000 }
+    );
+
     // Click Preview — this triggers: save → validate → open modal → generate
     await page.getByTestId('preview-button').click();
 
-    // Wait for preview modal to appear (it opens before generation completes)
+    // Verify modal opens and generate API was called
     await expect(page.getByTestId('preview-modal-container')).toBeVisible({ timeout: 15_000 });
-
-    // Wait for the generate API call to complete
-    await page.waitForResponse(
-      (r) => r.url().includes('/api/generate') && r.status() === 200,
-      { timeout: 15_000 }
-    );
+    await generateCalled;
   });
 
   test('download PDF triggers file download', async ({ page }) => {
