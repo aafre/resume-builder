@@ -7,192 +7,10 @@
  * Test mode (?__test=1) disables tour and CSS animations.
  */
 
-import { test, expect, Page } from '@playwright/test';
-import { createResumeWithExperience } from '../fixtures/test-data';
+import { test, expect } from '@playwright/test';
+import { gotoEditor } from '../utils/mock-helpers';
 
-// Shared mock data
 const TEST_RESUME_ID = 'e2e-test-resume-001';
-const TEST_TEMPLATE_ID = 'modern-with-icons';
-const testResume = createResumeWithExperience();
-
-// Supabase project ref extracted from VITE_SUPABASE_URL
-// The localStorage key format is: sb-{project-ref}-auth-token
-const SUPABASE_STORAGE_KEY = 'sb-mgetvioaymkvafczmhwo-auth-token';
-
-/**
- * Fake Supabase session for localStorage injection.
- * This makes the AuthContext think a valid anonymous session exists,
- * bypassing the need for a real Supabase instance.
- */
-const FAKE_SESSION = {
-  access_token: 'e2e-mock-access-token-' + Date.now(),
-  token_type: 'bearer',
-  expires_in: 3600,
-  expires_at: Math.floor(Date.now() / 1000) + 3600,
-  refresh_token: 'e2e-mock-refresh-token',
-  user: {
-    id: 'e2e-mock-user-id',
-    aud: 'authenticated',
-    role: 'authenticated',
-    email: null,
-    is_anonymous: true,
-    app_metadata: { provider: 'anonymous', providers: ['anonymous'] },
-    user_metadata: {},
-    created_at: new Date().toISOString(),
-  },
-};
-
-/**
- * Set up all route mocks needed for the editor to function.
- */
-async function setupEditorMocks(page: Page) {
-  // Mock Supabase auth endpoints (token refresh, user info)
-  await page.route('**/auth/v1/**', async (route) => {
-    const url = route.request().url();
-
-    if (url.includes('/token')) {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(FAKE_SESSION),
-      });
-    } else if (url.includes('/user')) {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(FAKE_SESSION.user),
-      });
-    } else {
-      await route.fulfill({ status: 200, contentType: 'application/json', body: '{}' });
-    }
-  });
-
-  // Mock Supabase REST endpoints (user_preferences, conversion_tracking)
-  await page.route('**/rest/v1/**', async (route) => {
-    const url = route.request().url();
-
-    if (url.includes('user_preferences')) {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify([{ tour_completed: true, idle_nudge_shown: true }]),
-      });
-    } else {
-      await route.fulfill({ status: 200, contentType: 'application/json', body: '[]' });
-    }
-  });
-
-  // Mock resume fetch by ID
-  await page.route(`**/api/resumes/${TEST_RESUME_ID}`, async (route) => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        resume: {
-          id: TEST_RESUME_ID,
-          template_id: TEST_TEMPLATE_ID,
-          contact_info: testResume.contact_info,
-          sections: testResume.sections.map((s, i) => ({ ...s, id: `section-${i}` })),
-          title: 'E2E Test Resume',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-      }),
-    });
-  });
-
-  // Mock template structure fetch
-  await page.route('**/api/template/**', async (route) => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        yaml: [
-          'contact_info:',
-          '  name: ""',
-          '  email: ""',
-          'sections:',
-          '  - name: Summary',
-          '    type: text',
-          '    content: ""',
-          '  - name: Experience',
-          '    type: experience',
-          '    content: []',
-          '  - name: Skills',
-          '    type: bulleted-list',
-          '    content: []',
-        ].join('\n'),
-        supportsIcons: true,
-      }),
-    });
-  });
-
-  // Mock resume list, save, count
-  await page.route('**/api/resumes', async (route) => {
-    const method = route.request().method();
-    if (method === 'GET') {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({ resumes: [] }),
-      });
-    } else {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({ success: true, resume_id: TEST_RESUME_ID }),
-      });
-    }
-  });
-
-  await page.route('**/api/resumes/count*', async (route) => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({ count: 1 }),
-    });
-  });
-
-  // Mock PDF generation - return minimal PDF bytes
-  await page.route('**/api/generate', async (route) => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/pdf',
-      headers: { 'Content-Disposition': 'attachment; filename="resume.pdf"' },
-      body: Buffer.from('%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\n%%EOF', 'utf-8'),
-    });
-  });
-
-  // Mock templates list
-  await page.route('**/api/templates', async (route) => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify([
-        { id: 'modern-with-icons', name: 'Modern', description: 'Contemporary design.', image_url: 'data:image/png;base64,iVBORw0KGgo=' },
-        { id: 'classic-alex-rivera', name: 'Professional', description: 'Clean layout.', image_url: 'data:image/png;base64,iVBORw0KGgo=' },
-      ]),
-    });
-  });
-}
-
-/**
- * Navigate to the editor with mocks and fake session.
- */
-async function gotoEditor(page: Page) {
-  await setupEditorMocks(page);
-
-  // Inject fake Supabase session into localStorage BEFORE page load
-  // We need to navigate first to set the origin, then inject, then navigate to editor
-  await page.goto('/?__test=1', { waitUntil: 'commit' });
-  await page.evaluate(({ key, session }) => {
-    localStorage.setItem(key, JSON.stringify(session));
-  }, { key: SUPABASE_STORAGE_KEY, session: FAKE_SESSION });
-
-  // Now navigate to editor — Supabase will find the session in localStorage
-  await page.goto(`/editor/${TEST_RESUME_ID}?__test=1`);
-  await page.getByTestId('editor-main-content').waitFor({ state: 'visible', timeout: 15_000 });
-}
 
 // ─── Test 1: Homepage → Templates ────────────────────────────────────────────
 
@@ -211,7 +29,7 @@ test.describe('Homepage and Templates', () => {
 
 test.describe('Editor Section Management', () => {
   test.beforeEach(async ({ page }) => {
-    await gotoEditor(page);
+    await gotoEditor(page, TEST_RESUME_ID);
   });
 
   test('editor loads with correct contact info and sections', async ({ page }) => {
@@ -270,7 +88,7 @@ test.describe('Editor Section Management', () => {
 
 test.describe('PDF Generation', () => {
   test.beforeEach(async ({ page }) => {
-    await gotoEditor(page);
+    await gotoEditor(page, TEST_RESUME_ID);
   });
 
   test('preview PDF opens preview modal and calls generate API', async ({ page }) => {
