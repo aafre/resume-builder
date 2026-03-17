@@ -17,7 +17,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  workers: process.env.CI ? 2 : 4,
 
   reporter: [
     ['html', { outputFolder: 'playwright-report', open: 'never' }],
@@ -40,6 +40,10 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
     },
     // Sitemap validation - run separately: npx playwright test --project=sitemap
     {
