@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
-import IconManager from "./IconManager";
+import React, { useState, useEffect, useCallback } from "react";
 import { SectionHeader } from "./SectionHeader";
 import { MarkdownHint } from "./MarkdownLinkPreview";
-import { RichTextInput } from "./RichTextInput";
-import { MdDelete } from "react-icons/md";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
 import { GhostButton } from "./shared/GhostButton";
+import EducationItem, { EducationItemData } from "./EducationItem";
 
 interface EducationItem {
   degree: string;
@@ -82,18 +80,14 @@ const EducationSection: React.FC<EducationSectionProps> = ({
     setIsCollapsed(!isCollapsed);
   };
 
-  const handleUpdateItem = (
-    index: number,
-    key: keyof EducationItem,
-    value: string | File | null
-  ) => {
+  const handleUpdateItem = useCallback((index: number, updatedEducationItem: EducationItemData) => {
     const updatedEducation = [...education];
-    updatedEducation[index] = { ...updatedEducation[index], [key]: value };
+    updatedEducation[index] = updatedEducationItem;
     onUpdate(updatedEducation);
-  };
+  }, [education, onUpdate]);
 
-  const handleAddItem = () => {
-    const newEducation: EducationItem = {
+  const handleAddItem = useCallback(() => {
+    const newEducation: EducationItemData = {
       degree: "",
       school: "",
       year: "",
@@ -103,9 +97,9 @@ const EducationSection: React.FC<EducationSectionProps> = ({
       iconBase64: null,
     };
     onUpdate([...education, newEducation]);
-  };
+  }, [education, onUpdate]);
 
-  const handleRemoveItem = (index: number) => {
+  const handleRemoveItem = useCallback((index: number) => {
     if (onDeleteEntry) {
       // Trigger confirmation dialog
       onDeleteEntry(index);
@@ -115,20 +109,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({
       updatedEducation.splice(index, 1);
       onUpdate(updatedEducation);
     }
-  };
-
-  // Handle icon changes from IconManager
-  const handleIconChange = (index: number, filename: string | null, file: File | null) => {
-    // Single atomic update - IconManager handles file storage
-    const updatedEducation = [...education];
-    updatedEducation[index] = {
-      ...updatedEducation[index],
-      icon: filename,
-      iconFile: file, // Keep for transition compatibility
-      iconBase64: null, // Clear any old base64 data
-    };
-    onUpdate(updatedEducation);
-  };
+  }, [education, onDeleteEntry, onUpdate]);
 
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
@@ -165,80 +146,14 @@ const EducationSection: React.FC<EducationSectionProps> = ({
             <>
               {education.map((item, index) => (
                 <SortableItem key={itemIds[index]} id={itemIds[index]}>
-                  <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
-                    <div className="flex justify-between items-center">
-                      <h3 className="text-lg font-semibold">Entry {index + 1}</h3>
-                      <button
-                        onClick={() => handleRemoveItem(index)}
-                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        aria-label="Delete education entry"
-                        title="Delete this entry"
-                      >
-                        <MdDelete className="text-xl" />
-                      </button>
-                    </div>
-                    <div className="mt-4">
-                      {supportsIcons && iconRegistry && (
-                        <div className="mb-4">
-                          <IconManager
-                            value={item.icon || null}
-                            onChange={(filename, file) => handleIconChange(index, filename, file)}
-                            registerIcon={iconRegistry.registerIcon}
-                            getIconFile={iconRegistry.getIconFile}
-                            removeIcon={iconRegistry.removeIcon}
-                          />
-                        </div>
-                      )}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-gray-700 font-medium mb-1">
-                            Degree
-                          </label>
-                          <RichTextInput
-                            value={item.degree}
-                            onChange={(value) => handleUpdateItem(index, "degree", value)}
-                            placeholder="e.g., Bachelor of Science"
-                            className="w-full border border-gray-300 rounded-lg p-2"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-gray-700 font-medium mb-1">
-                            School
-                          </label>
-                          <RichTextInput
-                            value={item.school}
-                            onChange={(value) => handleUpdateItem(index, "school", value)}
-                            placeholder="e.g., University Name"
-                            className="w-full border border-gray-300 rounded-lg p-2"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-gray-700 font-medium mb-1">
-                            Year
-                          </label>
-                          <input
-                            type="text"
-                            value={item.year}
-                            onChange={(e) =>
-                              handleUpdateItem(index, "year", e.target.value)
-                            }
-                            className="w-full border border-gray-300 rounded-lg p-2"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-gray-700 font-medium mb-1">
-                            Field of Study
-                          </label>
-                          <RichTextInput
-                            value={item.field_of_study || ""}
-                            onChange={(value) => handleUpdateItem(index, "field_of_study", value)}
-                            placeholder="e.g., Computer Science"
-                            className="w-full border border-gray-300 rounded-lg p-2"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <EducationItem
+                    educationItem={item}
+                    index={index}
+                    onUpdate={handleUpdateItem}
+                    onDelete={handleRemoveItem}
+                    supportsIcons={supportsIcons}
+                    iconRegistry={iconRegistry}
+                  />
                 </SortableItem>
               ))}
             </>
