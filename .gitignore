@@ -51,10 +51,12 @@ coverage.xml
 .pytest_cache/
 cover/
 
-# Playwright E2E test results
+# Playwright E2E
 playwright-report/
 test-results/
+blob-report/
 .playwright/
+storage/
 
 # Translations
 *.mo
@@ -226,3 +228,4 @@ cold-reachouts/
 local_files/
 SearchConsole/
 seo-tracking/
+.mcp.json
