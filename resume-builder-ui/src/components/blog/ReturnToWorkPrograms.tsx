@@ -20,7 +20,7 @@ const PROGRAMS: Program[] = [
     duration: '15 weeks',
     paid: true,
     minGap: '2+ years',
-    url: 'https://careers.jpmorgan.com/us/en/programs/reentry',
+    url: 'https://www.jpmorganchase.com/careers',
     description: 'One of the largest and longest-running returnship programs. Operates across multiple business lines with a strong conversion rate to full-time roles. Available in the US, UK, and India.',
   },
   {
@@ -30,7 +30,7 @@ const PROGRAMS: Program[] = [
     duration: '12 weeks',
     paid: true,
     minGap: '2+ years',
-    url: 'https://www.goldmansachs.com/careers/returnship/',
+    url: 'https://www.goldmansachs.com/careers',
     description: 'The program that coined the term "returnship." Highly competitive with mentorship, training, and networking. Strong track record of converting participants to permanent employees.',
   },
   {
@@ -40,7 +40,7 @@ const PROGRAMS: Program[] = [
     duration: '16 weeks',
     paid: true,
     minGap: '1+ years',
-    url: 'https://www.amazon.jobs/en/landing_pages/returnship',
+    url: 'https://www.amazon.jobs/en/landing_pages/returnships',
     description: 'Paid internship-style program with mentorship and a dedicated cohort. Focuses on tech and operations roles. Available in multiple US locations and some international offices.',
   },
   {
@@ -50,7 +50,7 @@ const PROGRAMS: Program[] = [
     duration: '16 weeks',
     paid: true,
     minGap: 'Non-traditional background',
-    url: 'https://www.microsoft.com/en-us/leap/',
+    url: 'https://leap.microsoft.com/',
     description: 'Designed for career changers and returners entering software engineering. Includes intensive training and placement on a product team. Not limited to those with CS degrees.',
   },
   {
@@ -60,7 +60,7 @@ const PROGRAMS: Program[] = [
     duration: '16 weeks',
     paid: true,
     minGap: '2+ years',
-    url: 'https://careers.pypl.com/recharge/',
+    url: 'https://careers.pypl.com/home/',
     description: 'Structured return-to-work program with mentorship, professional development, and a clear path to full-time employment. Strong focus on inclusion and supporting diverse returners.',
   },
   {
@@ -70,7 +70,7 @@ const PROGRAMS: Program[] = [
     duration: '12 weeks',
     paid: true,
     minGap: '1+ years',
-    url: 'https://www.ibm.com/employment/techreentry/',
+    url: 'https://www.ibm.com/careers',
     description: 'Focused on technical roles with training in IBM cloud and AI platforms. Good option for engineers who want to update their skills while re-entering the workforce.',
   },
   {
@@ -80,7 +80,7 @@ const PROGRAMS: Program[] = [
     duration: '16 weeks',
     paid: true,
     minGap: '2+ years',
-    url: 'https://www.metacareers.com/returntowork',
+    url: 'https://www.metacareers.com/careerprograms/pathways',
     description: 'Offers full compensation and benefits during the program. Participants are embedded in real teams working on production products. Strong conversion rate.',
   },
   {
@@ -90,7 +90,7 @@ const PROGRAMS: Program[] = [
     duration: 'Varies',
     paid: true,
     minGap: '2+ years',
-    url: 'https://www2.deloitte.com/us/en/pages/careers/articles/encore-program.html',
+    url: 'https://www.deloitte.com/us/en/careers/join-deloitte/encore-program.html',
     description: 'Professional services returnship across all major practice areas. Provides training, mentorship, and exposure to client-facing work. Available in the US and UK.',
   },
   {
@@ -100,7 +100,7 @@ const PROGRAMS: Program[] = [
     duration: '16 weeks',
     paid: true,
     minGap: '18+ months',
-    url: 'https://www.accenture.com/us-en/careers/returntowork',
+    url: 'https://www.accenture.com/us-en/careers',
     description: 'Global program available across multiple practices. Includes dedicated onboarding, coaching, and a buddy system. Open to professionals who have been on a career break.',
   },
   {
@@ -120,7 +120,7 @@ const PROGRAMS: Program[] = [
     duration: '6 months',
     paid: true,
     minGap: '2+ years',
-    url: 'https://www.sap.com/about/careers.html',
+    url: 'https://www.sap.com/careers.html',
     description: 'Longer-duration program that gives returners more time to ramp up. Includes training on SAP products, mentorship, and networking. Available globally.',
   },
   {
@@ -130,7 +130,7 @@ const PROGRAMS: Program[] = [
     duration: '12 weeks',
     paid: true,
     minGap: '2+ years',
-    url: 'https://www.nbcunicareers.com/act-two',
+    url: 'https://www.nbcunicareers.com/programs',
     description: 'Returnship in the media and entertainment industry. Good option for returners interested in creative, tech, or business roles at a major media company.',
   },
   {
@@ -140,7 +140,7 @@ const PROGRAMS: Program[] = [
     duration: '12-24 weeks',
     paid: true,
     minGap: '2+ years',
-    url: 'https://www.ubs.com/global/en/careers.html',
+    url: 'https://www.ubs.com/careers',
     description: 'Originally a Credit Suisse program, now continued under UBS. Places returners across banking divisions with structured mentorship and career development.',
   },
 ];
