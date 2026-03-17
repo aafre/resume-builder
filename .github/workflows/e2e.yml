@@ -18,17 +18,22 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: resume-builder-ui/package-lock.json
+          cache-dependency-path: |
+            resume-builder-ui/package-lock.json
+            package-lock.json
 
       - name: Install frontend dependencies
         working-directory: resume-builder-ui
         run: npm ci
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+      - name: Install root dependencies (Playwright + axe-core)
+        run: npm ci
 
-      - name: Run E2E tests
-        run: npx playwright test --project=chromium
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium firefox
+
+      - name: Run E2E tests (Chromium + Firefox)
+        run: npx playwright test --project=chromium --project=firefox
 
       - name: Upload test report
         uses: actions/upload-artifact@v4
