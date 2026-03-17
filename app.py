@@ -2531,39 +2531,19 @@ def save_resume():
                 logging.error(f"Failed to upload icon {filename}: {upload_error}")
                 # Continue with other icons, don't fail entire save
 
-        # Combine new uploads with unchanged icons
-        all_icon_records = icon_records + [
-            {
-                "id": str(uuid.uuid4()),
-                "resume_id": resume_id,
-                "user_id": user_id,
-                "filename": icon["filename"],
-                "storage_path": icon["storage_path"],
-                "storage_url": icon["storage_url"],
-                "mime_type": icon["mime_type"],
-                "file_size": icon["file_size"],
-                "created_at": "now()",
-            }
-            for icon in icons_to_keep
-        ]
-
         # Save resume to database (upsert)
         supabase.table("resumes").upsert(resume_data).execute()
 
-        # Delete removed icons
+        # Batch delete removed icons
         if icons_to_delete and is_update:
-            for filename in icons_to_delete:
-                supabase.table("resume_icons").delete().eq("resume_id", resume_id).eq(
-                    "filename", filename
-                ).execute()
-                logging.info(f"Deleted removed icon: {filename}")
+            supabase.table("resume_icons").delete().eq("resume_id", resume_id).in_(
+                "filename", icons_to_delete
+            ).execute()
+            logging.info(f"Deleted {len(icons_to_delete)} removed icons for resume {resume_id}")
 
-        # Replace all icon records with new set
-        if is_update:
-            supabase.table("resume_icons").delete().eq("resume_id", resume_id).execute()
-
-        if all_icon_records:
-            supabase.table("resume_icons").insert(all_icon_records).execute()
+        # Insert only new/changed icon records
+        if icon_records:
+            supabase.table("resume_icons").insert(icon_records).execute()
 
         logging.info(
             f"Icon summary - Uploaded: {len(icon_records)}, Kept: {len(icons_to_keep)}, Deleted: {len(icons_to_delete)}"
