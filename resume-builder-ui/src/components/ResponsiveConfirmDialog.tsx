@@ -129,6 +129,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
               {cancelText}
             </button>
             <button
+              data-testid="confirm-dialog-confirm"
               onClick={handleConfirm}
               disabled={isLoading}
               className={`w-full lg:w-auto px-6 py-3 rounded-lg font-medium
