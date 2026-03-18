@@ -174,17 +174,22 @@ export async function setupEditorMocks(page: Page, options: SetupMocksOptions) {
  */
 export async function gotoEditor(page: Page, resumeId: string, session?: ReturnType<typeof createFakeSession>) {
   const s = session ?? createFakeSession();
+
+  // Set up ALL route mocks BEFORE any navigation — critical for CI where
+  // Supabase client initializes on first page load and makes real requests
   await setupEditorMocks(page, { resumeId, session: s });
 
-  // Inject fake session into localStorage BEFORE navigating to editor
-  await page.goto('/?__test=1', { waitUntil: 'commit' });
+  // Navigate to homepage first to set the origin for localStorage
+  await page.goto('/?__test=1', { waitUntil: 'domcontentloaded' });
+
+  // Inject fake session into localStorage
   await page.evaluate(({ key, sess }) => {
     localStorage.setItem(key, JSON.stringify(sess));
   }, { key: SUPABASE_STORAGE_KEY, sess: s });
 
   // Navigate to editor — Supabase client will find the session in localStorage
-  await page.goto(`/editor/${resumeId}?__test=1`);
-  await page.getByTestId('editor-main-content').waitFor({ state: 'visible', timeout: 15_000 });
+  await page.goto(`/editor/${resumeId}?__test=1`, { waitUntil: 'domcontentloaded' });
+  await page.getByTestId('editor-main-content').waitFor({ state: 'visible', timeout: 30_000 });
 
   return s;
 }

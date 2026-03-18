@@ -33,8 +33,8 @@ export default defineConfig({
     actionTimeout: 10_000,
   },
 
-  timeout: 30_000,
-  expect: { timeout: 5_000 },
+  timeout: process.env.CI ? 60_000 : 30_000,
+  expect: { timeout: process.env.CI ? 10_000 : 5_000 },
 
   projects: [
     {
@@ -59,6 +59,6 @@ export default defineConfig({
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
     cwd: './resume-builder-ui',
-    timeout: 60_000,
+    timeout: 120_000, // 2 min for CI cold start
   },
 });
