@@ -83,6 +83,12 @@ export default function GeminiResumePrompts() {
           </CopyablePrompt>
         </div>
 
+        <p className="text-lg leading-relaxed text-stone-warm">
+          For pre-built keyword lists organized by role, browse our{' '}
+          <Link to="/resume-keywords" className="text-accent hover:underline">resume keywords by job title</Link>
+          {' '}pages &mdash; they pair well with Gemini&rsquo;s extraction prompts above.
+        </p>
+
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Resume Content Prompts
         </h2>

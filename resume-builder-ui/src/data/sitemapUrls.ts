@@ -80,6 +80,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/behavioral-interview-questions', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/introducing-prepai-ai-interview-coach', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/how-to-write-a-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/best-free-resume-builders-2026', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
   { loc: '/blog/resume-action-verbs', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/how-to-use-resume-keywords', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
   // /resume-keywords/software-engineer is auto-generated from JOBS_DATABASE (priority 0.9)
@@ -98,6 +99,12 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/grok-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/ai-job-description-analyzer', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/ai-resume-review', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/deepseek-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
+  { loc: '/blog/copilot-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
+  { loc: '/blog/ai-cover-letter-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
+  { loc: '/blog/career-change-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
+  { loc: '/blog/resume-employment-gaps', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
+  { loc: '/blog/return-to-work-programs', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
 
   // Competitor Comparison Posts (0.5) - recently created
   { loc: '/blog/resume-io-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },

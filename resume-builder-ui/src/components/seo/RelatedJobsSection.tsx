@@ -23,7 +23,7 @@ export default function RelatedJobsSection({ job, limit = 6 }: RelatedJobsSectio
 
   return (
     <RevealSection stagger>
-      <div className="mb-16">
+      <div className="mt-12 md:mt-20 mb-16">
         <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">Related Keywords</span>
         <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-4 text-center">
           Related Resume Keywords

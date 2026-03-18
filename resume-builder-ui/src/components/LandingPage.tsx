@@ -309,7 +309,7 @@ const LandingPage: React.FC = () => {
       </div>
 
       {/* ═══════════ COMPANY MARQUEE — light ═══════════ */}
-      <section className="bg-chalk py-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+      <section className="bg-chalk py-20 px-4 cv-auto cv-h-300">
         <div className="max-w-6xl mx-auto">
           <RevealSection className="text-center mb-12">
             <span className="font-mono text-xs tracking-[0.15em] text-stone-warm uppercase mb-4 block">
@@ -330,7 +330,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ FEATURES — light, numbered list ═══════════ */}
-      <section className="bg-chalk py-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 800px' }}>
+      <section className="bg-chalk py-20 px-4 cv-auto cv-h-600">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block">
@@ -370,7 +370,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ INTERACTIVE DEMO ═══════════ */}
-      <section className="bg-chalk py-24 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 600px' }}>
+      <section className="bg-chalk py-24 px-4 cv-auto cv-h-500">
         <div className="max-w-5xl mx-auto">
           <RevealSection className="text-center mb-16">
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block">
@@ -413,7 +413,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ RESOURCE CARDS — light ═══════════ */}
-      <section className="bg-chalk py-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 600px' }}>
+      <section className="bg-chalk py-20 px-4 cv-auto cv-h-400">
         <div className="max-w-6xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block">
@@ -477,7 +477,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ WHY CHOOSE US — keyword-rich prose ═══════════ */}
-      <section className="bg-chalk py-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 700px' }}>
+      <section className="bg-chalk py-20 px-4 cv-auto cv-h-500">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block">
@@ -529,7 +529,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ HOW TO BUILD — keyword-rich steps ═══════════ */}
-      <section className="bg-chalk-dark py-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 500px' }}>
+      <section className="bg-chalk-dark py-20 px-4 cv-auto cv-h-400">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
@@ -580,7 +580,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ FAQ — light, minimal ═══════════ */}
-      <section className="bg-chalk py-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 800px' }}>
+      <section className="bg-chalk py-20 px-4 cv-auto cv-h-500">
         <div className="max-w-3xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
@@ -621,7 +621,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ FINAL CTA ═══════════ */}
-      <section className="bg-chalk py-20 px-4" style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 400px' }}>
+      <section className="bg-chalk py-20 px-4 cv-auto cv-h-400">
         <div className="max-w-4xl mx-auto">
           <RevealSection variant="scale-in">
             <div className="relative bg-ink rounded-3xl py-20 px-6 md:py-24 md:px-12 overflow-hidden text-center">

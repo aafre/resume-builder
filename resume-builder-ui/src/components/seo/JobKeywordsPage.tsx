@@ -15,6 +15,7 @@ import RevealSection from '../shared/RevealSection';
 import RelatedJobsSection from './RelatedJobsSection';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { getJobBySlug } from '../../data/jobKeywords';
+import { getMatchingExampleSlug } from '../../utils/crossLinkHelpers';
 import { generateJobFAQs, getTotalKeywordCount } from '../../utils/jobKeywordHelpers';
 import { generateJobPageTitle, generateJobPageDescription } from '../../utils/seoHelpers';
 import type { BreadcrumbConfig, HeroConfig } from '../../types/seo';
@@ -32,6 +33,9 @@ export default function JobKeywordsPage() {
 
   // Generate FAQs (use custom if provided, otherwise auto-generate)
   const faqs = jobData.customFaqs || generateJobFAQs(jobData);
+
+  // Cross-link to matching example page
+  const matchingExampleSlug = getMatchingExampleSlug(jobData.slug);
 
   // Get before/after example from job data
   const example = jobData.example;
@@ -96,7 +100,7 @@ export default function JobKeywordsPage() {
       {/* Role Intro Section */}
       {jobData.roleIntro && (
         <RevealSection>
-          <div className="mb-12 max-w-4xl mx-auto">
+          <div className="mb-12 max-w-4xl mx-auto cv-auto cv-h-200">
             <div className="bg-accent/[0.04] border border-accent/20 rounded-2xl p-8">
               <h2 className="text-2xl font-extrabold text-ink tracking-tight mb-4">
                 What hiring teams look for in {jobData.title.toLowerCase()} keywords
@@ -123,7 +127,7 @@ export default function JobKeywordsPage() {
 
       {/* Core Skills Section */}
       <RevealSection>
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-500">
           <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Core Skills</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
             Core {jobData.title.toLowerCase()} skills (soft skills)
@@ -152,7 +156,7 @@ export default function JobKeywordsPage() {
 
       {/* Technical Skills Section */}
       <RevealSection stagger>
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-500">
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
             Technical skills & tools (hard skills)
           </h2>
@@ -204,7 +208,7 @@ export default function JobKeywordsPage() {
       {/* Processes Section */}
       {jobData.keywords.processes && jobData.keywords.processes.length > 0 && (
         <RevealSection>
-          <div className="mb-16">
+          <div className="mb-16 cv-auto cv-h-400">
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
               Methodologies and processes
             </h2>
@@ -233,7 +237,7 @@ export default function JobKeywordsPage() {
       {/* Certifications Section */}
       {jobData.keywords.certifications && jobData.keywords.certifications.length > 0 && (
         <RevealSection>
-          <div className="mb-16">
+          <div className="mb-16 cv-auto cv-h-400">
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
               Relevant certifications
             </h2>
@@ -262,7 +266,7 @@ export default function JobKeywordsPage() {
       {/* Metrics Section */}
       {jobData.keywords.metrics && jobData.keywords.metrics.length > 0 && (
         <RevealSection>
-          <div className="mb-16">
+          <div className="mb-16 cv-auto cv-h-400">
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Metrics</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
               Metrics and KPIs
@@ -291,7 +295,7 @@ export default function JobKeywordsPage() {
 
       {/* Example Section */}
       <RevealSection>
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-400">
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 text-center">
             How to use these keywords: examples
           </h2>
@@ -326,7 +330,7 @@ export default function JobKeywordsPage() {
       {/* Keyword Phrases Section */}
       {jobData.phrases && jobData.phrases.length > 0 && (
         <RevealSection>
-          <div className="mb-16">
+          <div className="mb-16 cv-auto cv-h-400">
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Key Phrases</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
               Keyword phrases for {jobData.title.toLowerCase()} resumes
@@ -358,7 +362,7 @@ export default function JobKeywordsPage() {
       {/* Example Bullets Section */}
       {jobData.exampleBullets && jobData.exampleBullets.length > 0 && (
         <RevealSection>
-          <div className="mb-16">
+          <div className="mb-16 cv-auto cv-h-500">
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8">
               Ready-to-adapt resume bullets
             </h2>
@@ -387,7 +391,7 @@ export default function JobKeywordsPage() {
       {/* Common Mistakes Section */}
       {jobData.commonMistakes && jobData.commonMistakes.length > 0 && (
         <RevealSection>
-          <div className="mb-16">
+          <div className="mb-16 cv-auto cv-h-400">
             <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Common Mistakes</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
               Common {jobData.title.toLowerCase()} resume mistakes
@@ -422,9 +426,12 @@ export default function JobKeywordsPage() {
 
       {/* Related Resources */}
       <RevealSection>
-        <div className="bg-chalk-dark rounded-2xl p-6 border border-black/[0.06] mt-12 mb-16 max-w-4xl mx-auto">
+        <div className="bg-chalk-dark rounded-2xl p-6 border border-black/[0.06] mt-12 mb-16 max-w-4xl mx-auto cv-auto cv-h-250">
           <h2 className="text-2xl font-extrabold text-ink tracking-tight mb-4">Related Resources</h2>
           <ul className="space-y-2">
+            {matchingExampleSlug && (
+              <li><Link to={`/examples/${matchingExampleSlug}`} className="text-accent hover:underline font-medium">Free {jobData.title} Resume Example — Ready to Customize</Link></li>
+            )}
             <li><Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">How to Use Resume Keywords Effectively</Link></li>
             <li><Link to="/resume-keyword-scanner" className="text-accent hover:underline">ATS Keyword Scanner — Check Your Match Score</Link></li>
             <li><Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">ATS Resume Optimization Guide</Link></li>

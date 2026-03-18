@@ -271,8 +271,16 @@ function getSuggestedPlacement(keyword: string): string {
 async function runMatch(resumeText: string, jobDescription: string): Promise<EnhancedScanResult> {
   // 1. Extract candidate phrases from JD
   const candidateMap = extractCandidates(jobDescription);
-  const allCandidates = [...candidateMap.entries()]
+  let allCandidates = [...candidateMap.entries()]
     .sort((a, b) => b[1] - a[1]);
+
+  // OPTIMIZATION: Limit to top 150 candidates to prevent performance bottleneck on large JDs
+  // Embedding hundreds of phrases is expensive. The top 150 most frequent terms
+  // provide sufficient coverage for the top 40 distinct semantic keywords we eventually select.
+  if (allCandidates.length > 150) {
+    allCandidates = allCandidates.slice(0, 150);
+  }
+
   const candidateLabels = allCandidates.map(([label]) => label);
   const candidateFreqs = allCandidates.map(([, freq]) => freq);
 

@@ -28,7 +28,7 @@ import copy
 from jinja2 import Environment, FileSystemLoader
 from concurrent.futures import ThreadPoolExecutor
 import atexit
-from functools import wraps, partial
+from functools import wraps, partial, lru_cache
 import time
 from typing import Callable, Any
 from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
@@ -52,6 +52,15 @@ from jobs_pseo import PseoRenderer, PageType, load_vite_manifest
 DEBUG_LOGGING = os.getenv("DEBUG_LOGGING", "false").lower() == "true"
 log_level = logging.DEBUG if DEBUG_LOGGING else logging.INFO
 logging.basicConfig(level=log_level, format="%(asctime)s [%(levelname)s] %(message)s")
+
+
+TRANSIENT_ERROR_KEYWORDS = ("server disconnected", "connection", "timeout", "reset", "network")
+
+
+def is_transient_error(error_msg: str) -> bool:
+    """Check if an error message indicates a transient/retryable failure."""
+    error_lower = error_msg.lower()
+    return any(kw in error_lower for kw in TRANSIENT_ERROR_KEYWORDS)
 
 
 def retry_on_connection_error(max_retries=3, backoff_factor=0.5):
@@ -80,19 +89,8 @@ def retry_on_connection_error(max_retries=3, backoff_factor=0.5):
                     return func(*args, **kwargs)
                 except Exception as e:
                     last_exception = e
-                    error_msg = str(e).lower()
 
-                    # Only retry on connection-related errors
-                    is_retryable = any(
-                        [
-                            "server disconnected" in error_msg,
-                            "connection" in error_msg,
-                            "timeout" in error_msg,
-                            "reset" in error_msg,
-                        ]
-                    )
-
-                    if not is_retryable or attempt == max_retries:
+                    if not is_transient_error(str(e)) or attempt == max_retries:
                         raise
 
                     wait_time = backoff_factor * (2**attempt)
@@ -135,14 +133,7 @@ def classify_thumbnail_error(error):
         }
 
     # Connection/network errors - retryable
-    transient_keywords = [
-        "server disconnected",
-        "connection",
-        "timeout",
-        "reset",
-        "network",
-    ]
-    if any(keyword in error_msg for keyword in transient_keywords):
+    if is_transient_error(str(error)):
         return {"retryable": True, "error_type": "network", "user_message": None}
 
     # Storage errors - retryable (may be transient auth token)
@@ -247,6 +238,59 @@ def pdf_generation_worker(
         error_msg = f"Worker process failed: {str(e)}"
         logging.error(error_msg)
         return {"success": False, "error": error_msg}
+
+
+def _dispatch_html_pdf_generation(
+    template, yaml_path, output_path, icons_dir, session_id, timeout=60
+):
+    """Dispatch HTML-based PDF generation via thread pool or direct subprocess fallback."""
+    if PDF_THREAD_POOL is None:
+        logging.warning("Thread pool not available, falling back to direct subprocess")
+        cmd = [
+            "python",
+            "resume_generator.py",
+            "--template",
+            template,
+            "--input",
+            str(yaml_path),
+            "--output",
+            str(output_path),
+            "--session-icons-dir",
+            str(icons_dir),
+            "--session-id",
+            session_id,
+        ]
+
+        result = subprocess.run(
+            cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT)
+        )
+
+        if result.returncode != 0:
+            logging.error(f"PDF generation subprocess error: {result.stderr}")
+            raise RuntimeError("Failed to generate PDF")
+    else:
+        future = PDF_THREAD_POOL.submit(
+            pdf_generation_worker,
+            template,
+            yaml_path,
+            output_path,
+            icons_dir,
+            session_id,
+        )
+
+        try:
+            result = future.result(timeout=timeout)
+
+            if not result["success"]:
+                logging.error(f"Process pool worker failed: {result['error']}")
+                logging.error(f"Failed template: {template}, session: {session_id}")
+                raise RuntimeError(f"Failed to generate PDF: {result['error']}")
+        except RuntimeError:
+            raise
+        except Exception as e:
+            logging.error(f"Process pool execution failed: {e}")
+            logging.error(f"Failed template: {template}, session: {session_id}")
+            raise RuntimeError(f"Failed to generate PDF: {str(e)}") from e
 
 
 # Initialize thread pool for PDF generation dispatch
@@ -503,152 +547,56 @@ def normalize_sections(data):
     return data
 
 
-def convert_markdown_links_to_html(text):
-    """
-    Convert Markdown-style links [text](url) to HTML <a> tags.
+_MARKDOWN_LINK_PATTERN = r"\[([^\]]+)\]\(([^\)]+)\)"
 
-    Args:
-        text: String that may contain markdown links
 
-    Returns:
-        String with markdown links converted to HTML anchor tags
-
-    Example:
-        "Visit [Google](https://google.com)" -> "Visit <a href=\"https://google.com\">Google</a>"
-    """
+def _convert_markdown_links(text, replacement):
+    """Apply markdown link conversion using the given replacement template."""
     if not text or not isinstance(text, str):
         return text
+    return re.sub(_MARKDOWN_LINK_PATTERN, replacement, text)
 
-    # Regex to match [text](url) pattern
-    import re
 
-    pattern = r"\[([^\]]+)\]\(([^\)]+)\)"
-
-    # Replace with HTML anchor tag
-    html_text = re.sub(pattern, r'<a href="\2">\1</a>', text)
-
-    return html_text
+def convert_markdown_links_to_html(text):
+    """Convert Markdown-style links [text](url) to HTML <a> tags."""
+    return _convert_markdown_links(text, r'<a href="\2">\1</a>')
 
 
 def convert_markdown_links_to_latex(text):
-    """
-    Convert Markdown-style links [text](url) to LaTeX \\href{url}{text} commands.
+    r"""Convert Markdown-style links [text](url) to LaTeX \href{url}{text} commands."""
+    return _convert_markdown_links(text, r"\\href{\2}{\1}")
 
-    Args:
-        text: String that may contain markdown links
 
-    Returns:
-        String with markdown links converted to LaTeX href commands
+# Markdown formatting rules: (pattern, html_replacement, latex_replacement)
+# Order matters — double-char patterns (**,__,~~,++) must precede single-char (*,_).
+_MARKDOWN_FORMATTING_RULES = [
+    (r"\*\*(.+?)\*\*", r"<strong>\1</strong>", r"\\textbf{\1}"),
+    (r"__(.+?)__", r"<strong>\1</strong>", r"\\textbf{\1}"),
+    (r"\*(.+?)\*", r"<em>\1</em>", r"\\textit{\1}"),
+    (r"_(.+?)_", r"<em>\1</em>", r"\\textit{\1}"),
+    (r"~~(.+?)~~", r"<s>\1</s>", r"\\sout{\1}"),
+    (r"\+\+(.+?)\+\+", r"<u>\1</u>", r"\\underline{\1}"),
+]
 
-    Example:
-        "Visit [Google](https://google.com)" -> "Visit \\href{https://google.com}{Google}"
-    """
+
+def _apply_markdown_formatting(text, rule_index):
+    """Apply markdown formatting rules using the given rule column index (1=HTML, 2=LaTeX)."""
     if not text or not isinstance(text, str):
         return text
-
-    # Regex to match [text](url) pattern
-    import re
-
-    pattern = r"\[([^\]]+)\]\(([^\)]+)\)"
-
-    # Replace with LaTeX href command
-    latex_text = re.sub(pattern, r"\\href{\2}{\1}", text)
-
-    return latex_text
-
-
-def convert_markdown_formatting_to_html(text):
-    """
-    Convert Markdown-style formatting to HTML tags.
-
-    Supports:
-    - Bold: **text** or __text__ → <strong>text</strong>
-    - Italic: *text* or _text_ → <em>text</em>
-    - Strikethrough: ~~text~~ → <s>text</s>
-    - Underline: ++text++ → <u>text</u> (custom syntax, not standard markdown)
-
-    Args:
-        text: String that may contain markdown formatting
-
-    Returns:
-        String with markdown formatting converted to HTML tags
-
-    Example:
-        "This is **bold** and *italic*" -> "This is <strong>bold</strong> and <em>italic</em>"
-    """
-    if not text or not isinstance(text, str):
-        return text
-
-    import re
-
-    # Process in specific order to avoid conflicts
-    # 1. Bold with ** (must come before single *)
-    text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
-
-    # 2. Bold with __ (must come before single _)
-    text = re.sub(r"__(.+?)__", r"<strong>\1</strong>", text)
-
-    # 3. Italic with * (after ** is processed)
-    text = re.sub(r"\*(.+?)\*", r"<em>\1</em>", text)
-
-    # 4. Italic with _ (after __ is processed)
-    text = re.sub(r"_(.+?)_", r"<em>\1</em>", text)
-
-    # 5. Strikethrough with ~~
-    text = re.sub(r"~~(.+?)~~", r"<s>\1</s>", text)
-
-    # 6. Underline with ++ (custom syntax)
-    text = re.sub(r"\+\+(.+?)\+\+", r"<u>\1</u>", text)
-
+    for pattern, *replacements in _MARKDOWN_FORMATTING_RULES:
+        text = re.sub(pattern, replacements[rule_index - 1], text)
     return text
 
 
+def convert_markdown_formatting_to_html(text):
+    """Convert Markdown-style formatting (**bold**, *italic*, ~~strike~~, ++underline++) to HTML tags."""
+    return _apply_markdown_formatting(text, 1)
+
+
 def convert_markdown_formatting_to_latex(text):
-    """
-    Convert Markdown-style formatting to LaTeX commands.
-
-    Supports:
-    - Bold: **text** or __text__ → \\textbf{text}
-    - Italic: *text* or _text_ → \\textit{text}
-    - Strikethrough: ~~text~~ → \\sout{text}
-    - Underline: ++text++ → \\underline{text} (custom syntax, not standard markdown)
-
-    Args:
-        text: String that may contain markdown formatting
-
-    Returns:
-        String with markdown formatting converted to LaTeX commands
-
-    Example:
-        "This is **bold** and *italic*" -> "This is \\textbf{bold} and \\textit{italic}"
-    """
-    if not text or not isinstance(text, str):
-        return text
-
-    import re
-
-    # Process in specific order to avoid conflicts
-    # 1. Bold with ** (must come before single *)
-    text = re.sub(r"\*\*(.+?)\*\*", r"\\textbf{\1}", text)
-
-    # 2. Bold with __ (must come before single _)
-    text = re.sub(r"__(.+?)__", r"\\textbf{\1}", text)
-
-    # 3. Italic with * (after ** is processed)
-    text = re.sub(r"\*(.+?)\*", r"\\textit{\1}", text)
-
-    # 4. Italic with _ (after __ is processed)
-    text = re.sub(r"_(.+?)_", r"\\textit{\1}", text)
-
-    # 5. Strikethrough with ~~
-    text = re.sub(r"~~(.+?)~~", r"\\sout{\1}", text)
-
-    # 6. Underline with ++ (custom syntax)
-    text = re.sub(r"\+\+(.+?)\+\+", r"\\underline{\1}", text)
-
-    # 7. Escape remaining dangerous characters that weren't consumed by markdown
+    r"""Convert Markdown-style formatting to LaTeX commands (\textbf, \textit, \sout, \underline)."""
+    text = _apply_markdown_formatting(text, 2)
     text = _escape_remaining_latex_chars(text)
-
     return text
 
 
@@ -707,79 +655,71 @@ def _prepare_latex_data(data):
 
     prepared_data = apply_escaping_recursive(prepared_data)
 
-    # Process contact info and social links
     contact_info = prepared_data.get("contact_info", {})
     if contact_info:
-        # Migrate old LinkedIn format to new social_links array (backward compatibility)
-        contact_info = migrate_linkedin_to_social_links(contact_info)
-
-        # Process social_links array
-        social_links = contact_info.get("social_links", [])
-        if social_links:
-            for link in social_links:
-                platform = link.get("platform", "")
-                url = link.get("url", "")
-
-                if not url or not url.strip():
-                    continue
-
-                # Add https:// if not present
-                if not url.startswith("https://") and not url.startswith("http://"):
-                    url = "https://" + url
-                    link["url"] = url
-
-                # Extract handle for display
-                link["handle"] = get_social_media_handle(url, platform)
-
-                # Generate display_text if not provided
-                if not link.get("display_text") or not link.get("display_text").strip():
-                    if platform == "linkedin":
-                        link["display_text"] = generate_linkedin_display_text(
-                            url, contact_info.get("name", "")
-                        )
-                    elif platform == "github":
-                        link["display_text"] = link["handle"]
-                    elif platform == "twitter":
-                        link["display_text"] = link["handle"]
-                    elif platform == "website":
-                        # Extract domain from URL
-                        try:
-                            from urllib.parse import urlparse
-
-                            parsed = urlparse(url)
-                            link["display_text"] = (
-                                parsed.hostname.replace("www.", "")
-                                if parsed.hostname
-                                else "Website"
-                            )
-                        except:
-                            link["display_text"] = "Website"
-                    else:
-                        # Default: use handle or platform name
-                        link["display_text"] = link["handle"] or platform.capitalize()
-
-                    logging.info(
-                        f"Generated {platform} display text: {link['display_text']}"
-                    )
-
-        # Store processed social_links back in contact_info
-        contact_info["social_links"] = social_links
-
-        # Maintain backward compatibility: keep linkedin fields for old templates
-        linkedin_link = next(
-            (link for link in social_links if link.get("platform") == "linkedin"), None
-        )
-        if linkedin_link:
-            contact_info["linkedin"] = linkedin_link.get("url", "")
-            contact_info["linkedin_handle"] = linkedin_link.get("handle", "")
-            contact_info["linkedin_display"] = linkedin_link.get("display_text", "")
-        else:
-            contact_info["linkedin"] = ""
-            contact_info["linkedin_handle"] = ""
-            contact_info["linkedin_display"] = ""
-
+        contact_info = _process_social_links(contact_info)
     prepared_data["contact_info"] = contact_info
     return prepared_data
+
+
+def _process_social_links(contact_info):
+    """Process social_links in contact_info: normalize URLs, extract handles, generate display text."""
+    contact_info = migrate_linkedin_to_social_links(contact_info)
+
+    social_links = contact_info.get("social_links", [])
+    for link in social_links:
+        platform = link.get("platform", "")
+        url = link.get("url", "")
+
+        if not url or not url.strip():
+            continue
+
+        if not url.startswith("https://") and not url.startswith("http://"):
+            url = "https://" + url
+            link["url"] = url
+
+        link["handle"] = get_social_media_handle(url, platform)
+
+        if not link.get("display_text") or not link.get("display_text").strip():
+            if platform == "linkedin":
+                link["display_text"] = generate_linkedin_display_text(
+                    url, contact_info.get("name", "")
+                )
+            elif platform in ("github", "twitter"):
+                link["display_text"] = link["handle"]
+            elif platform == "website":
+                try:
+                    parsed = urlparse(url)
+                    link["display_text"] = (
+                        parsed.hostname.replace("www.", "")
+                        if parsed.hostname
+                        else "Website"
+                    )
+                except Exception:
+                    link["display_text"] = "Website"
+            else:
+                link["display_text"] = link["handle"] or platform.capitalize()
+
+            logging.info(
+                f"Generated {platform} display text: {link['display_text']}"
+            )
+
+    contact_info["social_links"] = social_links
+
+    # Maintain backward compatibility: keep linkedin fields for old templates
+    linkedin_link = next(
+        (link for link in social_links if link.get("platform") == "linkedin"), None
+    )
+    if linkedin_link:
+        contact_info["linkedin"] = linkedin_link.get("url", "")
+        contact_info["linkedin_handle"] = linkedin_link.get("handle", "")
+        contact_info["linkedin_display"] = linkedin_link.get("display_text", "")
+    else:
+        contact_info["linkedin"] = ""
+        contact_info["linkedin_handle"] = ""
+        contact_info["linkedin_display"] = ""
+
+    return contact_info
 
 
 def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic"):
@@ -904,6 +844,22 @@ def load_resume_data(yaml_file_path):
         raise ValueError("Invalid YAML format: Root must be a dictionary")
 
     return data
+
+@lru_cache(maxsize=32)
+def _load_yaml_file_cached(yaml_path_str: str) -> dict:
+    """Internal cached helper to load YAML files from disk."""
+    with open(yaml_path_str, "r", encoding="utf-8") as file:
+        data = yaml.safe_load(file)
+    return data
+
+def get_template_config(yaml_path) -> dict:
+    """
+    Load a static YAML template with caching to prevent redundant disk I/O and parsing.
+    Returns a deepcopy to prevent 'cache poisoning' if the caller mutates the dictionary.
+    """
+    # Use string representation of path for caching
+    data = _load_yaml_file_cached(str(yaml_path))
+    return copy.deepcopy(data)
 
 
 def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
@@ -1392,19 +1348,8 @@ def require_auth(f):
                 return f(*args, **kwargs)
             except Exception as e:
                 error_msg = str(e)
-                error_lower = error_msg.lower()
 
-                # Same keywords as retry_on_connection_error decorator
-                is_connection_error = any(
-                    [
-                        "server disconnected" in error_lower,
-                        "connection" in error_lower,
-                        "timeout" in error_lower,
-                        "reset" in error_lower,
-                    ]
-                )
-
-                if is_connection_error and auth_attempt < max_auth_attempts - 1:
+                if is_transient_error(error_msg) and auth_attempt < max_auth_attempts - 1:
                     logging.warning(
                         f"Auth retry {auth_attempt + 1}/{max_auth_attempts - 1} | "
                         f"endpoint={request.path} | error={error_msg}"
@@ -1846,9 +1791,8 @@ def get_template_data(template_id):
             logging.warning(f"Template file not found: {template_path}")
             return jsonify({"success": False, "error": "Template not found"}), 404
 
-        # Read the YAML content
-        with open(template_path, "r") as file:
-            yaml_content = yaml.safe_load(file)
+        # Read the YAML content using cached function
+        yaml_content = get_template_config(template_path)
 
         # Determine icon support based on template ID
         # Only 'modern-with-icons' template supports icons
@@ -2062,86 +2006,15 @@ def generate_resume():
             # Use the mapped template directory
             actual_template = TEMPLATE_DIR_MAP[template]
 
-            # Use subprocess for PDF generation to avoid Qt state issues
             if actual_template == "classic":
-                # LaTeX path: Use XeLaTeX compilation for classic templates
-                logging.info(
-                    f"Using direct LaTeX generation for template: {actual_template}"
-                )
                 generate_latex_pdf(
                     yaml_data, str(session_icons_dir), str(output_path), actual_template
                 )
             else:
-                # HTML path: Use thread pool to dispatch subprocess for PDF generation
-                # Subprocess provides process isolation (fresh Python + Qt state)
-                # Thread pool provides backpressure and timeout handling
-                logging.info(
-                    f"Using thread pool HTML generation for template: {actual_template}"
+                _dispatch_html_pdf_generation(
+                    actual_template, yaml_path, output_path,
+                    session_icons_dir, session_id,
                 )
-
-                if PDF_THREAD_POOL is None:
-                    # Fallback to direct subprocess if pool not available
-                    logging.warning(
-                        "Thread pool not available, falling back to direct subprocess"
-                    )
-                    cmd = [
-                        "python",
-                        "resume_generator.py",
-                        "--template",
-                        actual_template,
-                        "--input",
-                        str(yaml_path),
-                        "--output",
-                        str(output_path),
-                        "--session-icons-dir",
-                        str(session_icons_dir),
-                        "--session-id",
-                        session_id,
-                    ]
-
-                    result = subprocess.run(
-                        cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT)
-                    )
-
-                    if result.returncode != 0:
-                        logging.error(f"Subprocess error: {result.stderr}")
-                        raise RuntimeError("Failed to generate the resume")
-                else:
-                    # Use thread pool with timeout handling
-                    logging.debug("Submitting PDF generation task to thread pool")
-                    future = PDF_THREAD_POOL.submit(
-                        pdf_generation_worker,
-                        actual_template,
-                        yaml_path,
-                        output_path,
-                        session_icons_dir,
-                        session_id,
-                    )
-
-                    # Wait for result with timeout
-                    try:
-                        result = future.result(timeout=60)  # 60 second timeout
-
-                        if not result["success"]:
-                            logging.error(
-                                f"Process pool worker failed: {result['error']}"
-                            )
-                            logging.error(f"Failed template: {actual_template}")
-                            logging.error(f"Failed session: {session_id}")
-                            logging.error(f"YAML data for reproduction: {yaml_data}")
-                            raise RuntimeError(
-                                f"Failed to generate the resume: {result['error']}"
-                            )
-
-                        logging.info(
-                            "Process pool PDF generation completed successfully"
-                        )
-                    except Exception as e:
-                        logging.error(f"Process pool execution failed: {e}")
-                        logging.error(f"Failed template: {actual_template}")
-                        logging.error(f"Failed session: {session_id}")
-                        logging.error(f"YAML data for reproduction: {yaml_data}")
-                        raise RuntimeError(f"Failed to generate the resume: {str(e)}")
 
             if not output_path.exists():
                 logging.error(f"Expected output file at: {output_path}")
@@ -2178,6 +2051,37 @@ def generate_resume():
             )
 
 
+def _validate_and_serve_file(filename, base_dir, file_type="file"):
+    """Validate filename against path traversal and check existence.
+
+    Returns:
+        (file_path, None) on success, or (None, error_response) on failure.
+    """
+    if ".." in filename or filename.startswith("/"):
+        logging.warning(f"Path traversal attempt in {file_type} request: {filename}")
+        return None, (jsonify({"success": False, "error": "Invalid path"}), 400)
+
+    safe_filename = secure_filename(filename)
+    if not safe_filename or safe_filename != filename:
+        logging.warning(f"Invalid {file_type} filename attempt: {filename}")
+        return None, (jsonify({"success": False, "error": "Invalid filename"}), 400)
+
+    file_path = base_dir / safe_filename
+
+    try:
+        if not file_path.resolve().is_relative_to(base_dir.resolve()):
+            logging.warning(f"{file_type.capitalize()} path traversal attempt: {filename}")
+            return None, (jsonify({"success": False, "error": "Access denied"}), 403)
+    except ValueError:
+        logging.warning(f"{file_type.capitalize()} path validation failed for: {filename}")
+        return None, (jsonify({"success": False, "error": "Access denied"}), 403)
+
+    if not file_path.exists():
+        return None, (jsonify({"success": False, "error": f"{file_type.capitalize()} not found"}), 404)
+
+    return file_path, None
+
+
 @app.route("/download/<filename>")
 @require_auth
 def download_file(filename):
@@ -2189,28 +2093,9 @@ def download_file(filename):
     - Validates filename to prevent path traversal attacks
     - Ensures file is within OUTPUT_DIR
     """
-    # Validate filename - prevent path traversal
-    safe_filename = secure_filename(filename)
-    if not safe_filename or safe_filename != filename:
-        logging.warning(f"Invalid filename attempt: {filename}")
-        return jsonify({"success": False, "error": "Invalid filename"}), 400
-
-    # Construct file path
-    file_path = OUTPUT_DIR / safe_filename
-
-    # Verify file is within OUTPUT_DIR (prevent directory traversal)
-    try:
-        if not file_path.resolve().is_relative_to(OUTPUT_DIR.resolve()):
-            logging.warning(f"Path traversal attempt: {filename}")
-            return jsonify({"success": False, "error": "Access denied"}), 403
-    except ValueError:
-        # is_relative_to can raise ValueError in some edge cases
-        logging.warning(f"Path validation failed for: {filename}")
-        return jsonify({"success": False, "error": "Access denied"}), 403
-
-    # Check if file exists
-    if not file_path.exists():
-        return jsonify({"success": False, "error": "File not found"}), 404
+    file_path, error = _validate_and_serve_file(filename, OUTPUT_DIR, "file")
+    if error:
+        return error
 
     return send_file(file_path, as_attachment=True)
 
@@ -2225,29 +2110,11 @@ def serve_icon(filename):
     - Ensures file is within ICONS_DIR
     """
     try:
-        # Validate filename - prevent path traversal
-        safe_filename = secure_filename(filename)
-        if not safe_filename or safe_filename != filename:
-            logging.warning(f"Invalid icon filename attempt: {filename}")
-            return jsonify({"success": False, "error": "Invalid filename"}), 400
+        file_path, error = _validate_and_serve_file(filename, ICONS_DIR, "icon")
+        if error:
+            return error
 
-        # Construct icon path
-        icon_path = ICONS_DIR / safe_filename
-
-        # Verify file is within ICONS_DIR (prevent directory traversal)
-        try:
-            if not icon_path.resolve().is_relative_to(ICONS_DIR.resolve()):
-                logging.warning(f"Icon path traversal attempt: {filename}")
-                return jsonify({"success": False, "error": "Access denied"}), 403
-        except ValueError:
-            logging.warning(f"Icon path validation failed for: {filename}")
-            return jsonify({"success": False, "error": "Access denied"}), 403
-
-        # Check if file exists
-        if not icon_path.exists():
-            return jsonify({"success": False, "error": "Icon not found"}), 404
-
-        return send_file(icon_path)
+        return send_file(file_path)
     except Exception as e:
         logging.error(f"Error serving icon {filename}: {e}")
         return jsonify({"success": False, "error": "Icon not found"}), 404
@@ -2264,35 +2131,14 @@ def serve_templates(filename):
     - Rejects paths containing '..' or starting with '/'
     """
     try:
-        # Validate filename - prevent path traversal
-        if ".." in filename or filename.startswith("/"):
-            logging.warning(f"Path traversal attempt in template request: {filename}")
-            return jsonify({"success": False, "error": "Invalid path"}), 400
-
-        # Sanitize filename
-        safe_filename = secure_filename(filename)
-        if not safe_filename:
-            logging.warning(f"Invalid template filename: {filename}")
-            return jsonify({"success": False, "error": "Invalid filename"}), 400
-
-        # Construct template image path
         template_image_dir = PROJECT_ROOT / "docs" / "templates"
-        file_path = template_image_dir / safe_filename
+        file_path, error = _validate_and_serve_file(filename, template_image_dir, "image")
+        if error:
+            return error
 
-        # Verify file is within template directory (prevent directory traversal)
-        try:
-            if not file_path.resolve().is_relative_to(template_image_dir.resolve()):
-                logging.warning(f"Template path traversal attempt: {filename}")
-                return jsonify({"success": False, "error": "Access denied"}), 403
-        except ValueError:
-            logging.warning(f"Template path validation failed for: {filename}")
-            return jsonify({"success": False, "error": "Access denied"}), 403
-
-        # Check if file exists
-        if not file_path.exists():
-            return jsonify({"success": False, "error": "Image not found"}), 404
-
-        return send_file(file_path)
+        response = send_file(file_path)
+        response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        return response
     except Exception as e:
         logging.error(f"Error serving template image {filename}: {e}")
         return jsonify({"success": False, "error": "Image not found"}), 404
@@ -2351,8 +2197,8 @@ def create_resume():
         if not template_path.exists():
             return jsonify({"success": False, "error": "Template not found"}), 404
 
-        with open(template_path, "r") as file:
-            template_data = yaml.safe_load(file)
+        # Load template data using cached function
+        template_data = get_template_config(template_path)
 
         # Initialize resume with template data
         contact_info = template_data.get("contact_info", {})
@@ -2685,39 +2531,19 @@ def save_resume():
                 logging.error(f"Failed to upload icon {filename}: {upload_error}")
                 # Continue with other icons, don't fail entire save
 
-        # Combine new uploads with unchanged icons
-        all_icon_records = icon_records + [
-            {
-                "id": str(uuid.uuid4()),
-                "resume_id": resume_id,
-                "user_id": user_id,
-                "filename": icon["filename"],
-                "storage_path": icon["storage_path"],
-                "storage_url": icon["storage_url"],
-                "mime_type": icon["mime_type"],
-                "file_size": icon["file_size"],
-                "created_at": "now()",
-            }
-            for icon in icons_to_keep
-        ]
-
         # Save resume to database (upsert)
         supabase.table("resumes").upsert(resume_data).execute()
 
-        # Delete removed icons
+        # Batch delete removed icons
         if icons_to_delete and is_update:
-            for filename in icons_to_delete:
-                supabase.table("resume_icons").delete().eq("resume_id", resume_id).eq(
-                    "filename", filename
-                ).execute()
-                logging.info(f"Deleted removed icon: {filename}")
+            supabase.table("resume_icons").delete().eq("resume_id", resume_id).in_(
+                "filename", icons_to_delete
+            ).execute()
+            logging.info(f"Deleted {len(icons_to_delete)} removed icons for resume {resume_id}")
 
-        # Replace all icon records with new set
-        if is_update:
-            supabase.table("resume_icons").delete().eq("resume_id", resume_id).execute()
-
-        if all_icon_records:
-            supabase.table("resume_icons").insert(all_icon_records).execute()
+        # Insert only new/changed icon records
+        if icon_records:
+            supabase.table("resume_icons").insert(icon_records).execute()
 
         logging.info(
             f"Icon summary - Uploaded: {len(icon_records)}, Kept: {len(icons_to_keep)}, Deleted: {len(icons_to_delete)}"
@@ -2818,12 +2644,8 @@ def list_resumes():
         logging.error(f"Error listing resumes: {e}", exc_info=True)
         error_msg = "Failed to list resumes"
 
-        # Provide more specific error message for common issues
-        error_str = str(e).lower()
-        if "server disconnected" in error_str or "connection" in error_str:
+        if is_transient_error(str(e)):
             error_msg = "Connection to database failed. Please try again."
-        elif "timeout" in error_str:
-            error_msg = "Request timed out. Please try again."
 
         return jsonify({"success": False, "error": error_msg}), 500
 
@@ -2866,12 +2688,8 @@ def get_resume_count():
         logging.error(f"Error getting resume count: {e}", exc_info=True)
         error_msg = "Failed to get resume count"
 
-        # Specific error messages for common issues
-        error_str = str(e).lower()
-        if "server disconnected" in error_str or "connection" in error_str:
+        if is_transient_error(str(e)):
             error_msg = "Connection to database failed. Please try again."
-        elif "timeout" in error_str:
-            error_msg = "Request timed out. Please try again."
 
         return jsonify({"success": False, "error": error_msg}), 500
 
@@ -3634,44 +3452,10 @@ def generate_pdf_for_saved_resume(resume_id):
                     yaml_data, str(session_icons_dir), str(output_path), actual_template
                 )
             else:
-                # Use thread pool or direct subprocess
-                if PDF_THREAD_POOL is None:
-                    cmd = [
-                        "python",
-                        "resume_generator.py",
-                        "--template",
-                        actual_template,
-                        "--input",
-                        str(yaml_path),
-                        "--output",
-                        str(output_path),
-                        "--session-icons-dir",
-                        str(session_icons_dir),
-                        "--session-id",
-                        session_id,
-                    ]
-
-                    result = subprocess.run(
-                        cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT)
-                    )
-
-                    if result.returncode != 0:
-                        logging.error(f"PDF generation error: {result.stderr}")
-                        raise RuntimeError("Failed to generate PDF")
-                else:
-                    future = PDF_THREAD_POOL.submit(
-                        pdf_generation_worker,
-                        actual_template,
-                        yaml_path,
-                        output_path,
-                        session_icons_dir,
-                        session_id,
-                    )
-
-                    result = future.result(timeout=60)
-
-                    if not result["success"]:
-                        raise RuntimeError(f"Failed to generate PDF: {result['error']}")
+                _dispatch_html_pdf_generation(
+                    actual_template, yaml_path, output_path,
+                    session_icons_dir, session_id,
+                )
 
             if not output_path.exists():
                 raise FileNotFoundError("PDF file was not generated")
@@ -3919,44 +3703,10 @@ def generate_thumbnail_for_resume(resume_id):
                     yaml_data, str(session_icons_dir), str(output_path), actual_template
                 )
             else:
-                # Use thread pool or direct subprocess
-                if PDF_THREAD_POOL is None:
-                    cmd = [
-                        "python",
-                        "resume_generator.py",
-                        "--template",
-                        actual_template,
-                        "--input",
-                        str(yaml_path),
-                        "--output",
-                        str(output_path),
-                        "--session-icons-dir",
-                        str(session_icons_dir),
-                        "--session-id",
-                        session_id,
-                    ]
-
-                    result = subprocess.run(
-                        cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT)
-                    )
-
-                    if result.returncode != 0:
-                        logging.error(f"PDF generation error: {result.stderr}")
-                        raise RuntimeError("Failed to generate PDF")
-                else:
-                    future = PDF_THREAD_POOL.submit(
-                        pdf_generation_worker,
-                        actual_template,
-                        yaml_path,
-                        output_path,
-                        session_icons_dir,
-                        session_id,
-                    )
-
-                    result = future.result(timeout=60)
-
-                    if not result["success"]:
-                        raise RuntimeError(f"Failed to generate PDF: {result['error']}")
+                _dispatch_html_pdf_generation(
+                    actual_template, yaml_path, output_path,
+                    session_icons_dir, session_id,
+                )
 
             if not output_path.exists():
                 raise FileNotFoundError("PDF file was not generated")

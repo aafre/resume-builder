@@ -18,8 +18,8 @@
 # Python Development
 # ============================================
 # Virtual environments
-.venv/
-venv/
+.venv*/
+venv*/
 env/
 ENV/
 
@@ -81,8 +81,10 @@ vitest.config.ts
 .devcontainer/
 .idea/
 .claude/
+.agents/
 *.swp
 *.swo
+*.png
 
 # ============================================
 # Documentation
@@ -102,6 +104,18 @@ announcement-bar.md
 *.tmp
 output/
 temp/
+playwright-report/
+test-results/
+
+# ============================================
+# Local/Non-Production Data
+# ============================================
+SearchConsole/
+seo-tracking/
+linkedin-content/
+search-perf/
+local_files/
+email-templates/
 
 # ============================================
 # Docker Files

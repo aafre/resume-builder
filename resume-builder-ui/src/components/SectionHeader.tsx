@@ -94,7 +94,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           <button
             type="button"
             onClick={onToggleCollapse}
-            className="p-2 text-gray-600 hover:text-accent hover:bg-accent/[0.06] rounded-lg transition-colors flex-shrink-0"
+            className="p-2 text-gray-600 hover:text-accent hover:bg-accent/[0.06] rounded-lg transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
             aria-label={isCollapsed ? "Expand section" : "Collapse section"}
             title={isCollapsed ? "Expand section" : "Collapse section"}
           >
@@ -123,10 +123,14 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
             type="button"
             onClick={onDelete}
             data-testid="section-delete-button"
-            className="flex items-center gap-1.5 text-gray-500 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-colors"
+            className="flex items-center gap-1.5 text-gray-500 border border-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
             title="Remove Section"
+
+
+            aria-label={`Remove ${title || 'Section'}`}
+
           >
-            <MdDeleteOutline className="text-lg" />
+            <MdDeleteOutline className="text-lg" aria-hidden="true" />
             <span className="hidden sm:inline">Remove</span>
           </button>
         </div>

@@ -60,9 +60,15 @@ describe('semanticMatcher.worker', () => {
     vi.clearAllMocks();
 
     // Mock self.postMessage
-    vi.stubGlobal('postMessage', (msg: WorkerOutMessage) => {
-      postedMessages.push(msg);
-    });
+    // Need to mock 'self' object for worker environment
+    const selfMock = {
+      postMessage: (msg: WorkerOutMessage) => {
+        postedMessages.push(msg);
+      },
+      onmessage: null,
+    };
+    vi.stubGlobal('self', selfMock);
+    vi.stubGlobal('postMessage', selfMock.postMessage);
 
     // Set up mock pipeline that returns fake embeddings
     const mockExtractor = vi.fn(async (texts: string[], _opts?: unknown) => ({

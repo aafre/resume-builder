@@ -229,3 +229,6 @@ local_files/
 SearchConsole/
 seo-tracking/
 .mcp.json
+linkedin-content/
+docs/templates/examples/
+pnpm-lock.yaml

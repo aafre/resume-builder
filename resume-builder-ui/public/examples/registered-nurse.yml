@@ -46,6 +46,17 @@ resume:
         - Developed and implemented patient care plans in collaboration with care team
         - Educated patients and families on discharge instructions and medication management
         - Participated in quality improvement initiative reducing fall rates by 30%
+        - Served as charge nurse on evening shifts overseeing 6 staff members and patient assignments
+
+    - company: St. Anthony's Community Hospital
+      title: New Graduate Registered Nurse
+      dates: Jun 2015 - Feb 2017
+      location: Lakewood, CO
+      bullets:
+        - Completed 12-month residency program on telemetry and step-down unit
+        - Monitored cardiac rhythms and administered vasoactive medications under supervision
+        - Coordinated discharge planning with case managers and social workers
+        - Documented assessments and interventions accurately in Cerner EHR system
 
   education:
     - school: University of Colorado Denver
@@ -66,6 +77,10 @@ resume:
     - Vital Signs Monitoring
     - Infection Control
     - CPR/BLS
+    - Triage
+    - Cardiac Monitoring
+    - Ventilator Management
+    - Team Leadership
 
   certifications:
     - Registered Nurse License (Colorado)

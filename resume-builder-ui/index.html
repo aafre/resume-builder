@@ -95,8 +95,6 @@
     <div id="root">
       <!-- App Shell: matches React layout so the H1 (LCP) paints without shift -->
       <div style="display:flex;flex-direction:column;min-height:100vh;background:#fafaf8">
-        <!-- AnnouncementBar placeholder (matches ~43px banner for unauthenticated landing) -->
-        <div class="shell-announcement" style="background:#0c0c0c;color:#fff;padding:10px 12px;min-height:43px"></div>
         <!-- Header placeholder (matches sticky header height) -->
         <div class="shell-header" style="background:#fff;border-bottom:1px solid rgba(0,0,0,.06);position:relative">
           <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00d47e"></div>
@@ -113,7 +111,6 @@
           .not-home #shell-landing{display:none}
           #shell-generic{display:none}
           .not-home #shell-generic{display:block}
-          .not-home .shell-announcement{display:none}
         </style>
         <main style="flex:1 1 0%;padding:0 1rem">
           <!-- SideRailLayout wrapper (matches React when explicit ads enabled) -->
@@ -154,18 +151,18 @@
               <!-- Generic page placeholder (shown on non-home routes) -->
               <div id="shell-generic" style="min-height:1200px;background:#fafaf8;font-family:'Bricolage Grotesque','Bricolage Fallback',system-ui,sans-serif">
                 <div style="max-width:80rem;margin:0 auto;padding:3rem 1rem">
-                  <!-- Breadcrumb skeleton -->
-                  <div style="height:20px;width:12rem;background:#e5e7eb;border-radius:6px;margin-bottom:2rem"></div>
-                  <!-- H1 skeleton -->
-                  <div style="height:48px;width:75%;background:#e5e7eb;border-radius:8px;margin-bottom:1rem"></div>
+                  <!-- Breadcrumb skeleton (shorter to minimize upward shift on hydration) -->
+                  <div style="height:16px;width:12rem;background:#e5e7eb;border-radius:6px;margin-bottom:2rem"></div>
+                  <!-- H1 skeleton (conservative height — actual H1s vary widely) -->
+                  <div style="height:40px;width:75%;background:#e5e7eb;border-radius:8px;margin-bottom:1rem"></div>
                   <!-- Subtitle skeleton -->
-                  <div style="height:24px;width:66%;background:#e5e7eb;border-radius:6px;margin-bottom:2rem"></div>
-                  <!-- CTA button skeleton -->
-                  <div style="height:56px;width:10rem;background:#e5e7eb;border-radius:12px;margin-bottom:3rem"></div>
-                  <!-- Content section skeletons -->
-                  <div style="height:12rem;background:#e5e7eb;border-radius:8px;margin-bottom:1.5rem"></div>
-                  <div style="height:12rem;background:#e5e7eb;border-radius:8px;margin-bottom:1.5rem"></div>
-                  <div style="height:12rem;background:#e5e7eb;border-radius:8px"></div>
+                  <div style="height:20px;width:66%;background:#e5e7eb;border-radius:6px;margin-bottom:2rem"></div>
+                  <!-- CTA button skeleton (matches typical btn-primary py-3.5 px-8) -->
+                  <div style="height:48px;width:10rem;background:#e5e7eb;border-radius:12px;margin-bottom:3rem"></div>
+                  <!-- Content section skeletons (shorter to reduce delta with actual content) -->
+                  <div style="height:10rem;background:#e5e7eb;border-radius:8px;margin-bottom:1.5rem"></div>
+                  <div style="height:10rem;background:#e5e7eb;border-radius:8px;margin-bottom:1.5rem"></div>
+                  <div style="height:10rem;background:#e5e7eb;border-radius:8px"></div>
                 </div>
               </div>
             </div>

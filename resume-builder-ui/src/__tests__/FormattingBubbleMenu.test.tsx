@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -42,43 +41,43 @@ describe("FormattingBubbleMenu", () => {
   it("displays bold button", () => {
     render(<BubbleMenuTestWrapper initialContent="test" />);
 
-    // Find bold button by title
-    const boldButton = screen.queryByTitle(/bold/i);
+    // Find bold button by label
     // Button might not be visible until text is selected
     // This tests the component structure
+    screen.queryByLabelText(/Bold/i);
   });
 
   it("displays italic button", () => {
     render(<BubbleMenuTestWrapper initialContent="test" />);
 
-    const italicButton = screen.queryByTitle(/italic/i);
     // Verify button exists in component
+    screen.queryByLabelText(/Italic/i);
   });
 
   it("displays underline button", () => {
     render(<BubbleMenuTestWrapper initialContent="test" />);
 
-    const underlineButton = screen.queryByTitle(/underline/i);
     // Verify button exists
+    screen.queryByLabelText(/Underline/i);
   });
 
   it("displays strikethrough button", () => {
     render(<BubbleMenuTestWrapper initialContent="test" />);
 
-    const strikeButton = screen.queryByTitle(/strikethrough/i);
     // Verify button exists
+    screen.queryByLabelText(/Strikethrough/i);
   });
 
   it("displays link button", () => {
     render(<BubbleMenuTestWrapper initialContent="test" />);
 
-    const linkButton = screen.queryByTitle(/insert link/i);
     // Verify button exists
+    screen.queryByLabelText(/Insert Link/i);
   });
 
   it("applies bold formatting when bold button is clicked", async () => {
     const onUpdate = vi.fn();
-    const { container } = render(
+    render(
       <BubbleMenuTestWrapper initialContent="sample text" onUpdate={onUpdate} />
     );
 
@@ -93,7 +92,7 @@ describe("FormattingBubbleMenu", () => {
 
     // Wait for bubble menu to appear (it might take a moment)
     await waitFor(() => {
-      const boldButton = screen.queryByTitle(/bold/i);
+      const boldButton = screen.queryByLabelText("Bold");
       if (boldButton && !boldButton.hasAttribute("disabled")) {
         fireEvent.click(boldButton);
       }
@@ -123,10 +122,10 @@ describe("FormattingBubbleMenu", () => {
       selection?.addRange(range);
 
       await waitFor(() => {
-        const boldButton = screen.queryByTitle(/bold/i);
+        const boldButton = screen.queryByLabelText("Bold");
         if (boldButton) {
-          // Button should have active class
-          expect(boldButton.className).toContain("bg-blue-100");
+          // Button should have aria-pressed="true"
+          expect(boldButton).toHaveAttribute("aria-pressed", "true");
         }
       });
     }
@@ -146,7 +145,7 @@ describe("FormattingBubbleMenu", () => {
     selection?.addRange(range);
 
     await waitFor(() => {
-      const italicButton = screen.queryByTitle(/italic/i);
+      const italicButton = screen.queryByLabelText("Italic");
       if (italicButton) {
         fireEvent.click(italicButton);
       }
@@ -174,7 +173,7 @@ describe("FormattingBubbleMenu", () => {
     selection?.addRange(range);
 
     await waitFor(() => {
-      const underlineButton = screen.queryByTitle(/underline/i);
+      const underlineButton = screen.queryByLabelText("Underline");
       if (underlineButton) {
         fireEvent.click(underlineButton);
       }
@@ -201,7 +200,7 @@ describe("FormattingBubbleMenu", () => {
     selection?.addRange(range);
 
     await waitFor(() => {
-      const strikeButton = screen.queryByTitle(/strikethrough/i);
+      const strikeButton = screen.queryByLabelText("Strikethrough");
       if (strikeButton) {
         fireEvent.click(strikeButton);
       }
@@ -231,7 +230,7 @@ describe("FormattingBubbleMenu", () => {
       selection?.addRange(range);
 
       await waitFor(() => {
-        const boldButton = screen.queryByTitle(/bold/i);
+        const boldButton = screen.queryByLabelText("Bold");
         if (boldButton) {
           // Click to toggle off
           fireEvent.click(boldButton);
@@ -263,7 +262,7 @@ describe("FormattingBubbleMenu", () => {
 
     // Apply bold
     await waitFor(() => {
-      const boldButton = screen.queryByTitle(/bold/i);
+      const boldButton = screen.queryByLabelText("Bold");
       if (boldButton) {
         fireEvent.click(boldButton);
       }
@@ -271,7 +270,7 @@ describe("FormattingBubbleMenu", () => {
 
     // Apply italic
     await waitFor(() => {
-      const italicButton = screen.queryByTitle(/italic/i);
+      const italicButton = screen.queryByLabelText("Italic");
       if (italicButton) {
         fireEvent.click(italicButton);
       }
@@ -291,20 +290,20 @@ describe("FormattingBubbleMenu", () => {
     const { container } = render(<BubbleMenuTestWrapper initialContent="test" />);
 
     // Look for separator div
-    const separator = container.querySelector(".w-px");
     // Separator should exist in the bubble menu structure
+    container.querySelector(".w-px");
   });
 
   it("renders with proper styling classes", () => {
     const { container } = render(<BubbleMenuTestWrapper initialContent="test" />);
 
     // Bubble menu should have white background and shadow
-    const bubbleMenu = container.querySelector(".bubble-menu");
     // Should exist with proper classes (even if not visible)
+    container.querySelector(".bubble-menu");
   });
 
   it("displays proper icons for each button", () => {
-    const { container } = render(<BubbleMenuTestWrapper initialContent="test" />);
+    render(<BubbleMenuTestWrapper initialContent="test" />);
 
     // Should have SVG icons for buttons (bubble menu renders conditionally)
     // Just verify component renders without errors
@@ -325,7 +324,7 @@ describe("FormattingBubbleMenu", () => {
     selection?.addRange(range);
 
     await waitFor(() => {
-      const boldButton = screen.queryByTitle(/bold/i);
+      const boldButton = screen.queryByLabelText("Bold");
       if (boldButton) {
         // Hover state should be defined in classes
         expect(boldButton.className).toContain("hover:bg-gray-100");
@@ -356,7 +355,7 @@ describe("FormattingBubbleMenu", () => {
 
     // Bubble menu should have placement configuration
     // TipTap BubbleMenu uses popper.js for positioning
-    const bubbleMenu = container.querySelector(".bubble-menu");
     // Component structure should be present
+    container.querySelector(".bubble-menu");
   });
 });

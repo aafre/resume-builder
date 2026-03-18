@@ -3,6 +3,10 @@
     "supabase-easyfreeresume": {
       "type": "http",
       "url": "https://mcp.supabase.com/mcp"
+    },
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=dyperwpscrycthxhgkme&read_only=true"
     }
   }
 }
