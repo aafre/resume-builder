@@ -52,14 +52,19 @@ resume:
       dates: Jan 2018 - Jul 2019
       location: San Diego, CA
       bullets:
-        - Completed RDA training program while assisting with patient care
-        - Sterilized instruments and maintained infection control standards
-        - Took and developed X-rays under dentist supervision
+        - Completed RDA training program while assisting with patient care for 20+ patients daily
+        - Sterilized instruments and maintained infection control standards per OSHA guidelines
+        - Took and developed X-rays under dentist supervision with 97% diagnostic quality
+        - Assisted with patient scheduling and front office coverage during peak hours
+        - Maintained organized supply inventory and placed orders for clinical materials
 
   education:
     - school: Concorde Career College
       degree: Diploma, Dental Assisting
       year: "2018"
+    - school: San Diego Mesa College
+      degree: Associate of Science, Health Sciences
+      year: "2020"
 
   skills:
     - Chairside Assistance
@@ -74,6 +79,10 @@ resume:
     - Coronal Polishing
     - Sealant Application
     - Bilingual (English/Spanish)
+    - Intraoral Photography
+    - Treatment Planning
+    - Insurance Verification
+    - Inventory Management
 
   certifications:
     - Registered Dental Assistant (RDA)

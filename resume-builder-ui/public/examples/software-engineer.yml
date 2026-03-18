@@ -51,15 +51,20 @@ resume:
       dates: Aug 2017 - May 2019
       location: Oakland, CA
       bullets:
-        - Developed responsive web applications using React and Node.js
-        - Created RESTful APIs serving 100K+ daily requests
-        - Contributed to open-source projects with 500+ GitHub stars
+        - Developed responsive web applications using React and Node.js for 15+ client projects
+        - Created RESTful APIs serving 100K+ daily requests with comprehensive documentation
+        - Contributed to open-source projects with 500+ GitHub stars and 100+ forks
+        - Wrote automated tests using Mocha and Chai achieving 80% code coverage
+        - Participated in daily standups and sprint planning in Agile team of 8 engineers
 
   education:
     - school: University of California, Berkeley
       degree: B.S. Computer Science
       year: "2017"
       gpa: "3.7"
+    - school: Stanford University (Online)
+      degree: Certificate, Machine Learning
+      year: "2020"
 
   skills:
     - JavaScript/TypeScript
@@ -74,10 +79,16 @@ resume:
     - Git
     - CI/CD
     - Agile/Scrum
+    - GraphQL
+    - Redis
+    - Terraform
+    - System Design
 
   certifications:
     - AWS Certified Developer - Associate
     - Google Cloud Professional Developer
+    - Certified Kubernetes Application Developer (CKAD)
+    - HashiCorp Terraform Associate
 
 bulletBank:
   - category: Technical Achievement

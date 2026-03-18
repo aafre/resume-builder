@@ -52,14 +52,19 @@ resume:
       dates: Jun 2019 - Apr 2020
       location: Evanston, IL
       bullets:
-        - Provided friendly customer service in fast-paced mall retail environment
-        - Met daily sales goals and promoted store credit card with 20% signup rate
-        - Assisted with inventory management and back stock organization
+        - Provided friendly customer service in fast-paced mall retail environment serving 80+ daily customers
+        - Met daily sales goals and promoted store credit card achieving 20% signup rate (team high)
+        - Assisted with inventory management and back stock organization during weekly truck deliveries
+        - Maintained visual merchandising standards and completed seasonal floor set changes
+        - Processed POS transactions and handled cash drawer reconciliation with zero discrepancies
 
   education:
     - school: Harold Washington College
       degree: Associate Degree, Business Administration
       year: "2021"
+    - school: National Retail Federation Foundation
+      degree: Retail Industry Fundamentals Certificate
+      year: "2020"
 
   skills:
     - Sales
@@ -74,6 +79,15 @@ resume:
     - Team Collaboration
     - Communication
     - Problem Solving
+    - Client Book Management
+    - CRM Software
+    - Store Opening & Closing
+    - Sales Reporting
+
+  certifications:
+    - NRF Customer Service Certification
+    - Loss Prevention Certified (LPC)
+    - First Aid/CPR Certified
 
 bulletBank:
   - category: Sales Performance

@@ -1,3 +1,6 @@
+import React from 'react';
+import { MdArrowUpward, MdArrowDownward, MdDeleteOutline } from 'react-icons/md';
+
 const SectionControls: React.FC<{
   sectionIndex: number;
   sections: any[];
@@ -19,32 +22,41 @@ const SectionControls: React.FC<{
   return (
     <div className="absolute top-4 right-4 flex gap-2">
       <button
+        type="button"
+        aria-label="Move section up"
+        title="Move section up"
         onClick={() => moveSection(sectionIndex, sectionIndex - 1)}
         disabled={sectionIndex === 0}
-        className={`px-2 py-1 rounded ${
+        className={`p-2 rounded focus-visible:ring-2 focus-visible:ring-accent ${
           sectionIndex === 0
-            ? "bg-gray-300 cursor-not-allowed"
+            ? "bg-gray-300 cursor-not-allowed text-gray-500"
             : "bg-accent hover:bg-accent text-ink"
         }`}
       >
-        ↑
+        <MdArrowUpward className="text-lg" />
       </button>
       <button
+        type="button"
+        aria-label="Move section down"
+        title="Move section down"
         onClick={() => moveSection(sectionIndex, sectionIndex + 1)}
         disabled={sectionIndex === sections.length - 1}
-        className={`px-2 py-1 rounded ${
+        className={`p-2 rounded focus-visible:ring-2 focus-visible:ring-accent ${
           sectionIndex === sections.length - 1
-            ? "bg-gray-300 cursor-not-allowed"
+            ? "bg-gray-300 cursor-not-allowed text-gray-500"
             : "bg-accent hover:bg-accent text-ink"
         }`}
       >
-        ↓
+        <MdArrowDownward className="text-lg" />
       </button>
       <button
+        type="button"
+        aria-label="Delete section"
+        title="Delete section"
         onClick={deleteSection}
-        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+        className="p-2 rounded bg-red-500 hover:bg-red-600 text-white focus-visible:ring-2 focus-visible:ring-red-600"
       >
-        🗑
+        <MdDeleteOutline className="text-lg" />
       </button>
     </div>
   );

@@ -3,6 +3,7 @@ import { SectionHeader } from "./SectionHeader";
 import IconManager from "./IconManager";
 import { MarkdownHint } from "./MarkdownLinkPreview";
 import { RichTextInput } from "./RichTextInput";
+import { MdDelete } from "react-icons/md";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
 import { GhostButton } from "./shared/GhostButton";
@@ -210,11 +211,13 @@ const IconListSection: React.FC<IconListSectionProps> = ({
                         </div>
                         <div className="flex justify-end mt-4">
                           <button
+                            type="button"
                             onClick={() => handleRemoveItem(index)}
-                            className="text-red-600 hover:text-red-800 text-lg"
+                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                             title="Remove Certification"
+                            aria-label="Remove certification"
                           >
-                            ✕
+                            <MdDelete className="text-xl" />
                           </button>
                         </div>
                       </div>

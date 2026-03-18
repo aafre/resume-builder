@@ -62,7 +62,7 @@ export default function ZetyFreeAlternative() {
 
       {/* Everything Zety charges for */}
       <RevealSection variant="fade-up">
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-400">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             Everything Zety Charges For — Free Here
           </h2>
@@ -96,7 +96,7 @@ export default function ZetyFreeAlternative() {
 
       {/* What Zety users say */}
       <RevealSection variant="fade-up">
-        <div className="mb-16">
+        <div className="mb-16 cv-auto cv-h-500">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
             What Zety Users Say
           </h2>
@@ -127,7 +127,7 @@ export default function ZetyFreeAlternative() {
 
       {/* Internal links */}
       <RevealSection variant="fade-up">
-        <div className="mb-16 text-center">
+        <div className="mb-16 text-center cv-auto cv-h-200">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6">
             Related Resources
           </h2>

@@ -226,3 +226,6 @@ cold-reachouts/
 local_files/
 SearchConsole/
 seo-tracking/
+linkedin-content/
+docs/templates/examples/
+pnpm-lock.yaml
