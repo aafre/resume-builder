@@ -2,6 +2,83 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.22.0] - 2026-03-18
+
+### 🚀 Features
+
+- **seo:** Add cross-links between job examples and keyword pages
+- **seo:** Add "Best Free Resume Builders 2026" roundup blog post
+- **blog:** Add DeepSeek Resume Prompts blog post
+- **blog:** Add Microsoft Copilot Resume Prompts blog post
+- **blog:** Add AI Cover Letter Prompts blog post
+- **seo:** Add cross-links from top blog posts to pSEO pages
+- **blog:** Add Career Change Resume Guide
+- **blog:** Add Resume Employment Gaps guide
+- **blog:** Add Return to Work Programs guide
+- **seo:** Replace fake resume mockups with real template preview images
+- **seo:** Upgrade all 26 job example YAMLs with page-filling content
+- **seo:** Serve preview images from Supabase Storage CDN
+- **seo:** Replace truncated text with full HTML-styled resume below preview image
+- **seo:** Cross-link career cluster blog posts
+- **a11y:** Add aria-labels to editor toolbar buttons
+- **ui:** Improve LinkInsertionModal accessibility and fix insertion bug
+- Enhance FormattingBubbleMenu accessibility with aria-labels and focus states
+- **ui:** Enhance contact info buttons with icons and accessibility attributes
+
+### 🐛 Bug Fixes
+
+- **seo:** Align DeepSeek blog post meta with blogPosts.ts canonical source
+- **seo:** Use subprocess workflow for previews, replace remaining emoji placeholders
+- **seo:** Add ImageObject to SchemaType union for job example pages
+- **cwv:** Resolve TS error in ImageObject schema and restore content-visibility on landing page
+- **seo:** Add null-check for VITE_SUPABASE_URL in JobExamplePage
+- **a11y:** Add scope="col" to comparison table headers
+- **a11y:** Improve keyboard accessibility for section reordering
+- **blog:** Update broken career site URLs in return-to-work programs
+- **ui:** Add spacing between FAQ and Related Keywords sections
+- **css:** Remove size containment from .google-auto-placed to prevent CLS
+
+### 🚜 Refactor
+
+- **cwv:** Extract content-visibility inline styles to CSS utility classes
+- **app:** Remove redundant `import re` from function bodies
+- **app:** Extract _validate_and_serve_file() helper
+- **app:** Extract is_transient_error() helper + TRANSIENT_ERROR_KEYWORDS
+- **app:** Consolidate markdown conversion functions
+- **app:** Extract _process_social_links() from _prepare_latex_data()
+- **app:** Extract _dispatch_html_pdf_generation() helper
+- **app:** Address review feedback
+- **app:** Restore error logging in _dispatch_html_pdf_generation()
+- **app:** Remove redundant type guard in convert_markdown_formatting_to_latex
+- **seo:** Inline VITE_SUPABASE_URL check in JobExamplePage
+
+### 📚 Documentation
+
+- Add preview image runbook and move imports to top-level
+
+### ⚡ Performance
+
+- **cwv:** Eliminate desktop CLS from announcement bar, shell skeleton, and auto-ads
+- **cwv:** Fix 7.5s LCP on free-resume-builder page
+- **cwv:** Fix mobile CLS on templates hub page
+- **cwv:** Fix mobile CLS on keyword pages
+- **cwv:** Add content-visibility containment to pSEO pages
+- **hooks:** Memoize useIconRegistry return value
+- Limit semantic matcher candidate phrases to top 150
+- Cache static YAML template parsing in app.py
+- Cache static YAML template parsing in app.py
+- Extract ExperienceItem to memoized component
+- Cache base64 conversion in useCloudSave
+
+### ⚙️ Miscellaneous Tasks
+
+- Gitignore generated preview images and delete local copies
+- Remove pnpm-lock.yaml and add to .gitignore
+
+### Merge
+
+- Resolve conflict with real-template-previews base branch
+
 ## [3.21.1] - 2026-03-01
 
 ### 🐛 Bug Fixes
