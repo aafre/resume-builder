@@ -2,7 +2,7 @@
  * Modal component for inserting markdown-style links in a user-friendly way
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 interface LinkInsertionModalProps {
   isOpen: boolean;
@@ -23,40 +23,41 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
   onClose,
   onInsert,
   onRemove,
-  initialText = '',
-  initialUrl = '',
+  initialText = "",
+  initialUrl = "",
   isEditMode = false,
 }) => {
   const [linkText, setLinkText] = useState(initialText);
   const [url, setUrl] = useState(initialUrl);
-  const [urlError, setUrlError] = useState('');
+  const [urlError, setUrlError] = useState("");
 
   // Reset state when modal opens
   useEffect(() => {
     if (isOpen) {
       setLinkText(initialText);
       setUrl(initialUrl);
-      setUrlError('');
+      setUrlError("");
     }
   }, [isOpen, initialText, initialUrl]);
 
   // Validate URL format
   const validateUrl = (urlToValidate: string): boolean => {
     if (!urlToValidate.trim()) {
-      setUrlError('URL is required');
+      setUrlError("URL is required");
       return false;
     }
 
     // Basic URL validation - check for common patterns
-    const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/i;
+    const urlPattern =
+      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/i;
     const isValid = urlPattern.test(urlToValidate);
 
     if (!isValid) {
-      setUrlError('Please enter a valid URL (e.g., https://example.com)');
+      setUrlError("Please enter a valid URL (e.g., https://example.com)");
       return false;
     }
 
-    setUrlError('');
+    setUrlError("");
     return true;
   };
 
@@ -76,10 +77,10 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
       handleInsert();
-    } else if (e.key === 'Escape') {
+    } else if (e.key === "Escape") {
       onClose();
     }
   };
@@ -87,9 +88,8 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
   if (!isOpen) return null;
 
   // Preview markdown
-  const previewMarkdown = linkText.trim() && url.trim()
-    ? `[${linkText.trim()}](${url.trim()})`
-    : '';
+  const previewMarkdown =
+    linkText.trim() && url.trim() ? `[${linkText.trim()}](${url.trim()})` : "";
 
   return (
     <div
@@ -104,16 +104,24 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
         onClick={(e) => e.stopPropagation()}
         onKeyDown={handleKeyDown}
       >
-        <h3 id="modal-title" className="text-xl font-semibold mb-4 text-gray-800">
-          {isEditMode ? 'Edit Link' : 'Insert Link'}
+        <h3
+          id="modal-title"
+          className="text-xl font-semibold mb-4 text-gray-800"
+        >
+          {isEditMode ? "Edit Link" : "Insert Link"}
         </h3>
 
         <div className="space-y-4">
           {/* Link Text Input */}
           <div>
-            <label htmlFor="link-text" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="link-text"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Link Text
-              <span className="text-gray-500 font-normal ml-1">(what users will see)</span>
+              <span className="text-gray-500 font-normal ml-1">
+                (what users will see)
+              </span>
             </label>
             <input
               id="link-text"
@@ -128,7 +136,10 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
 
           {/* URL Input */}
           <div>
-            <label htmlFor="link-url" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="link-url"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               URL
               <span className="text-red-500">*</span>
             </label>
@@ -138,17 +149,19 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
               value={url}
               onChange={(e) => {
                 setUrl(e.target.value);
-                setUrlError('');
+                setUrlError("");
               }}
               placeholder="e.g., https://example.com"
               className={`w-full border ${
-                urlError ? 'border-red-500' : 'border-gray-300'
+                urlError ? "border-red-500" : "border-gray-300"
               } rounded-lg p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all`}
               aria-invalid={!!urlError}
               aria-describedby={urlError ? "url-error" : undefined}
             />
             {urlError && (
-              <p id="url-error" className="text-red-500 text-sm mt-1">{urlError}</p>
+              <p id="url-error" className="text-red-500 text-sm mt-1">
+                {urlError}
+              </p>
             )}
           </div>
 
@@ -166,26 +179,29 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
         {/* Buttons */}
         <div className="flex gap-3 mt-6">
           <button
+            type="button"
             onClick={handleInsert}
-            className="flex-1 bg-accent text-ink px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-200"
+            className="flex-1 bg-accent text-ink px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent"
           >
-            {isEditMode ? 'Update Link' : 'Insert Link'}
+            {isEditMode ? "Update Link" : "Insert Link"}
           </button>
           {isEditMode && onRemove && (
             <button
+              type="button"
               onClick={() => {
                 onRemove();
                 onClose();
               }}
-              className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-200"
+              className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
               title="Remove Link"
             >
               Remove
             </button>
           )}
           <button
+            type="button"
             onClick={onClose}
-            className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200"
+            className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent"
           >
             Cancel
           </button>

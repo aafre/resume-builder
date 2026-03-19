@@ -1,13 +1,13 @@
-import { useState, useCallback } from 'react';
-import { createPortal } from 'react-dom';
-import { useResumeParser } from '../hooks/useResumeParser';
+import { useState, useCallback } from "react";
+import { createPortal } from "react-dom";
+import { useResumeParser } from "../hooks/useResumeParser";
 import {
   CloudArrowUpIcon,
   XMarkIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
-} from '@heroicons/react/24/outline';
-import { DocumentArrowUpIcon } from '@heroicons/react/24/solid';
+} from "@heroicons/react/24/outline";
+import { DocumentArrowUpIcon } from "@heroicons/react/24/solid";
 
 interface UploadResumeModalProps {
   isOpen: boolean;
@@ -22,41 +22,37 @@ export function UploadResumeModal({
 }: UploadResumeModalProps) {
   const { parseResume, parsing, progress, error } = useResumeParser();
   const [dragActive, setDragActive] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [parseResult, setParseResult] = useState<any>(null);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.type === 'dragenter' || e.type === 'dragover') {
+    if (e.type === "dragenter" || e.type === "dragover") {
       setDragActive(true);
-    } else if (e.type === 'dragleave') {
+    } else if (e.type === "dragleave") {
       setDragActive(false);
     }
   }, []);
 
-  const handleDrop = useCallback(
-    async (e: React.DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setDragActive(false);
+  const handleDrop = useCallback(async (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
 
-      const file = e.dataTransfer.files?.[0];
-      if (file) {
-        await handleFileUpload(file);
-      }
-    },
-    []
-  );
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      await handleFileUpload(file);
+    }
+  }, []);
 
-  const handleFileInput = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       await handleFileUpload(file);
     }
     // Reset input
-    e.target.value = '';
+    e.target.value = "";
   };
 
   const handleFileUpload = async (file: File) => {
@@ -64,17 +60,13 @@ export function UploadResumeModal({
       const result = await parseResume(file);
       setParseResult(result);
     } catch (err) {
-      console.error('Parse error:', err);
+      console.error("Parse error:", err);
     }
   };
 
   const handleContinue = () => {
     if (parseResult) {
-      onSuccess(
-        parseResult.yaml,
-        parseResult.confidence,
-        parseResult.warnings
-      );
+      onSuccess(parseResult.yaml, parseResult.confidence, parseResult.warnings);
       setParseResult(null);
     }
   };
@@ -88,18 +80,30 @@ export function UploadResumeModal({
 
   const modalContent = (
     <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
+      <div
+        className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="upload-resume-title"
+      >
         {/* Header */}
         <div className="bg-ink px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 p-2 rounded-lg">
               <DocumentArrowUpIcon className="w-6 h-6 text-white" />
             </div>
-            <h2 className="text-xl font-bold text-white">Upload Resume</h2>
+            <h2
+              id="upload-resume-title"
+              className="text-xl font-bold text-white"
+            >
+              Upload Resume
+            </h2>
           </div>
           <button
+            type="button"
+            aria-label="Close"
             onClick={handleCloseModal}
-            className="text-white/80 hover:text-white transition-colors"
+            className="text-white/80 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent rounded-sm"
           >
             <XMarkIcon className="w-6 h-6" />
           </button>
@@ -111,13 +115,13 @@ export function UploadResumeModal({
           {parseResult && !error && (
             <div
               className={`mb-4 p-4 rounded-lg border-2 ${
-                parseResult.ui_message.type === 'success'
-                  ? 'bg-green-50 border-green-200'
-                  : 'bg-yellow-50 border-yellow-200'
+                parseResult.ui_message.type === "success"
+                  ? "bg-green-50 border-green-200"
+                  : "bg-yellow-50 border-yellow-200"
               }`}
             >
               <div className="flex items-start gap-3">
-                {parseResult.ui_message.type === 'success' ? (
+                {parseResult.ui_message.type === "success" ? (
                   <CheckCircleIcon className="w-6 h-6 text-green-600 flex-shrink-0" />
                 ) : (
                   <ExclamationTriangleIcon className="w-6 h-6 text-yellow-600 flex-shrink-0" />
@@ -125,18 +129,18 @@ export function UploadResumeModal({
                 <div className="flex-1">
                   <h3
                     className={`font-semibold ${
-                      parseResult.ui_message.type === 'success'
-                        ? 'text-green-900'
-                        : 'text-yellow-900'
+                      parseResult.ui_message.type === "success"
+                        ? "text-green-900"
+                        : "text-yellow-900"
                     }`}
                   >
                     {parseResult.ui_message.title}
                   </h3>
                   <p
                     className={`text-sm mt-1 ${
-                      parseResult.ui_message.type === 'success'
-                        ? 'text-green-700'
-                        : 'text-yellow-700'
+                      parseResult.ui_message.type === "success"
+                        ? "text-green-700"
+                        : "text-yellow-700"
                     }`}
                   >
                     {parseResult.ui_message.description}
@@ -145,12 +149,14 @@ export function UploadResumeModal({
                   {/* Warnings */}
                   {parseResult.warnings.length > 0 && (
                     <ul className="mt-3 text-sm space-y-1">
-                      {parseResult.warnings.map((warning: string, idx: number) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <span className="text-yellow-600">•</span>
-                          <span className="text-yellow-700">{warning}</span>
-                        </li>
-                      ))}
+                      {parseResult.warnings.map(
+                        (warning: string, idx: number) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <span className="text-yellow-600">•</span>
+                            <span className="text-yellow-700">{warning}</span>
+                          </li>
+                        ),
+                      )}
                     </ul>
                   )}
 
@@ -186,8 +192,8 @@ export function UploadResumeModal({
             <div
               className={`border-2 border-dashed rounded-xl p-8 text-center transition-all ${
                 dragActive
-                  ? 'border-accent bg-accent/[0.06]'
-                  : 'border-gray-300 hover:border-gray-400'
+                  ? "border-accent bg-accent/[0.06]"
+                  : "border-gray-300 hover:border-gray-400"
               }`}
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
@@ -216,7 +222,7 @@ export function UploadResumeModal({
                 className="btn-primary inline-flex items-center gap-2 px-6 py-3 cursor-pointer disabled:opacity-50"
               >
                 <DocumentArrowUpIcon className="w-5 h-5" />
-                {parsing ? 'Parsing...' : 'Choose File'}
+                {parsing ? "Parsing..." : "Choose File"}
               </label>
             </div>
           )}
@@ -244,12 +250,17 @@ export function UploadResumeModal({
         {parseResult && (
           <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
             <button
+              type="button"
               onClick={handleCloseModal}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent"
             >
               Cancel
             </button>
-            <button onClick={handleContinue} className="btn-primary px-6 py-2">
+            <button
+              type="button"
+              onClick={handleContinue}
+              className="btn-primary px-6 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent"
+            >
               Continue to Editor
             </button>
           </div>
