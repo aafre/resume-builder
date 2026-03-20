@@ -22,6 +22,7 @@ export function UploadResumeModal({
 }: UploadResumeModalProps) {
   const { parseResume, parsing, progress, error } = useResumeParser();
   const [dragActive, setDragActive] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [parseResult, setParseResult] = useState<any>(null);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
@@ -208,12 +209,12 @@ export function UploadResumeModal({
                 accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 onChange={handleFileInput}
                 disabled={parsing}
-                className="hidden"
+                className="sr-only peer"
                 id="resume-file-input"
               />
               <label
                 htmlFor="resume-file-input"
-                className="btn-primary inline-flex items-center gap-2 px-6 py-3 cursor-pointer disabled:opacity-50"
+                className="btn-primary inline-flex items-center gap-2 px-6 py-3 cursor-pointer disabled:opacity-50 peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-accent"
               >
                 <DocumentArrowUpIcon className="w-5 h-5" />
                 {parsing ? 'Parsing...' : 'Choose File'}
