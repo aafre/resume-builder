@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.22.1] - 2026-03-20
+
+### 🐛 Bug Fixes
+
+- **cls:** Reduce layout shift on /free-resume-builder-no-sign-up
+
 ## [3.22.0] - 2026-03-18
 
 ### 🚀 Features
