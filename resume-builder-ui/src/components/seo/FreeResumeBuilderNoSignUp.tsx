@@ -52,7 +52,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* Video section — moved below features to keep LCP content above fold */}
       <RevealSection variant="fade-up">
-      <div className="mb-16 cv-auto cv-h-500">
+      <div className="mb-16">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Edit instantly: open the builder
         </h2>
@@ -104,7 +104,7 @@ export default function FreeResumeBuilderNoSignUp() {
 
       {/* Why No-Sign-Up Matters */}
       <RevealSection variant="fade-up">
-      <div className="mb-16 cv-auto cv-h-400">
+      <div className="mb-16">
         <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
           Why no-sign-up matters for job seekers
         </h2>
