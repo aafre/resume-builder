@@ -36,6 +36,7 @@ export const blogPosts: BlogPost[] = [
     publishDate: "2026-01-21",
     readTime: "18 min",
     category: "AI & Tools",
+    featured: true,
   },
   {
     slug: "gemini-resume-prompts",
@@ -157,7 +158,6 @@ export const blogPosts: BlogPost[] = [
     publishDate: "2026-03-05",
     readTime: "14 min",
     category: "Comparisons",
-    featured: true,
   },
   {
     slug: "resume-action-verbs",
