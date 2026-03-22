@@ -77,6 +77,14 @@ export default function ResumeBuilderForNurses() {
               <h3 className="font-bold text-ink mb-1">All Resume Keywords</h3>
               <p className="text-stone-warm text-sm">Browse keywords across all industries</p>
             </Link>
+            <Link to="/examples/registered-nurse" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Registered Nurse Resume Example</h3>
+              <p className="text-stone-warm text-sm">Full RN resume with clinical experience layout</p>
+            </Link>
+            <Link to="/examples/medical-assistant" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Medical Assistant Resume Example</h3>
+              <p className="text-stone-warm text-sm">Healthcare resume with certifications section</p>
+            </Link>
           </div>
         </div>
       </RevealSection>

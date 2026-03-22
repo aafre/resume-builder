@@ -77,6 +77,18 @@ export default function ResumeBuilderForStudents() {
               <h3 className="font-bold text-ink mb-1">Professional Summary Examples</h3>
               <p className="text-stone-warm text-sm">Entry-level summary templates you can adapt</p>
             </Link>
+            <Link to="/examples/college-student" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">College Student Resume Example</h3>
+              <p className="text-stone-warm text-sm">Full resume example with education-first layout</p>
+            </Link>
+            <Link to="/examples/internship" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Internship Resume Example</h3>
+              <p className="text-stone-warm text-sm">Tailored for internship applications</p>
+            </Link>
+            <Link to="/examples/entry-level-marketing" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Entry-Level Resume Example</h3>
+              <p className="text-stone-warm text-sm">How to stand out with limited experience</p>
+            </Link>
           </div>
         </div>
       </RevealSection>

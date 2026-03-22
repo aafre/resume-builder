@@ -112,6 +112,14 @@ export default function ResumeBuilderForVeterans() {
               <h3 className="font-bold text-ink mb-1">ATS-Friendly Templates</h3>
               <p className="text-stone-warm text-sm">Clean templates that pass corporate ATS systems</p>
             </Link>
+            <Link to="/examples/project-manager" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Project Manager Resume Example</h3>
+              <p className="text-stone-warm text-sm">Great for veterans transitioning to PM roles</p>
+            </Link>
+            <Link to="/examples/administrative-assistant" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Administrative Assistant Resume Example</h3>
+              <p className="text-stone-warm text-sm">Leverage your organizational and logistics skills</p>
+            </Link>
           </div>
         </div>
       </RevealSection>

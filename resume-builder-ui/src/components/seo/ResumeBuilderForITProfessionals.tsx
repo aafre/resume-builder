@@ -80,6 +80,18 @@ export default function ResumeBuilderForITProfessionals() {
               <h3 className="font-bold text-ink mb-1">Tech Resume Guide</h3>
               <p className="text-stone-warm text-sm">Complete guide to writing a tech resume</p>
             </Link>
+            <Link to="/examples/software-engineer" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Software Engineer Resume Example</h3>
+              <p className="text-stone-warm text-sm">Full resume with tech stack and project highlights</p>
+            </Link>
+            <Link to="/examples/data-analyst" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Data Analyst Resume Example</h3>
+              <p className="text-stone-warm text-sm">SQL, Python, visualization tools highlighted</p>
+            </Link>
+            <Link to="/examples/front-end-developer" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Front-End Developer Resume Example</h3>
+              <p className="text-stone-warm text-sm">React, TypeScript, and portfolio projects</p>
+            </Link>
           </div>
         </div>
       </RevealSection>
