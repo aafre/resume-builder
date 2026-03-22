@@ -4,13 +4,13 @@
  * Target keyword: "free resume builder for students"
  */
 
-import { Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import RevealSection from '../shared/RevealSection';
+import ResourceCard from '../shared/ResourceCard';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 
@@ -149,42 +149,15 @@ export default function ResumeBuilderForStudents() {
             Student Resume Resources
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
-            <Link to="/blog/resume-no-experience" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Resume With No Experience Guide</h3>
-              <p className="text-stone-warm text-sm">Step-by-step guide with copy-paste examples</p>
-            </Link>
-            <Link to="/templates/resume-templates-for-students" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Student Resume Templates</h3>
-              <p className="text-stone-warm text-sm">Templates that highlight education and projects</p>
-            </Link>
-            <Link to="/resume-keywords" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Resume Keywords by Industry</h3>
-              <p className="text-stone-warm text-sm">Find the right keywords for your target role</p>
-            </Link>
-            <Link to="/blog/professional-summary-examples" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Professional Summary Examples</h3>
-              <p className="text-stone-warm text-sm">Entry-level summary templates you can adapt</p>
-            </Link>
-            <Link to="/examples/college-student" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">College Student Resume Example</h3>
-              <p className="text-stone-warm text-sm">Full resume example with education-first layout</p>
-            </Link>
-            <Link to="/examples/internship" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Internship Resume Example</h3>
-              <p className="text-stone-warm text-sm">Tailored for internship applications</p>
-            </Link>
-            <Link to="/examples/entry-level-marketing" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Entry-Level Resume Example</h3>
-              <p className="text-stone-warm text-sm">How to stand out with limited experience</p>
-            </Link>
-            <Link to="/blog/how-to-list-skills" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">How to List Skills on a Resume</h3>
-              <p className="text-stone-warm text-sm">Structure your skills section for maximum impact</p>
-            </Link>
-            <Link to="/resume-keyword-scanner" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">ATS Keyword Scanner</h3>
-              <p className="text-stone-warm text-sm">Check if your resume matches the job description</p>
-            </Link>
+            <ResourceCard to="/blog/resume-no-experience" title="Resume With No Experience Guide" description="Step-by-step guide with copy-paste examples" />
+            <ResourceCard to="/templates/resume-templates-for-students" title="Student Resume Templates" description="Templates that highlight education and projects" />
+            <ResourceCard to="/resume-keywords" title="Resume Keywords by Industry" description="Find the right keywords for your target role" />
+            <ResourceCard to="/blog/professional-summary-examples" title="Professional Summary Examples" description="Entry-level summary templates you can adapt" />
+            <ResourceCard to="/examples/college-student" title="College Student Resume Example" description="Full resume example with education-first layout" />
+            <ResourceCard to="/examples/internship" title="Internship Resume Example" description="Tailored for internship applications" />
+            <ResourceCard to="/examples/entry-level-marketing" title="Entry-Level Resume Example" description="How to stand out with limited experience" />
+            <ResourceCard to="/blog/how-to-list-skills" title="How to List Skills on a Resume" description="Structure your skills section for maximum impact" />
+            <ResourceCard to="/resume-keyword-scanner" title="ATS Keyword Scanner" description="Check if your resume matches the job description" />
           </div>
         </div>
       </RevealSection>
@@ -217,6 +190,7 @@ export default function ResumeBuilderForStudents() {
                 </div>
               </details>
             ))}
+
           </div>
         </div>
       </RevealSection>
