@@ -13,6 +13,11 @@ const dateFormatOptions: Intl.DateTimeFormatOptions = {
   day: 'numeric',
 };
 
+interface BlogFAQ {
+  question: string;
+  answer: string;
+}
+
 interface BlogLayoutProps {
   children: ReactNode;
   title: string;
@@ -23,6 +28,7 @@ interface BlogLayoutProps {
   keywords: string[];
   showBreadcrumbs?: boolean;
   ctaType?: 'resume' | 'interview' | 'general';
+  faqs?: BlogFAQ[];
 }
 
 export default function BlogLayout({
@@ -34,7 +40,8 @@ export default function BlogLayout({
   readTime,
   keywords,
   showBreadcrumbs = true,
-  ctaType = 'general'
+  ctaType = 'general',
+  faqs
 }: BlogLayoutProps) {
   // Use origin + pathname to strip query params and hash from canonical URL
   const currentUrl = typeof window !== 'undefined'
@@ -86,6 +93,25 @@ export default function BlogLayout({
           "keywords": keywords
         }}
       />
+      {faqs && faqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": faqs.map(faq => ({
+                "@type": "Question",
+                "name": faq.question,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": faq.answer
+                }
+              }))
+            })
+          }}
+        />
+      )}
       <article className="bg-chalk">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {showBreadcrumbs && (
