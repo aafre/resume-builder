@@ -1,6 +1,29 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 
+const FAQS = [
+  {
+    question: "How long should a resume be in 2026?",
+    answer: "For most job seekers, a resume should be 1-2 pages. Entry-level candidates (0-3 years experience) should aim for 1 page, mid-level professionals (3-10 years) can use 1-2 pages, and senior-level professionals (10+ years) may use 2-3 pages.",
+  },
+  {
+    question: "Is a 3-page resume too long?",
+    answer: "For most industries, yes. A 3-page resume is generally only appropriate for senior executives with 15+ years of experience, academic CVs, or healthcare professionals with extensive certifications. Over 77% of recruiters prefer resumes that are 1-2 pages.",
+  },
+  {
+    question: "Can a resume be 2 pages for an entry-level candidate?",
+    answer: "It is generally not recommended. Entry-level candidates with 0-3 years of experience should keep their resume to 1 page, focusing on education, internships, projects, and relevant skills. Quality content is more important than filling space.",
+  },
+  {
+    question: "Do ATS systems have resume length limits?",
+    answer: "While most modern ATS systems can process multi-page resumes, some older systems may truncate content beyond 2 pages. For best results, keep critical information on the first two pages, maintain consistent formatting, and keep your file size under 1MB.",
+  },
+  {
+    question: "Should I use a smaller font to fit my resume on one page?",
+    answer: "No. Using a font smaller than 10pt makes your resume difficult to read and signals that you could not effectively prioritize your content. Instead, focus on your most impactful achievements and remove outdated or irrelevant information.",
+  },
+];
+
 export default function ResumeLengthGuide() {
   return (
     <BlogLayout
@@ -18,6 +41,7 @@ export default function ResumeLengthGuide() {
         "resume length by experience",
         "resume length ATS",
       ]}
+      faqs={FAQS}
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
@@ -558,6 +582,7 @@ export default function ResumeLengthGuide() {
           The key is matching your resume length to your story's complexity while respecting industry norms and recruiter preferences. Quality content that demonstrates value will always trump arbitrary length requirements.
         </p>
 
+<<<<<<< HEAD
         {/* FAQ */}
         <h2 id="faq" className="text-3xl font-bold text-ink mt-12 mb-6">
           Frequently Asked Questions
@@ -642,6 +667,17 @@ export default function ResumeLengthGuide() {
           </ul>
         </div>
 
+=======
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">Frequently Asked Questions</h2>
+        <div className="space-y-6">
+          {FAQS.map((faq, i) => (
+            <div key={i} className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+              <h3 className="font-bold text-ink mb-2">{faq.question}</h3>
+              <p className="text-stone-warm leading-relaxed">{faq.answer}</p>
+            </div>
+          ))}
+        </div>
+>>>>>>> 0b61274 (feat(seo): add FAQPage schema to blog posts (batch 1))
       </div>
     </BlogLayout>
   );

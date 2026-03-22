@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import SEOHead from './SEOHead';
 import BlogCTA from './BlogCTA';
@@ -6,6 +7,7 @@ import { blogPosts } from '../data/blogPosts';
 import AuthorBio from './blog/AuthorBio';
 import RelatedArticles from './blog/RelatedArticles';
 import RevealSection from './shared/RevealSection';
+import { generateFAQPageSchema } from '../utils/schemaGenerators';
 
 const dateFormatOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
@@ -94,23 +96,11 @@ export default function BlogLayout({
         }}
       />
       {faqs && faqs.length > 0 && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": faqs.map(faq => ({
-                "@type": "Question",
-                "name": faq.question,
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": faq.answer
-                }
-              }))
-            })
-          }}
-        />
+        <Helmet>
+          <script type="application/ld+json">
+            {JSON.stringify(generateFAQPageSchema(faqs))}
+          </script>
+        </Helmet>
       )}
       <article className="bg-chalk">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
