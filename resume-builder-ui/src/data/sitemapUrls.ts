@@ -23,8 +23,8 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/free-resume-builder-no-sign-up', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-17' },
   { loc: '/free-resume-builder-download', priority: 0.9, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/free-resume-builder-no-payment', priority: 0.9, changefreq: 'monthly', lastmod: '2026-03-22' },
-  { loc: '/ai-resume-builder-free', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
-  { loc: '/zety-free-alternative', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
+  { loc: '/ai-resume-builder-free', priority: 0.9, changefreq: 'monthly', lastmod: '2026-03-22' },
+  { loc: '/zety-free-alternative', priority: 0.9, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/best-free-resume-builder-reddit', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-17' },
 
   // ATS Keyword Scanner Tool (0.8)
