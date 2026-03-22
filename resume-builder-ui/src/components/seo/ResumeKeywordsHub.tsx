@@ -408,6 +408,22 @@ export default function ResumeKeywordsHub() {
         <FAQSection faqs={config.faqs} />
       </div>
 
+      {/* Cross-link to examples */}
+      <RevealSection>
+        <div className="mb-16 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-4">
+            <Link to="/examples" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Resume Examples by Job Title</h3>
+              <p className="text-stone-warm text-sm">See how these keywords look in a full resume</p>
+            </Link>
+            <Link to="/blog/best-free-resume-builders-2026" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Best Free Resume Builders 2026</h3>
+              <p className="text-stone-warm text-sm">Honest comparison of 9 free tools</p>
+            </Link>
+          </div>
+        </div>
+      </RevealSection>
+
       <DownloadCTA
         title="Ready to Optimize Your Resume?"
         description="Use these keywords with our ATS-friendly templates for maximum impact."
