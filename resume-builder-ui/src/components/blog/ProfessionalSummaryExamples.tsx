@@ -41,11 +41,8 @@ export default function ProfessionalSummaryExamples() {
         "how to write a professional summary",
         "resume templates",
       ]}
-<<<<<<< HEAD
       ctaType="resume"
-=======
       faqs={FAQS}
->>>>>>> 0b61274 (feat(seo): add FAQPage schema to blog posts (batch 1))
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
@@ -791,7 +788,6 @@ export default function ProfessionalSummaryExamples() {
           your target role.
         </p>
 
-<<<<<<< HEAD
         {/* FAQ Section */}
         <h2 id="faq" className="text-3xl font-bold text-ink mt-12 mb-6">
           Frequently Asked Questions
@@ -959,18 +955,6 @@ export default function ProfessionalSummaryExamples() {
               what ATS and hiring managers prioritize.
             </p>
           </Link>
-=======
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          Frequently Asked Questions
-        </h2>
-        <div className="space-y-6">
-          {FAQS.map((faq, i) => (
-            <div key={i} className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
-              <h3 className="font-bold text-ink mb-2">{faq.question}</h3>
-              <p className="text-stone-warm leading-relaxed">{faq.answer}</p>
-            </div>
-          ))}
->>>>>>> 0b61274 (feat(seo): add FAQPage schema to blog posts (batch 1))
         </div>
       </div>
     </BlogLayout>
