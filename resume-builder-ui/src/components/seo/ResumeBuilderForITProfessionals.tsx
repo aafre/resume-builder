@@ -53,6 +53,61 @@ export default function ResumeBuilderForITProfessionals() {
         </div>
       </RevealSection>
 
+      {/* Common mistakes section */}
+      <RevealSection variant="fade-up">
+        <div className="mb-16 max-w-4xl mx-auto">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+            AVOID THESE PITFALLS
+          </span>
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4 text-center">
+            Common IT Resume Mistakes That Get You Rejected
+          </h2>
+          <p className="text-lg md:text-xl font-extralight text-stone-warm leading-relaxed text-center mb-10 max-w-3xl mx-auto">
+            Tech recruiters review hundreds of resumes per week. These mistakes send yours straight to
+            the rejection pile — even when you have the skills for the job.
+          </p>
+          <div className="space-y-4">
+            {[
+              {
+                mistake: 'Listing every technology you have ever touched',
+                fix: 'Curate a focused skills section that mirrors the job description. A laundry list of 40 technologies signals "jack of all trades." Instead, group 10-15 relevant skills by category and let your experience bullets prove depth.',
+              },
+              {
+                mistake: 'Describing projects without context or outcomes',
+                fix: 'Every bullet should follow the pattern: "Did X using Y, resulting in Z." Vague lines like "worked on backend systems" tell recruiters nothing. Specify the system, your contribution, and the measurable result.',
+              },
+              {
+                mistake: 'Missing GitHub profile or portfolio links',
+                fix: 'Recruiters expect to see your work. Include a GitHub link with pinned repos, a portfolio site, or links to open-source contributions. If your GitHub is empty, create one meaningful project that demonstrates your strongest skill.',
+              },
+              {
+                mistake: 'Writing vague descriptions like "worked on systems"',
+                fix: 'Replace every vague verb with a specific action. "Worked on" becomes "Architected," "Migrated," "Optimized," or "Deployed." Pair it with scale: number of users, requests per second, data volume, or team size.',
+              },
+              {
+                mistake: 'Not quantifying performance improvements',
+                fix: 'Numbers are the universal language of tech resumes. "Reduced page load time from 4.2s to 1.1s" is infinitely stronger than "improved performance." Track latency, uptime, cost savings, deployment frequency, and error rates.',
+              },
+            ].map((item, i) => (
+              <div key={i} className="bg-chalk-dark rounded-xl p-6 border border-black/[0.06]">
+                <div className="flex items-start gap-4">
+                  <span className="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">✗</span>
+                  <div>
+                    <h3 className="font-display text-lg font-bold text-ink mb-1">{item.mistake}</h3>
+                    <p className="text-stone-warm font-extralight leading-relaxed">{item.fix}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-lg text-stone-warm font-extralight leading-relaxed mt-8 text-center">
+            Not sure which skills to highlight? Use our{' '}
+            <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">resume keyword scanner</Link>{' '}
+            to compare your resume against the job description and identify exactly what is missing.
+          </p>
+        </div>
+      </RevealSection>
+
       {/* Role-specific keyword links */}
       <RevealSection>
         <div className="mb-16 max-w-4xl mx-auto cv-auto cv-h-300">
@@ -61,7 +116,9 @@ export default function ResumeBuilderForITProfessionals() {
           </h2>
           <p className="text-lg text-stone-warm font-extralight mb-6 leading-relaxed">
             Different IT roles require different keyword strategies. Browse our curated keyword
-            lists for your specific role:
+            lists for your specific role, or read our guide on{' '}
+            <Link to="/blog/how-to-list-skills" className="text-accent hover:underline font-medium">how to list skills on a resume</Link>{' '}
+            for general best practices:
           </p>
           <div className="grid md:grid-cols-2 gap-4">
             <Link to="/resume-keywords/software-engineer" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
@@ -93,6 +150,55 @@ export default function ResumeBuilderForITProfessionals() {
               <p className="text-stone-warm text-sm">React, TypeScript, and portfolio projects</p>
             </Link>
           </div>
+        </div>
+      </RevealSection>
+
+      {/* Inline FAQ section */}
+      <RevealSection variant="fade-up">
+        <div className="mb-16 max-w-4xl mx-auto">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+            QUICK ANSWERS
+          </span>
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-10 text-center">
+            IT Resume Questions, Answered
+          </h2>
+          <div className="space-y-6">
+            {[
+              {
+                q: 'Should I list all programming languages I know?',
+                a: 'No. List only languages you could confidently use in a technical interview or on day one of the job. A focused list of 6-8 languages you truly know beats a sprawling list of 20 you touched once. Organize by proficiency level or relevance to the target role, and let your experience bullets demonstrate depth in each.',
+              },
+              {
+                q: 'How do I showcase side projects on my resume?',
+                a: 'Add a dedicated "Projects" section between Experience and Education. For each project, include the name, tech stack, your role, and a measurable outcome: "Built a real-time chat app with React, Node.js, and WebSockets — 500+ daily active users." Link to the live project or GitHub repo. Side projects are especially valuable for career changers and junior developers.',
+              },
+              {
+                q: 'Should I include IT certifications on my resume?',
+                a: 'Yes, if they are relevant to the role. AWS Solutions Architect, Google Cloud Professional, Azure Administrator, CompTIA Security+, and Kubernetes certifications carry significant weight. Place them in a dedicated Certifications section near the top. Include the issuing body and year obtained. Skip expired certifications unless you are actively renewing.',
+              },
+              {
+                q: 'How long should a tech resume be?',
+                a: 'One page for early-career professionals (under 8-10 years). Two pages maximum for senior engineers, architects, and engineering managers with extensive project histories. If you are struggling to fit on one page, cut roles older than 10 years, remove obvious skills (e.g., "Microsoft Office"), and tighten bullet points to one line each.',
+              },
+              {
+                q: 'Should I include a portfolio or GitHub link?',
+                a: 'Absolutely. Add it right next to your contact information. For GitHub, pin your 3-5 best repositories and write clear README files. For a portfolio site, include live project demos and case studies. Recruiters at top tech companies consistently say they check links — make sure yours are worth clicking.',
+              },
+              {
+                q: 'How do I describe agile and scrum experience?',
+                a: 'Do not just write "Agile methodology" — that tells recruiters nothing. Be specific: "Led sprint planning for a 7-person team delivering bi-weekly releases" or "Reduced sprint carry-over by 40% through refined backlog grooming." Mention specific tools (Jira, Linear, Shortcut) and practices (standups, retros, CI/CD pipelines) with outcomes.',
+              },
+            ].map((item, i) => (
+              <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-black/[0.06]">
+                <h3 className="font-display text-lg font-bold text-ink mb-2">{item.q}</h3>
+                <p className="text-stone-warm font-extralight leading-relaxed">{item.a}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-lg text-stone-warm font-extralight leading-relaxed mt-8 text-center">
+            For a deeper dive, read our complete{' '}
+            <Link to="/blog/tech-resume-guide" className="text-accent hover:underline font-medium">tech resume writing guide</Link>.
+          </p>
         </div>
       </RevealSection>
 
