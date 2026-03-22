@@ -25,6 +25,9 @@ import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
+import { STATIC_URLS } from '../src/data/sitemapUrls';
+import { JOBS_DATABASE } from '../src/data/jobKeywords/index';
+import { JOB_EXAMPLES_DATABASE } from '../src/data/jobExamples/index';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,156 +35,42 @@ const DIST_DIR = path.resolve(__dirname, '../dist');
 const PRERENDER_DIR = path.join(DIST_DIR, 'prerendered');
 
 /**
- * SEO-critical routes to prerender.
- * These are the highest-value pages that bots should see as static HTML.
+ * Pages we intentionally skip prerendering (low SEO value).
  */
-const ROUTES_TO_PRERENDER = [
-  // High-priority landing pages
-  '/',
-  '/templates',
-  '/templates/ats-friendly',
-  '/templates/modern-resume-templates',
-  '/templates/minimalist-resume-templates',
-  '/templates/resume-templates-for-students',
+const PRERENDER_EXCLUDE = new Set([
+  '/privacy-policy',
+  '/terms-of-service',
+]);
 
-  // SEO hub pages
-  '/ats-resume-templates',
-  '/resume-keywords',
-  '/resume-keywords/customer-service',
-  '/examples',
+/**
+ * Build the prerender route list dynamically from the same data sources
+ * that generate the sitemap (STATIC_URLS + JOBS_DATABASE + JOB_EXAMPLES_DATABASE).
+ * This prevents drift between the sitemap and prerendered pages.
+ */
+function buildRoutesToPrerender(): string[] {
+  const routes = new Set<string>();
 
-  // Job keyword pages (programmatic SEO)
-  '/resume-keywords/software-engineer',
-  '/resume-keywords/data-scientist',
-  '/resume-keywords/product-manager',
-  '/resume-keywords/frontend-developer',
-  '/resume-keywords/backend-developer',
-  '/resume-keywords/full-stack-developer',
-  '/resume-keywords/devops-engineer',
-  '/resume-keywords/data-analyst',
-  '/resume-keywords/ux-designer',
-  '/resume-keywords/project-manager',
-  '/resume-keywords/registered-nurse',
-  '/resume-keywords/marketing-manager',
-  '/resume-keywords/financial-analyst',
-  '/resume-keywords/teacher',
-  '/resume-keywords/sales-representative',
-  '/resume-keywords/sales',
-  '/resume-keywords/marketing',
-  '/resume-keywords/business-analyst',
-  '/resume-keywords/nursing',
-  '/resume-keywords/administrative-assistant',
+  // Static pages (landing, blog, audience, CV, hub pages)
+  for (const url of STATIC_URLS) {
+    if (!PRERENDER_EXCLUDE.has(url.loc)) {
+      routes.add(url.loc);
+    }
+  }
 
-  // Job example pages (programmatic SEO)
-  '/examples/customer-service-representative',
-  '/examples/administrative-assistant',
-  '/examples/receptionist',
-  '/examples/retail-sales-associate',
-  '/examples/warehouse-worker',
-  '/examples/project-manager',
-  '/examples/business-analyst',
-  '/examples/human-resources-generalist',
-  '/examples/marketing-coordinator',
-  '/examples/accountant',
-  '/examples/registered-nurse',
-  '/examples/medical-assistant',
-  '/examples/dental-assistant',
-  '/examples/teacher',
-  '/examples/tutor',
-  '/examples/software-engineer',
-  '/examples/data-analyst',
-  '/examples/front-end-developer',
-  '/examples/graphic-designer',
-  '/examples/social-media-manager',
-  '/examples/college-student',
-  '/examples/high-school-student',
-  '/examples/internship',
-  '/examples/entry-level-marketing',
-  '/examples/electrician',
-  '/examples/hvac-technician',
+  // Programmatic SEO: job keyword pages
+  for (const job of JOBS_DATABASE) {
+    routes.add(`/resume-keywords/${job.slug}`);
+  }
 
-  // Landing pages
-  '/free-resume-builder-no-sign-up',
-  '/actual-free-resume-builder',
-  '/best-free-resume-builder-reddit',
-  '/free-resume-builder-download',
-  '/free-resume-builder-no-payment',
-  '/ai-resume-builder-free',
-  '/zety-free-alternative',
-  '/resume-keyword-scanner',
+  // Programmatic SEO: job example pages
+  for (const example of JOB_EXAMPLES_DATABASE) {
+    routes.add(`/examples/${example.slug}`);
+  }
 
-  // Audience landing pages
-  '/free-resume-builder-for-students',
-  '/free-resume-builder-for-veterans',
-  '/free-resume-builder-for-it-professionals',
-  '/free-resume-builder-for-nurses',
+  return Array.from(routes);
+}
 
-  // UK/CV pages
-  '/cv-templates',
-  '/cv-templates/ats-friendly',
-  '/free-cv-builder-no-sign-up',
-
-  // Blog index
-  '/blog',
-
-  // Blog - comparison posts (high impression, low CTR) — sorted alphabetically
-  '/blog/canva-resume-vs-easy-free-resume',
-  '/blog/enhancv-vs-easy-free-resume',
-  '/blog/flowcv-vs-easy-free-resume',
-  '/blog/novoresume-vs-easy-free-resume',
-  '/blog/resume-genius-vs-easy-free-resume',
-  '/blog/resume-io-vs-easy-free-resume',
-  '/easyfreeresume-vs-indeed-resume-builder',
-  '/easyfreeresume-vs-zety',
-
-  // Blog - AI prompt posts (gaining traction)
-  '/blog/chatgpt-resume-prompts',
-  '/blog/claude-resume-prompts',
-  '/blog/gemini-resume-prompts',
-
-  // Blog - key guides
-  '/blog/how-to-write-a-resume-guide',
-  '/blog/ats-resume-optimization',
-  '/blog/resume-keywords-guide',
-
-  // Blog - high-impression posts
-  '/blog/professional-summary-examples',
-  '/blog/how-to-use-resume-keywords',
-  '/blog/resume-no-experience',
-  '/blog/resume-vs-cv-difference',
-
-  // Blog - additional guides (previously crawled but not indexed)
-  '/blog/quantify-resume-accomplishments',
-  '/blog/tech-resume-guide',
-  '/blog/how-to-list-skills',
-  '/blog/career-change-resume-guide',
-  '/blog/resume-action-verbs',
-  '/blog/resume-length-guide',
-  '/blog/remote-work-resume',
-  '/blog/behavioral-interview-questions',
-  '/blog/job-interview-guide',
-  '/blog/cover-letter-guide',
-  '/blog/resume-mistakes-to-avoid',
-  '/blog/grok-resume-prompts',
-
-  // Blog - not yet indexed
-  '/blog/deepseek-resume-prompts',
-  '/blog/copilot-resume-prompts',
-  '/blog/ai-cover-letter-prompts',
-  '/blog/resume-employment-gaps',
-  '/blog/return-to-work-programs',
-  '/blog/best-free-resume-builders-2026',
-  '/blog/customer-service-resume-keywords-guide',
-  '/blog/resume-keywords-by-industry',
-  '/blog/how-why-easyfreeresume-completely-free',
-  '/blog/ai-resume-builder',
-  '/blog/ai-resume-writing-guide',
-  '/blog/introducing-prepai-ai-interview-coach',
-
-  // Info pages
-  '/about',
-  '/contact',
-];
+const ROUTES_TO_PRERENDER = buildRoutesToPrerender();
 
 /**
  * Simple static file server for the dist directory.
@@ -265,6 +154,7 @@ async function prerender() {
   }
   fs.mkdirSync(PRERENDER_DIR, { recursive: true });
 
+  console.log(`[prerender] ${ROUTES_TO_PRERENDER.length} routes to prerender`);
   console.log('Launching browser...');
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
