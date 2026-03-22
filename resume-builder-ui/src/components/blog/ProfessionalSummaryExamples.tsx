@@ -1,4 +1,5 @@
 import BlogLayout from "../BlogLayout";
+import { Link } from "react-router-dom";
 
 export default function ProfessionalSummaryExamples() {
   return (
@@ -6,28 +7,60 @@ export default function ProfessionalSummaryExamples() {
       title="30+ Professional Summary Examples for Resumes (2026)"
       description="Copy-paste professional summary examples for every industry: tech, healthcare, finance, marketing, student. Plus a 60-second formula for writing your own."
       publishDate="2026-01-18"
-      readTime="8 min"
+      lastUpdated="2026-03-22"
+      readTime="12 min"
       keywords={[
         "professional summary",
         "resume summary",
+        "resume summary examples",
         "career objective",
         "summary examples",
+        "how to write a professional summary",
         "resume templates",
       ]}
+      ctaType="resume"
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
-          Updated for 2026: Your professional summary is the most important
-          section of your resume-it's the first thing recruiters read and often
-          determines whether they'll continue reading. A compelling summary can
-          be the difference between landing an interview and having your resume
-          overlooked. This guide provides 20+ proven examples and templates to
-          help you craft a summary that opens doors.
+          Your professional summary is the most important section of your
+          resume — it is the first thing recruiters read and often determines
+          whether they continue reading. A compelling summary can be the
+          difference between landing an interview and having your resume
+          overlooked. This guide provides 30+ proven examples across every
+          experience level and industry, plus a 60-second formula for writing
+          your own. If you are building your resume from scratch, pair this
+          guide with our{" "}
+          <Link
+            to="/blog/how-to-write-a-resume-guide"
+            className="text-accent hover:underline"
+          >
+            complete resume writing guide
+          </Link>{" "}
+          for end-to-end coverage.
         </p>
+
+        {/* Table of Contents */}
+        <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
+          <h2 className="font-bold text-ink mb-4 text-lg">
+            Table of Contents
+          </h2>
+          <ol className="space-y-2 text-ink/80 list-decimal list-inside">
+            <li><a href="#what-makes-effective" className="text-accent hover:underline">What Makes a Professional Summary Effective?</a></li>
+            <li><a href="#formula" className="text-accent hover:underline">Professional Summary Formula (60-Second Template)</a></li>
+            <li><a href="#by-experience" className="text-accent hover:underline">Examples by Experience Level</a></li>
+            <li><a href="#by-industry" className="text-accent hover:underline">Industry-Specific Examples</a></li>
+            <li><a href="#mistakes" className="text-accent hover:underline">Common Mistakes to Avoid</a></li>
+            <li><a href="#summary-vs-objective" className="text-accent hover:underline">Professional Summary vs. Objective Statement</a></li>
+            <li><a href="#ats-optimization" className="text-accent hover:underline">Optimizing Your Summary for ATS</a></li>
+            <li><a href="#power-words" className="text-accent hover:underline">Power Words for Your Summary</a></li>
+            <li><a href="#final-tips" className="text-accent hover:underline">Final Tips for Success</a></li>
+            <li><a href="#faq" className="text-accent hover:underline">Frequently Asked Questions</a></li>
+          </ol>
+        </nav>
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
           <h3 className="text-lg font-bold text-ink mb-2">
-            🎯 Quick Impact
+            Quick Impact
           </h3>
           <p className="text-ink/80">
             Studies show that recruiters spend just 6-8 seconds scanning a
@@ -36,19 +69,34 @@ export default function ProfessionalSummaryExamples() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+        <h2 id="what-makes-effective" className="text-3xl font-bold text-ink mt-12 mb-6">
           What Makes a Professional Summary Effective?
         </h2>
         <p className="text-lg leading-relaxed text-stone-warm">
           An effective professional summary is a 3-4 sentence paragraph that
           combines your years of experience, key skills, notable achievements,
           and the value you bring to employers. It should be tailored to your
-          target role and industry while showcasing what makes you unique.
+          target role and industry while showcasing what makes you unique. The
+          best summaries open with a{" "}
+          <Link
+            to="/blog/resume-action-verbs"
+            className="text-accent hover:underline"
+          >
+            strong action verb or descriptor
+          </Link>{" "}
+          and include at least one{" "}
+          <Link
+            to="/blog/quantify-resume-accomplishments"
+            className="text-accent hover:underline"
+          >
+            quantified accomplishment
+          </Link>{" "}
+          to anchor your claims in real results.
         </p>
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
           <h4 className="font-bold text-green-800 mb-3">
-            ✅ Essential Elements of a Strong Summary:
+            Essential Elements of a Strong Summary:
           </h4>
           <ul className="list-disc pl-6 space-y-2 text-accent">
             <li>
@@ -64,7 +112,7 @@ export default function ProfessionalSummaryExamples() {
               measurable result
             </li>
             <li>
-              <strong>Value Proposition:</strong> What you'll bring to the
+              <strong>Value Proposition:</strong> What you will bring to the
               employer
             </li>
             <li>
@@ -74,12 +122,12 @@ export default function ProfessionalSummaryExamples() {
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+        <h2 id="formula" className="text-3xl font-bold text-ink mt-12 mb-6">
           Professional Summary Formula
         </h2>
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
           <h4 className="font-bold text-ink mb-3">
-            📐 The Winning Formula:
+            The Winning Formula:
           </h4>
           <div className="text-ink/80 space-y-3 text-lg">
             <p>
@@ -124,7 +172,7 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+        <h2 id="by-experience" className="text-3xl font-bold text-ink mt-12 mb-6">
           Professional Summary Examples by Experience Level
         </h2>
 
@@ -133,7 +181,15 @@ export default function ProfessionalSummaryExamples() {
         </h3>
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
           For new graduates and career changers, focus on relevant education,
-          internships, projects, and transferable skills.
+          internships, projects, and transferable skills. If you have limited
+          work history, our{" "}
+          <Link
+            to="/blog/resume-no-experience"
+            className="text-accent hover:underline"
+          >
+            guide to writing a resume with no experience
+          </Link>{" "}
+          walks through exactly how to position yourself competitively.
         </p>
 
         <div className="grid md:grid-cols-1 gap-6 my-8">
@@ -174,7 +230,7 @@ export default function ProfessionalSummaryExamples() {
               "Results-driven professional with 6+ years in sales and customer
               relationship management, transitioning to Human Resources. Proven
               ability to build rapport, communicate effectively, and resolve
-              conflicts-skills directly applicable to HR functions. Completed HR
+              conflicts — skills directly applicable to HR functions. Completed HR
               certification program and managed recruitment for 20+ positions
               during volunteer work. Passionate about fostering positive
               workplace cultures and supporting employee development."
@@ -215,6 +271,16 @@ export default function ProfessionalSummaryExamples() {
               code, test-driven development, and mentoring junior developers.
               Seeking senior role to drive technical innovation and system
               architecture decisions."
+            </p>
+            <p className="text-sm text-stone-warm mt-3">
+              See a{" "}
+              <Link
+                to="/examples/software-engineer"
+                className="text-accent hover:underline"
+              >
+                full software engineer resume example
+              </Link>{" "}
+              to see how this summary fits within a complete resume.
             </p>
           </div>
 
@@ -288,7 +354,7 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+        <h2 id="by-industry" className="text-3xl font-bold text-ink mt-12 mb-6">
           Industry-Specific Professional Summary Examples
         </h2>
 
@@ -390,14 +456,14 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+        <h2 id="mistakes" className="text-3xl font-bold text-ink mt-12 mb-6">
           Common Professional Summary Mistakes to Avoid
         </h2>
 
         <div className="space-y-6">
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">
-              ❌ Mistake: Generic, one-size-fits-all summaries
+              Mistake: Generic, one-size-fits-all summaries
             </h4>
             <p className="text-stone-warm mb-2">
               <strong>Example:</strong> "Hardworking professional with excellent
@@ -410,9 +476,9 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">
-              ❌ Mistake: Focusing on what you want instead of what you offer
+              Mistake: Focusing on what you want instead of what you offer
             </h4>
             <p className="text-stone-warm mb-2">
               <strong>Example:</strong> "Seeking a challenging position where I
@@ -424,23 +490,29 @@ export default function ProfessionalSummaryExamples() {
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">
-              ❌ Mistake: Using vague buzzwords without context
+              Mistake: Using vague buzzwords without context
             </h4>
             <p className="text-stone-warm mb-2">
               <strong>Example:</strong> "Dynamic, results-oriented professional
               with exceptional leadership capabilities."
             </p>
             <p className="text-accent">
-              <strong>Fix:</strong> Support claims with specific examples and
-              quantifiable achievements that demonstrate these qualities.
+              <strong>Fix:</strong> Support claims with specific examples and{" "}
+              <Link
+                to="/blog/quantify-resume-accomplishments"
+                className="text-accent hover:underline"
+              >
+                quantifiable achievements
+              </Link>{" "}
+              that demonstrate these qualities.
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-500 p-6">
+          <div className="bg-red-50 border border-red-200 rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">
-              ❌ Mistake: Writing in first person or using personal pronouns
+              Mistake: Writing in first person or using personal pronouns
             </h4>
             <p className="text-stone-warm mb-2">
               <strong>Example:</strong> "I am a marketing professional with 5
@@ -455,7 +527,7 @@ export default function ProfessionalSummaryExamples() {
 
         <div className="bg-ink text-white rounded-xl p-8 my-12">
           <h3 className="text-2xl font-bold mb-4">
-            🎯 Your Professional Summary Action Plan
+            Your Professional Summary Action Plan
           </h3>
           <ol className="list-decimal pl-6 space-y-3 text-lg">
             <li>
@@ -470,7 +542,7 @@ export default function ProfessionalSummaryExamples() {
           </ol>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+        <h2 id="summary-vs-objective" className="text-3xl font-bold text-ink mt-12 mb-6">
           Professional Summary vs. Objective Statement
         </h2>
         <p className="text-lg leading-relaxed text-stone-warm mb-4">
@@ -493,7 +565,7 @@ export default function ProfessionalSummaryExamples() {
         <div className="grid md:grid-cols-2 gap-6 my-8">
           <div className="bg-green-50 border border-green-200 rounded-xl p-6">
             <h4 className="font-bold text-green-800 mb-3">
-              ✅ Professional Summary
+              Professional Summary
             </h4>
             <ul className="list-disc pl-6 space-y-2 text-accent text-sm">
               <li>Focuses on what you offer employers</li>
@@ -519,18 +591,26 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+        <h2 id="ats-optimization" className="text-3xl font-bold text-ink mt-12 mb-6">
           Optimizing Your Summary for ATS
         </h2>
         <p className="text-lg leading-relaxed text-stone-warm">
           Applicant Tracking Systems (ATS) scan your professional summary for
           keywords and phrases that match job requirements. Strategic keyword
-          integration is essential for passing initial screening.
+          integration is essential for passing initial screening. Use our{" "}
+          <Link
+            to="/resume-keywords"
+            className="text-accent hover:underline"
+          >
+            resume keywords tool
+          </Link>{" "}
+          to find the exact terms hiring managers look for in your industry, then
+          weave them naturally into your summary.
         </p>
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
           <h4 className="font-bold text-ink mb-3">
-            🤖 ATS Optimization Tips:
+            ATS Optimization Tips:
           </h4>
           <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
@@ -553,16 +633,75 @@ export default function ProfessionalSummaryExamples() {
               <strong>Avoid keyword stuffing:</strong> Maintain readability for
               human reviewers
             </li>
+            <li>
+              <strong>Use an ATS-friendly template:</strong> Even the best summary
+              can be lost if your formatting confuses the parser — start with an{" "}
+              <Link
+                to="/templates/ats-friendly"
+                className="text-accent hover:underline"
+              >
+                ATS-friendly resume template
+              </Link>
+            </li>
           </ul>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+        <h2 id="power-words" className="text-3xl font-bold text-ink mt-12 mb-6">
+          Power Words for Your Professional Summary
+        </h2>
+        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+          The words you choose set the tone for your entire resume. Opening
+          with a weak descriptor like "Hardworking" signals nothing specific,
+          while a precise verb like "Architected" or "Spearheaded" immediately
+          communicates impact. Here are high-impact words organized by the
+          message you want to send. For an extended list with 200+
+          options, see our{" "}
+          <Link
+            to="/blog/resume-action-verbs"
+            className="text-accent hover:underline"
+          >
+            resume action verbs guide
+          </Link>.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-6 my-8">
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">Leadership Words</h4>
+            <p className="text-stone-warm text-sm leading-relaxed">
+              Directed, Spearheaded, Orchestrated, Championed, Mentored,
+              Transformed, Pioneered, Mobilized, Cultivated, Established
+            </p>
+          </div>
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">Achievement Words</h4>
+            <p className="text-stone-warm text-sm leading-relaxed">
+              Delivered, Generated, Accelerated, Exceeded, Surpassed,
+              Maximized, Achieved, Optimized, Improved, Increased
+            </p>
+          </div>
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">Technical Words</h4>
+            <p className="text-stone-warm text-sm leading-relaxed">
+              Architected, Engineered, Automated, Implemented, Integrated,
+              Developed, Designed, Deployed, Configured, Streamlined
+            </p>
+          </div>
+          <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+            <h4 className="font-bold text-ink mb-3">Strategy Words</h4>
+            <p className="text-stone-warm text-sm leading-relaxed">
+              Strategized, Analyzed, Forecasted, Evaluated, Conceptualized,
+              Devised, Formulated, Prioritized, Reengineered, Revitalized
+            </p>
+          </div>
+        </div>
+
+        <h2 id="final-tips" className="text-3xl font-bold text-ink mt-12 mb-6">
           Final Tips for Professional Summary Success
         </h2>
         <div className="grid md:grid-cols-2 gap-6 my-8">
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
             <h4 className="font-bold text-ink mb-3">
-              📏 Length Guidelines
+              Length Guidelines
             </h4>
             <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
               <li>3-4 sentences maximum</li>
@@ -572,7 +711,7 @@ export default function ProfessionalSummaryExamples() {
             </ul>
           </div>
           <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
-            <h4 className="font-bold text-ink mb-3">🎨 Formatting Tips</h4>
+            <h4 className="font-bold text-ink mb-3">Formatting Tips</h4>
             <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
               <li>Place immediately after contact info</li>
               <li>Use standard fonts and formatting</li>
@@ -582,8 +721,22 @@ export default function ProfessionalSummaryExamples() {
           </div>
         </div>
 
+        <p className="text-lg leading-relaxed text-stone-warm">
+          Not sure which skills to highlight in your summary? Start by
+          reviewing what the job description emphasizes, then cross-reference
+          with our{" "}
+          <Link
+            to="/blog/how-to-list-skills"
+            className="text-accent hover:underline"
+          >
+            guide to listing skills on a resume
+          </Link>{" "}
+          to identify the competencies that carry the most weight with
+          recruiters in your field.
+        </p>
+
         <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-8">
-          <h4 className="font-bold text-yellow-800 mb-3">💡 Pro Tip</h4>
+          <h4 className="font-bold text-yellow-800 mb-3">Pro Tip</h4>
           <p className="text-yellow-700">
             Your professional summary should evolve throughout your career.
             Update it regularly to reflect new achievements, skills, and career
@@ -605,11 +758,180 @@ export default function ProfessionalSummaryExamples() {
         </p>
 
         <p className="text-lg leading-relaxed text-stone-warm mt-6">
-          Remember that your professional summary is often the first-and
-          sometimes only-section recruiters read. Make those few seconds count
+          Remember that your professional summary is often the first — and
+          sometimes only — section recruiters read. Make those few seconds count
           by crafting a summary that positions you as the ideal candidate for
           your target role.
         </p>
+
+        {/* FAQ Section */}
+        <h2 id="faq" className="text-3xl font-bold text-ink mt-12 mb-6">
+          Frequently Asked Questions
+        </h2>
+
+        <div className="space-y-6">
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-3">
+              What is a professional summary on a resume?
+            </h3>
+            <p className="text-lg leading-relaxed text-stone-warm">
+              A professional summary is a 3-4 sentence paragraph at the top of
+              your resume that highlights your most relevant experience, core
+              skills, and key accomplishments. It gives recruiters a snapshot
+              of your value proposition so they can quickly determine whether
+              you are a strong fit for the role. Think of it as your elevator
+              pitch in written form.
+            </p>
+          </div>
+
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-3">
+              How long should a professional summary be?
+            </h3>
+            <p className="text-lg leading-relaxed text-stone-warm">
+              Keep it between 50 and 150 words — roughly 3-4 concise sentences
+              that fit in 2-3 lines on a standard resume. Anything shorter
+              feels incomplete; anything longer risks losing the recruiter's
+              attention. Every word should earn its place by communicating
+              experience, skills, or a measurable result.
+            </p>
+          </div>
+
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-3">
+              Should I use a summary or an objective?
+            </h3>
+            <p className="text-lg leading-relaxed text-stone-warm">
+              In almost every case, use a professional summary. Summaries focus
+              on the value you bring to an employer, while objectives focus on
+              what you want from an employer — and recruiters care far more
+              about the former. The only exceptions are dramatic career changes
+              where context is needed, or absolute first-time job seekers with
+              zero professional history. Even then, a summary reframing
+              transferable skills tends to perform better.
+            </p>
+          </div>
+
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-3">
+              How do I write a professional summary with no experience?
+            </h3>
+            <p className="text-lg leading-relaxed text-stone-warm">
+              Focus on education, relevant coursework, projects, internships,
+              volunteer work, and transferable skills. Lead with your degree or
+              certification, mention 2-3 relevant skills, and include at least
+              one concrete result — even from academic or personal projects.
+              For a full walkthrough, see our{" "}
+              <Link
+                to="/blog/resume-no-experience"
+                className="text-accent hover:underline"
+              >
+                resume with no experience guide
+              </Link>.
+            </p>
+          </div>
+
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-3">
+              Should I customize my summary for each job?
+            </h3>
+            <p className="text-lg leading-relaxed text-stone-warm">
+              Yes. Your professional summary should be tailored for every
+              application. Read the job description carefully, identify the top
+              3 requirements, and make sure your summary directly addresses
+              them. This also helps with ATS keyword matching — the closer
+              your language mirrors the job posting, the higher you will score.
+              Our{" "}
+              <Link
+                to="/resume-keywords"
+                className="text-accent hover:underline"
+              >
+                resume keywords tool
+              </Link>{" "}
+              can help you identify the right terms for any role.
+            </p>
+          </div>
+
+          <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6">
+            <h3 className="text-xl font-bold text-ink mb-3">
+              What are the best power words for a resume summary?
+            </h3>
+            <p className="text-lg leading-relaxed text-stone-warm">
+              The best words are specific to your function. For leadership
+              roles, use words like "Spearheaded," "Directed," and
+              "Transformed." For technical roles, try "Architected,"
+              "Engineered," or "Automated." For results, lean on
+              "Delivered," "Generated," or "Accelerated." Avoid vague
+              fillers like "Hardworking" or "Detail-oriented" unless backed
+              by proof. Browse our full list of{" "}
+              <Link
+                to="/blog/resume-action-verbs"
+                className="text-accent hover:underline"
+              >
+                200+ resume action verbs
+              </Link>{" "}
+              for more options.
+            </p>
+          </div>
+        </div>
+
+        {/* Related Guides */}
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Related Guides
+        </h2>
+        <div className="grid md:grid-cols-2 gap-6 my-8">
+          <Link
+            to="/blog/how-to-write-a-resume-guide"
+            className="bg-chalk-dark rounded-xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 block"
+          >
+            <h4 className="font-bold text-ink mb-2">
+              How to Write a Resume: Complete Guide
+            </h4>
+            <p className="text-stone-warm text-sm">
+              The step-by-step process for building every section of your resume,
+              from header to references.
+            </p>
+          </Link>
+
+          <Link
+            to="/blog/resume-action-verbs"
+            className="bg-chalk-dark rounded-xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 block"
+          >
+            <h4 className="font-bold text-ink mb-2">
+              200+ Resume Action Verbs
+            </h4>
+            <p className="text-stone-warm text-sm">
+              Powerful verbs organized by skill category to replace weak
+              openers and make every bullet count.
+            </p>
+          </Link>
+
+          <Link
+            to="/blog/quantify-resume-accomplishments"
+            className="bg-chalk-dark rounded-xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 block"
+          >
+            <h4 className="font-bold text-ink mb-2">
+              How to Quantify Resume Accomplishments
+            </h4>
+            <p className="text-stone-warm text-sm">
+              Turn vague claims into measurable results that prove your impact
+              with numbers and metrics.
+            </p>
+          </Link>
+
+          <Link
+            to="/blog/how-to-list-skills"
+            className="bg-chalk-dark rounded-xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 block"
+          >
+            <h4 className="font-bold text-ink mb-2">
+              How to List Skills on a Resume
+            </h4>
+            <p className="text-stone-warm text-sm">
+              Choose, organize, and format the skills section so it aligns with
+              what ATS and hiring managers prioritize.
+            </p>
+          </Link>
+        </div>
       </div>
     </BlogLayout>
   );
