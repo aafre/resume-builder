@@ -238,7 +238,8 @@ export default function ATSOptimization() {
           for specific terms, skills, and phrases that match job requirements.
           Strategic keyword placement can dramatically improve your ranking.
           We maintain <Link to="/resume-keywords" className="text-accent hover:underline font-medium">industry-specific keyword lists</Link> for
-          17+ job categories to help you find the right terms for your field.
+          17+ job categories to help you find the right terms for your field
+          — for example, see our <Link to="/resume-keywords/software-engineer" className="text-accent hover:underline font-medium">software engineer keywords</Link> guide.
         </p>
 
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
@@ -471,7 +472,10 @@ export default function ATSOptimization() {
         </h2>
         <p className="text-lg leading-relaxed text-stone-warm">
           Before submitting your resume, test how well ATS systems can parse
-          your information.
+          your information. Try our free{" "}
+          <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">resume keyword scanner</Link>{" "}
+          to instantly check whether your resume includes the right terms for
+          your target role.
         </p>
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
