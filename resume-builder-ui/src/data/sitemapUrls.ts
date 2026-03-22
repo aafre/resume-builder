@@ -31,8 +31,8 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/resume-keyword-scanner', priority: 0.8, changefreq: 'monthly', lastmod: '2026-03-22' },
 
   // Audience Landing Pages (0.8)
-  { loc: '/free-resume-builder-for-students', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
-  { loc: '/free-resume-builder-for-veterans', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
+  { loc: '/free-resume-builder-for-students', priority: 0.8, changefreq: 'monthly', lastmod: '2026-03-22' },
+  { loc: '/free-resume-builder-for-veterans', priority: 0.8, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/free-resume-builder-for-it-professionals', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/free-resume-builder-for-nurses', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
 
