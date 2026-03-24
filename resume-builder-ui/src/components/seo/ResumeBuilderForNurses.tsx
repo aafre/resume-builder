@@ -11,6 +11,7 @@ import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import RevealSection from '../shared/RevealSection';
+import ResourceCard from '../shared/ResourceCard';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 
@@ -123,30 +124,12 @@ export default function ResumeBuilderForNurses() {
             to strengthen your nursing application:
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            <Link to="/resume-keywords/nursing" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Nursing Resume Keywords</h3>
-              <p className="text-stone-warm text-sm">BLS, ACLS, Epic, clinical skills, and more</p>
-            </Link>
-            <Link to="/templates/ats-friendly" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">ATS-Friendly Templates</h3>
-              <p className="text-stone-warm text-sm">Clean templates that pass hospital ATS systems</p>
-            </Link>
-            <Link to="/blog/resume-no-experience" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">New Graduate Resume Guide</h3>
-              <p className="text-stone-warm text-sm">Perfect for new nursing graduates</p>
-            </Link>
-            <Link to="/resume-keywords" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">All Resume Keywords</h3>
-              <p className="text-stone-warm text-sm">Browse keywords across all industries</p>
-            </Link>
-            <Link to="/examples/registered-nurse" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Registered Nurse Resume Example</h3>
-              <p className="text-stone-warm text-sm">Full RN resume with clinical experience layout</p>
-            </Link>
-            <Link to="/examples/medical-assistant" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Medical Assistant Resume Example</h3>
-              <p className="text-stone-warm text-sm">Healthcare resume with certifications section</p>
-            </Link>
+            <ResourceCard to="/resume-keywords/nursing" title="Nursing Resume Keywords" description="BLS, ACLS, Epic, clinical skills, and more" />
+            <ResourceCard to="/templates/ats-friendly" title="ATS-Friendly Templates" description="Clean templates that pass hospital ATS systems" />
+            <ResourceCard to="/blog/resume-no-experience" title="New Graduate Resume Guide" description="Perfect for new nursing graduates" />
+            <ResourceCard to="/resume-keywords" title="All Resume Keywords" description="Browse keywords across all industries" />
+            <ResourceCard to="/examples/registered-nurse" title="Registered Nurse Resume Example" description="Full RN resume with clinical experience layout" />
+            <ResourceCard to="/examples/medical-assistant" title="Medical Assistant Resume Example" description="Healthcare resume with certifications section" />
           </div>
         </div>
       </RevealSection>
@@ -192,6 +175,7 @@ export default function ResumeBuilderForNurses() {
                 <p className="text-stone-warm font-extralight leading-relaxed">{item.a}</p>
               </div>
             ))}
+
           </div>
         </div>
       </RevealSection>

@@ -11,6 +11,7 @@ import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import RevealSection from '../shared/RevealSection';
+import ResourceCard from '../shared/ResourceCard';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 
@@ -196,34 +197,13 @@ export default function ResumeBuilderForVeterans() {
             Veteran Resume Resources
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
-            <Link to="/resume-keywords" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Resume Keywords by Industry</h3>
-              <p className="text-stone-warm text-sm">Find civilian keywords for your target role</p>
-            </Link>
-            <Link to="/templates/ats-friendly" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">ATS-Friendly Templates</h3>
-              <p className="text-stone-warm text-sm">Clean templates that pass corporate ATS systems</p>
-            </Link>
-            <Link to="/examples/project-manager" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Project Manager Resume Example</h3>
-              <p className="text-stone-warm text-sm">Great for veterans transitioning to PM roles</p>
-            </Link>
-            <Link to="/examples/administrative-assistant" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Administrative Assistant Resume Example</h3>
-              <p className="text-stone-warm text-sm">Leverage your organizational and logistics skills</p>
-            </Link>
-            <Link to="/blog/career-change-resume-guide" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Career Change Resume Guide</h3>
-              <p className="text-stone-warm text-sm">Reframe your experience for a new industry</p>
-            </Link>
-            <Link to="/blog/resume-employment-gaps" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Handling Employment Gaps</h3>
-              <p className="text-stone-warm text-sm">Address transition periods with confidence</p>
-            </Link>
-            <Link to="/resume-keyword-scanner" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">ATS Keyword Scanner</h3>
-              <p className="text-stone-warm text-sm">Check if your resume matches the job description</p>
-            </Link>
+            <ResourceCard to="/resume-keywords" title="Resume Keywords by Industry" description="Find civilian keywords for your target role" />
+            <ResourceCard to="/templates/ats-friendly" title="ATS-Friendly Templates" description="Clean templates that pass corporate ATS systems" />
+            <ResourceCard to="/examples/project-manager" title="Project Manager Resume Example" description="Great for veterans transitioning to PM roles" />
+            <ResourceCard to="/examples/administrative-assistant" title="Administrative Assistant Resume Example" description="Leverage your organizational and logistics skills" />
+            <ResourceCard to="/blog/career-change-resume-guide" title="Career Change Resume Guide" description="Reframe your experience for a new industry" />
+            <ResourceCard to="/blog/resume-employment-gaps" title="Handling Employment Gaps" description="Address transition periods with confidence" />
+            <ResourceCard to="/resume-keyword-scanner" title="ATS Keyword Scanner" description="Check if your resume matches the job description" />
           </div>
         </div>
       </RevealSection>
@@ -256,6 +236,7 @@ export default function ResumeBuilderForVeterans() {
                 </div>
               </details>
             ))}
+
           </div>
         </div>
       </RevealSection>
