@@ -1,0 +1,3 @@
+## 2024-05-18 - Avoid Inline Object Literals in Hooks With Deep Dependency Tracking
+**Learning:** Passing inline object literals to custom hooks with deep dependency tracking (like `useCloudSave`) causes reference inequality on every render. Even though the actual content might be identical, the new object reference triggers the hook's `useEffect`, which in this case performs an expensive `JSON.stringify` operation to check for changes. This can cause significant main thread blocking on rapid keystrokes or minor state updates.
+**Action:** Always wrap object literal parameters passed to such hooks in a `useMemo`. This ensures referential equality is maintained as long as the underlying dependencies haven't actually changed.
