@@ -22,7 +22,17 @@ export function UploadResumeModal({
 }: UploadResumeModalProps) {
   const { parseResume, parsing, progress, error } = useResumeParser();
   const [dragActive, setDragActive] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [parseResult, setParseResult] = useState<any>(null);
+
+  const handleFileUpload = useCallback(async (file: File) => {
+    try {
+      const result = await parseResume(file);
+      setParseResult(result);
+    } catch (err) {
+      console.error('Parse error:', err);
+    }
+  }, [parseResume]);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -45,7 +55,7 @@ export function UploadResumeModal({
         await handleFileUpload(file);
       }
     },
-    []
+    [handleFileUpload]
   );
 
   const handleFileInput = async (
@@ -57,15 +67,6 @@ export function UploadResumeModal({
     }
     // Reset input
     e.target.value = '';
-  };
-
-  const handleFileUpload = async (file: File) => {
-    try {
-      const result = await parseResume(file);
-      setParseResult(result);
-    } catch (err) {
-      console.error('Parse error:', err);
-    }
   };
 
   const handleContinue = () => {
@@ -99,7 +100,8 @@ export function UploadResumeModal({
           </div>
           <button
             onClick={handleCloseModal}
-            className="text-white/80 hover:text-white transition-colors"
+            className="text-white/80 hover:text-white transition-colors p-1 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            aria-label="Close modal"
           >
             <XMarkIcon className="w-6 h-6" />
           </button>
