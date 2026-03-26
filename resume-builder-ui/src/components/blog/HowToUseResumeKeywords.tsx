@@ -195,12 +195,12 @@ export default function HowToUseResumeKeywords() {
             <p className="text-ink/80 mb-3">
               This is the perfect place for a bulleted list of your hard skills.
               For a detailed guide, read our article on{" "}
-              <a
-                href="/blog/how-to-list-skills-on-resume"
+              <Link
+                to="/blog/how-to-list-skills"
                 className="text-accent hover:text-ink underline"
               >
                 How to List Skills on a Resume
-              </a>
+              </Link>
               .
             </p>
             <div className="bg-white p-4 rounded-lg text-sm">

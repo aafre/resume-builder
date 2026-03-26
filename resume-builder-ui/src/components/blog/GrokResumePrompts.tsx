@@ -230,7 +230,7 @@ export default function GrokResumePrompts() {
           <p className="text-stone-warm font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Link to="/blog/chatgpt-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">ChatGPT Prompts</h3>
+              <h3 className="font-bold text-ink mb-1">ChatGPT Resume Prompts</h3>
               <p className="text-sm text-stone-warm">Best for creative writing and natural language</p>
             </Link>
             <Link to="/blog/claude-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
