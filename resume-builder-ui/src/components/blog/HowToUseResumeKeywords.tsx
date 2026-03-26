@@ -250,12 +250,12 @@ export default function HowToUseResumeKeywords() {
           Simply listing keywords is not enough. To impress both the ATS and the
           human recruiter, you need to provide context and quantify your
           results. For more on this, check out our guide on{" "}
-          <a
-            href="/blog/quantify-resume-accomplishments"
+          <Link
+            to="/blog/quantify-resume-accomplishments"
             className="text-accent hover:text-ink underline"
           >
             How to Quantify Your Resume Accomplishments
-          </a>
+          </Link>
           .
         </p>
 
