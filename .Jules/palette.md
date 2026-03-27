@@ -1,3 +1,7 @@
 ## 2025-02-14 - ResponsiveConfirmDialog for Destructive Actions
 **Learning:** Destructive actions (like Delete) implemented with custom hardcoded modals lack standard accessibility attributes (`role="dialog"`, `aria-modal`, etc.) and mobile responsiveness (like bottom sheets). This app has a `ResponsiveConfirmDialog` component designed specifically for this purpose, but it was not being utilized uniformly.
 **Action:** Always use `ResponsiveConfirmDialog` for destructive confirmation prompts (such as `DeleteResumeModal`) to ensure a consistent, accessible, and mobile-friendly UX that prevents accidental data loss.
+
+## 2024-05-15 - Accessible Custom Modal Close Buttons
+**Learning:** Custom modal close buttons (e.g., `XMarkIcon` without visible text text) on dark headers often lack proper keyboard focus visibility and screen reader labels. Standard `hover` states aren't sufficient for keyboard users.
+**Action:** Always include an explicit `aria-label` (e.g., "Close modal") on icon-only close buttons. Furthermore, apply distinct `focus-visible` styles with sufficient contrast (e.g., `focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink`) to ensure the focus state is clearly visible against the specific background color of the modal header, alongside rounding (`rounded-lg`) to match the focus ring shape to the interactive area.
