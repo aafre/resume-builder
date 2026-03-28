@@ -11,6 +11,7 @@ pytest
 fastapi[standard]
 supabase
 pyjwt
+pydantic>=2.0
 python-dotenv
 requests
 pdf2image

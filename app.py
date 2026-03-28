@@ -28,6 +28,8 @@ import copy
 from jinja2 import Environment, FileSystemLoader
 from concurrent.futures import ThreadPoolExecutor
 import atexit
+from templates import registry as template_registry
+from templates.models import TemplateMetadata
 from functools import wraps, partial, lru_cache
 import time
 from typing import Callable, Any
@@ -241,7 +243,8 @@ def pdf_generation_worker(
 
 
 def _dispatch_html_pdf_generation(
-    template, yaml_path, output_path, icons_dir, session_id, timeout=60
+    template, yaml_path, output_path, icons_dir, session_id, timeout=60,
+    pdf_options=None,
 ):
     """Dispatch HTML-based PDF generation via thread pool or direct subprocess fallback."""
     if PDF_THREAD_POOL is None:
@@ -1270,27 +1273,15 @@ OUTPUT_DIR = PROJECT_ROOT / "output"
 os.makedirs(ICONS_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# Template file mapping
+# Template configuration is now managed by templates/registry.py
+# Legacy references kept for backward compatibility during migration:
 TEMPLATE_FILE_MAP = {
-    "modern": TEMPLATES_DIR / "john_doe.yml",  # Alias for job example pages
-    "modern-no-icons": TEMPLATES_DIR / "john_doe_no_icon.yml",
-    "modern-with-icons": TEMPLATES_DIR / "john_doe.yml",
-    "classic-alex-rivera": PROJECT_ROOT
-    / "samples"
-    / "classic"
-    / "alex_rivera_data.yml",
-    "classic-jane-doe": PROJECT_ROOT / "samples" / "classic" / "jane_doe.yml",
+    tid: template_registry.get_sample_path(tid)
+    for tid in template_registry.all_ids()
 }
-
-# Template ID to directory mapping
-# Maps UI template IDs to actual template directory names
 TEMPLATE_DIR_MAP = {
-    "modern-with-icons": "modern",  # HTML template - icons supported
-    "modern-no-icons": "modern",  # HTML template - no icons
-    "modern": "modern",  # Default HTML template
-    "classic": "classic",  # LaTeX template (generic)
-    "classic-alex-rivera": "classic",  # LaTeX template (data analytics)
-    "classic-jane-doe": "classic",  # LaTeX template (marketing)
+    tid: template_registry.get_dir(tid)
+    for tid in template_registry.all_ids()
 }
 
 
@@ -1731,41 +1722,21 @@ def serve(path):
 def get_templates():
     """
     Fetch available templates with metadata for display.
+    Template configuration is driven by templates/registry.py.
     """
     try:
+        display_templates = template_registry.get_display_templates()
         templates = [
-            {
-                "id": "classic-alex-rivera",
-                "name": "Professional",
-                "description": "Clean, structured layout with traditional formatting and excellent space utilization.",
-                "image_url": url_for(
-                    "serve_templates", filename="alex_rivera.png", _external=True
+            TemplateMetadata(
+                id=t.id,
+                name=t.name,
+                description=t.description,
+                image_url=url_for(
+                    "serve_templates", filename=t.preview, _external=True
                 ),
-            },
-            {
-                "id": "classic-jane-doe",
-                "name": "Elegant",
-                "description": "Refined design with sophisticated typography and organized section layout.",
-                "image_url": url_for(
-                    "serve_templates", filename="jane_doe.png", _external=True
-                ),
-            },
-            {
-                "id": "modern-no-icons",
-                "name": "Minimalist",
-                "description": "Clean and simple design focused on content clarity and easy readability.",
-                "image_url": url_for(
-                    "serve_templates", filename="modern-no-icons.png", _external=True
-                ),
-            },
-            {
-                "id": "modern-with-icons",
-                "name": "Modern",
-                "description": "Contemporary design enhanced with visual icons and dynamic styling elements.",
-                "image_url": url_for(
-                    "serve_templates", filename="modern-with-icons.png", _external=True
-                ),
-            },
+                supports_icons=t.supports_icons,
+            ).model_dump()
+            for t in display_templates
         ]
         return jsonify({"success": True, "templates": templates})
     except Exception as e:
@@ -1777,36 +1748,30 @@ def get_templates():
 def get_template_data(template_id):
     """
     Fetch the YAML string for the specified template and determine if it supports icons.
+    Template lookup is driven by templates/registry.py.
     """
     try:
-        # Map template ID to the file name
-        template_file = TEMPLATE_FILE_MAP.get(template_id)
-        if not template_file:
-            logging.warning(f"Template ID not mapped: {template_id}")
-            return jsonify({"success": False, "error": "Template not found"}), 404
+        config = template_registry.get(template_id)
+        sample_path = template_registry.get_sample_path(template_id)
 
-        # Construct the full path to the YAML file
-        template_path = TEMPLATES_DIR / template_file
-        if not template_path.exists():
-            logging.warning(f"Template file not found: {template_path}")
+        if not sample_path.exists():
+            logging.warning(f"Template sample file not found: {sample_path}")
             return jsonify({"success": False, "error": "Template not found"}), 404
 
         # Read the YAML content using cached function
-        yaml_content = get_template_config(template_path)
+        yaml_content = get_template_config(sample_path)
 
-        # Determine icon support based on template ID
-        # Only 'modern-with-icons' template supports icons
-        supports_icons = template_id == "modern-with-icons"
-
-        # Return the YAML content and supportsIcons flag
         return jsonify(
             {
                 "success": True,
                 "yaml": yaml.safe_dump(yaml_content),
                 "template_id": template_id,
-                "supportsIcons": supports_icons,
+                "supportsIcons": config.supports_icons,
             }
         )
+    except KeyError:
+        logging.warning(f"Template ID not registered: {template_id}")
+        return jsonify({"success": False, "error": "Template not found"}), 404
     except FileNotFoundError:
         logging.warning(f"Template file not found for {template_id}")
         return jsonify({"success": False, "error": "Template not found"}), 404
@@ -1997,24 +1962,23 @@ def generate_resume():
                     "Skipping user uploaded icons for no-icons template variant"
                 )
 
-            # Validate template ID against known templates
-            if template not in TEMPLATE_DIR_MAP:
+            # Validate template ID against registry
+            if not template_registry.is_valid(template):
                 raise ValueError(
-                    f"Invalid template: {template}. Available templates: {', '.join(TEMPLATE_DIR_MAP.keys())}"
+                    f"Invalid template: {template}. Available templates: {', '.join(template_registry.all_ids())}"
                 )
 
-            # Use the mapped template directory
-            actual_template = TEMPLATE_DIR_MAP[template]
+            # Dispatch PDF generation via template renderer
+            from templates.renderer import generate_pdf as render_template_pdf
 
-            if actual_template == "classic":
-                generate_latex_pdf(
-                    yaml_data, str(session_icons_dir), str(output_path), actual_template
-                )
-            else:
-                _dispatch_html_pdf_generation(
-                    actual_template, yaml_path, output_path,
-                    session_icons_dir, session_id,
-                )
+            render_template_pdf(
+                template_id=template,
+                yaml_data=yaml_data,
+                yaml_path=yaml_path,
+                output_path=str(output_path),
+                icons_dir=str(session_icons_dir),
+                session_id=session_id,
+            )
 
             if not output_path.exists():
                 logging.error(f"Expected output file at: {output_path}")
@@ -3444,18 +3408,18 @@ def generate_pdf_for_saved_resume(resume_id):
             output_path = temp_dir_path / f"Resume_{timestamp}.pdf"
 
             template_id = resume.get("template_id", "modern")
-            actual_template = TEMPLATE_DIR_MAP.get(template_id, "modern")
 
-            # Generate PDF using appropriate method
-            if actual_template == "classic":
-                generate_latex_pdf(
-                    yaml_data, str(session_icons_dir), str(output_path), actual_template
-                )
-            else:
-                _dispatch_html_pdf_generation(
-                    actual_template, yaml_path, output_path,
-                    session_icons_dir, session_id,
-                )
+            # Dispatch PDF generation via template renderer
+            from templates.renderer import generate_pdf as render_template_pdf
+
+            render_template_pdf(
+                template_id=template_id,
+                yaml_data=yaml_data,
+                yaml_path=yaml_path,
+                output_path=str(output_path),
+                icons_dir=str(session_icons_dir),
+                session_id=session_id,
+            )
 
             if not output_path.exists():
                 raise FileNotFoundError("PDF file was not generated")
@@ -3695,18 +3659,18 @@ def generate_thumbnail_for_resume(resume_id):
             output_path = temp_dir_path / f"Resume_{timestamp}.pdf"
 
             template_id = resume.get("template_id", "modern")
-            actual_template = TEMPLATE_DIR_MAP.get(template_id, "modern")
 
-            # Generate PDF using appropriate method
-            if actual_template == "classic":
-                generate_latex_pdf(
-                    yaml_data, str(session_icons_dir), str(output_path), actual_template
-                )
-            else:
-                _dispatch_html_pdf_generation(
-                    actual_template, yaml_path, output_path,
-                    session_icons_dir, session_id,
-                )
+            # Dispatch PDF generation via template renderer
+            from templates.renderer import generate_pdf as render_template_pdf
+
+            render_template_pdf(
+                template_id=template_id,
+                yaml_data=yaml_data,
+                yaml_path=yaml_path,
+                output_path=str(output_path),
+                icons_dir=str(session_icons_dir),
+                session_id=session_id,
+            )
 
             if not output_path.exists():
                 raise FileNotFoundError("PDF file was not generated")

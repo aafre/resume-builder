@@ -165,7 +165,8 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
 
 # Generate PDF from HTML file
 def generate_pdf(
-    template_name, data, output_file, session_icons_dir=None, session_id=None
+    template_name, data, output_file, session_icons_dir=None, session_id=None,
+    pdf_options=None,
 ):
     # Set up paths using pathlib
     project_root = Path(__file__).parent.resolve()
@@ -317,6 +318,10 @@ def generate_pdf(
         "load-error-handling": "abort",  # fail fast on missing assets
         "quiet": ""                      # keep stderr tidy
     }
+
+    # Merge per-template PDF options (e.g., page-size: A4 for UK CV)
+    if pdf_options:
+        options.update(pdf_options)
 
     logging.info(f"Converting HTML file to PDF using wkhtmltopdf")
     logging.debug(f"pdfkit options: {options}")
