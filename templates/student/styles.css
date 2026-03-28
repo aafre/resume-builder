@@ -43,18 +43,18 @@ a {
     text-transform: uppercase;
     letter-spacing: 0.8px;
     color: #2D3436;
-    margin: 20px 0 0 0;
-    padding-bottom: 4px;
+    margin: 16px 0 2px 0;
+    padding-bottom: 2px;
     border-bottom: 1.5px solid #2D3436;
 }
 
 .text-content {
-    margin: 6px 0 0 0;
+    margin: 1px 0 0 0;
     line-height: 1.25;
 }
 
 .bulleted-list {
-    margin: 4px 0 0 0;
+    margin: 1px 0 0 0;
     padding-left: 16px;
 }
 

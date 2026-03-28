@@ -25,7 +25,7 @@ a {
 /* ── Full-width header ─────────────────────────────────── */
 
 .header {
-    text-align: left;
+    text-align: center;
     margin-bottom: 0;
 }
 
@@ -33,15 +33,16 @@ a {
     font-size: 24pt;
     font-weight: 600;
     line-height: 1.1;
-    margin: 0 0 6px 0;
+    margin: 0 0 4px 0;
     color: #1F2937;
 }
 
 .summary {
     font-size: 9.5pt;
-    line-height: 1.45;
+    line-height: 1.4;
     color: #374151;
-    margin: 0 0 10px 0;
+    margin: 2px 0 8px 0;
+    text-align: left;
 }
 
 .contact-line {
@@ -49,6 +50,7 @@ a {
     color: #374151;
     line-height: 1.4;
     margin: 0 0 4px 0;
+    text-align: center;
 }
 
 .contact-line a {

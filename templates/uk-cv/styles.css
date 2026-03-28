@@ -35,18 +35,18 @@ a {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: #000;
-    margin: 10px 0 4px 0;
+    margin: 10px 0 2px 0;
     padding-bottom: 2px;
     border-bottom: 1px solid #000;
 }
 
 .text-content {
-    margin: 2px 0;
+    margin: 1px 0;
     line-height: 1.3;
 }
 
 .bulleted-list {
-    margin: 2px 0;
+    margin: 1px 0;
     padding-left: 20px;
 }
 
