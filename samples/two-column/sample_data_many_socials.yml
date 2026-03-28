@@ -1,0 +1,64 @@
+font: Calibri
+
+settings:
+  accent_color: "#0A2647"
+
+contact_info:
+  name: Priya Sharma
+  location: "London, UK"
+  email: priya.sharma@email.com
+  phone: "+44 7700 900123"
+  social_links:
+    - platform: linkedin
+      url: https://linkedin.com/in/priya-sharma
+      display_text: Priya Sharma
+    - platform: github
+      url: https://github.com/priyasharma
+      display_text: priyasharma
+    - platform: website
+      url: https://priyasharma.dev
+      display_text: priyasharma.dev
+    - platform: twitter
+      url: https://twitter.com/priya_codes
+      display_text: priya_codes
+    - platform: medium
+      url: https://medium.com/@priyasharma
+      display_text: priyasharma
+    - platform: stackoverflow
+      url: https://stackoverflow.com/users/789012/priyasharma
+      display_text: priyasharma
+    - platform: youtube
+      url: https://youtube.com/@priyasharma
+      display_text: priyasharma
+    - platform: behance
+      url: https://behance.net/priyasharma
+      display_text: priyasharma
+
+sections:
+  - name: Professional Summary
+    type: text
+    content: "Full-stack engineer with 5 years of experience building scalable web applications."
+
+  - name: Experience
+    type: experience
+    content:
+      - company: "Monzo Bank"
+        title: "Senior Full-Stack Engineer"
+        dates: "Jan 2023 – Present"
+        description:
+          - "Led redesign of the business banking dashboard serving 300K+ SMB customers"
+
+  - name: Technical Skills
+    type: grouped-list
+    content:
+      - label: "Frontend"
+        items: ["React", "TypeScript", "Next.js"]
+      - label: "Backend"
+        items: ["Node.js", "Python", "Go"]
+
+  - name: Education
+    type: education
+    content:
+      - degree: "BSc Computer Science (First Class Honours)"
+        school: "University of Edinburgh"
+        year: "2019"
