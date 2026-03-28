@@ -113,3 +113,10 @@ sections:
         dates: "Sep 2024 – Present"
         description:
           - "Mentored **50+ students** in IoT and embedded project design and implementation"
+
+  - name: Certifications
+    type: bulleted-list
+    content:
+      - "NPTEL — VLSI Design Flow: RTL to GDS (Elite, 78%) (Nov 2025)"
+      - "NPTEL — Computer Architecture (Gold Medal, Top 1%) (Jul 2025)"
+      - "Xilinx — Vivado Design Suite Fundamentals (Mar 2025)"
