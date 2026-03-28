@@ -113,6 +113,18 @@ _register(
 
 _register(
     TemplateConfig(
+        id="executive",
+        dir="executive",
+        engine=TemplateEngine.latex,
+        sample="samples/executive/sample_data.yml",
+        name="Executive",
+        description="Premium typography for senior professionals. Handles multi-page resumes elegantly.",
+        preview="executive.png",
+    )
+)
+
+_register(
+    TemplateConfig(
         id="classic-alex-rivera",
         dir="classic",
         engine=TemplateEngine.latex,
@@ -132,6 +144,19 @@ _register(
         name="Elegant",
         description="Refined design with sophisticated typography and organized section layout.",
         preview="jane_doe.png",
+    )
+)
+
+_register(
+    TemplateConfig(
+        id="uk-cv",
+        dir="uk-cv",
+        engine=TemplateEngine.html,
+        sample="samples/uk-cv/sample_data.yml",
+        name="UK CV",
+        description="British CV format with Personal Profile. A4 paper, two-page layout, optional references.",
+        preview="uk-cv.png",
+        pdf_options=PDFOptions(page_size="A4"),
     )
 )
 

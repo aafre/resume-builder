@@ -1,0 +1,83 @@
+font: Calibri
+
+settings:
+  accent_color: "#1E3A5F"
+
+contact_info:
+  name: James Hartley
+  location: "Manchester, United Kingdom"
+  email: james.hartley@email.co.uk
+  phone: "+44 7700 900789"
+  social_links:
+    - platform: linkedin
+      url: https://linkedin.com/in/jameshartley
+      display_text: James Hartley
+
+sections:
+  - name: Personal Profile
+    type: text
+    content: "An experienced marketing professional with over 8 years in digital marketing strategy, brand management, and campaign execution across B2B and B2C sectors. Proven track record of growing brand awareness by 150% and driving \u00A32.5M in attributable revenue through integrated marketing campaigns. Seeking a Head of Marketing role where I can combine strategic vision with hands-on execution."
+
+  - name: Employment History
+    type: experience
+    content:
+      - company: "Barclays"
+        title: "Senior Marketing Manager"
+        dates: "April 2021 \u2013 Present"
+        description:
+          - "Lead a team of 8 marketing professionals delivering integrated campaigns across digital, print, and events channels"
+          - "Developed and executed brand repositioning strategy for the SMB banking division, increasing brand awareness by 45%"
+          - "Managed annual marketing budget of \u00A31.8M, consistently delivering campaigns 10% under budget"
+          - "Introduced marketing automation platform (HubSpot), increasing qualified lead generation by 60%"
+
+      - company: "Unilever"
+        title: "Digital Marketing Manager"
+        dates: "September 2018 \u2013 March 2021"
+        description:
+          - "Managed digital marketing strategy for 3 consumer brands with combined annual revenue of \u00A350M"
+          - "Launched influencer marketing programme generating 12M+ impressions and \u00A3800K in tracked revenue"
+          - "Optimised paid media spend across Google Ads, Meta, and TikTok, improving ROAS from 3.2x to 5.1x"
+
+      - company: "Innocent Drinks"
+        title: "Marketing Executive"
+        dates: "June 2016 \u2013 August 2018"
+        description:
+          - "Coordinated social media strategy across Instagram, Twitter, and Facebook, growing combined following by 200K"
+          - "Managed agency relationships for creative production and media buying"
+          - "Supported launch of 2 new product lines with integrated go-to-market campaigns"
+
+  - name: "Education & Qualifications"
+    type: education
+    content:
+      - degree: "MSc Digital Marketing"
+        school: "University of Manchester"
+        year: "2016"
+      - degree: "BA (Hons) Business Studies, First Class"
+        school: "University of Leeds"
+        year: "2014"
+
+  - name: Key Skills
+    type: grouped-list
+    content:
+      - label: "Digital Marketing"
+        items: ["SEO/SEM", "Social Media Strategy", "Content Marketing", "Email Marketing", "Marketing Automation"]
+      - label: "Analytics & Tools"
+        items: ["Google Analytics 4", "HubSpot", "Salesforce", "Tableau", "Google Ads", "Meta Business Suite"]
+      - label: "Leadership"
+        items: ["Team Management", "Budget Management", "Stakeholder Engagement", "Agency Management", "Strategic Planning"]
+
+  - name: Professional Development
+    type: bulleted-list
+    content:
+      - "Google Analytics 4 Certification (2024)"
+      - "HubSpot Inbound Marketing Certification (2023)"
+      - "CIM Diploma in Professional Marketing (2020)"
+      - "Google Ads Search Certification (2019)"
+
+  - name: Interests
+    type: text
+    content: "Long-distance running (completed 3 marathons), photography, and volunteer marketing consultant for local charities."
+
+  - name: References
+    type: text
+    content: "Available upon request."
