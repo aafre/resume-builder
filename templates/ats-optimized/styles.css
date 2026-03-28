@@ -28,6 +28,11 @@ a {
     line-height: 2;
 }
 
+.sep {
+    color: #aaa;
+    margin: 0 2px;
+}
+
 
 .header-rule {
     border: none;

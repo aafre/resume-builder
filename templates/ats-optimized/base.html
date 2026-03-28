@@ -25,16 +25,16 @@
     <h1 class="name">{{ contact_info.name }}</h1>
     <p class="contact-line">
         {{ contact_info.location }}
-        {% if contact_info.email %} &middot; {{ contact_info.email }}{% endif %}
-        {% if contact_info.phone %} &middot; {{ contact_info.phone }}{% endif %}
+        {% if contact_info.email %} <span class="sep">|</span> {{ contact_info.email }}{% endif %}
+        {% if contact_info.phone %} <span class="sep">|</span> {{ contact_info.phone }}{% endif %}
         {% if contact_info.social_links %}
             {% for social_link in contact_info.social_links %}
                 {% if social_link.url and social_link.url.strip() and social_link.platform %}
-                    &middot; <a href="{{ social_link.url }}">{{ social_link.url | replace('https://', '') }}</a>
+                    <span class="sep">|</span> <a href="{{ social_link.url }}">{{ social_link.url | replace('https://', '') }}</a>
                 {% endif %}
             {% endfor %}
         {% elif contact_info.linkedin and contact_info.linkedin.strip() %}
-            &middot; <a href="{{ contact_info.linkedin }}">{{ contact_info.linkedin | replace('https://', '') }}</a>
+            <span class="sep">|</span> <a href="{{ contact_info.linkedin }}">{{ contact_info.linkedin | replace('https://', '') }}</a>
         {% endif %}
     </p>
     <hr class="header-rule">
