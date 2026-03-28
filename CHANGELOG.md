@@ -2,6 +2,57 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.23.0] - 2026-03-28
+
+### 🚀 Features
+
+- **seo:** Add cross-links from audience pages to relevant examples
+- **seo:** Add cross-links from keywords hub to examples and roundup
+- **blog:** Rotate featured post to best-free-resume-builders-2026
+- **blog:** Switch featured post to claude-resume-prompts
+- **blog:** Enrich resume-length-guide for indexing
+- **blog:** Enrich professional-summary-examples for indexing
+- **blog:** Enrich behavioral-interview-questions for indexing
+- **blog:** Enrich quantify-resume-accomplishments for indexing
+- **blog:** Enrich how-to-write-a-resume-guide for indexing
+- **blog:** Enrich resume-keywords-guide for indexing
+- **blog:** Enrich resume-action-verbs for indexing
+- **blog:** Enrich how-to-list-skills for indexing
+- **blog:** Add AI prompts cluster cross-links to chatgpt and grok posts
+- **blog:** Add AI prompts cluster cross-links to deepseek and copilot posts
+- **blog:** Add AI prompts cluster cross-links to claude and gemini posts
+- **seo:** Differentiate and enrich download + no-payment landing pages
+- **seo:** Enrich ai-resume-builder-free and zety-free-alternative pages
+- **seo:** Enrich resume-keyword-scanner page with guide content
+- **seo:** Enrich students and veterans audience pages with FAQs and content
+- **seo:** Enrich IT professionals and nurses audience pages with FAQs and content
+- **seo:** Add career outlook intros to job example pages
+- **seo:** Add cross-links from indexed blog posts to unindexed pages
+- **blog:** Add FAQPage schema support to BlogLayout
+- **seo:** Add FAQPage schema to blog posts (batch 1)
+- **seo:** Add FAQPage schema to blog posts (batch 2)
+
+### 🐛 Bug Fixes
+
+- **prerender:** Expand coverage to all 120 sitemap URLs + fix route bug
+- Resolve merge conflict markers in ResumeLengthGuide and QuantifyResumeAccomplishments
+- Resolve remaining conflict markers in ProfessionalSummaryExamples
+- **seo:** Resolve GSC redirect error, 404, and PR review items
+- Address PR #418 review — consistent AI titles + Link usage
+
+### 🚜 Refactor
+
+- **shared:** Extract ResourceCard component from audience pages
+- **prerender:** Generate routes dynamically from data sources
+
+### 🧪 Testing
+
+- Add tests for ResourceCard component and prerender route generation
+
+### ⚙️ Miscellaneous Tasks
+
+- Remove accidentally committed screenshots
+
 ## [3.22.1] - 2026-03-20
 
 ### 🐛 Bug Fixes
