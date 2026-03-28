@@ -2,10 +2,12 @@
     <h2 class="section-heading">{{ section.name }}</h2>
     {% for job in section.content %}
         <div class="experience-item">
-            <p class="job-line">
-                <span class="job-title">{{ job.title | markdown_links | markdown_formatting | safe }}</span> | <span class="job-company">{{ job.company | markdown_links | markdown_formatting | safe }}</span>
-            </p>
-            <p class="job-dates">{{ job.dates | markdown_links | markdown_formatting | safe }}</p>
+            <div class="job-header">
+                <span class="job-line">
+                    <span class="job-title">{{ job.title | markdown_links | markdown_formatting | safe }}</span>{% if job.company %} | <span class="job-company">{{ job.company | markdown_links | markdown_formatting | safe }}</span>{% endif %}
+                </span>
+                {% if job.dates %}<span class="job-dates">{{ job.dates | markdown_links | markdown_formatting | safe }}</span>{% endif %}
+            </div>
             {% if job.description %}
             <ul>
                 {% for bullet in job.description %}

@@ -44,37 +44,15 @@ a {
     margin: 0 0 10px 0;
 }
 
-.contact-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
+.contact-line {
     font-size: 9pt;
     color: #374151;
+    line-height: 1.4;
+    margin: 0 0 4px 0;
 }
 
-.contact-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    white-space: nowrap;
-}
-
-.contact-item a {
+.contact-line a {
     color: #374151;
-}
-
-.contact-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background-color: #0D9488;
-    color: #fff;
-    font-size: 10px;
-    line-height: 1;
-    flex-shrink: 0;
 }
 
 .header-rule {
