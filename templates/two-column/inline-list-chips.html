@@ -1,0 +1,8 @@
+<div class="section">
+    <h2 class="section-heading">{{ section.name }}</h2>
+    <div class="chip-list">
+        {% for item in section.content %}
+            <span class="skill-chip">{{ item | markdown_links | markdown_formatting | safe }}</span>
+        {% endfor %}
+    </div>
+</div>

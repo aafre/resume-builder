@@ -102,7 +102,7 @@ _register(
 _register(
     TemplateConfig(
         id="student",
-        dir="ats-optimized",
+        dir="student",
         engine=TemplateEngine.html,
         sample="samples/student/sample_data.yml",
         name="Student",

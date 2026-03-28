@@ -8,73 +8,110 @@
     {% if font and font not in system_fonts %}
         <link href="https://fonts.googleapis.com/css?family={{ font | replace(' ', '+') }}&display=swap" rel="stylesheet">
     {% endif %}
-    <style>body { font-family: '{{ font | default("Calibri") }}', 'Segoe UI', Arial, sans-serif; }</style>
 
+    <!-- External CSS first so inline accent overrides take precedence -->
     <link rel="stylesheet" href="{{ css_path }}">
 
-    {% set accent = '#2563EB' %}
+    {% set accent = '#0D9488' %}
     {% if settings and settings.accent_color %}
         {% set accent = settings.accent_color %}
     {% endif %}
     <style>
-        .sidebar .section-heading { color: {{ accent }}; border-bottom-color: {{ accent }}; }
-        .main-content .section-heading { color: {{ accent }}; border-bottom-color: {{ accent }}; }
-        .name { color: {{ accent }}; }
+        body { font-family: '{{ font | default("Calibri") }}', 'Segoe UI', Arial, sans-serif; }
+        .section-heading { color: {{ accent }}; border-bottom-color: {{ accent }}; }
+        .contact-icon { background-color: {{ accent }}; }
+        .skill-chip { background-color: {{ accent }}18; color: {{ accent }}; }
     </style>
 </head>
 <body>
-    <div class="resume-layout">
-        <aside class="sidebar">
-            <!-- Contact Info -->
-            <div class="sidebar-section">
-                <h2 class="section-heading">Contact</h2>
-                <p class="contact-item">{{ contact_info.email }}</p>
-                <p class="contact-item">{{ contact_info.phone }}</p>
-                <p class="contact-item">{{ contact_info.location }}</p>
-                {% if contact_info.social_links %}
-                    {% for social_link in contact_info.social_links %}
-                        {% if social_link.url and social_link.url.strip() %}
-                            <p class="contact-item"><a href="{{ social_link.url }}">{{ social_link.display_text or social_link.platform | capitalize }}</a></p>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            </div>
+    <!-- Full-width header -->
+    <div class="header">
+        <h1 class="name">{{ contact_info.name }}</h1>
 
-            <!-- Sidebar sections (skills, education, etc.) -->
-            {% for section in sections %}
-                {% if section.type in ['inline-list', 'dynamic-column-list', 'grouped-list', 'bulleted-list'] %}
-                    <div class="sidebar-section">
-                        {% if section.type == "grouped-list" %}
-                            {% include 'grouped-list.html' %}
-                        {% elif section.type == "bulleted-list" %}
-                            {% include 'bulleted-list.html' %}
-                        {% elif section.type == "inline-list" %}
-                            {% include 'inline-list.html' %}
-                        {% elif section.type == "dynamic-column-list" %}
-                            {% include 'dynamic-column-list.html' %}
-                        {% endif %}
-                    </div>
-                {% elif section.type == "education" or section.name == "Education" %}
-                    <div class="sidebar-section">
-                        {% include 'education.html' %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </aside>
+        {# Render the first text section as the summary paragraph.
+           We use a mutable list to track state across Jinja2 scopes:
+           after rendering, summary_used | length > 1 signals "skip this one". #}
+        {% set summary_used = [] %}
+        {% for section in sections %}
+            {% if section.type == "text" and summary_used | length == 0 %}
+                <p class="summary">{{ section.content | markdown_links | markdown_formatting | safe }}</p>
+                {% if summary_used.append(loop.index) %}{% endif %}
+            {% endif %}
+        {% endfor %}
 
-        <main class="main-content">
-            <h1 class="name">{{ contact_info.name }}</h1>
+        <div class="contact-row">
+            {% if contact_info.email %}
+            <span class="contact-item">
+                <span class="contact-icon">&#9993;</span>
+                <a href="mailto:{{ contact_info.email }}">{{ contact_info.email }}</a>
+            </span>
+            {% endif %}
+            {% if contact_info.phone %}
+            <span class="contact-item">
+                <span class="contact-icon">&#9742;</span>
+                {{ contact_info.phone }}
+            </span>
+            {% endif %}
+            {% if contact_info.location %}
+            <span class="contact-item">
+                <span class="contact-icon">&#9906;</span>
+                {{ contact_info.location }}
+            </span>
+            {% endif %}
+            {% if contact_info.social_links %}
+                {% for social_link in contact_info.social_links %}
+                    {% if social_link.url and social_link.url.strip() %}
+                    <span class="contact-item">
+                        <span class="contact-icon">&#128279;</span>
+                        <a href="{{ social_link.url }}">{{ social_link.display_text or social_link.platform | capitalize }}</a>
+                    </span>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
 
+    <hr class="header-rule">
+
+    <!-- Two-column layout -->
+    <div class="resume-columns">
+        <!-- Left / Main column -->
+        <div class="main-col">
+            {% set text_seen = [] %}
             {% for section in sections %}
                 {% if section.type == "text" %}
-                    {% include 'text.html' %}
+                    {% if text_seen | length == 0 and summary_used | length > 0 %}
+                        {# This is the first text section and it was rendered as
+                           the header summary — skip it in the main column. #}
+                        {% if text_seen.append(true) %}{% endif %}
+                    {% else %}
+                        {% if text_seen.append(true) %}{% endif %}
+                        {% include 'text.html' %}
+                    {% endif %}
                 {% elif section.type == "experience" or section.name == "Experience" %}
                     {% include 'experience.html' %}
                 {% elif section.type == "icon-list" %}
                     {% include 'bulleted-list.html' %}
                 {% endif %}
             {% endfor %}
-        </main>
+        </div>
+
+        <!-- Right / Side column -->
+        <div class="side-col">
+            {% for section in sections %}
+                {% if section.type == "grouped-list" %}
+                    {% include 'grouped-list.html' %}
+                {% elif section.type == "inline-list" %}
+                    {% include 'inline-list-chips.html' %}
+                {% elif section.type == "dynamic-column-list" %}
+                    {% include 'dynamic-column-list.html' %}
+                {% elif section.type == "bulleted-list" %}
+                    {% include 'bulleted-list.html' %}
+                {% elif section.type == "education" or section.name == "Education" %}
+                    {% include 'education.html' %}
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
 </body>
 </html>
