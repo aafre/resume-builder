@@ -60,6 +60,8 @@ const Editor: React.FC = () => {
     setSupportsIcons,
     originalTemplateData,
     setOriginalTemplateData,
+    documentSettings,
+    setDocumentSettings,
     loading,
     setLoading,
     loadingError,
@@ -337,6 +339,8 @@ const Editor: React.FC = () => {
         sections={sections}
         supportsIcons={supportsIcons}
         iconRegistry={iconRegistry}
+        documentSettings={documentSettings}
+        onDocumentSettingsChange={setDocumentSettings}
         isAnonymous={isAnonymous}
         isAuthenticated={isAuthenticated}
         contactForm={{

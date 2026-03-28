@@ -25,6 +25,7 @@ import { ContactInfo, Section, SaveStatus } from '../../types';
 import { UnifiedDndContext, UnifiedDndContextValue, DraggedItemInfo } from '../../contexts/UnifiedDndContext';
 import { DragLevel } from '../../hooks/editor/useUnifiedDragDrop';
 import ContactInfoSection from '../ContactInfoSection';
+import DocumentSettingsPanel from '../DocumentSettingsPanel';
 import FormattingHelp from '../FormattingHelp';
 import SectionRenderer from './SectionRenderer';
 import MobileActionBar from '../MobileActionBar';
@@ -174,6 +175,10 @@ export interface EditorContentProps {
   supportsIcons: boolean;
   iconRegistry: EditorContentIconRegistry;
 
+  // Document settings
+  documentSettings: import('../../types').DocumentSettings;
+  onDocumentSettingsChange: (settings: import('../../types').DocumentSettings) => void;
+
   // Auth state
   isAnonymous: boolean;
   isAuthenticated: boolean;
@@ -231,6 +236,8 @@ export const EditorContent: React.FC<EditorContentProps> = ({
   sections,
   supportsIcons,
   iconRegistry,
+  documentSettings,
+  onDocumentSettingsChange,
   isAnonymous,
   isAuthenticated,
   contactForm,
@@ -305,6 +312,12 @@ export const EditorContent: React.FC<EditorContentProps> = ({
 
       {/* Global Formatting Help */}
       <FormattingHelp />
+
+      {/* Document Settings (accent colour, font, page numbers) */}
+      <DocumentSettingsPanel
+        settings={documentSettings}
+        onSettingsChange={onDocumentSettingsChange}
+      />
 
       {/* Resume Sections with Drag and Drop */}
       <UnifiedDndContext.Provider value={unifiedDndContextValue}>
