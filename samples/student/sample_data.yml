@@ -60,14 +60,6 @@ sections:
           - "Implemented **FSM-based protocol translation** with start/stop detection, address decoding and AXI VALID/READY handshaking"
           - "Achieved **400 kHz I2C Fast Mode** compatibility with configurable clock stretching and multi-slave address support"
 
-      - company: "Pipelined RISC-V RV32I Processor"
-        title: "SystemVerilog, FPGA Synthesis, ModelSim"
-        dates: "Oct 2025"
-        description:
-          - "Designed a **5-stage pipelined RISC-V RV32I core** in SystemVerilog with hazard detection, data forwarding, and branch prediction"
-          - "Implemented **instruction and data cache** modules with write-back policy, achieving **92% cache hit rate** on Dhrystone benchmark"
-          - "Synthesised on **Xilinx Artix-7 FPGA** at **100 MHz** clock frequency, verified with assembly test programs covering all RV32I instructions"
-
       - company: "Asynchronous FIFO with Clock Domain Crossing (CDC)"
         title: "Verilog RTL, Gray-code CDC"
         dates: "Sep 2025"
@@ -103,12 +95,6 @@ sections:
         description:
           - "Verilog-Based VGA Display Controller with Interactive Track Rendering (FPGA)"
 
-      - company: "IEEE Student Paper Contest, Region 10"
-        title: "Finalist"
-        dates: "Mar 2026"
-        description:
-          - "Paper on Low-Power AES Accelerator Design using Clock Gating and Operand Isolation Techniques"
-
   - name: Position of Responsibility
     type: experience
     content:
@@ -127,8 +113,3 @@ sections:
         dates: "Sep 2024 – Present"
         description:
           - "Mentored **50+ students** in IoT and embedded project design and implementation"
-      - company: "Imperial College VLSI Design Lab"
-        title: "Teaching Assistant"
-        dates: "Jan 2026 – Present"
-        description:
-          - "Assisted **40 undergraduate students** with Verilog RTL coding, FPGA synthesis, and timing analysis assignments"
