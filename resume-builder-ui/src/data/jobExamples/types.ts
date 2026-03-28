@@ -34,6 +34,7 @@ export interface JobExampleMeta {
   category: JobCategory;           // For hub page organization
   priority: number;                // Sitemap priority (0.6-0.8)
   lastmod?: string;                // Last modified date (YYYY-MM-DD)
+  careerOutlook?: string;          // 1-2 sentence career outlook intro for SEO differentiation
 }
 
 /**
@@ -118,6 +119,7 @@ export interface JobExampleInfo {
   category: JobCategory;
   priority: number;
   metaDescription: string;
+  careerOutlook?: string;          // 1-2 sentence career outlook intro for SEO differentiation
 }
 
 /**

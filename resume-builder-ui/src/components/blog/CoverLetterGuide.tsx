@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import BlogLayout from "../BlogLayout";
 
 export default function CoverLetterGuide() {
@@ -36,7 +37,12 @@ export default function CoverLetterGuide() {
         </p>
         <p className="text-lg leading-relaxed text-stone-warm">
           Even in a world of LinkedIn profiles and AI screening, a well-crafted
-          cover letter shows effort, interest, and professionalism.
+          cover letter shows effort, interest, and professionalism. If you want
+          a head start, try our{" "}
+          <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline font-semibold">
+            AI cover letter prompts
+          </Link>{" "}
+          to generate a strong first draft in seconds.
         </p>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
@@ -139,9 +145,13 @@ Sincerely,
           advantage that sets you apart.
         </p>
         <p className="text-lg leading-relaxed text-stone-warm mt-6">
-          Use your cover letter to tell the story your resume can’t. With a
-          little time and the right strategy, yours can make a lasting
-          impression in a noisy hiring world.
+          Use your cover letter to tell the story your resume can’t. Pair it
+          with a polished resume — browse our{" "}
+          <Link to="/examples" className="text-accent hover:underline font-semibold">
+            resume examples
+          </Link>{" "}
+          for role-specific inspiration. With a little time and the right
+          strategy, yours can make a lasting impression in a noisy hiring world.
         </p>
       </div>
     </BlogLayout>

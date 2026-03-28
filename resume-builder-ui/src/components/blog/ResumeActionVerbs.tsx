@@ -1,4 +1,28 @@
 import BlogLayout from "../BlogLayout";
+import { Link } from "react-router-dom";
+
+const FAQS = [
+  {
+    question: "What are the best action verbs for a resume?",
+    answer: "The best action verbs depend on your role, but universally strong choices include Achieved, Led, Developed, Optimized, and Implemented. Choose verbs that match the job description and convey ownership and measurable impact.",
+  },
+  {
+    question: "Should I use the same action verb more than once on my resume?",
+    answer: "No. Repeating the same verb makes your resume feel monotonous. Vary your vocabulary by using synonyms: instead of writing 'Managed' three times, alternate with 'Directed,' 'Supervised,' and 'Coordinated.'",
+  },
+  {
+    question: "Should I use past tense or present tense action verbs?",
+    answer: "Use present tense for your current role (e.g., 'Lead a team of 10') and past tense for all previous positions (e.g., 'Led a team of 10'). Be consistent within each job entry.",
+  },
+  {
+    question: "How do action verbs help with ATS screening?",
+    answer: "ATS systems scan for specific keywords including action verbs commonly found in job descriptions. Using industry-relevant verbs like 'Implemented,' 'Analyzed,' or 'Engineered' increases your keyword match rate and improves your chances of passing automated filters.",
+  },
+  {
+    question: "What words should I avoid on my resume?",
+    answer: "Avoid passive phrases like 'Responsible for,' 'Helped with,' 'Worked on,' and 'Was involved in.' These phrases are vague and fail to demonstrate ownership or measurable results. Replace them with strong action verbs paired with specific achievements.",
+  },
+];
 
 export default function ResumeActionVerbs() {
   return (
@@ -6,7 +30,8 @@ export default function ResumeActionVerbs() {
       title="Action Verbs for Resumes: 200+ Words to Boost Your Impact"
       description="Replace boring words with powerful action verbs that grab recruiters' attention and showcase your accomplishments."
       publishDate="2026-01-25"
-      readTime="9 min"
+      lastUpdated="2026-03-22"
+      readTime="12 min"
       keywords={[
         "resume action verbs",
         "power words resume",
@@ -15,17 +40,23 @@ export default function ResumeActionVerbs() {
         "professional resume words",
         "resume vocabulary",
       ]}
+      faqs={FAQS}
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
           The difference between a good resume and a great one often comes down
           to word choice. Updated for 2026, action verbs remain powerful tools
           that transform passive job descriptions into dynamic achievements that
-          capture recruiters' attention and demonstrate your impact.
+          capture recruiters' attention and demonstrate your impact. This guide gives you
+          200+ categorized verbs with context on when to use each set, so you can pick the
+          right word for every bullet on your{" "}
+          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+            resume
+          </Link>.
         </p>
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
-          <h3 className="font-bold text-ink mb-3">💡 Quick Impact Check</h3>
+          <h3 className="font-bold text-ink mb-3">Quick Impact Check</h3>
           <p className="text-ink/80 mb-3">
             Compare these two descriptions of the same job:
           </p>
@@ -53,13 +84,18 @@ export default function ResumeActionVerbs() {
         <p className="text-lg leading-relaxed text-stone-warm">
           Action verbs serve multiple purposes on your resume. They help you
           pass ATS screening, grab human attention, and demonstrate your
-          proactive approach to work.
+          proactive approach to work. Many applicant tracking systems scan for specific
+          verbs as{" "}
+          <Link to="/resume-keywords" className="text-accent hover:underline">
+            resume keywords
+          </Link>, so choosing the right ones can directly affect whether your
+          application makes it past the first filter.
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
           <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h4 className="font-bold text-green-800 mb-3">✅ Benefits of Strong Action Verbs</h4>
-            <ul className="list-disc pl-6 space-y-2 text-accent text-sm">
+            <h4 className="font-bold text-green-800 mb-3">Benefits of Strong Action Verbs</h4>
+            <ul className="list-disc pl-6 space-y-2 text-green-700 text-sm">
               <li>Show ownership and initiative</li>
               <li>Quantify your achievements</li>
               <li>Pass ATS keyword scanning</li>
@@ -70,7 +106,7 @@ export default function ResumeActionVerbs() {
           </div>
 
           <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-            <h4 className="font-bold text-red-800 mb-3">❌ Words to Avoid</h4>
+            <h4 className="font-bold text-red-800 mb-3">Words to Avoid</h4>
             <ul className="list-disc pl-6 space-y-2 text-red-700 text-sm">
               <li>"Responsible for" - Too passive</li>
               <li>"Helped with" - Unclear contribution</li>
@@ -88,14 +124,23 @@ export default function ResumeActionVerbs() {
 
         <p className="text-lg leading-relaxed text-stone-warm">
           Choose verbs that align with your industry and the specific job you're
-          targeting. Here are powerful action verbs organized by skill area:
+          targeting. Each category below includes guidance on when to use those verbs
+          and which roles they suit best.
         </p>
 
         <div className="space-y-8 mt-8">
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-4">
-              👑 Leadership & Management
+            <h3 className="text-xl font-bold text-ink mb-2">
+              Leadership & Management
             </h3>
+            <p className="text-ink/80 text-sm mb-4">
+              Use these verbs when you supervised people, directed initiatives, or were accountable for team outcomes.
+              Ideal for management, executive, and{" "}
+              <Link to="/examples/project-manager" className="text-accent hover:underline">
+                project manager
+              </Link>{" "}
+              roles where hiring managers expect evidence of organizational influence.
+            </p>
             <div className="grid md:grid-cols-4 gap-4 text-ink/80">
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
@@ -141,10 +186,19 @@ export default function ResumeActionVerbs() {
           </div>
 
           <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-green-800 mb-4">
-              🎯 Achievement & Results
+            <h3 className="text-xl font-bold text-green-800 mb-2">
+              Achievement & Results
             </h3>
-            <div className="grid md:grid-cols-4 gap-4 text-accent">
+            <p className="text-green-700 text-sm mb-4">
+              Reach for these when describing measurable outcomes: revenue growth, cost savings, quota
+              attainment, or efficiency gains. They pair naturally with numbers, so combine them
+              with{" "}
+              <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+                quantified accomplishments
+              </Link>{" "}
+              for maximum impact. Best for sales, operations, and any results-driven role.
+            </p>
+            <div className="grid md:grid-cols-4 gap-4 text-green-700">
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
                   <li>Achieved</li>
@@ -189,9 +243,14 @@ export default function ResumeActionVerbs() {
           </div>
 
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-4">
-              🚀 Innovation & Problem-Solving
+            <h3 className="text-xl font-bold text-ink mb-2">
+              Innovation & Problem-Solving
             </h3>
+            <p className="text-ink/80 text-sm mb-4">
+              Choose these when you built something new, fixed something broken, or improved a process
+              that was not working. Especially effective for engineering, product, design, and R&D roles
+              where creativity and initiative are prized.
+            </p>
             <div className="grid md:grid-cols-4 gap-4 text-ink/80">
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
@@ -237,9 +296,14 @@ export default function ResumeActionVerbs() {
           </div>
 
           <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-yellow-800 mb-4">
-              💼 Business & Strategy
+            <h3 className="text-xl font-bold text-yellow-800 mb-2">
+              Business & Strategy
             </h3>
+            <p className="text-yellow-700 text-sm mb-4">
+              Use these for roles that involve planning, forecasting, or stakeholder management.
+              Strong choices for consultants, analysts, finance professionals, and anyone who influenced
+              business decisions or managed budgets.
+            </p>
             <div className="grid md:grid-cols-4 gap-4 text-yellow-700">
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
@@ -285,9 +349,18 @@ export default function ResumeActionVerbs() {
           </div>
 
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-ink mb-4">
-              📊 Analysis & Research
+            <h3 className="text-xl font-bold text-ink mb-2">
+              Analysis & Research
             </h3>
+            <p className="text-ink/80 text-sm mb-4">
+              Best for data-heavy roles: analysts, researchers, scientists, and QA professionals.
+              Use these when you gathered information, interpreted data, or turned findings into
+              recommendations. They also work well in the{" "}
+              <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+                skills section
+              </Link>{" "}
+              of your resume to signal analytical ability.
+            </p>
             <div className="grid md:grid-cols-4 gap-4 text-ink/80">
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
@@ -333,9 +406,18 @@ export default function ResumeActionVerbs() {
           </div>
 
           <div className="bg-teal-50 border border-teal-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-teal-800 mb-4">
-              🤝 Communication & Training
+            <h3 className="text-xl font-bold text-teal-800 mb-2">
+              Communication & Training
             </h3>
+            <p className="text-teal-700 text-sm mb-4">
+              Reach for these when your role involved teaching, presenting, writing, or stakeholder
+              communication. Ideal for educators, HR professionals, marketers, and client-facing roles.
+              These verbs also strengthen a{" "}
+              <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+                professional summary
+              </Link>{" "}
+              that highlights interpersonal skills.
+            </p>
             <div className="grid md:grid-cols-4 gap-4 text-teal-700">
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
@@ -381,9 +463,18 @@ export default function ResumeActionVerbs() {
           </div>
 
           <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-orange-800 mb-4">
-              🔧 Technical & Operations
+            <h3 className="text-xl font-bold text-orange-800 mb-2">
+              Technical & Operations
             </h3>
+            <p className="text-orange-700 text-sm mb-4">
+              Use these for hands-on technical work: building systems, shipping code, managing infrastructure,
+              or maintaining equipment. Essential for software engineers, DevOps, IT administrators, and
+              operations managers. Pair them with an{" "}
+              <Link to="/templates/ats-friendly" className="text-accent hover:underline">
+                ATS-friendly template
+              </Link>{" "}
+              to ensure clean parsing.
+            </p>
             <div className="grid md:grid-cols-4 gap-4 text-orange-700">
               <div>
                 <ul className="list-disc pl-5 space-y-1 text-sm">
@@ -461,10 +552,15 @@ export default function ResumeActionVerbs() {
             <h3 className="text-lg font-bold text-green-800 mb-3">
               2. Pair Verbs with Quantifiable Results
             </h3>
-            <p className="text-accent mb-3">
-              Action verbs become powerful when combined with specific metrics:
+            <p className="text-green-700 mb-3">
+              Action verbs become powerful when combined with specific metrics.
+              For a deep dive on adding numbers to your bullets, see our guide
+              on{" "}
+              <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+                quantifying resume accomplishments
+              </Link>.
             </p>
-            <div className="space-y-2 text-accent">
+            <div className="space-y-2 text-green-700">
               <div className="bg-white p-3 rounded text-sm">
                 <strong>Formula:</strong> Action Verb + Specific Task + Quantifiable Result
               </div>
@@ -479,7 +575,12 @@ export default function ResumeActionVerbs() {
               3. Vary Your Verb Choices
             </h3>
             <p className="text-yellow-700 mb-3">
-              Avoid repetition by using synonyms and varied vocabulary:
+              Avoid repetition by using synonyms and varied vocabulary. If you need help generating
+              diverse phrasing, try using{" "}
+              <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">
+                AI resume prompts
+              </Link>{" "}
+              to brainstorm alternatives.
             </p>
             <div className="space-y-2 text-yellow-700">
               <div className="bg-white p-3 rounded text-sm">
@@ -499,35 +600,35 @@ export default function ResumeActionVerbs() {
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-green-50 border border-green-200 rounded-xl p-6">
             <h3 className="text-lg font-bold text-green-800 mb-3">
-              🌱 Entry-Level Power Words
+              Entry-Level Power Words
             </h3>
-            <p className="text-accent mb-3">
+            <p className="text-green-700 mb-3">
               Emphasize learning, contribution, and potential:
             </p>
-            <div className="text-accent text-sm space-y-1">
-              <p>• Contributed to team success by...</p>
-              <p>• Supported operations through...</p>
-              <p>• Assisted in developing...</p>
-              <p>• Participated in strategic...</p>
-              <p>• Collaborated on...</p>
-              <p>• Learned and applied...</p>
+            <div className="text-green-700 text-sm space-y-1">
+              <p>Contributed to team success by...</p>
+              <p>Supported operations through...</p>
+              <p>Assisted in developing...</p>
+              <p>Participated in strategic...</p>
+              <p>Collaborated on...</p>
+              <p>Learned and applied...</p>
             </div>
           </div>
 
           <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
             <h3 className="text-lg font-bold text-ink mb-3">
-              🚀 Senior-Level Power Words
+              Senior-Level Power Words
             </h3>
             <p className="text-ink/80 mb-3">
               Highlight leadership, strategy, and impact:
             </p>
             <div className="text-ink/80 text-sm space-y-1">
-              <p>• Spearheaded organization-wide...</p>
-              <p>• Orchestrated cross-functional...</p>
-              <p>• Pioneered innovative...</p>
-              <p>• Transformed business operations...</p>
-              <p>• Architected comprehensive...</p>
-              <p>• Championed strategic initiatives...</p>
+              <p>Spearheaded organization-wide...</p>
+              <p>Orchestrated cross-functional...</p>
+              <p>Pioneered innovative...</p>
+              <p>Transformed business operations...</p>
+              <p>Architected comprehensive...</p>
+              <p>Championed strategic initiatives...</p>
             </div>
           </div>
         </div>
@@ -540,12 +641,12 @@ export default function ResumeActionVerbs() {
             Use these powerful action verbs with our professional templates to
             create a resume that gets results
           </p>
-          <a
-            href="/templates"
+          <Link
+            to="/templates"
             className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Build Your Resume Now
-          </a>
+          </Link>
         </div>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
@@ -559,15 +660,15 @@ export default function ResumeActionVerbs() {
             </h4>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="bg-red-100 border-l-4 border-red-500 p-4 rounded">
-                <p className="font-medium text-red-800 mb-2">❌ Before:</p>
+                <p className="font-medium text-red-800 mb-2">Before:</p>
                 <p className="text-red-700 text-sm">
                   "Was responsible for social media. Helped with marketing
                   campaigns. Worked on brand awareness initiatives."
                 </p>
               </div>
               <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-                <p className="font-medium text-green-800 mb-2">✅ After:</p>
-                <p className="text-accent text-sm">
+                <p className="font-medium text-green-800 mb-2">After:</p>
+                <p className="text-green-700 text-sm">
                   "<strong>Orchestrated</strong> integrated social media strategy across 5
                   platforms. <strong>Spearheaded</strong> multi-channel marketing campaigns
                   that <strong>generated</strong> 300+ qualified leads monthly. <strong>Amplified</strong> brand
@@ -583,15 +684,15 @@ export default function ResumeActionVerbs() {
             </h4>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="bg-red-100 border-l-4 border-red-500 p-4 rounded">
-                <p className="font-medium text-red-800 mb-2">❌ Before:</p>
+                <p className="font-medium text-red-800 mb-2">Before:</p>
                 <p className="text-red-700 text-sm">
                   "Worked on web applications. Fixed bugs and did code reviews.
                   Helped improve system performance."
                 </p>
               </div>
               <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-                <p className="font-medium text-green-800 mb-2">✅ After:</p>
-                <p className="text-accent text-sm">
+                <p className="font-medium text-green-800 mb-2">After:</p>
+                <p className="text-green-700 text-sm">
                   "<strong>Architected</strong> scalable web applications serving 50K+ users.
                   <strong>Debugged</strong> critical system issues, <strong>reducing</strong> downtime by 40%.
                   <strong>Streamlined</strong> code review processes and <strong>optimized</strong> system
@@ -685,7 +786,7 @@ export default function ResumeActionVerbs() {
         </div>
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-8">
-          <h3 className="font-bold text-ink mb-3">💡 Pro Tips for Maximum Impact</h3>
+          <h3 className="font-bold text-ink mb-3">Pro Tips for Maximum Impact</h3>
           <ul className="list-disc pl-6 space-y-2 text-ink/80">
             <li>
               <strong>Start every bullet point</strong> with a different action verb
@@ -705,18 +806,114 @@ export default function ResumeActionVerbs() {
           </ul>
         </div>
 
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Frequently Asked Questions
+        </h2>
+
+        <div className="space-y-4 my-6">
+          {FAQS.map((faq, i) => (
+            <div key={i} className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+              <h4 className="font-bold text-ink mb-2">{faq.question}</h4>
+              <p className="text-stone-warm text-sm">{faq.answer}</p>
+            </div>
+          ))}
+        </div>
+
         <p className="text-lg leading-relaxed text-stone-warm mt-8">
           Remember, action verbs are just one element of a powerful resume in 2026.
           For a complete guide on writing compelling resume content, check out our{" "}
-          <a
-            href="/blog/how-to-write-a-resume-guide"
-            className="text-accent hover:text-ink underline"
+          <Link
+            to="/blog/how-to-write-a-resume-guide"
+            className="text-accent hover:underline"
           >
             step-by-step resume writing guide
-          </a>
+          </Link>
           . The right combination of strong action verbs, quantified achievements, and
           professional formatting will help you stand out in today's competitive job market.
         </p>
+
+        {/* FAQ */}
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Frequently Asked Questions
+        </h2>
+
+        <div className="space-y-4">
+          {[
+            {
+              q: 'What are action verbs on a resume?',
+              a: 'Action verbs are strong, specific words that begin each bullet point in your experience section. Instead of passive phrases like "was responsible for," action verbs such as "orchestrated," "delivered," or "streamlined" immediately tell the reader what you did and convey energy and ownership.',
+            },
+            {
+              q: 'Why are action verbs important for ATS?',
+              a: 'Applicant tracking systems scan resumes for keywords that match the job description. Many of those keywords are action verbs. Using the right verbs — like "managed," "analyzed," or "implemented" — increases the chance your resume gets past the automated filter and into a recruiter\'s hands.',
+            },
+            {
+              q: 'What verbs should I avoid on a resume?',
+              a: 'Avoid weak, passive phrases: "responsible for," "helped with," "worked on," "was involved in," and "assisted." These hide your actual contribution. Also steer clear of overused buzzwords like "synergized" or "leveraged" that sound hollow without context. Replace every instance with a specific action verb followed by a measurable result.',
+            },
+            {
+              q: 'How many action verbs should I use per bullet?',
+              a: 'One strong action verb per bullet point, placed at the very beginning. Starting with the verb creates a punchy, scannable format. If a single bullet describes two distinct actions, consider splitting it into two bullets so each one leads with its own verb.',
+            },
+            {
+              q: 'Can I repeat action verbs on my resume?',
+              a: 'Try not to. Repeating the same verb — especially "managed" or "led" — makes your resume feel monotonous and suggests a limited vocabulary. Use the category lists above to find synonyms. For example, rotate between "directed," "supervised," "orchestrated," and "coordinated" instead of writing "managed" four times.',
+            },
+            {
+              q: 'What are the best action verbs for leadership roles?',
+              a: 'The strongest leadership verbs are "spearheaded," "orchestrated," "championed," "mentored," and "mobilized." These convey initiative and influence beyond basic management. Pair them with scope indicators — team size, budget, or cross-functional reach — to show the scale of your leadership.',
+            },
+          ].map((faq, i) => (
+            <div key={i} className="bg-chalk-dark rounded-xl p-5">
+              <h3 className="font-bold text-ink mb-2">{faq.q}</h3>
+              <p className="text-stone-warm">{faq.a}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Related Guides */}
+        <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 mt-12">
+          <h3 className="font-bold text-ink mb-3">Related Guides</h3>
+          <ul className="space-y-2 text-ink/80">
+            <li>
+              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+                How to Write a Resume: Complete Guide
+              </Link>{' '}
+              &mdash; the pillar guide covering every section of your resume
+            </li>
+            <li>
+              <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+                How to Quantify Accomplishments on Your Resume
+              </Link>{' '}
+              &mdash; pair action verbs with numbers for stronger bullets
+            </li>
+            <li>
+              <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+                Professional Summary Examples
+              </Link>{' '}
+              &mdash; see action verbs used in real summary statements
+            </li>
+            <li>
+              <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+                How to List Skills on a Resume
+              </Link>{' '}
+              &mdash; use action verbs to describe skill proficiency
+            </li>
+            <li>
+              <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">
+                Claude AI Resume Prompts
+              </Link>{' '}
+              &mdash; use AI to generate verb variations and rewrite weak bullets
+            </li>
+            <li>
+              <Link to="/resume-keywords" className="text-accent hover:underline">
+                Resume Keywords by Job Title
+              </Link>{' '}
+              &mdash; find the right action verbs for your specific role
+            </li>
+          </ul>
+        </div>
+
       </div>
     </BlogLayout>
   );
