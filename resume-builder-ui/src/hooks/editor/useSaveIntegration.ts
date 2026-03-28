@@ -68,6 +68,18 @@ export const useSaveIntegration = ({
     return iconsObj;
   }, [iconRegistry.getRegisteredFilenames().join(',')]);
 
+  // Memoize resumeData to prevent useCloudSave effect from running on every render
+  // This avoids expensive JSON.stringify serialization on keystrokes
+  const memoizedResumeData = useMemo(() => {
+    return contactInfo && templateId
+      ? {
+          contact_info: contactInfo,
+          sections: sections,
+          template_id: templateId,
+        }
+      : { contact_info: { name: '', location: '', email: '', phone: '' }, sections: [], template_id: '' };
+  }, [contactInfo, sections, templateId]);
+
   const {
     saveStatus,
     lastSaved,
@@ -75,14 +87,7 @@ export const useSaveIntegration = ({
     resumeId: savedResumeId,
   } = useCloudSave({
     resumeId: cloudResumeId,
-    resumeData:
-      contactInfo && templateId
-        ? {
-            contact_info: contactInfo,
-            sections: sections,
-            template_id: templateId,
-          }
-        : { contact_info: { name: '', location: '', email: '', phone: '' }, sections: [], template_id: '' },
+    resumeData: memoizedResumeData,
     icons: iconsForCloudSave,
     enabled: !!templateId && !!contactInfo && !isLoadingFromUrl && !authLoading,
     session: session,
