@@ -89,11 +89,9 @@ sections:
       - degree: "Master of Science in Computer Science"
         school: "Columbia University"
         year: "2008"
-        gpa: "3.9/4.0"
       - degree: "Bachelor of Science in Computer Engineering, magna cum laude"
         school: "University of Michigan"
         year: "2006"
-        gpa: "3.8/4.0"
 
   - name: Technical Skills
     type: grouped-list

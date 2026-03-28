@@ -9,7 +9,7 @@
                 <p class="gpa">GPA: {{ edu.gpa }}</p>
             {% endif %}
             {% if edu.coursework %}
-                <p class="coursework">{{ edu.coursework | join(', ') }}</p>
+                <p class="coursework"><strong>Coursework:</strong> {{ edu.coursework | join(', ') }}</p>
             {% endif %}
         </div>
     {% endfor %}
