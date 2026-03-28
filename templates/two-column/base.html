@@ -23,7 +23,7 @@
     </style>
 </head>
 <body>
-    <!-- Full-width header -->
+    <!-- Full-width header: Name + Contact only -->
     <div class="header">
         <h1 class="name">{{ contact_info.name }}</h1>
 
@@ -39,34 +39,17 @@
                 {% endfor %}
             {% endif %}
         </p>
-
-        {# Render the first text section as the summary paragraph. #}
-        {% set summary_used = [] %}
-        {% for section in sections %}
-            {% if section.type == "text" and summary_used | length == 0 %}
-                <p class="summary">{{ section.content | markdown_links | markdown_formatting | safe }}</p>
-                {% if summary_used.append(loop.index) %}{% endif %}
-            {% endif %}
-        {% endfor %}
     </div>
 
     <hr class="header-rule">
 
     <!-- Two-column layout -->
     <div class="resume-columns">
-        <!-- Left / Main column -->
+        <!-- Left / Main column: summary, experience, other text -->
         <div class="main-col">
-            {% set text_seen = [] %}
             {% for section in sections %}
                 {% if section.type == "text" %}
-                    {% if text_seen | length == 0 and summary_used | length > 0 %}
-                        {# This is the first text section and it was rendered as
-                           the header summary — skip it in the main column. #}
-                        {% if text_seen.append(true) %}{% endif %}
-                    {% else %}
-                        {% if text_seen.append(true) %}{% endif %}
-                        {% include 'text.html' %}
-                    {% endif %}
+                    {% include 'text.html' %}
                 {% elif section.type == "experience" or section.name == "Experience" %}
                     {% include 'experience.html' %}
                 {% elif section.type == "icon-list" %}
