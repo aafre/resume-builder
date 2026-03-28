@@ -8,6 +8,7 @@ export default function GeminiResumePrompts() {
       title="Best Gemini Resume Prompts (Copy-Paste Ready) 2026"
       description="Top Gemini prompts for resume writing: job description analysis, keyword extraction, bullet optimization. Copy-paste ready for Gemini Advanced and free."
       publishDate="2026-01-21"
+      lastUpdated="2026-03-22"
       readTime="8 min"
       keywords={[
         "gemini resume prompts",
