@@ -46,21 +46,17 @@ a {
 }
 
 .contact-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 6px 14px;
+    text-align: center;
     font-size: 9pt;
     color: #374151;
     margin: 4px 0 0 0;
-    line-height: 1.6;
+    line-height: 2;
 }
 
 .contact-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+    display: inline;
     white-space: nowrap;
+    margin: 0 6px;
 }
 
 .contact-item a {
@@ -68,10 +64,12 @@ a {
 }
 
 .contact-svg {
-    width: 12px;
-    height: 12px;
-    flex-shrink: 0;
-    opacity: 0.7;
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    vertical-align: -1px;
+    margin-right: 3px;
+    opacity: 0.65;
 }
 
 .header-rule {
