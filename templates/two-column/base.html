@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ contact_info.name }}'s Resume</title>
+
+    {% if font %}
+        <link href="https://fonts.googleapis.com/css?family={{ font | replace(' ', '+') }}&display=swap" rel="stylesheet">
+        <style>body { font-family: '{{ font }}', sans-serif; }</style>
+    {% else %}
+        <style>body { font-family: 'Calibri', 'Segoe UI', Arial, sans-serif; }</style>
+    {% endif %}
+
+    <link rel="stylesheet" href="{{ css_path }}">
+
+    {% set accent = '#2563EB' %}
+    {% if settings and settings.accent_color %}
+        {% set accent = settings.accent_color %}
+    {% endif %}
+    <style>
+        .sidebar .section-heading { color: {{ accent }}; border-bottom-color: {{ accent }}; }
+        .main-content .section-heading { color: {{ accent }}; border-bottom-color: {{ accent }}; }
+        .name { color: {{ accent }}; }
+    </style>
+</head>
+<body>
+    <div class="resume-layout">
+        <aside class="sidebar">
+            <!-- Contact Info -->
+            <div class="sidebar-section">
+                <h2 class="section-heading">Contact</h2>
+                <p class="contact-item">{{ contact_info.email }}</p>
+                <p class="contact-item">{{ contact_info.phone }}</p>
+                <p class="contact-item">{{ contact_info.location }}</p>
+                {% if contact_info.social_links %}
+                    {% for social_link in contact_info.social_links %}
+                        {% if social_link.url and social_link.url.strip() %}
+                            <p class="contact-item"><a href="{{ social_link.url }}">{{ social_link.display_text or social_link.platform | capitalize }}</a></p>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <!-- Sidebar sections (skills, education, etc.) -->
+            {% for section in sections %}
+                {% if section.type in ['inline-list', 'dynamic-column-list', 'grouped-list', 'bulleted-list'] %}
+                    <div class="sidebar-section">
+                        {% if section.type == "grouped-list" %}
+                            {% include 'grouped-list.html' %}
+                        {% elif section.type == "bulleted-list" %}
+                            {% include 'bulleted-list.html' %}
+                        {% elif section.type == "inline-list" %}
+                            {% include 'inline-list.html' %}
+                        {% elif section.type == "dynamic-column-list" %}
+                            {% include 'dynamic-column-list.html' %}
+                        {% endif %}
+                    </div>
+                {% elif section.type == "education" or section.name == "Education" %}
+                    <div class="sidebar-section">
+                        {% include 'education.html' %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </aside>
+
+        <main class="main-content">
+            <h1 class="name">{{ contact_info.name }}</h1>
+
+            {% for section in sections %}
+                {% if section.type == "text" %}
+                    {% include 'text.html' %}
+                {% elif section.type == "experience" or section.name == "Experience" %}
+                    {% include 'experience.html' %}
+                {% elif section.type == "icon-list" %}
+                    {% include 'bulleted-list.html' %}
+                {% endif %}
+            {% endfor %}
+        </main>
+    </div>
+</body>
+</html>

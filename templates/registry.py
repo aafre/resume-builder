@@ -89,6 +89,18 @@ _register(
 
 _register(
     TemplateConfig(
+        id="two-column",
+        dir="two-column",
+        engine=TemplateEngine.html,
+        sample="samples/two-column/sample_data.yml",
+        name="Two-Column",
+        description="Sidebar layout with skills and contact info on the left, experience on the right.",
+        preview="two-column.png",
+    )
+)
+
+_register(
+    TemplateConfig(
         id="classic-alex-rivera",
         dir="classic",
         engine=TemplateEngine.latex,
