@@ -1,7 +1,7 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 10pt;
-    line-height: 1.2;
+    line-height: 1.15;
     margin: 0;
     padding: 0;
     color: #000;
@@ -43,13 +43,13 @@ a {
     text-transform: uppercase;
     letter-spacing: 0.8px;
     color: #333;
-    margin: 20px 0 0 0;
+    margin: 16px 0 0 0;
     padding-bottom: 4px;
     border-bottom: 1.5px solid #333;
 }
 
 .section:first-child .section-heading {
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 .text-content {
@@ -113,7 +113,7 @@ a {
 }
 
 .experience-item {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     page-break-inside: avoid;
 }
 
@@ -169,5 +169,5 @@ a {
 }
 
 @page {
-    margin: 0.6in;
+    margin: 0.5in;
 }

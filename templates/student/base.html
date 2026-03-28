@@ -24,17 +24,17 @@
 <body>
     <h1 class="name">{{ contact_info.name }}</h1>
     <p class="contact-line">
-        {{ contact_info.email }}
-        {% if contact_info.phone %} &nbsp;|&nbsp; {{ contact_info.phone }}{% endif %}
-        {% if contact_info.location %} &nbsp;|&nbsp; {{ contact_info.location }}{% endif %}
+        {{ contact_info.location }}
+        {% if contact_info.email %} &nbsp;&middot;&nbsp; {{ contact_info.email }}{% endif %}
+        {% if contact_info.phone %} &nbsp;&middot;&nbsp; {{ contact_info.phone }}{% endif %}
         {% if contact_info.social_links %}
             {% for social_link in contact_info.social_links %}
                 {% if social_link.url and social_link.url.strip() and social_link.platform %}
-                    &nbsp;|&nbsp; <a href="{{ social_link.url }}">{{ social_link.display_text or social_link.handle or social_link.platform | capitalize }}</a>
+                    &nbsp;&middot;&nbsp; <a href="{{ social_link.url }}">{{ social_link.display_text or social_link.handle or social_link.platform | capitalize }}</a>
                 {% endif %}
             {% endfor %}
         {% elif contact_info.linkedin and contact_info.linkedin.strip() %}
-            &nbsp;|&nbsp; <a href="{{ contact_info.linkedin }}">{{ contact_info.linkedin_display or contact_info.linkedin_handle }}</a>
+            &nbsp;&middot;&nbsp; <a href="{{ contact_info.linkedin }}">{{ contact_info.linkedin_display or contact_info.linkedin_handle }}</a>
         {% endif %}
     </p>
     <hr class="header-rule">

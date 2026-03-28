@@ -93,13 +93,12 @@ a {
 
 .main-col {
     width: 62%;
-    padding-right: 16px;
+    padding-right: 12px;
 }
 
 .side-col {
     width: 38%;
-    padding-left: 8px;
-    border-left: 1px solid #E5E7EB;
+    padding-left: 12px;
 }
 
 /* ── Section headings (shared) ─────────────────────────── */
