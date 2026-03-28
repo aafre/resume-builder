@@ -1,6 +1,29 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 
+const FAQS = [
+  {
+    question: "How long should a professional summary be on a resume?",
+    answer: "A professional summary should be 3-4 sentences or 50-150 words. It should fit within 2-3 lines when formatted on your resume. Keep it concise but comprehensive enough to communicate your value proposition, key skills, and a notable achievement.",
+  },
+  {
+    question: "What is the difference between a professional summary and an objective statement?",
+    answer: "A professional summary highlights your qualifications, achievements, and the value you bring to an employer. An objective statement describes what you hope to gain from a position. In 2026, most recruiters prefer summaries because they focus on what you offer rather than what you want.",
+  },
+  {
+    question: "Should I customize my professional summary for each job application?",
+    answer: "Yes. Tailoring your professional summary for each application significantly improves your chances. Analyze the job description, identify key requirements, and adjust your summary to highlight the most relevant skills, experience, and achievements for that specific role.",
+  },
+  {
+    question: "Can entry-level candidates write a professional summary?",
+    answer: "Absolutely. Entry-level candidates should focus on relevant education, internships, academic projects, transferable skills, and career potential. Highlight specific achievements from internships or coursework and quantify results where possible to demonstrate value.",
+  },
+  {
+    question: "How do I optimize my professional summary for ATS?",
+    answer: "Mirror the language from the job description, include industry-specific keywords and certifications, use both acronyms and full terms (e.g., 'Search Engine Optimization (SEO)'), and integrate keywords naturally into readable sentences. Avoid keyword stuffing.",
+  },
+];
+
 export default function ProfessionalSummaryExamples() {
   return (
     <BlogLayout
@@ -19,6 +42,7 @@ export default function ProfessionalSummaryExamples() {
         "resume templates",
       ]}
       ctaType="resume"
+      faqs={FAQS}
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">

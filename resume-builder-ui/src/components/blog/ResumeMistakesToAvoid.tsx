@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import BlogLayout from '../BlogLayout';
 
 export default function ResumeMistakesToAvoid() {
@@ -74,7 +75,9 @@ export default function ResumeMistakesToAvoid() {
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">4. Listing Job Duties Instead of Achievements</h2>
         <p className="text-lg leading-relaxed text-stone-warm">
-          Employers know what your job title entails. They want to see what you accomplished in that role. Focus on specific, quantifiable achievements rather than generic responsibilities.
+          Employers know what your job title entails. They want to see what you accomplished in that role. Focus on specific, quantifiable achievements rather than generic responsibilities. Need stronger language? Check out our list of{' '}
+          <Link to="/blog/resume-action-verbs" className="text-accent hover:underline font-medium">resume action verbs</Link>{' '}
+          to replace weak phrasing.
         </p>
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
           <h4 className="font-bold text-ink mb-3">The Achievement Formula:</h4>
@@ -163,7 +166,9 @@ export default function ResumeMistakesToAvoid() {
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">9. Neglecting ATS Optimization</h2>
         <p className="text-lg leading-relaxed text-stone-warm">
-          Over 98% of Fortune 500 companies use Applicant Tracking Systems (ATS) to filter resumes. If your resume isn't ATS-friendly, it may never reach human eyes, regardless of your qualifications.
+          Over 98% of Fortune 500 companies use Applicant Tracking Systems (ATS) to filter resumes. If your resume isn't ATS-friendly, it may never reach human eyes, regardless of your qualifications. Use our free{' '}
+          <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">resume keyword scanner</Link>{' '}
+          to check your resume against a job description before you apply.
         </p>
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
           <h4 className="font-bold text-ink mb-3">🤖 ATS Optimization Tips:</h4>

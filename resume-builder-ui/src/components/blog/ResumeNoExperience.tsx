@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import BlogLayout from "../BlogLayout";
 
 export default function ResumeNoExperience() {
@@ -850,7 +851,15 @@ export default function ResumeNoExperience() {
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
           Not all resume templates work well when you have limited experience.
           Look for templates that emphasize skills and projects over long work
-          histories. Here are our top picks:
+          histories. For inspiration, see our{" "}
+          <Link to="/examples/college-student" className="text-accent hover:underline font-semibold">
+            college student resume example
+          </Link>{" "}
+          and{" "}
+          <Link to="/examples/internship" className="text-accent hover:underline font-semibold">
+            internship resume example
+          </Link>
+          . Here are our top template picks:
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">

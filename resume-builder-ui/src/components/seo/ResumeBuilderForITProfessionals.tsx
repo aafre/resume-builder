@@ -11,6 +11,7 @@ import FeatureGrid from '../shared/FeatureGrid';
 import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import RevealSection from '../shared/RevealSection';
+import ResourceCard from '../shared/ResourceCard';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
 
@@ -121,34 +122,13 @@ export default function ResumeBuilderForITProfessionals() {
             for general best practices:
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            <Link to="/resume-keywords/software-engineer" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Software Engineer Keywords</h3>
-              <p className="text-stone-warm text-sm">Python, React, AWS, CI/CD, microservices</p>
-            </Link>
-            <Link to="/resume-keywords/product-manager" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Product Manager Keywords</h3>
-              <p className="text-stone-warm text-sm">Roadmap, OKRs, A/B testing, user research</p>
-            </Link>
-            <Link to="/resume-keywords/business-analyst" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Business Analyst Keywords</h3>
-              <p className="text-stone-warm text-sm">Requirements, SQL, JIRA, process mapping</p>
-            </Link>
-            <Link to="/blog/tech-resume-guide" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Tech Resume Guide</h3>
-              <p className="text-stone-warm text-sm">Complete guide to writing a tech resume</p>
-            </Link>
-            <Link to="/examples/software-engineer" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Software Engineer Resume Example</h3>
-              <p className="text-stone-warm text-sm">Full resume with tech stack and project highlights</p>
-            </Link>
-            <Link to="/examples/data-analyst" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Data Analyst Resume Example</h3>
-              <p className="text-stone-warm text-sm">SQL, Python, visualization tools highlighted</p>
-            </Link>
-            <Link to="/examples/front-end-developer" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Front-End Developer Resume Example</h3>
-              <p className="text-stone-warm text-sm">React, TypeScript, and portfolio projects</p>
-            </Link>
+            <ResourceCard to="/resume-keywords/software-engineer" title="Software Engineer Keywords" description="Python, React, AWS, CI/CD, microservices" />
+            <ResourceCard to="/resume-keywords/product-manager" title="Product Manager Keywords" description="Roadmap, OKRs, A/B testing, user research" />
+            <ResourceCard to="/resume-keywords/business-analyst" title="Business Analyst Keywords" description="Requirements, SQL, JIRA, process mapping" />
+            <ResourceCard to="/blog/tech-resume-guide" title="Tech Resume Guide" description="Complete guide to writing a tech resume" />
+            <ResourceCard to="/examples/software-engineer" title="Software Engineer Resume Example" description="Full resume with tech stack and project highlights" />
+            <ResourceCard to="/examples/data-analyst" title="Data Analyst Resume Example" description="SQL, Python, visualization tools highlighted" />
+            <ResourceCard to="/examples/front-end-developer" title="Front-End Developer Resume Example" description="React, TypeScript, and portfolio projects" />
           </div>
         </div>
       </RevealSection>

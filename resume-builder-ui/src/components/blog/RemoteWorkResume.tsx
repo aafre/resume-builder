@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import BlogLayout from "../BlogLayout";
 
 export default function RemoteWorkResume() {
@@ -109,6 +110,14 @@ export default function RemoteWorkResume() {
           </div>
         </div>
 
+        <p className="text-lg leading-relaxed text-stone-warm mt-4">
+          For a full breakdown of how to structure a tech resume for remote
+          roles, see our{" "}
+          <Link to="/examples/software-engineer" className="text-accent hover:underline font-semibold">
+            software engineer resume example
+          </Link>.
+        </p>
+
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
           3. Emphasize Tools and Technologies
         </h3>
@@ -149,7 +158,11 @@ export default function RemoteWorkResume() {
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
           Hiring managers want candidates who can operate independently and
           handle ambiguity. Highlight achievements that demonstrate remote work
-          capabilities:
+          capabilities. For tips on presenting your skills effectively, read
+          our guide on{" "}
+          <Link to="/blog/how-to-list-skills" className="text-accent hover:underline font-semibold">
+            how to list skills on a resume
+          </Link>.
         </p>
 
         <div className="grid md:grid-cols-1 gap-6 my-8">

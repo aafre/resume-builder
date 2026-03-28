@@ -5,6 +5,7 @@ Disallow: /auth/
 Disallow: /editor
 Disallow: /my-resumes
 Disallow: /error/
+Disallow: /cdn-cgi/
 
 # AI Search Crawlers - explicitly allow for AI-powered search
 User-agent: GPTBot
