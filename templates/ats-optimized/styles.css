@@ -28,18 +28,6 @@ a {
     line-height: 2;
 }
 
-.contact-item {
-    display: inline;
-    white-space: nowrap;
-    margin: 0 5px;
-}
-
-.contact-icon {
-    width: 11px;
-    height: 11px;
-    vertical-align: -1px;
-    margin-right: 2px;
-}
 
 .header-rule {
     border: none;
@@ -135,27 +123,23 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 1px;
-}
-
-.job-line {
-    font-size: 10pt;
-    line-height: 1.3;
 }
 
 .job-title {
+    font-size: 10pt;
     font-weight: bold;
 }
 
 .job-company {
-    font-weight: normal;
+    font-size: 9.5pt;
+    color: #444;
+    margin: 0 0 2px 0;
 }
 
 .job-dates {
     font-size: 9pt;
     color: #666;
     white-space: nowrap;
-    padding-left: 8px;
 }
 
 .experience-item ul {

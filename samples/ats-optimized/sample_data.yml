@@ -60,7 +60,7 @@ sections:
       - degree: "Bachelor of Science in Computer Science"
         school: "University of California, Berkeley"
         year: "2017"
-        gpa: "3.74 GPA"
+        gpa: "3.74/4.0"
 
   - name: Technical Skills
     type: grouped-list
