@@ -8,16 +8,16 @@ export interface DocumentSettingsPanelProps {
 }
 
 const COLOR_PRESETS = [
-  { name: "Black", value: "#000000" },
-  { name: "Blue", value: "#2563EB" },
-  { name: "Teal", value: "#0D9488" },
-  { name: "Slate", value: "#475569" },
-  { name: "Green", value: "#16A34A" },
-  { name: "Burgundy", value: "#991B1B" },
-  { name: "Charcoal", value: "#1F2937" },
-  { name: "Navy", value: "#1E3A5F" },
-  { name: "Terracotta", value: "#C2410C" },
-  { name: "Purple", value: "#7C3AED" },
+  { name: "Graphite", value: "#2D3436" },
+  { name: "Midnight Ink", value: "#0A2647" },
+  { name: "Racing Green", value: "#1B4332" },
+  { name: "Oxblood", value: "#4A0E0E" },
+  { name: "Dark Petrol", value: "#2C3639" },
+  { name: "Aubergine", value: "#3C1874" },
+  { name: "Juniper", value: "#1A3636" },
+  { name: "Espresso", value: "#4A3728" },
+  { name: "Steel Blue", value: "#1B2838" },
+  { name: "True Black", value: "#000000" },
 ] as const;
 
 const FONT_OPTIONS = [

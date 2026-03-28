@@ -14,8 +14,8 @@
 
     <link rel="stylesheet" href="{{ css_path }}">
 
-    {% set accent = settings.accent_color | default('#333333') if settings else '#333333' %}
-    {% if accent != '#333333' %}
+    {% set accent = settings.accent_color | default('#2D3436') if settings else '#2D3436' %}
+    {% if accent != '#2D3436' %}
     <style>
         .section-heading { color: {{ accent }}; border-bottom-color: {{ accent }}; }
     </style>

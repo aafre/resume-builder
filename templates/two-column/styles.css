@@ -88,8 +88,8 @@ a {
     letter-spacing: 0.5px;
     margin: 14px 0 6px 0;
     padding-bottom: 3px;
-    border-bottom: 1.5px solid currentColor;
-    color: #0D9488;
+    border-bottom: 1.5px solid #0A2647;
+    color: #0A2647;
 }
 
 .main-col .section:first-child .section-heading,
@@ -98,7 +98,7 @@ a {
 }
 
 .section {
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 }
 
 /* ── Text section ──────────────────────────────────────── */
@@ -152,7 +152,7 @@ a {
     padding: 2px 8px;
     border-radius: 3px;
     background-color: rgba(13, 148, 136, 0.09);
-    color: #0D9488;
+    color: #0A2647;
     white-space: nowrap;
 }
 
@@ -182,15 +182,15 @@ a {
 /* ── Grouped list ──────────────────────────────────────── */
 
 .grouped-list-item {
-    margin: 6px 0;
+    margin: 8px 0;
     font-size: 9pt;
-    line-height: 1.35;
+    line-height: 1.4;
 }
 
 /* ── Experience ────────────────────────────────────────── */
 
 .experience-item {
-    margin-bottom: 10px;
+    margin-bottom: 14px;
     page-break-inside: avoid;
 }
 

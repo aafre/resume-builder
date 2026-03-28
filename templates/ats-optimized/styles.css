@@ -1,7 +1,7 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 10pt;
-    line-height: 1.15;
+    line-height: 1.1;
     margin: 0;
     padding: 0;
     color: #000;
@@ -34,7 +34,7 @@ a {
 }
 
 .section {
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .section-heading {
@@ -42,14 +42,14 @@ a {
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    color: #333;
-    margin: 16px 0 0 0;
-    padding-bottom: 4px;
-    border-bottom: 1.5px solid #333;
+    color: #2D3436;
+    margin: 14px 0 0 0;
+    padding-bottom: 3px;
+    border-bottom: 1.5px solid #2D3436;
 }
 
 .section:first-child .section-heading {
-    margin-top: 6px;
+    margin-top: 4px;
 }
 
 .text-content {
@@ -113,7 +113,7 @@ a {
 }
 
 .experience-item {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     page-break-inside: avoid;
 }
 
