@@ -16,7 +16,7 @@ contact_info:
 sections:
   - name: Professional Summary
     type: text
-    content: "Results-driven software engineer with 6+ years of experience designing and building scalable distributed systems at high-growth fintech companies. Proven track record of delivering high-impact features serving millions of users, reducing infrastructure costs by 35%, and leading cross-functional initiatives from concept to production. Passionate about performance optimization, developer experience, and mentoring junior engineers to accelerate their growth."
+    content: "Senior software engineer specializing in payment infrastructure and real-time fraud systems. 6+ years building Go and Python services that process 50M+ daily transactions at Stripe and Coinbase. Led the migration from monolith to event-driven microservices that cut deployment cycles from weekly to daily. Currently focused on distributed tracing, API gateway design, and reducing false positive rates in ML-based fraud detection pipelines."
 
   - name: Experience
     type: experience
@@ -89,13 +89,6 @@ sections:
       - "Core maintainer of go-resilience (2.8K GitHub stars), a Go library for circuit breakers, retries, and rate limiting in distributed systems"
       - "Published 'Practical Strategies for Migrating Monoliths to Microservices' — The Pragmatic Engineer Newsletter, Oct 2023"
       - "Speaker at GopherCon 2023 — 'Building Low-Latency Order Books in Go'"
-
-  - name: Key Achievements
-    type: bulleted-list
-    content:
-      - "Promoted to Senior Software Engineer within 18 months at Stripe (typical timeline: 2.5 years)"
-      - "Reduced Stripe's fraud detection false positive rate by 28%, saving an estimated $15M in annual chargeback costs"
-      - "Led on-call rotation for Tier 1 payment services (99.99% SLA) across 3 time zones"
 
   - name: Volunteer & Mentoring
     type: bulleted-list
