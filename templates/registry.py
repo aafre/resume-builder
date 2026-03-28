@@ -101,6 +101,18 @@ _register(
 
 _register(
     TemplateConfig(
+        id="student",
+        dir="ats-optimized",
+        engine=TemplateEngine.html,
+        sample="samples/student/sample_data.yml",
+        name="Student",
+        description="Education-first layout designed for students and first-time job seekers.",
+        preview="student.png",
+    )
+)
+
+_register(
+    TemplateConfig(
         id="classic-alex-rivera",
         dir="classic",
         engine=TemplateEngine.latex,
