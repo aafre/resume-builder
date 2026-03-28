@@ -8,6 +8,7 @@ export default function CopilotResumePrompts() {
       title="20+ Microsoft Copilot Prompts for Resume Writing (2026)"
       description="Best Microsoft Copilot prompts for resume writing: professional summaries, experience bullets, ATS keywords, skills, and cover letters. Copy-paste ready for Copilot in Bing, Edge, and Microsoft 365."
       publishDate="2026-03-05"
+      lastUpdated="2026-03-22"
       readTime="14 min"
       keywords={[
         'copilot resume prompts',
@@ -24,7 +25,10 @@ export default function CopilotResumePrompts() {
           Microsoft Copilot is built into the tools millions already use &mdash; Bing, Edge, Windows,
           and Microsoft 365. That makes it one of the most accessible AI assistants for resume writing
           in 2026. These 20+ prompts are organized by task so you can copy, paste, and start improving
-          your resume immediately.
+          your resume immediately. For a broader look at how AI can help with resumes, see our{' '}
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
+            complete AI resume writing guide
+          </Link>.
         </p>
 
         {/* Table of Contents */}
@@ -285,6 +289,10 @@ export default function CopilotResumePrompts() {
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
           Copilot&rsquo;s web access is a real advantage for cover letters &mdash; it can research the
           company, find recent news, and weave genuine details into your letter instead of generic praise.
+          For prompts that work across all AI tools, check out our{' '}
+          <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline">
+            AI cover letter prompts guide
+          </Link>.
         </p>
 
         <div className="space-y-6">
@@ -505,6 +513,34 @@ export default function CopilotResumePrompts() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* AI Resume Tools */}
+        <div className="my-12">
+          <h2 className="text-2xl font-bold text-ink mb-2">Explore Other AI Resume Tools</h2>
+          <p className="text-stone-warm font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Link to="/blog/chatgpt-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">ChatGPT Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for creative writing and natural language</p>
+            </Link>
+            <Link to="/blog/claude-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Claude Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for analysis, structured output, and nuance</p>
+            </Link>
+            <Link to="/blog/gemini-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Gemini Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for research and Google ecosystem integration</p>
+            </Link>
+            <Link to="/blog/grok-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Grok Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for conversational iteration and real-time feedback</p>
+            </Link>
+            <Link to="/blog/deepseek-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">DeepSeek Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for technical roles and coding resumes</p>
+            </Link>
+          </div>
         </div>
 
         {/* FAQ */}

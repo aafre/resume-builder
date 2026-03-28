@@ -4,6 +4,7 @@
  * Target keyword: "zety free alternative"
  */
 
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
@@ -15,12 +16,42 @@ import DownloadCTA from '../shared/DownloadCTA';
 import RevealSection from '../shared/RevealSection';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
+import type { FAQConfig } from '../../types/seo';
+
+const EXTRA_FAQS: FAQConfig[] = [
+  {
+    question: 'Is Zety really free?',
+    answer:
+      'Zety lets you build a resume for free, but downloading it requires payment. You can type your content, choose a template, and preview the result at no cost. The moment you click "Download" you are prompted to start a $2.70 seven-day trial that auto-renews at $24.70 per month. Many users describe this as a bait-and-switch because the paywall only appears after you have invested time creating your resume.',
+  },
+  {
+    question: 'How much does Zety cost?',
+    answer:
+      'Zety offers a 7-day trial for $2.70 that automatically renews into a monthly subscription at $24.70 per month. If you do not cancel within the trial window, you will be charged the full monthly rate. Some users also report difficulty cancelling and unexpected charges. EasyFreeResume has no pricing tiers at all — every feature, template, and download is free.',
+  },
+  {
+    question: 'What does Zety charge for that EasyFreeResume does not?',
+    answer:
+      'Zety charges for PDF downloads, access to premium templates, watermark-free exports, and their AI writing assistant. EasyFreeResume provides all of these features at no cost: free PDF downloads, all templates unlocked, no watermarks, and you can use any free AI (ChatGPT, Claude, Gemini) to write your content before pasting it into our builder.',
+  },
+  {
+    question: 'Can I cancel my Zety subscription?',
+    answer:
+      'Yes, but you need to cancel before the 7-day trial ends to avoid being charged $24.70. To cancel, log into your Zety account, go to Account Settings, and look for subscription management. Some users report the cancellation process is not straightforward. If you have not signed up yet, consider using EasyFreeResume instead — there is nothing to cancel because there is no subscription.',
+  },
+];
 
 export default function ZetyFreeAlternative() {
   const config = SEO_PAGES.zetyAlternative;
+
+  const allFaqs = useMemo(
+    () => [...config.faqs, ...EXTRA_FAQS],
+    [config.faqs],
+  );
+
   const schemas = usePageSchema({
     type: 'software',
-    faqs: config.faqs,
+    faqs: allFaqs,
   });
 
   return (
@@ -89,6 +120,12 @@ export default function ZetyFreeAlternative() {
               ))}
             </ul>
           </div>
+          <p className="text-center mt-6 text-stone-warm font-extralight">
+            See the full breakdown in our{' '}
+            <Link to="/easyfreeresume-vs-zety" className="text-accent hover:underline font-medium">
+              detailed EasyFreeResume vs Zety comparison
+            </Link>.
+          </p>
         </div>
       </RevealSection>
 
@@ -117,7 +154,7 @@ export default function ZetyFreeAlternative() {
           </div>
           <p className="text-center mt-8 text-stone-warm font-extralight">
             Read our detailed{' '}
-            <Link to="/blog/zety-vs-easy-free-resume" className="text-accent hover:underline">
+            <Link to="/easyfreeresume-vs-zety" className="text-accent hover:underline">
               Zety vs EasyFreeResume comparison
             </Link>{' '}
             for a thorough, factual breakdown.
@@ -137,6 +174,7 @@ export default function ZetyFreeAlternative() {
               { label: 'No Payment Builder', href: '/free-resume-builder-no-payment' },
               { label: 'ATS Templates', href: '/templates/ats-friendly' },
               { label: 'Resume Keywords', href: '/resume-keywords' },
+              { label: 'Resume Examples', href: '/examples' },
             ].map((link) => (
               <Link
                 key={link.href}
@@ -150,7 +188,62 @@ export default function ZetyFreeAlternative() {
         </div>
       </RevealSection>
 
-      <FAQSection faqs={config.faqs} />
+      <FAQSection faqs={allFaqs} />
+
+      {/* Compare More Builders */}
+      <RevealSection variant="fade-up">
+        <div className="mb-16 cv-auto cv-h-400">
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4 text-center">
+            Compare More Resume Builders
+          </h2>
+          <p className="text-lg font-extralight text-stone-warm max-w-3xl mx-auto text-center leading-relaxed mb-10">
+            Zety is not the only paid builder. See how EasyFreeResume compares to other popular options.
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              {
+                title: 'EasyFreeResume vs Zety (Full Review)',
+                desc: 'In-depth comparison of pricing, templates, features, and ATS compatibility between EasyFreeResume and Zety.',
+                href: '/easyfreeresume-vs-zety',
+              },
+              {
+                title: 'Best Free Resume Builders 2026',
+                desc: 'Our honest roundup of the best free resume builders available right now, ranked by features and value.',
+                href: '/blog/best-free-resume-builders-2026',
+              },
+              {
+                title: 'FlowCV vs EasyFreeResume',
+                desc: 'How FlowCV compares on pricing, template quality, and free-tier limitations.',
+                href: '/blog/flowcv-vs-easy-free-resume',
+              },
+              {
+                title: 'Resume.io vs EasyFreeResume',
+                desc: 'Side-by-side comparison with Resume.io on cost, templates, and download options.',
+                href: '/blog/resume-io-vs-easy-free-resume',
+              },
+              {
+                title: 'Resume Genius vs EasyFreeResume',
+                desc: 'Feature comparison with Resume Genius covering pricing, ATS optimization, and ease of use.',
+                href: '/blog/resume-genius-vs-easy-free-resume',
+              },
+              {
+                title: 'ATS-Friendly Templates',
+                desc: 'Browse our collection of free, ATS-optimized resume templates designed to pass automated screening.',
+                href: '/templates/ats-friendly',
+              },
+            ].map((guide) => (
+              <Link
+                key={guide.href}
+                to={guide.href}
+                className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 hover:-translate-y-1 block"
+              >
+                <h3 className="font-display text-lg font-bold text-ink mb-2">{guide.title}</h3>
+                <p className="text-stone-warm font-extralight text-sm leading-relaxed">{guide.desc}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </RevealSection>
 
       <DownloadCTA
         title="Done with Zety? Build Your Resume Free"

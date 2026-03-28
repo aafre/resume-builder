@@ -195,12 +195,12 @@ export default function HowToUseResumeKeywords() {
             <p className="text-ink/80 mb-3">
               This is the perfect place for a bulleted list of your hard skills.
               For a detailed guide, read our article on{" "}
-              <a
-                href="/blog/how-to-list-skills-on-resume"
+              <Link
+                to="/blog/how-to-list-skills"
                 className="text-accent hover:text-ink underline"
               >
                 How to List Skills on a Resume
-              </a>
+              </Link>
               .
             </p>
             <div className="bg-white p-4 rounded-lg text-sm">
@@ -250,12 +250,12 @@ export default function HowToUseResumeKeywords() {
           Simply listing keywords is not enough. To impress both the ATS and the
           human recruiter, you need to provide context and quantify your
           results. For more on this, check out our guide on{" "}
-          <a
-            href="/blog/quantify-resume-accomplishments"
+          <Link
+            to="/blog/quantify-resume-accomplishments"
             className="text-accent hover:text-ink underline"
           >
             How to Quantify Your Resume Accomplishments
-          </a>
+          </Link>
           .
         </p>
 
