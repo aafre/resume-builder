@@ -59,7 +59,7 @@ a {
     color: #2D3436;
     margin: 18px 0 2px 0;
     padding-bottom: 2px;
-    border-bottom: 1.5px solid #2D3436;
+    border-bottom: 0.75px solid #999;
 }
 
 .text-content {
