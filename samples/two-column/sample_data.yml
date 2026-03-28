@@ -55,6 +55,14 @@ sections:
           - "Developed an internal React component library adopted by 5 project teams, reducing frontend scaffolding time by 60%"
           - "Contributed to an open-source accessibility audit tool that scanned WCAG 2.1 compliance across client portals"
 
+      - company: "University of Edinburgh"
+        title: "Software Engineering Intern"
+        dates: "Jun 2018 – Aug 2018"
+        description:
+          - "Built a data visualization dashboard for the School of Informatics research group using D3.js and Python Flask"
+          - "Processed and visualized 2M+ records from Edinburgh's IoT sensor network for urban planning research"
+          - "Presented findings at the university's annual Computer Science showcase, winning Best Undergraduate Demo"
+
   - name: Technical Skills
     type: grouped-list
     content:
