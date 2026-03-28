@@ -175,6 +175,17 @@
             \end{itemize}\vspace{0.5em}
         \BLOCK{endif}
 
+    \BLOCK{elif section_type == "grouped-list"}
+        \BLOCK{for group in section.content}
+            \BLOCK{if group is mapping and group.label is defined}
+                \BLOCK{set group_items = group['items']}
+                \textbf{\VAR{group.label | markdown_links | markdown_formatting}:} \VAR{group_items | join(', ') | markdown_links | markdown_formatting} \\[2pt]
+            \BLOCK{else}
+                \VAR{group | markdown_links | markdown_formatting} \\[2pt]
+            \BLOCK{endif}
+        \BLOCK{endfor}
+        \vspace{0.5em}
+
     \BLOCK{elif section_type == "experience"}
         \BLOCK{for job in section.content}
             \rjobtitle{\VAR{job.title | markdown_links | markdown_formatting}}

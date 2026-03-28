@@ -71,6 +71,8 @@
             {% include 'icon-list.html' %}
         {% elif section.type == "dynamic-column-list" %}
             {% include 'dynamic-column-list.html' %}
+        {% elif section.type == "grouped-list" %}
+            {% include 'grouped-list.html' %}
         {% elif section.type == "experience" or section.name == "Experience" %}
             {% include 'experience.html' %}
         {% elif section.type == "education" or section.name == "Education" %}
