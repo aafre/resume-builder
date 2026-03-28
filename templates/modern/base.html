@@ -24,6 +24,14 @@
     
     <!-- Link custom CSS file -->
     <link rel="stylesheet" href="{{ css_path }}">
+
+    <!-- Accent colour override (from settings.accent_color) -->
+    {% if settings and settings.accent_color and settings.accent_color != '#000000' %}
+    <style>
+        .section-heading { color: {{ settings.accent_color }}; }
+        .divider { background: {{ settings.accent_color }}; }
+    </style>
+    {% endif %}
 </head>
 <body>
     <!-- Header Section -->

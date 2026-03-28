@@ -278,6 +278,11 @@ def generate_pdf(
         contact_info["linkedin_handle"] = ""
         contact_info["linkedin_display"] = ""
 
+    # Extract document settings (accent colour, page numbers, etc.)
+    settings = data.get("settings", {})
+    if not isinstance(settings, dict):
+        settings = {}
+
     # Render HTML with data
     logging.info(f"Rendering HTML template for: {template_name}")
 
@@ -288,6 +293,7 @@ def generate_pdf(
         icon_path=data["icon_path"],
         css_path=data["css_path"],
         font=data.get("font", "Arial"),
+        settings=settings,
     )
 
     # Ensure output directory exists
@@ -322,6 +328,12 @@ def generate_pdf(
     # Merge per-template PDF options (e.g., page-size: A4 for UK CV)
     if pdf_options:
         options.update(pdf_options)
+
+    # Apply page number settings from YAML settings object
+    if settings.get("show_page_numbers"):
+        options["footer-center"] = "[page]"
+        options["footer-font-size"] = "9"
+        options["footer-font-name"] = settings.get("footer_font", "Arial")
 
     logging.info(f"Converting HTML file to PDF using wkhtmltopdf")
     logging.debug(f"pdfkit options: {options}")

@@ -764,6 +764,12 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
         latex_env.filters["markdown_links"] = convert_markdown_links_to_latex
         latex_env.filters["markdown_formatting"] = convert_markdown_formatting_to_latex
 
+        # Extract document settings for LaTeX rendering
+        settings = yaml_data.get("settings", {})
+        if not isinstance(settings, dict):
+            settings = {}
+        prepared_data["settings"] = settings
+
         # Render the LaTeX template
         template = latex_env.get_template("resume.tex")
         latex_content = template.render(**prepared_data)
