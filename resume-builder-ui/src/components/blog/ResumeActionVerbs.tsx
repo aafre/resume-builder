@@ -1,6 +1,29 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 
+const FAQS = [
+  {
+    question: "What are the best action verbs for a resume?",
+    answer: "The best action verbs depend on your role, but universally strong choices include Achieved, Led, Developed, Optimized, and Implemented. Choose verbs that match the job description and convey ownership and measurable impact.",
+  },
+  {
+    question: "Should I use the same action verb more than once on my resume?",
+    answer: "No. Repeating the same verb makes your resume feel monotonous. Vary your vocabulary by using synonyms: instead of writing 'Managed' three times, alternate with 'Directed,' 'Supervised,' and 'Coordinated.'",
+  },
+  {
+    question: "Should I use past tense or present tense action verbs?",
+    answer: "Use present tense for your current role (e.g., 'Lead a team of 10') and past tense for all previous positions (e.g., 'Led a team of 10'). Be consistent within each job entry.",
+  },
+  {
+    question: "How do action verbs help with ATS screening?",
+    answer: "ATS systems scan for specific keywords including action verbs commonly found in job descriptions. Using industry-relevant verbs like 'Implemented,' 'Analyzed,' or 'Engineered' increases your keyword match rate and improves your chances of passing automated filters.",
+  },
+  {
+    question: "What words should I avoid on my resume?",
+    answer: "Avoid passive phrases like 'Responsible for,' 'Helped with,' 'Worked on,' and 'Was involved in.' These phrases are vague and fail to demonstrate ownership or measurable results. Replace them with strong action verbs paired with specific achievements.",
+  },
+];
+
 export default function ResumeActionVerbs() {
   return (
     <BlogLayout
@@ -17,6 +40,7 @@ export default function ResumeActionVerbs() {
         "professional resume words",
         "resume vocabulary",
       ]}
+      faqs={FAQS}
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
@@ -780,6 +804,19 @@ export default function ResumeActionVerbs() {
               <strong>Review and revise</strong> to ensure variety and impact in your word choice
             </li>
           </ul>
+        </div>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Frequently Asked Questions
+        </h2>
+
+        <div className="space-y-4 my-6">
+          {FAQS.map((faq, i) => (
+            <div key={i} className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+              <h4 className="font-bold text-ink mb-2">{faq.question}</h4>
+              <p className="text-stone-warm text-sm">{faq.answer}</p>
+            </div>
+          ))}
         </div>
 
         <p className="text-lg leading-relaxed text-stone-warm mt-8">

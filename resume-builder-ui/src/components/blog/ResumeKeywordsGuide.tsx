@@ -1,6 +1,29 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 
+const FAQS = [
+  {
+    question: "How many keywords should I include on my resume?",
+    answer: "Aim for 15-25 unique keywords spread naturally across your summary, skills, and experience sections. Focus on the keywords that appear most frequently in the job description and that you genuinely have experience with.",
+  },
+  {
+    question: "Should I use the exact keywords from the job description?",
+    answer: "Yes. ATS systems often perform literal string matching, so use the exact phrasing from the job posting. If the listing says 'Project Management,' include that exact phrase rather than just 'managed projects.' Also include both acronyms and full terms, such as 'Search Engine Optimization (SEO).'",
+  },
+  {
+    question: "Can keyword stuffing hurt my resume?",
+    answer: "Absolutely. Modern ATS systems can flag resumes with unnatural keyword density, and human recruiters will immediately notice forced or repetitive phrasing. Use keywords naturally within context and pair them with specific achievements and metrics.",
+  },
+  {
+    question: "Where should I place the most important keywords on my resume?",
+    answer: "Place your top 3-5 keywords in the professional summary since it is scanned first. Then weave them into your experience bullet points alongside quantifiable results. Use the skills section as a catch-all for keywords that do not fit naturally elsewhere.",
+  },
+  {
+    question: "How often should I update my resume keywords?",
+    answer: "Update your keywords every time you apply to a new position by analyzing that specific job description. Additionally, review your master keyword list quarterly to add emerging tools, technologies, and certifications relevant to your industry.",
+  },
+];
+
 export default function ResumeKeywordsGuide() {
   return (
     <BlogLayout
@@ -20,6 +43,7 @@ export default function ResumeKeywordsGuide() {
         "ats keywords by industry",
       ]}
       ctaType="resume"
+      faqs={FAQS}
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
@@ -879,6 +903,19 @@ export default function ResumeKeywordsGuide() {
             </li>
             <li>Fine-tune and repeat for each application.</li>
           </ol>
+        </div>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Frequently Asked Questions
+        </h2>
+
+        <div className="space-y-4 my-6">
+          {FAQS.map((faq, i) => (
+            <div key={i} className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+              <h4 className="font-bold text-ink mb-2">{faq.question}</h4>
+              <p className="text-stone-warm text-sm">{faq.answer}</p>
+            </div>
+          ))}
         </div>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">

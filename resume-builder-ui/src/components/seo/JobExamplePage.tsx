@@ -15,7 +15,7 @@ import BreadcrumbsWithSchema from '../shared/BreadcrumbsWithSchema';
 import RevealSection from '../shared/RevealSection';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { loadJobExample, convertToEditorFormat } from '../../utils/yamlLoader';
-import { getRelatedJobs, JOB_CATEGORIES } from '../../data/jobExamples';
+import { getRelatedJobs, getJobExampleBySlug, JOB_CATEGORIES } from '../../data/jobExamples';
 import { getMatchingKeywordSlug, getKeywordJobTitle } from '../../utils/crossLinkHelpers';
 import { useAuth } from '../../contexts/AuthContext';
 import { useResumeCreate } from '../../hooks/useResumeCreate';
@@ -106,6 +106,7 @@ export default function JobExamplePage() {
 
   // Compute derived values (always computed to maintain hook order)
   const relatedJobs = slug ? getRelatedJobs(slug, 4) : [];
+  const dbEntry = slug ? getJobExampleBySlug(slug) : undefined;
   const categoryInfo = data ? JOB_CATEGORIES.find(c => c.id === data.meta.category) : null;
   const faqs: FAQConfig[] = data?.customFaqs || (data ? generateFAQs(data) : []);
   const matchingKeywordSlug = slug ? getMatchingKeywordSlug(slug) : null;
@@ -254,6 +255,15 @@ export default function JobExamplePage() {
 
       {/* Hero Section */}
       <PageHero config={heroConfig} />
+
+      {/* Career Outlook Intro */}
+      {(dbEntry?.careerOutlook || data.meta.careerOutlook) && (
+        <div className="max-w-4xl mx-auto mb-8 px-4">
+          <p className="text-lg font-extralight text-stone-warm leading-relaxed">
+            {dbEntry?.careerOutlook || data.meta.careerOutlook}
+          </p>
+        </div>
+      )}
 
       {/* Resume Preview Section */}
       <RevealSection>
