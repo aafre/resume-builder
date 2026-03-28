@@ -11,10 +11,10 @@ contact_info:
   social_links:
     - platform: linkedin
       url: https://linkedin.com/in/priya-sharma
-      display_text: Priya Sharma
+      display_text: linkedin.com/in/priya-sharma
     - platform: github
       url: https://github.com/priyasharma
-      display_text: priyasharma
+      display_text: github.com/priyasharma
     - platform: website
       url: https://priyasharma.dev
       display_text: priyasharma.dev
@@ -22,7 +22,7 @@ contact_info:
 sections:
   - name: Professional Summary
     type: text
-    content: "Full-stack engineer with 5 years of experience building scalable web applications. Passionate about clean architecture, developer experience, and shipping user-facing products that people love."
+    content: "Senior full-stack engineer with 6+ years of experience designing and shipping scalable web applications across fintech, logistics, and consulting. Strong track record of leading cross-functional initiatives, improving developer experience, and delivering measurable product outcomes. Passionate about clean architecture, observability, and building tools that engineers actually want to use."
 
   - name: Experience
     type: experience
@@ -32,23 +32,28 @@ sections:
         dates: "Jan 2023 – Present"
         description:
           - "Led redesign of the business banking dashboard serving 300K+ SMB customers, improving task completion rate by 23%"
-          - "Architected a real-time notification system using WebSockets and Redis Pub/Sub, handling 2M+ daily events"
-          - "Introduced end-to-end TypeScript across 4 microservices, reducing production type errors by 85%"
+          - "Architected a real-time notification system using WebSockets and Redis Pub/Sub, handling 2M+ daily events with 99.95% delivery reliability"
+          - "Introduced end-to-end TypeScript across 4 microservices, reducing production type errors by 85% and cutting onboarding time for new engineers by 40%"
+          - "Mentored 3 mid-level engineers through promotion cycles; facilitated weekly architecture review sessions for the platform team"
+          - "Drove adoption of OpenTelemetry distributed tracing, reducing mean time to resolution for production incidents from 45 minutes to 12 minutes"
 
       - company: "Deliveroo"
         title: "Full-Stack Engineer"
         dates: "Mar 2021 – Dec 2022"
         description:
-          - "Built restaurant onboarding flow that reduced merchant setup time from 5 days to 2 hours"
-          - "Developed A/B testing framework used across 3 product teams, running 40+ experiments quarterly"
-          - "Optimized GraphQL query resolution, cutting average API response time from 450ms to 120ms"
+          - "Built restaurant onboarding flow that reduced merchant setup time from 5 days to 2 hours, directly contributing to 18% growth in new merchant sign-ups"
+          - "Developed A/B testing framework used across 3 product teams, running 40+ experiments quarterly with statistically rigorous feature-flag evaluation"
+          - "Optimized GraphQL query resolution with DataLoader batching and query complexity analysis, cutting average API response time from 450ms to 120ms"
+          - "Implemented server-side rendering for the consumer-facing menu pages, improving Largest Contentful Paint by 1.8s and boosting organic search traffic by 12%"
 
       - company: "ThoughtWorks"
         title: "Junior Consultant Developer"
         dates: "Sep 2019 – Feb 2021"
         description:
-          - "Delivered 3 client projects across fintech and healthcare using agile methodologies"
-          - "Built CI/CD pipelines with GitHub Actions and Terraform, achieving 15-minute deploy cycles"
+          - "Delivered 3 client engagements across fintech and healthcare verticals using agile methodologies and trunk-based development"
+          - "Built CI/CD pipelines with GitHub Actions and Terraform, achieving 15-minute deploy cycles and zero-downtime blue-green deployments"
+          - "Developed an internal React component library adopted by 5 project teams, reducing frontend scaffolding time by 60%"
+          - "Contributed to an open-source accessibility audit tool that scanned WCAG 2.1 compliance across client portals"
 
   - name: Technical Skills
     type: grouped-list
@@ -74,6 +79,24 @@ sections:
     content:
       - "AWS Solutions Architect — Associate (2023)"
       - "Google Cloud Professional Developer (2022)"
+      - "Certified Kubernetes Application Developer — CKAD (2024)"
+      - "HashiCorp Terraform Associate (2023)"
+
+  - name: Personal Projects
+    type: bulleted-list
+    content:
+      - "Devclock — Open-source CLI time tracker for developers built with Go and SQLite; 1.2K GitHub stars"
+      - "Raga ML — Experimental music generation tool using Python and TensorFlow that blends Indian classical ragas with ambient textures"
+      - "London Tech Events — Community site aggregating meetups and conferences across London, built with Next.js and Supabase"
+
+  - name: Interests
+    type: inline-list
+    content:
+      - "Open-source contribution"
+      - "Indian classical music"
+      - "Trail running"
+      - "Specialty coffee"
+      - "Science fiction"
 
   - name: Languages
     type: inline-list

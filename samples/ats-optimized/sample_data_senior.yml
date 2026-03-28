@@ -1,0 +1,98 @@
+font: Arial
+
+contact_info:
+  name: Michael Torres
+  location: "New York, NY"
+  email: michael.torres@email.com
+  phone: "+1 (212) 555-0347"
+  social_links:
+    - platform: linkedin
+      url: https://linkedin.com/in/michaeltorres
+      display_text: Michael Torres
+    - platform: github
+      url: https://github.com/mtorres
+      display_text: mtorres
+
+sections:
+  - name: Professional Summary
+    type: text
+    content: "Engineering leader with 16 years of experience spanning individual contribution, team leadership, and executive management. Built and scaled engineering organizations from 5 to 120+ engineers across 3 continents. Delivered platforms handling $30B+ in annual transaction volume with 99.99% uptime. Expertise in distributed systems, cloud architecture, and organizational transformation. Track record of reducing infrastructure costs by 40%+ while improving system reliability."
+
+  - name: Experience
+    type: experience
+    content:
+      - company: "Stripe"
+        title: "Director of Engineering"
+        dates: "Jan 2021 – Present"
+        description:
+          - "Lead 3 engineering teams (45 engineers) responsible for payment processing infrastructure handling $30B+ annual volume"
+          - "Architected migration from monolithic payment service to event-driven microservices, reducing deployment time from 2 weeks to 2 hours"
+          - "Established SRE practices achieving 99.99% uptime across all payment-critical services, up from 99.9%"
+          - "Drove adoption of Kubernetes across 200+ services, reducing infrastructure costs by $4.2M annually"
+          - "Built engineering career ladder and promotion framework, improving retention by 25%"
+
+      - company: "Uber"
+        title: "Senior Engineering Manager"
+        dates: "Mar 2018 – Dec 2020"
+        description:
+          - "Managed 28 engineers across real-time pricing and surge optimization, directly impacting $12B in annual rider revenue"
+          - "Redesigned surge pricing algorithm using ML models, increasing driver supply by 18% during peak hours"
+          - "Led cross-functional initiative to reduce rider app latency by 40%, measured across 50M+ daily active users"
+          - "Mentored 6 senior engineers to manager transitions, building a self-sustaining leadership pipeline"
+
+      - company: "Amazon Web Services"
+        title: "Senior Software Engineer → Principal Engineer"
+        dates: "Aug 2014 – Feb 2018"
+        description:
+          - "Promoted from Senior to Principal Engineer in 3 years (top 2% promotion rate at AWS)"
+          - "Designed the autoscaling architecture for EC2 fleet management serving 1M+ instances"
+          - "Led development of internal capacity planning tool, reducing over-provisioning costs by $50M annually"
+          - "Authored 3 company-wide technical standards adopted across 200+ teams"
+
+      - company: "Bloomberg LP"
+        title: "Software Engineer → Senior Software Engineer"
+        dates: "Jun 2011 – Jul 2014"
+        description:
+          - "Built real-time market data distribution system serving 325,000+ terminal users globally"
+          - "Optimized C++ message serialization layer, reducing network bandwidth by 35% and saving $2M in infrastructure"
+          - "Led team of 5 engineers developing next-generation fixed income analytics platform"
+
+      - company: "Morgan Stanley"
+        title: "Technology Analyst → Associate"
+        dates: "Jul 2008 – May 2011"
+        description:
+          - "Developed automated trade reconciliation system processing 500K+ daily transactions"
+          - "Built risk monitoring dashboard used by 200+ traders across equity derivatives desk"
+          - "Received Technology Innovation Award for real-time P&L calculation engine"
+
+  - name: Education
+    type: education
+    content:
+      - degree: "Master of Science in Computer Science"
+        school: "Columbia University"
+        year: "2008"
+      - degree: "Bachelor of Science in Computer Engineering"
+        school: "University of Michigan"
+        year: "2006"
+
+  - name: Technical Skills
+    type: grouped-list
+    content:
+      - label: "Languages"
+        items: ["Java", "Python", "Go", "C++", "Scala", "TypeScript"]
+      - label: "Cloud & Infrastructure"
+        items: ["AWS", "GCP", "Kubernetes", "Terraform", "Docker", "Kafka", "Datadog"]
+      - label: "Databases"
+        items: ["PostgreSQL", "DynamoDB", "Redis", "Cassandra", "Elasticsearch"]
+      - label: "Architecture"
+        items: ["Microservices", "Event Sourcing", "CQRS", "Domain-Driven Design"]
+      - label: "Leadership"
+        items: ["Engineering Strategy", "Org Design", "Hiring", "M&A Technical Diligence"]
+
+  - name: Certifications & Speaking
+    type: bulleted-list
+    content:
+      - "AWS Solutions Architect — Professional (2022)"
+      - "QCon New York 2023 — 'Scaling Payment Systems Beyond $10B'"
+      - "LeadDev London 2022 — 'Building Engineering Orgs That Scale'"
+      - "O'Reilly Author — 'Distributed Systems Patterns' (2021)"

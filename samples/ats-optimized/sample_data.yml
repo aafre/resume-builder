@@ -16,7 +16,7 @@ contact_info:
 sections:
   - name: Professional Summary
     type: text
-    content: "Results-driven software engineer with 6+ years of experience designing and building scalable distributed systems. Proven track record of delivering high-impact features in fast-paced environments, reducing infrastructure costs by 35%, and mentoring junior engineers. Seeking a senior engineering role at a growth-stage company."
+    content: "Results-driven software engineer with 6+ years of experience designing and building scalable distributed systems at high-growth fintech companies. Proven track record of delivering high-impact features serving millions of users, reducing infrastructure costs by 35%, and leading cross-functional initiatives from concept to production. Passionate about performance optimization, developer experience, and mentoring junior engineers to accelerate their growth."
 
   - name: Experience
     type: experience
@@ -25,25 +25,34 @@ sections:
         title: "Senior Software Engineer"
         dates: "Mar 2022 – Present"
         description:
-          - "Designed and implemented a real-time fraud detection pipeline processing 50M+ transactions daily, reducing false positives by 28%"
-          - "Led migration of payment orchestration service from monolith to microservices, improving deployment frequency from weekly to daily"
+          - "Designed and implemented a real-time fraud detection pipeline processing 50M+ transactions daily, reducing false positives by 28% and saving $3.1M in annual chargeback losses"
+          - "Led migration of payment orchestration service from monolith to microservices architecture, improving deployment frequency from weekly to daily and reducing rollback incidents by 70%"
           - "Mentored 4 junior engineers through structured 1:1 programs, resulting in 2 promotions within 12 months"
-          - "Reduced cloud infrastructure costs by $420K annually through container optimization and autoscaling improvements"
+          - "Reduced cloud infrastructure costs by $420K annually through container right-sizing, autoscaling policy tuning, and spot instance adoption"
 
       - company: "Coinbase"
         title: "Software Engineer"
         dates: "Jun 2019 – Feb 2022"
         description:
-          - "Built order matching engine handling 100K+ concurrent orders with sub-millisecond latency using Go and Redis"
-          - "Implemented comprehensive monitoring and alerting system using Prometheus and Grafana, reducing MTTR by 60%"
-          - "Developed automated compliance reporting pipeline, eliminating 40 hours of manual work per month"
+          - "Built order matching engine handling 100K+ concurrent orders with sub-millisecond latency using Go and Redis, supporting the 2021 trading volume surge without degradation"
+          - "Implemented comprehensive monitoring and alerting system using Prometheus and Grafana, reducing mean time to resolution from 45 minutes to 18 minutes"
+          - "Developed automated compliance reporting pipeline processing 2M+ daily transactions, eliminating 40 hours of manual analyst work per month"
+          - "Designed WebSocket streaming API for real-time market data, adopted by 15+ institutional trading partners"
 
       - company: "Salesforce"
         title: "Associate Software Engineer"
         dates: "Jul 2017 – May 2019"
         description:
-          - "Developed RESTful APIs for customer data platform serving 10M+ daily requests with 99.95% uptime"
-          - "Wrote comprehensive integration test suite achieving 92% code coverage across 3 microservices"
+          - "Developed RESTful APIs for customer data platform serving 10M+ daily requests with 99.95% uptime across 3 geographic regions"
+          - "Wrote comprehensive integration test suite achieving 92% code coverage across 3 microservices, reducing production bug rate by 40%"
+          - "Contributed to internal migration toolkit that automated Heroku-to-Hyperforce transitions for 200+ enterprise customers"
+
+      - company: "Palantir Technologies"
+        title: "Software Engineering Intern"
+        dates: "May 2016 – Aug 2016"
+        description:
+          - "Built data ingestion pipeline for Gotham platform, processing 500GB+ of structured geospatial data from government sources"
+          - "Developed React-based visualization dashboard for analyst workflows, adopted by 3 deployment teams"
 
   - name: Education
     type: education
@@ -51,18 +60,21 @@ sections:
       - degree: "Bachelor of Science in Computer Science"
         school: "University of California, Berkeley"
         year: "2017"
+        gpa: "3.74 GPA"
 
   - name: Technical Skills
     type: grouped-list
     content:
       - label: "Languages"
-        items: ["Go", "Python", "TypeScript", "Java", "SQL"]
+        items: ["Go", "Python", "TypeScript", "Java", "SQL", "Rust"]
       - label: "Infrastructure"
-        items: ["AWS", "Kubernetes", "Docker", "Terraform", "CI/CD"]
+        items: ["AWS (ECS, Lambda, S3, SQS)", "Kubernetes", "Docker", "Terraform", "GitHub Actions"]
       - label: "Databases"
-        items: ["PostgreSQL", "Redis", "DynamoDB", "Elasticsearch"]
+        items: ["PostgreSQL", "Redis", "DynamoDB", "Elasticsearch", "Apache Kafka"]
       - label: "Practices"
-        items: ["Microservices", "Event-Driven Architecture", "TDD", "Agile"]
+        items: ["Microservices", "Event-Driven Architecture", "TDD", "CI/CD", "Agile/Scrum"]
+      - label: "Observability"
+        items: ["Datadog", "Prometheus", "Grafana", "PagerDuty", "OpenTelemetry"]
 
   - name: Certifications
     type: bulleted-list
@@ -70,3 +82,10 @@ sections:
       - "AWS Solutions Architect — Associate (2023)"
       - "Certified Kubernetes Administrator (CKA) (2022)"
       - "Google Cloud Professional Data Engineer (2021)"
+
+  - name: Open Source & Publications
+    type: bulleted-list
+    content:
+      - "Core maintainer of go-resilience (2.8K GitHub stars), a Go library for circuit breakers, retries, and rate limiting in distributed systems"
+      - "Published 'Practical Strategies for Migrating Monoliths to Microservices' — The Pragmatic Engineer Newsletter, Oct 2023"
+      - "Speaker at GopherCon 2023 — 'Building Low-Latency Order Books in Go'"

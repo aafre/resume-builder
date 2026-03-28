@@ -16,35 +16,46 @@ contact_info:
 sections:
   - name: Personal Profile
     type: text
-    content: "An experienced marketing professional with over 8 years in digital marketing strategy, brand management, and campaign execution across B2B and B2C sectors. Proven track record of growing brand awareness by 150% and driving \u00A32.5M in attributable revenue through integrated marketing campaigns. Seeking a Head of Marketing role where I can combine strategic vision with hands-on execution."
+    content: "An experienced marketing professional with over 8 years in digital marketing strategy, brand management, and campaign execution across B2B and B2C sectors. Proven track record of growing brand awareness by 150% and driving £2.5M in attributable revenue through integrated marketing campaigns spanning digital, print, events, and influencer channels. Adept at building high-performing teams, managing six-figure budgets, and translating data-driven insights into commercial growth. Seeking a Head of Marketing role where I can combine strategic vision with hands-on execution to scale brand presence in competitive markets."
 
   - name: Employment History
     type: experience
     content:
       - company: "Barclays"
         title: "Senior Marketing Manager"
-        dates: "April 2021 \u2013 Present"
+        dates: "April 2021 – Present"
         description:
-          - "Lead a team of 8 marketing professionals delivering integrated campaigns across digital, print, and events channels"
-          - "Developed and executed brand repositioning strategy for the SMB banking division, increasing brand awareness by 45%"
-          - "Managed annual marketing budget of \u00A31.8M, consistently delivering campaigns 10% under budget"
-          - "Introduced marketing automation platform (HubSpot), increasing qualified lead generation by 60%"
+          - "Lead a team of 8 marketing professionals delivering integrated campaigns across digital, print, and events channels for the SMB banking division"
+          - "Developed and executed brand repositioning strategy, increasing unaided brand awareness by 45% and consideration by 22% over 18 months"
+          - "Managed annual marketing budget of £1.8M, consistently delivering campaigns 10% under budget while exceeding KPIs"
+          - "Introduced HubSpot marketing automation platform, increasing qualified lead generation by 60% and reducing cost per lead from £42 to £17"
+          - "Launched 'Business Confidence Index' content series generating 2.4M impressions and featured in Financial Times and The Guardian"
 
       - company: "Unilever"
         title: "Digital Marketing Manager"
-        dates: "September 2018 \u2013 March 2021"
+        dates: "September 2018 – March 2021"
         description:
-          - "Managed digital marketing strategy for 3 consumer brands with combined annual revenue of \u00A350M"
-          - "Launched influencer marketing programme generating 12M+ impressions and \u00A3800K in tracked revenue"
+          - "Managed digital marketing strategy for 3 consumer brands (Dove, Ben & Jerry's, Persil) with combined annual revenue of £50M"
+          - "Launched influencer marketing programme across Instagram and TikTok, generating 12M+ impressions and £800K in tracked revenue within first year"
           - "Optimised paid media spend across Google Ads, Meta, and TikTok, improving ROAS from 3.2x to 5.1x"
+          - "Led cross-functional rebrand of Persil's digital presence, resulting in 35% increase in online direct-to-consumer sales"
 
       - company: "Innocent Drinks"
         title: "Marketing Executive"
-        dates: "June 2016 \u2013 August 2018"
+        dates: "June 2016 – August 2018"
         description:
-          - "Coordinated social media strategy across Instagram, Twitter, and Facebook, growing combined following by 200K"
-          - "Managed agency relationships for creative production and media buying"
-          - "Supported launch of 2 new product lines with integrated go-to-market campaigns"
+          - "Coordinated social media strategy across Instagram, Twitter, and Facebook, growing combined following from 180K to 380K"
+          - "Managed relationships with 4 creative agencies for campaign production and media buying, negotiating 15% cost savings on annual retainers"
+          - "Supported launch of 2 new product lines (Innocent Plus and Innocent Dairy Free) with integrated go-to-market campaigns"
+          - "Created monthly performance dashboards using Google Analytics and Sprout Social, presented to senior leadership"
+
+      - company: "Boohoo Group"
+        title: "Marketing Assistant"
+        dates: "September 2014 – May 2016"
+        description:
+          - "Assisted with email marketing campaigns to 3M+ subscriber base, achieving 28% average open rate and 4.2% click-through rate"
+          - "Managed social media content calendar and community engagement across Instagram and Twitter"
+          - "Coordinated logistics for 6 seasonal photoshoots and 2 pop-up retail events in London and Manchester"
 
   - name: "Education & Qualifications"
     type: education
@@ -60,23 +71,42 @@ sections:
     type: grouped-list
     content:
       - label: "Digital Marketing"
-        items: ["SEO/SEM", "Social Media Strategy", "Content Marketing", "Email Marketing", "Marketing Automation"]
+        items: ["SEO/SEM", "Social Media Strategy", "Content Marketing", "Email Marketing", "Marketing Automation", "Influencer Marketing", "CRO"]
       - label: "Analytics & Tools"
-        items: ["Google Analytics 4", "HubSpot", "Salesforce", "Tableau", "Google Ads", "Meta Business Suite"]
+        items: ["Google Analytics 4", "HubSpot", "Salesforce Marketing Cloud", "Tableau", "Google Ads", "Meta Business Suite", "Sprout Social", "Hotjar"]
       - label: "Leadership"
-        items: ["Team Management", "Budget Management", "Stakeholder Engagement", "Agency Management", "Strategic Planning"]
+        items: ["Team Management (up to 12 reports)", "Budget Management", "Stakeholder Engagement", "Agency Management", "Strategic Planning", "P&L Ownership"]
+      - label: "Content & Creative"
+        items: ["Brand Strategy", "Copywriting", "Adobe Creative Suite", "Canva", "Video Production", "A/B Testing"]
+
+  - name: Volunteer Experience
+    type: experience
+    content:
+      - company: "Manchester Digital"
+        title: "Pro Bono Marketing Advisor"
+        dates: "January 2022 – Present"
+        description:
+          - "Provide quarterly marketing strategy reviews for 3 early-stage tech startups in the Manchester Digital accelerator programme"
+          - "Developed go-to-market playbook template adopted by 15+ programme cohort companies"
+      - company: "Parkrun UK"
+        title: "Event Volunteer & Social Media Coordinator"
+        dates: "March 2019 – Present"
+        description:
+          - "Manage social media accounts for Heaton Park Parkrun (2,400+ followers), covering weekly event photography and community engagement"
 
   - name: Professional Development
     type: bulleted-list
     content:
       - "Google Analytics 4 Certification (2024)"
       - "HubSpot Inbound Marketing Certification (2023)"
+      - "Meta Certified Digital Marketing Associate (2023)"
       - "CIM Diploma in Professional Marketing (2020)"
-      - "Google Ads Search Certification (2019)"
+      - "Google Ads Search & Display Certification (2019)"
+      - "Chartered Institute of PR — Crisis Communications Workshop (2022)"
 
   - name: Interests
     type: text
-    content: "Long-distance running (completed 3 marathons), photography, and volunteer marketing consultant for local charities."
+    content: "Long-distance running (completed Manchester, London, and Edinburgh marathons), amateur photography with a focus on street and landscape work, and regular contributor to Marketing Week's community forum."
 
   - name: References
     type: text
