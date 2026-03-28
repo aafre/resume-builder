@@ -67,13 +67,15 @@ sections:
     type: grouped-list
     content:
       - label: "Frontend"
-        items: ["React", "TypeScript", "Next.js", "Tailwind CSS", "Storybook"]
+        items: ["React", "TypeScript", "Next.js", "Tailwind CSS", "Storybook", "Playwright"]
       - label: "Backend"
-        items: ["Node.js", "Python", "Go", "GraphQL", "REST"]
+        items: ["Node.js", "Python", "Go", "GraphQL", "REST", "gRPC"]
       - label: "Infrastructure"
-        items: ["AWS", "Docker", "Kubernetes", "Terraform", "GitHub Actions"]
+        items: ["AWS", "Docker", "Kubernetes", "Terraform", "GitHub Actions", "Datadog"]
       - label: "Databases"
-        items: ["PostgreSQL", "Redis", "MongoDB", "DynamoDB"]
+        items: ["PostgreSQL", "Redis", "MongoDB", "DynamoDB", "Elasticsearch"]
+      - label: "Practices"
+        items: ["TDD", "Trunk-Based Dev", "Observability", "Feature Flags", "A/B Testing"]
 
   - name: Education
     type: education
@@ -97,14 +99,21 @@ sections:
       - "Raga ML — Experimental music generation tool using Python and TensorFlow that blends Indian classical ragas with ambient textures"
       - "London Tech Events — Community site aggregating meetups and conferences across London, built with Next.js and Supabase"
 
+  - name: Awards
+    type: bulleted-list
+    content:
+      - "Monzo Hack Week Winner — AI-powered expense categorisation (2024)"
+      - "Deliveroo Engineering Excellence Award (2022)"
+
   - name: Interests
     type: inline-list
     content:
-      - "Open-source contribution"
+      - "Open-source"
       - "Indian classical music"
       - "Trail running"
       - "Specialty coffee"
       - "Science fiction"
+      - "Board games"
 
   - name: Languages
     type: inline-list

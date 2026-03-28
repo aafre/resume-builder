@@ -74,16 +74,19 @@ sections:
         description:
           - "Architected an **asynchronous FIFO** in Verilog RTL enabling reliable data transfer between **independent clock domains** using Gray-code pointer synchronization"
           - "Constructed key modules including **dual-port memory**, read/write pointers with **pointer width calculation based on FIFO depth**, Gray-code conversion, and full/empty flag logic"
+          - "Verified functionality using simulation-based testbenches, validating correct operation across **CDC scenarios** and back-to-back read/write transactions"
 
   - name: Skills
     type: grouped-list
     content:
-      - label: "Verification Methodologies"
-        items: ["UVM", "Constrained Random Verification", "Functional Coverage", "Assertion-Based Verification (SVA)", "OOPs"]
+      - label: "HDL & Verification"
+        items: ["Verilog", "SystemVerilog", "UVM", "Constrained Random Verification", "Functional Coverage", "SVA", "OOPs"]
       - label: "ASIC & EDA Tools"
         items: ["Cadence Virtuoso", "ModelSim", "Xilinx Vivado", "WinSpice", "LTSpice", "Microwind", "Synopsys Design Compiler"]
       - label: "Programming & Embedded"
         items: ["Python", "C/C++", "Assembly", "TCL", "Linux", "Arduino", "Keil", "Proteus"]
+      - label: "Protocols & Interfaces"
+        items: ["AXI4-Lite", "I2C", "SPI", "UART", "JTAG", "PCIe (basics)"]
 
   - name: Achievements & Certifications
     type: experience
