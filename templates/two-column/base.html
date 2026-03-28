@@ -42,19 +42,19 @@
         <div class="contact-row">
             {% if contact_info.email %}
             <span class="contact-item">
-                <span class="contact-icon">&#9993;</span>
+                <span class="contact-icon">E</span>
                 <a href="mailto:{{ contact_info.email }}">{{ contact_info.email }}</a>
             </span>
             {% endif %}
             {% if contact_info.phone %}
             <span class="contact-item">
-                <span class="contact-icon">&#9742;</span>
+                <span class="contact-icon">P</span>
                 {{ contact_info.phone }}
             </span>
             {% endif %}
             {% if contact_info.location %}
             <span class="contact-item">
-                <span class="contact-icon">&#9906;</span>
+                <span class="contact-icon">L</span>
                 {{ contact_info.location }}
             </span>
             {% endif %}
@@ -62,7 +62,7 @@
                 {% for social_link in contact_info.social_links %}
                     {% if social_link.url and social_link.url.strip() %}
                     <span class="contact-item">
-                        <span class="contact-icon">&#128279;</span>
+                        <span class="contact-icon">W</span>
                         <a href="{{ social_link.url }}">{{ social_link.display_text or social_link.platform | capitalize }}</a>
                     </span>
                     {% endif %}

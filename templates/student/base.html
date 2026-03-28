@@ -18,24 +18,23 @@
     {% if accent != '#333333' %}
     <style>
         .section-heading { color: {{ accent }}; border-bottom-color: {{ accent }}; }
-        .contact-icon { color: {{ accent }}; }
     </style>
     {% endif %}
 </head>
 <body>
     <h1 class="name">{{ contact_info.name }}</h1>
     <p class="contact-line">
-        <span class="contact-icon">&#9993;</span> {{ contact_info.email }}
-        {% if contact_info.phone %} &nbsp;<span class="contact-icon">&#9742;</span> {{ contact_info.phone }}{% endif %}
-        {% if contact_info.location %} &nbsp;<span class="contact-icon">&#128205;</span> {{ contact_info.location }}{% endif %}
+        {{ contact_info.email }}
+        {% if contact_info.phone %} &nbsp;|&nbsp; {{ contact_info.phone }}{% endif %}
+        {% if contact_info.location %} &nbsp;|&nbsp; {{ contact_info.location }}{% endif %}
         {% if contact_info.social_links %}
             {% for social_link in contact_info.social_links %}
                 {% if social_link.url and social_link.url.strip() and social_link.platform %}
-                    &nbsp;<span class="contact-icon">&#128279;</span> <a href="{{ social_link.url }}">{{ social_link.display_text or social_link.handle or social_link.platform | capitalize }}</a>
+                    &nbsp;|&nbsp; <a href="{{ social_link.url }}">{{ social_link.display_text or social_link.handle or social_link.platform | capitalize }}</a>
                 {% endif %}
             {% endfor %}
         {% elif contact_info.linkedin and contact_info.linkedin.strip() %}
-            &nbsp;<span class="contact-icon">&#128279;</span> <a href="{{ contact_info.linkedin }}">{{ contact_info.linkedin_display or contact_info.linkedin_handle }}</a>
+            &nbsp;|&nbsp; <a href="{{ contact_info.linkedin }}">{{ contact_info.linkedin_display or contact_info.linkedin_handle }}</a>
         {% endif %}
     </p>
     <hr class="header-rule">
