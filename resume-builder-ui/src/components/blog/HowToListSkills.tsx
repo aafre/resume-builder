@@ -1,6 +1,29 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 
+const FAQS = [
+  {
+    question: "How many skills should I list on my resume?",
+    answer: "List 8-12 skills that are most relevant to the specific job you are applying for. Too few skills may not pass ATS filters, while too many dilute impact and make it harder for recruiters to identify your core strengths.",
+  },
+  {
+    question: "Should I include soft skills on my resume?",
+    answer: "Yes, but be strategic. Aim for a 60-70% hard skills to 30-40% soft skills ratio. Hard skills get you past ATS filters, while soft skills show cultural fit. Choose specific soft skills like 'Cross-functional Team Leadership' over generic ones like 'Team player.'",
+  },
+  {
+    question: "How do I know which skills to include for a specific job?",
+    answer: "Read the job description carefully and identify the skills mentioned in the requirements and responsibilities sections. Match those skills against your master skills inventory and prioritize the ones you genuinely possess that appear most frequently in the listing.",
+  },
+  {
+    question: "Should I list my proficiency level for each skill?",
+    answer: "Including proficiency levels is optional and depends on the role. It works well for technical positions where employers need to gauge depth of experience, such as 'Python (Expert, 5+ years).' For non-technical roles, a simple bulleted list is usually sufficient.",
+  },
+  {
+    question: "What is the difference between hard skills and soft skills?",
+    answer: "Hard skills are teachable, technical abilities specific to a job, such as programming languages, software proficiency, or data analysis. Soft skills are interpersonal attributes like communication, leadership, and problem-solving that describe how you work and interact with others.",
+  },
+];
+
 export default function HowToListSkills() {
   return (
     <BlogLayout
@@ -16,6 +39,7 @@ export default function HowToListSkills() {
         "technical skills resume",
         "resume examples",
       ]}
+      faqs={FAQS}
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
@@ -801,6 +825,19 @@ export default function HowToListSkills() {
             done right, it can be the difference between getting filtered out by
             ATS and landing in the "yes" pile for human review.
           </p>
+        </div>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Frequently Asked Questions
+        </h2>
+
+        <div className="space-y-4 my-6">
+          {FAQS.map((faq, i) => (
+            <div key={i} className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+              <h4 className="font-bold text-ink mb-2">{faq.question}</h4>
+              <p className="text-stone-warm text-sm">{faq.answer}</p>
+            </div>
+          ))}
         </div>
 
         <p className="text-lg leading-relaxed text-stone-warm mt-8">

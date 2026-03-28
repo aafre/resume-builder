@@ -1,6 +1,29 @@
 import BlogLayout from '../BlogLayout';
 import { Link } from 'react-router-dom';
 
+const FAQS = [
+  {
+    question: "How do I quantify accomplishments if my job doesn't involve numbers?",
+    answer: "Every role has measurable outcomes. Consider time saved, people served, projects completed, satisfaction scores, error reductions, or process improvements. If exact numbers are unavailable, use estimated ranges (e.g., 'approximately 15-20% increase') and be prepared to explain your reasoning.",
+  },
+  {
+    question: "What types of metrics should I include on my resume?",
+    answer: "Focus on three categories: financial metrics (revenue generated, cost savings, ROI), performance metrics (percentages, volume, time saved, quality scores), and scale metrics (team size, geographic scope, market reach). Choose metrics most relevant to your target role.",
+  },
+  {
+    question: "How many quantified accomplishments should each job have?",
+    answer: "Aim for at least 2-3 quantified bullet points per role. Your most recent and relevant positions should have the most detail. Focus on achievements that demonstrate the skills and impact your target employer is looking for.",
+  },
+  {
+    question: "Is it okay to use estimated numbers on a resume?",
+    answer: "Yes, using reasonable estimates is better than no numbers at all. Use qualifiers like 'approximately' or ranges like '15-20%' when exact figures are unavailable. Just ensure your estimates are defensible and be prepared to discuss your methodology in interviews.",
+  },
+  {
+    question: "Where can I find metrics from my previous jobs?",
+    answer: "Check performance reviews, project reports, sales dashboards, analytics tools, financial statements, and team records. You can also calculate metrics retroactively by comparing before-and-after states, goals versus results, or your performance relative to peers.",
+  },
+];
+
 const QuantifyResumeAccomplishments = () => {
   return (
     <BlogLayout
@@ -11,6 +34,7 @@ const QuantifyResumeAccomplishments = () => {
       readTime="14 min"
       keywords={["quantify resume accomplishments", "resume metrics", "resume numbers", "quantified achievements", "resume results", "ATS resume optimization", "resume bullet points with numbers", "accomplishment statements resume"]}
       ctaType="resume"
+      faqs={FAQS}
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
