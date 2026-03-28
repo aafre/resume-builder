@@ -77,6 +77,18 @@ _register(
 
 _register(
     TemplateConfig(
+        id="ats-optimized",
+        dir="ats-optimized",
+        engine=TemplateEngine.html,
+        sample="samples/ats-optimized/sample_data.yml",
+        name="ATS-Optimized",
+        description="Ultra-plain, zero-decoration layout designed for maximum ATS parsability.",
+        preview="ats-optimized.png",
+    )
+)
+
+_register(
+    TemplateConfig(
         id="classic-alex-rivera",
         dir="classic",
         engine=TemplateEngine.latex,

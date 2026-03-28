@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ contact_info.name }}'s Resume</title>
+
+    {% if font %}
+        <link href="https://fonts.googleapis.com/css?family={{ font | replace(' ', '+') }}&display=swap" rel="stylesheet">
+        <style>
+            body { font-family: '{{ font }}', Arial, sans-serif; }
+        </style>
+    {% else %}
+        <style>
+            body { font-family: Arial, Helvetica, sans-serif; }
+        </style>
+    {% endif %}
+
+    <link rel="stylesheet" href="{{ css_path }}">
+</head>
+<body>
+    <h1 class="name">{{ contact_info.name }}</h1>
+    <p class="contact-line">
+        {{ contact_info.location }}
+        {% if contact_info.phone %} | {{ contact_info.phone }}{% endif %}
+        {% if contact_info.email %} | <a href="mailto:{{ contact_info.email }}">{{ contact_info.email }}</a>{% endif %}
+        {% if contact_info.social_links %}
+            {% for social_link in contact_info.social_links %}
+                {% if social_link.url and social_link.url.strip() and social_link.platform %}
+                    | <a href="{{ social_link.url }}">{{ social_link.display_text or social_link.handle or social_link.platform | capitalize }}</a>
+                {% endif %}
+            {% endfor %}
+        {% elif contact_info.linkedin and contact_info.linkedin.strip() %}
+            | <a href="{{ contact_info.linkedin }}">{{ contact_info.linkedin_display or contact_info.linkedin_handle }}</a>
+        {% endif %}
+    </p>
+
+    {% for section in sections %}
+        {% if section.type == "text" %}
+            {% include 'text.html' %}
+        {% elif section.type == "bulleted-list" %}
+            {% include 'bulleted-list.html' %}
+        {% elif section.type == "inline-list" %}
+            {% include 'inline-list.html' %}
+        {% elif section.type == "dynamic-column-list" %}
+            {% include 'dynamic-column-list.html' %}
+        {% elif section.type == "grouped-list" %}
+            {% include 'grouped-list.html' %}
+        {% elif section.type == "experience" or section.name == "Experience" %}
+            {% include 'experience.html' %}
+        {% elif section.type == "education" or section.name == "Education" %}
+            {% include 'education.html' %}
+        {% endif %}
+    {% endfor %}
+</body>
+</html>
