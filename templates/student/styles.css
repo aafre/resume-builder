@@ -23,8 +23,22 @@ a {
 .contact-line {
     font-size: 9pt;
     color: #444;
-    line-height: 1.4;
-    margin: 0 0 12px 0;
+    text-align: center;
+    margin: 0 0 8px 0;
+    line-height: 2;
+}
+
+.contact-item {
+    display: inline;
+    white-space: nowrap;
+    margin: 0 5px;
+}
+
+.contact-icon {
+    width: 11px;
+    height: 11px;
+    vertical-align: -1px;
+    margin-right: 2px;
 }
 
 .header-rule {

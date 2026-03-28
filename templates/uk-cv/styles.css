@@ -22,7 +22,22 @@ a {
 .contact-line {
     font-size: 10pt;
     color: #333;
-    margin: 0 0 12px 0;
+    text-align: center;
+    margin: 0 0 10px 0;
+    line-height: 2;
+}
+
+.contact-item {
+    display: inline;
+    white-space: nowrap;
+    margin: 0 5px;
+}
+
+.contact-icon {
+    width: 12px;
+    height: 12px;
+    vertical-align: -1px;
+    margin-right: 3px;
 }
 
 .section {
