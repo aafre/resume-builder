@@ -89,3 +89,16 @@ sections:
       - "Core maintainer of go-resilience (2.8K GitHub stars), a Go library for circuit breakers, retries, and rate limiting in distributed systems"
       - "Published 'Practical Strategies for Migrating Monoliths to Microservices' — The Pragmatic Engineer Newsletter, Oct 2023"
       - "Speaker at GopherCon 2023 — 'Building Low-Latency Order Books in Go'"
+
+  - name: Key Achievements
+    type: bulleted-list
+    content:
+      - "Promoted to Senior Software Engineer within 18 months at Stripe (typical timeline: 2.5 years)"
+      - "Reduced Stripe's fraud detection false positive rate by 28%, saving an estimated $15M in annual chargeback costs"
+      - "Led on-call rotation for Tier 1 payment services (99.99% SLA) across 3 time zones"
+
+  - name: Volunteer & Mentoring
+    type: bulleted-list
+    content:
+      - "Mentor at Code2040 — guiding 2 early-career Black and Latinx engineers through technical career development (2022 – Present)"
+      - "Mock interview coach for Engineering Fellows at Hack Reactor bootcamp (2021 – Present)"
