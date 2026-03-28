@@ -8,6 +8,7 @@ export default function DeepSeekResumePrompts() {
       title="20+ DeepSeek Prompts for Resume Writing (Copy & Paste Ready) 2026"
       description="Best DeepSeek prompts for resume writing: professional summaries, experience bullets, ATS keywords, skills optimization, and cover letters. Copy-paste ready for DeepSeek V3 and R1."
       publishDate="2026-03-05"
+      lastUpdated="2026-03-22"
       readTime="15 min"
       keywords={[
         'deepseek resume prompts',
@@ -24,7 +25,12 @@ export default function DeepSeekResumePrompts() {
           DeepSeek has emerged as one of the most capable AI models in 2026, rivaling GPT-4 and Claude
           for structured writing tasks. Its reasoning model (DeepSeek-R1) is particularly strong at
           analyzing job descriptions and tailoring resume content. These 20+ prompts are organized by
-          task so you can copy, paste, and customize immediately.
+          task so you can copy, paste, and customize immediately. If you are new to using AI for resumes,
+          start with our{' '}
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
+            comprehensive AI resume writing guide
+          </Link>{' '}
+          for foundational strategies.
         </p>
 
         {/* Table of Contents */}
@@ -285,7 +291,11 @@ export default function DeepSeekResumePrompts() {
 
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
           DeepSeek writes natural-sounding cover letters when given enough context about the role and
-          your background. The key is specificity &mdash; generic inputs produce generic output.
+          your background. The key is specificity &mdash; generic inputs produce generic output. For
+          prompts that work across all AI tools, see our{' '}
+          <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline">
+            AI cover letter prompts guide
+          </Link>.
         </p>
 
         <div className="space-y-6">
@@ -497,6 +507,34 @@ export default function DeepSeekResumePrompts() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* AI Resume Tools */}
+        <div className="my-12">
+          <h2 className="text-2xl font-bold text-ink mb-2">Explore Other AI Resume Tools</h2>
+          <p className="text-stone-warm font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Link to="/blog/chatgpt-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">ChatGPT Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for creative writing and natural language</p>
+            </Link>
+            <Link to="/blog/claude-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Claude Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for analysis, structured output, and nuance</p>
+            </Link>
+            <Link to="/blog/gemini-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Gemini Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for research and Google ecosystem integration</p>
+            </Link>
+            <Link to="/blog/grok-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Grok Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for conversational iteration and real-time feedback</p>
+            </Link>
+            <Link to="/blog/copilot-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Copilot Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for Microsoft 365 integration and Word users</p>
+            </Link>
+          </div>
         </div>
 
         {/* FAQ */}

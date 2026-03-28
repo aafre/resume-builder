@@ -8,6 +8,7 @@ export default function GeminiResumePrompts() {
       title="Best Gemini Resume Prompts (Copy-Paste Ready) 2026"
       description="Top Gemini prompts for resume writing: job description analysis, keyword extraction, bullet optimization. Copy-paste ready for Gemini Advanced and free."
       publishDate="2026-01-21"
+      lastUpdated="2026-03-22"
       readTime="8 min"
       keywords={[
         "gemini resume prompts",
@@ -26,7 +27,7 @@ export default function GeminiResumePrompts() {
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Google Gemini excels at research and analysis tasks, making it particularly useful for
           analyzing job descriptions, extracting keywords, and understanding what companies are
-          looking for. These prompts leverage Gemini's strengths for resume writing.
+          looking for. These prompts leverage Gemini's strengths for resume writing. For a broader look at how AI can transform your job application materials, see our <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">complete AI resume writing guide</Link>.
         </p>
 
         {/* Quick Answer Box */}
@@ -93,6 +94,10 @@ export default function GeminiResumePrompts() {
           Resume Content Prompts
         </h2>
 
+        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+          Once you've analyzed the job description, use these prompts to generate polished resume content. Gemini also works well for <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline">AI-powered cover letter writing</Link> using the same research context.
+        </p>
+
         <div className="space-y-6">
           <CopyablePrompt title="Prompt #4: Achievement Bullets">
               Create achievement-focused resume bullets for my role as [JOB TITLE].<br /><br />
@@ -135,6 +140,10 @@ export default function GeminiResumePrompts() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Optimization Prompts
         </h2>
+
+        <p className="text-lg leading-relaxed text-stone-warm mb-6">
+          After generating your content, run it through our <Link to="/resume-keyword-scanner" className="text-accent hover:underline">free ATS keyword scanner</Link> to verify your resume matches the job description before submitting.
+        </p>
 
         <div className="space-y-6">
           <CopyablePrompt title="Prompt #7: Resume-JD Match Score">
@@ -198,6 +207,34 @@ export default function GeminiResumePrompts() {
             Gemini can access current web information. Ask it to research specific companies,
             industry trends, or salary data to better inform your resume strategy.
           </p>
+        </div>
+
+        {/* AI Resume Tools */}
+        <div className="my-12">
+          <h2 className="text-2xl font-bold text-ink mb-2">Explore Other AI Resume Tools</h2>
+          <p className="text-stone-warm font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Link to="/blog/chatgpt-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">ChatGPT Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for creative writing and natural language</p>
+            </Link>
+            <Link to="/blog/claude-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Claude Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for analysis, structured output, and nuance</p>
+            </Link>
+            <Link to="/blog/grok-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Grok Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for conversational iteration and real-time feedback</p>
+            </Link>
+            <Link to="/blog/deepseek-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">DeepSeek Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for technical roles and coding resumes</p>
+            </Link>
+            <Link to="/blog/copilot-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Copilot Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for Microsoft 365 integration and Word users</p>
+            </Link>
+          </div>
         </div>
 
         <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">

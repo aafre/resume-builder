@@ -681,6 +681,34 @@ export default function ClaudeResumePrompts() {
           </div>
         </div>
 
+        {/* AI Resume Tools */}
+        <div className="my-12">
+          <h2 className="text-2xl font-bold text-ink mb-2">Explore Other AI Resume Tools</h2>
+          <p className="text-stone-warm font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Link to="/blog/chatgpt-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">ChatGPT Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for creative writing and natural language</p>
+            </Link>
+            <Link to="/blog/gemini-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Gemini Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for research and Google ecosystem integration</p>
+            </Link>
+            <Link to="/blog/grok-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Grok Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for conversational iteration and real-time feedback</p>
+            </Link>
+            <Link to="/blog/deepseek-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">DeepSeek Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for technical roles and coding resumes</p>
+            </Link>
+            <Link to="/blog/copilot-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Copilot Resume Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for Microsoft 365 integration and Word users</p>
+            </Link>
+          </div>
+        </div>
+
         <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Format Your Claude-Generated Content

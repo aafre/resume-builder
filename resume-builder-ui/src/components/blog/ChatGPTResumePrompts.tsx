@@ -8,6 +8,7 @@ export default function ChatGPTResumePrompts() {
       title="25+ ChatGPT Prompts for Resume Writing (Copy & Paste Ready)"
       description="Get the best ChatGPT prompts for writing resume summaries, experience bullets, skills sections, and more. Copy-paste ready prompts that actually work in 2026."
       publishDate="2026-01-21"
+      lastUpdated="2026-03-22"
       readTime="12 min"
       keywords={[
         "chatgpt resume prompts",
@@ -23,8 +24,11 @@ export default function ChatGPTResumePrompts() {
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
           ChatGPT can be a powerful tool for writing your resume, but only if you know how to prompt it correctly.
-          Generic prompts give generic results. These carefully crafted prompts will help you create compelling,
-          personalized resume content that actually stands out.
+          Generic prompts give generic results. These carefully crafted prompts — part of our{" "}
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
+            comprehensive AI resume writing guide
+          </Link>
+          {" "}— will help you create compelling, personalized resume content that actually stands out.
         </p>
 
         {/* Quick Answer Box */}
@@ -280,6 +284,14 @@ export default function ChatGPTResumePrompts() {
             4. Suggested revisions for key bullets
           </CopyablePrompt>
 
+          <p className="text-stone-warm text-lg leading-relaxed">
+            Want to verify your keyword optimization? Try our free{" "}
+            <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+              Resume Keyword Scanner
+            </Link>
+            {" "}to instantly compare your resume against any job description.
+          </p>
+
           <CopyablePrompt
             title="Prompt #19: Quantification Helper"
             bestFor="Adding impact through quantification"
@@ -398,6 +410,42 @@ export default function ChatGPTResumePrompts() {
             </Link>
           </li>
         </ol>
+
+        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+          Once your resume is polished, use the same AI approach for your cover letter. Check out our{" "}
+          <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline font-medium">
+            AI cover letter prompts
+          </Link>
+          {" "}to create a matching, personalized cover letter.
+        </p>
+
+        {/* AI Resume Tools */}
+        <div className="my-12">
+          <h2 className="text-2xl font-bold text-ink mb-2">Explore Other AI Resume Tools</h2>
+          <p className="text-stone-warm font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Link to="/blog/claude-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Claude Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for analysis, structured output, and nuance</p>
+            </Link>
+            <Link to="/blog/gemini-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Gemini Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for research and Google ecosystem integration</p>
+            </Link>
+            <Link to="/blog/grok-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Grok Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for conversational iteration and real-time feedback</p>
+            </Link>
+            <Link to="/blog/deepseek-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">DeepSeek Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for technical roles and coding resumes</p>
+            </Link>
+            <Link to="/blog/copilot-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">Copilot Prompts</h3>
+              <p className="text-sm text-stone-warm">Best for Microsoft 365 integration and Word users</p>
+            </Link>
+          </div>
+        </div>
 
         <div className="my-12 bg-ink text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">

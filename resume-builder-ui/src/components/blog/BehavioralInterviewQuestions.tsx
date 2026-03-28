@@ -1,6 +1,29 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 
+const FAQS = [
+  {
+    question: "What is the STAR method for behavioral interview questions?",
+    answer: "The STAR method is a structured framework for answering behavioral questions: Situation (set the context), Task (explain the challenge), Action (describe the specific steps you took), and Result (share the outcomes with quantifiable data). It helps you give clear, concise, and compelling answers.",
+  },
+  {
+    question: "How long should a STAR response be?",
+    answer: "Aim for 1-2 minutes per answer. Keep your response concise by spending about 10% on the Situation, 10% on the Task, 60% on the Action, and 20% on the Result. Focus on your specific contributions and quantify results whenever possible.",
+  },
+  {
+    question: "How many STAR stories should I prepare before an interview?",
+    answer: "Prepare at least 8-10 STAR stories covering different competencies such as leadership, teamwork, problem-solving, conflict resolution, and handling pressure. Each story can often be adapted to answer multiple types of behavioral questions.",
+  },
+  {
+    question: "What if I don't have work experience for behavioral questions?",
+    answer: "You can draw from academic projects, volunteer work, internships, extracurricular activities, or personal challenges. Interviewers care about how you approach situations, not just where the experience comes from. Focus on transferable skills and lessons learned.",
+  },
+  {
+    question: "How do I answer 'Tell me about a time you failed'?",
+    answer: "Choose a genuine but not catastrophic failure. Briefly describe the situation and what went wrong, then focus most of your answer on what you learned, the changes you made going forward, and how the experience made you a better professional. Always end on a positive, growth-oriented note.",
+  },
+];
+
 export default function BehavioralInterviewQuestions() {
   return (
     <BlogLayout
@@ -20,6 +43,7 @@ export default function BehavioralInterviewQuestions() {
         "behavioral interview tips",
       ]}
       ctaType="interview"
+      faqs={FAQS}
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
@@ -859,6 +883,18 @@ export default function BehavioralInterviewQuestions() {
           confidence and compelling stories that set you apart from other
           candidates.
         </p>
+
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Frequently Asked Questions
+        </h2>
+        <div className="space-y-6">
+          {FAQS.map((faq, i) => (
+            <div key={i} className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
+              <h3 className="font-bold text-ink mb-2">{faq.question}</h3>
+              <p className="text-stone-warm leading-relaxed">{faq.answer}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </BlogLayout>
   );

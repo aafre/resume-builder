@@ -21,20 +21,20 @@ export const STATIC_URLS: SitemapUrl[] = [
   // New SEO Landing Pages (0.9) - updated footer links today
   { loc: '/actual-free-resume-builder', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-02' },
   { loc: '/free-resume-builder-no-sign-up', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-17' },
-  { loc: '/free-resume-builder-download', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
-  { loc: '/free-resume-builder-no-payment', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
-  { loc: '/ai-resume-builder-free', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
-  { loc: '/zety-free-alternative', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-10' },
+  { loc: '/free-resume-builder-download', priority: 0.9, changefreq: 'monthly', lastmod: '2026-03-22' },
+  { loc: '/free-resume-builder-no-payment', priority: 0.9, changefreq: 'monthly', lastmod: '2026-03-22' },
+  { loc: '/ai-resume-builder-free', priority: 0.9, changefreq: 'monthly', lastmod: '2026-03-22' },
+  { loc: '/zety-free-alternative', priority: 0.9, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/best-free-resume-builder-reddit', priority: 0.9, changefreq: 'monthly', lastmod: '2026-02-17' },
 
   // ATS Keyword Scanner Tool (0.8)
-  { loc: '/resume-keyword-scanner', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
+  { loc: '/resume-keyword-scanner', priority: 0.8, changefreq: 'monthly', lastmod: '2026-03-22' },
 
   // Audience Landing Pages (0.8)
-  { loc: '/free-resume-builder-for-students', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
-  { loc: '/free-resume-builder-for-veterans', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
-  { loc: '/free-resume-builder-for-it-professionals', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
-  { loc: '/free-resume-builder-for-nurses', priority: 0.8, changefreq: 'monthly', lastmod: '2026-02-10' },
+  { loc: '/free-resume-builder-for-students', priority: 0.8, changefreq: 'monthly', lastmod: '2026-03-22' },
+  { loc: '/free-resume-builder-for-veterans', priority: 0.8, changefreq: 'monthly', lastmod: '2026-03-22' },
+  { loc: '/free-resume-builder-for-it-professionals', priority: 0.8, changefreq: 'monthly', lastmod: '2026-03-22' },
+  { loc: '/free-resume-builder-for-nurses', priority: 0.8, changefreq: 'monthly', lastmod: '2026-03-22' },
 
   // UK CV Market Pages (0.9)
   { loc: '/free-cv-builder-no-sign-up', priority: 0.9, changefreq: 'monthly', lastmod: '2026-01-18' },
@@ -92,15 +92,15 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/quantify-resume-accomplishments', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
 
   // New AI Blog Posts (0.5) - recently created
-  { loc: '/blog/chatgpt-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/chatgpt-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/blog/ai-resume-writing-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/claude-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-17' },
-  { loc: '/blog/gemini-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
-  { loc: '/blog/grok-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/gemini-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
+  { loc: '/blog/grok-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/blog/ai-job-description-analyzer', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/ai-resume-review', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
-  { loc: '/blog/deepseek-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
-  { loc: '/blog/copilot-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
+  { loc: '/blog/deepseek-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
+  { loc: '/blog/copilot-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/blog/ai-cover-letter-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
   { loc: '/blog/career-change-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
   { loc: '/blog/resume-employment-gaps', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },

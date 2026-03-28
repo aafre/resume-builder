@@ -1,6 +1,29 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 
+const FAQS = [
+  {
+    question: "How long should my resume be?",
+    answer: "For most professionals, one page is ideal. If you have 10+ years of relevant experience or work in an academic or technical field, two pages are acceptable. Never exceed two pages unless you are writing a CV for academia or research.",
+  },
+  {
+    question: "What is the best resume format for 2026?",
+    answer: "The reverse-chronological format is best for most job seekers because recruiters and ATS systems are familiar with it. It lists your most recent experience first. Use a functional format only if you are changing careers or have significant employment gaps.",
+  },
+  {
+    question: "Should I include a professional summary or objective on my resume?",
+    answer: "A professional summary is recommended for candidates with work experience. It provides a 2-3 sentence snapshot of your skills and achievements. Objectives are outdated; they focus on what you want rather than what you offer the employer.",
+  },
+  {
+    question: "Do I need to tailor my resume for every job application?",
+    answer: "Yes. Tailoring your resume to each job description significantly increases your chances of passing ATS screening and impressing recruiters. Adjust your summary, reorder bullet points, and mirror the language used in the job posting.",
+  },
+  {
+    question: "What file format should I use when submitting my resume?",
+    answer: "Always submit your resume as a PDF unless the job posting specifically requests a different format. PDFs preserve your formatting across all devices and operating systems, ensuring the recruiter sees exactly what you intended.",
+  },
+];
+
 export default function HowToWriteResumeGuide() {
   return (
     <BlogLayout
@@ -20,6 +43,7 @@ export default function HowToWriteResumeGuide() {
         "ATS resume",
       ]}
       ctaType="resume"
+      faqs={FAQS}
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
@@ -770,6 +794,19 @@ export default function HowToWriteResumeGuide() {
           showcase your skills and experience in person. Good luck!
         </p>
 
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Frequently Asked Questions
+        </h2>
+
+        <div className="space-y-4 my-6">
+          {FAQS.map((faq, i) => (
+            <div key={i} className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+              <h4 className="font-bold text-ink mb-2">{faq.question}</h4>
+              <p className="text-stone-warm text-sm">{faq.answer}</p>
+            </div>
+          ))}
+        </div>
+
         {/* Related Guides */}
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 mt-12">
           <h3 className="font-bold text-ink mb-4">
@@ -838,7 +875,6 @@ export default function HowToWriteResumeGuide() {
             </li>
           </ul>
         </div>
-
       </div>
     </BlogLayout>
   );
