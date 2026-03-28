@@ -29,9 +29,9 @@ describe("SectionTypeModal", () => {
 
     const { container } = render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
 
-    // Each card should have an SVG visual (7 section types)
+    // Each card should have an SVG visual (8 section types including grouped-list)
     const svgElements = container.querySelectorAll('svg[aria-hidden="true"]');
-    expect(svgElements.length).toBe(7);
+    expect(svgElements.length).toBe(8);
   });
 
   it("calls onSelect with the correct type and position when a section card is selected and Add button clicked", () => {
@@ -112,9 +112,9 @@ describe("SectionTypeModal", () => {
     render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
 
     // All section cards should be buttons
-    // 7 section cards + 1 cancel button + 1 add section button + 2 position toggle buttons = 11 buttons
+    // 8 section cards + 1 cancel button + 1 add section button + 2 position toggle buttons = 12 buttons
     const sectionButtons = screen.getAllByRole("button");
-    expect(sectionButtons.length).toBe(11);
+    expect(sectionButtons.length).toBe(12);
   });
 
   it("displays 'Certifications' instead of 'Bullet List with Icons'", () => {
@@ -143,9 +143,9 @@ describe("SectionTypeModal", () => {
 
     // Should NOT show "Certifications" when icons not supported
     expect(screen.queryByText("Certifications")).not.toBeInTheDocument();
-    // Should have 6 section cards + 1 cancel button + 1 add section button + 2 position buttons = 10 buttons
+    // Should have 7 section cards + 1 cancel button + 1 add section button + 2 position buttons = 11 buttons
     const sectionButtons = screen.getAllByRole("button");
-    expect(sectionButtons.length).toBe(10);
+    expect(sectionButtons.length).toBe(11);
   });
 
   describe("position selection - segmented control", () => {

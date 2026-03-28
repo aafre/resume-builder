@@ -9,6 +9,7 @@ import {
   InlineListVisual,
   SmartTableVisual,
   CertificationVisual,
+  GroupedListVisual,
 } from './sectionVisuals';
 
 // Position types for section insertion
@@ -85,6 +86,12 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
       title: "Certifications",
       description: "Professional certifications with issuer and dates.",
       Visual: CertificationVisual,
+    },
+    {
+      type: "grouped-list",
+      title: "Grouped List",
+      description: "Categorized items with bold labels. Perfect for skills.",
+      Visual: GroupedListVisual,
     },
   ];
 

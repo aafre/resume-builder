@@ -5,3 +5,4 @@ export { default as BulletedListVisual } from './BulletedListVisual';
 export { default as InlineListVisual } from './InlineListVisual';
 export { default as SmartTableVisual } from './SmartTableVisual';
 export { default as CertificationVisual } from './CertificationVisual';
+export { default as GroupedListVisual } from './GroupedListVisual';
