@@ -28,6 +28,13 @@ a {
     line-height: 2;
 }
 
+.contact-icon {
+    width: 11px;
+    height: 11px;
+    vertical-align: -1px;
+    margin-right: 2px;
+}
+
 .sep {
     color: #aaa;
     margin: 0 2px;
