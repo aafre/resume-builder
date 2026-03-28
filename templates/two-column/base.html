@@ -27,17 +27,6 @@
     <div class="header">
         <h1 class="name">{{ contact_info.name }}</h1>
 
-        {# Render the first text section as the summary paragraph.
-           We use a mutable list to track state across Jinja2 scopes:
-           after rendering, summary_used | length > 1 signals "skip this one". #}
-        {% set summary_used = [] %}
-        {% for section in sections %}
-            {% if section.type == "text" and summary_used | length == 0 %}
-                <p class="summary">{{ section.content | markdown_links | markdown_formatting | safe }}</p>
-                {% if summary_used.append(loop.index) %}{% endif %}
-            {% endif %}
-        {% endfor %}
-
         <p class="contact-line">
             {{ contact_info.location }}
             {% if contact_info.email %} &nbsp;&middot;&nbsp; {{ contact_info.email }}{% endif %}
@@ -50,6 +39,15 @@
                 {% endfor %}
             {% endif %}
         </p>
+
+        {# Render the first text section as the summary paragraph. #}
+        {% set summary_used = [] %}
+        {% for section in sections %}
+            {% if section.type == "text" and summary_used | length == 0 %}
+                <p class="summary">{{ section.content | markdown_links | markdown_formatting | safe }}</p>
+                {% if summary_used.append(loop.index) %}{% endif %}
+            {% endif %}
+        {% endfor %}
     </div>
 
     <hr class="header-rule">
