@@ -22,7 +22,7 @@ contact_info:
 sections:
   - name: Professional Summary
     type: text
-    content: "Senior full-stack engineer with 6+ years of experience designing and shipping scalable web applications across fintech, logistics, and consulting. Strong track record of leading cross-functional initiatives, improving developer experience, and delivering measurable product outcomes. Passionate about clean architecture, observability, and building tools that engineers actually want to use."
+    content: "Senior full-stack engineer with 6+ years of experience designing and shipping scalable web applications across fintech, logistics, and consulting. Strong track record of leading cross-functional initiatives, improving developer experience, and delivering measurable product outcomes. Passionate about clean architecture, observability, and building tools that engineers actually want to use. Experienced in leading teams of 3-8 engineers, establishing engineering best practices, and driving adoption of modern tooling across organisations."
 
   - name: Experience
     type: experience
@@ -45,6 +45,7 @@ sections:
           - "Developed A/B testing framework used across 3 product teams, running 40+ experiments quarterly with statistically rigorous feature-flag evaluation"
           - "Optimized GraphQL query resolution with DataLoader batching and query complexity analysis, cutting average API response time from 450ms to 120ms"
           - "Implemented server-side rendering for the consumer-facing menu pages, improving Largest Contentful Paint by 1.8s and boosting organic search traffic by 12%"
+          - "Designed event-driven order tracking pipeline with Kafka and Node.js, processing 500K+ events per hour with exactly-once delivery guarantees"
 
       - company: "ThoughtWorks"
         title: "Junior Consultant Developer"
@@ -54,6 +55,7 @@ sections:
           - "Built CI/CD pipelines with GitHub Actions and Terraform, achieving 15-minute deploy cycles and zero-downtime blue-green deployments"
           - "Developed an internal React component library adopted by 5 project teams, reducing frontend scaffolding time by 60%"
           - "Contributed to an open-source accessibility audit tool that scanned WCAG 2.1 compliance across client portals"
+          - "Led pair programming workshops and facilitated retrospectives for cross-functional teams of 6-10 engineers"
 
       - company: "University of Edinburgh"
         title: "Software Engineering Intern"

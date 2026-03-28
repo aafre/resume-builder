@@ -116,6 +116,15 @@ a {
     margin-bottom: 14px;
 }
 
+/* Right column gets more breathing room between its many short sections */
+.side-col .section {
+    margin-bottom: 20px;
+}
+
+.side-col .grouped-list-item {
+    margin: 10px 0;
+}
+
 /* ── Text section ──────────────────────────────────────── */
 
 .text-content {
