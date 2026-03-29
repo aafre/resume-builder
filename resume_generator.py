@@ -282,7 +282,7 @@ def generate_pdf(
     settings = data.get("settings", {})
     if not isinstance(settings, dict):
         settings = {}
-    logging.info(f"Document settings: {settings}")
+    logging.debug(f"Document settings: {settings}")
 
     # Render HTML with data
     logging.info(f"Rendering HTML template for: {template_name}")
@@ -346,7 +346,7 @@ def generate_pdf(
         options.setdefault("margin-bottom", "20mm")
 
     logging.info(f"Converting HTML file to PDF using wkhtmltopdf")
-    logging.info(f"pdfkit options: {options}")
+    logging.debug(f"pdfkit options: {options}")
     try:
         pdfkit.from_file(temp_html_file.as_posix(), output_file, options=options)
         logging.info(f"PDF generated successfully at: {output_file}")
