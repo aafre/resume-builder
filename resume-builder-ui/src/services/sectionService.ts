@@ -198,7 +198,7 @@ export const createDefaultSection = (
         content: [
           {
             label: "",
-            items: [""],
+            items: [],
           },
         ],
       };

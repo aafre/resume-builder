@@ -24,7 +24,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . /app/
 
 # Install bundled fonts for deterministic PDF rendering
-RUN cp fonts/bundled/*.ttf /usr/share/fonts/ 2>/dev/null; fc-cache -f
+RUN if ls fonts/bundled/*.ttf > /dev/null 2>&1; then cp fonts/bundled/*.ttf /usr/share/fonts/; fi; fc-cache -f
 
 # Default command (optional: for running a dev server or similar)
 CMD ["bash"]

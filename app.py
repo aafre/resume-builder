@@ -910,6 +910,18 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
     return max_columns  # Default to max columns if all checks pass
 
 
+def _copy_black_icons(session_icons_dir: Path, base_contact_icons: list[str]) -> None:
+    """Copy black monochrome icon variants to session directory."""
+    black_icons_src = ICONS_DIR / "black"
+    if black_icons_src.is_dir():
+        black_icons_dst = session_icons_dir / "black"
+        black_icons_dst.mkdir(exist_ok=True)
+        for icon_name in base_contact_icons:
+            src = black_icons_src / icon_name
+            if src.exists():
+                shutil.copy2(src, black_icons_dst / icon_name)
+
+
 def extract_icons_from_yaml(data):
     """
     Recursively extract all icon filenames referenced in YAML data.
@@ -1931,14 +1943,7 @@ def generate_resume():
                     )
 
             # Copy black icon variants (used by ATS, Student, UK CV templates)
-            black_icons_src = ICONS_DIR / "black"
-            if black_icons_src.is_dir():
-                black_icons_dst = session_icons_dir / "black"
-                black_icons_dst.mkdir(exist_ok=True)
-                for icon_name in base_contact_icons:
-                    src = black_icons_src / icon_name
-                    if src.exists():
-                        shutil.copy2(src, black_icons_dst / icon_name)
+            _copy_black_icons(session_icons_dir, base_contact_icons)
 
             # Copy additional icons referenced in YAML content (only for icon-supporting templates)
             if uses_icons:
@@ -3383,14 +3388,7 @@ def generate_pdf_for_saved_resume(resume_id):
                     logging.warning(f"Base contact icon not found: {icon_name}")
 
             # Copy black icon variants (used by ATS, Student, UK CV templates)
-            black_icons_src = ICONS_DIR / "black"
-            if black_icons_src.is_dir():
-                black_icons_dst = session_icons_dir / "black"
-                black_icons_dst.mkdir(exist_ok=True)
-                for icon_name in base_contact_icons:
-                    src = black_icons_src / icon_name
-                    if src.exists():
-                        shutil.copy2(src, black_icons_dst / icon_name)
+            _copy_black_icons(session_icons_dir, base_contact_icons)
 
             # Extract content icons (from Experience, Education, Certifications, etc.) only for icon-supporting templates
             if uses_icons:
@@ -3647,14 +3645,7 @@ def generate_thumbnail_for_resume(resume_id):
                     logging.warning(f"Base contact icon not found: {icon_name}")
 
             # Copy black icon variants (used by ATS, Student, UK CV templates)
-            black_icons_src = ICONS_DIR / "black"
-            if black_icons_src.is_dir():
-                black_icons_dst = session_icons_dir / "black"
-                black_icons_dst.mkdir(exist_ok=True)
-                for icon_name in base_contact_icons:
-                    src = black_icons_src / icon_name
-                    if src.exists():
-                        shutil.copy2(src, black_icons_dst / icon_name)
+            _copy_black_icons(session_icons_dir, base_contact_icons)
 
             # Extract content icons (from Experience, Education, Certifications, etc.) only for icon-supporting templates
             if uses_icons:

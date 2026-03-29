@@ -68,7 +68,7 @@ const GroupedListSection: React.FC<GroupedListSectionProps> = ({
   );
 
   const handleAddGroup = useCallback(() => {
-    onUpdate([...groups, { label: "", items: [""] }]);
+    onUpdate([...groups, { label: "", items: [] }]);
   }, [groups, onUpdate]);
 
   const handleDeleteGroup = useCallback(
