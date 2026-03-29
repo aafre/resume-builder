@@ -196,7 +196,7 @@ function cleanPrerenderedHtml(html: string, localPort: number): string {
       // Helmet injected a replacement — remove the original (the one WITHOUT data-rh)
       // Match meta tags with this attr=value that do NOT contain data-rh
       const originalPattern = new RegExp(
-        `\\s*<meta\\s+(?!.*data-rh)[^>]*${attr}=["']${escaped}["'][^>]*/?>`,
+        `\\s*<meta\\s+(?![^>]*data-rh)[^>]*${attr}=["']${escaped}["'][^>]*/?>`,
         'gi'
       );
       cleaned = cleaned.replace(originalPattern, '');
