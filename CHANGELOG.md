@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.24.0] - 2026-03-29
+
+### 🚀 Features
+
+- **seo:** Add social media bots to prerendered HTML serving
+
+### 🐛 Bug Fixes
+
+- **seo:** Use BASE_URL instead of window.location.origin in BlogLayout canonical
+- **seo:** Strip duplicate meta tags from prerendered HTML
+- **seo:** Constrain negative lookahead to current tag in meta dedup regex
+
 ## [3.23.0] - 2026-03-28
 
 ### 🚀 Features
