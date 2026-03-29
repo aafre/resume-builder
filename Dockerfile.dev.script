@@ -12,6 +12,8 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     wkhtmltopdf \
     build-essential \
+    fontconfig \
+    fonts-liberation \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
@@ -20,6 +22,9 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copy the application code
 COPY . /app/
+
+# Install bundled fonts for deterministic PDF rendering
+RUN cp fonts/bundled/*.ttf /usr/share/fonts/ 2>/dev/null; fc-cache -f
 
 # Default command (optional: for running a dev server or similar)
 CMD ["bash"]

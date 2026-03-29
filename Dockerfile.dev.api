@@ -8,6 +8,8 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wkhtmltopdf \
     poppler-utils \
+    fontconfig \
+    fonts-liberation \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy only the requirements and install dependencies
@@ -16,6 +18,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the Flask app
 COPY . .
+
+# Install bundled fonts for deterministic PDF rendering
+RUN cp fonts/bundled/*.ttf /usr/share/fonts/ 2>/dev/null; fc-cache -f
 
 # Expose the port that Flask uses
 EXPOSE 5000

@@ -77,6 +77,8 @@ COPY --chown=appuser:appuser jobs_matrix.json ./
 COPY --chown=appuser:appuser templates/ ./templates/
 COPY --chown=appuser:appuser samples/ ./samples/
 COPY --chown=appuser:appuser icons/ ./icons/
+COPY --chown=appuser:appuser fonts/bundled/*.ttf /usr/share/fonts/
+RUN fc-cache -f
 COPY --chown=appuser:appuser docs/templates/ ./docs/templates/
 
 # Copy built React assets from build stage
