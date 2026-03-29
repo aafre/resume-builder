@@ -23,6 +23,8 @@ export interface IconExportData {
 export interface PortableYAMLData {
   contact_info: any;
   sections: any[];
+  // Document-level settings (accent colour, font, page numbers)
+  settings?: Record<string, unknown>;
   // Special section containing all referenced icons
   __icons__?: IconExportData;
 }

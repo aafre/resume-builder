@@ -1,0 +1,132 @@
+font: Arial
+
+settings:
+  show_page_numbers: true
+
+contact_info:
+  name: Michael Torres
+  location: "New York, NY"
+  email: michael.torres@email.com
+  phone: "+1 (212) 555-0347"
+  social_links:
+    - platform: linkedin
+      url: https://linkedin.com/in/michaeltorres
+      display_text: Michael Torres
+    - platform: github
+      url: https://github.com/mtorres
+      display_text: mtorres
+    - platform: website
+      url: https://michaeltorres.dev
+      display_text: michaeltorres.dev
+
+sections:
+  - name: Professional Summary
+    type: text
+    content: "Engineering leader with 16 years of experience spanning individual contribution, team leadership, and executive management. Built and scaled engineering organizations from 5 to 120+ engineers across 3 continents. Delivered platforms handling $30B+ in annual transaction volume with 99.99% uptime. Expertise in distributed systems, cloud architecture, and organizational transformation. Track record of reducing infrastructure costs by 40%+ while improving system reliability and developer productivity."
+
+  - name: Experience
+    type: experience
+    content:
+      - company: "Stripe"
+        title: "Director of Engineering"
+        dates: "Jan 2021 – Present"
+        description:
+          - "Lead 3 engineering teams (45 engineers) responsible for payment processing infrastructure handling $30B+ annual transaction volume across 40+ countries"
+          - "Architected migration from monolithic payment service to event-driven microservices architecture, reducing deployment cycle from 2 weeks to 2 hours and enabling 15 independent team deployments per day"
+          - "Established SRE practices and on-call culture achieving 99.99% uptime across all payment-critical services, up from 99.9%, preventing an estimated $12M in annual revenue loss"
+          - "Drove adoption of Kubernetes across 200+ services, consolidating 8 separate deployment pipelines into a unified platform and reducing infrastructure costs by $4.2M annually"
+          - "Built engineering career ladder and promotion framework adopted company-wide, improving senior engineer retention by 25% and reducing time-to-productivity for new hires from 6 weeks to 2 weeks"
+          - "Led technical due diligence for 2 acquisition targets, evaluating architecture, technical debt, and team capabilities for deals totalling $180M"
+
+      - company: "Uber"
+        title: "Senior Engineering Manager"
+        dates: "Mar 2018 – Dec 2020"
+        description:
+          - "Managed 28 engineers across 3 teams responsible for real-time pricing, surge optimization, and marketplace matching, directly impacting $12B in annual rider revenue"
+          - "Redesigned surge pricing algorithm using gradient-boosted ML models trained on 2B+ historical trips, increasing driver supply by 18% during peak hours while maintaining rider satisfaction scores"
+          - "Led cross-functional initiative with product and data science to reduce rider app latency by 40% (P99: 800ms → 480ms), measured across 50M+ daily active users in 63 countries"
+          - "Mentored 6 senior engineers to engineering manager transitions over 2 years, building a self-sustaining leadership pipeline that eliminated external management hiring"
+          - "Designed and implemented Uber's first engineering-wide incident classification system, reducing MTTR by 35% and enabling data-driven investment in reliability"
+
+      - company: "Amazon Web Services"
+        title: "Senior Software Engineer → Principal Engineer"
+        dates: "Aug 2014 – Feb 2018"
+        description:
+          - "Promoted from Senior to Principal Engineer in 3 years (top 2% promotion rate at AWS), recognized for technical leadership across EC2, Auto Scaling, and internal tooling"
+          - "Designed the autoscaling architecture for EC2 fleet management serving 1M+ instances across 24 regions, handling 500K scaling decisions per minute with sub-second response time"
+          - "Led development of internal capacity planning tool (Project Forecast) that reduced over-provisioning costs by $50M annually and was adopted by 12 AWS service teams"
+          - "Authored 3 company-wide technical standards for service-to-service communication, error handling, and observability, adopted across 200+ teams and 1,400+ microservices"
+          - "Served as bar raiser for 150+ technical interviews, calibrating hiring standards for L6-L8 engineering roles across AWS"
+
+      - company: "Bloomberg LP"
+        title: "Software Engineer → Senior Software Engineer"
+        dates: "Jun 2011 – Jul 2014"
+        description:
+          - "Built real-time market data distribution system serving 325,000+ Bloomberg Terminal users globally with guaranteed message delivery under 5ms latency"
+          - "Optimized C++ message serialization layer using custom binary protocol, reducing network bandwidth by 35% across 40Gbps backbone and saving $2M in infrastructure annually"
+          - "Led team of 5 engineers developing next-generation fixed income analytics platform, delivering pricing models for 500K+ bond instruments"
+          - "Designed failover architecture for market data feeds achieving zero data loss during 3 major exchange outages"
+
+      - company: "Morgan Stanley"
+        title: "Technology Analyst → Associate"
+        dates: "Jul 2008 – May 2011"
+        description:
+          - "Developed automated trade reconciliation system processing 500K+ daily transactions across equity derivatives desk, reducing manual reconciliation effort by 90%"
+          - "Built real-time risk monitoring dashboard used by 200+ traders, displaying live P&L, Greeks, and VaR calculations with sub-second refresh"
+          - "Received Technology Innovation Award (2010) for real-time P&L calculation engine that replaced end-of-day batch processing"
+          - "Implemented FIX protocol gateway handling order routing to 15 external execution venues with 99.97% message delivery rate"
+
+      - company: "Accenture Technology"
+        title: "Software Engineering Intern"
+        dates: "Summer 2007"
+        description:
+          - "Developed automated testing framework for a Fortune 500 bank's online banking platform, reducing regression test cycle from 3 days to 4 hours"
+          - "Received return offer and team commendation for delivering 2 weeks ahead of schedule"
+
+  - name: Education
+    type: education
+    content:
+      - degree: "Master of Science in Computer Science"
+        school: "Columbia University"
+        year: "2008"
+      - degree: "Bachelor of Science in Computer Engineering, magna cum laude"
+        school: "University of Michigan"
+        year: "2006"
+
+  - name: Technical Skills
+    type: grouped-list
+    content:
+      - label: "Languages"
+        items: ["Java", "Python", "Go", "C++", "Scala", "TypeScript", "Rust"]
+      - label: "Cloud & Infrastructure"
+        items: ["AWS (EC2, ECS, Lambda, DynamoDB)", "GCP", "Kubernetes", "Terraform", "Docker", "Kafka", "Datadog", "PagerDuty"]
+      - label: "Databases"
+        items: ["PostgreSQL", "DynamoDB", "Redis", "Cassandra", "Elasticsearch", "Apache Spark"]
+      - label: "Architecture"
+        items: ["Microservices", "Event Sourcing", "CQRS", "Domain-Driven Design", "Service Mesh", "gRPC"]
+      - label: "Leadership"
+        items: ["Engineering Strategy", "Org Design", "Hiring & Bar Raising", "M&A Technical Diligence", "Budget Management", "Vendor Evaluation"]
+
+  - name: Board Memberships & Advisory
+    type: bulleted-list
+    content:
+      - "Advisory Board Member — FinTech Innovation Lab, New York (2023 – Present)"
+      - "Technical Advisor — Series A payments startup, stealth mode (2022 – Present)"
+      - "Mentor — Techstars NYC and First Round Capital Angel Track (2020 – Present)"
+
+  - name: Speaking & Publications
+    type: bulleted-list
+    content:
+      - "QCon New York 2024 — 'Beyond Microservices: Event-Driven Architecture at Stripe Scale'"
+      - "QCon New York 2023 — 'Scaling Payment Systems Beyond $10B'"
+      - "LeadDev London 2022 — 'Building Engineering Orgs That Scale Without Breaking'"
+      - "AWS re:Invent 2017 — 'Autoscaling at AWS: Lessons from 1 Million Instances'"
+      - "O'Reilly Author — 'Distributed Systems Patterns for Financial Applications' (2021)"
+      - "InfoQ Author — 'The Principal Engineer's Guide to Technical Strategy' (2023)"
+
+  - name: Certifications
+    type: bulleted-list
+    content:
+      - "AWS Solutions Architect — Professional (2022)"
+      - "Certified Kubernetes Administrator (CKA) (2021)"
+      - "Stanford Executive Program — Engineering Leadership (2023)"

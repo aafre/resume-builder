@@ -56,8 +56,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         texlive-plain-generic \
         texlive-fonts-extra \
         fontconfig \
+        fonts-liberation \
         curl \
         poppler-utils && \
+    fc-cache -f && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
@@ -75,6 +77,8 @@ COPY --chown=appuser:appuser jobs_matrix.json ./
 COPY --chown=appuser:appuser templates/ ./templates/
 COPY --chown=appuser:appuser samples/ ./samples/
 COPY --chown=appuser:appuser icons/ ./icons/
+COPY --chown=appuser:appuser fonts/bundled/*.ttf /usr/share/fonts/
+RUN fc-cache -f
 COPY --chown=appuser:appuser docs/templates/ ./docs/templates/
 
 # Copy built React assets from build stage

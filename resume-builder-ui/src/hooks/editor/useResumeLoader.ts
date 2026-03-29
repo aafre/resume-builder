@@ -28,6 +28,7 @@ export interface UseResumeLoaderProps {
   templateId: string | null;
   setTemplateId: (id: string | null) => void;
   setSupportsIcons: (supports: boolean) => void;
+  setDocumentSettings: (settings: import('../../types').DocumentSettings) => void;
   setOriginalTemplateData: (data: { contactInfo: ContactInfo; sections: Section[] } | null) => void;
   setLoading: (loading: boolean) => void;
   setLoadingError: (error: string | null) => void;
@@ -93,6 +94,7 @@ export const useResumeLoader = ({
   templateId,
   setTemplateId,
   setSupportsIcons,
+  setDocumentSettings,
   setOriginalTemplateData,
   setLoading,
   setLoadingError,
@@ -217,6 +219,11 @@ export const useResumeLoader = ({
         setTemplateId(resume.template_id); // Get template ID from database
         setCloudResumeId(resume.id);
 
+        // Restore document settings (accent colour, font, page numbers)
+        if (resume.settings && typeof resume.settings === 'object') {
+          setDocumentSettings(resume.settings);
+        }
+
         // Load template structure and metadata (including supportsIcons flag)
         try {
           const { yaml: templateYaml, supportsIcons } = await fetchTemplate(resume.template_id);
@@ -316,6 +323,7 @@ export const useResumeLoader = ({
       setSections,
       setTemplateId,
       setSupportsIcons,
+      setDocumentSettings,
       setOriginalTemplateData,
       iconRegistry,
       setShowAIWarning,

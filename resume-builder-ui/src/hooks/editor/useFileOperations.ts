@@ -3,7 +3,7 @@
 
 import { useState, useCallback, useRef, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
-import { Section, ContactInfo } from '../../types';
+import { Section, ContactInfo, DocumentSettings } from '../../types';
 import { UseFileOperationsReturn } from '../../types/editor';
 import {
   exportResumeAsYAML,
@@ -33,6 +33,8 @@ export interface UseFileOperationsProps {
   isAnonymous: boolean;
   /** Whether current template supports icons */
   supportsIcons: boolean;
+  /** Document settings (accent colour, font, page numbers) */
+  documentSettings?: DocumentSettings;
   /** Function to update original template data (for change detection) */
   setOriginalTemplateData: React.Dispatch<React.SetStateAction<{ contactInfo: ContactInfo; sections: Section[] } | null>>;
   /** Function to enable/disable auto-save after loading */
@@ -80,6 +82,7 @@ export const useFileOperations = ({
   saveBeforeAction,
   isAnonymous,
   supportsIcons,
+  documentSettings,
   setOriginalTemplateData,
   setIsLoadingFromUrl,
   pendingImportFile,
@@ -109,7 +112,7 @@ export const useFileOperations = ({
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Use yamlService to create the export
-      const result = await exportResumeAsYAML(contactInfo, sections, iconRegistry);
+      const result = await exportResumeAsYAML(contactInfo, sections, iconRegistry, documentSettings as Record<string, unknown> | undefined);
 
       // Trigger download
       const url = URL.createObjectURL(result.blob);
