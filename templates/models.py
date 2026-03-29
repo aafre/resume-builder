@@ -58,6 +58,10 @@ class PDFOptions(BaseModel):
             opts["footer-center"] = "[page]"
             opts["footer-font-name"] = self.footer_font_name
             opts["footer-font-size"] = self.footer_font_size
+            # Footer renders inside the bottom margin area — ensure at least
+            # 20mm so the page number is visible and not clipped.
+            if self.margin_bottom is None:
+                opts["margin-bottom"] = "20mm"
 
         return opts
 

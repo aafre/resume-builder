@@ -330,14 +330,20 @@ def generate_pdf(
     if pdf_options:
         options.update(pdf_options)
 
-    # Apply page number settings from YAML settings object
+    # Apply page number settings from YAML settings object.
+    # Note: when invoked via the renderer (app.py -> renderer.py ->
+    # _dispatch_html_pdf_generation), PDFOptions.to_pdfkit_options() already
+    # sets footer-center / footer-font-* / margin-bottom in the pdf_options
+    # dict merged above.  This block acts as a fallback for direct CLI usage
+    # (python resume_generator.py --input ...) where pdf_options may be empty.
     if settings.get("show_page_numbers"):
-        options["footer-center"] = "[page]"
-        options["footer-font-size"] = "9"
-        options["footer-font-name"] = settings.get("footer_font", "Arial")
-        # Ensure enough bottom margin for the footer — wkhtmltopdf's footer
-        # renders in the margin area, but CSS @page margins can squeeze it out
-        options["margin-bottom"] = "20mm"
+        options.setdefault("footer-center", "[page]")
+        options.setdefault("footer-font-size", "9")
+        options.setdefault("footer-font-name",
+                           settings.get("footer_font", "Arial"))
+        # Footer renders inside the CLI bottom margin area.  Ensure at least
+        # 20mm so the page number text is visible and not clipped.
+        options.setdefault("margin-bottom", "20mm")
 
     logging.info(f"Converting HTML file to PDF using wkhtmltopdf")
     logging.info(f"pdfkit options: {options}")

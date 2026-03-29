@@ -184,6 +184,8 @@ a {
     margin: 1px 0;
 }
 
-@page {
-    margin: 0.75in;
-}
+/* Page margins are set via wkhtmltopdf CLI flags (--margin-top, etc.)
+   rather than CSS @page so that wkhtmltopdf has exclusive control over the
+   margin area.  This is required for headers/footers (page numbers) to
+   render correctly — @page CSS margins conflict with CLI margins and can
+   push the footer off the visible page.  See PDFOptions in models.py. */

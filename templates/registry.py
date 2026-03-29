@@ -87,6 +87,12 @@ _register(
         description="Ultra-plain, zero-decoration layout designed for maximum ATS parsability.",
         preview="ats-optimized.png",
         tags=["ats-friendly", "single-column", "recruiter-approved"],
+        pdf_options=PDFOptions(
+            margin_top="0.75in",
+            margin_bottom="0.75in",
+            margin_left="0.75in",
+            margin_right="0.75in",
+        ),
     )
 )
 

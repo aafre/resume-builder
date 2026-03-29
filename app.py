@@ -221,6 +221,10 @@ def pdf_generation_worker(
             error_msg = f"Worker subprocess failed: {result.stderr}"
             return {"success": False, "error": error_msg}
 
+        # Log subprocess output for debugging
+        if result.stderr:
+            logging.info(f"Worker stderr: {result.stderr[:500]}")
+
         # Verify PDF was created and has content
         pdf_path = Path(output_path)
         if not pdf_path.exists() or pdf_path.stat().st_size == 0:
