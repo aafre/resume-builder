@@ -105,6 +105,12 @@ _register(
         name="Two-Column",
         description="Sidebar layout with skills and contact info on the left, experience on the right.",
         preview="two-column.png",
+        pdf_options=PDFOptions(
+            margin_top="0.6in",
+            margin_bottom="0.6in",
+            margin_left="0.6in",
+            margin_right="0.6in",
+        ),
     )
 )
 
@@ -114,10 +120,16 @@ _register(
         dir="student",
         engine=TemplateEngine.html,
         sample="samples/student/sample_data.yml",
-    name="Student Resume",
+        name="Student Resume",
         description="Education-first layout designed for students and first-time job seekers.",
         preview="student.png",
         tags=["entry-level", "education-first", "new-graduate"],
+        pdf_options=PDFOptions(
+            margin_top="0.7in",
+            margin_bottom="0.7in",
+            margin_left="0.7in",
+            margin_right="0.7in",
+        ),
     )
 )
 
@@ -170,7 +182,13 @@ _register(
         description="British CV format with Personal Profile. A4 paper, two-page layout, optional references.",
         preview="uk-cv.png",
         tags=["british", "a4", "two-page", "international"],
-        pdf_options=PDFOptions(page_size="A4"),
+        pdf_options=PDFOptions(
+            page_size="A4",
+            margin_top="0.75in",
+            margin_bottom="0.75in",
+            margin_left="0.75in",
+            margin_right="0.75in",
+        ),
     )
 )
 
