@@ -45,9 +45,10 @@ export default function BlogLayout({
   ctaType = 'general',
   faqs
 }: BlogLayoutProps) {
-  // Use origin + pathname to strip query params and hash from canonical URL
+  // Use hardcoded BASE_URL (not window.location.origin) so prerendered HTML
+  // gets production canonical URLs instead of http://localhost:4173
   const currentUrl = typeof window !== 'undefined'
-    ? window.location.origin + window.location.pathname
+    ? 'https://easyfreeresume.com' + (window.location.pathname.replace(/\/+$/, '') || '/')
     : '';
 
   return (
