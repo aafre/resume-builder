@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { STATIC_URLS, getStaticUrlPaths } from '../data/sitemapUrls';
 import { JOBS_DATABASE, getAllJobSlugs } from '../data/jobKeywords';
 import { JOB_EXAMPLES_DATABASE, getAllJobExampleSlugs } from '../data/jobExamples';
-import { blogPosts } from '../data/blogPosts';
+import { blogPosts, getActiveBlogPosts } from '../data/blogPosts';
 import {
   HREFLANG_PAIRS,
   CV_REGIONS,
@@ -114,11 +114,9 @@ describe('Sitemap URL Validation', () => {
       });
 
       // Add blog post URLs (non-redirect, non-coming-soon)
-      blogPosts
-        .filter(post => !post.comingSoon && !post.redirectTo)
-        .forEach(post => {
-          allUrls.push(`/blog/${post.slug}`);
-        });
+      getActiveBlogPosts().forEach(post => {
+        allUrls.push(`/blog/${post.slug}`);
+      });
 
       const uniqueUrls = new Set(allUrls);
       expect(allUrls.length).toBe(uniqueUrls.size);
@@ -136,7 +134,7 @@ describe('Sitemap URL Validation', () => {
       expect(blogHub).toBeDefined();
     });
 
-    it('all redirect blog posts should have a redirectTo field', () => {
+    it('should have redirect blog posts with valid redirectTo paths', () => {
       const redirectPosts = blogPosts.filter(post => post.redirectTo);
       expect(redirectPosts.length).toBeGreaterThan(0);
       redirectPosts.forEach(post => {
