@@ -10,7 +10,7 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { JOBS_DATABASE } from '../src/data/jobKeywords/index';
 import { JOB_EXAMPLES_DATABASE } from '../src/data/jobExamples/index';
-import { blogPosts } from '../src/data/blogPosts';
+import { getActiveBlogPosts } from '../src/data/blogPosts';
 import { STATIC_URLS } from '../src/data/sitemapUrls';
 import {
   HREFLANG_PAIRS,
@@ -42,13 +42,11 @@ const JOB_EXAMPLES = JOB_EXAMPLES_DATABASE.map(job => ({
 }));
 
 // Blog posts (exclude redirects and coming-soon drafts)
-const BLOG_POSTS = blogPosts
-  .filter(post => !post.comingSoon && !post.redirectTo)
-  .map(post => ({
-    slug: post.slug,
-    priority: 0.5,
-    lastmod: post.publishDate,
-  }));
+const BLOG_POSTS = getActiveBlogPosts().map(post => ({
+  slug: post.slug,
+  priority: 0.5,
+  lastmod: post.publishDate,
+}));
 
 /**
  * Escape special XML characters to ensure valid XML output

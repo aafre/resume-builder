@@ -13,6 +13,14 @@ export interface BlogPost {
   redirectTo?: string;
 }
 
+/**
+ * Get blog posts that should appear in the sitemap and be prerendered.
+ * Excludes redirects and coming-soon drafts.
+ */
+export function getActiveBlogPosts(): BlogPost[] {
+  return blogPosts.filter(post => !post.comingSoon && !post.redirectTo);
+}
+
 export const blogPosts: BlogPost[] = [
   // New AI Blog Content (Featured)
   {

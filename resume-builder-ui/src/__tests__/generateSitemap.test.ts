@@ -3,7 +3,7 @@ import { describe, it, expect, beforeAll } from 'vitest';
 import { STATIC_URLS } from '../data/sitemapUrls';
 import { JOBS_DATABASE } from '../data/jobKeywords';
 import { JOB_EXAMPLES_DATABASE } from '../data/jobExamples';
-import { blogPosts } from '../data/blogPosts';
+import { blogPosts, getActiveBlogPosts } from '../data/blogPosts';
 import {
   HREFLANG_PAIRS,
   CV_REGIONS,
@@ -200,11 +200,9 @@ describe('Sitemap XML Generation', () => {
     });
 
     it('should include all non-redirect blog post URLs', () => {
-      blogPosts
-        .filter(post => !post.comingSoon && !post.redirectTo)
-        .forEach(post => {
-          expect(xml).toContain(`<loc>${baseUrl}/blog/${post.slug}</loc>`);
-        });
+      getActiveBlogPosts().forEach(post => {
+        expect(xml).toContain(`<loc>${baseUrl}/blog/${post.slug}</loc>`);
+      });
     });
 
     it('should not include redirect blog post URLs', () => {
