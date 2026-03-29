@@ -29,7 +29,7 @@ PROJECT_ROOT: Path = Path(__file__).parent.parent.resolve()
 TEMPLATES: dict[str, TemplateConfig] = {}
 
 # IDs that are convenience aliases (not shown in the UI template picker)
-_ALIAS_IDS: set[str] = {"modern", "classic"}
+_ALIAS_IDS: set[str] = {"modern", "classic", "two-column"}
 
 
 def _register(config: TemplateConfig) -> None:
@@ -56,10 +56,11 @@ _register(
         dir="modern",
         engine=TemplateEngine.html,
         sample="samples/modern/john_doe.yml",
-        name="Modern",
+        name="Modern Resume",
         description="Contemporary design enhanced with visual icons and dynamic styling elements.",
         preview="modern-with-icons.png",
         supports_icons=True,
+        tags=["professional", "icons", "visual"],
     )
 )
 
@@ -69,9 +70,10 @@ _register(
         dir="modern",
         engine=TemplateEngine.html,
         sample="samples/modern/john_doe_no_icon.yml",
-        name="Minimalist",
+        name="Minimalist Resume",
         description="Clean and simple design focused on content clarity and easy readability.",
         preview="modern-no-icons.png",
+        tags=["clean", "simple", "ats-friendly"],
     )
 )
 
@@ -81,9 +83,10 @@ _register(
         dir="ats-optimized",
         engine=TemplateEngine.html,
         sample="samples/ats-optimized/sample_data.yml",
-        name="ATS-Optimized",
+        name="ATS Resume",
         description="Ultra-plain, zero-decoration layout designed for maximum ATS parsability.",
         preview="ats-optimized.png",
+        tags=["ats-friendly", "single-column", "recruiter-approved"],
     )
 )
 
@@ -105,9 +108,10 @@ _register(
         dir="student",
         engine=TemplateEngine.html,
         sample="samples/student/sample_data.yml",
-        name="Student",
+    name="Student Resume",
         description="Education-first layout designed for students and first-time job seekers.",
         preview="student.png",
+        tags=["entry-level", "education-first", "new-graduate"],
     )
 )
 
@@ -117,9 +121,10 @@ _register(
         dir="executive",
         engine=TemplateEngine.latex,
         sample="samples/executive/sample_data.yml",
-        name="Executive",
+        name="Executive Resume",
         description="Premium typography for senior professionals. Handles multi-page resumes elegantly.",
         preview="executive.png",
+        tags=["senior", "multi-page", "premium-typography"],
     )
 )
 
@@ -129,9 +134,10 @@ _register(
         dir="classic",
         engine=TemplateEngine.latex,
         sample="samples/classic/alex_rivera_data.yml",
-        name="Professional",
+        name="Professional Resume",
         description="Clean, structured layout with traditional formatting and excellent space utilization.",
         preview="alex_rivera.png",
+        tags=["traditional", "structured", "versatile"],
     )
 )
 
@@ -141,9 +147,10 @@ _register(
         dir="classic",
         engine=TemplateEngine.latex,
         sample="samples/classic/jane_doe.yml",
-        name="Elegant",
+        name="Elegant Resume",
         description="Refined design with sophisticated typography and organized section layout.",
         preview="jane_doe.png",
+        tags=["refined", "sophisticated", "classic"],
     )
 )
 
@@ -156,6 +163,7 @@ _register(
         name="UK CV",
         description="British CV format with Personal Profile. A4 paper, two-page layout, optional references.",
         preview="uk-cv.png",
+        tags=["british", "a4", "two-page", "international"],
         pdf_options=PDFOptions(page_size="A4"),
     )
 )

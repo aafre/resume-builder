@@ -96,6 +96,7 @@ class TemplateConfig(BaseModel):
     description: str
     preview: str
     supports_icons: bool = False
+    tags: list[str] = []
     pdf_options: PDFOptions = PDFOptions()
 
     @field_validator("id")
@@ -122,3 +123,4 @@ class TemplateMetadata(BaseModel):
     description: str
     image_url: str
     supports_icons: bool = False
+    tags: list[str] = []
