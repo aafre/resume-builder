@@ -53,6 +53,7 @@ sections:
         description:
           - "Built data ingestion pipeline for Gotham platform, processing 500GB+ of structured geospatial data from government sources"
           - "Developed React-based visualization dashboard for analyst workflows, adopted by 3 deployment teams"
+          - "Optimized batch processing jobs with parallel execution and caching, reducing nightly ETL runtime from 6 hours to 90 minutes"
 
   - name: Education
     type: education
