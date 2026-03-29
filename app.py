@@ -155,7 +155,8 @@ def classify_thumbnail_error(error):
 
 
 def pdf_generation_worker(
-    template_name, yaml_path, output_path, session_icons_dir, session_id
+    template_name, yaml_path, output_path, session_icons_dir, session_id,
+    pdf_options=None,
 ):
     """
     Worker function for process pool PDF generation.
@@ -193,6 +194,10 @@ def pdf_generation_worker(
             "--session-id",
             session_id,
         ]
+
+        if pdf_options:
+            import json as json_mod
+            cmd.extend(["--pdf-options", json_mod.dumps(pdf_options)])
 
         logging.debug(f"Worker running command: {' '.join(cmd)}")
 
@@ -264,6 +269,9 @@ def _dispatch_html_pdf_generation(
             session_id,
         ]
 
+        if pdf_options:
+            cmd.extend(["--pdf-options", json.dumps(pdf_options)])
+
         result = subprocess.run(
             cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT)
         )
@@ -279,6 +287,7 @@ def _dispatch_html_pdf_generation(
             output_path,
             icons_dir,
             session_id,
+            pdf_options,
         )
 
         try:

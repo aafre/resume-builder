@@ -528,6 +528,10 @@ if __name__ == "__main__":
         "--session-id",
         help="The session ID for unique temp file naming.",
     )
+    parser.add_argument(
+        "--pdf-options",
+        help="JSON string of pdfkit options (e.g., page-size, footer-center).",
+    )
 
     args = parser.parse_args()
 
@@ -535,12 +539,20 @@ if __name__ == "__main__":
         resume_data = load_resume_data(args.input)
         # Normalize sections for backward compatibility
         resume_data = normalize_sections(resume_data)
+
+        # Parse PDF options from CLI if provided
+        cli_pdf_options = None
+        if getattr(args, "pdf_options", None):
+            import json as json_mod
+            cli_pdf_options = json_mod.loads(args.pdf_options)
+
         generate_pdf(
             args.template,
             resume_data,
             args.output,
             getattr(args, "session_icons_dir", None),
             session_id=getattr(args, "session_id", None),
+            pdf_options=cli_pdf_options,
         )
     except Exception as e:
         print(f"Error: {e}")
