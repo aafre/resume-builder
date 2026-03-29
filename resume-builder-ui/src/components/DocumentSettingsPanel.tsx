@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MdSettings, MdExpandMore, MdExpandLess } from "react-icons/md";
+import { MdTune, MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { DocumentSettings } from "../types";
 
 export interface DocumentSettingsPanelProps {
@@ -34,7 +34,8 @@ export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
   settings,
   onSettingsChange,
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [showCustomColor, setShowCustomColor] = useState(false);
 
   const accentColor = settings.accent_color ?? "#000000";
   const fontFamily = settings.font_family ?? "Arial";
@@ -47,131 +48,162 @@ export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
     onSettingsChange({ ...settings, [key]: value });
   };
 
-  const isPresetSelected = COLOR_PRESETS.some((p) => p.value.toLowerCase() === accentColor.toLowerCase());
+  const isPresetSelected = COLOR_PRESETS.some(
+    (p) => p.value.toLowerCase() === accentColor.toLowerCase()
+  );
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-      {/* Header */}
+    <div className="bg-white rounded-xl border border-gray-200/80 overflow-hidden shadow-sm">
+      {/* Header — always visible, acts as toggle */}
       <button
         type="button"
         onClick={() => setIsCollapsed((prev) => !prev)}
-        className="w-full flex items-center justify-between px-5 py-3.5 hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-gray-50/80 transition-colors"
         aria-expanded={!isCollapsed}
       >
-        <div className="flex items-center gap-2">
-          <MdSettings className="text-lg text-gray-500" />
-          <span className="text-sm font-semibold text-gray-900">
+        <div className="flex items-center gap-1.5">
+          <MdTune className="text-base text-gray-400" />
+          <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
             Document Settings
           </span>
         </div>
         {isCollapsed ? (
-          <MdExpandMore className="text-2xl text-gray-500" />
+          <MdKeyboardArrowDown className="text-lg text-gray-400" />
         ) : (
-          <MdExpandLess className="text-2xl text-gray-500" />
+          <MdKeyboardArrowUp className="text-lg text-gray-400" />
         )}
       </button>
 
-      {/* Body */}
+      {/* Body — compact settings strip */}
       {!isCollapsed && (
-        <div className="px-5 pb-5 space-y-5 border-t border-gray-100">
-          {/* Accent Colour */}
-          <div className="pt-4">
-            <label className="text-sm font-medium text-gray-700 block mb-2">
-              Accent Colour
-            </label>
-            <div className="flex flex-wrap items-center gap-2">
-              {COLOR_PRESETS.map((preset) => {
-                const selected =
-                  preset.value.toLowerCase() === accentColor.toLowerCase();
-                return (
-                  <button
-                    key={preset.value}
-                    type="button"
-                    title={preset.name}
-                    aria-label={`${preset.name} accent colour`}
-                    onClick={() => updateSetting("accent_color", preset.value)}
-                    className={`w-6 h-6 rounded-full border-2 transition-all duration-150 flex-shrink-0 ${
-                      selected
-                        ? "ring-2 ring-offset-2 ring-gray-400 border-white"
-                        : "border-gray-200 hover:scale-110"
-                    }`}
-                    style={{ backgroundColor: preset.value }}
+        <div className="px-4 pb-4 pt-1 space-y-3">
+          {/* Row 1: Colour + Font + Page Numbers — horizontal on desktop, stacked on mobile */}
+          <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+            {/* Accent Colour */}
+            <div className="flex-1 min-w-0">
+              <label className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1.5">
+                Accent Colour
+              </label>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {COLOR_PRESETS.map((preset) => {
+                  const selected =
+                    preset.value.toLowerCase() === accentColor.toLowerCase();
+                  return (
+                    <button
+                      key={preset.value}
+                      type="button"
+                      title={preset.name}
+                      aria-label={`${preset.name} accent colour`}
+                      onClick={() => {
+                        updateSetting("accent_color", preset.value);
+                        setShowCustomColor(false);
+                      }}
+                      className={`w-5 h-5 rounded-full transition-all duration-150 flex-shrink-0 ${
+                        selected
+                          ? "ring-[1.5px] ring-offset-1 ring-gray-400 scale-110"
+                          : "hover:scale-110 opacity-80 hover:opacity-100"
+                      }`}
+                      style={{ backgroundColor: preset.value }}
+                    />
+                  );
+                })}
+                {/* Custom colour toggle */}
+                <button
+                  type="button"
+                  title="Custom colour"
+                  aria-label="Custom hex colour"
+                  onClick={() => setShowCustomColor((prev) => !prev)}
+                  className={`w-5 h-5 rounded-full flex-shrink-0 border border-dashed transition-all duration-150 flex items-center justify-center ${
+                    !isPresetSelected
+                      ? "border-gray-400 ring-[1.5px] ring-offset-1 ring-gray-400 scale-110"
+                      : "border-gray-300 opacity-60 hover:opacity-100 hover:scale-110"
+                  }`}
+                  style={
+                    !isPresetSelected
+                      ? { backgroundColor: accentColor }
+                      : undefined
+                  }
+                >
+                  {isPresetSelected && (
+                    <span className="text-[8px] text-gray-400 font-bold">
+                      #
+                    </span>
+                  )}
+                </button>
+              </div>
+              {/* Custom hex input — slides in */}
+              {showCustomColor && (
+                <div className="flex items-center gap-2 mt-2">
+                  <div
+                    className="w-4 h-4 rounded-full border border-gray-200 flex-shrink-0"
+                    style={{ backgroundColor: accentColor }}
                   />
-                );
-              })}
-            </div>
-            {/* Custom hex input */}
-            <div className="flex items-center gap-2 mt-2.5">
-              <div
-                className="w-5 h-5 rounded-full border border-gray-300 flex-shrink-0"
-                style={{ backgroundColor: accentColor }}
-              />
-              <input
-                type="text"
-                value={accentColor}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  // Allow typing — update on every keystroke
-                  updateSetting("accent_color", val);
-                }}
-                placeholder="#000000"
-                maxLength={7}
-                className="w-24 px-2 py-1 text-sm border border-gray-300 rounded-md font-mono focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
-                aria-label="Custom hex colour"
-              />
-              {!isPresetSelected && (
-                <span className="text-xs text-gray-400">Custom</span>
+                  <input
+                    type="text"
+                    value={accentColor}
+                    onChange={(e) => updateSetting("accent_color", e.target.value)}
+                    placeholder="#000000"
+                    maxLength={7}
+                    className="w-20 px-2 py-1 text-xs border border-gray-200 rounded-lg font-mono text-gray-600 focus:outline-none focus:ring-1 focus:ring-accent focus:border-transparent"
+                    aria-label="Custom hex colour"
+                  />
+                </div>
               )}
             </div>
-          </div>
 
-          {/* Font */}
-          <div className="flex items-center justify-between">
-            <label
-              htmlFor="doc-font-select"
-              className="text-sm font-medium text-gray-700"
-            >
-              Font
-            </label>
-            <select
-              id="doc-font-select"
-              value={fontFamily}
-              onChange={(e) => updateSetting("font_family", e.target.value)}
-              className="px-3 py-1.5 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
-              style={{ fontFamily }}
-            >
-              {FONT_OPTIONS.map((font) => (
-                <option key={font} value={font} style={{ fontFamily: font }}>
-                  {font}
-                </option>
-              ))}
-            </select>
-          </div>
+            {/* Font + Page Numbers — grouped right */}
+            <div className="flex items-end gap-4 sm:gap-3 flex-shrink-0">
+              {/* Font */}
+              <div>
+                <label
+                  htmlFor="doc-font-select"
+                  className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1.5"
+                >
+                  Font
+                </label>
+                <select
+                  id="doc-font-select"
+                  value={fontFamily}
+                  onChange={(e) => updateSetting("font_family", e.target.value)}
+                  className="px-2.5 py-1.5 text-xs border border-gray-200 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-accent focus:border-transparent cursor-pointer"
+                  style={{ fontFamily }}
+                >
+                  {FONT_OPTIONS.map((font) => (
+                    <option key={font} value={font} style={{ fontFamily: font }}>
+                      {font}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-          {/* Page Numbers */}
-          <div className="flex items-center justify-between">
-            <label
-              htmlFor="doc-page-numbers"
-              className="text-sm font-medium text-gray-700"
-            >
-              Show Page Numbers
-            </label>
-            <button
-              id="doc-page-numbers"
-              type="button"
-              role="switch"
-              aria-checked={showPageNumbers}
-              onClick={() => updateSetting("show_page_numbers", !showPageNumbers)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 ${
-                showPageNumbers ? "bg-accent" : "bg-gray-300"
-              }`}
-            >
-              <span
-                className={`inline-block h-4 w-4 rounded-full bg-white shadow-sm transform transition-transform duration-200 ${
-                  showPageNumbers ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
-            </button>
+              {/* Page Numbers */}
+              <div>
+                <label
+                  htmlFor="doc-page-numbers"
+                  className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1.5"
+                >
+                  Pages
+                </label>
+                <button
+                  id="doc-page-numbers"
+                  type="button"
+                  role="switch"
+                  aria-checked={showPageNumbers}
+                  onClick={() =>
+                    updateSetting("show_page_numbers", !showPageNumbers)
+                  }
+                  className={`relative inline-flex h-[26px] w-10 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-accent focus:ring-offset-1 ${
+                    showPageNumbers ? "bg-accent" : "bg-gray-200"
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-[18px] w-[18px] rounded-full bg-white shadow-sm transform transition-transform duration-200 ${
+                      showPageNumbers ? "translate-x-[18px]" : "translate-x-1"
+                    }`}
+                  />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
