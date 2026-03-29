@@ -56,8 +56,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         texlive-plain-generic \
         texlive-fonts-extra \
         fontconfig \
+        fonts-liberation \
         curl \
         poppler-utils && \
+    fc-cache -f && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
