@@ -177,12 +177,12 @@ export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
               </div>
 
               {/* Page Numbers */}
-              <div>
+              <div title="Add page numbers to the footer of your PDF">
                 <label
                   htmlFor="doc-page-numbers"
                   className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1.5"
                 >
-                  Pages
+                  Page #
                 </label>
                 <button
                   id="doc-page-numbers"
