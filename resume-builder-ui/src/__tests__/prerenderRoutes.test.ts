@@ -3,6 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { STATIC_URLS } from '../data/sitemapUrls';
 import { JOBS_DATABASE } from '../data/jobKeywords';
 import { JOB_EXAMPLES_DATABASE } from '../data/jobExamples';
+import { blogPosts } from '../data/blogPosts';
 
 /**
  * These tests validate the prerender route generation logic — the same
@@ -27,6 +28,12 @@ function buildRoutesToPrerender(): string[] {
 
   for (const example of JOB_EXAMPLES_DATABASE) {
     routes.add(`/examples/${example.slug}`);
+  }
+
+  for (const post of blogPosts) {
+    if (!post.comingSoon && !post.redirectTo) {
+      routes.add(`/blog/${post.slug}`);
+    }
   }
 
   return Array.from(routes);
@@ -90,6 +97,20 @@ describe('Prerender route generation', () => {
     ];
     for (const redirect of redirectSources) {
       expect(routes).not.toContain(redirect);
+    }
+  });
+
+  it('includes all non-redirect blog post routes', () => {
+    const nonRedirectPosts = blogPosts.filter(p => !p.comingSoon && !p.redirectTo);
+    for (const post of nonRedirectPosts) {
+      expect(routes).toContain(`/blog/${post.slug}`);
+    }
+  });
+
+  it('does not include redirect blog post routes', () => {
+    const redirectPosts = blogPosts.filter(p => p.redirectTo);
+    for (const post of redirectPosts) {
+      expect(routes).not.toContain(`/blog/${post.slug}`);
     }
   });
 
