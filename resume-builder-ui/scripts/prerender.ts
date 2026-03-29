@@ -28,6 +28,7 @@ import { fileURLToPath } from 'url';
 import { STATIC_URLS } from '../src/data/sitemapUrls';
 import { JOBS_DATABASE } from '../src/data/jobKeywords/index';
 import { JOB_EXAMPLES_DATABASE } from '../src/data/jobExamples/index';
+import { blogPosts } from '../src/data/blogPosts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -66,6 +67,13 @@ function buildRoutesToPrerender(): string[] {
   // Programmatic SEO: job example pages
   for (const example of JOB_EXAMPLES_DATABASE) {
     routes.add(`/examples/${example.slug}`);
+  }
+
+  // Blog posts (exclude redirects and coming-soon drafts)
+  for (const post of blogPosts) {
+    if (!post.comingSoon && !post.redirectTo) {
+      routes.add(`/blog/${post.slug}`);
+    }
   }
 
   return Array.from(routes);

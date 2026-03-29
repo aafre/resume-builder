@@ -3,6 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { STATIC_URLS, getStaticUrlPaths } from '../data/sitemapUrls';
 import { JOBS_DATABASE, getAllJobSlugs } from '../data/jobKeywords';
 import { JOB_EXAMPLES_DATABASE, getAllJobExampleSlugs } from '../data/jobExamples';
+import { blogPosts } from '../data/blogPosts';
 import {
   HREFLANG_PAIRS,
   CV_REGIONS,
@@ -96,7 +97,7 @@ describe('Sitemap URL Validation', () => {
   });
 
   describe('Combined Sitemap Deduplication', () => {
-    it('should have no duplicate URLs across static, job keywords, and job examples', () => {
+    it('should have no duplicate URLs across static, job keywords, job examples, and blog posts', () => {
       const allUrls: string[] = [];
 
       // Add static URLs
@@ -112,8 +113,35 @@ describe('Sitemap URL Validation', () => {
         allUrls.push(`/examples/${job.slug}`);
       });
 
+      // Add blog post URLs (non-redirect, non-coming-soon)
+      blogPosts
+        .filter(post => !post.comingSoon && !post.redirectTo)
+        .forEach(post => {
+          allUrls.push(`/blog/${post.slug}`);
+        });
+
       const uniqueUrls = new Set(allUrls);
       expect(allUrls.length).toBe(uniqueUrls.size);
+    });
+  });
+
+  describe('Blog Posts in Sitemap', () => {
+    it('should not have any /blog/* entries in STATIC_URLS (auto-generated from blogPosts.ts)', () => {
+      const blogEntries = STATIC_URLS.filter(url => url.loc.startsWith('/blog/'));
+      expect(blogEntries).toEqual([]);
+    });
+
+    it('should have /blog hub in STATIC_URLS', () => {
+      const blogHub = STATIC_URLS.find(url => url.loc === '/blog');
+      expect(blogHub).toBeDefined();
+    });
+
+    it('all redirect blog posts should have a redirectTo field', () => {
+      const redirectPosts = blogPosts.filter(post => post.redirectTo);
+      expect(redirectPosts.length).toBeGreaterThan(0);
+      redirectPosts.forEach(post => {
+        expect(post.redirectTo).toMatch(/^\//);
+      });
     });
   });
 });

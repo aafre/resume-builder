@@ -9,6 +9,8 @@ export interface BlogPost {
   category: string;
   featured?: boolean;
   comingSoon?: boolean;
+  /** If set, this slug is a 301 redirect — excluded from sitemap and prerender */
+  redirectTo?: string;
 }
 
 export const blogPosts: BlogPost[] = [
@@ -285,6 +287,7 @@ export const blogPosts: BlogPost[] = [
     publishDate: "2025-08-10",
     readTime: "14 min",
     category: "Tech Industry",
+    redirectTo: "/resume-keywords/software-engineer",
   },
   {
     slug: "customer-service-resume-keywords",
@@ -293,6 +296,7 @@ export const blogPosts: BlogPost[] = [
     publishDate: "2025-08-05",
     readTime: "9 min",
     category: "Keywords",
+    redirectTo: "/resume-keywords/customer-service",
   },
   {
     slug: "customer-service-resume-keywords-guide",
@@ -325,6 +329,7 @@ export const blogPosts: BlogPost[] = [
     publishDate: "2025-07-28",
     readTime: "9 min",
     category: "Comparisons",
+    redirectTo: "/easyfreeresume-vs-zety",
   },
   {
     slug: "resume-io-vs-easy-free-resume",
