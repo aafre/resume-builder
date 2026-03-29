@@ -112,7 +112,7 @@ export const useFileOperations = ({
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Use yamlService to create the export
-      const result = await exportResumeAsYAML(contactInfo, sections, iconRegistry, documentSettings);
+      const result = await exportResumeAsYAML(contactInfo, sections, iconRegistry, documentSettings as Record<string, unknown> | undefined);
 
       // Trigger download
       const url = URL.createObjectURL(result.blob);

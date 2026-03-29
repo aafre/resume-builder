@@ -62,7 +62,6 @@ export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
 
   const accentColor = settings.accent_color ?? "#000000";
   const fontFamily = settings.font_family ?? "Source Sans 3";
-  const showPageNumbers = settings.show_page_numbers ?? false;
 
   const updateSetting = <K extends keyof DocumentSettings>(
     key: K,

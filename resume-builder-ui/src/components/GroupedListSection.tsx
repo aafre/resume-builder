@@ -82,17 +82,16 @@ const GroupedListSection: React.FC<GroupedListSectionProps> = ({
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
       <SectionHeader
-        sectionName={sectionName}
+        title={sectionName}
         isEditing={isEditing}
         temporaryTitle={temporaryTitle}
-        setTemporaryTitle={setTemporaryTitle}
-        onEditTitle={onTitleEdit}
-        onSaveTitle={onTitleSave}
-        onCancelTitle={onTitleCancel}
+        onTitleChange={setTemporaryTitle}
+        onTitleEdit={onTitleEdit}
+        onTitleSave={onTitleSave}
+        onTitleCancel={onTitleCancel}
         onDelete={onDelete}
         isCollapsed={isCollapsed}
         onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
-        sectionType="grouped-list"
       />
 
       {!isCollapsed && (
@@ -132,7 +131,7 @@ const GroupedListSection: React.FC<GroupedListSectionProps> = ({
             </div>
           ))}
 
-          <GhostButton onClick={handleAddGroup} icon={MdAdd}>
+          <GhostButton onClick={handleAddGroup} icon={<MdAdd />}>
             Add Category
           </GhostButton>
         </div>
