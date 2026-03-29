@@ -203,33 +203,7 @@ export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
                 </select>
               </div>
 
-              {/* Page Numbers */}
-              <div title="Add page numbers to the footer of your PDF">
-                <label
-                  htmlFor="doc-page-numbers"
-                  className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1.5"
-                >
-                  Page #
-                </label>
-                <button
-                  id="doc-page-numbers"
-                  type="button"
-                  role="switch"
-                  aria-checked={showPageNumbers}
-                  onClick={() =>
-                    updateSetting("show_page_numbers", !showPageNumbers)
-                  }
-                  className={`relative inline-flex h-[26px] w-10 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-accent focus:ring-offset-1 ${
-                    showPageNumbers ? "bg-accent" : "bg-gray-200"
-                  }`}
-                >
-                  <span
-                    className={`inline-block h-[18px] w-[18px] rounded-full bg-white shadow-sm transform transition-transform duration-200 ${
-                      showPageNumbers ? "translate-x-[18px]" : "translate-x-1"
-                    }`}
-                  />
-                </button>
-              </div>
+              {/* Page Numbers — disabled pending wkhtmltopdf footer fix */}
             </div>
           </div>
         </div>
