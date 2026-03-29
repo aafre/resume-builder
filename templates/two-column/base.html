@@ -16,8 +16,33 @@
     {% if settings and settings.accent_color %}
         {% set accent = settings.accent_color %}
     {% endif %}
+    {# Font stack includes Liberation equivalents so Linux/Docker (which has
+       fonts-liberation but not the Microsoft originals) can resolve the font
+       via fontconfig without falling through to the generic sans-serif. #}
+    {% set font_val = font | default("Calibri") %}
+    {% set liberation_map = {
+        'Times New Roman': 'Liberation Serif',
+        'Georgia':         'Liberation Serif',
+        'Cambria':         'Liberation Serif',
+        'Arial':           'Liberation Sans',
+        'Helvetica':       'Liberation Sans',
+        'Calibri':         'Liberation Sans',
+        'Verdana':         'Liberation Sans',
+        'Tahoma':          'Liberation Sans',
+        'Trebuchet MS':    'Liberation Sans',
+    } %}
+    {% set lib_font = liberation_map.get(font_val, '') %}
+    {% set serif_fonts = ['Times New Roman', 'Georgia', 'Cambria', 'Garamond',
+                          'Liberation Serif', 'DejaVu Serif'] %}
+    {% if font_val in serif_fonts or 'Serif' in font_val %}
+        {% set generic = 'serif' %}
+    {% else %}
+        {% set generic = 'sans-serif' %}
+    {% endif %}
     <style>
-        body { font-family: '{{ font | default("Calibri") }}', 'Segoe UI', Arial, sans-serif; }
+        body {
+            font-family: '{{ font_val }}'{% if lib_font %}, '{{ lib_font }}'{% endif %}, {{ generic }};
+        }
         .section-heading { color: {{ accent }}; border-bottom-color: {{ accent }}; }
         .skill-chip { background-color: {{ accent }}18; color: {{ accent }}; }
     </style>

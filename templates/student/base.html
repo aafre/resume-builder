@@ -12,8 +12,33 @@
     <link rel="stylesheet" href="{{ css_path }}">
 
     {# Font and accent overrides AFTER the stylesheet so they win the cascade #}
+    {# Font stack includes Liberation equivalents so Linux/Docker (which has
+       fonts-liberation but not the Microsoft originals) can resolve the font
+       via fontconfig without falling through to the generic sans-serif. #}
+    {% set font_val = font | default("Arial") %}
+    {% set liberation_map = {
+        'Times New Roman': 'Liberation Serif',
+        'Georgia':         'Liberation Serif',
+        'Cambria':         'Liberation Serif',
+        'Arial':           'Liberation Sans',
+        'Helvetica':       'Liberation Sans',
+        'Calibri':         'Liberation Sans',
+        'Verdana':         'Liberation Sans',
+        'Tahoma':          'Liberation Sans',
+        'Trebuchet MS':    'Liberation Sans',
+    } %}
+    {% set lib_font = liberation_map.get(font_val, '') %}
+    {% set serif_fonts = ['Times New Roman', 'Georgia', 'Cambria', 'Garamond',
+                          'Liberation Serif', 'DejaVu Serif'] %}
+    {% if font_val in serif_fonts or 'Serif' in font_val %}
+        {% set generic = 'serif' %}
+    {% else %}
+        {% set generic = 'sans-serif' %}
+    {% endif %}
     <style>
-        body { font-family: '{{ font | default("Arial") }}', Arial, Helvetica, sans-serif; }
+        body {
+            font-family: '{{ font_val }}'{% if lib_font %}, '{{ lib_font }}'{% endif %}, {{ generic }};
+        }
     </style>
 
     {% set accent = settings.accent_color | default('#2D3436') if settings else '#2D3436' %}

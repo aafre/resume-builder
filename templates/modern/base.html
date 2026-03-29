@@ -5,25 +5,43 @@
     <title>{{ contact_info.name }}'s Resume</title>
     
     <!-- Link Google Fonts based on YAML font selection -->
-    {% if font %}
+    {% set system_fonts = ['Arial', 'Helvetica', 'Calibri', 'Georgia', 'Tahoma', 'Times New Roman', 'Verdana', 'Trebuchet MS', 'Cambria'] %}
+    {% if font and font not in system_fonts %}
         <link href="https://fonts.googleapis.com/css?family={{ font | replace(' ', '+') }}&display=swap" rel="stylesheet">
-        <style>
-            body {
-                font-family: '{{ font }}', sans-serif;
-            }
-        </style>
-    {% else %}
-        <!-- Default font if not specified in YAML -->
-        <link href="https://fonts.googleapis.com/css?family=Arial&display=swap" rel="stylesheet">
-        <style>
-            body {
-                font-family: 'Arial', sans-serif;
-            }
-        </style>
     {% endif %}
-    
+
     <!-- Link custom CSS file -->
     <link rel="stylesheet" href="{{ css_path }}">
+
+    {# Font and accent overrides AFTER the stylesheet so they win the cascade #}
+    {# Font stack includes Liberation equivalents so Linux/Docker (which has
+       fonts-liberation but not the Microsoft originals) can resolve the font
+       via fontconfig without falling through to the generic sans-serif. #}
+    {% set font_val = font | default("Arial") %}
+    {% set liberation_map = {
+        'Times New Roman': 'Liberation Serif',
+        'Georgia':         'Liberation Serif',
+        'Cambria':         'Liberation Serif',
+        'Arial':           'Liberation Sans',
+        'Helvetica':       'Liberation Sans',
+        'Calibri':         'Liberation Sans',
+        'Verdana':         'Liberation Sans',
+        'Tahoma':          'Liberation Sans',
+        'Trebuchet MS':    'Liberation Sans',
+    } %}
+    {% set lib_font = liberation_map.get(font_val, '') %}
+    {% set serif_fonts = ['Times New Roman', 'Georgia', 'Cambria', 'Garamond',
+                          'Liberation Serif', 'DejaVu Serif'] %}
+    {% if font_val in serif_fonts or 'Serif' in font_val %}
+        {% set generic = 'serif' %}
+    {% else %}
+        {% set generic = 'sans-serif' %}
+    {% endif %}
+    <style>
+        body {
+            font-family: '{{ font_val }}'{% if lib_font %}, '{{ lib_font }}'{% endif %}, {{ generic }};
+        }
+    </style>
 
     <!-- Accent colour override (from settings.accent_color) -->
     {% if settings and settings.accent_color and settings.accent_color != '#000000' %}
