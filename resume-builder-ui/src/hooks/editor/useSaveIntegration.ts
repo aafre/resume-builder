@@ -56,6 +56,8 @@ export const useSaveIntegration = ({
 }: UseSaveIntegrationProps): UseSaveIntegrationReturn => {
   // Convert iconRegistry to plain object for cloud save
   // Dependency uses joined filenames string to detect when icons are added/removed
+  const iconFilenames = iconRegistry.getRegisteredFilenames().join(',');
+
   const iconsForCloudSave = useMemo(() => {
     const filenames = iconRegistry.getRegisteredFilenames();
     const iconsObj: { [filename: string]: File } = {};
@@ -66,7 +68,21 @@ export const useSaveIntegration = ({
       }
     });
     return iconsObj;
-  }, [iconRegistry.getRegisteredFilenames().join(',')]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [iconRegistry, iconFilenames]);
+
+  // Memoize resumeData to prevent reference inequality on every render.
+  // Passing an inline object literal to useCloudSave triggers expensive JSON.stringify
+  // operations internally because the reference changes on every render.
+  const memoizedResumeData = useMemo(() => {
+    return contactInfo && templateId
+      ? {
+          contact_info: contactInfo,
+          sections: sections,
+          template_id: templateId,
+        }
+      : { contact_info: { name: '', location: '', email: '', phone: '' }, sections: [], template_id: '' };
+  }, [contactInfo, sections, templateId]);
 
   const {
     saveStatus,
@@ -75,14 +91,7 @@ export const useSaveIntegration = ({
     resumeId: savedResumeId,
   } = useCloudSave({
     resumeId: cloudResumeId,
-    resumeData:
-      contactInfo && templateId
-        ? {
-            contact_info: contactInfo,
-            sections: sections,
-            template_id: templateId,
-          }
-        : { contact_info: { name: '', location: '', email: '', phone: '' }, sections: [], template_id: '' },
+    resumeData: memoizedResumeData,
     icons: iconsForCloudSave,
     enabled: !!templateId && !!contactInfo && !isLoadingFromUrl && !authLoading,
     session: session,
