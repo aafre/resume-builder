@@ -133,46 +133,46 @@ const EducationSection: React.FC<EducationSectionProps> = ({
         isCollapsed={isCollapsed}
         onToggleCollapse={handleToggleCollapse}
       />
-      {!isCollapsed && <MarkdownHint className="mb-4" />}
-      {!isCollapsed && (
-        <ItemDndContext
-          items={education}
-          sectionId={`education-${sectionName.replace(/\s+/g, '-').toLowerCase()}`}
-          onReorder={(oldIndex, newIndex) => {
-            if (onReorderEntry) {
-              onReorderEntry(oldIndex, newIndex);
-            }
-          }}
-          getItemInfo={(item) => ({
-            label: item.school || 'Untitled School',
-            sublabel: item.degree || undefined,
-            type: 'education' as const,
-          })}
-        >
-          {({ itemIds }) => (
-            <>
-              {education.map((item, index) => (
-                <EducationItem
-                  key={itemIds[index]}
-                  id={itemIds[index]}
-                  index={index}
-                  data={item}
-                  onChange={handleUpdateItemStable}
-                  onIconChange={handleIconChangeStable}
-                  onRemove={handleRemoveItemStable}
-                  supportsIcons={supportsIcons}
-                  iconRegistry={iconRegistry}
-                />
-              ))}
-            </>
-          )}
-        </ItemDndContext>
-      )}
-      {!isCollapsed && (
-        <GhostButton onClick={handleAddItem} className="mt-4">
-          Add Entry
-        </GhostButton>
-      )}
+      <div className={`section-collapsible${isCollapsed ? " section-collapsed" : ""}`}>
+        <div>
+          <MarkdownHint className="mb-4" />
+          <ItemDndContext
+            items={education}
+            sectionId={`education-${sectionName.replace(/\s+/g, '-').toLowerCase()}`}
+            onReorder={(oldIndex, newIndex) => {
+              if (onReorderEntry) {
+                onReorderEntry(oldIndex, newIndex);
+              }
+            }}
+            getItemInfo={(item) => ({
+              label: item.school || 'Untitled School',
+              sublabel: item.degree || undefined,
+              type: 'education' as const,
+            })}
+          >
+            {({ itemIds }) => (
+              <>
+                {education.map((item, index) => (
+                  <EducationItem
+                    key={itemIds[index]}
+                    id={itemIds[index]}
+                    index={index}
+                    data={item}
+                    onChange={handleUpdateItemStable}
+                    onIconChange={handleIconChangeStable}
+                    onRemove={handleRemoveItemStable}
+                    supportsIcons={supportsIcons}
+                    iconRegistry={iconRegistry}
+                  />
+                ))}
+              </>
+            )}
+          </ItemDndContext>
+          <GhostButton onClick={handleAddItem} className="mt-4">
+            Add Entry
+          </GhostButton>
+        </div>
+      </div>
     </div>
   );
 };
