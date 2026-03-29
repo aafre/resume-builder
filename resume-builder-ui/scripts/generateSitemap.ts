@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { JOBS_DATABASE } from '../src/data/jobKeywords/index';
 import { JOB_EXAMPLES_DATABASE } from '../src/data/jobExamples/index';
+import { getActiveBlogPosts } from '../src/data/blogPosts';
 import { STATIC_URLS } from '../src/data/sitemapUrls';
 import {
   HREFLANG_PAIRS,
@@ -38,6 +39,13 @@ const JOB_EXAMPLES = JOB_EXAMPLES_DATABASE.map(job => ({
   slug: job.slug,
   priority: job.priority,
   lastmod: new Date().toISOString().split('T')[0],
+}));
+
+// Blog posts (exclude redirects and coming-soon drafts)
+const BLOG_POSTS = getActiveBlogPosts().map(post => ({
+  slug: post.slug,
+  priority: 0.5,
+  lastmod: post.publishDate,
 }));
 
 /**
@@ -116,6 +124,15 @@ export function generateSitemap(): string {
     });
   });
 
+  // Add blog posts (auto-generated from blogPosts.ts)
+  BLOG_POSTS.forEach(post => {
+    addUrl(`/blog/${post.slug}`, {
+      lastmod: post.lastmod,
+      changefreq: 'monthly',
+      priority: post.priority
+    });
+  });
+
   // Check if we have any hreflang pairs that need the xhtml namespace
   const hasHreflangPairs = HREFLANG_PAIRS.length > 0;
 
@@ -181,9 +198,9 @@ function writeSitemap(): void {
       locations.push(distSitemapPath);
     }
 
-    const totalUrls = STATIC_URLS.length + JOBS.length + JOB_EXAMPLES.length;
+    const totalUrls = STATIC_URLS.length + JOBS.length + JOB_EXAMPLES.length + BLOG_POSTS.length;
     console.log(`✅ Sitemap generated successfully!`);
-    console.log(`   📄 Total URLs: ${totalUrls} (${STATIC_URLS.length} static + ${JOBS.length} keyword pages + ${JOB_EXAMPLES.length} example pages)`);
+    console.log(`   📄 Total URLs: ${totalUrls} (${STATIC_URLS.length} static + ${JOBS.length} keyword pages + ${JOB_EXAMPLES.length} example pages + ${BLOG_POSTS.length} blog posts)`);
     console.log(`   📍 Locations: ${locations.join(', ')}`);
   } catch (error) {
     console.error('❌ Error generating sitemap:', error);
