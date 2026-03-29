@@ -123,6 +123,7 @@ class TestSmartDiffing:
         json_repr = json.dumps({
             'contact_info': contact_info,
             'sections': sections,
+            'settings': {},
             'icon_metadata': []
         }, sort_keys=True)
         expected_hash = hashlib.sha256(json_repr.encode('utf-8')).hexdigest()
@@ -209,6 +210,7 @@ class TestSmartDiffing:
         json_repr = json.dumps({
             'contact_info': contact_info,
             'sections': sections,
+            'settings': {},
             'icon_metadata': sorted(icon_metadata, key=lambda x: x['filename'])
         }, sort_keys=True)
         expected_hash = hashlib.sha256(json_repr.encode('utf-8')).hexdigest()

@@ -1741,6 +1741,7 @@ def get_templates():
                     "serve_templates", filename=t.preview, _external=True
                 ),
                 supports_icons=t.supports_icons,
+                tags=t.tags,
             ).model_dump()
             for t in display_templates
         ]
@@ -1974,6 +1975,9 @@ def generate_resume():
                     f"Invalid template: {template}. Available templates: {', '.join(template_registry.all_ids())}"
                 )
 
+            # Extract document settings for renderer (accent colour, page numbers, etc.)
+            user_settings = yaml_data.get("settings", {})
+
             # Dispatch PDF generation via template renderer
             from templates.renderer import generate_pdf as render_template_pdf
 
@@ -1984,6 +1988,7 @@ def generate_resume():
                 output_path=str(output_path),
                 icons_dir=str(session_icons_dir),
                 session_id=session_id,
+                settings=user_settings,
             )
 
             if not output_path.exists():
@@ -2286,6 +2291,7 @@ def save_resume():
         contact_info = data.get("contact_info", {})
         sections = data.get("sections", [])
         icons = data.get("icons", [])
+        settings = data.get("settings", {})
         ai_import_warnings = data.get("ai_import_warnings")  # Optional JSONB array
         ai_import_confidence = data.get("ai_import_confidence")  # Optional decimal
 
@@ -2314,6 +2320,7 @@ def save_resume():
             {
                 "contact_info": contact_info,
                 "sections": sections,
+                "settings": settings,
                 "icon_metadata": sorted(
                     icon_metadata, key=lambda x: x["filename"]
                 ),  # Sort for consistency
@@ -2390,6 +2397,7 @@ def save_resume():
             "template_id": template_id,
             "contact_info": contact_info,
             "sections": sections,
+            "settings": settings,
             "json_hash": new_hash,  # Store hash for future diffing
             "updated_at": "now()",
             "last_accessed_at": "now()",
@@ -3310,10 +3318,12 @@ def generate_pdf_for_saved_resume(resume_id):
                 return jsonify({"success": False, "error": error_msg}), 500
 
             # Prepare YAML data
+            resume_settings = resume.get("settings", {})
             yaml_data = {
                 "template": resume.get("template_id"),
                 "contact_info": resume.get("contact_info", {}),
                 "sections": resume.get("sections", []),
+                "settings": resume_settings if isinstance(resume_settings, dict) else {},
             }
 
             # Normalize sections
@@ -3425,6 +3435,7 @@ def generate_pdf_for_saved_resume(resume_id):
                 output_path=str(output_path),
                 icons_dir=str(session_icons_dir),
                 session_id=session_id,
+                settings=yaml_data.get("settings", {}),
             )
 
             if not output_path.exists():
@@ -3561,10 +3572,12 @@ def generate_thumbnail_for_resume(resume_id):
                 # Icons will be missing from PDF, but thumbnail will still generate
 
             # Prepare YAML data
+            resume_settings = resume.get("settings", {})
             yaml_data = {
                 "template": resume.get("template_id"),
                 "contact_info": resume.get("contact_info", {}),
                 "sections": resume.get("sections", []),
+                "settings": resume_settings if isinstance(resume_settings, dict) else {},
             }
 
             # Normalize sections
@@ -3676,6 +3689,7 @@ def generate_thumbnail_for_resume(resume_id):
                 output_path=str(output_path),
                 icons_dir=str(session_icons_dir),
                 session_id=session_id,
+                settings=yaml_data.get("settings", {}),
             )
 
             if not output_path.exists():

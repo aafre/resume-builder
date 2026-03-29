@@ -4,7 +4,7 @@ import { getSessionId } from '../utils/session';
 import { extractReferencedIconFilenames } from '../utils/iconExtractor';
 import { apiClient } from '../lib/api-client';
 import yaml from 'js-yaml';
-import { ContactInfo, Section } from '../types';
+import { ContactInfo, Section, DocumentSettings } from '../types';
 
 interface IconRegistry {
   getIconFile: (filename: string) => File | null;
@@ -56,6 +56,7 @@ interface UsePreviewOptions {
   iconRegistry?: IconRegistry;
   processSections?: (sections: Section[]) => Section[];
   supportsIcons?: boolean;
+  documentSettings?: DocumentSettings;
 
   // MyResumes mode (database PDF)
   resumeId?: string;
@@ -90,6 +91,7 @@ export function usePreview({
   iconRegistry,
   processSections,
   supportsIcons = false,
+  documentSettings,
   resumeId,
   mode = 'live',
   session,
@@ -278,6 +280,7 @@ export function usePreview({
           const yamlData = yaml.dump({
             contact_info: contactInfo,
             sections: processedSections,
+            ...(documentSettings && Object.keys(documentSettings).length > 0 && { settings: documentSettings }),
           });
 
           // Build FormData

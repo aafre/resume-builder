@@ -292,7 +292,7 @@ def generate_pdf(
         sections=sections,
         icon_path=data["icon_path"],
         css_path=data["css_path"],
-        font=data.get("font", "Arial"),
+        font=settings.get("font_family") or data.get("font", "Arial"),
         settings=settings,
     )
 

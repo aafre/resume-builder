@@ -23,12 +23,11 @@ const COLOR_PRESETS = [
 const FONT_OPTIONS = [
   "Arial",
   "Calibri",
+  "Cambria",
   "Garamond",
   "Georgia",
-  "Lato",
-  "Roboto",
-  "Source Sans Pro",
   "Tahoma",
+  "Times New Roman",
 ] as const;
 
 export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({

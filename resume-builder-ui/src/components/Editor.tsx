@@ -143,6 +143,7 @@ const Editor: React.FC = () => {
     templateId,
     setTemplateId,
     setSupportsIcons,
+    setDocumentSettings,
     setOriginalTemplateData,
     setLoading,
     setLoadingError,
@@ -169,6 +170,7 @@ const Editor: React.FC = () => {
     contactInfo,
     sections,
     templateId,
+    documentSettings,
     iconRegistry,
     cloudResumeId: resumeLoader.cloudResumeId,
     setCloudResumeId: resumeLoader.setCloudResumeId,
@@ -205,6 +207,7 @@ const Editor: React.FC = () => {
     iconRegistry,
     processSections: processSectionsForExport,
     supportsIcons,
+    documentSettings,
   });
 
   // ===== LAYER 4: Action Hooks =====
@@ -217,6 +220,7 @@ const Editor: React.FC = () => {
     saveBeforeAction,
     isAnonymous,
     supportsIcons,
+    documentSettings,
     setOriginalTemplateData,
     setIsLoadingFromUrl: resumeLoader.setIsLoadingFromUrl,
     pendingImportFile: modalManager.pendingImportFile,
@@ -238,6 +242,7 @@ const Editor: React.FC = () => {
     isAnonymous,
     hasShownDownloadToast,
     markDownloadToastShown,
+    documentSettings,
     originalTemplateData,
     isLoadingFromUrl: resumeLoader.isLoadingFromUrl,
     validateIcons: preview.validateIcons,
