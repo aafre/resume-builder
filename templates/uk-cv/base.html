@@ -4,18 +4,23 @@
     <meta charset="UTF-8">
     <title>{{ contact_info.name }}'s Resume</title>
 
-    {% set system_fonts = ['Arial', 'Helvetica', 'Calibri', 'Georgia', 'Tahoma', 'Times New Roman', 'Verdana', 'Trebuchet MS', 'Cambria'] %}
-    {% if font and font not in system_fonts %}
+    {# Fonts bundled in Docker — no external download needed #}
+    {% set bundled_fonts = ['EB Garamond', 'Source Serif 4', 'Crimson Pro', 'Newsreader',
+                            'IBM Plex Sans', 'Source Sans 3', 'DM Sans',
+                            'Plus Jakarta Sans', 'Playfair Display'] %}
+    {% set system_fonts = ['Arial', 'Helvetica', 'Calibri', 'Georgia', 'Tahoma',
+                           'Times New Roman', 'Verdana', 'Trebuchet MS', 'Cambria'] %}
+    {% set local_fonts = bundled_fonts + system_fonts %}
+    {% if font and font not in local_fonts %}
         <link href="https://fonts.googleapis.com/css?family={{ font | replace(' ', '+') }}&display=swap" rel="stylesheet">
     {% endif %}
 
     <link rel="stylesheet" href="{{ css_path }}">
 
-    {# Font and accent overrides AFTER the stylesheet so they win the cascade #}
-    {# Font stack includes Liberation equivalents so Linux/Docker (which has
-       fonts-liberation but not the Microsoft originals) can resolve the font
-       via fontconfig without falling through to the generic sans-serif. #}
-    {% set font_val = font | default("Arial") %}
+    {# Font override AFTER the stylesheet so it wins the cascade.
+       - Bundled fonts are installed in Docker and resolved directly.
+       - System fonts need a Liberation fallback for Linux/Docker. #}
+    {% set font_val = font | default("Source Sans 3") %}
     {% set liberation_map = {
         'Times New Roman': 'Liberation Serif',
         'Georgia':         'Liberation Serif',
@@ -29,6 +34,8 @@
     } %}
     {% set lib_font = liberation_map.get(font_val, '') %}
     {% set serif_fonts = ['Times New Roman', 'Georgia', 'Cambria', 'Garamond',
+                          'EB Garamond', 'Source Serif 4', 'Crimson Pro',
+                          'Newsreader', 'Playfair Display',
                           'Liberation Serif', 'DejaVu Serif'] %}
     {% if font_val in serif_fonts or 'Serif' in font_val %}
         {% set generic = 'serif' %}

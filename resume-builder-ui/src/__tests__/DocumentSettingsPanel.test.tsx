@@ -39,11 +39,13 @@ describe("DocumentSettingsPanel", () => {
       expect(presetButtons).toHaveLength(10);
     });
 
-    it("renders font dropdown with 7 options", () => {
+    it("renders font dropdown with grouped options", () => {
       renderPanel();
       const select = screen.getByLabelText("Font");
       const options = within(select).getAllByRole("option");
-      expect(options).toHaveLength(7);
+      expect(options).toHaveLength(15); // 4 sans + 5 serif + 6 classic
+      const groups = within(select).getAllByRole("group");
+      expect(groups).toHaveLength(3); // Sans Serif, Serif, Classic
     });
 
     it("renders page number toggle with role=switch", () => {
@@ -234,18 +236,18 @@ describe("DocumentSettingsPanel", () => {
       renderPanel();
 
       const select = screen.getByLabelText("Font");
-      fireEvent.change(select, { target: { value: "Garamond" } });
+      fireEvent.change(select, { target: { value: "EB Garamond" } });
 
       expect(onSettingsChange).toHaveBeenCalledWith(
-        expect.objectContaining({ font_family: "Garamond" })
+        expect.objectContaining({ font_family: "EB Garamond" })
       );
     });
 
-    it("default font is Arial when settings.font_family is undefined", () => {
+    it("default font is Source Sans 3 when settings.font_family is undefined", () => {
       renderPanel({ accent_color: "#000000" });
 
       const select = screen.getByLabelText("Font") as HTMLSelectElement;
-      expect(select.value).toBe("Arial");
+      expect(select.value).toBe("Source Sans 3");
     });
   });
 
@@ -311,9 +313,9 @@ describe("DocumentSettingsPanel", () => {
     it("uses correct defaults when settings are empty", () => {
       renderPanel({});
 
-      // Font defaults to Arial
+      // Font defaults to Source Sans 3
       const select = screen.getByLabelText("Font") as HTMLSelectElement;
-      expect(select.value).toBe("Arial");
+      expect(select.value).toBe("Source Sans 3");
 
       // Page numbers default to off
       const toggle = screen.getByRole("switch");

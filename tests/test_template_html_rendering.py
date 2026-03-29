@@ -321,17 +321,17 @@ class TestTwoColumnTemplate:
         assert "resume-columns" in html
 
     def test_font_in_body_style(self):
-        """Two-column defaults to Calibri, but a custom font should appear."""
-        html = render_template("two-column", make_context(font="Garamond"))
-        assert "Garamond" in html
+        """Two-column accepts a custom font which should appear in the output."""
+        html = render_template("two-column", make_context(font="EB Garamond"))
+        assert "EB Garamond" in html
 
-    def test_default_font_is_calibri(self):
-        """When font is omitted entirely, two-column defaults to Calibri via
-        the Jinja2 ``default("Calibri")`` filter."""
+    def test_default_font_is_source_sans(self):
+        """When font is omitted entirely, two-column defaults to Source Sans 3
+        via the Jinja2 ``default("Source Sans 3")`` filter."""
         ctx = make_context()
         del ctx["font"]  # Remove key so Jinja2 sees it as undefined
         html = render_template("two-column", ctx)
-        assert "Calibri" in html
+        assert "Source Sans 3" in html
 
     def test_does_not_use_black_icons(self):
         """Two-column uses icon_path directly, not the bicon /black rewrite."""

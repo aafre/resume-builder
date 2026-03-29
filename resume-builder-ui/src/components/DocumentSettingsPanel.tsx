@@ -20,14 +20,37 @@ const COLOR_PRESETS = [
   { name: "True Black", value: "#000000" },
 ] as const;
 
-const FONT_OPTIONS = [
-  "Arial",
-  "Calibri",
-  "Cambria",
-  "Garamond",
-  "Georgia",
-  "Tahoma",
-  "Times New Roman",
+const FONT_GROUPS = [
+  {
+    label: "Sans Serif",
+    fonts: [
+      "Source Sans 3",
+      "IBM Plex Sans",
+      "DM Sans",
+      "Plus Jakarta Sans",
+    ],
+  },
+  {
+    label: "Serif",
+    fonts: [
+      "EB Garamond",
+      "Source Serif 4",
+      "Crimson Pro",
+      "Newsreader",
+      "Playfair Display",
+    ],
+  },
+  {
+    label: "Classic",
+    fonts: [
+      "Arial",
+      "Calibri",
+      "Cambria",
+      "Georgia",
+      "Tahoma",
+      "Times New Roman",
+    ],
+  },
 ] as const;
 
 export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
@@ -38,7 +61,7 @@ export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
   const [showCustomColor, setShowCustomColor] = useState(false);
 
   const accentColor = settings.accent_color ?? "#000000";
-  const fontFamily = settings.font_family ?? "Arial";
+  const fontFamily = settings.font_family ?? "Source Sans 3";
   const showPageNumbers = settings.show_page_numbers ?? false;
 
   const updateSetting = <K extends keyof DocumentSettings>(
@@ -168,10 +191,14 @@ export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
                   className="px-2.5 py-1.5 text-xs border border-gray-200 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-accent focus:border-transparent cursor-pointer"
                   style={{ fontFamily }}
                 >
-                  {FONT_OPTIONS.map((font) => (
-                    <option key={font} value={font} style={{ fontFamily: font }}>
-                      {font}
-                    </option>
+                  {FONT_GROUPS.map((group) => (
+                    <optgroup key={group.label} label={group.label}>
+                      {group.fonts.map((font) => (
+                        <option key={font} value={font} style={{ fontFamily: font }}>
+                          {font}
+                        </option>
+                      ))}
+                    </optgroup>
                   ))}
                 </select>
               </div>
