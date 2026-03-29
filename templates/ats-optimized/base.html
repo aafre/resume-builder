@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <title>{{ contact_info.name }}'s Resume</title>
 
-    {% set system_fonts = ['Arial', 'Helvetica', 'Calibri', 'Georgia', 'Tahoma', 'Times New Roman', 'Verdana', 'Trebuchet MS'] %}
+    {% set system_fonts = ['Arial', 'Helvetica', 'Calibri', 'Georgia', 'Tahoma', 'Times New Roman', 'Verdana', 'Trebuchet MS', 'Cambria'] %}
     {% if font and font not in system_fonts %}
         <link href="https://fonts.googleapis.com/css?family={{ font | replace(' ', '+') }}&display=swap" rel="stylesheet">
     {% endif %}
+
+    <link rel="stylesheet" href="{{ css_path }}">
+
+    {# Font and accent overrides AFTER the stylesheet so they win the cascade #}
     <style>
         body { font-family: '{{ font | default("Arial") }}', Arial, Helvetica, sans-serif; }
     </style>
-
-    <link rel="stylesheet" href="{{ css_path }}">
 
     {% set accent = settings.accent_color | default('#2D3436') if settings else '#2D3436' %}
     {% if accent != '#2D3436' %}
