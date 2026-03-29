@@ -1498,7 +1498,8 @@ BOT_USER_AGENTS = re.compile(
     r"googlebot|bingbot|yandexbot|duckduckbot|baiduspider|"
     r"slurp|facebot|ia_archiver|semrushbot|ahrefsbot|"
     r"gptbot|claude-web|perplexitybot|amazonbot|bytespider|ccbot|"
-    r"google-extended|applebot",
+    r"google-extended|applebot|"
+    r"twitterbot|linkedinbot|whatsapp|telegrambot|slackbot",
     re.IGNORECASE,
 )
 
