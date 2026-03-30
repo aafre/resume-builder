@@ -11,7 +11,6 @@ export const TEMPLATE_BADGES: Record<
   { label: string; variant: 'popular' | 'ats' | 'new' | 'entry' }
 > = {
   'modern-with-icons': { label: 'Most Popular', variant: 'popular' },
-  'ats-optimized': { label: 'ATS Optimized', variant: 'ats' },
   student: { label: 'Entry Level', variant: 'entry' },
 };
 
@@ -133,20 +132,6 @@ export default function TemplateCard({
           `}
         />
 
-        {/* Badge overlay */}
-        {badge && (
-          <span
-            className={`
-              absolute top-3 left-3 z-10
-              font-display text-xs font-semibold
-              px-2.5 py-1 rounded-lg
-              ${BADGE_STYLES[badge.variant]}
-            `}
-          >
-            {badge.label}
-          </span>
-        )}
-
         {/* Hover overlay — preview hint */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.04] transition-all duration-300 flex items-center justify-center">
           <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg">
@@ -157,10 +142,23 @@ export default function TemplateCard({
 
       {/* ---- Compact footer ---- */}
       <div className="p-4">
-        {/* Template name */}
-        <h3 className="font-display text-lg font-bold text-ink leading-tight">
-          {template.name}
-        </h3>
+        {/* Template name + badge */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <h3 className="font-display text-lg font-bold text-ink leading-tight">
+            {template.name}
+          </h3>
+          {badge && (
+            <span
+              className={`
+                font-display text-[11px] font-semibold
+                px-2 py-0.5 rounded-md whitespace-nowrap
+                ${BADGE_STYLES[badge.variant]}
+              `}
+            >
+              {badge.label}
+            </span>
+          )}
+        </div>
 
         {/* Best-for tagline */}
         {bestFor && (
