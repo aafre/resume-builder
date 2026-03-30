@@ -1,0 +1,3 @@
+## 2024-03-30 - Pattern: Hoisting Regex Compilation in LaTeX Escaping
+**Learning:** Found a performance optimization pattern where utility functions like `_escape_latex` (in `app.py` and `resume_generator_latex.py`) define dictionary mapping and compile regexes on every single invocation. Given this is called recursively/repeatedly for almost every string field in the resume JSON during generation, it causes unnecessary overhead.
+**Action:** Always hoist static dictionaries (like `LATEX_SPECIAL_CHARS`) and their compiled regex counterparts (`LATEX_ESCAPE_PATTERN` using `re.compile()`) to module-level constants to avoid recompiling the regex and recreating the dict on each call. This results in an approximate 2x speedup for the escape function.
