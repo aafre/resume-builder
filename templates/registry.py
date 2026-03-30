@@ -47,8 +47,34 @@ def _register(config: TemplateConfig) -> None:
 
 
 # ---------------------------------------------------------------------------
-# User-facing templates
+# User-facing templates (order determines display order in the gallery)
 # ---------------------------------------------------------------------------
+
+_register(
+    TemplateConfig(
+        id="classic-alex-rivera",
+        dir="classic",
+        engine=TemplateEngine.latex,
+        sample="samples/classic/alex_rivera_data.yml",
+        name="Professional Resume",
+        description="Clean, structured layout with traditional formatting and excellent space utilization.",
+        preview="alex_rivera.png",
+        tags=["traditional", "structured", "versatile"],
+    )
+)
+
+_register(
+    TemplateConfig(
+        id="classic-jane-doe",
+        dir="classic",
+        engine=TemplateEngine.latex,
+        sample="samples/classic/jane_doe.yml",
+        name="Elegant Resume",
+        description="Refined design with sophisticated typography and organized section layout.",
+        preview="jane_doe.png",
+        tags=["refined", "sophisticated", "classic"],
+    )
+)
 
 _register(
     TemplateConfig(
@@ -98,24 +124,6 @@ _register(
 
 _register(
     TemplateConfig(
-        id="two-column",
-        dir="two-column",
-        engine=TemplateEngine.html,
-        sample="samples/two-column/sample_data.yml",
-        name="Two-Column",
-        description="Sidebar layout with skills and contact info on the left, experience on the right.",
-        preview="two-column.png",
-        pdf_options=PDFOptions(
-            margin_top="0.6in",
-            margin_bottom="0.6in",
-            margin_left="0.6in",
-            margin_right="0.6in",
-        ),
-    )
-)
-
-_register(
-    TemplateConfig(
         id="student",
         dir="student",
         engine=TemplateEngine.html,
@@ -148,27 +156,19 @@ _register(
 
 _register(
     TemplateConfig(
-        id="classic-alex-rivera",
-        dir="classic",
-        engine=TemplateEngine.latex,
-        sample="samples/classic/alex_rivera_data.yml",
-        name="Professional Resume",
-        description="Clean, structured layout with traditional formatting and excellent space utilization.",
-        preview="alex_rivera.png",
-        tags=["traditional", "structured", "versatile"],
-    )
-)
-
-_register(
-    TemplateConfig(
-        id="classic-jane-doe",
-        dir="classic",
-        engine=TemplateEngine.latex,
-        sample="samples/classic/jane_doe.yml",
-        name="Elegant Resume",
-        description="Refined design with sophisticated typography and organized section layout.",
-        preview="jane_doe.png",
-        tags=["refined", "sophisticated", "classic"],
+        id="two-column",
+        dir="two-column",
+        engine=TemplateEngine.html,
+        sample="samples/two-column/sample_data.yml",
+        name="Two-Column",
+        description="Sidebar layout with skills and contact info on the left, experience on the right.",
+        preview="two-column.png",
+        pdf_options=PDFOptions(
+            margin_top="0.6in",
+            margin_bottom="0.6in",
+            margin_left="0.6in",
+            margin_right="0.6in",
+        ),
     )
 )
 

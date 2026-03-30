@@ -6,14 +6,6 @@ import { MagnifyingGlassPlusIcon } from '@heroicons/react/24/outline';
 /*  Static metadata maps                                               */
 /* ------------------------------------------------------------------ */
 
-export const TEMPLATE_BADGES: Record<
-  string,
-  { label: string; variant: 'popular' | 'ats' | 'new' | 'entry' }
-> = {
-  'modern-with-icons': { label: 'Most Popular', variant: 'popular' },
-  student: { label: 'Entry Level', variant: 'entry' },
-};
-
 export const TEMPLATE_BEST_FOR: Record<string, string> = {
   'modern-with-icons': 'Best for tech, startups & creative roles',
   'modern-no-icons': 'Best for any industry — clean and versatile',
@@ -23,13 +15,6 @@ export const TEMPLATE_BEST_FOR: Record<string, string> = {
   'classic-alex-rivera': 'Best for corporate, finance & law',
   'classic-jane-doe': 'Best for creative professionals',
   'two-column': 'Best for tech roles with many skills',
-};
-
-const BADGE_STYLES: Record<string, string> = {
-  popular: 'bg-accent/90 text-ink backdrop-blur-sm shadow-sm',
-  ats: 'bg-white/90 text-blue-700 backdrop-blur-sm border border-blue-200/50 shadow-sm',
-  new: 'bg-white/90 text-purple-700 backdrop-blur-sm border border-purple-200/50 shadow-sm',
-  entry: 'bg-white/90 text-amber-700 backdrop-blur-sm border border-amber-200/50 shadow-sm',
 };
 
 /* ------------------------------------------------------------------ */
@@ -70,7 +55,6 @@ export default function TemplateCard({
 }: TemplateCardProps) {
   const [imgLoaded, setImgLoaded] = useState(false);
 
-  const badge = TEMPLATE_BADGES[template.id];
   const bestFor = TEMPLATE_BEST_FOR[template.id];
 
   return (
@@ -125,7 +109,7 @@ export default function TemplateCard({
           decoding="async"
           onLoad={() => setImgLoaded(true)}
           className={`
-            w-full object-contain
+            w-full object-cover object-top
             h-80 md:h-96 lg:h-[28rem]
             group-hover:scale-[1.02] transition-all duration-500
             ${imgLoaded ? 'opacity-100' : 'opacity-0'}
@@ -142,23 +126,10 @@ export default function TemplateCard({
 
       {/* ---- Compact footer ---- */}
       <div className="p-4">
-        {/* Template name + badge */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <h3 className="font-display text-lg font-bold text-ink leading-tight">
-            {template.name}
-          </h3>
-          {badge && (
-            <span
-              className={`
-                font-display text-[11px] font-semibold
-                px-2 py-0.5 rounded-md whitespace-nowrap
-                ${BADGE_STYLES[badge.variant]}
-              `}
-            >
-              {badge.label}
-            </span>
-          )}
-        </div>
+        {/* Template name */}
+        <h3 className="font-display text-lg font-bold text-ink leading-tight">
+          {template.name}
+        </h3>
 
         {/* Best-for tagline */}
         {bestFor && (
