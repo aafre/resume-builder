@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { EyeIcon } from '@heroicons/react/24/outline';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import { MagnifyingGlassPlusIcon } from '@heroicons/react/24/outline';
 
 /* ------------------------------------------------------------------ */
 /*  Static metadata maps                                               */
@@ -27,10 +27,10 @@ export const TEMPLATE_BEST_FOR: Record<string, string> = {
 };
 
 const BADGE_STYLES: Record<string, string> = {
-  popular: 'bg-accent text-ink',
-  ats: 'bg-blue-100 text-blue-800',
-  new: 'bg-purple-100 text-purple-800',
-  entry: 'bg-amber-100 text-amber-800',
+  popular: 'bg-accent/90 text-ink backdrop-blur-sm shadow-sm',
+  ats: 'bg-white/90 text-blue-700 backdrop-blur-sm border border-blue-200/50 shadow-sm',
+  new: 'bg-white/90 text-purple-700 backdrop-blur-sm border border-purple-200/50 shadow-sm',
+  entry: 'bg-white/90 text-amber-700 backdrop-blur-sm border border-amber-200/50 shadow-sm',
 };
 
 /* ------------------------------------------------------------------ */
@@ -73,7 +73,6 @@ export default function TemplateCard({
 
   const badge = TEMPLATE_BADGES[template.id];
   const bestFor = TEMPLATE_BEST_FOR[template.id];
-  const displayTags = template.tags?.slice(0, 3);
 
   return (
     <div
@@ -103,8 +102,18 @@ export default function TemplateCard({
         </div>
       )}
 
-      {/* ---- Image area ---- */}
-      <div className="relative overflow-hidden rounded-t-3xl bg-chalk-dark">
+      {/* ---- Image area (click to preview) ---- */}
+      <div
+        className="relative overflow-hidden rounded-t-3xl bg-chalk-dark cursor-zoom-in"
+        onClick={(e) => {
+          e.stopPropagation();
+          onPreview(template);
+        }}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); onPreview(template); } }}
+        aria-label={`Preview ${template.name}`}
+      >
         {/* Skeleton shimmer while image loads */}
         {!imgLoaded && (
           <div className="absolute inset-0 animate-pulse bg-gray-200" />
@@ -118,8 +127,8 @@ export default function TemplateCard({
           onLoad={() => setImgLoaded(true)}
           className={`
             w-full object-contain
-            h-52 md:h-72 lg:h-80
-            transition-opacity duration-300
+            h-80 md:h-96 lg:h-[28rem]
+            group-hover:scale-[1.02] transition-all duration-500
             ${imgLoaded ? 'opacity-100' : 'opacity-0'}
           `}
         />
@@ -129,119 +138,88 @@ export default function TemplateCard({
           <span
             className={`
               absolute top-3 left-3 z-10
-              font-mono text-xs tracking-widest uppercase
-              px-2.5 py-1 rounded-lg font-semibold
+              font-display text-xs font-semibold
+              px-2.5 py-1 rounded-lg
               ${BADGE_STYLES[badge.variant]}
             `}
           >
             {badge.label}
           </span>
         )}
+
+        {/* Hover overlay — preview hint */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.04] transition-all duration-300 flex items-center justify-center">
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg">
+            <MagnifyingGlassPlusIcon className="h-5 w-5 text-ink" />
+          </div>
+        </div>
       </div>
 
-      {/* ---- Content ---- */}
-      <div className="flex flex-col flex-1 p-4 md:p-5 gap-2">
+      {/* ---- Compact footer ---- */}
+      <div className="p-4">
         {/* Template name */}
-        <h3 className="font-display text-xl font-bold text-ink leading-tight">
+        <h3 className="font-display text-lg font-bold text-ink leading-tight">
           {template.name}
         </h3>
 
         {/* Best-for tagline */}
         {bestFor && (
-          <p className="text-sm text-accent font-medium">{bestFor}</p>
+          <p className="text-sm text-stone-warm mt-1">
+            <span className="text-accent">→</span> {bestFor}
+          </p>
         )}
 
-        {/* Tag pills */}
-        {displayTags && displayTags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mt-1">
-            {displayTags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full bg-chalk-dark text-xs text-stone-warm px-2.5 py-0.5"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* Spacer to push CTAs to bottom */}
-        <div className="flex-1" />
-
-        {/* CTAs */}
-        <div className="flex flex-col sm:flex-row gap-2 mt-3">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onPreview(template);
-            }}
-            className="
-              inline-flex items-center justify-center gap-1.5
-              rounded-lg px-3.5 py-2 text-sm font-medium
-              text-stone-warm hover:text-ink hover:bg-black/5
-              transition-all duration-300
-              active:scale-[0.98]
-              sm:flex-none
-            "
-            aria-label={`Preview ${template.name}`}
-          >
-            <EyeIcon className="h-4 w-4" />
-            Preview
-          </button>
-
-          <button
-            type="button"
-            disabled={isLoading}
-            onClick={(e) => {
-              e.stopPropagation();
-              onUseTemplate(template.id);
-            }}
-            className={`
-              inline-flex items-center justify-center gap-2
-              rounded-xl px-5 py-2.5 text-sm font-bold
-              transition-all duration-300
-              active:scale-[0.98]
-              w-full sm:flex-1
-              ${
-                isLoading
-                  ? 'bg-accent/60 text-ink/60 cursor-not-allowed'
-                  : 'bg-accent text-ink hover:brightness-110 shadow-md hover:shadow-lg'
-              }
-            `}
-            aria-label={
-              isLoading ? loadingText : `Use ${template.name} template`
+        {/* CTA */}
+        <button
+          type="button"
+          disabled={isLoading}
+          onClick={(e) => {
+            e.stopPropagation();
+            onUseTemplate(template.id);
+          }}
+          className={`
+            mt-3 w-full inline-flex items-center justify-center gap-2
+            rounded-xl px-5 py-2.5 text-sm font-bold
+            transition-all duration-300
+            active:scale-[0.98]
+            ${
+              isLoading
+                ? 'bg-accent/60 text-ink/60 cursor-not-allowed'
+                : 'bg-accent text-ink hover:brightness-110 shadow-md hover:shadow-lg'
             }
-          >
-            {isLoading ? (
-              <>
-                <svg
-                  className="h-4 w-4 animate-spin"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                  />
-                </svg>
-                {loadingText}
-              </>
-            ) : (
-              'Use Template'
-            )}
-          </button>
-        </div>
+          `}
+          aria-label={
+            isLoading ? loadingText : `Use ${template.name} template`
+          }
+        >
+          {isLoading ? (
+            <>
+              <svg
+                className="h-4 w-4 animate-spin"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                />
+              </svg>
+              {loadingText}
+            </>
+          ) : (
+            'Use Template'
+          )}
+        </button>
       </div>
     </div>
   );
