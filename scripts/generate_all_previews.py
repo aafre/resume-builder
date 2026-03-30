@@ -82,10 +82,19 @@ def run_resume_generator(template: str, input_path: str, output_path: str) -> bo
     ]
     result = subprocess.run(cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT))
     if result.returncode != 0:
-        log.error(f"  resume_generator.py failed: {result.stderr.strip()}")
+        log.error(f"  resume_generator.py failed (exit {result.returncode}):")
+        if result.stderr:
+            for line in result.stderr.strip().splitlines()[-5:]:
+                log.error(f"    {line}")
         return False
     if not Path(output_path).exists() or Path(output_path).stat().st_size == 0:
         log.error(f"  PDF not created or empty")
+        if result.stderr:
+            for line in result.stderr.strip().splitlines()[-5:]:
+                log.error(f"    {line}")
+        if result.stdout:
+            for line in result.stdout.strip().splitlines()[-3:]:
+                log.error(f"    stdout: {line}")
         return False
     return True
 
