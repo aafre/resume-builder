@@ -18,7 +18,6 @@ LaTeX templates also require: texlive-xetex, texlive-fonts-recommended
 """
 
 import argparse
-import importlib
 import logging
 import subprocess
 import sys
@@ -30,6 +29,7 @@ from pdf2image import convert_from_path
 from PIL import Image
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
+sys.path.insert(0, str(PROJECT_ROOT))
 
 EXAMPLES_DIR = PROJECT_ROOT / "resume-builder-ui" / "public" / "examples"
 OUTPUT_DIR = PROJECT_ROOT / "docs" / "templates" / "examples"
@@ -41,7 +41,7 @@ WEBP_QUALITY = 82
 PDF_DPI = 200
 
 # Job examples are all rendered with the modern HTML template
-EXAMPLE_TEMPLATE = "modern"
+EXAMPLE_TEMPLATE_DIR = "modern"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -72,31 +72,51 @@ def generate_preview_images(slug: str, pdf_path: str, output_dir: Path) -> None:
         log.info(f"  {out_path.name}: {width}x{height}, {size_kb:.1f} KB")
 
 
-def run_resume_generator(template: str, input_path: str, output_path: str) -> bool:
-    """Run resume_generator.py as subprocess. Returns True on success."""
+def run_html_pdf(template_dir: str, input_path: str, output_path: str) -> bool:
+    """Generate PDF via resume_generator.py (HTML engine). Pass directory name, not ID."""
     cmd = [
         "python", "resume_generator.py",
-        "--template", template,
+        "--template", template_dir,
         "--input", input_path,
         "--output", output_path,
     ]
     result = subprocess.run(cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT))
-    if result.returncode != 0:
-        log.error(f"  resume_generator.py failed (exit {result.returncode}):")
-        if result.stderr:
-            for line in result.stderr.strip().splitlines()[-5:]:
-                log.error(f"    {line}")
-        return False
-    if not Path(output_path).exists() or Path(output_path).stat().st_size == 0:
-        log.error(f"  PDF not created or empty")
-        if result.stderr:
-            for line in result.stderr.strip().splitlines()[-5:]:
-                log.error(f"    {line}")
-        if result.stdout:
-            for line in result.stdout.strip().splitlines()[-3:]:
-                log.error(f"    stdout: {line}")
+    if result.returncode != 0 or not Path(output_path).exists() or Path(output_path).stat().st_size == 0:
+        stderr = result.stderr.strip().splitlines()[-3:] if result.stderr else []
+        stdout = result.stdout.strip().splitlines()[-3:] if result.stdout else []
+        for line in stderr + stdout:
+            log.error(f"    {line}")
         return False
     return True
+
+
+def run_latex_pdf(template_dir: str, yaml_data: dict, output_path: str) -> bool:
+    """Generate PDF via LaTeX (xelatex). Uses the renderer's latex pipeline."""
+    try:
+        from templates.renderer import generate_pdf as renderer_generate_pdf
+        from templates.registry import get as get_template
+
+        # Find a template ID that maps to this directory
+        # (renderer needs the ID to look up config)
+        all_templates = get_registry_templates()
+        match = [t for t in all_templates if t.dir == template_dir]
+        if not match:
+            log.error(f"  No template found for dir={template_dir}")
+            return False
+
+        renderer_generate_pdf(
+            template_id=match[0].id,
+            yaml_data=yaml_data,
+            output_path=output_path,
+        )
+
+        if not Path(output_path).exists() or Path(output_path).stat().st_size == 0:
+            log.error(f"  PDF not created or empty after LaTeX render")
+            return False
+        return True
+    except Exception as e:
+        log.error(f"  LaTeX render failed: {e}")
+        return False
 
 
 # ---------------------------------------------------------------------------
@@ -200,7 +220,7 @@ def convert_flat_to_template_yaml(resume: dict) -> dict:
         })
 
     return {
-        "template": EXAMPLE_TEMPLATE,
+        "template": EXAMPLE_TEMPLATE_DIR,
         "font": "Arial",
         "contact_info": contact_info,
         "sections": sections,
@@ -210,7 +230,7 @@ def convert_flat_to_template_yaml(resume: dict) -> dict:
 def process_example(yml_path: Path) -> bool:
     """Process a single job example YAML → PDF → WebP. Returns True on success."""
     slug = yml_path.stem
-    log.info(f"[example] Processing: {slug}")
+    log.info(f"[example] {slug}")
 
     try:
         with open(yml_path, "r", encoding="utf-8") as f:
@@ -218,7 +238,7 @@ def process_example(yml_path: Path) -> bool:
 
         resume = raw.get("resume", {})
         if not resume:
-            log.warning(f"  Skipping {slug}: no 'resume' key in YAML")
+            log.warning(f"  Skipping {slug}: no 'resume' key")
             return False
 
         template_data = convert_flat_to_template_yaml(resume)
@@ -232,77 +252,74 @@ def process_example(yml_path: Path) -> bool:
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp_pdf:
             tmp_pdf_path = tmp_pdf.name
 
-        success = run_resume_generator(EXAMPLE_TEMPLATE, tmp_yml_path, tmp_pdf_path)
+        success = run_html_pdf(EXAMPLE_TEMPLATE_DIR, tmp_yml_path, tmp_pdf_path)
         Path(tmp_yml_path).unlink(missing_ok=True)
 
         if not success:
             Path(tmp_pdf_path).unlink(missing_ok=True)
             return False
 
-        log.info(f"  PDF generated ({Path(tmp_pdf_path).stat().st_size} bytes)")
+        log.info(f"  PDF OK ({Path(tmp_pdf_path).stat().st_size} bytes)")
         generate_preview_images(slug, tmp_pdf_path, OUTPUT_DIR)
         Path(tmp_pdf_path).unlink(missing_ok=True)
         return True
 
     except Exception as e:
-        log.error(f"  Failed to process {slug}: {e}")
+        log.error(f"  Failed: {e}")
         return False
 
 
 # ---------------------------------------------------------------------------
-# Template processing (sample YAML already in template format → PDF → WebP)
+# Template processing (sample YAML → PDF → WebP)
 # ---------------------------------------------------------------------------
 
 def get_registry_templates() -> list:
     """Import the template registry and return display templates."""
-    sys.path.insert(0, str(PROJECT_ROOT))
-    registry = importlib.import_module("templates.registry")
-    return registry.get_display_templates()
+    from templates.registry import get_display_templates
+    return get_display_templates()
 
 
 def process_template(template_config) -> bool:
     """Process a single registry template → PDF → WebP. Returns True on success."""
     tid = template_config.id
+    tdir = template_config.dir
     sample_path = PROJECT_ROOT / template_config.sample
-    template_dir = template_config.dir
     engine = template_config.engine.value  # 'html' or 'latex'
 
-    log.info(f"[template] Processing: {tid} (engine={engine})")
+    # Output slug from preview filename (e.g., "alex_rivera" from "alex_rivera.png")
+    preview_name = template_config.preview
+    slug = Path(preview_name).stem if preview_name else tid
+
+    log.info(f"[template] {tid} → {slug} (engine={engine}, dir={tdir})")
 
     if not sample_path.exists():
-        log.error(f"  Sample YAML not found: {sample_path}")
+        log.error(f"  Sample not found: {sample_path}")
         return False
-
-    # Check if LaTeX engine is available for latex templates
-    if engine == "latex":
-        try:
-            subprocess.run(["xelatex", "--version"], capture_output=True, check=True)
-        except (subprocess.CalledProcessError, FileNotFoundError):
-            log.warning(f"  Skipping {tid}: xelatex not available (LaTeX template)")
-            return False
 
     try:
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp_pdf:
             tmp_pdf_path = tmp_pdf.name
 
-        success = run_resume_generator(tid, str(sample_path), tmp_pdf_path)
+        if engine == "latex":
+            # LaTeX: load YAML data and use renderer pipeline
+            with open(sample_path, "r", encoding="utf-8") as f:
+                yaml_data = yaml.safe_load(f)
+            success = run_latex_pdf(tdir, yaml_data, tmp_pdf_path)
+        else:
+            # HTML: pass directory name (not template ID) to resume_generator.py
+            success = run_html_pdf(tdir, str(sample_path), tmp_pdf_path)
 
         if not success:
             Path(tmp_pdf_path).unlink(missing_ok=True)
             return False
 
-        log.info(f"  PDF generated ({Path(tmp_pdf_path).stat().st_size} bytes)")
-
-        # Use the preview filename stem as the slug (e.g., "alex_rivera" from "alex_rivera.png")
-        preview_name = template_config.preview
-        slug = Path(preview_name).stem if preview_name else tid
-
+        log.info(f"  PDF OK ({Path(tmp_pdf_path).stat().st_size} bytes)")
         generate_preview_images(slug, tmp_pdf_path, OUTPUT_DIR)
         Path(tmp_pdf_path).unlink(missing_ok=True)
         return True
 
     except Exception as e:
-        log.error(f"  Failed to process {tid}: {e}")
+        log.error(f"  Failed: {e}")
         return False
 
 
@@ -319,72 +336,63 @@ def main():
     parser.add_argument("--examples", action="store_true",
                         help="Generate only the 26 job example previews")
     parser.add_argument("--slug",
-                        help="Process a single job example by slug (e.g., 'software-engineer')")
+                        help="Single job example slug (e.g., 'software-engineer')")
     parser.add_argument("--template-id",
-                        help="Process a single template by ID (e.g., 'modern-with-icons')")
+                        help="Single template ID (e.g., 'modern-with-icons')")
     args = parser.parse_args()
 
-    # Default: generate everything if no flags specified
+    # Default: generate everything if no flags
     do_templates = args.templates or args.template_id or (not args.examples and not args.slug)
     do_examples = args.examples or args.slug or (not args.templates and not args.template_id)
 
-    # Ensure output directories exist
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     (PROJECT_ROOT / "output").mkdir(exist_ok=True)
 
-    total_success, total_fail = 0, 0
+    total_ok, total_fail = 0, 0
 
-    # --- Templates ---
     if do_templates:
         log.info("=" * 60)
         log.info("GENERATING TEMPLATE PREVIEWS")
         log.info("=" * 60)
 
-        registry_templates = get_registry_templates()
-
+        templates = get_registry_templates()
         if args.template_id:
-            match = [t for t in registry_templates if t.id == args.template_id]
-            if not match:
-                log.error(f"Template ID not found: {args.template_id}")
+            templates = [t for t in templates if t.id == args.template_id]
+            if not templates:
+                log.error(f"Template not found: {args.template_id}")
                 sys.exit(1)
-            registry_templates = match
 
-        log.info(f"Found {len(registry_templates)} templates")
-
-        for t in registry_templates:
+        log.info(f"Found {len(templates)} templates")
+        for t in templates:
             if process_template(t):
-                total_success += 1
+                total_ok += 1
             else:
                 total_fail += 1
 
-    # --- Job examples ---
     if do_examples:
         log.info("=" * 60)
         log.info("GENERATING JOB EXAMPLE PREVIEWS")
         log.info("=" * 60)
 
         if args.slug:
-            yml_path = EXAMPLES_DIR / f"{args.slug}.yml"
-            if not yml_path.exists():
-                log.error(f"File not found: {yml_path}")
+            yml_files = [EXAMPLES_DIR / f"{args.slug}.yml"]
+            if not yml_files[0].exists():
+                log.error(f"Not found: {yml_files[0]}")
                 sys.exit(1)
-            yml_files = [yml_path]
         else:
             yml_files = sorted(EXAMPLES_DIR.glob("*.yml"))
 
-        log.info(f"Found {len(yml_files)} example YAML files")
-
+        log.info(f"Found {len(yml_files)} examples")
         for yml_path in yml_files:
             if process_example(yml_path):
-                total_success += 1
+                total_ok += 1
             else:
                 total_fail += 1
 
-    # --- Summary ---
     log.info("=" * 60)
-    log.info(f"DONE: {total_success} succeeded, {total_fail} failed, {total_success * 2} images generated")
+    log.info(f"DONE: {total_ok} succeeded, {total_fail} failed, {total_ok * 2} images")
     if total_fail:
-        log.warning(f"{total_fail} items failed — check logs above")
+        log.warning(f"{total_fail} failed — see errors above")
         sys.exit(1)
 
 
