@@ -745,12 +745,12 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               to="/contact"
               className={`w-full flex items-center transition-all rounded-md ${
                 isCollapsed
-                  ? "flex-col gap-1 py-2 px-1 hover:bg-teal-50/80"
-                  : "flex-row gap-3 px-3 py-2 hover:bg-teal-50/80 text-gray-700 hover:text-teal-700"
+                  ? "flex-col gap-1 py-2 px-1 hover:bg-chalk-dark"
+                  : "flex-row gap-3 px-3 py-2 hover:bg-chalk-dark text-stone-warm hover:text-ink"
               }`}
             >
               <MdSupport
-                className={`text-teal-600 ${isCollapsed ? "text-base" : "text-base"}`}
+                className={`text-stone-warm ${isCollapsed ? "text-base" : "text-base"}`}
               />
               <span
                 className={`${

@@ -238,7 +238,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
             <Link
               to="/contact"
               onClick={onClose}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-teal-500 to-cyan-600 text-white rounded-lg font-medium shadow-md hover:shadow-lg active:scale-95 transition-all min-h-[48px]"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-chalk-dark text-stone-warm hover:text-ink rounded-xl font-medium hover:shadow-sm active:scale-95 transition-all min-h-[48px]"
               style={{ WebkitTapHighlightColor: "transparent" }}
             >
               <MdSupport className="text-xl" />
