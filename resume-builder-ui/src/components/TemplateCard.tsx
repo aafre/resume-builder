@@ -109,8 +109,9 @@ export default function TemplateCard({
           decoding="async"
           onLoad={() => setImgLoaded(true)}
           className={`
-            w-full object-cover object-top
+            w-full object-contain
             h-80 md:h-96 lg:h-[28rem]
+            p-2
             group-hover:scale-[1.02] transition-all duration-500
             ${imgLoaded ? 'opacity-100' : 'opacity-0'}
           `}
