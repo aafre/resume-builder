@@ -115,7 +115,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   const isTopOrBottom = selectedPosition === 'top' || selectedPosition === 'bottom';
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" data-testid="section-type-modal">
       <div
         className="bg-white p-4 sm:p-6 rounded-lg max-w-sm sm:max-w-2xl w-full max-h-[90vh] overflow-y-auto"
         role="dialog"
@@ -204,6 +204,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
               <button
                 key={section.type}
                 type="button"
+                data-testid={`section-type-option-${section.type}`}
                 onClick={() => handleTypeSelect(section.type)}
                 className={`group flex flex-col text-left bg-white rounded-xl border
                            overflow-hidden shadow-sm transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent
@@ -241,6 +242,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
           </button>
           <button
             type="button"
+            data-testid="section-type-confirm"
             onClick={handleConfirm}
             disabled={!selectedType}
             className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent

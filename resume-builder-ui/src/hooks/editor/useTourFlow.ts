@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { UseTourFlowReturn } from '../../types/editor';
+import { isTestMode } from '../../utils/testMode';
 
 /**
  * Props for useTourFlow hook (dependency injection from contexts and hooks)
@@ -83,7 +84,8 @@ export const useTourFlow = ({
   const justSignedInFromTour = useRef<boolean>(false);
 
   // Derived: should we show tour for new users?
-  const shouldShowTour = !tourCompleted && !prefsLoading;
+  // In test mode (?__test=1), always skip the tour
+  const shouldShowTour = !isTestMode() && !tourCompleted && !prefsLoading;
 
   /**
    * Initial tour launch effect

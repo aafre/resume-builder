@@ -65,7 +65,11 @@ export function SaveStatusIndicator({ status, lastSaved }: SaveStatusIndicatorPr
   };
 
   return (
-    <div className={`flex items-center gap-1.5 text-sm ${colorClasses[status]}`}>
+    <div
+      className={`flex items-center gap-1.5 text-sm ${colorClasses[status]}`}
+      data-testid="save-status-indicator"
+      data-status={status}
+    >
       {icons[status]}
       <span>{text[status]}</span>
     </div>

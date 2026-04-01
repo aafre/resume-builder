@@ -53,6 +53,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
             className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-200"
             placeholder="Enter your name"
             aria-label="Full name"
+            data-testid="contact-name-input"
           />
         </div>
 
@@ -91,6 +92,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
             className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-200"
             placeholder="Enter your email"
             aria-label="Email address"
+            data-testid="contact-email-input"
           />
         </div>
 

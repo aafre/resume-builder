@@ -361,6 +361,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                     isSelected ? "scale-[1.02]" : "hover:scale-[1.02]"
                   }`}
                   onClick={() => handleSelectTemplate(template)}
+                  data-testid={`template-card-${template.id}`}
                 >
                   <div
                     className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 ${
@@ -416,6 +417,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                           <>
                             <button
                               className="flex-1 inline-flex items-center justify-center bg-accent text-ink py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                              data-testid={`use-template-${template.id}`}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleUseTemplate(template.id);

@@ -208,6 +208,7 @@ const LandingPage: React.FC = () => {
 
             <div className="flex flex-wrap gap-4 mb-8">
               <button
+                data-testid="hero-start-building"
                 className="group inline-flex items-center justify-center bg-accent text-ink py-3.5 px-8 rounded-xl text-base font-bold shadow-lg hover:shadow-accent/25 hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-300 active:scale-95 font-display"
                 onClick={() => navigate(hasResumes ? "/my-resumes" : "/templates")}
               >
