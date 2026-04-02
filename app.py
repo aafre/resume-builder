@@ -1744,14 +1744,14 @@ def get_templates():
     """
     try:
         display_templates = template_registry.get_display_templates()
+        # Serve preview images from Supabase Storage CDN (WebP)
+        cdn_base = f"{SUPABASE_URL}/storage/v1/object/public/template-previews"
         templates = [
             TemplateMetadata(
                 id=t.id,
                 name=t.name,
                 description=t.description,
-                image_url=url_for(
-                    "serve_templates", filename=t.preview, _external=True
-                ),
+                image_url=f"{cdn_base}/{Path(t.preview).stem}.webp",
                 supports_icons=t.supports_icons,
                 tags=t.tags,
             ).model_dump()
