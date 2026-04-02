@@ -99,7 +99,8 @@ export function UploadResumeModal({
           </div>
           <button
             onClick={handleCloseModal}
-            className="text-white/80 hover:text-white transition-colors"
+            className="text-white/80 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg"
+            aria-label="Close modal"
           >
             <XMarkIcon className="w-6 h-6" />
           </button>
@@ -208,12 +209,12 @@ export function UploadResumeModal({
                 accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 onChange={handleFileInput}
                 disabled={parsing}
-                className="hidden"
+                className="sr-only peer"
                 id="resume-file-input"
               />
               <label
                 htmlFor="resume-file-input"
-                className="btn-primary inline-flex items-center gap-2 px-6 py-3 cursor-pointer disabled:opacity-50"
+                className="btn-primary inline-flex items-center gap-2 px-6 py-3 cursor-pointer disabled:opacity-50 peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2 peer-focus-visible:outline-none"
               >
                 <DocumentArrowUpIcon className="w-5 h-5" />
                 {parsing ? 'Parsing...' : 'Choose File'}
@@ -245,7 +246,7 @@ export function UploadResumeModal({
           <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
             <button
               onClick={handleCloseModal}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Cancel
             </button>
