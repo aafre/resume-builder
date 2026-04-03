@@ -1,0 +1,3 @@
+## 2024-03-28 - Optimizing I/O Bound Tasks with Promise.all()
+**Learning:** Sequential `await` loops inside data processing/export functions (like `fileToBase64` in `useIconRegistry`) create unnecessary bottlenecks, as I/O-bound tasks like FileReader conversions can run concurrently. Processing them sequentially adds cumulative delay.
+**Action:** When executing independent asynchronous tasks over a collection (e.g., converting multiple files), refactor the sequential loop into an array of Promises and use `Promise.all()` to execute them concurrently. Maintain isolated `try/catch` blocks within the `map` callback to ensure a single failure doesn't abort the entire batch.
