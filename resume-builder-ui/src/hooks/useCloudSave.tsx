@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { ContactInfo, Section, SaveStatus } from '../types';
+import { Session } from '@supabase/supabase-js';
 import { apiClient, ApiError, AuthError } from '../lib/api-client';
 
 interface ResumeData {
@@ -17,7 +18,7 @@ interface UseCloudSaveOptions {
   resumeData: ResumeData;
   icons: IconRegistry;
   enabled: boolean; // Only save if user is authenticated
-  session: any | null; // Session from AuthContext
+  session: Session | null; // Session from AuthContext
 }
 
 interface UseCloudSaveReturn {
@@ -73,6 +74,13 @@ export function useCloudSave({
       reader.readAsDataURL(icon);
     });
   };
+
+  // Wrap resumeData with useMemo to maintain referential stability for fields that matter
+  const stableResumeData = useMemo(() => ({
+    contact_info: resumeData.contact_info,
+    sections: resumeData.sections,
+    template_id: resumeData.template_id
+  }), [resumeData.contact_info, resumeData.sections, resumeData.template_id]);
 
   // Function to save to cloud
   const saveToCloud = useCallback(async (): Promise<string | null> => {
@@ -130,7 +138,7 @@ export function useCloudSave({
       // Generate smart title
       const generateTitle = (): string => {
         // Priority 1: First job title from Experience section
-        const experienceSection = resumeData.sections.find(
+        const experienceSection = stableResumeData.sections.find(
           s => s.type === 'experience'
         );
         if (experienceSection && Array.isArray(experienceSection.content) &&
@@ -142,12 +150,12 @@ export function useCloudSave({
         }
 
         // Priority 2: Name + Template
-        if (resumeData.contact_info.name) {
-          const templateName = resumeData.template_id
+        if (stableResumeData.contact_info.name) {
+          const templateName = stableResumeData.template_id
             .split('-')
             .map(w => w.charAt(0).toUpperCase() + w.slice(1))
             .join(' ');
-          return `${resumeData.contact_info.name} - ${templateName}`;
+          return `${stableResumeData.contact_info.name} - ${templateName}`;
         }
 
         // Priority 3: Fallback to date
@@ -162,9 +170,9 @@ export function useCloudSave({
       const payload = {
         id: currentResumeId,
         title: generateTitle(),
-        template_id: resumeData.template_id,
-        contact_info: resumeData.contact_info,
-        sections: resumeData.sections,
+        template_id: stableResumeData.template_id,
+        contact_info: stableResumeData.contact_info,
+        sections: stableResumeData.sections,
         icons: iconsArray
       };
 
@@ -211,7 +219,7 @@ export function useCloudSave({
       // Just return null for other errors
       return null;
     }
-  }, [enabled, currentResumeId, resumeData, icons, session]);
+  }, [enabled, currentResumeId, stableResumeData, icons, session]);
 
   // Manual save function (bypasses debounce)
   const saveNow = useCallback(async (): Promise<string | null> => {
@@ -247,8 +255,8 @@ export function useCloudSave({
 
     // Serialize current data for comparison
     const currentData = JSON.stringify({
-      contact_info: resumeData.contact_info,
-      sections: resumeData.sections,
+      contact_info: stableResumeData.contact_info,
+      sections: stableResumeData.sections,
       iconMetadata  // Use metadata (filename + size) instead of just filenames
     });
 
@@ -279,7 +287,7 @@ export function useCloudSave({
         clearTimeout(debounceTimerRef.current);
       }
     };
-  }, [enabled, resumeData, icons, saveToCloud]);
+  }, [enabled, stableResumeData, icons, saveToCloud]);
 
   // Save on blur (when user switches tabs)
   useEffect(() => {
