@@ -1,0 +1,5 @@
+## 2025-02-20 - Optimizing referential equality for deep object parameters in useCloudSave
+
+**Learning:** Passing inline object literals or whole unmemoized objects (like `resumeData` which contains nested arrays and objects) into hooks with deep dependency tracking (`useCloudSave`) causes the hook's `useEffect` dependencies to constantly break reference equality. This leads to redundant recalculations and expensive operations like `JSON.stringify` on every re-render of the parent component, even when the actual underlying data fields (like `contact_info` and `sections`) haven't changed. In `useCloudSave`, `resumeData` was passed directly in the dependency array.
+
+**Action:** Always wrap deep object parameters passed to such hooks in a `useMemo`, ensuring that only the specific required fields (`contact_info`, `sections`, `template_id`) are included in the dependency array of the memoized value. This maintains referential stability across renders, preventing the `useCloudSave` hook's stringification logic and debounced saves from triggering unnecessarily.
