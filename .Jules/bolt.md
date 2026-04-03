@@ -1,0 +1,3 @@
+## 2025-03-24 - Parallelizing FileReader Conversions
+**Learning:** Sequential `await` loops for independent asynchronous tasks (e.g., `FileReader` conversions in `useIconRegistry.ts`) are inefficient for I/O-bound tasks and cause unnecessary delays.
+**Action:** Refactor sequential `await` loops for independent tasks into concurrent operations using `Promise.all` and `Array.prototype.map`. Always maintain individual `try/catch` blocks within the map callback to prevent a single failure from aborting the entire batch.
