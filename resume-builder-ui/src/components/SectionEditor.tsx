@@ -4,6 +4,7 @@ import SectionControls from "./SectionControls";
 interface Section {
   name: string;
   type: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content: any;
 }
 
@@ -49,6 +50,7 @@ const SectionEditor: React.FC<{
                 onClick={handleSaveName}
                 className="ml-2 text-green-500 hover:text-green-600"
                 title="Save Section Name"
+                aria-label="Save Section Name"
               >
                 💾
               </button>
@@ -56,6 +58,7 @@ const SectionEditor: React.FC<{
                 onClick={handleCancelEdit}
                 className="ml-2 text-red-500 hover:text-red-600"
                 title="Cancel Edit"
+                aria-label="Cancel Edit"
               >
                 ❌
               </button>
@@ -122,6 +125,7 @@ const SectionEditor: React.FC<{
       <div>
         <label className="block text-gray-700 font-medium mb-1">Content</label>
         {Array.isArray(section.content) ? (
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           section.content.map((item: any, itemIndex: number) => (
             <div key={itemIndex} className="flex items-center gap-2 mb-2">
               <input
