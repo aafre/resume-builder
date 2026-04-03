@@ -22,6 +22,7 @@ export function UploadResumeModal({
 }: UploadResumeModalProps) {
   const { parseResume, parsing, progress, error } = useResumeParser();
   const [dragActive, setDragActive] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [parseResult, setParseResult] = useState<any>(null);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
