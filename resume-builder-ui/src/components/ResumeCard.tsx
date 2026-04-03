@@ -1,7 +1,7 @@
-import { ResumeListItem } from '../types';
-import { useState } from 'react';
-import { Download, Eye } from 'lucide-react';
-import { KebabMenu } from './KebabMenu';
+import { ResumeListItem } from "../types";
+import { useState } from "react";
+import { Download, Eye } from "lucide-react";
+import { KebabMenu } from "./KebabMenu";
 
 /**
  * Adds cache-busting query parameter to thumbnail URL
@@ -9,12 +9,12 @@ import { KebabMenu } from './KebabMenu';
  */
 const getThumbnailUrl = (
   thumbnail_url: string | null | undefined,
-  pdf_generated_at: string | null | undefined
+  pdf_generated_at: string | null | undefined,
 ): string | null => {
   if (!thumbnail_url) return null;
 
   // If URL already has version param (from backend), use as-is
-  if (thumbnail_url.includes('?v=')) return thumbnail_url;
+  if (thumbnail_url.includes("?v=")) return thumbnail_url;
 
   // Add pdf_generated_at as cache buster for backwards compatibility
   if (pdf_generated_at) {
@@ -22,7 +22,7 @@ const getThumbnailUrl = (
     if (!isNaN(date.getTime())) {
       const timestamp = date.getTime();
       const url = new URL(thumbnail_url);
-      url.searchParams.set('v', timestamp.toString());
+      url.searchParams.set("v", timestamp.toString());
       return url.toString();
     }
   }
@@ -51,7 +51,7 @@ export function ResumeCard({
   onDuplicate,
   onRename,
   isEditButtonLoading = false,
-  isPreviewLoading = false
+  isPreviewLoading = false,
 }: ResumeCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(resume.title);
@@ -62,30 +62,38 @@ export function ResumeCard({
     const now = new Date();
     const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-    if (diffInSeconds < 60) return 'Just now';
+    if (diffInSeconds < 60) return "Just now";
     if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+    if (diffInSeconds < 86400)
+      return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    if (diffInSeconds < 604800)
+      return `${Math.floor(diffInSeconds / 86400)}d ago`;
 
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
   const getTemplatePreview = (templateId: string) => {
     const templateImages: Record<string, string> = {
-      'modern-with-icons': '/docs/templates/modern-with-icons.png',
-      'modern-no-icons': '/docs/templates/modern-no-icons.png',
-      'classic-alex-rivera': '/docs/templates/alex_rivera.png',
-      'classic-jane-doe': '/docs/templates/jane_doe.png'
+      "modern-with-icons": "/docs/templates/modern-with-icons.png",
+      "modern-no-icons": "/docs/templates/modern-no-icons.png",
+      "classic-alex-rivera": "/docs/templates/alex_rivera.png",
+      "classic-jane-doe": "/docs/templates/jane_doe.png",
     };
 
-    return templateImages[templateId] || '/docs/templates/modern-with-icons.png';
+    return (
+      templateImages[templateId] || "/docs/templates/modern-with-icons.png"
+    );
   };
 
   const getTemplateName = (templateId: string) => {
     return templateId
-      .split('-')
-      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(' ');
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
   };
 
   const handleRename = async () => {
@@ -101,7 +109,7 @@ export function ResumeCard({
     try {
       await onRename(resume.id, trimmedTitle);
       setIsEditing(false);
-    } catch (error) {
+    } catch {
       // Revert on error
       setEditedTitle(resume.title);
       setIsEditing(false);
@@ -111,9 +119,7 @@ export function ResumeCard({
   };
 
   return (
-    <div
-      className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200 group"
-    >
+    <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200 group">
       {/* Thumbnail */}
       <div
         data-testid="thumbnail-container"
@@ -121,23 +127,26 @@ export function ResumeCard({
         tabIndex={!isPreviewLoading ? 0 : -1}
         aria-label={`Preview ${resume.title}`}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
             e.currentTarget.click();
           }
         }}
         className={`relative bg-gray-100 h-48 overflow-hidden rounded-t-lg ${
-          isPreviewLoading ? 'cursor-wait' : 'cursor-pointer'
+          isPreviewLoading ? "cursor-wait" : "cursor-pointer"
         }`}
         onClick={() => !isPreviewLoading && onPreview(resume.id)}
       >
         {/* Always show thumbnail - never hide it */}
         <img
-          key={`${resume.id}-${resume.pdf_generated_at || 'default'}`}
-          src={getThumbnailUrl(resume.thumbnail_url, resume.pdf_generated_at) || getTemplatePreview(resume.template_id)}
+          key={`${resume.id}-${resume.pdf_generated_at || "default"}`}
+          src={
+            getThumbnailUrl(resume.thumbnail_url, resume.pdf_generated_at) ||
+            getTemplatePreview(resume.template_id)
+          }
           alt={resume.title}
           className={`w-full h-full object-cover object-top transition-all duration-200 ${
-            isPreviewLoading ? 'scale-105 blur-[2px]' : ''
+            isPreviewLoading ? "scale-105 blur-[2px]" : ""
           }`}
           width="300"
           height="400"
@@ -145,9 +154,17 @@ export function ResumeCard({
 
         {/* Preview Loading Overlay */}
         {isPreviewLoading && (
-          <div data-testid="preview-loading-overlay" className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center gap-2">
-            <div data-testid="preview-loading-spinner" className="animate-spin rounded-full h-8 w-8 border-2 border-white border-t-transparent"></div>
-            <span className="text-white font-medium text-sm">Opening preview...</span>
+          <div
+            data-testid="preview-loading-overlay"
+            className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center gap-2"
+          >
+            <div
+              data-testid="preview-loading-spinner"
+              className="animate-spin rounded-full h-8 w-8 border-2 border-white border-t-transparent"
+            ></div>
+            <span className="text-white font-medium text-sm">
+              Opening preview...
+            </span>
           </div>
         )}
 
@@ -171,8 +188,8 @@ export function ResumeCard({
             onChange={(e) => setEditedTitle(e.target.value)}
             onBlur={handleRename}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') handleRename();
-              if (e.key === 'Escape') {
+              if (e.key === "Enter") handleRename();
+              if (e.key === "Escape") {
                 setEditedTitle(resume.title);
                 setIsEditing(false);
               }
@@ -189,7 +206,7 @@ export function ResumeCard({
             tabIndex={0}
             aria-label={`Rename ${resume.title}`}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
+              if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
                 e.currentTarget.click();
               }
@@ -222,10 +239,10 @@ export function ResumeCard({
               onEdit(resume.id);
             }}
             disabled={isEditButtonLoading}
-            className={`flex-1 bg-accent text-ink py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
+            className={`flex-1 bg-accent text-ink py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent ${
               isEditButtonLoading
-                ? 'opacity-75 cursor-not-allowed'
-                : 'hover:bg-accent/90 active:scale-[0.98]'
+                ? "opacity-75 cursor-not-allowed"
+                : "hover:bg-accent/90 active:scale-[0.98]"
             }`}
           >
             {isEditButtonLoading ? (
@@ -234,7 +251,7 @@ export function ResumeCard({
                 <span>Opening...</span>
               </>
             ) : (
-              'Edit Resume'
+              "Edit Resume"
             )}
           </button>
 
@@ -243,7 +260,7 @@ export function ResumeCard({
               e.stopPropagation();
               onDownload(resume.id);
             }}
-            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             title="Download PDF"
             aria-label="Download PDF"
           >
