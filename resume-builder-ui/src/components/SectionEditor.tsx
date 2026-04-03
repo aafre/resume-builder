@@ -4,6 +4,7 @@ import SectionControls from "./SectionControls";
 interface Section {
   name: string;
   type: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content: any;
 }
 
@@ -47,15 +48,17 @@ const SectionEditor: React.FC<{
               />
               <button
                 onClick={handleSaveName}
-                className="ml-2 text-green-500 hover:text-green-600"
+                className="ml-2 text-green-500 hover:text-green-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded"
                 title="Save Section Name"
+                aria-label="Save Section Name"
               >
                 💾
               </button>
               <button
                 onClick={handleCancelEdit}
-                className="ml-2 text-red-500 hover:text-red-600"
+                className="ml-2 text-red-500 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 rounded"
                 title="Cancel Edit"
+                aria-label="Cancel Edit"
               >
                 ❌
               </button>
@@ -66,7 +69,7 @@ const SectionEditor: React.FC<{
               {!isFixedSection && (
                 <button
                   onClick={() => setIsEditingName(true)}
-                  className="ml-2 text-accent hover:text-accent"
+                  className="ml-2 text-accent hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
                   aria-label="Edit Section Name"
                 >
                   ✏️
@@ -122,6 +125,7 @@ const SectionEditor: React.FC<{
       <div>
         <label className="block text-gray-700 font-medium mb-1">Content</label>
         {Array.isArray(section.content) ? (
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           section.content.map((item: any, itemIndex: number) => (
             <div key={itemIndex} className="flex items-center gap-2 mb-2">
               <input
@@ -154,7 +158,7 @@ const SectionEditor: React.FC<{
                   updatedSections[sectionIndex].content.splice(itemIndex, 1);
                   setSections(updatedSections);
                 }}
-                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
               >
                 Remove
               </button>
@@ -181,7 +185,7 @@ const SectionEditor: React.FC<{
               });
               setSections(updatedSections);
             }}
-            className="bg-accent text-ink px-4 py-2 mt-2 rounded hover:bg-accent"
+            className="bg-accent text-ink px-4 py-2 mt-2 rounded hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent"
           >
             Add Item
           </button>
