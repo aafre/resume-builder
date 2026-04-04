@@ -30,7 +30,7 @@ export default function FAQSection({
         {faqs.map((faq, index) => (
           <details
             key={index}
-            className="group border border-black/[0.06] rounded-lg overflow-hidden transition-all duration-200 hover:border-accent/30"
+            className="group border border-black/[0.06] rounded-lg overflow-hidden transition-all duration-200 hover:border-accent/20 scroll-mt-24"
           >
             <summary className="px-6 py-4 text-left flex justify-between items-center bg-chalk hover:bg-chalk-dark transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden">
               <span className="font-semibold text-ink pr-4">{faq.question}</span>
@@ -45,6 +45,9 @@ export default function FAQSection({
             </div>
           </details>
         ))}
+        <p className="text-sm text-mist text-center mt-6">
+          {faqs.length} of {faqs.length} questions
+        </p>
       </div>
     </div>
   );
