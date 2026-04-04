@@ -27,6 +27,33 @@ export type SectionType =
   | 'education';
 
 /**
+ * Section types that support in-place type switching.
+ * Excludes experience, education (complex structured content), and icon-list (lossy conversion).
+ */
+export type ChangeableSectionType = 'text' | 'bulleted-list' | 'inline-list' | 'dynamic-column-list';
+
+export const CHANGEABLE_TYPES: readonly ChangeableSectionType[] = [
+  'text', 'bulleted-list', 'inline-list', 'dynamic-column-list',
+] as const;
+
+/**
+ * Display names for changeable types (used in toast messages and UI labels)
+ */
+export const TYPE_DISPLAY_NAMES: Record<ChangeableSectionType, string> = {
+  'text': 'Text Block',
+  'bulleted-list': 'Bulleted List',
+  'inline-list': 'Inline List',
+  'dynamic-column-list': 'Smart Table',
+};
+
+/**
+ * Checks whether a section type supports in-place type switching.
+ */
+export const isChangeableType = (type: string | undefined): type is ChangeableSectionType => {
+  return CHANGEABLE_TYPES.includes(type as ChangeableSectionType);
+};
+
+/**
  * Type name mapping for section types
  */
 const TYPE_NAME_MAP: Record<SectionType, string> = {
@@ -197,6 +224,48 @@ export const createDefaultSection = (
       return section;
     }
   }
+};
+
+/**
+ * Converts a section's content from one changeable type to another.
+ * Preserves id and name. Content is converted intelligently:
+ * - string[] ↔ string[]: content kept as-is, only type changes
+ * - string → string[]: split by newlines, filter empties
+ * - string[] → string: join with newlines
+ *
+ * @param section - The source section (must be a changeable type)
+ * @param targetType - The target changeable type
+ * @returns A new Section with converted type and content
+ */
+export const convertSectionType = (
+  section: Section,
+  targetType: ChangeableSectionType
+): Section => {
+  const sourceType = section.type;
+
+  // Same type — no-op
+  if (sourceType === targetType) return section;
+
+  let newContent: string | string[];
+
+  if (sourceType === 'text') {
+    // string → string[]
+    const text = (section.content as string) || '';
+    newContent = text.split(/\r?\n/).filter(line => line.trim() !== '');
+  } else if (targetType === 'text') {
+    // string[] → string
+    const items = (Array.isArray(section.content) ? section.content : []) as string[];
+    newContent = items.join('\n');
+  } else {
+    // string[] → string[] (between list types) — keep content as-is
+    newContent = Array.isArray(section.content) ? [...section.content] : [];
+  }
+
+  return {
+    ...section,
+    type: targetType,
+    content: newContent,
+  } as Section;
 };
 
 /**
