@@ -176,23 +176,23 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                 <p className="text-xs text-gray-500 mb-3">
                   We'll extract your data automatically
                 </p>
-                <button
-                  type="button"
-                  className="btn-primary px-4 py-2 text-sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    fileInputRef.current?.click();
-                  }}
-                >
-                  Browse Files
-                </button>
                 <input
+                  id="template-start-file-input"
                   ref={fileInputRef}
                   type="file"
                   accept=".pdf,.docx"
-                  className="hidden"
+                  className="sr-only peer"
                   onChange={handleFileInput}
                 />
+                <label
+                  htmlFor="template-start-file-input"
+                  className="btn-primary px-4 py-2 text-sm cursor-pointer peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-accent"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  Browse Files
+                </label>
                 <p className="text-xs text-gray-400 mt-2">Max 10MB • PDF or DOCX</p>
               </div>
             )}
