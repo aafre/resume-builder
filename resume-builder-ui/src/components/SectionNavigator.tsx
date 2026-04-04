@@ -270,29 +270,6 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
     return <MdList className="text-base" />;
   };
 
-  // Get short label for collapsed state
-  const getShortLabel = (section: Section): string => {
-    const name = section.name.toLowerCase();
-
-    // Check more specific patterns first, then broader ones
-    if (name.includes("contact")) return "Contact";
-    if (name.includes("professional summary") || name.includes("summary") || name.includes("objective")) return "Summary";
-    if (name.includes("professional qual") || name.includes("qualification")) return "Quals";
-    if (name.includes("key skill") || name.includes("skill") || name.includes("technical")) return "Skills";
-    if (name.includes("experience") || name.includes("work") || name.includes("employment")) return "Work";
-    if (name.includes("education") || name.includes("school") || name.includes("academic")) return "Edu";
-    if (name.includes("certification") || name.includes("certificate")) return "Certs";
-    if (name.includes("personal") || name.includes("interest") || name.includes("hobby")) return "Personal";
-    if (name.includes("project") || name.includes("portfolio")) return "Projects";
-    if (name.includes("award") || name.includes("honor")) return "Awards";
-    if (name.includes("language")) return "Lang";
-    if (name.includes("volunteer")) return "Volunteer";
-
-    // Truncate to first word or first 8 chars
-    const firstWord = section.name.split(" ")[0];
-    return firstWord.length > 8 ? firstWord.substring(0, 7) + "." : firstWord;
-  };
-
   return (
     <nav
       ref={sidebarRef}
@@ -336,9 +313,10 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           {/* Contact Info */}
           <button
             onClick={() => onSectionClick(-1)}
+            title={isCollapsed ? "Contact Information" : undefined}
             className={`w-full flex items-center transition-all rounded-lg group ${
               isCollapsed
-                ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-accent/[0.06]/80"
+                ? "justify-center py-2.5 px-1.5 hover:bg-accent/[0.06]/80"
                 : "flex-row gap-3 px-3 py-2.5 hover:bg-gray-100/80"
             } ${
               activeSectionIndex === -1
@@ -350,24 +328,20 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           >
             <div
               className={`flex items-center justify-center ${
-                isCollapsed ? "w-7 h-7" : "w-6 h-6"
+                isCollapsed ? "w-8 h-8" : "w-6 h-6"
               } rounded-md ${
                 activeSectionIndex === -1
                   ? "bg-accent/10 text-accent"
                   : "bg-gray-100/80 text-gray-500 group-hover:bg-gray-200/80 group-hover:text-gray-700"
               }`}
             >
-              <MdPerson className="text-base" />
+              <MdPerson className={isCollapsed ? "text-lg" : "text-base"} />
             </div>
-            <span
-              className={`${
-                isCollapsed
-                  ? "text-[11px] font-medium text-center leading-tight"
-                  : "text-[13px] flex-1 text-left"
-              }`}
-            >
-              {isCollapsed ? "Contact" : "Contact Information"}
-            </span>
+            {!isCollapsed && (
+              <span className="text-[13px] flex-1 text-left">
+                Contact Information
+              </span>
+            )}
           </button>
 
           {/* Dynamic Sections */}
@@ -375,9 +349,10 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             <button
               key={index}
               onClick={() => onSectionClick(index)}
+              title={isCollapsed ? section.name : undefined}
               className={`w-full flex items-center transition-all rounded-lg group ${
                 isCollapsed
-                  ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-accent/[0.06]/80 mt-1"
+                  ? "justify-center py-2.5 px-1.5 hover:bg-accent/[0.06]/80 mt-1"
                   : "flex-row gap-3 px-3 py-2.5 hover:bg-gray-100/80 mt-0.5"
               } ${
                 activeSectionIndex === index
@@ -389,7 +364,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             >
               <div
                 className={`flex items-center justify-center ${
-                  isCollapsed ? "w-7 h-7" : "w-6 h-6"
+                  isCollapsed ? "w-8 h-8" : "w-6 h-6"
                 } rounded-md ${
                   activeSectionIndex === index
                     ? "bg-accent/10 text-accent"
@@ -398,16 +373,14 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               >
                 {getSectionIcon(section)}
               </div>
-              <span
-                className={`${
-                  isCollapsed
-                    ? "text-[11px] font-medium text-center leading-tight"
-                    : "text-[13px] flex-1 truncate text-left"
-                }`}
-                title={section.name}
-              >
-                {isCollapsed ? getShortLabel(section) : section.name}
-              </span>
+              {!isCollapsed && (
+                <span
+                  className="text-[13px] flex-1 truncate text-left"
+                  title={section.name}
+                >
+                  {section.name}
+                </span>
+              )}
             </button>
           ))}
 

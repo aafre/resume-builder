@@ -106,7 +106,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
         onToggleCollapse={handleToggleCollapse}
       />
 
-      {!isCollapsed && (
+      <div className={`section-collapsible${isCollapsed ? " section-collapsed" : ""}`}>
         <div className="mt-4">
           {section.type === "text" && (
             <>
@@ -305,7 +305,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
           </>
         )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

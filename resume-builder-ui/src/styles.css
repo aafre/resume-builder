@@ -662,6 +662,30 @@ footer {
   50%      { opacity: 1; box-shadow: 0 0 0 4px rgba(0,212,126,0.15); }
 }
 
+/* ── Save Status Micro-animations (MobileActionBar) ── */
+@keyframes statusFadeIn {
+  from { opacity: 0; transform: translateY(-2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes savePulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+
+/* ── Section Collapse/Expand Animation ── */
+.section-collapsible {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.3s ease-out;
+}
+.section-collapsible.section-collapsed {
+  grid-template-rows: 0fr;
+}
+.section-collapsible > div {
+  overflow: hidden;
+}
+
 /* Hide scrollbar for tab overflow */
 .scrollbar-none::-webkit-scrollbar { display: none; }
 .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }

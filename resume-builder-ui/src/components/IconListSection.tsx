@@ -138,102 +138,104 @@ const IconListSection: React.FC<IconListSectionProps> = ({
         isCollapsed={isCollapsed}
         onToggleCollapse={handleToggleCollapse}
       />
-      {!isCollapsed && data.length > 0 && (
-        <ItemDndContext
-          items={data}
-          sectionId={`iconlist-${sectionName.replace(/\s+/g, '-').toLowerCase()}`}
-          onReorder={(oldIndex, newIndex) => {
-            if (onReorderEntry) {
-              onReorderEntry(oldIndex, newIndex);
-            }
-          }}
-          getItemInfo={(item) => ({
-            label: item.certification || 'Untitled Certification',
-            sublabel: item.issuer || undefined,
-            type: 'certification' as const,
-          })}
-        >
-          {({ itemIds }) => (
-            <>
-              {data.map((item, index) => (
-                <SortableItem key={itemIds[index]} id={itemIds[index]}>
-                  <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
-                    <div>
-                      {iconRegistry && (
-                        <div className="mb-4">
-                          <IconManager
-                            value={item.icon || null}
-                            onChange={(filename, file) => handleIconChange(index, filename, file)}
-                            registerIcon={iconRegistry.registerIcon}
-                            getIconFile={iconRegistry.getIconFile}
-                            removeIcon={iconRegistry.removeIcon}
-                          />
-                        </div>
-                      )}
-                      <div>
-                        <MarkdownHint className="mb-2" />
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className={`section-collapsible${isCollapsed ? " section-collapsed" : ""}`}>
+        <div>
+          {data.length > 0 && (
+            <ItemDndContext
+              items={data}
+              sectionId={`iconlist-${sectionName.replace(/\s+/g, '-').toLowerCase()}`}
+              onReorder={(oldIndex, newIndex) => {
+                if (onReorderEntry) {
+                  onReorderEntry(oldIndex, newIndex);
+                }
+              }}
+              getItemInfo={(item) => ({
+                label: item.certification || 'Untitled Certification',
+                sublabel: item.issuer || undefined,
+                type: 'certification' as const,
+              })}
+            >
+              {({ itemIds }) => (
+                <>
+                  {data.map((item, index) => (
+                    <SortableItem key={itemIds[index]} id={itemIds[index]}>
+                      <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
+                        <div>
+                          {iconRegistry && (
+                            <div className="mb-4">
+                              <IconManager
+                                value={item.icon || null}
+                                onChange={(filename, file) => handleIconChange(index, filename, file)}
+                                registerIcon={iconRegistry.registerIcon}
+                                getIconFile={iconRegistry.getIconFile}
+                                removeIcon={iconRegistry.removeIcon}
+                              />
+                            </div>
+                          )}
                           <div>
-                            <label className="block text-gray-700 font-medium mb-1">
-                              Certification
-                            </label>
-                            <RichTextInput
-                              value={item.certification}
-                              onChange={(value) =>
-                                handleUpdateItem(index, "certification", value)
-                              }
-                              placeholder="e.g., AWS Certified Solutions Architect"
-                              className="w-full border border-gray-300 rounded-lg p-2"
-                            />
+                            <MarkdownHint className="mb-2" />
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                              <div>
+                                <label className="block text-gray-700 font-medium mb-1">
+                                  Certification
+                                </label>
+                                <RichTextInput
+                                  value={item.certification}
+                                  onChange={(value) =>
+                                    handleUpdateItem(index, "certification", value)
+                                  }
+                                  placeholder="e.g., AWS Certified Solutions Architect"
+                                  className="w-full border border-gray-300 rounded-lg p-2"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-gray-700 font-medium mb-1">
+                                  Issuer
+                                </label>
+                                <RichTextInput
+                                  value={item.issuer}
+                                  onChange={(value) => handleUpdateItem(index, "issuer", value)}
+                                  placeholder="e.g., Amazon Web Services"
+                                  className="w-full border border-gray-300 rounded-lg p-2"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-gray-700 font-medium mb-1">
+                                  Date
+                                </label>
+                                <RichTextInput
+                                  value={item.date}
+                                  onChange={(value) => handleUpdateItem(index, "date", value)}
+                                  placeholder="e.g., 2024"
+                                  className="w-full border border-gray-300 rounded-lg p-2"
+                                />
+                              </div>
+                            </div>
+                            <div className="flex justify-end mt-4">
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveItem(index)}
+                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                title="Remove Certification"
+                                aria-label="Remove certification"
+                              >
+                                <MdDelete className="text-xl" />
+                              </button>
+                            </div>
                           </div>
-                          <div>
-                            <label className="block text-gray-700 font-medium mb-1">
-                              Issuer
-                            </label>
-                            <RichTextInput
-                              value={item.issuer}
-                              onChange={(value) => handleUpdateItem(index, "issuer", value)}
-                              placeholder="e.g., Amazon Web Services"
-                              className="w-full border border-gray-300 rounded-lg p-2"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-gray-700 font-medium mb-1">
-                              Date
-                            </label>
-                            <RichTextInput
-                              value={item.date}
-                              onChange={(value) => handleUpdateItem(index, "date", value)}
-                              placeholder="e.g., 2024"
-                              className="w-full border border-gray-300 rounded-lg p-2"
-                            />
-                          </div>
-                        </div>
-                        <div className="flex justify-end mt-4">
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveItem(index)}
-                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                            title="Remove Certification"
-                            aria-label="Remove certification"
-                          >
-                            <MdDelete className="text-xl" />
-                          </button>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </SortableItem>
-              ))}
-            </>
+                    </SortableItem>
+                  ))}
+                </>
+              )}
+            </ItemDndContext>
           )}
-        </ItemDndContext>
-      )}
-      {!isCollapsed && (
-        <GhostButton onClick={handleAddItem}>
-          Add Item
-        </GhostButton>
-      )}
+          <GhostButton onClick={handleAddItem}>
+            Add Item
+          </GhostButton>
+        </div>
+      </div>
     </div>
   );
 };

@@ -105,58 +105,58 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
         isCollapsed={isCollapsed}
         onToggleCollapse={handleToggleCollapse}
       />
-      {!isCollapsed && (
-        <ItemDndContext
-          items={experiences}
-          sectionId={`experience-${sectionName.replace(/\s+/g, '-').toLowerCase()}`}
-          onReorder={(oldIndex, newIndex) => {
-            if (onReorderEntry) {
-              onReorderEntry(oldIndex, newIndex);
-            }
-          }}
-          getItemInfo={(item) => ({
-            label: item.company || 'Untitled Company',
-            sublabel: item.title || undefined,
-            type: 'experience' as const,
-          })}
-        >
-          {({ itemIds }) => (
-            <>
-              {experiences.map((experience, index) => (
-                <SortableItem key={itemIds[index]} id={itemIds[index]}>
-                  <ExperienceItem
-                    item={experience}
-                    index={index}
-                    sectionName={sectionName}
-                    supportsIcons={supportsIcons}
-                    iconRegistry={iconRegistry}
-                    onUpdate={handleUpdateItem}
-                    onDelete={handleDeleteItem}
-                  />
-                </SortableItem>
-              ))}
-            </>
-          )}
-        </ItemDndContext>
-      )}
-      {!isCollapsed && (
-        <GhostButton
-          onClick={() => {
-            const newExperience: ExperienceItemData = {
-              company: "",
-              title: "",
-              dates: "",
-              description: [],
-              icon: null,
-              iconFile: null,
-              iconBase64: null,
-            };
-            onUpdate([...experiences, newExperience]);
-          }}
-        >
-          Add Experience
-        </GhostButton>
-      )}
+      <div className={`section-collapsible${isCollapsed ? " section-collapsed" : ""}`}>
+        <div>
+          <ItemDndContext
+            items={experiences}
+            sectionId={`experience-${sectionName.replace(/\s+/g, '-').toLowerCase()}`}
+            onReorder={(oldIndex, newIndex) => {
+              if (onReorderEntry) {
+                onReorderEntry(oldIndex, newIndex);
+              }
+            }}
+            getItemInfo={(item) => ({
+              label: item.company || 'Untitled Company',
+              sublabel: item.title || undefined,
+              type: 'experience' as const,
+            })}
+          >
+            {({ itemIds }) => (
+              <>
+                {experiences.map((experience, index) => (
+                  <SortableItem key={itemIds[index]} id={itemIds[index]}>
+                    <ExperienceItem
+                      item={experience}
+                      index={index}
+                      sectionName={sectionName}
+                      supportsIcons={supportsIcons}
+                      iconRegistry={iconRegistry}
+                      onUpdate={handleUpdateItem}
+                      onDelete={handleDeleteItem}
+                    />
+                  </SortableItem>
+                ))}
+              </>
+            )}
+          </ItemDndContext>
+          <GhostButton
+            onClick={() => {
+              const newExperience: ExperienceItemData = {
+                company: "",
+                title: "",
+                dates: "",
+                description: [],
+                icon: null,
+                iconFile: null,
+                iconBase64: null,
+              };
+              onUpdate([...experiences, newExperience]);
+            }}
+          >
+            Add Experience
+          </GhostButton>
+        </div>
+      </div>
     </div>
   );
 };
