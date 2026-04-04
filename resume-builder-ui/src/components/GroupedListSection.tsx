@@ -27,6 +27,7 @@ const GroupedListSection: React.FC<GroupedListSectionProps> = ({
   onDelete,
   isEditing,
   temporaryTitle,
+  setTemporaryTitle,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(() => {
     if (typeof window !== "undefined") {
