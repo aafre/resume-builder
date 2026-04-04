@@ -154,7 +154,15 @@ const IconManager: React.FC<IconManagerProps> = ({
   return (
     <div className={`icon-manager relative w-12 h-12 ${className}`}>
       <label className={`cursor-pointer relative group ${disabled ? 'pointer-events-none opacity-50' : ''}`}>
-        <div className="w-12 h-12 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 group-hover:border-accent group-hover:bg-accent/[0.06] transition-all duration-200">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="sr-only peer"
+          onChange={handleFileChange}
+          disabled={disabled || isUploading}
+        />
+        <div className="w-12 h-12 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 group-hover:border-accent group-hover:bg-accent/[0.06] transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:border-transparent">
           {isUploading ? (
             <div className="animate-spin w-4 h-4 border-2 border-accent border-t-transparent rounded-full" />
           ) : iconPreview ? (
@@ -173,15 +181,6 @@ const IconManager: React.FC<IconManagerProps> = ({
             </div>
           )}
         </div>
-        
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={handleFileChange}
-          disabled={disabled || isUploading}
-        />
       </label>
 
       {/* Clear button */}
