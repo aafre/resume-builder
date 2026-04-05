@@ -191,7 +191,16 @@ export const useResumeLoader = ({
 
         // Use session from AuthContext instead of calling getSession()
         if (!session) {
-          setResumeNotFound(true);
+          // No session — check if we can recover from template or existing editor state
+          // before declaring the resume as not found
+          const hasTemplateParam = searchParams.get('template');
+          const hasEditorState = contactInfo && sections.length > 0;
+          const canRecover = templateId || hasTemplateParam || hasEditorState;
+
+          if (!canRecover) {
+            setResumeNotFound(true);
+          }
+
           setHasLoadedFromUrl(true);
           setIsLoadingFromUrl(false);
           return;
