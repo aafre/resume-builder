@@ -243,7 +243,7 @@ export function ResumeCard({
               e.stopPropagation();
               onDownload(resume.id);
             }}
-            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             title="Download PDF"
             aria-label="Download PDF"
           >
