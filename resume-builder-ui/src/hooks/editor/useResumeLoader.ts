@@ -299,6 +299,10 @@ export const useResumeLoader = ({
           // No recovery path — this resume ID simply doesn't exist
           setResumeNotFound(true);
         } else {
+          // The resume ID couldn't be loaded, so we still set resumeNotFound to true
+          // to indicate that the requested resume doesn't exist, even if we
+          // can recover the UI state using a template.
+          setResumeNotFound(true);
           console.log('Resume not found in database, will recover from template or existing editor state');
         }
 
