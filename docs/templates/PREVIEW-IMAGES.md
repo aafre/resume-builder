@@ -1,53 +1,67 @@
-# Job Example Preview Images
+# Preview Image Generation
 
-Preview images for the 26 job example pages (`/examples/{slug}`) are generated from YAML data, converted to WebP, and served from Supabase Storage CDN.
+Preview images for both **9 registry templates** and **26 job example pages** are generated from YAML data, converted to uniform WebP images, and served from Supabase Storage CDN.
 
 ## Architecture
 
 ```
-YAML (public/examples/*.yml)
-  → resume_generator.py (HTML/CSS → PDF via pdfkit)
+YAML source
+  → resume_generator.py (HTML/CSS or LaTeX → PDF)
     → pdf2image + Pillow (PDF → WebP)
       → Supabase Storage bucket "template-previews"
-        → CDN URL used by JobExamplePage.tsx
+        → CDN URL used by TemplateCard + JobExamplePage
 ```
 
 **Bucket:** `template-previews` (public, WebP only)
 **CDN base:** `{VITE_SUPABASE_URL}/storage/v1/object/public/template-previews`
 **Cache:** `public, max-age=31536000, immutable` (1 year, CDN-cached)
 
-Each slug produces two files:
+Each item produces two files:
 - `{slug}.webp` — 800px wide (desktop)
 - `{slug}-sm.webp` — 400px wide (mobile, via `srcSet`)
 
-## Prerequisites
+## Unified Script: `scripts/generate_all_previews.py`
+
+Generates previews for everything — templates AND job examples — in one run.
+
+### Usage
 
 ```bash
-pip install pyyaml pdf2image Pillow python-dotenv supabase
+# Everything (9 templates + 26 job examples)
+python scripts/generate_all_previews.py
+
+# Only the 9 registry templates
+python scripts/generate_all_previews.py --templates
+
+# Only the 26 job examples
+python scripts/generate_all_previews.py --examples
+
+# Single template by ID
+python scripts/generate_all_previews.py --template-id modern-with-icons
+
+# Single job example by slug
+python scripts/generate_all_previews.py --slug software-engineer
 ```
 
-System dependency: [Poppler](https://poppler.freedesktop.org/) (for `pdf2image`).
-- Windows: `choco install poppler` or download from [poppler releases](https://github.com/osrf/poppler-win32/releases)
-- macOS: `brew install poppler`
-- Linux: `apt install poppler-utils`
+### Running in Docker (recommended)
 
-Also requires `wkhtmltopdf` (used by `pdfkit` inside `resume_generator.py`).
-
-## How to Update Preview Images
-
-### 1. Regenerate images from YAML
+The dev script container has all dependencies (wkhtmltopdf, poppler, texlive):
 
 ```bash
-# All 26 examples
-python scripts/generate_example_previews.py
+docker build -t resume-script -f Dockerfile.dev.script .
 
-# Single slug
-python scripts/generate_example_previews.py --slug software-engineer
+# Generate all previews
+docker run --rm \
+  -v "$(pwd)/docs/templates/examples:/app/docs/templates/examples" \
+  resume-script python scripts/generate_all_previews.py
+
+# Templates only
+docker run --rm \
+  -v "$(pwd)/docs/templates/examples:/app/docs/templates/examples" \
+  resume-script python scripts/generate_all_previews.py --templates
 ```
 
-Output goes to `docs/templates/examples/`.
-
-### 2. Upload to Supabase Storage (production CDN)
+### Upload to Supabase CDN
 
 Requires `.env` with `SUPABASE_URL` and `SUPABASE_SECRET_KEY`.
 
@@ -59,32 +73,65 @@ python scripts/upload_previews_to_supabase.py
 python scripts/upload_previews_to_supabase.py --slug software-engineer
 ```
 
-The upload script uses `upsert: true` so it overwrites existing files.
+## Image Sources
 
-### 3. Verify
+| Type | YAML source | Template engine | Output slug |
+|------|-------------|-----------------|-------------|
+| Registry templates | `samples/{dir}/{file}.yml` | Uses own template ID (HTML or LaTeX) | Preview filename stem from `registry.py` |
+| Job examples | `resume-builder-ui/public/examples/{slug}.yml` | Always `modern` (HTML) | `{slug}` |
 
-Visit any example page (e.g., `/examples/software-engineer`) and confirm the image loads from the CDN URL.
+### Template → Slug Mapping
+
+| Template ID | Preview slug | Engine |
+|-------------|-------------|--------|
+| classic-alex-rivera | `alex_rivera` | LaTeX |
+| classic-jane-doe | `jane_doe` | LaTeX |
+| modern-with-icons | `modern-with-icons` | HTML |
+| modern-no-icons | `modern-no-icons` | HTML |
+| ats-optimized | `ats-optimized` | HTML |
+| student | `student` | HTML |
+| executive | `executive` | LaTeX |
+| two-column | `two-column` | HTML |
+| uk-cv | `uk-cv` | HTML |
+
+## Prerequisites
+
+**Python packages:** `pyyaml`, `pdf2image`, `Pillow` (in `requirements.txt`)
+
+**System packages:**
+- `wkhtmltopdf` — PDF generation for HTML templates
+- `poppler-utils` — PDF → image conversion (`pdf2image`)
+- `texlive-xetex`, `texlive-fonts-recommended` — LaTeX template rendering
+
+All included in `Dockerfile.dev.script`.
 
 ## When to Regenerate
 
-- **YAML content changed** — if you edit a job example YAML in `resume-builder-ui/public/examples/`, regenerate its preview
-- **Template CSS/HTML changed** — if `templates/modern/` styles change, regenerate all 26 previews
-- **New job example added** — generate + upload the new slug
+- **YAML content changed** — regenerate affected slug(s)
+- **Template CSS/HTML/LaTeX changed** — regenerate all templates using that engine
+- **New template or job example added** — generate + upload the new slug
+- **Font changes** — regenerate everything (fonts affect PDF rendering)
 
 ## Adding a New Job Example
 
-1. Create `resume-builder-ui/public/examples/{new-slug}.yml` (follow existing format)
-2. Add the slug to the registry in `resume-builder-ui/src/data/jobExamples/`
-3. Generate preview: `python scripts/generate_example_previews.py --slug {new-slug}`
+1. Create `resume-builder-ui/public/examples/{new-slug}.yml`
+2. Add entry to `resume-builder-ui/src/data/jobExamples/index.ts`
+3. Generate: `python scripts/generate_all_previews.py --slug {new-slug}`
 4. Upload: `python scripts/upload_previews_to_supabase.py --slug {new-slug}`
-5. Add the URL to `sitemapUrls.ts`
+5. Add URL to `resume-builder-ui/src/data/sitemapUrls.ts`
 
 ## File Reference
 
 | File | Purpose |
 |------|---------|
-| `scripts/generate_example_previews.py` | YAML → PDF → WebP generation |
+| `scripts/generate_all_previews.py` | Unified YAML → PDF → WebP generation (templates + examples) |
 | `scripts/upload_previews_to_supabase.py` | Upload WebP files to Supabase Storage |
 | `docs/templates/examples/*.webp` | Generated images (gitignored) |
-| `resume-builder-ui/src/components/seo/JobExamplePage.tsx` | Frontend component consuming CDN images |
-| `resume-builder-ui/public/examples/*.yml` | Source YAML files |
+| `resume-builder-ui/src/components/seo/JobExamplePage.tsx` | Frontend consuming CDN images |
+| `resume-builder-ui/public/examples/*.yml` | Job example source YAML files |
+| `samples/` | Template sample YAML files |
+| `templates/registry.py` | Template registry with preview filenames |
+
+## Legacy Script
+
+`scripts/generate_example_previews.py` — original script that only handles job examples (not templates). Superseded by `generate_all_previews.py`.
