@@ -297,6 +297,28 @@ describe('UserMenu', () => {
     });
   });
 
+  describe('Version Display', () => {
+    it('should display the app version in the dropdown', async () => {
+      const user = createMockUser();
+
+      renderWithProviders(<UserMenu />, {
+        authContext: createMockAuthContext({
+          user,
+          session: { user },
+          signOut: mockSignOut,
+        }),
+      });
+
+      // Open menu
+      fireEvent.click(screen.getByLabelText('User menu'));
+
+      // Version text should be visible (defaults to 'dev' in test environment)
+      await waitFor(() => {
+        expect(screen.getByText('dev')).toBeInTheDocument();
+      });
+    });
+  });
+
   describe('Display Name Logic', () => {
     it('should show full_name when available', () => {
       const user = {

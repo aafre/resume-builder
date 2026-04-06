@@ -5,6 +5,8 @@ import { MdLogout, MdFolder, MdExpandMore, MdViewModule } from 'react-icons/md';
 import { useUserAvatar } from '../hooks/useUserAvatar';
 import { useQueryClient } from '@tanstack/react-query';
 
+const appVersion = import.meta.env.VITE_APP_VERSION || 'dev';
+
 const UserMenu: React.FC = () => {
   const { user, signOut, isAnonymous, signingOut } = useAuth();
   const navigate = useNavigate();
@@ -59,7 +61,7 @@ const UserMenu: React.FC = () => {
     <div className="relative" ref={menuRef} data-testid="user-menu">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/60 backdrop-blur-sm hover:shadow-md transition-all duration-300"
+        className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-white/70 backdrop-blur-sm hover:shadow-md transition-all duration-300 group"
         aria-label="User menu"
         data-testid="user-menu-button"
       >
@@ -67,7 +69,7 @@ const UserMenu: React.FC = () => {
           <img
             src={avatarUrl}
             alt={displayName}
-            className="w-8 h-8 rounded-full object-cover ring-2 ring-accent/20"
+            className="w-8 h-8 rounded-full object-cover ring-2 ring-accent/20 group-hover:ring-accent/40 transition-all duration-300"
             width="32"
             height="32"
             onError={handleError}
@@ -75,7 +77,7 @@ const UserMenu: React.FC = () => {
             crossOrigin="anonymous"
           />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-ink flex items-center justify-center shadow-md">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ink to-ink-light flex items-center justify-center shadow-md ring-2 ring-black/[0.06] group-hover:ring-accent/30 transition-all duration-300">
             <span className="text-white font-semibold text-sm">
               {displayName.charAt(0).toUpperCase()}
             </span>
@@ -87,62 +89,92 @@ const UserMenu: React.FC = () => {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-3 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl shadow-accent/10 border border-white/50 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 mt-3 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-premium border border-black/[0.06] py-0 z-50 animate-menu-enter overflow-hidden">
+          {/* User Identity Section */}
+          <div className="px-5 pt-5 pb-4">
+            <div className="flex items-center gap-3.5">
+              {avatarUrl && !hasError ? (
+                <img
+                  src={avatarUrl}
+                  alt={displayName}
+                  className="w-10 h-10 rounded-full object-cover ring-2 ring-accent/20 shadow-sm flex-shrink-0"
+                  width="40"
+                  height="40"
+                  onError={handleError}
+                  referrerPolicy="no-referrer"
+                  crossOrigin="anonymous"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ink to-ink-light flex items-center justify-center shadow-md flex-shrink-0">
+                  <span className="text-white font-bold text-base">
+                    {displayName.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-ink truncate font-display">{displayName}</p>
+                {!isAnonymous && user.email && (
+                  <p className="text-xs text-stone-warm truncate">{user.email}</p>
+                )}
+                {isAnonymous && (
+                  <p className="text-xs text-amber-600 font-medium">Guest account</p>
+                )}
+              </div>
+            </div>
+          </div>
+
           {/* Navigation Links - Mobile Only */}
           {!isAnonymous && (
-            <div className="lg:hidden border-b border-gray-100/50 pb-2">
-              <Link
-                to="/my-resumes"
-                onClick={() => setIsOpen(false)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg mx-2 my-1 transition-all duration-200 ${
-                  location.pathname === '/my-resumes'
-                    ? 'bg-accent/[0.06] text-ink/80 font-semibold'
-                    : 'text-gray-700 hover:bg-accent/[0.06]'
-                }`}
-              >
-                <MdFolder size={18} className={location.pathname === '/my-resumes' ? 'text-accent' : 'text-gray-500'} />
-                <span>My Resumes</span>
-              </Link>
-              <Link
-                to="/templates"
-                onClick={() => setIsOpen(false)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg mx-2 my-1 transition-all duration-200 ${
-                  location.pathname === '/templates'
-                    ? 'bg-accent/[0.06] text-ink/80 font-semibold'
-                    : 'text-gray-700 hover:bg-accent/[0.06]'
-                }`}
-              >
-                <MdViewModule size={18} className={location.pathname === '/templates' ? 'text-accent' : 'text-gray-500'} />
-                <span>Templates</span>
-              </Link>
+            <div className="lg:hidden">
+              <div className="h-px bg-gradient-to-r from-transparent via-black/[0.06] to-transparent" />
+              <div className="px-2 py-2">
+                <Link
+                  to="/my-resumes"
+                  onClick={() => setIsOpen(false)}
+                  className={`flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl transition-all duration-200 ${
+                    location.pathname === '/my-resumes'
+                      ? 'bg-accent/[0.08] text-ink font-semibold'
+                      : 'text-gray-700 hover:bg-black/[0.04]'
+                  }`}
+                >
+                  <MdFolder size={18} className={location.pathname === '/my-resumes' ? 'text-accent' : 'text-mist'} />
+                  <span>My Resumes</span>
+                </Link>
+                <Link
+                  to="/templates"
+                  onClick={() => setIsOpen(false)}
+                  className={`flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl transition-all duration-200 ${
+                    location.pathname === '/templates'
+                      ? 'bg-accent/[0.08] text-ink font-semibold'
+                      : 'text-gray-700 hover:bg-black/[0.04]'
+                  }`}
+                >
+                  <MdViewModule size={18} className={location.pathname === '/templates' ? 'text-accent' : 'text-mist'} />
+                  <span>Templates</span>
+                </Link>
+              </div>
             </div>
           )}
 
-          <div className="px-4 py-3 border-b border-gray-100/50">
-            <p className="text-sm font-semibold text-gray-900">{displayName}</p>
-            {!isAnonymous && user.email && (
-              <p className="text-xs text-gray-500">{user.email}</p>
+          {/* Actions Section */}
+          <div className="h-px bg-gradient-to-r from-transparent via-black/[0.06] to-transparent" />
+          <div className="px-2 py-2">
+            {!isAnonymous && (
+              <button
+                onClick={handleMyResumes}
+                className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 hover:bg-black/[0.04] rounded-xl transition-all duration-200"
+              >
+                <MdFolder size={18} className="text-accent" />
+                <span>My Resumes</span>
+              </button>
             )}
-            {isAnonymous && (
-              <p className="text-xs text-amber-600 font-medium">Anonymous (resumes saved locally)</p>
-            )}
-          </div>
 
-          {!isAnonymous && (
-            <button
-              onClick={handleMyResumes}
-              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-accent/[0.06] rounded-lg mx-2 my-1 transition-all duration-200"
-            >
-              <MdFolder size={18} className="text-accent" />
-              <span>My Resumes</span>
-            </button>
-          )}
+            <div className="h-px bg-gradient-to-r from-transparent via-black/[0.06] to-transparent my-1" />
 
-          <div className="border-t border-gray-100/50 mt-1 pt-1">
             <button
               onClick={handleSignOut}
               disabled={signingOut}
-              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50/70 rounded-lg mx-2 my-1 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-red-600 hover:bg-red-50/70 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               data-testid="sign-out-button"
             >
               {signingOut ? (
@@ -157,6 +189,14 @@ const UserMenu: React.FC = () => {
                 </>
               )}
             </button>
+          </div>
+
+          {/* Version Footer */}
+          <div className="h-px bg-gradient-to-r from-transparent via-black/[0.06] to-transparent" />
+          <div className="px-5 py-3 bg-chalk-dark/50">
+            <p className="font-mono text-[10px] tracking-[0.08em] text-mist text-center select-none">
+              {appVersion}
+            </p>
           </div>
         </div>
       )}
