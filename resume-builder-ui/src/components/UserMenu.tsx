@@ -44,11 +44,6 @@ const UserMenu: React.FC = () => {
     }
   };
 
-  const handleMyResumes = () => {
-    setIsOpen(false);
-    navigate('/my-resumes');
-  };
-
   if (!user) return null;
 
   // Get display name and avatar
@@ -123,9 +118,9 @@ const UserMenu: React.FC = () => {
             </div>
           </div>
 
-          {/* Navigation Links - Mobile Only */}
+          {/* Navigation Links */}
           {!isAnonymous && (
-            <div className="lg:hidden">
+            <>
               <div className="h-px bg-gradient-to-r from-transparent via-black/[0.06] to-transparent" />
               <div className="px-2 py-2">
                 <Link
@@ -143,7 +138,7 @@ const UserMenu: React.FC = () => {
                 <Link
                   to="/templates"
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl transition-all duration-200 ${
+                  className={`lg:hidden flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl transition-all duration-200 ${
                     location.pathname === '/templates'
                       ? 'bg-accent/[0.08] text-ink font-semibold'
                       : 'text-gray-700 hover:bg-black/[0.04]'
@@ -153,24 +148,12 @@ const UserMenu: React.FC = () => {
                   <span>Templates</span>
                 </Link>
               </div>
-            </div>
+            </>
           )}
 
-          {/* Actions Section */}
+          {/* Sign Out */}
           <div className="h-px bg-gradient-to-r from-transparent via-black/[0.06] to-transparent" />
           <div className="px-2 py-2">
-            {!isAnonymous && (
-              <button
-                onClick={handleMyResumes}
-                className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 hover:bg-black/[0.04] rounded-xl transition-all duration-200"
-              >
-                <MdFolder size={18} className="text-accent" />
-                <span>My Resumes</span>
-              </button>
-            )}
-
-            <div className="h-px bg-gradient-to-r from-transparent via-black/[0.06] to-transparent my-1" />
-
             <button
               onClick={handleSignOut}
               disabled={signingOut}
