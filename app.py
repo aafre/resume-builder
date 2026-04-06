@@ -2227,6 +2227,7 @@ def create_resume():
                 "bulleted-list",
                 "inline-list",
                 "dynamic-column-list",
+                "grouped-list",
                 "icon-list",
                 "experience",
                 "education",
