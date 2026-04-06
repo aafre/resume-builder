@@ -1,0 +1,3 @@
+## 2024-05-14 - Regex and Dictionary Hoisting in Escape Functions
+**Learning:** In utility functions like `_escape_latex` that are called recursively or in loops over large data structures (e.g., ASTs or JSON), compiling a regex pattern and recreating a large static dictionary on every function call significantly degrades performance. It causes redundant object allocations and CPU cycles, turning $O(N)$ operations into $O(N^2)$ effectively when parsing many items.
+**Action:** Hoist static dictionaries and regex compilations (`re.compile`) to module-level constants. This guarantees they are initialized only once when the module is imported, drastically improving the performance of the function, especially in recursive operations like `apply_escaping_recursive`.
