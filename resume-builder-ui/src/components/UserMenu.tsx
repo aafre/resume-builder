@@ -5,7 +5,7 @@ import { MdLogout, MdFolder, MdExpandMore, MdViewModule } from 'react-icons/md';
 import { useUserAvatar } from '../hooks/useUserAvatar';
 import { useQueryClient } from '@tanstack/react-query';
 
-const appVersion = import.meta.env.VITE_APP_VERSION || 'dev';
+const appVersion = import.meta.env.VITE_APP_VERSION || `dev-${__GIT_HASH__}`;
 
 const UserMenu: React.FC = () => {
   const { user, signOut, isAnonymous, signingOut } = useAuth();

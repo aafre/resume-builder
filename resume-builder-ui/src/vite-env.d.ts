@@ -10,6 +10,8 @@ interface ImportMetaEnv {
   readonly VITE_APP_VERSION?: string;
 }
 
+declare const __GIT_HASH__: string;
+
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }

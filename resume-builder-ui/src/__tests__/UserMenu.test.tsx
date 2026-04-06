@@ -312,9 +312,9 @@ describe('UserMenu', () => {
       // Open menu
       fireEvent.click(screen.getByLabelText('User menu'));
 
-      // Version text should be visible (defaults to 'dev' in test environment)
+      // Version text should be visible (falls back to dev-<git-hash> in test environment)
       await waitFor(() => {
-        expect(screen.getByText('dev')).toBeInTheDocument();
+        expect(screen.getByText((text) => /^dev-[a-f0-9]+$/.test(text))).toBeInTheDocument();
       });
     });
   });
