@@ -1,0 +1,3 @@
+## 2025-04-07 - Hoisting regex and dictionary allocations in recursive utility functions
+**Learning:** In utility functions called frequently or recursively (like `_escape_latex` used during template rendering), defining dictionaries and compiling regular expressions inside the function scope causes redundant allocations and compilation on every call, leading to significant overhead.
+**Action:** Hoist these static mappings (e.g., `LATEX_SPECIAL_CHARS`) and their compiled regex patterns (`re.compile(...)`) to the module level. This ensures they are instantiated once at module load time, improving performance without sacrificing code readability.
