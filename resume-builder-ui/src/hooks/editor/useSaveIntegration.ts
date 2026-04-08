@@ -68,6 +68,19 @@ export const useSaveIntegration = ({
     return iconsObj;
   }, [iconRegistry.getRegisteredFilenames().join(',')]);
 
+  // Memoize resumeData to prevent reference inequality on every render.
+  // Passing an inline object literal triggers expensive operations like JSON.stringify
+  // in useCloudSave's deep dependency tracking effect.
+  const resumeDataForCloudSave = useMemo(() => {
+    return contactInfo && templateId
+      ? {
+          contact_info: contactInfo,
+          sections: sections,
+          template_id: templateId,
+        }
+      : { contact_info: { name: '', location: '', email: '', phone: '' }, sections: [], template_id: '' };
+  }, [contactInfo, sections, templateId]);
+
   const {
     saveStatus,
     lastSaved,
@@ -75,14 +88,7 @@ export const useSaveIntegration = ({
     resumeId: savedResumeId,
   } = useCloudSave({
     resumeId: cloudResumeId,
-    resumeData:
-      contactInfo && templateId
-        ? {
-            contact_info: contactInfo,
-            sections: sections,
-            template_id: templateId,
-          }
-        : { contact_info: { name: '', location: '', email: '', phone: '' }, sections: [], template_id: '' },
+    resumeData: resumeDataForCloudSave,
     icons: iconsForCloudSave,
     enabled: !!templateId && !!contactInfo && !isLoadingFromUrl && !authLoading,
     session: session,

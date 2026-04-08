@@ -1,0 +1,3 @@
+## 2024-05-24 - Performance Optimization: Inline object literal tracking
+**Learning:** Passing an inline object literal to custom hooks with deep dependency tracking (like `useCloudSave`) causes reference inequality on every render. This inequality triggers expensive operations like `JSON.stringify` to perform deep comparison within the `useEffect` block, negatively impacting React re-rendering performance when building out deep UI trees.
+**Action:** Always wrap dynamically generated, potentially deep objects in a `useMemo` hook (e.g. `resumeData` inside `useSaveIntegration`) before passing them down as hook arguments or component props to stabilize their references.
