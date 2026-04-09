@@ -22,7 +22,7 @@ export function UploadResumeModal({
 }: UploadResumeModalProps) {
   const { parseResume, parsing, progress, error } = useResumeParser();
   const [dragActive, setDragActive] = useState(false);
-  const [parseResult, setParseResult] = useState<any>(null);
+  const [parseResult, setParseResult] = useState<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -99,7 +99,8 @@ export function UploadResumeModal({
           </div>
           <button
             onClick={handleCloseModal}
-            className="text-white/80 hover:text-white transition-colors"
+            aria-label="Close modal"
+            className="text-white/80 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink rounded-lg"
           >
             <XMarkIcon className="w-6 h-6" />
           </button>
