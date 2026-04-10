@@ -263,7 +263,7 @@ export function extractKeywords(jobDescription: string): string[] {
     if (wordCount === 1 && count < 2) {
       const cat = getSkillCategory(keyword);
       if (cat === 'soft-skill') continue;
-      if (!isKnownSkill(keyword) && !/[+#\/.]/.test(keyword)) continue;
+      if (!isKnownSkill(keyword) && !/[+#/.]/.test(keyword)) continue;
     }
 
     // Skip single word if it is already part of a higher-ranked phrase
@@ -289,15 +289,23 @@ export function extractKeywords(jobDescription: string): string[] {
   // This preserves "data" (8x) when "data science" only appears 2x.
   const multiWordCandidates = candidates.filter((c) => c.keyword.includes(' '));
   const subsumedWords = new Set<string>();
+
+  // ⚡ Bolt Performance Optimization: Replace O(N^2) nested array find with O(N) Map lookup
+  // Pre-compute map of standalone word counts to eliminate inner loop array scan
+  const standaloneWordCounts = new Map<string, number>();
+  for (const c of candidates) {
+    if (!c.keyword.includes(' ')) {
+      standaloneWordCounts.set(c.keyword, c.count);
+    }
+  }
+
   for (const { keyword: bigram, count: bigramCount } of multiWordCandidates) {
     for (const word of bigram.split(' ')) {
-      // Find the standalone word's count
-      const standalone = candidates.find(
-        (c) => c.keyword === word && !c.keyword.includes(' ')
-      );
-      if (standalone) {
+      // Find the standalone word's count using O(1) Map lookup instead of O(N) array find
+      if (standaloneWordCounts.has(word)) {
+        const standaloneCount = standaloneWordCounts.get(word)!;
         // Only subsume if standalone frequency is ≤ 1.5x the bigram frequency
-        if (standalone.count <= bigramCount * 1.5) {
+        if (standaloneCount <= bigramCount * 1.5) {
           subsumedWords.add(word);
         }
       } else {

@@ -1,0 +1,3 @@
+## 2025-04-10 - O(N^2) Keyword Subsumption Replaced With O(N) Map Lookup
+**Learning:** Found a textbook O(N^2) bottleneck in `keywordMatcher.ts` bidirectional subsumption logic. A loop iterating over multi-word candidates nested a `find()` scan over the entire `candidates` array to locate single-word frequencies. In edge cases with high keyword density JDs, this could delay main-thread execution during resume matching.
+**Action:** Replaced nested array `find()` operations with a pre-computed `Map` (hash map) of standalone word counts, reducing algorithmic complexity from O(N^2) to O(N). This makes scaling up to longer documents and larger multi-word sets predictable and fast.
