@@ -153,8 +153,16 @@ const IconManager: React.FC<IconManagerProps> = ({
 
   return (
     <div className={`icon-manager relative w-12 h-12 ${className}`}>
-      <label className={`cursor-pointer relative group ${disabled ? 'pointer-events-none opacity-50' : ''}`}>
-        <div className="w-12 h-12 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 group-hover:border-accent group-hover:bg-accent/[0.06] transition-all duration-200">
+      <label className={`cursor-pointer relative block group ${disabled ? 'pointer-events-none opacity-50' : ''}`}>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="sr-only peer"
+          onChange={handleFileChange}
+          disabled={disabled || isUploading}
+        />
+        <div className="w-12 h-12 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 group-hover:border-accent group-hover:bg-accent/[0.06] transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2">
           {isUploading ? (
             <div className="animate-spin w-4 h-4 border-2 border-accent border-t-transparent rounded-full" />
           ) : iconPreview ? (
@@ -166,30 +174,22 @@ const IconManager: React.FC<IconManagerProps> = ({
           ) : (
             <FaImage className="text-gray-400 w-4 h-4" />
           )}
-          
+
           {!isUploading && (
             <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
               <FaPencilAlt className="text-white w-3 h-3" />
             </div>
           )}
         </div>
-        
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={handleFileChange}
-          disabled={disabled || isUploading}
-        />
       </label>
 
       {/* Clear button */}
       {iconPreview && !disabled && (
         <button
           type="button"
+          aria-label="Remove icon"
           onClick={handleClear}
-          className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow-lg transition-colors duration-200"
+          className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow-lg transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1"
           disabled={isUploading}
         >
           <FaTimes />

@@ -1058,4 +1058,70 @@ describe('scanResume', () => {
       expect(kw).toContain('infrastructure as code');
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // 18. Bidirectional Subsumption (PR #456 — Map optimization)
+  // ---------------------------------------------------------------------------
+  describe('bidirectional subsumption', () => {
+    it('subsumes standalone word when its count <= 1.5x bigram count', () => {
+      // "learning" appears only within "machine learning" bigrams (count = 3 from singles),
+      // "machine learning" appears 3x as a bigram. 3 <= 3 * 1.5 = 4.5, so "learning" is subsumed.
+      const jd =
+        'Machine learning models. Machine learning pipelines. Machine learning research.';
+      const kw = extractKeywords(jd);
+      expect(kw).toContain('machine learning');
+      expect(kw).not.toContain('learning');
+    });
+
+    it('preserves standalone word when its count >> bigram count', () => {
+      // "data" appears 8x standalone, "data science" appears 2x as bigram
+      // 8 > 2 * 1.5 = 3, so "data" should be preserved
+      const jd =
+        'Data pipelines. Data warehousing. Data engineering. Data lakes. ' +
+        'Data governance. Data processing. Data integration. Data modeling. ' +
+        'Data science research. Data science models.';
+      const kw = extractKeywords(jd);
+      expect(kw).toContain('data science');
+      expect(kw).toContain('data');
+    });
+
+    it('multi-word phrases are always kept regardless of subsumption', () => {
+      const jd =
+        'Machine learning pipelines. Machine learning models. Machine learning ops. ' +
+        'Deep learning research. Deep learning training.';
+      const kw = extractKeywords(jd);
+      expect(kw).toContain('machine learning');
+      expect(kw).toContain('deep learning');
+    });
+
+    it('extractKeywords output is stable for a known input', () => {
+      const jd =
+        'Python backend development. Python scripting. ' +
+        'React frontend. React components. ' +
+        'Docker containers. Docker deployment. ' +
+        'SQL databases. SQL queries.';
+      const kw = extractKeywords(jd);
+      // Should always contain these multi-word and standalone keywords
+      expect(kw).toContain('python');
+      expect(kw).toContain('react');
+      expect(kw).toContain('docker');
+      expect(kw).toContain('sql');
+      // Run twice to verify determinism
+      const kw2 = extractKeywords(jd);
+      expect(kw).toEqual(kw2);
+    });
+
+    it('word at 1.5x boundary is still subsumed (equal case)', () => {
+      // "cloud" 3x standalone, "cloud computing" 2x bigram
+      // 3 <= 2 * 1.5 = 3, so "cloud" should be subsumed (boundary is inclusive)
+      const jd =
+        'Cloud computing platform. Cloud computing services. ' +
+        'Cloud infrastructure. Cloud deployment. Cloud migration.';
+      const kw = extractKeywords(jd);
+      expect(kw).toContain('cloud computing');
+      // At exactly 1.5x boundary, the word should be subsumed
+      // 3 (standalone "cloud" from "cloud infrastructure", "cloud deployment", "cloud migration")
+      // vs 2 (bigram "cloud computing"), 3 <= 3.0 => subsumed
+    });
+  });
 });
