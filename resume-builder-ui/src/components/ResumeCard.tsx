@@ -101,7 +101,7 @@ export function ResumeCard({
     try {
       await onRename(resume.id, trimmedTitle);
       setIsEditing(false);
-    } catch (error) {
+    } catch {
       // Revert on error
       setEditedTitle(resume.title);
       setIsEditing(false);
@@ -126,7 +126,7 @@ export function ResumeCard({
             e.currentTarget.click();
           }
         }}
-        className={`relative bg-gray-100 h-48 overflow-hidden rounded-t-lg ${
+        className={`relative bg-gray-100 h-48 overflow-hidden rounded-t-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset ${
           isPreviewLoading ? 'cursor-wait' : 'cursor-pointer'
         }`}
         onClick={() => !isPreviewLoading && onPreview(resume.id)}
