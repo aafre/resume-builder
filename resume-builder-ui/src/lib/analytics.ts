@@ -8,20 +8,20 @@
  * - Graceful no-op when VITE_POSTHOG_KEY is not set (local dev)
  */
 
-import type PostHogJS from 'posthog-js';
+import type { PostHog } from 'posthog-js';
 
 // ─── Config ──────────────────────────────────────────────────────────
 const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY as string | undefined;
 const POSTHOG_HOST = (import.meta.env.VITE_POSTHOG_HOST as string) || 'https://us.i.posthog.com';
 
 // ─── State ───────────────────────────────────────────────────────────
-let posthog: PostHogJS | null = null;
-let initPromise: Promise<PostHogJS | null> | null = null;
+let posthog: PostHog | null = null;
+let initPromise: Promise<PostHog | null> | null = null;
 const queue: Array<() => void> = [];
 
 // ─── Lazy loader ─────────────────────────────────────────────────────
 
-function loadPostHog(): Promise<PostHogJS | null> {
+function loadPostHog(): Promise<PostHog | null> {
   if (posthog) return Promise.resolve(posthog);
   if (!POSTHOG_KEY) return Promise.resolve(null);
   if (initPromise) return initPromise;
@@ -60,7 +60,7 @@ function loadPostHog(): Promise<PostHogJS | null> {
 }
 
 /** Queue a call or execute immediately if PostHog is loaded. */
-function run(fn: (ph: PostHogJS) => void): void {
+function run(fn: (ph: PostHog) => void): void {
   if (posthog) {
     fn(posthog);
   } else if (POSTHOG_KEY) {
