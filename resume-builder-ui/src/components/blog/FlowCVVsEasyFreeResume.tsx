@@ -35,7 +35,7 @@ export default function FlowCVVsEasyFreeResume() {
   const schema = generateComparisonSchema(
     EASY_FREE_RESUME_PRODUCT,
     { name: "FlowCV", price: "0", description: "Free online resume builder with customizable templates and a Pro plan for additional features." },
-    "2026-02-04"
+    "2026-04-11"
   );
 
   return (
@@ -44,10 +44,10 @@ export default function FlowCVVsEasyFreeResume() {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
       <BlogLayout
-      title="FlowCV Review 2026: Is It Really Free? (Honest Look)"
-      description="Both FlowCV and EasyFreeResume offer free resume building. Compare features, privacy, and templates to see which free option is truly better for your job search."
+      title="FlowCV vs EasyFreeResume (2026): Features, Pricing & Privacy Compared"
+      description="FlowCV requires sign-up and limits free exports. Compare FlowCV and EasyFreeResume side-by-side on templates, ATS compatibility, pricing, and privacy."
       publishDate="2026-01-21"
-      lastUpdated="2026-02-04"
+      lastUpdated="2026-04-11"
       readTime="7 min"
       keywords={[
         "flowcv review",
