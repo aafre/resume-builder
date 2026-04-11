@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useRef, useCallback, ReactNode } from 'react';
 import { apiClient, ApiError } from '../lib/api-client';
 import { toast } from 'react-hot-toast';
+import { trackSignupCompleted } from '../lib/analytics';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { User, Session } from '@supabase/supabase-js';
 
@@ -437,6 +438,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               anonMigrationAttempted.current = true; // Prevent duplicate calls in StrictMode
               setAnonMigrationInProgress(true);
               console.log('👤 Starting migration process - blocking UI loads...');
+            }
+
+            // Track signup/sign-in in analytics
+            const provider = session.user.app_metadata?.provider;
+            if (provider === 'google' || provider === 'linkedin_oidc' || provider === 'email') {
+              trackSignupCompleted({ provider: provider === 'linkedin_oidc' ? 'linkedin' : provider });
             }
 
             // Show welcome toast on successful sign-in (only once per session)
