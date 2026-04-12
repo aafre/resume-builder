@@ -5,7 +5,12 @@ import tailwindcss from "tailwindcss";
 import viteCompression from 'vite-plugin-compression';
 import { execSync } from 'child_process';
 
-const gitHash = execSync('git rev-parse --short HEAD').toString().trim();
+let gitHash = 'unknown';
+try {
+  gitHash = execSync('git rev-parse --short HEAD').toString().trim();
+} catch {
+  // git not available (e.g., Docker build stage)
+}
 
 export default defineConfig({
   plugins: [
