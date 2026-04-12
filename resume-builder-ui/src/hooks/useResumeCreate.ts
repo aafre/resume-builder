@@ -17,6 +17,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '../lib/api-client';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
+import { trackResumeCreated } from '../lib/analytics';
 
 interface ContactInfo {
   name?: string;
@@ -118,6 +119,12 @@ export function useResumeCreate(): UseResumeCreateReturn {
         queryClient.invalidateQueries({ queryKey: ['resumes'] }),
         queryClient.invalidateQueries({ queryKey: ['resume-count'] }),
       ]);
+
+      // Determine creation method for analytics
+      const method = options.contactInfo && options.sections
+        ? (options.aiImportConfidence != null ? 'ai_import' : 'job_example')
+        : (options.loadExample ? 'example' : 'blank');
+      trackResumeCreated({ template_id: options.templateId, method });
 
       toast.success("Resume created! Loading editor...");
       navigate(`/editor/${response.resume_id}`);

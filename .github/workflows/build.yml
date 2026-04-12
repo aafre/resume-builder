@@ -60,6 +60,7 @@ jobs:
             VITE_APP_URL=${{ secrets.VITE_APP_URL }}
             VITE_ENABLE_EXPLICIT_ADS=${{ secrets.VITE_ENABLE_EXPLICIT_ADS }}
             VITE_APP_VERSION=${{ inputs.version }}
+            VITE_POSTHOG_KEY=${{ secrets.VITE_POSTHOG_KEY }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false

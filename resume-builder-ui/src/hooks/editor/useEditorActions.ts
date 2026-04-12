@@ -11,6 +11,7 @@ import { getSessionId } from '../../utils/session';
 import { extractReferencedIconFilenames } from '../../utils/iconExtractor';
 import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
 import { validateLinkedInUrl } from '../../services/validationService';
+import { trackPdfDownloaded } from '../../lib/analytics';
 
 /**
  * Icon validation result from usePreview
@@ -269,6 +270,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         document.body.removeChild(link);
         URL.revokeObjectURL(pdfUrl);
 
+        trackPdfDownloaded({ template_id: templateId || 'unknown', source: 'editor' });
         toast.success('Resume downloaded successfully!');
 
         // Show celebration modal on first download (all users)
