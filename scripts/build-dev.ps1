@@ -88,10 +88,10 @@ Write-Host ""
 
 # Verify build freshness -- confirms code changes were picked up
 Write-Host "Verifying build freshness..."
-$baked = docker run --rm "${IMAGE_NAME}:${TAG}" python -c 'import os; print(os.environ.get("VITE_APP_VERSION","unknown"))'
+$baked = docker run --rm "${IMAGE_NAME}:${TAG}" cat /app/static/.build-version
 Write-Host "  Baked version : $baked"
 Write-Host "  Expected      : $VITE_APP_VERSION"
-if ($baked.Trim() -ne $VITE_APP_VERSION) {
+if (-not $baked -or $baked.Trim() -ne $VITE_APP_VERSION) {
     Write-Warning "Version mismatch -- build may have used stale cache. Re-run with: docker build --no-cache ..."
 }
 Write-Host ""

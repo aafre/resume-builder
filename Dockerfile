@@ -38,7 +38,8 @@ COPY resume-builder-ui/ ./
 
 # Build React app with embedded environment variables and prerender
 # SEO-critical routes to static HTML for bot user-agents (Googlebot, etc.)
-RUN npm run build:prerender
+# .build-version is read by build scripts to verify freshness after build
+RUN npm run build:prerender && echo "$VITE_APP_VERSION" > dist/.build-version
 
 
 # Step 2: Set up Flask with Python 3.13 on Bookworm (LaTeX-friendly)

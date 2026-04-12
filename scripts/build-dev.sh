@@ -58,7 +58,7 @@ echo ""
 
 # Verify build freshness — confirms code changes were picked up
 echo "Verifying build freshness..."
-BAKED=$(docker run --rm "$IMAGE_NAME:$TAG" python -c "import os; print(os.environ.get('VITE_APP_VERSION','unknown'))")
+BAKED=$(docker run --rm "$IMAGE_NAME:$TAG" cat /app/static/.build-version)
 echo "  Baked version : $BAKED"
 echo "  Expected      : $VITE_APP_VERSION"
 if [ "$BAKED" != "$VITE_APP_VERSION" ]; then
