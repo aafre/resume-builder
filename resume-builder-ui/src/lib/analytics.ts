@@ -39,11 +39,10 @@ function loadPostHog(): Promise<PostHog | null> {
       autocapture: false,
       // Heatmaps — capture click/scroll patterns (no extra events)
       enable_heatmaps: true,
-      // Session recording — masks passwords, allows other inputs
+      // Session recording — mask all inputs by default (resume content is PII)
       disable_session_recording: false,
       session_recording: {
-        maskAllInputs: false,
-        maskInputOptions: { password: true },
+        maskAllInputs: true,
       },
     });
 
@@ -59,13 +58,16 @@ function loadPostHog(): Promise<PostHog | null> {
   return initPromise;
 }
 
-/** Queue a call or execute immediately if PostHog is loaded. */
+/**
+ * Queue a call or execute immediately if PostHog is loaded.
+ * Does NOT trigger loading — initAnalytics() handles that via
+ * requestIdleCallback to avoid blocking initial paint.
+ */
 function run(fn: (ph: PostHog) => void): void {
   if (posthog) {
     fn(posthog);
   } else if (POSTHOG_KEY) {
     queue.push(() => { if (posthog) fn(posthog); });
-    loadPostHog();
   }
   // No key configured → silent no-op
 }
@@ -89,17 +91,20 @@ export function initAnalytics(): void {
 }
 
 /**
- * Identify user by Supabase user ID. Call on auth state change.
- * Resets identity on sign-out (anonymous session).
+ * Identify authenticated user by Supabase user ID.
+ * Only call for non-anonymous users. PostHog handles anonymous
+ * tracking automatically — do NOT call reset() on every mount.
  */
-export function identifyUser(userId: string, isAnonymous: boolean): void {
-  run((ph) => {
-    if (isAnonymous) {
-      ph.reset();
-    } else {
-      ph.identify(userId);
-    }
-  });
+export function identifyUser(userId: string): void {
+  run((ph) => ph.identify(userId));
+}
+
+/**
+ * Reset PostHog identity. Call ONLY on explicit sign-out to
+ * disconnect the session from the signed-in user.
+ */
+export function resetUser(): void {
+  run((ph) => ph.reset());
 }
 
 /** Track a page view. Call on every route change. */
@@ -125,10 +130,11 @@ export function trackPdfDownloaded(props: {
   run((ph) => ph.capture('pdf_downloaded', props));
 }
 
-export function trackSignupCompleted(props: {
+export function trackSignedIn(props: {
   provider: 'google' | 'linkedin' | 'email';
+  is_new_user: boolean;
 }): void {
-  run((ph) => ph.capture('signup_completed', props));
+  run((ph) => ph.capture('signed_in', props));
 }
 
 export function trackTemplateSelected(props: {

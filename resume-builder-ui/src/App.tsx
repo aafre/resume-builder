@@ -997,9 +997,9 @@ function AppWithProviders() {
   // Initialize PostHog analytics (lazy-loaded, deferred via requestIdleCallback)
   useEffect(() => { initAnalytics(); }, []);
 
-  // Identify user in PostHog when auth state changes
+  // Identify authenticated users in PostHog (anonymous users tracked automatically)
   useEffect(() => {
-    if (user?.id) identifyUser(user.id, isAnonymous);
+    if (user?.id && !isAnonymous) identifyUser(user.id);
   }, [user?.id, isAnonymous]);
 
   const { preferences, setPreference } = usePreferencePersistence({
