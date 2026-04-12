@@ -125,6 +125,12 @@ describe('cleanPrerenderedHtml', () => {
       const result = cleanPrerenderedHtml(html, PORT);
       expect(result).toContain('localhost:9999');
     });
+
+    it('does not partially match ports with shared prefix (e.g., 4173 vs 41730)', () => {
+      const html = `<a href="http://localhost:41730/page">Link</a>`;
+      const result = cleanPrerenderedHtml(html, PORT);
+      expect(result).toContain('localhost:41730');
+    });
   });
 
   describe('edge cases', () => {

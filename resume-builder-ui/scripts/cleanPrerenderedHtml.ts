@@ -73,7 +73,7 @@ export function cleanPrerenderedHtml(html: string, localPort: number): string {
   cleaned = cleaned.replace(/\s*<!-- Twitter -->\s*/g, '\n    ');
 
   // 3. Replace any remaining localhost URLs with production origin
-  const localhostPattern = new RegExp(`http://localhost:${localPort}`, 'g');
+  const localhostPattern = new RegExp(`http://localhost:${localPort}(?![0-9])`, 'g');
   cleaned = cleaned.replace(localhostPattern, PRODUCTION_ORIGIN);
 
   return cleaned;
