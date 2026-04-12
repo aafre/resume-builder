@@ -246,11 +246,39 @@ async function prerender() {
     userAgent: 'EasyFreeResume-Prerender/1.0',
   });
 
+  // Transparent 1×1 PNG — used to fulfill external image requests during prerender.
+  // This prevents onError handlers from mutating img.src, preserving the correct
+  // Supabase CDN URLs in the prerendered HTML for Googlebot to discover.
+  const TRANSPARENT_1PX_PNG = Buffer.from(
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+    'base64'
+  );
+
   let successCount = 0;
   let failCount = 0;
 
   for (const route of ROUTES_TO_PRERENDER) {
     const page = await context.newPage();
+
+    // Block external network requests during prerender.
+    // All page content comes from local dist/ assets (JS, CSS, YAML).
+    // External CDN images get a transparent pixel so onError handlers don't
+    // mutate img.src — preserving correct CDN URLs in the prerendered HTML.
+    // Auth/analytics requests are aborted (they fail gracefully in AuthContext).
+    await page.route(
+      (url) => url.hostname !== 'localhost',
+      (route) => {
+        if (route.request().resourceType() === 'image') {
+          route.fulfill({
+            status: 200,
+            contentType: 'image/png',
+            body: TRANSPARENT_1PX_PNG,
+          });
+        } else {
+          route.abort();
+        }
+      }
+    );
 
     try {
       const url = `http://localhost:${port}${route}`;
