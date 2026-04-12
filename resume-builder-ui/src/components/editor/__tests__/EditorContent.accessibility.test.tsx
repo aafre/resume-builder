@@ -419,6 +419,8 @@ describe('EditorContent Accessibility Tests', () => {
     sections: [],
     supportsIcons: true,
     iconRegistry: mockIconRegistry,
+    documentSettings: {},
+    onDocumentSettingsChange: vi.fn(),
     isAnonymous: false,
     isAuthenticated: true,
     contactForm: {

@@ -80,8 +80,8 @@ class TestGetTemplates:
         data = response.get_json()
         for template in data['templates']:
             image_url = template['image_url']
-            assert '/docs/templates/' in image_url
-            assert image_url.endswith('.png')
+            assert '/storage/v1/object/public/template-previews/' in image_url
+            assert image_url.endswith('.webp')
 
 
 class TestGetTemplateData:

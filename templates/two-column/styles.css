@@ -1,0 +1,296 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    background: #fff;
+}
+
+body {
+    font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.3;
+    color: #1F2937;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ── Full-width header ─────────────────────────────────── */
+
+.header {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.name {
+    font-size: 24pt;
+    font-weight: 600;
+    line-height: 1.1;
+    margin: 0 0 4px 0;
+    color: #1F2937;
+}
+
+.summary {
+    font-size: 9.5pt;
+    line-height: 1.4;
+    color: #374151;
+    margin: 2px 0 8px 0;
+    text-align: left;
+}
+
+.contact-row {
+    text-align: center;
+    font-size: 9pt;
+    color: #374151;
+    margin: 4px 0 0 0;
+    line-height: 2;
+}
+
+.contact-item {
+    display: inline;
+    white-space: nowrap;
+    margin: 0 6px;
+}
+
+.contact-item a {
+    color: #374151;
+}
+
+.contact-icon {
+    width: 13px;
+    height: 13px;
+    vertical-align: -2px;
+    margin-right: 4px;
+}
+
+.header-rule {
+    border: 0;
+    height: 1.5px;
+    background: #D1D5DB;
+    margin: 12px 0 14px 0;
+}
+
+/* ── Two-column layout ─────────────────────────────────── */
+
+.resume-columns {
+    display: flex;
+    gap: 0;
+}
+
+.main-col {
+    width: 55%;
+    padding-right: 14px;
+}
+
+.side-col {
+    width: 45%;
+    padding-left: 14px;
+}
+
+/* ── Section headings (shared) ─────────────────────────── */
+
+.section-heading {
+    font-size: 10pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 14px 0 6px 0;
+    padding-bottom: 3px;
+    border-bottom: 1.5px solid #0A2647;
+    color: #0A2647;
+}
+
+.main-col .section:first-child .section-heading,
+.side-col .section:first-child .section-heading {
+    margin-top: 0;
+}
+
+.section {
+    margin-bottom: 14px;
+}
+
+/* Right column gets more breathing room between its many short sections */
+.side-col .section {
+    margin-bottom: 20px;
+}
+
+.side-col .grouped-list-item {
+    margin: 10px 0;
+}
+
+/* ── Text section ──────────────────────────────────────── */
+
+.text-content {
+    line-height: 1.4;
+    margin: 2px 0;
+}
+
+/* ── Bulleted list ─────────────────────────────────────── */
+
+.bulleted-list {
+    margin: 2px 0;
+    padding-left: 16px;
+}
+
+.bulleted-list li {
+    margin-bottom: 2px;
+}
+
+/* ── Inline list (plain, for sidebar fallback) ─────────── */
+
+.inline-list {
+    list-style: none;
+    padding: 0;
+    margin: 2px 0;
+}
+
+.inline-list li {
+    display: inline;
+    font-size: 9pt;
+}
+
+.inline-list li:not(:last-child)::after {
+    content: " \00b7 ";
+    color: #9CA3AF;
+}
+
+/* ── Skill chips (inline-list in side column) ──────────── */
+
+.chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 2px 0;
+}
+
+.skill-chip {
+    display: inline-block;
+    font-size: 8.5pt;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background-color: rgba(13, 148, 136, 0.09);
+    color: #0A2647;
+    white-space: nowrap;
+}
+
+/* ── Dynamic column list ───────────────────────────────── */
+
+.multi-column-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.multi-column-table td {
+    vertical-align: top;
+    padding: 0 4px;
+}
+
+.multi-column-table ul {
+    list-style: disc;
+    padding-left: 14px;
+    margin: 0;
+}
+
+.multi-column-table li {
+    margin-bottom: 1px;
+    font-size: 9pt;
+}
+
+/* ── Grouped list ──────────────────────────────────────── */
+
+.grouped-list-item {
+    margin: 8px 0;
+    font-size: 9pt;
+    line-height: 1.4;
+}
+
+/* ── Experience ────────────────────────────────────────── */
+
+.experience-item {
+    margin-bottom: 14px;
+    page-break-inside: avoid;
+}
+
+.job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1px;
+}
+
+.job-title {
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+.job-company {
+    font-size: 9pt;
+    color: #4B5563;
+    margin: 0 0 2px 0;
+}
+
+.job-dates {
+    font-size: 9pt;
+    color: #6B7280;
+    white-space: nowrap;
+}
+
+.experience-item ul {
+    list-style-type: disc;
+    padding-left: 18px;
+    margin: 2px 0;
+}
+
+.experience-item li {
+    margin-bottom: 1px;
+    line-height: 1.3;
+}
+
+/* ── Education (compact) ───────────────────────────────── */
+
+.education-item {
+    margin-bottom: 6px;
+}
+
+.education-item p {
+    margin: 1px 0;
+    font-size: 9pt;
+}
+
+.education-degree {
+    font-weight: bold;
+    font-size: 9.5pt;
+}
+
+.education-school {
+    color: #4B5563;
+    font-size: 9pt;
+}
+
+.education-year {
+    color: #6B7280;
+    font-size: 8.5pt;
+}
+
+.gpa {
+    font-size: 8.5pt;
+    color: #4B5563;
+}
+
+.coursework {
+    font-size: 8.5pt;
+    color: #4B5563;
+}
+
+/* Page margins are set via wkhtmltopdf CLI flags (--margin-top, etc.)
+   rather than CSS @page so that wkhtmltopdf has exclusive control over the
+   margin area.  This is required for headers/footers (page numbers) to
+   render correctly — @page CSS margins conflict with CLI margins and can
+   push the footer off the visible page.  See PDFOptions in models.py. */

@@ -1,0 +1,107 @@
+font: Calibri
+
+settings:
+  accent_color: "#1B4332"
+
+contact_info:
+  name: James Hartley
+  location: "Manchester, United Kingdom"
+  email: james.hartley@email.co.uk
+  phone: "+44 7700 900789"
+  social_links:
+    - platform: linkedin
+      url: https://linkedin.com/in/jameshartley
+      display_text: James Hartley
+
+sections:
+  - name: Personal Profile
+    type: text
+    content: "An experienced marketing professional with over 8 years in digital marketing strategy, brand management, and campaign execution across B2B and B2C sectors. Proven track record of growing brand awareness by 150% and driving £2.5M in attributable revenue through integrated marketing campaigns spanning digital, print, events, and influencer channels. Adept at building high-performing teams, managing six-figure budgets, and translating data-driven insights into commercial growth. Seeking a Head of Marketing role where I can combine strategic vision with hands-on execution to scale brand presence in competitive markets."
+
+  - name: Employment History
+    type: experience
+    content:
+      - company: "Barclays"
+        title: "Senior Marketing Manager"
+        dates: "April 2021 – Present"
+        description:
+          - "Lead a team of 8 marketing professionals delivering integrated campaigns across digital, print, and events channels for the SMB banking division"
+          - "Developed and executed brand repositioning strategy, increasing unaided brand awareness by 45% and consideration by 22% over 18 months"
+          - "Managed annual marketing budget of £1.8M, consistently delivering campaigns 10% under budget while exceeding KPIs"
+          - "Introduced HubSpot marketing automation platform, increasing qualified lead generation by 60% and reducing cost per lead from £42 to £17"
+          - "Launched 'Business Confidence Index' content series generating 2.4M impressions and featured in Financial Times and The Guardian"
+
+      - company: "Unilever"
+        title: "Digital Marketing Manager"
+        dates: "September 2018 – March 2021"
+        description:
+          - "Managed digital marketing strategy for 3 consumer brands (Dove, Ben & Jerry's, Persil) with combined annual revenue of £50M"
+          - "Launched influencer marketing programme across Instagram and TikTok, generating 12M+ impressions and £800K in tracked revenue within first year"
+          - "Optimised paid media spend across Google Ads, Meta, and TikTok, improving ROAS from 3.2x to 5.1x"
+          - "Led cross-functional rebrand of Persil's digital presence, resulting in 35% increase in online direct-to-consumer sales"
+
+      - company: "Innocent Drinks"
+        title: "Marketing Executive"
+        dates: "June 2016 – August 2018"
+        description:
+          - "Coordinated social media strategy across Instagram, Twitter, and Facebook, growing combined following from 180K to 380K"
+          - "Managed relationships with 4 creative agencies for campaign production and media buying, negotiating 15% cost savings on annual retainers"
+          - "Supported launch of 2 new product lines (Innocent Plus and Innocent Dairy Free) with integrated go-to-market campaigns"
+          - "Created monthly performance dashboards using Google Analytics and Sprout Social, presented to senior leadership"
+
+      - company: "Boohoo Group"
+        title: "Marketing Assistant"
+        dates: "September 2014 – May 2016"
+        description:
+          - "Assisted with email marketing campaigns to 3M+ subscriber base, achieving 28% average open rate and 4.2% click-through rate"
+          - "Managed social media content calendar and community engagement across Instagram and Twitter"
+          - "Coordinated logistics for 6 seasonal photoshoots and 2 pop-up retail events in London and Manchester"
+
+  - name: "Education & Qualifications"
+    type: education
+    content:
+      - degree: "MSc Digital Marketing"
+        school: "University of Manchester"
+        year: "2016"
+      - degree: "BA (Hons) Business Studies, First Class"
+        school: "University of Leeds"
+        year: "2014"
+
+  - name: Key Skills
+    type: grouped-list
+    content:
+      - label: "Digital Marketing"
+        items: ["SEO/SEM", "Social Media Strategy", "Content Marketing", "Email Marketing", "Marketing Automation", "Influencer Marketing", "CRO"]
+      - label: "Analytics & Tools"
+        items: ["Google Analytics 4", "HubSpot", "Salesforce Marketing Cloud", "Tableau", "Google Ads", "Meta Business Suite", "Sprout Social", "Hotjar"]
+      - label: "Leadership"
+        items: ["Team Management (up to 12 reports)", "Budget Management", "Stakeholder Engagement", "Agency Management", "Strategic Planning", "P&L Ownership"]
+      - label: "Content & Creative"
+        items: ["Brand Strategy", "Copywriting", "Adobe Creative Suite", "Canva", "Video Production", "A/B Testing"]
+
+  - name: Volunteer Experience
+    type: experience
+    content:
+      - company: "Manchester Digital"
+        title: "Pro Bono Marketing Advisor"
+        dates: "January 2022 – Present"
+        description:
+          - "Provide quarterly marketing strategy reviews for 3 early-stage tech startups in the Manchester Digital accelerator programme"
+          - "Developed go-to-market playbook template adopted by 15+ programme cohort companies"
+      - company: "Parkrun UK"
+        title: "Event Volunteer & Social Media Coordinator"
+        dates: "March 2019 – Present"
+        description:
+          - "Manage social media accounts for Heaton Park Parkrun (2,400+ followers), covering weekly event photography and community engagement"
+
+  - name: Professional Development
+    type: bulleted-list
+    content:
+      - "Google Analytics 4 Certification (2024)"
+      - "HubSpot Inbound Marketing Certification (2023)"
+      - "Meta Certified Digital Marketing Associate (2023)"
+      - "CIM Diploma in Professional Marketing (2020)"
+      - "Google Ads Search & Display Certification (2019)"
+      - "Chartered Institute of PR — Crisis Communications Workshop (2022)"
+
+

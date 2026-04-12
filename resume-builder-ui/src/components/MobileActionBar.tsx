@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdMenu, MdFileDownload, MdVisibility } from "react-icons/md";
 
 interface MobileActionBarProps {
@@ -37,6 +37,27 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
 }) => {
   // Show loading on button when either opening (save/validate) or generating
   const isPreviewLoading = isOpeningPreview || isGeneratingPreview;
+
+  // Track save status for micro-animations
+  const prevSavingRef = useRef(isSaving);
+  const [showSavedFlash, setShowSavedFlash] = useState(false);
+  const [statusKey, setStatusKey] = useState(0);
+
+  useEffect(() => {
+    // Detect transition from saving → saved (not saving, has lastSaved, no error)
+    if (prevSavingRef.current && !isSaving && lastSaved && !saveError) {
+      setShowSavedFlash(true);
+      setStatusKey((k) => k + 1);
+      const timer = setTimeout(() => setShowSavedFlash(false), 1000);
+      return () => clearTimeout(timer);
+    }
+    // Also bump key on any status change for fade-in
+    if (prevSavingRef.current !== isSaving || saveError) {
+      setStatusKey((k) => k + 1);
+    }
+    prevSavingRef.current = isSaving;
+  }, [isSaving, lastSaved, saveError]);
+
   // Format last saved time
   const getLastSavedText = () => {
     if (!lastSaved) return "";
@@ -59,22 +80,31 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
       {/* Auto-save status bar (subtle, above buttons) - only for authenticated users */}
       {isAuthenticated && (isSaving || lastSaved || saveError) && (
         <div className="px-4 py-1 bg-gray-50 border-b border-gray-100">
-          <div className="flex items-center justify-center gap-2 text-xs">
+          <div
+            key={statusKey}
+            className="flex items-center justify-center gap-2 text-xs transition-all duration-300 animate-[statusFadeIn_0.3s_ease-out]"
+          >
             {isSaving && (
               <>
                 <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-accent"></div>
-                <span className="text-gray-600">Saving...</span>
+                <span className="text-gray-600 animate-[savePulse_1.5s_ease-in-out_infinite]">Saving...</span>
               </>
             )}
             {!isSaving && lastSaved && !saveError && (
               <>
                 <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <span className="text-gray-600">Saved {getLastSavedText()}</span>
+                <span
+                  className={`transition-colors duration-1000 ${
+                    showSavedFlash ? "text-accent font-medium" : "text-gray-600"
+                  }`}
+                >
+                  Saved {getLastSavedText()}
+                </span>
               </>
             )}
             {saveError && (
               <>
-                <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
                 <span className="text-red-600">Save failed - retrying...</span>
               </>
             )}

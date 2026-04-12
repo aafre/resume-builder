@@ -110,6 +110,7 @@ const SectionEditor: React.FC<{
             "inline-list",
             "icon-list",
             "dynamic-column-list",
+            "grouped-list",
             "experience",
             "education",
           ].map((type) => (

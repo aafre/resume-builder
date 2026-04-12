@@ -9,6 +9,7 @@ ARG VITE_ENABLE_EXPLICIT_ADS
 ARG VITE_AFFILIATE_JOB_SEARCH_ENABLED
 ARG VITE_AFFILIATE_RESUME_REVIEW_ENABLED
 ARG VITE_AFFILIATE_RESUME_REVIEW_URL
+ARG VITE_APP_VERSION
 
 # Set as environment variables for Vite build process
 ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
@@ -18,6 +19,7 @@ ENV VITE_ENABLE_EXPLICIT_ADS=$VITE_ENABLE_EXPLICIT_ADS
 ENV VITE_AFFILIATE_JOB_SEARCH_ENABLED=$VITE_AFFILIATE_JOB_SEARCH_ENABLED
 ENV VITE_AFFILIATE_RESUME_REVIEW_ENABLED=$VITE_AFFILIATE_RESUME_REVIEW_ENABLED
 ENV VITE_AFFILIATE_RESUME_REVIEW_URL=$VITE_AFFILIATE_RESUME_REVIEW_URL
+ENV VITE_APP_VERSION=$VITE_APP_VERSION
 
 WORKDIR /app/react
 COPY resume-builder-ui/package*.json ./
@@ -56,8 +58,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         texlive-plain-generic \
         texlive-fonts-extra \
         fontconfig \
+        fonts-liberation \
         curl \
         poppler-utils && \
+    fc-cache -f && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
@@ -75,6 +79,8 @@ COPY --chown=appuser:appuser jobs_matrix.json ./
 COPY --chown=appuser:appuser templates/ ./templates/
 COPY --chown=appuser:appuser samples/ ./samples/
 COPY --chown=appuser:appuser icons/ ./icons/
+COPY --chown=appuser:appuser fonts/bundled/*.ttf /usr/share/fonts/
+RUN fc-cache -f
 COPY --chown=appuser:appuser docs/templates/ ./docs/templates/
 
 # Copy built React assets from build stage

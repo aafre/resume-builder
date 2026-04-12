@@ -28,6 +28,8 @@ import copy
 from jinja2 import Environment, FileSystemLoader
 from concurrent.futures import ThreadPoolExecutor
 import atexit
+from templates import registry as template_registry
+from templates.models import TemplateMetadata
 from functools import wraps, partial, lru_cache
 import time
 from typing import Callable, Any
@@ -153,7 +155,8 @@ def classify_thumbnail_error(error):
 
 
 def pdf_generation_worker(
-    template_name, yaml_path, output_path, session_icons_dir, session_id
+    template_name, yaml_path, output_path, session_icons_dir, session_id,
+    pdf_options=None,
 ):
     """
     Worker function for process pool PDF generation.
@@ -192,6 +195,10 @@ def pdf_generation_worker(
             session_id,
         ]
 
+        if pdf_options:
+            import json as json_mod
+            cmd.extend(["--pdf-options", json_mod.dumps(pdf_options)])
+
         logging.debug(f"Worker running command: {' '.join(cmd)}")
 
         # Get the project root (worker process needs proper cwd)
@@ -213,6 +220,9 @@ def pdf_generation_worker(
             logging.error(f"Template: {template_name}, Session: {session_id}")
             error_msg = f"Worker subprocess failed: {result.stderr}"
             return {"success": False, "error": error_msg}
+
+        if result.stderr:
+            logging.debug(f"Worker stderr: {result.stderr[:500]}")
 
         # Verify PDF was created and has content
         pdf_path = Path(output_path)
@@ -241,7 +251,8 @@ def pdf_generation_worker(
 
 
 def _dispatch_html_pdf_generation(
-    template, yaml_path, output_path, icons_dir, session_id, timeout=60
+    template, yaml_path, output_path, icons_dir, session_id, timeout=60,
+    pdf_options=None,
 ):
     """Dispatch HTML-based PDF generation via thread pool or direct subprocess fallback."""
     if PDF_THREAD_POOL is None:
@@ -261,6 +272,9 @@ def _dispatch_html_pdf_generation(
             session_id,
         ]
 
+        if pdf_options:
+            cmd.extend(["--pdf-options", json.dumps(pdf_options)])
+
         result = subprocess.run(
             cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT)
         )
@@ -276,6 +290,7 @@ def _dispatch_html_pdf_generation(
             output_path,
             icons_dir,
             session_id,
+            pdf_options,
         )
 
         try:
@@ -762,6 +777,12 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
         latex_env.filters["markdown_links"] = convert_markdown_links_to_latex
         latex_env.filters["markdown_formatting"] = convert_markdown_formatting_to_latex
 
+        # Extract document settings for LaTeX rendering
+        settings = yaml_data.get("settings", {})
+        if not isinstance(settings, dict):
+            settings = {}
+        prepared_data["settings"] = settings
+
         # Render the LaTeX template
         template = latex_env.get_template("resume.tex")
         latex_content = template.render(**prepared_data)
@@ -888,6 +909,18 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
             return cols - 1
 
     return max_columns  # Default to max columns if all checks pass
+
+
+def _copy_black_icons(session_icons_dir: Path, base_contact_icons: list[str]) -> None:
+    """Copy black monochrome icon variants to session directory."""
+    black_icons_src = ICONS_DIR / "black"
+    if black_icons_src.is_dir():
+        black_icons_dst = session_icons_dir / "black"
+        black_icons_dst.mkdir(exist_ok=True)
+        for icon_name in base_contact_icons:
+            src = black_icons_src / icon_name
+            if src.exists():
+                shutil.copy2(src, black_icons_dst / icon_name)
 
 
 def extract_icons_from_yaml(data):
@@ -1271,27 +1304,15 @@ OUTPUT_DIR = PROJECT_ROOT / "output"
 os.makedirs(ICONS_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# Template file mapping
+# Template configuration is now managed by templates/registry.py
+# Legacy references kept for backward compatibility during migration:
 TEMPLATE_FILE_MAP = {
-    "modern": TEMPLATES_DIR / "john_doe.yml",  # Alias for job example pages
-    "modern-no-icons": TEMPLATES_DIR / "john_doe_no_icon.yml",
-    "modern-with-icons": TEMPLATES_DIR / "john_doe.yml",
-    "classic-alex-rivera": PROJECT_ROOT
-    / "samples"
-    / "classic"
-    / "alex_rivera_data.yml",
-    "classic-jane-doe": PROJECT_ROOT / "samples" / "classic" / "jane_doe.yml",
+    tid: template_registry.get_sample_path(tid)
+    for tid in template_registry.all_ids()
 }
-
-# Template ID to directory mapping
-# Maps UI template IDs to actual template directory names
 TEMPLATE_DIR_MAP = {
-    "modern-with-icons": "modern",  # HTML template - icons supported
-    "modern-no-icons": "modern",  # HTML template - no icons
-    "modern": "modern",  # Default HTML template
-    "classic": "classic",  # LaTeX template (generic)
-    "classic-alex-rivera": "classic",  # LaTeX template (data analytics)
-    "classic-jane-doe": "classic",  # LaTeX template (marketing)
+    tid: template_registry.get_dir(tid)
+    for tid in template_registry.all_ids()
 }
 
 
@@ -1733,41 +1754,22 @@ def serve(path):
 def get_templates():
     """
     Fetch available templates with metadata for display.
+    Template configuration is driven by templates/registry.py.
     """
     try:
+        display_templates = template_registry.get_display_templates()
+        # Serve preview images from Supabase Storage CDN (WebP)
+        cdn_base = f"{SUPABASE_URL or ''}/storage/v1/object/public/template-previews"
         templates = [
-            {
-                "id": "classic-alex-rivera",
-                "name": "Professional",
-                "description": "Clean, structured layout with traditional formatting and excellent space utilization.",
-                "image_url": url_for(
-                    "serve_templates", filename="alex_rivera.png", _external=True
-                ),
-            },
-            {
-                "id": "classic-jane-doe",
-                "name": "Elegant",
-                "description": "Refined design with sophisticated typography and organized section layout.",
-                "image_url": url_for(
-                    "serve_templates", filename="jane_doe.png", _external=True
-                ),
-            },
-            {
-                "id": "modern-no-icons",
-                "name": "Minimalist",
-                "description": "Clean and simple design focused on content clarity and easy readability.",
-                "image_url": url_for(
-                    "serve_templates", filename="modern-no-icons.png", _external=True
-                ),
-            },
-            {
-                "id": "modern-with-icons",
-                "name": "Modern",
-                "description": "Contemporary design enhanced with visual icons and dynamic styling elements.",
-                "image_url": url_for(
-                    "serve_templates", filename="modern-with-icons.png", _external=True
-                ),
-            },
+            TemplateMetadata(
+                id=t.id,
+                name=t.name,
+                description=t.description,
+                image_url=f"{cdn_base}/{Path(t.preview).stem}.webp" if t.preview else f"{cdn_base}/modern-no-icons.webp",
+                supports_icons=t.supports_icons,
+                tags=t.tags,
+            ).model_dump()
+            for t in display_templates
         ]
         return jsonify({"success": True, "templates": templates})
     except Exception as e:
@@ -1779,36 +1781,30 @@ def get_templates():
 def get_template_data(template_id):
     """
     Fetch the YAML string for the specified template and determine if it supports icons.
+    Template lookup is driven by templates/registry.py.
     """
     try:
-        # Map template ID to the file name
-        template_file = TEMPLATE_FILE_MAP.get(template_id)
-        if not template_file:
-            logging.warning(f"Template ID not mapped: {template_id}")
-            return jsonify({"success": False, "error": "Template not found"}), 404
+        config = template_registry.get(template_id)
+        sample_path = template_registry.get_sample_path(template_id)
 
-        # Construct the full path to the YAML file
-        template_path = TEMPLATES_DIR / template_file
-        if not template_path.exists():
-            logging.warning(f"Template file not found: {template_path}")
+        if not sample_path.exists():
+            logging.warning(f"Template sample file not found: {sample_path}")
             return jsonify({"success": False, "error": "Template not found"}), 404
 
         # Read the YAML content using cached function
-        yaml_content = get_template_config(template_path)
+        yaml_content = get_template_config(sample_path)
 
-        # Determine icon support based on template ID
-        # Only 'modern-with-icons' template supports icons
-        supports_icons = template_id == "modern-with-icons"
-
-        # Return the YAML content and supportsIcons flag
         return jsonify(
             {
                 "success": True,
                 "yaml": yaml.safe_dump(yaml_content),
                 "template_id": template_id,
-                "supportsIcons": supports_icons,
+                "supportsIcons": config.supports_icons,
             }
         )
+    except KeyError:
+        logging.warning(f"Template ID not registered: {template_id}")
+        return jsonify({"success": False, "error": "Template not found"}), 404
     except FileNotFoundError:
         logging.warning(f"Template file not found for {template_id}")
         return jsonify({"success": False, "error": "Template not found"}), 404
@@ -1948,6 +1944,9 @@ def generate_resume():
                         f"Base contact icon not found: {icon_name} at {default_icon_path}"
                     )
 
+            # Copy black icon variants (used by ATS, Student, UK CV templates)
+            _copy_black_icons(session_icons_dir, base_contact_icons)
+
             # Copy additional icons referenced in YAML content (only for icon-supporting templates)
             if uses_icons:
                 referenced_icons = extract_icons_from_yaml(yaml_data)
@@ -1999,24 +1998,27 @@ def generate_resume():
                     "Skipping user uploaded icons for no-icons template variant"
                 )
 
-            # Validate template ID against known templates
-            if template not in TEMPLATE_DIR_MAP:
+            # Validate template ID against registry
+            if not template_registry.is_valid(template):
                 raise ValueError(
-                    f"Invalid template: {template}. Available templates: {', '.join(TEMPLATE_DIR_MAP.keys())}"
+                    f"Invalid template: {template}. Available templates: {', '.join(template_registry.all_ids())}"
                 )
 
-            # Use the mapped template directory
-            actual_template = TEMPLATE_DIR_MAP[template]
+            # Extract document settings for renderer (accent colour, page numbers, etc.)
+            user_settings = yaml_data.get("settings", {})
 
-            if actual_template == "classic":
-                generate_latex_pdf(
-                    yaml_data, str(session_icons_dir), str(output_path), actual_template
-                )
-            else:
-                _dispatch_html_pdf_generation(
-                    actual_template, yaml_path, output_path,
-                    session_icons_dir, session_id,
-                )
+            # Dispatch PDF generation via template renderer
+            from templates.renderer import generate_pdf as render_template_pdf
+
+            render_template_pdf(
+                template_id=template,
+                yaml_data=yaml_data,
+                yaml_path=yaml_path,
+                output_path=str(output_path),
+                icons_dir=str(session_icons_dir),
+                session_id=session_id,
+                settings=user_settings,
+            )
 
             if not output_path.exists():
                 logging.error(f"Expected output file at: {output_path}")
@@ -2209,6 +2211,7 @@ def create_resume():
         contact_info = migrate_linkedin_to_social_links(contact_info)
 
         sections = template_data.get("sections", [])
+        settings = template_data.get("settings", {})
 
         # If load_example is False, clear the content but keep the structure
         if not load_example:
@@ -2227,6 +2230,7 @@ def create_resume():
                 "bulleted-list",
                 "inline-list",
                 "dynamic-column-list",
+                "grouped-list",
                 "icon-list",
                 "experience",
                 "education",
@@ -2248,6 +2252,7 @@ def create_resume():
             "template_id": template_id,
             "contact_info": contact_info,
             "sections": sections,
+            "settings": settings,
             "json_hash": None,  # No hash yet (no data)
             "created_at": "now()",
             "updated_at": "now()",
@@ -2318,6 +2323,7 @@ def save_resume():
         contact_info = data.get("contact_info", {})
         sections = data.get("sections", [])
         icons = data.get("icons", [])
+        settings = data.get("settings", {})
         ai_import_warnings = data.get("ai_import_warnings")  # Optional JSONB array
         ai_import_confidence = data.get("ai_import_confidence")  # Optional decimal
 
@@ -2346,6 +2352,7 @@ def save_resume():
             {
                 "contact_info": contact_info,
                 "sections": sections,
+                "settings": settings,
                 "icon_metadata": sorted(
                     icon_metadata, key=lambda x: x["filename"]
                 ),  # Sort for consistency
@@ -2422,6 +2429,7 @@ def save_resume():
             "template_id": template_id,
             "contact_info": contact_info,
             "sections": sections,
+            "settings": settings,
             "json_hash": new_hash,  # Store hash for future diffing
             "updated_at": "now()",
             "last_accessed_at": "now()",
@@ -3342,10 +3350,12 @@ def generate_pdf_for_saved_resume(resume_id):
                 return jsonify({"success": False, "error": error_msg}), 500
 
             # Prepare YAML data
+            resume_settings = resume.get("settings", {})
             yaml_data = {
                 "template": resume.get("template_id"),
                 "contact_info": resume.get("contact_info", {}),
                 "sections": resume.get("sections", []),
+                "settings": resume_settings if isinstance(resume_settings, dict) else {},
             }
 
             # Normalize sections
@@ -3381,6 +3391,9 @@ def generate_pdf_for_saved_resume(resume_id):
                     logging.debug(f"Copied base contact icon: {icon_name}")
                 else:
                     logging.warning(f"Base contact icon not found: {icon_name}")
+
+            # Copy black icon variants (used by ATS, Student, UK CV templates)
+            _copy_black_icons(session_icons_dir, base_contact_icons)
 
             # Extract content icons (from Experience, Education, Certifications, etc.) only for icon-supporting templates
             if uses_icons:
@@ -3446,18 +3459,19 @@ def generate_pdf_for_saved_resume(resume_id):
             output_path = temp_dir_path / f"Resume_{timestamp}.pdf"
 
             template_id = resume.get("template_id", "modern")
-            actual_template = TEMPLATE_DIR_MAP.get(template_id, "modern")
 
-            # Generate PDF using appropriate method
-            if actual_template == "classic":
-                generate_latex_pdf(
-                    yaml_data, str(session_icons_dir), str(output_path), actual_template
-                )
-            else:
-                _dispatch_html_pdf_generation(
-                    actual_template, yaml_path, output_path,
-                    session_icons_dir, session_id,
-                )
+            # Dispatch PDF generation via template renderer
+            from templates.renderer import generate_pdf as render_template_pdf
+
+            render_template_pdf(
+                template_id=template_id,
+                yaml_data=yaml_data,
+                yaml_path=yaml_path,
+                output_path=str(output_path),
+                icons_dir=str(session_icons_dir),
+                session_id=session_id,
+                settings=yaml_data.get("settings", {}),
+            )
 
             if not output_path.exists():
                 raise FileNotFoundError("PDF file was not generated")
@@ -3593,10 +3607,12 @@ def generate_thumbnail_for_resume(resume_id):
                 # Icons will be missing from PDF, but thumbnail will still generate
 
             # Prepare YAML data
+            resume_settings = resume.get("settings", {})
             yaml_data = {
                 "template": resume.get("template_id"),
                 "contact_info": resume.get("contact_info", {}),
                 "sections": resume.get("sections", []),
+                "settings": resume_settings if isinstance(resume_settings, dict) else {},
             }
 
             # Normalize sections
@@ -3632,6 +3648,9 @@ def generate_thumbnail_for_resume(resume_id):
                     logging.debug(f"Copied base contact icon: {icon_name}")
                 else:
                     logging.warning(f"Base contact icon not found: {icon_name}")
+
+            # Copy black icon variants (used by ATS, Student, UK CV templates)
+            _copy_black_icons(session_icons_dir, base_contact_icons)
 
             # Extract content icons (from Experience, Education, Certifications, etc.) only for icon-supporting templates
             if uses_icons:
@@ -3697,18 +3716,19 @@ def generate_thumbnail_for_resume(resume_id):
             output_path = temp_dir_path / f"Resume_{timestamp}.pdf"
 
             template_id = resume.get("template_id", "modern")
-            actual_template = TEMPLATE_DIR_MAP.get(template_id, "modern")
 
-            # Generate PDF using appropriate method
-            if actual_template == "classic":
-                generate_latex_pdf(
-                    yaml_data, str(session_icons_dir), str(output_path), actual_template
-                )
-            else:
-                _dispatch_html_pdf_generation(
-                    actual_template, yaml_path, output_path,
-                    session_icons_dir, session_id,
-                )
+            # Dispatch PDF generation via template renderer
+            from templates.renderer import generate_pdf as render_template_pdf
+
+            render_template_pdf(
+                template_id=template_id,
+                yaml_data=yaml_data,
+                yaml_path=yaml_path,
+                output_path=str(output_path),
+                icons_dir=str(session_icons_dir),
+                session_id=session_id,
+                settings=yaml_data.get("settings", {}),
+            )
 
             if not output_path.exists():
                 raise FileNotFoundError("PDF file was not generated")

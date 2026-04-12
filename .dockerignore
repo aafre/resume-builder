@@ -111,6 +111,11 @@ docker-compose*
 .dockerignore
 
 # ============================================
+# Scripts (dev utilities, not needed at runtime)
+# ============================================
+scripts/
+
+# ============================================
 # Configuration Files
 # ============================================
 .mcp.json

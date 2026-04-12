@@ -1,0 +1,16 @@
+<!-- type: grouped-list -->
+<div class="section">
+    <h2 class="section-heading">{{ section.name }}</h2>
+    {% for group in section.content %}
+        {% if group is mapping and group.label is defined %}
+            {% set group_items = group['items'] %}
+            <p class="grouped-list-item" style="margin: 2px 0;">
+                <strong>{{ group.label | markdown_links | markdown_formatting | safe }}:</strong>
+                {{ group_items | join(', ') | markdown_links | markdown_formatting | safe }}
+            </p>
+        {% else %}
+            {# Backward compat: if content is a plain string, render as simple item #}
+            <p class="grouped-list-item" style="margin: 2px 0;">{{ group | markdown_links | markdown_formatting | safe }}</p>
+        {% endif %}
+    {% endfor %}
+</div>

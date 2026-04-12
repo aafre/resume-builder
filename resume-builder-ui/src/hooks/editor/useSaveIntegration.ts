@@ -4,7 +4,7 @@
 import { useEffect, useRef, useCallback, useMemo } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { toast } from 'react-hot-toast';
-import { ContactInfo, Section, SaveStatus } from '../../types';
+import { ContactInfo, Section, SaveStatus, DocumentSettings } from '../../types';
 import { useCloudSave } from '../useCloudSave';
 
 interface IconRegistry {
@@ -16,6 +16,7 @@ interface UseSaveIntegrationProps {
   contactInfo: ContactInfo | null;
   sections: Section[];
   templateId: string | null;
+  documentSettings?: DocumentSettings;
   iconRegistry: IconRegistry;
   cloudResumeId: string | null;
   setCloudResumeId: (id: string | null) => void;
@@ -45,6 +46,7 @@ export const useSaveIntegration = ({
   contactInfo,
   sections,
   templateId,
+  documentSettings,
   iconRegistry,
   cloudResumeId,
   setCloudResumeId,
@@ -76,9 +78,10 @@ export const useSaveIntegration = ({
           contact_info: contactInfo,
           sections: sections,
           template_id: templateId,
+          settings: documentSettings,
         }
       : { contact_info: { name: '', location: '', email: '', phone: '' }, sections: [], template_id: '' };
-  }, [contactInfo, sections, templateId]);
+  }, [contactInfo, sections, templateId, documentSettings]);
 
   const {
     saveStatus,

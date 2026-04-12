@@ -1,0 +1,178 @@
+body {
+    font-size: 10.5pt;
+    line-height: 1.3;
+    margin: 0;
+    padding: 0;
+    color: #000;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.name {
+    font-size: 28pt;
+    font-weight: bold;
+    margin: 0 0 4px 0;
+    color: #000;
+}
+
+.contact-line {
+    font-size: 10pt;
+    color: #333;
+    text-align: left;
+    margin: 0 0 10px 0;
+    line-height: 2;
+}
+
+.contact-item {
+    display: inline;
+    white-space: nowrap;
+    margin: 0 5px;
+}
+
+.contact-icon {
+    width: 12px;
+    height: 12px;
+    vertical-align: -1px;
+    margin-right: 3px;
+}
+
+.section {
+    margin-bottom: 12px;
+}
+
+.section-heading {
+    font-size: 11pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #000;
+    margin: 14px 0 2px 0;
+    padding-bottom: 2px;
+    border-bottom: 0.75px solid #999;
+}
+
+.text-content {
+    margin: 1px 0;
+    line-height: 1.3;
+}
+
+.bulleted-list {
+    margin: 1px 0;
+    padding-left: 20px;
+}
+
+.bulleted-list li {
+    margin-bottom: 3px;
+}
+
+.inline-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 2px 0;
+    gap: 4px;
+}
+
+.inline-list li {
+    display: inline;
+}
+
+.inline-list li:not(:last-child)::after {
+    content: " \00b7";
+    margin-left: 4px;
+    color: #666;
+}
+
+.multi-column-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.multi-column-table td {
+    vertical-align: top;
+    padding: 0 8px;
+}
+
+.multi-column-table ul {
+    list-style: disc;
+    padding-left: 16px;
+    margin: 0;
+}
+
+.multi-column-table li {
+    margin-bottom: 2px;
+}
+
+.grouped-list-item {
+    margin: 1px 0;
+    line-height: 1.3;
+}
+
+.experience-item {
+    margin-bottom: 12px;
+    page-break-inside: avoid;
+}
+
+.job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1px;
+}
+
+.job-title {
+    font-weight: bold;
+    font-size: 10.5pt;
+}
+
+.job-company {
+    font-size: 10pt;
+    color: #333;
+    margin: 0;
+}
+
+.job-dates {
+    font-size: 10pt;
+    color: #555;
+    white-space: nowrap;
+}
+
+.experience-item ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin: 2px 0;
+}
+
+.experience-item li {
+    margin-bottom: 1px;
+}
+
+.education-item {
+    margin-bottom: 4px;
+}
+
+.education-item p {
+    margin: 1px 0;
+    font-size: 10.5pt;
+}
+
+.gpa {
+    font-size: 9.5pt;
+    color: #333;
+}
+
+.coursework {
+    font-size: 9.5pt;
+    color: #333;
+}
+
+/* Page margins are set via wkhtmltopdf CLI flags (--margin-top, etc.)
+   rather than CSS @page so that wkhtmltopdf has exclusive control over the
+   margin area.  This is required for headers/footers (page numbers) to
+   render correctly — @page CSS margins conflict with CLI margins and can
+   push the footer off the visible page.  See PDFOptions in models.py. */
