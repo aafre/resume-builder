@@ -196,7 +196,7 @@ async function prerender() {
     }
   );
 
-  const concurrency = parseInt(process.env.PRERENDER_CONCURRENCY || '5', 10);
+  const concurrency = parseInt(process.env.PRERENDER_CONCURRENCY || '5', 10) || 5;
   console.log(`  Concurrency: ${concurrency} page${concurrency > 1 ? 's' : ''}`);
 
   let successCount = 0;
