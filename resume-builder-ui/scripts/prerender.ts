@@ -212,9 +212,11 @@ async function prerender() {
       const url = `http://localhost:${port}${route}`;
       console.log(`  Rendering: ${route}`);
 
-      // Navigate and wait for network to be idle (React hydration complete)
+      // Navigate and wait for initial load. External requests are blocked by
+      // context.route(), so 'networkidle' is unnecessary and flaky in CI
+      // (aborted requests can trigger SPA retry loops that prevent idle state).
       await page.goto(url, {
-        waitUntil: 'networkidle',
+        waitUntil: 'load',
         timeout: 30000,
       });
 
