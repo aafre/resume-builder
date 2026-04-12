@@ -698,6 +698,17 @@ footer {
 /* Hide scrollbar for tab overflow */
 .scrollbar-none::-webkit-scrollbar { display: none; }
 .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Template preview modal image cross-fade */
+@keyframes tpm-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.tpm-img-fade {
+  animation: tpm-fade-in 0.3s ease-out;
+}
 
 /* Custom scrollbar for sidebar */
 .scrollbar-thin {

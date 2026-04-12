@@ -8,7 +8,7 @@
  * - Touch-optimized with 44px min tap targets
  */
 
-import { useRef, useCallback } from 'react';
+import { useCallback } from 'react';
 
 export const FILTER_CATEGORIES = [
   { id: 'all', label: 'All Templates', tags: [] },
@@ -32,8 +32,6 @@ export default function TemplateFilterBar({
   onFilterChange,
   templateCounts,
 }: TemplateFilterBarProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
   const handleFilterClick = useCallback(
     (filterId: string) => {
       onFilterChange(filterId);
@@ -55,7 +53,6 @@ export default function TemplateFilterBar({
 
       {/* Scrollable container */}
       <div
-        ref={scrollRef}
         role="toolbar"
         aria-label="Filter templates by category"
         className="flex gap-2.5 overflow-x-auto px-2 py-1 sm:flex-wrap sm:justify-center sm:overflow-x-visible sm:px-0 scrollbar-hide"
@@ -71,7 +68,6 @@ export default function TemplateFilterBar({
             <button
               key={category.id}
               type="button"
-              role="button"
               aria-pressed={isActive}
               onClick={() => handleFilterClick(category.id)}
               className={`
@@ -103,11 +99,6 @@ export default function TemplateFilterBar({
         })}
       </div>
 
-      {/* Hide scrollbar via inline style as fallback */}
-      <style>{`
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
     </div>
   );
 }

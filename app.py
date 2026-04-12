@@ -1763,7 +1763,7 @@ def get_templates():
                 id=t.id,
                 name=t.name,
                 description=t.description,
-                image_url=f"{cdn_base}/{Path(t.preview).stem}.webp",
+                image_url=f"{cdn_base}/{Path(t.preview).stem}.webp" if t.preview else f"{cdn_base}/modern-no-icons.webp",
                 supports_icons=t.supports_icons,
                 tags=t.tags,
             ).model_dump()

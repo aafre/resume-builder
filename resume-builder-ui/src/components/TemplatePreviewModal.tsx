@@ -145,7 +145,7 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
       document.body.style.overflow = '';
       previousFocusRef.current?.focus();
       onClose();
-    }, 250);
+    }, 300);
   }, [onClose]);
 
   /* ---------------------------------------------------------------- */
@@ -274,17 +274,6 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
 
   const modal = (
     <>
-      {/* Scoped keyframe for image cross-fade */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes tpm-fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        .tpm-img-fade {
-          animation: tpm-fade-in 0.3s ease-out;
-        }
-      `}} />
-
       <div
         data-state={animState}
         className={`
