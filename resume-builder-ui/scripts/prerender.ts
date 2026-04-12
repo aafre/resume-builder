@@ -212,17 +212,22 @@ async function prerender() {
       const url = `http://localhost:${port}${route}`;
       console.log(`  Rendering: ${route}`);
 
-      // Navigate and wait for network to be idle (React hydration complete)
+      // Navigate and wait for initial load. Using 'load' instead of 'networkidle'
+      // because external requests are blocked by context.route() — aborted/fulfilled
+      // requests can prevent the 500ms idle window from ever opening, especially on
+      // image-heavy pages (/examples/*) in resource-constrained CI environments.
+      // React hydration is verified by waitForSelector('#root > *') below.
       await page.goto(url, {
-        waitUntil: 'networkidle',
+        waitUntil: 'load',
         timeout: 30000,
       });
 
       // Wait for React root to have content (not just the app shell)
       await page.waitForSelector('#root > *', { timeout: 10000 });
 
-      // Small delay for any remaining async rendering
-      await page.waitForTimeout(500);
+      // Wait for async data fetching and rendering (YAML loads, image placeholders).
+      // Longer than the old 500ms since we no longer wait for networkidle.
+      await page.waitForTimeout(1500);
 
       // Get the full rendered HTML
       let html = await page.content();
