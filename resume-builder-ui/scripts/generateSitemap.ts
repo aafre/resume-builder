@@ -198,9 +198,8 @@ function writeSitemap(): void {
       locations.push(distSitemapPath);
     }
 
-    const totalUrls = STATIC_URLS.length + JOBS.length + JOB_EXAMPLES.length + BLOG_POSTS.length;
     console.log(`✅ Sitemap generated successfully!`);
-    console.log(`   📄 Total URLs: ${totalUrls} (${STATIC_URLS.length} static + ${JOBS.length} keyword pages + ${JOB_EXAMPLES.length} example pages + ${BLOG_POSTS.length} blog posts)`);
+    console.log(`   📄 Total URLs: ${urls.size} (${STATIC_URLS.length} static + ${JOBS.length} keyword pages + ${JOB_EXAMPLES.length} example pages + ${BLOG_POSTS.length} blog posts, deduplicated)`);
     console.log(`   📍 Locations: ${locations.join(', ')}`);
   } catch (error) {
     console.error('❌ Error generating sitemap:', error);

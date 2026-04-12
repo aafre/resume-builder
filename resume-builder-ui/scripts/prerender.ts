@@ -254,31 +254,31 @@ async function prerender() {
     'base64'
   );
 
+  // Block external network requests during prerender.
+  // All page content comes from local dist/ assets (JS, CSS, YAML).
+  // External CDN images get a transparent pixel so onError handlers don't
+  // mutate img.src — preserving correct CDN URLs in the prerendered HTML.
+  // Auth/analytics requests are aborted (they fail gracefully in AuthContext).
+  await context.route(
+    (url) => url.hostname !== 'localhost' && url.hostname !== '127.0.0.1',
+    (route) => {
+      if (route.request().resourceType() === 'image') {
+        route.fulfill({
+          status: 200,
+          contentType: 'image/png',
+          body: TRANSPARENT_1PX_PNG,
+        });
+      } else {
+        route.abort();
+      }
+    }
+  );
+
   let successCount = 0;
   let failCount = 0;
 
   for (const route of ROUTES_TO_PRERENDER) {
     const page = await context.newPage();
-
-    // Block external network requests during prerender.
-    // All page content comes from local dist/ assets (JS, CSS, YAML).
-    // External CDN images get a transparent pixel so onError handlers don't
-    // mutate img.src — preserving correct CDN URLs in the prerendered HTML.
-    // Auth/analytics requests are aborted (they fail gracefully in AuthContext).
-    await page.route(
-      (url) => url.hostname !== 'localhost',
-      (route) => {
-        if (route.request().resourceType() === 'image') {
-          route.fulfill({
-            status: 200,
-            contentType: 'image/png',
-            body: TRANSPARENT_1PX_PNG,
-          });
-        } else {
-          route.abort();
-        }
-      }
-    );
 
     try {
       const url = `http://localhost:${port}${route}`;
