@@ -11,6 +11,7 @@ import FAQSection from '../shared/FAQSection';
 import DownloadCTA from '../shared/DownloadCTA';
 import RevealSection from '../shared/RevealSection';
 import TemplateCarousel from '../TemplateCarousel';
+import JobExamplesSection from '../JobExamplesSection';
 import { InContentAd, AD_CONFIG } from '../ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
 import { SEO_PAGES } from '../../config/seoPages';
@@ -37,6 +38,8 @@ export default function TemplatesPage() {
       </section>
 
       <InContentAd adSlot={AD_CONFIG.slots.templatesIncontent} marginY={32} />
+
+      <JobExamplesSection />
 
       {/* Why Our Templates Section */}
       <RevealSection variant="fade-up">

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ contact_info.name }}'s Resume</title>
+
+    {# Fonts bundled in Docker — no external download needed #}
+    {% set bundled_fonts = ['EB Garamond', 'Source Serif 4', 'Crimson Pro', 'Newsreader',
+                            'IBM Plex Sans', 'Source Sans 3', 'DM Sans',
+                            'Plus Jakarta Sans', 'Playfair Display'] %}
+    {% set system_fonts = ['Arial', 'Helvetica', 'Calibri', 'Georgia', 'Tahoma',
+                           'Times New Roman', 'Verdana', 'Trebuchet MS', 'Cambria'] %}
+    {% set local_fonts = bundled_fonts + system_fonts %}
+    {% if font and font not in local_fonts %}
+        <link href="https://fonts.googleapis.com/css?family={{ font | replace(' ', '+') }}&display=swap" rel="stylesheet">
+    {% endif %}
+
+    <link rel="stylesheet" href="{{ css_path }}">
+
+    {# Font override AFTER the stylesheet so it wins the cascade.
+       - Bundled fonts (EB Garamond, IBM Plex Sans, etc.) are installed in the
+         Docker image and resolved directly by fontconfig.
+       - System fonts (Arial, Calibri, etc.) need a Liberation fallback for
+         Linux/Docker where the Microsoft originals are not available. #}
+    {% set font_val = font | default("Source Sans 3") %}
+    {% set liberation_map = {
+        'Times New Roman': 'Liberation Serif',
+        'Georgia':         'Liberation Serif',
+        'Cambria':         'Liberation Serif',
+        'Arial':           'Liberation Sans',
+        'Helvetica':       'Liberation Sans',
+        'Calibri':         'Liberation Sans',
+        'Verdana':         'Liberation Sans',
+        'Tahoma':          'Liberation Sans',
+        'Trebuchet MS':    'Liberation Sans',
+    } %}
+    {% set lib_font = liberation_map.get(font_val, '') %}
+    {% set serif_fonts = ['Times New Roman', 'Georgia', 'Cambria', 'Garamond',
+                          'EB Garamond', 'Source Serif 4', 'Crimson Pro',
+                          'Newsreader', 'Playfair Display',
+                          'Liberation Serif', 'DejaVu Serif'] %}
+    {% if font_val in serif_fonts or 'Serif' in font_val %}
+        {% set generic = 'serif' %}
+    {% else %}
+        {% set generic = 'sans-serif' %}
+    {% endif %}
+    <style>
+        body {
+            font-family: '{{ font_val }}'{% if lib_font %}, '{{ lib_font }}'{% endif %}, {{ generic }};
+        }
+    </style>
+
+    {% set accent = settings.accent_color | default('#2D3436') if settings else '#2D3436' %}
+    {% if accent != '#2D3436' %}
+    <style>
+        .section-heading { color: {{ accent }}; border-bottom-color: {{ accent }}; }
+    </style>
+    {% endif %}
+</head>
+<body>
+    {% set bicon = icon_path | replace('/icons', '/icons/black') if '/icons' in icon_path else icon_path %}
+    <h1 class="name">{{ contact_info.name }}</h1>
+    <p class="contact-line">
+        <img src="{{ bicon }}/location.png" alt="" class="contact-icon"> {{ contact_info.location }}
+        {% if contact_info.email %} <span class="sep">|</span> <img src="{{ bicon }}/email.png" alt="" class="contact-icon"> {{ contact_info.email }}{% endif %}
+        {% if contact_info.phone %} <span class="sep">|</span> <img src="{{ bicon }}/phone.png" alt="" class="contact-icon"> {{ contact_info.phone }}{% endif %}
+        {% if contact_info.social_links %}
+            {% for social_link in contact_info.social_links %}
+                {% if social_link.url and social_link.url.strip() and social_link.platform %}
+                    <span class="sep">|</span> <img src="{{ bicon }}/{{ social_link.platform }}.png" alt="" class="contact-icon"> <a href="{{ social_link.url }}">{{ social_link.display_text or social_link.handle or social_link.platform | capitalize }}</a>
+                {% endif %}
+            {% endfor %}
+        {% elif contact_info.linkedin and contact_info.linkedin.strip() %}
+            <span class="sep">|</span> <img src="{{ bicon }}/linkedin.png" alt="" class="contact-icon"> <a href="{{ contact_info.linkedin }}">{{ contact_info.linkedin_display or contact_info.linkedin_handle }}</a>
+        {% endif %}
+    </p>
+    <hr class="header-rule">
+
+    {% for section in sections %}
+        {% if section.type == "text" %}
+            {% include 'text.html' %}
+        {% elif section.type == "bulleted-list" %}
+            {% include 'bulleted-list.html' %}
+        {% elif section.type == "inline-list" %}
+            {% include 'inline-list.html' %}
+        {% elif section.type == "icon-list" %}
+            {% include 'bulleted-list.html' %}
+        {% elif section.type == "dynamic-column-list" %}
+            {% include 'dynamic-column-list.html' %}
+        {% elif section.type == "grouped-list" %}
+            {% include 'grouped-list.html' %}
+        {% elif section.type == "experience" or section.name == "Experience" %}
+            {% include 'experience.html' %}
+        {% elif section.type == "education" or section.name == "Education" %}
+            {% include 'education.html' %}
+        {% endif %}
+    {% endfor %}
+</body>
+</html>

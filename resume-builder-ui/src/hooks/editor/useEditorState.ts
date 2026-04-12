@@ -1,7 +1,7 @@
 // src/hooks/editor/useEditorState.ts
 
 import { useState, useCallback, useMemo, Dispatch, SetStateAction } from 'react';
-import type { ContactInfo, Section } from '../../types';
+import type { ContactInfo, Section, DocumentSettings } from '../../types';
 
 /**
  * Type representing the original template data used for reset functionality.
@@ -25,6 +25,9 @@ export interface UseEditorStateReturn {
   supportsIcons: boolean;
   originalTemplateData: OriginalTemplateData | null;
 
+  // Document settings (accent colour, font, page numbers)
+  documentSettings: DocumentSettings;
+
   // Loading states
   loading: boolean;
   loadingError: string | null;
@@ -35,6 +38,7 @@ export interface UseEditorStateReturn {
   setTemplateId: Dispatch<SetStateAction<string | null>>;
   setSupportsIcons: Dispatch<SetStateAction<boolean>>;
   setOriginalTemplateData: Dispatch<SetStateAction<OriginalTemplateData | null>>;
+  setDocumentSettings: Dispatch<SetStateAction<DocumentSettings>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
   setLoadingError: Dispatch<SetStateAction<string | null>>;
 
@@ -59,6 +63,9 @@ export const useEditorState = (): UseEditorStateReturn => {
   // Template metadata state
   const [supportsIcons, setSupportsIcons] = useState(false);
   const [originalTemplateData, setOriginalTemplateData] = useState<OriginalTemplateData | null>(null);
+
+  // Document settings (accent colour, font, page numbers)
+  const [documentSettings, setDocumentSettings] = useState<DocumentSettings>({});
 
   // Loading states
   const [loading, setLoading] = useState(true);
@@ -99,6 +106,9 @@ export const useEditorState = (): UseEditorStateReturn => {
       supportsIcons,
       originalTemplateData,
 
+      // Document settings
+      documentSettings,
+
       // Loading states
       loading,
       loadingError,
@@ -109,6 +119,7 @@ export const useEditorState = (): UseEditorStateReturn => {
       setTemplateId,
       setSupportsIcons,
       setOriginalTemplateData,
+      setDocumentSettings,
       setLoading,
       setLoadingError,
 
@@ -121,6 +132,7 @@ export const useEditorState = (): UseEditorStateReturn => {
       templateId,
       supportsIcons,
       originalTemplateData,
+      documentSettings,
       loading,
       loadingError,
     ]

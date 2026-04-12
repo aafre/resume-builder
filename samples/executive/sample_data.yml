@@ -1,0 +1,108 @@
+font: EB Garamond
+
+settings:
+  show_page_numbers: true
+  accent_color: "#1B2838"
+
+contact_info:
+  name: Richard Thornton
+  location: "New York, NY"
+  email: richard.thornton@email.com
+  phone: "+1 (212) 555-0198"
+  social_links:
+    - platform: linkedin
+      url: https://linkedin.com/in/richard-thornton
+      display_text: Richard Thornton
+
+sections:
+  - name: Executive Summary
+    type: text
+    content: "Visionary technology leader with 15+ years of experience driving digital transformation across financial services and enterprise software. Built and scaled engineering organizations from 10 to 200+ engineers, delivered platforms processing $50B+ in annual transaction volume, and led cloud migration programs saving $8M+ annually. Proven ability to align technology strategy with business objectives, navigate complex stakeholder landscapes, and build high-performing teams."
+
+  - name: Key Achievements
+    type: bulleted-list
+    content:
+      - "Scaled engineering organization from 12 to 200+ engineers across 4 global offices, maintaining <10% attrition"
+      - "Led $50M cloud migration program, reducing infrastructure costs by 40% ($8M annual savings)"
+      - "Architected real-time payment platform processing $50B+ annually with 99.999% uptime"
+      - "Drove company IPO preparation — built SOC 2 compliance program and engineering due diligence process"
+
+  - name: Professional Experience
+    type: experience
+    content:
+      - company: "FinanceOS Inc."
+        title: "Chief Technology Officer"
+        dates: "Jan 2021 – Present"
+        description:
+          - "Set technology vision and roadmap for B2B fintech platform serving 2,000+ enterprise clients"
+          - "Built engineering organization from 45 to 200+ across New York, London, and Bangalore"
+          - "Led migration from on-premise infrastructure to AWS, reducing costs by $8M annually"
+          - "Established platform engineering team, reducing developer onboarding time from 3 weeks to 2 days"
+          - "Drove adoption of event-driven architecture, improving system throughput by 300%"
+
+      - company: "JPMorgan Chase"
+        title: "Vice President — Software Engineering"
+        dates: "Mar 2017 – Dec 2020"
+        description:
+          - "Led 80-engineer division responsible for institutional trading platform processing $20B daily"
+          - "Architected real-time risk calculation engine reducing computation time from 45 minutes to 90 seconds"
+          - "Implemented CI/CD pipeline across 200+ microservices, increasing deployment frequency by 500%"
+          - "Championed adoption of Kubernetes across the division, standardizing container orchestration"
+
+      - company: "Goldman Sachs"
+        title: "Vice President — Technology"
+        dates: "Jun 2013 – Feb 2017"
+        description:
+          - "Managed team of 35 engineers building next-generation fixed income trading platform"
+          - "Designed low-latency order management system handling 500K+ orders per second"
+          - "Led migration from Sybase to PostgreSQL, reducing database licensing costs by $3M annually"
+
+      - company: "Bloomberg LP"
+        title: "Senior Software Engineer"
+        dates: "Aug 2010 – May 2013"
+        description:
+          - "Built real-time market data distribution system serving 325,000+ terminal users globally"
+          - "Optimized message serialization layer, reducing network bandwidth by 35%"
+
+      - company: "Accenture"
+        title: "Technology Consultant"
+        dates: "Jul 2008 – Jul 2010"
+        description:
+          - "Delivered technology transformation projects for 3 Fortune 500 financial services clients"
+          - "Led development of automated regulatory reporting system for major UK bank"
+
+  - name: Education
+    type: education
+    content:
+      - degree: "Master of Science in Computer Science"
+        school: "Columbia University"
+        year: "2008"
+      - degree: "Bachelor of Science in Computer Engineering"
+        school: "University of Michigan"
+        year: "2006"
+
+  - name: Technical Skills
+    type: grouped-list
+    content:
+      - label: "Languages"
+        items: ["Java", "Python", "Go", "C++", "Scala"]
+      - label: "Cloud & Infrastructure"
+        items: ["AWS", "Kubernetes", "Terraform", "Docker", "Kafka"]
+      - label: "Databases"
+        items: ["PostgreSQL", "DynamoDB", "Redis", "Elasticsearch"]
+      - label: "Practices"
+        items: ["Microservices", "Event-Driven Architecture", "Domain-Driven Design", "SRE"]
+
+  - name: Board & Advisory
+    type: bulleted-list
+    content:
+      - "Advisory Board Member, FinTech Innovation Lab (2022 – Present)"
+      - "Board Advisor, AI-First Capital (2023 – Present)"
+      - "Mentor, Techstars NYC Program (2019 – Present)"
+
+  - name: Speaking & Publications
+    type: bulleted-list
+    content:
+      - "QCon London 2024 — 'Building Antifragile Systems in Financial Services'"
+      - "AWS re:Invent 2023 — 'Cloud Migration at Scale: Lessons from Wall Street'"
+      - "O'Reilly Author — 'Distributed Systems Patterns for Financial Applications' (2022)"

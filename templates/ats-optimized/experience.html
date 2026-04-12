@@ -1,0 +1,21 @@
+<div class="section">
+    <h2 class="section-heading">{{ section.name }}</h2>
+    {% for job in section.content %}
+        <div class="experience-item">
+            <div class="job-header">
+                <span class="job-title">{{ job.title | markdown_links | markdown_formatting | safe }}</span>
+                <span class="job-dates">{{ job.dates | markdown_links | markdown_formatting | safe }}</span>
+            </div>
+            {% if job.company %}
+                <p class="job-company">{{ job.company | markdown_links | markdown_formatting | safe }}</p>
+            {% endif %}
+            {% if job.description %}
+            <ul>
+                {% for bullet in job.description %}
+                    <li>{{ bullet | markdown_links | markdown_formatting | safe }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>

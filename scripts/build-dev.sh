@@ -20,6 +20,7 @@ VITE_ENABLE_EXPLICIT_ADS="${VITE_ENABLE_EXPLICIT_ADS:-true}"
 VITE_AFFILIATE_JOB_SEARCH_ENABLED="${VITE_AFFILIATE_JOB_SEARCH_ENABLED:-false}"
 VITE_AFFILIATE_RESUME_REVIEW_ENABLED="${VITE_AFFILIATE_RESUME_REVIEW_ENABLED:-false}"
 VITE_AFFILIATE_RESUME_REVIEW_URL="${VITE_AFFILIATE_RESUME_REVIEW_URL:-}"
+VITE_APP_VERSION="${VITE_APP_VERSION:-dev-$(git rev-parse --short HEAD)}"
 
 # Registry
 REGISTRY="europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder"
@@ -32,8 +33,10 @@ echo "  VITE_SUPABASE_URL: $VITE_SUPABASE_URL"
 echo "  VITE_ENABLE_EXPLICIT_ADS: $VITE_ENABLE_EXPLICIT_ADS"
 echo "  VITE_AFFILIATE_JOB_SEARCH_ENABLED: $VITE_AFFILIATE_JOB_SEARCH_ENABLED"
 echo "  VITE_AFFILIATE_RESUME_REVIEW_ENABLED: $VITE_AFFILIATE_RESUME_REVIEW_ENABLED"
+echo "  VITE_APP_VERSION: $VITE_APP_VERSION"
+if [ -n "$VITE_POSTHOG_KEY" ]; then echo "  VITE_POSTHOG_KEY: ${VITE_POSTHOG_KEY:0:8}..."; else echo "  VITE_POSTHOG_KEY: (not set)"; fi
 
-docker build  --no-cache \
+docker build \
   --build-arg VITE_SUPABASE_URL="$VITE_SUPABASE_URL" \
   --build-arg VITE_SUPABASE_PUBLISHABLE_KEY="$VITE_SUPABASE_PUBLISHABLE_KEY" \
   --build-arg VITE_APP_URL="$VITE_APP_URL" \
@@ -41,6 +44,8 @@ docker build  --no-cache \
   --build-arg VITE_AFFILIATE_JOB_SEARCH_ENABLED="$VITE_AFFILIATE_JOB_SEARCH_ENABLED" \
   --build-arg VITE_AFFILIATE_RESUME_REVIEW_ENABLED="$VITE_AFFILIATE_RESUME_REVIEW_ENABLED" \
   --build-arg VITE_AFFILIATE_RESUME_REVIEW_URL="$VITE_AFFILIATE_RESUME_REVIEW_URL" \
+  --build-arg VITE_APP_VERSION="$VITE_APP_VERSION" \
+  --build-arg VITE_POSTHOG_KEY="$VITE_POSTHOG_KEY" \
   -t "$IMAGE_NAME:$TAG" \
   .
 
@@ -49,6 +54,17 @@ docker tag "$IMAGE_NAME:$TAG" "$REGISTRY/$IMAGE_NAME:$TAG"
 
 echo ""
 echo "Build complete!"
+echo ""
+
+# Verify build freshness — confirms code changes were picked up
+echo "Verifying build freshness..."
+BAKED=$(docker run --rm "$IMAGE_NAME:$TAG" cat /app/static/.build-version)
+echo "  Baked version : $BAKED"
+echo "  Expected      : $VITE_APP_VERSION"
+if [ "$BAKED" != "$VITE_APP_VERSION" ]; then
+  echo "WARNING: Version mismatch — build may have used stale cache. Re-run with: docker build --no-cache ..."
+fi
+echo ""
 echo "To push: docker push $REGISTRY/$IMAGE_NAME:$TAG"
 echo ""
 echo "To test locally:"
@@ -58,3 +74,6 @@ echo "    -e SUPABASE_SECRET_KEY=$SUPABASE_SECRET_KEY \\"
 echo "    -e ADZUNA_APP_ID=\$ADZUNA_APP_ID \\"
 echo "    -e ADZUNA_APP_KEY=\$ADZUNA_APP_KEY \\"
 echo "    $IMAGE_NAME:$TAG"
+echo ""
+echo "If cache seems stale, re-run with: docker build --no-cache ..."
+echo "To clear all build cache: docker builder prune"

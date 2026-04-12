@@ -4,9 +4,10 @@ import BlogLayout from '../BlogLayout';
 export default function BestFreeResumeBuilders2026() {
   return (
     <BlogLayout
-      title="9 Best Free Resume Builders in 2026 (Honestly Reviewed)"
-      description="We tested 9 free resume builders so you don't have to. Real pricing, actual free tiers, ATS compatibility, and export formats — no affiliate bias."
+      title="9 Best Free Resume Builders in 2026 (We Tested Every One)"
+      description="We built the same resume on 9 'free' builders and documented what actually costs money. See which ones are truly free to download as PDF, no paywall."
       publishDate="2026-03-05"
+      lastUpdated="2026-04-11"
       readTime="14 min"
       keywords={[
         'best free resume builder',

@@ -13,6 +13,7 @@ import { toast } from 'react-hot-toast';
 import { useThumbnailRefresh } from '../hooks/useThumbnailRefresh';
 import { useResumes } from '../hooks/useResumes';
 import { useAuth } from '../contexts/AuthContext';
+import { trackPdfDownloaded } from '../lib/analytics';
 import { usePreview } from '../hooks/usePreview';
 import { InContentAd, AD_CONFIG } from '../components/ads';
 
@@ -227,6 +228,8 @@ export default function MyResumes() {
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
 
+        const resume = resumes.find(r => r.id === id);
+        trackPdfDownloaded({ template_id: resume?.template_id || 'unknown', source: 'my_resumes' });
         toast.success('Resume downloaded successfully');
       } catch (err) {
         console.error('Error downloading resume:', err);

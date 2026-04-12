@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { ContactInfo, Section, SaveStatus } from '../types';
+import { ContactInfo, Section, SaveStatus, DocumentSettings } from '../types';
 import { apiClient, ApiError, AuthError } from '../lib/api-client';
 
 interface ResumeData {
   contact_info: ContactInfo;
   sections: Section[];
   template_id: string;
+  settings?: DocumentSettings;
 }
 
 interface IconRegistry {
@@ -165,6 +166,7 @@ export function useCloudSave({
         template_id: resumeData.template_id,
         contact_info: resumeData.contact_info,
         sections: resumeData.sections,
+        settings: resumeData.settings || {},
         icons: iconsArray
       };
 
@@ -249,6 +251,7 @@ export function useCloudSave({
     const currentData = JSON.stringify({
       contact_info: resumeData.contact_info,
       sections: resumeData.sections,
+      settings: resumeData.settings || {},
       iconMetadata  // Use metadata (filename + size) instead of just filenames
     });
 

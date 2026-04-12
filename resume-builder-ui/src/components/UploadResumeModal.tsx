@@ -88,18 +88,24 @@ export function UploadResumeModal({
 
   const modalContent = (
     <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
+      <div
+        className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="upload-modal-title"
+      >
         {/* Header */}
         <div className="bg-ink px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 p-2 rounded-lg">
               <DocumentArrowUpIcon className="w-6 h-6 text-white" />
             </div>
-            <h2 className="text-xl font-bold text-white">Upload Resume</h2>
+            <h2 id="upload-modal-title" className="text-xl font-bold text-white">Upload Resume</h2>
           </div>
           <button
             onClick={handleCloseModal}
-            className="text-white/80 hover:text-white transition-colors"
+            aria-label="Close upload modal"
+            className="text-white/80 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
           >
             <XMarkIcon className="w-6 h-6" />
           </button>
@@ -208,12 +214,12 @@ export function UploadResumeModal({
                 accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 onChange={handleFileInput}
                 disabled={parsing}
-                className="hidden"
+                className="sr-only peer"
                 id="resume-file-input"
               />
               <label
                 htmlFor="resume-file-input"
-                className="btn-primary inline-flex items-center gap-2 px-6 py-3 cursor-pointer disabled:opacity-50"
+                className="btn-primary inline-flex items-center gap-2 px-6 py-3 cursor-pointer disabled:opacity-50 peer-focus-visible:ring-2 peer-focus-visible:ring-accent peer-focus-visible:ring-offset-2"
               >
                 <DocumentArrowUpIcon className="w-5 h-5" />
                 {parsing ? 'Parsing...' : 'Choose File'}
@@ -245,11 +251,14 @@ export function UploadResumeModal({
           <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
             <button
               onClick={handleCloseModal}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Cancel
             </button>
-            <button onClick={handleContinue} className="btn-primary px-6 py-2">
+            <button
+              onClick={handleContinue}
+              className="btn-primary px-6 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            >
               Continue to Editor
             </button>
           </div>

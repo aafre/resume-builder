@@ -18,10 +18,18 @@ export interface ContactInfo {
   social_links?: SocialLink[]; // New: array of social media links
 }
 
+// Document-level settings (accent colour, page numbers, font).
+export interface DocumentSettings {
+  accent_color?: string;
+  show_page_numbers?: boolean;
+  font_family?: string;
+}
+
 // The overall resume template object.
 export interface ResumeTemplate {
   template?: string;
   font?: string;
+  settings?: DocumentSettings;
   contact_info: ContactInfo;
   sections: Section[];
 }
@@ -58,6 +66,17 @@ export interface InlineListSection extends SectionBase {
 export interface DynamicColumnListSection extends SectionBase {
   type: "dynamic-column-list";
   content: string[];
+}
+
+// Grouped list section (e.g., categorized skills with bold labels).
+export interface GroupedListItem {
+  label: string;
+  items: string[];
+}
+
+export interface GroupedListSection extends SectionBase {
+  type: "grouped-list";
+  content: GroupedListItem[];
 }
 
 // Icon list section (e.g. Certifications).
@@ -98,6 +117,8 @@ export interface EducationItem {
   school: string;
   year: string;
   field_of_study?: string;
+  gpa?: string;
+  coursework?: string[];
   icon?: string;
 }
 
@@ -112,6 +133,7 @@ export type Section =
   | BulletedListSection
   | InlineListSection
   | DynamicColumnListSection
+  | GroupedListSection
   | IconListSection
   | ExperienceSection
   | EducationSection

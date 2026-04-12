@@ -3,6 +3,14 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import tailwindcss from "tailwindcss";
 import viteCompression from 'vite-plugin-compression';
+import { execSync } from 'child_process';
+
+let gitHash = 'unknown';
+try {
+  gitHash = execSync('git rev-parse --short HEAD').toString().trim();
+} catch {
+  // git not available (e.g., Docker build stage)
+}
 
 export default defineConfig({
   plugins: [
@@ -39,6 +47,9 @@ export default defineConfig({
         }
       }
     }
+  },
+  define: {
+    __GIT_HASH__: JSON.stringify(gitHash),
   },
   optimizeDeps: {
     exclude: ['@huggingface/transformers'],

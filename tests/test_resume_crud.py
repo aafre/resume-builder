@@ -116,6 +116,97 @@ class TestCreateResume:
         resume_data = insert_call[0][0]
         assert resume_data['contact_info']['name'] == ''
 
+    def test_create_resume_empty_grouped_list_gets_array_not_string(self, flask_test_client, auth_headers):
+        """Verify grouped-list sections get content: [] (not '') when load_example=False."""
+        client, mock_sb, _ = flask_test_client
+
+        mock_user = MagicMock()
+        mock_user.id = TEST_USER_ID
+        mock_sb.auth.get_user.return_value = MagicMock(user=mock_user)
+
+        mock_sb.table.return_value.execute.side_effect = [
+            create_mock_response([], count=0),  # check_resume_limit
+            create_mock_response([{'id': 'new-resume-id'}]),  # insert resume
+            create_mock_response([]),  # upsert preferences
+        ]
+
+        response = client.post(
+            '/api/resumes/create',
+            json={'template_id': 'executive', 'load_example': False},
+            headers=auth_headers
+        )
+
+        assert response.status_code == 201
+
+        insert_call = mock_sb.table.return_value.insert.call_args
+        resume_data = insert_call[0][0]
+
+        # Find the grouped-list section (Technical Skills in executive template)
+        grouped_sections = [s for s in resume_data['sections'] if s['type'] == 'grouped-list']
+        assert len(grouped_sections) > 0, "Executive template should have a grouped-list section"
+        for section in grouped_sections:
+            assert section['content'] == [], (
+                f"grouped-list section '{section['name']}' should have content: [] "
+                f"but got content: {section['content']!r}"
+            )
+
+    def test_create_resume_persists_template_settings(self, flask_test_client, auth_headers):
+        """Verify settings (accent_color, show_page_numbers) are persisted from template."""
+        client, mock_sb, _ = flask_test_client
+
+        mock_user = MagicMock()
+        mock_user.id = TEST_USER_ID
+        mock_sb.auth.get_user.return_value = MagicMock(user=mock_user)
+
+        mock_sb.table.return_value.execute.side_effect = [
+            create_mock_response([], count=0),  # check_resume_limit
+            create_mock_response([{'id': 'new-resume-id'}]),  # insert resume
+            create_mock_response([]),  # upsert preferences
+        ]
+
+        response = client.post(
+            '/api/resumes/create',
+            json={'template_id': 'executive', 'load_example': True},
+            headers=auth_headers
+        )
+
+        assert response.status_code == 201
+
+        insert_call = mock_sb.table.return_value.insert.call_args
+        resume_data = insert_call[0][0]
+
+        assert 'settings' in resume_data, "Resume should include settings from template"
+        assert resume_data['settings'].get('accent_color') == '#1B2838'
+        assert resume_data['settings'].get('show_page_numbers') is True
+
+    def test_create_resume_settings_empty_for_template_without_settings(self, flask_test_client, auth_headers):
+        """Verify settings defaults to {} for templates without settings in YAML."""
+        client, mock_sb, _ = flask_test_client
+
+        mock_user = MagicMock()
+        mock_user.id = TEST_USER_ID
+        mock_sb.auth.get_user.return_value = MagicMock(user=mock_user)
+
+        mock_sb.table.return_value.execute.side_effect = [
+            create_mock_response([], count=0),  # check_resume_limit
+            create_mock_response([{'id': 'new-resume-id'}]),  # insert resume
+            create_mock_response([]),  # upsert preferences
+        ]
+
+        response = client.post(
+            '/api/resumes/create',
+            json={'template_id': 'modern-with-icons', 'load_example': True},
+            headers=auth_headers
+        )
+
+        assert response.status_code == 201
+
+        insert_call = mock_sb.table.return_value.insert.call_args
+        resume_data = insert_call[0][0]
+
+        assert 'settings' in resume_data
+        assert resume_data['settings'] == {}
+
     def test_create_resume_updates_last_edited_preference(self, flask_test_client, auth_headers):
         """Verify creating resume updates user's last_edited_resume_id preference."""
         client, mock_sb, _ = flask_test_client

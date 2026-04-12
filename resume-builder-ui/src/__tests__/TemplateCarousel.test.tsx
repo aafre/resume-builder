@@ -75,22 +75,22 @@ describe('TemplateCarousel', () => {
       </MemoryRouter>
     );
 
-    // Wait for templates to load
+    // Wait for templates to load (TemplateCard uses "{name} resume template preview" as alt)
     await waitFor(() => {
-      expect(screen.getByAltText('Template 1')).toBeInTheDocument();
+      expect(screen.getByAltText('Template 1 resume template preview')).toBeInTheDocument();
     });
 
-    const img1 = screen.getByAltText('Template 1');
-    const img2 = screen.getByAltText('Template 2');
-    const img3 = screen.getByAltText('Template 3');
-    const img4 = screen.getByAltText('Template 4');
+    const img1 = screen.getByAltText('Template 1 resume template preview');
+    const img2 = screen.getByAltText('Template 2 resume template preview');
+    const img3 = screen.getByAltText('Template 3 resume template preview');
+    const img4 = screen.getByAltText('Template 4 resume template preview');
 
-    // First 2 should be eager
+    // First 3 should be eager (3-column grid, above fold)
     expect(img1).toHaveAttribute('loading', 'eager');
     expect(img2).toHaveAttribute('loading', 'eager');
+    expect(img3).toHaveAttribute('loading', 'eager');
 
     // Rest should be lazy
-    expect(img3).toHaveAttribute('loading', 'lazy');
     expect(img4).toHaveAttribute('loading', 'lazy');
 
     // All should have decoding="async"

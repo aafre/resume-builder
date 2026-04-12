@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
-import { Section, IconListItem } from '../../types';
+import { Section, IconListItem, GroupedListItem } from '../../types';
 import { EditorContentIconRegistry } from './EditorContent';
 import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
 import ExperienceSection from '../ExperienceSection';
 import EducationSection from '../EducationSection';
 import GenericSection from '../GenericSection';
 import IconListSection from '../IconListSection';
+import GroupedListSection from '../GroupedListSection';
 
 interface SectionRendererProps {
   section: Section;
@@ -125,6 +126,21 @@ const SectionRenderer: React.FC<SectionRendererProps> = React.memo(({
         temporaryTitle={temporaryTitle}
         setTemporaryTitle={setTemporaryTitle}
         iconRegistry={iconRegistry}
+      />
+    );
+  } else if (section.type === 'grouped-list') {
+    return (
+      <GroupedListSection
+        sectionName={section.name}
+        groups={section.content as GroupedListItem[]}
+        onUpdate={onUpdate}
+        onTitleEdit={onTitleEdit}
+        onTitleSave={handleTitleSave}
+        onTitleCancel={handleTitleCancel}
+        onDelete={onDelete}
+        isEditing={isEditingTitle}
+        temporaryTitle={temporaryTitle}
+        setTemporaryTitle={setTemporaryTitle}
       />
     );
   } else {

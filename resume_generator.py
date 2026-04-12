@@ -165,7 +165,8 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
 
 # Generate PDF from HTML file
 def generate_pdf(
-    template_name, data, output_file, session_icons_dir=None, session_id=None
+    template_name, data, output_file, session_icons_dir=None, session_id=None,
+    pdf_options=None,
 ):
     # Set up paths using pathlib
     project_root = Path(__file__).parent.resolve()
@@ -277,6 +278,12 @@ def generate_pdf(
         contact_info["linkedin_handle"] = ""
         contact_info["linkedin_display"] = ""
 
+    # Extract document settings (accent colour, page numbers, etc.)
+    settings = data.get("settings", {})
+    if not isinstance(settings, dict):
+        settings = {}
+    logging.debug(f"Document settings: {settings}")
+
     # Render HTML with data
     logging.info(f"Rendering HTML template for: {template_name}")
 
@@ -286,7 +293,8 @@ def generate_pdf(
         sections=sections,
         icon_path=data["icon_path"],
         css_path=data["css_path"],
-        font=data.get("font", "Arial"),
+        font=settings.get("font_family") or data.get("font", "Arial"),
+        settings=settings,
     )
 
     # Ensure output directory exists
@@ -317,6 +325,25 @@ def generate_pdf(
         "load-error-handling": "abort",  # fail fast on missing assets
         "quiet": ""                      # keep stderr tidy
     }
+
+    # Merge per-template PDF options (e.g., page-size: A4 for UK CV)
+    if pdf_options:
+        options.update(pdf_options)
+
+    # Apply page number settings from YAML settings object.
+    # Note: when invoked via the renderer (app.py -> renderer.py ->
+    # _dispatch_html_pdf_generation), PDFOptions.to_pdfkit_options() already
+    # sets footer-center / footer-font-* / margin-bottom in the pdf_options
+    # dict merged above.  This block acts as a fallback for direct CLI usage
+    # (python resume_generator.py --input ...) where pdf_options may be empty.
+    if settings.get("show_page_numbers"):
+        options.setdefault("footer-center", "[page]")
+        options.setdefault("footer-font-size", "9")
+        options.setdefault("footer-font-name",
+                           settings.get("footer_font_name", "Arial"))
+        # Footer renders inside the CLI bottom margin area.  Ensure at least
+        # 20mm so the page number text is visible and not clipped.
+        options.setdefault("margin-bottom", "20mm")
 
     logging.info(f"Converting HTML file to PDF using wkhtmltopdf")
     logging.debug(f"pdfkit options: {options}")
@@ -511,6 +538,10 @@ if __name__ == "__main__":
         "--session-id",
         help="The session ID for unique temp file naming.",
     )
+    parser.add_argument(
+        "--pdf-options",
+        help="JSON string of pdfkit options (e.g., page-size, footer-center).",
+    )
 
     args = parser.parse_args()
 
@@ -518,12 +549,20 @@ if __name__ == "__main__":
         resume_data = load_resume_data(args.input)
         # Normalize sections for backward compatibility
         resume_data = normalize_sections(resume_data)
+
+        # Parse PDF options from CLI if provided
+        cli_pdf_options = None
+        if getattr(args, "pdf_options", None):
+            import json as json_mod
+            cli_pdf_options = json_mod.loads(args.pdf_options)
+
         generate_pdf(
             args.template,
             resume_data,
             args.output,
             getattr(args, "session_icons_dir", None),
             session_id=getattr(args, "session_id", None),
+            pdf_options=cli_pdf_options,
         )
     except Exception as e:
         print(f"Error: {e}")

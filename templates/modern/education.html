@@ -8,6 +8,12 @@
                 {% endif %}
                 <strong>{{ edu.degree | markdown_links | markdown_formatting | safe }}</strong>, {{ edu.school | markdown_links | markdown_formatting | safe }} - {{ edu.year | markdown_links | markdown_formatting | safe }}
             </p>
+            {% if edu.gpa %}
+                <p style="font-size: 13px; color: #555; margin: 2px 0;">GPA: {{ edu.gpa }}</p>
+            {% endif %}
+            {% if edu.coursework %}
+                <p style="font-size: 13px; color: #555; margin: 2px 0;"><strong>Relevant Coursework:</strong> {{ edu.coursework | join(', ') }}</p>
+            {% endif %}
         </div>
     {% endfor %}
 </div>

@@ -17,7 +17,12 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-2xl shadow-xl max-w-md w-full mx-4">
+      <div
+        className="bg-white rounded-2xl shadow-xl max-w-md w-full mx-4"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="storage-modal-title"
+      >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex-shrink-0">
@@ -36,7 +41,7 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Storage Full</h2>
+              <h2 id="storage-modal-title" className="text-xl font-bold text-gray-900">Storage Full</h2>
               <p className="text-sm text-gray-500 mt-1">You've reached the 5-resume limit</p>
             </div>
           </div>
@@ -49,13 +54,13 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
           <div className="flex gap-3">
             <button
               onClick={handleManageResumes}
-              className="flex-1 bg-accent hover:bg-accent/90 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 bg-accent hover:bg-accent/90 text-white font-medium py-2 px-4 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent"
             >
               Manage Resumes
             </button>
             <button
               onClick={onClose}
-              className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent"
             >
               Cancel
             </button>

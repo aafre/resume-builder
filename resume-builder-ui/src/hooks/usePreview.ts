@@ -4,7 +4,7 @@ import { getSessionId } from '../utils/session';
 import { extractReferencedIconFilenames } from '../utils/iconExtractor';
 import { apiClient } from '../lib/api-client';
 import yaml from 'js-yaml';
-import { ContactInfo, Section } from '../types';
+import { ContactInfo, Section, DocumentSettings } from '../types';
 
 interface IconRegistry {
   getIconFile: (filename: string) => File | null;
@@ -56,6 +56,7 @@ interface UsePreviewOptions {
   iconRegistry?: IconRegistry;
   processSections?: (sections: Section[]) => Section[];
   supportsIcons?: boolean;
+  documentSettings?: DocumentSettings;
 
   // MyResumes mode (database PDF)
   resumeId?: string;
@@ -90,6 +91,7 @@ export function usePreview({
   iconRegistry,
   processSections,
   supportsIcons = false,
+  documentSettings,
   resumeId,
   mode = 'live',
   session,
@@ -124,7 +126,7 @@ export function usePreview({
   // Generate simple hash of content for staleness detection
   const generateContentHash = useCallback(() => {
     if (!contactInfo) return '';
-    const contentString = JSON.stringify({ contactInfo, sections });
+    const contentString = JSON.stringify({ contactInfo, sections, documentSettings });
     // Simple hash: sum of char codes (fast, not cryptographic)
     let hash = 0;
     for (let i = 0; i < contentString.length; i++) {
@@ -132,7 +134,7 @@ export function usePreview({
       hash = hash & hash; // Convert to 32-bit integer
     }
     return hash.toString(36);
-  }, [contactInfo, sections]);
+  }, [contactInfo, sections, documentSettings]);
 
   // Compute current hash directly (not as state to avoid async issues)
   const currentContentHash = generateContentHash();
@@ -278,6 +280,7 @@ export function usePreview({
           const yamlData = yaml.dump({
             contact_info: contactInfo,
             sections: processedSections,
+            ...(documentSettings && Object.keys(documentSettings).length > 0 && { settings: documentSettings }),
           });
 
           // Build FormData
@@ -353,6 +356,7 @@ export function usePreview({
     templateId,
     iconRegistry,
     processSections,
+    documentSettings,
     resumeId,
     currentContentHash,
     session,
