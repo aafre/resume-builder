@@ -340,7 +340,7 @@ def generate_pdf(
         options.setdefault("footer-center", "[page]")
         options.setdefault("footer-font-size", "9")
         options.setdefault("footer-font-name",
-                           settings.get("footer_font", "Arial"))
+                           settings.get("footer_font_name", "Arial"))
         # Footer renders inside the CLI bottom margin area.  Ensure at least
         # 20mm so the page number text is visible and not clipped.
         options.setdefault("margin-bottom", "20mm")

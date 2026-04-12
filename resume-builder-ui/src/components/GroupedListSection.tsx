@@ -60,7 +60,7 @@ const GroupedListSection: React.FC<GroupedListSectionProps> = ({
       const updated = [...groups];
       updated[groupIndex] = {
         ...updated[groupIndex],
-        items: newItems.split(",").map((s) => s.trim()).filter(Boolean),
+        items: newItems.split(",").map((s) => s.trim()),
       };
       onUpdate(updated);
     },
@@ -98,7 +98,7 @@ const GroupedListSection: React.FC<GroupedListSectionProps> = ({
         <div className="p-4 space-y-3">
           {groups.map((group, groupIndex) => (
             <div
-              key={groupIndex}
+              key={`group-${groupIndex}`}
               className="flex gap-2 items-start group"
             >
               <div className="flex-1 space-y-1">
