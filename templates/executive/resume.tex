@@ -53,15 +53,6 @@
 
 \usepackage{fontawesome5}
 
-% Custom execbox environment using xcolor (avoids tcolorbox / texlive-latex-extra dependency)
-\newsavebox{\execboxcontent}
-\newenvironment{execbox}{%
-    \begin{lrbox}{\execboxcontent}\begin{minipage}{\dimexpr\linewidth-16pt\relax}%
-    \small\setlength{\parskip}{0.4em}%
-}{%
-    \end{minipage}\end{lrbox}%
-    \noindent\colorbox{accent!5}{\usebox{\execboxcontent}}\par
-}
 
 % ---------- fancyhdr: page 2+ header with name + page number ----------
 \usepackage{fancyhdr}
@@ -164,38 +155,18 @@
         \BLOCK{endif}
     \BLOCK{endif}
 
-    \#{ Detect executive highlight sections }
-    \BLOCK{set is_exec_summary = 'executive summary' in section.name|lower}
-    \BLOCK{set is_key_achievements = 'key achievements' in section.name|lower}
-
     \section*{\VAR{section.name}}
 
     \BLOCK{if section_type == "text"}
-        \BLOCK{if is_exec_summary}
-            \begin{execbox}
-                \VAR{section.content | markdown_links | markdown_formatting}
-            \end{execbox}\vspace{0.5em}
-        \BLOCK{else}
-            \small{\VAR{section.content | markdown_links | markdown_formatting}}\vspace{0.5em}
-        \BLOCK{endif}
+        \small{\VAR{section.content | markdown_links | markdown_formatting}}\vspace{0.5em}
 
     \BLOCK{elif section_type == "bulleted-list"}
         \BLOCK{if section.content and section.content|length > 0}
-            \BLOCK{if is_key_achievements}
-                \begin{execbox}
-                    \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
-                        \BLOCK{for item in section.content}
-                            \rbullet{\VAR{item | markdown_links | markdown_formatting}}
-                        \BLOCK{endfor}
-                    \end{itemize}
-                \end{execbox}\vspace{0.5em}
-            \BLOCK{else}
-                \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
-                    \BLOCK{for item in section.content}
-                        \rbullet{\VAR{item | markdown_links | markdown_formatting}}
-                    \BLOCK{endfor}
-                \end{itemize}\vspace{0.5em}
-            \BLOCK{endif}
+            \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
+                \BLOCK{for item in section.content}
+                    \rbullet{\VAR{item | markdown_links | markdown_formatting}}
+                \BLOCK{endfor}
+            \end{itemize}\vspace{0.5em}
         \BLOCK{endif}
 
     \BLOCK{elif section_type == "inline-list"}
