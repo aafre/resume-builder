@@ -1,0 +1,3 @@
+## 2025-04-12 - Regex Hoisting for LaTeX Escaping
+**Learning:** `_escape_latex` function is called recursively or in loops on large datasets during generation, causing the re-creation of `latex_special_chars` dictionary and re-compilation of `pattern` regex to act as a hidden performance bottleneck due to cumulative O(1) recompilation overhead.
+**Action:** When a function performs regex-based substitution, especially within recursive mapping functions or loops (like `_escape_latex` in `app.py` and `resume_generator_latex.py`), always hoist the mapping dictionaries and `re.compile()` calls to module-level constants.
