@@ -84,7 +84,8 @@ COPY --chown=appuser:appuser templates/ ./templates/
 COPY --chown=appuser:appuser samples/ ./samples/
 COPY --chown=appuser:appuser icons/ ./icons/
 COPY --chown=appuser:appuser fonts/bundled/*.ttf /usr/share/fonts/
-RUN fc-cache -f
+# Symlink texlive OpenType fonts (fontawesome5, etc.) so xdvipdfmx can find them
+RUN ln -sf /usr/share/texlive/texmf-dist/fonts/opentype /usr/share/fonts/opentype-texlive && fc-cache -f
 COPY --chown=appuser:appuser docs/templates/ ./docs/templates/
 
 # Copy built React assets from build stage
