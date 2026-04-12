@@ -1756,14 +1756,14 @@ def get_templates():
     """
     try:
         display_templates = template_registry.get_display_templates()
+        # Serve preview images from Supabase Storage CDN (WebP)
+        cdn_base = f"{SUPABASE_URL}/storage/v1/object/public/template-previews"
         templates = [
             TemplateMetadata(
                 id=t.id,
                 name=t.name,
                 description=t.description,
-                image_url=url_for(
-                    "serve_templates", filename=t.preview, _external=True
-                ),
+                image_url=f"{cdn_base}/{Path(t.preview).stem}.webp" if t.preview else f"{cdn_base}/modern-no-icons.webp",
                 supports_icons=t.supports_icons,
                 tags=t.tags,
             ).model_dump()
@@ -2209,6 +2209,7 @@ def create_resume():
         contact_info = migrate_linkedin_to_social_links(contact_info)
 
         sections = template_data.get("sections", [])
+        settings = template_data.get("settings", {})
 
         # If load_example is False, clear the content but keep the structure
         if not load_example:
@@ -2227,6 +2228,7 @@ def create_resume():
                 "bulleted-list",
                 "inline-list",
                 "dynamic-column-list",
+                "grouped-list",
                 "icon-list",
                 "experience",
                 "education",
@@ -2248,6 +2250,7 @@ def create_resume():
             "template_id": template_id,
             "contact_info": contact_info,
             "sections": sections,
+            "settings": settings,
             "json_hash": None,  # No hash yet (no data)
             "created_at": "now()",
             "updated_at": "now()",
