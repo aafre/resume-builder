@@ -1757,7 +1757,7 @@ def get_templates():
     try:
         display_templates = template_registry.get_display_templates()
         # Serve preview images from Supabase Storage CDN (WebP)
-        cdn_base = f"{SUPABASE_URL}/storage/v1/object/public/template-previews"
+        cdn_base = f"{SUPABASE_URL or ''}/storage/v1/object/public/template-previews"
         templates = [
             TemplateMetadata(
                 id=t.id,
