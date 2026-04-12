@@ -2209,6 +2209,7 @@ def create_resume():
         contact_info = migrate_linkedin_to_social_links(contact_info)
 
         sections = template_data.get("sections", [])
+        settings = template_data.get("settings", {})
 
         # If load_example is False, clear the content but keep the structure
         if not load_example:
@@ -2227,6 +2228,7 @@ def create_resume():
                 "bulleted-list",
                 "inline-list",
                 "dynamic-column-list",
+                "grouped-list",
                 "icon-list",
                 "experience",
                 "education",
@@ -2248,6 +2250,7 @@ def create_resume():
             "template_id": template_id,
             "contact_info": contact_info,
             "sections": sections,
+            "settings": settings,
             "json_hash": None,  # No hash yet (no data)
             "created_at": "now()",
             "updated_at": "now()",

@@ -6,7 +6,11 @@ interface ImportMetaEnv {
   readonly VITE_APP_URL: string;
   /** Enable explicit ad placements (in-content, in-feed, sidebar). Default: disabled */
   readonly VITE_ENABLE_EXPLICIT_ADS: string;
+  /** App version from release pipeline (e.g. "v3.21.0"). Undefined in local dev. */
+  readonly VITE_APP_VERSION?: string;
 }
+
+declare const __GIT_HASH__: string;
 
 interface ImportMeta {
   readonly env: ImportMetaEnv;

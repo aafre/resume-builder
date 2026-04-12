@@ -53,40 +53,20 @@
 
 \usepackage{fontawesome5}
 
-\usepackage[most]{tcolorbox}
-\tcbset{
-    execbox/.style={
-        colback=accent!5,
-        colframe=accent!40,
-        arc=2pt,
-        boxrule=0.5pt,
-        left=8pt,
-        right=8pt,
-        top=6pt,
-        bottom=6pt,
-        fontupper=\small,
-        before upper={\setlength{\parskip}{0.4em}},
-    }
-}
 
-% ---------- fancyhdr: page 2+ header with name + page number ----------
+% ---------- fancyhdr: centered page number on every page ----------
 \usepackage{fancyhdr}
 \fancyhf{}
-\renewcommand{\headrulewidth}{0.4pt}
-\fancyhead[R]{\small\textit{\VAR{contact_info.name}} --- Page \thepage}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{\small\thepage}
+\pagestyle{fancy}
 
-% Page 1: empty (no header/footer); page 2+: fancy
+% Page 1 uses the same style
 \fancypagestyle{firstpage}{%
     \fancyhf{}%
     \renewcommand{\headrulewidth}{0pt}%
-    % Always show page numbers for executive template
     \fancyfoot[C]{\small\thepage}%
 }
-\pagestyle{fancy}
-
-% Force page numbers on (executive template always shows them)
-% The fancyhdr styles above handle this: page 1 gets number in footer,
-% page 2+ gets name + page in header.
 
 % --- Custom Commands for Resume Elements ---
 \newcommand{\rjobtitle}[1]{%
@@ -127,7 +107,7 @@
 
 % --- Header ---
 \begin{center}
-    {\fontsize{16pt}{19pt}\selectfont\bfseries\VAR{contact_info.name}} \\
+    {\fontsize{16pt}{19pt}\selectfont\bfseries \VAR{contact_info.name}} \\
     \vspace{0.3em}
     \normalsize{%
         \faMapMarker* \enspace \VAR{contact_info.location} \enspace $\cdot$ \enspace
@@ -170,38 +150,18 @@
         \BLOCK{endif}
     \BLOCK{endif}
 
-    \#{ Detect executive highlight sections }
-    \BLOCK{set is_exec_summary = 'executive summary' in section.name|lower}
-    \BLOCK{set is_key_achievements = 'key achievements' in section.name|lower}
-
     \section*{\VAR{section.name}}
 
     \BLOCK{if section_type == "text"}
-        \BLOCK{if is_exec_summary}
-            \begin{tcolorbox}[execbox]
-                \VAR{section.content | markdown_links | markdown_formatting}
-            \end{tcolorbox}\vspace{0.5em}
-        \BLOCK{else}
-            \small{\VAR{section.content | markdown_links | markdown_formatting}}\vspace{0.5em}
-        \BLOCK{endif}
+        \small{\VAR{section.content | markdown_links | markdown_formatting}}\vspace{0.5em}
 
     \BLOCK{elif section_type == "bulleted-list"}
         \BLOCK{if section.content and section.content|length > 0}
-            \BLOCK{if is_key_achievements}
-                \begin{tcolorbox}[execbox]
-                    \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
-                        \BLOCK{for item in section.content}
-                            \rbullet{\VAR{item | markdown_links | markdown_formatting}}
-                        \BLOCK{endfor}
-                    \end{itemize}
-                \end{tcolorbox}\vspace{0.5em}
-            \BLOCK{else}
-                \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
-                    \BLOCK{for item in section.content}
-                        \rbullet{\VAR{item | markdown_links | markdown_formatting}}
-                    \BLOCK{endfor}
-                \end{itemize}\vspace{0.5em}
-            \BLOCK{endif}
+            \begin{itemize}[leftmargin=1.5em,label=\textbullet,itemsep=0.1em,parsep=0pt]
+                \BLOCK{for item in section.content}
+                    \rbullet{\VAR{item | markdown_links | markdown_formatting}}
+                \BLOCK{endfor}
+            \end{itemize}\vspace{0.5em}
         \BLOCK{endif}
 
     \BLOCK{elif section_type == "inline-list"}
