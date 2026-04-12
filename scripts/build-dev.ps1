@@ -62,7 +62,7 @@ Write-Host "  VITE_AFFILIATE_RESUME_REVIEW_ENABLED: $VITE_AFFILIATE_RESUME_REVIE
 Write-Host "  VITE_APP_VERSION: $VITE_APP_VERSION"
 Write-Host "  VITE_POSTHOG_KEY: $(if ($VITE_POSTHOG_KEY) { $VITE_POSTHOG_KEY.Substring(0,8) + '...' } else { '(not set)' })"
 
-docker build --no-cache `
+docker build `
     --build-arg VITE_SUPABASE_URL="$VITE_SUPABASE_URL" `
     --build-arg VITE_SUPABASE_PUBLISHABLE_KEY="$VITE_SUPABASE_PUBLISHABLE_KEY" `
     --build-arg VITE_APP_URL="$VITE_APP_URL" `
@@ -84,6 +84,17 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host ""
 Write-Host "Build complete!"
+Write-Host ""
+
+# Verify build freshness — confirms code changes were picked up
+Write-Host "Verifying build freshness..."
+$baked = docker run --rm "${IMAGE_NAME}:${TAG}" python -c "import os; print(os.environ.get('VITE_APP_VERSION','unknown'))"
+Write-Host "  Baked version : $baked"
+Write-Host "  Expected      : $VITE_APP_VERSION"
+if ($baked.Trim() -ne $VITE_APP_VERSION) {
+    Write-Warning "Version mismatch — build may have used stale cache. Re-run with: docker build --no-cache ..."
+}
+Write-Host ""
 Write-Host "To push: docker push ${REGISTRY}/${IMAGE_NAME}:${TAG}"
 Write-Host ""
 Write-Host "To test locally:"
@@ -93,3 +104,6 @@ Write-Host "    -e SUPABASE_SECRET_KEY=$SUPABASE_SECRET_KEY ``"
 Write-Host "    -e ADZUNA_APP_ID=`$ADZUNA_APP_ID ``"
 Write-Host "    -e ADZUNA_APP_KEY=`$ADZUNA_APP_KEY ``"
 Write-Host "    ${IMAGE_NAME}:${TAG}"
+Write-Host ""
+Write-Host "If cache seems stale, re-run with: docker build --no-cache ..."
+Write-Host "To clear all build cache: docker builder prune"
