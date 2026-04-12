@@ -7,9 +7,9 @@ COPY resume-builder-ui/package*.json ./
 RUN --mount=type=cache,target=/root/.npm \
     npm ci --prefer-offline
 
-# Playwright browser — cached unless @playwright/test version changes
-RUN --mount=type=cache,target=/root/.cache/ms-playwright \
-    npx playwright install --with-deps chromium
+# Playwright browser — cached unless @playwright/test version changes.
+# No cache mount here: the binary must persist in the layer for later RUN steps.
+RUN npx playwright install --with-deps chromium
 
 # Build args declared AFTER dependency layers so changing them
 # (e.g. VITE_APP_VERSION with git hash) doesn't bust npm/playwright cache.
