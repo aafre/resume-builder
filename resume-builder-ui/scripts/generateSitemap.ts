@@ -199,7 +199,7 @@ function writeSitemap(): void {
     }
 
     console.log(`✅ Sitemap generated successfully!`);
-    console.log(`   📄 Total URLs: ${urls.size} (${STATIC_URLS.length} static + ${JOBS.length} keyword pages + ${JOB_EXAMPLES.length} example pages + ${BLOG_POSTS.length} blog posts, deduplicated)`);
+    console.log(`   📄 Total URLs: ${STATIC_URLS.length} static + ${JOBS.length} keyword pages + ${JOB_EXAMPLES.length} example pages + ${BLOG_POSTS.length} blog posts`);
     console.log(`   📍 Locations: ${locations.join(', ')}`);
   } catch (error) {
     console.error('❌ Error generating sitemap:', error);
