@@ -70,6 +70,19 @@ export const useSaveIntegration = ({
     return iconsObj;
   }, [iconRegistry.getRegisteredFilenames().join(',')]);
 
+  // Memoize resumeData to prevent reference inequality across renders,
+  // which otherwise triggers expensive JSON.stringify operations in useCloudSave's effect
+  const resumeDataForCloudSave = useMemo(() => {
+    return contactInfo && templateId
+      ? {
+          contact_info: contactInfo,
+          sections: sections,
+          template_id: templateId,
+          settings: documentSettings,
+        }
+      : { contact_info: { name: '', location: '', email: '', phone: '' }, sections: [], template_id: '' };
+  }, [contactInfo, sections, templateId, documentSettings]);
+
   const {
     saveStatus,
     lastSaved,
@@ -77,15 +90,7 @@ export const useSaveIntegration = ({
     resumeId: savedResumeId,
   } = useCloudSave({
     resumeId: cloudResumeId,
-    resumeData:
-      contactInfo && templateId
-        ? {
-            contact_info: contactInfo,
-            sections: sections,
-            template_id: templateId,
-            settings: documentSettings,
-          }
-        : { contact_info: { name: '', location: '', email: '', phone: '' }, sections: [], template_id: '' },
+    resumeData: resumeDataForCloudSave,
     icons: iconsForCloudSave,
     enabled: !!templateId && !!contactInfo && !isLoadingFromUrl && !authLoading,
     session: session,
