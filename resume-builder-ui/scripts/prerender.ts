@@ -28,6 +28,7 @@ import { fileURLToPath } from 'url';
 import { STATIC_URLS } from '../src/data/sitemapUrls';
 import { JOBS_DATABASE } from '../src/data/jobKeywords/index';
 import { JOB_EXAMPLES_DATABASE } from '../src/data/jobExamples/index';
+import { getActiveBlogPosts } from '../src/data/blogPosts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -66,6 +67,11 @@ function buildRoutesToPrerender(): string[] {
   // Programmatic SEO: job example pages
   for (const example of JOB_EXAMPLES_DATABASE) {
     routes.add(`/examples/${example.slug}`);
+  }
+
+  // Blog posts (exclude redirects and coming-soon drafts)
+  for (const post of getActiveBlogPosts()) {
+    routes.add(`/blog/${post.slug}`);
   }
 
   return Array.from(routes);
@@ -239,6 +245,34 @@ async function prerender() {
   const context = await browser.newContext({
     userAgent: 'EasyFreeResume-Prerender/1.0',
   });
+
+  // Transparent 1×1 PNG — used to fulfill external image requests during prerender.
+  // This prevents onError handlers from mutating img.src, preserving the correct
+  // Supabase CDN URLs in the prerendered HTML for Googlebot to discover.
+  const TRANSPARENT_1PX_PNG = Buffer.from(
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+    'base64'
+  );
+
+  // Block external network requests during prerender.
+  // All page content comes from local dist/ assets (JS, CSS, YAML).
+  // External CDN images get a transparent pixel so onError handlers don't
+  // mutate img.src — preserving correct CDN URLs in the prerendered HTML.
+  // Auth/analytics requests are aborted (they fail gracefully in AuthContext).
+  await context.route(
+    (url) => url.hostname !== 'localhost' && url.hostname !== '127.0.0.1',
+    (route) => {
+      if (route.request().resourceType() === 'image') {
+        route.fulfill({
+          status: 200,
+          contentType: 'image/png',
+          body: TRANSPARENT_1PX_PNG,
+        });
+      } else {
+        route.abort();
+      }
+    }
+  );
 
   let successCount = 0;
   let failCount = 0;
