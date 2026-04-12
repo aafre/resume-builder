@@ -196,10 +196,16 @@ async function prerender() {
     }
   );
 
+  const concurrency = parseInt(process.env.PRERENDER_CONCURRENCY || '5', 10);
+  console.log(`  Concurrency: ${concurrency} page${concurrency > 1 ? 's' : ''}`);
+
   let successCount = 0;
   let failCount = 0;
 
-  for (const route of ROUTES_TO_PRERENDER) {
+  /**
+   * Render a single route: navigate, wait for hydration, extract HTML, save.
+   */
+  async function renderRoute(route: string): Promise<void> {
     const page = await context.newPage();
 
     try {
@@ -258,6 +264,20 @@ async function prerender() {
       await page.close();
     }
   }
+
+  // Process routes with a concurrency-limited worker pool.
+  // Each worker pulls the next unprocessed route from a shared index.
+  let nextIndex = 0;
+  async function worker(): Promise<void> {
+    while (nextIndex < ROUTES_TO_PRERENDER.length) {
+      const route = ROUTES_TO_PRERENDER[nextIndex++];
+      await renderRoute(route);
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, ROUTES_TO_PRERENDER.length) }, () => worker())
+  );
 
   await browser.close();
   server.close();
