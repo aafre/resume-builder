@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light">
   <meta name="supported-color-schemes" content="light">
-  <title>Sign in to EasyFreeResume</title>
+  <title>How was your experience? - EasyFreeResume</title>
   <!--[if mso]>
   <noscript>
     <xml>
@@ -35,7 +35,7 @@
       background-color: #ffffff;
     }
 
-    /* Brand crown: accent bar + ink header */
+    /* Brand crown */
     .accent-bar {
       background-color: #00d47e;
       height: 4px;
@@ -77,10 +77,28 @@
       margin: 0 0 28px 0;
     }
 
+    /* Star rating visual */
+    .stars-container {
+      text-align: center;
+      margin: 28px 0 8px 0;
+    }
+
+    .stars {
+      font-size: 36px;
+      letter-spacing: 6px;
+      color: #00d47e;
+    }
+
+    .stars-label {
+      font-size: 13px;
+      color: #8a8680;
+      margin: 8px 0 0 0;
+    }
+
     /* CTA button */
     .button-container {
       text-align: center;
-      margin: 32px 0;
+      margin: 24px 0 32px 0;
     }
 
     .button-table {
@@ -104,31 +122,26 @@
       mso-line-height-rule: exactly;
     }
 
-    /* Alt link */
-    .alt-link {
-      margin-top: 24px;
-      padding: 16px;
+    /* Testimonial-style callout */
+    .callout-box {
+      margin-top: 28px;
+      padding: 20px 24px;
       background-color: #f0efe9;
-      border-radius: 10px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .callout-text {
+      font-size: 14px;
+      color: #4b5563;
+      margin: 0;
+      font-style: italic;
+    }
+
+    .callout-meta {
       font-size: 13px;
       color: #8a8680;
-      word-break: break-all;
-    }
-
-    .alt-link a {
-      color: #00d47e;
-      text-decoration: none;
-    }
-
-    /* Security notice */
-    .security-notice {
-      margin-top: 28px;
-      padding: 16px;
-      background-color: #fef3c7;
-      border-left: 4px solid #f59e0b;
-      border-radius: 0 10px 10px 0;
-      font-size: 14px;
-      color: #92400e;
+      margin: 8px 0 0 0;
     }
 
     /* Footer */
@@ -151,12 +164,24 @@
       font-size: 13px;
     }
 
+    .unsubscribe {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #a8a4a0;
+    }
+
+    .unsubscribe a {
+      color: #8a8680;
+      text-decoration: underline;
+    }
+
     /* Responsive */
     @media only screen and (max-width: 600px) {
       .email-container { width: 100% !important; }
       .content { padding: 28px 20px !important; }
       .header { padding: 28px 20px !important; }
       .greeting { font-size: 20px !important; }
+      .stars { font-size: 28px !important; letter-spacing: 4px !important; }
       .button-table { width: 100% !important; max-width: 100% !important; }
       .button-td { width: 100% !important; }
       .button-link { padding: 14px 20px !important; font-size: 15px !important; }
@@ -183,41 +208,44 @@
           <!-- Content -->
           <tr>
             <td class="content" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 40px 30px; color: #4b5563; line-height: 1.6;">
-              <h2 class="greeting" style="font-size: 24px; font-weight: 700; margin: 0 0 16px 0; color: #0c0c0c;">Sign in to your account</h2>
+              <h2 class="greeting" style="font-size: 24px; font-weight: 700; margin: 0 0 16px 0; color: #0c0c0c;">Your resume is ready!</h2>
               <p class="message" style="font-size: 16px; color: #4b5563; margin: 0 0 28px 0;">
-                We received a request to sign in to your EasyFreeResume account using <strong>{{ .Email }}</strong>. Click the button below to continue.
+                Great news &mdash; your resume PDF has been downloaded successfully. We hope it helps you land your next opportunity.
               </p>
-              <p class="message" style="font-size: 16px; color: #4b5563; margin: 0 0 28px 0; margin-bottom: 0;">
-                This link will expire in 1 hour for security purposes.
+              <p class="message" style="font-size: 16px; color: #4b5563; margin: 0 0 28px 0;">
+                If EasyFreeResume made your job search a little easier, we'd love to hear about it. A quick review on Trustpilot helps other job seekers discover us.
               </p>
 
-              <div class="button-container" style="text-align: center; margin: 32px 0;">
+              <!-- Star rating visual -->
+              <div class="stars-container" style="text-align: center; margin: 28px 0 8px 0;">
+                <div class="stars" style="font-size: 36px; letter-spacing: 6px; color: #00d47e;">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="stars-label" style="font-size: 13px; color: #8a8680; margin: 8px 0 0 0;">Takes less than 60 seconds</p>
+              </div>
+
+              <div class="button-container" style="text-align: center; margin: 24px 0 32px 0;">
                 <!--[if mso]>
-                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ .ConfirmationURL }}" style="height:52px;v-text-anchor:middle;width:280px;" arcsize="23%" strokecolor="#00d47e" fillcolor="#00d47e">
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ .ReviewURL }}" style="height:52px;v-text-anchor:middle;width:280px;" arcsize="23%" strokecolor="#00d47e" fillcolor="#00d47e">
                   <w:anchorlock/>
-                  <center style="color:#0c0c0c;font-family:sans-serif;font-size:16px;font-weight:700;">Sign In to EasyFreeResume</center>
+                  <center style="color:#0c0c0c;font-family:sans-serif;font-size:16px;font-weight:700;">Leave a Review on Trustpilot</center>
                 </v:roundrect>
                 <![endif]-->
                 <!--[if !mso]><!-->
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" class="button-table" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; margin: 0 auto;">
                   <tr>
                     <td class="button-td" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #00d47e; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0, 212, 126, 0.25), 0 1px 3px rgba(0, 0, 0, 0.08);" bgcolor="#00d47e" align="center">
-                      <a href="{{ .ConfirmationURL }}" class="button-link" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; display: block; padding: 16px 36px; text-decoration: none; font-weight: 700; font-size: 16px; mso-line-height-rule: exactly; color: #0c0c0c !important;">Sign In to EasyFreeResume</a>
+                      <a href="{{ .ReviewURL }}" class="button-link" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; display: block; padding: 16px 36px; text-decoration: none; font-weight: 700; font-size: 16px; mso-line-height-rule: exactly; color: #0c0c0c !important;">Leave a Review on Trustpilot</a>
                     </td>
                   </tr>
                 </table>
                 <!--<![endif]-->
               </div>
 
-              <div class="alt-link" style="margin-top: 24px; padding: 16px; background-color: #f0efe9; border-radius: 10px; font-size: 13px; color: #8a8680; word-break: break-all;">
-                <p style="margin: 0 0 8px 0; font-weight: 600;">Button not working?</p>
-                <p style="margin: 0 0 4px 0;">Copy and paste this link into your browser:</p>
-                <a href="{{ .ConfirmationURL }}" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #00d47e; text-decoration: none;">{{ .ConfirmationURL }}</a>
-              </div>
-
-              <div class="security-notice" style="margin-top: 28px; padding: 16px; background-color: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 0 10px 10px 0; font-size: 14px; color: #92400e;">
-                <p style="margin: 0 0 4px 0; font-weight: 600;">&#128274; Security Notice</p>
-                <p style="margin: 0;">If you didn't request this email, you can safely ignore it. This link will expire in 1 hour.</p>
+              <!-- Social proof callout -->
+              <div class="callout-box" style="margin-top: 28px; padding: 20px 24px; background-color: #f0efe9; border-radius: 12px; text-align: center;">
+                <p class="callout-text" style="font-size: 14px; color: #4b5563; margin: 0; font-style: italic;">
+                  "I was able to create a professional resume in minutes. Genuinely free, no tricks."
+                </p>
+                <p class="callout-meta" style="font-size: 13px; color: #8a8680; margin: 8px 0 0 0;">&mdash; A recent EasyFreeResume user</p>
               </div>
             </td>
           </tr>
@@ -235,6 +263,9 @@
               <p style="margin: 12px 0 0 0; font-size: 12px; color: #a8a4a0;">
                 Build professional resumes for free, no sign-up required.
               </p>
+              <div class="unsubscribe" style="margin-top: 16px; font-size: 12px; color: #a8a4a0;">
+                <p style="margin: 0;">Don't want to receive review requests? <a href="{{ .UnsubscribeURL }}" style="-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #8a8680; text-decoration: underline;">Unsubscribe</a></p>
+              </div>
             </td>
           </tr>
         </table>

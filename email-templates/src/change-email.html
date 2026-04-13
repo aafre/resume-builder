@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light">
   <meta name="supported-color-schemes" content="light">
-  <title>Confirm your email - EasyFreeResume</title>
+  <title>Confirm email change - EasyFreeResume</title>
   <!--[if mso]>
   <noscript>
     <xml>
@@ -104,25 +104,6 @@
       mso-line-height-rule: exactly;
     }
 
-    /* Feature box */
-    .feature-box {
-      margin-top: 28px;
-      padding: 20px 24px;
-      background-color: #f0efe9;
-      border-radius: 12px;
-    }
-
-    .feature-item {
-      margin: 8px 0;
-      font-size: 14px;
-      color: #4b5563;
-    }
-
-    .feature-check {
-      color: #00d47e;
-      font-weight: 700;
-    }
-
     /* Alt link */
     .alt-link {
       margin-top: 24px;
@@ -202,48 +183,27 @@
           <!-- Content -->
           <tr>
             <td class="content">
-              <h2 class="greeting">Welcome to EasyFreeResume!</h2>
+              <h2 class="greeting">Confirm your new email address</h2>
               <p class="message">
-                Thanks for creating your free account with <strong>{{ .Email }}</strong>. Click the button below to confirm your email address and unlock cloud-saved resumes.
+                We received a request to change your EasyFreeResume account email to <strong>{{ .Email }}</strong>. Click the button below to confirm this new email address.
               </p>
 
               <div class="button-container">
                 <!--[if mso]>
-                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ .ConfirmationURL }}" style="height:52px;v-text-anchor:middle;width:250px;" arcsize="23%" strokecolor="#00d47e" fillcolor="#00d47e">
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ .ConfirmationURL }}" style="height:52px;v-text-anchor:middle;width:240px;" arcsize="23%" strokecolor="#00d47e" fillcolor="#00d47e">
                   <w:anchorlock/>
-                  <center style="color:#0c0c0c;font-family:sans-serif;font-size:16px;font-weight:700;">Confirm Your Email</center>
+                  <center style="color:#0c0c0c;font-family:sans-serif;font-size:16px;font-weight:700;">Confirm New Email</center>
                 </v:roundrect>
                 <![endif]-->
                 <!--[if !mso]><!-->
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" class="button-table">
                   <tr>
                     <td class="button-td">
-                      <a href="{{ .ConfirmationURL }}" class="button-link">Confirm Your Email</a>
+                      <a href="{{ .ConfirmationURL }}" class="button-link">Confirm New Email</a>
                     </td>
                   </tr>
                 </table>
                 <!--<![endif]-->
-              </div>
-
-              <div class="feature-box">
-                <p style="margin: 0 0 12px 0; font-weight: 700; color: #0c0c0c; font-size: 15px;">
-                  What you get with your free account:
-                </p>
-                <div class="feature-item">
-                  <span class="feature-check">&#10003;</span> Save and access your last 5 resumes from anywhere
-                </div>
-                <div class="feature-item">
-                  <span class="feature-check">&#10003;</span> Cloud backup &mdash; never lose your work
-                </div>
-                <div class="feature-item">
-                  <span class="feature-check">&#10003;</span> ATS-optimized professional templates
-                </div>
-                <div class="feature-item">
-                  <span class="feature-check">&#10003;</span> Download unlimited PDFs
-                </div>
-                <div class="feature-item">
-                  <span class="feature-check">&#10003;</span> 100% free, no premium upsells
-                </div>
               </div>
 
               <div class="alt-link">
@@ -254,7 +214,7 @@
 
               <div class="security-notice">
                 <p style="margin: 0 0 4px 0; font-weight: 600;">&#128274; Security Notice</p>
-                <p style="margin: 0;">If you didn't create an account, you can safely ignore this email. This link will expire in 24 hours.</p>
+                <p style="margin: 0;">If you didn't request this email change, please ignore this email and contact support immediately. Your email address will not be changed unless you click the confirmation link above.</p>
               </div>
             </td>
           </tr>
