@@ -2775,17 +2775,13 @@ def load_resume(resume_id):
 
         resume["icons"] = icons_result.data
 
-        # Update last_accessed_at while preserving updated_at (non-blocking - don't fail if this fails)
+        # Update last_accessed_at only (non-blocking - don't fail if this fails)
+        # Note: updated_at is NOT included — without the DB trigger, only columns
+        # in the SET clause are modified, so updated_at is preserved automatically.
         try:
-            # Preserve updated_at when only updating last_accessed_at
-            current_updated_at = resume.get("updated_at")
-            update_data = {"last_accessed_at": datetime.now().isoformat()}
-            if current_updated_at:
-                update_data["updated_at"] = (
-                    current_updated_at  # Preserve original timestamp
-                )
-
-            supabase.table("resumes").update(update_data).eq("id", resume_id).execute()
+            supabase.table("resumes").update(
+                {"last_accessed_at": datetime.now().isoformat()}
+            ).eq("id", resume_id).execute()
         except Exception as timestamp_error:
             logging.warning(
                 f"Failed to update last_accessed_at for resume {resume_id}: {timestamp_error}"
@@ -3104,26 +3100,23 @@ def migrate_anonymous_resumes():
             f"Starting migration: {old_count} resumes from {old_user_id} to {new_user_id} (total: {total_count})"
         )
 
-        # Get all resumes being migrated with their updated_at timestamps
+        # Get all resume IDs being migrated
         resumes_to_migrate = (
             supabase.table("resumes")
-            .select("id, updated_at")
+            .select("id")
             .eq("user_id", old_user_id)
             .is_("deleted_at", "null")
             .execute()
         )
 
         old_resume_ids = [r["id"] for r in resumes_to_migrate.data]
-        resume_timestamps = {r["id"]: r["updated_at"] for r in resumes_to_migrate.data}
 
-        # Step 1: Update resume ownership while preserving updated_at timestamps
-        # We update each resume individually to preserve its original updated_at
-        for resume_id, original_timestamp in resume_timestamps.items():
+        # Step 1: Update resume ownership.
+        # updated_at is NOT included — without the DB trigger, only the
+        # user_id column changes, so updated_at is preserved automatically.
+        for resume_id in old_resume_ids:
             supabase.table("resumes").update(
-                {
-                    "user_id": new_user_id,
-                    "updated_at": original_timestamp,  # Preserve original timestamp
-                }
+                {"user_id": new_user_id}
             ).eq("id", resume_id).execute()
 
         logging.info(f"Updated {old_count} resume records while preserving timestamps")
@@ -3278,14 +3271,19 @@ def update_resume_partial(resume_id):
         if not result.data:
             return jsonify({"success": False, "error": "Resume not found"}), 404
 
-        # Update title
-        supabase.table("resumes").update(
-            {"title": new_title, "updated_at": "now()"}
-        ).eq("id", resume_id).execute()
+        # Update title and return the new updated_at for frontend cache sync
+        result = (
+            supabase.table("resumes")
+            .update({"title": new_title, "updated_at": "now()"})
+            .eq("id", resume_id)
+            .select("updated_at")
+            .execute()
+        )
+        updated_at = result.data[0]["updated_at"] if result.data else None
 
         logging.info(f"Resume title updated: {resume_id} -> {new_title}")
 
-        return jsonify({"success": True, "title": new_title}), 200
+        return jsonify({"success": True, "title": new_title, "updated_at": updated_at}), 200
 
     except Exception as e:
         logging.error(f"Error updating resume title: {e}")
@@ -3493,33 +3491,16 @@ def generate_pdf_for_saved_resume(resume_id):
                     str(output_path), user_id, resume_id
                 )
                 if thumbnail_url:
-                    # Fetch current updated_at to preserve it (avoid triggering timestamp update for metadata-only change)
-                    current_resume = (
-                        supabase.table("resumes")
-                        .select("updated_at")
-                        .eq("id", resume_id)
-                        .execute()
-                    )
-                    current_updated_at = (
-                        current_resume.data[0]["updated_at"]
-                        if current_resume.data
-                        else None
-                    )
-
-                    # Update resume with thumbnail URL and timestamp
+                    # Update resume with thumbnail URL and generation timestamp.
+                    # updated_at is NOT included — without the DB trigger, it is
+                    # preserved automatically for metadata-only changes.
                     current_time = datetime.now(timezone.utc).isoformat()
-                    update_data = {
-                        "thumbnail_url": thumbnail_url,
-                        "pdf_generated_at": current_time,  # Use consistent timestamp
-                    }
-                    if current_updated_at:
-                        update_data["updated_at"] = (
-                            current_updated_at  # Preserve original timestamp
-                        )
-
-                    supabase.table("resumes").update(update_data).eq(
-                        "id", resume_id
-                    ).execute()
+                    supabase.table("resumes").update(
+                        {
+                            "thumbnail_url": thumbnail_url,
+                            "pdf_generated_at": current_time,
+                        }
+                    ).eq("id", resume_id).execute()
                     logging.info(
                         f"Thumbnail generated and saved for resume {resume_id}"
                     )
@@ -3757,29 +3738,16 @@ def generate_thumbnail_for_resume(resume_id):
                     500,
                 )
 
-            # Fetch current updated_at to preserve it (avoid triggering timestamp update for metadata-only change)
-            current_resume = (
-                supabase.table("resumes")
-                .select("updated_at")
-                .eq("id", resume_id)
-                .execute()
-            )
-            current_updated_at = (
-                current_resume.data[0]["updated_at"] if current_resume.data else None
-            )
-
-            # Update resume with thumbnail URL and timestamp
+            # Update resume with thumbnail URL and generation timestamp.
+            # updated_at is NOT included — without the DB trigger, it is
+            # preserved automatically for metadata-only changes.
             current_time = datetime.now(timezone.utc).isoformat()
-            update_data = {
-                "thumbnail_url": thumbnail_url,
-                "pdf_generated_at": current_time,  # Use same timestamp as response for polling
-            }
-            if current_updated_at:
-                update_data["updated_at"] = (
-                    current_updated_at  # Preserve original timestamp
-                )
-
-            supabase.table("resumes").update(update_data).eq("id", resume_id).execute()
+            supabase.table("resumes").update(
+                {
+                    "thumbnail_url": thumbnail_url,
+                    "pdf_generated_at": current_time,
+                }
+            ).eq("id", resume_id).execute()
 
             logging.info(f"Thumbnail generated successfully for resume {resume_id}")
             logging.debug(
