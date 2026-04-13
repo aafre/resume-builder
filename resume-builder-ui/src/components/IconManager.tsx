@@ -189,8 +189,10 @@ const IconManager: React.FC<IconManagerProps> = ({
         <button
           type="button"
           onClick={handleClear}
-          className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow-lg transition-colors duration-200"
+          className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow-lg transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-accent"
           disabled={isUploading}
+          aria-label="Remove icon"
+          title="Remove icon"
         >
           <FaTimes />
         </button>

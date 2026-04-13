@@ -47,15 +47,17 @@ const SectionEditor: React.FC<{
               />
               <button
                 onClick={handleSaveName}
-                className="ml-2 text-green-500 hover:text-green-600"
+                className="ml-2 p-1 rounded-md text-green-500 hover:text-green-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 title="Save Section Name"
+                aria-label="Save section name"
               >
                 💾
               </button>
               <button
                 onClick={handleCancelEdit}
-                className="ml-2 text-red-500 hover:text-red-600"
+                className="ml-2 p-1 rounded-md text-red-500 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 title="Cancel Edit"
+                aria-label="Cancel edit"
               >
                 ❌
               </button>
@@ -66,8 +68,9 @@ const SectionEditor: React.FC<{
               {!isFixedSection && (
                 <button
                   onClick={() => setIsEditingName(true)}
-                  className="ml-2 text-accent hover:text-accent"
+                  className="ml-2 p-1 rounded-md text-accent hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                   aria-label="Edit Section Name"
+                  title="Edit Section Name"
                 >
                   ✏️
                 </button>
