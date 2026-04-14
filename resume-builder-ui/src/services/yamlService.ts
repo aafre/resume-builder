@@ -115,7 +115,8 @@ export interface YAMLExportResult {
 export const exportResumeAsYAML = async (
   contactInfo: ContactInfo | null,
   sections: Section[],
-  iconRegistry: IconRegistryForYAML
+  iconRegistry: IconRegistryForYAML,
+  settings?: Record<string, unknown>,
 ): Promise<YAMLExportResult> => {
   // Process sections to clean icon paths
   const processedSections = processSectionsForExport(sections);
@@ -134,6 +135,11 @@ export const exportResumeAsYAML = async (
     contact_info: contactInfo,
     sections: processedSections,
   };
+
+  // Include document settings if any are set
+  if (settings && Object.keys(settings).length > 0) {
+    portableData.settings = settings;
+  }
 
   // Only include __icons__ section if there are icons to embed
   if (Object.keys(iconData).length > 0) {
@@ -159,6 +165,8 @@ export interface YAMLImportResult {
   sections: Section[];
   /** Number of icons imported from the YAML */
   iconCount: number;
+  /** Document-level settings from YAML */
+  settings?: Record<string, unknown>;
 }
 
 /**
@@ -209,5 +217,6 @@ export const importResumeFromYAML = async (
     contactInfo: parsedYaml.contact_info,
     sections: sectionsWithIds,
     iconCount,
+    settings: parsedYaml.settings,
   };
 };

@@ -41,6 +41,7 @@
     "js-yaml": "^4.1.0",
     "lucide-react": "^0.562.0",
     "pdfjs-dist": "^3.11.174",
+    "posthog-js": "^1.367.0",
     "react": "^18.3.1",
     "react-countup": "^6.5.3",
     "react-dom": "^18.3.1",

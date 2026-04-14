@@ -1,0 +1,47 @@
+font: Arial
+
+contact_info:
+  name: Jordan Mitchell
+  location: "San Francisco, CA"
+  email: jordan.mitchell@email.com
+  phone: "+1 (415) 555-0192"
+  social_links:
+    - platform: linkedin
+      url: https://linkedin.com/in/jordan-mitchell
+      display_text: Jordan Mitchell
+    - platform: github
+      url: https://github.com/jmitchell
+      display_text: jmitchell
+    - platform: website
+      url: https://jordanmitchell.dev
+      display_text: jordanmitchell.dev
+    - platform: twitter
+      url: https://twitter.com/jmitchell_dev
+      display_text: jmitchell_dev
+    - platform: stackoverflow
+      url: https://stackoverflow.com/users/123456/jmitchell
+      display_text: jmitchell
+    - platform: medium
+      url: https://medium.com/@jmitchell
+      display_text: jmitchell
+
+sections:
+  - name: Professional Summary
+    type: text
+    content: "Results-driven software engineer with 6+ years of experience designing and building scalable distributed systems."
+
+  - name: Experience
+    type: experience
+    content:
+      - company: "Stripe"
+        title: "Senior Software Engineer"
+        dates: "Mar 2022 – Present"
+        description:
+          - "Designed and implemented a real-time fraud detection pipeline processing 50M+ transactions daily"
+
+  - name: Education
+    type: education
+    content:
+      - degree: "Bachelor of Science in Computer Science"
+        school: "University of California, Berkeley"
+        year: "2017"

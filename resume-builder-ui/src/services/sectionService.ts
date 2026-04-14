@@ -7,6 +7,7 @@ import {
   BulletedListSection,
   InlineListSection,
   DynamicColumnListSection,
+  GroupedListSection,
   IconListSection,
   ExperienceSection,
   EducationSection,
@@ -22,6 +23,7 @@ export type SectionType =
   | 'bulleted-list'
   | 'inline-list'
   | 'dynamic-column-list'
+  | 'grouped-list'
   | 'icon-list'
   | 'experience'
   | 'education';
@@ -36,6 +38,7 @@ const TYPE_NAME_MAP: Record<SectionType, string> = {
   "bulleted-list": "New Bulleted List Section",
   "inline-list": "New Inline List Section",
   "dynamic-column-list": "New Dynamic Column List Section",
+  "grouped-list": "New Grouped List Section",
   "icon-list": "New Icon List Section",
 };
 
@@ -184,6 +187,20 @@ export const createDefaultSection = (
         name: defaultName,
         type: "dynamic-column-list",
         content: [],
+      };
+      return section;
+    }
+    case "grouped-list": {
+      const section: GroupedListSection = {
+        id,
+        name: defaultName,
+        type: "grouped-list",
+        content: [
+          {
+            label: "",
+            items: [],
+          },
+        ],
       };
       return section;
     }

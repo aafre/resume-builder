@@ -65,31 +65,37 @@ const LandingPage: React.FC = () => {
       title: "Beat the ATS",
       description:
         "Get past automated screening systems with templates optimized for Applicant Tracking Systems.",
+      icon: "\u{1F916}",
     },
     {
       title: "Simple & Intuitive",
       description:
         "Build your resume with an easy-to-use editor that shows exactly how your resume will look.",
+      icon: "\u{2728}",
     },
     {
       title: "Ready in Minutes",
       description:
         "Download your professional PDF resume immediately - no waiting, no registration required.",
+      icon: "\u{26A1}",
     },
     {
       title: "Hiring Manager Approved",
       description:
         "Clean, modern designs that recruiters love and that help you stand out from the crowd.",
+      icon: "\u{2705}",
     },
     {
       title: "No Sign-Up, No Data Collection",
       description:
         "Start building immediately without registration. We don't store your personal information - complete privacy guaranteed.",
+      icon: "\u{1F512}",
     },
     {
       title: "100% Free & Unlimited",
       description:
         "Build unlimited resumes at no cost. No hidden fees, no premium upgrades, no catch.",
+      icon: "\u{1F389}",
     },
   ];
 
@@ -225,6 +231,45 @@ const LandingPage: React.FC = () => {
             <p className="font-mono text-xs tracking-wide text-stone-warm">
               100% free · No sign-up · No paywall
             </p>
+
+            {/* Mobile-only compact resume mockup */}
+            <RevealSection variant="fade-up" className="lg:hidden mt-8">
+              <div className="flex justify-center" aria-hidden="true">
+                <div
+                  className="relative w-[200px] h-[270px] bg-white rounded-xl p-5 flex flex-col gap-2.5 border border-black/[0.06]"
+                  style={{
+                    boxShadow: '0 8px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)',
+                  }}
+                >
+                  {/* Name bar */}
+                  <div className="h-4 w-24 bg-ink rounded-sm" />
+                  <div className="h-2 w-16 bg-accent/60 rounded-sm" />
+                  {/* Divider */}
+                  <div className="h-px w-full bg-gray-200 my-0.5" />
+                  {/* Section: experience */}
+                  <div className="h-1.5 w-12 bg-ink/40 rounded-sm" />
+                  <div className="space-y-1">
+                    <div className="h-1 w-full bg-gray-200 rounded-sm" />
+                    <div className="h-1 w-[90%] bg-gray-200 rounded-sm" />
+                    <div className="h-1 w-[75%] bg-gray-200 rounded-sm" />
+                  </div>
+                  {/* Section: skills */}
+                  <div className="h-1.5 w-10 bg-ink/40 rounded-sm mt-1" />
+                  <div className="flex gap-1 flex-wrap">
+                    <div className="h-3 w-10 bg-accent/15 rounded-full" />
+                    <div className="h-3 w-8 bg-accent/15 rounded-full" />
+                    <div className="h-3 w-12 bg-accent/15 rounded-full" />
+                    <div className="h-3 w-9 bg-accent/15 rounded-full" />
+                  </div>
+                  {/* Section: education */}
+                  <div className="h-1.5 w-10 bg-ink/40 rounded-sm mt-1" />
+                  <div className="space-y-1">
+                    <div className="h-1 w-[85%] bg-gray-200 rounded-sm" />
+                    <div className="h-1 w-[60%] bg-gray-200 rounded-sm" />
+                  </div>
+                </div>
+              </div>
+            </RevealSection>
           </div>
 
           {/* Right: CSS-only floating resume mockup */}
@@ -279,25 +324,25 @@ const LandingPage: React.FC = () => {
       {/* ═══════════ STATS ═══════════ */}
       <section className="py-12">
         <RevealSection stagger className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-0 sm:divide-x sm:divide-ink/10">
-          <div className="text-center sm:px-16">
-            <p className="font-mono text-3xl md:text-4xl font-normal text-ink mb-1">
+          <div className="group relative text-center sm:px-16 cursor-default">
+            <p className="font-mono text-3xl md:text-4xl font-normal text-ink mb-1 group-hover:scale-105 transition-transform duration-300">
               {prefersReducedMotion ? (
                 <>{resumeCountValue.toLocaleString("en-US")}+</>
               ) : (
                 <CountUp end={resumeCountValue} separator="," suffix="+" duration={2.5} enableScrollSpy scrollSpyOnce />
               )}
             </p>
-            <p className="font-display text-sm font-extralight text-stone-warm tracking-wide">Resumes Created</p>
+            <p className="relative font-display text-sm font-extralight text-stone-warm tracking-wide after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 group-hover:after:w-full after:h-0.5 after:bg-accent after:transition-all after:duration-300">Resumes Created</p>
           </div>
-          <div className="text-center sm:px-16">
-            <p className="font-mono text-3xl md:text-4xl font-normal text-ink mb-1">
+          <div className="group relative text-center sm:px-16 cursor-default">
+            <p className="font-mono text-3xl md:text-4xl font-normal text-ink mb-1 group-hover:scale-105 transition-transform duration-300">
               {prefersReducedMotion ? (
                 <>100%</>
               ) : (
                 <CountUp end={100} suffix="%" duration={2} enableScrollSpy scrollSpyOnce />
               )}
             </p>
-            <p className="font-display text-sm font-extralight text-stone-warm tracking-wide">ATS Compatible</p>
+            <p className="relative font-display text-sm font-extralight text-stone-warm tracking-wide after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 group-hover:after:w-full after:h-0.5 after:bg-accent after:transition-all after:duration-300">ATS Compatible</p>
           </div>
         </RevealSection>
       </section>
@@ -348,8 +393,11 @@ const LandingPage: React.FC = () => {
               {features.map((item, index) => (
                 <div
                   key={index}
-                  className="group flex items-start gap-6 py-8 border-b border-black/[0.06] last:border-b-0 cursor-default"
+                  className="group relative flex items-start gap-6 py-8 border-b border-black/[0.06] last:border-b-0 cursor-default overflow-hidden"
                 >
+                  <span className="text-6xl opacity-[0.06] absolute right-4 top-4 pointer-events-none select-none" aria-hidden="true">
+                    {item.icon}
+                  </span>
                   <span className="font-mono text-3xl md:text-4xl text-accent/30 group-hover:text-accent transition-colors duration-300 flex-shrink-0 leading-none mt-1 w-12 md:w-16 text-right">
                     {String(index + 1).padStart(2, "0")}
                   </span>
@@ -459,7 +507,7 @@ const LandingPage: React.FC = () => {
                 <a
                   key={i}
                   href={resource.href}
-                  className="group bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
+                  className="group bg-chalk-dark rounded-2xl p-6 border border-transparent border-l-4 border-l-accent/30 hover:border-l-accent hover:bg-white hover:shadow-lg hover:border-black/[0.04] hover:border-l-accent transition-all duration-300"
                 >
                   <h3 className="font-display text-lg font-extrabold text-ink mb-2 flex items-center justify-between">
                     {resource.title}

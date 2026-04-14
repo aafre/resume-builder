@@ -9,6 +9,7 @@
 
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { ArrowRightIcon } from '@heroicons/react/24/solid';
 import SEOPageLayout from '../shared/SEOPageLayout';
 import PageHero from '../shared/PageHero';
 import FAQSection from '../shared/FAQSection';
@@ -117,14 +118,14 @@ export default function JobExamplesHub() {
       <PageHero config={heroConfig} />
 
       {/* Category Filter */}
-      <section className="my-8">
-        <div className="p-2 bg-white/50 rounded-2xl border border-black/[0.06]">
+      <section className="py-8">
+        <div className="p-3 bg-white/60 rounded-2xl border border-black/[0.04] shadow-sm backdrop-blur-sm">
           <div className="flex flex-wrap justify-center gap-2">
             <button
               onClick={() => handleCategoryClick('all')}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+              className={`px-5 py-2.5 rounded-xl text-sm font-display font-medium transition-all duration-300 ${
                 selectedCategory === 'all'
-                  ? 'bg-accent text-ink'
+                  ? 'bg-accent text-ink shadow-sm'
                   : 'bg-chalk-dark text-stone-warm hover:bg-white hover:shadow-sm'
               }`}
             >
@@ -134,9 +135,9 @@ export default function JobExamplesHub() {
               <button
                 key={category.id}
                 onClick={() => handleCategoryClick(category.id)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                className={`px-5 py-2.5 rounded-xl text-sm font-display font-medium transition-all duration-300 ${
                   selectedCategory === category.id
-                    ? 'bg-accent text-ink'
+                    ? 'bg-accent text-ink shadow-sm'
                     : 'bg-chalk-dark text-stone-warm hover:bg-white hover:shadow-sm'
                 }`}
               >
@@ -148,7 +149,7 @@ export default function JobExamplesHub() {
       </section>
 
       {/* Job Examples by Category */}
-      <section className="my-12">
+      <section className="py-12">
         {categoriesToShow.map(category => {
           const jobs = jobsByCategory[category.id];
           if (jobs.length === 0) return null;
@@ -157,14 +158,16 @@ export default function JobExamplesHub() {
             <RevealSection key={category.id}>
               <div className="mb-12 cv-auto cv-h-500" id={category.id}>
                 {/* Category Header */}
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="text-3xl">{category.icon}</span>
-                  <div>
-                    <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight">
-                      {category.title} Resumes
-                    </h2>
-                    <p className="text-stone-warm font-extralight">{category.description}</p>
-                  </div>
+                <div className="mb-12">
+                  <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-3 block">
+                    {category.icon} {category.id.replace(/-/g, ' ')}
+                  </span>
+                  <h2 className="font-display text-2xl md:text-3xl font-extrabold text-ink tracking-tight mb-2">
+                    {category.title} Resumes
+                  </h2>
+                  <p className="font-display font-extralight text-stone-warm text-sm">
+                    {category.description}
+                  </p>
                 </div>
 
                 {/* Job Cards Grid */}
@@ -173,24 +176,22 @@ export default function JobExamplesHub() {
                     <Link
                       key={job.slug}
                       to={`/examples/${job.slug}`}
-                      className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all duration-300 group"
+                      className="group bg-white rounded-2xl p-6 border border-black/[0.04] shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all duration-300"
                     >
-                      <div className="flex items-start justify-between">
-                        <h3 className="font-bold text-ink group-hover:text-accent transition-colors">
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="font-display text-lg font-extrabold text-ink group-hover:text-accent transition-colors">
                           {job.title}
                         </h3>
-                        <span className="text-accent opacity-0 group-hover:opacity-100 transition-opacity">
-                          &rarr;
-                        </span>
+                        <ArrowRightIcon className="w-4 h-4 text-stone-warm group-hover:text-accent group-hover:translate-x-1 transition-all duration-200 flex-shrink-0 mt-1" />
                       </div>
-                      <p className="text-sm text-stone-warm mt-2 line-clamp-2">
+                      <p className="font-display font-extralight text-stone-warm text-sm line-clamp-2 mb-3">
                         {job.metaDescription}
                       </p>
-                      <div className="mt-3 flex items-center gap-2">
-                        <span className="text-xs px-2 py-1 bg-accent/[0.06] text-ink/80 rounded">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-mono px-2.5 py-1 bg-accent/[0.06] text-ink/70 rounded-md">
                           Free Template
                         </span>
-                        <span className="text-xs px-2 py-1 bg-accent/10 text-ink/80 rounded">
+                        <span className="text-xs font-mono px-2.5 py-1 bg-accent/[0.06] text-ink/70 rounded-md">
                           ATS-Friendly
                         </span>
                       </div>
@@ -204,95 +205,98 @@ export default function JobExamplesHub() {
       </section>
 
       {/* How to Use Section */}
-      <RevealSection>
-        <div className="my-16 cv-auto cv-h-300">
-          <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">How It Works</span>
-          <StepByStep steps={howToSteps} title="" />
+      <section className="py-20 cv-auto cv-h-300">
+        <div className="bg-chalk-dark rounded-3xl py-16 px-6 md:px-12">
+          <RevealSection>
+            <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">How It Works</span>
+            <StepByStep steps={howToSteps} title="" />
+          </RevealSection>
         </div>
-      </RevealSection>
+      </section>
 
       {/* Stats Section */}
-      <RevealSection stagger>
-        <section className="my-16 cv-auto cv-h-200">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
-              <p className="text-3xl font-extrabold text-accent">{totalExamples}+</p>
-              <p className="text-stone-warm">Resume Examples</p>
-            </div>
-            <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
-              <p className="text-3xl font-extrabold text-accent">{JOB_CATEGORIES.length}</p>
-              <p className="text-stone-warm">Industries Covered</p>
-            </div>
-            <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
-              <p className="text-3xl font-extrabold text-accent">100%</p>
-              <p className="text-stone-warm">Free to Use</p>
-            </div>
-            <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
-              <p className="text-3xl font-extrabold text-accent">ATS</p>
-              <p className="text-stone-warm">Optimized</p>
-            </div>
+      <section className="py-16 cv-auto cv-h-200">
+        <RevealSection stagger>
+          <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-0 sm:divide-x sm:divide-ink/10">
+            {[
+              { value: `${totalExamples}+`, label: 'Resume Examples' },
+              { value: String(JOB_CATEGORIES.length), label: 'Industries Covered' },
+              { value: '100%', label: 'Free to Use' },
+              { value: 'ATS', label: 'Optimized' },
+            ].map((stat, i) => (
+              <div key={i} className="group relative text-center sm:px-12 cursor-default">
+                <p className="font-mono text-3xl md:text-4xl font-normal text-ink mb-1 group-hover:scale-105 transition-transform duration-300">
+                  {stat.value}
+                </p>
+                <p className="relative font-display text-sm font-extralight text-stone-warm tracking-wide after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 group-hover:after:w-full after:h-0.5 after:bg-accent after:transition-all after:duration-300">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
           </div>
-        </section>
-      </RevealSection>
+        </RevealSection>
+      </section>
 
       {/* Quick Links by Popular Jobs */}
-      <RevealSection>
-        <section className="my-16 cv-auto cv-h-300">
-          <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">Popular</span>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight mb-6 text-center">
-            Most Popular Resume Examples
-          </h2>
-          <div className="flex flex-wrap justify-center gap-3">
-            {JOB_EXAMPLES_DATABASE
-              .filter(job => job.priority >= 0.8)
-              .slice(0, 12)
-              .map(job => (
-                <Link
-                  key={job.slug}
-                  to={`/examples/${job.slug}`}
-                  className="px-4 py-2 bg-chalk-dark text-ink rounded-xl hover:bg-white hover:shadow-sm transition-all duration-300 text-sm"
-                >
-                  {job.title}
-                </Link>
-              ))}
-          </div>
-        </section>
-      </RevealSection>
+      <section className="py-20 cv-auto cv-h-300">
+        <div className="bg-chalk-dark rounded-3xl py-16 px-6 md:px-12">
+          <RevealSection>
+            <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">Popular</span>
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-4 text-center">
+              Most Popular Resume Examples
+            </h2>
+            <p className="font-display text-lg font-extralight text-stone-warm mb-12 text-center max-w-2xl mx-auto">
+              The most-viewed resume examples across all industries
+            </p>
+            <div className="flex flex-wrap justify-center gap-3">
+              {JOB_EXAMPLES_DATABASE
+                .filter(job => job.priority >= 0.8)
+                .slice(0, 12)
+                .map(job => (
+                  <Link
+                    key={job.slug}
+                    to={`/examples/${job.slug}`}
+                    className="group inline-flex items-center gap-2 px-5 py-2.5 bg-white text-ink rounded-xl border border-transparent border-l-2 border-l-accent/30 hover:border-l-accent hover:shadow-md transition-all duration-300 text-sm font-display font-medium"
+                  >
+                    {job.title}
+                    <ArrowRightIcon className="w-3 h-3 text-stone-warm opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200" />
+                  </Link>
+                ))}
+            </div>
+          </RevealSection>
+        </div>
+      </section>
 
       <FAQSection faqs={FAQS} />
 
       {/* Related Resources */}
       <RevealSection>
-        <section className="my-16 cv-auto cv-h-300">
+        <section className="py-16 cv-auto cv-h-300">
           <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">Resources</span>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight mb-6 text-center">
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-12 text-center">
             More Resume Resources
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Link
-              to="/templates"
-              className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 text-center"
-            >
-              <span className="text-ink font-medium">Resume Templates</span>
-            </Link>
-            <Link
-              to="/resume-keywords"
-              className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 text-center"
-            >
-              <span className="text-ink font-medium">Resume Keywords by Industry</span>
-            </Link>
-            <Link
-              to="/blog/how-to-write-a-resume-guide"
-              className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 text-center"
-            >
-              <span className="text-ink font-medium">How to Write a Resume</span>
-            </Link>
-            <Link
-              to="/cv-templates"
-              className="bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300 text-center"
-            >
-              <span className="text-ink font-medium">CV Templates (UK)</span>
-            </Link>
+            {[
+              { to: '/templates', title: 'Resume Templates', desc: 'Browse professional resume templates designed for every industry.' },
+              { to: '/resume-keywords', title: 'Resume Keywords by Industry', desc: 'Find the right keywords to get past ATS filters for your target role.' },
+              { to: '/blog/how-to-write-a-resume-guide', title: 'How to Write a Resume', desc: 'Step-by-step guide to writing a resume that gets interviews.' },
+              { to: '/cv-templates', title: 'CV Templates (UK)', desc: 'Professional CV templates formatted for UK and international job markets.' },
+            ].map((resource) => (
+              <Link
+                key={resource.to}
+                to={resource.to}
+                className="group bg-chalk-dark rounded-2xl p-6 border border-transparent border-l-4 border-l-accent/30 hover:border-l-accent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300"
+              >
+                <h3 className="font-display text-lg font-extrabold text-ink mb-2 flex items-center justify-between">
+                  {resource.title}
+                  <ArrowRightIcon className="w-4 h-4 text-stone-warm group-hover:text-accent group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
+                </h3>
+                <p className="font-display font-extralight text-stone-warm text-sm leading-relaxed">
+                  {resource.desc}
+                </p>
+              </Link>
+            ))}
           </div>
         </section>
       </RevealSection>

@@ -28,12 +28,13 @@ import { fileURLToPath } from 'url';
 import { STATIC_URLS } from '../src/data/sitemapUrls';
 import { JOBS_DATABASE } from '../src/data/jobKeywords/index';
 import { JOB_EXAMPLES_DATABASE } from '../src/data/jobExamples/index';
+import { cleanPrerenderedHtml } from './cleanPrerenderedHtml';
+import { getActiveBlogPosts } from '../src/data/blogPosts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DIST_DIR = path.resolve(__dirname, '../dist');
 const PRERENDER_DIR = path.join(DIST_DIR, 'prerendered');
-const PRODUCTION_ORIGIN = 'https://easyfreeresume.com';
 
 /**
  * Pages we intentionally skip prerendering (low SEO value).
@@ -66,6 +67,11 @@ function buildRoutesToPrerender(): string[] {
   // Programmatic SEO: job example pages
   for (const example of JOB_EXAMPLES_DATABASE) {
     routes.add(`/examples/${example.slug}`);
+  }
+
+  // Blog posts (exclude redirects and coming-soon drafts)
+  for (const post of getActiveBlogPosts()) {
+    routes.add(`/blog/${post.slug}`);
   }
 
   return Array.from(routes);
@@ -137,84 +143,6 @@ function createStaticServer(distDir: string, port: number): Promise<http.Server>
   });
 }
 
-/**
- * Meta tag identifiers that react-helmet-async manages via data-rh="true".
- * For each identifier we check: if a data-rh version exists in the HTML,
- * remove the original non-data-rh duplicate (which came from index.html).
- * If NO data-rh version exists, keep the original as a fallback.
- */
-const META_TAG_PATTERNS: { attr: string; value: string }[] = [
-  // <meta name="...">
-  { attr: 'name', value: 'description' },
-  { attr: 'name', value: 'robots' },
-  { attr: 'name', value: 'author' },
-  { attr: 'name', value: 'keywords' },
-  { attr: 'name', value: 'theme-color' },
-  { attr: 'name', value: 'msapplication-TileColor' },
-  { attr: 'name', value: 'twitter:card' },
-  { attr: 'name', value: 'twitter:url' },
-  { attr: 'name', value: 'twitter:title' },
-  { attr: 'name', value: 'twitter:description' },
-  { attr: 'name', value: 'twitter:image' },
-  // <meta property="...">
-  { attr: 'property', value: 'og:type' },
-  { attr: 'property', value: 'og:url' },
-  { attr: 'property', value: 'og:title' },
-  { attr: 'property', value: 'og:description' },
-  { attr: 'property', value: 'og:image' },
-  { attr: 'property', value: 'og:site_name' },
-];
-
-/**
- * Post-process prerendered HTML to fix duplicate meta tags.
- *
- * react-helmet-async APPENDS new <meta> tags with data-rh="true" to <head>
- * but does NOT remove the original tags from index.html. This means Google
- * sees the generic description first (from index.html) and ignores the
- * page-specific one (from Helmet). This function strips the originals
- * when a Helmet replacement exists.
- *
- * Also replaces any localhost:PORT URLs with the production origin
- * (belt-and-suspenders for the BlogLayout.tsx fix).
- */
-function cleanPrerenderedHtml(html: string, localPort: number): string {
-  let cleaned = html;
-
-  // 1. Remove duplicate non-data-rh meta tags (only when data-rh equivalent exists)
-  for (const { attr, value } of META_TAG_PATTERNS) {
-    // Escape special regex characters in the value (e.g., "og:title" → "og:title")
-    const escaped = value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-    // Check if a data-rh="true" version of this tag exists
-    const helmetPattern = new RegExp(
-      `<meta\\s+[^>]*${attr}="${escaped}"[^>]*data-rh="true"[^>]*/?>` +
-      `|<meta\\s+[^>]*data-rh="true"[^>]*${attr}="${escaped}"[^>]*/?>`,
-      'i'
-    );
-
-    if (helmetPattern.test(cleaned)) {
-      // Helmet injected a replacement — remove the original (the one WITHOUT data-rh)
-      // Match meta tags with this attr=value that do NOT contain data-rh
-      const originalPattern = new RegExp(
-        `\\s*<meta\\s+(?![^>]*data-rh)[^>]*${attr}=["']${escaped}["'][^>]*/?>`,
-        'gi'
-      );
-      cleaned = cleaned.replace(originalPattern, '');
-    }
-  }
-
-  // 2. Remove stale HTML comment blocks from index.html
-  cleaned = cleaned.replace(/\s*<!-- SEO Meta Tags -->\s*/g, '\n    ');
-  cleaned = cleaned.replace(/\s*<!-- Open Graph \/ Facebook -->\s*/g, '\n    ');
-  cleaned = cleaned.replace(/\s*<!-- Twitter -->\s*/g, '\n    ');
-
-  // 3. Replace any remaining localhost URLs with production origin
-  const localhostPattern = new RegExp(`http://localhost:${localPort}`, 'g');
-  cleaned = cleaned.replace(localhostPattern, PRODUCTION_ORIGIN);
-
-  return cleaned;
-}
-
 async function prerender() {
   const port = 4173;
 
@@ -240,27 +168,66 @@ async function prerender() {
     userAgent: 'EasyFreeResume-Prerender/1.0',
   });
 
+  // Transparent 1×1 PNG — used to fulfill external image requests during prerender.
+  // This prevents onError handlers from mutating img.src, preserving the correct
+  // Supabase CDN URLs in the prerendered HTML for Googlebot to discover.
+  const TRANSPARENT_1PX_PNG = Buffer.from(
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+    'base64'
+  );
+
+  // Block external network requests during prerender.
+  // All page content comes from local dist/ assets (JS, CSS, YAML).
+  // External CDN images get a transparent pixel so onError handlers don't
+  // mutate img.src — preserving correct CDN URLs in the prerendered HTML.
+  // Auth/analytics requests are aborted (they fail gracefully in AuthContext).
+  await context.route(
+    (url) => url.hostname !== 'localhost' && url.hostname !== '127.0.0.1',
+    (route) => {
+      if (route.request().resourceType() === 'image') {
+        route.fulfill({
+          status: 200,
+          contentType: 'image/png',
+          body: TRANSPARENT_1PX_PNG,
+        });
+      } else {
+        route.abort();
+      }
+    }
+  );
+
+  const concurrency = parseInt(process.env.PRERENDER_CONCURRENCY || '5', 10) || 5;
+  console.log(`  Concurrency: ${concurrency} page${concurrency > 1 ? 's' : ''}`);
+
   let successCount = 0;
   let failCount = 0;
 
-  for (const route of ROUTES_TO_PRERENDER) {
+  /**
+   * Render a single route: navigate, wait for hydration, extract HTML, save.
+   */
+  async function renderRoute(route: string): Promise<void> {
     const page = await context.newPage();
 
     try {
       const url = `http://localhost:${port}${route}`;
       console.log(`  Rendering: ${route}`);
 
-      // Navigate and wait for network to be idle (React hydration complete)
+      // Navigate and wait for initial load. Using 'load' instead of 'networkidle'
+      // because external requests are blocked by context.route() — aborted/fulfilled
+      // requests can prevent the 500ms idle window from ever opening, especially on
+      // image-heavy pages (/examples/*) in resource-constrained CI environments.
+      // React hydration is verified by waitForSelector('#root > *') below.
       await page.goto(url, {
-        waitUntil: 'networkidle',
+        waitUntil: 'load',
         timeout: 30000,
       });
 
       // Wait for React root to have content (not just the app shell)
       await page.waitForSelector('#root > *', { timeout: 10000 });
 
-      // Small delay for any remaining async rendering
-      await page.waitForTimeout(500);
+      // Wait for async data fetching and rendering (YAML loads, image placeholders).
+      // Longer than the old 500ms since we no longer wait for networkidle.
+      await page.waitForTimeout(1500);
 
       // Get the full rendered HTML
       let html = await page.content();
@@ -302,6 +269,20 @@ async function prerender() {
       await page.close();
     }
   }
+
+  // Process routes with a concurrency-limited worker pool.
+  // Each worker pulls the next unprocessed route from a shared index.
+  let nextIndex = 0;
+  async function worker(): Promise<void> {
+    while (nextIndex < ROUTES_TO_PRERENDER.length) {
+      const route = ROUTES_TO_PRERENDER[nextIndex++];
+      await renderRoute(route);
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, ROUTES_TO_PRERENDER.length) }, () => worker())
+  );
 
   await browser.close();
   server.close();

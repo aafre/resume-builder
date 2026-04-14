@@ -4,13 +4,14 @@
 import { useState, useCallback, useRef, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 import yaml from 'js-yaml';
-import { Section, ContactInfo } from '../../types';
+import { Section, ContactInfo, DocumentSettings } from '../../types';
 import { UseEditorActionsReturn } from '../../types/editor';
 import { generateResume } from '../../services/templates';
 import { getSessionId } from '../../utils/session';
 import { extractReferencedIconFilenames } from '../../utils/iconExtractor';
 import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
 import { validateLinkedInUrl } from '../../services/validationService';
+import { trackPdfDownloaded } from '../../lib/analytics';
 
 /**
  * Icon validation result from usePreview
@@ -56,6 +57,8 @@ export interface UseEditorActionsProps {
   hasShownDownloadToast: boolean;
   /** Function to mark download toast as shown */
   markDownloadToastShown: () => void;
+  /** Document settings (accent colour, font, page numbers) */
+  documentSettings?: DocumentSettings;
   /** Original template data for start fresh */
   originalTemplateData: { contactInfo: ContactInfo; sections: Section[] } | null;
   /** Whether resume is loading from URL (for missing icons dialog) */
@@ -106,6 +109,7 @@ export const useEditorActions = ({
   isAnonymous,
   hasShownDownloadToast,
   markDownloadToastShown,
+  documentSettings,
   originalTemplateData,
   isLoadingFromUrl,
   validateIcons,
@@ -231,6 +235,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         const yamlData = yaml.dump({
           contact_info: contactInfo,
           sections: processedSections,
+          ...(documentSettings && Object.keys(documentSettings).length > 0 && { settings: documentSettings }),
         });
 
         const formData = new FormData();
@@ -265,6 +270,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         document.body.removeChild(link);
         URL.revokeObjectURL(pdfUrl);
 
+        trackPdfDownloaded({ template_id: templateId || 'unknown', source: 'editor' });
         toast.success('Resume downloaded successfully!');
 
         // Show celebration modal on first download (all users)

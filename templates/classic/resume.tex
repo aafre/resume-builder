@@ -15,7 +15,7 @@
 
 \usepackage{ragged2e}
 \usepackage{titlesec}
-\titleformat{\section}{\Large\bfseries\scshape\RaggedRight}{}{0em}{}[\vspace{-0.6em}\rule{\linewidth}{0.8pt}\vspace{-0.1em}]
+\titleformat{\section}{\Large\bfseries\scshape\color{accent}\RaggedRight}{}{0em}{}[\vspace{-0.6em}{\color{accent}\rule{\linewidth}{0.8pt}}\vspace{-0.1em}]
 \titlespacing*{\section}{0pt}{*1.0}{*0.1}
 
 \usepackage{enumitem}
@@ -26,6 +26,14 @@
 
 \usepackage{xcolor}
 \definecolor{linkcolor}{RGB}{51,51,153}
+
+% Accent colour from settings (defaults to black if not set)
+\BLOCK{if settings and settings.accent_color and settings.accent_color != '#000000'}
+\definecolor{accent}{HTML}{\VAR{settings.accent_color | replace('#', '')}}
+\BLOCK{else}
+\definecolor{accent}{HTML}{000000}
+\BLOCK{endif}
+
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
@@ -37,6 +45,13 @@
 \usepackage[normalem]{ulem}  % For strikethrough support (normalem prevents underlining emphasis)
 
 \usepackage{fontawesome5}
+
+% Page number toggle from settings
+\BLOCK{if settings and settings.show_page_numbers}
+\pagestyle{plain}
+\BLOCK{else}
+\pagestyle{empty}
+\BLOCK{endif}
 
 % --- Custom Commands for Resume Elements ---
 \newcommand{\rjobtitle}[1]{%
@@ -174,6 +189,17 @@
                 \BLOCK{endfor}
             \end{itemize}\vspace{0.5em}
         \BLOCK{endif}
+
+    \BLOCK{elif section_type == "grouped-list"}
+        \BLOCK{for group in section.content}
+            \BLOCK{if group is mapping and group.label is defined}
+                \BLOCK{set group_items = group['items']}
+                \textbf{\VAR{group.label | markdown_links | markdown_formatting}:} \VAR{group_items | join(', ') | markdown_links | markdown_formatting} \\[2pt]
+            \BLOCK{else}
+                \VAR{group | markdown_links | markdown_formatting} \\[2pt]
+            \BLOCK{endif}
+        \BLOCK{endfor}
+        \vspace{0.5em}
 
     \BLOCK{elif section_type == "experience"}
         \BLOCK{for job in section.content}

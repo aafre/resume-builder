@@ -25,12 +25,14 @@ import { ContactInfo, Section, SaveStatus } from '../../types';
 import { UnifiedDndContext, UnifiedDndContextValue, DraggedItemInfo } from '../../contexts/UnifiedDndContext';
 import { DragLevel } from '../../hooks/editor/useUnifiedDragDrop';
 import ContactInfoSection from '../ContactInfoSection';
+import DocumentSettingsPanel from '../DocumentSettingsPanel';
 import FormattingHelp from '../FormattingHelp';
 import SectionRenderer from './SectionRenderer';
 import MobileActionBar from '../MobileActionBar';
 import MobileNavigationDrawer from '../MobileNavigationDrawer';
 import SectionNavigator from '../SectionNavigator';
 import DragHandle from '../DragHandle';
+import { GhostButton } from '../shared/GhostButton';
 
 /**
  * Props for contact form functionality
@@ -101,6 +103,7 @@ export interface EditorContentModalProps {
   closeNavigationDrawer: () => void;
   openSectionTypeModal: () => void;
   openHelpModal: () => void;
+  openFontModal: () => void;
 }
 
 /**
@@ -174,6 +177,10 @@ export interface EditorContentProps {
   supportsIcons: boolean;
   iconRegistry: EditorContentIconRegistry;
 
+  // Document settings
+  documentSettings: import('../../types').DocumentSettings;
+  onDocumentSettingsChange: (settings: import('../../types').DocumentSettings) => void;
+
   // Auth state
   isAnonymous: boolean;
   isAuthenticated: boolean;
@@ -231,6 +238,8 @@ export const EditorContent: React.FC<EditorContentProps> = ({
   sections,
   supportsIcons,
   iconRegistry,
+  documentSettings,
+  onDocumentSettingsChange,
   isAnonymous,
   isAuthenticated,
   contactForm,
@@ -305,6 +314,13 @@ export const EditorContent: React.FC<EditorContentProps> = ({
 
       {/* Global Formatting Help */}
       <FormattingHelp />
+
+      {/* Document Settings (accent colour, font, page numbers) */}
+      <DocumentSettingsPanel
+        settings={documentSettings}
+        onSettingsChange={onDocumentSettingsChange}
+        onOpenFontModal={modals.openFontModal}
+      />
 
       {/* Resume Sections with Drag and Drop */}
       <UnifiedDndContext.Provider value={unifiedDndContextValue}>
@@ -449,6 +465,13 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         </DragOverlay>
         </DndContext>
       </UnifiedDndContext.Provider>
+
+      {/* Add Section — bottom of form */}
+      <div className="mt-6 mb-8">
+        <GhostButton onClick={handleAddNewSectionClick}>
+          Add a New Section
+        </GhostButton>
+      </div>
 
       {/* Mobile Action Bar */}
       <MobileActionBar

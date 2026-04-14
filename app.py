@@ -28,6 +28,8 @@ import copy
 from jinja2 import Environment, FileSystemLoader
 from concurrent.futures import ThreadPoolExecutor
 import atexit
+from templates import registry as template_registry
+from templates.models import TemplateMetadata
 from functools import wraps, partial, lru_cache
 import time
 from typing import Callable, Any
@@ -153,7 +155,8 @@ def classify_thumbnail_error(error):
 
 
 def pdf_generation_worker(
-    template_name, yaml_path, output_path, session_icons_dir, session_id
+    template_name, yaml_path, output_path, session_icons_dir, session_id,
+    pdf_options=None,
 ):
     """
     Worker function for process pool PDF generation.
@@ -192,6 +195,10 @@ def pdf_generation_worker(
             session_id,
         ]
 
+        if pdf_options:
+            import json as json_mod
+            cmd.extend(["--pdf-options", json_mod.dumps(pdf_options)])
+
         logging.debug(f"Worker running command: {' '.join(cmd)}")
 
         # Get the project root (worker process needs proper cwd)
@@ -213,6 +220,9 @@ def pdf_generation_worker(
             logging.error(f"Template: {template_name}, Session: {session_id}")
             error_msg = f"Worker subprocess failed: {result.stderr}"
             return {"success": False, "error": error_msg}
+
+        if result.stderr:
+            logging.debug(f"Worker stderr: {result.stderr[:500]}")
 
         # Verify PDF was created and has content
         pdf_path = Path(output_path)
@@ -241,7 +251,8 @@ def pdf_generation_worker(
 
 
 def _dispatch_html_pdf_generation(
-    template, yaml_path, output_path, icons_dir, session_id, timeout=60
+    template, yaml_path, output_path, icons_dir, session_id, timeout=60,
+    pdf_options=None,
 ):
     """Dispatch HTML-based PDF generation via thread pool or direct subprocess fallback."""
     if PDF_THREAD_POOL is None:
@@ -261,6 +272,9 @@ def _dispatch_html_pdf_generation(
             session_id,
         ]
 
+        if pdf_options:
+            cmd.extend(["--pdf-options", json.dumps(pdf_options)])
+
         result = subprocess.run(
             cmd, capture_output=True, text=True, cwd=str(PROJECT_ROOT)
         )
@@ -276,6 +290,7 @@ def _dispatch_html_pdf_generation(
             output_path,
             icons_dir,
             session_id,
+            pdf_options,
         )
 
         try:
@@ -473,6 +488,25 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
         return "LinkedIn Profile"
 
 
+LATEX_SPECIAL_CHARS = {
+    "\\": r"\textbackslash{}",
+    "&": r"\&",
+    "%": r"\%",
+    "$": r"\$",
+    "#": r"\#",
+    # "_": r"\_",  # Don't escape: used for markdown italic/bold (_text_ and __text__)
+    "{": r"\{",
+    "}": r"\}",
+    # "~": r"\textasciitilde{}",  # Don't escape: used for markdown strikethrough (~~text~~)
+    "^": r"\textasciicircum{}",
+    "<": r"\textless{}",
+    ">": r"\textgreater{}",
+    "|": r"\textbar{}",
+    "-": r"{-}",
+}
+
+LATEX_ESCAPE_PATTERN = re.compile("|".join(re.escape(key) for key in LATEX_SPECIAL_CHARS.keys()))
+
 def _escape_latex(text):
     r"""Escapes special LaTeX characters in a string to prevent compilation errors.
 
@@ -489,25 +523,7 @@ def _escape_latex(text):
     if not isinstance(text, str):
         return text
 
-    latex_special_chars = {
-        "\\": r"\textbackslash{}",
-        "&": r"\&",
-        "%": r"\%",
-        "$": r"\$",
-        "#": r"\#",
-        # "_": r"\_",  # Don't escape: used for markdown italic/bold (_text_ and __text__)
-        "{": r"\{",
-        "}": r"\}",
-        # "~": r"\textasciitilde{}",  # Don't escape: used for markdown strikethrough (~~text~~)
-        "^": r"\textasciicircum{}",
-        "<": r"\textless{}",
-        ">": r"\textgreater{}",
-        "|": r"\textbar{}",
-        "-": r"{-}",
-    }
-
-    pattern = re.compile("|".join(re.escape(key) for key in latex_special_chars.keys()))
-    escaped_text = pattern.sub(lambda match: latex_special_chars[match.group(0)], text)
+    escaped_text = LATEX_ESCAPE_PATTERN.sub(lambda match: LATEX_SPECIAL_CHARS[match.group(0)], text)
     return escaped_text
 
 
@@ -761,6 +777,12 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
         latex_env.filters["markdown_links"] = convert_markdown_links_to_latex
         latex_env.filters["markdown_formatting"] = convert_markdown_formatting_to_latex
 
+        # Extract document settings for LaTeX rendering
+        settings = yaml_data.get("settings", {})
+        if not isinstance(settings, dict):
+            settings = {}
+        prepared_data["settings"] = settings
+
         # Render the LaTeX template
         template = latex_env.get_template("resume.tex")
         latex_content = template.render(**prepared_data)
@@ -791,39 +813,50 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
             compile_command, capture_output=True, text=True, cwd=str(temp_dir)
         )
 
-        # Check if PDF was generated successfully (primary success indicator)
-        if not temp_pdf_file.exists():
-            logging.error("PDF file was not generated by LaTeX compilation")
-            logging.error(f"LaTeX return code: {result.returncode}")
-            logging.error(f"LaTeX stdout: {result.stdout}")
-            logging.error(f"LaTeX stderr: {result.stderr}")
-            raise Exception("PDF file was not generated")
+        try:
+            # Check if PDF was generated successfully
+            # xdvipdfmx can leave a partial/empty file before crashing,
+            # so we must check both existence AND non-zero size
+            if not temp_pdf_file.exists() or temp_pdf_file.stat().st_size == 0:
+                logging.error("PDF file was not generated by LaTeX compilation")
+                logging.error(f"LaTeX return code: {result.returncode}")
+                logging.error(f"LaTeX stdout: {result.stdout}")
+                logging.error(f"LaTeX stderr: {result.stderr}")
+                raise Exception("PDF file was not generated")
 
-        # Log warnings if present but don't fail if PDF exists
-        if result.stderr:
-            logging.warning(f"LaTeX compilation warnings: {result.stderr}")
+            # Fail if xdvipdfmx reported fatal errors (corrupt output even if file exists)
+            # Check both stdout and stderr since LaTeX tools are inconsistent about output streams
+            combined_output = ((result.stdout or "") + (result.stderr or "")).lower()
+            if result.returncode != 0 and "fatal" in combined_output:
+                logging.error(
+                    f"LaTeX compilation had fatal errors (return code {result.returncode})"
+                )
+                logging.error(f"LaTeX stderr: {result.stderr}")
+                raise Exception("LaTeX compilation failed with fatal error")
 
-        # Only fail on non-zero return code if PDF wasn't generated
-        if result.returncode != 0:
-            logging.warning(
-                f"LaTeX compilation completed with warnings (return code {result.returncode})"
-            )
-            logging.warning(f"LaTeX stdout: {result.stdout}")
+            # Log non-fatal warnings
+            if result.stderr:
+                logging.warning(f"LaTeX compilation warnings: {result.stderr}")
 
-        # Copy the generated PDF to the output location
-        shutil.copy2(temp_pdf_file, output_path)
-        logging.info(f"PDF successfully generated at: {output_path}")
+            if result.returncode != 0:
+                logging.warning(
+                    f"LaTeX compilation completed with warnings (return code {result.returncode})"
+                )
+                logging.warning(f"LaTeX stdout: {result.stdout}")
 
-        # Clean up temporary files
-        for pattern in [f"resume_{session_id}.*"]:
-            for temp_file in temp_dir.glob(pattern):
+            # Copy the generated PDF to the output location
+            shutil.copy2(temp_pdf_file, output_path)
+            logging.info(f"PDF successfully generated at: {output_path}")
+
+            return str(output_path)
+        finally:
+            # Always clean up temporary files (contain PII from resume data)
+            for temp_file in temp_dir.glob(f"resume_{session_id}.*"):
                 try:
                     temp_file.unlink()
                     logging.debug(f"Cleaned up temporary file: {temp_file}")
                 except Exception as e:
                     logging.warning(f"Could not remove temporary file {temp_file}: {e}")
-
-        return str(output_path)
 
     except Exception as e:
         # Complete error context for debugging - ONLY on actual errors
@@ -887,6 +920,18 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
             return cols - 1
 
     return max_columns  # Default to max columns if all checks pass
+
+
+def _copy_black_icons(session_icons_dir: Path, base_contact_icons: list[str]) -> None:
+    """Copy black monochrome icon variants to session directory."""
+    black_icons_src = ICONS_DIR / "black"
+    if black_icons_src.is_dir():
+        black_icons_dst = session_icons_dir / "black"
+        black_icons_dst.mkdir(exist_ok=True)
+        for icon_name in base_contact_icons:
+            src = black_icons_src / icon_name
+            if src.exists():
+                shutil.copy2(src, black_icons_dst / icon_name)
 
 
 def extract_icons_from_yaml(data):
@@ -1270,27 +1315,15 @@ OUTPUT_DIR = PROJECT_ROOT / "output"
 os.makedirs(ICONS_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# Template file mapping
+# Template configuration is now managed by templates/registry.py
+# Legacy references kept for backward compatibility during migration:
 TEMPLATE_FILE_MAP = {
-    "modern": TEMPLATES_DIR / "john_doe.yml",  # Alias for job example pages
-    "modern-no-icons": TEMPLATES_DIR / "john_doe_no_icon.yml",
-    "modern-with-icons": TEMPLATES_DIR / "john_doe.yml",
-    "classic-alex-rivera": PROJECT_ROOT
-    / "samples"
-    / "classic"
-    / "alex_rivera_data.yml",
-    "classic-jane-doe": PROJECT_ROOT / "samples" / "classic" / "jane_doe.yml",
+    tid: template_registry.get_sample_path(tid)
+    for tid in template_registry.all_ids()
 }
-
-# Template ID to directory mapping
-# Maps UI template IDs to actual template directory names
 TEMPLATE_DIR_MAP = {
-    "modern-with-icons": "modern",  # HTML template - icons supported
-    "modern-no-icons": "modern",  # HTML template - no icons
-    "modern": "modern",  # Default HTML template
-    "classic": "classic",  # LaTeX template (generic)
-    "classic-alex-rivera": "classic",  # LaTeX template (data analytics)
-    "classic-jane-doe": "classic",  # LaTeX template (marketing)
+    tid: template_registry.get_dir(tid)
+    for tid in template_registry.all_ids()
 }
 
 
@@ -1732,41 +1765,22 @@ def serve(path):
 def get_templates():
     """
     Fetch available templates with metadata for display.
+    Template configuration is driven by templates/registry.py.
     """
     try:
+        display_templates = template_registry.get_display_templates()
+        # Serve preview images from Supabase Storage CDN (WebP)
+        cdn_base = f"{SUPABASE_URL or ''}/storage/v1/object/public/template-previews"
         templates = [
-            {
-                "id": "classic-alex-rivera",
-                "name": "Professional",
-                "description": "Clean, structured layout with traditional formatting and excellent space utilization.",
-                "image_url": url_for(
-                    "serve_templates", filename="alex_rivera.png", _external=True
-                ),
-            },
-            {
-                "id": "classic-jane-doe",
-                "name": "Elegant",
-                "description": "Refined design with sophisticated typography and organized section layout.",
-                "image_url": url_for(
-                    "serve_templates", filename="jane_doe.png", _external=True
-                ),
-            },
-            {
-                "id": "modern-no-icons",
-                "name": "Minimalist",
-                "description": "Clean and simple design focused on content clarity and easy readability.",
-                "image_url": url_for(
-                    "serve_templates", filename="modern-no-icons.png", _external=True
-                ),
-            },
-            {
-                "id": "modern-with-icons",
-                "name": "Modern",
-                "description": "Contemporary design enhanced with visual icons and dynamic styling elements.",
-                "image_url": url_for(
-                    "serve_templates", filename="modern-with-icons.png", _external=True
-                ),
-            },
+            TemplateMetadata(
+                id=t.id,
+                name=t.name,
+                description=t.description,
+                image_url=f"{cdn_base}/{Path(t.preview).stem}.webp" if t.preview else f"{cdn_base}/modern-no-icons.webp",
+                supports_icons=t.supports_icons,
+                tags=t.tags,
+            ).model_dump()
+            for t in display_templates
         ]
         return jsonify({"success": True, "templates": templates})
     except Exception as e:
@@ -1778,36 +1792,30 @@ def get_templates():
 def get_template_data(template_id):
     """
     Fetch the YAML string for the specified template and determine if it supports icons.
+    Template lookup is driven by templates/registry.py.
     """
     try:
-        # Map template ID to the file name
-        template_file = TEMPLATE_FILE_MAP.get(template_id)
-        if not template_file:
-            logging.warning(f"Template ID not mapped: {template_id}")
-            return jsonify({"success": False, "error": "Template not found"}), 404
+        config = template_registry.get(template_id)
+        sample_path = template_registry.get_sample_path(template_id)
 
-        # Construct the full path to the YAML file
-        template_path = TEMPLATES_DIR / template_file
-        if not template_path.exists():
-            logging.warning(f"Template file not found: {template_path}")
+        if not sample_path.exists():
+            logging.warning(f"Template sample file not found: {sample_path}")
             return jsonify({"success": False, "error": "Template not found"}), 404
 
         # Read the YAML content using cached function
-        yaml_content = get_template_config(template_path)
+        yaml_content = get_template_config(sample_path)
 
-        # Determine icon support based on template ID
-        # Only 'modern-with-icons' template supports icons
-        supports_icons = template_id == "modern-with-icons"
-
-        # Return the YAML content and supportsIcons flag
         return jsonify(
             {
                 "success": True,
                 "yaml": yaml.safe_dump(yaml_content),
                 "template_id": template_id,
-                "supportsIcons": supports_icons,
+                "supportsIcons": config.supports_icons,
             }
         )
+    except KeyError:
+        logging.warning(f"Template ID not registered: {template_id}")
+        return jsonify({"success": False, "error": "Template not found"}), 404
     except FileNotFoundError:
         logging.warning(f"Template file not found for {template_id}")
         return jsonify({"success": False, "error": "Template not found"}), 404
@@ -1947,6 +1955,9 @@ def generate_resume():
                         f"Base contact icon not found: {icon_name} at {default_icon_path}"
                     )
 
+            # Copy black icon variants (used by ATS, Student, UK CV templates)
+            _copy_black_icons(session_icons_dir, base_contact_icons)
+
             # Copy additional icons referenced in YAML content (only for icon-supporting templates)
             if uses_icons:
                 referenced_icons = extract_icons_from_yaml(yaml_data)
@@ -1998,24 +2009,27 @@ def generate_resume():
                     "Skipping user uploaded icons for no-icons template variant"
                 )
 
-            # Validate template ID against known templates
-            if template not in TEMPLATE_DIR_MAP:
+            # Validate template ID against registry
+            if not template_registry.is_valid(template):
                 raise ValueError(
-                    f"Invalid template: {template}. Available templates: {', '.join(TEMPLATE_DIR_MAP.keys())}"
+                    f"Invalid template: {template}. Available templates: {', '.join(template_registry.all_ids())}"
                 )
 
-            # Use the mapped template directory
-            actual_template = TEMPLATE_DIR_MAP[template]
+            # Extract document settings for renderer (accent colour, page numbers, etc.)
+            user_settings = yaml_data.get("settings", {})
 
-            if actual_template == "classic":
-                generate_latex_pdf(
-                    yaml_data, str(session_icons_dir), str(output_path), actual_template
-                )
-            else:
-                _dispatch_html_pdf_generation(
-                    actual_template, yaml_path, output_path,
-                    session_icons_dir, session_id,
-                )
+            # Dispatch PDF generation via template renderer
+            from templates.renderer import generate_pdf as render_template_pdf
+
+            render_template_pdf(
+                template_id=template,
+                yaml_data=yaml_data,
+                yaml_path=yaml_path,
+                output_path=str(output_path),
+                icons_dir=str(session_icons_dir),
+                session_id=session_id,
+                settings=user_settings,
+            )
 
             if not output_path.exists():
                 logging.error(f"Expected output file at: {output_path}")
@@ -2208,6 +2222,7 @@ def create_resume():
         contact_info = migrate_linkedin_to_social_links(contact_info)
 
         sections = template_data.get("sections", [])
+        settings = template_data.get("settings", {})
 
         # If load_example is False, clear the content but keep the structure
         if not load_example:
@@ -2226,6 +2241,7 @@ def create_resume():
                 "bulleted-list",
                 "inline-list",
                 "dynamic-column-list",
+                "grouped-list",
                 "icon-list",
                 "experience",
                 "education",
@@ -2247,6 +2263,7 @@ def create_resume():
             "template_id": template_id,
             "contact_info": contact_info,
             "sections": sections,
+            "settings": settings,
             "json_hash": None,  # No hash yet (no data)
             "created_at": "now()",
             "updated_at": "now()",
@@ -2317,6 +2334,7 @@ def save_resume():
         contact_info = data.get("contact_info", {})
         sections = data.get("sections", [])
         icons = data.get("icons", [])
+        settings = data.get("settings", {})
         ai_import_warnings = data.get("ai_import_warnings")  # Optional JSONB array
         ai_import_confidence = data.get("ai_import_confidence")  # Optional decimal
 
@@ -2345,6 +2363,7 @@ def save_resume():
             {
                 "contact_info": contact_info,
                 "sections": sections,
+                "settings": settings,
                 "icon_metadata": sorted(
                     icon_metadata, key=lambda x: x["filename"]
                 ),  # Sort for consistency
@@ -2421,6 +2440,7 @@ def save_resume():
             "template_id": template_id,
             "contact_info": contact_info,
             "sections": sections,
+            "settings": settings,
             "json_hash": new_hash,  # Store hash for future diffing
             "updated_at": "now()",
             "last_accessed_at": "now()",
@@ -2755,17 +2775,13 @@ def load_resume(resume_id):
 
         resume["icons"] = icons_result.data
 
-        # Update last_accessed_at while preserving updated_at (non-blocking - don't fail if this fails)
+        # Update last_accessed_at only (non-blocking - don't fail if this fails)
+        # Note: updated_at is NOT included — without the DB trigger, only columns
+        # in the SET clause are modified, so updated_at is preserved automatically.
         try:
-            # Preserve updated_at when only updating last_accessed_at
-            current_updated_at = resume.get("updated_at")
-            update_data = {"last_accessed_at": datetime.now().isoformat()}
-            if current_updated_at:
-                update_data["updated_at"] = (
-                    current_updated_at  # Preserve original timestamp
-                )
-
-            supabase.table("resumes").update(update_data).eq("id", resume_id).execute()
+            supabase.table("resumes").update(
+                {"last_accessed_at": "now()"}
+            ).eq("id", resume_id).execute()
         except Exception as timestamp_error:
             logging.warning(
                 f"Failed to update last_accessed_at for resume {resume_id}: {timestamp_error}"
@@ -3084,27 +3100,24 @@ def migrate_anonymous_resumes():
             f"Starting migration: {old_count} resumes from {old_user_id} to {new_user_id} (total: {total_count})"
         )
 
-        # Get all resumes being migrated with their updated_at timestamps
+        # Get all resume IDs being migrated
         resumes_to_migrate = (
             supabase.table("resumes")
-            .select("id, updated_at")
+            .select("id")
             .eq("user_id", old_user_id)
             .is_("deleted_at", "null")
             .execute()
         )
 
         old_resume_ids = [r["id"] for r in resumes_to_migrate.data]
-        resume_timestamps = {r["id"]: r["updated_at"] for r in resumes_to_migrate.data}
 
-        # Step 1: Update resume ownership while preserving updated_at timestamps
-        # We update each resume individually to preserve its original updated_at
-        for resume_id, original_timestamp in resume_timestamps.items():
+        # Step 1: Update resume ownership in bulk.
+        # updated_at is NOT included — without the DB trigger, only the
+        # user_id column changes, so updated_at is preserved automatically.
+        if old_resume_ids:
             supabase.table("resumes").update(
-                {
-                    "user_id": new_user_id,
-                    "updated_at": original_timestamp,  # Preserve original timestamp
-                }
-            ).eq("id", resume_id).execute()
+                {"user_id": new_user_id}
+            ).in_("id", old_resume_ids).execute()
 
         logging.info(f"Updated {old_count} resume records while preserving timestamps")
 
@@ -3258,14 +3271,19 @@ def update_resume_partial(resume_id):
         if not result.data:
             return jsonify({"success": False, "error": "Resume not found"}), 404
 
-        # Update title
-        supabase.table("resumes").update(
-            {"title": new_title, "updated_at": "now()"}
-        ).eq("id", resume_id).execute()
+        # Update title and return the new updated_at for frontend cache sync
+        result = (
+            supabase.table("resumes")
+            .update({"title": new_title, "updated_at": "now()"})
+            .eq("id", resume_id)
+            .select("updated_at")
+            .execute()
+        )
+        updated_at = result.data[0]["updated_at"] if result.data else None
 
         logging.info(f"Resume title updated: {resume_id} -> {new_title}")
 
-        return jsonify({"success": True, "title": new_title}), 200
+        return jsonify({"success": True, "title": new_title, "updated_at": updated_at}), 200
 
     except Exception as e:
         logging.error(f"Error updating resume title: {e}")
@@ -3341,10 +3359,12 @@ def generate_pdf_for_saved_resume(resume_id):
                 return jsonify({"success": False, "error": error_msg}), 500
 
             # Prepare YAML data
+            resume_settings = resume.get("settings", {})
             yaml_data = {
                 "template": resume.get("template_id"),
                 "contact_info": resume.get("contact_info", {}),
                 "sections": resume.get("sections", []),
+                "settings": resume_settings if isinstance(resume_settings, dict) else {},
             }
 
             # Normalize sections
@@ -3380,6 +3400,9 @@ def generate_pdf_for_saved_resume(resume_id):
                     logging.debug(f"Copied base contact icon: {icon_name}")
                 else:
                     logging.warning(f"Base contact icon not found: {icon_name}")
+
+            # Copy black icon variants (used by ATS, Student, UK CV templates)
+            _copy_black_icons(session_icons_dir, base_contact_icons)
 
             # Extract content icons (from Experience, Education, Certifications, etc.) only for icon-supporting templates
             if uses_icons:
@@ -3445,18 +3468,19 @@ def generate_pdf_for_saved_resume(resume_id):
             output_path = temp_dir_path / f"Resume_{timestamp}.pdf"
 
             template_id = resume.get("template_id", "modern")
-            actual_template = TEMPLATE_DIR_MAP.get(template_id, "modern")
 
-            # Generate PDF using appropriate method
-            if actual_template == "classic":
-                generate_latex_pdf(
-                    yaml_data, str(session_icons_dir), str(output_path), actual_template
-                )
-            else:
-                _dispatch_html_pdf_generation(
-                    actual_template, yaml_path, output_path,
-                    session_icons_dir, session_id,
-                )
+            # Dispatch PDF generation via template renderer
+            from templates.renderer import generate_pdf as render_template_pdf
+
+            render_template_pdf(
+                template_id=template_id,
+                yaml_data=yaml_data,
+                yaml_path=yaml_path,
+                output_path=str(output_path),
+                icons_dir=str(session_icons_dir),
+                session_id=session_id,
+                settings=yaml_data.get("settings", {}),
+            )
 
             if not output_path.exists():
                 raise FileNotFoundError("PDF file was not generated")
@@ -3467,33 +3491,16 @@ def generate_pdf_for_saved_resume(resume_id):
                     str(output_path), user_id, resume_id
                 )
                 if thumbnail_url:
-                    # Fetch current updated_at to preserve it (avoid triggering timestamp update for metadata-only change)
-                    current_resume = (
-                        supabase.table("resumes")
-                        .select("updated_at")
-                        .eq("id", resume_id)
-                        .execute()
-                    )
-                    current_updated_at = (
-                        current_resume.data[0]["updated_at"]
-                        if current_resume.data
-                        else None
-                    )
-
-                    # Update resume with thumbnail URL and timestamp
+                    # Update resume with thumbnail URL and generation timestamp.
+                    # updated_at is NOT included — without the DB trigger, it is
+                    # preserved automatically for metadata-only changes.
                     current_time = datetime.now(timezone.utc).isoformat()
-                    update_data = {
-                        "thumbnail_url": thumbnail_url,
-                        "pdf_generated_at": current_time,  # Use consistent timestamp
-                    }
-                    if current_updated_at:
-                        update_data["updated_at"] = (
-                            current_updated_at  # Preserve original timestamp
-                        )
-
-                    supabase.table("resumes").update(update_data).eq(
-                        "id", resume_id
-                    ).execute()
+                    supabase.table("resumes").update(
+                        {
+                            "thumbnail_url": thumbnail_url,
+                            "pdf_generated_at": current_time,
+                        }
+                    ).eq("id", resume_id).execute()
                     logging.info(
                         f"Thumbnail generated and saved for resume {resume_id}"
                     )
@@ -3592,10 +3599,12 @@ def generate_thumbnail_for_resume(resume_id):
                 # Icons will be missing from PDF, but thumbnail will still generate
 
             # Prepare YAML data
+            resume_settings = resume.get("settings", {})
             yaml_data = {
                 "template": resume.get("template_id"),
                 "contact_info": resume.get("contact_info", {}),
                 "sections": resume.get("sections", []),
+                "settings": resume_settings if isinstance(resume_settings, dict) else {},
             }
 
             # Normalize sections
@@ -3631,6 +3640,9 @@ def generate_thumbnail_for_resume(resume_id):
                     logging.debug(f"Copied base contact icon: {icon_name}")
                 else:
                     logging.warning(f"Base contact icon not found: {icon_name}")
+
+            # Copy black icon variants (used by ATS, Student, UK CV templates)
+            _copy_black_icons(session_icons_dir, base_contact_icons)
 
             # Extract content icons (from Experience, Education, Certifications, etc.) only for icon-supporting templates
             if uses_icons:
@@ -3696,18 +3708,19 @@ def generate_thumbnail_for_resume(resume_id):
             output_path = temp_dir_path / f"Resume_{timestamp}.pdf"
 
             template_id = resume.get("template_id", "modern")
-            actual_template = TEMPLATE_DIR_MAP.get(template_id, "modern")
 
-            # Generate PDF using appropriate method
-            if actual_template == "classic":
-                generate_latex_pdf(
-                    yaml_data, str(session_icons_dir), str(output_path), actual_template
-                )
-            else:
-                _dispatch_html_pdf_generation(
-                    actual_template, yaml_path, output_path,
-                    session_icons_dir, session_id,
-                )
+            # Dispatch PDF generation via template renderer
+            from templates.renderer import generate_pdf as render_template_pdf
+
+            render_template_pdf(
+                template_id=template_id,
+                yaml_data=yaml_data,
+                yaml_path=yaml_path,
+                output_path=str(output_path),
+                icons_dir=str(session_icons_dir),
+                session_id=session_id,
+                settings=yaml_data.get("settings", {}),
+            )
 
             if not output_path.exists():
                 raise FileNotFoundError("PDF file was not generated")
@@ -3725,29 +3738,16 @@ def generate_thumbnail_for_resume(resume_id):
                     500,
                 )
 
-            # Fetch current updated_at to preserve it (avoid triggering timestamp update for metadata-only change)
-            current_resume = (
-                supabase.table("resumes")
-                .select("updated_at")
-                .eq("id", resume_id)
-                .execute()
-            )
-            current_updated_at = (
-                current_resume.data[0]["updated_at"] if current_resume.data else None
-            )
-
-            # Update resume with thumbnail URL and timestamp
+            # Update resume with thumbnail URL and generation timestamp.
+            # updated_at is NOT included — without the DB trigger, it is
+            # preserved automatically for metadata-only changes.
             current_time = datetime.now(timezone.utc).isoformat()
-            update_data = {
-                "thumbnail_url": thumbnail_url,
-                "pdf_generated_at": current_time,  # Use same timestamp as response for polling
-            }
-            if current_updated_at:
-                update_data["updated_at"] = (
-                    current_updated_at  # Preserve original timestamp
-                )
-
-            supabase.table("resumes").update(update_data).eq("id", resume_id).execute()
+            supabase.table("resumes").update(
+                {
+                    "thumbnail_url": thumbnail_url,
+                    "pdf_generated_at": current_time,
+                }
+            ).eq("id", resume_id).execute()
 
             logging.info(f"Thumbnail generated successfully for resume {resume_id}")
             logging.debug(

@@ -13,6 +13,8 @@ import ResponsiveConfirmDialog from '../ResponsiveConfirmDialog';
 import PreviewModal from '../PreviewModal';
 import { StorageLimitModal } from '../StorageLimitModal';
 import ContextAwareTour from '../ContextAwareTour';
+import FontSelectionModal from '../FontSelectionModal';
+import { DocumentSettings } from '../../types';
 
 /**
  * Preview-related props for EditorModals
@@ -76,6 +78,10 @@ export interface EditorModalsProps {
   contactInfo: ContactInfo | null;
   /** Callback when auth completes successfully (from actions auth modal) */
   onAuthSuccess?: () => void;
+  /** Current document settings (for font modal) */
+  documentSettings?: DocumentSettings;
+  /** Callback when document settings change (for font modal) */
+  onDocumentSettingsChange?: (settings: DocumentSettings) => void;
 }
 
 /**
@@ -126,6 +132,8 @@ export const EditorModals: React.FC<EditorModalsProps> = ({
   sections,
   contactInfo,
   onAuthSuccess,
+  documentSettings,
+  onDocumentSettingsChange,
 }) => {
   return (
     <>
@@ -259,6 +267,18 @@ export const EditorModals: React.FC<EditorModalsProps> = ({
       <StorageLimitModal
         isOpen={modalManager.showStorageLimitModal}
         onClose={modalManager.closeStorageLimitModal}
+      />
+
+      {/* Font Selection Modal */}
+      <FontSelectionModal
+        isOpen={modalManager.showFontModal}
+        onClose={modalManager.closeFontModal}
+        currentFont={documentSettings?.font_family ?? 'Source Sans 3'}
+        onFontSelect={(font) => {
+          if (documentSettings && onDocumentSettingsChange) {
+            onDocumentSettingsChange({ ...documentSettings, font_family: font });
+          }
+        }}
       />
     </>
   );

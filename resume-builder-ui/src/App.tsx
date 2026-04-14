@@ -5,7 +5,7 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 
 // Critical components - loaded immediately
@@ -19,6 +19,7 @@ import { SideRailLayout, InContentAd, AD_CONFIG, isExplicitAdsEnabled } from "./
 import { affiliateConfig } from "./config/affiliate";
 import { ConversionProvider } from "./contexts/ConversionContext";
 import usePreferencePersistence from "./hooks/usePreferencePersistence";
+import { initAnalytics, identifyUser } from "./lib/analytics";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Landing page — inlined (6.5 KB brotli) to avoid Suspense fallback → page
@@ -991,7 +992,15 @@ function AppContent() {
 
 // Wrapper component to access auth context and provide preferences to ConversionProvider
 function AppWithProviders() {
-  const { session, loading: authLoading } = useAuth();
+  const { session, loading: authLoading, user, isAnonymous } = useAuth();
+
+  // Initialize PostHog analytics (lazy-loaded, deferred via requestIdleCallback)
+  useEffect(() => { initAnalytics(); }, []);
+
+  // Identify authenticated users in PostHog (anonymous users tracked automatically)
+  useEffect(() => {
+    if (user?.id && !isAnonymous) identifyUser(user.id);
+  }, [user?.id, isAnonymous]);
 
   const { preferences, setPreference } = usePreferencePersistence({
     session,

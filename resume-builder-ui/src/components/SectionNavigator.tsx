@@ -270,29 +270,6 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
     return <MdList className="text-base" />;
   };
 
-  // Get short label for collapsed state
-  const getShortLabel = (section: Section): string => {
-    const name = section.name.toLowerCase();
-
-    // Check more specific patterns first, then broader ones
-    if (name.includes("contact")) return "Contact";
-    if (name.includes("professional summary") || name.includes("summary") || name.includes("objective")) return "Summary";
-    if (name.includes("professional qual") || name.includes("qualification")) return "Quals";
-    if (name.includes("key skill") || name.includes("skill") || name.includes("technical")) return "Skills";
-    if (name.includes("experience") || name.includes("work") || name.includes("employment")) return "Work";
-    if (name.includes("education") || name.includes("school") || name.includes("academic")) return "Edu";
-    if (name.includes("certification") || name.includes("certificate")) return "Certs";
-    if (name.includes("personal") || name.includes("interest") || name.includes("hobby")) return "Personal";
-    if (name.includes("project") || name.includes("portfolio")) return "Projects";
-    if (name.includes("award") || name.includes("honor")) return "Awards";
-    if (name.includes("language")) return "Lang";
-    if (name.includes("volunteer")) return "Volunteer";
-
-    // Truncate to first word or first 8 chars
-    const firstWord = section.name.split(" ")[0];
-    return firstWord.length > 8 ? firstWord.substring(0, 7) + "." : firstWord;
-  };
-
   return (
     <nav
       ref={sidebarRef}
@@ -336,9 +313,10 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           {/* Contact Info */}
           <button
             onClick={() => onSectionClick(-1)}
+            title={isCollapsed ? "Contact Information" : undefined}
             className={`w-full flex items-center transition-all rounded-lg group ${
               isCollapsed
-                ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-accent/[0.06]/80"
+                ? "justify-center py-2.5 px-1.5 hover:bg-accent/[0.06]/80"
                 : "flex-row gap-3 px-3 py-2.5 hover:bg-gray-100/80"
             } ${
               activeSectionIndex === -1
@@ -350,24 +328,20 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           >
             <div
               className={`flex items-center justify-center ${
-                isCollapsed ? "w-7 h-7" : "w-6 h-6"
+                isCollapsed ? "w-8 h-8" : "w-6 h-6"
               } rounded-md ${
                 activeSectionIndex === -1
                   ? "bg-accent/10 text-accent"
                   : "bg-gray-100/80 text-gray-500 group-hover:bg-gray-200/80 group-hover:text-gray-700"
               }`}
             >
-              <MdPerson className="text-base" />
+              <MdPerson className={isCollapsed ? "text-lg" : "text-base"} />
             </div>
-            <span
-              className={`${
-                isCollapsed
-                  ? "text-[11px] font-medium text-center leading-tight"
-                  : "text-[13px] flex-1 text-left"
-              }`}
-            >
-              {isCollapsed ? "Contact" : "Contact Information"}
-            </span>
+            {!isCollapsed && (
+              <span className="text-[13px] flex-1 text-left">
+                Contact Information
+              </span>
+            )}
           </button>
 
           {/* Dynamic Sections */}
@@ -375,9 +349,10 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             <button
               key={index}
               onClick={() => onSectionClick(index)}
+              title={isCollapsed ? section.name : undefined}
               className={`w-full flex items-center transition-all rounded-lg group ${
                 isCollapsed
-                  ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-accent/[0.06]/80 mt-1"
+                  ? "justify-center py-2.5 px-1.5 hover:bg-accent/[0.06]/80 mt-1"
                   : "flex-row gap-3 px-3 py-2.5 hover:bg-gray-100/80 mt-0.5"
               } ${
                 activeSectionIndex === index
@@ -389,7 +364,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             >
               <div
                 className={`flex items-center justify-center ${
-                  isCollapsed ? "w-7 h-7" : "w-6 h-6"
+                  isCollapsed ? "w-8 h-8" : "w-6 h-6"
                 } rounded-md ${
                   activeSectionIndex === index
                     ? "bg-accent/10 text-accent"
@@ -398,16 +373,14 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               >
                 {getSectionIcon(section)}
               </div>
-              <span
-                className={`${
-                  isCollapsed
-                    ? "text-[11px] font-medium text-center leading-tight"
-                    : "text-[13px] flex-1 truncate text-left"
-                }`}
-                title={section.name}
-              >
-                {isCollapsed ? getShortLabel(section) : section.name}
-              </span>
+              {!isCollapsed && (
+                <span
+                  className="text-[13px] flex-1 truncate text-left"
+                  title={section.name}
+                >
+                  {section.name}
+                </span>
+              )}
             </button>
           ))}
 
@@ -540,73 +513,9 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           )}
         </div>
 
-      {/* Actions Section */}
-      <div className="border-t border-gray-200/60 bg-gradient-to-t from-gray-50/80 to-white">
-        <div className={`${isCollapsed ? "py-3 px-2" : "p-4"}`}>
-          {!isCollapsed && (
-            <h3 className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-3 px-1">
-              Actions
-            </h3>
-          )}
-
-          {/* Primary Action: Preview PDF */}
-          {onPreviewResume && (
-            <button
-              id="tour-preview-button"
-              onClick={onPreviewResume}
-              disabled={isPreviewLoading}
-              className={`w-full flex items-center justify-center bg-accent text-ink font-semibold rounded-lg shadow-md hover:shadow-lg hover:bg-accent/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative ${
-                isCollapsed
-                  ? "flex-col gap-1 py-2.5 px-1 mb-2"
-                  : "flex-row gap-2 px-4 py-2.5 mb-2.5"
-              }`}
-            >
-              {/* Staleness indicator badge */}
-              {previewIsStale && !isPreviewLoading && (
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full border-2 border-white animate-pulse"></span>
-              )}
-              {isPreviewLoading ? (
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-              ) : (
-                <MdVisibility className={isCollapsed ? "text-lg" : "text-base"} />
-              )}
-              <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
-                {isPreviewLoading
-                  ? isCollapsed
-                    ? "..."
-                    : "Loading..."
-                  : isCollapsed
-                  ? "Preview"
-                  : previewIsStale
-                  ? "Refresh Preview"
-                  : "Preview PDF"}
-              </span>
-            </button>
-          )}
-
-          {/* Primary Action: Download Resume */}
-          <button
-            id="tour-download-button"
-            onClick={onDownloadResume}
-            disabled={isGenerating}
-            className={`w-full flex items-center justify-center bg-gradient-to-r from-emerald-600 to-green-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-emerald-500 hover:to-green-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${
-              isCollapsed
-                ? "flex-col gap-1 py-2.5 px-1"
-                : "flex-row gap-2 px-4 py-2.5 mb-2.5"
-            }`}
-          >
-            <MdFileDownload className={isCollapsed ? "text-lg" : "text-base"} />
-            <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
-              {isGenerating
-                ? isCollapsed
-                  ? "..."
-                  : "Generating..."
-                : isCollapsed
-                ? "PDF"
-                : "Download Resume"}
-            </span>
-          </button>
-
+      {/* Secondary Actions — inside scrollable area */}
+      <div className="border-t border-gray-200/60">
+        <div className={`${isCollapsed ? "py-2 px-2" : "p-3"}`}>
           {/* Secondary Action: Add Section */}
           <button
             onClick={onAddSection}
@@ -745,12 +654,12 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               to="/contact"
               className={`w-full flex items-center transition-all rounded-md ${
                 isCollapsed
-                  ? "flex-col gap-1 py-2 px-1 hover:bg-teal-50/80"
-                  : "flex-row gap-3 px-3 py-2 hover:bg-teal-50/80 text-gray-700 hover:text-teal-700"
+                  ? "flex-col gap-1 py-2 px-1 hover:bg-chalk-dark"
+                  : "flex-row gap-3 px-3 py-2 hover:bg-chalk-dark text-stone-warm hover:text-ink"
               }`}
             >
               <MdSupport
-                className={`text-teal-600 ${isCollapsed ? "text-base" : "text-base"}`}
+                className={`text-stone-warm ${isCollapsed ? "text-base" : "text-base"}`}
               />
               <span
                 className={`${
@@ -765,10 +674,72 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           </div>
         </div>
       </div>
+      </div>
+      {/* END scrollable area */}
+
+      {/* Primary Actions — always visible, pinned below scroll area */}
+      <div className={`flex-shrink-0 border-t border-gray-200/60 bg-gradient-to-t from-gray-50/80 to-white ${isCollapsed ? "py-3 px-2" : "p-4"}`}>
+        {/* Preview PDF */}
+        {onPreviewResume && (
+          <button
+            id="tour-preview-button"
+            onClick={onPreviewResume}
+            disabled={isPreviewLoading}
+            className={`w-full flex items-center justify-center bg-accent text-ink font-semibold rounded-lg shadow-md hover:shadow-lg hover:bg-accent/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative ${
+              isCollapsed
+                ? "flex-col gap-1 py-3 px-2 mb-2"
+                : "flex-row gap-2 px-4 py-2.5 mb-2.5"
+            }`}
+          >
+            {previewIsStale && !isPreviewLoading && (
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full border-2 border-white animate-pulse"></span>
+            )}
+            {isPreviewLoading ? (
+              <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+            ) : (
+              <MdVisibility className={isCollapsed ? "text-lg" : "text-base"} />
+            )}
+            <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
+              {isPreviewLoading
+                ? isCollapsed
+                  ? "..."
+                  : "Loading..."
+                : isCollapsed
+                ? "Preview"
+                : previewIsStale
+                ? "Refresh Preview"
+                : "Preview PDF"}
+            </span>
+          </button>
+        )}
+
+        {/* Download Resume */}
+        <button
+          id="tour-download-button"
+          onClick={onDownloadResume}
+          disabled={isGenerating}
+          className={`w-full flex items-center justify-center bg-gradient-to-r from-emerald-600 to-green-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-emerald-500 hover:to-green-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${
+            isCollapsed
+              ? "flex-col gap-1 py-3 px-2"
+              : "flex-row gap-2 px-4 py-2.5"
+          }`}
+        >
+          <MdFileDownload className={isCollapsed ? "text-lg" : "text-base"} />
+          <span className={isCollapsed ? "text-[10px] leading-tight font-medium" : "text-[13px]"}>
+            {isGenerating
+              ? isCollapsed
+                ? "..."
+                : "Generating..."
+              : isCollapsed
+              ? "PDF"
+              : "Download Resume"}
+          </span>
+        </button>
+      </div>
 
       {/* Keyboard shortcut hint */}
       {!isCollapsed && (
-        <div className="px-4 py-2.5 bg-gray-100/50 border-t border-gray-200/40">
+        <div className="flex-shrink-0 px-4 py-2.5 bg-gray-100/50 border-t border-gray-200/40">
           <p className="text-[10px] text-gray-500 text-center">
             Press{" "}
             <kbd className="px-1.5 py-0.5 bg-white rounded text-[9px] font-mono border border-gray-300 shadow-sm">
@@ -786,7 +757,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
       {/* Desktop-only sidebar ad - far from interactive elements
           Phase 3 implementation - monitor for impact on editor completion rate */}
       {!isCollapsed && (
-        <div className="px-3 py-3 border-t border-gray-200/40 bg-gray-50/30">
+        <div className="flex-shrink-0 px-3 py-3 border-t border-gray-200/40 bg-gray-50/30">
           <AdContainer
             adSlot={AD_CONFIG.slots.editorSidebar}
             adFormat="vertical"
@@ -797,7 +768,6 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           />
         </div>
       )}
-      </div>
     </nav>
   );
 };

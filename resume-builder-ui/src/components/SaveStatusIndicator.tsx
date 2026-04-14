@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { SaveStatus } from '../types';
 
 interface SaveStatusIndicatorProps {
@@ -24,9 +25,25 @@ function formatTimeAgo(date: Date | null): string {
 }
 
 export function SaveStatusIndicator({ status, lastSaved }: SaveStatusIndicatorProps) {
+  const prevStatusRef = useRef<SaveStatus>(status);
+  const [showFlash, setShowFlash] = useState(false);
+
+  // Flash green background when transitioning from saving -> saved
+  useEffect(() => {
+    if (prevStatusRef.current === 'saving' && status === 'saved') {
+      setShowFlash(true);
+      const timer = setTimeout(() => setShowFlash(false), 1200);
+      return () => clearTimeout(timer);
+    }
+    prevStatusRef.current = status;
+  }, [status]);
+
   const icons = {
     saved: (
-      <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg
+        className={`w-4 h-4 text-green-500 ${showFlash ? 'animate-[scaleCheck_0.3s_ease-out]' : ''}`}
+        fill="none" viewBox="0 0 24 24" stroke="currentColor"
+      >
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
       </svg>
     ),
@@ -41,7 +58,7 @@ export function SaveStatusIndicator({ status, lastSaved }: SaveStatusIndicatorPr
       </svg>
     ),
     error: (
-      <svg className="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg className="w-4 h-4 text-red-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -61,11 +78,15 @@ export function SaveStatusIndicator({ status, lastSaved }: SaveStatusIndicatorPr
   const colorClasses = {
     saved: 'text-gray-600',
     saving: 'text-accent',
-    error: 'text-red-600'
+    error: 'text-red-600 font-medium'
   };
 
   return (
-    <div className={`flex items-center gap-1.5 text-sm ${colorClasses[status]}`}>
+    <div
+      className={`flex items-center gap-1.5 text-sm px-2 py-1 rounded-lg transition-colors duration-500 ${colorClasses[status]} ${
+        showFlash ? 'bg-green-50' : ''
+      }`}
+    >
       {icons[status]}
       <span>{text[status]}</span>
     </div>

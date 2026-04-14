@@ -1,0 +1,122 @@
+font: Source Sans Pro
+
+settings:
+  show_page_numbers: false
+
+contact_info:
+  name: Sarah Chen
+  location: "London, UK"
+  email: sarah.chen@university.ac.uk
+  phone: "+44 7700 900456"
+  social_links:
+    - platform: linkedin
+      url: https://linkedin.com/in/sarahchen
+      display_text: Sarah Chen
+    - platform: github
+      url: https://github.com/sarahchen
+      display_text: sarahchen
+
+sections:
+  - name: Objective
+    type: text
+    content: "Motivated Electronics and Communication Engineering student seeking a summer internship in VLSI design and verification. Strong foundation in digital design, Verilog RTL, and UVM-based verification methodologies with hands-on project experience in FPGA prototyping and ASIC design flows."
+
+  - name: Education
+    type: education
+    content:
+      - degree: "Bachelor of Technology in Electronics & Communication Engineering"
+        school: "Imperial College London"
+        year: "Expected May 2027"
+        gpa: "First Class Honours (78%)"
+        coursework:
+          - "Digital Electronics"
+          - "CMOS Design"
+          - "VLSI Design"
+          - "Analog Electronics"
+          - "Verilog & SystemVerilog"
+          - "Embedded Systems"
+          - "Electronic Devices and Circuits"
+          - "Computer Architecture"
+          - "Signal Processing"
+          - "Semiconductor Physics"
+          - "Control Systems"
+
+  - name: Projects
+    type: experience
+    content:
+      - company: "AES-128 Encryption/Decryption SoC Accelerator"
+        title: "SystemVerilog, AXI4-Lite, Xilinx Artix-7 FPGA"
+        dates: "Dec 2025"
+        description:
+          - "Architected an **AES-128 hardware accelerator** in SystemVerilog, integrated with a pipelined **AXI4-Lite slave interface** for SoC communication"
+          - "Incorporated a **Canright composite-field S-Box** achieving **5% LUT area reduction** and improved throughput compared to lookup-table baseline on **Xilinx Artix-7 FPGA**"
+          - "Verified functionality using a **UVM verification** environment with constrained-random stimulus, scoreboard, and **100% functional coverage** against **NIST FIPS-197 KAT vectors**"
+
+      - company: "I2C to AXI4-Lite Protocol Bridge"
+        title: "Verilog, FSM Design, AXI Protocol"
+        dates: "Feb 2026"
+        description:
+          - "Designed an **I2C to AXI4-Lite bridge** in Verilog for seamless integration of low-speed peripherals into AXI-based SoC systems"
+          - "Implemented **FSM-based protocol translation** with start/stop detection, address decoding and AXI VALID/READY handshaking"
+          - "Achieved **400 kHz I2C Fast Mode** compatibility with configurable clock stretching and multi-slave address support"
+
+      - company: "Asynchronous FIFO with Clock Domain Crossing (CDC)"
+        title: "Verilog RTL, Gray-code CDC"
+        dates: "Sep 2025"
+        description:
+          - "Architected an **asynchronous FIFO** in Verilog RTL enabling reliable data transfer between **independent clock domains** using Gray-code pointer synchronization"
+          - "Constructed key modules including **dual-port memory**, read/write pointers with **pointer width calculation based on FIFO depth**, Gray-code conversion, and full/empty flag logic"
+          - "Verified functionality using simulation-based testbenches, validating correct operation across **CDC scenarios** and back-to-back read/write transactions"
+
+  - name: Skills
+    type: grouped-list
+    content:
+      - label: "HDL & Verification"
+        items: ["Verilog", "SystemVerilog", "UVM", "Constrained Random Verification", "Functional Coverage", "SVA", "OOPs"]
+      - label: "ASIC & EDA Tools"
+        items: ["Cadence Virtuoso", "ModelSim", "Xilinx Vivado", "WinSpice", "LTSpice", "Microwind", "Synopsys Design Compiler"]
+      - label: "Programming & Embedded"
+        items: ["Python", "C/C++", "Assembly", "TCL", "Linux", "Arduino", "Keil", "Proteus"]
+      - label: "Protocols & Interfaces"
+        items: ["AXI4-Lite", "I2C", "SPI", "UART", "JTAG", "PCIe (basics)"]
+
+  - name: Achievements & Certifications
+    type: experience
+    content:
+      - company: "CMOS Design Competition"
+        title: "Winner"
+        dates: "Oct 2025"
+        description:
+          - "Transistor-Level CMOS Analog Signal Quantizer Design and Optimization (LTSpice)"
+
+      - company: "Dark Silicon (VLSI Design Competition), NIT Rourkela"
+        title: "Winner"
+        dates: "Jan 2025"
+        description:
+          - "Verilog-Based VGA Display Controller with Interactive Track Rendering (FPGA)"
+
+  - name: Position of Responsibility
+    type: experience
+    content:
+      - company: "Imperial College EEE Society"
+        title: "Event Management Lead"
+        dates: "Sep 2025 – Present"
+        description:
+          - "Led execution of **30+ events** including hackathons and industry talks with a **100+ member team**"
+      - company: "E-Summit"
+        title: "Event Organizer"
+        dates: "Feb 2026"
+        description:
+          - "Organized finance flagship event attracting **1500+ participants** and **12 industry sponsors**"
+      - company: "Iotics Club"
+        title: "Mentor"
+        dates: "Sep 2024 – Present"
+        description:
+          - "Mentored **50+ students** in IoT and embedded project design and implementation"
+
+  - name: Certifications
+    type: bulleted-list
+    content:
+      - "NPTEL — VLSI Design Flow: RTL to GDS (Elite, 78%) (Nov 2025)"
+      - "NPTEL — Computer Architecture (Gold Medal, Top 1%) (Jul 2025)"
+      - "Xilinx — Vivado Design Suite Fundamentals (Mar 2025)"

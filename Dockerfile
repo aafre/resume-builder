@@ -1,7 +1,19 @@
 FROM node:25-slim AS react-build
 
-# Build-time arguments for Vite (frontend environment variables)
-# These get embedded into the JavaScript bundle during build
+WORKDIR /app/react
+COPY resume-builder-ui/package*.json ./
+
+# Dependencies — cached unless package.json changes
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --prefer-offline
+
+# Playwright browser — cached unless @playwright/test version changes.
+# No cache mount here: the binary must persist in the layer for later RUN steps.
+RUN npx playwright install --with-deps chromium
+
+# Build args declared AFTER dependency layers so changing them
+# (e.g. VITE_APP_VERSION with git hash) doesn't bust npm/playwright cache.
+# COPY below uses content hashing — any source file change triggers a rebuild.
 ARG VITE_SUPABASE_URL
 ARG VITE_SUPABASE_PUBLISHABLE_KEY
 ARG VITE_APP_URL
@@ -9,8 +21,8 @@ ARG VITE_ENABLE_EXPLICIT_ADS
 ARG VITE_AFFILIATE_JOB_SEARCH_ENABLED
 ARG VITE_AFFILIATE_RESUME_REVIEW_ENABLED
 ARG VITE_AFFILIATE_RESUME_REVIEW_URL
-
-# Set as environment variables for Vite build process
+ARG VITE_APP_VERSION
+ARG VITE_POSTHOG_KEY
 ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
 ENV VITE_SUPABASE_PUBLISHABLE_KEY=$VITE_SUPABASE_PUBLISHABLE_KEY
 ENV VITE_APP_URL=$VITE_APP_URL
@@ -18,21 +30,16 @@ ENV VITE_ENABLE_EXPLICIT_ADS=$VITE_ENABLE_EXPLICIT_ADS
 ENV VITE_AFFILIATE_JOB_SEARCH_ENABLED=$VITE_AFFILIATE_JOB_SEARCH_ENABLED
 ENV VITE_AFFILIATE_RESUME_REVIEW_ENABLED=$VITE_AFFILIATE_RESUME_REVIEW_ENABLED
 ENV VITE_AFFILIATE_RESUME_REVIEW_URL=$VITE_AFFILIATE_RESUME_REVIEW_URL
+ENV VITE_APP_VERSION=$VITE_APP_VERSION
+ENV VITE_POSTHOG_KEY=$VITE_POSTHOG_KEY
 
-WORKDIR /app/react
-COPY resume-builder-ui/package*.json ./
-
-# Use cache mount for npm to speed up subsequent builds
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci --prefer-offline
-
+# Source code — content-hashed, rebuilds on ANY file change
 COPY resume-builder-ui/ ./
 
 # Build React app with embedded environment variables and prerender
 # SEO-critical routes to static HTML for bot user-agents (Googlebot, etc.)
-RUN --mount=type=cache,target=/root/.cache/ms-playwright \
-    npx playwright install --with-deps chromium && \
-    npm run build:prerender
+# .build-version is read by build scripts to verify freshness after build
+RUN npm run build:prerender && echo "$VITE_APP_VERSION" > dist/.build-version
 
 
 # Step 2: Set up Flask with Python 3.13 on Bookworm (LaTeX-friendly)
@@ -56,6 +63,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         texlive-plain-generic \
         texlive-fonts-extra \
         fontconfig \
+        fonts-liberation \
         curl \
         poppler-utils && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -75,6 +83,9 @@ COPY --chown=appuser:appuser jobs_matrix.json ./
 COPY --chown=appuser:appuser templates/ ./templates/
 COPY --chown=appuser:appuser samples/ ./samples/
 COPY --chown=appuser:appuser icons/ ./icons/
+COPY --chown=appuser:appuser fonts/bundled/*.ttf /usr/share/fonts/
+# Symlink texlive OpenType fonts (fontawesome5, etc.) so xdvipdfmx can find them
+RUN ln -sf /usr/share/texlive/texmf-dist/fonts/opentype /usr/share/fonts/opentype-texlive && fc-cache -f
 COPY --chown=appuser:appuser docs/templates/ ./docs/templates/
 
 # Copy built React assets from build stage
