@@ -32,6 +32,7 @@ import MobileActionBar from '../MobileActionBar';
 import MobileNavigationDrawer from '../MobileNavigationDrawer';
 import SectionNavigator from '../SectionNavigator';
 import DragHandle from '../DragHandle';
+import { GhostButton } from '../shared/GhostButton';
 
 /**
  * Props for contact form functionality
@@ -102,6 +103,7 @@ export interface EditorContentModalProps {
   closeNavigationDrawer: () => void;
   openSectionTypeModal: () => void;
   openHelpModal: () => void;
+  openFontModal: () => void;
 }
 
 /**
@@ -317,6 +319,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
       <DocumentSettingsPanel
         settings={documentSettings}
         onSettingsChange={onDocumentSettingsChange}
+        onOpenFontModal={modals.openFontModal}
       />
 
       {/* Resume Sections with Drag and Drop */}
@@ -462,6 +465,13 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         </DragOverlay>
         </DndContext>
       </UnifiedDndContext.Provider>
+
+      {/* Add Section — bottom of form */}
+      <div className="mt-6 mb-8">
+        <GhostButton onClick={handleAddNewSectionClick}>
+          Add a New Section
+        </GhostButton>
+      </div>
 
       {/* Mobile Action Bar */}
       <MobileActionBar

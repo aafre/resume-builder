@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { DocumentSettingsPanel } from "../components/DocumentSettingsPanel";
@@ -39,13 +39,11 @@ describe("DocumentSettingsPanel", () => {
       expect(presetButtons).toHaveLength(10);
     });
 
-    it("renders font dropdown with grouped options", () => {
+    it("renders font button showing current font name", () => {
       renderPanel();
-      const select = screen.getByLabelText("Font");
-      const options = within(select).getAllByRole("option");
-      expect(options).toHaveLength(15); // 4 sans + 5 serif + 6 classic
-      const groups = within(select).getAllByRole("group");
-      expect(groups).toHaveLength(3); // Sans Serif, Serif, Classic
+      const fontButton = screen.getByLabelText(/Font:.*Click to change/);
+      expect(fontButton).toBeInTheDocument();
+      expect(fontButton).toHaveTextContent("Arial");
     });
 
     it.skip("renders page number toggle with role=switch (disabled pending wkhtmltopdf fix)", () => {
@@ -148,38 +146,35 @@ describe("DocumentSettingsPanel", () => {
       );
     });
 
-    it("selected preset has scale-110 class", () => {
+    it("selected preset has scale-110 and ring-2 classes", () => {
       renderPanel({ ...defaultSettings, accent_color: "#2D3436" });
 
       const graphite = screen.getByLabelText("Graphite accent colour");
       expect(graphite.className).toContain("scale-110");
-      expect(graphite.className).toContain("ring-");
+      expect(graphite.className).toContain("ring-2");
     });
 
-    it("non-selected preset does not have ring class", () => {
+    it("non-selected preset does not have ring-2 class", () => {
       renderPanel({ ...defaultSettings, accent_color: "#2D3436" });
 
       const racingGreen = screen.getByLabelText("Racing Green accent colour");
-      expect(racingGreen.className).not.toContain("ring-[1.5px]");
+      expect(racingGreen.className).not.toContain("ring-2");
     });
   });
 
   // ─── Custom Colour ─────────────────────────────────────────
 
   describe("Custom Colour", () => {
-    it("clicking custom button shows hex input", async () => {
+    it("clicking custom button shows colour picker and hex input", async () => {
       const user = userEvent.setup();
       renderPanel();
 
-      // Initially no text input visible (only button with "Custom hex colour" label)
-      const customButtons = screen.getAllByLabelText("Custom hex colour");
-      expect(customButtons).toHaveLength(1); // just the button
+      const customButton = screen.getByLabelText("Custom hex colour");
+      await user.click(customButton);
 
-      await user.click(customButtons[0]);
-
-      // Now the hex input should also be visible
-      const allCustom = screen.getAllByLabelText("Custom hex colour");
-      expect(allCustom.length).toBe(2); // button + input
+      // Now the native color picker and hex input should be visible
+      expect(screen.getByLabelText("Pick custom colour")).toBeInTheDocument();
+      expect(screen.getByLabelText("Hex colour value")).toBeInTheDocument();
     });
 
     it("typing in hex input calls onSettingsChange with accent_color value", async () => {
@@ -189,12 +184,11 @@ describe("DocumentSettingsPanel", () => {
       const customButton = screen.getByLabelText("Custom hex colour");
       await userEvent.click(customButton);
 
-      // Find the text input (second element with the label)
-      const hexInput = screen.getAllByLabelText("Custom hex colour")[1];
+      // Find the text input
+      const hexInput = screen.getByLabelText("Hex colour value") as HTMLInputElement;
       expect(hexInput.tagName).toBe("INPUT");
 
-      // Simulate typing by firing a change event directly (controlled input
-      // won't re-render since onSettingsChange is mocked and doesn't update props)
+      // Simulate typing by firing a change event directly
       fireEvent.change(hexInput, { target: { value: "#FF0000" } });
 
       expect(onSettingsChange).toHaveBeenCalledWith(
@@ -206,18 +200,15 @@ describe("DocumentSettingsPanel", () => {
       renderPanel({ ...defaultSettings, accent_color: "#ABCDEF" });
 
       const customButton = screen.getByLabelText("Custom hex colour");
-      // When a non-preset colour is active, the custom button gets scale-110 and ring
       expect(customButton.className).toContain("scale-110");
-      expect(customButton.className).toContain("ring-");
+      expect(customButton.className).toContain("ring-2");
     });
 
     it("custom button does not show indicator when a preset is active", () => {
       renderPanel({ ...defaultSettings, accent_color: "#2D3436" });
 
       const customButton = screen.getByLabelText("Custom hex colour");
-      // When a preset is active, the custom button should NOT have ring-[1.5px]
-      // (it does have hover:scale-110, but not the non-hover scale-110 class)
-      expect(customButton.className).not.toContain("ring-[1.5px]");
+      expect(customButton.className).not.toContain("ring-2 ring-offset-2 ring-gray-400 scale-110");
       expect(customButton.className).toContain("opacity-60");
     });
   });
@@ -225,29 +216,35 @@ describe("DocumentSettingsPanel", () => {
   // ─── Font ───────────────────────────────────────────────────
 
   describe("Font", () => {
-    it("font dropdown shows current value from settings", () => {
+    it("font button shows current font name from settings", () => {
       renderPanel({ ...defaultSettings, font_family: "Georgia" });
 
-      const select = screen.getByLabelText("Font") as HTMLSelectElement;
-      expect(select.value).toBe("Georgia");
+      const fontButton = screen.getByLabelText(/Font:.*Click to change/);
+      expect(fontButton).toHaveTextContent("Georgia");
     });
 
-    it("changing font calls onSettingsChange with font_family", () => {
-      renderPanel();
-
-      const select = screen.getByLabelText("Font");
-      fireEvent.change(select, { target: { value: "EB Garamond" } });
-
-      expect(onSettingsChange).toHaveBeenCalledWith(
-        expect.objectContaining({ font_family: "EB Garamond" })
+    it("font button calls onOpenFontModal when clicked", async () => {
+      const user = userEvent.setup();
+      const onOpenFontModal = vi.fn();
+      render(
+        <DocumentSettingsPanel
+          settings={defaultSettings}
+          onSettingsChange={onSettingsChange}
+          onOpenFontModal={onOpenFontModal}
+        />
       );
+
+      const fontButton = screen.getByLabelText(/Font:.*Click to change/);
+      await user.click(fontButton);
+
+      expect(onOpenFontModal).toHaveBeenCalledOnce();
     });
 
     it("default font is Source Sans 3 when settings.font_family is undefined", () => {
       renderPanel({ accent_color: "#000000" });
 
-      const select = screen.getByLabelText("Font") as HTMLSelectElement;
-      expect(select.value).toBe("Source Sans 3");
+      const fontButton = screen.getByLabelText(/Font:.*Click to change/);
+      expect(fontButton).toHaveTextContent("Source Sans 3");
     });
   });
 
@@ -313,12 +310,12 @@ describe("DocumentSettingsPanel", () => {
     it("uses correct defaults when settings are empty", () => {
       renderPanel({});
 
-      // Font defaults to Source Sans 3
-      const select = screen.getByLabelText("Font") as HTMLSelectElement;
-      expect(select.value).toBe("Source Sans 3");
+      // Font button defaults to Source Sans 3
+      const fontButton = screen.getByLabelText(/Font:.*Click to change/);
+      expect(fontButton).toHaveTextContent("Source Sans 3");
     });
 
-    it("preserves other settings when updating a single field", async () => {
+    it("preserves other settings when updating colour", async () => {
       const user = userEvent.setup();
       const settings: DocumentSettings = {
         accent_color: "#2D3436",
@@ -327,15 +324,14 @@ describe("DocumentSettingsPanel", () => {
       };
       renderPanel(settings);
 
-      // Change font
-      fireEvent.change(screen.getByLabelText("Font"), {
-        target: { value: "Cambria" },
-      });
+      // Change colour
+      const racingGreen = screen.getByLabelText("Racing Green accent colour");
+      await user.click(racingGreen);
 
       expect(onSettingsChange).toHaveBeenCalledWith({
-        accent_color: "#2D3436",
+        accent_color: "#1B4332",
         show_page_numbers: true,
-        font_family: "Cambria",
+        font_family: "Georgia",
       });
     });
   });

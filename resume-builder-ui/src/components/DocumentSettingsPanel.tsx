@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { MdTune, MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { MdTune, MdKeyboardArrowDown, MdKeyboardArrowUp, MdUnfoldMore, MdCheck } from "react-icons/md";
 import { DocumentSettings } from "../types";
 
 export interface DocumentSettingsPanelProps {
   settings: DocumentSettings;
   onSettingsChange: (settings: DocumentSettings) => void;
+  onOpenFontModal?: () => void;
 }
 
-const COLOR_PRESETS = [
+export const COLOR_PRESETS = [
   { name: "Graphite", value: "#2D3436" },
   { name: "Midnight Ink", value: "#0A2647" },
   { name: "Racing Green", value: "#1B4332" },
@@ -20,7 +21,7 @@ const COLOR_PRESETS = [
   { name: "True Black", value: "#000000" },
 ] as const;
 
-const FONT_GROUPS = [
+export const FONT_GROUPS = [
   {
     label: "Sans Serif",
     fonts: [
@@ -56,6 +57,7 @@ const FONT_GROUPS = [
 export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
   settings,
   onSettingsChange,
+  onOpenFontModal,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [showCustomColor, setShowCustomColor] = useState(false);
@@ -105,59 +107,76 @@ export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
               <label className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1.5">
                 Accent Colour
               </label>
-              <div className="flex items-center gap-1.5 flex-wrap">
+              <div className="flex items-center gap-2 flex-wrap">
                 {COLOR_PRESETS.map((preset) => {
                   const selected =
                     preset.value.toLowerCase() === accentColor.toLowerCase();
                   return (
-                    <button
-                      key={preset.value}
-                      type="button"
-                      title={preset.name}
-                      aria-label={`${preset.name} accent colour`}
-                      onClick={() => {
-                        updateSetting("accent_color", preset.value);
-                        setShowCustomColor(false);
-                      }}
-                      className={`w-5 h-5 rounded-full transition-all duration-150 flex-shrink-0 ${
-                        selected
-                          ? "ring-[1.5px] ring-offset-1 ring-gray-400 scale-110"
-                          : "hover:scale-110 opacity-80 hover:opacity-100"
-                      }`}
-                      style={{ backgroundColor: preset.value }}
-                    />
+                    <div key={preset.value} className="relative group">
+                      <button
+                        type="button"
+                        aria-label={`${preset.name} accent colour`}
+                        onClick={() => {
+                          updateSetting("accent_color", preset.value);
+                          setShowCustomColor(false);
+                        }}
+                        className={`w-7 h-7 rounded-full transition-all duration-150 flex-shrink-0 flex items-center justify-center ${
+                          selected
+                            ? "ring-2 ring-offset-2 ring-gray-400 scale-110"
+                            : "hover:scale-110 opacity-85 hover:opacity-100"
+                        }`}
+                        style={{ backgroundColor: preset.value }}
+                      >
+                        {selected && (
+                          <MdCheck className="text-white text-xs drop-shadow-sm" />
+                        )}
+                      </button>
+                      {/* Tooltip */}
+                      <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-ink text-white text-[10px] px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none whitespace-nowrap z-10">
+                        {preset.name}
+                      </span>
+                    </div>
                   );
                 })}
                 {/* Custom colour toggle */}
-                <button
-                  type="button"
-                  title="Custom colour"
-                  aria-label="Custom hex colour"
-                  onClick={() => setShowCustomColor((prev) => !prev)}
-                  className={`w-5 h-5 rounded-full flex-shrink-0 border border-dashed transition-all duration-150 flex items-center justify-center ${
-                    !isPresetSelected
-                      ? "border-gray-400 ring-[1.5px] ring-offset-1 ring-gray-400 scale-110"
-                      : "border-gray-300 opacity-60 hover:opacity-100 hover:scale-110"
-                  }`}
-                  style={
-                    !isPresetSelected
-                      ? { backgroundColor: accentColor }
-                      : undefined
-                  }
-                >
-                  {isPresetSelected && (
-                    <span className="text-[8px] text-gray-400 font-bold">
-                      #
-                    </span>
-                  )}
-                </button>
+                <div className="relative group">
+                  <button
+                    type="button"
+                    aria-label="Custom hex colour"
+                    onClick={() => setShowCustomColor((prev) => !prev)}
+                    className={`w-7 h-7 rounded-full flex-shrink-0 border-2 border-dashed transition-all duration-150 flex items-center justify-center ${
+                      !isPresetSelected
+                        ? "border-gray-400 ring-2 ring-offset-2 ring-gray-400 scale-110"
+                        : "border-gray-300 opacity-60 hover:opacity-100 hover:scale-110"
+                    }`}
+                    style={
+                      !isPresetSelected
+                        ? { backgroundColor: accentColor }
+                        : undefined
+                    }
+                  >
+                    {isPresetSelected ? (
+                      <span className="text-[9px] text-gray-400 font-bold">
+                        #
+                      </span>
+                    ) : (
+                      <MdCheck className="text-white text-xs drop-shadow-sm" />
+                    )}
+                  </button>
+                  <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-ink text-white text-[10px] px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none whitespace-nowrap z-10">
+                    Custom
+                  </span>
+                </div>
               </div>
-              {/* Custom hex input — slides in */}
+              {/* Custom colour picker — slides in */}
               {showCustomColor && (
                 <div className="flex items-center gap-2 mt-2">
-                  <div
-                    className="w-4 h-4 rounded-full border border-gray-200 flex-shrink-0"
-                    style={{ backgroundColor: accentColor }}
+                  <input
+                    type="color"
+                    value={accentColor}
+                    onChange={(e) => updateSetting("accent_color", e.target.value)}
+                    className="w-7 h-7 rounded-md border border-gray-200 cursor-pointer p-0.5 bg-white"
+                    aria-label="Pick custom colour"
                   />
                   <input
                     type="text"
@@ -166,7 +185,7 @@ export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
                     placeholder="#000000"
                     maxLength={7}
                     className="w-20 px-2 py-1 text-xs border border-gray-200 rounded-lg font-mono text-gray-600 focus:outline-none focus:ring-1 focus:ring-accent focus:border-transparent"
-                    aria-label="Custom hex colour"
+                    aria-label="Hex colour value"
                   />
                 </div>
               )}
@@ -176,29 +195,23 @@ export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
             <div className="flex items-end gap-4 sm:gap-3 flex-shrink-0">
               {/* Font */}
               <div>
-                <label
-                  htmlFor="doc-font-select"
-                  className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1.5"
-                >
+                <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1.5">
                   Font
-                </label>
-                <select
-                  id="doc-font-select"
-                  value={fontFamily}
-                  onChange={(e) => updateSetting("font_family", e.target.value)}
-                  className="px-2.5 py-1.5 text-xs border border-gray-200 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-accent focus:border-transparent cursor-pointer"
-                  style={{ fontFamily }}
+                </span>
+                <button
+                  type="button"
+                  onClick={onOpenFontModal}
+                  className="flex items-center gap-2 px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-gray-700 hover:border-accent/50 hover:shadow-sm focus:outline-none focus:ring-1 focus:ring-accent focus:border-transparent cursor-pointer transition-all duration-150 group"
+                  aria-label={`Font: ${fontFamily}. Click to change.`}
                 >
-                  {FONT_GROUPS.map((group) => (
-                    <optgroup key={group.label} label={group.label}>
-                      {group.fonts.map((font) => (
-                        <option key={font} value={font} style={{ fontFamily: font }}>
-                          {font}
-                        </option>
-                      ))}
-                    </optgroup>
-                  ))}
-                </select>
+                  <span
+                    className="text-xs font-medium truncate max-w-[120px]"
+                    style={{ fontFamily }}
+                  >
+                    {fontFamily}
+                  </span>
+                  <MdUnfoldMore className="text-sm text-gray-400 group-hover:text-accent transition-colors flex-shrink-0" />
+                </button>
               </div>
 
               {/* Page Numbers — disabled pending wkhtmltopdf footer fix */}

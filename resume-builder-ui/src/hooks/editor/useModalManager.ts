@@ -24,6 +24,7 @@ export interface UseModalManagerReturn {
   showAuthModalFromTour: boolean;
   showAuthModal: boolean;
   showDownloadCelebration: boolean;
+  showFontModal: boolean;
 
   // Related state
   deleteTarget: DeleteTarget | null;
@@ -92,6 +93,10 @@ export interface UseModalManagerReturn {
   // Download Celebration
   openDownloadCelebration: () => void;
   closeDownloadCelebration: () => void;
+
+  // Font Selection Modal
+  openFontModal: () => void;
+  closeFontModal: () => void;
 }
 
 /**
@@ -124,6 +129,7 @@ export const useModalManager = (): UseModalManagerReturn => {
   const [showAuthModalFromTour, setShowAuthModalFromTour] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showDownloadCelebration, setShowDownloadCelebration] = useState(false);
+  const [showFontModal, setShowFontModal] = useState(false);
 
   // Related state
   const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
@@ -207,6 +213,10 @@ export const useModalManager = (): UseModalManagerReturn => {
   const openDownloadCelebration = useCallback(() => setShowDownloadCelebration(true), []);
   const closeDownloadCelebration = useCallback(() => setShowDownloadCelebration(false), []);
 
+  // Font Selection Modal functions
+  const openFontModal = useCallback(() => setShowFontModal(true), []);
+  const closeFontModal = useCallback(() => setShowFontModal(false), []);
+
   // Return stable object with useMemo
   return useMemo(
     () => ({
@@ -226,6 +236,7 @@ export const useModalManager = (): UseModalManagerReturn => {
       showAuthModalFromTour,
       showAuthModal,
       showDownloadCelebration,
+      showFontModal,
       deleteTarget,
       pendingImportFile,
 
@@ -264,6 +275,8 @@ export const useModalManager = (): UseModalManagerReturn => {
       closeAuthModal,
       openDownloadCelebration,
       closeDownloadCelebration,
+      openFontModal,
+      closeFontModal,
     }),
     [
       // Only state values are needed here, since the functions are stable
@@ -282,6 +295,7 @@ export const useModalManager = (): UseModalManagerReturn => {
       showAuthModalFromTour,
       showAuthModal,
       showDownloadCelebration,
+      showFontModal,
       deleteTarget,
       pendingImportFile,
     ]
