@@ -1,27 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MdClose, MdCheck } from 'react-icons/md';
+import { FONT_GROUPS as BASE_FONT_GROUPS } from './DocumentSettingsPanel';
 
-// Font groups matching DocumentSettingsPanel categories
-const FONT_GROUPS = [
-  {
-    key: 'professional',
-    label: 'Professional',
-    sublabel: 'Sans Serif',
-    fonts: ['Source Sans 3', 'IBM Plex Sans', 'DM Sans', 'Plus Jakarta Sans'],
-  },
-  {
-    key: 'modern',
-    label: 'Modern',
-    sublabel: 'Serif',
-    fonts: ['EB Garamond', 'Source Serif 4', 'Crimson Pro', 'Newsreader', 'Playfair Display'],
-  },
-  {
-    key: 'classic',
-    label: 'Classic',
-    sublabel: 'System',
-    fonts: ['Arial', 'Calibri', 'Cambria', 'Georgia', 'Tahoma', 'Times New Roman'],
-  },
-] as const;
+// Modal-specific metadata mapped from the shared font groups
+const MODAL_META: Record<string, { key: string; label: string; sublabel: string }> = {
+  'Sans Serif': { key: 'professional', label: 'Professional', sublabel: 'Sans Serif' },
+  'Serif':      { key: 'modern',       label: 'Modern',       sublabel: 'Serif' },
+  'Classic':    { key: 'classic',      label: 'Classic',      sublabel: 'System' },
+};
+
+const FONT_GROUPS = BASE_FONT_GROUPS.map((group) => {
+  const meta = MODAL_META[group.label] ?? { key: group.label.toLowerCase(), label: group.label, sublabel: group.label };
+  return { ...meta, fonts: group.fonts };
+});
 
 // Google Fonts that need to be loaded (classic/system fonts don't need loading)
 const GOOGLE_FONTS = [
@@ -118,13 +109,37 @@ const FontSelectionModal: React.FC<FontSelectionModalProps> = ({
     }
   }, [isOpen]);
 
-  // ESC to close
+  // ESC to close + focus trap
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || !dialogRef.current) return;
+
+    const modal = dialogRef.current;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault();
         onClose();
+        return;
+      }
+
+      // Focus trap — keep Tab cycling within modal
+      if (e.key === 'Tab') {
+        const focusable = modal.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last?.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first?.focus();
+          }
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
