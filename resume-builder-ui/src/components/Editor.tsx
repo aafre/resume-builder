@@ -398,6 +398,7 @@ const Editor: React.FC = () => {
           closeNavigationDrawer: modalManager.closeNavigationDrawer,
           openSectionTypeModal: modalManager.openSectionTypeModal,
           openHelpModal: modalManager.openHelpModal,
+          openFontModal: modalManager.openFontModal,
         }}
         fileOperations={{
           handleExportYAML: fileOperations.handleExportYAML,
@@ -459,6 +460,8 @@ const Editor: React.FC = () => {
         onAuthSuccess={() => {
           toast.success('Welcome! Your resume will now be saved to the cloud.');
         }}
+        documentSettings={documentSettings}
+        onDocumentSettingsChange={setDocumentSettings}
       />
 
       {/* Editor Header - Status indicators and idle tooltip */}

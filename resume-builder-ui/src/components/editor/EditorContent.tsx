@@ -102,6 +102,7 @@ export interface EditorContentModalProps {
   closeNavigationDrawer: () => void;
   openSectionTypeModal: () => void;
   openHelpModal: () => void;
+  openFontModal: () => void;
 }
 
 /**
@@ -317,6 +318,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
       <DocumentSettingsPanel
         settings={documentSettings}
         onSettingsChange={onDocumentSettingsChange}
+        onOpenFontModal={modals.openFontModal}
       />
 
       {/* Resume Sections with Drag and Drop */}

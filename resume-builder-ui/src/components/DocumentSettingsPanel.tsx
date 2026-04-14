@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { MdTune, MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { MdTune, MdKeyboardArrowDown, MdKeyboardArrowUp, MdUnfoldMore } from "react-icons/md";
 import { DocumentSettings } from "../types";
 
 export interface DocumentSettingsPanelProps {
   settings: DocumentSettings;
   onSettingsChange: (settings: DocumentSettings) => void;
+  onOpenFontModal?: () => void;
 }
 
-const COLOR_PRESETS = [
+export const COLOR_PRESETS = [
   { name: "Graphite", value: "#2D3436" },
   { name: "Midnight Ink", value: "#0A2647" },
   { name: "Racing Green", value: "#1B4332" },
@@ -20,7 +21,7 @@ const COLOR_PRESETS = [
   { name: "True Black", value: "#000000" },
 ] as const;
 
-const FONT_GROUPS = [
+export const FONT_GROUPS = [
   {
     label: "Sans Serif",
     fonts: [
@@ -56,6 +57,7 @@ const FONT_GROUPS = [
 export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
   settings,
   onSettingsChange,
+  onOpenFontModal,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [showCustomColor, setShowCustomColor] = useState(false);
@@ -176,29 +178,23 @@ export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
             <div className="flex items-end gap-4 sm:gap-3 flex-shrink-0">
               {/* Font */}
               <div>
-                <label
-                  htmlFor="doc-font-select"
-                  className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1.5"
-                >
+                <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1.5">
                   Font
-                </label>
-                <select
-                  id="doc-font-select"
-                  value={fontFamily}
-                  onChange={(e) => updateSetting("font_family", e.target.value)}
-                  className="px-2.5 py-1.5 text-xs border border-gray-200 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-accent focus:border-transparent cursor-pointer"
-                  style={{ fontFamily }}
+                </span>
+                <button
+                  type="button"
+                  onClick={onOpenFontModal}
+                  className="flex items-center gap-2 px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-gray-700 hover:border-accent/50 hover:shadow-sm focus:outline-none focus:ring-1 focus:ring-accent focus:border-transparent cursor-pointer transition-all duration-150 group"
+                  aria-label={`Font: ${fontFamily}. Click to change.`}
                 >
-                  {FONT_GROUPS.map((group) => (
-                    <optgroup key={group.label} label={group.label}>
-                      {group.fonts.map((font) => (
-                        <option key={font} value={font} style={{ fontFamily: font }}>
-                          {font}
-                        </option>
-                      ))}
-                    </optgroup>
-                  ))}
-                </select>
+                  <span
+                    className="text-xs font-medium truncate max-w-[120px]"
+                    style={{ fontFamily }}
+                  >
+                    {fontFamily}
+                  </span>
+                  <MdUnfoldMore className="text-sm text-gray-400 group-hover:text-accent transition-colors flex-shrink-0" />
+                </button>
               </div>
 
               {/* Page Numbers — disabled pending wkhtmltopdf footer fix */}
