@@ -2780,7 +2780,7 @@ def load_resume(resume_id):
         # in the SET clause are modified, so updated_at is preserved automatically.
         try:
             supabase.table("resumes").update(
-                {"last_accessed_at": datetime.now().isoformat()}
+                {"last_accessed_at": "now()"}
             ).eq("id", resume_id).execute()
         except Exception as timestamp_error:
             logging.warning(
@@ -3111,13 +3111,13 @@ def migrate_anonymous_resumes():
 
         old_resume_ids = [r["id"] for r in resumes_to_migrate.data]
 
-        # Step 1: Update resume ownership.
+        # Step 1: Update resume ownership in bulk.
         # updated_at is NOT included — without the DB trigger, only the
         # user_id column changes, so updated_at is preserved automatically.
-        for resume_id in old_resume_ids:
+        if old_resume_ids:
             supabase.table("resumes").update(
                 {"user_id": new_user_id}
-            ).eq("id", resume_id).execute()
+            ).in_("id", old_resume_ids).execute()
 
         logging.info(f"Updated {old_count} resume records while preserving timestamps")
 
