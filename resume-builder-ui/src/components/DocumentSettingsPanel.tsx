@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MdTune, MdKeyboardArrowDown, MdKeyboardArrowUp, MdUnfoldMore } from "react-icons/md";
+import { MdTune, MdKeyboardArrowDown, MdKeyboardArrowUp, MdUnfoldMore, MdCheck } from "react-icons/md";
 import { DocumentSettings } from "../types";
 
 export interface DocumentSettingsPanelProps {
@@ -107,59 +107,76 @@ export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
               <label className="text-[11px] font-medium text-gray-400 uppercase tracking-wider block mb-1.5">
                 Accent Colour
               </label>
-              <div className="flex items-center gap-1.5 flex-wrap">
+              <div className="flex items-center gap-2 flex-wrap">
                 {COLOR_PRESETS.map((preset) => {
                   const selected =
                     preset.value.toLowerCase() === accentColor.toLowerCase();
                   return (
-                    <button
-                      key={preset.value}
-                      type="button"
-                      title={preset.name}
-                      aria-label={`${preset.name} accent colour`}
-                      onClick={() => {
-                        updateSetting("accent_color", preset.value);
-                        setShowCustomColor(false);
-                      }}
-                      className={`w-5 h-5 rounded-full transition-all duration-150 flex-shrink-0 ${
-                        selected
-                          ? "ring-[1.5px] ring-offset-1 ring-gray-400 scale-110"
-                          : "hover:scale-110 opacity-80 hover:opacity-100"
-                      }`}
-                      style={{ backgroundColor: preset.value }}
-                    />
+                    <div key={preset.value} className="relative group">
+                      <button
+                        type="button"
+                        aria-label={`${preset.name} accent colour`}
+                        onClick={() => {
+                          updateSetting("accent_color", preset.value);
+                          setShowCustomColor(false);
+                        }}
+                        className={`w-7 h-7 rounded-full transition-all duration-150 flex-shrink-0 flex items-center justify-center ${
+                          selected
+                            ? "ring-2 ring-offset-2 ring-gray-400 scale-110"
+                            : "hover:scale-110 opacity-85 hover:opacity-100"
+                        }`}
+                        style={{ backgroundColor: preset.value }}
+                      >
+                        {selected && (
+                          <MdCheck className="text-white text-xs drop-shadow-sm" />
+                        )}
+                      </button>
+                      {/* Tooltip */}
+                      <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-ink text-white text-[10px] px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none whitespace-nowrap z-10">
+                        {preset.name}
+                      </span>
+                    </div>
                   );
                 })}
                 {/* Custom colour toggle */}
-                <button
-                  type="button"
-                  title="Custom colour"
-                  aria-label="Custom hex colour"
-                  onClick={() => setShowCustomColor((prev) => !prev)}
-                  className={`w-5 h-5 rounded-full flex-shrink-0 border border-dashed transition-all duration-150 flex items-center justify-center ${
-                    !isPresetSelected
-                      ? "border-gray-400 ring-[1.5px] ring-offset-1 ring-gray-400 scale-110"
-                      : "border-gray-300 opacity-60 hover:opacity-100 hover:scale-110"
-                  }`}
-                  style={
-                    !isPresetSelected
-                      ? { backgroundColor: accentColor }
-                      : undefined
-                  }
-                >
-                  {isPresetSelected && (
-                    <span className="text-[8px] text-gray-400 font-bold">
-                      #
-                    </span>
-                  )}
-                </button>
+                <div className="relative group">
+                  <button
+                    type="button"
+                    aria-label="Custom hex colour"
+                    onClick={() => setShowCustomColor((prev) => !prev)}
+                    className={`w-7 h-7 rounded-full flex-shrink-0 border-2 border-dashed transition-all duration-150 flex items-center justify-center ${
+                      !isPresetSelected
+                        ? "border-gray-400 ring-2 ring-offset-2 ring-gray-400 scale-110"
+                        : "border-gray-300 opacity-60 hover:opacity-100 hover:scale-110"
+                    }`}
+                    style={
+                      !isPresetSelected
+                        ? { backgroundColor: accentColor }
+                        : undefined
+                    }
+                  >
+                    {isPresetSelected ? (
+                      <span className="text-[9px] text-gray-400 font-bold">
+                        #
+                      </span>
+                    ) : (
+                      <MdCheck className="text-white text-xs drop-shadow-sm" />
+                    )}
+                  </button>
+                  <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-ink text-white text-[10px] px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none whitespace-nowrap z-10">
+                    Custom
+                  </span>
+                </div>
               </div>
-              {/* Custom hex input — slides in */}
+              {/* Custom colour picker — slides in */}
               {showCustomColor && (
                 <div className="flex items-center gap-2 mt-2">
-                  <div
-                    className="w-4 h-4 rounded-full border border-gray-200 flex-shrink-0"
-                    style={{ backgroundColor: accentColor }}
+                  <input
+                    type="color"
+                    value={accentColor}
+                    onChange={(e) => updateSetting("accent_color", e.target.value)}
+                    className="w-7 h-7 rounded-md border border-gray-200 cursor-pointer p-0.5 bg-white"
+                    aria-label="Pick custom colour"
                   />
                   <input
                     type="text"
