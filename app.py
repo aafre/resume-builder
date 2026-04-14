@@ -473,6 +473,27 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
         return "LinkedIn Profile"
 
 
+# Performance optimization: Hoist static dictionary and regex compilation to module level.
+# This prevents recompilation on every function call during intense LaTeX rendering.
+LATEX_SPECIAL_CHARS = {
+    "\\": r"\textbackslash{}",
+    "&": r"\&",
+    "%": r"\%",
+    "$": r"\$",
+    "#": r"\#",
+    # "_": r"\_",  # Don't escape: used for markdown italic/bold (_text_ and __text__)
+    "{": r"\{",
+    "}": r"\}",
+    # "~": r"\textasciitilde{}",  # Don't escape: used for markdown strikethrough (~~text~~)
+    "^": r"\textasciicircum{}",
+    "<": r"\textless{}",
+    ">": r"\textgreater{}",
+    "|": r"\textbar{}",
+    "-": r"{-}",
+}
+
+LATEX_ESCAPE_PATTERN = re.compile("|".join(re.escape(key) for key in LATEX_SPECIAL_CHARS.keys()))
+
 def _escape_latex(text):
     r"""Escapes special LaTeX characters in a string to prevent compilation errors.
 
@@ -489,25 +510,7 @@ def _escape_latex(text):
     if not isinstance(text, str):
         return text
 
-    latex_special_chars = {
-        "\\": r"\textbackslash{}",
-        "&": r"\&",
-        "%": r"\%",
-        "$": r"\$",
-        "#": r"\#",
-        # "_": r"\_",  # Don't escape: used for markdown italic/bold (_text_ and __text__)
-        "{": r"\{",
-        "}": r"\}",
-        # "~": r"\textasciitilde{}",  # Don't escape: used for markdown strikethrough (~~text~~)
-        "^": r"\textasciicircum{}",
-        "<": r"\textless{}",
-        ">": r"\textgreater{}",
-        "|": r"\textbar{}",
-        "-": r"{-}",
-    }
-
-    pattern = re.compile("|".join(re.escape(key) for key in latex_special_chars.keys()))
-    escaped_text = pattern.sub(lambda match: latex_special_chars[match.group(0)], text)
+    escaped_text = LATEX_ESCAPE_PATTERN.sub(lambda match: LATEX_SPECIAL_CHARS[match.group(0)], text)
     return escaped_text
 
 
