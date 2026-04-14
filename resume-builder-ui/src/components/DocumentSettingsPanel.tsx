@@ -185,7 +185,7 @@ export const DocumentSettingsPanel: React.FC<DocumentSettingsPanelProps> = ({
                     placeholder="#000000"
                     maxLength={7}
                     className="w-20 px-2 py-1 text-xs border border-gray-200 rounded-lg font-mono text-gray-600 focus:outline-none focus:ring-1 focus:ring-accent focus:border-transparent"
-                    aria-label="Custom hex colour"
+                    aria-label="Hex colour value"
                   />
                 </div>
               )}

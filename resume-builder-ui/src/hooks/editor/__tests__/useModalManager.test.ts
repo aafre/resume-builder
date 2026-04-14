@@ -24,6 +24,7 @@ describe('useModalManager', () => {
       expect(result.current.showAuthModalFromTour).toBe(false);
       expect(result.current.showAuthModal).toBe(false);
       expect(result.current.showDownloadCelebration).toBe(false);
+      expect(result.current.showFontModal).toBe(false);
     });
 
     it('should initialize deleteTarget to null', () => {
@@ -464,6 +465,29 @@ describe('useModalManager', () => {
       });
 
       expect(result.current.showDownloadCelebration).toBe(false);
+    });
+  });
+
+  describe('Font Modal', () => {
+    it('should open font modal', () => {
+      const { result } = renderHook(() => useModalManager());
+
+      act(() => {
+        result.current.openFontModal();
+      });
+
+      expect(result.current.showFontModal).toBe(true);
+    });
+
+    it('should close font modal', () => {
+      const { result } = renderHook(() => useModalManager());
+
+      act(() => {
+        result.current.openFontModal();
+        result.current.closeFontModal();
+      });
+
+      expect(result.current.showFontModal).toBe(false);
     });
   });
 
