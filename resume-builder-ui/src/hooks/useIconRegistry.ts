@@ -169,11 +169,12 @@ export const useIconRegistry = (): UseIconRegistryReturn => {
     const targetFilenames = filenames || Object.keys(registry);
     const exportData: IconExportData = {};
 
-    for (const filename of targetFilenames) {
+    await Promise.all(targetFilenames.map(async (filename) => {
       const entry = registry[filename];
       if (entry) {
         try {
           const base64Data = await fileToBase64(entry.file);
+          // Optimization: Concurrently convert independent files instead of sequential awaits
           exportData[filename] = {
             data: base64Data,
             type: entry.file.type,
@@ -184,7 +185,7 @@ export const useIconRegistry = (): UseIconRegistryReturn => {
           console.warn(`Failed to export icon ${filename}:`, error);
         }
       }
-    }
+    }));
 
     return exportData;
   }, [registry, fileToBase64]);
