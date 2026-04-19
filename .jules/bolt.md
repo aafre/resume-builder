@@ -1,0 +1,3 @@
+## 2024-05-24 - Hoisting Regex Compilation and Static Dictionaries
+**Learning:** In utility functions called repeatedly (like `_escape_latex` across `app.py` and `resume_generator_latex.py`), defining static mapping dictionaries and compiling regular expressions (`re.compile`) inside the function body adds significant overhead due to recreation and recompilation on every invocation.
+**Action:** Always hoist static dictionaries and regex compilations to module-level global constants to ensure they are initialized exactly once, reducing overhead and improving runtime performance for text-processing utilities.
