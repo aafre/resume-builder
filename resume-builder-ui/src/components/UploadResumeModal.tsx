@@ -99,7 +99,8 @@ export function UploadResumeModal({
           </div>
           <button
             onClick={handleCloseModal}
-            className="text-white/80 hover:text-white transition-colors"
+            className="text-white/80 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg p-1"
+            aria-label="Close modal"
           >
             <XMarkIcon className="w-6 h-6" />
           </button>
@@ -208,12 +209,12 @@ export function UploadResumeModal({
                 accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 onChange={handleFileInput}
                 disabled={parsing}
-                className="hidden"
+                className="sr-only peer"
                 id="resume-file-input"
               />
               <label
                 htmlFor="resume-file-input"
-                className="btn-primary inline-flex items-center gap-2 px-6 py-3 cursor-pointer disabled:opacity-50"
+                className="btn-primary inline-flex items-center gap-2 px-6 py-3 cursor-pointer disabled:opacity-50 peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-accent"
               >
                 <DocumentArrowUpIcon className="w-5 h-5" />
                 {parsing ? 'Parsing...' : 'Choose File'}
