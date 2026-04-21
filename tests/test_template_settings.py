@@ -261,13 +261,50 @@ def temp_dir():
 # Tier 1 helpers — Jinja2 rendering (no PDF generation)
 # ---------------------------------------------------------------------------
 
+# Cache Jinja2 environments per template_dir to avoid recreating them
+# for every parametrized test case (~200 calls).
+_html_env_cache: dict[str, Environment] = {}
+_latex_env_cache: dict[str, Environment] = {}
+
+
+def _get_html_env(template_dir: str) -> Environment:
+    """Return a cached Jinja2 Environment for the given HTML template dir."""
+    if template_dir not in _html_env_cache:
+        tpl_path = PROJECT_ROOT / "templates" / template_dir
+        env = Environment(loader=FileSystemLoader(str(tpl_path)))
+        env.filters["markdown_links"] = convert_markdown_links_to_html
+        env.filters["markdown_formatting"] = convert_markdown_formatting_to_html
+        _html_env_cache[template_dir] = env
+    return _html_env_cache[template_dir]
+
+
+def _get_latex_env(template_dir: str) -> Environment:
+    """Return a cached Jinja2 Environment for the given LaTeX template dir."""
+    if template_dir not in _latex_env_cache:
+        tpl_path = PROJECT_ROOT / "templates" / template_dir
+        env = Environment(
+            loader=FileSystemLoader(str(tpl_path)),
+            block_start_string="\\BLOCK{",
+            block_end_string="}",
+            variable_start_string="\\VAR{",
+            variable_end_string="}",
+            comment_start_string="\\#{",
+            comment_end_string="}",
+            line_statement_prefix="%%",
+            line_comment_prefix="%#",
+            trim_blocks=True,
+            autoescape=False,
+        )
+        env.filters["markdown_links"] = convert_markdown_links_to_latex
+        env.filters["markdown_formatting"] = convert_markdown_formatting_to_latex
+        _latex_env_cache[template_dir] = env
+    return _latex_env_cache[template_dir]
+
 
 def _render_html(template_dir: str, font: str, accent_color: str | None = None) -> str:
     """Render an HTML template to string using Jinja2 directly."""
     tpl_path = PROJECT_ROOT / "templates" / template_dir
-    env = Environment(loader=FileSystemLoader(str(tpl_path)))
-    env.filters["markdown_links"] = convert_markdown_links_to_html
-    env.filters["markdown_formatting"] = convert_markdown_formatting_to_html
+    env = _get_html_env(template_dir)
 
     css_abs = tpl_path / "styles.css"
     settings = {}
@@ -288,27 +325,18 @@ def _render_html(template_dir: str, font: str, accent_color: str | None = None) 
 
 
 def _render_latex(template_dir: str, font: str, accent_color: str | None = None) -> str:
-    """Render a LaTeX template to .tex string using Jinja2 directly."""
-    import app as flask_app
+    """Render a LaTeX template to .tex string using Jinja2 directly.
 
-    tpl_path = PROJECT_ROOT / "templates" / template_dir
-    latex_env = Environment(
-        loader=FileSystemLoader(str(tpl_path)),
-        block_start_string="\\BLOCK{",
-        block_end_string="}",
-        variable_start_string="\\VAR{",
-        variable_end_string="}",
-        comment_start_string="\\#{",
-        comment_end_string="}",
-        line_statement_prefix="%%",
-        line_comment_prefix="%#",
-        trim_blocks=True,
-        autoescape=False,
-    )
-    latex_env.filters["markdown_links"] = convert_markdown_links_to_latex
-    latex_env.filters["markdown_formatting"] = convert_markdown_formatting_to_latex
+    Avoids importing app.py (which triggers Flask init) by handling LaTeX
+    escaping inline. Test data uses safe ASCII strings so full escaping
+    is not needed.
+    """
+    env = _get_latex_env(template_dir)
 
-    # Build data dict matching what generate_latex_pdf() provides
+    # Build data dict matching what generate_latex_pdf() provides.
+    # Test data intentionally uses plain ASCII (no LaTeX special chars)
+    # so we skip app._prepare_latex_data() to avoid importing app.py
+    # and triggering Flask/Supabase initialization side effects.
     data = copy.deepcopy(MINIMAL_RESUME_DATA)
     settings = {}
     if font:
@@ -317,11 +345,8 @@ def _render_latex(template_dir: str, font: str, accent_color: str | None = None)
         settings["accent_color"] = accent_color
     data["settings"] = settings
 
-    # Apply LaTeX escaping (same as production pipeline)
-    prepared = flask_app._prepare_latex_data(data)
-
-    template = latex_env.get_template("resume.tex")
-    return template.render(**prepared)
+    template = env.get_template("resume.tex")
+    return template.render(**data)
 
 
 # ---------------------------------------------------------------------------
