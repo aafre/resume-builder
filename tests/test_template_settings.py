@@ -405,6 +405,21 @@ def _extract_pdf_text(pdf_path: Path) -> str:
     return "\n".join(text_parts)
 
 
+def _text_in_pdf(needle: str, pdf_text: str) -> bool:
+    """Check if text appears in PDF output, handling bold-doubling artifact.
+
+    wkhtmltopdf renders bold text by overlaying two copies of each glyph.
+    pdfplumber extracts both, producing doubled characters like 'AAccmmee'
+    instead of 'Acme'. This helper checks for both the normal and doubled
+    versions.
+    """
+    if needle in pdf_text:
+        return True
+    # Try doubled version: each alpha char becomes two copies
+    doubled = "".join(c + c if c.isalpha() else c for c in needle)
+    return doubled in pdf_text
+
+
 def _hex_to_rgb_tuple(hex_color: str) -> tuple[float, float, float]:
     """Convert '#1B4332' to (0.106, 0.263, 0.196) float tuple."""
     h = hex_color.lstrip("#")
@@ -638,10 +653,10 @@ class TestPdfGenerationSmoke:
         # 2. PDF contains expected text
         if PDFPLUMBER_AVAILABLE:
             text = _extract_pdf_text(output_path)
-            assert "Test User" in text, (
+            assert _text_in_pdf("Test User", text), (
                 f"[{template_dir}] Contact name 'Test User' not found in PDF text"
             )
-            assert "Acme Corp" in text, (
+            assert _text_in_pdf("Acme Corp", text), (
                 f"[{template_dir}] Company 'Acme Corp' not found in PDF text"
             )
 
@@ -738,7 +753,7 @@ class TestPdfGenerationSmoke:
 
         if PDFPLUMBER_AVAILABLE:
             text = _extract_pdf_text(output_path)
-            assert "Test User" in text
+            assert _text_in_pdf("Test User", text)
 
             pdf_colors = _extract_pdf_colors(output_path)
             assert _color_present_in_pdf(accent_color, pdf_colors), (
@@ -773,5 +788,5 @@ class TestPdfDefaultSettings:
 
         if PDFPLUMBER_AVAILABLE:
             text = _extract_pdf_text(output_path)
-            assert "Test User" in text
-            assert "Acme Corp" in text
+            assert _text_in_pdf("Test User", text)
+            assert _text_in_pdf("Acme Corp", text)
