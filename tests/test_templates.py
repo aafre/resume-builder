@@ -147,6 +147,24 @@ class TestGetTemplateData:
         data = response.get_json()
         assert data['template_id'] == 'modern-with-icons'
 
+    def test_get_template_data_returns_engine_for_html_template(self, flask_test_client):
+        """HTML templates report engine=html in the single-template response."""
+        client, _, _ = flask_test_client
+
+        response = client.get('/api/template/modern-with-icons')
+        data = response.get_json()
+
+        assert data['engine'] == 'html'
+
+    def test_get_template_data_returns_engine_for_latex_template(self, flask_test_client):
+        """LaTeX templates report engine=latex in the single-template response."""
+        client, _, _ = flask_test_client
+
+        response = client.get('/api/template/classic-alex-rivera')
+        data = response.get_json()
+
+        assert data['engine'] == 'latex'
+
     def test_get_nonexistent_template_returns_404(self, flask_test_client):
         """Verify 404 is returned for nonexistent template."""
         client, mock_sb, _ = flask_test_client

@@ -1812,6 +1812,7 @@ def get_template_data(template_id):
                 "yaml": yaml.safe_dump(yaml_content),
                 "template_id": template_id,
                 "supportsIcons": config.supports_icons,
+                "engine": config.engine.value,
             }
         )
     except KeyError:
