@@ -557,46 +557,17 @@ class TestLatexAccentColorRendering:
 
 
 class TestLatexFontRendering:
-    r"""Verify LaTeX templates inject \setmainfont from settings.font_family.
+    r"""Verify LaTeX templates inject \setmainfont from settings.font_family."""
 
-    KNOWN BUG: classic/resume.tex has no \setmainfont at all.
-    executive/resume.tex hardcodes \setmainfont{EB Garamond}.
-    These tests are xfail until the bug is fixed.
-    """
-
-    # All combos except executive+EB Garamond which passes by coincidence
-    # (executive hardcodes that font, not because it reads settings)
-    _XFAIL_PARAMS = [
-        (td, f)
-        for td in LATEX_TEMPLATE_DIRS
-        for f in ALL_FONTS
-        if not (td == "executive" and f == "EB Garamond")
-    ]
-
-    @pytest.mark.xfail(
-        reason=(
-            "Known bug: LaTeX templates do not apply settings.font_family. "
-            "classic/resume.tex has no \\setmainfont; "
-            "executive/resume.tex hardcodes EB Garamond."
-        ),
-        strict=True,
+    @pytest.mark.parametrize(
+        "template_dir,font",
+        [(td, f) for td in LATEX_TEMPLATE_DIRS for f in ALL_FONTS],
     )
-    @pytest.mark.parametrize("template_dir,font", _XFAIL_PARAMS)
     def test_font_in_tex(self, template_dir, font):
         tex = _render_latex(template_dir, font=font, accent_color="#000000")
         assert f"setmainfont{{{font}}}" in tex, (
-            f"[{template_dir}] FONT BUG: \\setmainfont{{{font}}} not found in "
+            f"[{template_dir}] \\setmainfont{{{font}}} not found in "
             f"rendered .tex — template is ignoring settings.font_family"
-        )
-
-    def test_executive_hardcodes_eb_garamond(self):
-        """Executive template hardcodes EB Garamond and ignores font_family."""
-        tex = _render_latex("executive", font="Arial", accent_color="#000000")
-        assert "setmainfont{EB Garamond}" in tex, (
-            "Executive template should have EB Garamond hardcoded"
-        )
-        assert "setmainfont{Arial}" not in tex, (
-            "Executive template should NOT apply the requested font (known bug)"
         )
 
 
@@ -680,10 +651,6 @@ class TestPdfGenerationSmoke:
 
     @requires_pdfkit
     @requires_xelatex
-    @pytest.mark.xfail(
-        reason="Known bug: LaTeX templates ignore font_family setting",
-        strict=True,
-    )
     @pytest.mark.parametrize(
         "template_dir,font,accent_color",
         LATEX_PDF_MATRIX,
@@ -693,7 +660,7 @@ class TestPdfGenerationSmoke:
         ],
     )
     def test_latex_pdf_font(self, template_dir, font, accent_color, temp_dir):
-        """LaTeX PDF font validation — xfail until font bug is fixed."""
+        """LaTeX PDF font validation — requested font must be embedded."""
         yaml_path = _make_test_yaml(
             temp_dir, font=font, accent_color=accent_color,
             template_name=template_dir,
