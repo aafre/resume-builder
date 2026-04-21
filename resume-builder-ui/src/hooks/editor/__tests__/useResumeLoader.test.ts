@@ -158,6 +158,7 @@ sections:
       expect(props.setContactInfo).toHaveBeenCalledWith(mockContactInfo);
       expect(props.setSections).toHaveBeenCalled();
       expect(props.setSupportsIcons).toHaveBeenCalledWith(false);
+      expect(props.setTemplateEngine).toHaveBeenCalledWith('html');
       expect(props.setOriginalTemplateData).toHaveBeenCalled();
       expect(props.setLoading).toHaveBeenCalledWith(true);
       expect(props.setLoading).toHaveBeenCalledWith(false);
@@ -327,6 +328,7 @@ sections:
       );
       expect(props.setTemplateId).toHaveBeenCalledWith('modern-with-icons');
       expect(props.setSupportsIcons).toHaveBeenCalledWith(true);
+      expect(props.setTemplateEngine).toHaveBeenCalledWith('html');
       expect(props.iconRegistry.clearRegistry).toHaveBeenCalled();
       expect(props.iconRegistry.registerIconWithFilename).toHaveBeenCalled();
       expect(props.setShowAIWarning).toHaveBeenCalledWith(true);
@@ -633,6 +635,7 @@ sections:
 
       // Should still complete successfully despite template error
       expect(result.current.hasLoadedFromUrl).toBe(true);
+      expect(props.setTemplateEngine).toHaveBeenCalledWith(null);
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         "Failed to load template structure for 'modern':",
         expect.any(Error)
