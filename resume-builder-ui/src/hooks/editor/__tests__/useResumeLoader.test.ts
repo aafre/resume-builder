@@ -56,6 +56,8 @@ const createMockProps = (overrides?: Partial<UseResumeLoaderProps>): UseResumeLo
     templateId: null,
     setTemplateId: vi.fn(),
     setSupportsIcons: vi.fn(),
+    setTemplateEngine: vi.fn(),
+    setDocumentSettings: vi.fn(),
     setOriginalTemplateData: vi.fn(),
     setLoading: vi.fn(),
     setLoadingError: vi.fn(),
@@ -137,6 +139,7 @@ sections:
       vi.spyOn(templates, 'fetchTemplate').mockResolvedValue({
         yaml: mockYaml,
         supportsIcons: false,
+        engine: 'html' as const,
       });
 
       vi.spyOn(yamlModule, 'load').mockReturnValue({
@@ -182,6 +185,7 @@ sections:
       vi.spyOn(templates, 'fetchTemplate').mockResolvedValue({
         yaml: mockYaml,
         supportsIcons: false,
+        engine: 'html' as const,
       });
 
       vi.spyOn(yamlModule, 'load').mockReturnValue({
@@ -211,6 +215,7 @@ sections:
       vi.spyOn(templates, 'fetchTemplate').mockResolvedValue({
         yaml: mockYaml,
         supportsIcons: false,
+        engine: 'html' as const,
       });
 
       vi.spyOn(yamlModule, 'load').mockReturnValue({
@@ -288,6 +293,7 @@ sections:
       vi.spyOn(templates, 'fetchTemplate').mockResolvedValue({
         yaml: mockTemplateYaml,
         supportsIcons: true,
+        engine: 'html' as const,
       });
       vi.spyOn(yamlModule, 'load').mockReturnValue({
         contact_info: {},
@@ -344,6 +350,7 @@ sections:
       vi.spyOn(templates, 'fetchTemplate').mockResolvedValue({
         yaml: 'contact_info: {}\nsections: []',
         supportsIcons: false,
+        engine: 'html' as const,
       });
       vi.spyOn(yamlModule, 'load').mockReturnValue({
         contact_info: {},
@@ -451,6 +458,7 @@ sections:
       vi.spyOn(templates, 'fetchTemplate').mockResolvedValue({
         yaml: 'contact_info: {}\nsections: []',
         supportsIcons: false,
+        engine: 'html' as const,
       });
       vi.spyOn(yamlModule, 'load').mockReturnValue({
         contact_info: {},
@@ -504,6 +512,7 @@ sections:
       vi.spyOn(templates, 'fetchTemplate').mockResolvedValue({
         yaml: 'contact_info: {}\nsections: []',
         supportsIcons: false,
+        engine: 'html' as const,
       });
       vi.spyOn(yamlModule, 'load').mockReturnValue({
         contact_info: {},
@@ -572,6 +581,7 @@ sections:
       vi.spyOn(templates, 'fetchTemplate').mockResolvedValue({
         yaml: 'contact_info: {}\nsections: []',
         supportsIcons: true,
+        engine: 'html' as const,
       });
       vi.spyOn(yamlModule, 'load').mockReturnValue({
         contact_info: {},
@@ -659,6 +669,7 @@ sections:
       vi.spyOn(templates, 'fetchTemplate').mockResolvedValue({
         yaml: 'contact_info: {}\nsections: []',
         supportsIcons: false,
+        engine: 'html' as const,
       });
       vi.spyOn(yamlModule, 'load').mockReturnValue({
         contact_info: {},
@@ -690,6 +701,7 @@ sections:
       vi.spyOn(templates, 'fetchTemplate').mockResolvedValue({
         yaml: 'contact_info: {}\nsections: []',
         supportsIcons: false,
+        engine: 'html' as const,
       });
       vi.spyOn(yamlModule, 'load').mockReturnValue({
         contact_info: {},
@@ -720,6 +732,7 @@ sections:
       vi.spyOn(templates, 'fetchTemplate').mockResolvedValue({
         yaml: 'contact_info: {}\nsections: []',
         supportsIcons: false,
+        engine: 'html' as const,
       });
       vi.spyOn(yamlModule, 'load').mockReturnValue({
         contact_info: {},
