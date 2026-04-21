@@ -1,0 +1,3 @@
+## 2026-04-21 - Hoist regex compilation in recursive functions
+**Learning:** Defining regex patterns and static mapping dictionaries inside a function that is called recursively or in loops (like `_escape_latex`) causes `re.compile` and dict initialization to be redundantly executed on every call, creating a significant performance bottleneck.
+**Action:** Hoist regex compilation (`re.compile`) and static mapping dictionaries to module-level constants (e.g., `LATEX_SPECIAL_CHARS`, `LATEX_ESCAPE_PATTERN`) instead of defining them within function scopes, particularly for recursive utility functions.
