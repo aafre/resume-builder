@@ -58,6 +58,7 @@ const Editor: React.FC = () => {
     setTemplateId,
     supportsIcons,
     setSupportsIcons,
+    templateEngine,
     setTemplateEngine,
     originalTemplateData,
     setOriginalTemplateData,
@@ -345,6 +346,7 @@ const Editor: React.FC = () => {
         setContactInfo={setContactInfo}
         sections={sections}
         supportsIcons={supportsIcons}
+        templateEngine={templateEngine}
         iconRegistry={iconRegistry}
         documentSettings={documentSettings}
         onDocumentSettingsChange={setDocumentSettings}
