@@ -649,19 +649,19 @@ describe('EditorContent Integration Tests', () => {
     it('renders DocumentSettingsPanel when templateEngine is "html"', () => {
       render(<EditorContent {...createDefaultProps({ templateEngine: 'html' })} />);
 
-      expect(screen.getByText(/document settings/i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /document settings/i })).toBeInTheDocument();
     });
 
     it('renders DocumentSettingsPanel when templateEngine is null (unknown)', () => {
       render(<EditorContent {...createDefaultProps({ templateEngine: null })} />);
 
-      expect(screen.getByText(/document settings/i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /document settings/i })).toBeInTheDocument();
     });
 
     it('hides DocumentSettingsPanel when templateEngine is "latex"', () => {
       render(<EditorContent {...createDefaultProps({ templateEngine: 'latex' })} />);
 
-      expect(screen.queryByText(/document settings/i)).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /document settings/i })).not.toBeInTheDocument();
     });
   });
 });
