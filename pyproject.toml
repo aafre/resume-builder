@@ -49,5 +49,7 @@ dev = [
 [tool.pytest.ini_options]
 markers = [
     "requires_pdfkit: marks tests that require pdfkit and wkhtmltopdf to be installed",
+    "requires_xelatex: marks tests that require xelatex/texlive to be installed",
+    "requires_poppler: marks tests that require poppler-utils (pdffonts, pdftotext)",
 ]
 testpaths = ["tests"]
