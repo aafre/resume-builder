@@ -1,11 +1,13 @@
 /**
  * JobExampleCard Component
  * Displays a job-specific resume example as an image-dominant link card.
- * Links to /examples/{slug} for full example pages.
+ * Card body navigates to /examples/{slug}. If onImageClick is provided,
+ * clicking the image area opens a preview modal instead of navigating.
  */
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { MagnifyingGlassPlusIcon } from '@heroicons/react/24/outline';
 import type { JobExampleInfo } from '../data/jobExamples';
 
 const PREVIEW_BASE_URL = import.meta.env.VITE_SUPABASE_URL
@@ -14,12 +16,35 @@ const PREVIEW_BASE_URL = import.meta.env.VITE_SUPABASE_URL
 
 interface JobExampleCardProps {
   job: JobExampleInfo;
-  /** Show a "Example" badge in the top-left corner */
+  /** Show an "Example" badge in the top-left corner */
   showBadge?: boolean;
+  /** If provided, clicking the image area invokes this instead of navigating */
+  onImageClick?: (job: JobExampleInfo) => void;
 }
 
-export default function JobExampleCard({ job, showBadge = false }: JobExampleCardProps) {
+export default function JobExampleCard({ job, showBadge = false, onImageClick }: JobExampleCardProps) {
   const [imgLoaded, setImgLoaded] = useState(false);
+
+  const handleImageClick = (e: React.MouseEvent | React.KeyboardEvent) => {
+    if (!onImageClick) return;
+    e.preventDefault();
+    e.stopPropagation();
+    onImageClick(job);
+  };
+
+  const imageInteractiveProps = onImageClick
+    ? {
+        role: 'button' as const,
+        tabIndex: 0,
+        onClick: handleImageClick,
+        onKeyDown: (e: React.KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            handleImageClick(e);
+          }
+        },
+        'aria-label': `Preview ${job.title} example`,
+      }
+    : {};
 
   return (
     <Link
@@ -37,7 +62,12 @@ export default function JobExampleCard({ job, showBadge = false }: JobExampleCar
       )}
 
       {/* Image area */}
-      <div className="relative overflow-hidden rounded-t-3xl bg-chalk-dark">
+      <div
+        {...imageInteractiveProps}
+        className={`relative overflow-hidden rounded-t-3xl bg-chalk-dark ${
+          onImageClick ? 'cursor-zoom-in' : ''
+        }`}
+      >
         {!imgLoaded && (
           <div className="absolute inset-0 animate-pulse bg-gray-200" />
         )}
@@ -60,6 +90,14 @@ export default function JobExampleCard({ job, showBadge = false }: JobExampleCar
             group-hover:scale-[1.02] transition-all duration-500
             ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
         />
+
+        {onImageClick && (
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.04] transition-all duration-300 flex items-center justify-center pointer-events-none">
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg">
+              <MagnifyingGlassPlusIcon className="h-5 w-5 text-ink" />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Footer */}

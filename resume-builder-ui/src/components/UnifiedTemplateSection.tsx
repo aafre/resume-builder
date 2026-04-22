@@ -14,6 +14,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { fetchTemplates } from '../services/templates';
 import TemplateCard from './TemplateCard';
 import JobExampleCard from './JobExampleCard';
+import JobExamplePreviewModal from './JobExamplePreviewModal';
 import TemplateFilterBar, { FILTER_CATEGORIES } from './TemplateFilterBar';
 import TemplatePreviewModal from './TemplatePreviewModal';
 import TemplateStartModal from './TemplateStartModal';
@@ -28,7 +29,7 @@ import {
   getJobExamplesByCategory,
   getJobCountByCategory,
 } from '../data/jobExamples';
-import type { JobCategory } from '../data/jobExamples';
+import type { JobCategory, JobExampleInfo } from '../data/jobExamples';
 
 const NotFound = lazy(() => import('./NotFound'));
 const ErrorPage = lazy(() => import('./ErrorPage'));
@@ -66,6 +67,10 @@ export default function UnifiedTemplateSection() {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Job example preview modal state
+  const [showExampleModal, setShowExampleModal] = useState(false);
+  const [exampleModalIndex, setExampleModalIndex] = useState(0);
 
   // Refs
   const gridRef = useRef<HTMLDivElement>(null);
@@ -137,6 +142,13 @@ export default function UnifiedTemplateSection() {
       setSearchParams(params, { replace: true });
     }
   }, [activeView, activeTemplateFilter, activeJobCategory, searchParams, setSearchParams]);
+
+  // Open the example preview modal at the clicked job's index
+  const handleExampleImageClick = (job: JobExampleInfo) => {
+    const index = filteredJobs.findIndex((j) => j.slug === job.slug);
+    setExampleModalIndex(index >= 0 ? index : 0);
+    setShowExampleModal(true);
+  };
 
   // View change handler — reset sub-filters and scroll into view
   const handleViewChange = (view: ViewMode) => {
@@ -404,6 +416,7 @@ export default function UnifiedTemplateSection() {
                   key={job.slug}
                   job={job}
                   showBadge={activeView === 'all'}
+                  onImageClick={handleExampleImageClick}
                 />
               ))}
             </div>
@@ -482,6 +495,13 @@ export default function UnifiedTemplateSection() {
         isOpen={actions.showAuthModal}
         onClose={() => actions.setShowAuthModal(false)}
         onSuccess={actions.handleAuthSuccess}
+      />
+
+      <JobExamplePreviewModal
+        isOpen={showExampleModal}
+        onClose={() => setShowExampleModal(false)}
+        jobs={filteredJobs}
+        initialIndex={exampleModalIndex}
       />
     </div>
   );
