@@ -169,22 +169,27 @@ export const useIconRegistry = (): UseIconRegistryReturn => {
     const targetFilenames = filenames || Object.keys(registry);
     const exportData: IconExportData = {};
 
-    for (const filename of targetFilenames) {
-      const entry = registry[filename];
-      if (entry) {
-        try {
-          const base64Data = await fileToBase64(entry.file);
-          exportData[filename] = {
-            data: base64Data,
-            type: entry.file.type,
-            size: entry.file.size,
-            uploadedAt: entry.uploadedAt.toISOString(),
-          };
-        } catch (error) {
-          console.warn(`Failed to export icon ${filename}:`, error);
+    // ⚡ Bolt: Performance Optimization
+    // Run all FileReader conversions concurrently using Promise.all
+    // instead of sequentially awaiting each one in a for...of loop.
+    await Promise.all(
+      targetFilenames.map(async (filename) => {
+        const entry = registry[filename];
+        if (entry) {
+          try {
+            const base64Data = await fileToBase64(entry.file);
+            exportData[filename] = {
+              data: base64Data,
+              type: entry.file.type,
+              size: entry.file.size,
+              uploadedAt: entry.uploadedAt.toISOString(),
+            };
+          } catch (error) {
+            console.warn(`Failed to export icon ${filename}:`, error);
+          }
         }
-      }
-    }
+      })
+    );
 
     return exportData;
   }, [registry, fileToBase64]);
