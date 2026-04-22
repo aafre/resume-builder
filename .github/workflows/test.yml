@@ -2,6 +2,7 @@ name: Tests
 
 on:
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   frontend-test:
@@ -48,10 +49,16 @@ jobs:
           python-version: "3.13"
           cache: "pip"
 
-      - name: Install wkhtmltopdf
+      - name: Install wkhtmltopdf and poppler-utils
         run: |
           sudo apt-get update
-          sudo apt-get install -y wkhtmltopdf
+          sudo apt-get install -y wkhtmltopdf poppler-utils
+
+      - name: Install bundled fonts
+        run: |
+          sudo mkdir -p /usr/local/share/fonts/resume-builder
+          sudo cp fonts/bundled/*.ttf /usr/local/share/fonts/resume-builder/
+          sudo fc-cache -fv
 
       - name: Install Python dependencies
         run: |
