@@ -28,6 +28,7 @@ export interface UseResumeLoaderProps {
   templateId: string | null;
   setTemplateId: (id: string | null) => void;
   setSupportsIcons: (supports: boolean) => void;
+  setTemplateEngine: (engine: import('../../services/templates').TemplateEngine | null) => void;
   setDocumentSettings: (settings: import('../../types').DocumentSettings) => void;
   setOriginalTemplateData: (data: { contactInfo: ContactInfo; sections: Section[] } | null) => void;
   setLoading: (loading: boolean) => void;
@@ -94,6 +95,7 @@ export const useResumeLoader = ({
   templateId,
   setTemplateId,
   setSupportsIcons,
+  setTemplateEngine,
   setDocumentSettings,
   setOriginalTemplateData,
   setLoading,
@@ -126,7 +128,7 @@ export const useResumeLoader = ({
     async (templateIdToLoad: string) => {
       try {
         setLoading(true);
-        const { yaml: yamlString, supportsIcons } = await fetchTemplate(templateIdToLoad);
+        const { yaml: yamlString, supportsIcons, engine } = await fetchTemplate(templateIdToLoad);
 
         // Parse YAML content
         const parsedData = yaml.load(yamlString);
@@ -155,6 +157,7 @@ export const useResumeLoader = ({
         const processedSections = processSectionsForExport(sectionsWithIds);
         setSections(processedSections);
         setSupportsIcons(supportsIcons);
+        setTemplateEngine(engine);
 
         // Store original template data to compare against changes
         setOriginalTemplateData({
@@ -171,7 +174,7 @@ export const useResumeLoader = ({
         setLoading(false);
       }
     },
-    [setLoading, setContactInfo, setSections, setSupportsIcons, setOriginalTemplateData, setLoadingError]
+    [setLoading, setContactInfo, setSections, setSupportsIcons, setTemplateEngine, setOriginalTemplateData, setLoadingError]
   );
 
   /**
@@ -226,10 +229,11 @@ export const useResumeLoader = ({
 
         // Load template structure and metadata (including supportsIcons flag)
         try {
-          const { yaml: templateYaml, supportsIcons } = await fetchTemplate(resume.template_id);
+          const { yaml: templateYaml, supportsIcons, engine } = await fetchTemplate(resume.template_id);
 
           // Use authoritative supportsIcons flag from backend
           setSupportsIcons(supportsIcons);
+          setTemplateEngine(engine);
 
           // Parse YAML content
           const parsedData = yaml.load(templateYaml);
@@ -259,6 +263,7 @@ export const useResumeLoader = ({
           // Fallback: use hardcoded check only if template fetch fails
           const fallbackSupportsIcons = resume.template_id === 'modern-with-icons';
           setSupportsIcons(fallbackSupportsIcons);
+          setTemplateEngine(null);
           // Non-critical: Start Fresh will still fail gracefully if originalTemplateData is null
         }
 
@@ -323,6 +328,7 @@ export const useResumeLoader = ({
       setSections,
       setTemplateId,
       setSupportsIcons,
+      setTemplateEngine,
       setDocumentSettings,
       setOriginalTemplateData,
       iconRegistry,

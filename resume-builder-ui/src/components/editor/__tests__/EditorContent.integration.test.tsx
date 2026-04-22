@@ -311,6 +311,7 @@ describe('EditorContent Integration Tests', () => {
     setContactInfo: vi.fn(),
     sections: [],
     supportsIcons: true,
+    templateEngine: null,
     iconRegistry: mockIconRegistry,
     documentSettings: {},
     onDocumentSettingsChange: vi.fn(),
@@ -642,6 +643,26 @@ describe('EditorContent Integration Tests', () => {
       await user.upload(fileInput, file);
 
       expect(handleFileInputChange).toHaveBeenCalled();
+    });
+  });
+
+  describe('DocumentSettingsPanel visibility by template engine', () => {
+    it('renders DocumentSettingsPanel when templateEngine is "html"', () => {
+      render(<EditorContent {...createDefaultProps({ templateEngine: 'html' })} />);
+
+      expect(screen.getByRole('button', { name: /document settings/i })).toBeInTheDocument();
+    });
+
+    it('renders DocumentSettingsPanel when templateEngine is null (unknown)', () => {
+      render(<EditorContent {...createDefaultProps({ templateEngine: null })} />);
+
+      expect(screen.getByRole('button', { name: /document settings/i })).toBeInTheDocument();
+    });
+
+    it('hides DocumentSettingsPanel when templateEngine is "latex"', () => {
+      render(<EditorContent {...createDefaultProps({ templateEngine: 'latex' })} />);
+
+      expect(screen.queryByRole('button', { name: /document settings/i })).not.toBeInTheDocument();
     });
   });
 });

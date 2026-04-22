@@ -9,7 +9,7 @@ describe("fetchTemplate", {}, () => {
 
   it("should return template YAML and supportsIcons when response is OK", async () => {
     const templateId = "1";
-    const mockData = { yaml: "sample: yaml content", supportsIcons: true };
+    const mockData = { yaml: "sample: yaml content", supportsIcons: true, engine: 'html' as const };
 
     // Mock fetch to simulate a successful API response.
     vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
