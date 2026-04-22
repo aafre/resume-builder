@@ -13,8 +13,9 @@ export const TEMPLATE_BEST_FOR: Record<string, string> = {
   student: 'Best for students & first-time job seekers',
   executive: 'Best for senior leaders & C-suite',
   'classic-alex-rivera': 'Best for corporate, finance & law',
-  'classic-jane-doe': 'Best for creative professionals',
+  'classic-jane-doe': 'Best for marketing, design & client-facing creatives',
   'two-column': 'Best for tech roles with many skills',
+  'uk-cv': 'Best for UK jobs, international & visa applications',
 };
 
 /* ------------------------------------------------------------------ */

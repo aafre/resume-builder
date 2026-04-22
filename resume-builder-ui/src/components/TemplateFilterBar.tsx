@@ -17,6 +17,7 @@ export const FILTER_CATEGORIES = [
   { id: 'creative', label: 'Creative', tags: ['icons', 'visual', 'sophisticated'] },
   { id: 'student', label: 'Student', tags: ['entry-level', 'education-first', 'new-graduate'] },
   { id: 'executive', label: 'Executive', tags: ['premium', 'executive', 'senior'] },
+  { id: 'international', label: 'International', tags: ['uk-cv', 'british', 'international', 'a4'] },
 ] as const;
 
 export type FilterCategoryId = (typeof FILTER_CATEGORIES)[number]['id'];
