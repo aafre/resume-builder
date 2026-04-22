@@ -311,6 +311,7 @@ describe('EditorContent Integration Tests', () => {
     setContactInfo: vi.fn(),
     sections: [],
     supportsIcons: true,
+    templateEngine: null,
     iconRegistry: mockIconRegistry,
     documentSettings: {},
     onDocumentSettingsChange: vi.fn(),
