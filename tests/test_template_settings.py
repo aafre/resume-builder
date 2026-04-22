@@ -16,8 +16,6 @@ import copy
 import os
 import subprocess
 import sys
-import tempfile
-import shutil
 from pathlib import Path
 
 import pytest
@@ -65,17 +63,8 @@ def _is_xelatex_available():
         return False
 
 
-def _is_pdfplumber_available():
-    try:
-        import pdfplumber  # noqa: F401
-        return True
-    except ImportError:
-        return False
-
-
 PDFKIT_AVAILABLE = _is_pdfkit_available()
 XELATEX_AVAILABLE = _is_xelatex_available()
-PDFPLUMBER_AVAILABLE = _is_pdfplumber_available()
 
 requires_pdfkit = pytest.mark.skipif(
     not PDFKIT_AVAILABLE, reason="pdfkit or wkhtmltopdf not installed"
@@ -250,11 +239,9 @@ MINIMAL_RESUME_DATA = {
 
 
 @pytest.fixture
-def temp_dir():
-    """Create a temporary directory, cleaned up after test."""
-    d = tempfile.mkdtemp()
-    yield Path(d)
-    shutil.rmtree(d, ignore_errors=True)
+def temp_dir(tmp_path):
+    """Alias for pytest's built-in tmp_path — kept so existing tests can use temp_dir."""
+    return tmp_path
 
 
 # ---------------------------------------------------------------------------
@@ -621,33 +608,34 @@ class TestPdfGenerationSmoke:
             header = f.read(5)
         assert header == b"%PDF-", "Invalid PDF header"
 
-        # 2. PDF contains expected text
-        if PDFPLUMBER_AVAILABLE:
-            text = _extract_pdf_text(output_path)
-            assert _text_in_pdf("Test User", text), (
-                f"[{template_dir}] Contact name 'Test User' not found in PDF text"
-            )
-            assert _text_in_pdf("Acme Corp", text), (
-                f"[{template_dir}] Company 'Acme Corp' not found in PDF text"
-            )
+        # 2. PDF contains expected text — skip the content checks explicitly
+        # when pdfplumber is unavailable, rather than silently passing.
+        pytest.importorskip("pdfplumber")
+        text = _extract_pdf_text(output_path)
+        assert _text_in_pdf("Test User", text), (
+            f"[{template_dir}] Contact name 'Test User' not found in PDF text"
+        )
+        assert _text_in_pdf("Acme Corp", text), (
+            f"[{template_dir}] Company 'Acme Corp' not found in PDF text"
+        )
 
-            # 3. Font is embedded correctly
-            pdf_fonts = _extract_pdf_fonts(output_path)
-            assert len(pdf_fonts) > 0, (
-                f"[{template_dir}] No fonts found in PDF"
-            )
-            assert _font_name_matches(font, pdf_fonts), (
-                f"[{template_dir}] Requested font '{font}' not found in PDF. "
-                f"PDF fonts: {pdf_fonts}"
-            )
+        # 3. Font is embedded correctly
+        pdf_fonts = _extract_pdf_fonts(output_path)
+        assert len(pdf_fonts) > 0, (
+            f"[{template_dir}] No fonts found in PDF"
+        )
+        assert _font_name_matches(font, pdf_fonts), (
+            f"[{template_dir}] Requested font '{font}' not found in PDF. "
+            f"PDF fonts: {pdf_fonts}"
+        )
 
-            # 4. Accent color is present (skip for default/None)
-            if accent_color and accent_color != "#000000":
-                pdf_colors = _extract_pdf_colors(output_path)
-                assert _color_present_in_pdf(accent_color, pdf_colors), (
-                    f"[{template_dir}] Accent color {accent_color} not found in PDF. "
-                    f"PDF colors: {pdf_colors}"
-                )
+        # 4. Accent color is present (skip for default/None)
+        if accent_color and accent_color != "#000000":
+            pdf_colors = _extract_pdf_colors(output_path)
+            assert _color_present_in_pdf(accent_color, pdf_colors), (
+                f"[{template_dir}] Accent color {accent_color} not found in PDF. "
+                f"PDF colors: {pdf_colors}"
+            )
 
     @requires_pdfkit
     @requires_xelatex
@@ -672,7 +660,8 @@ class TestPdfGenerationSmoke:
         # LaTeX uses generate_latex_pdf directly, not pdf_generation_worker
         import app as flask_app
 
-        data = yaml.safe_load(open(yaml_path))
+        with open(yaml_path) as f:
+            data = yaml.safe_load(f)
         flask_app.generate_latex_pdf(
             data, str(session_dir), str(output_path), template_dir,
         )
@@ -680,12 +669,12 @@ class TestPdfGenerationSmoke:
         assert output_path.exists(), "LaTeX PDF was not created"
         assert output_path.stat().st_size > 5000
 
-        if PDFPLUMBER_AVAILABLE:
-            pdf_fonts = _extract_pdf_fonts(output_path)
-            assert _font_name_matches(font, pdf_fonts), (
-                f"[{template_dir}] Requested font '{font}' not found in PDF. "
-                f"PDF fonts: {pdf_fonts}"
-            )
+        pytest.importorskip("pdfplumber")
+        pdf_fonts = _extract_pdf_fonts(output_path)
+        assert _font_name_matches(font, pdf_fonts), (
+            f"[{template_dir}] Requested font '{font}' not found in PDF. "
+            f"PDF fonts: {pdf_fonts}"
+        )
 
     @requires_pdfkit
     @requires_xelatex
@@ -710,7 +699,8 @@ class TestPdfGenerationSmoke:
 
         import app as flask_app
 
-        data = yaml.safe_load(open(yaml_path))
+        with open(yaml_path) as f:
+            data = yaml.safe_load(f)
         flask_app.generate_latex_pdf(
             data, str(session_dir), str(output_path), template_dir,
         )
@@ -718,15 +708,15 @@ class TestPdfGenerationSmoke:
         assert output_path.exists()
         assert output_path.stat().st_size > 5000
 
-        if PDFPLUMBER_AVAILABLE:
-            text = _extract_pdf_text(output_path)
-            assert _text_in_pdf("Test User", text)
+        pytest.importorskip("pdfplumber")
+        text = _extract_pdf_text(output_path)
+        assert _text_in_pdf("Test User", text)
 
-            pdf_colors = _extract_pdf_colors(output_path)
-            assert _color_present_in_pdf(accent_color, pdf_colors), (
-                f"[{template_dir}] Accent color {accent_color} not found in PDF. "
-                f"PDF colors: {pdf_colors}"
-            )
+        pdf_colors = _extract_pdf_colors(output_path)
+        assert _color_present_in_pdf(accent_color, pdf_colors), (
+            f"[{template_dir}] Accent color {accent_color} not found in PDF. "
+            f"PDF colors: {pdf_colors}"
+        )
 
 
 # =============================================================================
@@ -753,7 +743,7 @@ class TestPdfDefaultSettings:
         assert output_path.exists()
         assert output_path.stat().st_size > 5000
 
-        if PDFPLUMBER_AVAILABLE:
-            text = _extract_pdf_text(output_path)
-            assert _text_in_pdf("Test User", text)
-            assert _text_in_pdf("Acme Corp", text)
+        pytest.importorskip("pdfplumber")
+        text = _extract_pdf_text(output_path)
+        assert _text_in_pdf("Test User", text)
+        assert _text_in_pdf("Acme Corp", text)
