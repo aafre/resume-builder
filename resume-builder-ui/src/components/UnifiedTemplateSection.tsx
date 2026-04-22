@@ -51,13 +51,13 @@ interface Template {
 export default function UnifiedTemplateSection() {
   // URL state
   const [searchParams, setSearchParams] = useSearchParams();
-  const initialView = (searchParams.get('view') as ViewMode) || 'all';
+  const initialView = (searchParams.get('view') as ViewMode) || 'templates';
   const initialFilter = searchParams.get('filter') || 'all';
   const initialCategory = (searchParams.get('category') as JobCategory | 'all') || 'all';
 
-  // View state
+  // View state — defaults to 'templates' to match the /templates URL intent
   const [activeView, setActiveView] = useState<ViewMode>(
-    ['all', 'templates', 'examples'].includes(initialView) ? initialView : 'all'
+    ['all', 'templates', 'examples'].includes(initialView) ? initialView : 'templates'
   );
   const [activeTemplateFilter, setActiveTemplateFilter] = useState(initialFilter);
   const [activeJobCategory, setActiveJobCategory] = useState<JobCategory | 'all'>(initialCategory);
@@ -126,7 +126,8 @@ export default function UnifiedTemplateSection() {
   // URL sync
   useEffect(() => {
     const params = new URLSearchParams();
-    if (activeView !== 'all') params.set('view', activeView);
+    // 'templates' is the default view — omit from URL to keep /templates canonical
+    if (activeView !== 'templates') params.set('view', activeView);
     if (activeView === 'templates' && activeTemplateFilter !== 'all') params.set('filter', activeTemplateFilter);
     if (activeView === 'examples' && activeJobCategory !== 'all') params.set('category', activeJobCategory);
 
