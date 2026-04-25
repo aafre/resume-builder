@@ -1,0 +1,3 @@
+## 2025-04-25 - Optimization Pattern: Hoist Regex Compilation
+**Learning:** In `app.py` and `resume_generator_latex.py`, the `_escape_latex` function is called recursively or in loops. However, the static mapping dictionary `latex_special_chars` and the regex compilation `re.compile` are defined within the function scope, causing them to be recreated on every single call. This is inefficient.
+**Action:** Hoist regex compilation (`re.compile`) and static mapping dictionaries to module-level constants (e.g., `LATEX_SPECIAL_CHARS`, `LATEX_ESCAPE_PATTERN`) instead of defining them within function scopes. This is particularly effective for utility functions like `_escape_latex` that are called frequently.
