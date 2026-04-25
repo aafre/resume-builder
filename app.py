@@ -1,50 +1,41 @@
-import yaml
-import tempfile
-import shutil
-import hashlib
-import json
-from flask import (
-    Flask,
-    request,
-    send_file,
-    jsonify,
-    url_for,
-    send_from_directory,
-    redirect,
-)
-
-
-from werkzeug.middleware.proxy_fix import ProxyFix
-from werkzeug.utils import secure_filename
-import os
-import subprocess
-import logging
-from datetime import datetime, timezone
-from pathlib import Path
-import uuid
-import re
+import atexit
 import base64
 import copy
-from jinja2 import Environment, FileSystemLoader
-from concurrent.futures import ThreadPoolExecutor
-import atexit
-from functools import wraps, partial, lru_cache
+import hashlib
+import json
+import logging
+import os
+import re
+import shutil
+import subprocess
+import tempfile
 import time
-from typing import Callable, Any
-from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
+import uuid
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
+from functools import lru_cache, partial, wraps
+from pathlib import Path
+from typing import Any, Callable
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 import requests as http_requests
-
-from flask_cors import CORS
-from flask_compress import Compress
-from supabase import create_client, Client
+import yaml
 from dotenv import load_dotenv
+from flask import (Flask, jsonify, redirect, request, send_file,
+                   send_from_directory, url_for)
+from flask_compress import Compress
+from flask_cors import CORS
+from jinja2 import Environment, FileSystemLoader
+from werkzeug.middleware.proxy_fix import ProxyFix
+from werkzeug.utils import secure_filename
+
+from supabase import Client, create_client
 
 # Load environment variables from .env file
 load_dotenv()
 
 # pSEO imports (lazy — only used in production or when ADZUNA keys present)
-from jobs_pseo import PseoRenderer, PageType, load_vite_manifest
+from jobs_pseo import PageType, PseoRenderer, load_vite_manifest
 
 # Configure logging based on environment variable
 # Set DEBUG_LOGGING=true to enable detailed debug logs for troubleshooting
@@ -54,7 +45,13 @@ log_level = logging.DEBUG if DEBUG_LOGGING else logging.INFO
 logging.basicConfig(level=log_level, format="%(asctime)s [%(levelname)s] %(message)s")
 
 
-TRANSIENT_ERROR_KEYWORDS = ("server disconnected", "connection", "timeout", "reset", "network")
+TRANSIENT_ERROR_KEYWORDS = (
+    "server disconnected",
+    "connection",
+    "timeout",
+    "reset",
+    "network",
+)
 
 
 def is_transient_error(error_msg: str) -> bool:
@@ -168,8 +165,8 @@ def pdf_generation_worker(
     - Reliable PDF generation without Qt concurrency issues
     """
     try:
-        import subprocess
         import logging
+        import subprocess
         from pathlib import Path
 
         # Set up logging for worker process
@@ -473,6 +470,28 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
         return "LinkedIn Profile"
 
 
+LATEX_SPECIAL_CHARS = {
+    "\\": r"\textbackslash{}",
+    "&": r"\&",
+    "%": r"\%",
+    "$": r"\$",
+    "#": r"\#",
+    # "_": r"\_",  # Don't escape: used for markdown italic/bold (_text_ and __text__)
+    "{": r"\{",
+    "}": r"\}",
+    # "~": r"\textasciitilde{}",  # Don't escape: used for markdown strikethrough (~~text~~)
+    "^": r"\textasciicircum{}",
+    "<": r"\textless{}",
+    ">": r"\textgreater{}",
+    "|": r"\textbar{}",
+    "-": r"{-}",
+}
+
+LATEX_ESCAPE_PATTERN = re.compile(
+    "|".join(re.escape(key) for key in LATEX_SPECIAL_CHARS.keys())
+)
+
+
 def _escape_latex(text):
     r"""Escapes special LaTeX characters in a string to prevent compilation errors.
 
@@ -489,25 +508,9 @@ def _escape_latex(text):
     if not isinstance(text, str):
         return text
 
-    latex_special_chars = {
-        "\\": r"\textbackslash{}",
-        "&": r"\&",
-        "%": r"\%",
-        "$": r"\$",
-        "#": r"\#",
-        # "_": r"\_",  # Don't escape: used for markdown italic/bold (_text_ and __text__)
-        "{": r"\{",
-        "}": r"\}",
-        # "~": r"\textasciitilde{}",  # Don't escape: used for markdown strikethrough (~~text~~)
-        "^": r"\textasciicircum{}",
-        "<": r"\textless{}",
-        ">": r"\textgreater{}",
-        "|": r"\textbar{}",
-        "-": r"{-}",
-    }
-
-    pattern = re.compile("|".join(re.escape(key) for key in latex_special_chars.keys()))
-    escaped_text = pattern.sub(lambda match: latex_special_chars[match.group(0)], text)
+    escaped_text = LATEX_ESCAPE_PATTERN.sub(
+        lambda match: LATEX_SPECIAL_CHARS[match.group(0)], text
+    )
     return escaped_text
 
 
@@ -700,9 +703,7 @@ def _process_social_links(contact_info):
             else:
                 link["display_text"] = link["handle"] or platform.capitalize()
 
-            logging.info(
-                f"Generated {platform} display text: {link['display_text']}"
-            )
+            logging.info(f"Generated {platform} display text: {link['display_text']}")
 
     contact_info["social_links"] = social_links
 
@@ -845,12 +846,14 @@ def load_resume_data(yaml_file_path):
 
     return data
 
+
 @lru_cache(maxsize=32)
 def _load_yaml_file_cached(yaml_path_str: str) -> dict:
     """Internal cached helper to load YAML files from disk."""
     with open(yaml_path_str, "r", encoding="utf-8") as file:
         data = yaml.safe_load(file)
     return data
+
 
 def get_template_config(yaml_path) -> dict:
     """
@@ -1068,9 +1071,10 @@ def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
         return None
 
     try:
+        import tempfile
+
         from pdf2image import convert_from_path
         from PIL import Image
-        import tempfile
 
         # Convert first page of PDF to image at 150 DPI
         logging.debug(f"Converting PDF to thumbnail: {pdf_path}")
@@ -1208,6 +1212,7 @@ app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB
 # =============================================================================
 _pseo_renderer = None
 
+
 def _get_pseo_renderer():
     """Lazy-init the pSEO renderer on first use."""
     global _pseo_renderer
@@ -1238,7 +1243,9 @@ def _get_pseo_renderer():
         vite_manifest=vite_manifest,
         supabase=supabase,
     )
-    logging.info(f"pSEO renderer initialized: {matrix['meta']['total_roles']} roles × {matrix['meta']['total_locations']} locations")
+    logging.info(
+        f"pSEO renderer initialized: {matrix['meta']['total_roles']} roles × {matrix['meta']['total_locations']} locations"
+    )
     return _pseo_renderer
 
 
@@ -1349,7 +1356,10 @@ def require_auth(f):
             except Exception as e:
                 error_msg = str(e)
 
-                if is_transient_error(error_msg) and auth_attempt < max_auth_attempts - 1:
+                if (
+                    is_transient_error(error_msg)
+                    and auth_attempt < max_auth_attempts - 1
+                ):
                     logging.warning(
                         f"Auth retry {auth_attempt + 1}/{max_auth_attempts - 1} | "
                         f"endpoint={request.path} | error={error_msg}"
@@ -1530,6 +1540,7 @@ def _get_prerendered_path(route_path: str) -> str | None:
 # Jobs pSEO Routes — MUST be registered BEFORE the SPA catch-all
 # =============================================================================
 
+
 @app.route("/jobs/<path:subpath>", methods=["GET"])
 def jobs_pseo(subpath):
     """
@@ -1543,7 +1554,7 @@ def jobs_pseo(subpath):
         if FLASK_ENV == "production" and app.static_folder:
             return send_from_directory(app.static_folder, "index.html")
         # Dev mode: let Vite handle it
-        return "<!-- dev mode: use Vite -->" , 200
+        return "<!-- dev mode: use Vite -->", 200
 
     renderer = _get_pseo_renderer()
     if not renderer:
@@ -1622,6 +1633,7 @@ def jobs_pseo_data(subpath):
 # Dynamic Sitemap Routes
 # =============================================================================
 
+
 @app.route("/sitemap.xml", methods=["GET"])
 def sitemap_index():
     """Sitemap index referencing all sub-sitemaps."""
@@ -1631,7 +1643,9 @@ def sitemap_index():
     if _get_pseo_renderer():
         sub_sitemaps.append("sitemap-jobs-roles.xml")
     xml_parts = ['<?xml version="1.0" encoding="UTF-8"?>']
-    xml_parts.append('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+    xml_parts.append(
+        '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+    )
     base = "https://easyfreeresume.com"
     for name in sub_sitemaps:
         xml_parts.append(f"  <sitemap><loc>{base}/{name}</loc></sitemap>")
@@ -1665,17 +1679,23 @@ def sitemap_jobs_roles():
 
     for role in renderer.matrix.get("roles", []):
         # Role hub
-        xml_parts.append(f"  <url><loc>{base}/jobs/{role['slug']}</loc>"
-                        f"<lastmod>{today}</lastmod><priority>0.7</priority></url>")
+        xml_parts.append(
+            f"  <url><loc>{base}/jobs/{role['slug']}</loc>"
+            f"<lastmod>{today}</lastmod><priority>0.7</priority></url>"
+        )
         # Role × location pages
         for loc in renderer.matrix.get("locations", []):
-            xml_parts.append(f"  <url><loc>{base}/jobs/{role['slug']}/{loc['slug']}</loc>"
-                            f"<lastmod>{today}</lastmod><priority>0.6</priority></url>")
+            xml_parts.append(
+                f"  <url><loc>{base}/jobs/{role['slug']}/{loc['slug']}</loc>"
+                f"<lastmod>{today}</lastmod><priority>0.6</priority></url>"
+            )
 
     # Location hubs
     for loc in renderer.matrix.get("locations", []):
-        xml_parts.append(f"  <url><loc>{base}/jobs/in/{loc['slug']}</loc>"
-                        f"<lastmod>{today}</lastmod><priority>0.7</priority></url>")
+        xml_parts.append(
+            f"  <url><loc>{base}/jobs/in/{loc['slug']}</loc>"
+            f"<lastmod>{today}</lastmod><priority>0.7</priority></url>"
+        )
 
     xml_parts.append("</urlset>")
     return "\n".join(xml_parts), 200, {"Content-Type": "application/xml; charset=utf-8"}
@@ -2013,8 +2033,11 @@ def generate_resume():
                 )
             else:
                 _dispatch_html_pdf_generation(
-                    actual_template, yaml_path, output_path,
-                    session_icons_dir, session_id,
+                    actual_template,
+                    yaml_path,
+                    output_path,
+                    session_icons_dir,
+                    session_id,
                 )
 
             if not output_path.exists():
@@ -2071,14 +2094,21 @@ def _validate_and_serve_file(filename, base_dir, file_type="file"):
 
     try:
         if not file_path.resolve().is_relative_to(base_dir.resolve()):
-            logging.warning(f"{file_type.capitalize()} path traversal attempt: {filename}")
+            logging.warning(
+                f"{file_type.capitalize()} path traversal attempt: {filename}"
+            )
             return None, (jsonify({"success": False, "error": "Access denied"}), 403)
     except ValueError:
-        logging.warning(f"{file_type.capitalize()} path validation failed for: {filename}")
+        logging.warning(
+            f"{file_type.capitalize()} path validation failed for: {filename}"
+        )
         return None, (jsonify({"success": False, "error": "Access denied"}), 403)
 
     if not file_path.exists():
-        return None, (jsonify({"success": False, "error": f"{file_type.capitalize()} not found"}), 404)
+        return None, (
+            jsonify({"success": False, "error": f"{file_type.capitalize()} not found"}),
+            404,
+        )
 
     return file_path, None
 
@@ -2133,7 +2163,9 @@ def serve_templates(filename):
     """
     try:
         template_image_dir = PROJECT_ROOT / "docs" / "templates"
-        file_path, error = _validate_and_serve_file(filename, template_image_dir, "image")
+        file_path, error = _validate_and_serve_file(
+            filename, template_image_dir, "image"
+        )
         if error:
             return error
 
@@ -2540,7 +2572,9 @@ def save_resume():
             supabase.table("resume_icons").delete().eq("resume_id", resume_id).in_(
                 "filename", icons_to_delete
             ).execute()
-            logging.info(f"Deleted {len(icons_to_delete)} removed icons for resume {resume_id}")
+            logging.info(
+                f"Deleted {len(icons_to_delete)} removed icons for resume {resume_id}"
+            )
 
         # Insert only new/changed icon records
         if icon_records:
@@ -3454,8 +3488,11 @@ def generate_pdf_for_saved_resume(resume_id):
                 )
             else:
                 _dispatch_html_pdf_generation(
-                    actual_template, yaml_path, output_path,
-                    session_icons_dir, session_id,
+                    actual_template,
+                    yaml_path,
+                    output_path,
+                    session_icons_dir,
+                    session_id,
                 )
 
             if not output_path.exists():
@@ -3705,8 +3742,11 @@ def generate_thumbnail_for_resume(resume_id):
                 )
             else:
                 _dispatch_html_pdf_generation(
-                    actual_template, yaml_path, output_path,
-                    session_icons_dir, session_id,
+                    actual_template,
+                    yaml_path,
+                    output_path,
+                    session_icons_dir,
+                    session_id,
                 )
 
             if not output_path.exists():
@@ -3899,8 +3939,25 @@ def update_user_preferences():
 # ===== Adzuna Job Search Proxy =====
 
 ADZUNA_SUPPORTED_COUNTRIES = {
-    "gb", "us", "at", "au", "be", "br", "ca", "ch",
-    "de", "es", "fr", "in", "it", "mx", "nl", "nz", "pl", "sg", "za",
+    "gb",
+    "us",
+    "at",
+    "au",
+    "be",
+    "br",
+    "ca",
+    "ch",
+    "de",
+    "es",
+    "fr",
+    "in",
+    "it",
+    "mx",
+    "nl",
+    "nz",
+    "pl",
+    "sg",
+    "za",
 }
 
 # Simple TTL cache for Adzuna responses (15 minutes)
@@ -3923,7 +3980,7 @@ def search_jobs():
 
 def _search_jobs_post():
     """POST handler: 3-tier search with resume-context scoring."""
-    from job_engine import MatchContext, JobMatchEngine
+    from job_engine import JobMatchEngine, MatchContext
 
     body = request.get_json(silent=True) or {}
     query = (body.get("query") or "").strip()
@@ -3980,7 +4037,10 @@ def _search_jobs_post():
         return jsonify({"success": True, "data": data})
     except Exception as e:
         logging.error(f"Job match engine error: {e}")
-        return jsonify({"success": False, "error": "Job search temporarily unavailable"}), 502
+        return (
+            jsonify({"success": False, "error": "Job search temporarily unavailable"}),
+            502,
+        )
 
 
 def _search_jobs_get():
@@ -4015,8 +4075,20 @@ def _search_jobs_get():
         sort_by = "relevance"
 
     # Check cache
-    cache_key = (query.lower(), location.lower(), country, category, what_or.lower(),
-                 page, title_only, max_days_old, salary_min, full_time, permanent, sort_by)
+    cache_key = (
+        query.lower(),
+        location.lower(),
+        country,
+        category,
+        what_or.lower(),
+        page,
+        title_only,
+        max_days_old,
+        salary_min,
+        full_time,
+        permanent,
+        sort_by,
+    )
     now = time.time()
     cached = _adzuna_cache.get(cache_key)
     if cached and (now - cached["ts"]) < _ADZUNA_CACHE_TTL:
@@ -4058,16 +4130,18 @@ def _search_jobs_get():
 
         jobs = []
         for r in raw.get("results", []):
-            jobs.append({
-                "title": r.get("title", ""),
-                "company": (r.get("company", {}) or {}).get("display_name", ""),
-                "location": (r.get("location", {}) or {}).get("display_name", ""),
-                "salary_min": r.get("salary_min"),
-                "salary_max": r.get("salary_max"),
-                "salary_is_predicted": bool(r.get("salary_is_predicted")),
-                "url": r.get("redirect_url", ""),
-                "created": r.get("created", ""),
-            })
+            jobs.append(
+                {
+                    "title": r.get("title", ""),
+                    "company": (r.get("company", {}) or {}).get("display_name", ""),
+                    "location": (r.get("location", {}) or {}).get("display_name", ""),
+                    "salary_min": r.get("salary_min"),
+                    "salary_max": r.get("salary_max"),
+                    "salary_is_predicted": bool(r.get("salary_is_predicted")),
+                    "url": r.get("redirect_url", ""),
+                    "created": r.get("created", ""),
+                }
+            )
 
         data = {"count": raw.get("count", 0), "jobs": jobs}
 
@@ -4078,7 +4152,10 @@ def _search_jobs_get():
 
     except http_requests.RequestException as e:
         logging.error(f"Adzuna API error: {e}")
-        return jsonify({"success": False, "error": "Job search temporarily unavailable"}), 502
+        return (
+            jsonify({"success": False, "error": "Job search temporarily unavailable"}),
+            502,
+        )
 
 
 # ===== AI Role Suggestions =====
@@ -4097,17 +4174,29 @@ def suggest_roles():
     body = request.get_json(silent=True) or {}
     title = (body.get("title") or "").strip()
     if not title:
-        return jsonify({"success": True, "primary_role": "", "alternative_roles": [], "confidence": 0})
+        return jsonify(
+            {
+                "success": True,
+                "primary_role": "",
+                "alternative_roles": [],
+                "confidence": 0,
+            }
+        )
 
     skills = body.get("skills") or []
     experience_titles = body.get("experience_titles") or []
 
     # Build cache key from all inputs (lowercase, sorted)
-    cache_key = json.dumps({
-        "title": title.lower(),
-        "skills": sorted(s.lower() for s in skills if isinstance(s, str)),
-        "experience_titles": [t.lower() for t in experience_titles if isinstance(t, str)],
-    }, sort_keys=True)
+    cache_key = json.dumps(
+        {
+            "title": title.lower(),
+            "skills": sorted(s.lower() for s in skills if isinstance(s, str)),
+            "experience_titles": [
+                t.lower() for t in experience_titles if isinstance(t, str)
+            ],
+        },
+        sort_keys=True,
+    )
 
     now = time.time()
     cached = _suggestion_cache.get(cache_key)
@@ -4122,11 +4211,13 @@ def suggest_roles():
     try:
         response = supabase.functions.invoke(
             "suggest-roles",
-            invoke_options={"body": {
-                "title": title,
-                "skills": skills,
-                "experience_titles": experience_titles,
-            }},
+            invoke_options={
+                "body": {
+                    "title": title,
+                    "skills": skills,
+                    "experience_titles": experience_titles,
+                }
+            },
         )
 
         # supabase-py returns bytes or str or dict
