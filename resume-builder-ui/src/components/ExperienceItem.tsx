@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { MdDelete } from 'react-icons/md';
 import { RichTextInput } from './RichTextInput';
 import { MarkdownHint } from './MarkdownLinkPreview';
@@ -6,6 +6,7 @@ import IconManager from './IconManager';
 import ItemDndContext from './ItemDndContext';
 import SortableItem from './SortableItem';
 import { arrayMove } from '@dnd-kit/sortable';
+import ResponsiveConfirmDialog from './ResponsiveConfirmDialog';
 
 export interface ExperienceItemData {
   company: string;
@@ -89,12 +90,15 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
     onUpdate(index, { ...itemRef.current, description: [...itemRef.current.description, ""] });
   }, [index, onUpdate]);
 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
   return (
+    <>
     <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-medium">Experience #{index + 1}</h3>
         <button
-          onClick={() => onDelete(index)}
+          onClick={() => setShowDeleteConfirm(true)}
           className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
           aria-label="Delete experience entry"
           title="Delete this experience"
@@ -201,6 +205,18 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
         </div>
       </div>
     </div>
+    <ResponsiveConfirmDialog
+      isOpen={showDeleteConfirm}
+      onClose={() => setShowDeleteConfirm(false)}
+      onConfirm={() => {
+        onDelete(index);
+        setShowDeleteConfirm(false);
+      }}
+      title="Delete Experience?"
+      message="Are you sure you want to delete this experience entry? This action cannot be undone."
+      isDestructive={true}
+    />
+    </>
   );
 });
 

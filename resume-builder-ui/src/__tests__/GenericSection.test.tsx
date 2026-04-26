@@ -213,7 +213,7 @@ describe("GenericSection (List Type)", () => {
     expect(updatedSection.content[2]).toBe("");
   });
 
-  it("removes an item when its delete button is clicked", () => {
+  it("removes an item when its delete button is clicked and confirmed", () => {
     const onUpdateMock = vi.fn();
     const onEditTitleMock = vi.fn();
     const onSaveTitleMock = vi.fn();
@@ -238,6 +238,10 @@ describe("GenericSection (List Type)", () => {
     // For each list item, there's a delete button with title "Remove Item".
     const deleteButtons = screen.getAllByTitle("Remove Item");
     fireEvent.click(deleteButtons[0]);
+
+    const confirmBtn = screen.getByText("Confirm");
+    fireEvent.click(confirmBtn);
+
     expect(onUpdateMock).toHaveBeenCalledTimes(1);
     const updatedSection = onUpdateMock.mock.calls[0][0];
     // Original length is 2; after removing, it should be 1.
