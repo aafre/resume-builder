@@ -1,8 +1,9 @@
-import subprocess
-from jinja2 import Environment, FileSystemLoader
-from pathlib import Path
-import re
 import logging  # For clean, thoughtful logging
+import re
+import subprocess
+from pathlib import Path
+
+from jinja2 import Environment, FileSystemLoader
 
 # Set up logging for this module
 logging.basicConfig(
@@ -28,10 +29,10 @@ def convert_markdown_links_to_latex(text):
         return text
 
     # Regex to match [text](url) pattern
-    pattern = r'\[([^\]]+)\]\(([^\)]+)\)'
+    pattern = r"\[([^\]]+)\]\(([^\)]+)\)"
 
     # Replace with LaTeX href command
-    latex_text = re.sub(pattern, r'\\href{\2}{\1}', text)
+    latex_text = re.sub(pattern, r"\\href{\2}{\1}", text)
 
     return latex_text
 
@@ -60,22 +61,22 @@ def convert_markdown_formatting_to_latex(text):
 
     # Process in specific order to avoid conflicts
     # 1. Bold with ** (must come before single *)
-    text = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\1}', text)
+    text = re.sub(r"\*\*(.+?)\*\*", r"\\textbf{\1}", text)
 
     # 2. Bold with __ (must come before single _)
-    text = re.sub(r'__(.+?)__', r'\\textbf{\1}', text)
+    text = re.sub(r"__(.+?)__", r"\\textbf{\1}", text)
 
     # 3. Italic with * (after ** is processed)
-    text = re.sub(r'\*(.+?)\*', r'\\textit{\1}', text)
+    text = re.sub(r"\*(.+?)\*", r"\\textit{\1}", text)
 
     # 4. Italic with _ (after __ is processed)
-    text = re.sub(r'_(.+?)_', r'\\textit{\1}', text)
+    text = re.sub(r"_(.+?)_", r"\\textit{\1}", text)
 
     # 5. Strikethrough with ~~
-    text = re.sub(r'~~(.+?)~~', r'\\sout{\1}', text)
+    text = re.sub(r"~~(.+?)~~", r"\\sout{\1}", text)
 
     # 6. Underline with ++ (custom syntax)
-    text = re.sub(r'\+\+(.+?)\+\+', r'\\underline{\1}', text)
+    text = re.sub(r"\+\+(.+?)\+\+", r"\\underline{\1}", text)
 
     # 7. Escape remaining dangerous characters that weren't consumed by markdown
     text = _escape_remaining_latex_chars(text)
@@ -108,19 +109,19 @@ def _escape_remaining_latex_chars(text):
         return text
 
     # Escape underscores NOT already escaped (negative lookbehind for backslash)
-    text = re.sub(r'(?<!\\)_', r'\\_', text)
+    text = re.sub(r"(?<!\\)_", r"\\_", text)
 
     # Escape tildes NOT already escaped
-    text = re.sub(r'(?<!\\)~', r'\\textasciitilde{}', text)
+    text = re.sub(r"(?<!\\)~", r"\\textasciitilde{}", text)
 
     return text
 
 
 def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
     """
-    DEPRECATED: This function is no longer used. The LaTeX template now uses fixed-width 
+    DEPRECATED: This function is no longer used. The LaTeX template now uses fixed-width
     columns for better consistency and appearance.
-    
+
     Dynamically calculate the number of columns and ensure minimum items per column.
 
     Args:
@@ -146,6 +147,41 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
     return max_columns  # Default to max columns if all checks pass
 
 
+# Pre-compile mapping and regex for LaTeX escaping to optimize performance
+# Define a mapping for LaTeX special characters
+# Order matters for some replacements (e.g., '\' before '&')
+# NOTE: We intentionally DO NOT escape certain characters used in markdown syntax:
+# - ~ (tilde) is used for strikethrough: ~~text~~
+# - * (asterisk) is used for bold/italic: **text** or *text*
+# - _ (underscore) is used for bold/italic: __text__ or _text_
+# - + (plus) is used for underline: ++text++
+# These will be converted to LaTeX commands by the markdown filters.
+# Users should avoid literal underscores/tildes in text, or use asterisks for bold/italic instead.
+LATEX_SPECIAL_CHARS = {
+    "\\": r"\textbackslash{}",  # Backslash must be escaped first
+    "&": r"\&",
+    "%": r"\%",
+    "$": r"\$",
+    "#": r"\#",
+    # "_": r"\_",  # NOT escaped - used for markdown bold/italic (__text__ and _text_)
+    "{": r"\{",
+    "}": r"\}",
+    # "~": r"\textasciitilde{}",  # NOT escaped - used for markdown strikethrough (~~text~~)
+    "^": r"\textasciicircum{}",
+    "<": r"\textless{}",
+    ">": r"\textgreater{}",
+    "|": r"\textbar{}",
+    # Hyphen/dash handling: default hyphen is good, but for en/em dashes use text-specific commands
+    "-": r"{-}",  # Protect hyphens that might be misinterpreted as math operators
+}
+
+# Use a regular expression to find and replace all special characters
+# This approach ensures each character is handled once
+LATEX_ESCAPE_PATTERN = re.compile(
+    "|".join(re.escape(key) for key in LATEX_SPECIAL_CHARS.keys())
+)
+
+
 def _escape_latex(text):
     """
     Escapes special LaTeX characters in a string to prevent compilation errors.
@@ -162,37 +198,11 @@ def _escape_latex(text):
         # as they don't need LaTeX escaping.
         return text
 
-    # Define a mapping for LaTeX special characters
-    # Order matters for some replacements (e.g., '\' before '&')
-    # NOTE: We intentionally DO NOT escape certain characters used in markdown syntax:
-    # - ~ (tilde) is used for strikethrough: ~~text~~
-    # - * (asterisk) is used for bold/italic: **text** or *text*
-    # - _ (underscore) is used for bold/italic: __text__ or _text_
-    # - + (plus) is used for underline: ++text++
-    # These will be converted to LaTeX commands by the markdown filters.
-    # Users should avoid literal underscores/tildes in text, or use asterisks for bold/italic instead.
-    latex_special_chars = {
-        "\\": r"\textbackslash{}",  # Backslash must be escaped first
-        "&": r"\&",
-        "%": r"\%",
-        "$": r"\$",
-        "#": r"\#",
-        # "_": r"\_",  # NOT escaped - used for markdown bold/italic (__text__ and _text_)
-        "{": r"\{",
-        "}": r"\}",
-        # "~": r"\textasciitilde{}",  # NOT escaped - used for markdown strikethrough (~~text~~)
-        "^": r"\textasciicircum{}",
-        "<": r"\textless{}",
-        ">": r"\textgreater{}",
-        "|": r"\textbar{}",
-        # Hyphen/dash handling: default hyphen is good, but for en/em dashes use text-specific commands
-        "-": r"{-}",  # Protect hyphens that might be misinterpreted as math operators
-    }
-
-    # Use a regular expression to find and replace all special characters
-    # This approach ensures each character is handled once
-    pattern = re.compile("|".join(re.escape(key) for key in latex_special_chars.keys()))
-    escaped_text = pattern.sub(lambda match: latex_special_chars[match.group(0)], text)
+    # Optimized: Using module-level LATEX_ESCAPE_PATTERN and LATEX_SPECIAL_CHARS
+    # avoids compiling regex and instantiating the mapping dictionary on every call.
+    escaped_text = LATEX_ESCAPE_PATTERN.sub(
+        lambda match: LATEX_SPECIAL_CHARS[match.group(0)], text
+    )
 
     return escaped_text
 
@@ -254,35 +264,51 @@ def _prepare_latex_data(data):
     contact_info = prepared_data.get("contact_info", {})
     if contact_info:
         linkedin_url = contact_info.get("linkedin", "")
-        
+
         # Only process LinkedIn if URL is provided
         if linkedin_url and linkedin_url.strip():
-            if not linkedin_url.startswith("http://") and not linkedin_url.startswith("https://"):
+            if not linkedin_url.startswith("http://") and not linkedin_url.startswith(
+                "https://"
+            ):
                 contact_info["linkedin"] = "https://" + linkedin_url
                 linkedin_url = contact_info["linkedin"]  # Update local variable
-                logger.debug(f"Prepended https:// to LinkedIn URL: {contact_info['linkedin']}")
+                logger.debug(
+                    f"Prepended https:// to LinkedIn URL: {contact_info['linkedin']}"
+                )
 
             contact_info["linkedin_handle"] = _get_social_media_handle(linkedin_url)
             logger.debug(f"Derived LinkedIn handle: {contact_info['linkedin_handle']}")
-            
+
             # Generate linkedin_display if not already provided
             if not contact_info.get("linkedin_display"):
                 # Import the function from the same module if it exists, or use simple fallback
                 try:
                     from app import generate_linkedin_display_text
+
                     contact_info["linkedin_display"] = generate_linkedin_display_text(
                         linkedin_url, contact_info.get("name", "")
                     )
                 except ImportError:
                     # Simple fallback if import fails
                     handle = contact_info["linkedin_handle"]
-                    if handle and len(handle) > 3 and not any(char.isdigit() for char in handle[-4:]):
+                    if (
+                        handle
+                        and len(handle) > 3
+                        and not any(char.isdigit() for char in handle[-4:])
+                    ):
                         # Clean handle - format nicely
-                        contact_info["linkedin_display"] = ' '.join(part.capitalize() for part in handle.replace('-', ' ').split())
+                        contact_info["linkedin_display"] = " ".join(
+                            part.capitalize()
+                            for part in handle.replace("-", " ").split()
+                        )
                     else:
                         # Use contact name or fallback
-                        contact_info["linkedin_display"] = contact_info.get("name", "LinkedIn Profile")
-                logger.debug(f"Generated LinkedIn display text: {contact_info['linkedin_display']}")
+                        contact_info["linkedin_display"] = contact_info.get(
+                            "name", "LinkedIn Profile"
+                        )
+                logger.debug(
+                    f"Generated LinkedIn display text: {contact_info['linkedin_display']}"
+                )
         else:
             # Clear LinkedIn fields if URL is empty
             contact_info["linkedin_handle"] = ""
@@ -356,10 +382,12 @@ def generate_latex_pdf(template_name: str, data: dict, output_file: Path):
     )
 
     # Register custom Jinja2 filters for markdown to LaTeX conversion
-    env.filters['markdown_links'] = convert_markdown_links_to_latex
-    env.filters['markdown_formatting'] = convert_markdown_formatting_to_latex
+    env.filters["markdown_links"] = convert_markdown_links_to_latex
+    env.filters["markdown_formatting"] = convert_markdown_formatting_to_latex
 
-    logger.debug("Jinja2 environment configured with LaTeX-compatible delimiters and custom filters.")
+    logger.debug(
+        "Jinja2 environment configured with LaTeX-compatible delimiters and custom filters."
+    )
 
     # Load the main LaTeX template file
     try:
@@ -645,8 +673,7 @@ if __name__ == "__main__":
         test_resume_tex_path = test_template_dir / "resume.tex"
         if not test_resume_tex_path.exists():
             with open(test_resume_tex_path, "w", encoding="utf-8") as f:
-                f.write(
-                    r"""% LaTeX Template (Simplified for testing)
+                f.write(r"""% LaTeX Template (Simplified for testing)
 \documentclass[10pt, letterpaper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{geometry}
@@ -752,8 +779,7 @@ if __name__ == "__main__":
 \BLOCK{endfor}
 
 \end{document}
-"""
-                )
+""")
 
         # Also create a dummy font file for testing if it doesn't exist
         # This will allow xelatex to find 'Source Sans Pro' if it's set in YAML
