@@ -1,8 +1,9 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import IconManager from "./IconManager";
 import { RichTextInput } from "./RichTextInput";
 import { MdDelete } from "react-icons/md";
 import SortableItem from "./SortableItem";
+import ResponsiveConfirmDialog from "./ResponsiveConfirmDialog";
 
 export interface EducationItemData {
   degree: string;
@@ -43,13 +44,15 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
   supportsIcons,
   iconRegistry,
 }) => {
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
   return (
     <SortableItem id={id}>
       <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">Entry {index + 1}</h3>
           <button
-            onClick={() => onRemove(index)}
+            onClick={() => setShowDeleteConfirm(true)}
             className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
             aria-label="Delete education entry"
             title="Delete this entry"
@@ -119,6 +122,17 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
           </div>
         </div>
       </div>
+      <ResponsiveConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={() => {
+          onRemove(index);
+          setShowDeleteConfirm(false);
+        }}
+        title="Delete Education?"
+        message="Are you sure you want to delete this education entry? This action cannot be undone."
+        isDestructive={true}
+      />
     </SortableItem>
   );
 });

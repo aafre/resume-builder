@@ -136,7 +136,7 @@ describe("EducationSection", { timeout: 5000 }, () => {
     expect(updatedEducation[1]).toEqual(mockEducation[1]);
   });
 
-  it("removes an education entry when the Remove button is clicked", () => {
+  it("removes an education entry when the Remove button is clicked and confirmed", () => {
     const onUpdateMock = vi.fn();
     const props = createDefaultProps({ onUpdate: onUpdateMock });
     render(<EducationSection {...props} />, { wrapper: DndWrapper });
@@ -144,6 +144,10 @@ describe("EducationSection", { timeout: 5000 }, () => {
     // Get all delete buttons (the trash icon)
     const deleteButtons = screen.getAllByTitle("Delete this entry");
     fireEvent.click(deleteButtons[0]);
+
+    // Click confirm in the dialog
+    const confirmBtn = screen.getByText("Confirm");
+    fireEvent.click(confirmBtn);
 
     expect(onUpdateMock).toHaveBeenCalledTimes(1);
     const updatedEducation = onUpdateMock.mock.calls[0][0];
@@ -228,6 +232,9 @@ describe("EducationSection", { timeout: 5000 }, () => {
 
     const deleteButtons = screen.getAllByTitle("Delete this entry");
     fireEvent.click(deleteButtons[0]);
+
+    const confirmBtn = screen.getByText("Confirm");
+    fireEvent.click(confirmBtn);
 
     // Should call onDeleteEntry for confirmation, not onUpdate
     expect(onDeleteEntryMock).toHaveBeenCalledWith(0);

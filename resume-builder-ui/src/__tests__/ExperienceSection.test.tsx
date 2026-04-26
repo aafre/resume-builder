@@ -151,7 +151,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
     expect(updatedExperiences[1]).toEqual(baseMockExperiences[1]);
   });
 
-  it("removes an experience entry when the Remove button is clicked", () => {
+  it("removes an experience entry when the Remove button is clicked and confirmed", () => {
     const onUpdateMock = vi.fn();
     const props = createDefaultProps({ onUpdate: onUpdateMock });
     render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
@@ -159,6 +159,9 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
     // Click the delete button (trash icon) for the first experience.
     const deleteButtons = screen.getAllByTitle("Delete this experience");
     fireEvent.click(deleteButtons[0]);
+
+    const confirmBtn = screen.getByText("Confirm");
+    fireEvent.click(confirmBtn);
 
     expect(onUpdateMock).toHaveBeenCalledTimes(1);
     const updatedExperiences = onUpdateMock.mock.calls[0][0];
@@ -258,6 +261,9 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
 
     const deleteButtons = screen.getAllByTitle("Delete this experience");
     fireEvent.click(deleteButtons[0]);
+
+    const confirmBtn = screen.getByText("Confirm");
+    fireEvent.click(confirmBtn);
 
     // Should call onDeleteEntry for confirmation, not onUpdate
     expect(onDeleteEntryMock).toHaveBeenCalledWith(0);

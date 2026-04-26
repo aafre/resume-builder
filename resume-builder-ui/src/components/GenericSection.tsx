@@ -6,6 +6,7 @@ import { RichTextArea } from "./RichTextArea";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
 import { GhostButton } from "./shared/GhostButton";
+import ResponsiveConfirmDialog from "./ResponsiveConfirmDialog";
 import { MdDelete } from "react-icons/md";
 
 interface Section {
@@ -78,17 +79,26 @@ const GenericSection: React.FC<GenericSectionProps> = ({
     }
   };
 
+  const [deleteTargetIndex, setDeleteTargetIndex] = useState<number | null>(null);
+
   const handleRemoveItem = (index: number) => {
+    setDeleteTargetIndex(index);
+  };
+
+  const confirmRemoveItem = () => {
+    if (deleteTargetIndex === null) return;
+
     if (onDeleteEntry) {
-      // Trigger confirmation dialog
-      onDeleteEntry(index);
+      // Trigger parent confirmation dialog (or direct action) if provided
+      onDeleteEntry(deleteTargetIndex);
     } else {
       // Fallback: direct delete (backward compatibility)
       const updatedContent = section.content.filter(
-        (_: string, i: number) => i !== index
+        (_: string, i: number) => i !== deleteTargetIndex
       );
       onUpdate({ ...section, content: updatedContent });
     }
+    setDeleteTargetIndex(null);
   };
 
   return (
@@ -306,6 +316,14 @@ const GenericSection: React.FC<GenericSectionProps> = ({
         )}
         </div>
       )}
+      <ResponsiveConfirmDialog
+        isOpen={deleteTargetIndex !== null}
+        onClose={() => setDeleteTargetIndex(null)}
+        onConfirm={confirmRemoveItem}
+        title="Delete Item?"
+        message="Are you sure you want to delete this item? This action cannot be undone."
+        isDestructive={true}
+      />
     </div>
   );
 };
