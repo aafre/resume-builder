@@ -1,0 +1,3 @@
+## 2024-04-27 - Hoist compiled regex to module level for recursive/loop functions
+**Learning:** Inside `app.py` and `resume_generator_latex.py`, compiling regular expressions dynamically inside functions like `_escape_latex` and `_escape_remaining_latex_chars` (which are called recursively or inside loops during rendering) incurs significant overhead compared to module-level hoisted patterns.
+**Action:** Always hoist `re.compile()` calls and static dictionary mappings out of function scope and define them as module-level constants (e.g. `LATEX_ESCAPE_PATTERN = re.compile(...)`) when they are used heavily in loops or recursive traversal.

@@ -83,6 +83,9 @@ def convert_markdown_formatting_to_latex(text):
     return text
 
 
+ESCAPE_UNDERSCORE_PATTERN = re.compile(r'(?<!\\)_')
+ESCAPE_TILDE_PATTERN = re.compile(r'(?<!\\)~')
+
 def _escape_remaining_latex_chars(text):
     r"""Escapes markdown characters that weren't consumed by markdown conversion.
 
@@ -108,10 +111,10 @@ def _escape_remaining_latex_chars(text):
         return text
 
     # Escape underscores NOT already escaped (negative lookbehind for backslash)
-    text = re.sub(r'(?<!\\)_', r'\\_', text)
+    text = ESCAPE_UNDERSCORE_PATTERN.sub(r'\\_', text)
 
     # Escape tildes NOT already escaped
-    text = re.sub(r'(?<!\\)~', r'\\textasciitilde{}', text)
+    text = ESCAPE_TILDE_PATTERN.sub(r'\\textasciitilde{}', text)
 
     return text
 
@@ -146,6 +149,25 @@ def calculate_columns(num_items, max_columns=4, min_items_per_column=2):
     return max_columns  # Default to max columns if all checks pass
 
 
+LATEX_SPECIAL_CHARS = {
+    "\\": r"\textbackslash{}",  # Backslash must be escaped first
+    "&": r"\&",
+    "%": r"\%",
+    "$": r"\$",
+    "#": r"\#",
+    # "_": r"\_",  # NOT escaped - used for markdown bold/italic (__text__ and _text_)
+    "{": r"\{",
+    "}": r"\}",
+    # "~": r"\textasciitilde{}",  # NOT escaped - used for markdown strikethrough (~~text~~)
+    "^": r"\textasciicircum{}",
+    "<": r"\textless{}",
+    ">": r"\textgreater{}",
+    "|": r"\textbar{}",
+    # Hyphen/dash handling: default hyphen is good, but for en/em dashes use text-specific commands
+    "-": r"{-}",  # Protect hyphens that might be misinterpreted as math operators
+}
+LATEX_ESCAPE_PATTERN = re.compile("|".join(re.escape(key) for key in LATEX_SPECIAL_CHARS.keys()))
+
 def _escape_latex(text):
     """
     Escapes special LaTeX characters in a string to prevent compilation errors.
@@ -162,37 +184,9 @@ def _escape_latex(text):
         # as they don't need LaTeX escaping.
         return text
 
-    # Define a mapping for LaTeX special characters
-    # Order matters for some replacements (e.g., '\' before '&')
-    # NOTE: We intentionally DO NOT escape certain characters used in markdown syntax:
-    # - ~ (tilde) is used for strikethrough: ~~text~~
-    # - * (asterisk) is used for bold/italic: **text** or *text*
-    # - _ (underscore) is used for bold/italic: __text__ or _text_
-    # - + (plus) is used for underline: ++text++
-    # These will be converted to LaTeX commands by the markdown filters.
-    # Users should avoid literal underscores/tildes in text, or use asterisks for bold/italic instead.
-    latex_special_chars = {
-        "\\": r"\textbackslash{}",  # Backslash must be escaped first
-        "&": r"\&",
-        "%": r"\%",
-        "$": r"\$",
-        "#": r"\#",
-        # "_": r"\_",  # NOT escaped - used for markdown bold/italic (__text__ and _text_)
-        "{": r"\{",
-        "}": r"\}",
-        # "~": r"\textasciitilde{}",  # NOT escaped - used for markdown strikethrough (~~text~~)
-        "^": r"\textasciicircum{}",
-        "<": r"\textless{}",
-        ">": r"\textgreater{}",
-        "|": r"\textbar{}",
-        # Hyphen/dash handling: default hyphen is good, but for en/em dashes use text-specific commands
-        "-": r"{-}",  # Protect hyphens that might be misinterpreted as math operators
-    }
-
     # Use a regular expression to find and replace all special characters
     # This approach ensures each character is handled once
-    pattern = re.compile("|".join(re.escape(key) for key in latex_special_chars.keys()))
-    escaped_text = pattern.sub(lambda match: latex_special_chars[match.group(0)], text)
+    escaped_text = LATEX_ESCAPE_PATTERN.sub(lambda match: LATEX_SPECIAL_CHARS[match.group(0)], text)
 
     return escaped_text
 

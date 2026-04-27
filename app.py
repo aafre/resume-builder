@@ -473,6 +473,22 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
         return "LinkedIn Profile"
 
 
+LATEX_SPECIAL_CHARS = {
+    "\\": r"\textbackslash{}",
+    "&": r"\&",
+    "%": r"\%",
+    "$": r"\$",
+    "#": r"\#",
+    "{": r"\{",
+    "}": r"\}",
+    "^": r"\textasciicircum{}",
+    "<": r"\textless{}",
+    ">": r"\textgreater{}",
+    "|": r"\textbar{}",
+    "-": r"{-}",
+}
+LATEX_ESCAPE_PATTERN = re.compile("|".join(re.escape(key) for key in LATEX_SPECIAL_CHARS.keys()))
+
 def _escape_latex(text):
     r"""Escapes special LaTeX characters in a string to prevent compilation errors.
 
@@ -489,25 +505,7 @@ def _escape_latex(text):
     if not isinstance(text, str):
         return text
 
-    latex_special_chars = {
-        "\\": r"\textbackslash{}",
-        "&": r"\&",
-        "%": r"\%",
-        "$": r"\$",
-        "#": r"\#",
-        # "_": r"\_",  # Don't escape: used for markdown italic/bold (_text_ and __text__)
-        "{": r"\{",
-        "}": r"\}",
-        # "~": r"\textasciitilde{}",  # Don't escape: used for markdown strikethrough (~~text~~)
-        "^": r"\textasciicircum{}",
-        "<": r"\textless{}",
-        ">": r"\textgreater{}",
-        "|": r"\textbar{}",
-        "-": r"{-}",
-    }
-
-    pattern = re.compile("|".join(re.escape(key) for key in latex_special_chars.keys()))
-    escaped_text = pattern.sub(lambda match: latex_special_chars[match.group(0)], text)
+    escaped_text = LATEX_ESCAPE_PATTERN.sub(lambda match: LATEX_SPECIAL_CHARS[match.group(0)], text)
     return escaped_text
 
 
@@ -600,6 +598,9 @@ def convert_markdown_formatting_to_latex(text):
     return text
 
 
+ESCAPE_UNDERSCORE_PATTERN = re.compile(r"(?<!\\)_")
+ESCAPE_TILDE_PATTERN = re.compile(r"(?<!\\)~")
+
 def _escape_remaining_latex_chars(text):
     r"""Escapes markdown characters that weren't consumed by markdown conversion.
 
@@ -625,10 +626,10 @@ def _escape_remaining_latex_chars(text):
         return text
 
     # Escape underscores NOT already escaped (negative lookbehind for backslash)
-    text = re.sub(r"(?<!\\)_", r"\\_", text)
+    text = ESCAPE_UNDERSCORE_PATTERN.sub(r"\\_", text)
 
     # Escape tildes NOT already escaped
-    text = re.sub(r"(?<!\\)~", r"\\textasciitilde{}", text)
+    text = ESCAPE_TILDE_PATTERN.sub(r"\\textasciitilde{}", text)
 
     return text
 
