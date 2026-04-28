@@ -24,6 +24,17 @@ export function DuplicateResumeModal({
     }
   }, [resume]);
 
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onCancel();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [isOpen, onCancel]);
+
   if (!isOpen || !resume) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -35,7 +46,12 @@ export function DuplicateResumeModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+      <div
+        className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="duplicate-modal-title"
+      >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex-shrink-0">
@@ -54,7 +70,7 @@ export function DuplicateResumeModal({
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Duplicate Resume</h2>
+              <h2 id="duplicate-modal-title" className="text-xl font-bold text-gray-900">Duplicate Resume</h2>
               <p className="text-sm text-gray-500 mt-1">Create a copy with a new name</p>
             </div>
           </div>
@@ -84,7 +100,7 @@ export function DuplicateResumeModal({
               <button
                 type="submit"
                 disabled={isDuplicating || !newTitle.trim()}
-                className="flex-1 bg-accent hover:bg-accent/90 disabled:bg-accent/80 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                className="flex-1 bg-accent hover:bg-accent/90 disabled:bg-accent/80 text-white font-medium py-2 px-4 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent"
               >
                 {isDuplicating ? 'Duplicating...' : 'Duplicate'}
               </button>
@@ -92,7 +108,7 @@ export function DuplicateResumeModal({
                 type="button"
                 onClick={onCancel}
                 disabled={isDuplicating}
-                className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors"
+                className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent"
               >
                 Cancel
               </button>

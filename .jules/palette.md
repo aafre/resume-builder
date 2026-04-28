@@ -1,0 +1,3 @@
+## 2025-04-28 - Adding ARIA Roles and Focus Styles to Custom Modals
+**Learning:** Custom interactive dialogs and modals (like `DuplicateResumeModal`) that don't use standard `<dialog>` tags require manual ARIA attributes (`role="dialog"`, `aria-modal="true"`, `aria-labelledby`) and keyboard event listeners (like `Escape` to close) to be properly accessible to screen readers and keyboard users.
+**Action:** When auditing or implementing custom modals in this app, ensure they include semantic ARIA attributes, explicit keyboard support (Escape to close), and visible focus indicators (`focus-visible:ring-2`) on action buttons for full accessibility compliance.
