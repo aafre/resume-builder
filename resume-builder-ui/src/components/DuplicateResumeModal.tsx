@@ -24,6 +24,16 @@ export function DuplicateResumeModal({
     }
   }, [resume]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onCancel();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onCancel]);
+
   if (!isOpen || !resume) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -34,8 +44,17 @@ export function DuplicateResumeModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={onCancel}
+    >
+      <div
+        className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4"
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="duplicate-modal-title"
+      >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex-shrink-0">
@@ -54,7 +73,9 @@ export function DuplicateResumeModal({
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Duplicate Resume</h2>
+              <h2 id="duplicate-modal-title" className="text-xl font-bold text-gray-900">
+                Duplicate Resume
+              </h2>
               <p className="text-sm text-gray-500 mt-1">Create a copy with a new name</p>
             </div>
           </div>
