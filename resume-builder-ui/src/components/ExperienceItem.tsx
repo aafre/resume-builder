@@ -94,8 +94,9 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-medium">Experience #{index + 1}</h3>
         <button
+          type="button"
           onClick={() => onDelete(index)}
-          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1"
           aria-label="Delete experience entry"
           title="Delete this experience"
         >
@@ -178,8 +179,10 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
                             />
                           </div>
                           <button
+                            type="button"
                             onClick={() => handleDescRemove(descIndex)}
-                            className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
+                            className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1"
+                            aria-label="Remove description point"
                             title="Remove description point"
                           >
                             ✕
@@ -193,8 +196,9 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
             )}
           </div>
           <button
+            type="button"
             onClick={handleDescAdd}
-            className="mt-3 bg-accent text-ink px-4 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
+            className="mt-3 bg-accent text-ink px-4 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
           >
             + Add Description Point
           </button>
