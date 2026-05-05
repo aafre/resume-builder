@@ -178,9 +178,11 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
                             />
                           </div>
                           <button
+                            type="button"
                             onClick={() => handleDescRemove(descIndex)}
-                            className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
+                            className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1"
                             title="Remove description point"
+                            aria-label="Remove description point"
                           >
                             ✕
                           </button>
