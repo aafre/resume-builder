@@ -53,14 +53,26 @@ $REGISTRY = "europe-west2-docker.pkg.dev/uk-vm-00001/resume-builder"
 $IMAGE_NAME = "easyfreeresume-app"
 $TAG = "dev"
 
-Write-Host "Building DEV Docker image..."
-Write-Host "  VITE_APP_URL: $VITE_APP_URL"
-Write-Host "  VITE_SUPABASE_URL: $VITE_SUPABASE_URL"
-Write-Host "  VITE_ENABLE_EXPLICIT_ADS: $VITE_ENABLE_EXPLICIT_ADS"
-Write-Host "  VITE_AFFILIATE_JOB_SEARCH_ENABLED: $VITE_AFFILIATE_JOB_SEARCH_ENABLED"
-Write-Host "  VITE_AFFILIATE_RESUME_REVIEW_ENABLED: $VITE_AFFILIATE_RESUME_REVIEW_ENABLED"
-Write-Host "  VITE_APP_VERSION: $VITE_APP_VERSION"
-Write-Host "  VITE_POSTHOG_KEY: $(if ($VITE_POSTHOG_KEY) { $VITE_POSTHOG_KEY.Substring(0,8) + '...' } else { '(not set)' })"
+Write-Host ""
+Write-Host "=========================================" -ForegroundColor Cyan
+Write-Host "  DEV Build - Environment Variables" -ForegroundColor Cyan
+Write-Host "=========================================" -ForegroundColor Cyan
+Write-Host "  VITE_APP_URL              : $VITE_APP_URL"
+Write-Host "  VITE_APP_VERSION          : $VITE_APP_VERSION"
+Write-Host "  VITE_SUPABASE_URL         : $VITE_SUPABASE_URL"
+Write-Host "  VITE_SUPABASE_PUBLISHABLE : $($VITE_SUPABASE_PUBLISHABLE_KEY.Substring(0,16))..."
+Write-Host "  VITE_ENABLE_EXPLICIT_ADS  : $VITE_ENABLE_EXPLICIT_ADS"
+Write-Host "  VITE_AFFILIATE_JOB_SEARCH : $VITE_AFFILIATE_JOB_SEARCH_ENABLED"
+Write-Host "  VITE_AFFILIATE_REVIEW     : $VITE_AFFILIATE_RESUME_REVIEW_ENABLED"
+if ($VITE_POSTHOG_KEY) {
+    Write-Host "  VITE_POSTHOG_KEY          : $($VITE_POSTHOG_KEY.Substring(0,12))..." -ForegroundColor Green
+} else {
+    Write-Host "  VITE_POSTHOG_KEY          : *** NOT SET - analytics will be disabled ***" -ForegroundColor Red
+}
+Write-Host "  SUPABASE_URL (backend)    : $SUPABASE_URL"
+Write-Host "  SUPABASE_SECRET_KEY       : $($SUPABASE_SECRET_KEY.Substring(0,12))..."
+Write-Host "=========================================" -ForegroundColor Cyan
+Write-Host ""
 
 docker build `
     --build-arg VITE_SUPABASE_URL="$VITE_SUPABASE_URL" `
@@ -93,6 +105,18 @@ Write-Host "  Baked version : $baked"
 Write-Host "  Expected      : $VITE_APP_VERSION"
 if (-not $baked -or $baked.Trim() -ne $VITE_APP_VERSION) {
     Write-Warning "Version mismatch -- build may have used stale cache. Re-run with: docker build --no-cache ..."
+}
+
+# Verify PostHog was baked into the JS bundle
+Write-Host "Verifying PostHog in bundle..."
+$phCheck = docker run --rm "${IMAGE_NAME}:${TAG}" grep -rl "posthog" /app/static/assets/ 2>$null
+if ($phCheck) {
+    Write-Host "  PostHog: FOUND in JS bundle" -ForegroundColor Green
+} else {
+    Write-Host "  PostHog: NOT FOUND in JS bundle - analytics will not work!" -ForegroundColor Red
+    if (-not $VITE_POSTHOG_KEY) {
+        Write-Host "  Cause: VITE_POSTHOG_KEY was empty at build time (check .env)" -ForegroundColor Yellow
+    }
 }
 Write-Host ""
 Write-Host "To push: docker push ${REGISTRY}/${IMAGE_NAME}:${TAG}"
