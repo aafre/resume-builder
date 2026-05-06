@@ -4,17 +4,18 @@ This directory contains branded, reusable email templates for all transactional 
 
 ## Design System
 
-All templates follow the EasyFreeResume design language:
+All templates follow the EasyFreeResume 2026 design language:
 
-- **Color Scheme**: Blue (#2563eb) → Purple (#9333ea) → Indigo (#4f46e5) gradient
+- **Header**: 4px accent bar (#00d47e) + solid ink (#0c0c0c) header with white logo
+- **CTA Button**: Solid accent green (#00d47e) with dark text (#0c0c0c), 12px radius
+- **Page Background**: Chalk (#fafaf8), warm off-white
 - **Typography**: System fonts (-apple-system, BlinkMacSystemFont, Segoe UI, Roboto)
-- **Border Radius**: 12px for buttons, 8px for boxes
-- **Spacing**: Generous padding (40px desktop, 30px mobile)
-- **Shadows**: Subtle elevation with box-shadow
+- **Spacing**: Generous padding (40px desktop, 28px mobile)
+- **Shadows**: Subtle accent glow on CTA buttons
 
 ## Available Templates
 
-### 1. `magic-link.html` ⚡
+### 1. `magic-link.html`
 **Purpose**: Passwordless authentication (Magic Link sign-in)
 
 **Supabase Variable**: `{{ .ConfirmationURL }}`
@@ -26,11 +27,10 @@ All templates follow the EasyFreeResume design language:
 - 1-hour expiration notice
 - Security warning
 - Alternative link option
-- **Built with automated CSS inlining**
 
 ---
 
-### 2. `confirm-signup.html` ⚡
+### 2. `confirm-signup.html`
 **Purpose**: Email confirmation after account creation
 
 **Supabase Variable**: `{{ .ConfirmationURL }}`
@@ -39,10 +39,38 @@ All templates follow the EasyFreeResume design language:
 
 **Key Features**:
 - Welcome message
-- Feature highlights box
+- Feature highlights box (chalk-dark background)
 - 24-hour expiration notice
 - Onboarding tone
-- **Built with automated CSS inlining**
+
+---
+
+### 3. `change-email.html`
+**Purpose**: Confirm email address change
+
+**Supabase Variable**: `{{ .ConfirmationURL }}`
+
+**Used for**: Email change verification
+
+**Key Features**:
+- Clear explanation of the change
+- Security notice with contact-support guidance
+- Alternative link option
+
+---
+
+### 4. `trustpilot-review.html`
+**Purpose**: Request Trustpilot review after PDF download
+
+**Custom Variables**: `{{ .ReviewURL }}`, `{{ .UnsubscribeURL }}`, `{{ .SiteURL }}`
+
+**Used for**: Post-download review solicitation (sent via edge function, NOT Supabase Auth)
+
+**Key Features**:
+- Warm, non-pushy tone
+- Unicode star rating visual (email-safe, no images)
+- Social proof callout
+- Unsubscribe link
 
 ---
 
@@ -50,10 +78,10 @@ All templates follow the EasyFreeResume design language:
 
 ### Step 1: Access Email Templates
 1. Go to [Supabase Dashboard](https://app.supabase.com)
-2. Select your project: `mgetvioaymkvafczmhwo`
+2. Select your project
 3. Navigate to **Authentication** → **Email Templates**
 
-### Step 2: Configure Each Template
+### Step 2: Configure Each Auth Template
 
 #### Magic Link (Email OTP)
 1. Select "Magic Link" template
@@ -69,19 +97,14 @@ All templates follow the EasyFreeResume design language:
 4. **Subject line**: `Welcome to EasyFreeResume - Confirm your email`
 5. Save changes
 
-#### Reset Password (Recovery)
-1. Select "Reset Password" template
-2. Copy content from `email-templates/reset-password.html`
-3. Paste into "Message Body (HTML)"
-4. **Subject line**: `Reset your EasyFreeResume password`
-5. Save changes
-
 #### Change Email
 1. Select "Change Email" template
 2. Copy content from `email-templates/change-email.html`
 3. Paste into "Message Body (HTML)"
 4. **Subject line**: `Confirm your new email - EasyFreeResume`
 5. Save changes
+
+> **Note**: `trustpilot-review.html` is not a Supabase Auth template. It is sent via a backend edge function after PDF download.
 
 ---
 
@@ -91,13 +114,13 @@ All templates follow the EasyFreeResume design language:
 
 | Variable | Used? | Purpose |
 |----------|-------|---------|
-| `{{ .ConfirmationURL }}` | ✅ **YES** | Action button/link (all templates) |
-| `{{ .Email }}` | ✅ **YES** | User's email (all templates) |
-| `{{ .SiteURL }}` | ✅ **YES** | Footer links (all templates) |
-| `{{ .Token }}` | ❌ No | Not needed |
-| `{{ .TokenHash }}` | ❌ No | Internal use only |
-| `{{ .RedirectTo }}` | ❌ No | Future use |
-| `{{ .Data }}` | ❌ No | Future use |
+| `{{ .ConfirmationURL }}` | Yes | Action button/link (auth templates) |
+| `{{ .Email }}` | Yes | User's email (auth templates) |
+| `{{ .SiteURL }}` | Yes | Footer links (all templates) |
+| `{{ .Token }}` | No | Not needed |
+| `{{ .TokenHash }}` | No | Internal use only |
+| `{{ .RedirectTo }}` | No | Future use |
+| `{{ .Data }}` | No | Future use |
 
 **For complete variable documentation, see:** [`VARIABLES.md`](./VARIABLES.md)
 
@@ -113,76 +136,92 @@ When creating a new transactional email, follow this structure:
 
 Start with `base-template.html` as your foundation. It includes:
 - Responsive design
-- Brand colors and gradients
-- Header with logo
+- Brand colors (ink header, accent CTA)
+- 4px green accent bar
 - Footer with links
 - Mobile optimization
 
 ### 2. Template Structure
 
 ```html
-<!-- Header: Brand gradient -->
-<div class="header-gradient">
-  <h1 class="logo-text">EasyFreeResume</h1>
-</div>
+<!-- Accent bar -->
+<tr>
+  <td class="accent-bar">&nbsp;</td>
+</tr>
+
+<!-- Header: Ink background -->
+<tr>
+  <td class="header">
+    <h1 class="logo-text">EasyFreeResume</h1>
+  </td>
+</tr>
 
 <!-- Content: Main message -->
-<div class="content">
-  <h2 class="greeting">Heading Here</h2>
-  <p class="message">Message text...</p>
+<tr>
+  <td class="content">
+    <h2 class="greeting">Heading Here</h2>
+    <p class="message">Message text...</p>
 
-  <!-- CTA Button -->
-  <div class="button-container">
-    <a href="[ACTION_URL]" class="button">Button Text</a>
-  </div>
+    <!-- CTA Button -->
+    <div class="button-container">
+      <!-- MSO/VML fallback for Outlook -->
+      <!-- Standard table-based button -->
+    </div>
 
-  <!-- Alternative link (optional) -->
-  <div class="alt-link">...</div>
+    <!-- Alternative link (optional) -->
+    <div class="alt-link">...</div>
 
-  <!-- Security notice (if applicable) -->
-  <div class="security-notice">...</div>
-</div>
+    <!-- Security notice (if applicable) -->
+    <div class="security-notice">...</div>
+  </td>
+</tr>
 
 <!-- Footer: Standard -->
-<div class="footer">...</div>
+<tr>
+  <td class="footer">...</td>
+</tr>
 ```
 
 ### 3. CSS Classes Reference
 
 | Class | Purpose | Style |
 |-------|---------|-------|
-| `.header-gradient` | Top brand bar | Blue-purple-indigo gradient |
-| `.logo-text` | Company name | White, bold, 28px |
+| `.accent-bar` | Brand accent strip | 4px tall, accent green (#00d47e) |
+| `.header` | Brand header | Solid ink (#0c0c0c) background |
+| `.logo-text` | Company name | White, bold, 26px |
 | `.content` | Main body | Padded container |
-| `.greeting` | H2 heading | 24px, bold, dark gray |
-| `.message` | Body text | 16px, medium gray |
-| `.button` | Primary CTA | Gradient, rounded, shadow |
+| `.greeting` | H2 heading | 24px, 700 weight, ink (#0c0c0c) |
+| `.message` | Body text | 16px, #4b5563 |
+| `.button-td` | CTA button cell | Accent green, 12px radius, shadow |
+| `.button-link` | CTA button text | 700 weight, ink (#0c0c0c) |
 | `.button-container` | Button wrapper | Centered |
-| `.alt-link` | Fallback link | Light gray box |
-| `.security-notice` | Warning box | Yellow background, border |
-| `.feature-box` | Highlight box | Light gradient background |
-| `.footer` | Bottom section | Gray text, links |
+| `.alt-link` | Fallback link | Chalk-dark (#f0efe9) box |
+| `.security-notice` | Warning box | Amber background, left border |
+| `.feature-box` | Highlight box | Chalk-dark (#f0efe9) background |
+| `.footer` | Bottom section | Mist (#a8a4a0) text, links |
 
 ### 4. Design Guidelines
 
 **Do:**
-- ✅ Use the gradient for headers and primary buttons
-- ✅ Keep messaging concise and action-focused
-- ✅ Include alternative text link for accessibility
-- ✅ Add security notices for sensitive actions
-- ✅ Test on mobile (320px width minimum)
-- ✅ Use semantic HTML for screen readers
+- Use ink (#0c0c0c) for the header background
+- Use accent green (#00d47e) for CTA buttons only
+- Keep messaging concise and action-focused
+- Include alternative text link for accessibility
+- Add security notices for sensitive actions
+- Test on mobile (320px width minimum)
+- Use semantic HTML for screen readers
 
 **Don't:**
-- ❌ Use external images (inline SVG or data URIs only)
-- ❌ Rely on JavaScript (not supported in email)
-- ❌ Use complex CSS (many clients strip it)
-- ❌ Include forms (link to app instead)
-- ❌ Exceed 600px width for main container
+- Use external images (inline SVG or data URIs only)
+- Rely on JavaScript (not supported in email)
+- Use complex CSS (many clients strip it)
+- Include forms (link to app instead)
+- Exceed 600px width for main container
+- Use accent green for large surfaces or backgrounds
 
 ### 5. CSS Inlining Strategy
 
-**⚡ Automated Build Process** (Recommended for new/updated templates)
+**Automated Build Process** (All templates use this)
 
 We use an automated CSS inliner to eliminate manual style duplication:
 
@@ -226,18 +265,11 @@ cat magic-link.html  # This has inlined CSS
 # 4. Paste into Supabase Email Templates dashboard
 ```
 
-**Benefits:**
-- ✅ **Single source of truth**: Edit styles once in `<style>` block
-- ✅ **Zero manual duplication**: Build script handles inlining
-- ✅ **No human error**: Impossible to forget updating inline styles
-- ✅ **Version controlled**: Both source and built templates tracked in git
-- ✅ **Email client compatible**: Automatic `-webkit-`, `-ms-`, `mso-` prefixes
-
-**Migration Status:**
-- ✅ `magic-link.html` - Using automated build process
-- ✅ `confirm-signup.html` - Using automated build process
-
-**Note:** Only magic-link and confirm-signup templates are actively used and maintained with the build process.
+**Build Status:**
+- `magic-link.html` - Automated build
+- `confirm-signup.html` - Automated build
+- `change-email.html` - Automated build
+- `trustpilot-review.html` - Automated build
 
 ### 6. Testing Checklist
 
@@ -264,13 +296,19 @@ Our email buttons use the **"bulletproof button"** pattern for maximum compatibi
 
 - **Table-based structure**: Uses nested `<table>` with `<td>` instead of `<a>` with background
 - **VML for Outlook**: MSO conditional comments provide Vector Markup Language (VML) fallback for Outlook
-- **Fallback colors**: Solid `background-color` before `linear-gradient` for clients without gradient support
-- **Box-shadow placement**: Applied to `<td>` (not `<a>`) to match `border-radius` container and prevent rectangular shadows on rounded buttons
+- **Solid background-color**: No gradients (Gmail strips them); solid accent green is universally supported
+- **Box-shadow placement**: Applied to `<td>` (not `<a>`) to match `border-radius` container
 
 **Why This Matters**:
 - Yahoo Mail has poor CSS support and often doesn't render `display: inline-block` buttons correctly
 - Outlook uses Microsoft Word's rendering engine, which doesn't support standard CSS
 - Table-based buttons work across all major email clients
+
+### Dark Mode Handling
+All templates include `<meta name="color-scheme" content="light">` and `<meta name="supported-color-schemes" content="light">` to opt out of automatic dark mode color inversion, which can break the ink header and accent colors.
+
+### Outlook DPI
+All templates include MSO `OfficeDocumentSettings` with `PixelsPerInch: 96` to prevent Outlook from applying DPI scaling that distorts the layout.
 
 ---
 
@@ -306,40 +344,16 @@ Our email buttons use the **"bulletproof button"** pattern for maximum compatibi
 
 ---
 
-## Customization for Different Environments
-
-### Development
-Update URLs in templates for local testing:
-```html
-<a href="https://easyfreeresume.com">Home</a>
-<!-- Change to: -->
-<a href="http://localhost:5173">Home</a>
-```
-
-### Staging
-Use staging domain:
-```html
-<a href="https://staging.easyfreeresume.com">Home</a>
-```
-
-### Production
-Use production domain:
-```html
-<a href="https://easyfreeresume.com">Home</a>
-```
-
----
-
 ## Troubleshooting
 
 ### Issue: Links not working
 **Solution**: Verify `{{ .ConfirmationURL }}` is used correctly. Check Supabase redirect URLs.
 
 ### Issue: Styling broken in Gmail
-**Solution**: Gmail strips `<style>` tags in some clients. Use inline styles as fallback.
+**Solution**: Gmail strips `<style>` tags in some clients. All templates use automated CSS inlining via `npm run build` to guarantee inline styles on every element.
 
 ### Issue: Images not loading
-**Solution**: Don't use external images. Use data URIs or inline SVG.
+**Solution**: Don't use external images. Use data URIs, inline SVG, or Unicode characters.
 
 ### Issue: Emails going to spam
 **Solution**:
@@ -350,17 +364,18 @@ Use production domain:
 
 ---
 
-## Support
-
-For questions or issues with email templates:
-1. Check Supabase [Email Template Docs](https://supabase.com/docs/guides/auth/auth-email-templates)
-2. Review [Email on Acid](https://www.emailonacid.com/) for testing
-3. Consult team documentation
-
----
-
 ## Version History
 
+- **v2.0** (2026-04-13): Design system rebrand (purple → green)
+  - Updated all templates to 2026 green design system
+  - Ink (#0c0c0c) header + 4px accent (#00d47e) bar
+  - Solid green CTA buttons (no gradient)
+  - All 4 templates now use automated CSS inlining build
+  - Added change-email to build pipeline (was manual)
+  - Added dark mode opt-out meta tags
+  - Added MSO DPI settings to all templates
+  - New: Trustpilot review request template
+  - Removed: reset-password template (app uses magic link / SSO only)
 - **v1.0** (2025-01-22): Initial branded templates created
   - Magic Link
   - Confirm Signup

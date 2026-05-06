@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light">
   <meta name="supported-color-schemes" content="light">
-  <title>Confirm your email - EasyFreeResume</title>
+  <title>How was your experience? - EasyFreeResume</title>
   <!--[if mso]>
   <noscript>
     <xml>
@@ -77,10 +77,28 @@
       margin: 0 0 28px 0;
     }
 
+    /* Star rating visual */
+    .stars-container {
+      text-align: center;
+      margin: 28px 0 8px 0;
+    }
+
+    .stars {
+      font-size: 36px;
+      letter-spacing: 6px;
+      color: #00d47e;
+    }
+
+    .stars-label {
+      font-size: 13px;
+      color: #8a8680;
+      margin: 8px 0 0 0;
+    }
+
     /* CTA button */
     .button-container {
       text-align: center;
-      margin: 32px 0;
+      margin: 24px 0 32px 0;
     }
 
     .button-table {
@@ -104,50 +122,26 @@
       mso-line-height-rule: exactly;
     }
 
-    /* Feature box */
-    .feature-box {
+    /* Testimonial-style callout */
+    .callout-box {
       margin-top: 28px;
       padding: 20px 24px;
       background-color: #f0efe9;
       border-radius: 12px;
+      text-align: center;
     }
 
-    .feature-item {
-      margin: 8px 0;
+    .callout-text {
       font-size: 14px;
       color: #4b5563;
+      margin: 0;
+      font-style: italic;
     }
 
-    .feature-check {
-      color: #00d47e;
-      font-weight: 700;
-    }
-
-    /* Alt link */
-    .alt-link {
-      margin-top: 24px;
-      padding: 16px;
-      background-color: #f0efe9;
-      border-radius: 10px;
+    .callout-meta {
       font-size: 13px;
       color: #8a8680;
-      word-break: break-all;
-    }
-
-    .alt-link a {
-      color: #00d47e;
-      text-decoration: none;
-    }
-
-    /* Security notice */
-    .security-notice {
-      margin-top: 28px;
-      padding: 16px;
-      background-color: #fef3c7;
-      border-left: 4px solid #f59e0b;
-      border-radius: 0 10px 10px 0;
-      font-size: 14px;
-      color: #92400e;
+      margin: 8px 0 0 0;
     }
 
     /* Footer */
@@ -170,12 +164,24 @@
       font-size: 13px;
     }
 
+    .unsubscribe {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #a8a4a0;
+    }
+
+    .unsubscribe a {
+      color: #8a8680;
+      text-decoration: underline;
+    }
+
     /* Responsive */
     @media only screen and (max-width: 600px) {
       .email-container { width: 100% !important; }
       .content { padding: 28px 20px !important; }
       .header { padding: 28px 20px !important; }
       .greeting { font-size: 20px !important; }
+      .stars { font-size: 28px !important; letter-spacing: 4px !important; }
       .button-table { width: 100% !important; max-width: 100% !important; }
       .button-td { width: 100% !important; }
       .button-link { padding: 14px 20px !important; font-size: 15px !important; }
@@ -202,59 +208,44 @@
           <!-- Content -->
           <tr>
             <td class="content">
-              <h2 class="greeting">Welcome to EasyFreeResume!</h2>
+              <h2 class="greeting">Your resume is ready!</h2>
               <p class="message">
-                Thanks for creating your free account with <strong>{{ .Email }}</strong>. Click the button below to confirm your email address and unlock cloud-saved resumes.
+                Great news &mdash; your resume PDF has been downloaded successfully. We hope it helps you land your next opportunity.
               </p>
+              <p class="message">
+                If EasyFreeResume made your job search a little easier, we'd love to hear about it. A quick review on Trustpilot helps other job seekers discover us.
+              </p>
+
+              <!-- Star rating visual -->
+              <div class="stars-container">
+                <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="stars-label">Takes less than 60 seconds</p>
+              </div>
 
               <div class="button-container">
                 <!--[if mso]>
-                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ .ConfirmationURL }}" style="height:52px;v-text-anchor:middle;width:250px;" arcsize="23%" strokecolor="#00d47e" fillcolor="#00d47e">
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ .ReviewURL }}" style="height:52px;v-text-anchor:middle;width:280px;" arcsize="23%" strokecolor="#00d47e" fillcolor="#00d47e">
                   <w:anchorlock/>
-                  <center style="color:#0c0c0c;font-family:sans-serif;font-size:16px;font-weight:700;">Confirm Your Email</center>
+                  <center style="color:#0c0c0c;font-family:sans-serif;font-size:16px;font-weight:700;">Leave a Review on Trustpilot</center>
                 </v:roundrect>
                 <![endif]-->
                 <!--[if !mso]><!-->
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" class="button-table">
                   <tr>
                     <td class="button-td">
-                      <a href="{{ .ConfirmationURL }}" class="button-link">Confirm Your Email</a>
+                      <a href="{{ .ReviewURL }}" class="button-link">Leave a Review on Trustpilot</a>
                     </td>
                   </tr>
                 </table>
                 <!--<![endif]-->
               </div>
 
-              <div class="feature-box">
-                <p style="margin: 0 0 12px 0; font-weight: 700; color: #0c0c0c; font-size: 15px;">
-                  What you get with your free account:
+              <!-- Social proof callout -->
+              <div class="callout-box">
+                <p class="callout-text">
+                  "I was able to create a professional resume in minutes. Genuinely free, no tricks."
                 </p>
-                <div class="feature-item">
-                  <span class="feature-check">&#10003;</span> Save and access your last 5 resumes from anywhere
-                </div>
-                <div class="feature-item">
-                  <span class="feature-check">&#10003;</span> Cloud backup &mdash; never lose your work
-                </div>
-                <div class="feature-item">
-                  <span class="feature-check">&#10003;</span> ATS-optimized professional templates
-                </div>
-                <div class="feature-item">
-                  <span class="feature-check">&#10003;</span> Download unlimited PDFs
-                </div>
-                <div class="feature-item">
-                  <span class="feature-check">&#10003;</span> 100% free, no premium upsells
-                </div>
-              </div>
-
-              <div class="alt-link">
-                <p style="margin: 0 0 8px 0; font-weight: 600;">Button not working?</p>
-                <p style="margin: 0 0 4px 0;">Copy and paste this link into your browser:</p>
-                <a href="{{ .ConfirmationURL }}">{{ .ConfirmationURL }}</a>
-              </div>
-
-              <div class="security-notice">
-                <p style="margin: 0 0 4px 0; font-weight: 600;">&#128274; Security Notice</p>
-                <p style="margin: 0;">If you didn't create an account, you can safely ignore this email. This link will expire in 24 hours.</p>
+                <p class="callout-meta">&mdash; A recent EasyFreeResume user</p>
               </div>
             </td>
           </tr>
@@ -272,6 +263,9 @@
               <p style="margin: 12px 0 0 0; font-size: 12px; color: #a8a4a0;">
                 Build professional resumes for free, no sign-up required.
               </p>
+              <div class="unsubscribe">
+                <p style="margin: 0;">Don't want to receive review requests? <a href="{{ .UnsubscribeURL }}">Unsubscribe</a></p>
+              </div>
             </td>
           </tr>
         </table>

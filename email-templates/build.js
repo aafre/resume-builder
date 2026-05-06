@@ -19,7 +19,9 @@ const DIST_DIR = __dirname;
 // Templates to build
 const templates = [
   'magic-link.html',
-  'confirm-signup.html'
+  'confirm-signup.html',
+  'change-email.html',
+  'trustpilot-review.html'
 ];
 
 // Juice options for optimal email compatibility
