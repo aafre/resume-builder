@@ -46,6 +46,8 @@ const SectionEditor: React.FC<{
                 autoFocus
               />
               <button
+                type="button"
+                aria-label="Save Section Name"
                 onClick={handleSaveName}
                 className="ml-2 text-green-500 hover:text-green-600"
                 title="Save Section Name"
@@ -53,6 +55,8 @@ const SectionEditor: React.FC<{
                 💾
               </button>
               <button
+                type="button"
+                aria-label="Cancel Edit"
                 onClick={handleCancelEdit}
                 className="ml-2 text-red-500 hover:text-red-600"
                 title="Cancel Edit"
@@ -149,6 +153,8 @@ const SectionEditor: React.FC<{
                 placeholder="Enter item text"
               />
               <button
+                type="button"
+                aria-label="Remove item"
                 onClick={() => {
                   const updatedSections = [...sections];
                   updatedSections[sectionIndex].content.splice(itemIndex, 1);
