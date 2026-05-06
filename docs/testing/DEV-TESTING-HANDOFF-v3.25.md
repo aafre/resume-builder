@@ -26,7 +26,7 @@ This is a **massive release** (~120 commits, 197 files, +9.5K lines) being deplo
 
 ## DEV URL
 
-**Replace `{{DEV_URL}}` below with the actual staging URL** (e.g., `https://staging.easyfreeresume.com` or whatever Cloud Run assigns).
+**Replace `{{DEV_URL}}` below with the actual staging URL** (e.g., `https://dev.easyfreeresume.com` or whatever Cloud Run assigns).
 
 ---
 
@@ -34,9 +34,16 @@ This is a **massive release** (~120 commits, 197 files, +9.5K lines) being deplo
 
 ### Agent Architecture
 
-Deploy **6 test agents** organized into 3 pairs. Each pair tests the same area independently for double-coverage. Agents use Chrome DevTools MCP to navigate, interact, screenshot, and verify.
+Deploy **6 test agents** organized into 3 pairs. Each pair tests the same area independently for double-coverage.
 
-**CRITICAL**: Each agent must work on its **own browser page** (`new_page`). Never share pages between agents. Use `isolation: "worktree"` on agent calls so agents don't interfere with each other or the main session.
+### MCP Tool Preference
+
+- **Playwright MCP** (`mcp__playwright__*`): Use as the **primary** tool for all browser automation — navigation, clicking, filling forms, screenshots, viewport emulation, assertions. Playwright handles page lifecycle and element interaction more reliably.
+- **Chrome DevTools MCP** (`mcp__chrome-devtools__*`): Use **only when necessary** for things Playwright can't do — e.g., raw network request inspection (`list_network_requests`, `get_network_request`), console message capture (`list_console_messages`), performance traces (`performance_start_trace`/`performance_stop_trace`), Lighthouse audits, or evaluating arbitrary JS on the page.
+
+**Rule of thumb**: If Playwright has a tool for it, use Playwright. Fall back to DevTools for low-level browser internals.
+
+**CRITICAL**: Each agent must work on its **own browser page**. Never share pages between agents. Use `isolation: "worktree"` on agent calls so agents don't interfere with each other or the main session.
 
 ### Agent Pairs
 
@@ -498,6 +505,118 @@ If `VITE_POSTHOG_KEY` is set, after running the agents:
 
 ---
 
+## PR #469: Examples Hub Design Revamp
+
+**Branch**: `design/examples-hub-revamp` → `stg`
+**Scope**: `JobExamplesHub.tsx` (page), `StepByStep.tsx` (shared component used by 8 pages)
+
+### What changed
+
+1. **StepByStep shared component** — Replaced black circle numbers + black connector lines with faded mono step numbers (`01`, `02`, `03`), left-aligned text, lighter card styling. Affects all 8 SEO pages that use this component.
+2. **Examples Hub page** (`/examples`) — Full design system alignment:
+   - Category headers upgraded to eyebrow → H2 → subtitle pattern
+   - Job cards upgraded with `ArrowRightIcon`, `font-display`/`font-extrabold` typography, `font-mono` tag badges
+   - "How It Works" and "Popular" sections wrapped in `bg-chalk-dark rounded-3xl` contrast cards
+   - Stats section replaced with horizontal divider row (mono numbers, hover scale, accent underline)
+   - Resources cards upgraded with descriptions, accent left-borders, arrow icons
+   - Category filter bar polished with backdrop blur and refined spacing
+
+### Verification Steps
+
+Use **Playwright MCP** for all navigation, clicks, screenshots, and viewport emulation. Use **Chrome DevTools MCP** only for console error checks or raw network inspection.
+
+#### V1: Examples Hub — Desktop (1440px)
+
+1. Navigate to `{{DEV_URL}}/examples` (`browser_navigate`)
+2. **Hero + Filter bar**
+   - VERIFY: "Free Resume Examples" H1 renders with proper design system typography
+   - VERIFY: Filter pills have backdrop blur, rounded corners, green active state with shadow
+   - Click "Customer Service" filter → VERIFY: only that category shows
+   - Click "All Examples" → VERIFY: all categories return
+   - SCREENSHOT
+3. **Category headers**
+   - VERIFY: Each category has 3-part heading: mono eyebrow label (e.g., `OPERATIONS`) → bold H2 (e.g., "Customer Service & Operations Resumes") → light subtitle
+   - VERIFY: No emoji-in-flex-row layout (old pattern)
+4. **Job cards**
+   - VERIFY: Cards have `→` arrow icon (not `&rarr;` HTML entity)
+   - Hover a card → VERIFY: card lifts (`-translate-y-1`), title turns green, arrow slides right
+   - VERIFY: "Free Template" and "ATS-Friendly" badges use monospace font
+   - Click a card → VERIFY: navigates to `/examples/{slug}`
+   - SCREENSHOT hover state
+5. **How It Works section**
+   - VERIFY: Wrapped in a `bg-chalk-dark rounded-3xl` contrast card (visually distinct from surrounding white sections)
+   - VERIFY: Steps show faded green mono numbers (`01`, `02`, `03`) — NOT black circles
+   - VERIFY: No black connector lines between steps
+   - VERIFY: Step text is left-aligned, not centered
+   - SCREENSHOT
+6. **Stats row**
+   - VERIFY: Single horizontal row with vertical dividers (not 4 separate boxed cards)
+   - VERIFY: Numbers use monospace font (`26+`, `8`, `100%`, `ATS`)
+   - Hover a stat → VERIFY: number scales up, accent underline animates in on label
+   - SCREENSHOT
+7. **Popular section**
+   - VERIFY: Wrapped in `bg-chalk-dark rounded-3xl` contrast card
+   - VERIFY: Has eyebrow ("POPULAR"), H2, and subtitle text
+   - VERIFY: Pills have left accent border, white background
+   - Hover a pill → VERIFY: border turns green, small arrow appears
+   - SCREENSHOT
+8. **Resources section**
+   - VERIFY: 4 cards with titles AND descriptions (not bare text-only)
+   - VERIFY: Each card has green left-accent border (`border-l-4`)
+   - VERIFY: Arrow icon on each card, slides right on hover
+   - SCREENSHOT
+9. **FAQ + CTA**
+   - VERIFY: FAQ accordion works (click to expand/collapse)
+   - VERIFY: Dark CTA card at bottom ("Ready to Build Your Resume?")
+
+#### V2: Examples Hub — Mobile (375px)
+
+1. Emulate iPhone viewport: `375x812x2,mobile,touch`
+2. Navigate to `{{DEV_URL}}/examples`
+3. **Layout checks**
+   - VERIFY: No horizontal overflow/scroll
+   - VERIFY: Filter pills wrap properly
+   - VERIFY: Job cards stack to single column
+   - VERIFY: Stats stack vertically (no dividers on mobile)
+   - VERIFY: "How It Works" step cards stack vertically
+   - VERIFY: Resources cards stack to single column
+   - SCREENSHOT top, middle (steps/stats), bottom (resources/CTA)
+
+#### V3: StepByStep Regression — Other Pages
+
+The StepByStep component is shared by 8 pages. Spot-check at least 2:
+
+1. Navigate to `{{DEV_URL}}/free-resume-builder-no-sign-up`
+   - Scroll to "How It Works" section
+   - VERIFY: Faded mono step numbers (not black circles)
+   - VERIFY: No black connector lines
+   - SCREENSHOT
+
+2. Navigate to `{{DEV_URL}}/resume-keywords`
+   - Scroll to step section
+   - VERIFY: Same upgraded styling
+   - SCREENSHOT
+
+3. (Optional) Check any of: `/ats-resume-templates`, `/free-resume-builder-download`, `/free-cv-builder`
+
+#### V4: SEO Preservation
+
+1. Fetch `{{DEV_URL}}/examples` with Googlebot UA
+   - VERIFY: All H2 text content unchanged (same as before this PR)
+   - VERIFY: Meta title = "Free Resume Examples by Job Title (2026) | 50+ Professional Templates"
+   - VERIFY: Canonical URL = `/examples`
+   - VERIFY: FAQ schema still present in JSON-LD
+2. VERIFY: No link destinations changed (all `/examples/{slug}` links intact)
+3. VERIFY: `id` attributes on category sections preserved (for `?category=` deep-linking)
+
+### Severity Guide
+
+- **P0**: Any SEO regression (changed H1/H2 text, broken links, missing schema)
+- **P1**: StepByStep regression on other pages, broken hover interactions
+- **P2**: Spacing/alignment polish, minor mobile tweaks
+
+---
+
 ## Quick Reference: Key URLs to Test
 
 | Page | URL | Why |
@@ -507,6 +626,7 @@ If `VITE_POSTHOG_KEY` is set, after running the agents:
 | Blog #1 traffic driver | `/blog/claude-resume-prompts` | Protected Tier 1 |
 | Comparison blog | `/blog/flowcv-vs-easy-free-resume` | Protected Tier 2, mobile table |
 | Free builder landing | `/free-resume-builder-no-sign-up` | Protected Tier 1 |
+| Examples hub | `/examples` | Design revamp (PR #469) |
 | Example page | `/examples/customer-service-representative` | Was failing prerender |
 | Example page 2 | `/examples/internship` | High impressions (535), pos 55.1 |
 | Keyword page | `/resume-keywords/customer-service` | Approaching page 1 |
