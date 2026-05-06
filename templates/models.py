@@ -126,5 +126,6 @@ class TemplateMetadata(BaseModel):
     name: str
     description: str
     image_url: str
+    engine: TemplateEngine
     supports_icons: bool = False
     tags: list[str] = []

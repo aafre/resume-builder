@@ -28,6 +28,11 @@ describe('useEditorState', () => {
       expect(result.current.supportsIcons).toBe(false);
     });
 
+    it('should initialize templateEngine to null', () => {
+      const { result } = renderHook(() => useEditorState());
+      expect(result.current.templateEngine).toBeNull();
+    });
+
     it('should initialize originalTemplateData to null', () => {
       const { result } = renderHook(() => useEditorState());
       expect(result.current.originalTemplateData).toBeNull();
@@ -244,6 +249,28 @@ describe('useEditorState', () => {
           result.current.setSupportsIcons(false);
         });
         expect(result.current.supportsIcons).toBe(false);
+      });
+    });
+
+    describe('setTemplateEngine', () => {
+      it('should update templateEngine state to "html"', () => {
+        const { result } = renderHook(() => useEditorState());
+
+        act(() => {
+          result.current.setTemplateEngine('html');
+        });
+
+        expect(result.current.templateEngine).toBe('html');
+      });
+
+      it('should update templateEngine state to "latex"', () => {
+        const { result } = renderHook(() => useEditorState());
+
+        act(() => {
+          result.current.setTemplateEngine('latex');
+        });
+
+        expect(result.current.templateEngine).toBe('latex');
       });
     });
 

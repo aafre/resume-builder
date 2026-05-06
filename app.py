@@ -1777,9 +1777,10 @@ def get_templates():
                 name=t.name,
                 description=t.description,
                 image_url=f"{cdn_base}/{Path(t.preview).stem}.webp" if t.preview else f"{cdn_base}/modern-no-icons.webp",
+                engine=t.engine,
                 supports_icons=t.supports_icons,
                 tags=t.tags,
-            ).model_dump()
+            ).model_dump(mode="json")
             for t in display_templates
         ]
         return jsonify({"success": True, "templates": templates})
@@ -1811,6 +1812,7 @@ def get_template_data(template_id):
                 "yaml": yaml.safe_dump(yaml_content),
                 "template_id": template_id,
                 "supportsIcons": config.supports_icons,
+                "engine": config.engine.value,
             }
         )
     except KeyError:

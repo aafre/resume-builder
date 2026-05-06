@@ -20,18 +20,25 @@ export async function fetchTemplates() {
   return data.templates; // Extract templates array
 }
 
+/** Template rendering engine (matches backend TemplateEngine enum). */
+export type TemplateEngine = 'html' | 'latex';
+
 /**
  * Fetch template YAML data by template ID.
  * @param {string} templateId - The ID of the template to fetch.
- * @returns {Promise<any>} The YAML data of the template.
+ * @returns Parsed YAML string plus icon-support flag and rendering engine.
  */
-export async function fetchTemplate(templateId: string) {
+export async function fetchTemplate(templateId: string): Promise<{
+  yaml: string;
+  supportsIcons: boolean;
+  engine: TemplateEngine;
+}> {
   const response = await fetch(`${API_BASE_URL}/template/${templateId}`);
   if (!response.ok) {
     throw new Error("Failed to fetch template");
   }
-  const { yaml, supportsIcons } = await response.json();
-  return { yaml, supportsIcons }; 
+  const { yaml, supportsIcons, engine } = await response.json();
+  return { yaml, supportsIcons, engine };
 }
 
 /**
