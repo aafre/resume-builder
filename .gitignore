@@ -229,5 +229,6 @@ seo-tracking/
 linkedin-content/
 docs/templates/examples/
 pnpm-lock.yaml
-test-screenshots/
 .playwright-mcp/
+test-screenshots/
+.gemini/
