@@ -13,6 +13,13 @@
 \usepackage{fontspec}
 \defaultfontfeatures{Ligatures=TeX}
 
+% Main font from settings — falls back to default (Latin Modern) if unset or missing
+\BLOCK{if settings and settings.font_family}
+\IfFontExistsTF{\VAR{settings.font_family}}{%
+    \setmainfont{\VAR{settings.font_family}}%
+}{}
+\BLOCK{endif}
+
 \usepackage{ragged2e}
 \usepackage{titlesec}
 \titleformat{\section}{\Large\bfseries\scshape\color{accent}\RaggedRight}{}{0em}{}[\vspace{-0.6em}{\color{accent}\rule{\linewidth}{0.8pt}}\vspace{-0.1em}]

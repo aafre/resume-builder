@@ -13,12 +13,18 @@
 \usepackage{fontspec}
 \defaultfontfeatures{Ligatures=TeX}
 
-% EB Garamond for an elegant serif look; falls back to default if unavailable
+% Main font from settings, falling back to EB Garamond for the elegant serif look
+\BLOCK{if settings and settings.font_family}
+\IfFontExistsTF{\VAR{settings.font_family}}{%
+    \setmainfont{\VAR{settings.font_family}}%
+}{%
+    \IfFontExistsTF{EB Garamond}{\setmainfont{EB Garamond}}{}%
+}
+\BLOCK{else}
 \IfFontExistsTF{EB Garamond}{%
     \setmainfont{EB Garamond}%
-}{%
-    % fallback: use default Latin Modern
-}
+}{}
+\BLOCK{endif}
 
 \usepackage{ragged2e}
 \usepackage{titlesec}
