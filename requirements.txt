@@ -16,3 +16,4 @@ python-dotenv
 requests
 pdf2image
 Pillow
+pdfplumber
