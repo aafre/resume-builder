@@ -57,7 +57,7 @@ _register(
         engine=TemplateEngine.latex,
         sample="samples/classic/alex_rivera_data.yml",
         name="Professional Resume",
-        description="Clean, structured layout with traditional formatting and excellent space utilization.",
+        description="Single-column LaTeX layout with section dividers. Best for finance, law, and corporate analytics roles.",
         preview="alex_rivera.png",
         tags=["traditional", "structured", "versatile"],
     )
@@ -69,8 +69,8 @@ _register(
         dir="classic",
         engine=TemplateEngine.latex,
         sample="samples/classic/jane_doe.yml",
-        name="Elegant Resume",
-        description="Refined design with sophisticated typography and organized section layout.",
+        name="Creative Resume",
+        description="Refined LaTeX layout with sophisticated typography. Best for marketing, design, and client-facing creative roles.",
         preview="jane_doe.png",
         tags=["refined", "sophisticated", "classic"],
     )
@@ -83,7 +83,7 @@ _register(
         engine=TemplateEngine.html,
         sample="samples/modern/john_doe.yml",
         name="Modern Resume",
-        description="Contemporary design enhanced with visual icons and dynamic styling elements.",
+        description="Contemporary single-column design with visual contact icons and clean skill sections.",
         preview="modern-with-icons.png",
         supports_icons=True,
         tags=["professional", "icons", "visual"],
@@ -97,7 +97,7 @@ _register(
         engine=TemplateEngine.html,
         sample="samples/modern/john_doe_no_icon.yml",
         name="Minimalist Resume",
-        description="Clean and simple design focused on content clarity and easy readability.",
+        description="Same modern layout, icon-free — safest bet for strict ATS parsers and traditional industries.",
         preview="modern-no-icons.png",
         tags=["clean", "simple", "ats-friendly"],
     )
@@ -110,7 +110,7 @@ _register(
         engine=TemplateEngine.html,
         sample="samples/ats-optimized/sample_data.yml",
         name="ATS Resume",
-        description="Ultra-plain, zero-decoration layout designed for maximum ATS parsability.",
+        description="Ultra-plain, zero-decoration single-column layout built to pass ATS keyword extraction.",
         preview="ats-optimized.png",
         tags=["ats-friendly", "single-column", "recruiter-approved"],
         pdf_options=PDFOptions(
@@ -129,7 +129,7 @@ _register(
         engine=TemplateEngine.html,
         sample="samples/student/sample_data.yml",
         name="Student Resume",
-        description="Education-first layout designed for students and first-time job seekers.",
+        description="Education-first section order with room for coursework and projects. Built for students and interns.",
         preview="student.png",
         tags=["entry-level", "education-first", "new-graduate"],
         pdf_options=PDFOptions(
@@ -148,7 +148,7 @@ _register(
         engine=TemplateEngine.latex,
         sample="samples/executive/sample_data.yml",
         name="Executive Resume",
-        description="Premium typography for senior professionals. Handles multi-page resumes elegantly.",
+        description="Premium serif typography with multi-page support and optional page numbers. For senior leaders.",
         preview="executive.png",
         tags=["senior", "multi-page", "premium-typography"],
     )
@@ -179,9 +179,9 @@ _register(
         engine=TemplateEngine.html,
         sample="samples/uk-cv/sample_data.yml",
         name="UK CV",
-        description="British CV format with Personal Profile. A4 paper, two-page layout, optional references.",
+        description="A4 page size with UK Personal Profile structure and an optional references section. Two-page default.",
         preview="uk-cv.png",
-        tags=["british", "a4", "two-page", "international"],
+        tags=["uk-cv", "british", "a4", "two-page", "international"],
         pdf_options=PDFOptions(
             page_size="A4",
             margin_top="0.75in",

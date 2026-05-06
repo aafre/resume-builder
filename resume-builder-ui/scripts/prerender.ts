@@ -123,10 +123,10 @@ function createStaticServer(distDir: string, port: number): Promise<http.Server>
         res.end(JSON.stringify({
           success: true,
           templates: [
-            { id: 'classic-alex-rivera', name: 'Professional', description: 'Clean, structured layout with traditional formatting and excellent space utilization.', image_url: '/docs/templates/alex_rivera.png' },
-            { id: 'classic-jane-doe', name: 'Elegant', description: 'Refined design with sophisticated typography and organized section layout.', image_url: '/docs/templates/jane_doe.png' },
-            { id: 'modern-no-icons', name: 'Minimalist', description: 'Clean and simple design focused on content clarity and easy readability.', image_url: '/docs/templates/modern-no-icons.png' },
-            { id: 'modern-with-icons', name: 'Modern', description: 'Contemporary design enhanced with visual icons and dynamic styling elements.', image_url: '/docs/templates/modern-with-icons.png' },
+            { id: 'classic-alex-rivera', name: 'Professional Resume', description: 'Single-column LaTeX layout with section dividers. Best for finance, law, and corporate analytics roles.', image_url: '/docs/templates/alex_rivera.png' },
+            { id: 'classic-jane-doe', name: 'Creative Resume', description: 'Refined LaTeX layout with sophisticated typography. Best for marketing, design, and client-facing creative roles.', image_url: '/docs/templates/jane_doe.png' },
+            { id: 'modern-no-icons', name: 'Minimalist Resume', description: 'Same modern layout, icon-free — safest bet for strict ATS parsers and traditional industries.', image_url: '/docs/templates/modern-no-icons.png' },
+            { id: 'modern-with-icons', name: 'Modern Resume', description: 'Contemporary single-column design with visual contact icons and clean skill sections.', image_url: '/docs/templates/modern-with-icons.png' },
           ]
         }));
         return;

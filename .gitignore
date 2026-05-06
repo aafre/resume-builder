@@ -232,3 +232,4 @@ pnpm-lock.yaml
 .playwright-mcp/
 test-screenshots/
 .gemini/
+.worktrees/
