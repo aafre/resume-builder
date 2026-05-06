@@ -188,6 +188,7 @@ class TestTemplateMetadata:
             name="Modern",
             description="A test",
             image_url="https://example.com/img.png",
+            engine="html",
         )
         assert meta.tags == []
         assert meta.supports_icons is False
@@ -198,6 +199,7 @@ class TestTemplateMetadata:
             name="Modern",
             description="A test",
             image_url="https://example.com/img.png",
+            engine="html",
             supports_icons=True,
             tags=["fancy"],
         )

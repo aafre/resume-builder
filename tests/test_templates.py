@@ -83,6 +83,31 @@ class TestGetTemplates:
             assert '/storage/v1/object/public/template-previews/' in image_url
             assert image_url.endswith('.webp')
 
+    def test_templates_endpoint_returns_engine_field(self, flask_test_client):
+        """Each template in the list response exposes its rendering engine."""
+        client, _, _ = flask_test_client
+
+        response = client.get('/api/templates')
+        data = response.get_json()
+
+        for template in data['templates']:
+            assert 'engine' in template, f"missing engine on {template['id']}"
+            assert template['engine'] in ('html', 'latex')
+
+    def test_templates_endpoint_engine_values_match_registry(self, flask_test_client):
+        """LaTeX template IDs report engine=latex; modern HTML templates report engine=html."""
+        client, _, _ = flask_test_client
+
+        response = client.get('/api/templates')
+        data = response.get_json()
+        by_id = {t['id']: t for t in data['templates']}
+
+        assert by_id['classic-alex-rivera']['engine'] == 'latex'
+        assert by_id['classic-jane-doe']['engine'] == 'latex'
+        assert by_id['executive']['engine'] == 'latex'
+        assert by_id['modern-with-icons']['engine'] == 'html'
+        assert by_id['modern-no-icons']['engine'] == 'html'
+
 
 class TestGetTemplateData:
     """Tests for GET /api/template/<id> endpoint."""
@@ -121,6 +146,24 @@ class TestGetTemplateData:
 
         data = response.get_json()
         assert data['template_id'] == 'modern-with-icons'
+
+    def test_get_template_data_returns_engine_for_html_template(self, flask_test_client):
+        """HTML templates report engine=html in the single-template response."""
+        client, _, _ = flask_test_client
+
+        response = client.get('/api/template/modern-with-icons')
+        data = response.get_json()
+
+        assert data['engine'] == 'html'
+
+    def test_get_template_data_returns_engine_for_latex_template(self, flask_test_client):
+        """LaTeX templates report engine=latex in the single-template response."""
+        client, _, _ = flask_test_client
+
+        response = client.get('/api/template/classic-alex-rivera')
+        data = response.get_json()
+
+        assert data['engine'] == 'latex'
 
     def test_get_nonexistent_template_returns_404(self, flask_test_client):
         """Verify 404 is returned for nonexistent template."""

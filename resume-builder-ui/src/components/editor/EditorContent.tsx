@@ -22,6 +22,7 @@ import {
 } from '@dnd-kit/modifiers';
 
 import { ContactInfo, Section, SaveStatus } from '../../types';
+import type { TemplateEngine } from '../../services/templates';
 import { UnifiedDndContext, UnifiedDndContextValue, DraggedItemInfo } from '../../contexts/UnifiedDndContext';
 import { DragLevel } from '../../hooks/editor/useUnifiedDragDrop';
 import ContactInfoSection from '../ContactInfoSection';
@@ -175,6 +176,7 @@ export interface EditorContentProps {
   setContactInfo: React.Dispatch<React.SetStateAction<ContactInfo | null>>;
   sections: Section[];
   supportsIcons: boolean;
+  templateEngine: TemplateEngine | null;
   iconRegistry: EditorContentIconRegistry;
 
   // Document settings
@@ -237,6 +239,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
   setContactInfo,
   sections,
   supportsIcons,
+  templateEngine,
   iconRegistry,
   documentSettings,
   onDocumentSettingsChange,
@@ -315,12 +318,15 @@ export const EditorContent: React.FC<EditorContentProps> = ({
       {/* Global Formatting Help */}
       <FormattingHelp />
 
-      {/* Document Settings (accent colour, font, page numbers) */}
-      <DocumentSettingsPanel
-        settings={documentSettings}
-        onSettingsChange={onDocumentSettingsChange}
-        onOpenFontModal={modals.openFontModal}
-      />
+      {/* Document Settings (accent colour, font, page numbers).
+          Hidden for LaTeX templates, which don't honor these settings yet. */}
+      {templateEngine !== 'latex' && (
+        <DocumentSettingsPanel
+          settings={documentSettings}
+          onSettingsChange={onDocumentSettingsChange}
+          onOpenFontModal={modals.openFontModal}
+        />
+      )}
 
       {/* Resume Sections with Drag and Drop */}
       <UnifiedDndContext.Provider value={unifiedDndContextValue}>

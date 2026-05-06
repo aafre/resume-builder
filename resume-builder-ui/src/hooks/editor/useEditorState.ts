@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, Dispatch, SetStateAction } from 'react';
 import type { ContactInfo, Section, DocumentSettings } from '../../types';
+import type { TemplateEngine } from '../../services/templates';
 
 /**
  * Type representing the original template data used for reset functionality.
@@ -23,6 +24,7 @@ export interface UseEditorStateReturn {
 
   // Template metadata
   supportsIcons: boolean;
+  templateEngine: TemplateEngine | null;
   originalTemplateData: OriginalTemplateData | null;
 
   // Document settings (accent colour, font, page numbers)
@@ -37,6 +39,7 @@ export interface UseEditorStateReturn {
   setSections: Dispatch<SetStateAction<Section[]>>;
   setTemplateId: Dispatch<SetStateAction<string | null>>;
   setSupportsIcons: Dispatch<SetStateAction<boolean>>;
+  setTemplateEngine: Dispatch<SetStateAction<TemplateEngine | null>>;
   setOriginalTemplateData: Dispatch<SetStateAction<OriginalTemplateData | null>>;
   setDocumentSettings: Dispatch<SetStateAction<DocumentSettings>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -62,6 +65,7 @@ export const useEditorState = (): UseEditorStateReturn => {
 
   // Template metadata state
   const [supportsIcons, setSupportsIcons] = useState(false);
+  const [templateEngine, setTemplateEngine] = useState<TemplateEngine | null>(null);
   const [originalTemplateData, setOriginalTemplateData] = useState<OriginalTemplateData | null>(null);
 
   // Document settings (accent colour, font, page numbers)
@@ -104,6 +108,7 @@ export const useEditorState = (): UseEditorStateReturn => {
 
       // Template metadata
       supportsIcons,
+      templateEngine,
       originalTemplateData,
 
       // Document settings
@@ -118,6 +123,7 @@ export const useEditorState = (): UseEditorStateReturn => {
       setSections,
       setTemplateId,
       setSupportsIcons,
+      setTemplateEngine,
       setOriginalTemplateData,
       setDocumentSettings,
       setLoading,
@@ -131,6 +137,7 @@ export const useEditorState = (): UseEditorStateReturn => {
       sections,
       templateId,
       supportsIcons,
+      templateEngine,
       originalTemplateData,
       documentSettings,
       loading,
