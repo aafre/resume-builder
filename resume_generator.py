@@ -67,6 +67,8 @@ def normalize_sections(data):
     return data
 
 
+_MARKDOWN_LINK_PATTERN_COMPILED = re.compile(r'\[([^\]]+)\]\(([^\)]+)\)')
+
 def convert_markdown_links_to_html(text):
     """
     Convert Markdown-style links [text](url) to HTML <a> tags.
@@ -83,14 +85,20 @@ def convert_markdown_links_to_html(text):
     if not text or not isinstance(text, str):
         return text
 
-    # Regex to match [text](url) pattern
-    pattern = r'\[([^\]]+)\]\(([^\)]+)\)'
-
-    # Replace with HTML anchor tag
-    html_text = re.sub(pattern, r'<a href="\2">\1</a>', text)
+    # Replace with HTML anchor tag using compiled regex
+    html_text = _MARKDOWN_LINK_PATTERN_COMPILED.sub(r'<a href="\2">\1</a>', text)
 
     return html_text
 
+
+_MARKDOWN_FORMATTING_RULES_COMPILED = [
+    (re.compile(r'\*\*(.+?)\*\*'), r'<strong>\1</strong>'),
+    (re.compile(r'__(.+?)__'), r'<strong>\1</strong>'),
+    (re.compile(r'\*(.+?)\*'), r'<em>\1</em>'),
+    (re.compile(r'_(.+?)_'), r'<em>\1</em>'),
+    (re.compile(r'~~(.+?)~~'), r'<s>\1</s>'),
+    (re.compile(r'\+\+(.+?)\+\+'), r'<u>\1</u>'),
+]
 
 def convert_markdown_formatting_to_html(text):
     """
@@ -114,24 +122,9 @@ def convert_markdown_formatting_to_html(text):
     if not text or not isinstance(text, str):
         return text
 
-    # Process in specific order to avoid conflicts
-    # 1. Bold with ** (must come before single *)
-    text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
-
-    # 2. Bold with __ (must come before single _)
-    text = re.sub(r'__(.+?)__', r'<strong>\1</strong>', text)
-
-    # 3. Italic with * (after ** is processed)
-    text = re.sub(r'\*(.+?)\*', r'<em>\1</em>', text)
-
-    # 4. Italic with _ (after __ is processed)
-    text = re.sub(r'_(.+?)_', r'<em>\1</em>', text)
-
-    # 5. Strikethrough with ~~
-    text = re.sub(r'~~(.+?)~~', r'<s>\1</s>', text)
-
-    # 6. Underline with ++ (custom syntax)
-    text = re.sub(r'\+\+(.+?)\+\+', r'<u>\1</u>', text)
+    # Process in specific order to avoid conflicts using pre-compiled regexes
+    for pattern, replacement in _MARKDOWN_FORMATTING_RULES_COMPILED:
+        text = pattern.sub(replacement, text)
 
     return text
 

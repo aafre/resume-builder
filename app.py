@@ -489,26 +489,27 @@ def _escape_latex(text):
     if not isinstance(text, str):
         return text
 
-    latex_special_chars = {
-        "\\": r"\textbackslash{}",
-        "&": r"\&",
-        "%": r"\%",
-        "$": r"\$",
-        "#": r"\#",
-        # "_": r"\_",  # Don't escape: used for markdown italic/bold (_text_ and __text__)
-        "{": r"\{",
-        "}": r"\}",
-        # "~": r"\textasciitilde{}",  # Don't escape: used for markdown strikethrough (~~text~~)
-        "^": r"\textasciicircum{}",
-        "<": r"\textless{}",
-        ">": r"\textgreater{}",
-        "|": r"\textbar{}",
-        "-": r"{-}",
-    }
-
-    pattern = re.compile("|".join(re.escape(key) for key in latex_special_chars.keys()))
-    escaped_text = pattern.sub(lambda match: latex_special_chars[match.group(0)], text)
+    escaped_text = _LATEX_ESCAPE_PATTERN.sub(lambda match: _LATEX_SPECIAL_CHARS[match.group(0)], text)
     return escaped_text
+
+_LATEX_SPECIAL_CHARS = {
+    "\\": r"\textbackslash{}",
+    "&": r"\&",
+    "%": r"\%",
+    "$": r"\$",
+    "#": r"\#",
+    # "_": r"\_",  # Don't escape: used for markdown italic/bold (_text_ and __text__)
+    "{": r"\{",
+    "}": r"\}",
+    # "~": r"\textasciitilde{}",  # Don't escape: used for markdown strikethrough (~~text~~)
+    "^": r"\textasciicircum{}",
+    "<": r"\textless{}",
+    ">": r"\textgreater{}",
+    "|": r"\textbar{}",
+    "-": r"{-}",
+}
+
+_LATEX_ESCAPE_PATTERN = re.compile("|".join(re.escape(key) for key in _LATEX_SPECIAL_CHARS.keys()))
 
 
 def normalize_sections(data):
@@ -547,14 +548,14 @@ def normalize_sections(data):
     return data
 
 
-_MARKDOWN_LINK_PATTERN = r"\[([^\]]+)\]\(([^\)]+)\)"
+_MARKDOWN_LINK_PATTERN = re.compile(r"\[([^\]]+)\]\(([^\)]+)\)")
 
 
 def _convert_markdown_links(text, replacement):
     """Apply markdown link conversion using the given replacement template."""
     if not text or not isinstance(text, str):
         return text
-    return re.sub(_MARKDOWN_LINK_PATTERN, replacement, text)
+    return _MARKDOWN_LINK_PATTERN.sub(replacement, text)
 
 
 def convert_markdown_links_to_html(text):
@@ -570,12 +571,12 @@ def convert_markdown_links_to_latex(text):
 # Markdown formatting rules: (pattern, html_replacement, latex_replacement)
 # Order matters — double-char patterns (**,__,~~,++) must precede single-char (*,_).
 _MARKDOWN_FORMATTING_RULES = [
-    (r"\*\*(.+?)\*\*", r"<strong>\1</strong>", r"\\textbf{\1}"),
-    (r"__(.+?)__", r"<strong>\1</strong>", r"\\textbf{\1}"),
-    (r"\*(.+?)\*", r"<em>\1</em>", r"\\textit{\1}"),
-    (r"_(.+?)_", r"<em>\1</em>", r"\\textit{\1}"),
-    (r"~~(.+?)~~", r"<s>\1</s>", r"\\sout{\1}"),
-    (r"\+\+(.+?)\+\+", r"<u>\1</u>", r"\\underline{\1}"),
+    (re.compile(r"\*\*(.+?)\*\*"), r"<strong>\1</strong>", r"\\textbf{\1}"),
+    (re.compile(r"__(.+?)__"), r"<strong>\1</strong>", r"\\textbf{\1}"),
+    (re.compile(r"\*(.+?)\*"), r"<em>\1</em>", r"\\textit{\1}"),
+    (re.compile(r"_(.+?)_"), r"<em>\1</em>", r"\\textit{\1}"),
+    (re.compile(r"~~(.+?)~~"), r"<s>\1</s>", r"\\sout{\1}"),
+    (re.compile(r"\+\+(.+?)\+\+"), r"<u>\1</u>", r"\\underline{\1}"),
 ]
 
 
@@ -584,7 +585,7 @@ def _apply_markdown_formatting(text, rule_index):
     if not text or not isinstance(text, str):
         return text
     for pattern, *replacements in _MARKDOWN_FORMATTING_RULES:
-        text = re.sub(pattern, replacements[rule_index - 1], text)
+        text = pattern.sub(replacements[rule_index - 1], text)
     return text
 
 
@@ -599,6 +600,9 @@ def convert_markdown_formatting_to_latex(text):
     text = _escape_remaining_latex_chars(text)
     return text
 
+
+_UNDERSCORE_PATTERN = re.compile(r"(?<!\\)_")
+_TILDE_PATTERN = re.compile(r"(?<!\\)~")
 
 def _escape_remaining_latex_chars(text):
     r"""Escapes markdown characters that weren't consumed by markdown conversion.
@@ -625,10 +629,10 @@ def _escape_remaining_latex_chars(text):
         return text
 
     # Escape underscores NOT already escaped (negative lookbehind for backslash)
-    text = re.sub(r"(?<!\\)_", r"\\_", text)
+    text = _UNDERSCORE_PATTERN.sub(r"\\_", text)
 
     # Escape tildes NOT already escaped
-    text = re.sub(r"(?<!\\)~", r"\\textasciitilde{}", text)
+    text = _TILDE_PATTERN.sub(r"\\textasciitilde{}", text)
 
     return text
 
