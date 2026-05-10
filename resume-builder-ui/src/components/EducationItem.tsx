@@ -49,8 +49,9 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">Entry {index + 1}</h3>
           <button
+            type="button"
             onClick={() => onRemove(index)}
-            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1"
             aria-label="Delete education entry"
             title="Delete this entry"
           >
