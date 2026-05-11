@@ -1,0 +1,3 @@
+## 2024-05-11 - Pre-compile Regex Patterns in Hot Paths
+**Learning:** Re-compiling regular expressions inside functions that are called repeatedly (like markdown formatting applied to many lines or nodes in a PDF generation process) introduces unnecessary overhead. In Python, while the `re` module caches some recent patterns, relying on this implicit cache is less efficient than explicit module-level compilation for complex or frequently used patterns.
+**Action:** Pre-compile regular expressions (`re.compile`) at the module level rather than dynamically building and compiling them inside functions called frequently in hot paths.
