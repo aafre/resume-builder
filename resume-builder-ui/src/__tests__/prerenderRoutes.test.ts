@@ -98,6 +98,7 @@ describe('Prerender route generation', () => {
       '/',
       '/templates',
       '/blog',
+      '/blog/ai-resume-prompts-hub',
       '/resume-keywords',
       '/examples',
       '/about',

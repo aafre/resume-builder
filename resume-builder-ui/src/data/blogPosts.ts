@@ -5,6 +5,7 @@ export interface BlogPost {
   title: string;
   description: string;
   publishDate: string;
+  lastUpdated?: string;
   readTime: string;
   category: string;
   featured?: boolean;
@@ -18,6 +19,15 @@ export const blogPosts: BlogPost[] = [
     title: "25+ ChatGPT Prompts for Resume Writing (Copy & Paste Ready)",
     description: "Get the best ChatGPT prompts for writing resume summaries, experience bullets, skills sections, and more. Copy-paste ready prompts that actually work in 2026.",
     publishDate: "2026-01-21",
+    readTime: "12 min",
+    category: "AI & Tools",
+  },
+  {
+    slug: "ai-resume-prompts-hub",
+    title: "AI Resume Prompts Hub: Best Prompts for ChatGPT, Claude, Gemini & More",
+    description: "Compare Claude, ChatGPT, Gemini, Grok, Copilot, and DeepSeek for resume writing. Pick the best AI prompt for bullets, summaries, ATS keywords, and cover letters.",
+    publishDate: "2026-05-13",
+    lastUpdated: "2026-05-13",
     readTime: "12 min",
     category: "AI & Tools",
   },

@@ -49,6 +49,16 @@ describe('Sitemap URL Validation', () => {
         expect(url.loc).not.toContain('#');
       });
     });
+
+    it('should include the live AI resume prompts hub with current freshness metadata', () => {
+      const hubUrl = STATIC_URLS.find(url => url.loc === '/blog/ai-resume-prompts-hub');
+      expect(hubUrl).toEqual({
+        loc: '/blog/ai-resume-prompts-hub',
+        priority: 0.5,
+        changefreq: 'monthly',
+        lastmod: '2026-05-13',
+      });
+    });
   });
 
   describe('Job Keywords Slugs', () => {
