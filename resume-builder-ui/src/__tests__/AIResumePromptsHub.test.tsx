@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import AIResumePromptsHub from "../components/blog/AIResumePromptsHub";
 
 function renderHub() {
-  render(
+  return render(
     <HelmetProvider>
       <MemoryRouter>
         <AIResumePromptsHub />
@@ -75,5 +75,50 @@ describe("AIResumePromptsHub", () => {
       Boolean(href?.startsWith("https://"))
     );
     expect(outboundLinks.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("uses approved heading typography without placeholder version copy", () => {
+    const { container } = renderHub();
+    const hubContent = container.querySelector(".space-y-10");
+    expect(hubContent).toBeInTheDocument();
+
+    const h2Headings = Array.from(hubContent!.querySelectorAll("h2"));
+    h2Headings.forEach((heading) => {
+      expect(heading).toHaveClass(
+        "font-display",
+        "text-3xl",
+        "md:text-4xl",
+        "font-extrabold",
+        "tracking-tight"
+      );
+    });
+
+    Array.from(hubContent!.querySelectorAll("h3")).forEach((heading) => {
+      expect(heading).toHaveClass("font-display", "text-xl", "font-bold", "text-ink");
+    });
+
+    expect(screen.queryByText(/Reviewed as .* current public assistant experience/i)).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: "Turn the Prompt Output Into a Finished Resume",
+      })
+    ).toBeInTheDocument();
+  });
+
+  it("marks comparison table headers with explicit scope attributes", () => {
+    const { container } = renderHub();
+
+    const columnHeaders = Array.from(container.querySelectorAll("thead th"));
+    expect(columnHeaders).toHaveLength(7);
+    columnHeaders.forEach((header) => {
+      expect(header).toHaveAttribute("scope", "col");
+    });
+
+    const rowHeaders = Array.from(container.querySelectorAll("tbody th"));
+    expect(rowHeaders).toHaveLength(8);
+    rowHeaders.forEach((header) => {
+      expect(header).toHaveAttribute("scope", "row");
+    });
   });
 });

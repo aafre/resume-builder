@@ -127,7 +127,6 @@ const MODEL_SECTIONS = [
   {
     id: "chatgpt",
     name: "ChatGPT",
-    version: "Reviewed as ChatGPT's current public assistant experience.",
     strengths:
       "ChatGPT is fast, flexible, and strong at exact formatting instructions. It works well when you need five alternate bullets, a 50-word professional summary, or a clean first draft you can quickly revise.",
     limitations:
@@ -141,7 +140,6 @@ const MODEL_SECTIONS = [
   {
     id: "claude",
     name: "Claude",
-    version: "Reviewed as Claude's current public assistant experience.",
     strengths:
       "Claude is the strongest option for rewriting bullets and adding specific, credible impact language. It handles long resume context well and is especially useful for senior candidates who need concise narrative polish.",
     limitations:
@@ -159,7 +157,6 @@ const MODEL_SECTIONS = [
   {
     id: "gemini",
     name: "Gemini",
-    version: "Reviewed as Gemini's current public assistant experience.",
     strengths:
       "Gemini is the best fit for tailoring a resume to a job description. Its strength is connecting role language, company context, and resume phrasing into a targeted application draft.",
     limitations:
@@ -177,7 +174,6 @@ const MODEL_SECTIONS = [
   {
     id: "grok",
     name: "Grok",
-    version: "Reviewed as Grok's current public assistant experience.",
     strengths:
       "Grok is useful for quick iteration, brainstorming alternate phrasing, and getting direct feedback on weak resume language. It is strongest when speed matters more than final polish.",
     limitations:
@@ -191,7 +187,6 @@ const MODEL_SECTIONS = [
   {
     id: "copilot",
     name: "Copilot",
-    version: "Reviewed as Microsoft's current Copilot assistant experience.",
     strengths:
       "Copilot is strongest for web-grounded workflows, such as checking current job-posting language before you revise a resume. It is useful for research-heavy steps and quick keyword discovery.",
     limitations:
@@ -205,7 +200,6 @@ const MODEL_SECTIONS = [
   {
     id: "deepseek",
     name: "DeepSeek",
-    version: "Reviewed as DeepSeek's current public assistant and API ecosystem.",
     strengths:
       "DeepSeek can be cost-effective for high-volume first drafts, especially when you need many variations of summaries, skills lists, or bullet rewrites before human editing.",
     limitations:
@@ -280,7 +274,7 @@ export default function AIResumePromptsHub() {
           </p>
 
           <section>
-            <h2 className="text-2xl font-bold text-ink">AI Resume Prompts Comparison</h2>
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">AI Resume Prompts Comparison</h2>
             <div className="mt-4 overflow-x-auto rounded-lg border border-black/[0.08] bg-white">
               <table
                 aria-label="AI resume prompts comparison"
@@ -288,19 +282,19 @@ export default function AIResumePromptsHub() {
               >
                 <thead className="bg-chalk-dark text-left text-ink">
                   <tr>
-                    <th className="px-4 py-3 font-bold">Use case</th>
-                    <th className="px-4 py-3 font-bold">Claude</th>
-                    <th className="px-4 py-3 font-bold">ChatGPT</th>
-                    <th className="px-4 py-3 font-bold">Gemini</th>
-                    <th className="px-4 py-3 font-bold">Grok</th>
-                    <th className="px-4 py-3 font-bold">Copilot</th>
-                    <th className="px-4 py-3 font-bold">DeepSeek</th>
+                    <th scope="col" className="px-4 py-3 font-bold">Use case</th>
+                    <th scope="col" className="px-4 py-3 font-bold">Claude</th>
+                    <th scope="col" className="px-4 py-3 font-bold">ChatGPT</th>
+                    <th scope="col" className="px-4 py-3 font-bold">Gemini</th>
+                    <th scope="col" className="px-4 py-3 font-bold">Grok</th>
+                    <th scope="col" className="px-4 py-3 font-bold">Copilot</th>
+                    <th scope="col" className="px-4 py-3 font-bold">DeepSeek</th>
                   </tr>
                 </thead>
                 <tbody>
                   {COMPARISON_ROWS.map((row) => (
                     <tr key={row.useCase} className="border-t border-black/[0.06]">
-                      <th className="px-4 py-3 text-left font-semibold text-ink">{row.useCase}</th>
+                      <th scope="row" className="px-4 py-3 text-left font-semibold text-ink">{row.useCase}</th>
                       <td className="px-4 py-3 text-stone-warm">{row.Claude}</td>
                       <td className="px-4 py-3 text-stone-warm">{row.ChatGPT}</td>
                       <td className="px-4 py-3 text-stone-warm">{row.Gemini}</td>
@@ -315,7 +309,7 @@ export default function AIResumePromptsHub() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-ink">How We Reviewed These AIs</h2>
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">How We Reviewed These AIs</h2>
             <p className="mt-3 leading-relaxed text-stone-warm">
               <strong>How we reviewed:</strong> We compared the six tools against common
               resume-writing tasks: rewriting experience bullets, writing a professional summary,
@@ -328,21 +322,21 @@ export default function AIResumePromptsHub() {
 
           <section className="grid gap-4 md:grid-cols-3">
             <div className="rounded-lg border border-black/[0.06] bg-white p-4">
-              <h3 className="text-lg font-bold text-ink">Best for bullet rewrites</h3>
+              <h3 className="font-display text-xl font-bold text-ink">Best for bullet rewrites</h3>
               <p className="mt-2 text-sm text-stone-warm">
                 Claude is the strongest choice when the goal is clearer, more quantified
                 experience bullets.
               </p>
             </div>
             <div className="rounded-lg border border-black/[0.06] bg-white p-4">
-              <h3 className="text-lg font-bold text-ink">Best for summaries</h3>
+              <h3 className="font-display text-xl font-bold text-ink">Best for summaries</h3>
               <p className="mt-2 text-sm text-stone-warm">
                 Claude and ChatGPT are the best starting points for short professional summaries
                 with controlled tone.
               </p>
             </div>
             <div className="rounded-lg border border-black/[0.06] bg-white p-4">
-              <h3 className="text-lg font-bold text-ink">Best for ATS keywords</h3>
+              <h3 className="font-display text-xl font-bold text-ink">Best for ATS keywords</h3>
               <p className="mt-2 text-sm text-stone-warm">
                 Claude, ChatGPT, and Gemini all work well when paired with a specific job
                 description and the <Link to="/resume-keyword-scanner" className="text-accent hover:underline">ATS keyword scanner</Link>.
@@ -351,11 +345,10 @@ export default function AIResumePromptsHub() {
           </section>
 
           <section className="space-y-6">
-            <h2 className="text-2xl font-bold text-ink">Best AI Resume Prompts by Tool</h2>
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Best AI Resume Prompts by Tool</h2>
             {MODEL_SECTIONS.map((model) => (
               <article key={model.id} id={model.id} className="rounded-lg border border-black/[0.06] bg-white p-5">
-                <h3 className="text-xl font-bold text-ink">{model.name}</h3>
-                <p className="mt-1 text-sm font-semibold text-accent">{model.version}</p>
+                <h3 className="font-display text-xl font-bold text-ink">{model.name}</h3>
                 <p className="mt-3 text-stone-warm">{model.strengths}</p>
                 <p className="mt-3 text-stone-warm">{model.limitations}</p>
                 {model.cta && (
@@ -378,7 +371,7 @@ export default function AIResumePromptsHub() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-ink">Related Resume AI Resources</h2>
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Related Resume AI Resources</h2>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {INTERNAL_LINKS.map((link) => (
                 <Link
@@ -393,7 +386,7 @@ export default function AIResumePromptsHub() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-ink">Provider References</h2>
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Provider References</h2>
             <p className="mt-3 text-stone-warm">
               Use provider documentation and account settings before pasting sensitive resume data
               into any AI tool.
@@ -415,11 +408,11 @@ export default function AIResumePromptsHub() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-ink">AI Resume Prompts FAQ</h2>
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">AI Resume Prompts FAQ</h2>
             <div className="mt-4 space-y-4">
               {HUB_FAQS.map((faq) => (
                 <div key={faq.question} className="rounded-lg border border-black/[0.06] bg-white p-4">
-                  <h3 className="text-lg font-bold text-ink">{faq.question}</h3>
+                  <h3 className="font-display text-xl font-bold text-ink">{faq.question}</h3>
                   <p className="mt-2 text-stone-warm">{faq.answer}</p>
                 </div>
               ))}
@@ -427,7 +420,7 @@ export default function AIResumePromptsHub() {
           </section>
 
           <section className="rounded-lg bg-ink px-5 py-6 text-white">
-            <h2 className="text-2xl font-bold">Turn the prompt output into a finished resume</h2>
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight">Turn the Prompt Output Into a Finished Resume</h2>
             <p className="mt-2 text-white/80">
               Pick a template, paste your strongest AI-assisted bullets, and export a clean PDF
               without creating an account.
