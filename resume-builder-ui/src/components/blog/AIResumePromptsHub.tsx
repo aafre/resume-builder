@@ -1,7 +1,5 @@
-import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import BlogLayout from "../BlogLayout";
-import { generateFAQPageSchema, wrapInGraph } from "../../utils/schemaGenerators";
 
 const REVIEW_DATE = "2026-05-13";
 
@@ -233,30 +231,24 @@ const PROVIDER_LINKS = [
 ];
 
 export default function AIResumePromptsHub() {
-  const faqSchema = generateFAQPageSchema(HUB_FAQS);
-  const combinedSchema = wrapInGraph([faqSchema]);
-
   return (
-    <>
-      <Helmet>
-        <script type="application/ld+json">{JSON.stringify(combinedSchema)}</script>
-      </Helmet>
-      <BlogLayout
-        title="AI Resume Prompts Hub: Best Prompts for ChatGPT, Claude, Gemini & More"
-        description="Compare Claude, ChatGPT, Gemini, Grok, Copilot, and DeepSeek for resume writing. Pick the best AI prompt for bullets, summaries, ATS keywords, and cover letters."
-        publishDate={REVIEW_DATE}
-        lastUpdated={REVIEW_DATE}
-        readTime="12 min"
-        keywords={[
-          "ai resume prompts",
-          "best ai for resume writing",
-          "chatgpt resume prompts",
-          "claude resume prompts",
-          "gemini resume prompts",
-          "ats keyword prompts",
-        ]}
-        ctaType="resume"
-      >
+    <BlogLayout
+      title="AI Resume Prompts Hub: Best Prompts for ChatGPT, Claude, Gemini & More"
+      description="Compare Claude, ChatGPT, Gemini, Grok, Copilot, and DeepSeek for resume writing. Pick the best AI prompt for bullets, summaries, ATS keywords, and cover letters."
+      publishDate={REVIEW_DATE}
+      lastUpdated={REVIEW_DATE}
+      readTime="12 min"
+      keywords={[
+        "ai resume prompts",
+        "best ai for resume writing",
+        "chatgpt resume prompts",
+        "claude resume prompts",
+        "gemini resume prompts",
+        "ats keyword prompts",
+      ]}
+      ctaType="resume"
+      faqs={HUB_FAQS}
+    >
         <div className="space-y-10">
           <section className="border-l-4 border-accent bg-white/80 px-5 py-4">
             <p className="text-base leading-relaxed text-ink/90">
@@ -433,7 +425,6 @@ export default function AIResumePromptsHub() {
             </Link>
           </section>
         </div>
-      </BlogLayout>
-    </>
+    </BlogLayout>
   );
 }
