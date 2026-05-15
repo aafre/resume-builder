@@ -129,4 +129,4 @@ def test_classic_latex_omits_field_of_study_when_empty():
         )
     )
 
-    assert "\\noindent\\small{\\textit{" not in latex
+    assert "{\\small \\noindent\\textit{" not in latex

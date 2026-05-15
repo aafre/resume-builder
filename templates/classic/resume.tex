@@ -195,7 +195,7 @@
             \needspace{2\baselineskip}
             \reducationentry{\VAR{edu.degree | markdown_links | markdown_formatting}}{\VAR{edu.school | markdown_links | markdown_formatting}}{\VAR{edu.year | markdown_links | markdown_formatting}}
             \BLOCK{if edu.field_of_study}
-                \noindent\small{\textit{\VAR{edu.field_of_study | markdown_links | markdown_formatting}}}\par\vspace{0.1em}
+                {\small \noindent\textit{\VAR{edu.field_of_study | markdown_links | markdown_formatting}}\par\vspace{0.1em}}
             \BLOCK{endif}
             \BLOCK{if not loop.last}\vspace{0.4em}\BLOCK{endif}
         \BLOCK{endfor}
