@@ -1,7 +1,5 @@
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import BlogLayout from '../BlogLayout';
-import { generateFAQPageSchema } from '../../utils/schemaGenerators';
 
 const BEST_BUILDERS_FAQS = [
   {
@@ -31,14 +29,8 @@ const BEST_BUILDERS_FAQS = [
 ];
 
 export default function BestFreeResumeBuilders2026() {
-  const faqSchema = generateFAQPageSchema(BEST_BUILDERS_FAQS);
-
   return (
-    <>
-      <Helmet>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
-      </Helmet>
-      <BlogLayout
+    <BlogLayout
       title="9 Best Free Resume Builders in 2026 (We Tested Every One)"
       description="We built the same resume on 9 'free' builders and documented what actually costs money. See which ones are truly free to download as PDF, no paywall."
       publishDate="2026-03-05"
@@ -53,6 +45,7 @@ export default function BestFreeResumeBuilders2026() {
         'resume builder without paying',
       ]}
       ctaType="resume"
+      faqs={BEST_BUILDERS_FAQS}
     >
       <div className="space-y-8">
         {/* Answer-first block — GEO citation hook */}
@@ -653,6 +646,5 @@ export default function BestFreeResumeBuilders2026() {
 
       </div>
     </BlogLayout>
-    </>
   );
 }
