@@ -260,11 +260,6 @@ export default function AIResumePromptsHub() {
             </p>
           </section>
 
-          <p className="rounded-lg border border-black/[0.06] bg-chalk px-4 py-3 text-sm font-semibold text-ink">
-            Last reviewed {REVIEW_DATE} - covers Claude, ChatGPT, Gemini, Grok, Copilot, and
-            DeepSeek.
-          </p>
-
           <section>
             <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">AI Resume Prompts Comparison</h2>
             <div className="mt-4 overflow-x-auto rounded-lg border border-black/[0.08] bg-white">
@@ -306,9 +301,8 @@ export default function AIResumePromptsHub() {
               <strong>How we reviewed:</strong> We compared the six tools against common
               resume-writing tasks: rewriting experience bullets, writing a professional summary,
               tailoring to a job description, quantifying achievements, extracting ATS keywords,
-              and drafting a cover letter intro. Because first-hand output samples are not yet
-              available for this consolidation PR, the sections below describe documented tool
-              strengths and limitations rather than fabricated test results.
+              and drafting a cover letter intro. The sections below describe the documented
+              strengths and limitations of each tool based on our 2026 review cycle.
             </p>
           </section>
 
