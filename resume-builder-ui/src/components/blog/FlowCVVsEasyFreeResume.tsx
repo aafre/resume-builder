@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
-import { generateComparisonSchema, generateFAQPageSchema, wrapInGraph } from "../../utils/schemaGenerators";
+import { generateComparisonSchema } from "../../utils/schemaGenerators";
 import { EASY_FREE_RESUME_PRODUCT } from "../../data/products";
 import CompareBuildersCrossLinks from './CompareBuildersCrossLinks';
 
@@ -68,13 +68,11 @@ export default function FlowCVVsEasyFreeResume() {
     { name: "FlowCV", price: "0", description: "Free online resume builder with customizable templates and a Pro plan for additional features." },
     "2026-05-11"
   );
-  const faqSchema = generateFAQPageSchema(FLOWCV_FAQS);
-  const combinedSchema = wrapInGraph([comparisonSchema, faqSchema]);
 
   return (
     <>
       <Helmet>
-        <script type="application/ld+json">{JSON.stringify(combinedSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(comparisonSchema)}</script>
       </Helmet>
       <BlogLayout
       title="FlowCV vs EasyFreeResume (2026): Features, Pricing & Privacy Compared"
@@ -91,6 +89,7 @@ export default function FlowCVVsEasyFreeResume() {
         "free resume builder comparison",
         "flowcv 2026",
       ]}
+      faqs={FLOWCV_FAQS}
     >
       <div className="space-y-8">
         {/* Answer-first block — GEO citation hook */}
