@@ -29,6 +29,7 @@ export function generateSoftwareApplicationSchema(): StructuredDataConfig {
     sameAs: [
       'https://www.linkedin.com/company/easyfreeresume/',
       'https://www.youtube.com/@EasyFreeResume',
+      'https://www.youtube.com/watch?v=JU3QgmXpfQg',
       'https://github.com/aafre/resume-builder',
       'https://www.crunchbase.com/organization/easyfreeresume',
       'https://www.trustpilot.com/review/easyfreeresume.com',
