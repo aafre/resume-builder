@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import BlogLayout from "../BlogLayout";
+import RevealSection from "../shared/RevealSection";
 
 const REVIEW_DATE = "2026-05-13";
 
@@ -22,6 +23,14 @@ function StarRating({ value }: { value: Rating }) {
           ★
         </span>
       ))}
+    </span>
+  );
+}
+
+function SectionEyebrow({ children }: { children: string }) {
+  return (
+    <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-3 block">
+      {children}
     </span>
   );
 }
@@ -255,8 +264,9 @@ export default function AIResumePromptsHub() {
       faqs={HUB_FAQS}
     >
         <div className="space-y-10">
-          <section className="border-l-4 border-accent bg-white/80 px-5 py-4">
-            <p className="text-base leading-relaxed text-ink/90">
+          <section className="relative bg-white rounded-2xl shadow-premium card-gradient-border p-6 md:p-8 border-l-4 border-accent">
+            <SectionEyebrow>The Short Answer</SectionEyebrow>
+            <p className="text-base md:text-lg leading-relaxed text-ink/90">
               <strong>Short answer:</strong> For resume writing in 2026, Claude and ChatGPT
               produce the strongest output for rewriting bullets and crafting summaries. Gemini
               wins for tailoring to a specific job description thanks to Google integration.
@@ -265,162 +275,224 @@ export default function AIResumePromptsHub() {
             </p>
           </section>
 
-          <section>
-            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">AI Resume Prompts Comparison</h2>
-            <div className="mt-4 overflow-x-auto rounded-lg border border-black/[0.08] bg-white">
-              <table
-                aria-label="AI resume prompts comparison"
-                className="w-full min-w-[760px] border-collapse text-sm"
-              >
-                <thead className="bg-chalk-dark text-left text-ink">
-                  <tr>
-                    <th scope="col" className="px-4 py-3 font-bold">Use case</th>
-                    {PROVIDERS.map((provider) => (
-                      <th key={provider} scope="col" className="px-4 py-3 font-bold">{provider}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {COMPARISON_ROWS.map((row) => (
-                    <tr key={row.useCase} className="border-t border-black/[0.06]">
-                      <th scope="row" className="px-4 py-3 text-left font-semibold text-ink">{row.useCase}</th>
+          <RevealSection variant="fade-up">
+            <section>
+              <SectionEyebrow>Tool × Use Case</SectionEyebrow>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">AI Resume Prompts Comparison</h2>
+              <div className="mt-6 overflow-x-auto rounded-2xl shadow-premium bg-white">
+                <table
+                  aria-label="AI resume prompts comparison"
+                  className="w-full min-w-[760px] border-collapse text-sm"
+                >
+                  <thead className="bg-chalk-dark text-left text-ink">
+                    <tr>
+                      <th scope="col" className="px-4 py-3 font-bold">Use case</th>
                       {PROVIDERS.map((provider) => (
-                        <td key={provider} className="px-4 py-3 text-ink/85">
-                          {row.kind === "rating"
-                            ? <StarRating value={row.cells[provider]} />
-                            : row.cells[provider]}
-                        </td>
+                        <th key={provider} scope="col" className="px-4 py-3 font-bold">{provider}</th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">How We Reviewed These AIs</h2>
-            <p className="mt-3 leading-relaxed text-stone-warm">
-              <strong>How we reviewed:</strong> We compared the six tools against common
-              resume-writing tasks: rewriting experience bullets, writing a professional summary,
-              tailoring to a job description, quantifying achievements, extracting ATS keywords,
-              and drafting a cover letter intro. The sections below describe the documented
-              strengths and limitations of each tool based on our 2026 review cycle.
-            </p>
-          </section>
-
-          <section className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-lg border border-black/[0.06] bg-white p-4">
-              <h3 className="font-display text-xl font-bold text-ink">Best for bullet rewrites</h3>
-              <p className="mt-2 text-sm text-stone-warm">
-                Claude is the strongest choice when the goal is clearer, more quantified
-                experience bullets.
-              </p>
-            </div>
-            <div className="rounded-lg border border-black/[0.06] bg-white p-4">
-              <h3 className="font-display text-xl font-bold text-ink">Best for summaries</h3>
-              <p className="mt-2 text-sm text-stone-warm">
-                Claude and ChatGPT are the best starting points for short professional summaries
-                with controlled tone.
-              </p>
-            </div>
-            <div className="rounded-lg border border-black/[0.06] bg-white p-4">
-              <h3 className="font-display text-xl font-bold text-ink">Best for ATS keywords</h3>
-              <p className="mt-2 text-sm text-stone-warm">
-                Claude, ChatGPT, and Gemini all work well when paired with a specific job
-                description and the <Link to="/resume-keyword-scanner" className="text-accent hover:underline">ATS keyword scanner</Link>.
-              </p>
-            </div>
-          </section>
-
-          <section className="space-y-6">
-            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Best AI Resume Prompts by Tool</h2>
-            {MODEL_SECTIONS.map((model) => (
-              <article key={model.id} id={model.id} className="rounded-lg border border-black/[0.06] bg-white p-5">
-                <h3 className="font-display text-xl font-bold text-ink">{model.name}</h3>
-                <p className="mt-3 text-stone-warm">{model.strengths}</p>
-                <p className="mt-3 text-stone-warm">{model.limitations}</p>
-                {model.cta && (
-                  <p className="mt-3">
-                    <Link to={model.cta.href} className="font-semibold text-accent hover:underline">
-                      {model.cta.text}
-                    </Link>
-                  </p>
-                )}
-                <div className="mt-4">
-                  <h4 className="font-bold text-ink">Reference prompts</h4>
-                  <ol className="mt-2 list-decimal space-y-2 pl-5 text-sm text-stone-warm">
-                    {model.prompts.map((prompt) => (
-                      <li key={prompt}>{prompt}</li>
+                  </thead>
+                  <tbody>
+                    {COMPARISON_ROWS.map((row, idx) => (
+                      <tr
+                        key={row.useCase}
+                        className={`border-t border-black/[0.04] ${idx % 2 === 1 ? "bg-chalk/40" : ""}`}
+                      >
+                        <th scope="row" className="px-4 py-3 text-left font-semibold text-ink">{row.useCase}</th>
+                        {PROVIDERS.map((provider) => (
+                          <td key={provider} className="px-4 py-3 text-ink/85">
+                            {row.kind === "rating"
+                              ? <StarRating value={row.cells[provider]} />
+                              : row.cells[provider]}
+                          </td>
+                        ))}
+                      </tr>
                     ))}
-                  </ol>
-                </div>
-              </article>
-            ))}
-          </section>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </RevealSection>
 
-          <section>
-            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Related Resume AI Resources</h2>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {INTERNAL_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  className="rounded-lg border border-black/[0.06] bg-white px-4 py-3 font-semibold text-accent hover:border-accent/40 hover:bg-chalk"
+          <RevealSection variant="fade-up">
+            <section className="grid md:grid-cols-[1fr_2fr] gap-6 md:gap-10 items-start">
+              <div>
+                <SectionEyebrow>Methodology</SectionEyebrow>
+                <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">How We Reviewed These AIs</h2>
+              </div>
+              <p className="md:mt-9 leading-relaxed text-stone-warm">
+                <strong>How we reviewed:</strong> We compared the six tools against common
+                resume-writing tasks: rewriting experience bullets, writing a professional summary,
+                tailoring to a job description, quantifying achievements, extracting ATS keywords,
+                and drafting a cover letter intro. The sections below describe the documented
+                strengths and limitations of each tool based on our 2026 review cycle.
+              </p>
+            </section>
+            <section className="mt-8 grid gap-6 md:grid-cols-3">
+              <div className="bg-white rounded-2xl p-8 card-gradient-border shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300">
+                <h3 className="font-display text-xl font-bold text-ink">Best for bullet rewrites</h3>
+                <p className="mt-3 text-stone-warm leading-relaxed">
+                  Claude is the strongest choice when the goal is clearer, more quantified
+                  experience bullets.
+                </p>
+              </div>
+              <div className="bg-white rounded-2xl p-8 card-gradient-border shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300">
+                <h3 className="font-display text-xl font-bold text-ink">Best for summaries</h3>
+                <p className="mt-3 text-stone-warm leading-relaxed">
+                  Claude and ChatGPT are the best starting points for short professional summaries
+                  with controlled tone.
+                </p>
+              </div>
+              <div className="bg-white rounded-2xl p-8 card-gradient-border shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300">
+                <h3 className="font-display text-xl font-bold text-ink">Best for ATS keywords</h3>
+                <p className="mt-3 text-stone-warm leading-relaxed">
+                  Claude, ChatGPT, and Gemini all work well when paired with a specific job
+                  description and the <Link to="/resume-keyword-scanner" className="text-accent hover:underline">ATS keyword scanner</Link>.
+                </p>
+              </div>
+            </section>
+          </RevealSection>
+
+          <RevealSection variant="fade-up">
+            <section className="space-y-6">
+              <div>
+                <SectionEyebrow>Prompts by Tool</SectionEyebrow>
+                <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Best AI Resume Prompts by Tool</h2>
+              </div>
+              {MODEL_SECTIONS.map((model, idx) => (
+                <article
+                  key={model.id}
+                  id={model.id}
+                  className="bg-white rounded-2xl p-6 md:p-8 shadow-premium shadow-premium-hover hover:-translate-y-0.5 transition-all duration-300"
                 >
-                  {link.label}
-                </Link>
+                  <span className="font-mono text-[11px] tracking-[0.15em] text-mist uppercase block mb-2">
+                    {String(idx + 1).padStart(2, "0")} / {String(MODEL_SECTIONS.length).padStart(2, "0")}
+                  </span>
+                  <h3 className="font-display text-xl font-bold text-ink">{model.name}</h3>
+                  <p className="mt-3 text-stone-warm leading-relaxed">{model.strengths}</p>
+                  <p className="mt-3 text-stone-warm leading-relaxed">{model.limitations}</p>
+                  {model.cta && (
+                    <p className="mt-4">
+                      <Link to={model.cta.href} className="font-semibold text-accent hover:underline inline-flex items-center gap-1">
+                        {model.cta.text}
+                        <span aria-hidden="true">→</span>
+                      </Link>
+                    </p>
+                  )}
+                  <div className="mt-5">
+                    <h4 className="font-bold text-ink text-sm uppercase tracking-wide">Reference prompts</h4>
+                    <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm text-stone-warm leading-relaxed marker:text-accent marker:font-bold">
+                      {model.prompts.map((prompt) => (
+                        <li key={prompt}>{prompt}</li>
+                      ))}
+                    </ol>
+                  </div>
+                </article>
               ))}
-            </div>
-          </section>
+            </section>
+          </RevealSection>
 
-          <section>
-            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Provider References</h2>
-            <p className="mt-3 text-stone-warm">
-              Use provider documentation and account settings before pasting sensitive resume data
-              into any AI tool.
-            </p>
-            <ul className="mt-3 grid gap-2 sm:grid-cols-2">
-              {PROVIDER_LINKS.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-semibold text-accent hover:underline"
+          <RevealSection variant="fade-up">
+            <section>
+              <SectionEyebrow>Keep Reading</SectionEyebrow>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Related Resume AI Resources</h2>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {INTERNAL_LINKS.map((link) => (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    className="bg-chalk-dark rounded-2xl p-5 font-semibold text-ink hover:bg-white hover:shadow-lg border border-transparent hover:border-black/[0.04] transition-all duration-300 inline-flex items-center justify-between gap-2"
                   >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
+                    <span>{link.label}</span>
+                    <span aria-hidden="true" className="text-accent">→</span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          </RevealSection>
 
-          <section>
-            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">AI Resume Prompts FAQ</h2>
-            <div className="mt-4 space-y-4">
-              {HUB_FAQS.map((faq) => (
-                <div key={faq.question} className="rounded-lg border border-black/[0.06] bg-white p-4">
-                  <h3 className="font-display text-xl font-bold text-ink">{faq.question}</h3>
-                  <p className="mt-2 text-stone-warm">{faq.answer}</p>
-                </div>
-              ))}
-            </div>
-          </section>
+          <RevealSection variant="fade-in">
+            <section>
+              <SectionEyebrow>Sources</SectionEyebrow>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Provider References</h2>
+              <p className="mt-3 text-stone-warm leading-relaxed">
+                Use provider documentation and account settings before pasting sensitive resume data
+                into any AI tool.
+              </p>
+              <ul className="mt-4 flex flex-wrap gap-2">
+                {PROVIDER_LINKS.map((link) => (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-chalk-dark px-4 py-2 font-mono text-xs tracking-wide text-ink/80 hover:bg-white hover:text-accent border border-transparent hover:border-black/[0.06] transition-all duration-200"
+                    >
+                      {link.label}
+                      <span aria-hidden="true">↗</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </RevealSection>
 
-          <section className="rounded-lg bg-ink px-5 py-6 text-white">
-            <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight">Turn the Prompt Output Into a Finished Resume</h2>
-            <p className="mt-2 text-white/80">
-              Pick a template, paste your strongest AI-assisted bullets, and export a clean PDF
-              without creating an account.
-            </p>
-            <Link
-              to="/templates"
-              className="btn-primary mt-4 px-8 py-3.5"
-            >
-              Browse resume templates
-            </Link>
-          </section>
+          <RevealSection variant="fade-up">
+            <section>
+              <SectionEyebrow>Questions</SectionEyebrow>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">AI Resume Prompts FAQ</h2>
+              <div className="mt-6 space-y-3">
+                {HUB_FAQS.map((faq) => (
+                  <details
+                    key={faq.question}
+                    className="group rounded-2xl border border-black/[0.06] bg-white px-5 py-4 hover:border-accent/30 transition-colors duration-200"
+                  >
+                    <summary className="cursor-pointer list-none flex items-start justify-between gap-4">
+                      <h3 className="font-display text-xl font-bold text-ink">{faq.question}</h3>
+                      <span
+                        aria-hidden="true"
+                        className="text-accent text-2xl leading-none flex-shrink-0 transition-transform duration-300 group-open:rotate-45 mt-1"
+                      >
+                        +
+                      </span>
+                    </summary>
+                    <div className="faq-content">
+                      <div>
+                        <p className="mt-3 text-stone-warm leading-relaxed">{faq.answer}</p>
+                      </div>
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </section>
+          </RevealSection>
+
+          <RevealSection variant="scale-in">
+            <section className="relative bg-ink rounded-3xl py-16 px-6 md:py-20 md:px-12 overflow-hidden text-center text-white">
+              <div
+                aria-hidden="true"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-accent/[0.07] blur-3xl pointer-events-none"
+              />
+              <div className="relative z-10">
+                <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-6 block">
+                  Ready?
+                </span>
+                <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-4">
+                  Turn the Prompt Output Into a Finished Resume
+                </h2>
+                <p className="text-white/80 max-w-xl mx-auto mb-8 leading-relaxed">
+                  Pick a template, paste your strongest AI-assisted bullets, and export a clean PDF
+                  without creating an account.
+                </p>
+                <Link
+                  to="/templates"
+                  className="btn-primary px-8 py-3.5"
+                >
+                  Browse resume templates
+                </Link>
+              </div>
+            </section>
+          </RevealSection>
         </div>
     </BlogLayout>
   );
