@@ -49,6 +49,12 @@ describe("AIResumePromptsHub", () => {
     ].forEach((label) => {
       expect(within(table).getByText(label)).toBeInTheDocument();
     });
+
+    // 6 rating rows × 6 providers = 36 star-rating cells, each with an
+    // accessible name conveying the value. Text rows render strings, not images.
+    const ratingCells = within(table).getAllByRole("img", { name: /out of 5/i });
+    expect(ratingCells).toHaveLength(36);
+    expect(within(table).queryByText("★★★★★")).not.toBeInTheDocument();
   });
 
   it("includes the required internal and outbound authority links", () => {

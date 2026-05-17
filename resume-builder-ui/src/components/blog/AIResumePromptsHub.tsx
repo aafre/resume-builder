@@ -3,6 +3,29 @@ import BlogLayout from "../BlogLayout";
 
 const REVIEW_DATE = "2026-05-13";
 
+const PROVIDERS = ["Claude", "ChatGPT", "Gemini", "Grok", "Copilot", "DeepSeek"] as const;
+type Provider = (typeof PROVIDERS)[number];
+type Rating = 1 | 2 | 3 | 4 | 5;
+type RatingRow = { kind: "rating"; useCase: string; cells: Record<Provider, Rating> };
+type TextRow = { kind: "text"; useCase: string; cells: Record<Provider, string> };
+type ComparisonRow = RatingRow | TextRow;
+
+function StarRating({ value }: { value: Rating }) {
+  return (
+    <span
+      role="img"
+      aria-label={`${value} out of 5`}
+      className="inline-flex gap-0.5 text-base leading-none"
+    >
+      {Array.from({ length: 5 }, (_, i) => (
+        <span key={i} className={i < value ? "text-accent" : "text-black/15"} aria-hidden="true">
+          ★
+        </span>
+      ))}
+    </span>
+  );
+}
+
 const HUB_FAQS = [
   {
     question: "What's the best free AI for resume writing in 2026?",
@@ -46,78 +69,60 @@ const HUB_FAQS = [
   },
 ];
 
-const COMPARISON_ROWS = [
+const COMPARISON_ROWS: ComparisonRow[] = [
   {
+    kind: "rating",
     useCase: "Rewriting experience bullets",
-    Claude: "★★★★★",
-    ChatGPT: "★★★★",
-    Gemini: "★★★",
-    Grok: "★★★",
-    Copilot: "★★★",
-    DeepSeek: "★★",
+    cells: { Claude: 5, ChatGPT: 4, Gemini: 3, Grok: 3, Copilot: 3, DeepSeek: 2 },
   },
   {
+    kind: "rating",
     useCase: "Writing a professional summary",
-    Claude: "★★★★★",
-    ChatGPT: "★★★★",
-    Gemini: "★★★★",
-    Grok: "★★★",
-    Copilot: "★★★",
-    DeepSeek: "★★★",
+    cells: { Claude: 5, ChatGPT: 4, Gemini: 4, Grok: 3, Copilot: 3, DeepSeek: 3 },
   },
   {
+    kind: "rating",
     useCase: "Tailoring resume to a JD",
-    Claude: "★★★★",
-    ChatGPT: "★★★★",
-    Gemini: "★★★★★",
-    Grok: "★★★",
-    Copilot: "★★★",
-    DeepSeek: "★★",
+    cells: { Claude: 4, ChatGPT: 4, Gemini: 5, Grok: 3, Copilot: 3, DeepSeek: 2 },
   },
   {
+    kind: "rating",
     useCase: "Quantifying achievements",
-    Claude: "★★★★★",
-    ChatGPT: "★★★★",
-    Gemini: "★★★",
-    Grok: "★★★",
-    Copilot: "★★",
-    DeepSeek: "★★",
+    cells: { Claude: 5, ChatGPT: 4, Gemini: 3, Grok: 3, Copilot: 2, DeepSeek: 2 },
   },
   {
+    kind: "rating",
     useCase: "ATS keyword extraction",
-    Claude: "★★★★",
-    ChatGPT: "★★★★",
-    Gemini: "★★★★",
-    Grok: "★★★",
-    Copilot: "★★★",
-    DeepSeek: "★★",
+    cells: { Claude: 4, ChatGPT: 4, Gemini: 4, Grok: 3, Copilot: 3, DeepSeek: 2 },
   },
   {
+    kind: "rating",
     useCase: "Cover letter drafts",
-    Claude: "★★★★★",
-    ChatGPT: "★★★★",
-    Gemini: "★★★★",
-    Grok: "★★★",
-    Copilot: "★★★",
-    DeepSeek: "★★★",
+    cells: { Claude: 5, ChatGPT: 4, Gemini: 4, Grok: 3, Copilot: 3, DeepSeek: 3 },
   },
   {
+    kind: "text",
     useCase: "Free tier availability",
-    Claude: "Yes",
-    ChatGPT: "Limited",
-    Gemini: "Yes",
-    Grok: "Yes",
-    Copilot: "Yes",
-    DeepSeek: "Yes",
+    cells: {
+      Claude: "Yes",
+      ChatGPT: "Limited",
+      Gemini: "Yes",
+      Grok: "Yes",
+      Copilot: "Yes",
+      DeepSeek: "Yes",
+    },
   },
   {
+    kind: "text",
     useCase: "Privacy / no training on your input",
-    Claude: "Claude.ai opt-out",
-    ChatGPT: "Data controls",
-    Gemini: "Workspace edition",
-    Grok: "Limited controls",
-    Copilot: "Commercial controls",
-    DeepSeek: "Limited controls",
+    cells: {
+      Claude: "Claude.ai opt-out",
+      ChatGPT: "Data controls",
+      Gemini: "Workspace edition",
+      Grok: "Limited controls",
+      Copilot: "Commercial controls",
+      DeepSeek: "Limited controls",
+    },
   },
 ];
 
@@ -270,24 +275,22 @@ export default function AIResumePromptsHub() {
                 <thead className="bg-chalk-dark text-left text-ink">
                   <tr>
                     <th scope="col" className="px-4 py-3 font-bold">Use case</th>
-                    <th scope="col" className="px-4 py-3 font-bold">Claude</th>
-                    <th scope="col" className="px-4 py-3 font-bold">ChatGPT</th>
-                    <th scope="col" className="px-4 py-3 font-bold">Gemini</th>
-                    <th scope="col" className="px-4 py-3 font-bold">Grok</th>
-                    <th scope="col" className="px-4 py-3 font-bold">Copilot</th>
-                    <th scope="col" className="px-4 py-3 font-bold">DeepSeek</th>
+                    {PROVIDERS.map((provider) => (
+                      <th key={provider} scope="col" className="px-4 py-3 font-bold">{provider}</th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
                   {COMPARISON_ROWS.map((row) => (
                     <tr key={row.useCase} className="border-t border-black/[0.06]">
                       <th scope="row" className="px-4 py-3 text-left font-semibold text-ink">{row.useCase}</th>
-                      <td className="px-4 py-3 text-stone-warm">{row.Claude}</td>
-                      <td className="px-4 py-3 text-stone-warm">{row.ChatGPT}</td>
-                      <td className="px-4 py-3 text-stone-warm">{row.Gemini}</td>
-                      <td className="px-4 py-3 text-stone-warm">{row.Grok}</td>
-                      <td className="px-4 py-3 text-stone-warm">{row.Copilot}</td>
-                      <td className="px-4 py-3 text-stone-warm">{row.DeepSeek}</td>
+                      {PROVIDERS.map((provider) => (
+                        <td key={provider} className="px-4 py-3 text-ink/85">
+                          {row.kind === "rating"
+                            ? <StarRating value={row.cells[provider]} />
+                            : row.cells[provider]}
+                        </td>
+                      ))}
                     </tr>
                   ))}
                 </tbody>
