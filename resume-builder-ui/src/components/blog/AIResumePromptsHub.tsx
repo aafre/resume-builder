@@ -413,7 +413,7 @@ export default function AIResumePromptsHub() {
             </p>
             <Link
               to="/templates"
-              className="mt-4 inline-flex rounded-md bg-accent px-4 py-2 font-bold text-white hover:bg-accent/90"
+              className="btn-primary mt-4 px-8 py-3.5"
             >
               Browse resume templates
             </Link>
