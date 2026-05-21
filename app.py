@@ -1,50 +1,49 @@
-import yaml
 import tempfile
-import shutil
-import hashlib
-import json
-from flask import (
-    Flask,
-    request,
-    send_file,
-    jsonify,
-    url_for,
-    send_from_directory,
-    redirect,
-)
 
+import yaml
 
-from werkzeug.middleware.proxy_fix import ProxyFix
-from werkzeug.utils import secure_filename
-import os
-import subprocess
-import logging
-from datetime import datetime, timezone
-from pathlib import Path
-import uuid
-import re
+# Bolt optimization: Use C-based YAML loader if available for ~10x parsing speedup
+try:
+    from yaml import CSafeLoader as SafeLoader
+except ImportError:
+    from yaml import SafeLoader
+
+import atexit
 import base64
 import copy
-from jinja2 import Environment, FileSystemLoader
-from concurrent.futures import ThreadPoolExecutor
-import atexit
-from functools import wraps, partial, lru_cache
+import hashlib
+import json
+import logging
+import os
+import re
+import shutil
+import subprocess
 import time
-from typing import Callable, Any
-from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
+import uuid
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
+from functools import lru_cache, partial, wraps
+from pathlib import Path
+from typing import Any, Callable
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 import requests as http_requests
-
-from flask_cors import CORS
-from flask_compress import Compress
-from supabase import create_client, Client
 from dotenv import load_dotenv
+from flask import (Flask, jsonify, redirect, request, send_file,
+                   send_from_directory, url_for)
+from flask_compress import Compress
+from flask_cors import CORS
+from jinja2 import Environment, FileSystemLoader
+from werkzeug.middleware.proxy_fix import ProxyFix
+from werkzeug.utils import secure_filename
+
+from supabase import Client, create_client
 
 # Load environment variables from .env file
 load_dotenv()
 
 # pSEO imports (lazy — only used in production or when ADZUNA keys present)
-from jobs_pseo import PseoRenderer, PageType, load_vite_manifest
+from jobs_pseo import PageType, PseoRenderer, load_vite_manifest
 
 # Configure logging based on environment variable
 # Set DEBUG_LOGGING=true to enable detailed debug logs for troubleshooting
@@ -168,8 +167,8 @@ def pdf_generation_worker(
     - Reliable PDF generation without Qt concurrency issues
     """
     try:
-        import subprocess
         import logging
+        import subprocess
         from pathlib import Path
 
         # Set up logging for worker process
@@ -838,7 +837,8 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
 def load_resume_data(yaml_file_path):
     """Load and validate resume data from YAML file."""
     with open(yaml_file_path, "r") as file:
-        data = yaml.safe_load(file)
+        # Bolt optimization: Use C-based YAML loader if available for ~10x parsing speedup
+        data = yaml.load(file, Loader=SafeLoader)
 
     if not isinstance(data, dict):
         raise ValueError("Invalid YAML format: Root must be a dictionary")
@@ -849,7 +849,8 @@ def load_resume_data(yaml_file_path):
 def _load_yaml_file_cached(yaml_path_str: str) -> dict:
     """Internal cached helper to load YAML files from disk."""
     with open(yaml_path_str, "r", encoding="utf-8") as file:
-        data = yaml.safe_load(file)
+        # Bolt optimization: Use C-based YAML loader if available for ~10x parsing speedup
+        data = yaml.load(file, Loader=SafeLoader)
     return data
 
 def get_template_config(yaml_path) -> dict:
@@ -1068,9 +1069,10 @@ def generate_thumbnail_from_pdf(pdf_path, user_id, resume_id):
         return None
 
     try:
+        import tempfile
+
         from pdf2image import convert_from_path
         from PIL import Image
-        import tempfile
 
         # Convert first page of PDF to image at 150 DPI
         logging.debug(f"Converting PDF to thumbnail: {pdf_path}")
@@ -1897,7 +1899,8 @@ def generate_resume():
 
             # Parse YAML to extract icon references
             with open(yaml_path, "r") as f:
-                yaml_data = yaml.safe_load(f)
+                # Bolt optimization: Use C-based YAML loader if available for ~10x parsing speedup
+                yaml_data = yaml.load(f, Loader=SafeLoader)
 
             # Normalize sections for backward compatibility
             yaml_data = normalize_sections(yaml_data)
@@ -3923,7 +3926,7 @@ def search_jobs():
 
 def _search_jobs_post():
     """POST handler: 3-tier search with resume-context scoring."""
-    from job_engine import MatchContext, JobMatchEngine
+    from job_engine import JobMatchEngine, MatchContext
 
     body = request.get_json(silent=True) or {}
     query = (body.get("query") or "").strip()
