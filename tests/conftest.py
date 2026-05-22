@@ -7,13 +7,15 @@ Provides:
 - Mock authentication fixtures
 - Common test data helpers
 """
-import pytest
-from unittest.mock import MagicMock, patch
-import sys
+
 import os
-import tempfile
 import shutil
+import sys
+import tempfile
 from pathlib import Path
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -23,14 +25,15 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Test Constants
 # =============================================================================
 
-TEST_USER_ID = 'test-user-id-123'
-OTHER_USER_ID = 'other-user-id-456'
-TEST_RESUME_ID = 'test-resume-id-789'
+TEST_USER_ID = "test-user-id-123"
+OTHER_USER_ID = "other-user-id-456"
+TEST_RESUME_ID = "test-resume-id-789"
 
 
 # =============================================================================
 # Mock Supabase Helpers
 # =============================================================================
+
 
 def create_mock_response(data=None, count=None):
     """Create a mock Supabase response object."""
@@ -55,11 +58,27 @@ def create_mock_supabase():
 
     # Chain all common methods to return themselves
     chainable_methods = [
-        'select', 'insert', 'update', 'upsert', 'delete',
-        'eq', 'neq', 'gt', 'lt', 'gte', 'lte',
-        'in_', 'is_', 'not_', 'or_',
-        'order', 'limit', 'offset', 'range',
-        'maybeSingle', 'single'
+        "select",
+        "insert",
+        "update",
+        "upsert",
+        "delete",
+        "eq",
+        "neq",
+        "gt",
+        "lt",
+        "gte",
+        "lte",
+        "in_",
+        "is_",
+        "not_",
+        "or_",
+        "order",
+        "limit",
+        "offset",
+        "range",
+        "maybeSingle",
+        "single",
     ]
 
     for method in chainable_methods:
@@ -74,9 +93,11 @@ def create_mock_supabase():
     # Storage support
     mock_bucket = MagicMock()
     mock.storage.from_.return_value = mock_bucket
-    mock_bucket.download.return_value = b'fake-image-data'
+    mock_bucket.download.return_value = b"fake-image-data"
     mock_bucket.upload.return_value = None
-    mock_bucket.get_public_url.side_effect = lambda path: f'https://test.supabase.co/storage/{path}'
+    mock_bucket.get_public_url.side_effect = (
+        lambda path: f"https://test.supabase.co/storage/{path}"
+    )
     mock_bucket.remove.return_value = None
 
     # Auth support
@@ -91,6 +112,7 @@ def create_mock_supabase():
 # =============================================================================
 # Flask Test Client Fixtures
 # =============================================================================
+
 
 @pytest.fixture
 def mock_supabase():
@@ -111,8 +133,8 @@ def flask_test_client(mock_supabase):
     import app as flask_app
 
     # Patch the supabase client in the app module
-    with patch.object(flask_app, 'supabase', mock_supabase):
-        flask_app.app.config['TESTING'] = True
+    with patch.object(flask_app, "supabase", mock_supabase):
+        flask_app.app.config["TESTING"] = True
         with flask_app.app.test_client() as client:
             yield client, mock_supabase, flask_app
 
@@ -120,12 +142,13 @@ def flask_test_client(mock_supabase):
 @pytest.fixture
 def auth_headers():
     """Provide mock authorization headers."""
-    return {'Authorization': 'Bearer test-jwt-token'}
+    return {"Authorization": "Bearer test-jwt-token"}
 
 
 # =============================================================================
 # Temp Directory Fixtures
 # =============================================================================
+
 
 @pytest.fixture
 def temp_output_dir():
@@ -147,49 +170,50 @@ def temp_session_dir():
 # Test Data Fixtures
 # =============================================================================
 
+
 @pytest.fixture
 def sample_resume_data():
     """Provide sample resume data for testing."""
     return {
-        'id': TEST_RESUME_ID,
-        'user_id': TEST_USER_ID,
-        'title': 'Test Resume',
-        'template_id': 'modern-with-icons',
-        'contact_info': {
-            'name': 'John Doe',
-            'email': 'john@example.com',
-            'phone': '555-1234',
-            'location': 'San Francisco, CA',
-            'social_links': [
+        "id": TEST_RESUME_ID,
+        "user_id": TEST_USER_ID,
+        "title": "Test Resume",
+        "template_id": "modern-with-icons",
+        "contact_info": {
+            "name": "John Doe",
+            "email": "john@example.com",
+            "phone": "555-1234",
+            "location": "San Francisco, CA",
+            "social_links": [
                 {
-                    'platform': 'linkedin',
-                    'url': 'https://linkedin.com/in/johndoe',
-                    'display_text': 'John Doe'
+                    "platform": "linkedin",
+                    "url": "https://linkedin.com/in/johndoe",
+                    "display_text": "John Doe",
                 }
-            ]
+            ],
         },
-        'sections': [
+        "sections": [
             {
-                'name': 'Summary',
-                'type': 'text',
-                'content': 'Experienced software engineer...'
+                "name": "Summary",
+                "type": "text",
+                "content": "Experienced software engineer...",
             },
             {
-                'name': 'Experience',
-                'type': 'experience',
-                'content': [
+                "name": "Experience",
+                "type": "experience",
+                "content": [
                     {
-                        'company': 'Tech Corp',
-                        'title': 'Software Engineer',
-                        'dates': '2020-Present',
-                        'description': 'Built awesome stuff'
+                        "company": "Tech Corp",
+                        "title": "Software Engineer",
+                        "dates": "2020-Present",
+                        "description": "Built awesome stuff",
                     }
-                ]
-            }
+                ],
+            },
         ],
-        'json_hash': 'abc123',
-        'created_at': '2025-01-15T10:00:00Z',
-        'updated_at': '2025-01-20T14:00:00Z'
+        "json_hash": "abc123",
+        "created_at": "2025-01-15T10:00:00Z",
+        "updated_at": "2025-01-20T14:00:00Z",
     }
 
 
@@ -197,15 +221,15 @@ def sample_resume_data():
 def sample_icon_data():
     """Provide sample icon data for testing."""
     return {
-        'id': 'icon-id-123',
-        'resume_id': TEST_RESUME_ID,
-        'user_id': TEST_USER_ID,
-        'filename': 'company_google.png',
-        'storage_path': f'{TEST_USER_ID}/{TEST_RESUME_ID}/company_google.png',
-        'storage_url': 'https://test.supabase.co/storage/company_google.png',
-        'mime_type': 'image/png',
-        'file_size': 1024,
-        'created_at': '2025-01-15T10:00:00Z'
+        "id": "icon-id-123",
+        "resume_id": TEST_RESUME_ID,
+        "user_id": TEST_USER_ID,
+        "filename": "company_google.png",
+        "storage_path": f"{TEST_USER_ID}/{TEST_RESUME_ID}/company_google.png",
+        "storage_url": "https://test.supabase.co/storage/company_google.png",
+        "mime_type": "image/png",
+        "file_size": 1024,
+        "created_at": "2025-01-15T10:00:00Z",
     }
 
 
@@ -237,5 +261,3 @@ sections:
         description: Built awesome stuff
         icon: company_tech.png
 """
-
-
