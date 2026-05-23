@@ -292,7 +292,7 @@ export default function AIResumePromptsHub() {
           <RevealSection variant="fade-up">
             <section>
               <SectionEyebrow>Tool × Use Case</SectionEyebrow>
-              <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">AI Resume Prompts Comparison</h2>
+              <h2 id="comparison" className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">AI Resume Prompts Comparison</h2>
               <div className="mt-6 overflow-x-auto rounded-2xl shadow-premium bg-white">
                 <table
                   aria-label="AI resume prompts comparison"
@@ -332,7 +332,7 @@ export default function AIResumePromptsHub() {
             <section className="grid md:grid-cols-[1fr_2fr] gap-6 md:gap-10 items-start">
               <div>
                 <SectionEyebrow>Methodology</SectionEyebrow>
-                <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">How We Reviewed These AIs</h2>
+                <h2 id="methodology" className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">How We Reviewed These AIs</h2>
               </div>
               <p className="md:mt-9 leading-relaxed text-stone-warm">
                 <strong>How we reviewed:</strong> We compared the six tools against common
@@ -371,7 +371,7 @@ export default function AIResumePromptsHub() {
             <section className="space-y-6">
               <div>
                 <SectionEyebrow>Prompts by Tool</SectionEyebrow>
-                <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Best AI Resume Prompts by Tool</h2>
+                <h2 id="prompts-by-tool" className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Best AI Resume Prompts by Tool</h2>
               </div>
               {MODEL_SECTIONS.map((model, idx) => (
                 <article
@@ -409,7 +409,7 @@ export default function AIResumePromptsHub() {
           <RevealSection variant="fade-up">
             <section>
               <SectionEyebrow>Keep Reading</SectionEyebrow>
-              <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Related Resume AI Resources</h2>
+              <h2 id="related-resources" className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Related Resume AI Resources</h2>
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
                 {INTERNAL_LINKS.map((link) => (
                   <Link
@@ -428,7 +428,7 @@ export default function AIResumePromptsHub() {
           <RevealSection variant="fade-in">
             <section>
               <SectionEyebrow>Sources</SectionEyebrow>
-              <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Provider References</h2>
+              <h2 id="provider-references" className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">Provider References</h2>
               <p className="mt-3 text-stone-warm leading-relaxed">
                 Use provider documentation and account settings before pasting sensitive resume data
                 into any AI tool.
@@ -454,7 +454,7 @@ export default function AIResumePromptsHub() {
           <RevealSection variant="fade-up">
             <section>
               <SectionEyebrow>Questions</SectionEyebrow>
-              <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">AI Resume Prompts FAQ</h2>
+              <h2 id="faq" className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">AI Resume Prompts FAQ</h2>
               <div className="mt-6 space-y-3">
                 {HUB_FAQS.map((faq) => (
                   <details

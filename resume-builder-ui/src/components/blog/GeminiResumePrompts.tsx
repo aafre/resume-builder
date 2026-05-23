@@ -234,6 +234,10 @@ export default function GeminiResumePrompts() {
               <h3 className="font-bold text-ink mb-1">Copilot Resume Prompts</h3>
               <p className="text-sm text-stone-warm">Best for Microsoft 365 integration and Word users</p>
             </Link>
+            <Link to="/blog/ai-resume-prompts-hub" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">AI Resume Prompts Hub</h3>
+              <p className="text-sm text-stone-warm">Side-by-side comparison of Claude, ChatGPT, Gemini, Grok, Copilot, and DeepSeek for resume tasks</p>
+            </Link>
           </div>
         </div>
 
