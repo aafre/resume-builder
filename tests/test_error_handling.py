@@ -10,11 +10,13 @@ Tests cover:
 Run tests:
     pytest tests/test_error_handling.py -v
 """
-import pytest
-from unittest.mock import MagicMock, patch, call
-import sys
+
 import os
+import sys
 import time
+from unittest.mock import MagicMock, call, patch
+
+import pytest
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -73,7 +75,9 @@ class TestRetryDecorator:
         assert result == "success"
         assert call_count == 2
 
-    def test_retry_decorator_does_not_retry_non_connection_error(self, flask_test_client):
+    def test_retry_decorator_does_not_retry_non_connection_error(
+        self, flask_test_client
+    ):
         """Verify decorator does not retry non-connection errors."""
         client, mock_sb, flask_app = flask_test_client
 
@@ -122,7 +126,7 @@ class TestRetryDecorator:
             raise Exception("Connection error")
 
         # The backoff times should be: 0.5s, 1s (0.5 * 2^0, 0.5 * 2^1)
-        with patch('time.sleep') as mock_sleep:
+        with patch("time.sleep") as mock_sleep:
             with pytest.raises(Exception):
                 test_func()
 
@@ -304,7 +308,7 @@ class TestRetryDecoratorEdgeCases:
 
         result = func(a=1, b=2)
 
-        assert result == {'a': 1, 'b': 2}
+        assert result == {"a": 1, "b": 2}
 
 
 class TestClassifyThumbnailErrorRetryability:
@@ -319,13 +323,15 @@ class TestClassifyThumbnailErrorRetryability:
             "Connection refused",
             "Connection timeout",
             "Connection reset by peer",
-            "Network unreachable"
+            "Network unreachable",
         ]
 
         for error_msg in network_errors:
             error = Exception(error_msg)
             result = flask_app.classify_thumbnail_error(error)
-            assert result['retryable'] is True, f"Expected '{error_msg}' to be retryable"
+            assert (
+                result["retryable"] is True
+            ), f"Expected '{error_msg}' to be retryable"
 
     def test_dependency_errors_not_retryable(self, flask_test_client):
         """Verify dependency errors are not retryable."""
@@ -334,9 +340,9 @@ class TestClassifyThumbnailErrorRetryability:
         error = ImportError("No module named 'pdf2image'")
         result = flask_app.classify_thumbnail_error(error)
 
-        assert result['retryable'] is False
-        assert result['error_type'] == 'dependency'
-        assert 'user_message' in result
+        assert result["retryable"] is False
+        assert result["error_type"] == "dependency"
+        assert "user_message" in result
 
     def test_data_errors_not_retryable(self, flask_test_client):
         """Verify data/validation errors are not retryable."""
@@ -345,25 +351,29 @@ class TestClassifyThumbnailErrorRetryability:
         data_errors = [
             "Invalid PDF format",
             "Corrupted file data",
-            "Missing required field"
+            "Missing required field",
         ]
 
         for error_msg in data_errors:
             error = Exception(error_msg)
             result = flask_app.classify_thumbnail_error(error)
-            assert result['retryable'] is False, f"Expected '{error_msg}' to NOT be retryable"
+            assert (
+                result["retryable"] is False
+            ), f"Expected '{error_msg}' to NOT be retryable"
 
 
 class TestRequireAuthRetry:
     """Tests for require_auth retry on transient connection errors."""
 
-    def test_retries_on_connection_error_then_succeeds(self, flask_test_client, auth_headers):
+    def test_retries_on_connection_error_then_succeeds(
+        self, flask_test_client, auth_headers
+    ):
         """Verify require_auth retries get_user on connection error and succeeds on second attempt."""
         client, mock_sb, flask_app = flask_test_client
 
         call_count = 0
         mock_user = MagicMock()
-        mock_user.id = 'test-user-id-123'
+        mock_user.id = "test-user-id-123"
 
         def get_user_side_effect(token):
             nonlocal call_count
@@ -374,17 +384,22 @@ class TestRequireAuthRetry:
 
         mock_sb.auth.get_user.side_effect = get_user_side_effect
 
-        with patch('time.sleep'):
-            response = client.get('/api/user/preferences', headers=auth_headers)
+        with patch("time.sleep"):
+            response = client.get("/api/user/preferences", headers=auth_headers)
 
         assert response.status_code == 200
         assert call_count == 2
 
-    @pytest.mark.parametrize("error_message", [
-        "Token expired",
-        "Invalid JWT: signature verification failed",
-    ])
-    def test_does_not_retry_on_non_connection_errors(self, flask_test_client, auth_headers, error_message):
+    @pytest.mark.parametrize(
+        "error_message",
+        [
+            "Token expired",
+            "Invalid JWT: signature verification failed",
+        ],
+    )
+    def test_does_not_retry_on_non_connection_errors(
+        self, flask_test_client, auth_headers, error_message
+    ):
         """Verify require_auth does NOT retry on non-connection errors like invalid/expired tokens."""
         client, mock_sb, flask_app = flask_test_client
 
@@ -397,7 +412,7 @@ class TestRequireAuthRetry:
 
         mock_sb.auth.get_user.side_effect = get_user_side_effect
 
-        response = client.get('/api/user/preferences', headers=auth_headers)
+        response = client.get("/api/user/preferences", headers=auth_headers)
 
         assert response.status_code == 401
         assert call_count == 1
@@ -415,10 +430,10 @@ class TestRequireAuthRetry:
 
         mock_sb.auth.get_user.side_effect = get_user_side_effect
 
-        with patch('time.sleep'):
-            response = client.get('/api/user/preferences', headers=auth_headers)
+        with patch("time.sleep"):
+            response = client.get("/api/user/preferences", headers=auth_headers)
 
         assert response.status_code == 401
         data = response.get_json()
-        assert data['success'] is False
+        assert data["success"] is False
         assert call_count == 2
