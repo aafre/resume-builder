@@ -37,41 +37,49 @@ function SectionEyebrow({ children }: { children: string }) {
 
 const HUB_FAQS = [
   {
+    id: "faq-best-free-ai-2026",
     question: "What's the best free AI for resume writing in 2026?",
     answer:
       "Claude and Google Gemini both have generous free tiers and produce strong resume output in our review. ChatGPT's free tier is more limited for long-context inputs. For pure prompt quality on rewriting work, Claude is consistently the best free option as of 2026-05.",
   },
   {
+    id: "faq-chatgpt-vs-claude",
     question: "ChatGPT vs Claude for resume writing - which is better?",
     answer:
       "Claude tends to produce more polished prose with better quantification of achievements; ChatGPT is faster and better at strict formatting, such as bulleted lists with exact word counts. For experience-bullet rewriting and professional summary work, Claude is stronger. For high-volume drafting, ChatGPT is faster.",
   },
   {
+    id: "faq-is-gemini-good-for-resume",
     question: "Is Gemini good for resume writing?",
     answer:
       "Yes, particularly for tailoring a resume to a specific job description. Gemini's Google integration makes it useful for job-description context and role-specific language. It is a strong pick for JD-tailoring workflows. For pure rewriting it is solid but slightly behind Claude and ChatGPT.",
   },
   {
+    id: "faq-grok-or-deepseek-for-resume",
     question: "Can I use Grok or DeepSeek for resume writing?",
     answer:
       "Yes, but with caveats. Grok is fast and free but produces more generic output, so it is better for first drafts than finishing work. DeepSeek is inexpensive through common aggregator workflows, but its instruction-following on specific resume formats can be weaker. Use them for high-volume initial drafts you will refine elsewhere.",
   },
   {
+    id: "faq-best-ats-keyword-extraction",
     question: "Which AI handles ATS keyword extraction best?",
     answer:
       "Claude, ChatGPT, and Gemini are roughly equivalent on ATS keyword analysis when given a job description and a target resume. Grok and Copilot are usable but produce less reliable keyword priority ranking. For final ATS work, pair any of the top three with our free ATS keyword scanner.",
   },
   {
+    id: "faq-do-i-need-to-pay",
     question: "Do I need to pay to use AI for resume writing?",
     answer:
       "No. The free tiers of Claude, Gemini, and Copilot are sufficient for most resume writing. ChatGPT's free tier works for shorter tasks. Paid tiers are mainly useful for very high volume, longer context windows, team controls, or specific integrations.",
   },
   {
+    id: "faq-is-it-safe-to-put-resume-in-ai",
     question: "Is it safe to put my resume into an AI tool?",
     answer:
       "Privacy varies by tool. Claude.ai offers data controls, ChatGPT includes data controls, and Gemini privacy depends on the edition and account type. Strip PII such as full name, address, phone, and email before pasting resume content into any free AI tier if privacy matters.",
   },
   {
+    id: "faq-best-prompt-structure",
     question: "What's the best prompt structure for AI resume writing?",
     answer:
       "Three elements every prompt needs: the target role and job description, the current resume content or section, and an explicit output format such as bullet count, word count, and tone. Without these details the AI produces generic output. See our Claude and Gemini guides for tested prompt templates.",
@@ -266,12 +274,18 @@ export default function AIResumePromptsHub() {
         <div className="space-y-10">
           <section className="relative bg-white rounded-2xl shadow-premium card-gradient-border p-6 md:p-8 border-l-4 border-accent">
             <SectionEyebrow>The Short Answer</SectionEyebrow>
+            <time
+              dateTime={REVIEW_DATE}
+              className="font-mono text-[11px] tracking-[0.15em] text-mist uppercase block mb-3"
+            >
+              Last reviewed {REVIEW_DATE} · Refresh cadence: Quarterly
+            </time>
             <p className="text-base md:text-lg leading-relaxed text-ink/90">
               <strong>Short answer:</strong> For resume writing in 2026, Claude and ChatGPT
               produce the strongest output for rewriting bullets and crafting summaries. Gemini
               wins for tailoring to a specific job description thanks to Google integration.
               Grok and Copilot are fast and free but more generic. DeepSeek is cheapest but
-              limited. Choose based on your task and privacy preferences. Last reviewed {REVIEW_DATE}.
+              limited. Choose based on your task and privacy preferences.
             </p>
           </section>
 
@@ -445,6 +459,7 @@ export default function AIResumePromptsHub() {
                 {HUB_FAQS.map((faq) => (
                   <details
                     key={faq.question}
+                    id={faq.id}
                     className="group rounded-2xl border border-black/[0.06] bg-white px-5 py-4 hover:border-accent/30 transition-colors duration-200"
                   >
                     <summary className="cursor-pointer list-none flex items-start justify-between gap-4">
