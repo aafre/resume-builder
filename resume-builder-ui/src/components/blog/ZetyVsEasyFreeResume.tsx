@@ -298,10 +298,10 @@ export default function ZetyVsEasyFreeResume() {
                   </Link>{" "}
                   or{" "}
                   <Link
-                    to="/blog/chatgpt-resume-prompts"
+                    to="/blog/ai-resume-prompts-hub"
                     className="text-accent underline"
                   >
-                    ChatGPT Resume Prompts
+                    AI Resume Prompts
                   </Link>
                   ) to write compelling, personalized content.
                 </p>

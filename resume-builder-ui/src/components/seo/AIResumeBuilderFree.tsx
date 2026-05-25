@@ -109,8 +109,8 @@ export default function AIResumeBuilderFree() {
               <strong className="text-ink">Best for:</strong> Writing bullet points, professional summaries, cover letters, and tailoring content to specific job descriptions.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline font-medium">
-                ChatGPT resume prompts guide →
+              <Link to="/blog/ai-resume-prompts-hub" className="text-accent hover:underline font-medium">
+                AI resume prompts hub →
               </Link>
               <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline font-medium">
                 AI cover letter prompts →
@@ -213,9 +213,9 @@ export default function AIResumeBuilderFree() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
               {
-                title: 'ChatGPT Resume Prompts',
-                desc: '30+ copy-paste prompts to write bullet points, summaries, and cover letters with ChatGPT.',
-                href: '/blog/chatgpt-resume-prompts',
+                title: 'AI Resume Prompts Hub',
+                desc: '30+ copy-paste prompts for ChatGPT, Claude, Gemini, and more — compared side by side.',
+                href: '/blog/ai-resume-prompts-hub',
               },
               {
                 title: 'Claude Resume Prompts',

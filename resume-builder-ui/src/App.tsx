@@ -111,14 +111,10 @@ const HowToListSkills = lazy(() => import("./components/blog/HowToListSkills"));
 const QuantifyResumeAccomplishments = lazy(() => import("./components/blog/QuantifyResumeAccomplishments"));
 
 // New AI blog posts
-const ChatGPTResumePrompts = lazy(() => import("./components/blog/ChatGPTResumePrompts"));
 const AIResumePromptsHub = lazy(() => import("./components/blog/AIResumePromptsHub"));
 const AIResumeWritingGuide = lazy(() => import("./components/blog/AIResumeWritingGuide"));
 const ClaudeResumePrompts = lazy(() => import("./components/blog/ClaudeResumePrompts"));
 const GeminiResumePrompts = lazy(() => import("./components/blog/GeminiResumePrompts"));
-const GrokResumePrompts = lazy(() => import("./components/blog/GrokResumePrompts"));
-const DeepSeekResumePrompts = lazy(() => import("./components/blog/DeepSeekResumePrompts"));
-const CopilotResumePrompts = lazy(() => import("./components/blog/CopilotResumePrompts"));
 const AICoverLetterPrompts = lazy(() => import("./components/blog/AICoverLetterPrompts"));
 const CareerChangeResumeGuide = lazy(() => import("./components/blog/CareerChangeResumeGuide"));
 const ResumeEmploymentGaps = lazy(() => import("./components/blog/ResumeEmploymentGaps"));
@@ -742,11 +738,7 @@ function AppContent() {
           {/* New AI Blog Posts */}
           <Route
             path="/blog/chatgpt-resume-prompts"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <ChatGPTResumePrompts />
-              </Suspense>
-            }
+            element={<Navigate to="/blog/ai-resume-prompts-hub" replace />}
           />
           <Route
             path="/blog/ai-resume-prompts-hub"
@@ -782,27 +774,15 @@ function AppContent() {
           />
           <Route
             path="/blog/grok-resume-prompts"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <GrokResumePrompts />
-              </Suspense>
-            }
+            element={<Navigate to="/blog/ai-resume-prompts-hub" replace />}
           />
           <Route
             path="/blog/deepseek-resume-prompts"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <DeepSeekResumePrompts />
-              </Suspense>
-            }
+            element={<Navigate to="/blog/ai-resume-prompts-hub" replace />}
           />
           <Route
             path="/blog/copilot-resume-prompts"
-            element={
-              <Suspense fallback={<BlogLoadingSkeleton />}>
-                <CopilotResumePrompts />
-              </Suspense>
-            }
+            element={<Navigate to="/blog/ai-resume-prompts-hub" replace />}
           />
           <Route
             path="/blog/ai-cover-letter-prompts"

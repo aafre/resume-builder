@@ -1421,6 +1421,34 @@ def redirect_editor():
     return redirect("/templates", code=301)
 
 
+@app.route("/blog/chatgpt-resume-prompts")
+def gone_chatgpt_prompts():
+    if FLASK_ENV == "production" and app.static_folder:
+        return send_from_directory(app.static_folder, "index.html"), 410
+    return '', 410
+
+
+@app.route("/blog/grok-resume-prompts")
+def gone_grok_prompts():
+    if FLASK_ENV == "production" and app.static_folder:
+        return send_from_directory(app.static_folder, "index.html"), 410
+    return '', 410
+
+
+@app.route("/blog/copilot-resume-prompts")
+def gone_copilot_prompts():
+    if FLASK_ENV == "production" and app.static_folder:
+        return send_from_directory(app.static_folder, "index.html"), 410
+    return '', 410
+
+
+@app.route("/blog/deepseek-resume-prompts")
+def gone_deepseek_prompts():
+    if FLASK_ENV == "production" and app.static_folder:
+        return send_from_directory(app.static_folder, "index.html"), 410
+    return '', 410
+
+
 @app.route("/blog/how-to-use-resume-keywords-to-beat-ats")
 def redirect_keywords_beat_ats():
     """Redirect old blog URL to current version"""

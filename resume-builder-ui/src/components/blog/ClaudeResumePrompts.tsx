@@ -625,7 +625,7 @@ export default function ClaudeResumePrompts() {
             Use <strong>Claude for writing and tailoring</strong> (summaries, bullets, cover letters, career change narratives) where tone and nuance matter most. Use <strong>ChatGPT for analysis tasks</strong> (keyword extraction, ATS scanning, formatting checks) where speed matters more than prose quality. Or use both — many successful job seekers draft with Claude and verify with ChatGPT.
           </p>
           <p className="text-ink/80 mt-3">
-            Want ChatGPT-specific prompts? See our <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline font-medium">25+ ChatGPT prompts for resume writing</Link>.
+            Want prompts for other AI tools? See our <Link to="/blog/ai-resume-prompts-hub" className="text-accent hover:underline font-medium">AI Resume Prompts Hub</Link>.
           </p>
         </div>
 
@@ -686,29 +686,17 @@ export default function ClaudeResumePrompts() {
           <h2 className="text-2xl font-bold text-ink mb-2">Explore Other AI Resume Tools</h2>
           <p className="text-stone-warm font-extralight mb-6">Each AI has different strengths for resume writing. Try multiple tools to find what works best for you.</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Link to="/blog/chatgpt-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">ChatGPT Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for creative writing and natural language</p>
+            <Link to="/blog/ai-resume-prompts-hub" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">AI Resume Prompts Hub</h3>
+              <p className="text-sm text-stone-warm">Compare all AI tools side by side</p>
             </Link>
             <Link to="/blog/gemini-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
               <h3 className="font-bold text-ink mb-1">Gemini Resume Prompts</h3>
               <p className="text-sm text-stone-warm">Best for research and Google ecosystem integration</p>
             </Link>
-            <Link to="/blog/grok-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Grok Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for conversational iteration and real-time feedback</p>
-            </Link>
-            <Link to="/blog/deepseek-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">DeepSeek Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for technical roles and coding resumes</p>
-            </Link>
-            <Link to="/blog/copilot-resume-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">Copilot Resume Prompts</h3>
-              <p className="text-sm text-stone-warm">Best for Microsoft 365 integration and Word users</p>
-            </Link>
-            <Link to="/blog/ai-resume-prompts-hub" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
-              <h3 className="font-bold text-ink mb-1">AI Resume Prompts Hub</h3>
-              <p className="text-sm text-stone-warm">Compare all six tools side by side — ratings, prompts, and use-case picks in one place</p>
+            <Link to="/blog/ai-cover-letter-prompts" className="bg-chalk-dark rounded-xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-black/[0.04]">
+              <h3 className="font-bold text-ink mb-1">AI Cover Letter Prompts</h3>
+              <p className="text-sm text-stone-warm">Prompts for writing tailored cover letters</p>
             </Link>
           </div>
         </div>
@@ -734,8 +722,8 @@ export default function ClaudeResumePrompts() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
           <li>
-            <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">
-              25+ ChatGPT Prompts for Resume Writing
+            <Link to="/blog/ai-resume-prompts-hub" className="text-accent hover:underline">
+              AI Resume Prompts Hub — Compare All Tools
             </Link>
           </li>
           <li>
@@ -746,11 +734,6 @@ export default function ClaudeResumePrompts() {
           <li>
             <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline">
               Gemini Prompts for Resume Writing
-            </Link>
-          </li>
-          <li>
-            <Link to="/blog/grok-resume-prompts" className="text-accent hover:underline">
-              Grok AI Prompts for Resume Writing
             </Link>
           </li>
           <li>

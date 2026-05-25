@@ -92,16 +92,12 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/quantify-resume-accomplishments', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
 
   // New AI Blog Posts (0.5) - recently created
-  { loc: '/blog/chatgpt-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
-  { loc: '/blog/ai-resume-prompts-hub', priority: 0.5, changefreq: 'monthly', lastmod: '2026-05-17' },
+  { loc: '/blog/ai-resume-prompts-hub', priority: 0.5, changefreq: 'monthly', lastmod: '2026-05-25' },
   { loc: '/blog/ai-resume-writing-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/claude-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-17' },
   { loc: '/blog/gemini-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
-  { loc: '/blog/grok-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/blog/ai-job-description-analyzer', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/ai-resume-review', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
-  { loc: '/blog/deepseek-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
-  { loc: '/blog/copilot-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/blog/ai-cover-letter-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
   { loc: '/blog/career-change-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
   { loc: '/blog/resume-employment-gaps', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },

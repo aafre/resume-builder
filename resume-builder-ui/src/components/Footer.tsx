@@ -34,7 +34,7 @@ const footerLinks = {
       ? [{ path: '/jobs', label: 'Job Search' }]
       : []),
     { path: '/blog', label: 'Career Blog' },
-    { path: '/blog/chatgpt-resume-prompts', label: 'ChatGPT Resume Prompts' },
+    { path: '/blog/ai-resume-prompts-hub', label: 'AI Resume Prompts' },
     { path: '/blog/ats-resume-optimization', label: 'ATS Optimization Guide' },
     { path: '/blog/how-to-write-a-resume-guide', label: 'How to Write a Resume' },
   ],
