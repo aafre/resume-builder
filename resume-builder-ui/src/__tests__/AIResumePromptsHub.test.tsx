@@ -26,7 +26,7 @@ describe("AIResumePromptsHub", () => {
     ).toBeInTheDocument();
     expect(
       screen.getAllByText(
-        /Last reviewed 2026-05-13/i
+        /Last reviewed 2026-05-25/i
       )[0]
     ).toBeInTheDocument();
     expect(screen.queryByText(/Last tested/i)).not.toBeInTheDocument();
@@ -49,6 +49,12 @@ describe("AIResumePromptsHub", () => {
     ].forEach((label) => {
       expect(within(table).getByText(label)).toBeInTheDocument();
     });
+
+    // 6 rating rows × 6 providers = 36 star-rating cells, each with an
+    // accessible name conveying the value. Text rows render strings, not images.
+    const ratingCells = within(table).getAllByRole("img", { name: /out of 5/i });
+    expect(ratingCells).toHaveLength(36);
+    expect(within(table).queryByText("★★★★★")).not.toBeInTheDocument();
   });
 
   it("includes the required internal and outbound authority links", () => {
@@ -107,18 +113,51 @@ describe("AIResumePromptsHub", () => {
   });
 
   it("marks comparison table headers with explicit scope attributes", () => {
-    const { container } = renderHub();
+    renderHub();
 
-    const columnHeaders = Array.from(container.querySelectorAll("thead th"));
+    const table = screen.getByRole("table", {
+      name: /AI resume prompts comparison/i,
+    });
+
+    const columnHeaders = Array.from(table.querySelectorAll("thead th"));
     expect(columnHeaders).toHaveLength(7);
     columnHeaders.forEach((header) => {
       expect(header).toHaveAttribute("scope", "col");
     });
 
-    const rowHeaders = Array.from(container.querySelectorAll("tbody th"));
+    const rowHeaders = Array.from(table.querySelectorAll("tbody th"));
     expect(rowHeaders).toHaveLength(8);
     rowHeaders.forEach((header) => {
       expect(header).toHaveAttribute("scope", "row");
     });
+  });
+
+  it("renders the workflow tutorial and fan-out answer sections", () => {
+    const { container } = renderHub();
+
+    [
+      "How to Build an AI Resume Workflow",
+      "Tool Recommendations by AI",
+      "Is It Safe to Put My Resume in AI?",
+      "ATS Formatting: Which AI Tools Preserve It?",
+      "Token Limits for Long Resumes",
+    ].forEach((name) => {
+      expect(
+        screen.getByRole("heading", {
+          level: 2,
+          name,
+        })
+      ).toBeInTheDocument();
+    });
+
+    expect(container.querySelectorAll("pre code")).toHaveLength(5);
+    expect(
+      screen.getByRole("table", {
+        name: /AI resume privacy controls by provider/i,
+      })
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("Before").length).toBeGreaterThanOrEqual(3);
+    expect(screen.getAllByText(/After \(/).length).toBeGreaterThanOrEqual(3);
+    expect(screen.getByText(/3 runs per task per tool/i)).toBeInTheDocument();
   });
 });

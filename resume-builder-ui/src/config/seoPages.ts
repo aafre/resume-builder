@@ -1602,7 +1602,7 @@ export const SEO_PAGES: Record<string, PageConfig> = {
       description:
         'Use the most powerful AI models — ChatGPT, Claude, and Gemini — alongside our free resume builder. Get AI-written bullet points, keyword optimization, and professional formatting without paying a cent.',
       primaryCTA: { text: 'Build My AI Resume', href: '/templates' },
-      secondaryCTA: { text: 'See AI Prompts', href: '/blog/chatgpt-resume-prompts', variant: 'outline' },
+      secondaryCTA: { text: 'See AI Prompts', href: '/blog/ai-resume-prompts-hub', variant: 'outline' },
     },
     steps: [
       { number: 1, title: 'Choose Your AI', description: 'Pick from ChatGPT, Claude, or Gemini. Each has unique strengths for different resume tasks — or use all three.' },

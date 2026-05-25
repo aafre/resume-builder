@@ -303,7 +303,7 @@ export default function BestFreeResumeBuilderReddit() {
           <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
             <h3 className="font-display text-lg font-bold text-ink mb-2">Use AI to polish, not to write</h3>
             <p className="text-stone-warm text-sm leading-relaxed">
-              Reddit is split on AI resumes. The consensus: use <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">ChatGPT</Link> or <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">Claude</Link> to refine wording, but write the core content yourself. Recruiters can detect fully AI-generated resumes.
+              Reddit is split on AI resumes. The consensus: use <Link to="/blog/ai-resume-prompts-hub" className="text-accent hover:underline">AI tools like ChatGPT or Claude</Link> to refine wording, but write the core content yourself. Recruiters can detect fully AI-generated resumes.
             </p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">

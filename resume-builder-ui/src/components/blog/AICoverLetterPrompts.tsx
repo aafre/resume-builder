@@ -561,9 +561,8 @@ export default function AICoverLetterPrompts() {
         <p className="text-lg leading-relaxed text-stone-warm">
           For model-specific prompts optimized for each tool, see our guides for{' '}
           <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">Claude</Link>,{' '}
-          <Link to="/blog/copilot-resume-prompts" className="text-accent hover:underline">Copilot</Link>,{' '}
-          <Link to="/blog/deepseek-resume-prompts" className="text-accent hover:underline">DeepSeek</Link>, and{' '}
-          <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline">Gemini</Link>.
+          <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline">Gemini</Link>, and the{' '}
+          <Link to="/blog/ai-resume-prompts-hub" className="text-accent hover:underline">AI Resume Prompts Hub</Link>.
           For a broader overview of AI resume tools, read our{' '}
           <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">complete AI resume writing guide</Link>.
         </p>

@@ -349,7 +349,7 @@ export default function FreeResumeBuilderNoSignUp() {
           <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
             <h3 className="font-display text-lg font-bold text-ink mb-2">Use AI to polish, not to write from scratch</h3>
             <p className="text-stone-warm text-sm leading-relaxed">
-              AI tools like <Link to="/blog/chatgpt-resume-prompts" className="text-accent hover:underline">ChatGPT</Link> and <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">Claude</Link> are
+              AI tools like <Link to="/blog/ai-resume-prompts-hub" className="text-accent hover:underline">ChatGPT, Claude, and Gemini</Link> are
               great for refining your resume language, but start with your own content. Recruiters can spot entirely AI-generated resumes.
             </p>
           </div>

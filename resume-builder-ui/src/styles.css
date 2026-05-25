@@ -712,6 +712,16 @@ footer {
   color: inherit;
 }
 
+/* Design-system .btn-primary must keep its ink color inside .prose.
+   Without this, .prose a { color: #00d47e } wins by specificity (0,1,1)
+   over Tailwind's text-ink utility (0,1,0), making the button text
+   invisible (green-on-green). */
+.prose a.btn-primary,
+.prose a.btn-primary:hover {
+  color: #0c0c0c;
+  text-decoration: none;
+}
+
 /* Mobile-optimized blog tables */
 @media (max-width: 639px) {
   .prose table th,

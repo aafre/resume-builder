@@ -15,14 +15,6 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   // New AI Blog Content (Featured)
   {
-    slug: "chatgpt-resume-prompts",
-    title: "25+ ChatGPT Prompts for Resume Writing (Copy & Paste Ready)",
-    description: "Get the best ChatGPT prompts for writing resume summaries, experience bullets, skills sections, and more. Copy-paste ready prompts that actually work in 2026.",
-    publishDate: "2026-01-21",
-    readTime: "12 min",
-    category: "AI & Tools",
-  },
-  {
     slug: "ai-resume-prompts-hub",
     title: "AI Resume Prompts Hub: Best Prompts for ChatGPT, Claude, Gemini & More",
     description: "Compare Claude, ChatGPT, Gemini, Grok, Copilot, and DeepSeek for resume writing. Pick the best AI prompt for bullets, summaries, ATS keywords, and cover letters.",
@@ -57,14 +49,6 @@ export const blogPosts: BlogPost[] = [
     category: "AI & Tools",
   },
   {
-    slug: "grok-resume-prompts",
-    title: "Grok AI Prompts for Resume Writing (2026)",
-    description: "Use Grok AI (xAI) for fast resume writing with a conversational approach. Best prompts for quick iterations and real-time resume feedback.",
-    publishDate: "2026-01-21",
-    readTime: "7 min",
-    category: "AI & Tools",
-  },
-  {
     slug: "return-to-work-programs",
     title: "Return to Work Programs: 13 Top Companies Hiring Career Returners (2026)",
     description: "Return to work programs and returnships at JP Morgan, Goldman Sachs, Amazon, Microsoft, Meta, and more. Paid programs, eligibility, how to apply, and resume tips for career returners.",
@@ -94,22 +78,6 @@ export const blogPosts: BlogPost[] = [
     description: "AI cover letter prompts that actually work: tailored cover letters, opening hooks, career changes, follow-ups, and thank-you notes. Copy-paste ready for ChatGPT, Claude, Copilot, and Gemini.",
     publishDate: "2026-03-05",
     readTime: "16 min",
-    category: "AI & Tools",
-  },
-  {
-    slug: "copilot-resume-prompts",
-    title: "20+ Microsoft Copilot Prompts for Resume Writing (2026)",
-    description: "Best Microsoft Copilot prompts for resume writing: professional summaries, experience bullets, ATS keywords, skills, and cover letters. Copy-paste ready for Copilot in Bing, Edge, and Microsoft 365.",
-    publishDate: "2026-03-05",
-    readTime: "14 min",
-    category: "AI & Tools",
-  },
-  {
-    slug: "deepseek-resume-prompts",
-    title: "20+ DeepSeek Prompts for Resume Writing (Copy & Paste Ready) 2026",
-    description: "Best DeepSeek prompts for resume writing: professional summaries, experience bullets, ATS keywords, skills optimization, and cover letters. Copy-paste ready for DeepSeek V3 and R1.",
-    publishDate: "2026-03-05",
-    readTime: "14 min",
     category: "AI & Tools",
   },
   {

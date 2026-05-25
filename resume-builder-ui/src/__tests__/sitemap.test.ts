@@ -56,7 +56,20 @@ describe('Sitemap URL Validation', () => {
         loc: '/blog/ai-resume-prompts-hub',
         priority: 0.5,
         changefreq: 'monthly',
-        lastmod: '2026-05-13',
+        lastmod: '2026-05-25',
+      });
+    });
+
+    it('should not contain retired thin AI prompt pages (410 Gone)', () => {
+      const retiredPaths = [
+        '/blog/chatgpt-resume-prompts',
+        '/blog/grok-resume-prompts',
+        '/blog/copilot-resume-prompts',
+        '/blog/deepseek-resume-prompts',
+      ];
+      const sitemapPaths = getStaticUrlPaths();
+      retiredPaths.forEach(path => {
+        expect(sitemapPaths).not.toContain(path);
       });
     });
   });
