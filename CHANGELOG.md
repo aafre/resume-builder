@@ -2,6 +2,57 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.25.0] - 2026-05-25
+
+### 🚀 Features
+
+- **seo:** Add FAQPage schema + answer-first GEO blocks on FlowCV + Best-Builders
+- **seo:** Add tutorial video URL to entity sameAs across 3 schema locations
+- **seo:** Add ai resume prompts hub
+- **templates:** Render Education field_of_study in modern HTML template
+- **templates:** Render Education field_of_study in classic LaTeX template
+- **blog:** Add FAQ anchor IDs + page-level refresh cadence on AI prompts hub
+- **blog:** Add hub h2 anchors + cross-links from Tier-1 prompt pages
+- **seo:** 410 Gone on thin AI prompt pages + hub content rewrite
+
+### 🐛 Bug Fixes
+
+- **seo:** Post-v3.24.0 CTR optimizations for high-impression pages ([#458](https://github.com/aafre/resume-builder/pull/458))
+- **seo:** Add github + trustpilot text links to footer entity column
+- **seo:** Sync sitemap lastmod with FlowCV + Best-Builders content updates
+- **templates:** Scope \small in classic LaTeX education to prevent leak
+- **seo:** Remove dev meta-commentary + redundant block from AI prompts hub
+- **blog:** Repair invisible CTA on AI prompts hub (prose cascade)
+- **blog:** Render comparison ratings as filled+empty stars
+
+### 🚜 Refactor
+
+- **seo:** Use BlogLayout faqs prop for AI hub schema
+- **seo:** Migrate Best-Builders FAQ schema to BlogLayout faqs prop
+- **seo:** Migrate FlowCV FAQ schema to BlogLayout faqs prop, preserve comparison schema
+
+### 🎨 Styling
+
+- **blog:** Apply 2026 design system to AI prompts hub
+
+### 🧪 Testing
+
+- **templates:** Regression test for Education field_of_study rendering
+
+### ⚙️ Miscellaneous Tasks
+
+- **seo:** Bump ai-resume-prompts-hub sitemap lastmod to 2026-05-17
+
+### Merge
+
+- **release:** #523 SEO post-cliff stabilization (FAQ schemas + CTR + entity drift fixes)
+- **release:** #526 AI Resume Prompts Hub
+- **release:** #529 Education field_of_study render in modern + classic
+
+### Polish
+
+- **seo:** Align AI hub typography + table a11y
+
 ## [3.24.0] - 2026-03-29
 
 ### 🚀 Features
