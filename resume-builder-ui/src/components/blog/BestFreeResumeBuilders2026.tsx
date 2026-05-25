@@ -1,12 +1,40 @@
 import { Link } from 'react-router-dom';
 import BlogLayout from '../BlogLayout';
 
+const BEST_BUILDERS_FAQS = [
+  {
+    question: 'Is there a resume builder that is 100% free with no hidden costs?',
+    answer: 'Yes. EasyFreeResume and Google Docs are completely free with no paywalls. Canva also offers free PDF export, though some premium templates require a subscription. Most other builders (Zety, Resume.io, Resume Genius) charge for downloads.',
+  },
+  {
+    question: 'What is the best free resume builder for ATS?',
+    answer: 'EasyFreeResume, FlowCV, and Google Docs all produce ATS-compatible output. Canva templates can be ATS-unfriendly due to graphic elements. Always use a single-column layout and standard section headings for best ATS results.',
+  },
+  {
+    question: 'Do I need to pay for a resume builder in 2026?',
+    answer: "No. You can create a professional, ATS-optimized resume for free using tools like EasyFreeResume or Google Docs. Paid builders offer extras like AI writing assistance and more templates, but they're not necessary for a strong resume.",
+  },
+  {
+    question: 'Why do some resume builders charge after you build your resume?',
+    answer: "It's a common business model: let users invest time building the resume for free, then charge at the download step. This creates pressure to pay since you've already spent 30+ minutes on the resume. Look for builders that are transparent about costs upfront.",
+  },
+  {
+    question: 'Can I use ChatGPT to write my resume for free?',
+    answer: 'Yes. AI tools like ChatGPT, Claude, and Gemini can help write resume bullets, summaries, and skills sections for free. Pair the AI-generated content with a free resume builder for the best results. See our guides on using Claude and Gemini for resume writing.',
+  },
+  {
+    question: 'What should I look for in a free resume builder?',
+    answer: 'Free PDF export without watermarks, ATS-compatible templates, no mandatory sign-up (if privacy matters to you), and clear pricing — meaning no surprise paywalls at the download step.',
+  },
+];
+
 export default function BestFreeResumeBuilders2026() {
   return (
     <BlogLayout
-      title="9 Best Free Resume Builders in 2026 (Honestly Reviewed)"
-      description="We tested 9 free resume builders so you don't have to. Real pricing, actual free tiers, ATS compatibility, and export formats — no affiliate bias."
+      title="9 Best Free Resume Builders in 2026 (We Tested Every One)"
+      description="We built the same resume on 9 'free' builders and documented what actually costs money. See which ones are truly free to download as PDF, no paywall."
       publishDate="2026-03-05"
+      lastUpdated="2026-05-11"
       readTime="14 min"
       keywords={[
         'best free resume builder',
@@ -17,8 +45,20 @@ export default function BestFreeResumeBuilders2026() {
         'resume builder without paying',
       ]}
       ctaType="resume"
+      faqs={BEST_BUILDERS_FAQS}
     >
       <div className="space-y-8">
+        {/* Answer-first block — GEO citation hook */}
+        <div className="bg-chalk-dark/60 border-l-4 border-accent rounded-r-xl px-6 py-5 my-4">
+          <p className="text-base leading-relaxed text-ink/90">
+            <strong>Short answer:</strong> The best free resume builders in 2026 are
+            EasyFreeResume, Google Docs, FlowCV, and Canva — these four offer genuinely free
+            PDF downloads. EasyFreeResume requires no sign-up; the others need an account.
+            Most popular builders (Zety, Resume.io, Resume Genius) charge for downloads
+            despite calling themselves &ldquo;free.&rdquo; <em>Last tested 2026-05-11.</em>
+          </p>
+        </div>
+
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
           Most &ldquo;free resume builder&rdquo; lists are sponsored. You click through, build your entire resume,
           then hit a paywall at the download button. We actually tested nine popular builders in March 2026 and
@@ -584,35 +624,10 @@ export default function BestFreeResumeBuilders2026() {
         </h2>
 
         <div className="space-y-4">
-          {[
-            {
-              q: 'Is there a resume builder that is 100% free with no hidden costs?',
-              a: 'Yes. EasyFreeResume and Google Docs are completely free with no paywalls. Canva also offers free PDF export, though some premium templates require a subscription. Most other builders (Zety, Resume.io, Resume Genius) charge for downloads.',
-            },
-            {
-              q: 'What is the best free resume builder for ATS?',
-              a: 'EasyFreeResume, FlowCV, and Google Docs all produce ATS-compatible output. Canva templates can be ATS-unfriendly due to graphic elements. Always use a single-column layout and standard section headings for best ATS results.',
-            },
-            {
-              q: 'Do I need to pay for a resume builder in 2026?',
-              a: "No. You can create a professional, ATS-optimized resume for free using tools like EasyFreeResume or Google Docs. Paid builders offer extras like AI writing assistance and more templates, but they're not necessary for a strong resume.",
-            },
-            {
-              q: 'Why do some resume builders charge after you build your resume?',
-              a: "It's a common business model: let users invest time building the resume for free, then charge at the download step. This creates pressure to pay since you've already spent 30+ minutes on the resume. Look for builders that are transparent about costs upfront.",
-            },
-            {
-              q: 'Can I use ChatGPT to write my resume for free?',
-              a: 'Yes. AI tools like ChatGPT, Claude, and Gemini can help write resume bullets, summaries, and skills sections for free. Pair the AI-generated content with a free resume builder for the best results. See our guides on using Claude and Gemini for resume writing.',
-            },
-            {
-              q: 'What should I look for in a free resume builder?',
-              a: 'Free PDF export without watermarks, ATS-compatible templates, no mandatory sign-up (if privacy matters to you), and clear pricing — meaning no surprise paywalls at the download step.',
-            },
-          ].map((faq, i) => (
+          {BEST_BUILDERS_FAQS.map((faq, i) => (
             <div key={i} className="bg-chalk-dark rounded-xl p-5">
-              <h3 className="font-bold text-ink mb-2">{faq.q}</h3>
-              <p className="text-stone-warm">{faq.a}</p>
+              <h3 className="font-bold text-ink mb-2">{faq.question}</h3>
+              <p className="text-stone-warm">{faq.answer}</p>
             </div>
           ))}
         </div>

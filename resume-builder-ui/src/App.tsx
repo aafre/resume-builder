@@ -112,6 +112,7 @@ const QuantifyResumeAccomplishments = lazy(() => import("./components/blog/Quant
 
 // New AI blog posts
 const ChatGPTResumePrompts = lazy(() => import("./components/blog/ChatGPTResumePrompts"));
+const AIResumePromptsHub = lazy(() => import("./components/blog/AIResumePromptsHub"));
 const AIResumeWritingGuide = lazy(() => import("./components/blog/AIResumeWritingGuide"));
 const ClaudeResumePrompts = lazy(() => import("./components/blog/ClaudeResumePrompts"));
 const GeminiResumePrompts = lazy(() => import("./components/blog/GeminiResumePrompts"));
@@ -744,6 +745,14 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <ChatGPTResumePrompts />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/ai-resume-prompts-hub"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <AIResumePromptsHub />
               </Suspense>
             }
           />

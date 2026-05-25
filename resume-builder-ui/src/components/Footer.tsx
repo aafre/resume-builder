@@ -47,6 +47,8 @@ const footerLinks = {
     { path: 'https://www.linkedin.com/company/easyfreeresume/', label: 'LinkedIn', external: true },
     { path: 'https://www.crunchbase.com/organization/easyfreeresume', label: 'Crunchbase', external: true },
     { path: 'https://www.youtube.com/@EasyFreeResume', label: 'YouTube', external: true },
+    { path: 'https://github.com/aafre/resume-builder', label: 'GitHub', external: true },
+    { path: 'https://www.trustpilot.com/review/easyfreeresume.com', label: 'Trustpilot Reviews', external: true },
   ],
 };
 

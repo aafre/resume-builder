@@ -5,6 +5,37 @@ import { generateComparisonSchema } from "../../utils/schemaGenerators";
 import { EASY_FREE_RESUME_PRODUCT } from "../../data/products";
 import CompareBuildersCrossLinks from './CompareBuildersCrossLinks';
 
+const FLOWCV_FAQS = [
+  {
+    question: "Is FlowCV free?",
+    answer: "Yes — FlowCV offers genuinely free PDF downloads on its free tier. Account creation is required (email or Google sign-up). A paid Pro plan adds features like analytics and custom branding but is not needed for a working resume.",
+  },
+  {
+    question: "Is FlowCV legit?",
+    answer: "Yes. FlowCV is a real, established resume builder used by a large international user base. It's owned by FlowCV Inc. and has a working free tier with PDF export. The main caveat is that resumes are stored in their cloud, not on your device.",
+  },
+  {
+    question: "Do I need to sign up to use FlowCV?",
+    answer: "Yes. FlowCV requires you to create an account (email or Google) before you can build or download a resume. If you'd prefer to skip sign-up entirely, EasyFreeResume works in your browser with no account.",
+  },
+  {
+    question: "What's the difference between FlowCV and EasyFreeResume?",
+    answer: "Both are genuinely free PDF resume builders. FlowCV requires sign-up and stores your resume in the cloud across devices, with more template variety. EasyFreeResume requires no sign-up, keeps your data in your browser only, and has no upsells — at the cost of fewer templates and no cross-device sync.",
+  },
+  {
+    question: "Are FlowCV resumes ATS-friendly?",
+    answer: "FlowCV's templates are designed to pass Applicant Tracking Systems (ATS). For best ATS results — on any builder — use a single-column layout, standard section headings (Experience, Education, Skills), and avoid heavy graphics or icons that ATS parsers can mangle.",
+  },
+  {
+    question: "Can I download my FlowCV resume as a PDF for free?",
+    answer: "Yes. FlowCV's free tier includes unlimited PDF downloads without watermarks — one of the few free builders that doesn't charge at the download step. The free tier limits some advanced features (analytics, custom domains) but not PDF export itself.",
+  },
+  {
+    question: "What's the best free alternative to FlowCV?",
+    answer: "If FlowCV's sign-up requirement or cloud storage is a dealbreaker, EasyFreeResume is the closest alternative — also genuinely free PDF, but no account needed and data stays local. Google Docs is another free option if you want full document control. Avoid Zety, Resume.io, and Resume Genius — they charge at the download step.",
+  },
+];
+
 function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
   return (
     <div className="flex items-center justify-center gap-1">
@@ -32,22 +63,22 @@ function WinnerBadge() {
 }
 
 export default function FlowCVVsEasyFreeResume() {
-  const schema = generateComparisonSchema(
+  const comparisonSchema = generateComparisonSchema(
     EASY_FREE_RESUME_PRODUCT,
     { name: "FlowCV", price: "0", description: "Free online resume builder with customizable templates and a Pro plan for additional features." },
-    "2026-02-04"
+    "2026-05-11"
   );
 
   return (
     <>
       <Helmet>
-        <script type="application/ld+json">{JSON.stringify(schema)}</script>
+        <script type="application/ld+json">{JSON.stringify(comparisonSchema)}</script>
       </Helmet>
       <BlogLayout
-      title="FlowCV Review 2026: Is It Really Free? (Honest Look)"
-      description="Both FlowCV and EasyFreeResume offer free resume building. Compare features, privacy, and templates to see which free option is truly better for your job search."
+      title="FlowCV vs EasyFreeResume (2026): Features, Pricing & Privacy Compared"
+      description="FlowCV requires sign-up and limits free exports. Compare FlowCV and EasyFreeResume side-by-side on templates, ATS compatibility, pricing, and privacy."
       publishDate="2026-01-21"
-      lastUpdated="2026-02-04"
+      lastUpdated="2026-05-11"
       readTime="7 min"
       keywords={[
         "flowcv review",
@@ -58,8 +89,20 @@ export default function FlowCVVsEasyFreeResume() {
         "free resume builder comparison",
         "flowcv 2026",
       ]}
+      faqs={FLOWCV_FAQS}
     >
       <div className="space-y-8">
+        {/* Answer-first block — GEO citation hook */}
+        <div className="bg-chalk-dark/60 border-l-4 border-accent rounded-r-xl px-6 py-5 my-4">
+          <p className="text-base leading-relaxed text-ink/90">
+            <strong>Short answer:</strong> Both FlowCV and EasyFreeResume offer truly free PDF
+            downloads with no paywalls. FlowCV requires account sign-up and stores data in the
+            cloud; EasyFreeResume requires no account and keeps data in your browser. Choose
+            FlowCV for cloud sync and template variety; choose EasyFreeResume for privacy and
+            simplicity. <em>Last tested 2026-05-11.</em>
+          </p>
+        </div>
+
         {/* Quick Verdict Box */}
         <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-2xl p-6 my-8 shadow-lg">
           <h3 className="font-bold text-green-800 text-xl mb-4">
@@ -279,6 +322,20 @@ export default function FlowCVVsEasyFreeResume() {
           FlowCV is a solid choice. But if privacy and simplicity are priorities,
           EasyFreeResume is the better option.
         </p>
+
+        {/* FAQ section — text matches FAQPage JSON-LD schema in Helmet */}
+        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
+          Frequently Asked Questions
+        </h2>
+
+        <div className="space-y-4">
+          {FLOWCV_FAQS.map((faq, i) => (
+            <div key={i} className="bg-chalk-dark rounded-xl p-5">
+              <h3 className="font-bold text-ink mb-2">{faq.question}</h3>
+              <p className="text-stone-warm">{faq.answer}</p>
+            </div>
+          ))}
+        </div>
 
         <div className="my-12 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-xl p-5 sm:p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">

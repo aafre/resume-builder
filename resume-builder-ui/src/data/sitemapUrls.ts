@@ -80,7 +80,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/behavioral-interview-questions', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/blog/introducing-prepai-ai-interview-coach', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/how-to-write-a-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
-  { loc: '/blog/best-free-resume-builders-2026', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
+  { loc: '/blog/best-free-resume-builders-2026', priority: 0.5, changefreq: 'monthly', lastmod: '2026-05-11' },
   { loc: '/blog/resume-action-verbs', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/blog/how-to-use-resume-keywords', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
   // /resume-keywords/software-engineer is auto-generated from JOBS_DATABASE (priority 0.9)
@@ -93,6 +93,7 @@ export const STATIC_URLS: SitemapUrl[] = [
 
   // New AI Blog Posts (0.5) - recently created
   { loc: '/blog/chatgpt-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
+  { loc: '/blog/ai-resume-prompts-hub', priority: 0.5, changefreq: 'monthly', lastmod: '2026-05-13' },
   { loc: '/blog/ai-resume-writing-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/claude-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-17' },
   { loc: '/blog/gemini-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
@@ -112,7 +113,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/novoresume-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/blog/enhancv-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
   { loc: '/blog/canva-resume-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
-  { loc: '/blog/flowcv-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-04' },
+  { loc: '/blog/flowcv-vs-easy-free-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-05-11' },
   { loc: '/easyfreeresume-vs-indeed-resume-builder', priority: 0.7, changefreq: 'monthly', lastmod: '2026-02-10' },
 
   // Static Pages (0.3)
