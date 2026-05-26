@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import BlogLayout from "../BlogLayout";
+import CopyablePrompt from "../shared/CopyablePrompt";
 import RevealSection from "../shared/RevealSection";
 
 const REVIEW_DATE = "2026-05-25";
@@ -338,44 +338,6 @@ Do not compliment the draft. Only flag problems and provide the corrected text.`
   },
 ];
 
-function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy:", err);
-    }
-  };
-
-  return (
-    <button
-      onClick={handleCopy}
-      className="absolute right-3 top-3 flex items-center gap-1 text-white/50 hover:text-white text-xs font-medium bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg transition-colors"
-      aria-label={copied ? "Copied" : "Copy prompt"}
-    >
-      {copied ? (
-        <>
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          Copied!
-        </>
-      ) : (
-        <>
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg>
-          Copy
-        </>
-      )}
-    </button>
-  );
-}
-
 const PRIVACY_ROWS = [
   {
     provider: "Claude",
@@ -608,11 +570,10 @@ export default function AIResumePromptsHub() {
                   <article key={step.title} className="bg-white rounded-2xl p-6 md:p-8 shadow-premium card-gradient-border">
                     <h3 className="font-display text-xl font-bold text-ink">{step.title}</h3>
                     <p className="mt-3 text-stone-warm leading-relaxed">{step.description}</p>
-                    <div className="relative mt-4">
-                      <CopyButton text={step.code} />
-                      <pre className="bg-ink text-white/90 rounded-xl p-4 md:p-6 pr-20 text-sm leading-relaxed overflow-x-auto">
-                        <code>{step.code}</code>
-                      </pre>
+                    <div className="mt-4 not-prose">
+                      <CopyablePrompt title="Prompt" copyText={step.code}>
+                        <span className="whitespace-pre-wrap">{step.code}</span>
+                      </CopyablePrompt>
                     </div>
                   </article>
                 ))}
