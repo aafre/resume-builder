@@ -572,7 +572,7 @@ export default function AIResumePromptsHub() {
                     <p className="mt-3 text-stone-warm leading-relaxed">{step.description}</p>
                     <div className="mt-4 not-prose">
                       <CopyablePrompt title="Prompt" copyText={step.code}>
-                        <span className="whitespace-pre-wrap">{step.code}</span>
+                        <code className="whitespace-pre-wrap">{step.code}</code>
                       </CopyablePrompt>
                     </div>
                   </article>
