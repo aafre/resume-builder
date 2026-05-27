@@ -6,17 +6,19 @@ Tests cover:
 2. Error handling for preferences migration
 3. API contract tests (HTTP status codes and responses)
 """
-import pytest
-from unittest.mock import MagicMock, patch, call
-import sys
+
 import os
+import sys
+from unittest.mock import MagicMock, call, patch
+
+import pytest
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-OLD_USER_ID = 'anon-user-id-456'
-NEW_USER_ID = 'auth-user-id-789'
+OLD_USER_ID = "anon-user-id-456"
+NEW_USER_ID = "auth-user-id-789"
 
 
 def create_mock_supabase():
@@ -33,9 +35,9 @@ def create_mock_supabase():
     mock.maybeSingle.return_value = mock
     mock.rpc.return_value = mock
     mock.storage.from_.return_value = mock
-    mock.download.return_value = b'fake-image-data'
+    mock.download.return_value = b"fake-image-data"
     mock.upload.return_value = None
-    mock.get_public_url.return_value = 'https://test.supabase.co/storage/icon.png'
+    mock.get_public_url.return_value = "https://test.supabase.co/storage/icon.png"
     mock.remove.return_value = None
     return mock
 
@@ -69,16 +71,14 @@ class TestMigratePreferencesRPC:
         new_user_id = NEW_USER_ID
 
         # This mirrors the actual app.py implementation
-        mock_supabase.rpc('migrate_user_preferences', {
-            'old_uid': old_user_id,
-            'new_uid': new_user_id
-        }).execute()
+        mock_supabase.rpc(
+            "migrate_user_preferences", {"old_uid": old_user_id, "new_uid": new_user_id}
+        ).execute()
 
         # Verify RPC was called with correct function name and parameters
-        mock_supabase.rpc.assert_called_once_with('migrate_user_preferences', {
-            'old_uid': OLD_USER_ID,
-            'new_uid': NEW_USER_ID
-        })
+        mock_supabase.rpc.assert_called_once_with(
+            "migrate_user_preferences", {"old_uid": OLD_USER_ID, "new_uid": NEW_USER_ID}
+        )
 
     def test_rpc_error_is_caught_gracefully(self):
         """
@@ -98,10 +98,10 @@ class TestMigratePreferencesRPC:
 
         # Migration logic with error handling (as in app.py)
         try:
-            mock_supabase.rpc('migrate_user_preferences', {
-                'old_uid': old_user_id,
-                'new_uid': new_user_id
-            }).execute()
+            mock_supabase.rpc(
+                "migrate_user_preferences",
+                {"old_uid": old_user_id, "new_uid": new_user_id},
+            ).execute()
         except Exception as e:
             # This is the expected behavior - error is caught and logged
             error_caught = True
@@ -127,16 +127,17 @@ class TestMigrationAPIContract:
     def client(self):
         """Create Flask test client with mocked dependencies."""
         # Import here to avoid issues with module-level imports
-        with patch.dict('sys.modules', {'supabase': MagicMock()}):
+        with patch.dict("sys.modules", {"supabase": MagicMock()}):
             import app as flask_app
-            flask_app.app.config['TESTING'] = True
+
+            flask_app.app.config["TESTING"] = True
             with flask_app.app.test_client() as client:
                 yield client, flask_app
 
     @pytest.fixture
     def auth_headers(self):
         """Provide mock authorization headers."""
-        return {'Authorization': 'Bearer mock-jwt-token'}
+        return {"Authorization": "Bearer mock-jwt-token"}
 
     def test_same_user_returns_200_with_no_migration_needed(self, client, auth_headers):
         """
@@ -144,26 +145,26 @@ class TestMigrationAPIContract:
         HTTP 200 with message indicating no migration needed.
         """
         test_client, flask_app = client
-        same_user_id = 'same-user-123'
+        same_user_id = "same-user-123"
 
         # Mock the require_auth decorator to set request.user_id
-        with patch.object(flask_app, 'supabase') as mock_supabase:
+        with patch.object(flask_app, "supabase") as mock_supabase:
             # Mock JWT verification in require_auth
-            with patch.object(flask_app.supabase, 'auth') as mock_auth:
+            with patch.object(flask_app.supabase, "auth") as mock_auth:
                 mock_auth.get_user.return_value = MagicMock(
                     user=MagicMock(id=same_user_id)
                 )
 
                 response = test_client.post(
-                    '/api/migrate-anonymous-resumes',
-                    json={'old_user_id': same_user_id},
-                    headers=auth_headers
+                    "/api/migrate-anonymous-resumes",
+                    json={"old_user_id": same_user_id},
+                    headers=auth_headers,
                 )
 
         assert response.status_code == 200
         data = response.get_json()
-        assert data['migrated_count'] == 0
-        assert data['message'] == 'Same user, no migration needed'
+        assert data["migrated_count"] == 0
+        assert data["message"] == "Same user, no migration needed"
 
     def test_missing_old_user_id_returns_400(self, client, auth_headers):
         """
@@ -171,25 +172,23 @@ class TestMigrationAPIContract:
         with appropriate error message.
         """
         test_client, flask_app = client
-        new_user_id = 'auth-user-456'
+        new_user_id = "auth-user-456"
 
-        with patch.object(flask_app, 'supabase') as mock_supabase:
-            with patch.object(flask_app.supabase, 'auth') as mock_auth:
+        with patch.object(flask_app, "supabase") as mock_supabase:
+            with patch.object(flask_app.supabase, "auth") as mock_auth:
                 mock_auth.get_user.return_value = MagicMock(
                     user=MagicMock(id=new_user_id)
                 )
 
                 # Send request without old_user_id
                 response = test_client.post(
-                    '/api/migrate-anonymous-resumes',
-                    json={},
-                    headers=auth_headers
+                    "/api/migrate-anonymous-resumes", json={}, headers=auth_headers
                 )
 
         assert response.status_code == 400
         data = response.get_json()
-        assert 'error' in data
-        assert 'old_user_id' in data['error'].lower()
+        assert "error" in data
+        assert "old_user_id" in data["error"].lower()
 
     def test_missing_auth_header_returns_401(self, client):
         """
@@ -197,10 +196,10 @@ class TestMigrationAPIContract:
         """
         test_client, flask_app = client
 
-        with patch.object(flask_app, 'supabase', MagicMock()):
+        with patch.object(flask_app, "supabase", MagicMock()):
             response = test_client.post(
-                '/api/migrate-anonymous-resumes',
-                json={'old_user_id': 'some-user-id'}
+                "/api/migrate-anonymous-resumes",
+                json={"old_user_id": "some-user-id"},
                 # No auth headers
             )
 

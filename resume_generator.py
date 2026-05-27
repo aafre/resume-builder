@@ -1,22 +1,36 @@
-import re
-import pdfkit
 import argparse
-import yaml
-import uuid
-import logging
-import shutil
-import subprocess
-import os
-from jinja2 import Environment, FileSystemLoader
+import re
+import sys
 from pathlib import Path
 
+import pdfkit
+import yaml
+
+PROJECT_ROOT = Path(__file__).parent.absolute()
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
+import logging
+import os
+import shutil
+import subprocess
+import uuid
+from pathlib import Path
+
+from jinja2 import Environment, FileSystemLoader
+
+from utils.yaml_converter import fast_yaml_load
+
 # Configure logging for the subprocess
-logging.basicConfig(level=logging.DEBUG, format="%(asctime)s [GENERATOR] %(levelname)s: %(message)s")
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s [GENERATOR] %(levelname)s: %(message)s"
+)
 
 # Check wkhtmltopdf binary availability once per run
 wkhtmltopdf_binary = shutil.which("wkhtmltopdf") or "/usr/bin/wkhtmltopdf"
 try:
-    version_output = subprocess.check_output([wkhtmltopdf_binary, "-V"], text=True).strip()
+    version_output = subprocess.check_output(
+        [wkhtmltopdf_binary, "-V"], text=True
+    ).strip()
     logging.debug(f"wkhtmltopdf binary: {wkhtmltopdf_binary}")
     logging.debug(f"wkhtmltopdf version: {version_output}")
 except Exception as e:
@@ -27,7 +41,7 @@ except Exception as e:
 def load_resume_data(yaml_file_path):
     """Load and validate resume data from YAML file."""
     with open(yaml_file_path, "r") as file:
-        data = yaml.safe_load(file)
+        data = fast_yaml_load(file)
 
     if not isinstance(data, dict):
         raise ValueError("Invalid YAML format: Root must be a dictionary")
@@ -59,10 +73,14 @@ def normalize_sections(data):
 
         if section_name_lower == "experience":
             section["type"] = "experience"
-            logging.debug(f"Normalized section '{section.get('name')}' to type='experience'")
+            logging.debug(
+                f"Normalized section '{section.get('name')}' to type='experience'"
+            )
         elif section_name_lower == "education":
             section["type"] = "education"
-            logging.debug(f"Normalized section '{section.get('name')}' to type='education'")
+            logging.debug(
+                f"Normalized section '{section.get('name')}' to type='education'"
+            )
 
     return data
 
@@ -84,7 +102,7 @@ def convert_markdown_links_to_html(text):
         return text
 
     # Regex to match [text](url) pattern
-    pattern = r'\[([^\]]+)\]\(([^\)]+)\)'
+    pattern = r"\[([^\]]+)\]\(([^\)]+)\)"
 
     # Replace with HTML anchor tag
     html_text = re.sub(pattern, r'<a href="\2">\1</a>', text)
@@ -116,22 +134,22 @@ def convert_markdown_formatting_to_html(text):
 
     # Process in specific order to avoid conflicts
     # 1. Bold with ** (must come before single *)
-    text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
+    text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
 
     # 2. Bold with __ (must come before single _)
-    text = re.sub(r'__(.+?)__', r'<strong>\1</strong>', text)
+    text = re.sub(r"__(.+?)__", r"<strong>\1</strong>", text)
 
     # 3. Italic with * (after ** is processed)
-    text = re.sub(r'\*(.+?)\*', r'<em>\1</em>', text)
+    text = re.sub(r"\*(.+?)\*", r"<em>\1</em>", text)
 
     # 4. Italic with _ (after __ is processed)
-    text = re.sub(r'_(.+?)_', r'<em>\1</em>', text)
+    text = re.sub(r"_(.+?)_", r"<em>\1</em>", text)
 
     # 5. Strikethrough with ~~
-    text = re.sub(r'~~(.+?)~~', r'<s>\1</s>', text)
+    text = re.sub(r"~~(.+?)~~", r"<s>\1</s>", text)
 
     # 6. Underline with ++ (custom syntax)
-    text = re.sub(r'\+\+(.+?)\+\+', r'<u>\1</u>', text)
+    text = re.sub(r"\+\+(.+?)\+\+", r"<u>\1</u>", text)
 
     return text
 
@@ -196,8 +214,8 @@ def generate_pdf(
     env = Environment(loader=FileSystemLoader(template_dir))
 
     # Register custom filters for markdown links and formatting
-    env.filters['markdown_links'] = convert_markdown_links_to_html
-    env.filters['markdown_formatting'] = convert_markdown_formatting_to_html
+    env.filters["markdown_links"] = convert_markdown_links_to_html
+    env.filters["markdown_formatting"] = convert_markdown_formatting_to_html
 
     # Process sections and dynamically calculate column count for dynamic-column-list
     sections = data.get("sections", [])
@@ -253,21 +271,30 @@ def generate_pdf(
                     # Extract domain from URL
                     try:
                         from urllib.parse import urlparse
+
                         parsed = urlparse(url)
-                        link["display_text"] = parsed.hostname.replace('www.', '') if parsed.hostname else "Website"
+                        link["display_text"] = (
+                            parsed.hostname.replace("www.", "")
+                            if parsed.hostname
+                            else "Website"
+                        )
                     except:
                         link["display_text"] = "Website"
                 else:
                     # Default: use handle or platform name
                     link["display_text"] = link["handle"] or platform.capitalize()
 
-                logging.info(f"Generated {platform} display text: {link['display_text']}")
+                logging.info(
+                    f"Generated {platform} display text: {link['display_text']}"
+                )
 
     # Store processed social_links back in contact_info
     contact_info["social_links"] = social_links
 
     # Maintain backward compatibility: keep linkedin fields for old templates
-    linkedin_link = next((link for link in social_links if link.get("platform") == "linkedin"), None)
+    linkedin_link = next(
+        (link for link in social_links if link.get("platform") == "linkedin"), None
+    )
     if linkedin_link:
         contact_info["linkedin"] = linkedin_link.get("url", "")
         contact_info["linkedin_handle"] = linkedin_link.get("handle", "")
@@ -315,7 +342,7 @@ def generate_pdf(
     options = {
         "enable-local-file-access": "",
         "load-error-handling": "abort",  # fail fast on missing assets
-        "quiet": ""                      # keep stderr tidy
+        "quiet": "",  # keep stderr tidy
     }
 
     logging.info(f"Converting HTML file to PDF using wkhtmltopdf")
@@ -363,13 +390,13 @@ def get_social_media_handle(url, platform="linkedin"):
     # Platform-specific handle extraction
     if platform == "stackoverflow":
         # Extract username from stackoverflow.com/users/123456/username
-        match = re.search(r'/users/\d+/([\w\-]+)', url)
+        match = re.search(r"/users/\d+/([\w\-]+)", url)
         return match.group(1) if match else url.split("/")[-1]
 
     elif platform == "medium":
         # Extract @username from medium.com/@username
         handle = url.split("/")[-1]
-        return handle if handle.startswith('@') else f"@{handle}"
+        return handle if handle.startswith("@") else f"@{handle}"
 
     elif platform == "twitter":
         # Extract @username from twitter.com/username or x.com/username
@@ -398,11 +425,13 @@ def migrate_linkedin_to_social_links(contact_info):
     linkedin_url = contact_info.get("linkedin", "")
     if linkedin_url and linkedin_url.strip():
         # Create social_links array with migrated LinkedIn
-        contact_info["social_links"] = [{
-            "platform": "linkedin",
-            "url": linkedin_url,
-            "display_text": contact_info.get("linkedin_display", "")
-        }]
+        contact_info["social_links"] = [
+            {
+                "platform": "linkedin",
+                "url": linkedin_url,
+                "display_text": contact_info.get("linkedin_display", ""),
+            }
+        ]
         logging.info("Migrated old 'linkedin' field to 'social_links' array")
     else:
         # Initialize empty social_links array
@@ -418,10 +447,10 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
     Args:
         linkedin_url (str): The full LinkedIn URL.
         contact_name (str): The user's full name for fallback generation.
-    
+
     Returns:
         str: A clean, professional display text for the resume.
-        
+
     Examples:
         - "linkedin.com/in/john-fitzgerald-doe" -> "John Fitzgerald Doe"
         - "linkedin.com/in/jane-doe-a1b2c3d4" with name "Jane Doe" -> "Jane Doe"
@@ -430,9 +459,9 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
     # First, validate that this is actually a LinkedIn URL
     if not linkedin_url or "linkedin" not in linkedin_url.lower():
         return "LinkedIn Profile"
-    
+
     raw_handle = get_social_media_handle(linkedin_url)
-    
+
     # If there's no handle, we can't do much.
     if not raw_handle:
         return "LinkedIn Profile"
@@ -443,17 +472,17 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
         # Rule 1: Too long
         if len(handle) > 50:
             return False
-            
+
         # Rule 2: Too many hyphens
-        if handle.count('-') > 1:
+        if handle.count("-") > 1:
             return False
-            
+
         # Rule 3: Long sequences of numbers (e.g., ...1998)
-        if re.search(r'\d{4,}', handle):
+        if re.search(r"\d{4,}", handle):
             return False
-            
+
         # Rule 4: Common random suffixes (e.g., ...-a1b2c3d4)
-        if re.search(r'-[a-z0-9]{8,}', handle.lower()):
+        if re.search(r"-[a-z0-9]{8,}", handle.lower()):
             return False
 
         return True
@@ -461,13 +490,13 @@ def generate_linkedin_display_text(linkedin_url, contact_name=None):
     # --- Main logic ---
     if is_clean_handle(raw_handle):
         # Format the clean handle into a readable name
-        parts = raw_handle.replace('_', '-').split('-')
-        return ' '.join(part.capitalize() for part in parts if part)
+        parts = raw_handle.replace("_", "-").split("-")
+        return " ".join(part.capitalize() for part in parts if part)
     else:
         # If the handle is messy, use the contact name if available
         if contact_name:
             return contact_name.strip()
-        
+
         # Final fallback if handle is messy and no name is provided
         return "LinkedIn Profile"
 
