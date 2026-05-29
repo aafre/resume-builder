@@ -50,7 +50,7 @@ export default function FreeResumeBuilderNoPayment() {
       {/* Hidden fees other builders charge */}
       <RevealSection variant="fade-up">
         <div className="mb-16 cv-auto cv-h-600">
-          <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase text-center mb-4">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
             Price Breakdown
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -148,7 +148,7 @@ export default function FreeResumeBuilderNoPayment() {
       {/* What "free" actually means — freemium vs truly free */}
       <RevealSection variant="fade-up">
         <div className="mb-16 cv-auto cv-h-600">
-          <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase text-center mb-4">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
             Transparency
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -216,7 +216,7 @@ export default function FreeResumeBuilderNoPayment() {
       {/* Social proof / testimonial-style section */}
       <RevealSection variant="fade-up">
         <div className="mb-16 cv-auto cv-h-500">
-          <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase text-center mb-4">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
             User Experiences
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -245,7 +245,7 @@ export default function FreeResumeBuilderNoPayment() {
               },
             ].map((item) => (
               <div key={item.scenario} className="bg-white rounded-2xl p-6 shadow-premium border border-black/[0.06]">
-                <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-3">
+                <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-3">
                   {item.scenario}
                 </p>
                 <p className="text-ink font-medium leading-relaxed mb-4 italic">
@@ -270,7 +270,7 @@ export default function FreeResumeBuilderNoPayment() {
       {/* How we stay free */}
       <RevealSection variant="fade-up">
         <div className="mb-16 cv-auto cv-h-400">
-          <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase text-center mb-4">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
             Our Model
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -313,7 +313,7 @@ export default function FreeResumeBuilderNoPayment() {
       {/* Related Resources */}
       <RevealSection variant="fade-up">
         <div className="mb-16 cv-auto cv-h-400">
-          <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase text-center mb-4">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
             Related Resources
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">

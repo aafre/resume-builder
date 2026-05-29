@@ -22,6 +22,7 @@ module.exports = {
         'stone-warm': '#8a8680',
         mist: '#a8a4a0',
         accent: '#00d47e',
+        'accent-text': '#007a48',
       },
       typography: ({ theme }) => ({
         DEFAULT: {

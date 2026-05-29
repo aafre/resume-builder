@@ -476,7 +476,7 @@ export default function JobExamplePage() {
       {relatedJobs.length > 0 && (
         <RevealSection stagger>
           <section className="my-16 cv-auto cv-h-400">
-            <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">Related Examples</span>
+            <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">Related Examples</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-6 text-center">
               Related Resume Examples
             </h2>

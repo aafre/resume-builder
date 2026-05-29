@@ -32,7 +32,7 @@ export default function ResumeBuilderForNurses() {
       {/* Nursing resume tips */}
       <RevealSection variant="fade-up">
         <div className="mb-16">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             NURSING RESUME TIPS
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -58,7 +58,7 @@ export default function ResumeBuilderForNurses() {
       {/* Common mistakes section */}
       <RevealSection variant="fade-up">
         <div className="mb-16 max-w-4xl mx-auto">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             AVOID THESE PITFALLS
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4 text-center">
@@ -137,7 +137,7 @@ export default function ResumeBuilderForNurses() {
       {/* Inline FAQ section */}
       <RevealSection variant="fade-up">
         <div className="mb-16 max-w-4xl mx-auto">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             QUICK ANSWERS
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-10 text-center">

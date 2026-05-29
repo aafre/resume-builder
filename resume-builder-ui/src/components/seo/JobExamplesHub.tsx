@@ -206,7 +206,7 @@ export default function JobExamplesHub() {
       {/* How to Use Section */}
       <RevealSection>
         <div className="my-16 cv-auto cv-h-300">
-          <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">How It Works</span>
+          <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">How It Works</span>
           <StepByStep steps={howToSteps} title="" />
         </div>
       </RevealSection>
@@ -238,7 +238,7 @@ export default function JobExamplesHub() {
       {/* Quick Links by Popular Jobs */}
       <RevealSection>
         <section className="my-16 cv-auto cv-h-300">
-          <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">Popular</span>
+          <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">Popular</span>
           <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight mb-6 text-center">
             Most Popular Resume Examples
           </h2>
@@ -264,7 +264,7 @@ export default function JobExamplesHub() {
       {/* Related Resources */}
       <RevealSection>
         <section className="my-16 cv-auto cv-h-300">
-          <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">Resources</span>
+          <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">Resources</span>
           <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight mb-6 text-center">
             More Resume Resources
           </h2>

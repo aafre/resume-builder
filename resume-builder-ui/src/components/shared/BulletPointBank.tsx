@@ -49,7 +49,7 @@ export default function BulletPointBank({ categories, jobTitle }: BulletPointBan
     <RevealSection>
       <section className="my-12">
         <div className="text-center mb-8">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Bullet Bank</span>
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">Bullet Bank</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-4 mt-2">
             {jobTitle} Bullet Point Bank
           </h2>

@@ -196,7 +196,7 @@ const LandingPage: React.FC = () => {
         <div className="max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left: text */}
           <div>
-            <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-6 block">
+            <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-6 block">
               FREE FOREVER. NO SIGN-UP.
             </span>
             <h1 className="font-display text-[clamp(2.5rem,5.5vw,4.5rem)] font-extrabold leading-[1.08] tracking-tight text-ink mb-6">
@@ -222,7 +222,7 @@ const LandingPage: React.FC = () => {
               </button>
             </div>
 
-            <p className="font-mono text-xs tracking-wide text-stone-warm">
+            <p className="font-mono text-xs tracking-wide text-ink/60">
               100% free · No sign-up · No paywall
             </p>
           </div>
@@ -319,7 +319,7 @@ const LandingPage: React.FC = () => {
           <CompanyMarquee speed={12} pauseOnHover={true} />
 
           <div className="text-center mt-8">
-            <p className="text-xs text-stone-warm max-w-3xl mx-auto font-display font-extralight">
+            <p className="text-xs text-ink/60 max-w-3xl mx-auto font-display font-extralight">
               * We respect user privacy and don't track employment details. The
               companies shown represent professionals who have chosen our
               platform for building their resumes.
@@ -332,7 +332,7 @@ const LandingPage: React.FC = () => {
       <section className="bg-chalk py-20 px-4 cv-auto cv-h-600">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
-            <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block">
+            <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block">
               WHY US
             </span>
             <h2 className="font-display text-3xl md:text-5xl font-extrabold text-ink mb-4 tracking-tight">
@@ -372,7 +372,7 @@ const LandingPage: React.FC = () => {
       <section className="bg-chalk py-24 px-4 cv-auto cv-h-500">
         <div className="max-w-5xl mx-auto">
           <RevealSection className="text-center mb-16">
-            <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block">
+            <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block">
               HOW IT WORKS
             </span>
             <h2 className="font-display text-3xl md:text-5xl font-extrabold text-ink tracking-tight">
@@ -415,7 +415,7 @@ const LandingPage: React.FC = () => {
       <section className="bg-chalk py-20 px-4 cv-auto cv-h-400">
         <div className="max-w-6xl mx-auto">
           <RevealSection>
-            <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block">
+            <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block">
               RESOURCES
             </span>
             <h2 className="font-display text-3xl md:text-4xl font-extrabold text-ink mb-12 tracking-tight">
@@ -479,7 +479,7 @@ const LandingPage: React.FC = () => {
       <section className="bg-chalk py-20 px-4 cv-auto cv-h-500">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
-            <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block">
+            <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block">
               THE EASYFREERESUME DIFFERENCE
             </span>
             <h2 className="font-display text-3xl md:text-5xl font-extrabold text-ink mb-12 tracking-tight">
@@ -531,7 +531,7 @@ const LandingPage: React.FC = () => {
       <section className="bg-chalk-dark py-20 px-4 cv-auto cv-h-400">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
-            <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+            <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
               GET STARTED
             </span>
             <h2 className="font-display text-3xl md:text-5xl font-extrabold text-ink mb-12 tracking-tight text-center">
@@ -582,7 +582,7 @@ const LandingPage: React.FC = () => {
       <section className="bg-chalk py-20 px-4 cv-auto cv-h-500">
         <div className="max-w-3xl mx-auto">
           <RevealSection>
-            <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+            <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
               FAQ
             </span>
             <h2 className="font-display text-3xl md:text-5xl font-extrabold text-ink mb-4 text-center tracking-tight">

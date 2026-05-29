@@ -32,7 +32,7 @@ export default function FreeResumeBuilderDownload() {
       {/* Supported download formats section */}
       <RevealSection variant="fade-up">
         <div className="mb-16 cv-auto cv-h-600">
-          <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase text-center mb-4">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
             File Formats
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -110,7 +110,7 @@ export default function FreeResumeBuilderDownload() {
       {/* How to download your resume step-by-step */}
       <RevealSection variant="fade-up">
         <div className="mb-16 cv-auto cv-h-600">
-          <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase text-center mb-4">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
             Step-by-Step
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -164,7 +164,7 @@ export default function FreeResumeBuilderDownload() {
       {/* Printing tips section */}
       <RevealSection variant="fade-up">
         <div className="mb-16 cv-auto cv-h-500">
-          <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase text-center mb-4">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
             Print Guide
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -213,7 +213,7 @@ export default function FreeResumeBuilderDownload() {
       {/* Download vs online builders comparison */}
       <RevealSection variant="fade-up">
         <div className="mb-16 cv-auto cv-h-600">
-          <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase text-center mb-4">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
             Comparison
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -261,7 +261,7 @@ export default function FreeResumeBuilderDownload() {
       {/* Best format for ATS section */}
       <RevealSection variant="fade-up">
         <div className="mb-16 cv-auto cv-h-400">
-          <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase text-center mb-4">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
             ATS Advice
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -332,7 +332,7 @@ export default function FreeResumeBuilderDownload() {
       {/* Related Resources */}
       <RevealSection variant="fade-up">
         <div className="mb-16 cv-auto cv-h-400">
-          <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase text-center mb-4">
+          <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase text-center mb-4">
             Related Resources
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">

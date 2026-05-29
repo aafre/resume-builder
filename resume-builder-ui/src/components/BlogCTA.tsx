@@ -115,7 +115,7 @@ const BlogCTA = ({ type = 'general' }: BlogCTAProps) => {
     <section className="mt-12 mb-8">
       <div className="bg-chalk-dark rounded-2xl p-8 md:p-10 border border-black/[0.04]">
         <div className="text-center mb-8">
-          <span className="font-mono text-[10px] tracking-[0.15em] text-accent uppercase">
+          <span className="font-mono text-[10px] tracking-[0.15em] text-accent-text uppercase">
             Next Steps
           </span>
           <h3 className="font-display text-2xl font-extrabold text-ink mt-2 mb-2">

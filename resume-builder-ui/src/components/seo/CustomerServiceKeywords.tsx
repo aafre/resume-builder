@@ -284,7 +284,7 @@ export default function CustomerServiceKeywords() {
       {/* Core Skills Section */}
       <RevealSection>
         <div className="mb-16">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Core Skills</span>
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">Core Skills</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
             Core customer service skills (soft skills)
           </h2>
@@ -377,7 +377,7 @@ export default function CustomerServiceKeywords() {
       {/* Metrics Section */}
       <RevealSection>
         <div className="mb-16">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Metrics</span>
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">Metrics</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
             Processes and metrics
           </h2>
@@ -421,7 +421,7 @@ export default function CustomerServiceKeywords() {
       {/* Keywords to Avoid */}
       <RevealSection>
         <div className="mb-16">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Common Mistakes</span>
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">Common Mistakes</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
             Customer service keywords to avoid
           </h2>

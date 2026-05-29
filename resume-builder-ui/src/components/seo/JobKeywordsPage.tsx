@@ -128,7 +128,7 @@ export default function JobKeywordsPage() {
       {/* Core Skills Section */}
       <RevealSection>
         <div className="mb-16 cv-auto cv-h-500">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Core Skills</span>
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">Core Skills</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
             Core {jobData.title.toLowerCase()} skills (soft skills)
           </h2>
@@ -267,7 +267,7 @@ export default function JobKeywordsPage() {
       {jobData.keywords.metrics && jobData.keywords.metrics.length > 0 && (
         <RevealSection>
           <div className="mb-16 cv-auto cv-h-400">
-            <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Metrics</span>
+            <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">Metrics</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
               Metrics and KPIs
             </h2>
@@ -331,7 +331,7 @@ export default function JobKeywordsPage() {
       {jobData.phrases && jobData.phrases.length > 0 && (
         <RevealSection>
           <div className="mb-16 cv-auto cv-h-400">
-            <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Key Phrases</span>
+            <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">Key Phrases</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
               Keyword phrases for {jobData.title.toLowerCase()} resumes
             </h2>
@@ -392,7 +392,7 @@ export default function JobKeywordsPage() {
       {jobData.commonMistakes && jobData.commonMistakes.length > 0 && (
         <RevealSection>
           <div className="mb-16 cv-auto cv-h-400">
-            <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Common Mistakes</span>
+            <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">Common Mistakes</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-8 mt-2">
               Common {jobData.title.toLowerCase()} resume mistakes
             </h2>

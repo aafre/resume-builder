@@ -146,7 +146,7 @@ function ModelStatusIndicator({
         />
         <span
           key={wordIndex}
-          className="font-mono text-xs tracking-[0.15em] text-accent uppercase"
+          className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase"
           style={{ animation: 'fadeIn 0.3s ease-out' }}
         >
           {NLP_WORDS[wordIndex]}...
@@ -191,7 +191,7 @@ function ModelStatusIndicator({
               />
             ))}
           </span>
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">
             Ready
           </span>
         </div>
@@ -658,7 +658,7 @@ export default function ResumeKeywordScanner() {
       {/* How It Works */}
       <RevealSection variant="fade-up">
         <div className="mb-16">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             HOW IT WORKS
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -709,7 +709,7 @@ export default function ResumeKeywordScanner() {
       {/* Tips for improving match */}
       <RevealSection variant="fade-up">
         <div className="mb-16">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             PRO TIPS
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -753,7 +753,7 @@ export default function ResumeKeywordScanner() {
       {/* Step-by-Step Guide to Using the Scanner */}
       <RevealSection variant="fade-up">
         <div className="mb-16 max-w-4xl mx-auto">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             STEP-BY-STEP GUIDE
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -936,7 +936,7 @@ export default function ResumeKeywordScanner() {
       {/* Why Keywords Matter for ATS */}
       <RevealSection variant="fade-up">
         <div className="mb-16 max-w-4xl mx-auto">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             UNDERSTANDING ATS
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -1001,7 +1001,7 @@ export default function ResumeKeywordScanner() {
       {/* Related resources */}
       <RevealSection>
         <div className="mb-16 max-w-4xl mx-auto">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             RESOURCES
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">

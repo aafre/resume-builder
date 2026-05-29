@@ -29,7 +29,7 @@ function StarRating({ value }: { value: Rating }) {
 
 function SectionEyebrow({ children }: { children: string }) {
   return (
-    <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-3 block">
+    <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-3 block">
       {children}
     </span>
   );
@@ -814,7 +814,7 @@ export default function AIResumePromptsHub() {
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-accent/[0.07] blur-3xl pointer-events-none"
               />
               <div className="relative z-10">
-                <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-6 block">
+                <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-6 block">
                   Ready?
                 </span>
                 <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-4">
