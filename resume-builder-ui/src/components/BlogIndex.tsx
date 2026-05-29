@@ -215,7 +215,7 @@ export default function BlogIndex() {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-accent/[0.07] blur-3xl pointer-events-none" />
 
                 <div className="relative">
-                  <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">
+                  <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">
                     Ready?
                   </span>
                   <h2 className="font-display text-2xl md:text-3xl font-extrabold text-white mt-3 mb-4">
