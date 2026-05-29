@@ -64,7 +64,6 @@ export default function MyResumes() {
 
   // Thumbnail refresh hook - manages auto-triggering and silent retries
   const {
-    generatingIds: _generatingIds,
     triggerRefresh
   } = useThumbnailRefresh({
     session,
