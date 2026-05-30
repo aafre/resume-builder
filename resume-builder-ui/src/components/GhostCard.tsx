@@ -14,7 +14,7 @@ export function GhostCard({ isAtLimit, resumeCount, onCreateNew }: GhostCardProp
     // If over limit, show warning message instead of upgrade prompt
     if (isOverLimit) {
       return (
-        <div className="h-full min-h-[320px] bg-gradient-to-br from-red-50 via-orange-50 to-red-50 border-2 border-red-400 rounded-lg p-6 flex flex-col items-center justify-center">
+        <div className="h-full min-h-[200px] sm:min-h-[280px] bg-gradient-to-br from-red-50 via-orange-50 to-red-50 border-2 border-red-400 rounded-lg p-4 sm:p-6 flex flex-col items-center justify-center">
           <div className="bg-red-100 rounded-full p-4 mb-4">
             <AlertCircle className="w-12 h-12 text-red-600" />
           </div>
@@ -42,7 +42,7 @@ export function GhostCard({ isAtLimit, resumeCount, onCreateNew }: GhostCardProp
     // At exactly 5 resumes - show limit reached message
     return (
       <div
-        className="h-full min-h-[320px] bg-gradient-to-br from-gray-50 via-slate-50 to-gray-50 border-2 border-gray-400 rounded-lg p-6 flex flex-col items-center justify-center"
+        className="h-full min-h-[200px] sm:min-h-[280px] bg-gradient-to-br from-gray-50 via-slate-50 to-gray-50 border-2 border-gray-400 rounded-lg p-4 sm:p-6 flex flex-col items-center justify-center"
       >
         <div className="bg-gray-100 rounded-full p-4 mb-4">
           <Ban className="w-12 h-12 text-gray-600" />
@@ -71,7 +71,7 @@ export function GhostCard({ isAtLimit, resumeCount, onCreateNew }: GhostCardProp
   return (
     <div
       onClick={onCreateNew}
-      className="h-full min-h-[320px] border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-accent hover:bg-accent/[0.06]/20 transition-all duration-200 group"
+      className="h-full min-h-[200px] sm:min-h-[280px] border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-6 flex flex-col items-center justify-center cursor-pointer hover:border-accent hover:bg-accent/[0.06]/20 transition-all duration-200 group"
     >
       <PlusCircle className="w-16 h-16 text-gray-400 mb-4 group-hover:text-accent group-hover:scale-110 transition-all duration-200" />
 
