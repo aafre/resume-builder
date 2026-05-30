@@ -71,7 +71,7 @@ export function GhostCard({ isAtLimit, resumeCount, onCreateNew }: GhostCardProp
   return (
     <div
       onClick={onCreateNew}
-      className="h-full min-h-[200px] sm:min-h-[280px] border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-6 flex flex-col items-center justify-center cursor-pointer hover:border-accent hover:bg-accent/[0.06]/20 transition-all duration-200 group"
+      className="h-full min-h-[200px] sm:min-h-[280px] border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-6 flex flex-col items-center justify-center cursor-pointer hover:border-accent hover:bg-accent/[0.06] transition-all duration-200 group"
     >
       <PlusCircle className="w-16 h-16 text-gray-400 mb-4 group-hover:text-accent group-hover:scale-110 transition-all duration-200" />
 

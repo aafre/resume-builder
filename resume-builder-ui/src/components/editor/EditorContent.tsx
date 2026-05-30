@@ -452,7 +452,8 @@ export const EditorContent: React.FC<EditorContentProps> = ({
 
       {/* Add Section FAB — mobile only, floats above action bar */}
       <button
-        className="fixed bottom-[calc(var(--mobile-action-bar-height)+1rem)] right-4 z-30 lg:hidden w-14 h-14 rounded-full bg-accent shadow-lg flex items-center justify-center active:scale-95 transition-transform duration-150"
+        type="button"
+        className="fixed bottom-[calc(var(--mobile-action-bar-height)+1rem)] right-4 z-30 lg:hidden w-14 h-14 rounded-full bg-accent shadow-lg flex items-center justify-center active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 transition-transform duration-150"
         onClick={handleAddNewSectionClick}
         aria-label="Add section"
       >
