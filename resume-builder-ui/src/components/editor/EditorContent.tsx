@@ -2,7 +2,7 @@
 // Main content area for the Editor, including sections, drag-drop, toolbars
 
 import React, { RefObject, useMemo } from 'react';
-import { AlertCircle, X } from 'lucide-react';
+import { AlertCircle, Plus, X } from 'lucide-react';
 import {
   DndContext,
   DragOverlay,
@@ -449,6 +449,15 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         </DragOverlay>
         </DndContext>
       </UnifiedDndContext.Provider>
+
+      {/* Add Section FAB — mobile only, floats above action bar */}
+      <button
+        className="fixed bottom-[calc(var(--mobile-action-bar-height)+1rem)] right-4 z-30 lg:hidden w-14 h-14 rounded-full bg-accent shadow-lg flex items-center justify-center active:scale-95 transition-transform duration-150"
+        onClick={handleAddNewSectionClick}
+        aria-label="Add section"
+      >
+        <Plus className="w-7 h-7 text-ink" />
+      </button>
 
       {/* Mobile Action Bar */}
       <MobileActionBar
