@@ -99,7 +99,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
         data-testid="preview-modal-container"
       >
         <div
-          className="bg-white rounded-t-2xl lg:rounded-2xl shadow-2xl w-full lg:max-w-5xl lg:mx-4 h-[95vh] lg:h-[90vh] flex flex-col animate-slide-up lg:animate-scale-in"
+          className="bg-white rounded-t-2xl lg:rounded-2xl shadow-2xl w-full lg:max-w-5xl lg:mx-4 h-[92dvh] lg:h-[90vh] flex flex-col animate-slide-up lg:animate-scale-in pb-[env(safe-area-inset-bottom)]"
           onClick={(e) => e.stopPropagation()}
           data-testid="preview-modal-content"
         >
