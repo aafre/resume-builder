@@ -90,7 +90,6 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
           disabled={isGenerating || isGeneratingPreview}
           className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 rounded-xl transition-all disabled:opacity-50 hover:bg-gray-100 active:bg-gray-200 active:scale-[0.98] border border-gray-200"
           aria-label="Open navigation menu"
-          style={{ WebkitTapHighlightColor: "transparent" }}
         >
           <MdMenu className="text-2xl text-gray-700 mb-1.5" aria-hidden="true" />
           <span className="text-xs text-gray-600 font-medium">Menu</span>
@@ -103,8 +102,7 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
             disabled={isPreviewLoading || isGenerating}
             className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-accent text-ink rounded-xl shadow-lg transition-all hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed relative"
             aria-label="Preview resume PDF"
-            style={{ WebkitTapHighlightColor: "transparent" }}
-          >
+            >
             {/* Staleness indicator */}
             {previewIsStale && !isPreviewLoading && (
               <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-amber-400 rounded-full border-2 border-white animate-pulse shadow-sm"></span>
@@ -129,7 +127,6 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
           disabled={isGenerating || isGeneratingPreview}
           className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-xl shadow-lg transition-all hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Download resume as PDF"
-          style={{ WebkitTapHighlightColor: "transparent" }}
         >
           {isGenerating ? (
             <>
@@ -145,12 +142,6 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
         </button>
       </div>
 
-      {/* Safe area padding for devices with notches/home indicators */}
-      <style dangerouslySetInnerHTML={{__html: `
-        .safe-area-inset-bottom {
-          padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
-        }
-      `}} />
     </div>
   );
 };

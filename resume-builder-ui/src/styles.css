@@ -225,8 +225,8 @@ details .faq-content > div {
 }
 
 @keyframes typewriter {
-  from { width: 0; }
-  to   { width: 100%; }
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
 }
 
 @keyframes blink-caret {
@@ -400,6 +400,19 @@ body {
 
 main {
   flex-grow: 1;
+}
+
+/* Eliminate 300ms tap delay on touch devices globally.
+   touch-action:manipulation disables double-tap-to-zoom so browsers
+   don't need to wait for a second tap before firing click events.
+   This directly improves INP on mobile. */
+a, button, [role="button"], input, label, select, textarea {
+  touch-action: manipulation;
+}
+
+/* Remove webkit tap highlight on interactive elements — we use our own focus/active styles */
+a, button, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
 }
 
 footer {
@@ -609,6 +622,12 @@ footer {
     width: 32px;
     height: 32px;
   }
+}
+
+/* ── Mobile Safe Area ── */
+/* Padding respects iPhone home-indicator and Android nav bar via env() */
+.safe-area-inset-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
 }
 
 @keyframes pulse {
