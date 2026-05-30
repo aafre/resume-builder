@@ -415,6 +415,17 @@ a, button, [role="button"] {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Prevent iOS Safari from zooming in when tapping form inputs.
+   iOS zooms any input whose font-size < 16px. Setting 16px on mobile
+   stops the zoom without affecting desktop layout (which can be smaller). */
+@media screen and (max-width: 767px) {
+  input:not([type="range"]),
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
 footer {
   margin-top: auto;
   width: 100%;
