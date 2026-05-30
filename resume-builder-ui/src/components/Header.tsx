@@ -186,7 +186,7 @@ export default function Header() {
             )}
 
             {/* Auth UI - User Menu or Sign In Button — fixed min-width prevents CLS on auth resolve */}
-            <div className="flex items-center" style={{ minWidth: '80px', minHeight: '40px' }}>
+            <div className="flex items-center min-w-[50px] lg:min-w-[80px] min-h-[36px] lg:min-h-[40px]">
               {!authLoading && (
                 <>
                   {isAuthenticated ? (

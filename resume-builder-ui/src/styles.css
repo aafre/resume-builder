@@ -225,6 +225,8 @@ details .faq-content > div {
 }
 
 @keyframes typewriter {
+  /* clip-path reveal avoids CLS (no width change); trade-off: caret stays fixed at container edge
+     rather than tracking the text. Acceptable since CLS fix is the higher priority. */
   from { clip-path: inset(0 100% 0 0); }
   to   { clip-path: inset(0 0% 0 0); }
 }
@@ -422,7 +424,7 @@ a, button, [role="button"] {
   input:not([type="range"]),
   textarea,
   select {
-    font-size: 16px;
+    font-size: 16px !important; /* !important overrides Tailwind utilities (e.g. text-sm) that would otherwise win on specificity */
   }
 }
 

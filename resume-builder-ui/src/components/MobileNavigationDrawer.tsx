@@ -53,14 +53,17 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
 }) => {
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
   const touchStartX = useRef<number>(0);
+  const touchStartY = useRef<number>(0);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     const dx = e.changedTouches[0].clientX - touchStartX.current;
-    if (dx < -60) onClose();
+    const dy = e.changedTouches[0].clientY - touchStartY.current;
+    if (dx < -60 && Math.abs(dx) > Math.abs(dy) * 1.5) onClose();
   };
 
   if (!isOpen) return null;
