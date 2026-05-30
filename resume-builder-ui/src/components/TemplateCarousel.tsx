@@ -374,7 +374,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                       <img
                         src={template.image_url}
                         alt={template.name}
-                        className="w-full h-96 sm:h-[500px] object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-64 sm:h-80 md:h-96 lg:h-[500px] object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                         width="400"
                         height="500"
                         /* Optimization: Eager load first 2 templates (LCP), lazy load the rest */
@@ -398,7 +398,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                     </div>
 
                     {/* Template Info - Compact but informative */}
-                    <div className="p-6 lg:p-8">
+                    <div className="p-4 sm:p-6 lg:p-8">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
                           <h3 className="font-display text-2xl font-bold text-ink mb-2 group-hover:text-accent transition-colors">
@@ -415,7 +415,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                         {isSelected ? (
                           <>
                             <button
-                              className="flex-1 inline-flex items-center justify-center bg-accent text-ink py-4 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="flex-1 inline-flex items-center justify-center bg-accent text-ink py-3 px-4 sm:py-4 sm:px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleUseTemplate(template.id);
@@ -441,7 +441,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                             </button>
                           </>
                         ) : (
-                          <button className="btn-primary w-full py-4 px-6">
+                          <button className="btn-primary w-full py-3 px-4 sm:py-4 sm:px-6">
                             <span className="relative z-10">Select This Template</span>
                           </button>
                         )}
