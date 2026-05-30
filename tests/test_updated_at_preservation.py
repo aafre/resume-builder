@@ -149,27 +149,6 @@ class TestRenameUpdatesUpdatedAt:
 class TestThumbnailPreservesUpdatedAt:
     """Thumbnail operations must NOT include updated_at in their DB updates."""
 
-    def test_thumbnail_piggyback_excludes_updated_at(self, flask_test_client, auth_headers):
-        """Verify PDF generation's thumbnail piggyback does not set updated_at."""
-        client, mock_sb, flask_app = flask_test_client
-
-        mock_user = MagicMock()
-        mock_user.id = TEST_USER_ID
-        mock_sb.auth.get_user.return_value = MagicMock(user=mock_user)
-
-        # We can't easily test the full PDF generation flow, but we can verify
-        # the thumbnail update payload directly by checking app.py code.
-        # Instead, test the thumbnail endpoint which is self-contained.
-        pass
-
-    def test_thumbnail_endpoint_excludes_updated_at(self, flask_test_client, auth_headers):
-        """Verify the thumbnail endpoint code does not include updated_at in updates.
-
-        Full integration test requires pdf2image + poppler, so we use source inspection
-        to verify the pattern was removed. The structural test below covers this.
-        """
-        pass
-
     def test_thumbnail_update_payload_structure(self, flask_test_client, auth_headers):
         """
         Verify that when a thumbnail update is written to the DB,
