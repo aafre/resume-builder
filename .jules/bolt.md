@@ -1,0 +1,5 @@
+## 2025-05-31 - Fast YAML Parsing Performance Issue
+
+**Learning:** PyYAML's `yaml.safe_load` uses a pure Python parser which is slow. However, PyYAML can compile with `libyaml` bindings providing `CSafeLoader`, which is significantly faster. `utils/yaml_converter.py` already includes a `yaml_to_json_structure` function which just uses `yaml.safe_load`. There is also an unconfirmed memory rule stating: `A high-performance YAML loading utility fast_yaml_load is defined in utils/yaml_converter.py. This function should be imported and used instead of yaml.safe_load globally to leverage CSafeLoader for significantly faster parsing.` But `fast_yaml_load` is NOT actually present in `utils/yaml_converter.py`. We must define it and update the codebase.
+
+**Action:** Replace all instances of `yaml.safe_load` with `fast_yaml_load` globally, utilizing a `try...except` to fallback on `yaml.SafeLoader` if `yaml.CSafeLoader` is unavailable. Update `utils/yaml_converter.py` to expose this `fast_yaml_load`.
