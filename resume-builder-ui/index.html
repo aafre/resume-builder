@@ -77,6 +77,16 @@
     <!-- LLM-readable site description (llmstxt.org) -->
     <link rel="author" type="text/plain" href="/llms.txt" />
 
+    <!-- Shell layout CSS: lives in <head> so it persists through React mount
+         and cannot be removed when React replaces #root children. -->
+    <style>
+      .shell-header{height:64px}
+      @media(min-width:640px){.shell-header{height:72px}}
+      .not-home #shell-landing{display:none}
+      #shell-generic{display:none}
+      .not-home #shell-generic{display:block}
+    </style>
+
     <!-- Title -->
     <title>EasyFreeResume — 100% Free Resume Builder (No Paywall, No Sign-Up)</title>
 
@@ -99,29 +109,10 @@
         <div class="shell-header" style="background:#fff;border-bottom:1px solid rgba(0,0,0,.06);position:relative">
           <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00d47e"></div>
         </div>
-        <!-- Main content area matching LandingPage layout -->
-        <!-- Hide mobile-top ad placeholder on desktop (matches Tailwind md:hidden) -->
-        <style>
-          .shell-mobile-ad{display:block}
-          @media(min-width:768px){.shell-mobile-ad{display:none}}
-          /* Shell header: responsive height matching React Header (h-16 sm:h-[72px]) */
-          .shell-header{height:64px}
-          @media(min-width:640px){.shell-header{height:72px}}
-          /* Route-aware shell visibility */
-          .not-home #shell-landing{display:none}
-          #shell-generic{display:none}
-          .not-home #shell-generic{display:block}
-        </style>
         <main style="flex:1 1 0%;padding:0 1rem">
           <!-- SideRailLayout wrapper (matches React when explicit ads enabled) -->
           <div style="display:flex;justify-content:center;gap:1.5rem">
             <div style="flex:1 1 0%;min-width:0">
-              <!-- Mobile-top ad placeholder (matches SideRailLayout block md:hidden InContentAd) -->
-              <div class="shell-mobile-ad">
-                <div style="margin:16px 0;overflow:hidden">
-                  <div style="min-height:250px"></div>
-                </div>
-              </div>
               <!-- Landing page content (hidden on non-home routes) -->
               <!-- Must match LandingPage.tsx hero section: pt-12 pb-20 = 3rem/5rem, clamp(2.5rem,5.5vw,4.5rem), mb-6 -->
               <div id="shell-landing" style="position:relative;padding:3rem 0 5rem;background:#fafaf8">
