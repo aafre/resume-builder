@@ -138,12 +138,13 @@ class TestGetTemplateData:
         client, mock_sb, _ = flask_test_client
 
         import yaml
+        from utils.yaml_converter import fast_yaml_load
 
         response = client.get('/api/template/modern-with-icons')
         data = response.get_json()
 
         # Should be able to parse the YAML
-        parsed = yaml.safe_load(data['yaml'])
+        parsed = fast_yaml_load(data['yaml'])
         assert parsed is not None
         assert isinstance(parsed, dict)
 
@@ -152,10 +153,11 @@ class TestGetTemplateData:
         client, mock_sb, _ = flask_test_client
 
         import yaml
+        from utils.yaml_converter import fast_yaml_load
 
         response = client.get('/api/template/modern-with-icons')
         data = response.get_json()
-        parsed = yaml.safe_load(data['yaml'])
+        parsed = fast_yaml_load(data['yaml'])
 
         assert 'contact_info' in parsed
         assert 'sections' in parsed

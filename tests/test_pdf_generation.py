@@ -277,6 +277,7 @@ class TestSampleYamlPdfGeneration:
     def test_all_sample_yaml_files_are_valid(self, sample_yaml_files, temp_output_dir, temp_session_dir):
         """Verify all sample YAML files can be parsed and used for PDF generation."""
         import yaml
+        from utils.yaml_converter import fast_yaml_load
 
         for yaml_file in sample_yaml_files:
             # Skip test files that may have intentional issues
@@ -286,7 +287,7 @@ class TestSampleYamlPdfGeneration:
             # Verify YAML is valid
             with open(yaml_file, 'r') as f:
                 try:
-                    data = yaml.safe_load(f)
+                    data = fast_yaml_load(f)
                     assert data is not None, f"Empty YAML file: {yaml_file}"
                     assert "contact_info" in data or "sections" in data, \
                         f"Missing required keys in {yaml_file}"

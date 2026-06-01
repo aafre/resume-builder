@@ -26,6 +26,9 @@ from pdf2image import convert_from_path
 from PIL import Image
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
+import sys
+sys.path.append(str(PROJECT_ROOT))
+from utils.yaml_converter import fast_yaml_load
 
 EXAMPLES_DIR = PROJECT_ROOT / "resume-builder-ui" / "public" / "examples"
 OUTPUT_DIR = PROJECT_ROOT / "docs" / "templates" / "examples"
@@ -184,7 +187,7 @@ def process_example(yml_path: Path) -> bool:
 
     try:
         with open(yml_path, "r", encoding="utf-8") as f:
-            raw = yaml.safe_load(f)
+            raw = fast_yaml_load(f)
 
         resume = raw.get("resume", {})
         if not resume:
