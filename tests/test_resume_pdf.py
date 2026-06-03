@@ -11,18 +11,18 @@ Tests cover:
 Run tests:
     pytest tests/test_resume_pdf.py -v
 """
-import pytest
-from unittest.mock import MagicMock, patch, ANY
-import sys
+
 import os
+import sys
+from unittest.mock import ANY, MagicMock, patch
+
+import pytest
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from conftest import (
-    create_mock_supabase, create_mock_response,
-    TEST_USER_ID, TEST_RESUME_ID
-)
+from conftest import (TEST_RESUME_ID, TEST_USER_ID, create_mock_response,
+                      create_mock_supabase)
 
 
 # Check if pdfkit is available
@@ -30,6 +30,7 @@ def is_pdfkit_available():
     """Check if pdfkit and wkhtmltopdf are available."""
     try:
         import pdfkit
+
         pdfkit.configuration()
         return True
     except Exception:
@@ -38,15 +39,16 @@ def is_pdfkit_available():
 
 PDFKIT_AVAILABLE = is_pdfkit_available()
 requires_pdfkit = pytest.mark.skipif(
-    not PDFKIT_AVAILABLE,
-    reason="pdfkit or wkhtmltopdf not installed"
+    not PDFKIT_AVAILABLE, reason="pdfkit or wkhtmltopdf not installed"
 )
 
 
 class TestGeneratePdfFromSavedResume:
     """Tests for POST /api/resumes/<id>/pdf endpoint."""
 
-    def test_generate_pdf_returns_404_for_nonexistent(self, flask_test_client, auth_headers):
+    def test_generate_pdf_returns_404_for_nonexistent(
+        self, flask_test_client, auth_headers
+    ):
         """Verify 404 is returned for nonexistent resume."""
         client, mock_sb, _ = flask_test_client
 
@@ -59,13 +61,14 @@ class TestGeneratePdfFromSavedResume:
         mock_sb.table.return_value.execute.return_value = create_mock_response([])
 
         response = client.post(
-            f'/api/resumes/{TEST_RESUME_ID}/pdf',
-            headers=auth_headers
+            f"/api/resumes/{TEST_RESUME_ID}/pdf", headers=auth_headers
         )
 
         assert response.status_code == 404
 
-    def test_generate_pdf_returns_404_for_other_users_resume(self, flask_test_client, auth_headers):
+    def test_generate_pdf_returns_404_for_other_users_resume(
+        self, flask_test_client, auth_headers
+    ):
         """Verify 404 is returned for another user's resume."""
         client, mock_sb, _ = flask_test_client
 
@@ -78,13 +81,14 @@ class TestGeneratePdfFromSavedResume:
         mock_sb.table.return_value.execute.return_value = create_mock_response([])
 
         response = client.post(
-            f'/api/resumes/{TEST_RESUME_ID}/pdf',
-            headers=auth_headers
+            f"/api/resumes/{TEST_RESUME_ID}/pdf", headers=auth_headers
         )
 
         assert response.status_code == 404
 
-    def test_generate_pdf_fails_for_missing_user_icons(self, flask_test_client, auth_headers, sample_resume_data):
+    def test_generate_pdf_fails_for_missing_user_icons(
+        self, flask_test_client, auth_headers, sample_resume_data
+    ):
         """Verify PDF generation fails when user-uploaded icons cannot be downloaded."""
         client, mock_sb, flask_app = flask_test_client
 
@@ -94,15 +98,12 @@ class TestGeneratePdfFromSavedResume:
         mock_sb.auth.get_user.return_value = MagicMock(user=mock_user)
 
         # Resume with icon-supporting template
-        resume_with_icons = {
-            **sample_resume_data,
-            'template_id': 'modern-with-icons'
-        }
+        resume_with_icons = {**sample_resume_data, "template_id": "modern-with-icons"}
 
         # Icon that will fail to download
         icon_data = {
-            'filename': 'missing_icon.png',
-            'storage_path': f'{TEST_USER_ID}/{TEST_RESUME_ID}/missing_icon.png'
+            "filename": "missing_icon.png",
+            "storage_path": f"{TEST_USER_ID}/{TEST_RESUME_ID}/missing_icon.png",
         }
 
         # Configure mock responses
@@ -112,19 +113,22 @@ class TestGeneratePdfFromSavedResume:
         ]
 
         # Configure storage to fail download
-        mock_sb.storage.from_.return_value.download.side_effect = Exception("File not found")
+        mock_sb.storage.from_.return_value.download.side_effect = Exception(
+            "File not found"
+        )
 
         response = client.post(
-            f'/api/resumes/{TEST_RESUME_ID}/pdf',
-            headers=auth_headers
+            f"/api/resumes/{TEST_RESUME_ID}/pdf", headers=auth_headers
         )
 
         assert response.status_code == 500
         data = response.get_json()
-        assert data['success'] is False
-        assert 'icon' in data['error'].lower()
+        assert data["success"] is False
+        assert "icon" in data["error"].lower()
 
-    def test_generate_pdf_loads_resume_data(self, flask_test_client, auth_headers, sample_resume_data):
+    def test_generate_pdf_loads_resume_data(
+        self, flask_test_client, auth_headers, sample_resume_data
+    ):
         """Verify PDF generation queries correct resume data."""
         client, mock_sb, _ = flask_test_client
 
@@ -144,13 +148,12 @@ class TestGeneratePdfFromSavedResume:
         # The actual PDF generation will fail, but that's expected
 
         response = client.post(
-            f'/api/resumes/{TEST_RESUME_ID}/pdf',
-            headers=auth_headers
+            f"/api/resumes/{TEST_RESUME_ID}/pdf", headers=auth_headers
         )
 
         # Verify resume was queried with correct filters
         table_calls = mock_sb.table.call_args_list
-        assert any('resumes' in str(call) for call in table_calls)
+        assert any("resumes" in str(call) for call in table_calls)
 
         # Verify eq was called with resume_id and user_id
         eq_calls = mock_sb.table.return_value.eq.call_args_list
@@ -160,7 +163,9 @@ class TestGeneratePdfFromSavedResume:
 class TestPdfGenerationWithIcons:
     """Tests for icon handling during PDF generation."""
 
-    def test_generate_pdf_downloads_user_icons(self, flask_test_client, auth_headers, sample_resume_data, sample_icon_data):
+    def test_generate_pdf_downloads_user_icons(
+        self, flask_test_client, auth_headers, sample_resume_data, sample_icon_data
+    ):
         """Verify user icons are downloaded from storage before PDF generation."""
         client, mock_sb, _ = flask_test_client
 
@@ -176,21 +181,24 @@ class TestPdfGenerationWithIcons:
         ]
 
         # Configure storage download to succeed
-        mock_sb.storage.from_.return_value.download.return_value = b'fake-icon-data'
+        mock_sb.storage.from_.return_value.download.return_value = b"fake-icon-data"
 
         # This will fail at PDF generation stage, but we can verify icon download was attempted
         response = client.post(
-            f'/api/resumes/{TEST_RESUME_ID}/pdf',
-            headers=auth_headers
+            f"/api/resumes/{TEST_RESUME_ID}/pdf", headers=auth_headers
         )
 
         # Verify storage was accessed for icon download
         # The endpoint calls from_('resume-icons') for icons and from_('resume-thumbnails') for thumbnail
         storage_calls = [call[0][0] for call in mock_sb.storage.from_.call_args_list]
-        assert 'resume-icons' in storage_calls, f"Expected 'resume-icons' bucket access, got: {storage_calls}"
+        assert (
+            "resume-icons" in storage_calls
+        ), f"Expected 'resume-icons' bucket access, got: {storage_calls}"
         mock_sb.storage.from_.return_value.download.assert_called()
 
-    def test_generate_pdf_queries_icons_for_resume(self, flask_test_client, auth_headers, sample_resume_data):
+    def test_generate_pdf_queries_icons_for_resume(
+        self, flask_test_client, auth_headers, sample_resume_data
+    ):
         """Verify icons are queried by resume_id."""
         client, mock_sb, _ = flask_test_client
 
@@ -206,19 +214,20 @@ class TestPdfGenerationWithIcons:
         ]
 
         response = client.post(
-            f'/api/resumes/{TEST_RESUME_ID}/pdf',
-            headers=auth_headers
+            f"/api/resumes/{TEST_RESUME_ID}/pdf", headers=auth_headers
         )
 
         # Verify resume_icons table was queried
         table_calls = mock_sb.table.call_args_list
-        assert any('resume_icons' in str(call) for call in table_calls)
+        assert any("resume_icons" in str(call) for call in table_calls)
 
 
 class TestPdfGenerationPreview:
     """Tests for preview vs download mode."""
 
-    def test_generate_pdf_preview_mode(self, flask_test_client, auth_headers, sample_resume_data):
+    def test_generate_pdf_preview_mode(
+        self, flask_test_client, auth_headers, sample_resume_data
+    ):
         """Verify preview mode sets inline content disposition."""
         client, mock_sb, _ = flask_test_client
 
@@ -235,8 +244,7 @@ class TestPdfGenerationPreview:
 
         # Request with preview=true
         response = client.post(
-            f'/api/resumes/{TEST_RESUME_ID}/pdf?preview=true',
-            headers=auth_headers
+            f"/api/resumes/{TEST_RESUME_ID}/pdf?preview=true", headers=auth_headers
         )
 
         # The response will fail at PDF generation, but we're testing the query param parsing
@@ -246,7 +254,9 @@ class TestPdfGenerationPreview:
 class TestPdfGenerationTemplateMapping:
     """Tests for template mapping during PDF generation."""
 
-    def test_generate_pdf_maps_template_correctly(self, flask_test_client, auth_headers, sample_resume_data):
+    def test_generate_pdf_maps_template_correctly(
+        self, flask_test_client, auth_headers, sample_resume_data
+    ):
         """Verify template IDs are mapped to actual template directories."""
         client, mock_sb, _ = flask_test_client
 
@@ -256,7 +266,7 @@ class TestPdfGenerationTemplateMapping:
         mock_sb.auth.get_user.return_value = MagicMock(user=mock_user)
 
         # Test with modern-with-icons template
-        resume_modern = {**sample_resume_data, 'template_id': 'modern-with-icons'}
+        resume_modern = {**sample_resume_data, "template_id": "modern-with-icons"}
 
         mock_sb.table.return_value.execute.side_effect = [
             create_mock_response([resume_modern]),
@@ -265,13 +275,14 @@ class TestPdfGenerationTemplateMapping:
 
         # The actual PDF generation will fail, but template mapping should work
         response = client.post(
-            f'/api/resumes/{TEST_RESUME_ID}/pdf',
-            headers=auth_headers
+            f"/api/resumes/{TEST_RESUME_ID}/pdf", headers=auth_headers
         )
 
         # Verify the response (may fail at PDF gen stage, but that's expected without pdfkit)
 
-    def test_generate_pdf_classic_template_uses_latex(self, flask_test_client, auth_headers, sample_resume_data):
+    def test_generate_pdf_classic_template_uses_latex(
+        self, flask_test_client, auth_headers, sample_resume_data
+    ):
         """Verify classic templates use LaTeX PDF generation path."""
         client, mock_sb, _ = flask_test_client
 
@@ -281,7 +292,7 @@ class TestPdfGenerationTemplateMapping:
         mock_sb.auth.get_user.return_value = MagicMock(user=mock_user)
 
         # Test with classic template
-        resume_classic = {**sample_resume_data, 'template_id': 'classic-alex-rivera'}
+        resume_classic = {**sample_resume_data, "template_id": "classic-alex-rivera"}
 
         mock_sb.table.return_value.execute.side_effect = [
             create_mock_response([resume_classic]),
@@ -290,8 +301,7 @@ class TestPdfGenerationTemplateMapping:
 
         # The actual PDF generation will fail (no xelatex), but we're testing template mapping
         response = client.post(
-            f'/api/resumes/{TEST_RESUME_ID}/pdf',
-            headers=auth_headers
+            f"/api/resumes/{TEST_RESUME_ID}/pdf", headers=auth_headers
         )
 
         # Response may fail but that's expected in test environment
@@ -301,11 +311,15 @@ class TestPdfGenerationMetadata:
     """Tests for PDF metadata updates."""
 
     @pytest.mark.skip(reason="Requires full integration test with pdfkit")
-    def test_generate_pdf_updates_pdf_generated_at(self, flask_test_client, auth_headers, sample_resume_data):
+    def test_generate_pdf_updates_pdf_generated_at(
+        self, flask_test_client, auth_headers, sample_resume_data
+    ):
         """Verify pdf_generated_at timestamp is updated after generation."""
         pass
 
     @pytest.mark.skip(reason="Requires full integration test with pdfkit")
-    def test_generate_pdf_preserves_updated_at(self, flask_test_client, auth_headers, sample_resume_data):
+    def test_generate_pdf_preserves_updated_at(
+        self, flask_test_client, auth_headers, sample_resume_data
+    ):
         """Verify updated_at is preserved when only generating PDF."""
         pass
