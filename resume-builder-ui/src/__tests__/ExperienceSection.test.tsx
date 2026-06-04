@@ -194,7 +194,7 @@ describe("ExperienceSection", { timeout: 5000 }, () => {
     render(<ExperienceSection {...props} />, { wrapper: DndWrapper });
 
     // For the first experience, click the Add Description Point button.
-    const addDescButton = screen.getAllByText("+ Add Description Point")[0];
+    const addDescButton = screen.getAllByText("Add Description Point")[0];
     fireEvent.click(addDescButton);
 
     expect(onUpdateMock).toHaveBeenCalledTimes(1);
