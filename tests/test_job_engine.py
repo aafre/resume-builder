@@ -4,29 +4,22 @@ Tests for job_engine.py — 3-tier search, scoring, and AI fallback.
 Run tests:
     pytest tests/test_job_engine.py -v
 """
-import pytest
-from unittest.mock import patch, MagicMock
+
 import json
-import sys
 import os
+import sys
 import time
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from job_engine import (
-    TITLE_SYNONYMS,
-    SKILL_ALIASES,
-    MatchContext,
-    JobScorer,
-    JobMatchEngine,
-    get_ai_search_terms,
-    _ai_cache,
-    _AI_CACHE_TTL,
-    _ALIAS_LOOKUP,
-    _is_skill_query,
-)
-
+from job_engine import (_AI_CACHE_TTL, _ALIAS_LOOKUP, SKILL_ALIASES,
+                        TITLE_SYNONYMS, JobMatchEngine, JobScorer,
+                        MatchContext, _ai_cache, _is_skill_query,
+                        get_ai_search_terms)
 
 # =============================================================================
 # Title Synonym Table
@@ -63,7 +56,16 @@ class TestTitleSynonyms:
         assert "python developer" in syns
 
     def test_skill_synonym_keys_are_lowercase(self):
-        skill_keys = ["python", "java", "react", "golang", "rust", "aws", "docker", "kubernetes"]
+        skill_keys = [
+            "python",
+            "java",
+            "react",
+            "golang",
+            "rust",
+            "aws",
+            "docker",
+            "kubernetes",
+        ]
         for key in skill_keys:
             assert key in TITLE_SYNONYMS, f"Missing skill synonym: {key}"
             assert key == key.lower()
@@ -176,7 +178,9 @@ class TestSkillScoring:
         assert score == 30
 
     def test_partial_match_proportional(self):
-        scorer = JobScorer(MatchContext(query="dev", skills=["python", "react", "go", "rust"]))
+        scorer = JobScorer(
+            MatchContext(query="dev", skills=["python", "react", "go", "rust"])
+        )
         score = scorer._score_skills("We need python and react")
         # 2/4 matched → 15
         assert score == 15
@@ -223,20 +227,24 @@ class TestSalaryScoring:
 
     def test_real_salary_above_floor_gets_20(self):
         scorer = JobScorer(MatchContext(query="dev", salary_min=80000))
-        score = scorer._score_salary({
-            "salary_min": 90000,
-            "salary_max": 120000,
-            "salary_is_predicted": False,
-        })
+        score = scorer._score_salary(
+            {
+                "salary_min": 90000,
+                "salary_max": 120000,
+                "salary_is_predicted": False,
+            }
+        )
         assert score == 20
 
     def test_predicted_salary_gets_15(self):
         scorer = JobScorer(MatchContext(query="dev", salary_min=80000))
-        score = scorer._score_salary({
-            "salary_min": 90000,
-            "salary_max": 110000,
-            "salary_is_predicted": True,
-        })
+        score = scorer._score_salary(
+            {
+                "salary_min": 90000,
+                "salary_max": 110000,
+                "salary_is_predicted": True,
+            }
+        )
         assert score == 15  # 10 (has) + 5 (meets floor)
 
     def test_no_salary_data_gets_5(self):
@@ -246,11 +254,13 @@ class TestSalaryScoring:
 
     def test_salary_below_floor(self):
         scorer = JobScorer(MatchContext(query="dev", salary_min=100000))
-        score = scorer._score_salary({
-            "salary_min": 60000,
-            "salary_max": 80000,
-            "salary_is_predicted": False,
-        })
+        score = scorer._score_salary(
+            {
+                "salary_min": 60000,
+                "salary_max": 80000,
+                "salary_is_predicted": False,
+            }
+        )
         assert score == 15  # 10 (has) + 5 (real) + 0 (below floor)
 
 
@@ -263,19 +273,22 @@ class TestFreshnessScoring:
     """Tests for JobScorer._score_freshness()."""
 
     def test_today_gets_10(self):
-        from datetime import datetime, timezone, timedelta
+        from datetime import datetime, timedelta, timezone
+
         scorer = JobScorer(MatchContext(query="dev"))
         now = datetime.now(timezone.utc).isoformat()
         assert scorer._score_freshness(now) == 10
 
     def test_7_days_gets_6(self):
-        from datetime import datetime, timezone, timedelta
+        from datetime import datetime, timedelta, timezone
+
         scorer = JobScorer(MatchContext(query="dev"))
         week_ago = (datetime.now(timezone.utc) - timedelta(days=7)).isoformat()
         assert scorer._score_freshness(week_ago) == 6
 
     def test_45_days_gets_0(self):
-        from datetime import datetime, timezone, timedelta
+        from datetime import datetime, timedelta, timezone
+
         scorer = JobScorer(MatchContext(query="dev"))
         old = (datetime.now(timezone.utc) - timedelta(days=45)).isoformat()
         assert scorer._score_freshness(old) == 0
@@ -298,10 +311,12 @@ class TestAIFallback:
 
     def test_successful_translation(self):
         mock_sb = MagicMock()
-        mock_sb.functions.invoke.return_value = json.dumps({
-            "success": True,
-            "terms": ["Creative Director", "Art Director", "Brand Designer"],
-        }).encode("utf-8")
+        mock_sb.functions.invoke.return_value = json.dumps(
+            {
+                "success": True,
+                "terms": ["Creative Director", "Art Director", "Brand Designer"],
+            }
+        ).encode("utf-8")
 
         terms = get_ai_search_terms("Creative Wizard", mock_sb)
         assert terms == ["Creative Director", "Art Director", "Brand Designer"]
@@ -318,10 +333,12 @@ class TestAIFallback:
 
     def test_caching_prevents_repeat_calls(self):
         mock_sb = MagicMock()
-        mock_sb.functions.invoke.return_value = json.dumps({
-            "success": True,
-            "terms": ["A", "B", "C"],
-        }).encode("utf-8")
+        mock_sb.functions.invoke.return_value = json.dumps(
+            {
+                "success": True,
+                "terms": ["A", "B", "C"],
+            }
+        ).encode("utf-8")
 
         # First call
         terms1 = get_ai_search_terms("Niche Title", mock_sb)
@@ -343,10 +360,12 @@ class TestAIFallback:
 
     def test_limits_to_3_terms(self):
         mock_sb = MagicMock()
-        mock_sb.functions.invoke.return_value = json.dumps({
-            "success": True,
-            "terms": ["A", "B", "C", "D", "E"],
-        }).encode("utf-8")
+        mock_sb.functions.invoke.return_value = json.dumps(
+            {
+                "success": True,
+                "terms": ["A", "B", "C", "D", "E"],
+            }
+        ).encode("utf-8")
 
         terms = get_ai_search_terms("Some Title", mock_sb)
         assert len(terms) <= 3
@@ -366,6 +385,7 @@ class TestJobMatchEngine:
     def _make_jobs(self, n, url_prefix="http://job"):
         """Create n fake job dicts."""
         from datetime import datetime, timezone
+
         return [
             {
                 "title": f"Software Engineer {i}",
@@ -460,7 +480,8 @@ class TestJobMatchEngine:
     @patch.object(JobMatchEngine, "_fetch_adzuna")
     def test_results_sorted_by_score_desc(self, mock_fetch):
         """Jobs should be sorted by match_score descending."""
-        from datetime import datetime, timezone, timedelta
+        from datetime import datetime, timedelta, timezone
+
         jobs = [
             {
                 "title": "Nurse",
@@ -470,7 +491,9 @@ class TestJobMatchEngine:
                 "salary_max": None,
                 "salary_is_predicted": True,
                 "url": "http://a/1",
-                "created": (datetime.now(timezone.utc) - timedelta(days=30)).isoformat(),
+                "created": (
+                    datetime.now(timezone.utc) - timedelta(days=30)
+                ).isoformat(),
                 "_description": "",
             },
             {
@@ -794,6 +817,7 @@ class TestPaginationAndTotalAvailable:
 
     def _make_jobs(self, n, url_prefix="http://job"):
         from datetime import datetime, timezone
+
         return [
             {
                 "title": f"Software Engineer {i}",
@@ -846,6 +870,7 @@ class TestKeepDescription:
 
     def _make_jobs(self, n):
         from datetime import datetime, timezone
+
         return [
             {
                 "title": f"Dev {i}",
