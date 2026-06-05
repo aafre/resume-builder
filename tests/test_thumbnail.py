@@ -10,20 +10,20 @@ Tests cover:
 Run tests:
     pytest tests/test_thumbnail.py -v
 """
-import pytest
-from unittest.mock import MagicMock, patch, ANY
-import sys
+
 import os
+import sys
 import tempfile
 from pathlib import Path
+from unittest.mock import ANY, MagicMock, patch
+
+import pytest
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from conftest import (
-    create_mock_supabase, create_mock_response,
-    TEST_USER_ID, TEST_RESUME_ID
-)
+from conftest import (TEST_RESUME_ID, TEST_USER_ID, create_mock_response,
+                      create_mock_supabase)
 
 
 class TestClassifyThumbnailError:
@@ -36,9 +36,9 @@ class TestClassifyThumbnailError:
         error = ImportError("No module named 'pdf2image'")
         result = flask_app.classify_thumbnail_error(error)
 
-        assert result['retryable'] is False
-        assert result['error_type'] == 'dependency'
-        assert 'user_message' in result
+        assert result["retryable"] is False
+        assert result["error_type"] == "dependency"
+        assert "user_message" in result
 
     def test_classify_module_not_found_as_permanent(self, flask_test_client):
         """Verify ModuleNotFoundError is classified as permanent."""
@@ -47,8 +47,8 @@ class TestClassifyThumbnailError:
         error = ModuleNotFoundError("No module named 'PIL'")
         result = flask_app.classify_thumbnail_error(error)
 
-        assert result['retryable'] is False
-        assert result['error_type'] == 'dependency'
+        assert result["retryable"] is False
+        assert result["error_type"] == "dependency"
 
     def test_classify_connection_error_as_retryable(self, flask_test_client):
         """Verify connection errors are classified as retryable."""
@@ -57,8 +57,8 @@ class TestClassifyThumbnailError:
         error = Exception("Server disconnected")
         result = flask_app.classify_thumbnail_error(error)
 
-        assert result['retryable'] is True
-        assert result['error_type'] == 'network'
+        assert result["retryable"] is True
+        assert result["error_type"] == "network"
 
     def test_classify_timeout_error_as_retryable(self, flask_test_client):
         """Verify timeout errors are classified as retryable."""
@@ -67,8 +67,8 @@ class TestClassifyThumbnailError:
         error = Exception("Connection timeout")
         result = flask_app.classify_thumbnail_error(error)
 
-        assert result['retryable'] is True
-        assert result['error_type'] == 'network'
+        assert result["retryable"] is True
+        assert result["error_type"] == "network"
 
     def test_classify_storage_error_as_retryable(self, flask_test_client):
         """Verify storage errors are classified as retryable."""
@@ -77,8 +77,8 @@ class TestClassifyThumbnailError:
         error = Exception("Storage bucket not found")
         result = flask_app.classify_thumbnail_error(error)
 
-        assert result['retryable'] is True
-        assert result['error_type'] == 'storage'
+        assert result["retryable"] is True
+        assert result["error_type"] == "storage"
 
     def test_classify_data_error_as_permanent(self, flask_test_client):
         """Verify data validation errors are classified as permanent."""
@@ -87,8 +87,8 @@ class TestClassifyThumbnailError:
         error = Exception("Invalid PDF data")
         result = flask_app.classify_thumbnail_error(error)
 
-        assert result['retryable'] is False
-        assert result['error_type'] == 'data'
+        assert result["retryable"] is False
+        assert result["error_type"] == "data"
 
     def test_classify_unknown_error_as_retryable(self, flask_test_client):
         """Verify unknown errors default to retryable."""
@@ -97,8 +97,8 @@ class TestClassifyThumbnailError:
         error = Exception("Some random error")
         result = flask_app.classify_thumbnail_error(error)
 
-        assert result['retryable'] is True
-        assert result['error_type'] == 'unknown'
+        assert result["retryable"] is True
+        assert result["error_type"] == "unknown"
 
 
 class TestGenerateThumbnailFromPdf:
@@ -108,24 +108,29 @@ class TestGenerateThumbnailFromPdf:
         """Verify function returns None when Supabase is not initialized."""
         client, mock_sb, flask_app = flask_test_client
 
-        with patch.object(flask_app, 'supabase', None):
+        with patch.object(flask_app, "supabase", None):
             result = flask_app.generate_thumbnail_from_pdf(
-                '/fake/path.pdf', TEST_USER_ID, TEST_RESUME_ID
+                "/fake/path.pdf", TEST_USER_ID, TEST_RESUME_ID
             )
 
         assert result is None
 
-    def test_generate_thumbnail_handles_pdf2image_missing(self, flask_test_client, temp_output_dir):
+    def test_generate_thumbnail_handles_pdf2image_missing(
+        self, flask_test_client, temp_output_dir
+    ):
         """Verify graceful handling when pdf2image is not installed."""
         client, mock_sb, flask_app = flask_test_client
 
         # Create a fake PDF file
-        pdf_path = temp_output_dir / 'test.pdf'
-        pdf_path.write_bytes(b'%PDF-1.4 fake content')
+        pdf_path = temp_output_dir / "test.pdf"
+        pdf_path.write_bytes(b"%PDF-1.4 fake content")
 
         # Mock pdf2image import to fail
-        with patch.dict('sys.modules', {'pdf2image': None}):
-            with patch('builtins.__import__', side_effect=ImportError("No module named 'pdf2image'")):
+        with patch.dict("sys.modules", {"pdf2image": None}):
+            with patch(
+                "builtins.__import__",
+                side_effect=ImportError("No module named 'pdf2image'"),
+            ):
                 result = flask_app.generate_thumbnail_from_pdf(
                     str(pdf_path), TEST_USER_ID, TEST_RESUME_ID
                 )
@@ -134,7 +139,9 @@ class TestGenerateThumbnailFromPdf:
         assert result is None
 
     @pytest.mark.skipif(True, reason="Requires pdf2image and poppler")
-    def test_generate_thumbnail_uploads_to_storage(self, flask_test_client, temp_output_dir):
+    def test_generate_thumbnail_uploads_to_storage(
+        self, flask_test_client, temp_output_dir
+    ):
         """Verify thumbnail is uploaded to resume-thumbnails bucket."""
         # This test requires pdf2image to be installed
         # Skip for now as it requires external dependencies
@@ -153,7 +160,9 @@ class TestGenerateThumbnailFromPdf:
 class TestThumbnailEndpoint:
     """Tests for POST /api/resumes/<id>/thumbnail endpoint."""
 
-    def test_thumbnail_endpoint_returns_404_for_nonexistent(self, flask_test_client, auth_headers):
+    def test_thumbnail_endpoint_returns_404_for_nonexistent(
+        self, flask_test_client, auth_headers
+    ):
         """Verify 404 is returned for nonexistent resume."""
         client, mock_sb, _ = flask_test_client
 
@@ -166,8 +175,7 @@ class TestThumbnailEndpoint:
         mock_sb.table.return_value.execute.return_value = create_mock_response([])
 
         response = client.post(
-            f'/api/resumes/{TEST_RESUME_ID}/thumbnail',
-            headers=auth_headers
+            f"/api/resumes/{TEST_RESUME_ID}/thumbnail", headers=auth_headers
         )
 
         assert response.status_code == 404
@@ -176,11 +184,13 @@ class TestThumbnailEndpoint:
         """Verify authentication is required."""
         client, mock_sb, _ = flask_test_client
 
-        response = client.post(f'/api/resumes/{TEST_RESUME_ID}/thumbnail')
+        response = client.post(f"/api/resumes/{TEST_RESUME_ID}/thumbnail")
 
         assert response.status_code == 401
 
-    def test_thumbnail_endpoint_returns_404_for_other_users_resume(self, flask_test_client, auth_headers):
+    def test_thumbnail_endpoint_returns_404_for_other_users_resume(
+        self, flask_test_client, auth_headers
+    ):
         """Verify 404 for another user's resume."""
         client, mock_sb, _ = flask_test_client
 
@@ -193,8 +203,7 @@ class TestThumbnailEndpoint:
         mock_sb.table.return_value.execute.return_value = create_mock_response([])
 
         response = client.post(
-            f'/api/resumes/{TEST_RESUME_ID}/thumbnail',
-            headers=auth_headers
+            f"/api/resumes/{TEST_RESUME_ID}/thumbnail", headers=auth_headers
         )
 
         assert response.status_code == 404

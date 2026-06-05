@@ -10,18 +10,18 @@ Tests cover:
 Run tests:
     pytest tests/test_resume_limits.py -v
 """
-import pytest
-from unittest.mock import MagicMock, patch
-import sys
+
 import os
+import sys
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from conftest import (
-    create_mock_supabase, create_mock_response,
-    TEST_USER_ID, TEST_RESUME_ID
-)
+from conftest import (TEST_RESUME_ID, TEST_USER_ID, create_mock_response,
+                      create_mock_supabase)
 
 
 class TestCheckResumeLimit:
@@ -33,7 +33,7 @@ class TestCheckResumeLimit:
 
         # Configure mock to return 3 resumes
         mock_sb.table.return_value.execute.return_value = create_mock_response(
-            [{'id': '1'}, {'id': '2'}, {'id': '3'}], count=3
+            [{"id": "1"}, {"id": "2"}, {"id": "3"}], count=3
         )
 
         can_create, count = flask_app.check_resume_limit(TEST_USER_ID)
@@ -47,7 +47,7 @@ class TestCheckResumeLimit:
 
         # Configure mock to return 5 resumes
         mock_sb.table.return_value.execute.return_value = create_mock_response(
-            [{'id': str(i)} for i in range(5)], count=5
+            [{"id": str(i)} for i in range(5)], count=5
         )
 
         can_create, count = flask_app.check_resume_limit(TEST_USER_ID)
@@ -60,7 +60,9 @@ class TestCheckResumeLimit:
         client, mock_sb, flask_app = flask_test_client
 
         # Configure mock to return 0 resumes
-        mock_sb.table.return_value.execute.return_value = create_mock_response([], count=0)
+        mock_sb.table.return_value.execute.return_value = create_mock_response(
+            [], count=0
+        )
 
         can_create, count = flask_app.check_resume_limit(TEST_USER_ID)
 
@@ -73,7 +75,7 @@ class TestCheckResumeLimit:
 
         # Configure mock to return 4 resumes
         mock_sb.table.return_value.execute.return_value = create_mock_response(
-            [{'id': str(i)} for i in range(4)], count=4
+            [{"id": str(i)} for i in range(4)], count=4
         )
 
         can_create, count = flask_app.check_resume_limit(TEST_USER_ID)
@@ -96,20 +98,20 @@ class TestCreateResumeLimit:
 
         # Configure mock to return 5 existing resumes (at limit)
         mock_sb.table.return_value.execute.return_value = create_mock_response(
-            [{'id': str(i)} for i in range(5)], count=5
+            [{"id": str(i)} for i in range(5)], count=5
         )
 
         response = client.post(
-            '/api/resumes/create',
-            json={'template_id': 'modern-with-icons'},
-            headers=auth_headers
+            "/api/resumes/create",
+            json={"template_id": "modern-with-icons"},
+            headers=auth_headers,
         )
 
         assert response.status_code == 403
         data = response.get_json()
-        assert data['success'] is False
-        assert 'limit' in data['error'].lower()
-        assert data['error_code'] == 'RESUME_LIMIT_REACHED'
+        assert data["success"] is False
+        assert "limit" in data["error"].lower()
+        assert data["error_code"] == "RESUME_LIMIT_REACHED"
 
     def test_create_resume_succeeds_under_limit(self, flask_test_client, auth_headers):
         """Verify creating resume succeeds when under limit."""
@@ -122,15 +124,17 @@ class TestCreateResumeLimit:
 
         # Configure mock responses: check limit (3 resumes), insert, upsert prefs
         mock_sb.table.return_value.execute.side_effect = [
-            create_mock_response([{'id': str(i)} for i in range(3)], count=3),  # check limit
-            create_mock_response([{'id': 'new-id'}]),  # insert
+            create_mock_response(
+                [{"id": str(i)} for i in range(3)], count=3
+            ),  # check limit
+            create_mock_response([{"id": "new-id"}]),  # insert
             create_mock_response([]),  # upsert prefs
         ]
 
         response = client.post(
-            '/api/resumes/create',
-            json={'template_id': 'modern-with-icons'},
-            headers=auth_headers
+            "/api/resumes/create",
+            json={"template_id": "modern-with-icons"},
+            headers=auth_headers,
         )
 
         assert response.status_code == 201
@@ -139,7 +143,9 @@ class TestCreateResumeLimit:
 class TestDuplicateResumeLimit:
     """Tests for resume limit enforcement on duplicate endpoint."""
 
-    def test_duplicate_resume_fails_at_5_resumes(self, flask_test_client, auth_headers, sample_resume_data):
+    def test_duplicate_resume_fails_at_5_resumes(
+        self, flask_test_client, auth_headers, sample_resume_data
+    ):
         """Verify duplicating resume fails when user already has 5 resumes."""
         client, mock_sb, _ = flask_test_client
 
@@ -150,21 +156,23 @@ class TestDuplicateResumeLimit:
 
         # Configure mock to return 5 existing resumes (at limit)
         mock_sb.table.return_value.execute.return_value = create_mock_response(
-            [{'id': str(i)} for i in range(5)], count=5
+            [{"id": str(i)} for i in range(5)], count=5
         )
 
         response = client.post(
-            f'/api/resumes/{TEST_RESUME_ID}/duplicate',
-            json={'new_title': 'Copy of Resume'},
-            headers=auth_headers
+            f"/api/resumes/{TEST_RESUME_ID}/duplicate",
+            json={"new_title": "Copy of Resume"},
+            headers=auth_headers,
         )
 
         assert response.status_code == 400
         data = response.get_json()
-        assert data['success'] is False
-        assert 'limit' in data['error'].lower() or 'maximum' in data['error'].lower()
+        assert data["success"] is False
+        assert "limit" in data["error"].lower() or "maximum" in data["error"].lower()
 
-    def test_duplicate_resume_succeeds_under_limit(self, flask_test_client, auth_headers, sample_resume_data):
+    def test_duplicate_resume_succeeds_under_limit(
+        self, flask_test_client, auth_headers, sample_resume_data
+    ):
         """Verify duplicating resume succeeds when under limit."""
         client, mock_sb, _ = flask_test_client
 
@@ -175,27 +183,31 @@ class TestDuplicateResumeLimit:
 
         # Configure mock responses: check limit, get source resume, insert, get icons, insert icons
         mock_sb.table.return_value.execute.side_effect = [
-            create_mock_response([{'id': str(i)} for i in range(3)], count=3),  # check limit
+            create_mock_response(
+                [{"id": str(i)} for i in range(3)], count=3
+            ),  # check limit
             create_mock_response([sample_resume_data]),  # get source resume
             create_mock_response([]),  # insert new resume
             create_mock_response([]),  # get source icons
         ]
 
         response = client.post(
-            f'/api/resumes/{TEST_RESUME_ID}/duplicate',
-            json={'new_title': 'Copy of Resume'},
-            headers=auth_headers
+            f"/api/resumes/{TEST_RESUME_ID}/duplicate",
+            json={"new_title": "Copy of Resume"},
+            headers=auth_headers,
         )
 
         assert response.status_code == 200
         data = response.get_json()
-        assert data['success'] is True
+        assert data["success"] is True
 
 
 class TestDeletedResumesNotCounted:
     """Tests to verify deleted resumes are not counted in limit."""
 
-    def test_deleted_resumes_not_counted_in_limit(self, flask_test_client, auth_headers):
+    def test_deleted_resumes_not_counted_in_limit(
+        self, flask_test_client, auth_headers
+    ):
         """Verify soft-deleted resumes don't count toward the 5-resume limit."""
         client, mock_sb, _ = flask_test_client
 
@@ -207,15 +219,17 @@ class TestDeletedResumesNotCounted:
         # Configure mock: user has 4 active + some deleted (but query filters deleted)
         # The is_('deleted_at', 'null') filter means only 4 are returned
         mock_sb.table.return_value.execute.side_effect = [
-            create_mock_response([{'id': str(i)} for i in range(4)], count=4),  # check limit
-            create_mock_response([{'id': 'new-id'}]),  # insert
+            create_mock_response(
+                [{"id": str(i)} for i in range(4)], count=4
+            ),  # check limit
+            create_mock_response([{"id": "new-id"}]),  # insert
             create_mock_response([]),  # upsert prefs
         ]
 
         response = client.post(
-            '/api/resumes/create',
-            json={'template_id': 'modern-with-icons'},
-            headers=auth_headers
+            "/api/resumes/create",
+            json={"template_id": "modern-with-icons"},
+            headers=auth_headers,
         )
 
         # Should succeed since only 4 non-deleted resumes
@@ -225,13 +239,15 @@ class TestDeletedResumesNotCounted:
         """Verify check_resume_limit query filters by deleted_at."""
         client, mock_sb, flask_app = flask_test_client
 
-        mock_sb.table.return_value.execute.return_value = create_mock_response([], count=0)
+        mock_sb.table.return_value.execute.return_value = create_mock_response(
+            [], count=0
+        )
 
         flask_app.check_resume_limit(TEST_USER_ID)
 
         # Verify is_ was called with deleted_at filter
         is_calls = mock_sb.table.return_value.is_.call_args_list
-        assert any('deleted_at' in str(call) for call in is_calls)
+        assert any("deleted_at" in str(call) for call in is_calls)
 
 
 class TestSaveResumeLimit:
@@ -248,27 +264,29 @@ class TestSaveResumeLimit:
 
         # Configure mock to return 5 existing resumes (at limit)
         mock_sb.table.return_value.execute.return_value = create_mock_response(
-            [{'id': str(i)} for i in range(5)], count=5
+            [{"id": str(i)} for i in range(5)], count=5
         )
 
         response = client.post(
-            '/api/resumes',
+            "/api/resumes",
             json={
-                'id': None,  # New resume
-                'title': 'New Resume',
-                'template_id': 'modern-with-icons',
-                'contact_info': {'name': 'John'},
-                'sections': []
+                "id": None,  # New resume
+                "title": "New Resume",
+                "template_id": "modern-with-icons",
+                "contact_info": {"name": "John"},
+                "sections": [],
             },
-            headers=auth_headers
+            headers=auth_headers,
         )
 
         assert response.status_code == 403
         data = response.get_json()
-        assert data['success'] is False
-        assert data['error_code'] == 'RESUME_LIMIT_REACHED'
+        assert data["success"] is False
+        assert data["error_code"] == "RESUME_LIMIT_REACHED"
 
-    def test_save_existing_resume_succeeds_at_5_resumes(self, flask_test_client, auth_headers, sample_resume_data):
+    def test_save_existing_resume_succeeds_at_5_resumes(
+        self, flask_test_client, auth_headers, sample_resume_data
+    ):
         """Verify updating an existing resume succeeds even at limit."""
         client, mock_sb, _ = flask_test_client
 
@@ -279,7 +297,9 @@ class TestSaveResumeLimit:
 
         # Configure mock: verify existing resume, get icons, upsert, delete icons, upsert prefs
         mock_sb.table.return_value.execute.side_effect = [
-            create_mock_response([{'id': TEST_RESUME_ID, 'json_hash': 'old-hash'}]),  # verify ownership
+            create_mock_response(
+                [{"id": TEST_RESUME_ID, "json_hash": "old-hash"}]
+            ),  # verify ownership
             create_mock_response([]),  # get existing icons
             create_mock_response([]),  # upsert resume
             create_mock_response([]),  # delete old icons
@@ -287,15 +307,15 @@ class TestSaveResumeLimit:
         ]
 
         response = client.post(
-            '/api/resumes',
+            "/api/resumes",
             json={
-                'id': TEST_RESUME_ID,  # Existing resume
-                'title': 'Updated Resume',
-                'template_id': 'modern-with-icons',
-                'contact_info': {'name': 'John Updated'},
-                'sections': []
+                "id": TEST_RESUME_ID,  # Existing resume
+                "title": "Updated Resume",
+                "template_id": "modern-with-icons",
+                "contact_info": {"name": "John Updated"},
+                "sections": [],
             },
-            headers=auth_headers
+            headers=auth_headers,
         )
 
         # Updating existing should succeed regardless of limit

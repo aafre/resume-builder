@@ -10,13 +10,12 @@ All tiers feed into JobScorer which ranks results by resume fit.
 
 import json
 import logging
-import time
 import math
+import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 
 import requests as http_requests
-
 
 # =============================================================================
 # Title Synonym Table — Tier 2
@@ -28,15 +27,31 @@ TITLE_SYNONYMS: dict[str, list[str]] = {
     "software developer": ["software engineer", "application developer"],
     "frontend developer": ["front end developer", "react developer", "ui developer"],
     "frontend engineer": ["front end engineer", "ui engineer", "react developer"],
-    "backend developer": ["back end developer", "server side developer", "api developer"],
+    "backend developer": [
+        "back end developer",
+        "server side developer",
+        "api developer",
+    ],
     "backend engineer": ["back end engineer", "server side engineer"],
-    "full stack developer": ["fullstack developer", "full stack engineer", "web developer"],
+    "full stack developer": [
+        "fullstack developer",
+        "full stack engineer",
+        "web developer",
+    ],
     "full stack engineer": ["fullstack engineer", "full stack developer"],
     "web developer": ["frontend developer", "full stack developer"],
-    "devops engineer": ["site reliability engineer", "platform engineer", "infrastructure engineer"],
+    "devops engineer": [
+        "site reliability engineer",
+        "platform engineer",
+        "infrastructure engineer",
+    ],
     "sre": ["site reliability engineer", "devops engineer", "platform engineer"],
     "site reliability engineer": ["sre", "devops engineer", "platform engineer"],
-    "platform engineer": ["devops engineer", "infrastructure engineer", "cloud engineer"],
+    "platform engineer": [
+        "devops engineer",
+        "infrastructure engineer",
+        "cloud engineer",
+    ],
     "cloud engineer": ["cloud architect", "devops engineer", "infrastructure engineer"],
     "mobile developer": ["ios developer", "android developer", "mobile engineer"],
     "ios developer": ["mobile developer", "swift developer"],
@@ -45,66 +60,101 @@ TITLE_SYNONYMS: dict[str, list[str]] = {
     "firmware engineer": ["embedded engineer", "embedded software engineer"],
     "qa engineer": ["quality assurance engineer", "test engineer", "sdet"],
     "sdet": ["qa engineer", "test automation engineer", "quality engineer"],
-    "security engineer": ["cybersecurity engineer", "infosec engineer", "application security engineer"],
-    "machine learning engineer": ["ml engineer", "ai engineer", "deep learning engineer"],
+    "security engineer": [
+        "cybersecurity engineer",
+        "infosec engineer",
+        "application security engineer",
+    ],
+    "machine learning engineer": [
+        "ml engineer",
+        "ai engineer",
+        "deep learning engineer",
+    ],
     "ml engineer": ["machine learning engineer", "ai engineer"],
     "ai engineer": ["machine learning engineer", "ml engineer"],
-
     # Data
-    "data scientist": ["machine learning engineer", "data analyst", "research scientist"],
+    "data scientist": [
+        "machine learning engineer",
+        "data analyst",
+        "research scientist",
+    ],
     "data analyst": ["business analyst", "data scientist", "analytics engineer"],
     "data engineer": ["etl developer", "analytics engineer", "big data engineer"],
-    "business analyst": ["data analyst", "business intelligence analyst", "systems analyst"],
-    "business intelligence analyst": ["bi analyst", "data analyst", "reporting analyst"],
-
+    "business analyst": [
+        "data analyst",
+        "business intelligence analyst",
+        "systems analyst",
+    ],
+    "business intelligence analyst": [
+        "bi analyst",
+        "data analyst",
+        "reporting analyst",
+    ],
     # Product / Design
     "product manager": ["product owner", "program manager"],
     "product owner": ["product manager", "scrum master"],
-    "program manager": ["project manager", "product manager", "technical program manager"],
+    "program manager": [
+        "project manager",
+        "product manager",
+        "technical program manager",
+    ],
     "project manager": ["program manager", "project coordinator"],
     "scrum master": ["agile coach", "product owner"],
     "ux designer": ["ui designer", "product designer", "user experience designer"],
     "ui designer": ["ux designer", "visual designer", "product designer"],
     "product designer": ["ux designer", "ui designer"],
     "graphic designer": ["visual designer", "creative designer", "brand designer"],
-
     # Marketing / Sales
-    "marketing manager": ["digital marketing manager", "marketing director", "growth manager"],
+    "marketing manager": [
+        "digital marketing manager",
+        "marketing director",
+        "growth manager",
+    ],
     "digital marketing manager": ["marketing manager", "online marketing manager"],
     "content writer": ["copywriter", "content creator", "content strategist"],
     "copywriter": ["content writer", "creative writer"],
     "seo specialist": ["seo analyst", "seo manager", "digital marketing specialist"],
-    "sales representative": ["account executive", "sales associate", "business development representative"],
+    "sales representative": [
+        "account executive",
+        "sales associate",
+        "business development representative",
+    ],
     "account executive": ["sales representative", "account manager"],
-    "business development representative": ["bdr", "sales development representative", "sdr"],
-
+    "business development representative": [
+        "bdr",
+        "sales development representative",
+        "sdr",
+    ],
     # Operations / Support
-    "customer service representative": ["customer support specialist", "customer success associate"],
+    "customer service representative": [
+        "customer support specialist",
+        "customer success associate",
+    ],
     "customer success manager": ["account manager", "client success manager"],
     "operations manager": ["operations director", "operations coordinator"],
     "office manager": ["administrative manager", "office coordinator"],
     "executive assistant": ["administrative assistant", "personal assistant"],
-
     # Finance / Accounting
     "accountant": ["staff accountant", "accounting specialist", "bookkeeper"],
     "financial analyst": ["finance analyst", "investment analyst"],
     "controller": ["accounting manager", "finance manager"],
-
     # Healthcare
     "registered nurse": ["rn", "staff nurse", "clinical nurse"],
     "nurse practitioner": ["np", "advanced practice nurse", "arnp"],
     "medical assistant": ["clinical assistant", "healthcare assistant"],
-
     # HR
     "recruiter": ["talent acquisition specialist", "hr recruiter", "sourcer"],
     "hr manager": ["human resources manager", "people manager", "hr business partner"],
     "hr business partner": ["hrbp", "hr manager", "people partner"],
-
     # Skills / Languages → job titles (one-way: skill search expands to titles)
     "python": ["python developer", "python engineer", "backend developer"],
     "java": ["java developer", "java engineer", "software engineer"],
     "javascript": ["javascript developer", "frontend developer", "web developer"],
-    "typescript": ["typescript developer", "frontend developer", "full stack developer"],
+    "typescript": [
+        "typescript developer",
+        "frontend developer",
+        "full stack developer",
+    ],
     "react": ["react developer", "frontend developer", "frontend engineer"],
     "angular": ["angular developer", "frontend developer", "frontend engineer"],
     "vue": ["vue developer", "frontend developer", "frontend engineer"],
@@ -204,9 +254,11 @@ def _is_skill_query(query: str) -> bool:
 # Data Classes
 # =============================================================================
 
+
 @dataclass
 class MatchContext:
     """Resume context passed from frontend for scoring."""
+
     query: str
     location: str = ""
     country: str = "us"
@@ -221,16 +273,16 @@ class MatchContext:
     permanent: bool = False
     sort_by: str = "relevance"
     # Advanced filters
-    distance: int = 0              # km radius around location
-    contract: bool = False         # contract=1
-    part_time: bool = False        # part_time=1
-    salary_max: int = 0            # salary_max ceiling
-    sort_dir: str = ""             # sort_dir=up/down
-    what_exclude: str = ""         # excluded keywords
-    company: str = ""              # company name filter
-    what_phrase: str = ""          # exact phrase search (multi-word titles)
-    page: int = 1                  # pagination page number
-    results_per_page: int = 20     # results per page
+    distance: int = 0  # km radius around location
+    contract: bool = False  # contract=1
+    part_time: bool = False  # part_time=1
+    salary_max: int = 0  # salary_max ceiling
+    sort_dir: str = ""  # sort_dir=up/down
+    what_exclude: str = ""  # excluded keywords
+    company: str = ""  # company name filter
+    what_phrase: str = ""  # exact phrase search (multi-word titles)
+    page: int = 1  # pagination page number
+    results_per_page: int = 20  # results per page
 
 
 # =============================================================================
@@ -293,6 +345,7 @@ def get_ai_search_terms(title: str, supabase) -> list[str]:
 # JobScorer — 0-100 scoring algorithm
 # =============================================================================
 
+
 def _build_alias_lookup() -> dict[str, set[str]]:
     """Build bidirectional alias map: every term → set of all equivalent terms."""
     lookup: dict[str, set[str]] = {}
@@ -303,6 +356,7 @@ def _build_alias_lookup() -> dict[str, set[str]]:
                 lookup[term] = set()
             lookup[term].update(all_terms)
     return lookup
+
 
 _ALIAS_LOOKUP = _build_alias_lookup()
 
@@ -315,7 +369,9 @@ class JobScorer:
         self.query_words = set(self.query.split())
         self.skills = [s.lower().strip() for s in context.skills if s.strip()]
         self.salary_min = context.salary_min
-        self.seniority = context.seniority_level.lower() if context.seniority_level else ""
+        self.seniority = (
+            context.seniority_level.lower() if context.seniority_level else ""
+        )
 
         # Pre-compute synonym set for the query
         self.synonym_titles: set[str] = set()
@@ -425,11 +481,21 @@ class JobScorer:
 
 
 _SENIORITY_PREFIXES = [
-    "junior ", "jr ", "jr. ",
-    "mid ", "mid-level ", "midlevel ",
-    "senior ", "sr ", "sr. ",
-    "lead ", "principal ", "staff ",
-    "head of ", "entry level ", "entry-level ",
+    "junior ",
+    "jr ",
+    "jr. ",
+    "mid ",
+    "mid-level ",
+    "midlevel ",
+    "senior ",
+    "sr ",
+    "sr. ",
+    "lead ",
+    "principal ",
+    "staff ",
+    "head of ",
+    "entry level ",
+    "entry-level ",
 ]
 
 
@@ -438,13 +504,14 @@ def _strip_seniority(title: str) -> str:
     t = title.lower().strip()
     for prefix in _SENIORITY_PREFIXES:
         if t.startswith(prefix):
-            return t[len(prefix):]
+            return t[len(prefix) :]
     return t
 
 
 # =============================================================================
 # JobMatchEngine — 3-tier orchestrator
 # =============================================================================
+
 
 class JobMatchEngine:
     """
@@ -464,7 +531,9 @@ class JobMatchEngine:
         self.app_key = adzuna_app_key
         self.supabase = supabase
 
-    def search_and_rank(self, context: MatchContext, keep_description: bool = False) -> dict:
+    def search_and_rank(
+        self, context: MatchContext, keep_description: bool = False
+    ) -> dict:
         """
         Execute 3-tier search and return scored results.
         Returns: { "count": int, "jobs": [...], "total_available": int }
@@ -498,7 +567,9 @@ class JobMatchEngine:
 
         # --- Tier 2: Synonym expansion ---
         query_key = context.query.lower().strip()
-        synonyms = TITLE_SYNONYMS.get(query_key) or TITLE_SYNONYMS.get(_strip_seniority(query_key), [])
+        synonyms = TITLE_SYNONYMS.get(query_key) or TITLE_SYNONYMS.get(
+            _strip_seniority(query_key), []
+        )
         if synonyms:
             # Fetch first synonym only to limit API calls
             tier2 = self._fetch_adzuna(context, synonyms[0])
@@ -530,7 +601,11 @@ class JobMatchEngine:
                 "app_key": self.app_key,
                 "what_phrase": context.what_phrase,
                 "results_per_page": context.results_per_page or self.RESULTS_PER_QUERY,
-                "sort_by": context.sort_by if context.sort_by in ("relevance", "salary", "date") else "relevance",
+                "sort_by": (
+                    context.sort_by
+                    if context.sort_by in ("relevance", "salary", "date")
+                    else "relevance"
+                ),
                 "salary_include_unknown": "1",
             }
         else:
@@ -539,7 +614,11 @@ class JobMatchEngine:
                 "app_key": self.app_key,
                 "what": query,
                 "results_per_page": context.results_per_page or self.RESULTS_PER_QUERY,
-                "sort_by": context.sort_by if context.sort_by in ("relevance", "salary", "date") else "relevance",
+                "sort_by": (
+                    context.sort_by
+                    if context.sort_by in ("relevance", "salary", "date")
+                    else "relevance"
+                ),
                 "salary_include_unknown": "1",
             }
         if context.location:
@@ -590,24 +669,32 @@ class JobMatchEngine:
 
             jobs = []
             for r in raw.get("results", []):
-                jobs.append({
-                    "title": r.get("title", ""),
-                    "company": (r.get("company", {}) or {}).get("display_name", ""),
-                    "location": (r.get("location", {}) or {}).get("display_name", ""),
-                    "salary_min": r.get("salary_min"),
-                    "salary_max": r.get("salary_max"),
-                    "salary_is_predicted": bool(r.get("salary_is_predicted")),
-                    "url": r.get("redirect_url", ""),
-                    "created": r.get("created", ""),
-                    "_description": r.get("description", ""),  # used for scoring, stripped before response
-                })
+                jobs.append(
+                    {
+                        "title": r.get("title", ""),
+                        "company": (r.get("company", {}) or {}).get("display_name", ""),
+                        "location": (r.get("location", {}) or {}).get(
+                            "display_name", ""
+                        ),
+                        "salary_min": r.get("salary_min"),
+                        "salary_max": r.get("salary_max"),
+                        "salary_is_predicted": bool(r.get("salary_is_predicted")),
+                        "url": r.get("redirect_url", ""),
+                        "created": r.get("created", ""),
+                        "_description": r.get(
+                            "description", ""
+                        ),  # used for scoring, stripped before response
+                    }
+                )
             return jobs
 
         except http_requests.RequestException as e:
             logging.error(f"Adzuna API error for query '{query}': {e}")
             return []
 
-    def _merge(self, existing: list[dict], new: list[dict], seen_urls: set[str]) -> list[dict]:
+    def _merge(
+        self, existing: list[dict], new: list[dict], seen_urls: set[str]
+    ) -> list[dict]:
         """Merge new results, dedup by URL."""
         for job in new:
             url = job.get("url", "")
@@ -616,7 +703,9 @@ class JobMatchEngine:
                 existing.append(job)
         return existing
 
-    def _finalize(self, jobs: list[dict], scorer: JobScorer, keep_description: bool = False) -> dict:
+    def _finalize(
+        self, jobs: list[dict], scorer: JobScorer, keep_description: bool = False
+    ) -> dict:
         """Score all jobs, sort by score desc, optionally strip description."""
         for job in jobs:
             job["match_score"] = scorer.score(job)
