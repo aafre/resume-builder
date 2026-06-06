@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.25.1] - 2026-06-06
+
+### 🐛 Bug Fixes
+
+- **a11y:** Use higher-contrast color for mono labels and small text
+- **a11y:** Restore text-accent on dark-bg CTA labels in 3 more components
+- **api:** Stop corrupting updated_at on metadata-only resume updates
+- **ui:** Sync updated_at in cache after resume rename
+- **db:** Drop updated_at trigger on resumes table
+- **cls:** Move shell CSS to head; remove mobile-ad reservation
+- **cls:** Sync initial React mount; add web-vitals CLS attribution
+- **cls:** Remove orphaned shell-mobile-ad CSS rules
+- **api:** Use db now() for last_accessed_at; bulk-update migration ownership
+
+### 🧪 Testing
+
+- **timestamps:** Add tests for updated_at preservation
+- Remove empty placeholder test stubs from TestThumbnailPreservesUpdatedAt
+
+### ⚙️ Miscellaneous Tasks
+
+- Fix lint + stale test assertions from cherry-pick onto main
+
 ## [3.25.0] - 2026-05-25
 
 ### 🚀 Features
