@@ -32,7 +32,7 @@ export default function BlogIndex() {
           {/* Header */}
           <RevealSection variant="fade-up">
             <header className="text-center mb-12 md:mb-16">
-              <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">
+              <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">
                 Career Insights
               </span>
               <h1 className="font-display text-4xl md:text-5xl font-extrabold text-ink tracking-tight mt-3 mb-4">

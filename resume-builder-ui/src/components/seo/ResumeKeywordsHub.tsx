@@ -181,7 +181,7 @@ export default function ResumeKeywordsHub() {
       <RevealSection>
         <div className="mb-16 max-w-4xl mx-auto cv-auto cv-h-500" id="popular-keywords">
           <div className="bg-white rounded-2xl p-8 md:p-10 shadow-premium border border-black/[0.06]">
-            <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">Universal Keywords</span>
+            <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">Universal Keywords</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-6 mt-2">
               Most Popular Keywords Across All Industries
             </h2>
@@ -358,7 +358,7 @@ export default function ResumeKeywordsHub() {
 
       <RevealSection>
         <div className="mb-16 cv-auto cv-h-800">
-          <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">By Industry</span>
+          <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">By Industry</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-12 text-center">
             Browse keywords by industry
           </h2>
@@ -400,7 +400,7 @@ export default function ResumeKeywordsHub() {
       </RevealSection>
 
       <div className="mb-16" id="how-to-find">
-        <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">The Process</span>
+        <span className="block text-center font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">The Process</span>
         <StepByStep steps={howToSteps} title="How to find keywords for your resume" />
       </div>
 

@@ -460,7 +460,7 @@ export default function JobsPage() {
       <div className="max-w-5xl mx-auto">
         {/* Hero */}
         <div className="text-center mb-8">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 inline-block">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 inline-block">
             Job Search
           </span>
           <h1 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-ink mb-2">
@@ -848,7 +848,7 @@ export default function JobsPage() {
         <RevealSection variant="fade-up">
           <div className="bg-white rounded-2xl shadow-premium card-gradient-border p-8 md:p-12 mb-8">
             <div className="text-center mb-8">
-              <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase">How It Works</span>
+              <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">How It Works</span>
               <h2 className="font-display text-2xl md:text-3xl font-extrabold tracking-tight text-ink mt-2">
                 From Resume to Interview
               </h2>

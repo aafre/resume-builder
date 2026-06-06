@@ -29,7 +29,7 @@ function StarRating({ value }: { value: Rating }) {
 
 function SectionEyebrow({ children }: { children: string }) {
   return (
-    <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-3 block">
+    <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-3 block">
       {children}
     </span>
   );

@@ -17,7 +17,7 @@ export default function PageHero({ config, className = '' }: PageHeroProps) {
     <div className={`text-center mb-16 ${className}`}>
       {/* Eyebrow */}
       {config.eyebrow && (
-        <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4">
+        <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4">
           {config.eyebrow}
         </p>
       )}

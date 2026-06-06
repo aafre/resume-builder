@@ -67,7 +67,7 @@ export default function ResumeBuilderForStudents() {
       {/* Student-specific tips */}
       <RevealSection variant="fade-up">
         <div className="mb-16">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             STUDENT TIPS
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -93,7 +93,7 @@ export default function ResumeBuilderForStudents() {
       {/* Common mistakes section */}
       <RevealSection variant="fade-up">
         <div className="mb-16">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             AVOID THESE
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-6 text-center">
@@ -165,7 +165,7 @@ export default function ResumeBuilderForStudents() {
       {/* Inline FAQ section with student-specific questions */}
       <RevealSection variant="fade-up">
         <div className="mb-16 max-w-4xl mx-auto">
-          <span className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-4 block text-center">
+          <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
             STUDENT FAQ
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
