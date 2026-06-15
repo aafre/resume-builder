@@ -39,7 +39,8 @@ export default function TabbedHelpModal({
             </h2>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 rounded-md"
+              aria-label="Close modal"
             >
               <MdClose className="w-6 h-6" />
             </button>
