@@ -1,6 +1,7 @@
 """
 Regression tests for Education field_of_study rendering in production templates.
 """
+
 import os
 import sys
 from pathlib import Path
@@ -13,14 +14,15 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import app
 import resume_generator
 
-
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 def render_modern_education(section):
     env = Environment(loader=FileSystemLoader(PROJECT_ROOT / "templates" / "modern"))
     env.filters["markdown_links"] = resume_generator.convert_markdown_links_to_html
-    env.filters["markdown_formatting"] = resume_generator.convert_markdown_formatting_to_html
+    env.filters["markdown_formatting"] = (
+        resume_generator.convert_markdown_formatting_to_html
+    )
 
     template = env.get_template("education.html")
     return template.render(section=section, icon_path="/icons")
