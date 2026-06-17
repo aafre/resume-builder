@@ -1033,9 +1033,9 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /best-free-resume-builder-reddit
   redditRecommended: {
     seo: {
-      title: `Best Free Resume Builder ${CURRENT_YEAR} (Reddit-Tested, Actually Free)`,
+      title: `EasyFreeResume: Free Resume Builder Reddit Recommends (${CURRENT_YEAR})`,
       description:
-        `What r/resumes and r/jobs actually recommend in ${CURRENT_YEAR}. We analyzed 100+ Reddit threads. No paywalls, no watermarks, no sign-up. Here's what passed the test.`,
+        `Tired of "free" builders that charge at download? We read 100+ r/resumes threads. EasyFreeResume passes every test — no paywall, no watermark, no sign-up.`,
       keywords: [
         'best free resume builder reddit',
         'reddit resume builder',
