@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-hot-toast';
@@ -62,6 +62,22 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   const modalContent = (
     <div
       className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto"
@@ -70,15 +86,18 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
       <div
         className="bg-white rounded-2xl shadow-2xl max-w-md w-full my-auto max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="auth-modal-title"
       >
         {/* Header */}
         <div className="bg-ink px-6 py-4 flex items-center justify-between flex-shrink-0 rounded-t-2xl">
-          <h2 className="text-2xl font-bold text-white">Save Your Resume to the Cloud</h2>
+          <h2 id="auth-modal-title" className="text-2xl font-bold text-white">Save Your Resume to the Cloud</h2>
           <button
             onClick={onClose}
-            className="text-white/80 hover:text-white transition-colors"
+            className="text-white/80 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-sm"
             disabled={loading}
-            aria-label="Close"
+            aria-label="Close modal"
           >
             <MdClose size={24} />
           </button>
