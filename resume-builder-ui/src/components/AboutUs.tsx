@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import SEOHead from "./SEOHead";
-import { generateVideoObjectSchema, wrapInGraph } from "../utils/schemaGenerators";
+import { wrapInGraph } from "../utils/schemaGenerators";
 import { TUTORIAL_VIDEO } from "../config/videoContent";
 
 export default function AboutUs() {
@@ -25,13 +25,6 @@ export default function AboutUs() {
                 "Democratize career opportunities by providing free professional resume tools",
             },
           },
-          generateVideoObjectSchema(
-            TUTORIAL_VIDEO.name,
-            TUTORIAL_VIDEO.description,
-            TUTORIAL_VIDEO.thumbnailUrl,
-            TUTORIAL_VIDEO.uploadDate,
-            TUTORIAL_VIDEO.embedUrl
-          ),
         ])}
       />
       <div className="min-h-screen bg-chalk">
