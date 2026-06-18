@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.26.0] - 2026-06-18
+
+### 🚀 Features
+
+- **seo:** Rewrite reddit page title/meta for CTR recovery
+
 ## [3.25.1] - 2026-06-06
 
 ### 🐛 Bug Fixes
