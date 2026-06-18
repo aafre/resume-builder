@@ -140,7 +140,7 @@ export function ResumeCard({
             isPreviewLoading ? 'scale-105 blur-[2px]' : ''
           }`}
           width="300"
-          height="400"
+          height="192"
         />
 
         {/* Preview Loading Overlay */}

@@ -90,7 +90,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
   }, [index, onUpdate]);
 
   return (
-    <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
+    <div className="bg-gray-50/80 backdrop-blur-sm p-3 sm:p-6 mb-3 sm:mb-6 rounded-xl border border-gray-200 shadow-sm">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-medium">Experience #{index + 1}</h3>
         <button
