@@ -1,29 +1,20 @@
 """Tests for generate_jobs_matrix.py — slug safety, coverage, and validation."""
 
 import json
+import os
 import re
 import sys
-import os
 
 import pytest
 
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from generate_jobs_matrix import (
-    generate_matrix,
-    validate_matrix,
-    to_slug,
-    LOCATIONS,
-    LOCATION_BY_SLUG,
-    ROLE_CATEGORIES,
-    FILTER_MODIFIERS,
-    SENIORITY_PREFIXES,
-    SALARY_BANDS,
-    ALL_CATEGORIES,
-)
+from generate_jobs_matrix import (ALL_CATEGORIES, FILTER_MODIFIERS,
+                                  LOCATION_BY_SLUG, LOCATIONS, ROLE_CATEGORIES,
+                                  SALARY_BANDS, SENIORITY_PREFIXES,
+                                  generate_matrix, to_slug, validate_matrix)
 from job_engine import TITLE_SYNONYMS
-
 
 SLUG_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 
@@ -34,6 +25,7 @@ def matrix():
 
 
 # ---- Slug safety ----
+
 
 class TestSlugSafety:
     def test_role_slugs_are_url_safe(self, matrix):
@@ -46,11 +38,15 @@ class TestSlugSafety:
 
     def test_role_slugs_unique(self, matrix):
         slugs = [r["slug"] for r in matrix["roles"]]
-        assert len(slugs) == len(set(slugs)), f"Duplicate role slugs: {[s for s in slugs if slugs.count(s) > 1]}"
+        assert len(slugs) == len(
+            set(slugs)
+        ), f"Duplicate role slugs: {[s for s in slugs if slugs.count(s) > 1]}"
 
     def test_location_slugs_unique(self, matrix):
         slugs = [l["slug"] for l in matrix["locations"]]
-        assert len(slugs) == len(set(slugs)), f"Duplicate location slugs: {[s for s in slugs if slugs.count(s) > 1]}"
+        assert len(slugs) == len(
+            set(slugs)
+        ), f"Duplicate location slugs: {[s for s in slugs if slugs.count(s) > 1]}"
 
     def test_filter_modifier_slugs_are_url_safe(self):
         for slug in FILTER_MODIFIERS:
@@ -63,18 +59,22 @@ class TestSlugSafety:
 
 # ---- Coverage ----
 
+
 class TestCoverage:
     def test_all_title_synonyms_covered(self, matrix):
         """Every TITLE_SYNONYMS key must have a matching slug in the matrix."""
         role_slugs = {r["slug"] for r in matrix["roles"]}
         for key in TITLE_SYNONYMS:
             slug = to_slug(key)
-            assert slug in role_slugs, f"TITLE_SYNONYMS key '{key}' (slug: {slug}) not in matrix"
+            assert (
+                slug in role_slugs
+            ), f"TITLE_SYNONYMS key '{key}' (slug: {slug}) not in matrix"
 
     def test_every_role_has_category(self, matrix):
         for role in matrix["roles"]:
-            assert role["category"] in matrix["categories"], \
-                f"Role '{role['key']}' has unknown category '{role['category']}'"
+            assert (
+                role["category"] in matrix["categories"]
+            ), f"Role '{role['key']}' has unknown category '{role['category']}'"
 
     def test_all_categories_represented(self, matrix):
         """Every category should have at least one role."""
@@ -89,6 +89,7 @@ class TestCoverage:
 
 
 # ---- Structure ----
+
 
 class TestStructure:
     def test_matrix_has_required_keys(self, matrix):
@@ -123,18 +124,21 @@ class TestStructure:
 
     def test_related_roles_max_8(self, matrix):
         for role in matrix["roles"]:
-            assert len(role["related_roles"]) <= 8, \
-                f"Role '{role['key']}' has {len(role['related_roles'])} related roles (max 8)"
+            assert (
+                len(role["related_roles"]) <= 8
+            ), f"Role '{role['key']}' has {len(role['related_roles'])} related roles (max 8)"
 
     def test_nearby_locations_valid(self, matrix):
         loc_slugs = {l["slug"] for l in matrix["locations"]}
         for loc in matrix["locations"]:
             for nearby in loc["nearby"]:
-                assert nearby in loc_slugs, \
-                    f"Location '{loc['slug']}' has invalid nearby: '{nearby}'"
+                assert (
+                    nearby in loc_slugs
+                ), f"Location '{loc['slug']}' has invalid nearby: '{nearby}'"
 
 
 # ---- Validation function ----
+
 
 class TestValidation:
     def test_validate_passes_for_valid_matrix(self, matrix):
@@ -151,21 +155,26 @@ class TestValidation:
 
 # ---- to_slug function ----
 
+
 class TestToSlug:
-    @pytest.mark.parametrize("input_name,expected", [
-        ("Software Engineer", "software-engineer"),
-        ("c++", "cplusplus"),
-        ("c#", "csharp"),
-        ("QA Engineer", "qa-engineer"),
-        ("iOS Developer", "ios-developer"),
-        ("full stack developer", "full-stack-developer"),
-        ("SRE", "sre"),
-    ])
+    @pytest.mark.parametrize(
+        "input_name,expected",
+        [
+            ("Software Engineer", "software-engineer"),
+            ("c++", "cplusplus"),
+            ("c#", "csharp"),
+            ("QA Engineer", "qa-engineer"),
+            ("iOS Developer", "ios-developer"),
+            ("full stack developer", "full-stack-developer"),
+            ("SRE", "sre"),
+        ],
+    )
     def test_slug_generation(self, input_name, expected):
         assert to_slug(input_name) == expected
 
 
 # ---- Constants ----
+
 
 class TestConstants:
     def test_seniority_prefixes(self):

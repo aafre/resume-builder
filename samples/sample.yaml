@@ -1,0 +1,55 @@
+template: modern-with-icons
+contact_info:
+  name: John Doe
+  email: john.doe@example.com
+  phone: 555-123-4567
+  location: New York, NY
+  website: https://johndoe.com
+  github: johndoe
+  linkedin: johndoe
+sections:
+  - type: summary
+    name: Summary
+    content: >
+      A highly skilled software engineer with over 10 years of experience in full-stack development,
+      specializing in Python, JavaScript, and cloud infrastructure. Proven track record of delivering
+      high-quality, scalable applications.
+  - type: experience
+    name: Experience
+    content:
+      - company: Tech Corp
+        role: Senior Software Engineer
+        start_date: 2018-01-01
+        end_date: Present
+        location: New York, NY
+        description:
+          - Led a team of 5 engineers to rebuild the core billing platform
+          - Reduced latency by 40% using Redis caching
+          - Implemented CI/CD pipelines using GitHub Actions
+      - company: Startup Inc
+        role: Software Engineer
+        start_date: 2015-06-01
+        end_date: 2017-12-31
+        location: San Francisco, CA
+        description:
+          - Developed the initial MVP for the company's flagship product
+          - Scaled the application to support 100k+ MAU
+          - Integrated Stripe for payment processing
+  - type: education
+    name: Education
+    content:
+      - institution: State University
+        degree: Bachelor of Science in Computer Science
+        start_date: 2011-08-01
+        end_date: 2015-05-31
+        location: College Town, ST
+        gpa: 3.8
+  - type: skills
+    name: Skills
+    content:
+      - category: Languages
+        skills: [Python, JavaScript, TypeScript, Go, SQL]
+      - category: Frameworks
+        skills: [React, Node.js, Express, Django, Flask, FastAPI]
+      - category: Tools
+        skills: [Docker, Kubernetes, AWS, GCP, Terraform, Ansible]
