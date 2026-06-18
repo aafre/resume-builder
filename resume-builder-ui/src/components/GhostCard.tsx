@@ -71,7 +71,15 @@ export function GhostCard({ isAtLimit, resumeCount, onCreateNew }: GhostCardProp
   return (
     <div
       onClick={onCreateNew}
-      className="h-full min-h-[320px] border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-accent hover:bg-accent/[0.06]/20 transition-all duration-200 group"
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onCreateNew();
+        }
+      }}
+      className="h-full min-h-[320px] border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-accent hover:bg-accent/[0.06]/20 transition-all duration-200 group focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
       <PlusCircle className="w-16 h-16 text-gray-400 mb-4 group-hover:text-accent group-hover:scale-110 transition-all duration-200" />
 
