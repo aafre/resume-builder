@@ -15,30 +15,99 @@ from pathlib import Path
 
 from job_engine import TITLE_SYNONYMS
 
-
 # =============================================================================
 # Locations — 20 UK cities + remote
 # =============================================================================
 
 LOCATIONS: list[dict[str, str | list[str]]] = [
-    {"name": "London", "slug": "london", "region": "south-east", "nearby": ["reading", "cambridge", "brighton"]},
-    {"name": "Manchester", "slug": "manchester", "region": "north-west", "nearby": ["liverpool", "leeds", "sheffield"]},
-    {"name": "Birmingham", "slug": "birmingham", "region": "west-midlands", "nearby": ["coventry", "nottingham", "leicester"]},
-    {"name": "Leeds", "slug": "leeds", "region": "yorkshire", "nearby": ["manchester", "sheffield", "york"]},
-    {"name": "Glasgow", "slug": "glasgow", "region": "scotland", "nearby": ["edinburgh"]},
-    {"name": "Edinburgh", "slug": "edinburgh", "region": "scotland", "nearby": ["glasgow"]},
-    {"name": "Bristol", "slug": "bristol", "region": "south-west", "nearby": ["cardiff", "bath"]},
-    {"name": "Liverpool", "slug": "liverpool", "region": "north-west", "nearby": ["manchester"]},
-    {"name": "Sheffield", "slug": "sheffield", "region": "yorkshire", "nearby": ["leeds", "manchester", "nottingham"]},
+    {
+        "name": "London",
+        "slug": "london",
+        "region": "south-east",
+        "nearby": ["reading", "cambridge", "brighton"],
+    },
+    {
+        "name": "Manchester",
+        "slug": "manchester",
+        "region": "north-west",
+        "nearby": ["liverpool", "leeds", "sheffield"],
+    },
+    {
+        "name": "Birmingham",
+        "slug": "birmingham",
+        "region": "west-midlands",
+        "nearby": ["coventry", "nottingham", "leicester"],
+    },
+    {
+        "name": "Leeds",
+        "slug": "leeds",
+        "region": "yorkshire",
+        "nearby": ["manchester", "sheffield", "york"],
+    },
+    {
+        "name": "Glasgow",
+        "slug": "glasgow",
+        "region": "scotland",
+        "nearby": ["edinburgh"],
+    },
+    {
+        "name": "Edinburgh",
+        "slug": "edinburgh",
+        "region": "scotland",
+        "nearby": ["glasgow"],
+    },
+    {
+        "name": "Bristol",
+        "slug": "bristol",
+        "region": "south-west",
+        "nearby": ["cardiff", "bath"],
+    },
+    {
+        "name": "Liverpool",
+        "slug": "liverpool",
+        "region": "north-west",
+        "nearby": ["manchester"],
+    },
+    {
+        "name": "Sheffield",
+        "slug": "sheffield",
+        "region": "yorkshire",
+        "nearby": ["leeds", "manchester", "nottingham"],
+    },
     {"name": "Newcastle", "slug": "newcastle", "region": "north-east", "nearby": []},
-    {"name": "Nottingham", "slug": "nottingham", "region": "east-midlands", "nearby": ["birmingham", "sheffield", "leicester"]},
+    {
+        "name": "Nottingham",
+        "slug": "nottingham",
+        "region": "east-midlands",
+        "nearby": ["birmingham", "sheffield", "leicester"],
+    },
     {"name": "Cardiff", "slug": "cardiff", "region": "wales", "nearby": ["bristol"]},
     {"name": "Belfast", "slug": "belfast", "region": "northern-ireland", "nearby": []},
-    {"name": "Leicester", "slug": "leicester", "region": "east-midlands", "nearby": ["nottingham", "birmingham", "coventry"]},
-    {"name": "Coventry", "slug": "coventry", "region": "west-midlands", "nearby": ["birmingham", "leicester"]},
+    {
+        "name": "Leicester",
+        "slug": "leicester",
+        "region": "east-midlands",
+        "nearby": ["nottingham", "birmingham", "coventry"],
+    },
+    {
+        "name": "Coventry",
+        "slug": "coventry",
+        "region": "west-midlands",
+        "nearby": ["birmingham", "leicester"],
+    },
     {"name": "Cambridge", "slug": "cambridge", "region": "east", "nearby": ["london"]},
-    {"name": "Reading", "slug": "reading", "region": "south-east", "nearby": ["london"]},
-    {"name": "Brighton", "slug": "brighton", "region": "south-east", "nearby": ["london"]},
+    {
+        "name": "Reading",
+        "slug": "reading",
+        "region": "south-east",
+        "nearby": ["london"],
+    },
+    {
+        "name": "Brighton",
+        "slug": "brighton",
+        "region": "south-east",
+        "nearby": ["london"],
+    },
     {"name": "York", "slug": "york", "region": "yorkshire", "nearby": ["leeds"]},
     {"name": "Bath", "slug": "bath", "region": "south-west", "nearby": ["bristol"]},
     {"name": "Remote", "slug": "remote", "region": "remote", "nearby": []},
@@ -159,8 +228,16 @@ FILTER_MODIFIERS: dict[str, dict] = {
     "full-time": {"adzuna_param": "full_time", "adzuna_value": 1, "label": "Full-time"},
     "part-time": {"adzuna_param": "part_time", "adzuna_value": 1, "label": "Part-time"},
     # Freshness
-    "posted-today": {"adzuna_param": "max_days_old", "adzuna_value": 1, "label": "Posted Today"},
-    "posted-this-week": {"adzuna_param": "max_days_old", "adzuna_value": 7, "label": "Posted This Week"},
+    "posted-today": {
+        "adzuna_param": "max_days_old",
+        "adzuna_value": 1,
+        "label": "Posted Today",
+    },
+    "posted-this-week": {
+        "adzuna_param": "max_days_old",
+        "adzuna_value": 7,
+        "label": "Posted This Week",
+    },
 }
 
 SENIORITY_PREFIXES = ["junior", "mid", "senior", "lead"]
@@ -195,6 +272,7 @@ def to_slug(name: str) -> str:
 # Related roles (same category, excluding self)
 # =============================================================================
 
+
 def _build_related_roles(role_key: str, category: str) -> list[str]:
     """Return slugs of related roles in the same category (max 8)."""
     related = []
@@ -218,6 +296,7 @@ def _build_related_roles(role_key: str, category: str) -> list[str]:
 # Main matrix generation
 # =============================================================================
 
+
 def generate_matrix() -> dict:
     """Generate the complete jobs matrix."""
     # Deduplicate roles by slug (e.g. "go" and "golang" both → "go" slug)
@@ -239,24 +318,30 @@ def generate_matrix() -> dict:
             display_name = key
         if key in ("aws", "sql", "php", "ios developer"):
             parts = key.split()
-            display_name = " ".join(p.upper() if len(p) <= 3 and p.isalpha() else p.title() for p in parts)
+            display_name = " ".join(
+                p.upper() if len(p) <= 3 and p.isalpha() else p.title() for p in parts
+            )
 
-        roles.append({
-            "key": key,
-            "slug": slug,
-            "display_name": display_name,
-            "category": category,
-            "related_roles": _build_related_roles(key, category),
-        })
+        roles.append(
+            {
+                "key": key,
+                "slug": slug,
+                "display_name": display_name,
+                "category": category,
+                "related_roles": _build_related_roles(key, category),
+            }
+        )
 
     locations = []
     for loc in LOCATIONS:
-        locations.append({
-            "name": loc["name"],
-            "slug": loc["slug"],
-            "region": loc["region"],
-            "nearby": loc["nearby"],
-        })
+        locations.append(
+            {
+                "name": loc["name"],
+                "slug": loc["slug"],
+                "region": loc["region"],
+                "nearby": loc["nearby"],
+            }
+        )
 
     # Build combinations count
     combo_count = len(roles) * len(locations)
@@ -306,7 +391,9 @@ def validate_matrix(matrix: dict) -> list[str]:
     # Check every role has a category
     for role in matrix["roles"]:
         if role["category"] not in matrix["categories"]:
-            errors.append(f"Role '{role['key']}' has unknown category '{role['category']}'")
+            errors.append(
+                f"Role '{role['key']}' has unknown category '{role['category']}'"
+            )
 
     # Check related roles reference valid slugs
     valid_role_slugs = set(role_slugs)
@@ -321,13 +408,17 @@ def validate_matrix(matrix: dict) -> list[str]:
     for loc in matrix["locations"]:
         for nearby in loc["nearby"]:
             if nearby not in valid_loc_slugs:
-                errors.append(f"Location '{loc['slug']}' has invalid nearby: '{nearby}'")
+                errors.append(
+                    f"Location '{loc['slug']}' has invalid nearby: '{nearby}'"
+                )
 
     # Check all TITLE_SYNONYMS keys are covered
     for key in TITLE_SYNONYMS:
         slug = to_slug(key)
         if slug not in valid_role_slugs:
-            errors.append(f"TITLE_SYNONYMS key '{key}' (slug: {slug}) not in matrix roles")
+            errors.append(
+                f"TITLE_SYNONYMS key '{key}' (slug: {slug}) not in matrix roles"
+            )
 
     return errors
 
