@@ -12,24 +12,26 @@ is now solely responsible for managing updated_at — only content changes
 Run tests:
     pytest tests/test_updated_at_preservation.py -v
 """
-import pytest
-from unittest.mock import MagicMock, patch, call
-import sys
+
 import os
+import sys
+from unittest.mock import MagicMock, call, patch
+
+import pytest
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from conftest import (
-    create_mock_supabase, create_mock_response,
-    TEST_USER_ID, TEST_RESUME_ID
-)
+from conftest import (TEST_RESUME_ID, TEST_USER_ID, create_mock_response,
+                      create_mock_supabase)
 
 
 class TestLoadResumePreservesUpdatedAt:
     """GET /api/resumes/<id> must NOT include updated_at in its DB update."""
 
-    def test_load_resume_only_updates_last_accessed_at(self, flask_test_client, auth_headers):
+    def test_load_resume_only_updates_last_accessed_at(
+        self, flask_test_client, auth_headers
+    ):
         """Verify loading a resume only sets last_accessed_at, not updated_at."""
         client, mock_sb, _ = flask_test_client
 
@@ -40,19 +42,19 @@ class TestLoadResumePreservesUpdatedAt:
 
         # Build a resume response with a known old timestamp
         resume_data = {
-            'id': TEST_RESUME_ID,
-            'user_id': TEST_USER_ID,
-            'title': 'Test Resume',
-            'template_id': 'modern-with-icons',
-            'contact_info': {'name': 'Test'},
-            'sections': [],
-            'settings': {},
-            'created_at': '2025-01-10T10:00:00Z',
-            'updated_at': '2025-01-10T10:00:00Z',
-            'last_accessed_at': '2025-01-10T10:00:00Z',
-            'pdf_url': None,
-            'pdf_generated_at': None,
-            'thumbnail_url': None,
+            "id": TEST_RESUME_ID,
+            "user_id": TEST_USER_ID,
+            "title": "Test Resume",
+            "template_id": "modern-with-icons",
+            "contact_info": {"name": "Test"},
+            "sections": [],
+            "settings": {},
+            "created_at": "2025-01-10T10:00:00Z",
+            "updated_at": "2025-01-10T10:00:00Z",
+            "last_accessed_at": "2025-01-10T10:00:00Z",
+            "pdf_url": None,
+            "pdf_generated_at": None,
+            "thumbnail_url": None,
         }
 
         # Responses: select resume, select icons, update last_accessed_at
@@ -63,7 +65,7 @@ class TestLoadResumePreservesUpdatedAt:
         ]
 
         response = client.get(
-            f'/api/resumes/{TEST_RESUME_ID}',
+            f"/api/resumes/{TEST_RESUME_ID}",
             headers=auth_headers,
         )
 
@@ -71,14 +73,16 @@ class TestLoadResumePreservesUpdatedAt:
 
         # Inspect the update() call — it should only contain last_accessed_at
         update_calls = mock_sb.table.return_value.update.call_args_list
-        assert len(update_calls) >= 1, "Expected at least one update call for last_accessed_at"
+        assert (
+            len(update_calls) >= 1
+        ), "Expected at least one update call for last_accessed_at"
 
         # The last update call is the last_accessed_at update
         update_payload = update_calls[-1][0][0]  # First positional arg
-        assert 'last_accessed_at' in update_payload, "Should include last_accessed_at"
-        assert 'updated_at' not in update_payload, (
-            "Must NOT include updated_at — metadata-only operation should not touch it"
-        )
+        assert "last_accessed_at" in update_payload, "Should include last_accessed_at"
+        assert (
+            "updated_at" not in update_payload
+        ), "Must NOT include updated_at — metadata-only operation should not touch it"
 
 
 class TestRenameUpdatesUpdatedAt:
@@ -94,13 +98,15 @@ class TestRenameUpdatesUpdatedAt:
 
         # Responses: verify ownership, update+select
         mock_sb.table.return_value.execute.side_effect = [
-            create_mock_response([{'id': TEST_RESUME_ID}]),  # Verify ownership
-            create_mock_response([{'updated_at': '2026-04-13T12:00:00Z'}]),  # Update returns updated_at
+            create_mock_response([{"id": TEST_RESUME_ID}]),  # Verify ownership
+            create_mock_response(
+                [{"updated_at": "2026-04-13T12:00:00Z"}]
+            ),  # Update returns updated_at
         ]
 
         response = client.patch(
-            f'/api/resumes/{TEST_RESUME_ID}',
-            json={'title': 'Renamed Resume'},
+            f"/api/resumes/{TEST_RESUME_ID}",
+            json={"title": "Renamed Resume"},
             headers=auth_headers,
         )
 
@@ -108,19 +114,21 @@ class TestRenameUpdatesUpdatedAt:
         data = response.get_json()
 
         # Verify updated_at is returned in the response
-        assert 'updated_at' in data, "Rename response must include updated_at"
-        assert data['updated_at'] == '2026-04-13T12:00:00Z'
+        assert "updated_at" in data, "Rename response must include updated_at"
+        assert data["updated_at"] == "2026-04-13T12:00:00Z"
 
         # Verify the update payload includes updated_at='now()'
         update_calls = mock_sb.table.return_value.update.call_args_list
         assert len(update_calls) >= 1
         update_payload = update_calls[-1][0][0]
-        assert update_payload.get('updated_at') == 'now()', (
-            "Rename must set updated_at to 'now()'"
-        )
-        assert update_payload.get('title') == 'Renamed Resume'
+        assert (
+            update_payload.get("updated_at") == "now()"
+        ), "Rename must set updated_at to 'now()'"
+        assert update_payload.get("title") == "Renamed Resume"
 
-    def test_rename_response_includes_updated_at_field(self, flask_test_client, auth_headers):
+    def test_rename_response_includes_updated_at_field(
+        self, flask_test_client, auth_headers
+    ):
         """Verify the rename endpoint returns updated_at for frontend cache sync."""
         client, mock_sb, _ = flask_test_client
 
@@ -128,22 +136,22 @@ class TestRenameUpdatesUpdatedAt:
         mock_user.id = TEST_USER_ID
         mock_sb.auth.get_user.return_value = MagicMock(user=mock_user)
 
-        server_timestamp = '2026-04-13T15:30:00+00:00'
+        server_timestamp = "2026-04-13T15:30:00+00:00"
         mock_sb.table.return_value.execute.side_effect = [
-            create_mock_response([{'id': TEST_RESUME_ID}]),
-            create_mock_response([{'updated_at': server_timestamp}]),
+            create_mock_response([{"id": TEST_RESUME_ID}]),
+            create_mock_response([{"updated_at": server_timestamp}]),
         ]
 
         response = client.patch(
-            f'/api/resumes/{TEST_RESUME_ID}',
-            json={'title': 'New Title'},
+            f"/api/resumes/{TEST_RESUME_ID}",
+            json={"title": "New Title"},
             headers=auth_headers,
         )
 
         data = response.get_json()
-        assert data['success'] is True
-        assert data['title'] == 'New Title'
-        assert data['updated_at'] == server_timestamp
+        assert data["success"] is True
+        assert data["title"] == "New Title"
+        assert data["updated_at"] == server_timestamp
 
 
 class TestThumbnailPreservesUpdatedAt:
@@ -159,6 +167,7 @@ class TestThumbnailPreservesUpdatedAt:
         # This is a structural test — verify the app code no longer fetches
         # updated_at before thumbnail updates. We grep the source for the pattern.
         import inspect
+
         source = inspect.getsource(flask_app.generate_pdf_for_saved_resume)
 
         # The old buggy pattern: fetching updated_at to "preserve" it
@@ -169,9 +178,9 @@ class TestThumbnailPreservesUpdatedAt:
 
         # Also check the thumbnail endpoint
         source_thumb = inspect.getsource(flask_app.generate_thumbnail_for_resume)
-        assert 'select("updated_at")' not in source_thumb, (
-            "Thumbnail endpoint should not fetch updated_at"
-        )
+        assert (
+            'select("updated_at")' not in source_thumb
+        ), "Thumbnail endpoint should not fetch updated_at"
 
 
 class TestContentSaveSetsUpdatedAt:
@@ -186,16 +195,18 @@ class TestContentSaveSetsUpdatedAt:
         client, mock_sb, flask_app = flask_test_client
 
         import inspect
+
         source = inspect.getsource(flask_app.save_resume)
 
         # The resume_data dict must include updated_at
-        assert '"updated_at": "now()"' in source or "'updated_at': 'now()'" in source, (
-            "Content save must include updated_at='now()' in resume_data"
-        )
+        assert (
+            '"updated_at": "now()"' in source or "'updated_at': 'now()'" in source
+        ), "Content save must include updated_at='now()' in resume_data"
         # And last_accessed_at for the same dict
-        assert '"last_accessed_at": "now()"' in source or "'last_accessed_at': 'now()'" in source, (
-            "Content save must include last_accessed_at='now()' in resume_data"
-        )
+        assert (
+            '"last_accessed_at": "now()"' in source
+            or "'last_accessed_at': 'now()'" in source
+        ), "Content save must include last_accessed_at='now()' in resume_data"
 
 
 class TestSoftDeletePreservesUpdatedAt:
@@ -211,12 +222,12 @@ class TestSoftDeletePreservesUpdatedAt:
 
         # Responses: verify ownership, soft delete
         mock_sb.table.return_value.execute.side_effect = [
-            create_mock_response([{'id': TEST_RESUME_ID}]),  # Verify ownership
+            create_mock_response([{"id": TEST_RESUME_ID}]),  # Verify ownership
             create_mock_response([]),  # Soft delete
         ]
 
         response = client.delete(
-            f'/api/resumes/{TEST_RESUME_ID}',
+            f"/api/resumes/{TEST_RESUME_ID}",
             headers=auth_headers,
         )
 
@@ -226,10 +237,10 @@ class TestSoftDeletePreservesUpdatedAt:
         update_calls = mock_sb.table.return_value.update.call_args_list
         assert len(update_calls) >= 1
         update_payload = update_calls[-1][0][0]
-        assert 'deleted_at' in update_payload, "Should include deleted_at"
-        assert 'updated_at' not in update_payload, (
-            "Soft delete must NOT touch updated_at"
-        )
+        assert "deleted_at" in update_payload, "Should include deleted_at"
+        assert (
+            "updated_at" not in update_payload
+        ), "Soft delete must NOT touch updated_at"
 
 
 class TestMigrationPreservesUpdatedAt:
@@ -241,6 +252,7 @@ class TestMigrationPreservesUpdatedAt:
 
         # Structural test: verify migration code doesn't include updated_at
         import inspect
+
         source = inspect.getsource(flask_app.migrate_anonymous_resumes)
 
         # The old buggy pattern had "updated_at": original_timestamp in the update

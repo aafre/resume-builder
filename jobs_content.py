@@ -9,7 +9,6 @@ Template selection is deterministic via hash(slug_combo) for consistency.
 
 from __future__ import annotations
 
-
 # =============================================================================
 # Intro copy templates by category
 # =============================================================================
@@ -397,7 +396,10 @@ CATEGORY_FAQS: dict[str, list[dict[str, str]]] = {
 # Salary insight line
 # =============================================================================
 
-def format_salary_insight(salary_stats: dict | None, role_display: str, location: str) -> str:
+
+def format_salary_insight(
+    salary_stats: dict | None, role_display: str, location: str
+) -> str:
     """Generate a salary insight sentence from aggregated salary data."""
     if not salary_stats or salary_stats.get("sample_size", 0) < 3:
         return f"Salary data for {role_display} roles in {location} varies by experience and employer."
@@ -433,6 +435,7 @@ def format_salary_insight(salary_stats: dict | None, role_display: str, location
 # Template selection (deterministic)
 # =============================================================================
 
+
 def _select_template(templates: list[str], slug_combo: str) -> str:
     """Deterministically select a template based on slug combination hash."""
     idx = hash(slug_combo) % len(templates)
@@ -442,6 +445,7 @@ def _select_template(templates: list[str], slug_combo: str) -> str:
 # =============================================================================
 # Public API
 # =============================================================================
+
 
 def get_intro_copy(
     category: str,
@@ -486,19 +490,25 @@ def get_faqs(
     """Get FAQ list for a pSEO page, with variables filled in."""
     templates = CATEGORY_FAQS.get(category, CATEGORY_FAQS["engineering"])
 
-    skills_str = ", ".join(top_skills[:5]) if top_skills else "relevant technical skills"
+    skills_str = (
+        ", ".join(top_skills[:5]) if top_skills else "relevant technical skills"
+    )
     salary_insight = format_salary_insight(salary_stats, role_display, location)
 
     faqs = []
     for tpl in templates:
-        faqs.append({
-            "question": tpl["question"].format(role=role_display, location=location),
-            "answer": tpl["answer"].format(
-                role=role_display,
-                location=location,
-                top_skills=skills_str,
-                salary_insight=salary_insight,
-            ),
-        })
+        faqs.append(
+            {
+                "question": tpl["question"].format(
+                    role=role_display, location=location
+                ),
+                "answer": tpl["answer"].format(
+                    role=role_display,
+                    location=location,
+                    top_skills=skills_str,
+                    salary_insight=salary_insight,
+                ),
+            }
+        )
 
     return faqs
