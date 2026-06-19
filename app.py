@@ -1,4 +1,5 @@
 import yaml
+from utils.yaml_converter import fast_yaml_load
 import tempfile
 import shutil
 import hashlib
@@ -838,7 +839,7 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
 def load_resume_data(yaml_file_path):
     """Load and validate resume data from YAML file."""
     with open(yaml_file_path, "r") as file:
-        data = yaml.safe_load(file)
+        data = fast_yaml_load(file)
 
     if not isinstance(data, dict):
         raise ValueError("Invalid YAML format: Root must be a dictionary")
@@ -849,7 +850,7 @@ def load_resume_data(yaml_file_path):
 def _load_yaml_file_cached(yaml_path_str: str) -> dict:
     """Internal cached helper to load YAML files from disk."""
     with open(yaml_path_str, "r", encoding="utf-8") as file:
-        data = yaml.safe_load(file)
+        data = fast_yaml_load(file)
     return data
 
 def get_template_config(yaml_path) -> dict:
@@ -1925,7 +1926,7 @@ def generate_resume():
 
             # Parse YAML to extract icon references
             with open(yaml_path, "r") as f:
-                yaml_data = yaml.safe_load(f)
+                yaml_data = fast_yaml_load(f)
 
             # Normalize sections for backward compatibility
             yaml_data = normalize_sections(yaml_data)

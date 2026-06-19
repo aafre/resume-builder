@@ -12,6 +12,14 @@ import yaml
 from typing import Dict, Any
 
 
+def fast_yaml_load(stream):
+    try:
+        from yaml import CSafeLoader as SafeLoader
+    except ImportError:
+        from yaml import SafeLoader
+    return yaml.load(stream, Loader=SafeLoader)
+
+
 def json_to_yaml_structure(resume_data: Dict[str, Any]) -> str:
     """
     Convert resume JSON (from database JSONB) to YAML string.
@@ -87,7 +95,7 @@ def yaml_to_json_structure(yaml_string: str) -> Dict[str, Any]:
     """
 
     # Parse YAML
-    parsed = yaml.safe_load(yaml_string)
+    parsed = fast_yaml_load(yaml_string)
 
     if not parsed:
         raise ValueError("Empty or invalid YAML")

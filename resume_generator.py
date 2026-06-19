@@ -2,6 +2,7 @@ import re
 import pdfkit
 import argparse
 import yaml
+from utils.yaml_converter import fast_yaml_load
 import uuid
 import logging
 import shutil
@@ -27,7 +28,7 @@ except Exception as e:
 def load_resume_data(yaml_file_path):
     """Load and validate resume data from YAML file."""
     with open(yaml_file_path, "r") as file:
-        data = yaml.safe_load(file)
+        data = fast_yaml_load(file)
 
     if not isinstance(data, dict):
         raise ValueError("Invalid YAML format: Root must be a dictionary")
