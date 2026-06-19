@@ -46,18 +46,22 @@ const SectionEditor: React.FC<{
                 autoFocus
               />
               <button
+                type="button"
+                aria-label="Save Section Name"
                 onClick={handleSaveName}
-                className="ml-2 text-green-500 hover:text-green-600"
+                className="ml-2 text-green-500 hover:text-green-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent rounded"
                 title="Save Section Name"
               >
-                💾
+                <span role="img" aria-hidden="true">💾</span>
               </button>
               <button
+                type="button"
+                aria-label="Cancel Edit"
                 onClick={handleCancelEdit}
-                className="ml-2 text-red-500 hover:text-red-600"
+                className="ml-2 text-red-500 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500 rounded"
                 title="Cancel Edit"
               >
-                ❌
+                <span role="img" aria-hidden="true">❌</span>
               </button>
             </>
           ) : (
@@ -65,11 +69,12 @@ const SectionEditor: React.FC<{
               Section: {section.name}
               {!isFixedSection && (
                 <button
+                  type="button"
                   onClick={() => setIsEditingName(true)}
-                  className="ml-2 text-accent hover:text-accent"
+                  className="ml-2 text-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent rounded"
                   aria-label="Edit Section Name"
                 >
-                  ✏️
+                  <span role="img" aria-hidden="true">✏️</span>
                 </button>
               )}
             </h2>
@@ -149,12 +154,14 @@ const SectionEditor: React.FC<{
                 placeholder="Enter item text"
               />
               <button
+                type="button"
+                aria-label="Remove item"
                 onClick={() => {
                   const updatedSections = [...sections];
                   updatedSections[sectionIndex].content.splice(itemIndex, 1);
                   setSections(updatedSections);
                 }}
-                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
               >
                 Remove
               </button>
@@ -173,6 +180,7 @@ const SectionEditor: React.FC<{
         )}
         {Array.isArray(section.content) && (
           <button
+            type="button"
             onClick={() => {
               const updatedSections = [...sections];
               updatedSections[sectionIndex].content.push({
@@ -181,7 +189,7 @@ const SectionEditor: React.FC<{
               });
               setSections(updatedSections);
             }}
-            className="bg-accent text-ink px-4 py-2 mt-2 rounded hover:bg-accent"
+            className="bg-accent text-ink px-4 py-2 mt-2 rounded hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent"
           >
             Add Item
           </button>
