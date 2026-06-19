@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import BlogLayout from "../BlogLayout";
+import CopyablePrompt from "../shared/CopyablePrompt";
 import RevealSection from "../shared/RevealSection";
 
 const REVIEW_DATE = "2026-05-25";
@@ -569,9 +570,11 @@ export default function AIResumePromptsHub() {
                   <article key={step.title} className="bg-white rounded-2xl p-6 md:p-8 shadow-premium card-gradient-border">
                     <h3 className="font-display text-xl font-bold text-ink">{step.title}</h3>
                     <p className="mt-3 text-stone-warm leading-relaxed">{step.description}</p>
-                    <pre className="mt-4 bg-ink text-white/90 rounded-xl p-4 md:p-6 text-sm leading-relaxed overflow-x-auto">
-                      <code>{step.code}</code>
-                    </pre>
+                    <div className="mt-4 not-prose">
+                      <CopyablePrompt title="Prompt" copyText={step.code}>
+                        <code className="whitespace-pre-wrap">{step.code}</code>
+                      </CopyablePrompt>
+                    </div>
                   </article>
                 ))}
               </div>
