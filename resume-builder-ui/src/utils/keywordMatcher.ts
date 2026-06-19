@@ -289,15 +289,22 @@ export function extractKeywords(jobDescription: string): string[] {
   // This preserves "data" (8x) when "data science" only appears 2x.
   const multiWordCandidates = candidates.filter((c) => c.keyword.includes(' '));
   const subsumedWords = new Set<string>();
+
+  // Optimization: Pre-compute standalone word counts into a Map to change O(N^2) lookup into O(N)
+  const standaloneWordCounts = new Map<string, number>();
+  for (const c of candidates) {
+    if (!c.keyword.includes(' ')) {
+      standaloneWordCounts.set(c.keyword, c.count);
+    }
+  }
+
   for (const { keyword: bigram, count: bigramCount } of multiWordCandidates) {
     for (const word of bigram.split(' ')) {
-      // Find the standalone word's count
-      const standalone = candidates.find(
-        (c) => c.keyword === word && !c.keyword.includes(' ')
-      );
-      if (standalone) {
+      // Find the standalone word's count via Map instead of candidates.find()
+      if (standaloneWordCounts.has(word)) {
+        const count = standaloneWordCounts.get(word)!;
         // Only subsume if standalone frequency is ≤ 1.5x the bigram frequency
-        if (standalone.count <= bigramCount * 1.5) {
+        if (count <= bigramCount * 1.5) {
           subsumedWords.add(word);
         }
       } else {
