@@ -1,10 +1,18 @@
-import pdfkit
 import argparse
+
+import pdfkit
 import yaml
-import uuid
-from jinja2 import Environment, FileSystemLoader
-from pathlib import Path
+
+try:
+    from yaml import CSafeLoader as SafeLoader
+except ImportError:
+    from yaml import SafeLoader
+
 import sys  # Added for sys.exit to properly indicate failure
+import uuid
+from pathlib import Path
+
+from jinja2 import Environment, FileSystemLoader
 
 # Import the new LaTeX generator module
 # This line is the *first* essential change for integration.
@@ -14,7 +22,7 @@ import resume_generator_latex
 def load_resume_data(yaml_file_path):
     """Load and validate resume data from YAML file."""
     with open(yaml_file_path, "r") as file:
-        data = yaml.safe_load(file)
+        data = yaml.load(file, Loader=SafeLoader)
 
     if not isinstance(data, dict):
         raise ValueError("Invalid YAML format: Root must be a dictionary")

@@ -22,6 +22,12 @@ import tempfile
 from pathlib import Path
 
 import yaml
+
+try:
+    from yaml import CSafeLoader as SafeLoader
+except ImportError:
+    from yaml import SafeLoader
+
 from pdf2image import convert_from_path
 from PIL import Image
 
@@ -61,17 +67,25 @@ def convert_flat_to_template_yaml(resume: dict) -> dict:
     # Build social_links from flat contact fields
     social_links = []
     if contact.get("linkedin"):
-        social_links.append({
-            "platform": "linkedin",
-            "url": contact["linkedin"],
-            "display_text": contact.get("name", "LinkedIn"),
-        })
+        social_links.append(
+            {
+                "platform": "linkedin",
+                "url": contact["linkedin"],
+                "display_text": contact.get("name", "LinkedIn"),
+            }
+        )
     if contact.get("github"):
-        social_links.append({
-            "platform": "github",
-            "url": contact["github"],
-            "display_text": contact["github"].split("/")[-1] if "/" in contact["github"] else contact["github"],
-        })
+        social_links.append(
+            {
+                "platform": "github",
+                "url": contact["github"],
+                "display_text": (
+                    contact["github"].split("/")[-1]
+                    if "/" in contact["github"]
+                    else contact["github"]
+                ),
+            }
+        )
 
     contact_info = {
         "name": contact.get("name", ""),
@@ -85,71 +99,83 @@ def convert_flat_to_template_yaml(resume: dict) -> dict:
     sections = []
 
     if resume.get("summary"):
-        sections.append({
-            "name": "Professional Summary",
-            "type": "text",
-            "content": resume["summary"].strip(),
-        })
+        sections.append(
+            {
+                "name": "Professional Summary",
+                "type": "text",
+                "content": resume["summary"].strip(),
+            }
+        )
 
     if resume.get("experience"):
-        sections.append({
-            "name": "Work Experience",
-            "type": "experience",
-            "content": [
-                {
-                    "company": exp.get("company", ""),
-                    "title": exp.get("title", ""),
-                    "dates": exp.get("dates", ""),
-                    "description": exp.get("bullets", []),
-                }
-                for exp in resume["experience"]
-            ],
-        })
+        sections.append(
+            {
+                "name": "Work Experience",
+                "type": "experience",
+                "content": [
+                    {
+                        "company": exp.get("company", ""),
+                        "title": exp.get("title", ""),
+                        "dates": exp.get("dates", ""),
+                        "description": exp.get("bullets", []),
+                    }
+                    for exp in resume["experience"]
+                ],
+            }
+        )
 
     if resume.get("education"):
-        sections.append({
-            "name": "Education",
-            "type": "education",
-            "content": [
-                {
-                    "school": edu.get("school", ""),
-                    "degree": edu.get("degree", ""),
-                    "year": str(edu.get("year", "")),
-                    "gpa": edu.get("gpa", ""),
-                    "honors": edu.get("honors", ""),
-                }
-                for edu in resume["education"]
-            ],
-        })
+        sections.append(
+            {
+                "name": "Education",
+                "type": "education",
+                "content": [
+                    {
+                        "school": edu.get("school", ""),
+                        "degree": edu.get("degree", ""),
+                        "year": str(edu.get("year", "")),
+                        "gpa": edu.get("gpa", ""),
+                        "honors": edu.get("honors", ""),
+                    }
+                    for edu in resume["education"]
+                ],
+            }
+        )
 
     if resume.get("skills"):
-        sections.append({
-            "name": "Skills",
-            "type": "dynamic-column-list",
-            "content": resume["skills"],
-        })
+        sections.append(
+            {
+                "name": "Skills",
+                "type": "dynamic-column-list",
+                "content": resume["skills"],
+            }
+        )
 
     if resume.get("certifications"):
-        sections.append({
-            "name": "Certifications",
-            "type": "bulleted-list",
-            "content": resume["certifications"],
-        })
+        sections.append(
+            {
+                "name": "Certifications",
+                "type": "bulleted-list",
+                "content": resume["certifications"],
+            }
+        )
 
     if resume.get("projects"):
-        sections.append({
-            "name": "Projects",
-            "type": "experience",
-            "content": [
-                {
-                    "company": "",
-                    "title": proj.get("name", ""),
-                    "dates": "",
-                    "description": [proj.get("description", "")],
-                }
-                for proj in resume["projects"]
-            ],
-        })
+        sections.append(
+            {
+                "name": "Projects",
+                "type": "experience",
+                "content": [
+                    {
+                        "company": "",
+                        "title": proj.get("name", ""),
+                        "dates": "",
+                        "description": [proj.get("description", "")],
+                    }
+                    for proj in resume["projects"]
+                ],
+            }
+        )
 
     return {
         "template": TEMPLATE_NAME,
@@ -184,7 +210,7 @@ def process_example(yml_path: Path) -> bool:
 
     try:
         with open(yml_path, "r", encoding="utf-8") as f:
-            raw = yaml.safe_load(f)
+            raw = yaml.load(f, Loader=SafeLoader)
 
         resume = raw.get("resume", {})
         if not resume:
@@ -205,10 +231,14 @@ def process_example(yml_path: Path) -> bool:
             tmp_pdf_path = tmp_pdf.name
 
         cmd = [
-            "python", "resume_generator.py",
-            "--template", TEMPLATE_NAME,
-            "--input", tmp_yml_path,
-            "--output", tmp_pdf_path,
+            "python",
+            "resume_generator.py",
+            "--template",
+            TEMPLATE_NAME,
+            "--input",
+            tmp_yml_path,
+            "--output",
+            tmp_pdf_path,
         ]
 
         result = subprocess.run(
@@ -245,7 +275,9 @@ def process_example(yml_path: Path) -> bool:
 
 def main():
     parser = argparse.ArgumentParser(description="Generate example preview images")
-    parser.add_argument("--slug", help="Process only this slug (e.g., 'software-engineer')")
+    parser.add_argument(
+        "--slug", help="Process only this slug (e.g., 'software-engineer')"
+    )
     args = parser.parse_args()
 
     # Ensure output directories exist
@@ -271,7 +303,9 @@ def main():
         else:
             failed += 1
 
-    log.info(f"Done: {succeeded} succeeded, {failed} failed, {succeeded * 2} images generated")
+    log.info(
+        f"Done: {succeeded} succeeded, {failed} failed, {succeeded * 2} images generated"
+    )
     if failed:
         sys.exit(1)
 
