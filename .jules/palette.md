@@ -1,0 +1,5 @@
+## 2024-05-18 - Restoring default browser focus outlines on custom modal dialog components
+
+**Learning:** Custom dialog action buttons (Confirm/Cancel) styled with Tailwind classes like `bg-accent` or `shadow-md` often lose default browser focus outlines, severely impacting keyboard accessibility. Icon-only close buttons in modals also need explicit aria-labels, `aria-hidden` attributes on the icons, and keyboard event handlers (like "Escape" to close the modal) to ensure a fully accessible UX for all users.
+
+**Action:** Whenever creating or editing custom modal dialog components with custom styled buttons, explicitly add `focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2` (using contextual colors like `ring-red-500` for destructive actions or `ring-accent`) to restore keyboard accessibility. Ensure all icon-only buttons have descriptive `aria-label`s, `type="button"` to prevent form submissions, and `aria-hidden="true"` on the icon itself. Modals should also include a `useEffect` hook to handle the `Escape` keydown event to close the dialog.
