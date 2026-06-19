@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MdWarning, MdClose } from "react-icons/md";
 
 interface ResponsiveConfirmDialogProps {
@@ -33,6 +33,22 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
   isDestructive = false,
   isLoading = false,
 }) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen && !isLoading) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, isLoading, onClose]);
+
   if (!isOpen) return null;
 
   const handleConfirm = () => {
