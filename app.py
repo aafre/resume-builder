@@ -3344,16 +3344,22 @@ def generate_pdf_for_saved_resume(resume_id):
 
             # Download icons from storage
             failed_icons = []
-            for icon in icons_result.data:
+
+            def _download_worker(icon):
                 icon_path = session_icons_dir / icon["filename"]
                 success = download_icon_from_storage(
                     icon["storage_path"], str(icon_path)
                 )
                 if not success:
-                    failed_icons.append(icon["filename"])
                     logging.error(
                         f"Failed to download icon: {icon['filename']} from {icon['storage_path']}"
                     )
+                    return icon["filename"]
+                return None
+
+            with ThreadPoolExecutor(max_workers=MAX_ICON_COPY_WORKERS) as executor:
+                results = executor.map(_download_worker, icons_result.data)
+                failed_icons = [filename for filename in results if filename is not None]
 
             # Fail fast if any icons missing
             if failed_icons:
@@ -3578,16 +3584,22 @@ def generate_thumbnail_for_resume(resume_id):
 
             # Download icons from storage
             failed_icons = []
-            for icon in icons_result.data:
+
+            def _download_worker(icon):
                 icon_path = session_icons_dir / icon["filename"]
                 success = download_icon_from_storage(
                     icon["storage_path"], str(icon_path)
                 )
                 if not success:
-                    failed_icons.append(icon["filename"])
                     logging.error(
                         f"Failed to download icon: {icon['filename']} from {icon['storage_path']}"
                     )
+                    return icon["filename"]
+                return None
+
+            with ThreadPoolExecutor(max_workers=MAX_ICON_COPY_WORKERS) as executor:
+                results = executor.map(_download_worker, icons_result.data)
+                failed_icons = [filename for filename in results if filename is not None]
 
             # Log warning if any icons failed, but continue with graceful degradation
             if failed_icons:

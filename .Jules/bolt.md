@@ -1,0 +1,3 @@
+## 2026-05-16 - Parallelizing sequential async/IO operations
+**Learning:** In loops processing independent items via I/O operations (like `download_icon_from_storage` in Python or `fileToBase64` in JS), sequential iteration causes unnecessary blocking and latency proportional to item count. Python `app.py` already uses `ThreadPoolExecutor(max_workers=MAX_ICON_COPY_WORKERS)` for duplicate copies but missed applying this pattern to PDF/thumbnail icon downloads.
+**Action:** Replace sequential loops for network/disk I/O with `Promise.all` in JS and `ThreadPoolExecutor` in Python to fetch/process data concurrently while maintaining individual error handling per operation.
