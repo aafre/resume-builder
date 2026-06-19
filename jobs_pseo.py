@@ -16,58 +16,232 @@ import statistics
 import time
 from collections import Counter
 from dataclasses import dataclass, field
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Any
 
 from jinja2 import Environment, FileSystemLoader
 
-from job_engine import JobMatchEngine, MatchContext, TITLE_SYNONYMS
-from jobs_content import get_intro_copy, get_faqs, format_salary_insight
-from generate_jobs_matrix import (
-    FILTER_MODIFIERS,
-    SALARY_BANDS,
-    SENIORITY_PREFIXES,
-    LOCATION_BY_SLUG,
-    to_slug,
-)
+from generate_jobs_matrix import (FILTER_MODIFIERS, LOCATION_BY_SLUG,
+                                  SALARY_BANDS, SENIORITY_PREFIXES, to_slug)
+from job_engine import TITLE_SYNONYMS, JobMatchEngine, MatchContext
+from jobs_content import format_salary_insight, get_faqs, get_intro_copy
 
 logger = logging.getLogger(__name__)
 
 # Stop words for skill extraction from job descriptions
-_STOP_WORDS = frozenset({
-    "a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "has",
-    "have", "in", "is", "it", "its", "of", "on", "or", "that", "the", "to",
-    "was", "were", "will", "with", "you", "your", "this", "they", "can",
-    "all", "but", "not", "what", "who", "which", "their", "our", "we",
-    "been", "had", "would", "about", "into", "over", "such", "than", "them",
-    "then", "these", "those", "being", "each", "also", "more", "other",
-    "some", "very", "just", "should", "could", "may", "do", "did", "does",
-    "how", "when", "where", "why", "most", "must", "any", "both", "only",
-    "work", "working", "role", "experience", "team", "ability", "skills",
-    "looking", "including", "using", "new", "well", "within", "across",
-    "join", "company", "part", "based", "good", "great", "make", "help",
-    "use", "need", "like", "strong", "key", "right", "first", "one", "two",
-    "per", "via", "etc", "e.g", "i.e", "day", "days", "year", "years",
-    "time", "way", "see", "get", "set", "own", "end", "out", "up", "no",
-})
+_STOP_WORDS = frozenset(
+    {
+        "a",
+        "an",
+        "and",
+        "are",
+        "as",
+        "at",
+        "be",
+        "by",
+        "for",
+        "from",
+        "has",
+        "have",
+        "in",
+        "is",
+        "it",
+        "its",
+        "of",
+        "on",
+        "or",
+        "that",
+        "the",
+        "to",
+        "was",
+        "were",
+        "will",
+        "with",
+        "you",
+        "your",
+        "this",
+        "they",
+        "can",
+        "all",
+        "but",
+        "not",
+        "what",
+        "who",
+        "which",
+        "their",
+        "our",
+        "we",
+        "been",
+        "had",
+        "would",
+        "about",
+        "into",
+        "over",
+        "such",
+        "than",
+        "them",
+        "then",
+        "these",
+        "those",
+        "being",
+        "each",
+        "also",
+        "more",
+        "other",
+        "some",
+        "very",
+        "just",
+        "should",
+        "could",
+        "may",
+        "do",
+        "did",
+        "does",
+        "how",
+        "when",
+        "where",
+        "why",
+        "most",
+        "must",
+        "any",
+        "both",
+        "only",
+        "work",
+        "working",
+        "role",
+        "experience",
+        "team",
+        "ability",
+        "skills",
+        "looking",
+        "including",
+        "using",
+        "new",
+        "well",
+        "within",
+        "across",
+        "join",
+        "company",
+        "part",
+        "based",
+        "good",
+        "great",
+        "make",
+        "help",
+        "use",
+        "need",
+        "like",
+        "strong",
+        "key",
+        "right",
+        "first",
+        "one",
+        "two",
+        "per",
+        "via",
+        "etc",
+        "e.g",
+        "i.e",
+        "day",
+        "days",
+        "year",
+        "years",
+        "time",
+        "way",
+        "see",
+        "get",
+        "set",
+        "own",
+        "end",
+        "out",
+        "up",
+        "no",
+    }
+)
 
 # Known tech skills for extraction (lowercase)
-_KNOWN_SKILLS = frozenset({
-    "python", "java", "javascript", "typescript", "react", "angular", "vue",
-    "node", "nodejs", "go", "golang", "rust", "ruby", "php", "swift",
-    "kotlin", "c++", "c#", ".net", "sql", "nosql", "mongodb", "postgresql",
-    "mysql", "redis", "elasticsearch", "aws", "azure", "gcp", "docker",
-    "kubernetes", "terraform", "ansible", "jenkins", "git", "ci/cd",
-    "graphql", "rest", "api", "microservices", "agile", "scrum", "jira",
-    "figma", "sketch", "html", "css", "sass", "tailwind", "webpack",
-    "linux", "bash", "pandas", "numpy", "tensorflow", "pytorch",
-    "machine learning", "deep learning", "nlp", "data science",
-    "power bi", "tableau", "excel", "sap", "salesforce",
-    "spring", "django", "flask", "fastapi", "express", "nextjs",
-    "vue.js", "react native", "flutter", "unity", "unreal",
-})
+_KNOWN_SKILLS = frozenset(
+    {
+        "python",
+        "java",
+        "javascript",
+        "typescript",
+        "react",
+        "angular",
+        "vue",
+        "node",
+        "nodejs",
+        "go",
+        "golang",
+        "rust",
+        "ruby",
+        "php",
+        "swift",
+        "kotlin",
+        "c++",
+        "c#",
+        ".net",
+        "sql",
+        "nosql",
+        "mongodb",
+        "postgresql",
+        "mysql",
+        "redis",
+        "elasticsearch",
+        "aws",
+        "azure",
+        "gcp",
+        "docker",
+        "kubernetes",
+        "terraform",
+        "ansible",
+        "jenkins",
+        "git",
+        "ci/cd",
+        "graphql",
+        "rest",
+        "api",
+        "microservices",
+        "agile",
+        "scrum",
+        "jira",
+        "figma",
+        "sketch",
+        "html",
+        "css",
+        "sass",
+        "tailwind",
+        "webpack",
+        "linux",
+        "bash",
+        "pandas",
+        "numpy",
+        "tensorflow",
+        "pytorch",
+        "machine learning",
+        "deep learning",
+        "nlp",
+        "data science",
+        "power bi",
+        "tableau",
+        "excel",
+        "sap",
+        "salesforce",
+        "spring",
+        "django",
+        "flask",
+        "fastapi",
+        "express",
+        "nextjs",
+        "vue.js",
+        "react native",
+        "flutter",
+        "unity",
+        "unreal",
+    }
+)
 
 BASE_URL = "https://easyfreeresume.com"
 
@@ -75,6 +249,7 @@ BASE_URL = "https://easyfreeresume.com"
 # =============================================================================
 # Page type enum and data class
 # =============================================================================
+
 
 class PageType(Enum):
     ROLE_LOCATION = "role_location"
@@ -179,6 +354,7 @@ class PageData:
 # Renderer
 # =============================================================================
 
+
 class PseoRenderer:
     """Core pSEO page renderer with filesystem cache."""
 
@@ -187,9 +363,9 @@ class PseoRenderer:
     MAX_PER_COMPANY = 3
 
     CACHE_TTL = {
-        "default": 6 * 3600,        # 6 hours
-        "freshness": 2 * 3600,      # 2 hours for posted-today/posted-this-week
-        "hub": 12 * 3600,           # 12 hours for hub pages
+        "default": 6 * 3600,  # 6 hours
+        "freshness": 2 * 3600,  # 2 hours for posted-today/posted-this-week
+        "hub": 12 * 3600,  # 12 hours for hub pages
     }
 
     def __init__(
@@ -240,7 +416,10 @@ class PseoRenderer:
             return None
 
         # Apply noindex for thin content
-        if page_data.total_count < self.MIN_RESULTS_FOR_INDEX and page_type != PageType.MAIN_HUB:
+        if (
+            page_data.total_count < self.MIN_RESULTS_FOR_INDEX
+            and page_type != PageType.MAIN_HUB
+        ):
             page_data.noindex = True
 
         html = self._render_html(page_type, page_data)
@@ -249,7 +428,9 @@ class PseoRenderer:
 
         return html
 
-    def get_page_data(self, page_type: PageType, page: int = 1, **kwargs) -> PageData | None:
+    def get_page_data(
+        self, page_type: PageType, page: int = 1, **kwargs
+    ) -> PageData | None:
         """Return structured data (for JSON API)."""
         return self._fetch_page_data(page_type, page=page, **kwargs)
 
@@ -274,7 +455,10 @@ class PseoRenderer:
                 if len(path_segments) == 3:
                     loc_slug = path_segments[2].lower()
                     if loc_slug in self._loc_by_slug:
-                        return PageType.CATEGORY_HUB, {"category": cat, "location_slug": loc_slug}
+                        return PageType.CATEGORY_HUB, {
+                            "category": cat,
+                            "location_slug": loc_slug,
+                        }
                     return None, {}
                 return PageType.CATEGORY_HUB, {"category": cat}
             return None, {}
@@ -285,7 +469,10 @@ class PseoRenderer:
             if len(path_segments) == 3:
                 loc_slug = path_segments[2].lower()
                 if loc_slug in self._loc_by_slug:
-                    return PageType.COMPANY_PAGE, {"company": co_slug, "location_slug": loc_slug}
+                    return PageType.COMPANY_PAGE, {
+                        "company": co_slug,
+                        "location_slug": loc_slug,
+                    }
                 return None, {}
             return PageType.COMPANY_PAGE, {"company": co_slug}
 
@@ -310,7 +497,10 @@ class PseoRenderer:
             role_slug = seg0
             loc_slug = path_segments[1].lower()
             if role_slug in self._role_by_slug and loc_slug in self._loc_by_slug:
-                return PageType.ROLE_LOCATION, {"role_slug": role_slug, "location_slug": loc_slug}
+                return PageType.ROLE_LOCATION, {
+                    "role_slug": role_slug,
+                    "location_slug": loc_slug,
+                }
             return None, {}
 
         # /jobs/{role}/{location}/{modifier} — Filter page
@@ -334,7 +524,9 @@ class PseoRenderer:
 
     # ---- Data fetching ----------------------------------------------------
 
-    def _fetch_page_data(self, page_type: PageType, page: int = 1, **kwargs) -> PageData | None:
+    def _fetch_page_data(
+        self, page_type: PageType, page: int = 1, **kwargs
+    ) -> PageData | None:
         """Fetch data from Adzuna and build PageData."""
         try:
             if page_type == PageType.ROLE_LOCATION:
@@ -429,7 +621,11 @@ class PseoRenderer:
 
         # Pagination
         if page > 1:
-            page_data.prev_url = f"{page_data.canonical_url}?page={page - 1}" if page > 2 else page_data.canonical_url
+            page_data.prev_url = (
+                f"{page_data.canonical_url}?page={page - 1}"
+                if page > 2
+                else page_data.canonical_url
+            )
         if total > page * self.RESULTS_PER_PAGE:
             page_data.next_url = f"{page_data.canonical_url}?page={page + 1}"
 
@@ -489,7 +685,11 @@ class PseoRenderer:
 
         # Location cards: link to each /jobs/{role}/{location}
         page_data.related_locations = [
-            {"slug": loc["slug"], "name": loc["name"], "url": f"/jobs/{role_slug}/{loc['slug']}"}
+            {
+                "slug": loc["slug"],
+                "name": loc["name"],
+                "url": f"/jobs/{role_slug}/{loc['slug']}",
+            }
             for loc in self.matrix.get("locations", [])
             if loc["slug"] != "remote"
         ]
@@ -498,7 +698,9 @@ class PseoRenderer:
 
         return page_data
 
-    def _fetch_location_hub(self, location_slug: str, page: int = 1, **_) -> PageData | None:
+    def _fetch_location_hub(
+        self, location_slug: str, page: int = 1, **_
+    ) -> PageData | None:
         """Fetch data for /jobs/in/{location}."""
         loc = self._loc_by_slug.get(location_slug)
         if not loc:
@@ -522,7 +724,9 @@ class PseoRenderer:
             cached_at=datetime.now(timezone.utc).isoformat(),
         )
 
-        page_data.title = f"Jobs in {loc['name']} ({_current_month_year()}) | EasyFreeResume"
+        page_data.title = (
+            f"Jobs in {loc['name']} ({_current_month_year()}) | EasyFreeResume"
+        )
         page_data.meta_description = (
             f"Browse {total}+ jobs in {loc['name']}. Find roles across engineering, "
             f"data, design, marketing and more. Updated {_current_month_year()}."
@@ -533,8 +737,12 @@ class PseoRenderer:
 
         # Role links grouped by category
         page_data.related_roles = [
-            {"slug": r["slug"], "name": r["display_name"], "category": r["category"],
-             "url": f"/jobs/{r['slug']}/{location_slug}"}
+            {
+                "slug": r["slug"],
+                "name": r["display_name"],
+                "category": r["category"],
+                "url": f"/jobs/{r['slug']}/{location_slug}",
+            }
             for r in self.matrix.get("roles", [])
             if r["category"] in ("engineering", "data", "design", "management")
         ][:30]
@@ -627,7 +835,9 @@ class PseoRenderer:
 
         page_data.title = self._build_title(page_data)
         page_data.meta_description = self._build_meta_description(page_data)
-        page_data.canonical_url = f"{BASE_URL}/jobs/{role_slug}/{location_slug}/{modifier}"
+        page_data.canonical_url = (
+            f"{BASE_URL}/jobs/{role_slug}/{location_slug}/{modifier}"
+        )
         page_data.breadcrumbs = self._build_breadcrumbs(page_data)
         page_data.structured_data = self._build_structured_data(page_data)
         page_data.related_roles = self._build_related_roles(role, location_slug)
@@ -696,7 +906,9 @@ class PseoRenderer:
         seniority_display = seniority.title()
         page_data.title = self._build_title(page_data)
         page_data.meta_description = self._build_meta_description(page_data)
-        page_data.canonical_url = f"{BASE_URL}/jobs/{seniority}/{role_slug}/{location_slug}"
+        page_data.canonical_url = (
+            f"{BASE_URL}/jobs/{seniority}/{role_slug}/{location_slug}"
+        )
         page_data.breadcrumbs = self._build_breadcrumbs(page_data)
         page_data.structured_data = self._build_structured_data(page_data)
         page_data.related_roles = self._build_related_roles(role, location_slug)
@@ -705,7 +917,9 @@ class PseoRenderer:
 
         return page_data
 
-    def _fetch_category_hub(self, category: str, location_slug: str | None = None, page: int = 1, **_) -> PageData | None:
+    def _fetch_category_hub(
+        self, category: str, location_slug: str | None = None, page: int = 1, **_
+    ) -> PageData | None:
         """Fetch data for /jobs/category/{cat} or /jobs/category/{cat}/{location}."""
         loc = self._loc_by_slug.get(location_slug) if location_slug else None
         location_name = loc["name"] if loc else "the UK"
@@ -736,7 +950,9 @@ class PseoRenderer:
 
         cat_display = category.replace("-", " ").title()
         loc_suffix = f" in {location_name}" if loc else ""
-        page_data.title = f"{cat_display} Jobs{loc_suffix} ({_current_month_year()}) | EasyFreeResume"
+        page_data.title = (
+            f"{cat_display} Jobs{loc_suffix} ({_current_month_year()}) | EasyFreeResume"
+        )
         page_data.meta_description = (
             f"Browse {total}+ {category} jobs{loc_suffix}. "
             f"Find the best opportunities updated {_current_month_year()}."
@@ -750,8 +966,15 @@ class PseoRenderer:
 
         # Related roles in this category
         page_data.related_roles = [
-            {"slug": r["slug"], "name": r["display_name"],
-             "url": f"/jobs/{r['slug']}/{location_slug}" if location_slug else f"/jobs/{r['slug']}"}
+            {
+                "slug": r["slug"],
+                "name": r["display_name"],
+                "url": (
+                    f"/jobs/{r['slug']}/{location_slug}"
+                    if location_slug
+                    else f"/jobs/{r['slug']}"
+                ),
+            }
             for r in self.matrix.get("roles", [])
             if r["category"] == category
         ]
@@ -759,7 +982,9 @@ class PseoRenderer:
 
         return page_data
 
-    def _fetch_company_page(self, company: str, location_slug: str | None = None, page: int = 1, **_) -> PageData | None:
+    def _fetch_company_page(
+        self, company: str, location_slug: str | None = None, page: int = 1, **_
+    ) -> PageData | None:
         """Fetch data for /jobs/company/{co} or /jobs/company/{co}/{location}."""
         loc = self._loc_by_slug.get(location_slug) if location_slug else None
         company_display = company.replace("-", " ").title()
@@ -811,7 +1036,9 @@ class PseoRenderer:
             page_type=PageType.MAIN_HUB,
             cached_at=datetime.now(timezone.utc).isoformat(),
         )
-        page_data.title = f"Job Search ({_current_month_year()}) | Find Jobs | EasyFreeResume"
+        page_data.title = (
+            f"Job Search ({_current_month_year()}) | Find Jobs | EasyFreeResume"
+        )
         page_data.meta_description = (
             "Search thousands of UK jobs across engineering, data, design, marketing and more. "
             "Filter by location, salary, contract type. Updated daily."
@@ -825,7 +1052,9 @@ class PseoRenderer:
 
     # ---- Helper: build MatchContext ----------------------------------------
 
-    def _build_context(self, query: str, location: str = "", page: int = 1, **kwargs) -> MatchContext:
+    def _build_context(
+        self, query: str, location: str = "", page: int = 1, **kwargs
+    ) -> MatchContext:
         """Build a MatchContext for Adzuna search."""
         return MatchContext(
             query=query,
@@ -837,7 +1066,9 @@ class PseoRenderer:
         )
 
     def _get_engine(self) -> JobMatchEngine:
-        return JobMatchEngine(self.adzuna_app_id, self.adzuna_app_key, supabase=self.supabase)
+        return JobMatchEngine(
+            self.adzuna_app_id, self.adzuna_app_key, supabase=self.supabase
+        )
 
     def _clean_jobs(self, jobs: list[dict]) -> list[dict]:
         """Clean job data for rendering (keep _description temporarily for skill extraction)."""
@@ -847,20 +1078,24 @@ class PseoRenderer:
             # Strip HTML tags for clean snippet
             desc_clean = re.sub(r"<[^>]+>", " ", desc_raw).strip()
             desc_clean = re.sub(r"\s+", " ", desc_clean)
-            snippet = (desc_clean[:200] + "...") if len(desc_clean) > 200 else desc_clean
+            snippet = (
+                (desc_clean[:200] + "...") if len(desc_clean) > 200 else desc_clean
+            )
 
-            cleaned.append({
-                "title": j.get("title", ""),
-                "company": j.get("company", ""),
-                "location": j.get("location", ""),
-                "salary_min": j.get("salary_min"),
-                "salary_max": j.get("salary_max"),
-                "salary_is_predicted": j.get("salary_is_predicted", True),
-                "url": j.get("url", ""),
-                "created": j.get("created", ""),
-                "description": snippet,
-                "_description": desc_raw,  # internal, stripped later
-            })
+            cleaned.append(
+                {
+                    "title": j.get("title", ""),
+                    "company": j.get("company", ""),
+                    "location": j.get("location", ""),
+                    "salary_min": j.get("salary_min"),
+                    "salary_max": j.get("salary_max"),
+                    "salary_is_predicted": j.get("salary_is_predicted", True),
+                    "url": j.get("url", ""),
+                    "created": j.get("created", ""),
+                    "description": snippet,
+                    "_description": desc_raw,  # internal, stripped later
+                }
+            )
         return cleaned
 
     def _diversify_jobs(self, jobs: list[dict]) -> list[dict]:
@@ -1004,10 +1239,12 @@ class PseoRenderer:
 
         if data.category:
             cat_display = data.category.replace("-", " ").title()
-            crumbs.append({
-                "name": cat_display,
-                "url": f"{BASE_URL}/jobs/category/{data.category}",
-            })
+            crumbs.append(
+                {
+                    "name": cat_display,
+                    "url": f"{BASE_URL}/jobs/category/{data.category}",
+                }
+            )
 
         if data.page_type in (PageType.LOCATION_HUB,):
             crumbs.append({"name": data.location_display, "url": None})
@@ -1015,14 +1252,22 @@ class PseoRenderer:
 
         if data.role_display:
             if data.location_display and data.page_type != PageType.ROLE_HUB:
-                crumbs.append({
-                    "name": data.role_display,
-                    "url": f"{BASE_URL}/jobs/{data.role_slug}",
-                })
-                crumbs.append({
-                    "name": data.location_display,
-                    "url": f"{BASE_URL}/jobs/{data.role_slug}/{data.location_slug}" if data.modifier or data.seniority else None,
-                })
+                crumbs.append(
+                    {
+                        "name": data.role_display,
+                        "url": f"{BASE_URL}/jobs/{data.role_slug}",
+                    }
+                )
+                crumbs.append(
+                    {
+                        "name": data.location_display,
+                        "url": (
+                            f"{BASE_URL}/jobs/{data.role_slug}/{data.location_slug}"
+                            if data.modifier or data.seniority
+                            else None
+                        ),
+                    }
+                )
             else:
                 crumbs.append({"name": data.role_display, "url": None})
 
@@ -1049,11 +1294,13 @@ class PseoRenderer:
                 if crumb.get("url"):
                     item["item"] = crumb["url"]
                 items.append(item)
-            schemas.append({
-                "@context": "https://schema.org",
-                "@type": "BreadcrumbList",
-                "itemListElement": items,
-            })
+            schemas.append(
+                {
+                    "@context": "https://schema.org",
+                    "@type": "BreadcrumbList",
+                    "itemListElement": items,
+                }
+            )
 
         # JobPosting for each job (max 20)
         for job in data.jobs[:20]:
@@ -1063,31 +1310,39 @@ class PseoRenderer:
 
         # FAQPage
         if data.faqs:
-            schemas.append({
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                "mainEntity": [
-                    {
-                        "@type": "Question",
-                        "name": faq["question"],
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": faq["answer"],
-                        },
-                    }
-                    for faq in data.faqs
-                ],
-            })
+            schemas.append(
+                {
+                    "@context": "https://schema.org",
+                    "@type": "FAQPage",
+                    "mainEntity": [
+                        {
+                            "@type": "Question",
+                            "name": faq["question"],
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": faq["answer"],
+                            },
+                        }
+                        for faq in data.faqs
+                    ],
+                }
+            )
 
         # WebPage
-        schemas.append({
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            "name": data.title,
-            "description": data.meta_description,
-            "url": data.canonical_url,
-            "isPartOf": {"@type": "WebSite", "name": "EasyFreeResume", "url": BASE_URL},
-        })
+        schemas.append(
+            {
+                "@context": "https://schema.org",
+                "@type": "WebPage",
+                "name": data.title,
+                "description": data.meta_description,
+                "url": data.canonical_url,
+                "isPartOf": {
+                    "@type": "WebSite",
+                    "name": "EasyFreeResume",
+                    "url": BASE_URL,
+                },
+            }
+        )
 
         return schemas
 
@@ -1124,11 +1379,18 @@ class PseoRenderer:
         if job.get("location"):
             posting["jobLocation"] = {
                 "@type": "Place",
-                "address": {"@type": "PostalAddress", "addressLocality": job["location"]},
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": job["location"],
+                },
             }
 
         # Only include salary if NOT predicted
-        if not job.get("salary_is_predicted") and job.get("salary_min") and job.get("salary_max"):
+        if (
+            not job.get("salary_is_predicted")
+            and job.get("salary_min")
+            and job.get("salary_max")
+        ):
             posting["baseSalary"] = {
                 "@type": "MonetaryAmount",
                 "currency": "GBP",
@@ -1158,8 +1420,14 @@ class PseoRenderer:
         for related_slug in role.get("related_roles", [])[:6]:
             related = self._role_by_slug.get(related_slug)
             if related:
-                url = f"/jobs/{related_slug}/{location_slug}" if location_slug else f"/jobs/{related_slug}"
-                links.append({"slug": related_slug, "name": related["display_name"], "url": url})
+                url = (
+                    f"/jobs/{related_slug}/{location_slug}"
+                    if location_slug
+                    else f"/jobs/{related_slug}"
+                )
+                links.append(
+                    {"slug": related_slug, "name": related["display_name"], "url": url}
+                )
         return links
 
     def _build_related_locations(self, role_slug: str, loc: dict) -> list[dict]:
@@ -1169,22 +1437,26 @@ class PseoRenderer:
         for nearby_slug in loc.get("nearby", []):
             nearby = self._loc_by_slug.get(nearby_slug)
             if nearby:
-                links.append({
-                    "slug": nearby_slug,
-                    "name": nearby["name"],
-                    "url": f"/jobs/{role_slug}/{nearby_slug}",
-                })
+                links.append(
+                    {
+                        "slug": nearby_slug,
+                        "name": nearby["name"],
+                        "url": f"/jobs/{role_slug}/{nearby_slug}",
+                    }
+                )
         # Fill with other major cities
         major = ["london", "manchester", "birmingham", "edinburgh", "bristol"]
         for slug in major:
             if slug != loc["slug"] and slug not in [l["slug"] for l in links]:
                 other = self._loc_by_slug.get(slug)
                 if other:
-                    links.append({
-                        "slug": slug,
-                        "name": other["name"],
-                        "url": f"/jobs/{role_slug}/{slug}",
-                    })
+                    links.append(
+                        {
+                            "slug": slug,
+                            "name": other["name"],
+                            "url": f"/jobs/{role_slug}/{slug}",
+                        }
+                    )
             if len(links) >= 5:
                 break
         return links
@@ -1219,26 +1491,32 @@ class PseoRenderer:
             opp = opposite_map.get(data.modifier)
             if opp:
                 opp_label = FILTER_MODIFIERS.get(opp, {}).get("label", opp.title())
-                siblings.append({
-                    "url": f"/jobs/{data.role_slug}/{data.location_slug}/{opp}",
-                    "label": f"{opp_label} {data.role_display} jobs",
-                })
+                siblings.append(
+                    {
+                        "url": f"/jobs/{data.role_slug}/{data.location_slug}/{opp}",
+                        "label": f"{opp_label} {data.role_display} jobs",
+                    }
+                )
             # Adjacent salary bands
             if data.modifier in SALARY_BANDS:
                 bands = list(SALARY_BANDS.keys())
                 idx = bands.index(data.modifier)
                 if idx > 0:
                     prev_band = bands[idx - 1]
-                    siblings.append({
-                        "url": f"/jobs/{data.role_slug}/{data.location_slug}/{prev_band}",
-                        "label": f"£{SALARY_BANDS[prev_band] // 1000}k+ {data.role_display} jobs",
-                    })
+                    siblings.append(
+                        {
+                            "url": f"/jobs/{data.role_slug}/{data.location_slug}/{prev_band}",
+                            "label": f"£{SALARY_BANDS[prev_band] // 1000}k+ {data.role_display} jobs",
+                        }
+                    )
                 if idx < len(bands) - 1:
                     next_band = bands[idx + 1]
-                    siblings.append({
-                        "url": f"/jobs/{data.role_slug}/{data.location_slug}/{next_band}",
-                        "label": f"£{SALARY_BANDS[next_band] // 1000}k+ {data.role_display} jobs",
-                    })
+                    siblings.append(
+                        {
+                            "url": f"/jobs/{data.role_slug}/{data.location_slug}/{next_band}",
+                            "label": f"£{SALARY_BANDS[next_band] // 1000}k+ {data.role_display} jobs",
+                        }
+                    )
             links["siblings"] = siblings
 
         # Seniority siblings
@@ -1246,10 +1524,12 @@ class PseoRenderer:
             siblings = []
             for level in SENIORITY_PREFIXES:
                 if level != data.seniority:
-                    siblings.append({
-                        "url": f"/jobs/{level}/{data.role_slug}/{data.location_slug}",
-                        "label": f"{level.title()} {data.role_display} jobs",
-                    })
+                    siblings.append(
+                        {
+                            "url": f"/jobs/{level}/{data.role_slug}/{data.location_slug}",
+                            "label": f"{level.title()} {data.role_display} jobs",
+                        }
+                    )
             links["siblings"] = siblings
 
         # CTA
@@ -1259,7 +1539,9 @@ class PseoRenderer:
 
     # ---- Caching -----------------------------------------------------------
 
-    def _get_cache_path(self, page_type: PageType, page: int = 1, **kwargs) -> Path | None:
+    def _get_cache_path(
+        self, page_type: PageType, page: int = 1, **kwargs
+    ) -> Path | None:
         """Map page type + params to filesystem cache path."""
         parts = [page_type.value]
         for key in sorted(kwargs.keys()):
@@ -1284,7 +1566,12 @@ class PseoRenderer:
 
     def _get_cache_ttl(self, page_type: PageType) -> int:
         """Variable TTL by page type."""
-        if page_type in (PageType.ROLE_HUB, PageType.LOCATION_HUB, PageType.CATEGORY_HUB, PageType.MAIN_HUB):
+        if page_type in (
+            PageType.ROLE_HUB,
+            PageType.LOCATION_HUB,
+            PageType.CATEGORY_HUB,
+            PageType.MAIN_HUB,
+        ):
             return self.CACHE_TTL["hub"]
         # Check if filter page is freshness type (handled by caller providing modifier)
         return self.CACHE_TTL["default"]
@@ -1331,6 +1618,7 @@ class PseoRenderer:
 # =============================================================================
 # Utility functions
 # =============================================================================
+
 
 def _current_month_year() -> str:
     """Return e.g. 'Feb 2026'."""

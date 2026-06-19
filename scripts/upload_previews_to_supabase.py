@@ -19,6 +19,7 @@ import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
+
 from supabase import create_client
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
@@ -60,7 +61,9 @@ def main():
     load_dotenv(PROJECT_ROOT / ".env")
 
     parser = argparse.ArgumentParser(description="Upload preview images to Supabase")
-    parser.add_argument("--slug", help="Upload only this slug (e.g., 'software-engineer')")
+    parser.add_argument(
+        "--slug", help="Upload only this slug (e.g., 'software-engineer')"
+    )
     args = parser.parse_args()
 
     supabase_url = os.getenv("SUPABASE_URL")
@@ -113,7 +116,9 @@ def main():
 
     # Print the base URL for frontend config
     if succeeded > 0:
-        sample_url = supabase.storage.from_(BUCKET_NAME).get_public_url("software-engineer.webp")
+        sample_url = supabase.storage.from_(BUCKET_NAME).get_public_url(
+            "software-engineer.webp"
+        )
         base_url = sample_url.rsplit("/", 1)[0]
         log.info(f"\nBase URL for frontend: {base_url}")
 
