@@ -16,9 +16,11 @@ These tests ensure that:
 Run tests:
     pytest tests/test_latex_escaping.py -v
 """
-import pytest
-import sys
+
 import os
+import sys
+
+import pytest
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -130,7 +132,9 @@ class TestConvertMarkdownFormattingToLatex:
         result = app.convert_markdown_formatting_to_latex(
             "**AWS_Lambda** function with ~95% uptime"
         )
-        assert result == r"\textbf{AWS\_Lambda} function with \textasciitilde{}95% uptime"
+        assert (
+            result == r"\textbf{AWS\_Lambda} function with \textasciitilde{}95% uptime"
+        )
 
         # Case 2: Italic only
         result2 = app.convert_markdown_formatting_to_latex("Use _italic_ for emphasis")
@@ -155,7 +159,9 @@ class TestResumeGeneratorLatexConsistency:
         # Use a case with single underscore (no matching pair)
         test_input = "AWS_Lambda"
         app_result = app.convert_markdown_formatting_to_latex(test_input)
-        gen_result = resume_generator_latex.convert_markdown_formatting_to_latex(test_input)
+        gen_result = resume_generator_latex.convert_markdown_formatting_to_latex(
+            test_input
+        )
         assert app_result == gen_result
         assert app_result == r"AWS\_Lambda"
 
@@ -163,7 +169,9 @@ class TestResumeGeneratorLatexConsistency:
         """Both modules should handle stray tildes the same way."""
         test_input = "~500 users"
         app_result = app.convert_markdown_formatting_to_latex(test_input)
-        gen_result = resume_generator_latex.convert_markdown_formatting_to_latex(test_input)
+        gen_result = resume_generator_latex.convert_markdown_formatting_to_latex(
+            test_input
+        )
         assert app_result == gen_result
         assert app_result == r"\textasciitilde{}500 users"
 
@@ -171,7 +179,9 @@ class TestResumeGeneratorLatexConsistency:
         """Both modules should handle bold with inner underscores the same way."""
         test_input = "**AWS_Lambda**"
         app_result = app.convert_markdown_formatting_to_latex(test_input)
-        gen_result = resume_generator_latex.convert_markdown_formatting_to_latex(test_input)
+        gen_result = resume_generator_latex.convert_markdown_formatting_to_latex(
+            test_input
+        )
         assert app_result == gen_result
         assert app_result == r"\textbf{AWS\_Lambda}"
 
@@ -313,7 +323,8 @@ class TestRealWorldScenarios:
         assert result == r"AWS\_Lambda experience"
         # Verify no unescaped underscores remain
         import re
-        unescaped = re.findall(r'(?<!\\)_', result)
+
+        unescaped = re.findall(r"(?<!\\)_", result)
         assert len(unescaped) == 0
 
     def test_production_error_scenario_with_tilde(self):
@@ -389,7 +400,7 @@ class TestFullEscapingPipeline:
                     "content": [
                         "AWS_Lambda experience",
                         "~95% test coverage",
-                    ]
+                    ],
                 }
             ]
         }
@@ -428,7 +439,8 @@ class TestLatexCompilationSafety:
             result = app.convert_markdown_formatting_to_latex(test)
             # Count unescaped underscores (not preceded by backslash)
             import re
-            unescaped = re.findall(r'(?<!\\)_', result)
+
+            unescaped = re.findall(r"(?<!\\)_", result)
             assert len(unescaped) == 0, f"Found unescaped underscore in: {result}"
 
     def test_no_unescaped_tilde_in_text_mode(self):
@@ -443,8 +455,9 @@ class TestLatexCompilationSafety:
             result = app.convert_markdown_formatting_to_latex(test)
             # Count unescaped tildes (not part of \textasciitilde{})
             import re
+
             # Find tildes not preceded by backslash
-            unescaped = re.findall(r'(?<!\\)~', result)
+            unescaped = re.findall(r"(?<!\\)~", result)
             assert len(unescaped) == 0, f"Found unescaped tilde in: {result}"
 
     def test_output_contains_valid_latex_escapes(self):
