@@ -68,6 +68,16 @@ export const useSaveIntegration = ({
     return iconsObj;
   }, [iconRegistry.getRegisteredFilenames().join(',')]);
 
+  const resumeData = useMemo(() => {
+    return contactInfo && templateId
+      ? {
+          contact_info: contactInfo,
+          sections: sections,
+          template_id: templateId,
+        }
+      : { contact_info: { name: '', location: '', email: '', phone: '' }, sections: [], template_id: '' };
+  }, [contactInfo, sections, templateId]);
+
   const {
     saveStatus,
     lastSaved,
@@ -75,14 +85,7 @@ export const useSaveIntegration = ({
     resumeId: savedResumeId,
   } = useCloudSave({
     resumeId: cloudResumeId,
-    resumeData:
-      contactInfo && templateId
-        ? {
-            contact_info: contactInfo,
-            sections: sections,
-            template_id: templateId,
-          }
-        : { contact_info: { name: '', location: '', email: '', phone: '' }, sections: [], template_id: '' },
+    resumeData: resumeData,
     icons: iconsForCloudSave,
     enabled: !!templateId && !!contactInfo && !isLoadingFromUrl && !authLoading,
     session: session,
