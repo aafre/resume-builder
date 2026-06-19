@@ -1,0 +1,3 @@
+## 2024-05-24 - PyYAML C-Loader Speedup
+**Learning:** PyYAML's default `yaml.safe_load` is pure Python and very slow for large configs. `yaml.CSafeLoader` is a C extension that provides a massive speedup (~8x in benchmarks: Slow: 23.879s, Fast: 2.994s) but requires a fallback for environments where it is not compiled.
+**Action:** When working with large YAML files or in tight loops (like PDF rendering or example generation), use a custom wrapper like `fast_yaml_load` that attempts to import `yaml.CSafeLoader` and falls back to `yaml.SafeLoader`. Replace instances of `yaml.safe_load` globally with this wrapper.
