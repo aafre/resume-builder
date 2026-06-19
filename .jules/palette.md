@@ -1,0 +1,3 @@
+## 2024-05-22 - Explicit button types and focus states in generic editors
+**Learning:** In dynamically generated editor components (like `SectionEditor`), inline action buttons that use emojis or icons often lack `type="button"`, causing unintended form submissions if wrapped in a `<form>` later. Additionally, these custom controls frequently lose default keyboard focus visibility due to Tailwind resets.
+**Action:** Always add `type="button"`, descriptive `aria-label`s, and explicit focus classes (`focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded`) to all custom inline editor controls.
