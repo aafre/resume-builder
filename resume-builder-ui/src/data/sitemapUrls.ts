@@ -90,6 +90,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/easyfreeresume-vs-zety', priority: 0.7, changefreq: 'monthly', lastmod: '2026-02-25' },
   { loc: '/blog/how-to-list-skills', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/blog/quantify-resume-accomplishments', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
+  { loc: '/blog/resume-builder-hidden-costs', priority: 0.5, changefreq: 'monthly', lastmod: '2026-06-18' },
 
   // New AI Blog Posts (0.5) - recently created
   { loc: '/blog/ai-resume-prompts-hub', priority: 0.5, changefreq: 'monthly', lastmod: '2026-05-25' },
