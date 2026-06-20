@@ -110,7 +110,7 @@ export default function ResumeBuilderHiddenCosts() {
         </p>
 
         <div className="overflow-x-auto my-8">
-          <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm text-sm">
+          <table className="w-full bg-white border border-black/[0.06] rounded-xl shadow-sm text-sm overflow-hidden">
             <thead>
               <tr className="bg-chalk-dark">
                 <th className="px-4 py-4 text-left font-bold text-ink">
@@ -147,7 +147,7 @@ export default function ResumeBuilderHiddenCosts() {
                   Every 4 weeks (~13/yr)
                 </td>
                 <td className="px-4 py-4 text-stone-warm">~$389/year</td>
-                <td className="px-4 py-4 text-red-600">Yes (typical)</td>
+                <td className="px-4 py-4 text-red-700">Yes (typical)</td>
                 <td className="px-4 py-4 text-stone-warm">
                   Users report cancellation friction
                 </td>
@@ -162,7 +162,7 @@ export default function ResumeBuilderHiddenCosts() {
                   Every 4 weeks (~13/yr)
                 </td>
                 <td className="px-4 py-4 text-stone-warm">~$337/year</td>
-                <td className="px-4 py-4 text-red-600">Yes (typical)</td>
+                <td className="px-4 py-4 text-red-700">Yes (typical)</td>
                 <td className="px-4 py-4 text-stone-warm">
                   Cancel before trial ends
                 </td>
@@ -181,7 +181,7 @@ export default function ResumeBuilderHiddenCosts() {
                   Monthly or annual
                 </td>
                 <td className="px-4 py-4 text-stone-warm">~$120/year (Pro)</td>
-                <td className="px-4 py-4 text-yellow-600">
+                <td className="px-4 py-4 text-yellow-800">
                   Free tier limited, not watermarked
                 </td>
                 <td className="px-4 py-4 text-stone-warm">
