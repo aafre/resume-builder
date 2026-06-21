@@ -1739,8 +1739,21 @@ def serve(path):
         # Check if the path matches a known SPA route prefix
         first_segment = path.split("/")[0] if path else ""
         if first_segment in VALID_SPA_ROUTES:
-            # For bots: serve prerendered HTML if available
             user_agent = request.headers.get("User-Agent", "")
+
+            # C4 LCP spike: serve prerendered HTML to ALL users on the homepage so
+            # the already-painted H1 is the credited LCP element (main.tsx hydrates
+            # it in place via hydrateRoot). Route-limited to "/" for now. Served
+            # with no-cache so a stale prerender can never outlive its JS bundle —
+            # the #1 hydration-mismatch risk for prerender-to-all.
+            if path == "":
+                prerendered = _get_prerendered_path(path)
+                if prerendered:
+                    resp = send_file(prerendered, mimetype="text/html")
+                    resp.headers["Cache-Control"] = "no-cache, must-revalidate"
+                    return resp
+
+            # For bots on other routes: serve prerendered HTML if available
             if _is_bot(user_agent):
                 prerendered = _get_prerendered_path(path)
                 if prerendered:
