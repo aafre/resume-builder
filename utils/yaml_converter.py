@@ -9,7 +9,23 @@ while still supporting YAML for the PDF generation pipeline.
 """
 
 import yaml
-from typing import Dict, Any
+
+# High-performance YAML loader
+try:
+    from yaml import CSafeLoader as FastSafeLoader
+except ImportError:
+    from yaml import SafeLoader as FastSafeLoader
+
+
+def fast_yaml_load(stream):
+    """
+    Parse YAML using the C-based loader if available for significant performance gains.
+    Falls back to pure Python loader if C-extension is not compiled.
+    """
+    return yaml.load(stream, Loader=FastSafeLoader)
+
+
+from typing import Any, Dict
 
 
 def json_to_yaml_structure(resume_data: Dict[str, Any]) -> str:
@@ -46,9 +62,9 @@ def json_to_yaml_structure(resume_data: Dict[str, Any]) -> str:
 
     # Build YAML structure matching template expectations
     yaml_structure = {
-        'template': resume_data.get('template_id', 'modern-with-icons'),
-        'contact_info': resume_data.get('contact_info', {}),
-        'sections': resume_data.get('sections', [])
+        "template": resume_data.get("template_id", "modern-with-icons"),
+        "contact_info": resume_data.get("contact_info", {}),
+        "sections": resume_data.get("sections", []),
     }
 
     # Convert to YAML string
@@ -57,7 +73,7 @@ def json_to_yaml_structure(resume_data: Dict[str, Any]) -> str:
         default_flow_style=False,
         allow_unicode=True,
         sort_keys=False,
-        width=float('inf')  # Prevent line wrapping
+        width=float("inf"),  # Prevent line wrapping
     )
 
     return yaml_string
@@ -87,16 +103,16 @@ def yaml_to_json_structure(yaml_string: str) -> Dict[str, Any]:
     """
 
     # Parse YAML
-    parsed = yaml.safe_load(yaml_string)
+    parsed = fast_yaml_load(yaml_string)
 
     if not parsed:
         raise ValueError("Empty or invalid YAML")
 
     # Convert to JSON structure
     json_structure = {
-        'template_id': parsed.get('template', 'modern-with-icons'),
-        'contact_info': parsed.get('contact_info', {}),
-        'sections': parsed.get('sections', [])
+        "template_id": parsed.get("template", "modern-with-icons"),
+        "contact_info": parsed.get("contact_info", {}),
+        "sections": parsed.get("sections", []),
     }
 
     return json_structure
