@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.27.0] - 2026-06-21
+
+### 🚀 Features
+
+- **seo:** Add "real cost of free resume builders" anchor page
+
+### 🐛 Bug Fixes
+
+- **seo:** Address review on hidden-costs table (a11y + corner clipping)
+
 ## [3.26.0] - 2026-06-18
 
 ### 🚀 Features
