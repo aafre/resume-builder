@@ -13,6 +13,16 @@ export interface BlogPost {
 }
 
 export const blogPosts: BlogPost[] = [
+  {
+    slug: "resume-builder-hidden-costs",
+    title: 'The Real Cost of "Free" Resume Builders (2026)',
+    description:
+      'How much do "free" resume builders actually cost in 2026? Real trial prices, post-trial charges, the 13-charge billing trap, and a genuinely free, no-watermark alternative.',
+    publishDate: "2026-06-18",
+    readTime: "11 min",
+    category: "Comparisons",
+    featured: true,
+  },
   // New AI Blog Content (Featured)
   {
     slug: "ai-resume-prompts-hub",

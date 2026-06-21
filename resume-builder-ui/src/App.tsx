@@ -104,6 +104,7 @@ const HowToWriteResumeGuide = lazy(() => import("./components/blog/HowToWriteRes
 const BestFreeResumeBuilders2026 = lazy(() => import("./components/blog/BestFreeResumeBuilders2026"));
 const ResumeActionVerbs = lazy(() => import("./components/blog/ResumeActionVerbs"));
 const HowToUseResumeKeywords = lazy(() => import("./components/blog/HowToUseResumeKeywords"));
+const ResumeBuilderHiddenCosts = lazy(() => import("./components/blog/ResumeBuilderHiddenCosts"));
 // SoftwareEngineerResumeKeywords removed - route now redirects to /resume-keywords/software-engineer
 const EasyFreeResumeFreeBlog = lazy(() => import("./components/blog/EasyFreeResumeFreeBlog"));
 const ZetyVsEasyFreeResume = lazy(() => import("./components/blog/ZetyVsEasyFreeResume"));
@@ -686,6 +687,14 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <HowToUseResumeKeywords />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/resume-builder-hidden-costs"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ResumeBuilderHiddenCosts />
               </Suspense>
             }
           />
