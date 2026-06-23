@@ -84,7 +84,7 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
           className="text-green-600 hover:text-green-800 transition-colors"
           title="Save Title (Enter)"
         >
-          ✅
+          <span role="img" aria-hidden="true">✅</span>
         </button>
         <button
           type="button"
@@ -93,7 +93,7 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
           className="text-red-600 hover:text-red-800 transition-colors"
           title="Cancel (Esc)"
         >
-          ✕
+          <span aria-hidden="true">✕</span>
         </button>
       </div>
     );

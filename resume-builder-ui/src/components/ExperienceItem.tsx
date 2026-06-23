@@ -94,6 +94,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-medium">Experience #{index + 1}</h3>
         <button
+          type="button"
           onClick={() => onDelete(index)}
           className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
           aria-label="Delete experience entry"
@@ -178,11 +179,13 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
                             />
                           </div>
                           <button
+                            type="button"
                             onClick={() => handleDescRemove(descIndex)}
                             className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
                             title="Remove description point"
+                            aria-label="Remove description point"
                           >
-                            ✕
+                            <span aria-hidden="true">✕</span>
                           </button>
                         </div>
                       </SortableItem>
@@ -193,6 +196,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
             )}
           </div>
           <button
+            type="button"
             onClick={handleDescAdd}
             className="mt-3 bg-accent text-ink px-4 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
           >
