@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { MdWarning, MdClose } from "react-icons/md";
 
 interface ResponsiveConfirmDialogProps {
@@ -33,6 +33,24 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
   isDestructive = false,
   isLoading = false,
 }) => {
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (isOpen && dialogRef.current) {
+      dialogRef.current.focus();
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleConfirm = () => {
@@ -42,10 +60,10 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
 
   // Default button styles based on action type
   const defaultConfirmClass = isDestructive
-    ? "bg-red-600 hover:bg-red-700 text-white"
-    : "bg-accent hover:bg-accent/90 text-white";
+    ? "bg-red-600 hover:bg-red-700 text-white focus-visible:ring-red-600"
+    : "bg-accent hover:bg-accent/90 text-white focus-visible:ring-accent";
 
-  const confirmClass = confirmButtonClass || defaultConfirmClass;
+  const confirmClass = `${confirmButtonClass || defaultConfirmClass} focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2`;
 
   return (
     <>
@@ -62,6 +80,8 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
           bottom-0 left-0 right-0
           lg:inset-0 lg:flex lg:items-center lg:justify-center
           animate-slide-up lg:animate-fade-in"
+        ref={dialogRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby="dialog-title"
@@ -97,7 +117,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
             </div>
             <button
               onClick={onClose}
-              className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors p-1 -mr-1"
+              className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors p-1 -mr-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
               aria-label="Close dialog"
               disabled={isLoading}
             >
@@ -122,7 +142,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
               disabled={isLoading}
               className="w-full lg:w-auto px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700
                 hover:bg-gray-50 active:bg-gray-100
-                transition-colors disabled:opacity-50 disabled:cursor-not-allowed
+                transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-500
                 min-h-[48px] lg:min-h-[44px]"
               style={{ WebkitTapHighlightColor: "transparent" }}
             >
