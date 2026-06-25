@@ -50,7 +50,7 @@ export const SideRailLayout = ({
         <div className="block md:hidden">
           <InContentAd
             adSlot={AD_CONFIG.slots.mobileTop}
-            size="standard"
+            size="large" // "large" (400px) reserves enough for the ~375px mobile fill — prevents CLS
             marginY={16}
           />
         </div>
