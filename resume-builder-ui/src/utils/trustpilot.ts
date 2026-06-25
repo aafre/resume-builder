@@ -19,6 +19,9 @@ let loadPromise: Promise<void> | null = null;
  * it resolves immediately if `window.Trustpilot` is already available.
  */
 export function ensureTrustpilotLoaded(): Promise<void> {
+  if (typeof document === 'undefined') {
+    return Promise.resolve();
+  }
   if (typeof window !== "undefined" && window.Trustpilot) {
     return Promise.resolve();
   }
