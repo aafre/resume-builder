@@ -8,8 +8,22 @@ This allows us to store data as JSONB in the database (queryable, type-safe)
 while still supporting YAML for the PDF generation pipeline.
 """
 
+from typing import Any, Dict
+
 import yaml
-from typing import Dict, Any
+
+try:
+    from yaml import CSafeLoader as SafeLoader
+except ImportError:
+    from yaml import SafeLoader
+
+
+def fast_yaml_load(stream):
+    """
+    Fast YAML loading utility using CSafeLoader if available.
+    Significantly faster than yaml.safe_load for large YAML documents.
+    """
+    return yaml.load(stream, Loader=SafeLoader)
 
 
 def json_to_yaml_structure(resume_data: Dict[str, Any]) -> str:
@@ -46,9 +60,9 @@ def json_to_yaml_structure(resume_data: Dict[str, Any]) -> str:
 
     # Build YAML structure matching template expectations
     yaml_structure = {
-        'template': resume_data.get('template_id', 'modern-with-icons'),
-        'contact_info': resume_data.get('contact_info', {}),
-        'sections': resume_data.get('sections', [])
+        "template": resume_data.get("template_id", "modern-with-icons"),
+        "contact_info": resume_data.get("contact_info", {}),
+        "sections": resume_data.get("sections", []),
     }
 
     # Convert to YAML string
@@ -57,7 +71,7 @@ def json_to_yaml_structure(resume_data: Dict[str, Any]) -> str:
         default_flow_style=False,
         allow_unicode=True,
         sort_keys=False,
-        width=float('inf')  # Prevent line wrapping
+        width=float("inf"),  # Prevent line wrapping
     )
 
     return yaml_string
@@ -87,16 +101,16 @@ def yaml_to_json_structure(yaml_string: str) -> Dict[str, Any]:
     """
 
     # Parse YAML
-    parsed = yaml.safe_load(yaml_string)
+    parsed = fast_yaml_load(yaml_string)
 
     if not parsed:
         raise ValueError("Empty or invalid YAML")
 
     # Convert to JSON structure
     json_structure = {
-        'template_id': parsed.get('template', 'modern-with-icons'),
-        'contact_info': parsed.get('contact_info', {}),
-        'sections': parsed.get('sections', [])
+        "template_id": parsed.get("template", "modern-with-icons"),
+        "contact_info": parsed.get("contact_info", {}),
+        "sections": parsed.get("sections", []),
     }
 
     return json_structure
