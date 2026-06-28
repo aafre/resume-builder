@@ -1,0 +1,3 @@
+## 2025-06-28 - Fast YAML Loading
+**Learning:** PyYAML's default `yaml.safe_load` is pure Python and very slow (around 10s for 100 iterations of a moderate sized document). Using `yaml.load(file, Loader=yaml.CSafeLoader)` with a fallback to `yaml.SafeLoader` gives an ~10x parsing speedup (around 1.1s for the same workload).
+**Action:** When working with YAML parsing in Python, especially in backend applications where performance matters (like resume generation), always prefer `CSafeLoader` over `yaml.safe_load`. To avoid import overhead on every function call, evaluate the `try/except` import block for `CSafeLoader` once at the module level.
