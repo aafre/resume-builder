@@ -184,6 +184,16 @@ export const blogPosts: BlogPost[] = [
     featured: false,
   },
   {
+    slug: "ats-formatting-rules",
+    title: "ATS Formatting Rules 2026: The Invisible Rejection",
+    description:
+      "The ATS formatting rules that decide whether a recruiter ever sees your resume. What breaks parsers, the exact rules to follow, and how to avoid the invisible rejection in 2026.",
+    publishDate: "2026-07-01",
+    lastUpdated: "2026-07-01",
+    readTime: "9 min",
+    category: "ATS Optimization",
+  },
+  {
     slug: "resume-no-experience",
     title: "Resume with No Experience: Real Examples + Free Template",
     description:

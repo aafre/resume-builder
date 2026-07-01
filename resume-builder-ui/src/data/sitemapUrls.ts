@@ -69,6 +69,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/resume-no-experience', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
   { loc: '/blog/job-interview-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/ats-resume-optimization', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
+  { loc: '/blog/ats-formatting-rules', priority: 0.5, changefreq: 'monthly', lastmod: '2026-07-01' },
   { loc: '/blog/resume-mistakes-to-avoid', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/professional-summary-examples', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/blog/cover-letter-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },

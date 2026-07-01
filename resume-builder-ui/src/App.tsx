@@ -88,6 +88,7 @@ const TermsOfService = lazy(() => import("./components/TermsOfService"));
 const BlogIndex = lazy(() => import("./components/BlogIndex"));
 const ResumeMistakesToAvoid = lazy(() => import("./components/blog/ResumeMistakesToAvoid"));
 const ATSOptimization = lazy(() => import("./components/blog/ATSOptimization"));
+const ATSFormattingRules = lazy(() => import("./components/blog/ATSFormattingRules"));
 const ResumeNoExperience = lazy(() => import("./components/blog/ResumeNoExperience"));
 const ProfessionalSummaryExamples = lazy(() => import("./components/blog/ProfessionalSummaryExamples"));
 const ResumeKeywordsGuide = lazy(() => import("./components/blog/ResumeKeywordsGuide"));
@@ -557,6 +558,14 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <ATSOptimization />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/ats-formatting-rules"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ATSFormattingRules />
               </Suspense>
             }
           />
