@@ -1534,6 +1534,15 @@ BOT_USER_AGENTS = re.compile(
 # Prerendered HTML directory (populated by scripts/prerender.ts)
 PRERENDER_DIR = os.path.join(app.static_folder, "prerendered")
 
+# Routes deindexed via HTTP header (X-Robots-Tag). Used for thin/consolidated
+# pages we keep live for users but want out of the index. This is more robust
+# than a client-side <meta robots> alone: it reaches non-JS-rendering crawlers
+# and is served whether the route is prerendered or falls back to the SPA shell.
+# Path form is slash-stripped, matching `path.strip("/")` in serve().
+NOINDEX_ROUTES = {
+    "blog/ai-cover-letter-prompts",
+}
+
 
 def _is_bot(user_agent: str) -> bool:
     """Check if the request is from a known search engine or AI bot."""
@@ -1743,10 +1752,18 @@ def serve(path):
             user_agent = request.headers.get("User-Agent", "")
             if _is_bot(user_agent):
                 prerendered = _get_prerendered_path(path)
-                if prerendered:
-                    return send_file(prerendered, mimetype="text/html")
+                resp = (
+                    send_file(prerendered, mimetype="text/html")
+                    if prerendered
+                    else send_from_directory(app.static_folder, "index.html")
+                )
+            else:
+                resp = send_from_directory(app.static_folder, "index.html")
 
-            return send_from_directory(app.static_folder, "index.html")
+            # Deindex thin/consolidated pages via header (reaches non-JS crawlers)
+            if path.strip("/") in NOINDEX_ROUTES:
+                resp.headers["X-Robots-Tag"] = "noindex, follow"
+            return resp
 
         # Unknown route — serve index.html with 404 status so search engines
         # don't index non-existent pages (avoids soft-404 crawl issues)
