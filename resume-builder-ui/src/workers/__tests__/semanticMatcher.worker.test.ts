@@ -213,7 +213,10 @@ describe('semanticMatcher.worker', () => {
     for (const kw of result.matched) {
       expect(kw.found).toBe(true);
       expect(['exact', 'semantic']).toContain(kw.matchType);
-      expect(kw.similarity).toBeGreaterThanOrEqual(0.65);
+      // Recalibrated (Phase 1): matched threshold is 0.55, not the old 0.65 —
+      // and lexical hits (all three keywords here appear verbatim in the
+      // resume) are floored at the threshold regardless of raw cosine.
+      expect(kw.similarity).toBeGreaterThanOrEqual(0.55);
     }
   });
 
@@ -365,7 +368,10 @@ describe('semanticMatcher.worker', () => {
     const result = (results[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
 
     if (result.totalKeywords > 0) {
-      const expectedPct = Math.round((result.matchedCount / result.totalKeywords) * 100);
+      // Phase 1: partial matches count for half credit, not zero.
+      const expectedPct = Math.round(
+        ((result.matchedCount + 0.5 * result.partialCount) / result.totalKeywords) * 100
+      );
       expect(result.matchPercentage).toBe(expectedPct);
     }
   });
@@ -413,5 +419,92 @@ describe('semanticMatcher.worker', () => {
     expect(mockPipeline).toHaveBeenCalled();
     // Should have both progress/ready AND result messages
     expect(getMessages('match:result')).toHaveLength(1);
+  });
+
+  // ---------------------------------------------------------------------
+  // Phase 1 fix acceptance tests
+  //
+  // These use fully-controlled embeddings instead of the hash-based
+  // fakeEmbedding() above: any text NOT explicitly mapped collapses to the
+  // same vector as the GENERIC_PHRASES, so it gets pruned by
+  // filterGenericTerms() and never reaches the final keyword list. This
+  // keeps each test deterministic and focused on exactly one candidate,
+  // without needing to hand-enumerate every n-gram the extractor produces.
+  // ---------------------------------------------------------------------
+  describe('Phase 1 fixes', () => {
+    const GENERIC = [0, 1, 0, 0];
+
+    function mockControlledEmbeddings(embedMap: Record<string, number[]>) {
+      const mockExtractor = vi.fn(async (texts: string[]) => ({
+        tolist: () => texts.map((t) => embedMap[t.toLowerCase().trim()] ?? GENERIC),
+      }));
+      mockPipeline.mockResolvedValue(mockExtractor);
+    }
+
+    async function freshWorker() {
+      vi.resetModules();
+      await import('../semanticMatcher.worker');
+      workerHandler = (self as unknown as { onmessage: typeof workerHandler }).onmessage;
+      postedMessages.length = 0;
+    }
+
+    it('(a) force-promotes a verbatim keyword to matched even with worst-case (negative) cosine similarity', async () => {
+      mockControlledEmbeddings({
+        'monitor vital signs': [1, 0, 0, 0],
+        'experienced icu nurse who will monitor vital signs for every patient.': [-1, 0, 0, 0],
+      });
+      await freshWorker();
+
+      const jd = 'Qualifications: monitor vital signs for every patient.';
+      const resume = 'Experienced ICU nurse who will monitor vital signs for every patient.';
+
+      await sendMessage({ type: 'match', resumeText: resume, jobDescription: jd });
+      const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+
+      // Every other candidate n-gram collapses to the GENERIC vector and is
+      // filtered out, so only the verbatim phrase should remain.
+      expect(result.totalKeywords).toBe(1);
+      const kw = result.matched.find((k) => k.keyword === 'monitor vital signs');
+      expect(kw).toBeDefined();
+      expect(kw!.found).toBe(true);
+      expect(kw!.matchType).toBe('exact');
+    });
+
+    it('(b) matches a JD keyword via stem fallback ("management" JD keyword vs "managed" in resume)', async () => {
+      mockControlledEmbeddings({
+        management: [1, 0, 0, 0],
+      });
+      await freshWorker();
+
+      const jd = 'Requirements: team management is essential.';
+      const resume = 'Successfully managed cross-functional engineering teams across three product lines.';
+
+      await sendMessage({ type: 'match', resumeText: resume, jobDescription: jd });
+      const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+
+      const kw = result.matched.find((k) => k.keyword === 'management');
+      expect(kw).toBeDefined();
+      expect(kw!.matchType).toBe('exact');
+    });
+
+    it('(d) score formula gives partial-bucket keywords exactly half credit', async () => {
+      mockControlledEmbeddings({
+        quantum: [1, 0],
+        'this is unrelated content only.': [0.5, Math.sqrt(0.75)], // cosine(quantum, chunk) = 0.5 → 'partial'
+      });
+      await freshWorker();
+
+      const jd = 'Requirements: strong knowledge of quantum required for this position.';
+      const resume = 'This is unrelated content only.';
+
+      await sendMessage({ type: 'match', resumeText: resume, jobDescription: jd });
+      const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+
+      expect(result.totalKeywords).toBe(1);
+      expect(result.matchedCount).toBe(0);
+      expect(result.partialCount).toBe(1);
+      // (0 matched + 0.5 * 1 partial) / 1 total = 50%
+      expect(result.matchPercentage).toBe(50);
+    });
   });
 });

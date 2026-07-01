@@ -43,7 +43,9 @@ export interface ScanResult {
 }
 
 // Common English stop words to filter out
-const STOP_WORDS = new Set([
+// Exported so other matchers (e.g. the semantic worker) can reuse the same
+// vetted list instead of maintaining a second, smaller copy.
+export const STOP_WORDS = new Set([
   'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
   'of', 'with', 'by', 'from', 'is', 'are', 'was', 'were', 'be', 'been',
   'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would',
@@ -60,7 +62,7 @@ const STOP_WORDS = new Set([
 
 // Generic job posting filler words
 // (4c) Removed 'development', 'tools', 'support' — meaningful when repeated in requirements
-const JOB_FILLER = new Set([
+export const JOB_FILLER = new Set([
   'experience', 'required', 'preferred', 'ability', 'skills', 'including',
   'work', 'working', 'position', 'role', 'company', 'team', 'opportunity',
   'responsibilities', 'requirements', 'qualifications', 'candidate',
@@ -126,7 +128,7 @@ const PLACEMENT_RULES: Array<{ pattern: RegExp; placement: string }> = [
   { pattern: /(agile|scrum|kanban|waterfall|lean|six\s+sigma|sdlc)/i, placement: 'Skills section — Methodologies' },
 ];
 
-function getSuggestedPlacement(keyword: string): string {
+export function getSuggestedPlacement(keyword: string): string {
   for (const rule of PLACEMENT_RULES) {
     if (rule.pattern.test(keyword)) {
       return rule.placement;
@@ -138,7 +140,7 @@ function getSuggestedPlacement(keyword: string): string {
 /**
  * Normalize text for comparison — lowercase, collapse whitespace
  */
-function normalize(text: string): string {
+export function normalize(text: string): string {
   return text.toLowerCase().replace(/['']/g, "'").replace(/\s+/g, ' ').trim();
 }
 
@@ -147,7 +149,7 @@ function normalize(text: string): string {
  * If a section header is found, return text from that header onward.
  * Otherwise return the full text (best effort).
  */
-function extractRequirementsSection(text: string): string {
+export function extractRequirementsSection(text: string): string {
   const match = REQUIREMENTS_HEADER.exec(text);
   let section = text;
   if (match && match.index !== undefined) {
@@ -354,18 +356,58 @@ function stemText(text: string): string {
   return text.replace(/[a-z]+/gi, (word) => stem(word));
 }
 
+/** Pre-processed resume text ready for lexical keyword lookup */
+export interface LexicalResume {
+  normalized: string;
+  stemmed: string;
+}
+
+/**
+ * Prepare resume text once for lexical keyword matching: normalize, apply
+ * synonym canonicalization, and pre-stem for fallback matching. Reused by
+ * both `scanResume` and the semantic-matcher worker's lexical pre-pass so
+ * verbatim/synonym/stem keyword matching stays in one place.
+ */
+export function prepareLexicalResume(resumeText: string): LexicalResume {
+  // (4a) Normalize resume through full synonym pipeline (multi-word + single-word)
+  let normalized = normalize(resumeText);
+  normalized = applyAllSynonyms(normalized);
+  // (4f) Pre-stem resume text once for fallback stem matching
+  const stemmed = stemText(normalized);
+  return { normalized, stemmed };
+}
+
+/**
+ * Count occurrences of a keyword phrase in a prepared resume using the
+ * exact → synonym-normalized → stem-fallback cascade. Returns 0 if not found.
+ */
+export function countKeywordOccurrencesLexical(keyword: string, resume: LexicalResume): number {
+  // Try exact match first
+  let count = countOccurrences(keyword, resume.normalized);
+
+  // Also try with the synonym-normalized form if different
+  if (count === 0) {
+    const normalizedKeyword = normalizeSynonym(keyword);
+    if (normalizedKeyword !== keyword) {
+      count = countOccurrences(normalizedKeyword, resume.normalized);
+    }
+  }
+
+  // (4f) Stem fallback: only if exact match found nothing AND keyword is NOT a known skill
+  // (known skills like "React", "Docker" should match exactly, not via stems)
+  if (count === 0 && !isKnownSkill(keyword)) {
+    count = countStemOccurrences(keyword, resume.stemmed);
+  }
+
+  return count;
+}
+
 /**
  * Scan resume text against extracted job description keywords
  */
 export function scanResume(resumeText: string, jobDescription: string): ScanResult {
   const keywords = extractKeywords(jobDescription);
-
-  // (4a) Normalize resume through full synonym pipeline (multi-word + single-word)
-  let normalizedResume = normalize(resumeText);
-  normalizedResume = applyAllSynonyms(normalizedResume);
-
-  // (4f) Pre-stem resume text once for fallback stem matching
-  const stemmedResume = stemText(normalizedResume);
+  const resumeLex = prepareLexicalResume(resumeText);
 
   const matched: KeywordResult[] = [];
   const missing: KeywordResult[] = [];
@@ -375,19 +417,7 @@ export function scanResume(resumeText: string, jobDescription: string): ScanResu
     const normalizedKeyword = normalizeSynonym(keyword);
     const category = getSkillCategory(keyword) || getSkillCategory(normalizedKeyword) || 'hard-skill';
 
-    // Try exact match first
-    let count = countOccurrences(keyword, normalizedResume);
-
-    // Also try with the synonym-normalized form if different
-    if (count === 0 && normalizedKeyword !== keyword) {
-      count = countOccurrences(normalizedKeyword, normalizedResume);
-    }
-
-    // (4f) Stem fallback: only if exact match found nothing AND keyword is NOT a known skill
-    // (known skills like "React", "Docker" should match exactly, not via stems)
-    if (count === 0 && !isKnownSkill(keyword)) {
-      count = countStemOccurrences(keyword, stemmedResume);
-    }
+    const count = countKeywordOccurrencesLexical(keyword, resumeLex);
 
     if (count > 0) {
       matched.push({ keyword, found: true, count, category });

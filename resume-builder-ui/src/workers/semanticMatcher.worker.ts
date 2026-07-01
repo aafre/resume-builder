@@ -12,9 +12,24 @@ import type {
   EnhancedKeywordResult,
   EnhancedScanResult,
 } from '../types/semanticMatcher';
+import {
+  getSuggestedPlacement,
+  prepareLexicalResume,
+  countKeywordOccurrencesLexical,
+} from '../utils/keywordMatcher';
 
 // Use remote models from HuggingFace Hub, allow local caching via Cache API
 env.allowLocalModels = false;
+
+// Recalibrated thresholds (Phase 1 fix): the embedding pass alone is only the
+// tie-breaker for keywords the lexical pass (below) can't already confirm —
+// see runMatch(). 0.65 was calibrated too high; real semantic matches cluster
+// at 0.65-0.77, so genuine hits were routinely scored as "partial" (worth 0).
+const MATCHED_THRESHOLD = 0.55;
+const PARTIAL_THRESHOLD = 0.45;
+// Cosine value above which a matched keyword is labeled 'exact' vs 'semantic'
+// (embedding path only — lexical hits are always 'exact', see runMatch()).
+const EXACT_COSINE_THRESHOLD = 0.85;
 
 let extractor: FeatureExtractionPipeline | null = null;
 let modelLoadPromise: Promise<void> | null = null;
@@ -246,27 +261,8 @@ function chunkResume(text: string): string[] {
   return chunks;
 }
 
-// --- Placement suggestion (copied from keywordMatcher.ts) ---
-
-const PLACEMENT_RULES: Array<{ pattern: RegExp; placement: string }> = [
-  { pattern: /\b(python|java|javascript|typescript|c\+\+|ruby|go|rust|php|swift|kotlin|scala|r|matlab|sql|html|css|sass|less)\b/i, placement: 'Skills section — Technical Skills' },
-  { pattern: /\b(react|angular|vue|node|express|django|flask|spring|rails|next\.?js|nuxt|svelte|laravel|asp\.net)\b/i, placement: 'Skills section — Frameworks' },
-  { pattern: /\b(aws|azure|gcp|docker|kubernetes|terraform|jenkins|ci\/cd|git|linux|nginx|apache)\b/i, placement: 'Skills section — Tools & Infrastructure' },
-  { pattern: /\b(excel|powerpoint|word|salesforce|hubspot|jira|confluence|slack|figma|sketch|photoshop|tableau|power\s?bi)\b/i, placement: 'Skills section — Software' },
-  { pattern: /(certified|certification|license|cpa|pmp|scrum|cissp|aws\s+certified)/i, placement: 'Certifications section' },
-  { pattern: /(agile|scrum|kanban|waterfall|lean|six\s+sigma|sdlc)/i, placement: 'Skills section — Methodologies' },
-];
-
-function getSuggestedPlacement(keyword: string): string {
-  for (const rule of PLACEMENT_RULES) {
-    if (rule.pattern.test(keyword)) {
-      return rule.placement;
-    }
-  }
-  return 'Skills section or Experience bullet points';
-}
-
 // --- Main matching pipeline ---
+// (getSuggestedPlacement is imported from keywordMatcher.ts — no more duplicate copy)
 
 async function runMatch(resumeText: string, jobDescription: string): Promise<EnhancedScanResult> {
   // 1. Extract candidate phrases from JD
@@ -330,7 +326,16 @@ async function runMatch(resumeText: string, jobDescription: string): Promise<Enh
   const chunks = chunkResume(resumeText);
   const chunkEmbeddings = await embed(chunks);
 
-  // 6. For each keyword, find max similarity across chunks
+  // Phase 1: prepare resume once for the lexical exact/synonym/stem pass —
+  // reuses the same cascade keywordMatcher.ts's scanResume() already uses.
+  const lexicalResume = prepareLexicalResume(resumeText);
+
+  // 6. For each keyword: lexical pass FIRST. A keyword present in the resume
+  // (verbatim, synonym-normalized, or stemmed) is force-promoted to "matched"
+  // regardless of embedding cosine — a short JD phrase vs. a long resume
+  // sentence dilutes cosine even for a literal match (the root cause of the
+  // "verbatim skill shown as missing" bug). Only keywords the lexical pass
+  // can't confirm fall through to the embedding-cosine classification.
   const matched: EnhancedKeywordResult[] = [];
   const partial: EnhancedKeywordResult[] = [];
   const missing: EnhancedKeywordResult[] = [];
@@ -347,19 +352,40 @@ async function runMatch(resumeText: string, jobDescription: string): Promise<Enh
       }
     }
 
+    // Prefer a chunk that literally contains the phrase for display context;
+    // fall back to the highest-cosine chunk.
+    const literalChunkIdx = chunks.findIndex(c => c.toLowerCase().includes(kw.label.toLowerCase()));
+    const bestMatchContext = chunks[literalChunkIdx >= 0 ? literalChunkIdx : bestChunkIdx]?.slice(0, 150);
+
+    const lexicalCount = countKeywordOccurrencesLexical(kw.label, lexicalResume);
+    if (lexicalCount > 0) {
+      // ponytail: floor the displayed similarity at the matched threshold so a
+      // diluted cosine never shows a confusing low % next to a "matched" badge.
+      // Upgrade path: surface lexical vs. semantic confidence as separate fields
+      // if the UI ever needs to distinguish them.
+      matched.push({
+        keyword: kw.label,
+        found: true,
+        similarity: Math.round(Math.max(maxSim, MATCHED_THRESHOLD) * 100) / 100,
+        matchType: 'exact',
+        bestMatchContext,
+      });
+      continue;
+    }
+
     const result: EnhancedKeywordResult = {
       keyword: kw.label,
-      found: maxSim >= 0.65,
+      found: maxSim >= MATCHED_THRESHOLD,
       similarity: Math.round(maxSim * 100) / 100,
-      matchType: maxSim >= 0.65
-        ? (maxSim >= 0.85 ? 'exact' : 'semantic')
-        : (maxSim >= 0.45 ? 'partial' : 'none'),
-      bestMatchContext: chunks[bestChunkIdx]?.slice(0, 150),
+      matchType: maxSim >= MATCHED_THRESHOLD
+        ? (maxSim >= EXACT_COSINE_THRESHOLD ? 'exact' : 'semantic')
+        : (maxSim >= PARTIAL_THRESHOLD ? 'partial' : 'none'),
+      bestMatchContext,
     };
 
-    if (maxSim >= 0.65) {
+    if (maxSim >= MATCHED_THRESHOLD) {
       matched.push(result);
-    } else if (maxSim >= 0.45) {
+    } else if (maxSim >= PARTIAL_THRESHOLD) {
       partial.push(result);
     } else {
       result.suggestedPlacement = getSuggestedPlacement(kw.label);
@@ -372,8 +398,13 @@ async function runMatch(resumeText: string, jobDescription: string): Promise<Enh
   partial.sort((a, b) => b.similarity - a.similarity);
   missing.sort((a, b) => b.similarity - a.similarity);
 
+  // Phase 1: partial matches count for half credit — a resume that's 80%
+  // covered by verbatim/semantic matches plus a few partials should not be
+  // scored the same as one with only 20% direct matches.
   const total = keywords.length;
-  const matchPercentage = total > 0 ? Math.round((matched.length / total) * 100) : 0;
+  const matchPercentage = total > 0
+    ? Math.round(((matched.length + 0.5 * partial.length) / total) * 100)
+    : 0;
 
   return {
     matchPercentage,
