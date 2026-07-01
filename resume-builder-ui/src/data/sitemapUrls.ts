@@ -99,7 +99,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   { loc: '/blog/gemini-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/blog/ai-job-description-analyzer', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
   { loc: '/blog/ai-resume-review', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
-  { loc: '/blog/ai-cover-letter-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
+  // ai-cover-letter-prompts removed — noindexed thin prompt-cluster sibling (see AICoverLetterPrompts.tsx)
   { loc: '/blog/career-change-resume-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
   { loc: '/blog/resume-employment-gaps', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },
   { loc: '/blog/return-to-work-programs', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-05' },

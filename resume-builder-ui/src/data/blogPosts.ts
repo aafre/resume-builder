@@ -82,14 +82,9 @@ export const blogPosts: BlogPost[] = [
     readTime: "12 min",
     category: "Resume Writing",
   },
-  {
-    slug: "ai-cover-letter-prompts",
-    title: "25+ AI Cover Letter Prompts (Copy-Paste Ready for Any AI Tool)",
-    description: "AI cover letter prompts that actually work: tailored cover letters, opening hooks, career changes, follow-ups, and thank-you notes. Copy-paste ready for ChatGPT, Claude, Copilot, and Gemini.",
-    publishDate: "2026-03-05",
-    readTime: "16 min",
-    category: "AI & Tools",
-  },
+  // ai-cover-letter-prompts intentionally removed from index/sitemap — the page is
+  // noindexed as a thin, near-duplicate prompt-cluster sibling (post-Apr-2026 core-update
+  // quality pruning). Route kept in App.tsx so the live URL still serves the noindex tag.
   {
     slug: "ai-job-description-analyzer",
     title: "How to Use AI to Analyze Job Descriptions (Extract Keywords & Requirements)",
