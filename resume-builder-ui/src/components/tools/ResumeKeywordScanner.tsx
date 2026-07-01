@@ -93,9 +93,11 @@ function ScoreRing({ result }: { result: EnhancedScanResult }) {
 const NLP_WORDS = ['PARSING', 'TOKENIZING', 'EMBEDDING', 'CALIBRATING'] as const;
 const NODE_THRESHOLDS = [0, 17, 33, 50, 67, 83] as const;
 
-function ModelStatusIndicator({
+// Exported for tests only — not part of the page's public API.
+export function ModelStatusIndicator({
   status,
   progress,
+  statusText,
 }: {
   status: string;
   progress: number;
