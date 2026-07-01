@@ -139,37 +139,44 @@ function ModelStatusIndicator({
   // loading
   if (status === 'loading') {
     return (
-      <div className="min-h-[32px] flex items-center gap-3">
-        <span
-          className="w-2 h-2 rounded-full bg-accent"
-          style={{ animation: 'ks-breathe 2s ease-in-out infinite' }}
-        />
-        <span
-          key={wordIndex}
-          className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase"
-          style={{ animation: 'fadeIn 0.3s ease-out' }}
-        >
-          {NLP_WORDS[wordIndex]}...
-        </span>
-        <span className="flex items-center gap-0.5">
-          {NODE_THRESHOLDS.map((_, i) => (
-            <span
-              key={i}
-              className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
-                i < litCount ? 'bg-accent' : 'bg-mist/30'
-              }`}
-              style={
-                i === litCount - 1 && litCount > 0
-                  ? { animation: 'pulse-accent 1.5s ease-in-out infinite' }
-                  : undefined
-              }
-            />
-          ))}
-        </span>
-        {progress > 0 && (
-          <span className="font-mono text-[10px] text-mist tabular-nums">
-            {progress}%
+      <div className="flex flex-col items-center gap-1">
+        <div className="min-h-[32px] flex items-center gap-3">
+          <span
+            className="w-2 h-2 rounded-full bg-accent"
+            style={{ animation: 'ks-breathe 2s ease-in-out infinite' }}
+          />
+          <span
+            key={wordIndex}
+            className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase"
+            style={{ animation: 'fadeIn 0.3s ease-out' }}
+          >
+            {NLP_WORDS[wordIndex]}...
           </span>
+          <span className="flex items-center gap-0.5">
+            {NODE_THRESHOLDS.map((_, i) => (
+              <span
+                key={i}
+                className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                  i < litCount ? 'bg-accent' : 'bg-mist/30'
+                }`}
+                style={
+                  i === litCount - 1 && litCount > 0
+                    ? { animation: 'pulse-accent 1.5s ease-in-out infinite' }
+                    : undefined
+                }
+              />
+            ))}
+          </span>
+          {progress > 0 && (
+            <span className="font-mono text-[10px] text-mist tabular-nums">
+              {progress}%
+            </span>
+          )}
+        </div>
+        {/* Phase 3: explicit one-time/size copy so a slow first load reads as
+            expected progress, not a hang. */}
+        {statusText && (
+          <span className="font-mono text-[10px] text-mist tracking-wide">{statusText}</span>
         )}
       </div>
     );

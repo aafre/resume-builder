@@ -62,14 +62,18 @@ async function ensureModel(): Promise<void> {
   }
 
   modelLoadPromise = (async () => {
-    post({ type: 'init:progress', progress: 0, status: 'Downloading AI model...' });
+    // Phase 3: explicit "one-time, ~23 MB" copy so a slow first load reads as
+    // expected progress, not a hang (subsequent visits hit the Cache API and
+    // this state is skipped almost instantly).
+    const DOWNLOAD_STATUS = 'Downloading AI model (one-time, ~23 MB)…';
+    post({ type: 'init:progress', progress: 0, status: DOWNLOAD_STATUS });
 
     // @ts-expect-error — pipeline() overload union too complex for TS
     extractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
       dtype: 'q8',
       progress_callback: (data: { status: string; progress?: number }) => {
         if (data.status === 'progress' && data.progress != null) {
-          post({ type: 'init:progress', progress: Math.round(data.progress), status: 'Downloading AI model...' });
+          post({ type: 'init:progress', progress: Math.round(data.progress), status: DOWNLOAD_STATUS });
         }
       },
     }) as FeatureExtractionPipeline;
