@@ -1033,24 +1033,25 @@ export const SEO_PAGES: Record<string, PageConfig> = {
   // /best-free-resume-builder-reddit
   redditRecommended: {
     seo: {
-      title: `EasyFreeResume: Free Resume Builder Reddit Recommends (${CURRENT_YEAR})`,
+      title: `EasyFreeResume: The Free Resume Builder Reddit Actually Recommends (${CURRENT_YEAR})`,
       description:
-        `Tired of "free" builders that charge at download? We read 100+ r/resumes threads. EasyFreeResume passes every test — no paywall, no watermark, no sign-up.`,
+        `Looking for a free resume builder Reddit actually trusts? Most "free" builders charge $20+ at download. EasyFreeResume downloads free with no watermark, no sign-up, and ATS-friendly output.`,
       keywords: [
+        'free resume builder reddit',
+        'reddit free resume builder',
         'best free resume builder reddit',
         'reddit resume builder',
         'free resume builder no paywall',
-        'reddit recommended resume',
         'actually free resume builder',
         `best free resume builder ${CURRENT_YEAR}`,
       ],
       canonicalUrl: '/best-free-resume-builder-reddit',
     },
     hero: {
-      h1: `Best Free Resume Builder ${CURRENT_YEAR} - Reddit Recommended`,
-      subtitle: `See why Reddit users consistently recommend EasyFreeResume in ${CURRENT_YEAR}`,
+      h1: `The Free Resume Builder Reddit Recommends (${CURRENT_YEAR})`,
+      subtitle: `The free resume builder Reddit keeps pointing people to — because it downloads free, with no watermark and no forced sign-up.`,
       description:
-        `We analyzed top Reddit threads in r/resumes, r/jobs, and r/cscareerquestions (updated Feb ${CURRENT_YEAR}). Users value truly free exports, ATS compatibility, no watermarks, and privacy. Here is how we meet every criteria.`,
+        `We read the recurring threads in r/resumes, r/jobs, and r/cscareerquestions. The pattern is consistent: job seekers want a truly free download, ATS compatibility, no watermarks, and no forced account. Here is how EasyFreeResume meets every one.`,
       primaryCTA: {
         text: 'Try It Free',
         href: '/templates',
