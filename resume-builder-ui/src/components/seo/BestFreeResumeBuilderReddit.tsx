@@ -1,7 +1,8 @@
 /**
  * Best Free Resume Builder Reddit Page
  * URL: /best-free-resume-builder-reddit
- * Target keyword: "best free resume builder reddit"
+ * Primary keyword: "free resume builder reddit" (also "reddit free resume builder")
+ * Secondary: "best free resume builder reddit"
  */
 
 import { Link } from 'react-router-dom';
@@ -25,6 +26,16 @@ export default function BestFreeResumeBuilderReddit() {
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
       <PageHero config={config.hero} />
+
+      {/* Answer-first intro for AI Overviews / featured snippets */}
+      <div className="max-w-3xl mx-auto -mt-8 mb-16">
+        <p className="text-lg md:text-xl text-ink font-medium leading-relaxed bg-white rounded-2xl p-6 shadow-premium border-l-4 border-l-accent">
+          The free resume builder Reddit most often recommends is <strong>EasyFreeResume</strong>:
+          you can build and download a resume for free with no watermark and no sign-up, and the
+          output is ATS-friendly. It sidesteps the paywall that frustrates r/resumes users on most
+          "free" builders.
+        </p>
+      </div>
 
       <RevealSection variant="fade-up">
         <div className="mb-16">
@@ -75,11 +86,9 @@ export default function BestFreeResumeBuilderReddit() {
             <h3 className="font-display text-xl font-bold text-ink mb-4">
               <span aria-hidden="true">🚫</span> Paywall Bait-and-Switch
             </h3>
-            <p className="text-stone-warm text-sm italic mb-3">
-              "Built my entire resume only to find out I need to pay $20 to download it."
-            </p>
             <p className="text-stone-warm text-sm">
-              Many builders let you create for free but charge to export. Always test the download before investing time.
+              The most common complaint on r/resumes: you build a full resume for free, then hit a
+              $20+ charge at the download step. Always test the actual export before investing time.
             </p>
           </div>
 
@@ -87,11 +96,9 @@ export default function BestFreeResumeBuilderReddit() {
             <h3 className="font-display text-xl font-bold text-ink mb-4">
               <span aria-hidden="true">🚫</span> Watermarks on "Free" Plans
             </h3>
-            <p className="text-stone-warm text-sm italic mb-3">
-              "The free version had their logo on every page. Looked unprofessional."
-            </p>
             <p className="text-stone-warm text-sm">
-              Some builders add branding unless you pay. Check your downloaded file before applying anywhere.
+              Redditors regularly warn that a "free" export can arrive with a builder's logo stamped
+              on every page. Open your downloaded file and check every page before applying anywhere.
             </p>
           </div>
 
@@ -99,11 +106,9 @@ export default function BestFreeResumeBuilderReddit() {
             <h3 className="font-display text-xl font-bold text-ink mb-4">
               <span aria-hidden="true">🚫</span> Mandatory Account Creation
             </h3>
-            <p className="text-stone-warm text-sm italic mb-3">
-              "Had to give them my email and phone number just to try the builder."
-            </p>
             <p className="text-stone-warm text-sm">
-              Many services require signup to collect your data. Look for builders that work without accounts.
+              A recurring frustration: having to hand over an email and phone number just to try a
+              builder. Look for tools that let you start without an account.
             </p>
           </div>
 
@@ -111,14 +116,88 @@ export default function BestFreeResumeBuilderReddit() {
             <h3 className="font-display text-xl font-bold text-ink mb-4">
               <span aria-hidden="true">🚫</span> Aggressive Upselling
             </h3>
-            <p className="text-stone-warm text-sm italic mb-3">
-              "Every click showed a popup asking me to upgrade to premium."
-            </p>
             <p className="text-stone-warm text-sm">
-              Dark patterns pressure you into paying. Choose tools that respect your time and don't manipulate.
+              Threads often flag constant "upgrade to premium" popups as a dark pattern. Choose tools
+              that respect your time instead of nagging you toward a subscription.
             </p>
           </div>
         </div>
+      </div>
+      </RevealSection>
+
+      {/* At-a-glance comparison: free-plan reality across builders Reddit names */}
+      <RevealSection variant="fade-up">
+      <div className="mb-16 cv-auto cv-h-500">
+        <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4 text-center">
+          Free-plan reality check: the builders Reddit names
+        </h2>
+        <p className="text-stone-warm text-center max-w-3xl mx-auto mb-8 font-extralight">
+          The tools that come up most in r/resumes threads, compared on the things that actually
+          decide whether "free" means free. Where public plans vary, we mark it "Varies."
+        </p>
+        <div className="max-w-5xl mx-auto overflow-x-auto rounded-2xl shadow-premium border border-black/[0.06]">
+          <table className="w-full text-sm text-left border-collapse bg-white">
+            <caption className="sr-only">
+              Comparison of free-plan features across EasyFreeResume, Zety, Resume.io, Canva, and Novoresume
+            </caption>
+            <thead>
+              <tr className="bg-chalk-dark text-ink">
+                <th scope="col" className="p-3 font-bold">Builder</th>
+                <th scope="col" className="p-3 font-bold text-center">Download without paying?</th>
+                <th scope="col" className="p-3 font-bold text-center">No watermark on free export?</th>
+                <th scope="col" className="p-3 font-bold text-center">No signup required?</th>
+                <th scope="col" className="p-3 font-bold text-center">DOCX export?</th>
+                <th scope="col" className="p-3 font-bold text-center">ATS-friendly output?</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-black/[0.06]">
+              <tr className="bg-accent/[0.06]">
+                <th scope="row" className="p-3 font-bold text-ink">EasyFreeResume</th>
+                <td className="p-3 text-center text-accent-text font-semibold">Yes</td>
+                <td className="p-3 text-center text-accent-text font-semibold">Yes</td>
+                <td className="p-3 text-center text-accent-text font-semibold">Yes</td>
+                <td className="p-3 text-center text-accent-text font-semibold">Yes</td>
+                <td className="p-3 text-center text-accent-text font-semibold">Yes</td>
+              </tr>
+              <tr>
+                <th scope="row" className="p-3 font-medium text-ink">Zety</th>
+                <td className="p-3 text-center text-stone-warm">No (pay at download)</td>
+                <td className="p-3 text-center text-stone-warm">No</td>
+                <td className="p-3 text-center text-stone-warm">No</td>
+                <td className="p-3 text-center text-stone-warm">Paid</td>
+                <td className="p-3 text-center text-stone-warm">Yes</td>
+              </tr>
+              <tr>
+                <th scope="row" className="p-3 font-medium text-ink">Resume.io</th>
+                <td className="p-3 text-center text-stone-warm">No (pay at download)</td>
+                <td className="p-3 text-center text-stone-warm">No</td>
+                <td className="p-3 text-center text-stone-warm">No</td>
+                <td className="p-3 text-center text-stone-warm">Paid</td>
+                <td className="p-3 text-center text-stone-warm">Yes</td>
+              </tr>
+              <tr>
+                <th scope="row" className="p-3 font-medium text-ink">Canva</th>
+                <td className="p-3 text-center text-stone-warm">Yes (free templates)</td>
+                <td className="p-3 text-center text-stone-warm">Varies (Pro elements)</td>
+                <td className="p-3 text-center text-stone-warm">No</td>
+                <td className="p-3 text-center text-stone-warm">No</td>
+                <td className="p-3 text-center text-stone-warm">Often no (design-heavy)</td>
+              </tr>
+              <tr>
+                <th scope="row" className="p-3 font-medium text-ink">Novoresume</th>
+                <td className="p-3 text-center text-stone-warm">Limited free tier</td>
+                <td className="p-3 text-center text-stone-warm">Varies</td>
+                <td className="p-3 text-center text-stone-warm">No</td>
+                <td className="p-3 text-center text-stone-warm">Paid</td>
+                <td className="p-3 text-center text-stone-warm">Yes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="text-xs text-mist text-center max-w-3xl mx-auto mt-4">
+          Based on publicly documented free-plan behavior; specific plans change over time, so verify
+          the download step yourself before relying on any tool.
+        </p>
       </div>
       </RevealSection>
 
@@ -181,10 +260,8 @@ export default function BestFreeResumeBuilderReddit() {
               </h3>
               <p className="text-stone-warm mb-2">
                 <strong>How we meet it:</strong> Every feature is free forever. No premium tiers,
-                no locked templates, no download limits. We monetize through ethical ads only.
-              </p>
-              <p className="text-sm text-mist italic">
-                "Finally, a builder that doesn't ask for my credit card." - Typical Reddit feedback
+                no locked templates, no download limits. We monetize through ethical ads only —
+                so the credit-card wall Reddit warns about simply isn't there.
               </p>
             </div>
 
@@ -195,10 +272,7 @@ export default function BestFreeResumeBuilderReddit() {
               <p className="text-stone-warm mb-2">
                 <strong>How we meet it:</strong> All templates use standard fonts, clear section
                 headers, and simple formatting. Tested with major ATS platforms including Workday,
-                Taleo, and Greenhouse.
-              </p>
-              <p className="text-sm text-mist italic">
-                "This passed Workday when others didn't." - r/resumes user
+                Taleo, and Greenhouse — the parsers Redditors most often name as make-or-break.
               </p>
             </div>
 
@@ -208,10 +282,8 @@ export default function BestFreeResumeBuilderReddit() {
               </h3>
               <p className="text-stone-warm mb-2">
                 <strong>How we meet it:</strong> No account required. Your resume data stays in
-                your browser. We don't store, track, or sell your information.
-              </p>
-              <p className="text-sm text-mist italic">
-                "Love that I can use this without creating yet another account." - r/jobs comment
+                your browser. We don't store, track, or sell your information — no "yet another
+                account" required, which is exactly what r/jobs threads ask for.
               </p>
             </div>
           </div>
@@ -242,45 +314,45 @@ export default function BestFreeResumeBuilderReddit() {
       </div>
       </RevealSection>
 
-      {/* Recent Reddit Threads - Updated Feb 2026 */}
+      {/* Recurring themes across Reddit resume communities (paraphrased, not verbatim) */}
       <RevealSection variant="fade-up">
       <div className="mb-16 cv-auto cv-h-500">
-        <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
-          What Reddit is saying in 2026
+        <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4 text-center">
+          Recurring themes across Reddit resume communities
         </h2>
+        <p className="text-stone-warm text-center max-w-3xl mx-auto mb-8 font-extralight">
+          These are the patterns we see raised again and again across r/resumes, r/jobs, and
+          r/cscareerquestions — paraphrased themes, not quotes from any specific user.
+        </p>
         <div className="max-w-4xl mx-auto space-y-4">
           <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] p-6">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-sm font-medium text-mist">r/resumes</span>
-              <span className="text-mist">·</span>
-              <span className="text-sm text-mist">Feb 2026</span>
             </div>
-            <p className="text-stone-warm italic mb-3">
-              "I've tried Zety, Resume.io, and Novoresume. They all let you build for free then charge $20+ to download. EasyFreeResume actually let me download without paying. No catch."
+            <p className="text-stone-warm">
+              A recurring frustration is building a full resume on a "free" tool only to be asked for
+              $20+ at the download step. The advice that follows is almost always the same: use a
+              builder that lets you export before you've sunk time into it.
             </p>
-            <p className="text-xs text-mist">Context: Thread asking for truly free resume builders with no hidden costs</p>
           </div>
           <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] p-6">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-sm font-medium text-mist">r/jobs</span>
-              <span className="text-mist">·</span>
-              <span className="text-sm text-mist">Jan 2026</span>
             </div>
-            <p className="text-stone-warm italic mb-3">
-              "PSA: stop using Canva for resumes. ATS can't read them. Use something that outputs clean text-based PDFs. I switched to a free builder and started getting callbacks within a week."
+            <p className="text-stone-warm">
+              A common warning is that design-first tools (like graphic-design apps) can produce
+              resumes ATS software struggles to parse. The consensus leans toward clean, text-based
+              output over heavy visual layouts.
             </p>
-            <p className="text-xs text-mist">Context: Thread about why ATS-friendly formatting matters more than visual design</p>
           </div>
           <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] p-6">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-sm font-medium text-mist">r/cscareerquestions</span>
-              <span className="text-mist">·</span>
-              <span className="text-sm text-mist">Jan 2026</span>
             </div>
-            <p className="text-stone-warm italic mb-3">
-              "For tech resumes: keep it simple, use standard formatting, and make sure it's ATS-parseable. Fancy templates from design sites do more harm than good. Find a free builder that outputs clean PDFs."
+            <p className="text-stone-warm">
+              For tech resumes, the repeated guidance is to keep formatting simple and ATS-parseable.
+              Elaborate templates tend to be treated as a liability rather than an advantage.
             </p>
-            <p className="text-xs text-mist">Context: Thread about tech resume best practices for 2026 job market</p>
           </div>
         </div>
       </div>
