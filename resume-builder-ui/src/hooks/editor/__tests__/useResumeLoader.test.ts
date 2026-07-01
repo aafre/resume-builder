@@ -537,12 +537,13 @@ sections:
       });
       const { result, rerender } = renderHook(() => useResumeLoader(props));
 
-      // Wait for the first (and only) API call
+      // Wait for the error to be handled (state updates land after the
+      // rejected promise resolves, not when apiClient.get is first called)
       await waitFor(() => {
-        expect(apiClientModule.apiClient.get).toHaveBeenCalledTimes(1);
+        expect(result.current.resumeNotFound).toBe(true);
       });
 
-      expect(result.current.resumeNotFound).toBe(true);
+      expect(apiClientModule.apiClient.get).toHaveBeenCalledTimes(1);
       expect(result.current.hasLoadedFromUrl).toBe(true);
 
       // Rerender multiple times — should NOT trigger additional API calls
