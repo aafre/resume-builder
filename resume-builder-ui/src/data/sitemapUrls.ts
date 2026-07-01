@@ -95,6 +95,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   // New AI Blog Posts (0.5) - recently created
   { loc: '/blog/ai-resume-prompts-hub', priority: 0.5, changefreq: 'monthly', lastmod: '2026-05-25' },
   { loc: '/blog/ai-resume-writing-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },
+  { loc: '/blog/humanize-ai-resume', priority: 0.5, changefreq: 'monthly', lastmod: '2026-07-01' },
   { loc: '/blog/claude-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-17' },
   { loc: '/blog/gemini-resume-prompts', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
   { loc: '/blog/ai-job-description-analyzer', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-21' },

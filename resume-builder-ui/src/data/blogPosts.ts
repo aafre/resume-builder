@@ -42,6 +42,15 @@ export const blogPosts: BlogPost[] = [
     category: "AI & Tools",
   },
   {
+    slug: "humanize-ai-resume",
+    title: "How to Humanize an AI-Written Resume (Beat AI Detectors)",
+    description: "AI resumes get rejected when they read as generic and machine-written. Learn the tells recruiters and AI detectors catch, and how to rewrite them into specific, human copy.",
+    publishDate: "2026-07-01",
+    lastUpdated: "2026-07-01",
+    readTime: "9 min",
+    category: "AI & Tools",
+  },
+  {
     slug: "claude-resume-prompts",
     title: "25+ Claude AI Resume Prompts (Copy-Paste Ready) 2026",
     description: "Best Claude prompts for resume writing: professional summary, experience bullets, cover letters, career change, ATS optimization. Copy-paste ready for Claude 3.5 Sonnet and Opus.",
