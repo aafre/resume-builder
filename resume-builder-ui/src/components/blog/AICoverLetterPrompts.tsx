@@ -18,6 +18,7 @@ export default function AICoverLetterPrompts() {
         'cover letter chatgpt prompts',
       ]}
       ctaType="resume"
+      noindex
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
