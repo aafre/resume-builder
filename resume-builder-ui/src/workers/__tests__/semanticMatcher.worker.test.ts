@@ -507,4 +507,55 @@ describe('semanticMatcher.worker', () => {
       expect(result.matchPercentage).toBe(50);
     });
   });
+
+  // ---------------------------------------------------------------------
+  // Phase 2 fix acceptance tests (extraction quality)
+  // ---------------------------------------------------------------------
+  describe('Phase 2 fixes', () => {
+    it('(c) comma is a clause boundary — no cross-clause bigram in candidate extraction', async () => {
+      // Without the Phase 2 fix, "administer medications, monitor vital signs"
+      // would yield the nonsensical cross-clause bigram "medications monitor".
+      const jd = 'Requirements: administer medications, monitor vital signs regularly. ' +
+        'Chart medications, monitor changes daily.';
+
+      await sendMessage({ type: 'match', resumeText: 'Nurse with general clinical experience.', jobDescription: jd });
+      const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+
+      const allKeywords = [...result.matched, ...result.partial, ...result.missing].map((k) => k.keyword);
+      expect(allKeywords).not.toContain('medications monitor');
+    });
+
+    it('(e) dedupes overlapping n-grams lexically when embedding clustering (0.85) misses them', async () => {
+      vi.resetModules();
+      const embedMap: Record<string, number[]> = {
+        'aws cloud infrastructure': [1, 0, 0, 0],
+        'aws cloud': [0, 0, 1, 0],
+        'cloud infrastructure': [0, 0, 0, 1],
+      };
+      const GENERIC = [0, 1, 0, 0];
+      const mockExtractor = vi.fn(async (texts: string[]) => ({
+        tolist: () => texts.map((t) => embedMap[t.toLowerCase().trim()] ?? GENERIC),
+      }));
+      mockPipeline.mockResolvedValue(mockExtractor);
+
+      await import('../semanticMatcher.worker');
+      workerHandler = (self as unknown as { onmessage: typeof workerHandler }).onmessage;
+      postedMessages.length = 0;
+
+      const jd = 'Requirements: aws cloud infrastructure is critical. ' +
+        'Strong aws cloud infrastructure experience needed. ' +
+        'Manage aws cloud infrastructure daily operations.';
+
+      await sendMessage({ type: 'match', resumeText: 'Unrelated resume content.', jobDescription: jd });
+      const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+
+      const keywordLabels = [...result.matched, ...result.partial, ...result.missing].map((k) => k.keyword);
+      // The three orthogonal embeddings above are deliberately < 0.85 cosine
+      // apart, so only the lexical substring dedup (not embedding clustering)
+      // can collapse them — only the longest surviving phrase should remain.
+      expect(keywordLabels).toContain('aws cloud infrastructure');
+      expect(keywordLabels).not.toContain('aws cloud');
+      expect(keywordLabels).not.toContain('cloud infrastructure');
+    });
+  });
 });

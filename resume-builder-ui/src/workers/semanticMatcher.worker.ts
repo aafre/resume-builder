@@ -13,6 +13,9 @@ import type {
   EnhancedScanResult,
 } from '../types/semanticMatcher';
 import {
+  STOP_WORDS,
+  JOB_FILLER,
+  extractRequirementsSection,
   getSuggestedPlacement,
   prepareLexicalResume,
   countKeywordOccurrencesLexical,
@@ -90,7 +93,10 @@ async function embed(texts: string[]): Promise<number[][]> {
 
 /** Extract candidate keyword phrases from job description text */
 function extractCandidates(text: string): Map<string, number> {
-  const lower = text.toLowerCase();
+  // Phase 2: focus on the requirements/qualifications section when the JD has
+  // one — skips company-blurb and benefits noise (reuses keywordMatcher.ts).
+  const focused = extractRequirementsSection(text);
+  const lower = focused.toLowerCase();
   const candidates = new Map<string, number>();
 
   // 1) Special tech terms (C++, C#, .NET, etc.) — extract before normalizing
@@ -107,33 +113,13 @@ function extractCandidates(text: string): Map<string, number> {
     candidates.set(term, (candidates.get(term) || 0) + 1);
   }
 
-  // 3) Split into sentences, then extract n-grams
-  const sentences = lower.split(/[.!?;:\n]+/).filter(s => s.trim().length > 5);
-  const stopWords = new Set([
-    'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
-    'of', 'with', 'by', 'from', 'is', 'are', 'was', 'were', 'be', 'been',
-    'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would',
-    'could', 'should', 'may', 'might', 'shall', 'can', 'need', 'must',
-    'that', 'which', 'who', 'whom', 'this', 'these', 'those', 'it', 'its',
-    'we', 'our', 'you', 'your', 'they', 'their', 'he', 'she', 'him', 'her',
-    'not', 'no', 'nor', 'as', 'if', 'then', 'than', 'too', 'very', 'just',
-    'about', 'all', 'also', 'am', 'any', 'because', 'both', 'each',
-    'more', 'most', 'other', 'so', 'some', 'such', 'up', 'what', 'when',
-    'where', 'while', 'how', 'out', 'into', 'my', 'me', 'i',
-  ]);
-
-  const fillerWords = new Set([
-    'experience', 'required', 'preferred', 'ability', 'skills', 'including',
-    'work', 'working', 'position', 'role', 'company', 'team', 'opportunity',
-    'responsibilities', 'requirements', 'qualifications', 'candidate',
-    'apply', 'job', 'description', 'employment', 'equal', 'employer',
-    'benefits', 'salary', 'competitive', 'minimum', 'years', 'degree',
-    'bachelor', 'master', 'education', 'looking', 'seeking', 'ideal',
-    'someone', 'strong', 'excellent', 'good', 'great', 'solid',
-    'knowledge', 'understanding', 'familiarity', 'plus', 'bonus',
-    'demonstrated', 'proven', 'ensuring', 'responsible', 'proficient',
-    'relevant', 'related',
-  ]);
+  // 3) Split into sentences, then extract n-grams.
+  // Phase 2: comma/parens now count as clause boundaries too, so
+  // "administer medications, monitor vital signs" no longer yields the
+  // cross-clause bigram "medications monitor".
+  const sentences = lower.split(/[.!?;:,()\n]+/).filter(s => s.trim().length > 5);
+  // Phase 2: reuse keywordMatcher's larger, battle-tested stop/filler lists
+  // instead of maintaining a second, smaller copy here.
 
   for (const sentence of sentences) {
     const words = sentence
@@ -144,7 +130,7 @@ function extractCandidates(text: string): Map<string, number> {
     // Unigrams
     for (const word of words) {
       const clean = word.replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
-      if (clean.length <= 2 || stopWords.has(clean) || fillerWords.has(clean)) continue;
+      if (clean.length <= 2 || STOP_WORDS.has(clean) || JOB_FILLER.has(clean)) continue;
       candidates.set(clean, (candidates.get(clean) || 0) + 1);
     }
 
@@ -153,8 +139,8 @@ function extractCandidates(text: string): Map<string, number> {
       const a = words[i].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
       const b = words[i + 1].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
       if (a.length < 2 || b.length < 2) continue;
-      if (stopWords.has(a) || stopWords.has(b)) continue;
-      if (fillerWords.has(a) || fillerWords.has(b)) continue;
+      if (STOP_WORDS.has(a) || STOP_WORDS.has(b)) continue;
+      if (JOB_FILLER.has(a) || JOB_FILLER.has(b)) continue;
       const bigram = `${a} ${b}`;
       candidates.set(bigram, (candidates.get(bigram) || 0) + 1);
     }
@@ -165,8 +151,8 @@ function extractCandidates(text: string): Map<string, number> {
       const b = words[i + 1].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
       const c = words[i + 2].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
       if (a.length < 2 || b.length < 2 || c.length < 2) continue;
-      if (stopWords.has(a) || stopWords.has(c)) continue;
-      if (fillerWords.has(a) || fillerWords.has(c)) continue;
+      if (STOP_WORDS.has(a) || STOP_WORDS.has(c)) continue;
+      if (JOB_FILLER.has(a) || JOB_FILLER.has(c)) continue;
       const trigram = `${a} ${b} ${c}`;
       candidates.set(trigram, (candidates.get(trigram) || 0) + 1);
     }
@@ -261,6 +247,38 @@ function chunkResume(text: string): string[] {
   return chunks;
 }
 
+// --- Lexical n-gram dedup (Phase 2) ---
+
+/**
+ * Drop shorter multi-word candidates that are a substring of a longer
+ * surviving candidate (e.g. "aws cloud" and "cloud infrastructure" both
+ * swallowed by "aws cloud infrastructure"). The 0.85 embedding cluster
+ * (clusterEmbeddings above) misses these because adding/removing a word
+ * can shift cosine similarity below the cluster threshold even though the
+ * phrases describe the same concept. Single words are left untouched here
+ * — they're already handled by the subsumption step above.
+ */
+function dedupSubstringOverlaps<T extends { label: string }>(items: T[]): T[] {
+  const multiWord = [...items]
+    .filter(i => i.label.includes(' '))
+    .sort((a, b) => b.label.length - a.label.length); // longest first
+
+  const dropped = new Set<string>();
+  for (let i = 0; i < multiWord.length; i++) {
+    const shorter = multiWord[i];
+    if (dropped.has(shorter.label)) continue;
+    for (let j = 0; j < i; j++) {
+      const longer = multiWord[j];
+      if (!dropped.has(longer.label) && longer.label.includes(shorter.label)) {
+        dropped.add(shorter.label);
+        break;
+      }
+    }
+  }
+
+  return items.filter(i => !dropped.has(i.label));
+}
+
 // --- Main matching pipeline ---
 // (getSuggestedPlacement is imported from keywordMatcher.ts — no more duplicate copy)
 
@@ -315,6 +333,10 @@ async function runMatch(resumeText: string, jobDescription: string): Promise<Enh
     if (k.label.includes(' ')) return true;
     return !multiWord.some(mw => mw.freq >= k.freq && mw.label.includes(k.label));
   });
+
+  // Phase 2: lexical substring dedup for overlapping multi-word n-grams
+  // that the 0.85 embedding cluster didn't catch (see dedupSubstringOverlaps).
+  keywords = dedupSubstringOverlaps(keywords);
 
   keywords = keywords.slice(0, 40);
 
