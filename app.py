@@ -1543,6 +1543,15 @@ NOINDEX_ROUTES = {
     "blog/ai-cover-letter-prompts",
 }
 
+# ponytail: explicit allowlist — expand only after per-route dev/field CWV validation
+PRERENDER_TO_ALL_ROUTES = frozenset({
+    "free-resume-builder-no-sign-up",
+    "ai-resume-builder-free",
+    "free-cv-builder-no-sign-up",
+    "ats-resume-templates",
+    "resume-keywords",
+})
+
 
 def _is_bot(user_agent: str) -> bool:
     """Check if the request is from a known search engine or AI bot."""
@@ -1748,8 +1757,21 @@ def serve(path):
         # Check if the path matches a known SPA route prefix
         first_segment = path.split("/")[0] if path else ""
         if first_segment in VALID_SPA_ROUTES:
-            # For bots: serve prerendered HTML if available
             user_agent = request.headers.get("User-Agent", "")
+
+            # C4 LCP spike: serve prerendered HTML to ALL users on the homepage and
+            # the explicitly validated SEO allowlist so the already-painted H1 is
+            # the credited LCP element (main.tsx hydrates it in place via hydrateRoot).
+            # Served with no-cache so a stale prerender can never outlive its JS
+            # bundle — the #1 hydration-mismatch risk for prerender-to-all.
+            if path == "" or path in PRERENDER_TO_ALL_ROUTES:
+                prerendered = _get_prerendered_path(path)
+                if prerendered:
+                    resp = send_file(prerendered, mimetype="text/html")
+                    resp.headers["Cache-Control"] = "no-cache, must-revalidate"
+                    return resp
+
+            # For bots on other routes: serve prerendered HTML if available
             if _is_bot(user_agent):
                 prerendered = _get_prerendered_path(path)
                 resp = (

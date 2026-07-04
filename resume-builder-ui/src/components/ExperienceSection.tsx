@@ -91,7 +91,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   }, [onUpdate, onDeleteEntry]);
 
   return (
-    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200">
+    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 mb-4 sm:mb-8 border-l-4 border-l-accent border border-gray-200/60">
       <SectionHeader
         title={sectionName}
         isEditing={isEditingTitle}

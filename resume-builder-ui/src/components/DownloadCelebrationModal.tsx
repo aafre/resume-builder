@@ -7,6 +7,7 @@ import { extractJobSearchParams, JobSearchParams } from "../utils/resumeDataExtr
 import { searchJobs, AdzunaJob } from "../services/jobs";
 import { formatSalary } from "../utils/currencyFormat";
 import { getSalaryFloor } from "../utils/salaryFloor";
+import { ensureTrustpilotLoaded } from "../utils/trustpilot";
 
 interface DownloadCelebrationModalProps {
   isOpen: boolean;
@@ -118,11 +119,14 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
       .finally(() => setJobsLoading(false));
   }, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Ref callback to initialize the TrustBox widget when mounted
+  // Ref callback to initialize the TrustBox widget when mounted.
+  // The Trustpilot bootstrap script is loaded on-demand here (not globally in
+  // index.html) so it never burdens the landing page or other routes.
   const trustboxRef = useCallback((node: HTMLDivElement | null) => {
-    if (node && (window as any).Trustpilot) {
-      (window as any).Trustpilot.loadFromElement(node);
-    }
+    if (!node) return;
+    ensureTrustpilotLoaded().then(() => {
+      if (window.Trustpilot) window.Trustpilot.loadFromElement(node);
+    });
   }, []);
 
   if (!isOpen) return null;

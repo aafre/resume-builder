@@ -44,13 +44,10 @@ const LandingPage: React.FC = () => {
     // No auto-redirect for authenticated users - let them see landing page
   }, [searchParams, navigate]);
 
-  const resumeCountValue = useMemo(() => {
-    const launchDate = new Date("2019-01-01T00:00:00Z");
-    const now = new Date();
-    const msPerDay = 24 * 60 * 60 * 1000;
-    const daysSinceLaunch = Math.floor((now.getTime() - launchDate.getTime()) / msPerDay);
-    return 52000 + daysSinceLaunch * 28;
-  }, []);
+  // Static approximate count — kept constant (no new Date()) so the prerendered
+  // HTML and the first client render are byte-identical. This is what lets the
+  // landing route hydrate cleanly under hydrateRoot. Bump manually over time.
+  const resumeCountValue = 150000;
 
   const prefersReducedMotion = useMemo(
     () =>
