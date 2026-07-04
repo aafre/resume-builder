@@ -1,10 +1,12 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
-const srcDir = join(process.cwd(), "src");
+const srcDir = join(dirname(fileURLToPath(import.meta.url)), "..");
 const adConfig = readFileSync(join(srcDir, "config/ads.ts"), "utf8");
-const slotNames = Array.from(adConfig.matchAll(/^\s{4}([a-zA-Z0-9]+):\s"[^"]+"/gm), ([, name]) => name);
+const slotsBlock = adConfig.match(/slots:\s*\{([\s\S]*?)\}/)?.[1] ?? "";
+const slotNames = Array.from(slotsBlock.matchAll(/^\s*([a-zA-Z0-9]+):\s*"[^"]+"/gm), ([, name]) => name);
 
 const walk = (dir: string): string[] =>
   readdirSync(dir).flatMap((entry) => {
