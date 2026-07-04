@@ -133,6 +133,20 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
     };
   }, [isOpen]);
 
+  const touchStartX = useRef<number>(0);
+  const touchStartY = useRef<number>(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    const dy = e.changedTouches[0].clientY - touchStartY.current;
+    if (dx < -60 && Math.abs(dx) > Math.abs(dy) * 1.5) onClose();
+  };
+
   if (!isOpen) return null;
 
   const handleSectionClick = (index: number) => {
@@ -155,15 +169,17 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
         aria-hidden="true"
       />
 
-      {/* Drawer */}
+      {/* Drawer — max-w-[75vw] ensures it never fills the screen on phones < 375px */}
       <div
         ref={drawerRef}
-        className="fixed top-0 left-0 bottom-0 w-[280px] max-w-[80vw] bg-white z-[9999] lg:hidden shadow-lg
+        className="fixed top-0 left-0 bottom-0 w-[280px] max-w-[75vw] bg-white z-[9999] lg:hidden shadow-lg
           animate-slide-in-left flex flex-col"
         role="dialog"
         aria-modal="true"
         aria-label="Section navigation"
         tabIndex={-1}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-accent">
@@ -210,7 +226,6 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                     ? "bg-accent/[0.06] ring-1 ring-accent/20 text-ink font-semibold"
                     : "hover:bg-gray-100 active:bg-gray-200 text-gray-700"
                 }`}
-              style={{ WebkitTapHighlightColor: "transparent" }}
             >
               <span className="w-6 h-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs font-bold">
                 {index + 1}
@@ -325,7 +340,6 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
               to="/contact"
               onClick={onClose}
               className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-teal-500 to-cyan-600 text-white rounded-lg font-medium shadow-md hover:shadow-lg active:scale-95 transition-all min-h-[48px]"
-              style={{ WebkitTapHighlightColor: "transparent" }}
             >
               <MdSupport className="text-xl" />
               <span>Contact Support</span>

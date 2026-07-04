@@ -157,35 +157,40 @@ export default function Header() {
             {isEditorPage && editorContext && (
               <div id="header-auth-status" className="flex items-center gap-3">
                 <div id="header-job-badge-slot" />
-                {isAuthenticated && (
-                  <AutoSaveIndicator
-                    lastSaved={editorContext.lastSaved}
-                    isSaving={editorContext.isSaving}
-                    hasError={editorContext.saveError}
-                  />
-                )}
-                {isAnonymous && (
-                  <AnonymousWarningBadge onSignInClick={showAuthModal} />
-                )}
+                {/* min-width reserves space regardless of which badge mounts, preventing CLS */}
+                <div style={{ minWidth: '80px', minHeight: '32px' }} className="flex items-center">
+                  {isAuthenticated && (
+                    <AutoSaveIndicator
+                      lastSaved={editorContext.lastSaved}
+                      isSaving={editorContext.isSaving}
+                      hasError={editorContext.saveError}
+                    />
+                  )}
+                  {isAnonymous && (
+                    <AnonymousWarningBadge onSignInClick={showAuthModal} />
+                  )}
+                </div>
               </div>
             )}
 
-            {/* Auth UI - User Menu or Sign In Button */}
-            {!authLoading && (
-              <>
-                {isAuthenticated ? (
-                  <UserMenu />
-                ) : (
-                  <button
-                    id="tour-sign-in-button"
-                    onClick={showAuthModal}
-                    className="flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 font-semibold text-sm transition-all duration-200 text-ink hover:text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 lg:hover:no-underline lg:px-5 lg:bg-ink lg:text-white lg:shadow-sm lg:hover:shadow-md"
-                  >
-                    <span>Sign In</span>
-                  </button>
-                )}
-              </>
-            )}
+            {/* Auth UI - User Menu or Sign In Button — fixed min-width prevents CLS on auth resolve */}
+            <div className="flex items-center min-w-[50px] lg:min-w-[80px] min-h-[36px] lg:min-h-[40px]">
+              {!authLoading && (
+                <>
+                  {isAuthenticated ? (
+                    <UserMenu />
+                  ) : (
+                    <button
+                      id="tour-sign-in-button"
+                      onClick={showAuthModal}
+                      className="flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 font-semibold text-sm transition-all duration-200 text-ink hover:text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 lg:hover:no-underline lg:px-5 lg:bg-ink lg:text-white lg:shadow-sm lg:hover:shadow-md"
+                    >
+                      <span>Sign In</span>
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
 
             {/* CTA Button (all pages except editor, non-authenticated) */}
             {!isEditorPage && !isAuthenticated && location.pathname !== "/templates" && (

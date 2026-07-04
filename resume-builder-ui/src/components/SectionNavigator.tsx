@@ -27,7 +27,6 @@ import {
 import { PanelRightClose, PanelRightOpen, ShieldCheck, ChevronRight } from "lucide-react";
 import { JobSparkleIcon } from "./icons/JobSparkleIcon";
 import { Link } from "react-router-dom";
-import { AdContainer, AD_CONFIG } from "./ads";
 import { affiliateConfig } from "../config/affiliate";
 import { extractJobSearchParams } from "../utils/resumeDataExtractor";
 import type { ContactInfo, Section as ResumeSection } from "../types";
@@ -786,20 +785,6 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
         </div>
       )}
 
-      {/* Desktop-only sidebar ad - far from interactive elements
-          Phase 3 implementation - monitor for impact on editor completion rate */}
-      {!isCollapsed && (
-        <div className="px-3 py-3 border-t border-gray-200/40 bg-gray-50/30">
-          <AdContainer
-            adSlot={AD_CONFIG.slots.editorSidebar}
-            adFormat="vertical"
-            minHeight={100}
-            minWidth={240}
-            rootMargin="100px"
-            testId="editor-sidebar-ad"
-          />
-        </div>
-      )}
       </div>
     </nav>
   );
