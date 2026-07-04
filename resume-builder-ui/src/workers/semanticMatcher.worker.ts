@@ -149,7 +149,11 @@ function extractCandidates(text: string): Map<string, number> {
       candidates.set(bigram, (candidates.get(bigram) || 0) + 1);
     }
 
-    // Trigrams — first and last words must not be stop/filler
+    // Trigrams — first and last words must not be stop/filler. The middle
+    // word must not be a bare connector (STOP_WORDS) either — the bigram
+    // loop above already rejects "with"/"or"/"and" etc. in either position,
+    // but this loop only checked the ends, letting glue-word junk like
+    // "jenkins or github" and "hands-on with aws" survive as a trigram.
     for (let i = 0; i < words.length - 2; i++) {
       const a = words[i].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
       const b = words[i + 1].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
@@ -157,6 +161,7 @@ function extractCandidates(text: string): Map<string, number> {
       if (a.length < 2 || b.length < 2 || c.length < 2) continue;
       if (STOP_WORDS.has(a) || STOP_WORDS.has(c)) continue;
       if (JOB_FILLER.has(a) || JOB_FILLER.has(c)) continue;
+      if (STOP_WORDS.has(b)) continue;
       const trigram = `${a} ${b} ${c}`;
       candidates.set(trigram, (candidates.get(trigram) || 0) + 1);
     }

@@ -557,5 +557,23 @@ describe('semanticMatcher.worker', () => {
       expect(keywordLabels).not.toContain('aws cloud');
       expect(keywordLabels).not.toContain('cloud infrastructure');
     });
+
+    it('(f) trigram extraction rejects glue-word middle terms ("X or Y", "X with Y")', async () => {
+      // The trigram loop only checked the FIRST and LAST word against
+      // STOP_WORDS/JOB_FILLER, never the middle word — so any trigram whose
+      // middle word is a bare connector ("or", "with") survived as junk even
+      // though the bigram loop already rejects connectors in either position.
+      const jd = 'Requirements: experience with Jenkins or GitHub for CI/CD. ' +
+        'Must be hands-on with AWS cloud infrastructure. ' +
+        'Jest or similar testing framework experience required.';
+
+      await sendMessage({ type: 'match', resumeText: 'Nurse with general clinical experience.', jobDescription: jd });
+      const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+
+      const allKeywords = [...result.matched, ...result.partial, ...result.missing].map((k) => k.keyword);
+      expect(allKeywords).not.toContain('jenkins or github');
+      expect(allKeywords).not.toContain('hands-on with aws');
+      expect(allKeywords).not.toContain('jest or similar');
+    });
   });
 });
