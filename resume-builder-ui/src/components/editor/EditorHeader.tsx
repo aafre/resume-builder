@@ -199,7 +199,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
       <div className="fixed top-4 right-6 z-[65] hidden lg:flex items-center gap-3">
         {/* Save Status for authenticated users */}
         {isAuthenticated && saveStatus && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-md border border-gray-200/60">
+          <div className="bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-sm border border-gray-200/60">
             <SaveStatusIndicator status={saveStatus} lastSaved={lastSaved} />
           </div>
         )}
@@ -208,14 +208,14 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
       {/* Mobile Job Notification Banner */}
       {showMobileBanner && (
         <div className="fixed top-0 left-0 right-0 z-[70] lg:hidden animate-[slideDown_0.3s_ease-out]">
-          <div className="bg-ink text-white px-4 py-3 flex items-center justify-between shadow-lg">
+          <div className="bg-ink text-white px-4 py-3 flex items-center justify-between shadow-sm">
             <Link
               to="/jobs"
               onClick={() => {
                 handleBadgeClick();
                 dismissMobileBanner();
               }}
-              className="flex items-center gap-2 flex-1 min-w-0"
+              className="flex min-h-11 items-center gap-2 flex-1 min-w-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
             >
               <JobSparkleIcon className="w-4 h-4 flex-shrink-0 text-accent" />
               <span className="text-sm font-medium truncate">
@@ -225,7 +225,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
             </Link>
             <button
               onClick={dismissMobileBanner}
-              className="ml-2 p-1 hover:bg-white/10 rounded transition-colors flex-shrink-0"
+              className="ml-2 inline-flex min-h-9 min-w-9 items-center justify-center p-1 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
               aria-label="Dismiss"
             >
               <X className="w-4 h-4" />
@@ -238,7 +238,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
       {showIdleTooltip &&
         ReactDOM.createPortal(
           <div
-            className="fixed top-20 right-6 z-[70] bg-accent text-ink text-sm px-4 py-3 rounded-lg shadow-xl animate-bounce"
+            className="fixed top-20 right-6 z-[70] bg-accent text-ink text-sm px-4 py-3 rounded-lg shadow-md"
             role="alert"
             aria-live="polite"
           >
@@ -247,7 +247,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
               <span>Don't forget to save your progress permanently</span>
               <button
                 onClick={onDismissIdleTooltip}
-                className="ml-2 hover:opacity-75 text-white"
+                className="ml-2 inline-flex min-h-8 min-w-8 items-center justify-center rounded-md text-ink hover:bg-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/50"
                 aria-label="Dismiss reminder"
               >
                 ✕

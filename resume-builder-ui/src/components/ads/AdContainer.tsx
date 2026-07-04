@@ -195,7 +195,7 @@ export const AdContainer = ({
     return (
       <div
         ref={containerRef}
-        className={`ad-container ${className}`}
+        className={`ad-container ad-surface ${className}`}
         style={{
           minHeight: `${minHeight}px`,
           ...(minWidth && { minWidth: `${minWidth}px` }),
@@ -269,7 +269,7 @@ export const AdContainer = ({
   return (
     <div
       ref={containerRef}
-      className={`ad-container ${className}`}
+      className={`ad-container ad-surface ${className}`}
       style={containerStyle}
       data-testid={testId}
       role="complementary"

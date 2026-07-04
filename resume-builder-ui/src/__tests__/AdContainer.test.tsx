@@ -30,7 +30,7 @@ beforeEach(() => {
   mockMutationObserver.mockClear();
 
   // Setup IntersectionObserver mock
-  mockIntersectionObserver.mockImplementation((callback) => {
+  mockIntersectionObserver.mockImplementation(() => {
     return {
       observe: mockObserve,
       disconnect: mockDisconnect,
@@ -55,7 +55,9 @@ describe("AdContainer", () => {
   it("renders ad container with correct test id", () => {
     render(<AdContainer adSlot="1234567890" testId="test-ad" />);
 
-    expect(screen.getByTestId("test-ad")).toBeInTheDocument();
+    const container = screen.getByTestId("test-ad");
+    expect(container).toBeInTheDocument();
+    expect(container).toHaveClass("ad-surface");
   });
 
   it("applies minimum height for CLS prevention", () => {

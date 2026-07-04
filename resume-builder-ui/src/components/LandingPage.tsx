@@ -208,14 +208,16 @@ const LandingPage: React.FC = () => {
 
             <div className="flex flex-wrap gap-4 mb-8">
               <button
-                className="group inline-flex items-center justify-center bg-accent text-ink py-3.5 px-8 rounded-xl text-base font-bold shadow-lg hover:shadow-accent/25 hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-300 active:scale-95 font-display"
+                type="button"
+                className="btn-primary group px-7 text-base font-display"
                 onClick={() => navigate(hasResumes ? "/my-resumes" : "/templates")}
               >
                 {hasResumes ? "My Resumes" : "Build My Free Resume"}
                 <ArrowRightIcon className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
               <button
-                className="group inline-flex items-center justify-center border border-ink/15 text-ink py-3.5 px-8 rounded-xl text-base font-semibold hover:border-ink/30 hover:bg-ink/[0.03] transition-all duration-300 active:scale-95 font-display"
+                type="button"
+                className="btn-secondary group px-7 text-base font-display"
                 onClick={() => navigate("/templates")}
               >
                 View Templates
@@ -275,6 +277,14 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      <div className="block md:hidden container mx-auto max-w-4xl px-4">
+        <InContentAd
+          adSlot={AD_CONFIG.slots.mobileTop}
+          size="standard"
+          marginY={20}
+        />
+      </div>
 
       {/* ═══════════ STATS ═══════════ */}
       <section className="py-12">

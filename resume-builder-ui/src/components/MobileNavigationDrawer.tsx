@@ -77,7 +77,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
 
       {/* Drawer */}
       <div
-        className="fixed top-0 left-0 bottom-0 w-[280px] max-w-[80vw] bg-white z-[9999] lg:hidden shadow-2xl
+        className="fixed top-0 left-0 bottom-0 w-[280px] max-w-[80vw] bg-white z-[9999] lg:hidden shadow-lg
           animate-slide-in-left flex flex-col"
         role="dialog"
         aria-modal="true"
@@ -91,7 +91,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
           </h2>
           <button
             onClick={onClose}
-            className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-accent"
             aria-label="Close navigation"
           >
             <MdClose className="text-2xl" />
@@ -106,7 +106,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
             className={`w-full text-left px-4 py-3 rounded-lg transition-all min-h-[48px] flex items-center gap-3
               ${
                 activeSectionIndex === -1
-                  ? "bg-accent/[0.06] border-l-4 border-accent text-ink font-semibold"
+                  ? "bg-accent/[0.06] ring-1 ring-accent/20 text-ink font-semibold"
                   : "hover:bg-gray-100 active:bg-gray-200 text-gray-700"
               }`}
             style={{ WebkitTapHighlightColor: "transparent" }}
@@ -125,7 +125,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
               className={`w-full text-left px-4 py-3 rounded-lg transition-all min-h-[48px] flex items-center gap-3 mt-1
                 ${
                   activeSectionIndex === index
-                    ? "bg-accent/[0.06] border-l-4 border-accent text-ink font-semibold"
+                    ? "bg-accent/[0.06] ring-1 ring-accent/20 text-ink font-semibold"
                     : "hover:bg-gray-100 active:bg-gray-200 text-gray-700"
                 }`}
               style={{ WebkitTapHighlightColor: "transparent" }}
@@ -143,7 +143,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
           {/* Add Section Button */}
           <button
             onClick={() => handleAction(onAddSection)}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-accent text-ink rounded-lg font-medium shadow-md hover:shadow-lg active:scale-95 transition-all min-h-[48px]"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-accent text-ink rounded-lg font-medium shadow-sm hover:shadow-md active:scale-[0.98] transition-all min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             style={{ WebkitTapHighlightColor: "transparent" }}
           >
             <MdAdd className="text-xl" />
@@ -154,7 +154,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
           <div className="relative">
             <button
               onClick={() => setShowAdvancedMenu(!showAdvancedMenu)}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 active:bg-gray-100 transition-all min-h-[48px]"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 active:bg-gray-100 transition-all min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
               style={{ WebkitTapHighlightColor: "transparent" }}
             >
               <MdMoreVert className="text-xl" />
@@ -163,16 +163,18 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
 
             {/* Advanced Menu Dropdown */}
             {showAdvancedMenu && (
-              <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden">
+              <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
                 {/* Save My Work */}
                 <button
                   onClick={() => handleAction(onExportYAML)}
                   disabled={loadingSave}
-                  className="w-full text-left px-4 py-3 hover:bg-accent/[0.06] active:bg-accent/10 transition-colors flex items-center gap-3 border-b border-gray-100 disabled:opacity-50"
+                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-accent/[0.06] active:bg-accent/10 transition-colors flex items-center gap-3 border-b border-gray-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
                   style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   {loadingSave ? (
-                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-accent border-t-transparent"></div>
+                    <span className="h-2 w-8 overflow-hidden rounded-full bg-accent/20">
+                      <span className="block h-full w-1/2 animate-pulse rounded-full bg-accent" />
+                    </span>
                   ) : (
                     <MdFileDownload className="text-accent text-xl" />
                   )}
@@ -188,11 +190,13 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                 <button
                   onClick={() => handleAction(onImportYAML)}
                   disabled={loadingLoad}
-                  className="w-full text-left px-4 py-3 hover:bg-green-50 active:bg-green-100 transition-colors flex items-center gap-3 border-b border-gray-100 disabled:opacity-50"
+                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-green-50 active:bg-green-100 transition-colors flex items-center gap-3 border-b border-gray-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
                   style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   {loadingLoad ? (
-                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-green-600 border-t-transparent"></div>
+                    <span className="h-2 w-8 overflow-hidden rounded-full bg-green-100">
+                      <span className="block h-full w-1/2 animate-pulse rounded-full bg-green-600" />
+                    </span>
                   ) : (
                     <MdFileUpload className="text-green-600 text-xl" />
                   )}
@@ -207,7 +211,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                 {/* Start Fresh */}
                 <button
                   onClick={() => handleAction(onStartFresh)}
-                  className="w-full text-left px-4 py-3 hover:bg-orange-50 active:bg-orange-100 transition-colors flex items-center gap-3 border-b border-gray-100"
+                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-orange-50 active:bg-orange-100 transition-colors flex items-center gap-3 border-b border-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
                   style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   <MdRefresh className="text-orange-600 text-xl" />
@@ -220,7 +224,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                 {/* Help */}
                 <button
                   onClick={() => handleAction(onHelp)}
-                  className="w-full text-left px-4 py-3 hover:bg-accent/[0.06] active:bg-accent/10 transition-colors flex items-center gap-3"
+                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-accent/[0.06] active:bg-accent/10 transition-colors flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
                   style={{ WebkitTapHighlightColor: "transparent" }}
                 >
                   <MdHelpOutline className="text-accent text-xl" />
