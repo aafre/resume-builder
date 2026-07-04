@@ -31,6 +31,8 @@ interface BlogLayoutProps {
   showBreadcrumbs?: boolean;
   ctaType?: 'resume' | 'interview' | 'general';
   faqs?: BlogFAQ[];
+  /** When true, emit robots="noindex, follow" (deindex a thin/consolidated page while keeping link equity flowing). */
+  noindex?: boolean;
 }
 
 export default function BlogLayout({
@@ -43,7 +45,8 @@ export default function BlogLayout({
   keywords,
   showBreadcrumbs = true,
   ctaType = 'general',
-  faqs
+  faqs,
+  noindex
 }: BlogLayoutProps) {
   // Use hardcoded BASE_URL (not window.location.origin) so prerendered HTML
   // gets production canonical URLs instead of http://localhost:4173
@@ -59,6 +62,7 @@ export default function BlogLayout({
         keywords={keywords.join(', ')}
         canonicalUrl={currentUrl}
         ogType="article"
+        {...(noindex ? { robots: 'noindex, follow' } : {})}
         articleMeta={{
           publishedTime: publishDate,
           modifiedTime: lastUpdated,

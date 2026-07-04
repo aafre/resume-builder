@@ -88,9 +88,11 @@ const TermsOfService = lazy(() => import("./components/TermsOfService"));
 const BlogIndex = lazy(() => import("./components/BlogIndex"));
 const ResumeMistakesToAvoid = lazy(() => import("./components/blog/ResumeMistakesToAvoid"));
 const ATSOptimization = lazy(() => import("./components/blog/ATSOptimization"));
+const ATSFormattingRules = lazy(() => import("./components/blog/ATSFormattingRules"));
 const ResumeNoExperience = lazy(() => import("./components/blog/ResumeNoExperience"));
 const ProfessionalSummaryExamples = lazy(() => import("./components/blog/ProfessionalSummaryExamples"));
 const ResumeKeywordsGuide = lazy(() => import("./components/blog/ResumeKeywordsGuide"));
+const HumanizeAIResume = lazy(() => import("./components/blog/HumanizeAIResume"));
 const CoverLetterGuide = lazy(() => import("./components/blog/CoverLetterGuide"));
 const RemoteWorkResume = lazy(() => import("./components/blog/RemoteWorkResume"));
 const ResumeLengthGuide = lazy(() => import("./components/blog/ResumeLengthGuide"));
@@ -561,6 +563,14 @@ function AppContent() {
             }
           />
           <Route
+            path="/blog/ats-formatting-rules"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ATSFormattingRules />
+              </Suspense>
+            }
+          />
+          <Route
             path="/blog/resume-no-experience"
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
@@ -581,6 +591,14 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <ResumeKeywordsGuide />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/humanize-ai-resume"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <HumanizeAIResume />
               </Suspense>
             }
           />
