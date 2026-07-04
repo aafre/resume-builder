@@ -107,6 +107,14 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
       const lastElement = currentFocusableElements[currentFocusableElements.length - 1];
       const activeElement = document.activeElement;
 
+      // Drawer container itself is focused (tabIndex={-1}, e.g. after a tap on a
+      // non-interactive area) — wrap explicitly so Shift+Tab can't escape the trap
+      if (activeElement === drawerRef.current) {
+        event.preventDefault();
+        (event.shiftKey ? lastElement : firstElement).focus();
+        return;
+      }
+
       if (!drawerRef.current?.contains(activeElement)) {
         event.preventDefault();
         firstElement.focus();
