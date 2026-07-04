@@ -34,6 +34,10 @@ describe("ad slot references", () => {
     const statsStart = landing.indexOf("{/* ═══════════ STATS");
     const mobileTop = landing.indexOf("AD_CONFIG.slots.mobileTop");
 
+    expect(heroHeadline, "hero headline marker").toBeGreaterThan(-1);
+    expect(statsStart, "stats section marker").toBeGreaterThan(-1);
+    expect(mobileTop, "mobile top slot reference").toBeGreaterThan(-1);
+
     expect(mobileTop).toBeGreaterThan(heroHeadline);
     expect(mobileTop).toBeLessThan(statsStart);
     expect(sideRail).not.toContain("AD_CONFIG.slots.mobileTop");

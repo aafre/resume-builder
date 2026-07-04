@@ -93,7 +93,7 @@ const FormattingHelp: React.FC = () => {
               icon={MdMoreHoriz}
               title="Drag & Organize"
               primaryTip={
-                <div className="bg-accent/[0.06]/80 rounded-lg px-3 py-2 flex items-center gap-2">
+                <div className="bg-accent/[0.06] rounded-lg px-3 py-2 flex items-center gap-2">
                   {isTouchDevice ? (
                     <>
                       <MdTouchApp

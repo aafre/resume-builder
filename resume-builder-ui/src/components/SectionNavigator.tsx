@@ -341,13 +341,13 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             onClick={() => onSectionClick(-1)}
             className={`w-full flex items-center transition-all rounded-lg group ${
               isCollapsed
-                ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-accent/[0.06]/80"
+                ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-accent/[0.06]"
                 : "flex-row gap-3 px-3 py-2.5 hover:bg-gray-100/80"
             } ${
               activeSectionIndex === -1
                 ? isCollapsed
                   ? "bg-accent/[0.06] text-ink/80"
-                  : "bg-accent/[0.06]/80 ring-1 ring-accent/20 text-ink font-medium"
+                  : "bg-accent/[0.06] ring-1 ring-accent/20 text-ink font-medium"
                 : "text-gray-700 hover:text-gray-900"
             }`}
           >
@@ -380,13 +380,13 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               onClick={() => onSectionClick(index)}
               className={`w-full flex items-center transition-all rounded-lg group ${
                 isCollapsed
-                  ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-accent/[0.06]/80 mt-1"
+                  ? "flex-col gap-1.5 py-2.5 px-1.5 hover:bg-accent/[0.06] mt-1"
                   : "flex-row gap-3 px-3 py-2.5 hover:bg-gray-100/80 mt-0.5"
               } ${
                 activeSectionIndex === index
                   ? isCollapsed
                     ? "bg-accent/[0.06] text-ink/80"
-                    : "bg-accent/[0.06]/80 ring-1 ring-accent/20 text-ink font-medium"
+                    : "bg-accent/[0.06] ring-1 ring-accent/20 text-ink font-medium"
                   : "text-gray-700 hover:text-gray-900"
               }`}
             >
@@ -634,8 +634,8 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               disabled={loadingSave}
               className={`w-full min-h-11 flex items-center transition-all rounded-md disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
                 isCollapsed
-                  ? "flex-col gap-1 py-2 px-1 hover:bg-accent/[0.06]/80"
-                  : "flex-row gap-3 px-3 py-2 hover:bg-accent/[0.06]/80 text-gray-700 hover:text-ink/80"
+                  ? "flex-col gap-1 py-2 px-1 hover:bg-accent/[0.06]"
+                  : "flex-row gap-3 px-3 py-2 hover:bg-accent/[0.06] text-gray-700 hover:text-ink/80"
               }`}
             >
               <MdFileDownload
@@ -723,8 +723,8 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               onClick={onHelp}
               className={`w-full min-h-11 flex items-center transition-all rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
                 isCollapsed
-                  ? "flex-col gap-1 py-2 px-1 hover:bg-accent/[0.06]/80"
-                  : "flex-row gap-3 px-3 py-2 hover:bg-accent/[0.06]/80 text-gray-700 hover:text-ink/80"
+                  ? "flex-col gap-1 py-2 px-1 hover:bg-accent/[0.06]"
+                  : "flex-row gap-3 px-3 py-2 hover:bg-accent/[0.06] text-gray-700 hover:text-ink/80"
               }`}
             >
               <MdHelpOutline
