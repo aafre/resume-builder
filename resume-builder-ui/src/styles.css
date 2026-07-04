@@ -238,6 +238,72 @@ details .faq-content > div {
   50%      { box-shadow: 0 0 0 8px rgba(0,212,126,0); }
 }
 
+/* ── Hero "builds itself" sequence ──
+   Hidden start states live ONLY in keyframe `from` + fill-mode both/forwards,
+   so `animation: none` (reduced motion) leaves everything in its final visible
+   state. Animates clip-path/opacity/transform only — zero CLS. Delay comes
+   from the per-element --d custom property. */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes hero-pop {
+  0%   { opacity: 0; transform: scale(0.5); }
+  70%  { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes hero-stamp {
+  0%   { opacity: 0; transform: scale(1.6) rotate(-8deg); }
+  70%  { opacity: 1; transform: scale(0.95) rotate(0deg); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes hero-caret-blink {
+  0%, 40%, 80% { opacity: 1; }
+  20%, 60%     { opacity: 0; }
+  100%         { opacity: 0; }
+}
+
+.hero-mockup {
+  animation: float 4s ease-in-out infinite;
+}
+.hero-rise {
+  animation: hero-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--d, 0s);
+}
+.hero-type {
+  animation: typewriter 0.8s steps(14, end) both;
+  animation-delay: var(--d, 0s);
+}
+.hero-draw {
+  animation: typewriter 0.45s ease-out both;
+  animation-delay: var(--d, 0s);
+}
+.hero-pop {
+  animation: hero-pop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--d, 0s);
+}
+.hero-stamp {
+  animation:
+    hero-stamp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both,
+    pulse-accent 1.4s ease-out 2;
+  animation-delay: var(--d, 0s), calc(var(--d, 0s) + 0.65s);
+}
+.hero-type-caret {
+  position: relative;
+}
+.hero-type-caret::after {
+  content: '';
+  position: absolute;
+  top: 0.1em;
+  bottom: 0.1em;
+  right: -4px;
+  width: 2px;
+  background: #00d47e;
+  opacity: 0; /* hidden by default so reduced-motion (animation: none) never shows a stuck caret */
+  animation: hero-caret-blink 1.6s step-end forwards;
+  animation-delay: var(--d, 0s);
+}
+
 /* ── Download Celebration Modal ── */
 @keyframes dcm-scale-in {
   0% { transform: scale(0); opacity: 0; }
@@ -345,8 +411,15 @@ details .faq-content > div {
     display: none !important;
   }
 
-  /* Landing page animations: disable */
+  /* Landing page animations: disable (hero-* classes settle in their final
+     visible state; the caret ::after defaults to opacity 0) */
   .hero-mockup,
+  .hero-rise,
+  .hero-type,
+  .hero-draw,
+  .hero-pop,
+  .hero-stamp,
+  .hero-type-caret::after,
   .demo-typing {
     animation: none !important;
   }
