@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { extractKeywords, scanResume } from '../keywordMatcher';
+import { extractKeywords, scanResume, prepareLexicalResume, countKeywordOccurrencesLexical } from '../keywordMatcher';
 
 // ---------------------------------------------------------------------------
 // 1. extractKeywords — Basic Extraction
@@ -1039,6 +1039,35 @@ describe('scanResume', () => {
       const result = scanResume(resume, jd);
       const fintech = result.missing.find((m) => m.keyword === 'fintech');
       expect(fintech?.category).toBe('hard-skill');
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 18. Lexical Pass — Stem-Adjacent Verbatim Phrases (regression coverage)
+  // ---------------------------------------------------------------------------
+  // Reproduces three browser-verified misses in the lexical pre-pass
+  // (prepareLexicalResume + countKeywordOccurrencesLexical), the pass the
+  // semantic worker runs before falling back to embedding cosine.
+  describe('lexical pass — stem-adjacent verbatim phrases', () => {
+    it('"monitor vital" matches resume "monitoring vital signs"', () => {
+      const resume = prepareLexicalResume(
+        'Daily responsibilities include administering medications, monitoring vital signs, IV insertion and maintenance.'
+      );
+      expect(countKeywordOccurrencesLexical('monitor vital', resume)).toBeGreaterThan(0);
+    });
+
+    it('"administer medications" matches resume "administering medications"', () => {
+      const resume = prepareLexicalResume(
+        'Daily responsibilities include administering medications, monitoring vital signs, IV insertion and maintenance.'
+      );
+      expect(countKeywordOccurrencesLexical('administer medications', resume)).toBeGreaterThan(0);
+    });
+
+    it('"restful apis" matches resume "RESTful APIs" (case-only difference, literal substring)', () => {
+      const resume = prepareLexicalResume(
+        'Designed and maintained RESTful APIs and microservices on AWS cloud infrastructure.'
+      );
+      expect(countKeywordOccurrencesLexical('restful apis', resume)).toBeGreaterThan(0);
     });
   });
 

@@ -339,11 +339,32 @@ function countOccurrences(keyword: string, text: string): number {
  */
 function countStemOccurrences(keyword: string, stemmedText: string): number {
   const stemmedKeyword = stemPhrase(keyword);
-  if (stemmedKeyword === keyword) return 0; // No stemming change, skip
-  const escaped = stemmedKeyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const pattern = stemmedKeyword.includes(' ')
-    ? new RegExp(escaped, 'gi')
-    : new RegExp(`(?<=^|\\W)${escaped}(?=\\W|$)`, 'gi');
+
+  if (!stemmedKeyword.includes(' ')) {
+    // Single word: keep the original exact-boundary behavior. Bailing out
+    // when stemming didn't change the keyword is safe here — a single short
+    // word (e.g. "data") must NOT loosely match an unrelated longer word
+    // (e.g. "database") that happens to start with the same letters.
+    if (stemmedKeyword === keyword) return 0; // No stemming change, skip
+    const escaped = stemmedKeyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const pattern = new RegExp(`(?<=^|\\W)${escaped}(?=\\W|$)`, 'gi');
+    const matches = stemmedText.match(pattern);
+    return matches ? matches.length : 0;
+  }
+
+  // Multi-word: always search, even when the keyword phrase's own stem
+  // equals itself — the point of this fallback is to catch RESUME words
+  // that need stemming (e.g. "monitoring" -> "monitor"), which still
+  // applies when the keyword is already in base form.
+  //
+  // Match each stemmed word with a trailing \w*: the suffix-stripping
+  // stemmer is single-pass, so a keyword already in dictionary form (e.g.
+  // "administer") can over-stem relative to an inflected resume word
+  // stemmed in one pass (e.g. "administering" -> "administer"). Treating
+  // each stemmed word as a prefix (not a whole-word match) absorbs that
+  // asymmetry without changing stem() itself.
+  const words = stemmedKeyword.split(' ').map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  const pattern = new RegExp(`(?<=^|\\W)${words.join('\\w*\\s+')}\\w*(?=\\W|$)`, 'gi');
   const matches = stemmedText.match(pattern);
   return matches ? matches.length : 0;
 }
@@ -385,9 +406,16 @@ export function countKeywordOccurrencesLexical(keyword: string, resume: LexicalR
   // Try exact match first
   let count = countOccurrences(keyword, resume.normalized);
 
-  // Also try with the synonym-normalized form if different
+  // Also try with the synonym-normalized form if different. Use the same
+  // applyAllSynonyms() pipeline the resume text was built with (not the
+  // single-key normalizeSynonym lookup) — a multi-word keyword like
+  // "restful apis" isn't itself a registered synonym key, but its first
+  // WORD is ("restful" -> "rest apis"), and resume.normalized already went
+  // through that same per-word expansion. Re-deriving the keyword the same
+  // way keeps both sides symmetric instead of comparing a raw keyword
+  // against a synonym-rewritten resume.
   if (count === 0) {
-    const normalizedKeyword = normalizeSynonym(keyword);
+    const normalizedKeyword = applyAllSynonyms(keyword);
     if (normalizedKeyword !== keyword) {
       count = countOccurrences(normalizedKeyword, resume.normalized);
     }
