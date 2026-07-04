@@ -8,7 +8,6 @@ export const AD_CONFIG = {
     keywordsIncontent: "9055300614",
     blogInfeed: "7742218947",
     carouselInfeed: "3806186822",
-    editorSidebar: "3691293294",
     sideRailLeft: "2941074550",
     sideRailRight: "4121894901",
     blogIncontent: "3576273453",
