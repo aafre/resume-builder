@@ -1,11 +1,14 @@
 import { ReactNode } from "react";
 import { AD_CONFIG, isExplicitAdsEnabled } from "../../config/ads";
 import { AdContainer } from "./AdContainer";
+import { InContentAd } from "./InContentAd";
 
 interface SideRailLayoutProps {
   children: ReactNode;
   /** Disable side rails (e.g. on editor pages) */
   enabled?: boolean;
+  /** Hide the global mobile-top ad (e.g. landing page renders its own below the hero) */
+  showMobileTop?: boolean;
 }
 
 /**
@@ -20,6 +23,7 @@ interface SideRailLayoutProps {
 export const SideRailLayout = ({
   children,
   enabled = true,
+  showMobileTop = true,
 }: SideRailLayoutProps) => {
   const explicitAdsEnabled = isExplicitAdsEnabled();
   const showRails = enabled && (explicitAdsEnabled || AD_CONFIG.debug);
@@ -45,6 +49,15 @@ export const SideRailLayout = ({
 
       {/* Page content */}
       <div className="flex-1 min-w-0">
+        {showMobileTop && (
+          <div className="block md:hidden">
+            <InContentAd
+              adSlot={AD_CONFIG.slots.mobileTop}
+              size="large" // "large" (400px) reserves enough for the ~375px mobile fill — prevents CLS
+              marginY={16}
+            />
+          </div>
+        )}
         {children}
       </div>
 

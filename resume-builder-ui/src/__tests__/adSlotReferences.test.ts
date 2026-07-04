@@ -27,9 +27,10 @@ describe("ad slot references", () => {
     }
   });
 
-  it("places the mobile top slot after landing hero, not in the global side-rail wrapper", () => {
+  it("keeps the global mobile top slot, suppressed only on landing which places it below the hero", () => {
     const landing = readFileSync(join(srcDir, "components/LandingPage.tsx"), "utf8");
     const sideRail = readFileSync(join(srcDir, "components/ads/SideRailLayout.tsx"), "utf8");
+    const app = readFileSync(join(srcDir, "App.tsx"), "utf8");
     const heroHeadline = landing.indexOf("Free Resume Builder");
     const statsStart = landing.indexOf("{/* ═══════════ STATS");
     const mobileTop = landing.indexOf("AD_CONFIG.slots.mobileTop");
@@ -38,8 +39,14 @@ describe("ad slot references", () => {
     expect(statsStart, "stats section marker").toBeGreaterThan(-1);
     expect(mobileTop, "mobile top slot reference").toBeGreaterThan(-1);
 
+    // Landing renders its own mobile-top below the hero (UX: hero stays ad-free)
     expect(mobileTop).toBeGreaterThan(heroHeadline);
     expect(mobileTop).toBeLessThan(statsStart);
-    expect(sideRail).not.toContain("AD_CONFIG.slots.mobileTop");
+
+    // All other non-editor pages keep the global mobile-top (revenue inventory)
+    expect(sideRail).toContain("AD_CONFIG.slots.mobileTop");
+
+    // Landing must opt out of the global one to avoid double-serving the slot
+    expect(app).toContain('showMobileTop={location.pathname !== "/"}');
   });
 });
