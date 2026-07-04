@@ -106,6 +106,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   const [headerHeight, setHeaderHeight] = useState(0);
   const [bottomOffset, setBottomOffset] = useState(0);
   const sidebarRef = useRef<HTMLElement>(null);
+  const onCollapseChangeRef = useRef(onCollapseChange);
 
   // Calculate header height on mount and resize
   useEffect(() => {
@@ -172,10 +173,14 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
     };
   }, []);
 
-  // Notify parent of initial state
   useEffect(() => {
-    onCollapseChange?.(isCollapsed);
-  }, [isCollapsed, onCollapseChange]);
+    onCollapseChangeRef.current = onCollapseChange;
+  }, [onCollapseChange]);
+
+  // Notify parent when collapsed state changes
+  useEffect(() => {
+    onCollapseChangeRef.current?.(isCollapsed);
+  }, [isCollapsed]);
 
   // Persist preference to localStorage
   useEffect(() => {

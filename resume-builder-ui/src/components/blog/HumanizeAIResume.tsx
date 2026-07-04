@@ -123,7 +123,7 @@ export default function HumanizeAIResume() {
         </p>
 
         <div className="space-y-4">
-          <div className="bg-chalk-dark border-l-4 border-red-500 p-6">
+          <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
             <h3 className="font-bold text-ink mb-2">Generic, round-number metrics with no context</h3>
             <p className="text-stone-warm">
               "Increased efficiency by 30%." Thirty percent of what, measured how,
@@ -131,14 +131,14 @@ export default function HumanizeAIResume() {
               real data to anchor them.
             </p>
           </div>
-          <div className="bg-chalk-dark border-l-4 border-red-500 p-6">
+          <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
             <h3 className="font-bold text-ink mb-2">Uniform sentence rhythm</h3>
             <p className="text-stone-warm">
               Every bullet runs 12–15 words and follows the same shape. Real
               accomplishments come in different sizes, so real bullets should too.
             </p>
           </div>
-          <div className="bg-chalk-dark border-l-4 border-red-500 p-6">
+          <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
             <h3 className="font-bold text-ink mb-2">Corporate filler</h3>
             <p className="text-stone-warm">
               "Spearheaded," "leveraged synergies," "spearheaded cross-functional
@@ -146,7 +146,7 @@ export default function HumanizeAIResume() {
               but describe nothing.
             </p>
           </div>
-          <div className="bg-chalk-dark border-l-4 border-red-500 p-6">
+          <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
             <h3 className="font-bold text-ink mb-2">Hallucinated specifics</h3>
             <p className="text-stone-warm">
               AI will confidently invent a tool, a certification, or a metric you
@@ -154,7 +154,7 @@ export default function HumanizeAIResume() {
               collapse in an interview.
             </p>
           </div>
-          <div className="bg-chalk-dark border-l-4 border-red-500 p-6">
+          <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6">
             <h3 className="font-bold text-ink mb-2">Em-dash overuse and identical bullet openers</h3>
             <p className="text-stone-warm">
               A cascade of em dashes, and every bullet starting with the same verb
@@ -274,8 +274,8 @@ export default function HumanizeAIResume() {
           Frequently Asked Questions
         </h2>
         <div className="space-y-4 my-6">
-          {FAQS.map((faq, i) => (
-            <div key={i} className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
+          {FAQS.map((faq) => (
+            <div key={faq.question} className="bg-chalk-dark border border-black/[0.06] rounded-lg p-4">
               <h3 className="font-bold text-ink mb-2">{faq.question}</h3>
               <p className="text-stone-warm text-sm">{faq.answer}</p>
             </div>

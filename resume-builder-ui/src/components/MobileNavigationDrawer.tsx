@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   MdClose,
   MdDragIndicator,
@@ -32,6 +32,23 @@ interface MobileNavigationDrawerProps {
   loadingLoad?: boolean;
 }
 
+const FOCUSABLE_SELECTOR = [
+  "a[href]",
+  "button:not([disabled])",
+  "textarea:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  "[tabindex]:not([tabindex='-1'])",
+].join(",");
+
+const getFocusableElements = (container: HTMLElement | null) => {
+  if (!container) return [];
+
+  return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+    (element) => !element.hasAttribute("disabled") && !element.hidden
+  );
+};
+
 /**
  * Mobile navigation drawer - slides in from left
  * Shows all resume sections for quick navigation
@@ -52,6 +69,69 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
   loadingLoad = false,
 }) => {
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    previousFocusRef.current = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+
+    const focusableElements = getFocusableElements(drawerRef.current);
+    (focusableElements[0] ?? drawerRef.current)?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onCloseRef.current();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const currentFocusableElements = getFocusableElements(drawerRef.current);
+
+      if (currentFocusableElements.length === 0) {
+        event.preventDefault();
+        drawerRef.current?.focus();
+        return;
+      }
+
+      const firstElement = currentFocusableElements[0];
+      const lastElement = currentFocusableElements[currentFocusableElements.length - 1];
+      const activeElement = document.activeElement;
+
+      if (!drawerRef.current?.contains(activeElement)) {
+        event.preventDefault();
+        firstElement.focus();
+        return;
+      }
+
+      if (event.shiftKey && activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+        return;
+      }
+
+      if (!event.shiftKey && activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previousFocusRef.current?.focus();
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -77,11 +157,13 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
 
       {/* Drawer */}
       <div
+        ref={drawerRef}
         className="fixed top-0 left-0 bottom-0 w-[280px] max-w-[80vw] bg-white z-[9999] lg:hidden shadow-lg
           animate-slide-in-left flex flex-col"
         role="dialog"
         aria-modal="true"
         aria-label="Section navigation"
+        tabIndex={-1}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-accent">

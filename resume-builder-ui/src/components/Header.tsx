@@ -1,6 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import { FileText } from "lucide-react";
-import { useEditorContext } from "../contexts/EditorContext";
+import { useOptionalEditorContext } from "../contexts/EditorContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useResumeCount } from "../hooks/useResumeCount";
 import AutoSaveIndicator from "./AutoSaveIndicator";
@@ -18,7 +18,7 @@ export default function Header() {
   const { data: resumeCount = 0 } = useResumeCount();
 
   const isEditorPage = location.pathname.startsWith("/editor");
-  const editorContext = useEditorContext();
+  const editorContext = useOptionalEditorContext();
 
   const getPageTitle = () => {
     switch (location.pathname) {

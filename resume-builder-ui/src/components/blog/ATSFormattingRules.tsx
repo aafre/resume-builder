@@ -101,7 +101,7 @@ export default function ATSFormattingRules() {
           skills field, so a keyword search for that exact skill never returns
           your name.
         </p>
-        <div className="bg-chalk-dark border-l-4 border-red-500 p-6 my-6">
+        <div className="rounded-lg border border-red-200/70 bg-red-50/80 p-6 my-6">
           <h3 className="font-bold text-ink mb-2">The invisible rejection</h3>
           <p className="text-stone-warm">
             This is the failure mode that costs qualified people interviews. Your
@@ -366,8 +366,8 @@ export default function ATSFormattingRules() {
           Frequently Asked Questions
         </h2>
         <div className="space-y-4 my-6">
-          {FAQS.map((faq, i) => (
-            <div key={i} className="bg-chalk-dark border border-black/[0.06] rounded-lg p-5">
+          {FAQS.map((faq) => (
+            <div key={faq.question} className="bg-chalk-dark border border-black/[0.06] rounded-lg p-5">
               <h3 className="font-bold text-ink mb-2">{faq.question}</h3>
               <p className="text-stone-warm">{faq.answer}</p>
             </div>
