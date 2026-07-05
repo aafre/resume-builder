@@ -225,7 +225,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
             </Link>
             <button
               onClick={dismissMobileBanner}
-              className="ml-2 inline-flex min-h-9 min-w-9 items-center justify-center p-1 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+              className="ml-2 inline-flex min-h-11 min-w-11 items-center justify-center p-1 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
               aria-label="Dismiss"
             >
               <X className="w-4 h-4" />
@@ -247,7 +247,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
               <span>Don't forget to save your progress permanently</span>
               <button
                 onClick={onDismissIdleTooltip}
-                className="ml-2 inline-flex min-h-8 min-w-8 items-center justify-center rounded-md text-ink hover:bg-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/50"
+                className="ml-2 inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-ink hover:bg-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/50"
                 aria-label="Dismiss reminder"
               >
                 ✕

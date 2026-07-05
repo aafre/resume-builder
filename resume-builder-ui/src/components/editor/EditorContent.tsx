@@ -280,7 +280,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
           </div>
           <button
             onClick={modals.closeAIWarning}
-            className="inline-flex min-h-9 min-w-9 items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             aria-label="Close review banner"
           >
             <X className="w-4 h-4" />
