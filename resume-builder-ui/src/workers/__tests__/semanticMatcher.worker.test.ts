@@ -575,5 +575,18 @@ describe('semanticMatcher.worker', () => {
       expect(allKeywords).not.toContain('hands-on with aws');
       expect(allKeywords).not.toContain('jest or similar');
     });
+
+    it('(g) JD boilerplate unigrams "hands-on" and "similar" are not keywords', async () => {
+      const jd = 'Must be hands-on with AWS. Hands-on attitude required. ' +
+        'Jest or similar testing framework. Cypress or similar tools. ' +
+        'Similar hands-on roles considered.';
+
+      await sendMessage({ type: 'match', resumeText: 'Nurse with general clinical experience.', jobDescription: jd });
+      const result = (getMessages('match:result')[0] as { type: 'match:result'; result: EnhancedScanResult }).result;
+
+      const allKeywords = [...result.matched, ...result.partial, ...result.missing].map((k) => k.keyword);
+      expect(allKeywords).not.toContain('hands-on');
+      expect(allKeywords).not.toContain('similar');
+    });
   });
 });

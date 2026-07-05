@@ -100,6 +100,7 @@ export const JOB_FILLER = new Set([
   'deadline', 'deadlines', 'workload', 'sector', 'public',
   'prioritise', 'prioritize', 'liaising', 'liaise',
   'ongoing', 'forthcoming', 'particular', 'using', 'used',
+  'hands-on', 'similar',
 ]);
 
 // Connector words — bigrams containing these are almost always noise
