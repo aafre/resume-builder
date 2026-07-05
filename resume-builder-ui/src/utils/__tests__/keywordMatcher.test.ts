@@ -1069,6 +1069,23 @@ describe('scanResume', () => {
       );
       expect(countKeywordOccurrencesLexical('restful apis', resume)).toBeGreaterThan(0);
     });
+
+    it('gerund-named known skill "mentoring" matches resume "mentored"', () => {
+      // "mentoring" is in KNOWN_SKILLS, so the skip-set protects it from
+      // stemming AND the known-skill gate skips the stem fallback — while
+      // the resume's "mentored" stems to "mentor". Must still match.
+      const resume = prepareLexicalResume(
+        'Led code reviews and mentored junior engineers.'
+      );
+      expect(countKeywordOccurrencesLexical('mentoring', resume)).toBeGreaterThan(0);
+    });
+
+    it('known skill "docker" does NOT match unrelated dock words (no over-stemming)', () => {
+      const resume = prepareLexicalResume(
+        'Docked cargo ships at the loading dock daily.'
+      );
+      expect(countKeywordOccurrencesLexical('docker', resume)).toBe(0);
+    });
   });
 
   // ---------------------------------------------------------------------------

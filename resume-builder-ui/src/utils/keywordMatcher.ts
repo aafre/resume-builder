@@ -12,6 +12,7 @@ import {
   registerSkipTerms,
   stem,
   stemPhrase,
+  rawStem,
   normalizeSynonym,
   applyMultiWordSynonyms,
   applyAllSynonyms,
@@ -425,6 +426,20 @@ export function countKeywordOccurrencesLexical(keyword: string, resume: LexicalR
   // (known skills like "React", "Docker" should match exactly, not via stems)
   if (count === 0 && !isKnownSkill(keyword)) {
     count = countStemOccurrences(keyword, resume.stemmed);
+  }
+
+  // Gerund-named known skills ("mentoring", "consulting") are protected by
+  // the stemmer's skip set AND excluded by the known-skill gate above, so
+  // an inflected resume form ("mentored" → stemmed "mentor") never matches.
+  // For those, search the stemmed resume for the skill's raw (skip-bypassing)
+  // stem with an exact word boundary.
+  // ponytail: -ing single words only; "docker"→"dock" would over-match dock
+  // words, and multi-word skill phrases haven't shown this miss in practice.
+  if (count === 0 && isKnownSkill(keyword) && !keyword.includes(' ') && keyword.endsWith('ing')) {
+    const raw = rawStem(keyword);
+    if (raw !== keyword.toLowerCase()) {
+      count = countOccurrences(raw, resume.stemmed);
+    }
   }
 
   return count;
