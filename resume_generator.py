@@ -33,7 +33,7 @@ except Exception as e:
 
 def load_resume_data(yaml_file_path):
     """Load and validate resume data from YAML file."""
-    with open(yaml_file_path, "r") as file:
+    with open(yaml_file_path, "r", encoding="utf-8") as file:
         data = fast_yaml_load(file)
 
     if not isinstance(data, dict):

@@ -145,11 +145,13 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
   const touchStartY = useRef<number>(0);
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    if (!e.touches || e.touches.length === 0) return;
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!e.changedTouches || e.changedTouches.length === 0) return;
     const dx = e.changedTouches[0].clientX - touchStartX.current;
     const dy = e.changedTouches[0].clientY - touchStartY.current;
     if (dx < -60 && Math.abs(dx) > Math.abs(dy) * 1.5) onClose();

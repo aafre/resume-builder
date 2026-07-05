@@ -840,7 +840,7 @@ def generate_latex_pdf(yaml_data, icons_dir, output_path, template_name="classic
 
 def load_resume_data(yaml_file_path):
     """Load and validate resume data from YAML file."""
-    with open(yaml_file_path, "r") as file:
+    with open(yaml_file_path, "r", encoding="utf-8") as file:
         data = fast_yaml_load(file)
 
     if not isinstance(data, dict):
@@ -1985,7 +1985,7 @@ def generate_resume():
             yaml_file.save(yaml_path)
 
             # Parse YAML to extract icon references
-            with open(yaml_path, "r") as f:
+            with open(yaml_path, "r", encoding="utf-8") as f:
                 yaml_data = fast_yaml_load(f)
 
             # Normalize sections for backward compatibility

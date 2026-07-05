@@ -40,6 +40,14 @@ def test_prerender_to_all_allowlist_serves_non_bot_users(flask_test_client, monk
     assert allowlisted_response.status_code == 200
     assert b'data-prerendered="true"' in allowlisted_response.data
 
+    trailing_slash_response = client.get(
+        f"/{allowlisted_route}/",
+        headers=non_bot_headers,
+        follow_redirects=True,
+    )
+    assert trailing_slash_response.status_code == 200
+    assert b'data-prerendered="true"' in trailing_slash_response.data
+
     shell_response = client.get("/templates", headers=non_bot_headers)
     assert shell_response.status_code == 200
     assert b"data-prerendered" not in shell_response.data
