@@ -276,9 +276,21 @@ function dedupSubstringOverlaps<T extends { label: string }>(items: T[]): T[] {
   for (let i = 0; i < multiWord.length; i++) {
     const shorter = multiWord[i];
     if (dropped.has(shorter.label)) continue;
+    const shorterWords = shorter.label.split(' ');
     for (let j = 0; j < i; j++) {
       const longer = multiWord[j];
-      if (!dropped.has(longer.label) && longer.label.includes(shorter.label)) {
+      if (dropped.has(longer.label)) continue;
+      // Contiguous WORD-level subphrase, not raw substring: "platform
+      // engineering" must not swallow the unrelated "form engineering".
+      const longerWords = longer.label.split(' ');
+      let isSubphrase = false;
+      for (let k = 0; k <= longerWords.length - shorterWords.length; k++) {
+        if (shorterWords.every((w, idx) => longerWords[k + idx] === w)) {
+          isSubphrase = true;
+          break;
+        }
+      }
+      if (isSubphrase) {
         dropped.add(shorter.label);
         break;
       }

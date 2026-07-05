@@ -1086,6 +1086,27 @@ describe('scanResume', () => {
       );
       expect(countKeywordOccurrencesLexical('docker', resume)).toBe(0);
     });
+
+    it('unchanged single word "install" matches inflected resume "installing"', () => {
+      const resume = prepareLexicalResume(
+        'Responsible for installing and configuring network equipment.'
+      );
+      expect(countKeywordOccurrencesLexical('install', resume)).toBeGreaterThan(0);
+    });
+
+    it('single word "data" does NOT match unrelated longer word "database"', () => {
+      const resume = prepareLexicalResume(
+        'Administered the customer database and its schema.'
+      );
+      expect(countKeywordOccurrencesLexical('data', resume)).toBe(0);
+    });
+
+    it('multi-word stem match does NOT bleed across words ("data analysis" ≠ "database analysis")', () => {
+      const resume = prepareLexicalResume(
+        'Led the database analysis and reporting effort.'
+      );
+      expect(countKeywordOccurrencesLexical('data analysis', resume)).toBe(0);
+    });
   });
 
   // ---------------------------------------------------------------------------

@@ -343,11 +343,12 @@ function countStemOccurrences(keyword: string, stemmedText: string): number {
   const stemmedKeyword = stemPhrase(keyword);
 
   if (!stemmedKeyword.includes(' ')) {
-    // Single word: keep the original exact-boundary behavior. Bailing out
-    // when stemming didn't change the keyword is safe here — a single short
-    // word (e.g. "data") must NOT loosely match an unrelated longer word
-    // (e.g. "database") that happens to start with the same letters.
-    if (stemmedKeyword === keyword) return 0; // No stemming change, skip
+    // Single word, exact word-boundary match against the pre-stemmed resume.
+    // Search even when the keyword's own stem is unchanged (e.g. "install",
+    // "monitor", "test"): the resume side is stemmed too, so an inflected
+    // resume form ("installing" -> "install") must still match. The word
+    // boundaries below prevent a short word (e.g. "data") from matching an
+    // unrelated longer one (e.g. "database").
     const escaped = stemmedKeyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const pattern = new RegExp(`(?<=^|\\W)${escaped}(?=\\W|$)`, 'gi');
     const matches = stemmedText.match(pattern);
@@ -359,14 +360,15 @@ function countStemOccurrences(keyword: string, stemmedText: string): number {
   // that need stemming (e.g. "monitoring" -> "monitor"), which still
   // applies when the keyword is already in base form.
   //
-  // Match each stemmed word with a trailing \w*: the suffix-stripping
-  // stemmer is single-pass, so a keyword already in dictionary form (e.g.
-  // "administer") can over-stem relative to an inflected resume word
-  // stemmed in one pass (e.g. "administering" -> "administer"). Treating
-  // each stemmed word as a prefix (not a whole-word match) absorbs that
-  // asymmetry without changing stem() itself.
+  // Match each stemmed word with a bounded trailing \w{0,3}: the
+  // suffix-stripping stemmer is single-pass, so a keyword already in
+  // dictionary form (e.g. "administer") can over-stem relative to an
+  // inflected resume word stemmed in one pass (e.g. "administering" ->
+  // "administer"). Allowing up to 3 trailing chars absorbs that suffix
+  // asymmetry (er/ing/ed/s/es) without letting an unbounded \w* match a
+  // wholly different longer word (e.g. "data" -> "database").
   const words = stemmedKeyword.split(' ').map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  const pattern = new RegExp(`(?<=^|\\W)${words.join('\\w*\\s+')}\\w*(?=\\W|$)`, 'gi');
+  const pattern = new RegExp(`(?<=^|\\W)${words.join('\\w{0,3}\\s+')}\\w{0,3}(?=\\W|$)`, 'gi');
   const matches = stemmedText.match(pattern);
   return matches ? matches.length : 0;
 }
