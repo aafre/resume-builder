@@ -55,14 +55,16 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
   };
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-gray-200 shadow-sm">
       {/* Auto-save status bar (subtle, above buttons) - only for authenticated users */}
       {isAuthenticated && (isSaving || lastSaved || saveError) && (
         <div className="px-4 py-1 bg-gray-50 border-b border-gray-100">
           <div className="flex items-center justify-center gap-2 text-xs">
             {isSaving && (
               <>
-                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-accent"></div>
+                <div className="h-2 w-8 overflow-hidden rounded-full bg-slate-200">
+                  <div className="h-full w-1/2 animate-pulse rounded-full bg-accent" />
+                </div>
                 <span className="text-gray-600">Saving...</span>
               </>
             )}
@@ -88,7 +90,7 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
         <button
           onClick={onNavigationClick}
           disabled={isGenerating || isGeneratingPreview}
-          className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 rounded-xl transition-all disabled:opacity-50 hover:bg-gray-100 active:bg-gray-200 active:scale-[0.98] border border-gray-200"
+          className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 rounded-lg transition-all disabled:opacity-50 hover:bg-gray-100 active:bg-gray-200 active:scale-[0.98] border border-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           aria-label="Open navigation menu"
         >
           <MdMenu className="text-2xl text-gray-700 mb-1.5" aria-hidden="true" />
@@ -100,7 +102,7 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
           <button
             onClick={onPreviewClick}
             disabled={isPreviewLoading || isGenerating}
-            className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-accent text-ink rounded-xl shadow-lg transition-all hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed relative"
+            className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-accent text-ink rounded-lg shadow-sm transition-all hover:shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             aria-label="Preview resume PDF"
             >
             {/* Staleness indicator */}
@@ -109,7 +111,9 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
             )}
             {isPreviewLoading ? (
               <>
-                <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent mb-1.5"></div>
+                <span className="mb-1.5 h-2 w-10 overflow-hidden rounded-full bg-ink/15">
+                  <span className="block h-full w-1/2 animate-pulse rounded-full bg-ink/60" />
+                </span>
                 <span className="text-xs font-semibold">Loading...</span>
               </>
             ) : (
@@ -125,12 +129,14 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
         <button
           onClick={onDownloadClick}
           disabled={isGenerating || isGeneratingPreview}
-          className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-xl shadow-lg transition-all hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-emerald-600 text-white rounded-lg shadow-sm transition-all hover:bg-emerald-700 hover:shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
           aria-label="Download resume as PDF"
         >
           {isGenerating ? (
             <>
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mb-1.5"></div>
+              <span className="mb-1.5 h-2 w-10 overflow-hidden rounded-full bg-white/30">
+                <span className="block h-full w-1/2 animate-pulse rounded-full bg-white" />
+              </span>
               <span className="text-xs font-semibold">Creating...</span>
             </>
           ) : (

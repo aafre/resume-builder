@@ -1,6 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import { FileText } from "lucide-react";
-import { useEditorContext } from "../contexts/EditorContext";
+import { useOptionalEditorContext } from "../contexts/EditorContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useResumeCount } from "../hooks/useResumeCount";
 import AutoSaveIndicator from "./AutoSaveIndicator";
@@ -17,17 +17,8 @@ export default function Header() {
   // Get resume count for mobile badge (lightweight count-only query)
   const { data: resumeCount = 0 } = useResumeCount();
 
-  // Safely get editor context (might not be available)
   const isEditorPage = location.pathname.startsWith("/editor");
-  let editorContext = null;
-
-  try {
-    // Always call the hook to maintain hook order
-    editorContext = useEditorContext();
-  } catch {
-    // Context not available, which is fine for non-editor pages
-    editorContext = null;
-  }
+  const editorContext = useOptionalEditorContext();
 
   const getPageTitle = () => {
     switch (location.pathname) {
@@ -54,16 +45,13 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white/95 backdrop-blur-xl border-b border-black/[0.06] sticky top-0 z-50 relative">
-      {/* Accent line at top */}
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-accent" />
-
+    <header className="bg-white/95 backdrop-blur-xl border-b border-slate-200/80 sticky top-0 z-50 relative">
       <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-[72px] transition-all duration-200">
           {/* Logo and Home Navigation */}
           <Link
             to="/"
-            className="group flex items-center transition-all duration-200 relative flex-shrink-0"
+            className="group flex min-h-11 min-w-11 items-center rounded-lg transition-all duration-200 relative flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             aria-label="Go to homepage"
           >
             <LogoMark
@@ -81,7 +69,7 @@ export default function Header() {
               <Link
                 to="/my-resumes"
                 id="tour-my-resumes-link"
-                className={`relative px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+                className={`relative inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
                   location.pathname === '/my-resumes'
                     ? 'bg-ink text-white shadow-sm'
                     : 'text-gray-600 hover:bg-black/5 hover:text-ink'
@@ -96,7 +84,7 @@ export default function Header() {
               </Link>
               <Link
                 to="/templates"
-                className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+                className={`inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
                   location.pathname === '/templates'
                     ? 'bg-ink text-white shadow-sm'
                     : 'text-gray-600 hover:bg-black/5 hover:text-ink'
@@ -107,7 +95,7 @@ export default function Header() {
               {affiliateConfig.jobSearch.enabled && (
                 <Link
                   to="/jobs"
-                  className={`relative px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+                  className={`relative inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
                     location.pathname === '/jobs'
                       ? 'bg-ink text-white shadow-sm'
                       : 'text-gray-600 hover:bg-black/5 hover:text-ink'
@@ -148,7 +136,7 @@ export default function Header() {
                 {/* My Resumes Icon with Badge */}
                 <Link
                   to="/my-resumes"
-                  className="relative p-2 rounded-lg hover:bg-black/5 transition-all duration-200"
+                  className="relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg hover:bg-black/5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                   aria-label={`My Resumes${resumeCount > 0 ? ` (${resumeCount})` : ''}`}
                 >
                   <div className="relative">
@@ -195,7 +183,7 @@ export default function Header() {
                     <button
                       id="tour-sign-in-button"
                       onClick={showAuthModal}
-                      className="flex items-center gap-2 py-2 font-semibold text-sm transition-all duration-300 text-ink hover:text-accent hover:underline lg:hover:no-underline lg:py-2.5 lg:px-5 lg:bg-ink lg:text-white lg:rounded-xl lg:shadow-sm lg:hover:shadow-md lg:hover:scale-[1.02]"
+                      className="flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 font-semibold text-sm transition-all duration-200 text-ink hover:text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 lg:hover:no-underline lg:px-5 lg:bg-ink lg:text-white lg:shadow-sm lg:hover:shadow-md"
                     >
                       <span>Sign In</span>
                     </button>
@@ -208,7 +196,7 @@ export default function Header() {
             {!isEditorPage && !isAuthenticated && location.pathname !== "/templates" && (
               <Link
                 to="/templates"
-                className="bg-accent text-ink py-2.5 px-5 sm:py-3 sm:px-6 rounded-xl text-sm font-bold shadow-sm hover:shadow-md hover:shadow-accent/20 hover:scale-[1.02] transition-all duration-300 active:scale-[0.98]"
+                className="btn-primary px-5 sm:px-6 text-sm font-bold"
               >
                 <span className="hidden sm:inline">Create Free Resume</span>
                 <span className="sm:hidden">Create Resume</span>

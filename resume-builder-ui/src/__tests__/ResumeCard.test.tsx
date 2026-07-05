@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ResumeCard } from "../components/ResumeCard";
@@ -75,13 +74,10 @@ describe("ResumeCard", () => {
   });
 
   describe("Edit Resume button loading state", () => {
-    it("shows spinner when isEditButtonLoading is true", () => {
-      const { container } = render(
-        <ResumeCard {...defaultProps} isEditButtonLoading={true} />
-      );
+    it("shows loading indicator when isEditButtonLoading is true", () => {
+      render(<ResumeCard {...defaultProps} isEditButtonLoading={true} />);
 
-      const spinner = container.querySelector(".animate-spin");
-      expect(spinner).toBeInTheDocument();
+      expect(screen.getByTestId("edit-loading-indicator")).toBeInTheDocument();
     });
 
     it("shows 'Opening...' text when loading", () => {
@@ -245,7 +241,7 @@ describe("ResumeCard", () => {
 
   describe("combined loading states", () => {
     it("can have both edit button and preview loading states simultaneously", () => {
-      const { container } = render(
+      render(
         <ResumeCard
           {...defaultProps}
           isEditButtonLoading={true}
@@ -257,9 +253,8 @@ describe("ResumeCard", () => {
       expect(screen.getByText("Opening...")).toBeInTheDocument();
       expect(screen.getByText("Opening preview...")).toBeInTheDocument();
 
-      // Both spinners should be present
-      const spinners = container.querySelectorAll(".animate-spin");
-      expect(spinners.length).toBe(2);
+      expect(screen.getByTestId("edit-loading-indicator")).toBeInTheDocument();
+      expect(screen.getByTestId("preview-loading-spinner")).toBeInTheDocument();
     });
   });
 

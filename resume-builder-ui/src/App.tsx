@@ -231,7 +231,8 @@ function AppContent() {
           isEditorPage ? "px-0" : "px-4 sm:px-6 md:px-8"
         }`}
       >
-        <SideRailLayout enabled={!isEditorPage}>
+        {/* Landing page renders its own mobile-top ad below the hero */}
+        <SideRailLayout enabled={!isEditorPage} showMobileTop={location.pathname !== "/"}>
         <Routes>
           {/* Landing page — inlined to eliminate Suspense CLS */}
           <Route path="/" element={<LandingPage />} />
