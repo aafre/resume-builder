@@ -1209,6 +1209,13 @@ CORS(
 
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16 MB
 
+
+@app.route("/health", methods=["GET"])
+def health():
+    """Liveness check for docker-compose healthcheck and CI smoke tests."""
+    return jsonify(status="ok"), 200
+
+
 # =============================================================================
 # Jobs pSEO Renderer — initialized once at startup
 # =============================================================================

@@ -463,3 +463,15 @@ class TestGetSocialMediaHandle:
         result = flask_app.get_social_media_handle('', 'linkedin')
 
         assert result == ''
+
+
+class TestHealthEndpoint:
+    """Tests for the /health liveness check used by docker-compose and CI smoke tests."""
+
+    def test_health_returns_200_ok(self, flask_test_client):
+        client, mock_sb, flask_app = flask_test_client
+
+        response = client.get('/health')
+
+        assert response.status_code == 200
+        assert response.get_json() == {'status': 'ok'}
