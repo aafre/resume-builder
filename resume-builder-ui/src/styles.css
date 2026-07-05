@@ -239,18 +239,26 @@ details .faq-content > div {
 }
 
 /* ── Hero "builds itself" sequence ──
-   Hidden start states live ONLY in keyframe `from` + fill-mode both/forwards,
-   so `animation: none` (reduced motion) leaves everything in its final visible
-   state. Animates clip-path/opacity/transform only — zero CLS. Delay comes
-   from the per-element --d custom property. */
+   Hidden start states live ONLY in keyframe `from` + fill-mode both/forwards
+   (or a base opacity: 0), so `animation: none` (reduced motion) leaves
+   everything in its final visible state. Animates clip-path/opacity/transform
+   only — zero CLS. Delay comes from the per-element --d custom property.
+   The whole sequence is paused until useScrollReveal adds .revealed to the
+   .hero-seq container (matters on mobile, where the card sits below the CTAs). */
 @keyframes hero-rise {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+@keyframes hero-card-in {
+  from { opacity: 0; transform: perspective(1000px) rotateX(14deg) translateY(36px) scale(0.94); }
+  60%  { opacity: 1; }
+  to   { opacity: 1; transform: perspective(1000px) rotateX(0deg) translateY(0) scale(1); }
+}
 @keyframes hero-pop {
-  0%   { opacity: 0; transform: scale(0.5); }
-  70%  { opacity: 1; transform: scale(1.08); }
-  100% { opacity: 1; transform: scale(1); }
+  0%   { opacity: 0; transform: scale(0.4) rotate(-8deg); }
+  60%  { opacity: 1; transform: scale(1.12) rotate(2deg); }
+  80%  { transform: scale(0.97) rotate(-1deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 @keyframes hero-stamp {
   0%   { opacity: 0; transform: scale(1.6) rotate(-8deg); }
@@ -262,12 +270,72 @@ details .faq-content > div {
   20%, 60%     { opacity: 0; }
   100%         { opacity: 0; }
 }
+@keyframes hero-progress {
+  0%   { transform: scaleX(0); opacity: 1; }
+  85%  { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+@keyframes hero-scan {
+  from { transform: translateY(0); opacity: 0; }
+  15%  { opacity: 1; }
+  80%  { opacity: 1; }
+  to   { transform: translateY(440px); opacity: 0; }
+}
+@keyframes hero-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes hero-glow {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.92); }
+  50%      { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+}
 
+@keyframes hero-underline {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes hero-title-scan {
+  /* sweep for ~28% of the cycle, then rest — both endpoints render pure ink,
+     so the loop restart is invisible */
+  0%   { background-position: 100% 0; }
+  28%  { background-position: 0% 0; }
+  100% { background-position: 0% 0; }
+}
+
+/* Accent sheen sweeps across "Free Resume Builder" (left → right), looping
+   with a long pause. The text is always painted (gradient is ink except the
+   moving band), so LCP is safe; at rest (and under reduced motion / no
+   background-clip support) it reads as plain ink. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero-title-scan {
+    background-image: linear-gradient(100deg, #0c0c0c 42%, #00d47e 50%, #0c0c0c 58%);
+    background-size: 300% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: hero-title-scan 6s ease-in-out 0.5s infinite;
+  }
+}
+
+/* Accent highlighter behind "Get You Hired" in the H1 — draws in on load
+   (above the fold, not gated; text itself never animates so LCP is unaffected) */
+.hero-underline {
+  transform-origin: left;
+  animation: hero-underline 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both;
+}
+
+/* Ambient loops (not part of the gated sequence) */
 .hero-mockup {
   animation: float 4s ease-in-out infinite;
 }
-.hero-rise {
-  animation: hero-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+.hero-glow {
+  animation: hero-glow 7s ease-in-out infinite;
+}
+
+/* Sequence steps */
+.hero-card-in {
+  animation: hero-card-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: var(--d, 0s);
 }
 .hero-type {
@@ -279,14 +347,42 @@ details .faq-content > div {
   animation-delay: var(--d, 0s);
 }
 .hero-pop {
-  animation: hero-pop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: hero-pop 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: var(--d, 0s);
 }
 .hero-stamp {
   animation:
     hero-stamp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both,
-    pulse-accent 1.4s ease-out 2;
-  animation-delay: var(--d, 0s), calc(var(--d, 0s) + 0.65s);
+    pulse-accent 1.4s ease-out 2,
+    hero-bob 5.5s ease-in-out infinite;
+  animation-delay: var(--d, 0s), calc(var(--d, 0s) + 0.7s), calc(var(--d, 0s) + 1.6s);
+}
+.hero-chip {
+  animation:
+    hero-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both,
+    hero-bob 6.5s ease-in-out infinite;
+  animation-delay: var(--d, 0s), calc(var(--d, 0s) + 1.2s);
+}
+.hero-progress {
+  opacity: 0; /* base-hidden so reduced-motion (animation: none) never shows a stuck bar */
+  transform-origin: left;
+  animation: hero-progress 3.4s linear both;
+  animation-delay: var(--d, 0s);
+}
+.hero-scan {
+  opacity: 0;
+  animation: hero-scan 0.8s ease-in-out both;
+  animation-delay: var(--d, 0s);
+}
+.hero-particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 9999px;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  animation: dcm-particle-burst 0.7s ease-out both;
+  animation-delay: var(--d, 0s);
 }
 .hero-type-caret {
   position: relative;
@@ -302,6 +398,16 @@ details .faq-content > div {
   opacity: 0; /* hidden by default so reduced-motion (animation: none) never shows a stuck caret */
   animation: hero-caret-blink 1.6s step-end forwards;
   animation-delay: var(--d, 0s);
+}
+
+/* Gate: sequence waits for scroll-into-view (useScrollReveal adds .revealed) */
+.hero-seq :is(.hero-card-in, .hero-type, .hero-draw, .hero-pop, .hero-stamp, .hero-chip, .hero-progress, .hero-scan, .hero-particle),
+.hero-seq .hero-type-caret::after {
+  animation-play-state: paused;
+}
+.hero-seq.revealed :is(.hero-card-in, .hero-type, .hero-draw, .hero-pop, .hero-stamp, .hero-chip, .hero-progress, .hero-scan, .hero-particle),
+.hero-seq.revealed .hero-type-caret::after {
+  animation-play-state: running;
 }
 
 /* ── Download Celebration Modal ── */
@@ -414,11 +520,17 @@ details .faq-content > div {
   /* Landing page animations: disable (hero-* classes settle in their final
      visible state; the caret ::after defaults to opacity 0) */
   .hero-mockup,
-  .hero-rise,
+  .hero-glow,
+  .hero-underline,
+  .hero-card-in,
   .hero-type,
   .hero-draw,
   .hero-pop,
   .hero-stamp,
+  .hero-chip,
+  .hero-progress,
+  .hero-scan,
+  .hero-particle,
   .hero-type-caret::after,
   .demo-typing {
     animation: none !important;
