@@ -2,6 +2,71 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.28.0] - 2026-07-05
+
+### 🚀 Features
+
+- **seo:** Retarget + de-fabricate reddit page for revenue recovery
+- **seo:** Add humanize-AI-resume blog page for revenue recovery
+- **seo:** Add ATS formatting rules blog page for revenue recovery
+- **ui:** Add hero live-build keyframes and sequence utilities
+- **ui:** Add title accent-scan, underline, scroll-gated hero sequence
+- **ui:** Two-tier hero headline + mobile-visible live-build mockup
+- **scanner:** Surface model-download progress copy
+- **ops:** Add /health liveness endpoint
+
+### 🐛 Bug Fixes
+
+- **seo:** Serve X-Robots-Tag noindex for ai-cover-letter-prompts
+- **ui:** Remove invalid double-opacity Tailwind modifiers, harden ad slot test
+- **cls:** Fix top CLS sources on mobile
+- Address all 6 Gemini review findings on PR #561
+- **trustpilot:** Guard ensureTrustpilotLoaded against non-DOM env
+- **cls:** Reserve 400px for mobile-top ad to prevent layout shift
+- **ads:** Restore global mobile-top ad on non-editor pages, landing opts out
+- **a11y:** Close Shift+Tab focus-trap escape when drawer itself is focused
+- **a11y:** Raise sub-44px tap targets to 44px min (footer link, editor close/dismiss buttons)
+- **scanner:** Add lexical match pass, recalibrate thresholds
+- **scanner:** Improve JD keyword extraction quality
+- **scanner:** Destructure statusText prop in ModelStatusIndicator
+- **scanner:** Match stem-adjacent verbatim phrases in lexical pass
+- **scanner:** Reject glue-word middle terms in trigram extraction
+- **scanner:** Stem-match gerund-named known skills like mentoring
+- **scanner:** Filter JD boilerplate unigrams hands-on and similar
+- **scanner:** Tighten stem matching per review (bounded suffix, word-level dedup)
+- **scanner:** Make Resume Keyword Scanner output correct and trustworthy ([#630](https://github.com/aafre/resume-builder/pull/630))
+
+### 🚜 Refactor
+
+- **ui:** Drop redundant inline tap-highlight styles, robustify ad slot test paths
+- **ui:** Prefix hero particle list keys
+
+### ⚡ Performance
+
+- **mobile:** Eliminate 300ms tap delay + swipe-to-close drawer
+- **mobile:** Modal safe-area, dvh units, Speculation Rules for LCP
+- **editor:** Mobile editor UX — iOS zoom fix, tighter padding, accent borders
+- **mobile:** Lazy-load Trustpilot widget only when download modal opens
+- **landing:** Make hero stat count static for deterministic hydration
+- **lcp:** Hydrate prerendered homepage to credit shell H1 as LCP
+- **prerender:** Extend prerender-to-all to 5 SEO landing routes
+- Replace yaml.safe_load with fast_yaml_load
+
+### 🧪 Testing
+
+- **resume-loader:** Fix flaky 404 retry test race
+
+### ⚙️ Miscellaneous Tasks
+
+- **seo:** Noindex + de-sitemap ai-cover-letter-prompts thin sibling
+- Gitignore .worktrees directory
+- **ads:** Remove dead efr-editor-sidebar ad unit (B3, $2.78/90d)
+- Smoke-test the built Docker image before passing PR validation
+
+### Build
+
+- **prerender:** Tag prerendered root and allow route subset
+
 ## [3.27.0] - 2026-06-21
 
 ### 🚀 Features
