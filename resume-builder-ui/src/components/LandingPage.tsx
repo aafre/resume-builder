@@ -346,7 +346,7 @@ const LandingPage: React.FC = () => {
                     { px: '-22px', py: '26px', size: 5, color: '#00d47e' },
                   ].map((p, i) => (
                     <span
-                      key={i}
+                      key={`particle-${i}`}
                       className="hero-particle"
                       style={{
                         '--px': p.px,
