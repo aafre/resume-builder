@@ -73,6 +73,7 @@ COPY --chown=appuser:appuser jobs_matrix.json ./
 
 # Copy directories needed for the application
 COPY --chown=appuser:appuser templates/ ./templates/
+COPY --chown=appuser:appuser utils/ ./utils/
 COPY --chown=appuser:appuser samples/ ./samples/
 COPY --chown=appuser:appuser icons/ ./icons/
 COPY --chown=appuser:appuser docs/templates/ ./docs/templates/
