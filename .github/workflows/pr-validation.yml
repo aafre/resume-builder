@@ -59,6 +59,29 @@ jobs:
           docker build -t resume-builder:pr-${{ github.event.number }} .
           echo "✅ Docker build successful - image not pushed on PR"
 
+      - name: Smoke test the built image
+        run: |
+          docker run -d --name smoke-test -p 5000:5000 resume-builder:pr-${{ github.event.number }}
+          for i in $(seq 1 15); do
+            if curl -f -s http://localhost:5000/health > /dev/null; then
+              echo "✅ Container started and /health responded"
+              exit 0
+            fi
+            echo "Waiting for container to become healthy... ($i/15)"
+            sleep 2
+          done
+          echo "❌ Container did not become healthy in time"
+          docker logs smoke-test
+          exit 1
+
+      - name: Dump container logs on failure
+        if: failure()
+        run: docker logs smoke-test || true
+
+      - name: Stop smoke test container
+        if: always()
+        run: docker rm -f smoke-test || true
+
   docs-only-check:
     name: Documentation Only
     runs-on: ubuntu-latest
