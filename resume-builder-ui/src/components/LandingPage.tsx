@@ -7,12 +7,19 @@ import CompanyMarquee from "./CompanyMarquee";
 import RevealSection from "./shared/RevealSection";
 import { useAuth } from "../contexts/AuthContext";
 import { useResumeCount } from "../hooks/useResumeCount";
+import { useScrollReveal } from "../hooks/useScrollReveal";
 import { InContentAd, AD_CONFIG } from "./ads";
 import {
+  ArrowDownTrayIcon,
   ArrowRightIcon,
+  CheckIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 import { TUTORIAL_VIDEO } from "../config/videoContent";
+
+// Animation-delay for the hero build sequence (consumed by hero-* classes in styles.css).
+// Static values only — the landing route must prerender/hydrate byte-identical.
+const d = (delay: string) => ({ "--d": delay }) as React.CSSProperties;
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -44,13 +51,14 @@ const LandingPage: React.FC = () => {
     // No auto-redirect for authenticated users - let them see landing page
   }, [searchParams, navigate]);
 
-  const resumeCountValue = useMemo(() => {
-    const launchDate = new Date("2019-01-01T00:00:00Z");
-    const now = new Date();
-    const msPerDay = 24 * 60 * 60 * 1000;
-    const daysSinceLaunch = Math.floor((now.getTime() - launchDate.getTime()) / msPerDay);
-    return 52000 + daysSinceLaunch * 28;
-  }, []);
+  // Static approximate count — kept constant (no new Date()) so the prerendered
+  // HTML and the first client render are byte-identical. This is what lets the
+  // landing route hydrate cleanly under hydrateRoot. Bump manually over time.
+  const resumeCountValue = 150000;
+
+  // Starts the hero build sequence when the card scrolls into view (mobile:
+  // the card sits below the CTAs, so a load-triggered run would finish unseen)
+  const heroVisualRef = useScrollReveal<HTMLDivElement>({ threshold: 0.3 });
 
   const prefersReducedMotion = useMemo(
     () =>
@@ -193,29 +201,48 @@ const LandingPage: React.FC = () => {
 
       {/* ═══════════ HERO — light, asymmetric ═══════════ */}
       <section className="relative pt-12 pb-20 md:pt-20 md:pb-28">
-        <div className="max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left: text */}
+        <div className="max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-y-10 gap-x-12 lg:gap-x-16 items-center">
+          {/* Eyebrow + headline (mobile: card follows immediately, so both share the first viewport) */}
           <div>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-6 block">
               FREE FOREVER. NO SIGN-UP.
             </span>
-            <h1 className="font-display text-[clamp(2.5rem,5.5vw,4.5rem)] font-extrabold leading-[1.08] tracking-tight text-ink mb-6">
-              Free Resume Builder — Build Resumes That Get You Hired
+            {/* Two-tier headline. Line sizes use per-breakpoint fluid clamps and
+                [text-wrap:balance] so the promise line always breaks cleanly
+                (no orphaned words); the highlighted phrase is an unbreakable
+                inline-block so the underline never splits across lines. */}
+            <h1 className="font-display tracking-tight text-ink">
+              <span className="hero-title-scan block text-[clamp(1.5rem,7.8vw,2.25rem)] lg:text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-tight mb-2 lg:mb-3">
+                Free Resume Builder
+              </span>{' '}
+              <span className="block text-[clamp(2rem,8.9vw,3.25rem)] lg:text-[clamp(2.5rem,4.45vw,4rem)] font-extrabold leading-[1.08] [text-wrap:balance]">
+                Build Resumes That{' '}
+                <span className="relative inline-block">
+                  <span className="relative z-10">Get You Hired</span>
+                  <span className="hero-underline absolute left-0 bottom-1 lg:bottom-2 w-full h-3 lg:h-4 bg-accent/30 rounded-sm" aria-hidden="true" />
+                </span>
+              </span>
             </h1>
+          </div>
+
+          {/* Subtitle + CTAs (mobile: rendered after the visual via order-last) */}
+          <div className="order-last lg:order-none lg:col-start-1 lg:row-start-2">
             <p className="font-display text-lg md:text-xl font-extralight text-stone-warm max-w-lg leading-relaxed mb-8">
               Build your resume for free online with ATS-friendly templates. Download as PDF instantly — no sign up, no payment, no watermarks.
             </p>
 
             <div className="flex flex-wrap gap-4 mb-8">
               <button
-                className="group inline-flex items-center justify-center bg-accent text-ink py-3.5 px-8 rounded-xl text-base font-bold shadow-lg hover:shadow-accent/25 hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-300 active:scale-95 font-display"
+                type="button"
+                className="btn-primary group px-7 text-base font-display"
                 onClick={() => navigate(hasResumes ? "/my-resumes" : "/templates")}
               >
                 {hasResumes ? "My Resumes" : "Build My Free Resume"}
                 <ArrowRightIcon className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
               <button
-                className="group inline-flex items-center justify-center border border-ink/15 text-ink py-3.5 px-8 rounded-xl text-base font-semibold hover:border-ink/30 hover:bg-ink/[0.03] transition-all duration-300 active:scale-95 font-display"
+                type="button"
+                className="btn-secondary group px-7 text-base font-display"
                 onClick={() => navigate("/templates")}
               >
                 View Templates
@@ -227,54 +254,131 @@ const LandingPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Right: CSS-only floating resume mockup */}
-          <div className="hidden lg:flex items-center justify-center" aria-hidden="true">
+          {/* CSS-only "builds itself" resume mockup (run-once sequence, delays
+              via --d; all animation classes defined in styles.css). Desktop:
+              right column spanning both text rows. Mobile: directly below H1,
+              inside the first viewport so the sequence plays on load. */}
+          <div
+            ref={heroVisualRef}
+            className="hero-seq flex items-center justify-center lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:self-center"
+            aria-hidden="true"
+          >
             <div className="relative" style={{ perspective: '1000px' }}>
-              {/* Shadow copy behind */}
-              <div
-                className="absolute top-4 left-4 w-[280px] h-[380px] bg-ink/[0.04] rounded-xl"
-                style={{ transform: 'rotateY(-3deg)' }}
-              />
-              {/* Main mockup */}
-              <div
-                className="hero-mockup relative w-[280px] h-[380px] bg-white rounded-xl p-6 flex flex-col gap-3 border border-black/[0.06]"
-                style={{
-                  animation: prefersReducedMotion ? 'none' : 'float 4s ease-in-out infinite',
-                  transform: 'rotateY(-3deg)',
-                  boxShadow: '0 8px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)',
-                }}
-              >
-                {/* Name bar */}
-                <div className="h-5 w-32 bg-ink rounded-sm" />
-                <div className="h-2.5 w-20 bg-accent/60 rounded-sm" />
-                {/* Divider */}
-                <div className="h-px w-full bg-gray-200 my-1" />
-                {/* Section: experience */}
-                <div className="h-2 w-16 bg-ink/40 rounded-sm" />
-                <div className="space-y-1.5">
-                  <div className="h-1.5 w-full bg-gray-200 rounded-sm" />
-                  <div className="h-1.5 w-[90%] bg-gray-200 rounded-sm" />
-                  <div className="h-1.5 w-[75%] bg-gray-200 rounded-sm" />
+              {/* Radial accent glow */}
+              <div className="hero-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] lg:w-[480px] lg:h-[480px] rounded-full bg-accent/[0.07] blur-3xl pointer-events-none" />
+              <div className="hero-card-in relative" style={d('0.15s')}>
+                {/* Shadow copy behind */}
+                <div
+                  className="absolute top-4 left-4 w-full h-full bg-ink/[0.04] rounded-xl"
+                  style={{ transform: 'rotateY(-3deg)' }}
+                />
+                {/* Main mockup */}
+                <div
+                  className="hero-mockup relative w-[240px] h-[330px] lg:w-[280px] lg:h-[380px] bg-white rounded-xl p-5 lg:p-6 flex flex-col gap-2.5 lg:gap-3 border border-black/[0.06]"
+                  style={{
+                    transform: 'rotateY(-3deg)',
+                    boxShadow: '0 8px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)',
+                  }}
+                >
+                  {/* Build progress bar along the card's top edge */}
+                  <div className="hero-progress absolute top-0 left-0 w-full h-0.5 bg-accent/70 rounded-t-xl" style={d('0.4s')} />
+                  {/* Name types in */}
+                  <div className="hero-type hero-type-caret self-start" style={d('0.5s')}>
+                    <span className="font-display text-lg lg:text-xl font-extrabold text-ink leading-none whitespace-nowrap">
+                      John Doe
+                    </span>
+                  </div>
+                  <div className="hero-draw h-2.5 w-24 lg:w-28 bg-accent/60 rounded-sm" style={d('1.25s')} />
+                  {/* Divider */}
+                  <div className="h-px w-full bg-gray-200 my-1" />
+                  {/* Section: experience */}
+                  <div className="hero-draw font-mono text-[8px] lg:text-[9px] tracking-[0.15em] text-ink/50 uppercase" style={d('1.45s')}>
+                    Experience
+                  </div>
+                  <div className="space-y-1.5">
+                    <div className="hero-draw h-1.5 w-full bg-gray-200 rounded-sm" style={d('1.6s')} />
+                    <div className="hero-draw h-1.5 w-[90%] bg-gray-200 rounded-sm" style={d('1.75s')} />
+                    <div className="hero-draw h-1.5 w-[75%] bg-gray-200 rounded-sm" style={d('1.9s')} />
+                  </div>
+                  {/* Section: skills */}
+                  <div className="hero-draw font-mono text-[8px] lg:text-[9px] tracking-[0.15em] text-ink/50 uppercase mt-1.5 lg:mt-2" style={d('2.15s')}>
+                    Skills
+                  </div>
+                  <div className="flex gap-1.5 flex-wrap">
+                    {['React', 'SQL', 'Python', 'Figma'].map((skill, i) => (
+                      <span
+                        key={skill}
+                        className="hero-pop inline-flex items-center h-4 px-2 bg-accent/15 rounded-full font-mono text-[8px] lg:text-[9px] text-accent-text leading-none"
+                        style={d(`${(2.25 + i * 0.12).toFixed(2)}s`)}
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                  {/* Section: education */}
+                  <div className="hero-draw font-mono text-[8px] lg:text-[9px] tracking-[0.15em] text-ink/50 uppercase mt-1.5 lg:mt-2" style={d('2.7s')}>
+                    Education
+                  </div>
+                  <div className="space-y-1.5">
+                    <div className="hero-draw h-1.5 w-[85%] bg-gray-200 rounded-sm" style={d('2.85s')} />
+                    <div className="hero-draw h-1.5 w-[60%] bg-gray-200 rounded-sm" style={d('3s')} />
+                  </div>
+                  {/* ATS scan beam sweeps down the finished resume */}
+                  <div className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
+                    <div
+                      className="hero-scan absolute -top-12 left-0 w-full h-12 bg-gradient-to-b from-transparent via-accent/10 to-accent/30"
+                      style={d('3.1s')}
+                    />
+                  </div>
                 </div>
-                {/* Section: skills */}
-                <div className="h-2 w-12 bg-ink/40 rounded-sm mt-2" />
-                <div className="flex gap-1.5 flex-wrap">
-                  <div className="h-4 w-14 bg-accent/15 rounded-full" />
-                  <div className="h-4 w-10 bg-accent/15 rounded-full" />
-                  <div className="h-4 w-16 bg-accent/15 rounded-full" />
-                  <div className="h-4 w-12 bg-accent/15 rounded-full" />
+                {/* Floating proof chips */}
+                <div
+                  className="hero-stamp absolute -top-4 -right-8 lg:-top-5 lg:-right-10 flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 border border-black/[0.06] shadow-lg"
+                  style={d('3.7s')}
+                >
+                  <CheckIcon className="w-3.5 h-3.5 text-accent" />
+                  <span className="font-mono text-[10px] lg:text-xs tracking-wide font-semibold text-ink">ATS 100%</span>
+                  {/* Particle burst on badge stamp (reuses dcm-particle-burst) */}
+                  {[
+                    { px: '30px', py: '-22px', size: 5, color: '#00d47e' },
+                    { px: '-26px', py: '-24px', size: 4, color: '#34d399' },
+                    { px: '24px', py: '20px', size: 4, color: '#2dd4bf' },
+                    { px: '-22px', py: '26px', size: 5, color: '#00d47e' },
+                  ].map((p, i) => (
+                    <span
+                      key={`particle-${i}`}
+                      className="hero-particle"
+                      style={{
+                        '--px': p.px,
+                        '--py': p.py,
+                        '--d': '4s',
+                        width: p.size,
+                        height: p.size,
+                        background: p.color,
+                      } as React.CSSProperties}
+                    />
+                  ))}
                 </div>
-                {/* Section: education */}
-                <div className="h-2 w-14 bg-ink/40 rounded-sm mt-2" />
-                <div className="space-y-1.5">
-                  <div className="h-1.5 w-[85%] bg-gray-200 rounded-sm" />
-                  <div className="h-1.5 w-[60%] bg-gray-200 rounded-sm" />
+                <div
+                  className="hero-chip absolute -bottom-4 -left-8 lg:-bottom-5 lg:-left-10 flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 border border-black/[0.06] shadow-lg"
+                  style={d('3.95s')}
+                >
+                  <ArrowDownTrayIcon className="w-3.5 h-3.5 text-accent" />
+                  <span className="font-mono text-[10px] lg:text-xs tracking-wide font-semibold text-ink">PDF ready</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      <div className="block md:hidden container mx-auto max-w-4xl px-4">
+        <InContentAd
+          adSlot={AD_CONFIG.slots.mobileTop}
+          size="large" // "large" (400px) reserves enough for the ~375px mobile fill — prevents CLS
+          marginY={20}
+        />
+      </div>
 
       {/* ═══════════ STATS ═══════════ */}
       <section className="py-12">

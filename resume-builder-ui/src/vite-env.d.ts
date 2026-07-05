@@ -11,3 +11,8 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+interface Window {
+  /** Trustpilot widget global, injected on-demand by utils/trustpilot.ts */
+  Trustpilot?: { loadFromElement: (node: HTMLElement) => void };
+}

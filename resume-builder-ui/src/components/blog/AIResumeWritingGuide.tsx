@@ -423,6 +423,11 @@ export default function AIResumeWritingGuide() {
               AI Resume Builders: Are They Worth It?
             </Link>
           </li>
+          <li>
+            <Link to="/blog/humanize-ai-resume" className="text-accent hover:underline">
+              How to Humanize an AI-Written Resume
+            </Link>
+          </li>
         </ul>
       </div>
     </BlogLayout>

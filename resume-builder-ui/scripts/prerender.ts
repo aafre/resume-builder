@@ -71,7 +71,13 @@ function buildRoutesToPrerender(): string[] {
   return Array.from(routes);
 }
 
-const ROUTES_TO_PRERENDER = buildRoutesToPrerender();
+// Allow scoping the prerender to a subset of routes for fast local iteration
+// (e.g. PRERENDER_ONLY="/" to prerender just the homepage). Comma-separated.
+// When unset, prerender the full route list.
+const PRERENDER_ONLY = process.env.PRERENDER_ONLY;
+const ROUTES_TO_PRERENDER = PRERENDER_ONLY
+  ? PRERENDER_ONLY.split(',').map((r) => r.trim()).filter(Boolean)
+  : buildRoutesToPrerender();
 
 /**
  * Simple static file server for the dist directory.
@@ -274,6 +280,11 @@ async function prerender() {
       // Strip duplicate meta tags: remove original index.html tags when
       // react-helmet-async has injected page-specific replacements (data-rh="true")
       html = cleanPrerenderedHtml(html, port);
+
+      // Mark the root so the client entry (main.tsx) uses hydrateRoot instead of
+      // createRoot. Prerendered HTML is React's real output, so hydration adopts
+      // it in place and the already-painted H1 keeps LCP credit.
+      html = html.replace('<div id="root">', '<div id="root" data-prerendered="true">');
 
       // Validate: reject prerendered pages that accidentally contain noindex
       // (Only ErrorPage and NotFound should have noindex, never valid pages)

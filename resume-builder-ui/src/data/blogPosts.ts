@@ -42,6 +42,15 @@ export const blogPosts: BlogPost[] = [
     category: "AI & Tools",
   },
   {
+    slug: "humanize-ai-resume",
+    title: "How to Humanize an AI-Written Resume (Beat AI Detectors)",
+    description: "AI resumes get rejected when they read as generic and machine-written. Learn the tells recruiters and AI detectors catch, and how to rewrite them into specific, human copy.",
+    publishDate: "2026-07-01",
+    lastUpdated: "2026-07-01",
+    readTime: "9 min",
+    category: "AI & Tools",
+  },
+  {
     slug: "claude-resume-prompts",
     title: "25+ Claude AI Resume Prompts (Copy-Paste Ready) 2026",
     description: "Best Claude prompts for resume writing: professional summary, experience bullets, cover letters, career change, ATS optimization. Copy-paste ready for Claude 3.5 Sonnet and Opus.",
@@ -82,14 +91,9 @@ export const blogPosts: BlogPost[] = [
     readTime: "12 min",
     category: "Resume Writing",
   },
-  {
-    slug: "ai-cover-letter-prompts",
-    title: "25+ AI Cover Letter Prompts (Copy-Paste Ready for Any AI Tool)",
-    description: "AI cover letter prompts that actually work: tailored cover letters, opening hooks, career changes, follow-ups, and thank-you notes. Copy-paste ready for ChatGPT, Claude, Copilot, and Gemini.",
-    publishDate: "2026-03-05",
-    readTime: "16 min",
-    category: "AI & Tools",
-  },
+  // ai-cover-letter-prompts intentionally removed from index/sitemap — the page is
+  // noindexed as a thin, near-duplicate prompt-cluster sibling (post-Apr-2026 core-update
+  // quality pruning). Route kept in App.tsx so the live URL still serves the noindex tag.
   {
     slug: "ai-job-description-analyzer",
     title: "How to Use AI to Analyze Job Descriptions (Extract Keywords & Requirements)",
@@ -182,6 +186,16 @@ export const blogPosts: BlogPost[] = [
     readTime: "8 min",
     category: "ATS Optimization",
     featured: false,
+  },
+  {
+    slug: "ats-formatting-rules",
+    title: "ATS Formatting Rules 2026: The Invisible Rejection",
+    description:
+      "The ATS formatting rules that decide whether a recruiter ever sees your resume. What breaks parsers, the exact rules to follow, and how to avoid the invisible rejection in 2026.",
+    publishDate: "2026-07-01",
+    lastUpdated: "2026-07-01",
+    readTime: "9 min",
+    category: "ATS Optimization",
   },
   {
     slug: "resume-no-experience",

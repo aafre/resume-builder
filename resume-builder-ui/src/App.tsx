@@ -88,9 +88,11 @@ const TermsOfService = lazy(() => import("./components/TermsOfService"));
 const BlogIndex = lazy(() => import("./components/BlogIndex"));
 const ResumeMistakesToAvoid = lazy(() => import("./components/blog/ResumeMistakesToAvoid"));
 const ATSOptimization = lazy(() => import("./components/blog/ATSOptimization"));
+const ATSFormattingRules = lazy(() => import("./components/blog/ATSFormattingRules"));
 const ResumeNoExperience = lazy(() => import("./components/blog/ResumeNoExperience"));
 const ProfessionalSummaryExamples = lazy(() => import("./components/blog/ProfessionalSummaryExamples"));
 const ResumeKeywordsGuide = lazy(() => import("./components/blog/ResumeKeywordsGuide"));
+const HumanizeAIResume = lazy(() => import("./components/blog/HumanizeAIResume"));
 const CoverLetterGuide = lazy(() => import("./components/blog/CoverLetterGuide"));
 const RemoteWorkResume = lazy(() => import("./components/blog/RemoteWorkResume"));
 const ResumeLengthGuide = lazy(() => import("./components/blog/ResumeLengthGuide"));
@@ -229,7 +231,8 @@ function AppContent() {
           isEditorPage ? "px-0" : "px-4 sm:px-6 md:px-8"
         }`}
       >
-        <SideRailLayout enabled={!isEditorPage}>
+        {/* Landing page renders its own mobile-top ad below the hero */}
+        <SideRailLayout enabled={!isEditorPage} showMobileTop={location.pathname !== "/"}>
         <Routes>
           {/* Landing page — inlined to eliminate Suspense CLS */}
           <Route path="/" element={<LandingPage />} />
@@ -561,6 +564,14 @@ function AppContent() {
             }
           />
           <Route
+            path="/blog/ats-formatting-rules"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <ATSFormattingRules />
+              </Suspense>
+            }
+          />
+          <Route
             path="/blog/resume-no-experience"
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
@@ -581,6 +592,14 @@ function AppContent() {
             element={
               <Suspense fallback={<BlogLoadingSkeleton />}>
                 <ResumeKeywordsGuide />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/blog/humanize-ai-resume"
+            element={
+              <Suspense fallback={<BlogLoadingSkeleton />}>
+                <HumanizeAIResume />
               </Suspense>
             }
           />

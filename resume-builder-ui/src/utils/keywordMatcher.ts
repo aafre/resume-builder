@@ -12,6 +12,7 @@ import {
   registerSkipTerms,
   stem,
   stemPhrase,
+  rawStem,
   normalizeSynonym,
   applyMultiWordSynonyms,
   applyAllSynonyms,
@@ -43,7 +44,9 @@ export interface ScanResult {
 }
 
 // Common English stop words to filter out
-const STOP_WORDS = new Set([
+// Exported so other matchers (e.g. the semantic worker) can reuse the same
+// vetted list instead of maintaining a second, smaller copy.
+export const STOP_WORDS = new Set([
   'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
   'of', 'with', 'by', 'from', 'is', 'are', 'was', 'were', 'be', 'been',
   'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would',
@@ -60,7 +63,7 @@ const STOP_WORDS = new Set([
 
 // Generic job posting filler words
 // (4c) Removed 'development', 'tools', 'support' — meaningful when repeated in requirements
-const JOB_FILLER = new Set([
+export const JOB_FILLER = new Set([
   'experience', 'required', 'preferred', 'ability', 'skills', 'including',
   'work', 'working', 'position', 'role', 'company', 'team', 'opportunity',
   'responsibilities', 'requirements', 'qualifications', 'candidate',
@@ -97,6 +100,7 @@ const JOB_FILLER = new Set([
   'deadline', 'deadlines', 'workload', 'sector', 'public',
   'prioritise', 'prioritize', 'liaising', 'liaise',
   'ongoing', 'forthcoming', 'particular', 'using', 'used',
+  'hands-on', 'similar',
 ]);
 
 // Connector words — bigrams containing these are almost always noise
@@ -126,7 +130,7 @@ const PLACEMENT_RULES: Array<{ pattern: RegExp; placement: string }> = [
   { pattern: /(agile|scrum|kanban|waterfall|lean|six\s+sigma|sdlc)/i, placement: 'Skills section — Methodologies' },
 ];
 
-function getSuggestedPlacement(keyword: string): string {
+export function getSuggestedPlacement(keyword: string): string {
   for (const rule of PLACEMENT_RULES) {
     if (rule.pattern.test(keyword)) {
       return rule.placement;
@@ -138,7 +142,7 @@ function getSuggestedPlacement(keyword: string): string {
 /**
  * Normalize text for comparison — lowercase, collapse whitespace
  */
-function normalize(text: string): string {
+export function normalize(text: string): string {
   return text.toLowerCase().replace(/['']/g, "'").replace(/\s+/g, ' ').trim();
 }
 
@@ -147,7 +151,7 @@ function normalize(text: string): string {
  * If a section header is found, return text from that header onward.
  * Otherwise return the full text (best effort).
  */
-function extractRequirementsSection(text: string): string {
+export function extractRequirementsSection(text: string): string {
   const match = REQUIREMENTS_HEADER.exec(text);
   let section = text;
   if (match && match.index !== undefined) {
@@ -337,11 +341,34 @@ function countOccurrences(keyword: string, text: string): number {
  */
 function countStemOccurrences(keyword: string, stemmedText: string): number {
   const stemmedKeyword = stemPhrase(keyword);
-  if (stemmedKeyword === keyword) return 0; // No stemming change, skip
-  const escaped = stemmedKeyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const pattern = stemmedKeyword.includes(' ')
-    ? new RegExp(escaped, 'gi')
-    : new RegExp(`(?<=^|\\W)${escaped}(?=\\W|$)`, 'gi');
+
+  if (!stemmedKeyword.includes(' ')) {
+    // Single word, exact word-boundary match against the pre-stemmed resume.
+    // Search even when the keyword's own stem is unchanged (e.g. "install",
+    // "monitor", "test"): the resume side is stemmed too, so an inflected
+    // resume form ("installing" -> "install") must still match. The word
+    // boundaries below prevent a short word (e.g. "data") from matching an
+    // unrelated longer one (e.g. "database").
+    const escaped = stemmedKeyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const pattern = new RegExp(`(?<=^|\\W)${escaped}(?=\\W|$)`, 'gi');
+    const matches = stemmedText.match(pattern);
+    return matches ? matches.length : 0;
+  }
+
+  // Multi-word: always search, even when the keyword phrase's own stem
+  // equals itself — the point of this fallback is to catch RESUME words
+  // that need stemming (e.g. "monitoring" -> "monitor"), which still
+  // applies when the keyword is already in base form.
+  //
+  // Match each stemmed word with a bounded trailing \w{0,3}: the
+  // suffix-stripping stemmer is single-pass, so a keyword already in
+  // dictionary form (e.g. "administer") can over-stem relative to an
+  // inflected resume word stemmed in one pass (e.g. "administering" ->
+  // "administer"). Allowing up to 3 trailing chars absorbs that suffix
+  // asymmetry (er/ing/ed/s/es) without letting an unbounded \w* match a
+  // wholly different longer word (e.g. "data" -> "database").
+  const words = stemmedKeyword.split(' ').map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  const pattern = new RegExp(`(?<=^|\\W)${words.join('\\w{0,3}\\s+')}\\w{0,3}(?=\\W|$)`, 'gi');
   const matches = stemmedText.match(pattern);
   return matches ? matches.length : 0;
 }
@@ -354,18 +381,79 @@ function stemText(text: string): string {
   return text.replace(/[a-z]+/gi, (word) => stem(word));
 }
 
+/** Pre-processed resume text ready for lexical keyword lookup */
+export interface LexicalResume {
+  normalized: string;
+  stemmed: string;
+}
+
+/**
+ * Prepare resume text once for lexical keyword matching: normalize, apply
+ * synonym canonicalization, and pre-stem for fallback matching. Reused by
+ * both `scanResume` and the semantic-matcher worker's lexical pre-pass so
+ * verbatim/synonym/stem keyword matching stays in one place.
+ */
+export function prepareLexicalResume(resumeText: string): LexicalResume {
+  // (4a) Normalize resume through full synonym pipeline (multi-word + single-word)
+  let normalized = normalize(resumeText);
+  normalized = applyAllSynonyms(normalized);
+  // (4f) Pre-stem resume text once for fallback stem matching
+  const stemmed = stemText(normalized);
+  return { normalized, stemmed };
+}
+
+/**
+ * Count occurrences of a keyword phrase in a prepared resume using the
+ * exact → synonym-normalized → stem-fallback cascade. Returns 0 if not found.
+ */
+export function countKeywordOccurrencesLexical(keyword: string, resume: LexicalResume): number {
+  // Try exact match first
+  let count = countOccurrences(keyword, resume.normalized);
+
+  // Also try with the synonym-normalized form if different. Use the same
+  // applyAllSynonyms() pipeline the resume text was built with (not the
+  // single-key normalizeSynonym lookup) — a multi-word keyword like
+  // "restful apis" isn't itself a registered synonym key, but its first
+  // WORD is ("restful" -> "rest apis"), and resume.normalized already went
+  // through that same per-word expansion. Re-deriving the keyword the same
+  // way keeps both sides symmetric instead of comparing a raw keyword
+  // against a synonym-rewritten resume.
+  if (count === 0) {
+    const normalizedKeyword = applyAllSynonyms(keyword);
+    if (normalizedKeyword !== keyword) {
+      count = countOccurrences(normalizedKeyword, resume.normalized);
+    }
+  }
+
+  // (4f) Stem fallback: only if exact match found nothing AND keyword is NOT a known skill
+  // (known skills like "React", "Docker" should match exactly, not via stems)
+  if (count === 0 && !isKnownSkill(keyword)) {
+    count = countStemOccurrences(keyword, resume.stemmed);
+  }
+
+  // Gerund-named known skills ("mentoring", "consulting") are protected by
+  // the stemmer's skip set AND excluded by the known-skill gate above, so
+  // an inflected resume form ("mentored" → stemmed "mentor") never matches.
+  // For those, search the stemmed resume for the skill's raw (skip-bypassing)
+  // stem with an exact word boundary.
+  // ponytail: -ing single words only; "docker"→"dock" would over-match dock
+  // words, and multi-word skill phrases haven't shown this miss in practice.
+  if (count === 0 && isKnownSkill(keyword) && !keyword.includes(' ') && keyword.endsWith('ing')) {
+    const raw = rawStem(keyword);
+    if (raw !== keyword.toLowerCase()) {
+      count = countOccurrences(raw, resume.stemmed);
+    }
+  }
+
+  return count;
+}
+
 /**
  * Scan resume text against extracted job description keywords
  */
 export function scanResume(resumeText: string, jobDescription: string): ScanResult {
   const keywords = extractKeywords(jobDescription);
-
-  // (4a) Normalize resume through full synonym pipeline (multi-word + single-word)
-  let normalizedResume = normalize(resumeText);
-  normalizedResume = applyAllSynonyms(normalizedResume);
-
-  // (4f) Pre-stem resume text once for fallback stem matching
-  const stemmedResume = stemText(normalizedResume);
+  const resumeLex = prepareLexicalResume(resumeText);
 
   const matched: KeywordResult[] = [];
   const missing: KeywordResult[] = [];
@@ -375,19 +463,7 @@ export function scanResume(resumeText: string, jobDescription: string): ScanResu
     const normalizedKeyword = normalizeSynonym(keyword);
     const category = getSkillCategory(keyword) || getSkillCategory(normalizedKeyword) || 'hard-skill';
 
-    // Try exact match first
-    let count = countOccurrences(keyword, normalizedResume);
-
-    // Also try with the synonym-normalized form if different
-    if (count === 0 && normalizedKeyword !== keyword) {
-      count = countOccurrences(normalizedKeyword, normalizedResume);
-    }
-
-    // (4f) Stem fallback: only if exact match found nothing AND keyword is NOT a known skill
-    // (known skills like "React", "Docker" should match exactly, not via stems)
-    if (count === 0 && !isKnownSkill(keyword)) {
-      count = countStemOccurrences(keyword, stemmedResume);
-    }
+    const count = countKeywordOccurrencesLexical(keyword, resumeLex);
 
     if (count > 0) {
       matched.push({ keyword, found: true, count, category });

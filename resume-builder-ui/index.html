@@ -96,8 +96,8 @@
     <link rel="preconnect" href="https://fundingchoicesmessages.google.com" crossorigin="anonymous">
     <link rel="preconnect" href="https://mgetvioaymkvafczmhwo.supabase.co" crossorigin="anonymous">
 
-    <!-- TrustBox script — Trustpilot Review Collector widget -->
-    <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+    <!-- Trustpilot widget script is loaded on-demand by the download modal
+         (utils/trustpilot.ts) — not globally — to keep it off the landing/LCP path. -->
   </head>
   <body>
     <!-- Route-aware shell: hide landing content on non-home routes before first paint -->
@@ -142,15 +142,17 @@
               <!-- Generic page placeholder (shown on non-home routes) -->
               <div id="shell-generic" style="min-height:100vh;background:#fafaf8;font-family:'Bricolage Grotesque','Bricolage Fallback',system-ui,sans-serif">
                 <div style="max-width:80rem;margin:0 auto;padding:3rem 1rem">
-                  <!-- Breadcrumb skeleton (shorter to minimize upward shift on hydration) -->
+                  <!-- Breadcrumb skeleton -->
                   <div style="height:16px;width:12rem;background:#e5e7eb;border-radius:6px;margin-bottom:2rem"></div>
-                  <!-- H1 skeleton (conservative height — actual H1s vary widely) -->
-                  <div style="height:40px;width:75%;background:#e5e7eb;border-radius:8px;margin-bottom:1rem"></div>
-                  <!-- Subtitle skeleton -->
-                  <div style="height:20px;width:66%;background:#e5e7eb;border-radius:6px;margin-bottom:2rem"></div>
-                  <!-- CTA button skeleton (matches typical btn-primary py-3.5 px-8) -->
-                  <div style="height:48px;width:10rem;background:#e5e7eb;border-radius:12px;margin-bottom:3rem"></div>
-                  <!-- Content section skeletons (shorter to reduce delta with actual content) -->
+                  <!-- H1 skeleton: 48px matches clamp(2.5rem,5.5vw,4.5rem) floor on mobile (375px → 40px, tablet → 48px+). Two lines to cover multi-line H1s on small phones. -->
+                  <div style="height:48px;width:80%;background:#e5e7eb;border-radius:8px;margin-bottom:0.5rem"></div>
+                  <div style="height:48px;width:60%;background:#e5e7eb;border-radius:8px;margin-bottom:1.25rem"></div>
+                  <!-- Subtitle skeleton — matches text-lg/xl font-extralight ~28px line-height -->
+                  <div style="height:24px;width:70%;background:#e5e7eb;border-radius:6px;margin-bottom:0.5rem"></div>
+                  <div style="height:24px;width:50%;background:#e5e7eb;border-radius:6px;margin-bottom:2rem"></div>
+                  <!-- CTA button skeleton (matches btn-primary py-3.5 px-8 = 56px height) -->
+                  <div style="height:56px;width:10rem;background:#e5e7eb;border-radius:12px;margin-bottom:3rem"></div>
+                  <!-- Content section skeletons -->
                   <div style="height:10rem;background:#e5e7eb;border-radius:8px;margin-bottom:1.5rem"></div>
                   <div style="height:10rem;background:#e5e7eb;border-radius:8px;margin-bottom:1.5rem"></div>
                   <div style="height:10rem;background:#e5e7eb;border-radius:8px"></div>
@@ -228,6 +230,17 @@
           "https://www.trustpilot.com/review/easyfreeresume.com"
         ]
       }
+    </script>
+
+    <!-- Speculation Rules — prerender likely-next pages on hover for near-instant LCP on navigation -->
+    <!-- eagerness:moderate fires after ~200ms hover, correlated with user intent; gate analytics on document.prerendering -->
+    <script type="speculationrules">
+    {
+      "prerender": [{
+        "where": { "href_matches": "/(templates|my-resumes|jobs|blog|examples|resume-keywords)?" },
+        "eagerness": "moderate"
+      }]
+    }
     </script>
 
     <!-- AdSense — deferred load to free bandwidth for LCP -->

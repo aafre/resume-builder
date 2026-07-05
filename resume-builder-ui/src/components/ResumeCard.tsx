@@ -101,7 +101,7 @@ export function ResumeCard({
     try {
       await onRename(resume.id, trimmedTitle);
       setIsEditing(false);
-    } catch (error) {
+    } catch {
       // Revert on error
       setEditedTitle(resume.title);
       setIsEditing(false);
@@ -112,7 +112,7 @@ export function ResumeCard({
 
   return (
     <div
-      className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200 group"
+      className="bg-white rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow duration-200 group"
     >
       {/* Thumbnail */}
       <div
@@ -126,7 +126,7 @@ export function ResumeCard({
             e.currentTarget.click();
           }
         }}
-        className={`relative bg-gray-100 h-48 overflow-hidden rounded-t-lg ${
+        className={`relative bg-slate-100 h-48 overflow-hidden rounded-t-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
           isPreviewLoading ? 'cursor-wait' : 'cursor-pointer'
         }`}
         onClick={() => !isPreviewLoading && onPreview(resume.id)}
@@ -140,13 +140,15 @@ export function ResumeCard({
             isPreviewLoading ? 'scale-105 blur-[2px]' : ''
           }`}
           width="300"
-          height="400"
+          height="192"
         />
 
         {/* Preview Loading Overlay */}
         {isPreviewLoading && (
           <div data-testid="preview-loading-overlay" className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center gap-2">
-            <div data-testid="preview-loading-spinner" className="animate-spin rounded-full h-8 w-8 border-2 border-white border-t-transparent"></div>
+            <div data-testid="preview-loading-spinner" className="h-2 w-20 overflow-hidden rounded-full bg-white/30">
+              <div className="h-full w-1/2 animate-pulse rounded-full bg-white" />
+            </div>
             <span className="text-white font-medium text-sm">Opening preview...</span>
           </div>
         )}
@@ -180,11 +182,11 @@ export function ResumeCard({
             autoFocus
             disabled={isSaving}
             maxLength={200}
-            className="font-bold text-xl text-gray-900 w-full bg-white border-2 border-accent rounded px-2 py-1 focus:outline-none disabled:opacity-50 mb-2"
+            className="font-bold text-xl text-gray-900 w-full bg-white border border-slate-300 rounded-lg px-2 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-50 mb-2"
           />
         ) : (
           <h3
-            className="font-bold text-xl text-gray-900 truncate mb-2 cursor-text hover:bg-gray-50 rounded px-2 py-1 -mx-2 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="font-bold text-xl text-gray-900 truncate mb-2 cursor-text hover:bg-gray-50 rounded-lg px-2 py-2 -mx-2 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             role="button"
             tabIndex={0}
             aria-label={`Rename ${resume.title}`}
@@ -206,7 +208,7 @@ export function ResumeCard({
 
         {/* Metadata row */}
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-md">
             {getTemplateName(resume.template_id)}
           </span>
           <span className="text-xs text-gray-500">
@@ -222,7 +224,7 @@ export function ResumeCard({
               onEdit(resume.id);
             }}
             disabled={isEditButtonLoading}
-            className={`flex-1 bg-accent text-ink py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
+            className={`flex-1 min-h-11 bg-accent text-ink py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
               isEditButtonLoading
                 ? 'opacity-75 cursor-not-allowed'
                 : 'hover:bg-accent/90 active:scale-[0.98]'
@@ -230,7 +232,9 @@ export function ResumeCard({
           >
             {isEditButtonLoading ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                <span data-testid="edit-loading-indicator" className="h-2 w-10 overflow-hidden rounded-full bg-ink/15">
+                  <span className="block h-full w-1/2 animate-pulse rounded-full bg-ink/60" />
+                </span>
                 <span>Opening...</span>
               </>
             ) : (
@@ -243,7 +247,7 @@ export function ResumeCard({
               e.stopPropagation();
               onDownload(resume.id);
             }}
-            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             title="Download PDF"
             aria-label="Download PDF"
           >
@@ -252,7 +256,6 @@ export function ResumeCard({
 
           <KebabMenu
             resumeId={resume.id}
-            resumeTitle={resume.title}
             onRename={() => setIsEditing(true)}
             onDuplicate={onDuplicate}
             onDelete={onDelete}

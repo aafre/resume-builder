@@ -3,7 +3,6 @@ import { MoreVertical, Edit2, Copy, Trash2 } from 'lucide-react';
 
 interface KebabMenuProps {
   resumeId: string;
-  resumeTitle: string;
   onRename: (id: string) => void;
   onDuplicate: (id: string) => void;
   onDelete: (id: string) => void;
@@ -11,7 +10,6 @@ interface KebabMenuProps {
 
 export function KebabMenu({
   resumeId,
-  resumeTitle: _resumeTitle,
   onRename,
   onDuplicate,
   onDelete
@@ -61,7 +59,7 @@ export function KebabMenu({
           e.stopPropagation();
           setIsOpen(!isOpen);
         }}
-        className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         title="More options"
         aria-label="More options"
         aria-haspopup="menu"
@@ -72,13 +70,13 @@ export function KebabMenu({
 
       {isOpen && (
         <div
-          className="absolute right-0 top-full mt-1 w-48 bg-white/95 backdrop-blur-xl rounded-lg shadow-xl border border-gray-200 py-1 z-50"
+          className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50"
           role="menu"
           aria-orientation="vertical"
         >
           <button
             onClick={handleRename}
-            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none flex items-center gap-3 transition-colors"
+            className="flex min-h-11 w-full items-center gap-3 px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors"
             role="menuitem"
           >
             <Edit2 className="w-4 h-4" />
@@ -87,7 +85,7 @@ export function KebabMenu({
 
           <button
             onClick={handleDuplicate}
-            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none flex items-center gap-3 transition-colors"
+            className="flex min-h-11 w-full items-center gap-3 px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors"
             role="menuitem"
           >
             <Copy className="w-4 h-4" />
@@ -98,7 +96,7 @@ export function KebabMenu({
 
           <button
             onClick={handleDelete}
-            className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 focus:bg-red-50 focus:outline-none flex items-center gap-3 transition-colors"
+            className="flex min-h-11 w-full items-center gap-3 px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 focus:bg-red-50 focus:outline-none transition-colors"
             role="menuitem"
           >
             <Trash2 className="w-4 h-4" />

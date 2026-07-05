@@ -93,9 +93,11 @@ function ScoreRing({ result }: { result: EnhancedScanResult }) {
 const NLP_WORDS = ['PARSING', 'TOKENIZING', 'EMBEDDING', 'CALIBRATING'] as const;
 const NODE_THRESHOLDS = [0, 17, 33, 50, 67, 83] as const;
 
-function ModelStatusIndicator({
+// Exported for tests only — not part of the page's public API.
+export function ModelStatusIndicator({
   status,
   progress,
+  statusText,
 }: {
   status: string;
   progress: number;
@@ -139,37 +141,44 @@ function ModelStatusIndicator({
   // loading
   if (status === 'loading') {
     return (
-      <div className="min-h-[32px] flex items-center gap-3">
-        <span
-          className="w-2 h-2 rounded-full bg-accent"
-          style={{ animation: 'ks-breathe 2s ease-in-out infinite' }}
-        />
-        <span
-          key={wordIndex}
-          className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase"
-          style={{ animation: 'fadeIn 0.3s ease-out' }}
-        >
-          {NLP_WORDS[wordIndex]}...
-        </span>
-        <span className="flex items-center gap-0.5">
-          {NODE_THRESHOLDS.map((_, i) => (
-            <span
-              key={i}
-              className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
-                i < litCount ? 'bg-accent' : 'bg-mist/30'
-              }`}
-              style={
-                i === litCount - 1 && litCount > 0
-                  ? { animation: 'pulse-accent 1.5s ease-in-out infinite' }
-                  : undefined
-              }
-            />
-          ))}
-        </span>
-        {progress > 0 && (
-          <span className="font-mono text-[10px] text-mist tabular-nums">
-            {progress}%
+      <div className="flex flex-col items-center gap-1">
+        <div className="min-h-[32px] flex items-center gap-3">
+          <span
+            className="w-2 h-2 rounded-full bg-accent"
+            style={{ animation: 'ks-breathe 2s ease-in-out infinite' }}
+          />
+          <span
+            key={wordIndex}
+            className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase"
+            style={{ animation: 'fadeIn 0.3s ease-out' }}
+          >
+            {NLP_WORDS[wordIndex]}...
           </span>
+          <span className="flex items-center gap-0.5">
+            {NODE_THRESHOLDS.map((_, i) => (
+              <span
+                key={i}
+                className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                  i < litCount ? 'bg-accent' : 'bg-mist/30'
+                }`}
+                style={
+                  i === litCount - 1 && litCount > 0
+                    ? { animation: 'pulse-accent 1.5s ease-in-out infinite' }
+                    : undefined
+                }
+              />
+            ))}
+          </span>
+          {progress > 0 && (
+            <span className="font-mono text-[10px] text-mist tabular-nums">
+              {progress}%
+            </span>
+          )}
+        </div>
+        {/* Phase 3: explicit one-time/size copy so a slow first load reads as
+            expected progress, not a hang. */}
+        {statusText && (
+          <span className="font-mono text-[10px] text-mist tracking-wide">{statusText}</span>
         )}
       </div>
     );
@@ -456,7 +465,7 @@ export default function ResumeKeywordScanner() {
 
       {/* Scanner Tool */}
       <RevealSection variant="fade-up">
-        <div ref={scannerSectionRef} className="mb-16">
+        <div ref={scannerSectionRef} className="mb-16 rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
           {/* Privacy trust signal */}
           <div className="flex items-center justify-center gap-2 mb-6 text-xs text-mist">
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -476,7 +485,7 @@ export default function ResumeKeywordScanner() {
               </label>
               <textarea
                 id="resume-text"
-                className="w-full h-56 md:h-64 rounded-xl border border-black/[0.08] bg-white p-4 text-sm text-ink placeholder:text-mist focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 resize-none transition-all"
+                className="w-full h-56 md:h-64 rounded-lg border border-slate-200 bg-white p-4 text-sm text-ink placeholder:text-mist focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 resize-none transition-all"
                 placeholder="Paste your resume text here..."
                 value={resumeText}
                 onChange={(e) => setResumeText(e.target.value)}
@@ -499,7 +508,7 @@ export default function ResumeKeywordScanner() {
               </label>
               <textarea
                 id="job-description"
-                className="w-full h-56 md:h-64 rounded-xl border border-black/[0.08] bg-white p-4 text-sm text-ink placeholder:text-mist focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 resize-none transition-all"
+                className="w-full h-56 md:h-64 rounded-lg border border-slate-200 bg-white p-4 text-sm text-ink placeholder:text-mist focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 resize-none transition-all"
                 placeholder="Paste the job description here..."
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
@@ -517,13 +526,16 @@ export default function ResumeKeywordScanner() {
           <div className="flex flex-col items-center gap-3">
             <div className="flex justify-center gap-4">
               <button
+                type="button"
                 onClick={handleScan}
                 disabled={!canScan || isMatching}
-                className="btn-primary px-8 py-3.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none inline-flex items-center gap-2"
+                className="btn-primary px-8 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none inline-flex items-center gap-2"
               >
                 {isMatching ? (
                   <>
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span className="h-2 w-10 overflow-hidden rounded-full bg-ink/15">
+                      <span className="block h-full w-1/2 animate-pulse rounded-full bg-ink/60" />
+                    </span>
                     Analyzing...
                   </>
                 ) : (
@@ -531,7 +543,7 @@ export default function ResumeKeywordScanner() {
                 )}
               </button>
               {(resumeText || jobDescription) && (
-                <button onClick={handleClear} className="btn-secondary px-6 py-3.5">
+                <button type="button" onClick={handleClear} className="btn-secondary px-6">
                   Clear
                 </button>
               )}
@@ -548,13 +560,14 @@ export default function ResumeKeywordScanner() {
       {/* Error state */}
       {error && !isMatching && (
         <RevealSection variant="fade-up">
-          <div className="mb-8 bg-red-50 rounded-2xl p-6 border border-red-200 text-center">
+          <div className="mb-8 bg-red-50 rounded-lg p-6 border border-red-200 text-center">
             <p className="text-red-600 text-sm font-medium mb-2">Something went wrong</p>
             <p className="text-red-500 text-xs mb-4">{error}</p>
             <button
+              type="button"
               onClick={handleScan}
               disabled={!canScan}
-              className="btn-secondary px-6 py-2.5 text-sm"
+              className="btn-secondary px-6 text-sm"
             >
               Retry
             </button>
@@ -576,7 +589,7 @@ export default function ResumeKeywordScanner() {
         <RevealSection variant="fade-up">
           <div className="mb-16">
             {/* Score Overview */}
-            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-premium border border-black/[0.06] mb-8">
+            <div className="bg-white rounded-lg p-6 sm:p-8 shadow-sm border border-slate-200 mb-8">
               <div className="grid md:grid-cols-3 gap-6 md:gap-8 items-center">
                 <div className="md:col-span-1">
                   <ScoreRing result={result} />
@@ -620,7 +633,7 @@ export default function ResumeKeywordScanner() {
             </div>
 
             {/* Three-Tab Keyword Section */}
-            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-black/[0.06]">
+            <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-slate-200">
               <div className="flex gap-2 mb-6 overflow-x-auto pb-1 -mb-1 scrollbar-none">
                 {([
                   { key: 'missing' as const, label: 'Missing', count: result.missingCount, activeClass: 'bg-red-50 text-red-600 border border-red-200' },
@@ -628,9 +641,10 @@ export default function ResumeKeywordScanner() {
                   { key: 'matched' as const, label: 'Matched', count: result.matchedCount, activeClass: 'bg-accent/10 text-accent border border-accent/20' },
                 ] as const).map(tab => (
                   <button
+                    type="button"
                     key={tab.key}
                     onClick={() => setActiveTab(tab.key)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
+                    className={`min-h-11 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
                       activeTab === tab.key
                         ? tab.activeClass
                         : 'text-stone-warm hover:bg-chalk-dark border border-transparent'
@@ -736,7 +750,7 @@ export default function ResumeKeywordScanner() {
             ].map((tip) => (
               <div
                 key={tip.title}
-                className="bg-white rounded-2xl p-6 shadow-sm border border-black/[0.06] border-l-4 border-l-accent"
+                className="bg-white rounded-lg p-6 shadow-sm border border-slate-200"
               >
                 <h3 className="font-display text-lg font-bold text-ink mb-2">
                   {tip.title}

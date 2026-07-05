@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { extractKeywords, scanResume } from '../keywordMatcher';
+import { extractKeywords, scanResume, prepareLexicalResume, countKeywordOccurrencesLexical } from '../keywordMatcher';
 
 // ---------------------------------------------------------------------------
 // 1. extractKeywords — Basic Extraction
@@ -1039,6 +1039,73 @@ describe('scanResume', () => {
       const result = scanResume(resume, jd);
       const fintech = result.missing.find((m) => m.keyword === 'fintech');
       expect(fintech?.category).toBe('hard-skill');
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 18. Lexical Pass — Stem-Adjacent Verbatim Phrases (regression coverage)
+  // ---------------------------------------------------------------------------
+  // Reproduces three browser-verified misses in the lexical pre-pass
+  // (prepareLexicalResume + countKeywordOccurrencesLexical), the pass the
+  // semantic worker runs before falling back to embedding cosine.
+  describe('lexical pass — stem-adjacent verbatim phrases', () => {
+    it('"monitor vital" matches resume "monitoring vital signs"', () => {
+      const resume = prepareLexicalResume(
+        'Daily responsibilities include administering medications, monitoring vital signs, IV insertion and maintenance.'
+      );
+      expect(countKeywordOccurrencesLexical('monitor vital', resume)).toBeGreaterThan(0);
+    });
+
+    it('"administer medications" matches resume "administering medications"', () => {
+      const resume = prepareLexicalResume(
+        'Daily responsibilities include administering medications, monitoring vital signs, IV insertion and maintenance.'
+      );
+      expect(countKeywordOccurrencesLexical('administer medications', resume)).toBeGreaterThan(0);
+    });
+
+    it('"restful apis" matches resume "RESTful APIs" (case-only difference, literal substring)', () => {
+      const resume = prepareLexicalResume(
+        'Designed and maintained RESTful APIs and microservices on AWS cloud infrastructure.'
+      );
+      expect(countKeywordOccurrencesLexical('restful apis', resume)).toBeGreaterThan(0);
+    });
+
+    it('gerund-named known skill "mentoring" matches resume "mentored"', () => {
+      // "mentoring" is in KNOWN_SKILLS, so the skip-set protects it from
+      // stemming AND the known-skill gate skips the stem fallback — while
+      // the resume's "mentored" stems to "mentor". Must still match.
+      const resume = prepareLexicalResume(
+        'Led code reviews and mentored junior engineers.'
+      );
+      expect(countKeywordOccurrencesLexical('mentoring', resume)).toBeGreaterThan(0);
+    });
+
+    it('known skill "docker" does NOT match unrelated dock words (no over-stemming)', () => {
+      const resume = prepareLexicalResume(
+        'Docked cargo ships at the loading dock daily.'
+      );
+      expect(countKeywordOccurrencesLexical('docker', resume)).toBe(0);
+    });
+
+    it('unchanged single word "install" matches inflected resume "installing"', () => {
+      const resume = prepareLexicalResume(
+        'Responsible for installing and configuring network equipment.'
+      );
+      expect(countKeywordOccurrencesLexical('install', resume)).toBeGreaterThan(0);
+    });
+
+    it('single word "data" does NOT match unrelated longer word "database"', () => {
+      const resume = prepareLexicalResume(
+        'Administered the customer database and its schema.'
+      );
+      expect(countKeywordOccurrencesLexical('data', resume)).toBe(0);
+    });
+
+    it('multi-word stem match does NOT bleed across words ("data analysis" ≠ "database analysis")', () => {
+      const resume = prepareLexicalResume(
+        'Led the database analysis and reporting effort.'
+      );
+      expect(countKeywordOccurrencesLexical('data analysis', resume)).toBe(0);
     });
   });
 

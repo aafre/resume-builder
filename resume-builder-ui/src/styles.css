@@ -55,28 +55,25 @@
 
 /* 2026 Modern Button System */
 .btn-primary {
-  @apply relative inline-flex items-center justify-center bg-accent text-ink font-bold rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-300 active:scale-95 overflow-hidden;
+  @apply relative inline-flex min-h-11 items-center justify-center bg-accent text-ink font-bold rounded-lg shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] overflow-hidden;
 }
 
 .btn-primary::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.7s ease-out;
-}
-
-.btn-primary:hover::before {
-  transform: translateX(100%);
+  content: none;
 }
 
 .btn-secondary {
-  @apply relative inline-flex items-center justify-center bg-white border border-gray-200 text-ink font-semibold rounded-xl shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-300 active:scale-95;
+  @apply relative inline-flex min-h-11 items-center justify-center bg-white border border-gray-200 text-ink font-semibold rounded-lg shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-200 active:scale-[0.98];
 }
 
 .btn-ghost {
-  @apply relative text-gray-700 hover:text-ink transition-all duration-300 font-medium px-3 py-2 rounded-lg hover:bg-black/5;
+  @apply relative inline-flex min-h-11 items-center justify-center text-gray-700 hover:text-ink transition-all duration-200 font-medium px-3 py-2 rounded-lg hover:bg-black/5;
+}
+
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-ghost:focus-visible {
+  @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-white;
 }
 
 .btn-ghost::before {
@@ -225,8 +222,10 @@ details .faq-content > div {
 }
 
 @keyframes typewriter {
-  from { width: 0; }
-  to   { width: 100%; }
+  /* clip-path reveal avoids CLS (no width change); trade-off: caret stays fixed at container edge
+     rather than tracking the text. Acceptable since CLS fix is the higher priority. */
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
 }
 
 @keyframes blink-caret {
@@ -237,6 +236,178 @@ details .faq-content > div {
 @keyframes pulse-accent {
   0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,126,0.4); }
   50%      { box-shadow: 0 0 0 8px rgba(0,212,126,0); }
+}
+
+/* ── Hero "builds itself" sequence ──
+   Hidden start states live ONLY in keyframe `from` + fill-mode both/forwards
+   (or a base opacity: 0), so `animation: none` (reduced motion) leaves
+   everything in its final visible state. Animates clip-path/opacity/transform
+   only — zero CLS. Delay comes from the per-element --d custom property.
+   The whole sequence is paused until useScrollReveal adds .revealed to the
+   .hero-seq container (matters on mobile, where the card sits below the CTAs). */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes hero-card-in {
+  from { opacity: 0; transform: perspective(1000px) rotateX(14deg) translateY(36px) scale(0.94); }
+  60%  { opacity: 1; }
+  to   { opacity: 1; transform: perspective(1000px) rotateX(0deg) translateY(0) scale(1); }
+}
+@keyframes hero-pop {
+  0%   { opacity: 0; transform: scale(0.4) rotate(-8deg); }
+  60%  { opacity: 1; transform: scale(1.12) rotate(2deg); }
+  80%  { transform: scale(0.97) rotate(-1deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+@keyframes hero-stamp {
+  0%   { opacity: 0; transform: scale(1.6) rotate(-8deg); }
+  70%  { opacity: 1; transform: scale(0.95) rotate(0deg); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes hero-caret-blink {
+  0%, 40%, 80% { opacity: 1; }
+  20%, 60%     { opacity: 0; }
+  100%         { opacity: 0; }
+}
+@keyframes hero-progress {
+  0%   { transform: scaleX(0); opacity: 1; }
+  85%  { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+@keyframes hero-scan {
+  from { transform: translateY(0); opacity: 0; }
+  15%  { opacity: 1; }
+  80%  { opacity: 1; }
+  to   { transform: translateY(440px); opacity: 0; }
+}
+@keyframes hero-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes hero-glow {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.92); }
+  50%      { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+}
+
+@keyframes hero-underline {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes hero-title-scan {
+  /* sweep for ~28% of the cycle, then rest — both endpoints render pure ink,
+     so the loop restart is invisible */
+  0%   { background-position: 100% 0; }
+  28%  { background-position: 0% 0; }
+  100% { background-position: 0% 0; }
+}
+
+/* Accent sheen sweeps across "Free Resume Builder" (left → right), looping
+   with a long pause. The text is always painted (gradient is ink except the
+   moving band), so LCP is safe; at rest (and under reduced motion / no
+   background-clip support) it reads as plain ink. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero-title-scan {
+    background-image: linear-gradient(100deg, #0c0c0c 42%, #00d47e 50%, #0c0c0c 58%);
+    background-size: 300% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: hero-title-scan 6s ease-in-out 0.5s infinite;
+  }
+}
+
+/* Accent highlighter behind "Get You Hired" in the H1 — draws in on load
+   (above the fold, not gated; text itself never animates so LCP is unaffected) */
+.hero-underline {
+  transform-origin: left;
+  animation: hero-underline 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both;
+}
+
+/* Ambient loops (not part of the gated sequence) */
+.hero-mockup {
+  animation: float 4s ease-in-out infinite;
+}
+.hero-glow {
+  animation: hero-glow 7s ease-in-out infinite;
+}
+
+/* Sequence steps */
+.hero-card-in {
+  animation: hero-card-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--d, 0s);
+}
+.hero-type {
+  animation: typewriter 0.8s steps(14, end) both;
+  animation-delay: var(--d, 0s);
+}
+.hero-draw {
+  animation: typewriter 0.45s ease-out both;
+  animation-delay: var(--d, 0s);
+}
+.hero-pop {
+  animation: hero-pop 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--d, 0s);
+}
+.hero-stamp {
+  animation:
+    hero-stamp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both,
+    pulse-accent 1.4s ease-out 2,
+    hero-bob 5.5s ease-in-out infinite;
+  animation-delay: var(--d, 0s), calc(var(--d, 0s) + 0.7s), calc(var(--d, 0s) + 1.6s);
+}
+.hero-chip {
+  animation:
+    hero-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both,
+    hero-bob 6.5s ease-in-out infinite;
+  animation-delay: var(--d, 0s), calc(var(--d, 0s) + 1.2s);
+}
+.hero-progress {
+  opacity: 0; /* base-hidden so reduced-motion (animation: none) never shows a stuck bar */
+  transform-origin: left;
+  animation: hero-progress 3.4s linear both;
+  animation-delay: var(--d, 0s);
+}
+.hero-scan {
+  opacity: 0;
+  animation: hero-scan 0.8s ease-in-out both;
+  animation-delay: var(--d, 0s);
+}
+.hero-particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 9999px;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  animation: dcm-particle-burst 0.7s ease-out both;
+  animation-delay: var(--d, 0s);
+}
+.hero-type-caret {
+  position: relative;
+}
+.hero-type-caret::after {
+  content: '';
+  position: absolute;
+  top: 0.1em;
+  bottom: 0.1em;
+  right: -4px;
+  width: 2px;
+  background: #00d47e;
+  opacity: 0; /* hidden by default so reduced-motion (animation: none) never shows a stuck caret */
+  animation: hero-caret-blink 1.6s step-end forwards;
+  animation-delay: var(--d, 0s);
+}
+
+/* Gate: sequence waits for scroll-into-view (useScrollReveal adds .revealed) */
+.hero-seq :is(.hero-card-in, .hero-type, .hero-draw, .hero-pop, .hero-stamp, .hero-chip, .hero-progress, .hero-scan, .hero-particle),
+.hero-seq .hero-type-caret::after {
+  animation-play-state: paused;
+}
+.hero-seq.revealed :is(.hero-card-in, .hero-type, .hero-draw, .hero-pop, .hero-stamp, .hero-chip, .hero-progress, .hero-scan, .hero-particle),
+.hero-seq.revealed .hero-type-caret::after {
+  animation-play-state: running;
 }
 
 /* ── Download Celebration Modal ── */
@@ -273,7 +444,7 @@ details .faq-content > div {
 }
 
 .animate-dcm-scale-in {
-  animation: dcm-scale-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: dcm-scale-in 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 .animate-dcm-checkmark-draw {
   animation: dcm-checkmark-draw 0.6s ease-in-out 0.3s forwards;
@@ -346,8 +517,21 @@ details .faq-content > div {
     display: none !important;
   }
 
-  /* Landing page animations: disable */
+  /* Landing page animations: disable (hero-* classes settle in their final
+     visible state; the caret ::after defaults to opacity 0) */
   .hero-mockup,
+  .hero-glow,
+  .hero-underline,
+  .hero-card-in,
+  .hero-type,
+  .hero-draw,
+  .hero-pop,
+  .hero-stamp,
+  .hero-chip,
+  .hero-progress,
+  .hero-scan,
+  .hero-particle,
+  .hero-type-caret::after,
   .demo-typing {
     animation: none !important;
   }
@@ -400,6 +584,30 @@ body {
 
 main {
   flex-grow: 1;
+}
+
+/* Eliminate 300ms tap delay on touch devices globally.
+   touch-action:manipulation disables double-tap-to-zoom so browsers
+   don't need to wait for a second tap before firing click events.
+   This directly improves INP on mobile. */
+a, button, [role="button"], input, label, select, textarea {
+  touch-action: manipulation;
+}
+
+/* Remove webkit tap highlight on interactive elements — we use our own focus/active styles */
+a, button, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent iOS Safari from zooming in when tapping form inputs.
+   iOS zooms any input whose font-size < 16px. Setting 16px on mobile
+   stops the zoom without affecting desktop layout (which can be smaller). */
+@media screen and (max-width: 767px) {
+  input:not([type="range"]),
+  textarea,
+  select {
+    font-size: 16px !important; /* !important overrides Tailwind utilities (e.g. text-sm) that would otherwise win on specificity */
+  }
 }
 
 footer {
@@ -494,7 +702,7 @@ footer {
 .Toastify__toast--success .custom-toast {
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(52, 211, 153, 0.05)) !important;
   border: 1px solid rgba(16, 185, 129, 0.3) !important;
-  border-left: 4px solid #10b981 !important;
+  box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.08) !important;
 }
 
 .Toastify__toast--success .custom-toast::before {
@@ -506,7 +714,7 @@ footer {
 .Toastify__toast--error .custom-toast {
   background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(248, 113, 113, 0.05)) !important;
   border: 1px solid rgba(239, 68, 68, 0.3) !important;
-  border-left: 4px solid #ef4444 !important;
+  box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.08) !important;
 }
 
 .Toastify__toast--error .custom-toast::before {
@@ -518,7 +726,7 @@ footer {
 .Toastify__toast--info .custom-toast {
   background: linear-gradient(135deg, rgba(0, 212, 126, 0.1), rgba(0, 212, 126, 0.05)) !important;
   border: 1px solid rgba(0, 212, 126, 0.3) !important;
-  border-left: 4px solid #00d47e !important;
+  box-shadow: inset 0 0 0 1px rgba(0, 212, 126, 0.08) !important;
 }
 
 .Toastify__toast--info .custom-toast::before {
@@ -530,7 +738,7 @@ footer {
 .Toastify__toast--warning .custom-toast {
   background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(251, 191, 36, 0.05)) !important;
   border: 1px solid rgba(245, 158, 11, 0.3) !important;
-  border-left: 4px solid #f59e0b !important;
+  box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.08) !important;
 }
 
 .Toastify__toast--warning .custom-toast::before {
@@ -609,6 +817,12 @@ footer {
     width: 32px;
     height: 32px;
   }
+}
+
+/* ── Mobile Safe Area ── */
+/* Padding respects iPhone home-indicator and Android nav bar via env() */
+.safe-area-inset-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
 }
 
 @keyframes pulse {
@@ -742,6 +956,40 @@ footer {
 .ad-container {
   contain: layout style;
   max-width: 100%;
+}
+
+.ad-surface {
+  position: relative;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.88), rgba(255, 255, 255, 0.96)),
+    repeating-linear-gradient(135deg, rgba(15, 23, 42, 0.035) 0 1px, transparent 1px 12px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.ad-surface::before {
+  content: "Advertisement";
+  position: absolute;
+  top: 0.5rem;
+  left: 0.75rem;
+  z-index: 1;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: rgba(71, 85, 105, 0.72);
+  pointer-events: none;
+}
+
+.ad-surface:empty::after {
+  content: "";
+  position: absolute;
+  inset: 2.25rem 0.75rem 0.75rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.44);
+  pointer-events: none;
 }
 
 ins.adsbygoogle {

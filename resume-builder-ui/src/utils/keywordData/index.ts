@@ -1,4 +1,4 @@
-export { stem, stemPhrase, registerSkipTerms } from './stemmer';
+export { stem, stemPhrase, rawStem, registerSkipTerms } from './stemmer';
 export { SYNONYMS, MULTI_WORD_SYNONYM_KEYS, normalizeSynonym, applyMultiWordSynonyms, applyAllSynonyms } from './synonyms';
 export {
   type KeywordCategory,

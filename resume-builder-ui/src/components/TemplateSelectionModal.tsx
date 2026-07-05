@@ -130,7 +130,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
 
   const modalContent = (
     <div
-      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-2 sm:p-4"
+      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-3 sm:p-4"
       onClick={onClose}
       onKeyDown={handleKeyDown}
       role="dialog"
@@ -140,7 +140,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
     >
       <div
         ref={modalRef}
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden relative flex flex-col"
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92dvh] sm:max-h-[90vh] overflow-hidden relative flex flex-col"
         onClick={(e) => e.stopPropagation()}
         tabIndex={-1}
         data-testid="template-selection-modal"

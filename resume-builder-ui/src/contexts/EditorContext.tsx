@@ -32,6 +32,8 @@ export const useEditorContext = () => {
   return context;
 };
 
+export const useOptionalEditorContext = () => useContext(EditorContext);
+
 interface EditorProviderProps {
   children: ReactNode;
   // Auto-save state can be injected from useAutoSave hook

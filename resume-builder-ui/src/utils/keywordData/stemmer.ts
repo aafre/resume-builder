@@ -84,6 +84,18 @@ export function stem(word: string): string {
   // Never stem known skills / tech terms
   if (skipSet?.has(lower)) return lower;
 
+  return rawStem(lower);
+}
+
+/**
+ * Stem a word IGNORING the skip set. Needed when the skill name itself is
+ * an inflected English word ("mentoring", "consulting"): the skip set
+ * rightly protects it during text stemming, but matching it against resume
+ * text stemmed the normal way ("mentored" → "mentor") requires its true stem.
+ */
+export function rawStem(word: string): string {
+  const lower = word.toLowerCase();
+
   // Don't stem very short words
   if (lower.length <= 4) return lower;
 

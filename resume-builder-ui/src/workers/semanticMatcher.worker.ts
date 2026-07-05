@@ -12,9 +12,27 @@ import type {
   EnhancedKeywordResult,
   EnhancedScanResult,
 } from '../types/semanticMatcher';
+import {
+  STOP_WORDS,
+  JOB_FILLER,
+  extractRequirementsSection,
+  getSuggestedPlacement,
+  prepareLexicalResume,
+  countKeywordOccurrencesLexical,
+} from '../utils/keywordMatcher';
 
 // Use remote models from HuggingFace Hub, allow local caching via Cache API
 env.allowLocalModels = false;
+
+// Recalibrated thresholds (Phase 1 fix): the embedding pass alone is only the
+// tie-breaker for keywords the lexical pass (below) can't already confirm —
+// see runMatch(). 0.65 was calibrated too high; real semantic matches cluster
+// at 0.65-0.77, so genuine hits were routinely scored as "partial" (worth 0).
+const MATCHED_THRESHOLD = 0.55;
+const PARTIAL_THRESHOLD = 0.45;
+// Cosine value above which a matched keyword is labeled 'exact' vs 'semantic'
+// (embedding path only — lexical hits are always 'exact', see runMatch()).
+const EXACT_COSINE_THRESHOLD = 0.85;
 
 let extractor: FeatureExtractionPipeline | null = null;
 let modelLoadPromise: Promise<void> | null = null;
@@ -44,14 +62,18 @@ async function ensureModel(): Promise<void> {
   }
 
   modelLoadPromise = (async () => {
-    post({ type: 'init:progress', progress: 0, status: 'Downloading AI model...' });
+    // Phase 3: explicit "one-time, ~23 MB" copy so a slow first load reads as
+    // expected progress, not a hang (subsequent visits hit the Cache API and
+    // this state is skipped almost instantly).
+    const DOWNLOAD_STATUS = 'Downloading AI model (one-time, ~23 MB)…';
+    post({ type: 'init:progress', progress: 0, status: DOWNLOAD_STATUS });
 
     // @ts-expect-error — pipeline() overload union too complex for TS
     extractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
       dtype: 'q8',
       progress_callback: (data: { status: string; progress?: number }) => {
         if (data.status === 'progress' && data.progress != null) {
-          post({ type: 'init:progress', progress: Math.round(data.progress), status: 'Downloading AI model...' });
+          post({ type: 'init:progress', progress: Math.round(data.progress), status: DOWNLOAD_STATUS });
         }
       },
     }) as FeatureExtractionPipeline;
@@ -75,7 +97,10 @@ async function embed(texts: string[]): Promise<number[][]> {
 
 /** Extract candidate keyword phrases from job description text */
 function extractCandidates(text: string): Map<string, number> {
-  const lower = text.toLowerCase();
+  // Phase 2: focus on the requirements/qualifications section when the JD has
+  // one — skips company-blurb and benefits noise (reuses keywordMatcher.ts).
+  const focused = extractRequirementsSection(text);
+  const lower = focused.toLowerCase();
   const candidates = new Map<string, number>();
 
   // 1) Special tech terms (C++, C#, .NET, etc.) — extract before normalizing
@@ -92,33 +117,13 @@ function extractCandidates(text: string): Map<string, number> {
     candidates.set(term, (candidates.get(term) || 0) + 1);
   }
 
-  // 3) Split into sentences, then extract n-grams
-  const sentences = lower.split(/[.!?;:\n]+/).filter(s => s.trim().length > 5);
-  const stopWords = new Set([
-    'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
-    'of', 'with', 'by', 'from', 'is', 'are', 'was', 'were', 'be', 'been',
-    'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would',
-    'could', 'should', 'may', 'might', 'shall', 'can', 'need', 'must',
-    'that', 'which', 'who', 'whom', 'this', 'these', 'those', 'it', 'its',
-    'we', 'our', 'you', 'your', 'they', 'their', 'he', 'she', 'him', 'her',
-    'not', 'no', 'nor', 'as', 'if', 'then', 'than', 'too', 'very', 'just',
-    'about', 'all', 'also', 'am', 'any', 'because', 'both', 'each',
-    'more', 'most', 'other', 'so', 'some', 'such', 'up', 'what', 'when',
-    'where', 'while', 'how', 'out', 'into', 'my', 'me', 'i',
-  ]);
-
-  const fillerWords = new Set([
-    'experience', 'required', 'preferred', 'ability', 'skills', 'including',
-    'work', 'working', 'position', 'role', 'company', 'team', 'opportunity',
-    'responsibilities', 'requirements', 'qualifications', 'candidate',
-    'apply', 'job', 'description', 'employment', 'equal', 'employer',
-    'benefits', 'salary', 'competitive', 'minimum', 'years', 'degree',
-    'bachelor', 'master', 'education', 'looking', 'seeking', 'ideal',
-    'someone', 'strong', 'excellent', 'good', 'great', 'solid',
-    'knowledge', 'understanding', 'familiarity', 'plus', 'bonus',
-    'demonstrated', 'proven', 'ensuring', 'responsible', 'proficient',
-    'relevant', 'related',
-  ]);
+  // 3) Split into sentences, then extract n-grams.
+  // Phase 2: comma/parens now count as clause boundaries too, so
+  // "administer medications, monitor vital signs" no longer yields the
+  // cross-clause bigram "medications monitor".
+  const sentences = lower.split(/[.!?;:,()\n]+/).filter(s => s.trim().length > 5);
+  // Phase 2: reuse keywordMatcher's larger, battle-tested stop/filler lists
+  // instead of maintaining a second, smaller copy here.
 
   for (const sentence of sentences) {
     const words = sentence
@@ -129,7 +134,7 @@ function extractCandidates(text: string): Map<string, number> {
     // Unigrams
     for (const word of words) {
       const clean = word.replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
-      if (clean.length <= 2 || stopWords.has(clean) || fillerWords.has(clean)) continue;
+      if (clean.length <= 2 || STOP_WORDS.has(clean) || JOB_FILLER.has(clean)) continue;
       candidates.set(clean, (candidates.get(clean) || 0) + 1);
     }
 
@@ -138,20 +143,25 @@ function extractCandidates(text: string): Map<string, number> {
       const a = words[i].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
       const b = words[i + 1].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
       if (a.length < 2 || b.length < 2) continue;
-      if (stopWords.has(a) || stopWords.has(b)) continue;
-      if (fillerWords.has(a) || fillerWords.has(b)) continue;
+      if (STOP_WORDS.has(a) || STOP_WORDS.has(b)) continue;
+      if (JOB_FILLER.has(a) || JOB_FILLER.has(b)) continue;
       const bigram = `${a} ${b}`;
       candidates.set(bigram, (candidates.get(bigram) || 0) + 1);
     }
 
-    // Trigrams — first and last words must not be stop/filler
+    // Trigrams — first and last words must not be stop/filler. The middle
+    // word must not be a bare connector (STOP_WORDS) either — the bigram
+    // loop above already rejects "with"/"or"/"and" etc. in either position,
+    // but this loop only checked the ends, letting glue-word junk like
+    // "jenkins or github" and "hands-on with aws" survive as a trigram.
     for (let i = 0; i < words.length - 2; i++) {
       const a = words[i].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
       const b = words[i + 1].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
       const c = words[i + 2].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
       if (a.length < 2 || b.length < 2 || c.length < 2) continue;
-      if (stopWords.has(a) || stopWords.has(c)) continue;
-      if (fillerWords.has(a) || fillerWords.has(c)) continue;
+      if (STOP_WORDS.has(a) || STOP_WORDS.has(c)) continue;
+      if (JOB_FILLER.has(a) || JOB_FILLER.has(c)) continue;
+      if (STOP_WORDS.has(b)) continue;
       const trigram = `${a} ${b} ${c}`;
       candidates.set(trigram, (candidates.get(trigram) || 0) + 1);
     }
@@ -246,27 +256,52 @@ function chunkResume(text: string): string[] {
   return chunks;
 }
 
-// --- Placement suggestion (copied from keywordMatcher.ts) ---
+// --- Lexical n-gram dedup (Phase 2) ---
 
-const PLACEMENT_RULES: Array<{ pattern: RegExp; placement: string }> = [
-  { pattern: /\b(python|java|javascript|typescript|c\+\+|ruby|go|rust|php|swift|kotlin|scala|r|matlab|sql|html|css|sass|less)\b/i, placement: 'Skills section — Technical Skills' },
-  { pattern: /\b(react|angular|vue|node|express|django|flask|spring|rails|next\.?js|nuxt|svelte|laravel|asp\.net)\b/i, placement: 'Skills section — Frameworks' },
-  { pattern: /\b(aws|azure|gcp|docker|kubernetes|terraform|jenkins|ci\/cd|git|linux|nginx|apache)\b/i, placement: 'Skills section — Tools & Infrastructure' },
-  { pattern: /\b(excel|powerpoint|word|salesforce|hubspot|jira|confluence|slack|figma|sketch|photoshop|tableau|power\s?bi)\b/i, placement: 'Skills section — Software' },
-  { pattern: /(certified|certification|license|cpa|pmp|scrum|cissp|aws\s+certified)/i, placement: 'Certifications section' },
-  { pattern: /(agile|scrum|kanban|waterfall|lean|six\s+sigma|sdlc)/i, placement: 'Skills section — Methodologies' },
-];
+/**
+ * Drop shorter multi-word candidates that are a substring of a longer
+ * surviving candidate (e.g. "aws cloud" and "cloud infrastructure" both
+ * swallowed by "aws cloud infrastructure"). The 0.85 embedding cluster
+ * (clusterEmbeddings above) misses these because adding/removing a word
+ * can shift cosine similarity below the cluster threshold even though the
+ * phrases describe the same concept. Single words are left untouched here
+ * — they're already handled by the subsumption step above.
+ */
+function dedupSubstringOverlaps<T extends { label: string }>(items: T[]): T[] {
+  const multiWord = [...items]
+    .filter(i => i.label.includes(' '))
+    .sort((a, b) => b.label.length - a.label.length); // longest first
 
-function getSuggestedPlacement(keyword: string): string {
-  for (const rule of PLACEMENT_RULES) {
-    if (rule.pattern.test(keyword)) {
-      return rule.placement;
+  const dropped = new Set<string>();
+  for (let i = 0; i < multiWord.length; i++) {
+    const shorter = multiWord[i];
+    if (dropped.has(shorter.label)) continue;
+    const shorterWords = shorter.label.split(' ');
+    for (let j = 0; j < i; j++) {
+      const longer = multiWord[j];
+      if (dropped.has(longer.label)) continue;
+      // Contiguous WORD-level subphrase, not raw substring: "platform
+      // engineering" must not swallow the unrelated "form engineering".
+      const longerWords = longer.label.split(' ');
+      let isSubphrase = false;
+      for (let k = 0; k <= longerWords.length - shorterWords.length; k++) {
+        if (shorterWords.every((w, idx) => longerWords[k + idx] === w)) {
+          isSubphrase = true;
+          break;
+        }
+      }
+      if (isSubphrase) {
+        dropped.add(shorter.label);
+        break;
+      }
     }
   }
-  return 'Skills section or Experience bullet points';
+
+  return items.filter(i => !dropped.has(i.label));
 }
 
 // --- Main matching pipeline ---
+// (getSuggestedPlacement is imported from keywordMatcher.ts — no more duplicate copy)
 
 async function runMatch(resumeText: string, jobDescription: string): Promise<EnhancedScanResult> {
   // 1. Extract candidate phrases from JD
@@ -320,6 +355,10 @@ async function runMatch(resumeText: string, jobDescription: string): Promise<Enh
     return !multiWord.some(mw => mw.freq >= k.freq && mw.label.includes(k.label));
   });
 
+  // Phase 2: lexical substring dedup for overlapping multi-word n-grams
+  // that the 0.85 embedding cluster didn't catch (see dedupSubstringOverlaps).
+  keywords = dedupSubstringOverlaps(keywords);
+
   keywords = keywords.slice(0, 40);
 
   if (keywords.length === 0) {
@@ -330,7 +369,16 @@ async function runMatch(resumeText: string, jobDescription: string): Promise<Enh
   const chunks = chunkResume(resumeText);
   const chunkEmbeddings = await embed(chunks);
 
-  // 6. For each keyword, find max similarity across chunks
+  // Phase 1: prepare resume once for the lexical exact/synonym/stem pass —
+  // reuses the same cascade keywordMatcher.ts's scanResume() already uses.
+  const lexicalResume = prepareLexicalResume(resumeText);
+
+  // 6. For each keyword: lexical pass FIRST. A keyword present in the resume
+  // (verbatim, synonym-normalized, or stemmed) is force-promoted to "matched"
+  // regardless of embedding cosine — a short JD phrase vs. a long resume
+  // sentence dilutes cosine even for a literal match (the root cause of the
+  // "verbatim skill shown as missing" bug). Only keywords the lexical pass
+  // can't confirm fall through to the embedding-cosine classification.
   const matched: EnhancedKeywordResult[] = [];
   const partial: EnhancedKeywordResult[] = [];
   const missing: EnhancedKeywordResult[] = [];
@@ -347,19 +395,40 @@ async function runMatch(resumeText: string, jobDescription: string): Promise<Enh
       }
     }
 
+    // Prefer a chunk that literally contains the phrase for display context;
+    // fall back to the highest-cosine chunk.
+    const literalChunkIdx = chunks.findIndex(c => c.toLowerCase().includes(kw.label.toLowerCase()));
+    const bestMatchContext = chunks[literalChunkIdx >= 0 ? literalChunkIdx : bestChunkIdx]?.slice(0, 150);
+
+    const lexicalCount = countKeywordOccurrencesLexical(kw.label, lexicalResume);
+    if (lexicalCount > 0) {
+      // ponytail: floor the displayed similarity at the matched threshold so a
+      // diluted cosine never shows a confusing low % next to a "matched" badge.
+      // Upgrade path: surface lexical vs. semantic confidence as separate fields
+      // if the UI ever needs to distinguish them.
+      matched.push({
+        keyword: kw.label,
+        found: true,
+        similarity: Math.round(Math.max(maxSim, MATCHED_THRESHOLD) * 100) / 100,
+        matchType: 'exact',
+        bestMatchContext,
+      });
+      continue;
+    }
+
     const result: EnhancedKeywordResult = {
       keyword: kw.label,
-      found: maxSim >= 0.65,
+      found: maxSim >= MATCHED_THRESHOLD,
       similarity: Math.round(maxSim * 100) / 100,
-      matchType: maxSim >= 0.65
-        ? (maxSim >= 0.85 ? 'exact' : 'semantic')
-        : (maxSim >= 0.45 ? 'partial' : 'none'),
-      bestMatchContext: chunks[bestChunkIdx]?.slice(0, 150),
+      matchType: maxSim >= MATCHED_THRESHOLD
+        ? (maxSim >= EXACT_COSINE_THRESHOLD ? 'exact' : 'semantic')
+        : (maxSim >= PARTIAL_THRESHOLD ? 'partial' : 'none'),
+      bestMatchContext,
     };
 
-    if (maxSim >= 0.65) {
+    if (maxSim >= MATCHED_THRESHOLD) {
       matched.push(result);
-    } else if (maxSim >= 0.45) {
+    } else if (maxSim >= PARTIAL_THRESHOLD) {
       partial.push(result);
     } else {
       result.suggestedPlacement = getSuggestedPlacement(kw.label);
@@ -372,8 +441,13 @@ async function runMatch(resumeText: string, jobDescription: string): Promise<Enh
   partial.sort((a, b) => b.similarity - a.similarity);
   missing.sort((a, b) => b.similarity - a.similarity);
 
+  // Phase 1: partial matches count for half credit — a resume that's 80%
+  // covered by verbatim/semantic matches plus a few partials should not be
+  // scored the same as one with only 20% direct matches.
   const total = keywords.length;
-  const matchPercentage = total > 0 ? Math.round((matched.length / total) * 100) : 0;
+  const matchPercentage = total > 0
+    ? Math.round(((matched.length + 0.5 * partial.length) / total) * 100)
+    : 0;
 
   return {
     matchPercentage,
