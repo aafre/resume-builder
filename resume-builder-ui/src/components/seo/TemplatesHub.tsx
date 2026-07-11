@@ -40,7 +40,10 @@ export default function TemplatesHub() {
       {/* In-content Ad - Below hero */}
       <InContentAd adSlot={AD_CONFIG.slots.templatesIncontent} marginY={32} />
 
-      <RevealSection variant="fade-up">
+      {/* Not reveal-wrapped: on desktop the intro <p> below is the LCP element.
+          RevealSection starts children at opacity:0 until hydration adds
+          .revealed (IntersectionObserver), which stalled desktop LCP at ~4.7s.
+          Rendering it plainly lets it paint from the prerendered HTML. */}
         <div className="mb-16 cv-auto cv-h-500">
           <h2 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-8 text-center">
             What makes a resume ATS-friendly
@@ -76,7 +79,6 @@ export default function TemplatesHub() {
             </ul>
           </div>
         </div>
-      </RevealSection>
 
       {config.features && <FeatureGrid features={config.features} />}
 
