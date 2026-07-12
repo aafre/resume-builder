@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.28.1] - 2026-07-12
+
+### ⚡ Performance
+
+- **seo:** Unwrap ATS templates intro from scroll-reveal to fix desktop LCP
+
 ## [3.28.0] - 2026-07-05
 
 ### 🚀 Features
