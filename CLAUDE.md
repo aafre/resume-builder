@@ -317,7 +317,10 @@ When editing `sitemapUrls.ts`:
 Production `/robots.txt` is a **Cloudflare 301 redirect to a Google Cloud Storage bucket object**: `gs://easyfreeresume-static/robots/robots.txt` (public URL: `https://storage.googleapis.com/easyfreeresume-static/robots/robots.txt`). The redirect rule lives in Cloudflare — there is no reference to it anywhere in the repo.
 
 - **Editing `resume-builder-ui/public/robots.txt` does NOTHING in production** — Cloudflare intercepts `/robots.txt` before it reaches the app. Keep the repo file in sync as documentation of intent, but the repo change is inert.
-- **To actually change prod robots.txt:** update the GCS bucket object (owner/infra with account access), then purge the Cloudflare cache for `/robots.txt`. Verify with `curl -sSL https://easyfreeresume.com/robots.txt`.
+- **To actually change prod robots.txt:** update the GCS bucket object (owner/infra with account access), uploading as public-read in one step so it never has a private window: `gsutil -h "Content-Type:text/plain" cp -a public-read robots.txt gs://easyfreeresume-static/robots/robots.txt`.
+  - **Gotcha 1 — ACL:** a plain `gsutil cp` (without `-a public-read`) overwrites the object as **private**, so anonymous reads then 403 (which would take `/robots.txt` down site-wide once the edge cache lapses). The `-a public-read` flag above prevents this; if you already ran a plain `cp`, re-apply public read: `gsutil acl ch -u AllUsers:R gs://easyfreeresume-static/robots/robots.txt`.
+  - **Gotcha 2 — cache:** the object serves with `Cache-Control: public, max-age=3600`, cached by Google's edge and Cloudflare. Purge the Cloudflare cache for `/robots.txt` to go live immediately; otherwise expect up to ~1h lag.
+  - **Verify at origin (bypasses cache):** `curl -sS -w "%{http_code}\n" "https://storage.googleapis.com/easyfreeresume-static/robots/robots.txt?v=$RANDOM"` → expect `200` and the new content.
 - By contrast, `/llms.txt` and `/sitemap.xml` **are** served from the app, so repo edits to those take effect on deploy.
 
 ### Weekly SEO Review Protocol
