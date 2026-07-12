@@ -11,7 +11,13 @@ Disallow: /cdn-cgi/
 User-agent: GPTBot
 Allow: /
 
+User-agent: ClaudeBot
+Allow: /
+
 User-agent: Claude-Web
+Allow: /
+
+User-agent: Applebot-Extended
 Allow: /
 
 User-agent: Google-Extended
