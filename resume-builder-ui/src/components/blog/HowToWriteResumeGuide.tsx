@@ -1,6 +1,50 @@
 import BlogLayout from "../BlogLayout";
 import { Link } from "react-router-dom";
 
+// HowTo schema steps — MUST stay in sync with the visible "Step 1-8" H2 sections below.
+const HOW_TO_STEPS = [
+  {
+    name: "Choose the Right Resume Format",
+    text: "Pick reverse-chronological for most candidates, functional if you are changing careers or have gaps, or a combination format for senior professionals.",
+    url: "/blog/how-to-write-a-resume-guide#choose-format",
+  },
+  {
+    name: "Add the Essential Resume Sections in Order",
+    text: "Include header and contact info, professional summary, work experience, education, and skills, in that order.",
+    url: "/blog/how-to-write-a-resume-guide#essential-sections",
+  },
+  {
+    name: "Write Powerful Content",
+    text: "Use the CAR method (Context, Action, Result) and lead every bullet with impact and measurable outcomes, not duties.",
+    url: "/blog/how-to-write-a-resume-guide#writing-content",
+  },
+  {
+    name: "Use Power Words That Make an Impact",
+    text: "Start each bullet with a strong action verb such as Directed, Achieved, or Developed to convey your contributions clearly.",
+    url: "/blog/how-to-write-a-resume-guide#action-verbs",
+  },
+  {
+    name: "Follow Formatting Best Practices",
+    text: "Use a clean font at 10-12pt, 0.5-1 inch margins, consistent spacing, bullet points, and save as PDF; avoid tables and text boxes.",
+    url: "/blog/how-to-write-a-resume-guide#formatting",
+  },
+  {
+    name: "Tailor Your Resume for Each Application",
+    text: "Analyze the job description, adjust your summary, prioritize relevant experience, and mirror the exact keywords from the posting.",
+    url: "/blog/how-to-write-a-resume-guide#tailoring",
+  },
+  {
+    name: "Optimize for ATS",
+    text: "Use a single-column layout, standard headings, and simple formatting, and include job-description keywords naturally so applicant tracking systems can parse your resume.",
+    url: "/blog/how-to-write-a-resume-guide#ats-optimization",
+  },
+  {
+    name: "Do a Final Review and Optimization",
+    text: "Proofread for errors, verify consistent formatting and contact details, confirm 1-2 pages, test ATS compatibility, and save as a named PDF.",
+    url: "/blog/how-to-write-a-resume-guide#final-review",
+  },
+];
+
 const FAQS = [
   {
     question: "How long should my resume be?",
@@ -44,6 +88,7 @@ export default function HowToWriteResumeGuide() {
       ]}
       ctaType="resume"
       faqs={FAQS}
+      howToSteps={HOW_TO_STEPS}
     >
       <div className="space-y-8">
         <p className="text-xl leading-relaxed text-stone-warm font-medium">

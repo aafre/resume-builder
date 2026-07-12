@@ -7,7 +7,8 @@ import { blogPosts } from '../data/blogPosts';
 import AuthorBio from './blog/AuthorBio';
 import RelatedArticles from './blog/RelatedArticles';
 import RevealSection from './shared/RevealSection';
-import { generateFAQPageSchema } from '../utils/schemaGenerators';
+import { generateFAQPageSchema, generateHowToSchema } from '../utils/schemaGenerators';
+import type { HowToStep } from '../types/seo';
 
 const dateFormatOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
@@ -31,6 +32,8 @@ interface BlogLayoutProps {
   showBreadcrumbs?: boolean;
   ctaType?: 'resume' | 'interview' | 'general';
   faqs?: BlogFAQ[];
+  /** When provided, emit HowTo JSON-LD. Only for genuinely procedural guides — steps MUST match the visible numbered steps on the page. */
+  howToSteps?: HowToStep[];
   /** When true, emit robots="noindex, follow" (deindex a thin/consolidated page while keeping link equity flowing). */
   noindex?: boolean;
 }
@@ -46,6 +49,7 @@ export default function BlogLayout({
   showBreadcrumbs = true,
   ctaType = 'general',
   faqs,
+  howToSteps,
   noindex
 }: BlogLayoutProps) {
   // Use hardcoded BASE_URL (not window.location.origin) so prerendered HTML
@@ -104,6 +108,13 @@ export default function BlogLayout({
         <Helmet>
           <script type="application/ld+json">
             {JSON.stringify(generateFAQPageSchema(faqs))}
+          </script>
+        </Helmet>
+      )}
+      {howToSteps && howToSteps.length > 0 && (
+        <Helmet>
+          <script type="application/ld+json">
+            {JSON.stringify(generateHowToSchema(title, description, howToSteps, undefined, lastUpdated))}
           </script>
         </Helmet>
       )}
