@@ -2,11 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.28.2] - 2026-07-12
+
+### 📚 Documentation
+
+- Add robots.txt GCS update gotchas (private ACL, cache purge) ([#640](https://github.com/aafre/resume-builder/pull/640))
+
 ## [3.28.1] - 2026-07-12
+
+### 🚀 Features
+
+- **seo:** Emit HowTo schema on the how-to-write-a-resume guide
+
+### 📚 Documentation
+
+- Note robots.txt is served from GCS bucket, not the repo
 
 ### ⚡ Performance
 
 - **seo:** Unwrap ATS templates intro from scroll-reveal to fix desktop LCP
+
+### ⚙️ Miscellaneous Tasks
+
+- **seo:** Allow ClaudeBot and Applebot-Extended in robots.txt
+- **seo:** Trim llms.txt to high-value links, lead with key facts
 
 ## [3.28.0] - 2026-07-05
 
