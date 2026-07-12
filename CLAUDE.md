@@ -312,6 +312,14 @@ When editing `sitemapUrls.ts`:
 - Update `lastmod` to today's date for any URL whose content was modified
 - Never remove a URL from the sitemap without checking its GSC performance first
 
+### robots.txt — served from GCS, NOT the repo
+
+Production `/robots.txt` is a **Cloudflare 301 redirect to a Google Cloud Storage bucket object**: `gs://easyfreeresume-static/robots/robots.txt` (public URL: `https://storage.googleapis.com/easyfreeresume-static/robots/robots.txt`). The redirect rule lives in Cloudflare — there is no reference to it anywhere in the repo.
+
+- **Editing `resume-builder-ui/public/robots.txt` does NOTHING in production** — Cloudflare intercepts `/robots.txt` before it reaches the app. Keep the repo file in sync as documentation of intent, but the repo change is inert.
+- **To actually change prod robots.txt:** update the GCS bucket object (owner/infra with account access), then purge the Cloudflare cache for `/robots.txt`. Verify with `curl -sSL https://easyfreeresume.com/robots.txt`.
+- By contrast, `/llms.txt` and `/sitemap.xml` **are** served from the app, so repo edits to those take effect on deploy.
+
 ### Weekly SEO Review Protocol
 
 1. Export GSC data to `SearchConsole/{YYYY-MM-DD}/`
