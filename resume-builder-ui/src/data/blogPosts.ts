@@ -198,6 +198,15 @@ export const blogPosts: BlogPost[] = [
     category: "ATS Optimization",
   },
   {
+    slug: "free-ats-resume-check",
+    title: "How to Check Your Resume Against ATS (4 Free Methods)",
+    description:
+      "Four genuinely free ways to test whether your resume survives applicant tracking systems, including an unlimited keyword scanner that runs in your browser.",
+    publishDate: "2026-07-13",
+    readTime: "8 min",
+    category: "ATS Optimization",
+  },
+  {
     slug: "resume-no-experience",
     title: "Resume with No Experience: Real Examples + Free Template",
     description:
