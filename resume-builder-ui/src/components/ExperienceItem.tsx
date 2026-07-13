@@ -181,8 +181,9 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
                             onClick={() => handleDescRemove(descIndex)}
                             className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
                             title="Remove description point"
+                            aria-label="Remove description point"
                           >
-                            ✕
+                            <MdDelete className="text-xl" />
                           </button>
                         </div>
                       </SortableItem>

@@ -1,6 +1,7 @@
 // src/components/EditableTitle.tsx
 
 import React from "react";
+import { MdCheck, MdClose } from "react-icons/md";
 
 /**
  * Props for the EditableTitle component.
@@ -84,7 +85,7 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
           className="text-green-600 hover:text-green-800 transition-colors"
           title="Save Title (Enter)"
         >
-          ✅
+          <MdCheck className="text-xl" />
         </button>
         <button
           type="button"
@@ -93,7 +94,7 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({
           className="text-red-600 hover:text-red-800 transition-colors"
           title="Cancel (Esc)"
         >
-          ✕
+          <MdClose className="text-xl" />
         </button>
       </div>
     );
