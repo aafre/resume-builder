@@ -37,6 +37,42 @@ interface ExperienceItemProps {
   itemIds?: string[];
 }
 
+const DescriptionBullet = React.memo(({
+  id,
+  desc,
+  descIndex,
+  handleDescUpdate,
+  handleDescRemove
+}: {
+  id: string;
+  desc: string;
+  descIndex: number;
+  handleDescUpdate: (index: number, value: string) => void;
+  handleDescRemove: (index: number) => void;
+}) => {
+  return (
+    <SortableItem id={id}>
+      <div className="flex items-start gap-3">
+        <div className="flex-1">
+          <RichTextInput
+            value={desc}
+            onChange={(value) => handleDescUpdate(descIndex, value)}
+            placeholder="Describe your responsibilities, achievements, or key projects..."
+            className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all duration-200"
+          />
+        </div>
+        <button
+          onClick={() => handleDescRemove(descIndex)}
+          className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
+          title="Remove description point"
+        >
+          ✕
+        </button>
+      </div>
+    </SortableItem>
+  );
+});
+
 const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
   item,
   index,
@@ -167,25 +203,14 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
                 {({ itemIds: descItemIds }) => (
                   <>
                     {item.description.map((desc, descIndex) => (
-                      <SortableItem key={descItemIds[descIndex]} id={descItemIds[descIndex]}>
-                        <div className="flex items-start gap-3">
-                          <div className="flex-1">
-                            <RichTextInput
-                              value={desc}
-                              onChange={(value) => handleDescUpdate(descIndex, value)}
-                              placeholder="Describe your responsibilities, achievements, or key projects..."
-                              className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all duration-200"
-                            />
-                          </div>
-                          <button
-                            onClick={() => handleDescRemove(descIndex)}
-                            className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
-                            title="Remove description point"
-                          >
-                            ✕
-                          </button>
-                        </div>
-                      </SortableItem>
+                      <DescriptionBullet
+                        key={descItemIds[descIndex]}
+                        id={descItemIds[descIndex]}
+                        desc={desc}
+                        descIndex={descIndex}
+                        handleDescUpdate={handleDescUpdate}
+                        handleDescRemove={handleDescRemove}
+                      />
                     ))}
                   </>
                 )}
