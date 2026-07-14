@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.29.0] - 2026-07-14
+
+### 🚀 Features
+
+- **seo:** Add free ATS resume check guide ([#643](https://github.com/aafre/resume-builder/pull/643))
+
 ## [3.28.2] - 2026-07-12
 
 ### 📚 Documentation
