@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.29.1] - 2026-07-14
+
+### 🐛 Bug Fixes
+
+- **marquee:** Remove white logo boxes, fix seamless loop, add grayscale hover ([#648](https://github.com/aafre/resume-builder/pull/648))
+
 ## [3.29.0] - 2026-07-14
 
 ### 🚀 Features
