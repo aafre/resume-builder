@@ -44,8 +44,6 @@ export default function CompanyMarquee({
 
   // Duplicate companies for seamless loop
   const duplicatedCompanies = [...companies, ...companies];
-  const itemWidth = 9.5; // rem (w-38 equivalent)
-  const totalWidth = duplicatedCompanies.length * itemWidth;
 
   return (
     <div className={`relative overflow-hidden h-24 ${className}`}>
@@ -54,23 +52,22 @@ export default function CompanyMarquee({
       <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-chalk via-chalk/90 to-transparent z-10 pointer-events-none" />
 
       <div
-        className={`flex space-x-6 ${
+        className={`flex w-max ${
           pauseOnHover ? "hover:animation-pause" : ""
         }`}
         style={{
           animation: `marquee ${speed}s linear infinite`,
-          width: `${totalWidth}rem`,
         }}
       >
         {duplicatedCompanies.map((company, index) => (
           <div
             key={`${company.name}-${index}`}
-            className="flex-shrink-0 w-36 h-16 flex items-center justify-center group cursor-default"
+            className="flex-shrink-0 w-36 me-6 h-16 flex items-center justify-center group cursor-default"
           >
             <img
               src={company.logo}
               alt={company.alt}
-              className="w-28 h-10 object-contain transition-all duration-500"
+              className="w-28 h-10 object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition duration-500"
               width="112"
               height="40"
               onError={(e) => {
