@@ -62,12 +62,12 @@ export default function CompanyMarquee({
         {duplicatedCompanies.map((company, index) => (
           <div
             key={`${company.name}-${index}`}
-            className="flex-shrink-0 w-36 mr-6 h-16 flex items-center justify-center group cursor-default"
+            className="flex-shrink-0 w-36 me-6 h-16 flex items-center justify-center group cursor-default"
           >
             <img
               src={company.logo}
               alt={company.alt}
-              className="w-28 h-10 object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+              className="w-28 h-10 object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition duration-500"
               width="112"
               height="40"
               onError={(e) => {
