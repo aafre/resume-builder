@@ -20,7 +20,7 @@ export default function AboutUs() {
               "@type": "Organization",
               name: "EasyFreeResume",
               description: "Free professional resume builder platform",
-              foundingDate: "2019",
+              foundingDate: "2024-01",
               mission:
                 "Democratize career opportunities by providing free professional resume tools",
             },
