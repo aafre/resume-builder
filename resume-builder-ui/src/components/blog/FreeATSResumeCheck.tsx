@@ -232,10 +232,14 @@ export default function FreeATSResumeCheck() {
           </div>
         </div>
         <p className="text-lg leading-relaxed text-stone-warm">
-          If rebuilding the layout would take too long, start with one of our{" "}
+          If rebuilding the layout would take too long, browse our{" "}
+          <Link to="/ats-resume-templates" className="text-accent hover:underline font-medium">
+            ATS resume templates hub
+          </Link>{" "}
+          to compare options, or jump straight into our{" "}
           <Link to="/templates/ats-friendly" className="text-accent hover:underline font-medium">
-            ATS-friendly resume templates
-          </Link>. They provide a simple structure, but you should still run the
+            ATS-friendly template
+          </Link>. These templates provide a simple structure, but you should still run the
           plain-text and keyword checks on your finished content.
         </p>
         <p className="text-lg leading-relaxed text-stone-warm">
