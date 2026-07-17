@@ -358,7 +358,11 @@ export default function ATSFormattingRules() {
               resume keyword scanner
             </Link>{" "}
             to confirm it contains the exact terms the job posting is scanning
-            for — no sign-up required.
+            for — no sign-up required. For every free way to verify your resume
+            passes ATS, see our{" "}
+            <Link to="/blog/free-ats-resume-check" className="text-accent hover:underline font-medium">
+              free ATS resume check guide
+            </Link>.
           </p>
         </div>
 

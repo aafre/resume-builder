@@ -972,8 +972,11 @@ export default function ResumeKeywordScanner() {
               <p className="text-lg font-extralight text-stone-warm leading-relaxed mb-4">
                 Most ATS platforms &mdash; including Workday, Greenhouse, Lever, and iCIMS &mdash; use a combination of keyword matching and section analysis. They look for specific terms in specific contexts. For example, &ldquo;Python&rdquo; in your skills section carries more weight than &ldquo;Python&rdquo; mentioned offhandedly in a project description. This is why a well-structured resume with clear section headings is essential. Our <Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">ATS optimization guide</Link> covers the formatting details.
               </p>
-              <p className="text-lg font-extralight text-stone-warm leading-relaxed">
+              <p className="text-lg font-extralight text-stone-warm leading-relaxed mb-4">
                 Resumes that score below the threshold &mdash; typically around 60&ndash;75% match depending on the company &mdash; are automatically filtered out. The recruiter never sees them. That means your resume could be perfect in every other way, but without the right keywords, it disappears into a digital void.
+              </p>
+              <p className="text-lg font-extralight text-stone-warm leading-relaxed">
+                Keywords are only one failure mode, though. Want the full manual ATS check beyond keywords? See our <Link to="/blog/free-ats-resume-check" className="text-accent hover:underline">free ATS resume check guide</Link> for the plain-text paste test and structural audit that catch what a keyword scan alone can&rsquo;t.
               </p>
             </div>
 
