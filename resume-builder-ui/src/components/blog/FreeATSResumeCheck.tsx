@@ -239,7 +239,7 @@ export default function FreeATSResumeCheck() {
           to compare options, or jump straight into our{" "}
           <Link to="/templates/ats-friendly" className="text-accent hover:underline font-medium">
             ATS-friendly template
-          </Link>. They provide a simple structure, but you should still run the
+          </Link>. These templates provide a simple structure, but you should still run the
           plain-text and keyword checks on your finished content.
         </p>
         <p className="text-lg leading-relaxed text-stone-warm">
