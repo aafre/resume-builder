@@ -21,15 +21,8 @@ from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 import requests as http_requests
 import yaml
 from dotenv import load_dotenv
-from flask import (
-    Flask,
-    jsonify,
-    redirect,
-    request,
-    send_file,
-    send_from_directory,
-    url_for,
-)
+from flask import (Flask, jsonify, redirect, request, send_file,
+                   send_from_directory, url_for)
 from flask_compress import Compress
 from flask_cors import CORS
 from jinja2 import Environment, FileSystemLoader
@@ -37,7 +30,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.utils import secure_filename
 
 from supabase import Client, create_client
-from utils.yaml_converter import fast_yaml_load
+from utils.yaml_converter import fast_yaml_dump, fast_yaml_load
 
 # Load environment variables from .env file
 load_dotenv()
@@ -1563,13 +1556,15 @@ NOINDEX_ROUTES = {
 }
 
 # ponytail: explicit allowlist — expand only after per-route dev/field CWV validation
-PRERENDER_TO_ALL_ROUTES = frozenset({
-    "free-resume-builder-no-sign-up",
-    "ai-resume-builder-free",
-    "free-cv-builder-no-sign-up",
-    "ats-resume-templates",
-    "resume-keywords",
-})
+PRERENDER_TO_ALL_ROUTES = frozenset(
+    {
+        "free-resume-builder-no-sign-up",
+        "ai-resume-builder-free",
+        "free-cv-builder-no-sign-up",
+        "ats-resume-templates",
+        "resume-keywords",
+    }
+)
 
 
 def _is_bot(user_agent: str) -> bool:
@@ -3548,7 +3543,14 @@ def generate_pdf_for_saved_resume(resume_id):
             # Write YAML to temp file
             yaml_path = temp_dir_path / "resume.yaml"
             with open(yaml_path, "w") as f:
-                yaml.dump(yaml_data, f)
+                fast_yaml_dump(
+                    yaml_data,
+                    f,
+                    default_flow_style=False,
+                    allow_unicode=True,
+                    sort_keys=False,
+                    width=int(1e9),
+                )
 
             # Generate PDF
             timestamp = datetime.now().strftime("%Y%m%d_%H_%M_%S")
@@ -3785,7 +3787,14 @@ def generate_thumbnail_for_resume(resume_id):
             # Write YAML to temp file
             yaml_path = temp_dir_path / "resume.yaml"
             with open(yaml_path, "w") as f:
-                yaml.dump(yaml_data, f)
+                fast_yaml_dump(
+                    yaml_data,
+                    f,
+                    default_flow_style=False,
+                    allow_unicode=True,
+                    sort_keys=False,
+                    width=int(1e9),
+                )
 
             # Generate PDF
             timestamp = datetime.now().strftime("%Y%m%d_%H_%M_%S")
