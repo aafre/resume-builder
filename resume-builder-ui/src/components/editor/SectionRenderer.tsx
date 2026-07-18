@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 import { Section, IconListItem } from '../../types';
 import { EditorContentIconRegistry } from './EditorContent';
 import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
@@ -60,12 +60,17 @@ const SectionRenderer: React.FC<SectionRendererProps> = React.memo(({
     handleReorderEntry(index, oldIndex, newIndex);
   }, [handleReorderEntry, index]);
 
+  const sectionRef = useRef(section);
+  useEffect(() => {
+    sectionRef.current = section;
+  }, [section]);
+
   const onUpdate = useCallback((updatedContent: unknown) => {
     // Pass-through wrapper: content type varies by section and is enforced
     // by each child component's own prop types. We just wrap it into the
     // section object and forward to the parent handler.
-    handleUpdateSection(index, { ...section, content: updatedContent } as Section);
-  }, [handleUpdateSection, index, section]);
+    handleUpdateSection(index, { ...sectionRef.current, content: updatedContent } as Section);
+  }, [handleUpdateSection, index]);
 
   const onGenericUpdate = useCallback((updatedSection: Section) => {
     handleUpdateSection(index, updatedSection);
