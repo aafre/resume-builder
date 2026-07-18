@@ -1,3 +1,6 @@
 ## 2025-02-14 - ResponsiveConfirmDialog for Destructive Actions
 **Learning:** Destructive actions (like Delete) implemented with custom hardcoded modals lack standard accessibility attributes (`role="dialog"`, `aria-modal`, etc.) and mobile responsiveness (like bottom sheets). This app has a `ResponsiveConfirmDialog` component designed specifically for this purpose, but it was not being utilized uniformly.
 **Action:** Always use `ResponsiveConfirmDialog` for destructive confirmation prompts (such as `DeleteResumeModal`) to ensure a consistent, accessible, and mobile-friendly UX that prevents accidental data loss.
+## 2024-05-15 - DuplicateResumeModal Accessibility Enhancement
+**Learning:** Custom modals like DuplicateResumeModal often lack basic interactive backdrop close handling, keyboard handlers, ARIA roles, and keyboard navigation outline visibility, which impairs accessibility.
+**Action:** When creating or modifying custom modals, ensure `onClick` handlers for the backdrop correctly ignore inner modal clicks (via `stopPropagation`), handle the `Escape` key, assign `role="dialog"`, use `aria-modal="true"`, link titles via `aria-labelledby`, add `aria-hidden` to decorative items, and add explicit `focus-visible` outline styles to buttons.
