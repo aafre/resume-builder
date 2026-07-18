@@ -100,8 +100,9 @@ export function UploadResumeModal({
           <button
             onClick={handleCloseModal}
             className="text-white/80 hover:text-white transition-colors"
+            aria-label="Close modal"
           >
-            <XMarkIcon className="w-6 h-6" />
+            <XMarkIcon className="w-6 h-6" aria-hidden="true" />
           </button>
         </div>
 
