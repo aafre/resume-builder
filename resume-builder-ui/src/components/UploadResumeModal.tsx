@@ -98,8 +98,10 @@ export function UploadResumeModal({
             <h2 className="text-xl font-bold text-white">Upload Resume</h2>
           </div>
           <button
+            type="button"
             onClick={handleCloseModal}
-            className="text-white/80 hover:text-white transition-colors"
+            className="text-white/80 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-lg p-1"
+            aria-label="Close modal"
           >
             <XMarkIcon className="w-6 h-6" />
           </button>
@@ -244,12 +246,17 @@ export function UploadResumeModal({
         {parseResult && (
           <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
             <button
+              type="button"
               onClick={handleCloseModal}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               Cancel
             </button>
-            <button onClick={handleContinue} className="btn-primary px-6 py-2">
+            <button
+              type="button"
+              onClick={handleContinue}
+              className="btn-primary px-6 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent"
+            >
               Continue to Editor
             </button>
           </div>
