@@ -246,11 +246,12 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
               <span aria-hidden="true">💡</span>
               <span>Don't forget to save your progress permanently</span>
               <button
+                type="button"
                 onClick={onDismissIdleTooltip}
                 className="ml-2 inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-ink hover:bg-ink/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/50"
                 aria-label="Dismiss reminder"
               >
-                ✕
+                <span aria-hidden="true">✕</span>
               </button>
             </div>
           </div>,
