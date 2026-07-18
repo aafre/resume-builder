@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import CountUp from "react-countup";
 import SEOHead from "./SEOHead";
-import { generateSoftwareApplicationSchema, generateWebSiteSchema, generateFAQPageSchema, generateVideoObjectSchema, wrapInGraph } from "../utils/schemaGenerators";
+import { generateSoftwareApplicationSchema, generateWebSiteSchema, generateFAQPageSchema, wrapInGraph } from "../utils/schemaGenerators";
 import CompanyMarquee from "./CompanyMarquee";
 import RevealSection from "./shared/RevealSection";
 import { useAuth } from "../contexts/AuthContext";
@@ -189,13 +189,6 @@ const LandingPage: React.FC = () => {
           generateSoftwareApplicationSchema(),
           generateWebSiteSchema(),
           generateFAQPageSchema(faqs),
-          generateVideoObjectSchema(
-            TUTORIAL_VIDEO.name,
-            TUTORIAL_VIDEO.description,
-            TUTORIAL_VIDEO.thumbnailUrl,
-            TUTORIAL_VIDEO.uploadDate,
-            TUTORIAL_VIDEO.embedUrl
-          ),
         ])}
       />
 

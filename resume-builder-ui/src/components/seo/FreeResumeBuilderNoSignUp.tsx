@@ -15,7 +15,6 @@ import DownloadCTA from '../shared/DownloadCTA';
 import RevealSection from '../shared/RevealSection';
 import { InContentAd, AD_CONFIG } from '../ads';
 import { usePageSchema } from '../../hooks/usePageSchema';
-import { generateVideoObjectSchema } from '../../utils/schemaGenerators';
 import { SEO_PAGES } from '../../config/seoPages';
 import { TUTORIAL_VIDEO } from '../../config/videoContent';
 
@@ -24,20 +23,10 @@ export default function FreeResumeBuilderNoSignUp() {
   const [videoPlaying, setVideoPlaying] = useState(false);
   const handlePlayVideo = useCallback(() => setVideoPlaying(true), []);
 
-  const baseSchemas = usePageSchema({
+  const schemas = usePageSchema({
     type: 'software',
     faqs: config.faqs,
   });
-  const schemas = [
-    ...baseSchemas,
-    generateVideoObjectSchema(
-      TUTORIAL_VIDEO.name,
-      TUTORIAL_VIDEO.description,
-      TUTORIAL_VIDEO.thumbnailUrl,
-      TUTORIAL_VIDEO.uploadDate,
-      TUTORIAL_VIDEO.embedUrl
-    ),
-  ];
 
   return (
     <SEOPageLayout seoConfig={config.seo} schemas={schemas}>
