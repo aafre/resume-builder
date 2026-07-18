@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MdArrowUpward, MdArrowDownward, MdDeleteOutline } from 'react-icons/md';
+import ResponsiveConfirmDialog from './ResponsiveConfirmDialog';
 
 const SectionControls: React.FC<{
   sectionIndex: number;
   sections: any[];
   setSections: (sections: any[]) => void;
 }> = ({ sectionIndex, sections, setSections }) => {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
   const moveSection = (fromIndex: number, toIndex: number) => {
     const newSections = [...sections];
     const [removedSection] = newSections.splice(fromIndex, 1);
@@ -53,11 +56,21 @@ const SectionControls: React.FC<{
         type="button"
         aria-label="Delete section"
         title="Delete section"
-        onClick={deleteSection}
+        onClick={() => setIsConfirmOpen(true)}
         className="p-2 rounded bg-red-500 hover:bg-red-600 text-white focus-visible:ring-2 focus-visible:ring-red-600"
       >
         <MdDeleteOutline className="text-lg" />
       </button>
+
+      <ResponsiveConfirmDialog
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={deleteSection}
+        title="Delete Section?"
+        message="Are you sure you want to delete this entire section? This action cannot be undone."
+        confirmText="Delete Section"
+        isDestructive={true}
+      />
     </div>
   );
 };
