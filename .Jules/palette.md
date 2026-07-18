@@ -1,3 +1,7 @@
 ## 2025-02-14 - ResponsiveConfirmDialog for Destructive Actions
 **Learning:** Destructive actions (like Delete) implemented with custom hardcoded modals lack standard accessibility attributes (`role="dialog"`, `aria-modal`, etc.) and mobile responsiveness (like bottom sheets). This app has a `ResponsiveConfirmDialog` component designed specifically for this purpose, but it was not being utilized uniformly.
 **Action:** Always use `ResponsiveConfirmDialog` for destructive confirmation prompts (such as `DeleteResumeModal`) to ensure a consistent, accessible, and mobile-friendly UX that prevents accidental data loss.
+
+## 2026-07-11 - Custom Dialog Accessibility (Focus & Keyboard Navigation)
+**Learning:** Custom dialogs built with Tailwind classes lose default browser focus outlines on action buttons (Confirm/Cancel), and they do not automatically support standard 'Escape' key closure or auto-focusing behavior out of the box, breaking keyboard accessibility for screen reader users and power users.
+**Action:** When building or enhancing custom modals, always restore keyboard accessibility by adding explicit `focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2` (using contextual ring colors) to action buttons. Furthermore, ensure the modal container has a `tabIndex={-1}`, auto-focuses on mount via a `useRef`, and implements a `keydown` listener for the 'Escape' key to ensure proper keyboard management.
