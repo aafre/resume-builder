@@ -150,7 +150,7 @@ describe("AIResumePromptsHub", () => {
       ).toBeInTheDocument();
     });
 
-    expect(container.querySelectorAll("pre code")).toHaveLength(5);
+    expect(screen.getAllByRole("heading", { level: 4, name: "Prompt" })).toHaveLength(5);
     expect(
       screen.getByRole("table", {
         name: /AI resume privacy controls by provider/i,

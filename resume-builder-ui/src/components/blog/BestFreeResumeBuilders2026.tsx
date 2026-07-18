@@ -603,7 +603,7 @@ export default function BestFreeResumeBuilders2026() {
                 {i + 1}
               </div>
               <div>
-                <h3 className="font-bold text-ink mb-1">{rec.scenario}</h3>
+                <p className="font-bold text-ink mb-1">{rec.scenario}</p>
                 <p className="text-stone-warm">
                   <strong>Pick: </strong>
                   {rec.link ? (
