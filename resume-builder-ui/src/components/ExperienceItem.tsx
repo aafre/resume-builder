@@ -2,6 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { MdDelete } from 'react-icons/md';
 import { RichTextInput } from './RichTextInput';
 import { MarkdownHint } from './MarkdownLinkPreview';
+import { GhostButton } from './shared/GhostButton';
 import IconManager from './IconManager';
 import ItemDndContext from './ItemDndContext';
 import SortableItem from './SortableItem';
@@ -192,12 +193,9 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
               </ItemDndContext>
             )}
           </div>
-          <button
-            onClick={handleDescAdd}
-            className="mt-3 bg-accent text-ink px-4 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
-          >
-            + Add Description Point
-          </button>
+          <GhostButton onClick={handleDescAdd} className="mt-3">
+            Add Description Point
+          </GhostButton>
         </div>
       </div>
     </div>
