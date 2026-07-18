@@ -166,26 +166,29 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
         {/* Buttons */}
         <div className="flex gap-3 mt-6">
           <button
+            type="button"
             onClick={handleInsert}
-            className="flex-1 bg-accent text-ink px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-200"
+            className="flex-1 bg-accent text-ink px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             {isEditMode ? 'Update Link' : 'Insert Link'}
           </button>
           {isEditMode && onRemove && (
             <button
+              type="button"
               onClick={() => {
                 onRemove();
                 onClose();
               }}
-              className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-200"
+              className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
               title="Remove Link"
             >
               Remove
             </button>
           )}
           <button
+            type="button"
             onClick={onClose}
-            className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200"
+            className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2"
           >
             Cancel
           </button>
