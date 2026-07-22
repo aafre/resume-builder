@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MdArrowUpward, MdArrowDownward, MdDeleteOutline } from 'react-icons/md';
+import ResponsiveConfirmDialog from './ResponsiveConfirmDialog';
 
 const SectionControls: React.FC<{
   sectionIndex: number;
   sections: any[];
   setSections: (sections: any[]) => void;
 }> = ({ sectionIndex, sections, setSections }) => {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
   const moveSection = (fromIndex: number, toIndex: number) => {
     const newSections = [...sections];
     const [removedSection] = newSections.splice(fromIndex, 1);
@@ -27,10 +30,10 @@ const SectionControls: React.FC<{
         title="Move section up"
         onClick={() => moveSection(sectionIndex, sectionIndex - 1)}
         disabled={sectionIndex === 0}
-        className={`p-2 rounded focus-visible:ring-2 focus-visible:ring-accent ${
+        className={`p-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white transition-colors ${
           sectionIndex === 0
             ? "bg-gray-300 cursor-not-allowed text-gray-500"
-            : "bg-accent hover:bg-accent text-ink"
+            : "bg-accent hover:bg-accent/90 text-ink"
         }`}
       >
         <MdArrowUpward className="text-lg" />
@@ -41,10 +44,10 @@ const SectionControls: React.FC<{
         title="Move section down"
         onClick={() => moveSection(sectionIndex, sectionIndex + 1)}
         disabled={sectionIndex === sections.length - 1}
-        className={`p-2 rounded focus-visible:ring-2 focus-visible:ring-accent ${
+        className={`p-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white transition-colors ${
           sectionIndex === sections.length - 1
             ? "bg-gray-300 cursor-not-allowed text-gray-500"
-            : "bg-accent hover:bg-accent text-ink"
+            : "bg-accent hover:bg-accent/90 text-ink"
         }`}
       >
         <MdArrowDownward className="text-lg" />
@@ -53,11 +56,22 @@ const SectionControls: React.FC<{
         type="button"
         aria-label="Delete section"
         title="Delete section"
-        onClick={deleteSection}
-        className="p-2 rounded bg-red-500 hover:bg-red-600 text-white focus-visible:ring-2 focus-visible:ring-red-600"
+        onClick={() => setIsConfirmOpen(true)}
+        className="p-2 rounded bg-red-500 hover:bg-red-600 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white transition-colors"
       >
         <MdDeleteOutline className="text-lg" />
       </button>
+
+      <ResponsiveConfirmDialog
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={deleteSection}
+        title="Delete Section?"
+        message="Are you sure you want to delete this section? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDestructive={true}
+      />
     </div>
   );
 };
