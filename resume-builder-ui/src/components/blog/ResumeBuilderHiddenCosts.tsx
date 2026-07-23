@@ -77,9 +77,14 @@ export default function ResumeBuilderHiddenCosts() {
             <strong>13 charges a year</strong>, or about{" "}
             <strong>$337 annually</strong>. The "free" export is usually
             watermarked or restricted and unusable for real applications.
-            EasyFreeResume is
-            the genuinely free contrast: no trial, no credit card, no
-            watermark, no sign-up.
+            For a reality check on the "free" label, see{" "}
+            <Link
+              to="/best-free-resume-builder-reddit"
+              className="text-accent hover:underline"
+            >
+              what Reddit users recommend instead
+            </Link>. EasyFreeResume is the genuinely free contrast: no trial, no credit
+            card, no watermark, no sign-up.
           </p>
         </div>
 
