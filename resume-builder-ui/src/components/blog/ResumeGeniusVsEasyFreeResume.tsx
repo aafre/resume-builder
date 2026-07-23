@@ -100,6 +100,15 @@ export default function ResumeGeniusVsEasyFreeResume() {
             "I spent an hour building my resume on Resume Genius, then found out I had to pay
             just to download it. Felt like a bait and switch."
           </p>
+          <p className="text-yellow-700 mt-3">
+            Before paying, compare it with{" "}
+            <Link
+              to="/best-free-resume-builder-reddit"
+              className="text-accent underline"
+            >
+              the builder r/resumes keeps pointing people to
+            </Link>.
+          </p>
         </div>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
