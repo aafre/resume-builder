@@ -565,16 +565,6 @@ export default function BestFreeResumeBuilders2026() {
           There&rsquo;s no single &ldquo;best&rdquo; resume builder &mdash; it depends on what you need:
         </p>
 
-        <p className="text-lg leading-relaxed text-stone-warm">
-          Community feedback can help narrow the choice, too: see{" "}
-          <Link
-            to="/best-free-resume-builder-reddit"
-            className="text-accent hover:underline"
-          >
-            which free resume builder Reddit users recommend
-          </Link>.
-        </p>
-
         <div className="space-y-4">
           {[
             {
@@ -627,6 +617,16 @@ export default function BestFreeResumeBuilders2026() {
             </div>
           ))}
         </div>
+
+        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+          Community feedback can help narrow the choice, too: see{" "}
+          <Link
+            to="/best-free-resume-builder-reddit"
+            className="text-accent hover:underline"
+          >
+            which free resume builder Reddit users recommend
+          </Link>.
+        </p>
 
         {/* FAQ section */}
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
