@@ -66,7 +66,7 @@ export const STATIC_URLS: SitemapUrl[] = [
 
   // Blog Posts (0.5) - being updated with content refreshes
   { loc: '/blog/resume-keywords-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-03-22' },
-  { loc: '/blog/resume-no-experience', priority: 0.5, changefreq: 'monthly', lastmod: '2026-02-10' },
+  { loc: '/blog/resume-no-experience', priority: 0.5, changefreq: 'monthly', lastmod: '2026-07-25' },
   { loc: '/blog/job-interview-guide', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/ats-resume-optimization', priority: 0.5, changefreq: 'monthly', lastmod: '2026-01-25' },
   { loc: '/blog/ats-formatting-rules', priority: 0.5, changefreq: 'monthly', lastmod: '2026-07-01' },
