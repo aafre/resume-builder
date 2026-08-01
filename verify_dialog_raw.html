@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+  <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998] transition-opacity duration-200" aria-hidden="true"></div>
+  <div class="fixed z-[9999] bottom-0 left-0 right-0 lg:inset-0 lg:flex lg:items-center lg:justify-center animate-slide-up lg:animate-fade-in" role="dialog">
+    <div class="bg-white rounded-t-2xl lg:rounded-2xl shadow-2xl w-full lg:max-w-md max-h-[85vh] lg:max-h-[90vh] flex flex-col transform transition-transform duration-300">
+      <div class="flex items-start justify-between p-6 border-b border-gray-200">
+        <div class="flex items-start gap-3 flex-1">
+          <div class="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+            <span class="text-red-600 text-xl" aria-hidden="true">!</span>
+          </div>
+          <div class="flex-1">
+            <h2 id="dialog-title" class="text-lg font-bold text-red-900">Delete Resume?</h2>
+          </div>
+        </div>
+      </div>
+      <div class="flex-1 overflow-y-auto p-6">
+        <p id="dialog-description" class="text-gray-700 leading-relaxed whitespace-pre-line">Are you sure you want to delete this resume? This action cannot be undone.</p>
+      </div>
+      <div class="p-6 border-t border-gray-200 space-y-3 lg:space-y-0 lg:flex lg:gap-3 lg:justify-end">
+        <!-- THE TARGET CANCEL BUTTON -->
+        <button id="cancel-btn" autofocus class="w-full lg:w-auto px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px] lg:min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2">Cancel</button>
+        <button id="confirm-btn" class="w-full lg:w-auto px-6 py-3 rounded-lg font-medium shadow-md hover:shadow-lg active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px] lg:min-h-[44px] bg-red-600 hover:bg-red-700 text-white">Delete</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Force focus in raw html
+    document.getElementById('cancel-btn').focus();
+  </script>
+</body>
+</html>
