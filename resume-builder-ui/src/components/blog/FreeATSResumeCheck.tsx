@@ -238,7 +238,7 @@ export default function FreeATSResumeCheck() {
           </Link>{" "}
           to compare options, or jump straight into our{" "}
           <Link to="/templates/ats-friendly" className="text-accent hover:underline font-medium">
-            ATS-friendly template
+            ATS-friendly resume templates
           </Link>. These templates provide a simple structure, but you should still run the
           plain-text and keyword checks on your finished content.
         </p>
