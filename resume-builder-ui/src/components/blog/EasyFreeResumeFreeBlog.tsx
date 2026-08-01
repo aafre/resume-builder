@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import BlogLayout from "../BlogLayout";
 
 export default function EasyFreeResumeFreeBlog() {
@@ -31,6 +32,15 @@ export default function EasyFreeResumeFreeBlog() {
           </p>
           <p className="text-ink font-bold text-2xl">
             The answer is simple: <span className="text-accent">Yes. 100%. No catch.</span>
+          </p>
+          <p className="text-yellow-700 mt-3">
+            For a second opinion from job seekers, see{" "}
+            <Link
+              to="/best-free-resume-builder-reddit"
+              className="text-accent underline"
+            >
+              the free resume builder Reddit recommends
+            </Link>.
           </p>
         </div>
 
