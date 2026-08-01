@@ -106,7 +106,7 @@ export default function ResumeNoExperience() {
 
         <h2
           id="step-format"
-          className="text-3xl font-bold text-ink mt-12 mb-6"
+          className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6"
         >
           Step 1: Choose the Best Resume Format When You Have No Experience
         </h2>
@@ -145,7 +145,7 @@ export default function ResumeNoExperience() {
           </ol>
         </div>
 
-        <h2 id="step-ats" className="text-3xl font-bold text-ink mt-12 mb-6">
+        <h2 id="step-ats" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
           Step 2: Make It ATS-Friendly (So You Get Seen)
         </h2>
 
@@ -180,7 +180,7 @@ export default function ResumeNoExperience() {
           </div>
         </div>
 
-        <h2 id="step-summary" className="text-3xl font-bold text-ink mt-12 mb-6">
+        <h2 id="step-summary" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
           Step 3: Write Your Professional Summary (Copy-Paste Examples)
         </h2>
 
@@ -261,7 +261,7 @@ export default function ResumeNoExperience() {
           </div>
         </div>
 
-        <h2 id="step-bullets" className="text-3xl font-bold text-ink mt-12 mb-6">
+        <h2 id="step-bullets" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
           Step 4: Write Bullets With the Action + Outcome Formula
         </h2>
 
@@ -303,7 +303,7 @@ export default function ResumeNoExperience() {
           </p>
         </div>
 
-        <h2 id="step-projects" className="text-3xl font-bold text-ink mt-12 mb-6">
+        <h2 id="step-projects" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
           Step 5: Use Projects as Your Experience Section
         </h2>
 
@@ -370,7 +370,7 @@ export default function ResumeNoExperience() {
           </div>
         </div>
 
-        <h2 id="step-skills" className="text-3xl font-bold text-ink mt-12 mb-6">
+        <h2 id="step-skills" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
           Step 6: Group the Skills That Win Entry-Level Interviews
         </h2>
 
@@ -399,7 +399,7 @@ export default function ResumeNoExperience() {
           </div>
         </div>
 
-        <h2 id="step-keywords" className="text-3xl font-bold text-ink mt-12 mb-6">
+        <h2 id="step-keywords" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
           Step 7: Mirror Role-Specific Keywords From the Job Post
         </h2>
 
