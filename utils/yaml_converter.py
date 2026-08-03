@@ -13,9 +13,21 @@ from typing import Any, Dict
 import yaml
 
 try:
+    from yaml import CSafeDumper as SafeDumper
     from yaml import CSafeLoader as SafeLoader
 except ImportError:
-    from yaml import SafeLoader
+    from yaml import SafeDumper, SafeLoader
+
+
+def fast_yaml_dump(data, stream=None, **kwargs):
+    """
+    A significantly faster alternative to yaml.dump.
+    Uses C-based CSafeDumper if available.
+    """
+    # CSafeDumper raises OverflowError for float('inf') width
+    if kwargs.get("width") == float("inf"):
+        kwargs["width"] = int(1e9)
+    return yaml.dump(data, stream, Dumper=SafeDumper, **kwargs)
 
 
 def fast_yaml_load(stream):
@@ -66,7 +78,7 @@ def json_to_yaml_structure(resume_data: Dict[str, Any]) -> str:
     }
 
     # Convert to YAML string
-    yaml_string = yaml.dump(
+    yaml_string = fast_yaml_dump(
         yaml_structure,
         default_flow_style=False,
         allow_unicode=True,
