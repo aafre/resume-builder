@@ -5,8 +5,9 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
+import { initAnalytics, identifyUser } from "./lib/analytics";
 
 // Critical components - loaded immediately
 import Header from "./components/Header";
@@ -1017,7 +1018,16 @@ function AppContent() {
 
 // Wrapper component to access auth context and provide preferences to ConversionProvider
 function AppWithProviders() {
-  const { session, loading: authLoading } = useAuth();
+  const { session, loading: authLoading, user, isAnonymous } = useAuth();
+
+  // Start loading PostHog in the background (lazy chunk, requestIdleCallback)
+  useEffect(() => { initAnalytics(); }, []);
+
+  // Identify authenticated users only — PostHog tracks anonymous users itself,
+  // and identifying them would inflate unique-user counts.
+  useEffect(() => {
+    if (user?.id && !isAnonymous) identifyUser(user.id);
+  }, [user?.id, isAnonymous]);
 
   const { preferences, setPreference } = usePreferencePersistence({
     session,

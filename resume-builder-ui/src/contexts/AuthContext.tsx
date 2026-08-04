@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useRef, useCallback, ReactNode } from 'react';
 import { apiClient, ApiError } from '../lib/api-client';
 import { toast } from 'react-hot-toast';
+import { trackSignedIn, resetUser } from '../lib/analytics';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { User, Session } from '@supabase/supabase-js';
 
@@ -439,6 +440,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               console.log('👤 Starting migration process - blocking UI loads...');
             }
 
+            // Track sign-in in analytics (distinguish new signup vs returning login).
+            // A user upgrading from anonymous → identified is a new signup; an
+            // existing identified user logging back in has no anonymous migration.
+            const provider = session.user.app_metadata?.provider;
+            if (provider === 'google' || provider === 'linkedin_oidc' || provider === 'email') {
+              trackSignedIn({
+                provider: provider === 'linkedin_oidc' ? 'linkedin' : provider,
+                is_new_user: !!oldAnonUserId && oldAnonUserId !== session.user.id,
+              });
+            }
+
             // Show welcome toast on successful sign-in (only once per session)
             const hasShownToast = sessionStorage.getItem('login-toast-shown');
             if (!hasShownToast) {
@@ -597,6 +609,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       setSigningOut(true);
+
+      // Reset analytics identity (disconnect session from the signed-in user)
+      resetUser();
 
       // Reset toast flag, migration state, and auth return path
       sessionStorage.removeItem('login-toast-shown');
