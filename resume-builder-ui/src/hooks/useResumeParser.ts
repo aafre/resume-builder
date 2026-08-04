@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { trackResumeUploadStarted, trackResumeParseCompleted } from '../lib/analytics';
 
 interface ParseResponse {
   success: boolean;
@@ -110,6 +111,10 @@ export function useResumeParser() {
     setProgressMessage('Preparing upload...');
     setError(null);
 
+    // Declared outside the try so the catch can still report parse duration
+    let parseStart = 0;
+    let fileType = 'unknown';
+
     try {
       // Validate file first
       const validationError = validateFile(file);
@@ -137,6 +142,16 @@ export function useResumeParser() {
       // Create FormData
       const formData = new FormData();
       formData.append('file', file);
+
+      // Bracket the parse so abandonment during the ~12s median wait is measurable.
+      // Set only once the request is actually attempted, so validation/auth
+      // failures above don't pollute parse duration or the failure rate.
+      fileType = file.name.split('.').pop()?.toLowerCase() || 'unknown';
+      parseStart = Date.now();
+      trackResumeUploadStarted({
+        file_type: fileType,
+        file_size_kb: Math.round(file.size / 1024),
+      });
 
       // Call Edge Function (runs in parallel with progress animation)
       const response = await fetch(
@@ -170,11 +185,27 @@ export function useResumeParser() {
       setProgress(100);
       setProgressMessage('Finalizing your resume...');
 
+      trackResumeParseCompleted({
+        file_type: fileType,
+        duration_ms: Date.now() - parseStart,
+        success: true,
+        cached: data.cached,
+        confidence: data.confidence,
+      });
+
       return data;
     } catch (err) {
       // Stop animation on error
       stopProgressAnimation();
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      if (parseStart > 0) {
+        trackResumeParseCompleted({
+          file_type: fileType,
+          duration_ms: Date.now() - parseStart,
+          success: false,
+          error_type: errorMessage,
+        });
+      }
       setError(errorMessage);
       throw err;
     } finally {

@@ -11,6 +11,7 @@ import { getSessionId } from '../../utils/session';
 import { extractReferencedIconFilenames } from '../../utils/iconExtractor';
 import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
 import { validateLinkedInUrl } from '../../services/validationService';
+import { trackPdfDownloaded, trackPdfDownloadFailed } from '../../lib/analytics';
 
 /**
  * Icon validation result from usePreview
@@ -266,6 +267,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         URL.revokeObjectURL(pdfUrl);
 
         toast.success('Resume downloaded successfully!');
+        trackPdfDownloaded({ template_id: templateId || 'unknown', source: 'editor' });
 
         // Show celebration modal on first download (all users)
         if (!hasShownDownloadToast) {
@@ -279,6 +281,11 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         console.error('Error generating resume:', error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         toast.error(`Resume generation failed: ${errorMessage}`);
+        trackPdfDownloadFailed({
+          template_id: templateId || 'unknown',
+          source: 'editor',
+          error_type: errorMessage,
+        });
       } finally {
         setIsDownloading(false);
         downloadPromiseRef.current = null;
