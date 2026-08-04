@@ -8,6 +8,7 @@ services:
         VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
         VITE_SUPABASE_PUBLISHABLE_KEY: ${VITE_SUPABASE_PUBLISHABLE_KEY}
         VITE_APP_URL: ${VITE_APP_URL}
+        VITE_POSTHOG_KEY: ${VITE_POSTHOG_KEY}
 
     # Runtime environment variables for Flask backend
     environment:
