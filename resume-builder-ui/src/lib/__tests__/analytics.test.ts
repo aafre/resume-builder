@@ -211,4 +211,35 @@ describe('analytics', () => {
       expect(mockCapture).not.toHaveBeenCalled();
     });
   });
+
+  describe('categorizeError', () => {
+    // Guards a privacy boundary: /api/generate returns raw Python exception
+    // strings (paths, echoed resume content) and parse-resume interpolates
+    // error.message (uploaded filenames). None of that may reach PostHog.
+    it.each([
+      ['Request timed out after 30s', 'timeout'],
+      ['Failed to fetch', 'network'],
+      ['Invalid or expired token', 'auth'],
+      ['Cannot generate PDF: Missing 2 icon(s)', 'missing_icons'],
+      ['Text extraction failed: cannot read page 3', 'text_extraction'],
+      ['File too large', 'file_too_large'],
+      ['Invalid file type. Please upload a PDF or DOCX file.', 'unsupported_file_type'],
+      ['Unknown error', 'other'],
+    ])('categorizes %j as %s', async (input, expected) => {
+      const { categorizeError } = await import('../analytics');
+      expect(categorizeError(input)).toBe(expected);
+    });
+
+    it('never returns anything containing the raw message', async () => {
+      const { categorizeError } = await import('../analytics');
+      const leaky =
+        "[Errno 2] No such file or directory: '/tmp/sess_abc/john_smith_acme.png'";
+      const result = categorizeError(leaky);
+
+      expect(result).not.toContain('john_smith');
+      expect(result).not.toContain('/tmp');
+      // Bounded set — anything unrecognised collapses to a constant
+      expect(result).toBe('other');
+    });
+  });
 });

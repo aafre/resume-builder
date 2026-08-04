@@ -11,7 +11,7 @@ import { getSessionId } from '../../utils/session';
 import { extractReferencedIconFilenames } from '../../utils/iconExtractor';
 import { isExperienceSection, isEducationSection } from '../../utils/sectionTypeChecker';
 import { validateLinkedInUrl } from '../../services/validationService';
-import { trackPdfDownloaded, trackPdfDownloadFailed } from '../../lib/analytics';
+import { trackPdfDownloaded, trackPdfDownloadFailed, categorizeError } from '../../lib/analytics';
 
 /**
  * Icon validation result from usePreview
@@ -284,7 +284,7 @@ ${missingIcons.map((icon) => `• ${icon}`).join('\n')}`,
         trackPdfDownloadFailed({
           template_id: templateId || 'unknown',
           source: 'editor',
-          error_type: errorMessage,
+          error_type: categorizeError(errorMessage),
         });
       } finally {
         setIsDownloading(false);

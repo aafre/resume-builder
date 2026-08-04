@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { trackResumeUploadStarted, trackResumeParseCompleted } from '../lib/analytics';
+import { trackResumeUploadStarted, trackResumeParseCompleted, categorizeError } from '../lib/analytics';
 
 interface ParseResponse {
   success: boolean;
@@ -203,7 +203,7 @@ export function useResumeParser() {
           file_type: fileType,
           duration_ms: Date.now() - parseStart,
           success: false,
-          error_type: errorMessage,
+          error_type: categorizeError(errorMessage),
         });
       }
       setError(errorMessage);

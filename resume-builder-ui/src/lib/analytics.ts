@@ -157,6 +157,29 @@ export function trackCtaClicked(props: {
   run((ph) => ph.capture('cta_clicked', props));
 }
 
+/**
+ * Reduce an error message to a bounded, non-identifying category.
+ *
+ * Raw error strings must never reach the analytics provider. `/api/generate`
+ * returns `str(fnfe)` / `str(ve)` — raw Python exceptions that routinely carry
+ * filesystem paths and can echo resume content from validation failures — and
+ * the parse-resume function returns `Text extraction failed: ${error.message}`,
+ * which can include the uploaded filename. Sending those would contradict our
+ * privacy policy and make the property unbounded in cardinality.
+ */
+export function categorizeError(message: string): string {
+  const m = message.toLowerCase();
+  if (m.includes('timeout') || m.includes('timed out')) return 'timeout';
+  if (m.includes('failed to fetch') || m.includes('network')) return 'network';
+  if (m.includes('token') || m.includes('unauthor') || m.includes('sign in')) return 'auth';
+  if (m.includes('icon')) return 'missing_icons';
+  if (m.includes('extraction')) return 'text_extraction';
+  if (m.includes('too large') || m.includes('file size')) return 'file_too_large';
+  if (m.includes('file type') || m.includes('pdf or docx')) return 'unsupported_file_type';
+  if (m.includes('valid')) return 'validation';
+  return 'other';
+}
+
 // ─── AI import funnel ────────────────────────────────────────────────
 // 56% of resumes are created by uploading an existing PDF/DOCX, behind an
 // ~11.7s median parse. These two events bracket that wait so abandonment
