@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useRef, useCallback, ReactNode } from 'react';
 import { apiClient, ApiError } from '../lib/api-client';
 import { toast } from 'react-hot-toast';
+import { trackSignedIn, resetUser } from '../lib/analytics';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { User, Session } from '@supabase/supabase-js';
 
@@ -426,6 +427,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           }
 
           // Trigger migration when user signs in (from anonymous to authenticated)
+          // Reset analytics identity here rather than in signOut(), so session
+          // expiry and administrative invalidation are covered too — otherwise
+          // later anonymous activity stays attached to the previous user.
+          if (event === 'SIGNED_OUT') {
+            resetUser();
+          }
+
           if (event === 'SIGNED_IN' && session?.user && !session.user.is_anonymous) {
             // Check if migration is needed FIRST, before any other operations
             const oldAnonUserId = localStorage.getItem('anonymous-user-id');
@@ -444,6 +452,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             if (!hasShownToast) {
               toast.success('Signed in successfully');
               sessionStorage.setItem('login-toast-shown', 'true');
+
+              // Track inside this guard: Supabase also emits SIGNED_IN when it
+              // recovers a stored session, so firing on the raw event would
+              // double-count logins on every page load. The existing
+              // once-per-session marker is exactly the right gate.
+              //
+              // anonymous_upgraded is NOT "new user" — an anonymous session is
+              // created on first page load for everyone, so every sign-in would
+              // satisfy that condition. It reports only what it can prove.
+              const provider = session.user.app_metadata?.provider;
+              if (provider === 'google' || provider === 'linkedin_oidc' || provider === 'email') {
+                trackSignedIn({
+                  provider: provider === 'linkedin_oidc' ? 'linkedin' : provider,
+                  anonymous_upgraded: !!oldAnonUserId && oldAnonUserId !== session.user.id,
+                });
+              }
             }
 
             // Defer async operations to avoid blocking Web Lock
@@ -597,6 +621,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       setSigningOut(true);
+
+      // Analytics identity is reset by the SIGNED_OUT branch of the auth
+      // listener, which also covers expiry and admin invalidation.
 
       // Reset toast flag, migration state, and auth return path
       sessionStorage.removeItem('login-toast-shown');

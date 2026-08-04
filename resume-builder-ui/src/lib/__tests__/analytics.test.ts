@@ -1,0 +1,267 @@
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
+// We need to control import.meta.env.VITE_POSTHOG_KEY — test with and without key.
+// Since the module reads POSTHOG_KEY at import time, we use vi.resetModules() between groups.
+
+const mockCapture = vi.fn();
+const mockIdentify = vi.fn();
+const mockReset = vi.fn();
+const mockInit = vi.fn();
+
+const mockPostHogInstance = {
+  init: mockInit,
+  capture: mockCapture,
+  identify: mockIdentify,
+  reset: mockReset,
+};
+
+describe('analytics', () => {
+  beforeEach(() => {
+    vi.resetModules();
+    vi.clearAllMocks();
+
+    // Mock posthog-js dynamic import
+    vi.doMock('posthog-js', () => ({
+      default: mockPostHogInstance,
+    }));
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  describe('when POSTHOG_KEY is set', () => {
+    beforeEach(() => {
+      // Set env before importing module
+      vi.stubEnv('VITE_POSTHOG_KEY', 'phc_test_key_123');
+    });
+
+    afterEach(() => {
+      vi.unstubAllEnvs();
+    });
+
+    it('initAnalytics triggers lazy loading', async () => {
+      const { initAnalytics } = await import('../analytics');
+
+      // Mock requestIdleCallback
+      const originalRIC = window.requestIdleCallback;
+      let idleCallback: (() => void) | null = null;
+      window.requestIdleCallback = vi.fn((cb: any) => {
+        idleCallback = cb;
+        return 1;
+      }) as any;
+
+      initAnalytics();
+      expect(window.requestIdleCallback).toHaveBeenCalled();
+
+      // Fire the idle callback to trigger loading
+      if (idleCallback) idleCallback();
+
+      // Wait for the dynamic import promise to resolve
+      await vi.dynamicImportSettled();
+
+      expect(mockInit).toHaveBeenCalledWith(
+        'phc_test_key_123',
+        expect.objectContaining({
+          capture_pageview: false,
+          autocapture: false,
+        })
+      );
+
+      window.requestIdleCallback = originalRIC;
+    });
+
+    it('trackResumeCreated calls capture with correct event', async () => {
+      const { trackResumeCreated, initAnalytics } = await import('../analytics');
+
+      // Simulate PostHog loaded by calling initAnalytics and triggering the load
+      const originalRIC = window.requestIdleCallback;
+      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+      initAnalytics();
+      await vi.dynamicImportSettled();
+
+      trackResumeCreated({ template_id: 'modern', method: 'blank' });
+
+      expect(mockCapture).toHaveBeenCalledWith('resume_created', {
+        template_id: 'modern',
+        method: 'blank',
+      });
+
+      window.requestIdleCallback = originalRIC;
+    });
+
+    it('trackPdfDownloaded calls capture with correct event', async () => {
+      const { trackPdfDownloaded, initAnalytics } = await import('../analytics');
+
+      const originalRIC = window.requestIdleCallback;
+      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+      initAnalytics();
+      await vi.dynamicImportSettled();
+
+      trackPdfDownloaded({ template_id: 'modern', source: 'editor' });
+
+      expect(mockCapture).toHaveBeenCalledWith('pdf_downloaded', {
+        template_id: 'modern',
+        source: 'editor',
+      });
+
+      window.requestIdleCallback = originalRIC;
+    });
+
+    it('strips query and hash from pageview URLs', async () => {
+      // Job-search filters live in the query string and auth data in the hash;
+      // neither may reach PostHog.
+      const { trackPageView, initAnalytics } = await import('../analytics');
+
+      const originalRIC = window.requestIdleCallback;
+      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+      initAnalytics();
+      await vi.dynamicImportSettled();
+
+      window.history.replaceState({}, '', '/jobs?q=nurse&location=Leeds#tok=abc');
+      trackPageView('/jobs');
+
+      expect(mockCapture).toHaveBeenCalledWith('$pageview', {
+        $current_url: `${window.location.origin}/jobs`,
+        path: '/jobs',
+      });
+
+      window.history.replaceState({}, '', '/');
+      window.requestIdleCallback = originalRIC;
+    });
+
+    it('trackSignedIn calls capture with correct event', async () => {
+      const { trackSignedIn, initAnalytics } = await import('../analytics');
+
+      const originalRIC = window.requestIdleCallback;
+      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+      initAnalytics();
+      await vi.dynamicImportSettled();
+
+      trackSignedIn({ provider: 'google', anonymous_upgraded: true });
+
+      expect(mockCapture).toHaveBeenCalledWith('signed_in', {
+        provider: 'google',
+        anonymous_upgraded: true,
+      });
+
+      window.requestIdleCallback = originalRIC;
+    });
+
+    it('identifyUser calls identify', async () => {
+      const { identifyUser, initAnalytics } = await import('../analytics');
+
+      const originalRIC = window.requestIdleCallback;
+      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+      initAnalytics();
+      await vi.dynamicImportSettled();
+
+      identifyUser('user-123');
+      expect(mockIdentify).toHaveBeenCalledWith('user-123');
+
+      window.requestIdleCallback = originalRIC;
+    });
+
+    it('resetUser calls reset', async () => {
+      const { resetUser, initAnalytics } = await import('../analytics');
+
+      const originalRIC = window.requestIdleCallback;
+      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+      initAnalytics();
+      await vi.dynamicImportSettled();
+
+      resetUser();
+      expect(mockReset).toHaveBeenCalled();
+
+      window.requestIdleCallback = originalRIC;
+    });
+
+    it('queues events before PostHog loads and replays after', async () => {
+      const { trackPageView, initAnalytics } = await import('../analytics');
+
+      // Queue an event BEFORE init
+      trackPageView('/test-page');
+
+      // PostHog not loaded yet — should not have captured
+      expect(mockCapture).not.toHaveBeenCalled();
+
+      // Now init and load PostHog
+      const originalRIC = window.requestIdleCallback;
+      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+      initAnalytics();
+      await vi.dynamicImportSettled();
+
+      // After load, queued event should replay
+      expect(mockCapture).toHaveBeenCalledWith('$pageview', expect.objectContaining({
+        path: '/test-page',
+      }));
+
+      window.requestIdleCallback = originalRIC;
+    });
+  });
+
+  describe('when POSTHOG_KEY is not set', () => {
+    beforeEach(() => {
+      vi.stubEnv('VITE_POSTHOG_KEY', '');
+    });
+
+    afterEach(() => {
+      vi.unstubAllEnvs();
+    });
+
+    it('initAnalytics is a no-op', async () => {
+      const { initAnalytics } = await import('../analytics');
+
+      const originalRIC = window.requestIdleCallback;
+      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+
+      initAnalytics();
+
+      // Should not even try requestIdleCallback
+      expect(mockInit).not.toHaveBeenCalled();
+
+      window.requestIdleCallback = originalRIC;
+    });
+
+    it('track functions are silent no-ops', async () => {
+      const { trackResumeCreated, trackPageView } = await import('../analytics');
+
+      // Should not throw
+      trackResumeCreated({ template_id: 'modern', method: 'blank' });
+      trackPageView('/test');
+
+      expect(mockCapture).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('categorizeError', () => {
+    // Guards a privacy boundary: /api/generate returns raw Python exception
+    // strings (paths, echoed resume content) and parse-resume interpolates
+    // error.message (uploaded filenames). None of that may reach PostHog.
+    it.each([
+      ['Request timed out after 30s', 'timeout'],
+      ['Failed to fetch', 'network'],
+      ['Invalid or expired token', 'auth'],
+      ['Cannot generate PDF: Missing 2 icon(s)', 'missing_icons'],
+      ['Text extraction failed: cannot read page 3', 'text_extraction'],
+      ['File too large', 'file_too_large'],
+      ['Invalid file type. Please upload a PDF or DOCX file.', 'unsupported_file_type'],
+      ['Unknown error', 'other'],
+    ])('categorizes %j as %s', async (input, expected) => {
+      const { categorizeError } = await import('../analytics');
+      expect(categorizeError(input)).toBe(expected);
+    });
+
+    it('never returns anything containing the raw message', async () => {
+      const { categorizeError } = await import('../analytics');
+      const leaky =
+        "[Errno 2] No such file or directory: '/tmp/sess_abc/john_smith_acme.png'";
+      const result = categorizeError(leaky);
+
+      expect(result).not.toContain('john_smith');
+      expect(result).not.toContain('/tmp');
+      // Bounded set — anything unrecognised collapses to a constant
+      expect(result).toBe('other');
+    });
+  });
+});

@@ -86,9 +86,12 @@ const PrivacyPolicy = () => {
 
         <h4 className="font-semibold mt-4">5. Third-Party Services</h4>
         <p>
-          We use Supabase for authentication and database services (account users only). We use analytics tools
-          to understand aggregate usage patterns (page views, feature usage) but do not track individual resume
-          content or personally identifiable information beyond what's required for account functionality.
+          We use Supabase for authentication and database services (account users only). We use PostHog for
+          product analytics to understand aggregate usage patterns — page views, which features are used, and
+          anonymised click and scroll patterns. We do <strong>not</strong> record your screen or session, and we
+          do not send your resume content to any analytics provider. We do not track personally identifiable
+          information beyond what's required for account functionality. Analytics load after the initial page
+          render and do not affect page performance.
         </p>
 
         <h4 className="font-semibold mt-4">6. Data Sharing and Sale</h4>
