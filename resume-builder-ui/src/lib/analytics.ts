@@ -51,13 +51,34 @@ function loadPostHog(): Promise<PostHog | null> {
       capture_pageview: false,
       capture_pageleave: true,
       persistence: 'localStorage+cookie',
-      // PostHog attaches $current_url and $referrer to every event it sends,
-      // including $pageleave — so strip query/hash globally rather than only
-      // on the pageviews we fire ourselves.
-      sanitize_properties: (props) => {
-        if (typeof props.$current_url === 'string') props.$current_url = stripUrl(props.$current_url);
-        if (typeof props.$referrer === 'string') props.$referrer = stripUrl(props.$referrer);
-        return props;
+      // Strip query/hash from every outbound event. sanitize_properties is
+      // deprecated in favour of before_send, and before_send also lets us reach
+      // the nested heatmap payload.
+      before_send: (event) => {
+        if (!event?.properties) return event;
+        const p = event.properties;
+
+        if (typeof p.$current_url === 'string') p.$current_url = stripUrl(p.$current_url);
+        if (typeof p.$referrer === 'string') p.$referrer = stripUrl(p.$referrer);
+
+        // Heatmaps read window.location.href themselves and buffer points under
+        // the full URL as an object KEY inside $heatmap_data — so top-level
+        // property sanitising never sees it. posthog only masks campaign params
+        // (utm_*) there, leaving arbitrary ones like ?q= intact.
+        if (p.$heatmap_data && typeof p.$heatmap_data === 'object') {
+          const rekeyed: Record<string, unknown[]> = {};
+          for (const [url, points] of Object.entries(p.$heatmap_data)) {
+            const clean = stripUrl(url) || url;
+            // Distinct dirty URLs collapse to the same clean one, so merge
+            // rather than overwrite or we silently drop heatmap points.
+            rekeyed[clean] = rekeyed[clean]
+              ? [...rekeyed[clean], ...(points as unknown[])]
+              : (points as unknown[]);
+          }
+          p.$heatmap_data = rekeyed;
+        }
+
+        return event;
       },
       // Disable autocapture to reduce noise — we track explicit events
       autocapture: false,

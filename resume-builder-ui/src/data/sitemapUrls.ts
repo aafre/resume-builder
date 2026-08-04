@@ -119,7 +119,7 @@ export const STATIC_URLS: SitemapUrl[] = [
   // Static Pages (0.3)
   { loc: '/about', priority: 0.3, changefreq: 'yearly', lastmod: '2026-02-02' },
   { loc: '/contact', priority: 0.3, changefreq: 'yearly', lastmod: '2026-02-02' },
-  { loc: '/privacy-policy', priority: 0.3, changefreq: 'yearly', lastmod: '2026-01-01' },
+  { loc: '/privacy-policy', priority: 0.3, changefreq: 'yearly', lastmod: '2026-08-04' },
   { loc: '/terms-of-service', priority: 0.3, changefreq: 'yearly', lastmod: '2026-01-01' },
 ];
 

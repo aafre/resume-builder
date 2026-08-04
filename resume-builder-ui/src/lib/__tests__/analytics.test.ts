@@ -130,6 +130,38 @@ describe('analytics', () => {
       window.requestIdleCallback = originalRIC;
     });
 
+    it('strips query/hash from nested $heatmap_data URL keys', async () => {
+      // Heatmaps buffer points under the full window.location.href as an object
+      // KEY, so top-level property sanitising never reaches it. posthog only
+      // masks campaign params there, leaving ?q= intact.
+      const { initAnalytics } = await import('../analytics');
+
+      const originalRIC = window.requestIdleCallback;
+      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+      initAnalytics();
+      await vi.dynamicImportSettled();
+
+      const beforeSend = mockInit.mock.calls[0][1].before_send;
+      const out = beforeSend({
+        event: '$$heatmap',
+        properties: {
+          $heatmap_data: {
+            'https://x.com/jobs?q=nurse&location=Leeds': [{ x: 1 }],
+            'https://x.com/jobs?q=chef': [{ x: 2 }],
+            'https://x.com/editor#tok=abc': [{ x: 3 }],
+          },
+        },
+      });
+
+      const keys = Object.keys(out.properties.$heatmap_data);
+      expect(keys).toEqual(['https://x.com/jobs', 'https://x.com/editor']);
+      expect(JSON.stringify(out.properties.$heatmap_data)).not.toMatch(/nurse|chef|Leeds|tok=/);
+      // Two dirty URLs collapse to one clean key — points must merge, not drop
+      expect(out.properties.$heatmap_data['https://x.com/jobs']).toHaveLength(2);
+
+      window.requestIdleCallback = originalRIC;
+    });
+
     it('trackSignedIn calls capture with correct event', async () => {
       const { trackSignedIn, initAnalytics } = await import('../analytics');
 
