@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { trackResumeUploadStarted, trackResumeParseCompleted, categorizeError } from '../lib/analytics';
+import type { ParseSource } from '../lib/analytics';
 
 interface ParseResponse {
   success: boolean;
@@ -29,7 +30,15 @@ const PROGRESS_STAGES = [
   { threshold: 90, message: 'Finalizing your resume...' },
 ];
 
-export function useResumeParser() {
+/**
+ * @param options.source Which flow is parsing. The Jobs page parses a resume
+ *   only to prefill a job search, so those parses can never become
+ *   resume_created{method:'ai_import'} and would otherwise show up as
+ *   abandonment in the AI-import funnel.
+ */
+export function useResumeParser(options?: { source?: ParseSource }) {
+  const source: ParseSource = options?.source ?? 'resume_import';
+
   const { session } = useAuth();
   const [parsing, setParsing] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -146,11 +155,18 @@ export function useResumeParser() {
       // Bracket the parse so abandonment during the ~12s median wait is measurable.
       // Set only once the request is actually attempted, so validation/auth
       // failures above don't pollute parse duration or the failure rate.
-      fileType = file.name.split('.').pop()?.toLowerCase() || 'unknown';
+      //
+      // Derive file_type from the validated MIME type, never from file.name:
+      // validateFile checks file.type only, so a valid PDF named "Jane Smith CV"
+      // has no extension and splitting on '.' would send the user's name.
+      fileType = file.type === 'application/pdf' ? 'pdf'
+        : file.type.includes('wordprocessingml') ? 'docx'
+        : 'unknown';
       parseStart = Date.now();
       trackResumeUploadStarted({
         file_type: fileType,
         file_size_kb: Math.round(file.size / 1024),
+        source,
       });
 
       // Call Edge Function (runs in parallel with progress animation)
@@ -191,6 +207,7 @@ export function useResumeParser() {
         success: true,
         cached: data.cached,
         confidence: data.confidence,
+        source,
       });
 
       return data;
@@ -204,6 +221,7 @@ export function useResumeParser() {
           duration_ms: Date.now() - parseStart,
           success: false,
           error_type: categorizeError(errorMessage),
+          source,
         });
       }
       setError(errorMessage);

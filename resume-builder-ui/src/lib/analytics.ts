@@ -20,6 +20,21 @@ let initPromise: Promise<PostHog | null> | null = null;
 let loadFailed = false;
 const queue: Array<() => void> = [];
 
+/**
+ * Reduce a URL to origin + pathname.
+ *
+ * Query strings and hash fragments carry job-search filters (`q`, location,
+ * salary) and auth redirect data, none of which belongs in analytics.
+ */
+function stripUrl(url: string): string {
+  try {
+    const u = new URL(url);
+    return u.origin + u.pathname;
+  } catch {
+    return '';
+  }
+}
+
 // ─── Lazy loader ─────────────────────────────────────────────────────
 
 function loadPostHog(): Promise<PostHog | null> {
@@ -36,6 +51,14 @@ function loadPostHog(): Promise<PostHog | null> {
       capture_pageview: false,
       capture_pageleave: true,
       persistence: 'localStorage+cookie',
+      // PostHog attaches $current_url and $referrer to every event it sends,
+      // including $pageleave — so strip query/hash globally rather than only
+      // on the pageviews we fire ourselves.
+      sanitize_properties: (props) => {
+        if (typeof props.$current_url === 'string') props.$current_url = stripUrl(props.$current_url);
+        if (typeof props.$referrer === 'string') props.$referrer = stripUrl(props.$referrer);
+        return props;
+      },
       // Disable autocapture to reduce noise — we track explicit events
       autocapture: false,
       // Heatmaps — capture click/scroll patterns (no extra events)
@@ -124,8 +147,12 @@ export function resetUser(): void {
 
 /** Track a page view. Call on every route change. */
 export function trackPageView(path: string): void {
+  // Resolve the URL at invocation time, not inside run(). A queued pageview
+  // executes when the idle import completes, so reading window.location there
+  // would stamp the final route's URL onto every earlier route's event.
+  const url = stripUrl(window.location.href) || path;
   run((ph) => {
-    ph.capture('$pageview', { $current_url: window.location.href, path });
+    ph.capture('$pageview', { $current_url: url, path });
   });
 }
 
@@ -147,7 +174,12 @@ export function trackPdfDownloaded(props: {
 
 export function trackSignedIn(props: {
   provider: 'google' | 'linkedin' | 'email';
-  is_new_user: boolean;
+  /**
+   * Whether this sign-in migrated an anonymous session. Deliberately NOT
+   * "is_new_user": an anonymous session is created on first page load for
+   * every visitor, so returning users satisfy that condition too.
+   */
+  anonymous_upgraded: boolean;
 }): void {
   run((ph) => ph.capture('signed_in', props));
 }
@@ -194,9 +226,13 @@ export function categorizeError(message: string): string {
 // during it is measurable; pair with resume_created{method:'ai_import'}
 // to see how many parses actually become resumes.
 
+/** Which consumer triggered the parse — the Jobs page parses only to prefill a search. */
+export type ParseSource = 'resume_import' | 'job_search';
+
 export function trackResumeUploadStarted(props: {
   file_type: string;
   file_size_kb: number;
+  source: ParseSource;
 }): void {
   run((ph) => ph.capture('resume_upload_started', props));
 }
@@ -205,6 +241,7 @@ export function trackResumeParseCompleted(props: {
   file_type: string;
   duration_ms: number;
   success: boolean;
+  source: ParseSource;
   /** Edge-function cache hit — separates ~1s cached responses from ~12s cold parses. */
   cached?: boolean;
   confidence?: number;

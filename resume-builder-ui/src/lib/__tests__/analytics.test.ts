@@ -108,6 +108,28 @@ describe('analytics', () => {
       window.requestIdleCallback = originalRIC;
     });
 
+    it('strips query and hash from pageview URLs', async () => {
+      // Job-search filters live in the query string and auth data in the hash;
+      // neither may reach PostHog.
+      const { trackPageView, initAnalytics } = await import('../analytics');
+
+      const originalRIC = window.requestIdleCallback;
+      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+      initAnalytics();
+      await vi.dynamicImportSettled();
+
+      window.history.replaceState({}, '', '/jobs?q=nurse&location=Leeds#tok=abc');
+      trackPageView('/jobs');
+
+      expect(mockCapture).toHaveBeenCalledWith('$pageview', {
+        $current_url: `${window.location.origin}/jobs`,
+        path: '/jobs',
+      });
+
+      window.history.replaceState({}, '', '/');
+      window.requestIdleCallback = originalRIC;
+    });
+
     it('trackSignedIn calls capture with correct event', async () => {
       const { trackSignedIn, initAnalytics } = await import('../analytics');
 
@@ -116,11 +138,11 @@ describe('analytics', () => {
       initAnalytics();
       await vi.dynamicImportSettled();
 
-      trackSignedIn({ provider: 'google', is_new_user: true });
+      trackSignedIn({ provider: 'google', anonymous_upgraded: true });
 
       expect(mockCapture).toHaveBeenCalledWith('signed_in', {
         provider: 'google',
-        is_new_user: true,
+        anonymous_upgraded: true,
       });
 
       window.requestIdleCallback = originalRIC;
