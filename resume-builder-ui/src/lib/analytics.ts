@@ -17,6 +17,7 @@ const POSTHOG_HOST = (import.meta.env.VITE_POSTHOG_HOST as string) || 'https://u
 // ─── State ───────────────────────────────────────────────────────────
 let posthog: PostHog | null = null;
 let initPromise: Promise<PostHog | null> | null = null;
+let loadFailed = false;
 const queue: Array<() => void> = [];
 
 // ─── Lazy loader ─────────────────────────────────────────────────────
@@ -60,6 +61,13 @@ function loadPostHog(): Promise<PostHog | null> {
     queue.length = 0;
 
     return ph;
+  }).catch(() => {
+    // Ad blockers block posthog-js outright, and this audience likely skews
+    // high on them. Without this the rejection is unhandled (console error on
+    // every blocked load) and the queue accumulates for the whole session.
+    loadFailed = true;
+    queue.length = 0;
+    return null;
   });
 
   return initPromise;
@@ -73,10 +81,10 @@ function loadPostHog(): Promise<PostHog | null> {
 function run(fn: (ph: PostHog) => void): void {
   if (posthog) {
     fn(posthog);
-  } else if (POSTHOG_KEY) {
+  } else if (POSTHOG_KEY && !loadFailed) {
     queue.push(() => { if (posthog) fn(posthog); });
   }
-  // No key configured → silent no-op
+  // No key configured, or load was blocked → silent no-op
 }
 
 // ─── Public API ──────────────────────────────────────────────────────
