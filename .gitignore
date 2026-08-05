@@ -228,5 +228,5 @@ SearchConsole/
 seo-tracking/
 linkedin-content/
 docs/templates/examples/
-pnpm-lock.yaml
+# pnpm-lock.yaml
 .worktrees/

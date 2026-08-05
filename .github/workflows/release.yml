@@ -30,6 +30,7 @@ jobs:
               - 'templates/**'
               - 'requirements.txt'
               - 'package*.json'
+              - 'resume-builder-ui/pnpm-lock.yaml'
               - 'Dockerfile*'
               - '.github/workflows/**'
             docs-only:

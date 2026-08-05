@@ -15,18 +15,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
         with:
-          node-version: "20"
-          cache: "npm"
-          cache-dependency-path: resume-builder-ui/package-lock.json
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+          cache-dependency-path: resume-builder-ui/pnpm-lock.yaml
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Run tests with coverage
-        run: npm run coverage
+        run: pnpm exec vitest run --coverage
 
       - name: Test Summary
         run: |
