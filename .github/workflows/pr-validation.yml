@@ -29,6 +29,7 @@ jobs:
               - 'tests/**'
               - 'requirements.txt'
               - 'package*.json'
+              - 'resume-builder-ui/pnpm-lock.yaml'
               - 'Dockerfile*'
               - '.github/workflows/**'
               - 'pyproject.toml'
