@@ -23,6 +23,8 @@ from pathlib import Path
 
 import yaml
 from pdf2image import convert_from_path
+
+from utils.yaml_converter import fast_yaml_dump
 from PIL import Image
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
@@ -197,7 +199,7 @@ def process_example(yml_path: Path) -> bool:
         with tempfile.NamedTemporaryFile(
             mode="w", suffix=".yml", delete=False, dir=str(PROJECT_ROOT / "output")
         ) as tmp_yml:
-            yaml.dump(template_data, tmp_yml, default_flow_style=False)
+            fast_yaml_dump(template_data, stream=tmp_yml, default_flow_style=False)
             tmp_yml_path = tmp_yml.name
 
         # Generate PDF via subprocess — same workflow as app.py:180
