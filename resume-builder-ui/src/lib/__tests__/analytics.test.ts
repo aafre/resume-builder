@@ -130,6 +130,31 @@ describe('analytics', () => {
       window.requestIdleCallback = originalRIC;
     });
 
+    it('does not load PostHog during prerender', async () => {
+      // scripts/prerender.ts drives the real app in Playwright across ~118
+      // routes with the key baked in; without the UA guard every Docker build
+      // fires a pageview per route into production.
+      const { initAnalytics, trackPageView } = await import('../analytics');
+
+      const originalUA = navigator.userAgent;
+      Object.defineProperty(navigator, 'userAgent', {
+        value: 'EasyFreeResume-Prerender/1.0',
+        configurable: true,
+      });
+      const originalRIC = window.requestIdleCallback;
+      window.requestIdleCallback = vi.fn((cb: any) => { cb(); return 1; }) as any;
+
+      initAnalytics();
+      await vi.dynamicImportSettled();
+      trackPageView('/blog/resume-no-experience');
+
+      expect(mockInit).not.toHaveBeenCalled();
+      expect(mockCapture).not.toHaveBeenCalled();
+
+      Object.defineProperty(navigator, 'userAgent', { value: originalUA, configurable: true });
+      window.requestIdleCallback = originalRIC;
+    });
+
     it('strips query/hash from nested $heatmap_data URL keys', async () => {
       // Heatmaps buffer points under the full window.location.href as an object
       // KEY, so top-level property sanitising never reaches it. posthog only

@@ -13,6 +13,8 @@ import type { PostHog } from 'posthog-js';
 // ─── Config ──────────────────────────────────────────────────────────
 const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY as string | undefined;
 const POSTHOG_HOST = (import.meta.env.VITE_POSTHOG_HOST as string) || 'https://us.i.posthog.com';
+/** Must match the userAgent set in scripts/prerender.ts. */
+const PRERENDER_UA = 'EasyFreeResume-Prerender';
 
 // ─── State ───────────────────────────────────────────────────────────
 let posthog: PostHog | null = null;
@@ -139,6 +141,12 @@ function run(fn: (ph: PostHog) => void): void {
  */
 export function initAnalytics(): void {
   if (!POSTHOG_KEY || typeof window === 'undefined') return;
+
+  // The Docker build prerenders ~118 routes by driving the real app in
+  // Playwright (scripts/prerender.ts), with the key already baked in. Without
+  // this guard every build fires a pageview per route into production and
+  // downloads the PostHog chunk 118 times. Bail before any network happens.
+  if (navigator.userAgent.includes(PRERENDER_UA)) return;
 
   const start = () => loadPostHog();
 

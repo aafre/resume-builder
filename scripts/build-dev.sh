@@ -34,7 +34,13 @@ echo "  VITE_SUPABASE_URL: $VITE_SUPABASE_URL"
 echo "  VITE_ENABLE_EXPLICIT_ADS: $VITE_ENABLE_EXPLICIT_ADS"
 echo "  VITE_AFFILIATE_JOB_SEARCH_ENABLED: $VITE_AFFILIATE_JOB_SEARCH_ENABLED"
 echo "  VITE_AFFILIATE_RESUME_REVIEW_ENABLED: $VITE_AFFILIATE_RESUME_REVIEW_ENABLED"
-echo "  VITE_POSTHOG_KEY: ${VITE_POSTHOG_KEY:+set}${VITE_POSTHOG_KEY:-(unset — analytics disabled)}"
+# Report presence only — never the value. ${VAR:-default} expands to the VALUE
+# when set, so the obvious one-liner leaks the key into the build log.
+if [ -n "$VITE_POSTHOG_KEY" ]; then
+  echo "  VITE_POSTHOG_KEY: set"
+else
+  echo "  VITE_POSTHOG_KEY: (unset - analytics disabled)"
+fi
 
 docker build  --no-cache \
   --build-arg VITE_SUPABASE_URL="$VITE_SUPABASE_URL" \
