@@ -13,9 +13,9 @@ from typing import Any, Dict
 import yaml
 
 try:
-    from yaml import CSafeLoader as SafeLoader
+    from yaml import CSafeLoader as SafeLoader, CSafeDumper as SafeDumper
 except ImportError:
-    from yaml import SafeLoader
+    from yaml import SafeLoader, SafeDumper
 
 
 def fast_yaml_load(stream):
@@ -68,10 +68,11 @@ def json_to_yaml_structure(resume_data: Dict[str, Any]) -> str:
     # Convert to YAML string
     yaml_string = yaml.dump(
         yaml_structure,
+        Dumper=SafeDumper,
         default_flow_style=False,
         allow_unicode=True,
         sort_keys=False,
-        width=float("inf"),  # Prevent line wrapping
+        width=int(1e9),  # Prevent line wrapping
     )
 
     return yaml_string
