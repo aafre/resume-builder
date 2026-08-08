@@ -22,6 +22,10 @@ import tempfile
 from pathlib import Path
 
 import yaml
+try:
+    from yaml import CSafeDumper as SafeDumper
+except ImportError:
+    from yaml import SafeDumper
 from pdf2image import convert_from_path
 from PIL import Image
 
@@ -197,7 +201,7 @@ def process_example(yml_path: Path) -> bool:
         with tempfile.NamedTemporaryFile(
             mode="w", suffix=".yml", delete=False, dir=str(PROJECT_ROOT / "output")
         ) as tmp_yml:
-            yaml.dump(template_data, tmp_yml, default_flow_style=False)
+            yaml.dump(template_data, tmp_yml, default_flow_style=False, Dumper=SafeDumper)
             tmp_yml_path = tmp_yml.name
 
         # Generate PDF via subprocess — same workflow as app.py:180
