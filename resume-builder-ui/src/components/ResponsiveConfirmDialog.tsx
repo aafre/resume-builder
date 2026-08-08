@@ -97,7 +97,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
             </div>
             <button
               onClick={onClose}
-              className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors p-1 -mr-1"
+              className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors p-1 -mr-1 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent"
               aria-label="Close dialog"
               disabled={isLoading}
             >
@@ -120,8 +120,10 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
             <button
               onClick={onClose}
               disabled={isLoading}
+              autoFocus
               className="w-full lg:w-auto px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700
                 hover:bg-gray-50 active:bg-gray-100
+                focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent
                 transition-colors disabled:opacity-50 disabled:cursor-not-allowed
                 min-h-[48px] lg:min-h-[44px]"
               style={{ WebkitTapHighlightColor: "transparent" }}
@@ -133,6 +135,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
               disabled={isLoading}
               className={`w-full lg:w-auto px-6 py-3 rounded-lg font-medium
                 shadow-md hover:shadow-lg active:scale-95
+                focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent
                 transition-all disabled:opacity-50 disabled:cursor-not-allowed
                 min-h-[48px] lg:min-h-[44px]
                 ${confirmClass}`}
