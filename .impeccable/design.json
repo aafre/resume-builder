@@ -43,14 +43,14 @@
       "stone-warm": {
         "role": "neutral",
         "displayName": "Stone Warm",
-        "canonical": "#8a8680",
-        "tonalRamp": ["#26251f", "#3d3b33", "#5c5950", "#8a8680", "#a8a4a0", "#cdc9c1", "#f0efe9", "#fafaf8"]
+        "canonical": "#6b6761",
+        "tonalRamp": ["#26251f", "#3d3b33", "#5c5950", "#6b6761", "#807c72", "#a8a4a0", "#cdc9c1", "#f0efe9"]
       },
       "mist": {
         "role": "neutral",
         "displayName": "Mist",
-        "canonical": "#a8a4a0",
-        "tonalRamp": ["#26251f", "#3d3b33", "#5c5950", "#807c72", "#a8a4a0", "#cdc9c1", "#f0efe9", "#fafaf8"]
+        "canonical": "#706c68",
+        "tonalRamp": ["#26251f", "#3d3b33", "#5c5950", "#706c68", "#807c72", "#a8a4a0", "#cdc9c1", "#f0efe9"]
       }
     },
     "typographyMeta": {
@@ -91,7 +91,7 @@
       "refersTo": "button-primary",
       "description": "The system's one loud element. Signal Green fill, ink label, visible press compression.",
       "html": "<button class=\"ds-btn-primary\">Create Free Resume</button>",
-      "css": ".ds-btn-primary { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 14px 32px; background: #00d47e; color: #0c0c0c; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 700; font-size: 1rem; border: none; border-radius: 8px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); cursor: pointer; overflow: hidden; transition: box-shadow 200ms, transform 200ms; } .ds-btn-primary:hover { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #00d47e; }"
+      "css": ".ds-btn-primary { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 14px 32px; background: #00d47e; color: #0c0c0c; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 700; font-size: 1rem; border: none; border-radius: 8px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); cursor: pointer; overflow: hidden; transition: box-shadow 200ms, transform 200ms; } .ds-btn-primary:hover { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #007a48; }"
     },
     {
       "name": "Secondary Button",
@@ -99,7 +99,7 @@
       "refersTo": "button-secondary",
       "description": "White field with a near-invisible stroke. Same geometry and press response as primary.",
       "html": "<button class=\"ds-btn-secondary\">Browse Templates</button>",
-      "css": ".ds-btn-secondary { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 14px 32px; background: #ffffff; color: #0c0c0c; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 600; font-size: 1rem; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); cursor: pointer; transition: box-shadow 200ms, border-color 200ms, transform 200ms; } .ds-btn-secondary:hover { border-color: #d1d5db; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); } .ds-btn-secondary:active { transform: scale(0.98); } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #00d47e; }"
+      "css": ".ds-btn-secondary { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 14px 32px; background: #ffffff; color: #0c0c0c; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 600; font-size: 1rem; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); cursor: pointer; transition: box-shadow 200ms, border-color 200ms, transform 200ms; } .ds-btn-secondary:hover { border-color: #d1d5db; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); } .ds-btn-secondary:active { transform: scale(0.98); } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #007a48; }"
     },
     {
       "name": "Ghost Button",
@@ -107,7 +107,7 @@
       "refersTo": "button-ghost",
       "description": "Tertiary and navigation actions. No fill until touched.",
       "html": "<button class=\"ds-btn-ghost\">Templates</button>",
-      "css": ".ds-btn-ghost { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 12px; background: transparent; color: #374151; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 500; font-size: 0.875rem; border: none; border-radius: 8px; cursor: pointer; transition: background-color 200ms, color 200ms; } .ds-btn-ghost:hover { background: rgba(0,0,0,0.05); color: #0c0c0c; } .ds-btn-ghost:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #00d47e; }"
+      "css": ".ds-btn-ghost { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 12px; background: transparent; color: #374151; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 500; font-size: 0.875rem; border: none; border-radius: 8px; cursor: pointer; transition: background-color 200ms, color 200ms; } .ds-btn-ghost:hover { background: rgba(0,0,0,0.05); color: #0c0c0c; } .ds-btn-ghost:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #007a48; }"
     },
     {
       "name": "Ghost Add Button",
@@ -115,7 +115,7 @@
       "refersTo": "button-ghost",
       "description": "Signature affordance. Full-width dashed field meaning 'there could be more here'. The only sanctioned dashed border in the system.",
       "html": "<button class=\"ds-btn-add\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg><span>Add Experience</span></button>",
-      "css": ".ds-btn-add { width: 100%; min-height: 44px; padding: 12px 16px; display: flex; align-items: center; justify-content: center; gap: 8px; background: transparent; color: #6b7280; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; border: 2px dashed #d1d5db; border-radius: 8px; cursor: pointer; transition: border-color 150ms, color 150ms, background-color 150ms; } .ds-btn-add:hover { border-color: rgba(0,212,126,0.7); color: #007a48; background: rgba(0,212,126,0.06); } .ds-btn-add:focus-visible { outline: none; box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #00d47e; } .ds-btn-add:disabled { opacity: 0.5; cursor: not-allowed; }"
+      "css": ".ds-btn-add { width: 100%; min-height: 44px; padding: 12px 16px; display: flex; align-items: center; justify-content: center; gap: 8px; background: transparent; color: #6b7280; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; border: 2px dashed #d1d5db; border-radius: 8px; cursor: pointer; transition: border-color 150ms, color 150ms, background-color 150ms; } .ds-btn-add:hover { border-color: rgba(0,212,126,0.7); color: #007a48; background: rgba(0,212,126,0.06); } .ds-btn-add:focus-visible { outline: none; box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #007a48; } .ds-btn-add:disabled { opacity: 0.5; cursor: not-allowed; }"
     },
     {
       "name": "Input Field",
@@ -123,7 +123,7 @@
       "refersTo": "input-field",
       "description": "Wrapper-focused field. The ring lands on the container because several fields wrap rich-text editors rather than bare inputs.",
       "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Job Title</span><input class=\"ds-input\" type=\"text\" placeholder=\"Senior Product Designer\" /></label>",
-      "css": ".ds-field { display: flex; flex-direction: column; gap: 6px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; } .ds-field-label { font-size: 0.875rem; font-weight: 500; color: #0c0c0c; } .ds-input { width: 100%; padding: 12px; font-size: 1rem; font-family: inherit; color: #0c0c0c; background: #ffffff; border: 1px solid #d1d5db; border-radius: 8px; transition: box-shadow 200ms, border-color 200ms; } .ds-input::placeholder { color: #a8a4a0; } .ds-input:focus { outline: none; border-color: #00d47e; box-shadow: 0 0 0 2px #00d47e; }"
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 6px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; } .ds-field-label { font-size: 0.875rem; font-weight: 500; color: #0c0c0c; } .ds-input { width: 100%; padding: 12px; font-size: 1rem; font-family: inherit; color: #0c0c0c; background: #ffffff; border: 1px solid #d1d5db; border-radius: 8px; transition: box-shadow 200ms, border-color 200ms; } .ds-input::placeholder { color: #706c68; } .ds-input:focus { outline: none; border-color: #00d47e; box-shadow: 0 0 0 2px #007a48; }"
     },
     {
       "name": "App Card",
@@ -131,7 +131,7 @@
       "refersTo": "card-app",
       "description": "The workbench surface. Flat at rest, lifts only on hover.",
       "html": "<article class=\"ds-card-app\"><h3 class=\"ds-card-app-title\">Product Designer Resume</h3><p class=\"ds-card-app-meta\">Edited 2 days ago</p></article>",
-      "css": ".ds-card-app { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); font-family: 'Bricolage Grotesque', system-ui, sans-serif; transition: box-shadow 200ms; } .ds-card-app:hover { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); } .ds-card-app-title { margin: 0 0 8px; font-size: 1.25rem; font-weight: 700; color: #0c0c0c; } .ds-card-app-meta { margin: 0; font-size: 0.875rem; color: #8a8680; }"
+      "css": ".ds-card-app { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); font-family: 'Bricolage Grotesque', system-ui, sans-serif; transition: box-shadow 200ms; } .ds-card-app:hover { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); } .ds-card-app-title { margin: 0 0 8px; font-size: 1.25rem; font-weight: 700; color: #0c0c0c; } .ds-card-app-meta { margin: 0; font-size: 0.875rem; color: #6b6761; }"
     },
     {
       "name": "Marketing Feature Card",
@@ -139,7 +139,7 @@
       "refersTo": "card-feature",
       "description": "The one place resting depth is permitted. Four-layer shadow, gradient hairline border, hover lift with an accent bloom.",
       "html": "<article class=\"ds-card-feature\"><h3 class=\"ds-card-feature-title\">No paywall at download</h3><p class=\"ds-card-feature-body\">Your PDF is generated and downloaded without payment, and without an account.</p></article>",
-      "css": ".ds-card-feature { position: relative; background: #ffffff; border: 1px solid transparent; border-radius: 16px; padding: 32px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 8px rgba(0,0,0,0.04), 0 12px 24px rgba(0,0,0,0.06), 0 24px 48px rgba(0,0,0,0.04); transition: box-shadow 500ms cubic-bezier(0.16,1,0.3,1), transform 300ms cubic-bezier(0.16,1,0.3,1); } .ds-card-feature::before { content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; background: linear-gradient(135deg, rgba(0,212,126,0.2), rgba(0,212,126,0.12), rgba(0,212,126,0.2)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; } .ds-card-feature:hover { transform: translateY(-4px); box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 8px 16px rgba(0,0,0,0.06), 0 20px 40px rgba(0,0,0,0.08), 0 40px 80px rgba(0,212,126,0.06); } .ds-card-feature-title { margin: 0 0 12px; font-size: 1.25rem; font-weight: 700; color: #0c0c0c; } .ds-card-feature-body { margin: 0; font-size: 1.125rem; font-weight: 200; line-height: 1.625; color: #8a8680; }"
+      "css": ".ds-card-feature { position: relative; background: #ffffff; border: 1px solid transparent; border-radius: 16px; padding: 32px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 8px rgba(0,0,0,0.04), 0 12px 24px rgba(0,0,0,0.06), 0 24px 48px rgba(0,0,0,0.04); transition: box-shadow 500ms cubic-bezier(0.16,1,0.3,1), transform 300ms cubic-bezier(0.16,1,0.3,1); } .ds-card-feature::before { content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; background: linear-gradient(135deg, rgba(0,212,126,0.2), rgba(0,212,126,0.12), rgba(0,212,126,0.2)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; } .ds-card-feature:hover { transform: translateY(-4px); box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 8px 16px rgba(0,0,0,0.06), 0 20px 40px rgba(0,0,0,0.08), 0 40px 80px rgba(0,212,126,0.06); } .ds-card-feature-title { margin: 0 0 12px; font-size: 1.25rem; font-weight: 700; color: #0c0c0c; } .ds-card-feature-body { margin: 0; font-size: 1.125rem; font-weight: 200; line-height: 1.625; color: #6b6761; }"
     },
     {
       "name": "Resource Card",
@@ -147,7 +147,7 @@
       "refersTo": "card-resource",
       "description": "Brightens toward the user on hover rather than lifting. Chalk Dark resting fill resolving to white.",
       "html": "<a class=\"ds-card-resource\" href=\"#\"><h3 class=\"ds-card-resource-title\">Resume Keywords Guide</h3><p class=\"ds-card-resource-body\">Which terms an ATS actually scores, by industry.</p></a>",
-      "css": ".ds-card-resource { display: block; background: #f0efe9; border: 1px solid transparent; border-radius: 12px; padding: 20px; text-decoration: none; font-family: 'Bricolage Grotesque', system-ui, sans-serif; transition: background-color 300ms, box-shadow 300ms, border-color 300ms; } .ds-card-resource:hover { background: #ffffff; border-color: rgba(0,0,0,0.04); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1); } .ds-card-resource:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #00d47e; } .ds-card-resource-title { margin: 0 0 4px; font-size: 1rem; font-weight: 700; color: #0c0c0c; } .ds-card-resource-body { margin: 0; font-size: 0.875rem; color: #8a8680; }"
+      "css": ".ds-card-resource { display: block; background: #f0efe9; border: 1px solid transparent; border-radius: 12px; padding: 20px; text-decoration: none; font-family: 'Bricolage Grotesque', system-ui, sans-serif; transition: background-color 300ms, box-shadow 300ms, border-color 300ms; } .ds-card-resource:hover { background: #ffffff; border-color: rgba(0,0,0,0.04); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1); } .ds-card-resource:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #007a48; } .ds-card-resource-title { margin: 0 0 4px; font-size: 1rem; font-weight: 700; color: #0c0c0c; } .ds-card-resource-body { margin: 0; font-size: 0.875rem; color: #6b6761; }"
     },
     {
       "name": "Section Eyebrow",
@@ -155,7 +155,7 @@
       "refersTo": "label",
       "description": "The filing label that opens every section. Mono, uppercase, wide tracking, always Deep Signal — never Signal Green.",
       "html": "<div class=\"ds-section-head\"><p class=\"ds-eyebrow\">How it works</p><h2 class=\"ds-h2\">Three steps to a finished PDF</h2><p class=\"ds-sub\">No account, no trial, no card.</p></div>",
-      "css": ".ds-section-head { font-family: 'Bricolage Grotesque', system-ui, sans-serif; } .ds-eyebrow { margin: 0 0 16px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: #007a48; } .ds-h2 { margin: 0 0 16px; font-size: 2.25rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.025em; color: #0c0c0c; } .ds-sub { margin: 0; font-size: 1.25rem; font-weight: 200; line-height: 1.625; color: #8a8680; }"
+      "css": ".ds-section-head { font-family: 'Bricolage Grotesque', system-ui, sans-serif; } .ds-eyebrow { margin: 0 0 16px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: #007a48; } .ds-h2 { margin: 0 0 16px; font-size: 2.25rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.025em; color: #0c0c0c; } .ds-sub { margin: 0; font-size: 1.25rem; font-weight: 200; line-height: 1.625; color: #6b6761; }"
     },
     {
       "name": "Ad Surface",
@@ -178,8 +178,8 @@
       "Two typefaces only: Bricolage Grotesque (variable, 200–800) and JetBrains Mono for labels"
     ],
     "rules": [
-      { "name": "The 10% Rule", "body": "Signal Green covers no more than roughly a tenth of any screen. It fills primary CTAs, focus rings, and status indicators. It never backs a section, never tints a large surface, and never appears decoratively. The moment green becomes ambient, 'this passed' and 'click this' stop meaning anything.", "section": "colors" },
-      { "name": "The Deep Signal Rule", "body": "#00d47e on a light ground fails WCAG contrast for text (1.87:1 on chalk). Any accent-colored text below 24px uses #007a48 (text-accent-text) instead — 5.18:1, which clears AA. #00d47e is for fills only, where the surrounding text carries the contrast (ink on green measures 9.98:1). Note the accent focus ring at 1.87:1 does NOT meet the 3:1 focus-appearance threshold on light grounds; this is a known open finding.", "section": "colors" },
+      { "name": "The 10% Rule", "body": "Signal Green covers no more than roughly a tenth of any screen. It fills primary CTAs and status indicators. It never backs a section, never tints a large surface, and never appears decoratively. The moment green becomes ambient, 'this passed' and 'click this' stop meaning anything.", "section": "colors" },
+      { "name": "The Deep Signal Rule", "body": "#00d47e on a light ground measures 1.87:1 on chalk and clears neither the 4.5:1 text threshold nor the 3:1 non-text one. Any accent-colored text below 24px, and every focus ring, uses #007a48 (text-accent-text / ring-accent-text) instead — 5.18:1 on chalk, 4.70:1 on chalk-dark. #00d47e is for fills and decorative halos only, where the surrounding text carries the contrast (ink on green measures 9.98:1).", "section": "colors" },
       { "name": "The One Accent Rule", "body": "There is no secondary or tertiary brand color. Semantic reds, ambers, and blues exist only inside status affordances (toasts, validation, warning banners) and are never promoted into the brand palette.", "section": "colors" },
       { "name": "The Two-Weight Rule", "body": "Editorial type uses 800 or 200. Nothing in between. The intermediate weights (500/600/700) exist only for interface chrome — buttons, nav links, form labels, card titles — where they signal 'this is a control, not prose'. A 600-weight paragraph is off-system.", "section": "typography" },
       { "name": "The Eyebrow Rule", "body": "Every section heading block runs mono eyebrow → H2 → subtitle paragraph, then a mb-12 md:mb-16 gap before content. The eyebrow is what makes a section feel filed rather than merely stacked, and it is set in Deep Signal, never Signal Green.", "section": "typography" },
@@ -189,7 +189,8 @@
       { "name": "The 12px Default Rule", "body": "When unsure, use rounded-xl. Radius steps down to 8px for things you press and up to 16px/24px for things you look at.", "section": "shapes" }
     ],
     "dos": [
-      "Do use text-accent-text (#007a48) for any accent-colored text under 24px. text-accent is for fills, rings, and strokes.",
+      "Do use text-accent-text / ring-accent-text (#007a48) for any accent-colored text under 24px and for every focus ring. text-accent is for fills and decorative halos.",
+      "Do measure new foreground colors against chalk-dark (#f0efe9), not white — chalk-dark is the darkest ground the system paints text on and the one that fails first.",
       "Do keep every interactive control at min-h-11 (44px), including in the editor's densest rows.",
       "Do pair .cv-auto with a .cv-h-* intrinsic-size class on every new below-fold section.",
       "Do reserve explicit height for anything that loads late — ads, images, async status.",
@@ -207,8 +208,8 @@
       "Don't put a resting shadow on an app card.",
       "Don't restyle, shrink, or remove ad surfaces for visual tidiness.",
       "Don't introduce a dark mode. This system has one light world and every token, shadow, and contrast decision assumes it.",
-      "Don't put unique or task-critical information in Mist. At 2.37:1 it fails every threshold.",
-      "Don't assume the accent focus ring is accessible. It is not, on light grounds — treat any new focus treatment as needing its own contrast check."
+      "Don't lighten stone-warm or mist back toward their pre-audit values (#8a8680 / #a8a4a0). Both failed AA at body size; the current values (5.38:1 and 4.98:1 on chalk, 4.88:1 and 4.52:1 on chalk-dark) came from a measured pass.",
+      "Don't use ring-accent for a focus state. Signal Green is 1.87:1 on chalk and cannot carry a focus indicator; ring-accent-text is the system's focus ring."
     ]
   }
 }
