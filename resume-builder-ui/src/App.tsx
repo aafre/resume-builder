@@ -220,15 +220,21 @@ function AppContent() {
   <>
    <ScrollToTop/>
     <div className="flex flex-col min-h-screen bg-gray-50">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-ink focus:px-4 focus:py-3 focus:text-sm focus:font-semibold focus:text-white"
+      >
+        Skip to content
+      </a>
       <EnvironmentBanner />
-      {/* Header */}
-      <header className="bg-white sticky top-0 z-50">
-        <Header />
-      </header>
+      {/* Header — the only banner landmark; it carries its own sticky/glass treatment */}
+      <Header />
 
       {/* Main Content */}
       <main
-        className={`flex-grow ${
+        id="main-content"
+        tabIndex={-1}
+        className={`flex-grow focus:outline-none ${
           isEditorPage ? "px-0" : "px-4 sm:px-6 md:px-8"
         }`}
       >
