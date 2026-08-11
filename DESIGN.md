@@ -218,7 +218,7 @@ Sections use `py-12 md:py-20 px-4 sm:px-6 lg:px-8` on marketing and content surf
 
 Grids are `grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12`. Alternating sections swap Chalk and Chalk Dark rather than introducing borders.
 
-Fixed chrome heights are exposed as CSS custom properties and consumed as Tailwind spacing (`--header-height-mobile: 64px`, `--header-height-desktop: 72px`, `--footer-height: 200px`, `--mobile-action-bar-height: 110px`, `--tablet-toolbar-height: 80px`). Anything that needs to offset against chrome reads these rather than hardcoding a number.
+Fixed chrome heights are exposed as CSS custom properties and consumed as Tailwind spacing (`--header-height-mobile: 64px`, `--header-height-desktop: 72px`, `--mobile-action-bar-height: 110px`). Anything that needs to offset against chrome reads these rather than hardcoding a number. Only genuinely fixed heights get a variable: the footer's height is content-dependent and varies by roughly an order of magnitude across breakpoints, so it has none.
 
 Below-fold sections carry `content-visibility: auto` with a paired `.cv-h-*` intrinsic-size hint. Adding a new below-fold section without an intrinsic-size estimate reintroduces layout shift on a site whose traffic depends on Core Web Vitals.
 
