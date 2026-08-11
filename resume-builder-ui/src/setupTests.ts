@@ -67,8 +67,7 @@ vi.mock("./lib/supabase", () => ({
             Promise.resolve({
               data: {
                 tour_completed: false,
-                idle_nudge_shown: false,
-                announcement_dismissals: []
+                idle_nudge_shown: false
               },
               error: null
             })
