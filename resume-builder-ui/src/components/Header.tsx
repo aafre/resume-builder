@@ -51,7 +51,7 @@ export default function Header() {
           {/* Logo and Home Navigation */}
           <Link
             to="/"
-            className="group flex min-h-11 min-w-11 items-center rounded-lg transition-all duration-200 relative flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            className="group flex min-h-11 min-w-11 items-center rounded-lg transition-all duration-200 relative flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
             aria-label="Go to homepage"
           >
             <LogoMark
@@ -69,7 +69,7 @@ export default function Header() {
               <Link
                 to="/my-resumes"
                 id="tour-my-resumes-link"
-                className={`relative inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+                className={`relative inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                   location.pathname === '/my-resumes'
                     ? 'bg-ink text-white shadow-sm'
                     : 'text-gray-600 hover:bg-black/5 hover:text-ink'
@@ -84,7 +84,7 @@ export default function Header() {
               </Link>
               <Link
                 to="/templates"
-                className={`inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+                className={`inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                   location.pathname === '/templates'
                     ? 'bg-ink text-white shadow-sm'
                     : 'text-gray-600 hover:bg-black/5 hover:text-ink'
@@ -95,7 +95,7 @@ export default function Header() {
               {affiliateConfig.jobSearch.enabled && (
                 <Link
                   to="/jobs"
-                  className={`relative inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+                  className={`relative inline-flex min-h-11 items-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                     location.pathname === '/jobs'
                       ? 'bg-ink text-white shadow-sm'
                       : 'text-gray-600 hover:bg-black/5 hover:text-ink'
@@ -136,7 +136,7 @@ export default function Header() {
                 {/* My Resumes Icon with Badge */}
                 <Link
                   to="/my-resumes"
-                  className="relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg hover:bg-black/5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                  className="relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg hover:bg-black/5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
                   aria-label={`My Resumes${resumeCount > 0 ? ` (${resumeCount})` : ''}`}
                 >
                   <div className="relative">
@@ -183,7 +183,7 @@ export default function Header() {
                     <button
                       id="tour-sign-in-button"
                       onClick={showAuthModal}
-                      className="flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 font-semibold text-sm transition-all duration-200 text-ink hover:text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 lg:hover:no-underline lg:px-5 lg:bg-ink lg:text-white lg:shadow-sm lg:hover:shadow-md"
+                      className="flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 font-semibold text-sm transition-all duration-200 text-ink hover:text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 lg:hover:no-underline lg:px-5 lg:bg-ink lg:text-white lg:shadow-sm lg:hover:shadow-md"
                     >
                       <span>Sign In</span>
                     </button>

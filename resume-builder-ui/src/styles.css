@@ -70,10 +70,13 @@
   @apply relative inline-flex min-h-11 items-center justify-center text-gray-700 hover:text-ink transition-all duration-200 font-medium px-3 py-2 rounded-lg hover:bg-black/5;
 }
 
+/* Focus ring is Deep Signal, not Signal Green: #00d47e measures 1.87:1 on Chalk
+   and cannot carry the 3:1 non-text contrast requirement. #007a48 measures
+   5.18:1 on Chalk and 4.70:1 on Chalk Dark, and stays in the same green. */
 .btn-primary:focus-visible,
 .btn-secondary:focus-visible,
 .btn-ghost:focus-visible {
-  @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-white;
+  @apply outline-none ring-2 ring-accent-text ring-offset-2 ring-offset-white;
 }
 
 .btn-ghost::before {

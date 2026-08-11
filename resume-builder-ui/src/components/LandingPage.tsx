@@ -702,7 +702,7 @@ const LandingPage: React.FC = () => {
                 key={index}
                 className="border-b border-black/[0.06] last:border-b-0 group"
               >
-                <summary className="flex items-center justify-between w-full text-left py-5 cursor-pointer list-none [&::-webkit-details-marker]:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-lg">
+                <summary className="flex items-center justify-between w-full text-left py-5 cursor-pointer list-none [&::-webkit-details-marker]:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 rounded-lg">
                   <h3 className="font-display text-base font-extrabold text-ink pr-4">
                     {faq.question}
                   </h3>

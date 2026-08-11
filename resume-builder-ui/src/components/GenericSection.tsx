@@ -115,7 +115,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
               value={section.content || ""}
               onChange={(value) => handleContentChange(value)}
               placeholder="Enter text..."
-              className="w-full border border-gray-300 rounded-lg p-2 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all duration-200"
+              className="w-full border border-gray-300 rounded-lg p-2 focus-within:ring-2 focus-within:ring-accent-text focus-within:border-accent transition-all duration-200"
               rows={4}
             />
           </>
@@ -149,7 +149,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                                 value={item}
                                 onChange={(value) => handleContentChange(value, index)}
                                 placeholder="Add item..."
-                                className="w-full border border-gray-300 rounded-lg p-2 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all duration-200"
+                                className="w-full border border-gray-300 rounded-lg p-2 focus-within:ring-2 focus-within:ring-accent-text focus-within:border-accent transition-all duration-200"
                               />
                             </div>
                             <button
@@ -211,7 +211,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                                   value={item}
                                   onChange={(value) => handleContentChange(value, index)}
                                   placeholder="Add skill or item..."
-                                  className="w-full border border-gray-300 rounded-lg p-2 text-sm focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all duration-200"
+                                  className="w-full border border-gray-300 rounded-lg p-2 text-sm focus-within:ring-2 focus-within:ring-accent-text focus-within:border-accent transition-all duration-200"
                                 />
                               </div>
                               <button
@@ -273,7 +273,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                                   value={item}
                                   onChange={(value) => handleContentChange(value, index)}
                                   placeholder="Add item..."
-                                  className="w-full border border-gray-300 rounded-lg p-2 text-sm focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all duration-200"
+                                  className="w-full border border-gray-300 rounded-lg p-2 text-sm focus-within:ring-2 focus-within:ring-accent-text focus-within:border-accent transition-all duration-200"
                                 />
                               </div>
                               <button

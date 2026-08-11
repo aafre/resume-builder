@@ -215,7 +215,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
                 handleBadgeClick();
                 dismissMobileBanner();
               }}
-              className="flex min-h-11 items-center gap-2 flex-1 min-w-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+              className="flex min-h-11 items-center gap-2 flex-1 min-w-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
             >
               <JobSparkleIcon className="w-4 h-4 flex-shrink-0 text-accent" />
               <span className="text-sm font-medium truncate">
@@ -225,7 +225,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
             </Link>
             <button
               onClick={dismissMobileBanner}
-              className="ml-2 inline-flex min-h-11 min-w-11 items-center justify-center p-1 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+              className="ml-2 inline-flex min-h-11 min-w-11 items-center justify-center p-1 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
               aria-label="Dismiss"
             >
               <X className="w-4 h-4" />

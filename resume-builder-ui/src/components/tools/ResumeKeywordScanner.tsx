@@ -485,7 +485,7 @@ export default function ResumeKeywordScanner() {
               </label>
               <textarea
                 id="resume-text"
-                className="w-full h-56 md:h-64 rounded-lg border border-slate-200 bg-white p-4 text-sm text-ink placeholder:text-mist focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 resize-none transition-all"
+                className="w-full h-56 md:h-64 rounded-lg border border-slate-200 bg-white p-4 text-sm text-ink placeholder:text-mist focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-accent/40 resize-none transition-all"
                 placeholder="Paste your resume text here..."
                 value={resumeText}
                 onChange={(e) => setResumeText(e.target.value)}
@@ -508,7 +508,7 @@ export default function ResumeKeywordScanner() {
               </label>
               <textarea
                 id="job-description"
-                className="w-full h-56 md:h-64 rounded-lg border border-slate-200 bg-white p-4 text-sm text-ink placeholder:text-mist focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 resize-none transition-all"
+                className="w-full h-56 md:h-64 rounded-lg border border-slate-200 bg-white p-4 text-sm text-ink placeholder:text-mist focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-accent/40 resize-none transition-all"
                 placeholder="Paste the job description here..."
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
@@ -644,7 +644,7 @@ export default function ResumeKeywordScanner() {
                     type="button"
                     key={tab.key}
                     onClick={() => setActiveTab(tab.key)}
-                    className={`min-h-11 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+                    className={`min-h-11 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                       activeTab === tab.key
                         ? tab.activeClass
                         : 'text-stone-warm hover:bg-chalk-dark border border-transparent'

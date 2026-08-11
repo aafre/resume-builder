@@ -511,7 +511,7 @@ export default function JobsPage() {
                     value={titleInput}
                     onChange={(e) => setTitleInput(e.target.value)}
                     placeholder="Job title (e.g. Software Engineer)"
-                    className="w-full pl-10 pr-4 py-3 border border-black/[0.06] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-black/[0.06] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
                   />
                 </div>
 
@@ -523,7 +523,7 @@ export default function JobsPage() {
                     value={locationInput}
                     onChange={(e) => setLocationInput(e.target.value)}
                     placeholder="City or region (optional)"
-                    className="w-full pl-10 pr-4 py-3 border border-black/[0.06] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-black/[0.06] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
                   />
                 </div>
 
@@ -533,7 +533,7 @@ export default function JobsPage() {
                   <select
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
-                    className="w-full appearance-none pl-4 pr-10 py-3 border border-black/[0.06] rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                    className="w-full appearance-none pl-4 pr-10 py-3 border border-black/[0.06] rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
                   >
                     {ADZUNA_COUNTRIES.map((c) => (
                       <option key={c.code} value={c.code}>{c.label}</option>

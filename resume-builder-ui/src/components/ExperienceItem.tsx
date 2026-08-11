@@ -123,7 +123,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
               value={item.company}
               onChange={(value) => handleUpdateField("company", value)}
               placeholder="Enter company name"
-              className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all duration-200"
+              className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-accent-text focus-within:border-accent transition-all duration-200"
             />
           </div>
           <div>
@@ -132,7 +132,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
               value={item.title}
               onChange={(value) => handleUpdateField("title", value)}
               placeholder="Enter job title"
-              className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all duration-200"
+              className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-accent-text focus-within:border-accent transition-all duration-200"
             />
           </div>
           <div>
@@ -141,7 +141,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
               type="text"
               value={item.dates}
               onChange={(e) => handleUpdateField("dates", e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-200"
+              className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-accent-text focus:border-accent transition-all duration-200"
               placeholder="e.g., Jan 2020 - Present"
             />
           </div>
@@ -174,7 +174,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
                               value={desc}
                               onChange={(value) => handleDescUpdate(descIndex, value)}
                               placeholder="Describe your responsibilities, achievements, or key projects..."
-                              className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent transition-all duration-200"
+                              className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-accent-text focus-within:border-accent transition-all duration-200"
                             />
                           </div>
                           <button

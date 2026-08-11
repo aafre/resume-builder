@@ -316,7 +316,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
         )}
         <button
           onClick={handleToggle}
-          className={`inline-flex min-h-11 min-w-11 items-center justify-center p-2 hover:bg-white rounded-lg transition-all text-gray-500 hover:text-gray-800 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+          className={`inline-flex min-h-11 min-w-11 items-center justify-center p-2 hover:bg-white rounded-lg transition-all text-gray-500 hover:text-gray-800 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
             isCollapsed ? "mx-auto" : ""
           }`}
           aria-label={isCollapsed ? "Expand sidebar (Ctrl+\\)" : "Collapse sidebar (Ctrl+\\)"}
@@ -557,7 +557,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               id="tour-preview-button"
               onClick={onPreviewResume}
               disabled={isPreviewLoading}
-              className={`w-full min-h-11 flex items-center justify-center bg-accent text-ink font-semibold rounded-lg shadow-sm hover:shadow-md hover:bg-accent/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+              className={`w-full min-h-11 flex items-center justify-center bg-accent text-ink font-semibold rounded-lg shadow-sm hover:shadow-md hover:bg-accent/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                 isCollapsed
                   ? "flex-col gap-1 py-2.5 px-1 mb-2"
                   : "flex-row gap-2 px-4 py-2.5 mb-2.5"
@@ -612,7 +612,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           {/* Secondary Action: Add Section */}
           <button
             onClick={onAddSection}
-            className={`w-full min-h-11 flex items-center justify-center bg-accent text-ink font-medium rounded-lg shadow-sm hover:shadow-md hover:bg-accent/90 transition-all active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+            className={`w-full min-h-11 flex items-center justify-center bg-accent text-ink font-medium rounded-lg shadow-sm hover:shadow-md hover:bg-accent/90 transition-all active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
               isCollapsed
                 ? "flex-col gap-1 py-2 px-1 mt-2"
                 : "flex-row gap-2 px-4 py-2 mb-3"
@@ -631,7 +631,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
               id="tour-backup-button"
               onClick={onExportYAML}
               disabled={loadingSave}
-              className={`w-full min-h-11 flex items-center transition-all rounded-md disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+              className={`w-full min-h-11 flex items-center transition-all rounded-md disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                 isCollapsed
                   ? "flex-col gap-1 py-2 px-1 hover:bg-accent/[0.06]"
                   : "flex-row gap-3 px-3 py-2 hover:bg-accent/[0.06] text-gray-700 hover:text-ink/80"
@@ -668,7 +668,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             <button
               onClick={onImportYAML}
               disabled={loadingLoad}
-              className={`w-full min-h-11 flex items-center transition-all rounded-md disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+              className={`w-full min-h-11 flex items-center transition-all rounded-md disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                 isCollapsed
                   ? "flex-col gap-1 py-2 px-1 hover:bg-green-50/80"
                   : "flex-row gap-3 px-3 py-2 hover:bg-green-50/80 text-green-800 hover:text-green-700"
@@ -697,7 +697,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             {/* Start Fresh - KEEP LABEL AS-IS (not renamed) */}
             <button
               onClick={handleStartFresh}
-              className={`w-full min-h-11 flex items-center transition-all rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+              className={`w-full min-h-11 flex items-center transition-all rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                 isCollapsed
                   ? "flex-col gap-1 py-2 px-1 hover:bg-orange-50/80"
                   : "flex-row gap-3 px-3 py-2 hover:bg-orange-50/80 text-orange-800 hover:text-orange-700"
@@ -720,7 +720,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
             {/* Help */}
             <button
               onClick={onHelp}
-              className={`w-full min-h-11 flex items-center transition-all rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+              className={`w-full min-h-11 flex items-center transition-all rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                 isCollapsed
                   ? "flex-col gap-1 py-2 px-1 hover:bg-accent/[0.06]"
                   : "flex-row gap-3 px-3 py-2 hover:bg-accent/[0.06] text-gray-700 hover:text-ink/80"
@@ -745,7 +745,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
           <div className={`border-t border-gray-200/60 ${isCollapsed ? "pt-2 px-2" : "pt-3 px-4"}`}>
             <Link
               to="/contact"
-              className={`w-full min-h-11 flex items-center transition-all rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+              className={`w-full min-h-11 flex items-center transition-all rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                 isCollapsed
                   ? "flex-col gap-1 py-2 px-1 hover:bg-teal-50/80"
                   : "flex-row gap-3 px-3 py-2 hover:bg-teal-50/80 text-teal-800 hover:text-teal-700"

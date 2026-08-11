@@ -27,7 +27,7 @@ const SectionControls: React.FC<{
         title="Move section up"
         onClick={() => moveSection(sectionIndex, sectionIndex - 1)}
         disabled={sectionIndex === 0}
-        className={`p-2 rounded focus-visible:ring-2 focus-visible:ring-accent ${
+        className={`p-2 rounded focus-visible:ring-2 focus-visible:ring-accent-text ${
           sectionIndex === 0
             ? "bg-gray-300 cursor-not-allowed text-gray-500"
             : "bg-accent hover:bg-accent text-ink"
@@ -41,7 +41,7 @@ const SectionControls: React.FC<{
         title="Move section down"
         onClick={() => moveSection(sectionIndex, sectionIndex + 1)}
         disabled={sectionIndex === sections.length - 1}
-        className={`p-2 rounded focus-visible:ring-2 focus-visible:ring-accent ${
+        className={`p-2 rounded focus-visible:ring-2 focus-visible:ring-accent-text ${
           sectionIndex === sections.length - 1
             ? "bg-gray-300 cursor-not-allowed text-gray-500"
             : "bg-accent hover:bg-accent text-ink"

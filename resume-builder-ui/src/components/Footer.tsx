@@ -62,7 +62,7 @@ function FooterColumn({
   links: { path: string; label: string; external?: boolean }[];
   scrollToTop: (path: string) => () => void;
 }) {
-  const linkClass = "inline-flex min-h-11 items-center rounded-md text-gray-600 hover:text-accent font-medium transition-colors duration-200 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2";
+  const linkClass = "inline-flex min-h-11 items-center rounded-md text-gray-600 hover:text-accent font-medium transition-colors duration-200 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2";
   return (
     <nav aria-label={title}>
       <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">{title}</h3>
@@ -146,7 +146,7 @@ export default function Footer() {
                 href="https://www.trustpilot.com/review/easyfreeresume.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-emerald-50 px-3 py-2 rounded-lg hover:bg-emerald-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                className="flex items-center gap-2 bg-emerald-50 px-3 py-2 rounded-lg hover:bg-emerald-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
               >
                 <FaStar className="text-emerald-600" />
                 <span className="text-emerald-700 font-medium">Trustpilot</span>

@@ -82,7 +82,7 @@ export default function AnonymousWarningBadge({ onSignInClick }: AnonymousWarnin
                   hover:bg-accent/90
                   hover:shadow-md
                   transition-all duration-300
-                  focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2
+                  focus:outline-none focus:ring-2 focus:ring-accent-text focus:ring-offset-2
                 "
               >
                 Create Free Account

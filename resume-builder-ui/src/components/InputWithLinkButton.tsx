@@ -122,7 +122,7 @@ export const InputWithLinkButton: React.FC<InputWithLinkButtonProps> = ({
     setShowModal(true);
   };
 
-  const defaultInputClassName = "flex-1 border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-200";
+  const defaultInputClassName = "flex-1 border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-accent-text focus:border-accent transition-all duration-200";
   const combinedClassName = className || defaultInputClassName;
 
   return (
