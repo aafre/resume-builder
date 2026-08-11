@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   MdClose,
   MdDragIndicator,
@@ -11,6 +11,7 @@ import {
   MdSupport
 } from "react-icons/md";
 import { Link } from "react-router-dom";
+import useFocusTrap from "../hooks/useFocusTrap";
 
 interface Section {
   name: string;
@@ -31,23 +32,6 @@ interface MobileNavigationDrawerProps {
   loadingSave?: boolean;
   loadingLoad?: boolean;
 }
-
-const FOCUSABLE_SELECTOR = [
-  "a[href]",
-  "button:not([disabled])",
-  "textarea:not([disabled])",
-  "input:not([disabled])",
-  "select:not([disabled])",
-  "[tabindex]:not([tabindex='-1'])",
-].join(",");
-
-const getFocusableElements = (container: HTMLElement | null) => {
-  if (!container) return [];
-
-  return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
-    (element) => !element.hasAttribute("disabled") && !element.hidden
-  );
-};
 
 /**
  * Mobile navigation drawer - slides in from left
@@ -70,76 +54,8 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
 }) => {
   const [showAdvancedMenu, setShowAdvancedMenu] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
-  const previousFocusRef = useRef<HTMLElement | null>(null);
-  const onCloseRef = useRef(onClose);
 
-  useEffect(() => {
-    onCloseRef.current = onClose;
-  }, [onClose]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    previousFocusRef.current = document.activeElement instanceof HTMLElement
-      ? document.activeElement
-      : null;
-
-    const focusableElements = getFocusableElements(drawerRef.current);
-    (focusableElements[0] ?? drawerRef.current)?.focus();
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onCloseRef.current();
-        return;
-      }
-
-      if (event.key !== "Tab") return;
-
-      const currentFocusableElements = getFocusableElements(drawerRef.current);
-
-      if (currentFocusableElements.length === 0) {
-        event.preventDefault();
-        drawerRef.current?.focus();
-        return;
-      }
-
-      const firstElement = currentFocusableElements[0];
-      const lastElement = currentFocusableElements[currentFocusableElements.length - 1];
-      const activeElement = document.activeElement;
-
-      // Drawer container itself is focused (tabIndex={-1}, e.g. after a tap on a
-      // non-interactive area) — wrap explicitly so Shift+Tab can't escape the trap
-      if (activeElement === drawerRef.current) {
-        event.preventDefault();
-        (event.shiftKey ? lastElement : firstElement).focus();
-        return;
-      }
-
-      if (!drawerRef.current?.contains(activeElement)) {
-        event.preventDefault();
-        firstElement.focus();
-        return;
-      }
-
-      if (event.shiftKey && activeElement === firstElement) {
-        event.preventDefault();
-        lastElement.focus();
-        return;
-      }
-
-      if (!event.shiftKey && activeElement === lastElement) {
-        event.preventDefault();
-        firstElement.focus();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      previousFocusRef.current?.focus();
-    };
-  }, [isOpen]);
+  useFocusTrap(isOpen, drawerRef, onClose);
 
   const touchStartX = useRef<number>(0);
   const touchStartY = useRef<number>(0);
@@ -192,14 +108,14 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
         onTouchEnd={handleTouchEnd}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-accent">
-          <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <MdDragIndicator className="text-white/80" aria-hidden="true" />
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+          <h2 className="text-lg font-bold text-ink flex items-center gap-2">
+            <MdDragIndicator className="text-ink/60" aria-hidden="true" />
             Sections
           </h2>
           <button
             onClick={onClose}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-accent"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-ink/70 hover:text-ink hover:bg-black/5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
             aria-label="Close navigation"
           >
             <MdClose className="text-2xl" />
@@ -218,7 +134,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                   : "hover:bg-gray-100 active:bg-gray-200 text-gray-700"
               }`}
           >
-            <span className="w-6 h-6 rounded-full bg-accent/10 text-accent flex items-center justify-center text-xs font-bold">
+            <span className="w-6 h-6 rounded-full bg-accent/10 text-accent-text flex items-center justify-center text-xs font-bold">
               i
             </span>
             <span className="flex-1">Contact Information</span>
@@ -245,7 +161,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
         </nav>
 
         {/* Footer Actions */}
-        <div className="p-3 border-t border-gray-200 bg-gray-50 space-y-2">
+        <div className="p-3 border-t border-gray-200 bg-gray-50 space-y-2 safe-area-inset-bottom">
           {/* Add Section Button */}
           <button
             onClick={() => handleAction(onAddSection)}
@@ -342,7 +258,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
             <Link
               to="/contact"
               onClick={onClose}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-teal-500 to-cyan-600 text-white rounded-lg font-medium shadow-md hover:shadow-lg active:scale-95 transition-all min-h-[48px]"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 active:bg-gray-100 transition-all min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
             >
               <MdSupport className="text-xl" />
               <span>Contact Support</span>
@@ -350,22 +266,6 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
           </div>
         </div>
       </div>
-
-      {/* Animations */}
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes slide-in-left {
-          from {
-            transform: translateX(-100%);
-          }
-          to {
-            transform: translateX(0);
-          }
-        }
-
-        .animate-slide-in-left {
-          animation: slide-in-left 0.3s ease-out;
-        }
-      `}} />
     </>
   );
 };
