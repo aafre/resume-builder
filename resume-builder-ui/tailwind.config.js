@@ -19,8 +19,10 @@ module.exports = {
           DEFAULT: '#fafaf8',
           dark: '#f0efe9',
         },
-        'stone-warm': '#8a8680',
-        mist: '#a8a4a0',
+        // WCAG 2.2 AA, measured on Chalk / white / Chalk Dark (strictest ground):
+        // stone-warm 5.38 / 5.62 / 4.88, mist 4.98 / 5.21 / 4.52. See DESIGN.md.
+        'stone-warm': '#6b6761',
+        mist: '#706c68',
         accent: '#00d47e',
         'accent-text': '#007a48',
       },
