@@ -1,17 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { MdLogout, MdFolder, MdExpandMore, MdViewModule } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
+import { MdLogout, MdFolder, MdExpandMore } from 'react-icons/md';
 import { useUserAvatar } from '../hooks/useUserAvatar';
 import { useQueryClient } from '@tanstack/react-query';
 
 const UserMenu: React.FC = () => {
   const { user, signOut, isAnonymous, signingOut } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -24,6 +24,20 @@ const UserMenu: React.FC = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Escape closes the menu and hands focus back to the trigger
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setIsOpen(false);
+      triggerRef.current?.focus();
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
 
   const handleSignOut = async () => {
     try {
@@ -58,9 +72,12 @@ const UserMenu: React.FC = () => {
   return (
     <div className="relative" ref={menuRef} data-testid="user-menu">
       <button
+        ref={triggerRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/60 backdrop-blur-sm hover:shadow-md transition-all duration-300"
+        className="flex min-h-11 items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
         aria-label="User menu"
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
         data-testid="user-menu-button"
       >
         {avatarUrl && !hasError ? (
@@ -87,51 +104,22 @@ const UserMenu: React.FC = () => {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-3 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl shadow-accent/10 border border-white/50 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-          {/* Navigation Links - Mobile Only */}
-          {!isAnonymous && (
-            <div className="lg:hidden border-b border-gray-100/50 pb-2">
-              <Link
-                to="/my-resumes"
-                onClick={() => setIsOpen(false)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg mx-2 my-1 transition-all duration-200 ${
-                  location.pathname === '/my-resumes'
-                    ? 'bg-accent/[0.06] text-ink/80 font-semibold'
-                    : 'text-gray-700 hover:bg-accent/[0.06]'
-                }`}
-              >
-                <MdFolder size={18} className={location.pathname === '/my-resumes' ? 'text-accent' : 'text-gray-500'} />
-                <span>My Resumes</span>
-              </Link>
-              <Link
-                to="/templates"
-                onClick={() => setIsOpen(false)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg mx-2 my-1 transition-all duration-200 ${
-                  location.pathname === '/templates'
-                    ? 'bg-accent/[0.06] text-ink/80 font-semibold'
-                    : 'text-gray-700 hover:bg-accent/[0.06]'
-                }`}
-              >
-                <MdViewModule size={18} className={location.pathname === '/templates' ? 'text-accent' : 'text-gray-500'} />
-                <span>Templates</span>
-              </Link>
-            </div>
-          )}
-
+        <div className="absolute right-0 mt-3 w-56 bg-white/95 backdrop-blur-xl rounded-xl shadow-xl border border-gray-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200" role="menu">
           <div className="px-4 py-3 border-b border-gray-100/50">
             <p className="text-sm font-semibold text-gray-900">{displayName}</p>
             {!isAnonymous && user.email && (
               <p className="text-xs text-gray-500">{user.email}</p>
             )}
             {isAnonymous && (
-              <p className="text-xs text-amber-600 font-medium">Anonymous (resumes saved locally)</p>
+              <p className="text-xs text-stone-warm font-medium">Guest — resumes saved on this device</p>
             )}
           </div>
 
           {!isAnonymous && (
             <button
               onClick={handleMyResumes}
-              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-accent/[0.06] rounded-lg mx-2 my-1 transition-all duration-200"
+              role="menuitem"
+              className="w-full flex min-h-11 items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-accent/[0.06] rounded-lg mx-2 my-1 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
             >
               <MdFolder size={18} className="text-accent" />
               <span>My Resumes</span>
@@ -142,7 +130,8 @@ const UserMenu: React.FC = () => {
             <button
               onClick={handleSignOut}
               disabled={signingOut}
-              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50/70 rounded-lg mx-2 my-1 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              role="menuitem"
+              className="w-full flex min-h-11 items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50/70 rounded-lg mx-2 my-1 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
               data-testid="sign-out-button"
             >
               {signingOut ? (
