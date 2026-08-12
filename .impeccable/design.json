@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-11T00:00:00.000Z",
+  "title": "Design System: EasyFreeResume",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Signal Green",
+        "canonical": "#00d47e",
+        "tonalRamp": ["#00281a", "#00432a", "#005f3b", "#007a48", "#009a5c", "#00b86e", "#00d47e", "#7ceab6"]
+      },
+      "accent-text": {
+        "role": "primary",
+        "displayName": "Deep Signal",
+        "canonical": "#007a48",
+        "tonalRamp": ["#00281a", "#00432a", "#005f3b", "#007a48", "#009a5c", "#00b86e", "#00d47e", "#7ceab6"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#0c0c0c",
+        "tonalRamp": ["#000000", "#0c0c0c", "#1a1a1a", "#333333", "#5c5c5c", "#8a8a8a", "#c2c2c2", "#f0f0f0"]
+      },
+      "ink-light": {
+        "role": "neutral",
+        "displayName": "Ink Light",
+        "canonical": "#1a1a1a",
+        "tonalRamp": ["#000000", "#0c0c0c", "#1a1a1a", "#333333", "#5c5c5c", "#8a8a8a", "#c2c2c2", "#f0f0f0"]
+      },
+      "chalk": {
+        "role": "neutral",
+        "displayName": "Chalk",
+        "canonical": "#fafaf8",
+        "tonalRamp": ["#26251f", "#3d3b33", "#5c5950", "#807c72", "#a8a4a0", "#cdc9c1", "#f0efe9", "#fafaf8"]
+      },
+      "chalk-dark": {
+        "role": "neutral",
+        "displayName": "Chalk Dark",
+        "canonical": "#f0efe9",
+        "tonalRamp": ["#26251f", "#3d3b33", "#5c5950", "#807c72", "#a8a4a0", "#cdc9c1", "#f0efe9", "#fafaf8"]
+      },
+      "stone-warm": {
+        "role": "neutral",
+        "displayName": "Stone Warm",
+        "canonical": "#8a8680",
+        "tonalRamp": ["#26251f", "#3d3b33", "#5c5950", "#8a8680", "#a8a4a0", "#cdc9c1", "#f0efe9", "#fafaf8"]
+      },
+      "mist": {
+        "role": "neutral",
+        "displayName": "Mist",
+        "canonical": "#a8a4a0",
+        "tonalRamp": ["#26251f", "#3d3b33", "#5c5950", "#807c72", "#a8a4a0", "#cdc9c1", "#f0efe9", "#fafaf8"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Page H1 only, one per page. Weight 800 against a 1.08 line-height." },
+      "headline": { "displayName": "Headline", "purpose": "Section H2s, always preceded by a mono eyebrow." },
+      "title": { "displayName": "Title", "purpose": "Card and panel H3s. Weight 700 marks it as interface, not prose." },
+      "body": { "displayName": "Body", "purpose": "Paragraphs and subtitles at weight 200. Constrain the measure to max-w-3xl/4xl." },
+      "label": { "displayName": "Mono Label", "purpose": "Section eyebrows and filing markers. Uppercase, 0.15em tracking, always Deep Signal." }
+    },
+    "shadows": [
+      { "name": "resting-app", "value": "0 1px 2px 0 rgba(0,0,0,0.05)", "purpose": "Baseline edge for cards inside the application. Establishes edge, not lift." },
+      { "name": "responsive-lift", "value": "0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1)", "purpose": "The hover answer to resting-app. Always paired with transition-shadow duration-200." },
+      { "name": "premium-ambient", "value": "0 1px 2px rgba(0,0,0,0.04), 0 4px 8px rgba(0,0,0,0.04), 0 12px 24px rgba(0,0,0,0.06), 0 24px 48px rgba(0,0,0,0.04)", "purpose": "Four-layer resting depth. Marketing feature cards only — never app surfaces." },
+      { "name": "premium-response", "value": "0 2px 4px rgba(0,0,0,0.04), 0 8px 16px rgba(0,0,0,0.06), 0 20px 40px rgba(0,0,0,0.08), 0 40px 80px rgba(0,212,126,0.06)", "purpose": "Hover deepening with an accent bloom. The only sanctioned atmospheric use of green." },
+      { "name": "floating", "value": "0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)", "purpose": "Genuinely detached elements: modals, toasts, drag overlays, the sticky header." },
+      { "name": "drag-overlay", "value": "0 25px 50px -12px rgba(0,0,0,0.25)", "purpose": "Item lifted under an active drag, paired with a 2px rgba(0,212,126,0.5) border." }
+    ],
+    "motion": [
+      { "name": "ease-premium", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "The system's signature easing. Scroll reveals, premium shadow transitions, FAQ expansion, hero sequence." },
+      { "name": "duration-control", "value": "200ms", "purpose": "Buttons, nav links, inputs, and every other direct-manipulation control." },
+      { "name": "duration-surface", "value": "300ms", "purpose": "Card hovers, background and border transitions." },
+      { "name": "duration-glass", "value": "500ms", "purpose": "Glass and premium-shadow transitions, where slowness reads as weight." },
+      { "name": "duration-reveal", "value": "800ms", "purpose": "Scroll-triggered entrance animations." },
+      { "name": "press-response", "value": "scale(0.98)", "purpose": "Active-state compression on all three button variants. The core tactile cue." },
+      { "name": "reveal-stagger", "value": "0ms, 100ms, 180ms, 240ms, 300ms, 360ms, 400ms", "purpose": "Transition delays applied to nth-child of a [data-reveal-stagger] grid; clamps at 400ms from the seventh child on." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The system's one loud element. Signal Green fill, ink label, visible press compression.",
+      "html": "<button class=\"ds-btn-primary\">Create Free Resume</button>",
+      "css": ".ds-btn-primary { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 14px 32px; background: #00d47e; color: #0c0c0c; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 700; font-size: 1rem; border: none; border-radius: 8px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); cursor: pointer; overflow: hidden; transition: box-shadow 200ms, transform 200ms; } .ds-btn-primary:hover { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #00d47e; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "White field with a near-invisible stroke. Same geometry and press response as primary.",
+      "html": "<button class=\"ds-btn-secondary\">Browse Templates</button>",
+      "css": ".ds-btn-secondary { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 14px 32px; background: #ffffff; color: #0c0c0c; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 600; font-size: 1rem; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); cursor: pointer; transition: box-shadow 200ms, border-color 200ms, transform 200ms; } .ds-btn-secondary:hover { border-color: #d1d5db; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); } .ds-btn-secondary:active { transform: scale(0.98); } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #00d47e; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Tertiary and navigation actions. No fill until touched.",
+      "html": "<button class=\"ds-btn-ghost\">Templates</button>",
+      "css": ".ds-btn-ghost { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 12px; background: transparent; color: #374151; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 500; font-size: 0.875rem; border: none; border-radius: 8px; cursor: pointer; transition: background-color 200ms, color 200ms; } .ds-btn-ghost:hover { background: rgba(0,0,0,0.05); color: #0c0c0c; } .ds-btn-ghost:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #00d47e; }"
+    },
+    {
+      "name": "Ghost Add Button",
+      "kind": "custom",
+      "refersTo": "button-ghost",
+      "description": "Signature affordance. Full-width dashed field meaning 'there could be more here'. The only sanctioned dashed border in the system.",
+      "html": "<button class=\"ds-btn-add\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg><span>Add Experience</span></button>",
+      "css": ".ds-btn-add { width: 100%; min-height: 44px; padding: 12px 16px; display: flex; align-items: center; justify-content: center; gap: 8px; background: transparent; color: #6b7280; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; border: 2px dashed #d1d5db; border-radius: 8px; cursor: pointer; transition: border-color 150ms, color 150ms, background-color 150ms; } .ds-btn-add:hover { border-color: rgba(0,212,126,0.7); color: #007a48; background: rgba(0,212,126,0.06); } .ds-btn-add:focus-visible { outline: none; box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #00d47e; } .ds-btn-add:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Wrapper-focused field. The ring lands on the container because several fields wrap rich-text editors rather than bare inputs.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Job Title</span><input class=\"ds-input\" type=\"text\" placeholder=\"Senior Product Designer\" /></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 6px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; } .ds-field-label { font-size: 0.875rem; font-weight: 500; color: #0c0c0c; } .ds-input { width: 100%; padding: 12px; font-size: 1rem; font-family: inherit; color: #0c0c0c; background: #ffffff; border: 1px solid #d1d5db; border-radius: 8px; transition: box-shadow 200ms, border-color 200ms; } .ds-input::placeholder { color: #a8a4a0; } .ds-input:focus { outline: none; border-color: #00d47e; box-shadow: 0 0 0 2px #00d47e; }"
+    },
+    {
+      "name": "App Card",
+      "kind": "card",
+      "refersTo": "card-app",
+      "description": "The workbench surface. Flat at rest, lifts only on hover.",
+      "html": "<article class=\"ds-card-app\"><h3 class=\"ds-card-app-title\">Product Designer Resume</h3><p class=\"ds-card-app-meta\">Edited 2 days ago</p></article>",
+      "css": ".ds-card-app { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); font-family: 'Bricolage Grotesque', system-ui, sans-serif; transition: box-shadow 200ms; } .ds-card-app:hover { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); } .ds-card-app-title { margin: 0 0 8px; font-size: 1.25rem; font-weight: 700; color: #0c0c0c; } .ds-card-app-meta { margin: 0; font-size: 0.875rem; color: #8a8680; }"
+    },
+    {
+      "name": "Marketing Feature Card",
+      "kind": "card",
+      "refersTo": "card-feature",
+      "description": "The one place resting depth is permitted. Four-layer shadow, gradient hairline border, hover lift with an accent bloom.",
+      "html": "<article class=\"ds-card-feature\"><h3 class=\"ds-card-feature-title\">No paywall at download</h3><p class=\"ds-card-feature-body\">Your PDF is generated and downloaded without payment, and without an account.</p></article>",
+      "css": ".ds-card-feature { position: relative; background: #ffffff; border: 1px solid transparent; border-radius: 16px; padding: 32px; font-family: 'Bricolage Grotesque', system-ui, sans-serif; box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 8px rgba(0,0,0,0.04), 0 12px 24px rgba(0,0,0,0.06), 0 24px 48px rgba(0,0,0,0.04); transition: box-shadow 500ms cubic-bezier(0.16,1,0.3,1), transform 300ms cubic-bezier(0.16,1,0.3,1); } .ds-card-feature::before { content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; background: linear-gradient(135deg, rgba(0,212,126,0.2), rgba(0,212,126,0.12), rgba(0,212,126,0.2)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; } .ds-card-feature:hover { transform: translateY(-4px); box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 8px 16px rgba(0,0,0,0.06), 0 20px 40px rgba(0,0,0,0.08), 0 40px 80px rgba(0,212,126,0.06); } .ds-card-feature-title { margin: 0 0 12px; font-size: 1.25rem; font-weight: 700; color: #0c0c0c; } .ds-card-feature-body { margin: 0; font-size: 1.125rem; font-weight: 200; line-height: 1.625; color: #8a8680; }"
+    },
+    {
+      "name": "Resource Card",
+      "kind": "card",
+      "refersTo": "card-resource",
+      "description": "Brightens toward the user on hover rather than lifting. Chalk Dark resting fill resolving to white.",
+      "html": "<a class=\"ds-card-resource\" href=\"#\"><h3 class=\"ds-card-resource-title\">Resume Keywords Guide</h3><p class=\"ds-card-resource-body\">Which terms an ATS actually scores, by industry.</p></a>",
+      "css": ".ds-card-resource { display: block; background: #f0efe9; border: 1px solid transparent; border-radius: 12px; padding: 20px; text-decoration: none; font-family: 'Bricolage Grotesque', system-ui, sans-serif; transition: background-color 300ms, box-shadow 300ms, border-color 300ms; } .ds-card-resource:hover { background: #ffffff; border-color: rgba(0,0,0,0.04); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1); } .ds-card-resource:focus-visible { outline: none; box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #00d47e; } .ds-card-resource-title { margin: 0 0 4px; font-size: 1rem; font-weight: 700; color: #0c0c0c; } .ds-card-resource-body { margin: 0; font-size: 0.875rem; color: #8a8680; }"
+    },
+    {
+      "name": "Section Eyebrow",
+      "kind": "custom",
+      "refersTo": "label",
+      "description": "The filing label that opens every section. Mono, uppercase, wide tracking, always Deep Signal — never Signal Green.",
+      "html": "<div class=\"ds-section-head\"><p class=\"ds-eyebrow\">How it works</p><h2 class=\"ds-h2\">Three steps to a finished PDF</h2><p class=\"ds-sub\">No account, no trial, no card.</p></div>",
+      "css": ".ds-section-head { font-family: 'Bricolage Grotesque', system-ui, sans-serif; } .ds-eyebrow { margin: 0 0 16px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: #007a48; } .ds-h2 { margin: 0 0 16px; font-size: 2.25rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.025em; color: #0c0c0c; } .ds-sub { margin: 0; font-size: 1.25rem; font-weight: 200; line-height: 1.625; color: #8a8680; }"
+    },
+    {
+      "name": "Ad Surface",
+      "kind": "custom",
+      "refersTo": "card-app",
+      "description": "Ads fund the product's central promise, so they are a designed component. Labelled, bordered, and reserving its own space when unfilled.",
+      "html": "<div class=\"ds-ad-surface\"></div>",
+      "css": ".ds-ad-surface { position: relative; min-height: 250px; border: 1px solid rgba(15,23,42,0.08); border-radius: 8px; background: linear-gradient(180deg, rgba(248,250,252,0.88), rgba(255,255,255,0.96)), repeating-linear-gradient(135deg, rgba(15,23,42,0.035) 0 1px, transparent 1px 12px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.75); } .ds-ad-surface::before { content: 'Advertisement'; position: absolute; top: 0.5rem; left: 0.75rem; z-index: 1; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.08em; line-height: 1; text-transform: uppercase; color: rgba(71,85,105,0.72); pointer-events: none; } .ds-ad-surface:empty::after { content: ''; position: absolute; inset: 2.25rem 0.75rem 0.75rem; border-radius: 6px; background: rgba(255,255,255,0.44); pointer-events: none; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Honest Workshop",
+    "overview": "A well-lit workbench, not a showroom. The surfaces are paper-white and slightly warm, the tools sit out in the open where you can see them, and nothing is hidden behind glass or held back for a fee. This is the visual argument the product has to make before it makes any other one: a visitor arrives here having been burned by a builder that let them do the work and then asked for money at the download button. Every design decision either supports the claim that there is nothing behind the curtain, or it undermines it.\n\nThe system gets its force from typography, not decoration. Headings are set at weight 800 and body text at weight 200 — a gap wide enough that the page has an obvious spine and nothing else has to compete for attention. Backgrounds stay in a narrow band of warm off-whites, so the eye reads structure from type size and spacing rather than from boxes and rules. Green appears rarely, and when it does it means something is live, passing, or actionable. Depth is earned: surfaces sit flat until you touch them.\n\nComponents feel tactile and confident. Targets are generous (44px minimum, everywhere, including the dense editor), presses respond visibly, and states are unambiguous. The audience includes people writing their first resume at 11pm and unsure whether they are doing it right, so the interface must feel forgiving to touch rather than delicate and expensive.",
+    "keyCharacteristics": [
+      "Light-dominant: warm off-white grounds (#fafaf8, #f0efe9), near-black ink, no dark mode",
+      "Extreme type contrast: weight 800 against weight 200, with nothing decorative in between",
+      "One accent, used as a signal rather than as a brand wash",
+      "Flat at rest; shadow is a response to state, not a property of cards",
+      "Generous, unambiguous touch targets — confidence through hand-feel, not ornament",
+      "Two typefaces only: Bricolage Grotesque (variable, 200–800) and JetBrains Mono for labels"
+    ],
+    "rules": [
+      { "name": "The 10% Rule", "body": "Signal Green covers no more than roughly a tenth of any screen. It fills primary CTAs, focus rings, and status indicators. It never backs a section, never tints a large surface, and never appears decoratively. The moment green becomes ambient, 'this passed' and 'click this' stop meaning anything.", "section": "colors" },
+      { "name": "The Deep Signal Rule", "body": "#00d47e on a light ground fails WCAG contrast for text (1.87:1 on chalk). Any accent-colored text below 24px uses #007a48 (text-accent-text) instead — 5.18:1, which clears AA. #00d47e is for fills only, where the surrounding text carries the contrast (ink on green measures 9.98:1). Note the accent focus ring at 1.87:1 does NOT meet the 3:1 focus-appearance threshold on light grounds; this is a known open finding.", "section": "colors" },
+      { "name": "The One Accent Rule", "body": "There is no secondary or tertiary brand color. Semantic reds, ambers, and blues exist only inside status affordances (toasts, validation, warning banners) and are never promoted into the brand palette.", "section": "colors" },
+      { "name": "The Two-Weight Rule", "body": "Editorial type uses 800 or 200. Nothing in between. The intermediate weights (500/600/700) exist only for interface chrome — buttons, nav links, form labels, card titles — where they signal 'this is a control, not prose'. A 600-weight paragraph is off-system.", "section": "typography" },
+      { "name": "The Eyebrow Rule", "body": "Every section heading block runs mono eyebrow → H2 → subtitle paragraph, then a mb-12 md:mb-16 gap before content. The eyebrow is what makes a section feel filed rather than merely stacked, and it is set in Deep Signal, never Signal Green.", "section": "typography" },
+      { "name": "The Reserved Space Rule", "body": "Anything that arrives late — ads, images, async status, revealed sections — reserves its final height before it arrives. The scroll-reveal system animates opacity and transform only, never height or width, for exactly this reason. Ad slots carry explicit min-heights.", "section": "layout" },
+      { "name": "The Flat-At-Rest Rule", "body": "If a surface is not being interacted with and is not floating above the page, it has no shadow. A resting card that carries lift is claiming an importance it has not earned.", "section": "elevation" },
+      { "name": "The Glass Restraint Rule", "body": "backdrop-blur is reserved for elements that genuinely overlay content: the sticky header, toasts, modal scrims. Glass on a static in-flow card is decoration, and it costs paint performance on the editor's long lists.", "section": "elevation" },
+      { "name": "The 12px Default Rule", "body": "When unsure, use rounded-xl. Radius steps down to 8px for things you press and up to 16px/24px for things you look at.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do use text-accent-text (#007a48) for any accent-colored text under 24px. text-accent is for fills, rings, and strokes.",
+      "Do keep every interactive control at min-h-11 (44px), including in the editor's densest rows.",
+      "Do pair .cv-auto with a .cv-h-* intrinsic-size class on every new below-fold section.",
+      "Do reserve explicit height for anything that loads late — ads, images, async status.",
+      "Do wrap below-fold marketing sections in <RevealSection>; the reveal system animates opacity and transform only, never geometry.",
+      "Do lead every section with the mono eyebrow → H2 → subtitle block.",
+      "Do use overflow: clip rather than overflow: hidden on layout containers — hidden silently creates a scroll container and has broken this app's flex layout before.",
+      "Do verify a design still works with the webfont unloaded; font-display: optional means it will be, for some visitors."
+    ],
+    "donts": [
+      "Don't use gray-* or slate-* for text or backgrounds on a migrated page. Use ink, stone-warm, mist, chalk, chalk-dark.",
+      "Don't let Signal Green back a large surface, tint a section, or appear decoratively. Ten percent is the ceiling.",
+      "Don't apply scroll reveals, hover lifts, or .shadow-premium to the editor or my-resumes. Motion on a workbench is feedback; anything else is friction on a surface people use for forty minutes.",
+      "Don't introduce a third typeface, or reach for a weight between 200 and 800 for editorial text.",
+      "Don't reinstate the .btn-primary shimmer sweep. Its removal was deliberate.",
+      "Don't put a resting shadow on an app card.",
+      "Don't restyle, shrink, or remove ad surfaces for visual tidiness.",
+      "Don't introduce a dark mode. This system has one light world and every token, shadow, and contrast decision assumes it.",
+      "Don't put unique or task-critical information in Mist. At 2.37:1 it fails every threshold.",
+      "Don't assume the accent focus ring is accessible. It is not, on light grounds — treat any new focus treatment as needing its own contrast check."
+    ]
+  }
+}
