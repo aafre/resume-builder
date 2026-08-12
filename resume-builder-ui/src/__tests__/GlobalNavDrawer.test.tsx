@@ -75,4 +75,56 @@ describe("GlobalNavDrawer", () => {
     expect(document.activeElement).toBe(trigger);
     trigger.remove();
   });
+
+  it("renders outside the header so a filtered ancestor cannot contain it", () => {
+    // Header carries backdrop-blur-xl, which makes it the containing block for
+    // fixed descendants and clamped the drawer to header height. The portal is
+    // what prevents that; jsdom cannot measure layout, so assert the escape.
+    const { container } = renderDrawer();
+
+    const dialog = screen.getByRole("dialog");
+    expect(container.contains(dialog)).toBe(false);
+    expect(dialog.parentElement).toBe(document.body);
+    expect(dialog.closest("header")).toBeNull();
+  });
+
+  it("closes itself when the viewport crosses the lg breakpoint", () => {
+    // The drawer is lg:hidden. Without this it stays mounted and its focus
+    // trap keeps swallowing Tab against a panel nobody can see.
+    let fireChange: ((e: { matches: boolean }) => void) | undefined;
+    const addEventListener = vi.fn((_: string, handler: (e: { matches: boolean }) => void) => {
+      fireChange = handler;
+    });
+    const removeEventListener = vi.fn();
+    vi.spyOn(window, "matchMedia").mockReturnValue({
+      matches: false,
+      media: "(min-width: 1024px)",
+      onchange: null,
+      addEventListener,
+      removeEventListener,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    } as unknown as MediaQueryList);
+
+    const { onClose, unmount } = renderDrawer();
+    expect(onClose).not.toHaveBeenCalled();
+
+    fireChange?.({ matches: true });
+    expect(onClose).toHaveBeenCalledTimes(1);
+
+    unmount();
+    expect(removeEventListener).toHaveBeenCalled();
+    vi.mocked(window.matchMedia).mockRestore();
+  });
+
+  it("locks body scroll while open and restores it on close", () => {
+    expect(document.body.style.overflow).toBe("");
+
+    const { unmount } = renderDrawer();
+    expect(document.body.style.overflow).toBe("hidden");
+
+    unmount();
+    expect(document.body.style.overflow).toBe("");
+  });
 });

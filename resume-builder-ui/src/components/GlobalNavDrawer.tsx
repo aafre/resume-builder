@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
 import useFocusTrap from "../hooks/useFocusTrap";
@@ -31,12 +32,47 @@ export default function GlobalNavDrawer({
   onSignInClick,
 }: GlobalNavDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useFocusTrap(isOpen, drawerRef, onClose);
 
+  // The drawer is `lg:hidden`, so widening past the breakpoint hides it
+  // without closing it — leaving the focus trap swallowing Tab against a
+  // panel nobody can see. Close on the breakpoint instead of relying on CSS.
+  useEffect(() => {
+    if (!isOpen) return;
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    if (desktop.matches) {
+      onCloseRef.current();
+      return;
+    }
+    const handleChange = (event: MediaQueryListEvent) => {
+      if (event.matches) onCloseRef.current();
+    };
+    desktop.addEventListener("change", handleChange);
+    return () => desktop.removeEventListener("change", handleChange);
+  }, [isOpen]);
+
+  // aria-modal="true" is a promise that the rest of the page is inert; without
+  // this the page scrolls behind the drawer and reopens at a different offset.
+  // Body only, never html — see the overflow note in CLAUDE.md.
+  useEffect(() => {
+    if (!isOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
-  return (
+  // Portalled to <body> because Header carries `backdrop-blur-xl`, and a
+  // backdrop-filtered ancestor becomes the containing block for fixed
+  // descendants — which clamped this drawer to the 64px header. Same pattern
+  // as AuthModal and ResumeRecoveryModal.
+  return createPortal(
     <>
       {/* Backdrop */}
       <div
@@ -117,6 +153,7 @@ export default function GlobalNavDrawer({
           </div>
         )}
       </div>
-    </>
+    </>,
+    document.body
   );
 }

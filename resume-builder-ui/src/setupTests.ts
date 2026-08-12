@@ -93,3 +93,19 @@ vi.mock("./lib/supabase", () => ({
 if (!URL.createObjectURL) {
   URL.createObjectURL = vi.fn(() => "blob:http://dummy-url");
 }
+
+// jsdom does not implement matchMedia. Components that close themselves at a
+// breakpoint (GlobalNavDrawer) call it on mount. Defaults to "not desktop",
+// which is the viewport those components are rendered at in tests.
+if (!window.matchMedia) {
+  window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  }));
+}
