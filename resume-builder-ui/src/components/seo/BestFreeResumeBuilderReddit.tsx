@@ -194,7 +194,7 @@ export default function BestFreeResumeBuilderReddit() {
             </tbody>
           </table>
         </div>
-        <p className="text-xs text-mist text-center max-w-3xl mx-auto mt-4">
+        <p className="text-xs text-stone-warm text-center max-w-3xl mx-auto mt-4">
           Based on publicly documented free-plan behavior; specific plans change over time, so verify
           the download step yourself before relying on any tool.
         </p>
@@ -327,7 +327,7 @@ export default function BestFreeResumeBuilderReddit() {
         <div className="max-w-4xl mx-auto space-y-4">
           <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] p-6">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-sm font-medium text-mist">r/resumes</span>
+              <span className="text-sm font-medium text-stone-warm">r/resumes</span>
             </div>
             <p className="text-stone-warm">
               A recurring frustration is building a full resume on a "free" tool only to be asked for
@@ -337,7 +337,7 @@ export default function BestFreeResumeBuilderReddit() {
           </div>
           <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] p-6">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-sm font-medium text-mist">r/jobs</span>
+              <span className="text-sm font-medium text-stone-warm">r/jobs</span>
             </div>
             <p className="text-stone-warm">
               A common warning is that design-first tools (like graphic-design apps) can produce
@@ -347,7 +347,7 @@ export default function BestFreeResumeBuilderReddit() {
           </div>
           <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] p-6">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-sm font-medium text-mist">r/cscareerquestions</span>
+              <span className="text-sm font-medium text-stone-warm">r/cscareerquestions</span>
             </div>
             <p className="text-stone-warm">
               For tech resumes, the repeated guidance is to keep formatting simple and ATS-parseable.

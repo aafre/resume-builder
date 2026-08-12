@@ -126,7 +126,7 @@ export function ResumeCard({
             e.currentTarget.click();
           }
         }}
-        className={`relative bg-slate-100 h-48 overflow-hidden rounded-t-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+        className={`relative bg-slate-100 h-48 overflow-hidden rounded-t-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
           isPreviewLoading ? 'cursor-wait' : 'cursor-pointer'
         }`}
         onClick={() => !isPreviewLoading && onPreview(resume.id)}
@@ -182,11 +182,11 @@ export function ResumeCard({
             autoFocus
             disabled={isSaving}
             maxLength={200}
-            className="font-bold text-xl text-gray-900 w-full bg-white border border-slate-300 rounded-lg px-2 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-50 mb-2"
+            className="font-bold text-xl text-gray-900 w-full bg-white border border-slate-300 rounded-lg px-2 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text disabled:opacity-50 mb-2"
           />
         ) : (
           <h3
-            className="font-bold text-xl text-gray-900 truncate mb-2 cursor-text hover:bg-gray-50 rounded-lg px-2 py-2 -mx-2 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="font-bold text-xl text-gray-900 truncate mb-2 cursor-text hover:bg-gray-50 rounded-lg px-2 py-2 -mx-2 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text"
             role="button"
             tabIndex={0}
             aria-label={`Rename ${resume.title}`}
@@ -224,7 +224,7 @@ export function ResumeCard({
               onEdit(resume.id);
             }}
             disabled={isEditButtonLoading}
-            className={`flex-1 min-h-11 bg-accent text-ink py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+            className={`flex-1 min-h-11 bg-accent text-ink py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
               isEditButtonLoading
                 ? 'opacity-75 cursor-not-allowed'
                 : 'hover:bg-accent/90 active:scale-[0.98]'
@@ -247,7 +247,7 @@ export function ResumeCard({
               e.stopPropagation();
               onDownload(resume.id);
             }}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
             title="Download PDF"
             aria-label="Download PDF"
           >

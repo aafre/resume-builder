@@ -505,35 +505,35 @@ export default function JobsPage() {
               <div className="flex flex-col sm:flex-row gap-3">
                 {/* Job Title */}
                 <div className="flex-1 relative">
-                  <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-mist" />
+                  <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-warm" />
                   <input
                     type="text"
                     value={titleInput}
                     onChange={(e) => setTitleInput(e.target.value)}
                     placeholder="Job title (e.g. Software Engineer)"
-                    className="w-full pl-10 pr-4 py-3 border border-black/[0.06] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-black/[0.06] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
                   />
                 </div>
 
                 {/* Location */}
                 <div className="flex-1 relative">
-                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-mist" />
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-warm" />
                   <input
                     type="text"
                     value={locationInput}
                     onChange={(e) => setLocationInput(e.target.value)}
                     placeholder="City or region (optional)"
-                    className="w-full pl-10 pr-4 py-3 border border-black/[0.06] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-black/[0.06] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
                   />
                 </div>
 
                 {/* Country */}
                 <div className="relative sm:w-44">
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-mist pointer-events-none" />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-warm pointer-events-none" />
                   <select
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
-                    className="w-full appearance-none pl-4 pr-10 py-3 border border-black/[0.06] rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                    className="w-full appearance-none pl-4 pr-10 py-3 border border-black/[0.06] rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-transparent"
                   >
                     {ADZUNA_COUNTRIES.map((c) => (
                       <option key={c.code} value={c.code}>{c.label}</option>
@@ -557,7 +557,7 @@ export default function JobsPage() {
               </div>
 
               {/* Drop hint */}
-              <p className="text-xs text-mist text-center mt-2 flex items-center justify-center gap-1">
+              <p className="text-xs text-stone-warm text-center mt-2 flex items-center justify-center gap-1">
                 <Upload className="w-3 h-3" />
                 Or drag &amp; drop your resume (PDF/DOCX) for an instant personalized search
               </p>
@@ -595,7 +595,7 @@ export default function JobsPage() {
               <Sparkles className="w-4 h-4 text-accent" />
               <h3 className="text-sm font-display font-bold text-ink">Consider these related roles</h3>
             </div>
-            <p className="text-xs text-mist mb-3">Based on your resume skills and experience</p>
+            <p className="text-xs text-stone-warm mb-3">Based on your resume skills and experience</p>
             <div className="flex flex-wrap gap-2">
               {suggestions.alternative_roles.map((role) => (
                 <button
@@ -624,7 +624,7 @@ export default function JobsPage() {
 
         {/* Tier 3 AI Transparency */}
         {hasSearched && !loading && aiTermsUsed.length > 0 && (
-          <div className="flex items-center gap-2 mb-6 text-xs text-mist">
+          <div className="flex items-center gap-2 mb-6 text-xs text-stone-warm">
             <Info className="w-3.5 h-3.5 flex-shrink-0" />
             <span>Also searched for:</span>
             {aiTermsUsed.map((term) => (
@@ -647,7 +647,7 @@ export default function JobsPage() {
               </div>
               <button
                 onClick={handleClearResume}
-                className="p-1 rounded-lg hover:bg-black/5 text-mist hover:text-ink transition-colors flex-shrink-0"
+                className="p-1 rounded-lg hover:bg-black/5 text-stone-warm hover:text-ink transition-colors flex-shrink-0"
                 aria-label="Clear resume context"
               >
                 <X className="w-4 h-4" />
@@ -658,7 +658,7 @@ export default function JobsPage() {
                 <span className="font-medium">{resumeContext.displayTitle}</span>
               )}
               {resumeContext.displayTitle && resumeContext.skills.length > 0 && (
-                <span className="text-mist">|</span>
+                <span className="text-stone-warm">|</span>
               )}
               {resumeContext.skills.length > 0 && (
                 <span className="flex items-center gap-1 flex-wrap">
@@ -668,13 +668,13 @@ export default function JobsPage() {
                     </span>
                   ))}
                   {resumeContext.skills.length > 3 && (
-                    <span className="text-mist">+{resumeContext.skills.length - 3}</span>
+                    <span className="text-stone-warm">+{resumeContext.skills.length - 3}</span>
                   )}
                 </span>
               )}
               {resumeContext.yearsExperience > 0 && (
                 <>
-                  <span className="text-mist">|</span>
+                  <span className="text-stone-warm">|</span>
                   <span>{resumeContext.yearsExperience}yr exp</span>
                 </>
               )}
@@ -684,7 +684,7 @@ export default function JobsPage() {
 
         {/* Nudge Banner — when no resume */}
         {hasSearched && !loading && jobs.length > 0 && !resumeContext && (
-          <div className="flex items-center gap-2 mb-6 text-xs text-mist">
+          <div className="flex items-center gap-2 mb-6 text-xs text-stone-warm">
             <Upload className="w-3.5 h-3.5 text-accent flex-shrink-0" />
             <span>Drop your resume on the search box for personalized match scores</span>
           </div>
@@ -747,7 +747,7 @@ export default function JobsPage() {
                               ? 'bg-accent/10 text-accent'
                               : job.match_score >= 40
                                 ? 'bg-amber-50 text-amber-600'
-                                : 'bg-gray-100 text-mist'
+                                : 'bg-gray-100 text-stone-warm'
                           }`}>
                             {Math.round(job.match_score)}% match
                           </span>
@@ -762,7 +762,7 @@ export default function JobsPage() {
                           </span>
                         )}
                         {posted && (
-                          <span className="text-xs text-mist flex items-center gap-1">
+                          <span className="text-xs text-stone-warm flex items-center gap-1">
                             <Clock className="w-3 h-3" />
                             {posted}
                           </span>
@@ -798,7 +798,7 @@ export default function JobsPage() {
         {/* No Results State */}
         {hasSearched && !loading && !error && jobs.length === 0 && (
           <div className="text-center py-12 bg-white rounded-2xl card-gradient-border shadow-premium">
-            <Search className="w-12 h-12 mx-auto mb-3 text-mist" />
+            <Search className="w-12 h-12 mx-auto mb-3 text-stone-warm" />
             <h3 className="text-lg font-display font-bold text-ink mb-2">No jobs found</h3>
             <p className="text-sm text-stone-warm mb-6">Try different keywords or a broader location</p>
             <div className="flex flex-wrap justify-center gap-2 max-w-lg mx-auto">
@@ -818,9 +818,9 @@ export default function JobsPage() {
         {/* Empty State (before searching) — Popular searches */}
         {!hasSearched && !loading && (
           <div className="text-center py-12">
-            <Briefcase className="w-12 h-12 mx-auto mb-3 text-mist" />
+            <Briefcase className="w-12 h-12 mx-auto mb-3 text-stone-warm" />
             <p className="text-lg font-display font-bold text-ink mb-1">Search for your next opportunity</p>
-            <p className="text-sm text-mist mb-6">Or try one of these popular searches</p>
+            <p className="text-sm text-stone-warm mb-6">Or try one of these popular searches</p>
             <div className="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
               {POPULAR_SEARCHES.map((title) => (
                 <button
@@ -837,7 +837,7 @@ export default function JobsPage() {
 
         {/* Powered by */}
         <div className="text-center mt-8 mb-12">
-          <p className="text-xs text-mist">
+          <p className="text-xs text-stone-warm">
             Job listings powered by Adzuna
           </p>
         </div>

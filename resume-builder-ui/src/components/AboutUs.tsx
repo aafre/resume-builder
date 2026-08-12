@@ -43,7 +43,7 @@ export default function AboutUs() {
                   Home
                 </Link>
               </li>
-              <li className="text-mist">/</li>
+              <li className="text-stone-warm">/</li>
               <li className="text-ink font-medium">About Us</li>
             </ol>
           </nav>

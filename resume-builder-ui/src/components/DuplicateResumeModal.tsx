@@ -71,7 +71,7 @@ export function DuplicateResumeModal({
                 onChange={(e) => setNewTitle(e.target.value)}
                 disabled={isDuplicating}
                 autoFocus
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-text focus:border-accent disabled:bg-gray-100 disabled:cursor-not-allowed"
                 placeholder="Enter new title"
                 maxLength={200}
               />

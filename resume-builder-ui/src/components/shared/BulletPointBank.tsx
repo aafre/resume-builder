@@ -77,12 +77,12 @@ export default function BulletPointBank({ categories, jobTitle }: BulletPointBan
                   <span className="font-semibold text-ink">
                     {category.category}
                   </span>
-                  <span className="text-sm text-mist">
+                  <span className="text-sm text-stone-warm">
                     ({category.bullets.length} bullets)
                   </span>
                 </div>
                 <svg
-                  className={`w-5 h-5 text-mist transition-transform ${
+                  className={`w-5 h-5 text-stone-warm transition-transform ${
                     expandedCategories.has(category.category) ? 'rotate-180' : ''
                   }`}
                   fill="none"
@@ -118,7 +118,7 @@ export default function BulletPointBank({ categories, jobTitle }: BulletPointBan
                         `}
                       >
                         <div className="flex items-start gap-3">
-                          <span className="text-mist mt-0.5" aria-hidden="true">
+                          <span className="text-stone-warm mt-0.5" aria-hidden="true">
                             &bull;
                           </span>
                           <p className="text-ink/80 flex-1 pr-12">
@@ -136,7 +136,7 @@ export default function BulletPointBank({ categories, jobTitle }: BulletPointBan
                               Copied!
                             </span>
                           ) : (
-                            <span className="flex items-center gap-1 text-mist group-hover:text-accent text-sm">
+                            <span className="flex items-center gap-1 text-stone-warm group-hover:text-accent text-sm">
                               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                               </svg>

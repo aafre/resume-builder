@@ -174,7 +174,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
         <JobSparkleIcon className="w-3.5 h-3.5 text-accent" />
       )}
       <div className="flex flex-col leading-none">
-        <span className="text-[10px] uppercase font-bold text-mist tracking-wider group-hover:text-accent transition-colors">
+        <span className="text-[10px] uppercase font-bold text-stone-warm tracking-wider group-hover:text-accent transition-colors">
           Matches
         </span>
         <span className="text-xs font-bold text-ink tabular-nums">
@@ -215,17 +215,17 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
                 handleBadgeClick();
                 dismissMobileBanner();
               }}
-              className="flex min-h-11 items-center gap-2 flex-1 min-w-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+              className="flex min-h-11 items-center gap-2 flex-1 min-w-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
             >
               <JobSparkleIcon className="w-4 h-4 flex-shrink-0 text-accent" />
               <span className="text-sm font-medium truncate">
                 {jobCount} jobs matched to your skills
               </span>
-              <span className="text-xs text-mist flex-shrink-0">View &rarr;</span>
+              <span className="text-xs text-stone-warm-inverse flex-shrink-0">View &rarr;</span>
             </Link>
             <button
               onClick={dismissMobileBanner}
-              className="ml-2 inline-flex min-h-11 min-w-11 items-center justify-center p-1 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+              className="ml-2 inline-flex min-h-11 min-w-11 items-center justify-center p-1 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
               aria-label="Dismiss"
             >
               <X className="w-4 h-4" />

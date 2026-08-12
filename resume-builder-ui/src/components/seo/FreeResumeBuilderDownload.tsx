@@ -100,7 +100,7 @@ export default function FreeResumeBuilderDownload() {
               </ul>
             </div>
           </div>
-          <p className="text-sm text-mist mt-6 text-center max-w-2xl mx-auto">
+          <p className="text-sm text-stone-warm mt-6 text-center max-w-2xl mx-auto">
             Not sure which to choose? Use PDF for most online applications. Use DOCX if the job posting
             asks for Word format or if you want to edit the file later.
           </p>
@@ -311,7 +311,7 @@ export default function FreeResumeBuilderDownload() {
                 </div>
               </div>
             </div>
-            <p className="text-sm text-mist">
+            <p className="text-sm text-stone-warm">
               All EasyFreeResume templates are built to be{' '}
               <Link to="/templates/ats-friendly" className="text-accent hover:underline">
                 ATS-friendly

@@ -21,7 +21,7 @@ export default function BreadcrumbsWithSchema({
       <ol className="flex items-center space-x-2 text-sm text-stone-warm">
         {breadcrumbs.map((crumb, index) => (
           <li key={index} className="flex items-center">
-            {index > 0 && <span className="mx-2 text-mist">/</span>}
+            {index > 0 && <span className="mx-2 text-stone-warm">/</span>}
             {index === breadcrumbs.length - 1 ? (
               <span className="font-medium text-ink">{crumb.label}</span>
             ) : (

@@ -31,7 +31,7 @@ export default function FilterChips({ filters, onRemove, onClearAll }: FilterChi
         <button
           type="button"
           onClick={onClearAll}
-          className="text-xs text-mist hover:text-ink underline"
+          className="text-xs text-stone-warm hover:text-ink underline"
         >
           Clear all
         </button>

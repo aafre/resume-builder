@@ -19,8 +19,12 @@ module.exports = {
           DEFAULT: '#fafaf8',
           dark: '#f0efe9',
         },
-        'stone-warm': '#8a8680',
-        mist: '#a8a4a0',
+        // Warm grey is surface-polarity-paired: each token is AA-valid only against
+        // the polarity it was measured on. Never use one on the other's ground.
+        // stone-warm on Chalk / white / Chalk Dark (strictest): 5.38 / 5.62 / 4.88
+        'stone-warm': '#6b6761',
+        // ...-inverse on ink / ink-light / white-5%-over-ink-light: 7.90 / 7.03 / 6.19
+        'stone-warm-inverse': '#a8a4a0',
         accent: '#00d47e',
         'accent-text': '#007a48',
       },

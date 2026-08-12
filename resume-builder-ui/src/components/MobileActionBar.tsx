@@ -90,7 +90,7 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
         <button
           onClick={onNavigationClick}
           disabled={isGenerating || isGeneratingPreview}
-          className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 rounded-lg transition-all disabled:opacity-50 hover:bg-gray-100 active:bg-gray-200 active:scale-[0.98] border border-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+          className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 rounded-lg transition-all disabled:opacity-50 hover:bg-gray-100 active:bg-gray-200 active:scale-[0.98] border border-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
           aria-label="Open navigation menu"
         >
           <MdMenu className="text-2xl text-gray-700 mb-1.5" aria-hidden="true" />
@@ -102,7 +102,7 @@ const MobileActionBar: React.FC<MobileActionBarProps> = ({
           <button
             onClick={onPreviewClick}
             disabled={isPreviewLoading || isGenerating}
-            className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-accent text-ink rounded-lg shadow-sm transition-all hover:shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            className="flex flex-col items-center justify-center min-h-[60px] px-3 py-2 bg-accent text-ink rounded-lg shadow-sm transition-all hover:shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
             aria-label="Preview resume PDF"
             >
             {/* Staleness indicator */}

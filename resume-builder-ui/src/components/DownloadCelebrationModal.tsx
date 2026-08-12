@@ -268,7 +268,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
               {/* Divider */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex-1 h-px bg-black/[0.06]" />
-                <span className="text-xs font-semibold text-mist uppercase tracking-wider">
+                <span className="text-xs font-semibold text-stone-warm uppercase tracking-wider">
                   What&apos;s Next?
                 </span>
                 <div className="flex-1 h-px bg-black/[0.06]" />
@@ -292,7 +292,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                         {affiliateConfig.resumeReview.description}
                       </p>
                     </div>
-                    <ExternalLink className="w-4 h-4 text-mist flex-shrink-0" />
+                    <ExternalLink className="w-4 h-4 text-stone-warm flex-shrink-0" />
                   </a>
                 )}
 
@@ -352,7 +352,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                                 </p>
                               )}
                             </div>
-                            <ExternalLink className="w-4 h-4 text-mist flex-shrink-0" />
+                            <ExternalLink className="w-4 h-4 text-stone-warm flex-shrink-0" />
                           </a>
                         );
                       })}
@@ -380,7 +380,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
           <div className="mt-6 animate-dcm-content-fade-up" style={{ animationDelay: '225ms' }}>
             <div className="flex items-center gap-3 mb-4">
               <div className="flex-1 h-px bg-black/[0.06]" />
-              <span className="text-xs font-semibold text-mist uppercase tracking-wider">
+              <span className="text-xs font-semibold text-stone-warm uppercase tracking-wider">
                 One more thing
               </span>
               <div className="flex-1 h-px bg-black/[0.06]" />

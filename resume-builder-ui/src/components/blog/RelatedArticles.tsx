@@ -50,7 +50,7 @@ export default function RelatedArticles({ currentSlug, category, maxArticles = 3
               {post.description}
             </p>
 
-            <div className="flex items-center gap-3 text-[11px] text-mist font-mono">
+            <div className="flex items-center gap-3 text-[11px] text-stone-warm font-mono">
               <time dateTime={post.publishDate}>
                 {new Date(post.publishDate).toLocaleDateString('en-US', {
                   month: 'short',

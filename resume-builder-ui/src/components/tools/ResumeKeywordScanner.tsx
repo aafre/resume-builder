@@ -130,8 +130,8 @@ export function ModelStatusIndicator({
   if (status === 'idle') {
     return (
       <div className="min-h-[32px] flex items-center gap-2">
-        <span className="w-1.5 h-1.5 rounded-full bg-mist/40" />
-        <span className="font-mono text-xs tracking-[0.15em] text-mist uppercase">
+        <span className="w-1.5 h-1.5 rounded-full bg-stone-warm/40" />
+        <span className="font-mono text-xs tracking-[0.15em] text-stone-warm uppercase">
           AI Engine
         </span>
       </div>
@@ -159,7 +159,7 @@ export function ModelStatusIndicator({
               <span
                 key={i}
                 className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
-                  i < litCount ? 'bg-accent' : 'bg-mist/30'
+                  i < litCount ? 'bg-accent' : 'bg-stone-warm/30'
                 }`}
                 style={
                   i === litCount - 1 && litCount > 0
@@ -170,7 +170,7 @@ export function ModelStatusIndicator({
             ))}
           </span>
           {progress > 0 && (
-            <span className="font-mono text-[10px] text-mist tabular-nums">
+            <span className="font-mono text-[10px] text-stone-warm tabular-nums">
               {progress}%
             </span>
           )}
@@ -178,7 +178,7 @@ export function ModelStatusIndicator({
         {/* Phase 3: explicit one-time/size copy so a slow first load reads as
             expected progress, not a hang. */}
         {statusText && (
-          <span className="font-mono text-[10px] text-mist tracking-wide">{statusText}</span>
+          <span className="font-mono text-[10px] text-stone-warm tracking-wide">{statusText}</span>
         )}
       </div>
     );
@@ -291,7 +291,7 @@ function ContextCard({ kw }: { kw: EnhancedKeywordResult }) {
   if (!kw.bestMatchContext) return null;
   return (
     <div className="bg-chalk rounded-lg p-3 text-xs flex-1 min-w-0">
-      <span className="text-mist block mb-1">Closest match in your resume:</span>
+      <span className="text-stone-warm block mb-1">Closest match in your resume:</span>
       <span className="text-stone-warm italic line-clamp-2">&ldquo;{kw.bestMatchContext}&rdquo;</span>
     </div>
   );
@@ -327,7 +327,7 @@ function KeywordSection({
       {showContext && (variant === 'partial' || variant === 'missing') && (
         <div className="space-y-3 mt-4 pt-4 border-t border-black/[0.06]">
           {variant === 'partial' && (
-            <p className="text-xs text-mist mb-2">
+            <p className="text-xs text-stone-warm mb-2">
               Your resume mentions related concepts. Consider adding these keywords explicitly.
             </p>
           )}
@@ -342,7 +342,7 @@ function KeywordSection({
                 <ContextCard kw={kw} />
               ) : kw.suggestedPlacement ? (
                 <span className="text-xs text-stone-warm">
-                  <span className="text-mist mr-1">&rarr;</span> {kw.suggestedPlacement}
+                  <span className="text-stone-warm mr-1">&rarr;</span> {kw.suggestedPlacement}
                 </span>
               ) : null}
             </div>
@@ -360,7 +360,7 @@ function KeywordSection({
             {keywords.filter(kw => kw.suggestedPlacement).slice(6, 14).map((kw) => (
               <div key={kw.keyword} className="flex items-start gap-3 text-sm">
                 <span className="text-red-500 font-mono shrink-0 min-w-[80px]">{kw.keyword}</span>
-                <span className="text-mist">&rarr;</span>
+                <span className="text-stone-warm">&rarr;</span>
                 <span className="text-stone-warm">{kw.suggestedPlacement}</span>
               </div>
             ))}
@@ -467,7 +467,7 @@ export default function ResumeKeywordScanner() {
       <RevealSection variant="fade-up">
         <div ref={scannerSectionRef} className="mb-16 rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
           {/* Privacy trust signal */}
-          <div className="flex items-center justify-center gap-2 mb-6 text-xs text-mist">
+          <div className="flex items-center justify-center gap-2 mb-6 text-xs text-stone-warm">
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
             </svg>
@@ -485,13 +485,13 @@ export default function ResumeKeywordScanner() {
               </label>
               <textarea
                 id="resume-text"
-                className="w-full h-56 md:h-64 rounded-lg border border-slate-200 bg-white p-4 text-sm text-ink placeholder:text-mist focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 resize-none transition-all"
+                className="w-full h-56 md:h-64 rounded-lg border border-slate-200 bg-white p-4 text-sm text-ink placeholder:text-stone-warm focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-accent/40 resize-none transition-all"
                 placeholder="Paste your resume text here..."
                 value={resumeText}
                 onChange={(e) => setResumeText(e.target.value)}
                 onFocus={handleTextareaFocus}
               />
-              <p className="text-xs text-mist mt-1">
+              <p className="text-xs text-stone-warm mt-1">
                 {resumeText.length > 0
                   ? `${resumeText.split(/\s+/).filter(Boolean).length} words`
                   : 'Tip: Copy all text from your resume and paste it here'}
@@ -508,13 +508,13 @@ export default function ResumeKeywordScanner() {
               </label>
               <textarea
                 id="job-description"
-                className="w-full h-56 md:h-64 rounded-lg border border-slate-200 bg-white p-4 text-sm text-ink placeholder:text-mist focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40 resize-none transition-all"
+                className="w-full h-56 md:h-64 rounded-lg border border-slate-200 bg-white p-4 text-sm text-ink placeholder:text-stone-warm focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-accent/40 resize-none transition-all"
                 placeholder="Paste the job description here..."
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
                 onFocus={handleTextareaFocus}
               />
-              <p className="text-xs text-mist mt-1">
+              <p className="text-xs text-stone-warm mt-1">
                 {jobDescription.length > 0
                   ? `${jobDescription.split(/\s+/).filter(Boolean).length} words`
                   : 'Tip: Copy the full job posting including requirements'}
@@ -644,7 +644,7 @@ export default function ResumeKeywordScanner() {
                     type="button"
                     key={tab.key}
                     onClick={() => setActiveTab(tab.key)}
-                    className={`min-h-11 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+                    className={`min-h-11 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
                       activeTab === tab.key
                         ? tab.activeClass
                         : 'text-stone-warm hover:bg-chalk-dark border border-transparent'

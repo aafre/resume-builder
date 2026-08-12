@@ -274,7 +274,7 @@ export default function JobExamplePage() {
               <div className="bg-white rounded-2xl shadow-premium border border-black/[0.06] overflow-hidden">
                 <div className="bg-chalk px-6 py-4 border-b border-black/[0.06] flex items-center justify-between">
                   <h2 className="font-bold text-ink">Resume Preview</h2>
-                  <span className="text-sm text-mist">
+                  <span className="text-sm text-stone-warm">
                     Template: {data.resume.template.charAt(0).toUpperCase() + data.resume.template.slice(1)}
                   </span>
                 </div>
@@ -326,12 +326,12 @@ export default function JobExamplePage() {
                             <p className="font-semibold text-ink">{exp.title}</p>
                             <p className="text-stone-warm">{exp.company}</p>
                           </div>
-                          <p className="text-mist text-sm">{exp.dates}</p>
+                          <p className="text-stone-warm text-sm">{exp.dates}</p>
                         </div>
                         <ul className="mt-2 space-y-1">
                           {exp.bullets.map((bullet, bIndex) => (
                             <li key={bIndex} className="text-ink/80 text-sm pl-4 relative">
-                              <span className="absolute left-0 text-mist">&bull;</span>
+                              <span className="absolute left-0 text-stone-warm">&bull;</span>
                               {bullet}
                             </li>
                           ))}
@@ -349,7 +349,7 @@ export default function JobExamplePage() {
                           <p className="font-semibold text-ink">{edu.degree}</p>
                           <p className="text-stone-warm">{edu.school}</p>
                         </div>
-                        <p className="text-mist text-sm">{edu.year}</p>
+                        <p className="text-stone-warm text-sm">{edu.year}</p>
                       </div>
                     ))}
                   </div>
@@ -373,7 +373,7 @@ export default function JobExamplePage() {
                       <ul className="space-y-1">
                         {data.resume.certifications.map((cert, index) => (
                           <li key={index} className="text-ink/80 text-sm pl-4 relative">
-                            <span className="absolute left-0 text-mist">&bull;</span>
+                            <span className="absolute left-0 text-stone-warm">&bull;</span>
                             {cert}
                           </li>
                         ))}

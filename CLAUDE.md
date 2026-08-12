@@ -182,8 +182,8 @@ The landing page, header, and footer have been revamped with a modern design lan
 | `ink-light` | `#1a1a1a` | Dark surfaces (demo chrome) |
 | `chalk` | `#fafaf8` | Page/section backgrounds |
 | `chalk-dark` | `#f0efe9` | Alternate surface (cards, footer) |
-| `stone-warm` | `#8a8680` | Body text, subtitles |
-| `mist` | `#a8a4a0` | Tertiary/muted text |
+| `stone-warm` | `#6b6761` | Body text, subtitles — **light grounds only** |
+| `stone-warm-inverse` | `#a8a4a0` | Same role on **dark grounds** (`bg-ink`, `bg-ink-light`) |
 | `accent` | `#00d47e` | CTAs, highlights, badges |
 
 Standard Tailwind `gray-{200,300,600}` for borders and secondary text. Avoid introducing new brand colors.

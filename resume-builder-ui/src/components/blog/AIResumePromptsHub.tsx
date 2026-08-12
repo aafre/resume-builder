@@ -438,7 +438,7 @@ export default function AIResumePromptsHub() {
             <SectionEyebrow>The Short Answer</SectionEyebrow>
             <time
               dateTime={REVIEW_DATE}
-              className="font-mono text-[11px] tracking-[0.15em] text-mist uppercase block mb-3"
+              className="font-mono text-[11px] tracking-[0.15em] text-stone-warm uppercase block mb-3"
             >
               Last reviewed {REVIEW_DATE} · Refresh cadence: Quarterly
             </time>
@@ -596,7 +596,7 @@ export default function AIResumePromptsHub() {
                   id={model.id}
                   className="bg-white rounded-2xl p-6 md:p-8 shadow-premium shadow-premium-hover hover:-translate-y-0.5 transition-all duration-300"
                 >
-                  <span className="font-mono text-[11px] tracking-[0.15em] text-mist uppercase block mb-2">
+                  <span className="font-mono text-[11px] tracking-[0.15em] text-stone-warm uppercase block mb-2">
                     {String(idx + 1).padStart(2, "0")} / {String(MODEL_SECTIONS.length).padStart(2, "0")}
                   </span>
                   <h3 className="font-display text-xl font-bold text-ink">{model.name}</h3>

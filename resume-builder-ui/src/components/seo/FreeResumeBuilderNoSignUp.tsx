@@ -219,7 +219,7 @@ export default function FreeResumeBuilderNoSignUp() {
             </tbody>
           </table>
         </div>
-        <p className="text-center text-sm text-mist mt-4 max-w-2xl mx-auto">
+        <p className="text-center text-sm text-stone-warm mt-4 max-w-2xl mx-auto">
           Pricing based on published rates for Zety, Resume.io, and Resume Genius as of February 2026.
           See our detailed <Link to="/best-free-resume-builder-reddit" className="text-accent hover:underline">Reddit-recommended builders comparison</Link>.
         </p>

@@ -82,7 +82,7 @@ export default function JobsLandingPage() {
   if (!data) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-12 text-center">
-        <p className="text-mist">No job data available for this page.</p>
+        <p className="text-stone-warm">No job data available for this page.</p>
         <Link to="/jobs" className="text-accent hover:underline mt-2 inline-block">
           Back to Jobs
         </Link>
@@ -266,9 +266,9 @@ function JobCard({ job }: { job: PseoJob }) {
             </a>
           </h2>
           <p className="text-sm text-stone-warm mt-0.5">{job.company}</p>
-          <p className="text-sm text-mist mt-0.5">{job.location}</p>
+          <p className="text-sm text-stone-warm mt-0.5">{job.location}</p>
           {job.description && (
-            <p className="text-sm text-mist mt-1 line-clamp-2">{job.description}</p>
+            <p className="text-sm text-stone-warm mt-1 line-clamp-2">{job.description}</p>
           )}
         </div>
         <div className="text-right flex-shrink-0">

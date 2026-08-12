@@ -249,7 +249,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
           {/* Add Section Button */}
           <button
             onClick={() => handleAction(onAddSection)}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-accent text-ink rounded-lg font-medium shadow-sm hover:shadow-md active:scale-[0.98] transition-all min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-accent text-ink rounded-lg font-medium shadow-sm hover:shadow-md active:scale-[0.98] transition-all min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
           >
             <MdAdd className="text-xl" />
             <span>Add Section</span>
@@ -259,7 +259,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
           <div className="relative">
             <button
               onClick={() => setShowAdvancedMenu(!showAdvancedMenu)}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 active:bg-gray-100 transition-all min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 active:bg-gray-100 transition-all min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
             >
               <MdMoreVert className="text-xl" />
               <span>More Options</span>
@@ -272,7 +272,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                 <button
                   onClick={() => handleAction(onExportYAML)}
                   disabled={loadingSave}
-                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-accent/[0.06] active:bg-accent/10 transition-colors flex items-center gap-3 border-b border-gray-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
+                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-accent/[0.06] active:bg-accent/10 transition-colors flex items-center gap-3 border-b border-gray-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
                 >
                   {loadingSave ? (
                     <span className="h-2 w-8 overflow-hidden rounded-full bg-accent/20">
@@ -293,7 +293,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                 <button
                   onClick={() => handleAction(onImportYAML)}
                   disabled={loadingLoad}
-                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-green-50 active:bg-green-100 transition-colors flex items-center gap-3 border-b border-gray-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
+                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-green-50 active:bg-green-100 transition-colors flex items-center gap-3 border-b border-gray-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
                 >
                   {loadingLoad ? (
                     <span className="h-2 w-8 overflow-hidden rounded-full bg-green-100">
@@ -313,7 +313,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                 {/* Start Fresh */}
                 <button
                   onClick={() => handleAction(onStartFresh)}
-                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-orange-50 active:bg-orange-100 transition-colors flex items-center gap-3 border-b border-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
+                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-orange-50 active:bg-orange-100 transition-colors flex items-center gap-3 border-b border-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
                 >
                   <MdRefresh className="text-orange-600 text-xl" />
                   <div className="flex-1">
@@ -325,7 +325,7 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                 {/* Help */}
                 <button
                   onClick={() => handleAction(onHelp)}
-                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-accent/[0.06] active:bg-accent/10 transition-colors flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
+                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-accent/[0.06] active:bg-accent/10 transition-colors flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
                 >
                   <MdHelpOutline className="text-accent text-xl" />
                   <div className="flex-1">

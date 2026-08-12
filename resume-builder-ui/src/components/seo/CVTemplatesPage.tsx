@@ -196,7 +196,7 @@ export default function CVTemplatesPage() {
               <p className="mb-2">
                 <strong>Standard UK CV:</strong> 2 pages is the accepted length for most professional roles.
               </p>
-              <p className="text-sm text-mist">
+              <p className="text-sm text-stone-warm">
                 Exceptions: Academic CVs can be longer. Entry-level CVs may be 1 page.
                 Senior executives with 15+ years experience may extend to 3 pages if needed.
               </p>

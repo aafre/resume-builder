@@ -52,7 +52,7 @@ export default function FreeCVBuilder() {
                   <li>Canada</li>
                   <li>Corporate roles (US companies)</li>
                 </ul>
-                <p className="mt-4 text-sm text-mist">
+                <p className="mt-4 text-sm text-stone-warm">
                   Our templates work for both—the format is the same; only the terminology differs.
                 </p>
               </div>

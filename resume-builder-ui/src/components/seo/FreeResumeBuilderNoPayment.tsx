@@ -138,7 +138,7 @@ export default function FreeResumeBuilderNoPayment() {
                 ))}
               </tbody>
             </table>
-            <p className="text-sm text-mist mt-4 text-center">
+            <p className="text-sm text-stone-warm mt-4 text-center">
               Pricing data collected from publicly available information (March 2026). Prices may vary by region.
             </p>
           </div>
@@ -257,7 +257,7 @@ export default function FreeResumeBuilderNoPayment() {
               </div>
             ))}
           </div>
-          <p className="text-sm text-mist mt-6 text-center">
+          <p className="text-sm text-stone-warm mt-6 text-center">
             Scenarios based on common user patterns. Want to see how free resume builders compare?
             Read our{' '}
             <Link to="/blog/best-free-resume-builders-2026" className="text-accent hover:underline">

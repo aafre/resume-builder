@@ -121,7 +121,7 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
               value={linkText}
               onChange={(e) => setLinkText(e.target.value)}
               placeholder="e.g., Visit our website"
-              className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+              className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-accent-text focus:border-accent transition-all"
               autoFocus
             />
           </div>
@@ -143,7 +143,7 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
               placeholder="e.g., https://example.com"
               className={`w-full border ${
                 urlError ? 'border-red-500' : 'border-gray-300'
-              } rounded-lg p-3 focus:ring-2 focus:ring-accent focus:border-accent transition-all`}
+              } rounded-lg p-3 focus:ring-2 focus:ring-accent-text focus:border-accent transition-all`}
               aria-invalid={!!urlError}
               aria-describedby={urlError ? "url-error" : undefined}
             />

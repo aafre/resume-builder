@@ -306,7 +306,7 @@ export default function HowToUseResumeKeywords() {
               </Link>
               .
             </p>
-            <div className="text-sm text-mist">
+            <div className="text-sm text-stone-warm">
               Common keywords: Python, React, Agile, CI/CD, AWS, Microservices
             </div>
           </div>
@@ -325,7 +325,7 @@ export default function HowToUseResumeKeywords() {
               </Link>
               .
             </p>
-            <div className="text-sm text-mist">
+            <div className="text-sm text-stone-warm">
               Common keywords: CRM, Zendesk, Customer Satisfaction, Conflict
               Resolution
             </div>
