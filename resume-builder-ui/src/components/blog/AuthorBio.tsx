@@ -23,7 +23,7 @@ export default function AuthorBio() {
               >
                 More articles &rarr;
               </Link>
-              <span className="text-mist">|</span>
+              <span className="text-stone-warm">|</span>
               <Link
                 to="/templates"
                 className="text-sm font-medium text-accent hover:text-ink transition-colors"

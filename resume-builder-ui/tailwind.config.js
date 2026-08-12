@@ -19,10 +19,12 @@ module.exports = {
           DEFAULT: '#fafaf8',
           dark: '#f0efe9',
         },
-        // WCAG 2.2 AA, measured on Chalk / white / Chalk Dark (strictest ground):
-        // stone-warm 5.38 / 5.62 / 4.88, mist 4.98 / 5.21 / 4.52. See DESIGN.md.
+        // Warm grey is surface-polarity-paired: each token is AA-valid only against
+        // the polarity it was measured on. Never use one on the other's ground.
+        // stone-warm on Chalk / white / Chalk Dark (strictest): 5.38 / 5.62 / 4.88
         'stone-warm': '#6b6761',
-        mist: '#706c68',
+        // ...-inverse on ink / ink-light / white-5%-over-ink-light: 7.90 / 7.03 / 6.19
+        'stone-warm-inverse': '#a8a4a0',
         accent: '#00d47e',
         'accent-text': '#007a48',
       },

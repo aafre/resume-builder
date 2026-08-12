@@ -105,7 +105,7 @@ export default function Contact() {
                   Home
                 </Link>
               </li>
-              <li className="text-mist">/</li>
+              <li className="text-stone-warm">/</li>
               <li className="text-ink font-medium">Contact</li>
             </ol>
           </nav>
@@ -349,7 +349,7 @@ export default function Contact() {
                       <p className="text-stone-warm">
                         We typically respond within 24 hours
                       </p>
-                      <p className="text-sm text-mist mt-1">
+                      <p className="text-sm text-stone-warm mt-1">
                         Monday - Friday, 9 AM - 6 PM EST
                       </p>
                     </div>

@@ -126,11 +126,11 @@ export default function BlogLayout({
               <li>
                 <Link to="/" className="hover:text-accent transition-colors">Home</Link>
               </li>
-              <li className="text-mist">/</li>
+              <li className="text-stone-warm">/</li>
               <li>
                 <Link to="/blog" className="hover:text-accent transition-colors">Blog</Link>
               </li>
-              <li className="text-mist">/</li>
+              <li className="text-stone-warm">/</li>
               <li className="text-ink font-semibold truncate max-w-[200px] sm:max-w-none" title={title}>{title}</li>
             </ol>
           </nav>
@@ -181,7 +181,7 @@ export default function BlogLayout({
               </span>
             ))}
             {keywords.length > 5 && (
-              <span className="px-3 py-1 text-mist font-mono text-[10px] tracking-[0.1em] sm:hidden">
+              <span className="px-3 py-1 text-stone-warm font-mono text-[10px] tracking-[0.1em] sm:hidden">
                 +{keywords.length - 5} more
               </span>
             )}

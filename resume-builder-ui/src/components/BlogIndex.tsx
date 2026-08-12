@@ -58,7 +58,7 @@ export default function BlogIndex() {
                       <span className="px-3 py-1 bg-accent text-ink text-sm font-bold rounded-full">
                         Featured
                       </span>
-                      <span className="font-mono text-xs tracking-[0.15em] text-mist uppercase">
+                      <span className="font-mono text-xs tracking-[0.15em] text-stone-warm-inverse uppercase">
                         {featuredPost.category}
                       </span>
                     </div>
@@ -72,12 +72,12 @@ export default function BlogIndex() {
                       </Link>
                     </h2>
 
-                    <p className="font-display font-extralight text-mist text-lg mb-8 leading-relaxed max-w-3xl">
+                    <p className="font-display font-extralight text-stone-warm-inverse text-lg mb-8 leading-relaxed max-w-3xl">
                       {featuredPost.description}
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                      <div className="flex items-center gap-4 text-sm text-mist font-mono">
+                      <div className="flex items-center gap-4 text-sm text-stone-warm-inverse font-mono">
                         <time dateTime={featuredPost.publishDate}>
                           {new Date(
                             featuredPost.publishDate
@@ -147,7 +147,7 @@ export default function BlogIndex() {
 
                       <h3 className="font-display text-lg font-extrabold mb-3 leading-tight">
                         {post.comingSoon ? (
-                          <span className="text-mist cursor-not-allowed">
+                          <span className="text-stone-warm cursor-not-allowed">
                             {post.title}
                           </span>
                         ) : (
@@ -165,7 +165,7 @@ export default function BlogIndex() {
                       </p>
 
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 text-xs text-mist font-mono">
+                        <div className="flex items-center gap-3 text-xs text-stone-warm font-mono">
                           <time dateTime={post.publishDate}>
                             {new Date(post.publishDate).toLocaleDateString(
                               "en-US",
@@ -180,7 +180,7 @@ export default function BlogIndex() {
                         </div>
 
                         {post.comingSoon ? (
-                          <span className="text-mist text-sm font-medium cursor-not-allowed">
+                          <span className="text-stone-warm text-sm font-medium cursor-not-allowed">
                             Coming Soon
                           </span>
                         ) : (
@@ -221,7 +221,7 @@ export default function BlogIndex() {
                   <h2 className="font-display text-2xl md:text-3xl font-extrabold text-white mt-3 mb-4">
                     Ready to Put These Tips into Action?
                   </h2>
-                  <p className="font-display text-lg font-extralight text-mist mb-8 max-w-2xl mx-auto">
+                  <p className="font-display text-lg font-extralight text-stone-warm-inverse mb-8 max-w-2xl mx-auto">
                     Create a professional resume in minutes with our free resume
                     builder
                   </p>

@@ -7,7 +7,7 @@ colors:
   chalk: "#fafaf8"
   chalk-dark: "#f0efe9"
   stone-warm: "#6b6761"
-  mist: "#706c68"
+  stone-warm-inverse: "#a8a4a0"
   accent: "#00d47e"
   accent-text: "#007a48"
 typography:
@@ -137,9 +137,9 @@ A near-monochrome warm-grey system carrying a single high-chroma green that is s
 - **Chalk** (`#fafaf8`): The default page ground and the resting state of most sections. Warm enough to read as paper rather than as a UI grey.
 - **Chalk Dark** (`#f0efe9`): The alternate surface — resource cards, the footer, and every other section when sections alternate. Provides depth by tone rather than by shadow.
 - **Stone Warm** (`#6b6761`): Body copy, subtitles, and supporting text. The workhorse secondary text color. **Measures 5.38:1 on Chalk, 5.62:1 on white, 4.88:1 on Chalk Dark — clears AA at body size on every ground in the system.** The extra margin over the 4.5:1 floor is deliberate: this token carries weight-200 copy, and hairline type needs headroom that WCAG's size-only thresholds do not model.
-- **Mist** (`#706c68`): Tertiary and muted text — timestamps, counts, meta rows, placeholder text, secondary labels. **Measures 4.98:1 on Chalk, 5.21:1 on white, 4.52:1 on Chalk Dark — clears AA at body size on every ground.**
+- **Stone Warm Inverse** (`#a8a4a0`): The same role as Stone Warm, for dark grounds. Supporting text inside Ink and Ink Light blocks — the closing-CTA subtitle, the featured-post meta row, the mockup chrome label. **Measures 7.90:1 on Ink, 7.03:1 on Ink Light, 6.19:1 on a white-5% chip over Ink Light.**
 
-Stone Warm and Mist now sit one tonal step apart rather than the wide step they used to. That compression is forced, not sloppy: the light end of a warm-grey ramp is not available to text under AA on a near-white ground, so the tertiary token had to come up to meet the secondary one. The two remain separate tokens because the *role* distinction still holds — Mist marks text that supports rather than carries — but the separation is now read from size, weight, and placement rather than from a large tonal drop. Do not "restore" Mist to a lighter grey.
+There used to be a third warm grey, `mist`, holding a "tertiary" step below Stone Warm. The AA pass compressed it to `#706c68` against Stone Warm's `#6b6761` — five points per channel, which is not a tonal step, it is a rounding error with a name. It was collapsed into Stone Warm; the role distinction it claimed to carry is now read from size, weight, and placement, which is where it was actually being read from anyway. The freed value became the inverse token.
 
 Standard Tailwind `gray-{200,300,600,700}` remains acceptable for borders, form strokes, and interactive chrome inside app surfaces. It is **not** acceptable for text or backgrounds on any migrated page; that is what the tokens above are for.
 
@@ -148,6 +148,8 @@ Standard Tailwind `gray-{200,300,600,700}` remains acceptable for borders, form 
 **The 10% Rule.** Signal Green covers no more than roughly a tenth of any screen. It fills primary CTAs and status indicators. It never backs a section, never tints a large surface, and never appears decoratively. The moment green becomes ambient, "this passed" and "click this" stop meaning anything.
 
 **The Deep Signal Rule.** `#00d47e` on a light ground measures 1.87:1 on Chalk, which clears neither the 4.5:1 text threshold nor the 3:1 non-text one. Any accent-colored text below 24px, **and every focus ring**, uses `#007a48` (`text-accent-text` / `ring-accent-text`) instead — 5.18:1 on Chalk, 4.70:1 on Chalk Dark. `#00d47e` is for fills and decorative halos only, where the surrounding text carries the contrast (Ink on Signal Green measures 9.98:1, well clear). Reaching for `text-accent` or `ring-accent` on anything that has to be seen is the single most likely accessibility regression in this system.
+
+**The Surface Polarity Rule.** Warm greys are surface-polarity-paired, and **a token is only AA-valid against the polarity it was measured on.** `stone-warm` is for light grounds (Chalk, white, Chalk Dark); `stone-warm-inverse` is for dark grounds (Ink, Ink Light). Using either on the other's polarity fails AA in both directions — `stone-warm` drops to 3.48:1 on Ink, `stone-warm-inverse` drops to 2.15:1 on Chalk Dark. This is not a style preference, and it is the failure mode this system is most prone to: a single-axis contrast pass reads as complete, passes every number it checks, and silently inverts the problem on the other polarity. Measure both, always. Note also that translucent chips (`bg-white/5` over Ink Light composites to `#252525`) are a *third* ground — lighter than Ink Light, so stricter — and must be composited before measuring.
 
 **The One Accent Rule.** There is no secondary or tertiary brand color. Semantic reds, ambers, and blues exist only inside status affordances (toasts, validation, warning banners) and are never promoted into the brand palette.
 
@@ -163,14 +165,26 @@ Ratios are given against all three light grounds the system actually paints text
 | Ink on Signal Green (primary button label) | — | — | — | 9.98:1, passes everything |
 | Deep Signal | 5.18:1 | 5.42:1 | 4.70:1 | Passes AA text on all three, and the 3:1 non-text threshold |
 | Stone Warm | 5.38:1 | 5.62:1 | 4.88:1 | Passes AA at body size on all three |
-| Mist | 4.98:1 | 5.21:1 | 4.52:1 | Passes AA at body size on all three |
+| Stone Warm Inverse | 2.37:1 | 2.48:1 | 2.15:1 | **Fails AA on light grounds — dark grounds only** |
 | Deep Signal focus ring | 5.18:1 | 5.42:1 | 4.70:1 | Passes the 3:1 focus-indicator threshold with margin |
 | Signal Green | 1.87:1 | 1.96:1 | 1.70:1 | **Fills and decorative halos only — never text, never a focus ring** |
 
-Two caveats that survive the audit and must not be re-litigated by eye:
+And against the dark grounds, which the system paints text on in the closing-CTA blocks, the blog featured card, the editor mobile banner, and the landing-page mockup chrome:
+
+| Pairing | on Ink `#0c0c0c` | on Ink Light `#1a1a1a` | on `bg-white/5` over Ink Light (`#252525`) | Verdict |
+|---|---|---|---|---|
+| White | 19.56:1 | 17.40:1 | 15.33:1 | Passes everything |
+| Stone Warm Inverse | 7.90:1 | 7.03:1 | 6.19:1 | Passes AA at body size on all three |
+| Stone Warm | 3.48:1 | 3.10:1 | 2.73:1 | **Fails AA — never use on a dark ground** |
+| Signal Green | 9.98:1 | 8.88:1 | 7.82:1 | Passes AA text — the one ground where `text-accent` is contrast-safe |
+
+Note the last row: Signal Green inverts too. On light grounds it is a fill color and `text-accent-text` carries any accent text; on dark grounds `text-accent` clears AA comfortably, which is why the mono eyebrows inside the dark closing-CTA blocks correctly use `text-accent` and not `text-accent-text`. Deep Signal on Ink would be the wrong call — measure before "fixing" one to match the other. The 10% Rule still caps how much green appears either way.
+
+Three caveats that survive the audit and must not be re-litigated by eye:
 
 1. **Deep Signal clears 4.5:1 on Chalk Dark by only 0.20.** It passes, with little room. Do not set Deep Signal text on any ground darker than Chalk Dark without re-measuring.
-2. **Signal Green remains non-compliant as a foreground at every size, by design.** It is a fill color. The moment it appears as text, an icon that carries meaning alone, or a focus ring, that is a regression — check it against this table rather than trusting that it "looks green enough".
+2. **Signal Green remains non-compliant as a foreground on light grounds at every size, by design.** It is a fill color. The moment it appears as text, an icon that carries meaning alone, or a focus ring, that is a regression — check it against this table rather than trusting that it "looks green enough".
+3. **The two warm greys are mutually exclusive by ground, not interchangeable.** See the Surface Polarity Rule. Every row above that reads "fails" is a token being used on the wrong polarity, not a token that needs replacing.
 
 ## Typography
 
@@ -299,10 +313,11 @@ Ad slots must never be restyled to blend into content, and must never be removed
 - **Do** lead every section with the mono eyebrow → H2 → subtitle block.
 - **Do** use `overflow: clip` rather than `overflow: hidden` on layout containers — `hidden` silently creates a scroll container and has broken this app's flex layout before.
 - **Do** verify a design still works with the webfont unloaded; `font-display: optional` means it will be, for some visitors.
-- **Do** check any new text color against the measured-contrast table before using it, and measure against Chalk Dark rather than white — Chalk Dark is the darkest ground and the one that fails first.
+- **Do** check any new text color against the measured-contrast table before using it, and measure against Chalk Dark rather than white — Chalk Dark is the strictest light ground and the one that fails first.
+- **Do** measure **both** polarities whenever a neutral changes. A pass against light grounds alone reads as complete and is not. See the Surface Polarity Rule.
 
 ### Don't:
-- **Don't** use `gray-*` or `slate-*` for text or backgrounds on a migrated page. Use `ink`, `stone-warm`, `mist`, `chalk`, `chalk-dark`. (`ResumeCard.tsx` currently uses `slate-200`, `gray-900`, and `gray-500` — it is un-migrated, not a precedent.)
+- **Don't** use `gray-*` or `slate-*` for text or backgrounds on a migrated page. Use `ink`, `stone-warm`, `stone-warm-inverse`, `chalk`, `chalk-dark`. (`ResumeCard.tsx` currently uses `slate-200`, `gray-900`, and `gray-500` — it is un-migrated, not a precedent.)
 - **Don't** let Signal Green back a large surface, tint a section, or appear decoratively. Ten percent is the ceiling.
 - **Don't** apply scroll reveals, hover lifts, or `.shadow-premium` to the editor or my-resumes. Motion on a workbench is feedback; anything else is friction on a surface people use for forty minutes.
 - **Don't** introduce a third typeface, or reach for a weight between 200 and 800 for editorial text.
@@ -310,7 +325,8 @@ Ad slots must never be restyled to blend into content, and must never be removed
 - **Don't** put a resting shadow on an app card.
 - **Don't** restyle, shrink, or remove ad surfaces for visual tidiness.
 - **Don't** introduce a dark mode. This system has one light world and every token, shadow, and contrast decision assumes it.
-- **Don't** lighten Stone Warm or Mist back toward their pre-audit values (`#8a8680` / `#a8a4a0`). Both failed AA; the current values are the result of a measured pass, not a taste call.
+- **Don't** lighten Stone Warm back toward its pre-audit value (`#8a8680`). It failed AA on light grounds; `#6b6761` is the result of a measured pass, not a taste call. On dark grounds you want `stone-warm-inverse`, not a lighter Stone Warm.
+- **Don't** reintroduce a third warm grey to recover a "tertiary" step. The last one compressed to within five points of Stone Warm and was collapsed. Carry that hierarchy with size and weight.
 - **Don't** use `ring-accent` for a focus state. Signal Green is 1.87:1 on Chalk and cannot carry a focus indicator; `ring-accent-text` is the system's focus ring.
 
 <!--

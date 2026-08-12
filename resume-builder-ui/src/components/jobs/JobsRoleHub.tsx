@@ -55,7 +55,7 @@ export default function JobsRoleHub() {
   if (!data) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-12 text-center">
-        <p className="text-mist">No data available.</p>
+        <p className="text-stone-warm">No data available.</p>
         <Link to="/jobs" className="text-accent hover:underline mt-2 inline-block">
           Back to Jobs
         </Link>
@@ -107,7 +107,7 @@ export default function JobsRoleHub() {
             className="bg-white rounded-2xl border border-black/[0.06] p-3 hover:border-accent/30 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 text-center"
           >
             <span className="block text-sm font-medium text-ink">{loc.name}</span>
-            <span className="block text-xs text-mist mt-0.5">View jobs &rarr;</span>
+            <span className="block text-xs text-stone-warm mt-0.5">View jobs &rarr;</span>
           </Link>
         ))}
       </div>

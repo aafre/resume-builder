@@ -46,11 +46,13 @@
         "canonical": "#6b6761",
         "tonalRamp": ["#26251f", "#3d3b33", "#5c5950", "#6b6761", "#807c72", "#a8a4a0", "#cdc9c1", "#f0efe9"]
       },
-      "mist": {
+      "stone-warm-inverse": {
         "role": "neutral",
-        "displayName": "Mist",
-        "canonical": "#706c68",
-        "tonalRamp": ["#26251f", "#3d3b33", "#5c5950", "#706c68", "#807c72", "#a8a4a0", "#cdc9c1", "#f0efe9"]
+        "displayName": "Stone Warm Inverse",
+        "canonical": "#a8a4a0",
+        "surfacePolarity": "dark",
+        "note": "Stone Warm's pair for dark grounds. 7.90:1 on ink, 7.03:1 on ink-light, 6.19:1 on a bg-white/5 chip over ink-light. Fails AA on every light ground (2.15:1 on chalk-dark) — the two are mutually exclusive by polarity, not interchangeable.",
+        "tonalRamp": ["#26251f", "#3d3b33", "#5c5950", "#6b6761", "#807c72", "#a8a4a0", "#cdc9c1", "#f0efe9"]
       }
     },
     "typographyMeta": {
@@ -200,7 +202,7 @@
       "Do verify a design still works with the webfont unloaded; font-display: optional means it will be, for some visitors."
     ],
     "donts": [
-      "Don't use gray-* or slate-* for text or backgrounds on a migrated page. Use ink, stone-warm, mist, chalk, chalk-dark.",
+      "Don't use gray-* or slate-* for text or backgrounds on a migrated page. Use ink, stone-warm, stone-warm-inverse, chalk, chalk-dark.",
       "Don't let Signal Green back a large surface, tint a section, or appear decoratively. Ten percent is the ceiling.",
       "Don't apply scroll reveals, hover lifts, or .shadow-premium to the editor or my-resumes. Motion on a workbench is feedback; anything else is friction on a surface people use for forty minutes.",
       "Don't introduce a third typeface, or reach for a weight between 200 and 800 for editorial text.",
@@ -208,7 +210,9 @@
       "Don't put a resting shadow on an app card.",
       "Don't restyle, shrink, or remove ad surfaces for visual tidiness.",
       "Don't introduce a dark mode. This system has one light world and every token, shadow, and contrast decision assumes it.",
-      "Don't lighten stone-warm or mist back toward their pre-audit values (#8a8680 / #a8a4a0). Both failed AA at body size; the current values (5.38:1 and 4.98:1 on chalk, 4.88:1 and 4.52:1 on chalk-dark) came from a measured pass.",
+      "Don't lighten stone-warm back toward its pre-audit value (#8a8680). It failed AA at body size on light grounds; #6b6761 (5.38:1 on chalk, 4.88:1 on chalk-dark) came from a measured pass. On dark grounds reach for stone-warm-inverse, not a lighter stone-warm.",
+      "Don't use a warm grey on the wrong surface polarity. stone-warm is 3.48:1 on ink; stone-warm-inverse is 2.15:1 on chalk-dark. Both fail. Measure both polarities whenever a neutral changes — a light-grounds-only pass reads as complete and is not.",
+      "Don't reintroduce a third warm grey to recover a tertiary step. The last one (mist) compressed to within five points of stone-warm under AA and was collapsed into it. Carry that hierarchy with size and weight.",
       "Don't use ring-accent for a focus state. Signal Green is 1.87:1 on chalk and cannot carry a focus indicator; ring-accent-text is the system's focus ring."
     ]
   }

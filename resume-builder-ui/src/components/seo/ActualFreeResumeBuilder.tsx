@@ -130,7 +130,7 @@ export default function ActualFreeResumeBuilder() {
               </tr>
             </tbody>
           </table>
-          <p className="text-sm text-mist mt-4 text-center">
+          <p className="text-sm text-stone-warm mt-4 text-center">
             Comparison based on publicly available pricing from popular resume builders (Jan 2026)
           </p>
         </div>

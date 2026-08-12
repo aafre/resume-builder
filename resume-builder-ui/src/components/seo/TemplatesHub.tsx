@@ -167,27 +167,27 @@ export default function TemplatesHub() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="bg-white rounded-xl p-5 shadow-premium border border-black/[0.06] text-center">
                 <div className="font-display font-bold text-ink text-lg">Workday</div>
-                <p className="text-mist text-xs mt-1">Fortune 500 standard</p>
+                <p className="text-stone-warm text-xs mt-1">Fortune 500 standard</p>
               </div>
               <div className="bg-white rounded-xl p-5 shadow-premium border border-black/[0.06] text-center">
                 <div className="font-display font-bold text-ink text-lg">Taleo (Oracle)</div>
-                <p className="text-mist text-xs mt-1">Enterprise & government</p>
+                <p className="text-stone-warm text-xs mt-1">Enterprise & government</p>
               </div>
               <div className="bg-white rounded-xl p-5 shadow-premium border border-black/[0.06] text-center">
                 <div className="font-display font-bold text-ink text-lg">iCIMS</div>
-                <p className="text-mist text-xs mt-1">Large employers</p>
+                <p className="text-stone-warm text-xs mt-1">Large employers</p>
               </div>
               <div className="bg-white rounded-xl p-5 shadow-premium border border-black/[0.06] text-center">
                 <div className="font-display font-bold text-ink text-lg">Greenhouse</div>
-                <p className="text-mist text-xs mt-1">Tech & startups</p>
+                <p className="text-stone-warm text-xs mt-1">Tech & startups</p>
               </div>
               <div className="bg-white rounded-xl p-5 shadow-premium border border-black/[0.06] text-center">
                 <div className="font-display font-bold text-ink text-lg">Lever</div>
-                <p className="text-mist text-xs mt-1">Mid-size tech</p>
+                <p className="text-stone-warm text-xs mt-1">Mid-size tech</p>
               </div>
               <div className="bg-white rounded-xl p-5 shadow-premium border border-black/[0.06] text-center">
                 <div className="font-display font-bold text-ink text-lg">BambooHR</div>
-                <p className="text-mist text-xs mt-1">Small to mid-size</p>
+                <p className="text-stone-warm text-xs mt-1">Small to mid-size</p>
               </div>
             </div>
           </div>

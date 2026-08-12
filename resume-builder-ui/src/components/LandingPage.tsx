@@ -496,7 +496,7 @@ const LandingPage: React.FC = () => {
                 </div>
                 <div className="flex-1 flex justify-center">
                   <div className="bg-white/5 rounded-md px-4 py-1">
-                    <span className="font-mono text-[11px] text-mist">youtube.com/@EasyFreeResume</span>
+                    <span className="font-mono text-[11px] text-stone-warm-inverse">youtube.com/@EasyFreeResume</span>
                   </div>
                 </div>
               </div>
@@ -738,7 +738,7 @@ const LandingPage: React.FC = () => {
                 <h2 className="font-display text-3xl md:text-[3.5rem] font-extrabold text-white mb-6 tracking-tight leading-tight">
                   Ready to Land Your Dream Job?
                 </h2>
-                <p className="font-display text-lg font-extralight text-mist mb-10 max-w-xl mx-auto leading-relaxed">
+                <p className="font-display text-lg font-extralight text-stone-warm-inverse mb-10 max-w-xl mx-auto leading-relaxed">
                   Join thousands of job seekers who've successfully created
                   professional resumes with our free builder.
                 </p>

@@ -455,7 +455,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                       Will your resume pass the filter?
                     </p>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-mist group-hover:text-accent group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+                  <ChevronRight className="w-4 h-4 text-stone-warm group-hover:text-accent group-hover:translate-x-0.5 transition-all flex-shrink-0" />
                 </div>
               </a>
             )
@@ -535,7 +535,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                       Matched to your resume skills
                     </p>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-mist group-hover:text-accent group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+                  <ChevronRight className="w-4 h-4 text-stone-warm group-hover:text-accent group-hover:translate-x-0.5 transition-all flex-shrink-0" />
                 </div>
               </Link>
             )
