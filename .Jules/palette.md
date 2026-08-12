@@ -1,3 +1,6 @@
 ## 2025-02-14 - ResponsiveConfirmDialog for Destructive Actions
 **Learning:** Destructive actions (like Delete) implemented with custom hardcoded modals lack standard accessibility attributes (`role="dialog"`, `aria-modal`, etc.) and mobile responsiveness (like bottom sheets). This app has a `ResponsiveConfirmDialog` component designed specifically for this purpose, but it was not being utilized uniformly.
 **Action:** Always use `ResponsiveConfirmDialog` for destructive confirmation prompts (such as `DeleteResumeModal`) to ensure a consistent, accessible, and mobile-friendly UX that prevents accidental data loss.
+## 2025-02-14 - Auto-Focus Safe Actions in Destructive Dialogs
+**Learning:** Default focus in custom dialogs is often overlooked. In destructive dialogs (like Delete confirmations), if focus lands on the "Confirm" action by default or there is no default focus, users may accidentally trigger the destructive action by pressing 'Enter'. Adding `autoFocus` to the safe "Cancel" action prevents this, and adding visible focus rings (`focus-visible:ring-2`) ensures keyboard accessibility.
+**Action:** When implementing custom dialogs for destructive actions, always place `autoFocus={isDestructive}` on the safe/cancel button and explicitly add `focus-visible` styles to both buttons to ensure clear keyboard navigation.
