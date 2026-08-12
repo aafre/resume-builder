@@ -43,14 +43,8 @@
   --header-height-mobile: 64px;
   --header-height-desktop: 72px;
 
-  /* Footer height - measures entire footer component */
-  --footer-height: 200px;
-
   /* Mobile action bar (mobile/tablet only) */
   --mobile-action-bar-height: 110px;
-
-  /* Editor toolbar (tablet only) */
-  --tablet-toolbar-height: 80px;
 }
 
 /* 2026 Modern Button System */
@@ -826,6 +820,27 @@ footer {
 /* Padding respects iPhone home-indicator and Android nav bar via env() */
 .safe-area-inset-bottom {
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+/* ── Drawer entrances ── */
+/* Transform-only, so the global prefers-reduced-motion rule above collapses
+   them to a visible final state rather than to nothing. */
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.3s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s ease-out;
 }
 
 @keyframes pulse {
