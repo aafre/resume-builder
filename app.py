@@ -20,6 +20,7 @@ from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 import requests as http_requests
 import yaml
+from utils.yaml_converter import fast_yaml_dump
 from dotenv import load_dotenv
 from flask import (
     Flask,
@@ -3548,7 +3549,7 @@ def generate_pdf_for_saved_resume(resume_id):
             # Write YAML to temp file
             yaml_path = temp_dir_path / "resume.yaml"
             with open(yaml_path, "w") as f:
-                yaml.dump(yaml_data, f)
+                fast_yaml_dump(yaml_data, f)
 
             # Generate PDF
             timestamp = datetime.now().strftime("%Y%m%d_%H_%M_%S")
@@ -3785,7 +3786,7 @@ def generate_thumbnail_for_resume(resume_id):
             # Write YAML to temp file
             yaml_path = temp_dir_path / "resume.yaml"
             with open(yaml_path, "w") as f:
-                yaml.dump(yaml_data, f)
+                fast_yaml_dump(yaml_data, f)
 
             # Generate PDF
             timestamp = datetime.now().strftime("%Y%m%d_%H_%M_%S")
