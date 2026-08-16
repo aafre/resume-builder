@@ -2,7 +2,8 @@
  * Modal component for inserting markdown-style links in a user-friendly way
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId } from 'react';
+import ModalShell from './shared/ModalShell';
 
 interface LinkInsertionModalProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
   initialUrl = '',
   isEditMode = false,
 }) => {
+  const titleId = useId();
   const [linkText, setLinkText] = useState(initialText);
   const [url, setUrl] = useState(initialUrl);
   const [urlError, setUrlError] = useState('');
@@ -75,16 +77,14 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
     onClose();
   };
 
+  // Enter only. Escape is owned by ModalShell's focus trap - handling it here
+  // too would fire onClose twice for one keypress.
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       handleInsert();
-    } else if (e.key === 'Escape') {
-      onClose();
     }
   };
-
-  if (!isOpen) return null;
 
   // Preview markdown
   const previewMarkdown = linkText.trim() && url.trim()
@@ -92,19 +92,14 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
     : '';
 
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-      onClick={onClose}
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      panelClassName="bg-white p-6 rounded-xl shadow-2xl max-w-md w-full"
     >
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-        className="bg-white p-6 rounded-xl shadow-2xl max-w-md w-full"
-        onClick={(e) => e.stopPropagation()}
-        onKeyDown={handleKeyDown}
-      >
-        <h3 id="modal-title" className="text-xl font-semibold mb-4 text-gray-800">
+      <div onKeyDown={handleKeyDown}>
+        <h3 id={titleId} className="text-xl font-semibold mb-4 text-ink">
           {isEditMode ? 'Edit Link' : 'Insert Link'}
         </h3>
 
@@ -191,6 +186,6 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
           </button>
         </div>
       </div>
-    </div>
+    </ModalShell>
   );
 };
