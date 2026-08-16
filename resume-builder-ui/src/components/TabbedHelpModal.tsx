@@ -1,6 +1,8 @@
 import { Fragment } from 'react';
 import { Tab } from '@headlessui/react';
 import { MdClose, MdMouse, MdTouchApp } from 'react-icons/md';
+import { useId } from 'react';
+import ModalShell from './shared/ModalShell';
 
 interface TabbedHelpModalProps {
   isOpen: boolean;
@@ -26,16 +28,21 @@ export default function TabbedHelpModal({
   isAnonymous,
   onSignInClick
 }: TabbedHelpModalProps) {
-  if (!isOpen) return null;
+  const titleId = useId();
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden flex flex-col">
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      overlayClassName="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+      panelClassName="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden flex flex-col"
+    >
         {/* Header */}
         <div className="p-6 border-b border-gray-200 flex-shrink-0">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-gray-800">
-              Help & Tips
+            <h2 id={titleId} className="text-2xl font-bold text-ink">
+              Help &amp; Tips
             </h2>
             <button
               onClick={onClose}
@@ -114,8 +121,7 @@ export default function TabbedHelpModal({
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
-      </div>
-    </div>
+    </ModalShell>
   );
 }
 

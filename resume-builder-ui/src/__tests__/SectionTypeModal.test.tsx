@@ -27,7 +27,9 @@ describe("SectionTypeModal", () => {
     const onCloseMock = vi.fn();
     const onSelectMock = vi.fn();
 
-    const { container } = render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
+    // ModalShell portals to document.body, so the render container is empty.
+    render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
+    const container = document.body;
 
     // Each card should have an SVG visual (7 section types)
     const svgElements = container.querySelectorAll('svg[aria-hidden="true"]');
@@ -317,7 +319,9 @@ describe("SectionTypeModal", () => {
       const onCloseMock = vi.fn();
       const onSelectMock = vi.fn();
 
-      const { container } = render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
+      // ModalShell portals to document.body, so the render container is empty.
+    render(<SectionTypeModal onClose={onCloseMock} onSelect={onSelectMock} />);
+    const container = document.body;
 
       // Find the grid container
       const gridContainer = container.querySelector('.grid');
