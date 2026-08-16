@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { createPortal } from 'react-dom';
+import { useState, useCallback, useId } from 'react';
+import ModalShell from './shared/ModalShell';
 import { useResumeParser } from '../hooks/useResumeParser';
 import {
   CloudArrowUpIcon,
@@ -79,23 +79,28 @@ export function UploadResumeModal({
     }
   };
 
+  const titleId = useId();
+
   const handleCloseModal = () => {
     setParseResult(null);
     onClose();
   };
 
-  if (!isOpen) return null;
-
-  const modalContent = (
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
+  return (
+    <ModalShell
+      isOpen={isOpen}
+      onClose={handleCloseModal}
+      labelledBy={titleId}
+      overlayClassName="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 p-4"
+      panelClassName="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden"
+    >
         {/* Header */}
         <div className="bg-ink px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 p-2 rounded-lg">
               <DocumentArrowUpIcon className="w-6 h-6 text-white" />
             </div>
-            <h2 className="text-xl font-bold text-white">Upload Resume</h2>
+            <h2 id={titleId} className="text-xl font-bold text-white">Upload Resume</h2>
           </div>
           <button
             onClick={handleCloseModal}
@@ -254,9 +259,6 @@ export function UploadResumeModal({
             </button>
           </div>
         )}
-      </div>
-    </div>
+    </ModalShell>
   );
-
-  return createPortal(modalContent, document.body);
 }

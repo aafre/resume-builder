@@ -34,7 +34,13 @@ export const getFocusableElements = (container: HTMLElement | null) => {
 export default function useFocusTrap(
   isOpen: boolean,
   containerRef: { current: HTMLElement | null },
-  onClose: () => void
+  onClose: () => void,
+  /**
+   * Element to focus on open, when the first focusable is the wrong target —
+   * e.g. a celebration dialog wants its primary CTA focused, not its close
+   * button. Falls back to the first focusable if unset or not yet mounted.
+   */
+  initialFocusRef?: { current: HTMLElement | null }
 ) {
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const onCloseRef = useRef(onClose);
@@ -51,7 +57,7 @@ export default function useFocusTrap(
       : null;
 
     const focusableElements = getFocusableElements(containerRef.current);
-    (focusableElements[0] ?? containerRef.current)?.focus();
+    (initialFocusRef?.current ?? focusableElements[0] ?? containerRef.current)?.focus();
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -105,5 +111,5 @@ export default function useFocusTrap(
       document.removeEventListener("keydown", handleKeyDown);
       previousFocusRef.current?.focus();
     };
-  }, [isOpen, containerRef]);
+  }, [isOpen, containerRef, initialFocusRef]);
 }

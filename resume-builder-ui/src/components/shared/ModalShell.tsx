@@ -19,6 +19,12 @@ interface ModalShellProps {
   overlayClassName?: string;
   /** Clicking the overlay closes. Turn off for destructive confirmations. */
   closeOnBackdrop?: boolean;
+  /** data-testid for the overlay, for suites that target the backdrop. */
+  overlayTestId?: string;
+  /** data-testid for the dialog panel. */
+  panelTestId?: string;
+  /** Focus this on open instead of the first focusable (e.g. a primary CTA). */
+  initialFocusRef?: { current: HTMLElement | null };
 }
 
 const DEFAULT_OVERLAY =
@@ -54,10 +60,13 @@ export default function ModalShell({
   panelClassName = "",
   overlayClassName = DEFAULT_OVERLAY,
   closeOnBackdrop = true,
+  overlayTestId,
+  panelTestId,
+  initialFocusRef,
 }: ModalShellProps) {
   const panelRef = useRef<HTMLDivElement>(null);
 
-  useFocusTrap(isOpen, panelRef, onClose);
+  useFocusTrap(isOpen, panelRef, onClose, initialFocusRef);
   useScrollLock(isOpen);
 
   if (!isOpen) return null;
@@ -65,6 +74,7 @@ export default function ModalShell({
   return createPortal(
     <div
       className={overlayClassName}
+      data-testid={overlayTestId}
       // mousedown, not click: a drag that starts inside the panel and releases
       // over the overlay should not count as a click-outside.
       onMouseDown={(event) => {
@@ -80,6 +90,7 @@ export default function ModalShell({
         aria-describedby={describedBy}
         tabIndex={-1}
         className={panelClassName}
+        data-testid={panelTestId}
       >
         {children}
       </div>

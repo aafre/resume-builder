@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useId } from 'react';
+import ModalShell from './shared/ModalShell';
 import { MdWarning, MdClose, MdSecurity, MdPerson } from 'react-icons/md';
 
 interface ResumeRecoveryModalProps {
@@ -24,39 +24,16 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
   templateName,
   isAnonymous,
 }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const titleId = useId();
 
-  // Auto-focus modal on open
-  useEffect(() => {
-    if (isOpen && modalRef.current) {
-      modalRef.current.focus();
-    }
-  }, [isOpen]);
-
-  // Handle keyboard navigation
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      onClose();
-    }
-  };
-
-  if (!isOpen) return null;
-
-  const modalContent = (
-    <div
-      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
-      onClick={onClose}
-      onKeyDown={handleKeyDown}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="recovery-modal-title"
+  return (
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      overlayClassName="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+      panelClassName="bg-white rounded-2xl shadow-2xl max-w-lg w-full"
     >
-      <div
-        ref={modalRef}
-        className="bg-white rounded-2xl shadow-2xl max-w-lg w-full"
-        onClick={(e) => e.stopPropagation()}
-        tabIndex={-1}
-      >
         {/* Close button */}
         <button
           onClick={onClose}
@@ -72,7 +49,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
             <div className="bg-amber-200/40 p-2 rounded-full">
               <MdWarning className="text-3xl text-amber-600" />
             </div>
-            <h2 id="recovery-modal-title" className="text-2xl font-bold text-gray-800">
+            <h2 id={titleId} className="text-2xl font-bold text-gray-800">
               {isAnonymous ? 'Unsaved Work Found' : 'Resume Found'}
             </h2>
           </div>
@@ -154,11 +131,8 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
             </>
           )}
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
-
-  return createPortal(modalContent, document.body);
 };
 
 export default ResumeRecoveryModal;
