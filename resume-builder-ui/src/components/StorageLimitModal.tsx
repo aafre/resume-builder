@@ -16,7 +16,12 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="storage-limit-title"
+    >
       <div className="bg-white rounded-2xl shadow-xl max-w-md w-full mx-4">
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
@@ -36,7 +41,7 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Storage Full</h2>
+              <h2 id="storage-limit-title" className="text-xl font-bold text-gray-900">Storage Full</h2>
               <p className="text-sm text-gray-500 mt-1">You've reached the 5-resume limit</p>
             </div>
           </div>
