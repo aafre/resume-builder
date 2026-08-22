@@ -1,3 +1,6 @@
 ## 2025-02-14 - ResponsiveConfirmDialog for Destructive Actions
 **Learning:** Destructive actions (like Delete) implemented with custom hardcoded modals lack standard accessibility attributes (`role="dialog"`, `aria-modal`, etc.) and mobile responsiveness (like bottom sheets). This app has a `ResponsiveConfirmDialog` component designed specifically for this purpose, but it was not being utilized uniformly.
 **Action:** Always use `ResponsiveConfirmDialog` for destructive confirmation prompts (such as `DeleteResumeModal`) to ensure a consistent, accessible, and mobile-friendly UX that prevents accidental data loss.
+## 2025-02-14 - WAI-ARIA Modal Accessibility Attributes
+**Learning:** Custom React modals created without a dedicated component library (like Headless UI) often lack fundamental accessibility structure. `StorageLimitModal`, `DuplicateResumeModal`, and `UploadResumeModal` were missing the standard WAI-ARIA modal attributes (`role="dialog"`, `aria-modal="true"`, and `aria-labelledby`), meaning screen readers wouldn't announce them correctly or constrain user focus.
+**Action:** When building custom modals, always explicitly define `role="dialog"`, `aria-modal="true"`, and connect the modal container to its heading using `aria-labelledby` and a matching `id` attribute. This is a critical pattern for screen reader accessibility.

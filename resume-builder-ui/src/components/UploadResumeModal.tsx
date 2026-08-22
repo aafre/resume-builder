@@ -87,7 +87,12 @@ export function UploadResumeModal({
   if (!isOpen) return null;
 
   const modalContent = (
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black bg-opacity-50">
+    <div
+      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black bg-opacity-50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="upload-resume-title"
+    >
       <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
         {/* Header */}
         <div className="bg-ink px-6 py-4 flex items-center justify-between">
@@ -95,7 +100,7 @@ export function UploadResumeModal({
             <div className="bg-white/20 p-2 rounded-lg">
               <DocumentArrowUpIcon className="w-6 h-6 text-white" />
             </div>
-            <h2 className="text-xl font-bold text-white">Upload Resume</h2>
+            <h2 id="upload-resume-title" className="text-xl font-bold text-white">Upload Resume</h2>
           </div>
           <button
             onClick={handleCloseModal}
