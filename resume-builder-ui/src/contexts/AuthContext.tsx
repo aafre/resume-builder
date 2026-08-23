@@ -259,6 +259,14 @@ async function migrateAllLegacyResumes(session: Session, legacyResumes: FoundLeg
 
 const ANON_USER_ID_KEY = 'anonymous-user-id';
 const ANON_USER_TOKEN_KEY = 'anonymous-user-token';
+/**
+ * Where the anonymous uid is parked when the server refuses the migration. The
+ * resumes still exist in the database under that uid — the user just can't reach
+ * them any more — so the pointer has to survive for support to restore them.
+ * Deliberately NOT the migration key: leaving it there would retry on every auth
+ * event and reproduce the 403 storm fixed in 2346d732 / f9a34fe8.
+ */
+const ORPHANED_ANON_USER_ID_KEY = 'orphaned-anon-user-id';
 
 /**
  * Remember the anonymous session so the server can verify we owned it at migration
@@ -307,11 +315,19 @@ async function migrateAnonResumes(session: Session, oldUserId: string): Promise<
   } catch (error) {
     // apiClient can throw ApiError which has a status property
 
-    // Handle 403 silently - the server could not confirm we owned the old session
-    // (stale ID, expired anonymous token, or an already-migrated user).
+    // The server could not confirm we owned the old session (expired anonymous
+    // token, stale ID, or an already-migrated user). Stop retrying, but keep the
+    // uid so the work stays recoverable, and say so — the resumes are still in the
+    // database, the user simply has no way left to reach them.
     if (error instanceof ApiError && error.status === 403) {
-      console.log('Skipping migration: server did not authorize this old user ID');
-      forgetAnonSession(); // Clean up stale credentials
+      console.warn('Migration not authorized; parking anonymous user id for support:', oldUserId);
+      localStorage.setItem(ORPHANED_ANON_USER_ID_KEY, oldUserId);
+      forgetAnonSession(); // Stop retrying (the token is spent either way)
+      toast.error(
+        "We couldn't transfer your previous work. It's still saved — contact " +
+        "support@easyfreeresume.com and we can restore it.",
+        { duration: 10000 }
+      );
       return false;
     }
 
