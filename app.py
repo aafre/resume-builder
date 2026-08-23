@@ -3108,12 +3108,17 @@ def migrate_anonymous_resumes():
     Migrate all resumes from an old user to the authenticated user.
     Called when a user signs in after creating resumes (handles Supabase account linking).
 
+    The caller must prove possession of the old session by sending its access
+    token; being signed in is not by itself authorization to claim another
+    user's resumes.
+
     Note: Supabase automatically links anonymous accounts to OAuth accounts on sign-in,
     so the old user may no longer appear as "anonymous" when this endpoint is called.
 
     Request body:
         {
-            "old_user_id": "uuid-of-old-user"
+            "old_user_id": "uuid-of-old-user",
+            "old_user_token": "access-token-of-that-old-session"
         }
 
     Returns:
@@ -3145,10 +3150,69 @@ def migrate_anonymous_resumes():
                 200,
             )
 
-        # NOTE: We don't check if the old user is "anonymous" because Supabase
-        # automatically links anonymous accounts to OAuth accounts on sign-in,
-        # changing app_metadata.provider from 'anonymous' to 'google'/'email'.
-        # Instead, we check if the old user has resumes to migrate.
+        # Authorization: the caller must PROVE POSSESSION of the old session.
+        # "Is the source anonymous?" authorises nothing — every visitor gets an
+        # anonymous session on first page load — so we verify ownership instead:
+        # the client sends the old session's access token and Supabase checks its
+        # signature and expiry for us.
+        old_user_token = request.json.get("old_user_token")
+
+        if old_user_token:
+            try:
+                anon_user = supabase.auth.get_user(old_user_token).user
+            except Exception as token_error:
+                logging.warning(
+                    f"Migration denied: old_user_token rejected for {old_user_id}: {token_error}"
+                )
+                return (
+                    jsonify({"error": "Not authorized to migrate from this user"}),
+                    403,
+                )
+
+            if not anon_user or anon_user.id != old_user_id:
+                logging.warning(
+                    f"Migration denied: old_user_token subject mismatch "
+                    f"(claimed={old_user_id}, token_subject={getattr(anon_user, 'id', None)}, "
+                    f"caller={new_user_id})"
+                )
+                return (
+                    jsonify({"error": "Not authorized to migrate from this user"}),
+                    403,
+                )
+        else:
+            # Backward compatibility: sessions that predate the token being stored
+            # have an anonymous uid in localStorage but no token. Dropping them would
+            # silently lose their resumes, so fall back to the documented is_anonymous
+            # flag. NOT app_metadata.provider — that flips to 'google'/'email' on
+            # account linking, which is what 403'd legitimate migrations in 39e27eed.
+            # ponytail: weaker than possession (it trusts an unguessable uid), remove
+            # this branch once pre-deploy localStorage has aged out — grep the
+            # MIGRATE_COMPAT_FALLBACK log line to confirm it has gone quiet.
+            try:
+                old_user = supabase.auth.admin.get_user_by_id(old_user_id).user
+            except Exception as admin_error:
+                logging.warning(
+                    f"Migration denied: could not look up {old_user_id}: {admin_error}"
+                )
+                return (
+                    jsonify({"error": "Not authorized to migrate from this user"}),
+                    403,
+                )
+
+            if not old_user or not old_user.is_anonymous:
+                logging.warning(
+                    f"Migration denied: no old_user_token and {old_user_id} is not anonymous "
+                    f"(caller={new_user_id})"
+                )
+                return (
+                    jsonify({"error": "Not authorized to migrate from this user"}),
+                    403,
+                )
+
+            logging.warning(
+                f"MIGRATE_COMPAT_FALLBACK: no old_user_token supplied, accepted "
+                f"{old_user_id} on is_anonymous (caller={new_user_id})"
+            )
 
         # Get resume counts
         old_resumes_response = (
