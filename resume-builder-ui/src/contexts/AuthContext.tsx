@@ -257,6 +257,25 @@ async function migrateAllLegacyResumes(session: Session, legacyResumes: FoundLeg
   }
 }
 
+const ANON_USER_ID_KEY = 'anonymous-user-id';
+const ANON_USER_TOKEN_KEY = 'anonymous-user-token';
+
+/**
+ * Remember the anonymous session so the server can verify we owned it at migration
+ * time. The token MUST be captured while the anonymous session is still live —
+ * once OAuth completes, the session has been replaced and it is unrecoverable.
+ */
+function rememberAnonSession(session: Session | null) {
+  if (!session?.user?.is_anonymous) return;
+  localStorage.setItem(ANON_USER_ID_KEY, session.user.id);
+  localStorage.setItem(ANON_USER_TOKEN_KEY, session.access_token);
+}
+
+function forgetAnonSession() {
+  localStorage.removeItem(ANON_USER_ID_KEY);
+  localStorage.removeItem(ANON_USER_TOKEN_KEY);
+}
+
 /** Migrate anonymous user's cloud resumes to authenticated account */
 async function migrateAnonResumes(session: Session, oldUserId: string): Promise<boolean> {
   try {
@@ -264,7 +283,8 @@ async function migrateAnonResumes(session: Session, oldUserId: string): Promise<
 
     // Use apiClient for automatic token refresh
     const result = await apiClient.post('/api/migrate-anonymous-resumes', {
-      old_user_id: oldUserId
+      old_user_id: oldUserId,
+      old_user_token: localStorage.getItem(ANON_USER_TOKEN_KEY) ?? undefined
     }, { session });
 
     console.log('Resume migration successful:', result);
@@ -287,10 +307,11 @@ async function migrateAnonResumes(session: Session, oldUserId: string): Promise<
   } catch (error) {
     // apiClient can throw ApiError which has a status property
 
-    // Handle 403 silently - this means the old user ID was not anonymous (stale ID)
+    // Handle 403 silently - the server could not confirm we owned the old session
+    // (stale ID, expired anonymous token, or an already-migrated user).
     if (error instanceof ApiError && error.status === 403) {
-      console.log('Skipping migration: old user ID is not anonymous (likely stale)');
-      localStorage.removeItem('anonymous-user-id'); // Clean up stale ID
+      console.log('Skipping migration: server did not authorize this old user ID');
+      forgetAnonSession(); // Clean up stale credentials
       return false;
     }
 
@@ -389,10 +410,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setAuthInProgress(false);
           }
 
-          // Store anonymous user_id for migration later
-          if (session?.user?.is_anonymous) {
-            localStorage.setItem('anonymous-user-id', session.user.id);
-          }
+          // Store anonymous user_id + access token for migration later.
+          // Re-runs on TOKEN_REFRESHED, so the stored token stays fresh.
+          rememberAnonSession(session);
 
           // IMPORTANT: Migrate localStorage data for BOTH anonymous and authenticated users
           // This handles the upgrade scenario where old app (main branch) used localStorage
@@ -436,7 +456,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
           if (event === 'SIGNED_IN' && session?.user && !session.user.is_anonymous) {
             // Check if migration is needed FIRST, before any other operations
-            const oldAnonUserId = localStorage.getItem('anonymous-user-id');
+            const oldAnonUserId = localStorage.getItem(ANON_USER_ID_KEY);
             const needsMigration = oldAnonUserId && oldAnonUserId !== session.user.id && !anonMigrationAttempted.current;
 
             // Set migration flag IMMEDIATELY to prevent race conditions
@@ -490,7 +510,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
                 try {
                   await migrateAnonResumes(session, oldAnonUserId);
-                  localStorage.removeItem('anonymous-user-id');
+                  forgetAnonSession();
                 } catch (error) {
                   console.error('Migration failed:', error);
                 } finally {
@@ -558,6 +578,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Store current path for redirect after auth
     sessionStorage.setItem('auth-return-to', window.location.pathname + window.location.search);
 
+    // Capture the anonymous session BEFORE the OAuth redirect replaces it —
+    // the server needs its access token to authorize the resume migration.
+    // getSession() refreshes an expiring token, so this is the freshest copy.
+    const { data: { session: anonSession } } = await supabase.auth.getSession();
+    rememberAnonSession(anonSession);
+
     // Mark auth in progress to suspend beforeunload warnings
     setAuthInProgress(true);
 
@@ -598,6 +624,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Store current path for redirect after auth
     sessionStorage.setItem('auth-return-to', window.location.pathname + window.location.search);
 
+    // Capture the anonymous session before the magic link replaces it (see OAuth above)
+    const { data: { session: anonSession } } = await supabase.auth.getSession();
+    rememberAnonSession(anonSession);
+
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: {
@@ -628,7 +658,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Reset toast flag, migration state, and auth return path
       sessionStorage.removeItem('login-toast-shown');
       sessionStorage.removeItem('auth-return-to');
-      localStorage.removeItem('anonymous-user-id');
+      forgetAnonSession();
       migrationAttempted.current = false;
 
       // Show success toast
