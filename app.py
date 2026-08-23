@@ -3100,6 +3100,18 @@ def duplicate_resume(resume_id):
         return jsonify({"success": False, "error": "Failed to duplicate resume"}), 500
 
 
+# Anonymous accounts created before this date predate the frontend storing the
+# session token, so they are allowed through the is_anonymous compat fallback.
+# Anything created after has a token by construction and must prove possession —
+# without this bound the fallback would still let any caller claim any anonymous
+# user's resumes just by omitting the token field.
+# Set deliberately LATER than any plausible deploy date: a cutoff after the deploy
+# only covers accounts that have a token anyway, while a cutoff before it would
+# orphan the resumes of real users who have none.
+# ponytail: delete this constant and the fallback branch once
+# MIGRATE_COMPAT_FALLBACK stops appearing in the logs.
+MIGRATE_COMPAT_CUTOFF = datetime(2026, 10, 1, tzinfo=timezone.utc)
+
 @app.route("/api/migrate-anonymous-resumes", methods=["POST"])
 @require_auth
 @retry_on_connection_error(max_retries=3, backoff_factor=0.5)
@@ -3157,27 +3169,26 @@ def migrate_anonymous_resumes():
         # signature and expiry for us.
         old_user_token = request.json.get("old_user_token")
 
+        def deny(reason):
+            logging.warning(
+                f"MIGRATE_DENIED | reason={reason} | caller={new_user_id} | "
+                f"source={old_user_id}"
+            )
+            return (
+                jsonify({"error": "Not authorized to migrate from this user"}),
+                403,
+            )
+
         if old_user_token:
+            auth_path = "possession"
             try:
                 anon_user = supabase.auth.get_user(old_user_token).user
             except Exception as token_error:
-                logging.warning(
-                    f"Migration denied: old_user_token rejected for {old_user_id}: {token_error}"
-                )
-                return (
-                    jsonify({"error": "Not authorized to migrate from this user"}),
-                    403,
-                )
+                return deny(f"token-rejected ({token_error})")
 
             if not anon_user or anon_user.id != old_user_id:
-                logging.warning(
-                    f"Migration denied: old_user_token subject mismatch "
-                    f"(claimed={old_user_id}, token_subject={getattr(anon_user, 'id', None)}, "
-                    f"caller={new_user_id})"
-                )
-                return (
-                    jsonify({"error": "Not authorized to migrate from this user"}),
-                    403,
+                return deny(
+                    f"token-subject-mismatch (subject={getattr(anon_user, 'id', None)})"
                 )
         else:
             # Backward compatibility: sessions that predate the token being stored
@@ -3185,33 +3196,35 @@ def migrate_anonymous_resumes():
             # silently lose their resumes, so fall back to the documented is_anonymous
             # flag. NOT app_metadata.provider — that flips to 'google'/'email' on
             # account linking, which is what 403'd legitimate migrations in 39e27eed.
-            # ponytail: weaker than possession (it trusts an unguessable uid), remove
-            # this branch once pre-deploy localStorage has aged out — grep the
-            # MIGRATE_COMPAT_FALLBACK log line to confirm it has gone quiet.
+            #
+            # is_anonymous ALONE authorises nothing (every visitor is anonymous and
+            # guest resumes autosave server-side), so the fallback is additionally
+            # bounded by MIGRATE_COMPAT_CUTOFF: only accounts old enough to predate
+            # the token being stored may use it. That makes this branch self-closing.
+            auth_path = "compat-fallback"
             try:
                 old_user = supabase.auth.admin.get_user_by_id(old_user_id).user
             except Exception as admin_error:
-                logging.warning(
-                    f"Migration denied: could not look up {old_user_id}: {admin_error}"
-                )
-                return (
-                    jsonify({"error": "Not authorized to migrate from this user"}),
-                    403,
-                )
+                return deny(f"lookup-failed ({admin_error})")
 
             if not old_user or not old_user.is_anonymous:
-                logging.warning(
-                    f"Migration denied: no old_user_token and {old_user_id} is not anonymous "
-                    f"(caller={new_user_id})"
-                )
-                return (
-                    jsonify({"error": "Not authorized to migrate from this user"}),
-                    403,
-                )
+                return deny("no-token-and-not-anonymous")
+
+            created_at = getattr(old_user, "created_at", None)
+            if created_at is None:
+                return deny("no-token-and-unknown-created-at")
+
+            if created_at.tzinfo is None:
+                created_at = created_at.replace(tzinfo=timezone.utc)
+
+            if created_at >= MIGRATE_COMPAT_CUTOFF:
+                # Created after the frontend started storing tokens, so a missing
+                # token means the caller never had this session.
+                return deny(f"no-token-and-account-too-new (created_at={created_at})")
 
             logging.warning(
-                f"MIGRATE_COMPAT_FALLBACK: no old_user_token supplied, accepted "
-                f"{old_user_id} on is_anonymous (caller={new_user_id})"
+                f"MIGRATE_COMPAT_FALLBACK | caller={new_user_id} | source={old_user_id} | "
+                f"created_at={created_at} | accepted on is_anonymous, no token supplied"
             )
 
         # Get resume counts
