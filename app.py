@@ -3112,6 +3112,37 @@ def duplicate_resume(resume_id):
 # MIGRATE_COMPAT_FALLBACK stops appearing in the logs.
 MIGRATE_COMPAT_CUTOFF = datetime(2026, 10, 1, tzinfo=timezone.utc)
 
+# Rate limit for migration attempts, per calling user.
+# ponytail: in-process fixed window — per worker, no lock, resets on restart.
+# Enough to stop uid enumeration through the compat fallback; move to Redis only
+# if we ever run enough workers that a per-process budget stops meaning anything.
+MIGRATE_RATE_LIMIT = 5
+MIGRATE_RATE_WINDOW_SECONDS = 300
+_migrate_attempts: dict[str, list[float]] = {}
+
+
+def _migrate_rate_limited(caller_uid: str) -> bool:
+    """Record an attempt for caller_uid; True if it exceeds the window budget."""
+    global _migrate_attempts
+    now = time.monotonic()
+
+    if len(_migrate_attempts) > 10000:  # bound memory; entries expire anyway
+        _migrate_attempts = {
+            uid: stamps
+            for uid, stamps in _migrate_attempts.items()
+            if stamps and now - stamps[-1] < MIGRATE_RATE_WINDOW_SECONDS
+        }
+
+    recent = [
+        t
+        for t in _migrate_attempts.get(caller_uid, [])
+        if now - t < MIGRATE_RATE_WINDOW_SECONDS
+    ]
+    recent.append(now)
+    _migrate_attempts[caller_uid] = recent
+    return len(recent) > MIGRATE_RATE_LIMIT
+
+
 @app.route("/api/migrate-anonymous-resumes", methods=["POST"])
 @require_auth
 @retry_on_connection_error(max_retries=3, backoff_factor=0.5)
@@ -3148,6 +3179,12 @@ def migrate_anonymous_resumes():
         # Validation
         if not old_user_id:
             return jsonify({"error": "old_user_id is required"}), 400
+
+        if _migrate_rate_limited(new_user_id):
+            logging.warning(
+                f"Migration rate limited | caller={new_user_id} | source={old_user_id}"
+            )
+            return jsonify({"error": "Too many migration attempts"}), 429
 
         if old_user_id == new_user_id:
             return (
