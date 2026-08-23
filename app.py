@@ -3301,7 +3301,8 @@ def migrate_anonymous_resumes():
             )
 
         logging.info(
-            f"Starting migration: {old_count} resumes from {old_user_id} to {new_user_id} (total: {total_count})"
+            f"MIGRATE_START | caller={new_user_id} | source={old_user_id} | "
+            f"auth_path={auth_path} | resumes={old_count} | total_after={total_count}"
         )
 
         # Get all resume IDs being migrated
@@ -3407,7 +3408,8 @@ def migrate_anonymous_resumes():
             # Non-critical - preferences will be recreated on next interaction
 
         logging.info(
-            f"Migration complete: {old_count} resumes migrated to {new_user_id}"
+            f"MIGRATE_COMPLETE | caller={new_user_id} | source={old_user_id} | "
+            f"auth_path={auth_path} | resumes={old_count}"
         )
 
         return (
