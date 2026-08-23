@@ -3100,17 +3100,31 @@ def duplicate_resume(resume_id):
         return jsonify({"success": False, "error": "Failed to duplicate resume"}), 500
 
 
-# Anonymous accounts created before this date predate the frontend storing the
-# session token, so they are allowed through the is_anonymous compat fallback.
-# Anything created after has a token by construction and must prove possession —
-# without this bound the fallback would still let any caller claim any anonymous
-# user's resumes just by omitting the token field.
+# Two constants bound the no-token compat fallback. BOTH must pass.
+#
+#   MIGRATE_COMPAT_CUTOFF  — bounds WHICH accounts may use it.
+#   MIGRATE_COMPAT_EXPIRES — bounds UNTIL WHEN it may be used at all.
+#
+# CUTOFF: anonymous accounts created before this date predate the frontend
+# storing the session token, so they are allowed through the is_anonymous check.
+# Anything created after has a token by construction and must prove possession.
 # Set deliberately LATER than any plausible deploy date: a cutoff after the deploy
 # only covers accounts that have a token anyway, while a cutoff before it would
 # orphan the resumes of real users who have none.
-# ponytail: delete this constant and the fallback branch once
-# MIGRATE_COMPAT_FALLBACK stops appearing in the logs.
+#
+# EXPIRES: the cutoff alone does not shrink the exposed set — every anonymous
+# account that exists today was created before it, resumes never expire, and the
+# uid is not secret (resume-thumbnails is a public bucket keyed {user_id}/...).
+# So the whole branch also dies on a wall clock. The fallback only exists for
+# users mid-flow at deploy (anon session, resumes, pending sign-in); they sign in
+# within days, not months. It sits 30 days after the cutoff so the age check has
+# a live window in which it actually bites, and because EXPIRES is the hard cap
+# on exposure, keeping CUTOFF generous costs nothing.
+#
+# ponytail: on 2026-11-01 delete both constants and the entire fallback branch —
+# it is dead code from that date, not merely unused.
 MIGRATE_COMPAT_CUTOFF = datetime(2026, 10, 1, tzinfo=timezone.utc)
+MIGRATE_COMPAT_EXPIRES = datetime(2026, 11, 1, tzinfo=timezone.utc)
 
 # Rate limit for migration attempts, per calling user.
 # ponytail: in-process fixed window — per worker, no lock, resets on restart.
@@ -3236,9 +3250,15 @@ def migrate_anonymous_resumes():
             #
             # is_anonymous ALONE authorises nothing (every visitor is anonymous and
             # guest resumes autosave server-side), so the fallback is additionally
-            # bounded by MIGRATE_COMPAT_CUTOFF: only accounts old enough to predate
-            # the token being stored may use it. That makes this branch self-closing.
+            # bounded twice: MIGRATE_COMPAT_CUTOFF limits WHICH accounts may use it
+            # (only those old enough to predate the token being stored), and
+            # MIGRATE_COMPAT_EXPIRES closes the branch entirely on a wall clock.
+            # That makes it self-closing rather than a permanent bypass.
             auth_path = "compat-fallback"
+
+            if datetime.now(timezone.utc) > MIGRATE_COMPAT_EXPIRES:
+                return deny("compat_window_closed")
+
             try:
                 old_user = supabase.auth.admin.get_user_by_id(old_user_id).user
             except Exception as admin_error:
