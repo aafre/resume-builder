@@ -226,7 +226,19 @@ class TestMigrationAuthorization:
             import app as flask_app
             flask_app.app.config['TESTING'] = True
             flask_app._migrate_attempts.clear()  # per-test rate limit budget
-            yield flask_app
+            # Freeze inside the compat window. Without this the fallback tests
+            # would start failing on their own once real time passes
+            # MIGRATE_COMPAT_EXPIRES.
+            inside_window = flask_app.MIGRATE_COMPAT_EXPIRES - timedelta(days=1)
+            with self._clock_at(flask_app, inside_window):
+                yield flask_app
+
+    @staticmethod
+    def _clock_at(flask_app, when):
+        """Freeze app.py's wall clock (read only by the compat-window gate)."""
+        fake_datetime = MagicMock(wraps=datetime)
+        fake_datetime.now.return_value = when
+        return patch.object(flask_app, 'datetime', fake_datetime)
 
     @staticmethod
     def _before_cutoff():
@@ -424,3 +436,29 @@ class TestMigrationAuthorization:
 
         assert statuses[:flask_app.MIGRATE_RATE_LIMIT] == [403] * flask_app.MIGRATE_RATE_LIMIT
         assert statuses[flask_app.MIGRATE_RATE_LIMIT:] == [429, 429]
+
+    def test_absent_token_after_compat_window_closes_returns_403(self, flask_app):
+        """
+        The account-age cutoff alone never shrinks the exposed set: every
+        anonymous account alive today was created before it, and resumes are
+        never purged. The fallback therefore also expires on a wall clock —
+        past MIGRATE_COMPAT_EXPIRES even a legitimately old anonymous account
+        must prove possession.
+        """
+        mock_supabase = self._supabase_with_tokens({
+            self.CALLER_TOKEN: MagicMock(id=NEW_USER_ID),
+        })
+        mock_supabase.auth.admin.get_user_by_id.return_value = MagicMock(
+            user=MagicMock(is_anonymous=True, created_at=self._before_cutoff())
+        )
+
+        after_window = flask_app.MIGRATE_COMPAT_EXPIRES + timedelta(days=1)
+        with self._clock_at(flask_app, after_window):
+            response = self._post(flask_app, mock_supabase, {'old_user_id': OLD_USER_ID})
+
+        assert response.status_code == 403
+        # Closed early: not even the admin lookup should run
+        mock_supabase.auth.admin.get_user_by_id.assert_not_called()
+        mock_supabase.table.assert_not_called()
+        mock_supabase.update.assert_not_called()
+        mock_supabase.rpc.assert_not_called()
