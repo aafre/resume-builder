@@ -8,6 +8,7 @@ Tests cover:
 """
 import pytest
 from unittest.mock import MagicMock, patch, call
+from datetime import datetime, timedelta, timezone
 import sys
 import os
 
@@ -224,7 +225,19 @@ class TestMigrationAuthorization:
         with patch.dict('sys.modules', {'supabase': MagicMock()}):
             import app as flask_app
             flask_app.app.config['TESTING'] = True
+            flask_app._migrate_attempts.clear()  # per-test rate limit budget
             yield flask_app
+
+    @staticmethod
+    def _before_cutoff():
+        """An account old enough to predate the frontend storing session tokens."""
+        import app as flask_app
+        return flask_app.MIGRATE_COMPAT_CUTOFF - timedelta(days=1)
+
+    @staticmethod
+    def _after_cutoff():
+        import app as flask_app
+        return flask_app.MIGRATE_COMPAT_CUTOFF + timedelta(days=1)
 
     def _supabase_with_tokens(self, token_to_user):
         """Mock client whose auth.get_user resolves tokens per the given map."""
@@ -296,7 +309,7 @@ class TestMigrationAuthorization:
             self.CALLER_TOKEN: MagicMock(id=NEW_USER_ID),
         })
         mock_supabase.auth.admin.get_user_by_id.return_value = MagicMock(
-            user=MagicMock(is_anonymous=True)
+            user=MagicMock(is_anonymous=True, created_at=self._before_cutoff())
         )
         # old count, new count, ids to migrate, update, icons, rpc
         mock_supabase.execute.side_effect = [
@@ -321,7 +334,7 @@ class TestMigrationAuthorization:
             self.CALLER_TOKEN: MagicMock(id=NEW_USER_ID),
         })
         mock_supabase.auth.admin.get_user_by_id.return_value = MagicMock(
-            user=MagicMock(is_anonymous=False)
+            user=MagicMock(is_anonymous=False, created_at=self._before_cutoff())
         )
 
         response = self._post(flask_app, mock_supabase, {'old_user_id': OLD_USER_ID})
@@ -355,3 +368,59 @@ class TestMigrationAuthorization:
         mock_supabase.update.assert_any_call({'user_id': NEW_USER_ID})
         # Possession was proven by token — no admin lookup needed
         mock_supabase.auth.admin.get_user_by_id.assert_not_called()
+
+    def test_absent_token_and_account_newer_than_cutoff_returns_403(self, flask_app):
+        """
+        The compat fallback must not become a bypass: an attacker who simply omits
+        old_user_token would otherwise reach any anonymous user (every visitor has
+        one, and guest resumes autosave server-side). Accounts created after the
+        cutoff always have a stored token, so a missing one is not credible.
+        """
+        mock_supabase = self._supabase_with_tokens({
+            self.CALLER_TOKEN: MagicMock(id=NEW_USER_ID),
+        })
+        mock_supabase.auth.admin.get_user_by_id.return_value = MagicMock(
+            user=MagicMock(is_anonymous=True, created_at=self._after_cutoff())
+        )
+
+        response = self._post(flask_app, mock_supabase, {'old_user_id': OLD_USER_ID})
+
+        assert response.status_code == 403
+        mock_supabase.table.assert_not_called()
+        mock_supabase.update.assert_not_called()
+        mock_supabase.rpc.assert_not_called()
+
+    def test_naive_created_at_is_treated_as_utc(self, flask_app):
+        """A tz-naive created_at must not blow up the comparison into a 500."""
+        mock_supabase = self._supabase_with_tokens({
+            self.CALLER_TOKEN: MagicMock(id=NEW_USER_ID),
+        })
+        naive_too_new = self._after_cutoff().replace(tzinfo=None)
+        mock_supabase.auth.admin.get_user_by_id.return_value = MagicMock(
+            user=MagicMock(is_anonymous=True, created_at=naive_too_new)
+        )
+
+        response = self._post(flask_app, mock_supabase, {'old_user_id': OLD_USER_ID})
+
+        assert response.status_code == 403
+        mock_supabase.table.assert_not_called()
+
+    def test_repeated_attempts_are_rate_limited(self, flask_app):
+        """
+        The compat fallback is enumerable, so cap attempts per calling user.
+        The legitimate flow makes exactly one call per sign-in.
+        """
+        mock_supabase = self._supabase_with_tokens({
+            self.CALLER_TOKEN: MagicMock(id=NEW_USER_ID),
+        })
+        mock_supabase.auth.admin.get_user_by_id.return_value = MagicMock(
+            user=MagicMock(is_anonymous=True, created_at=self._after_cutoff())
+        )
+
+        statuses = [
+            self._post(flask_app, mock_supabase, {'old_user_id': f'victim-{i}'}).status_code
+            for i in range(flask_app.MIGRATE_RATE_LIMIT + 2)
+        ]
+
+        assert statuses[:flask_app.MIGRATE_RATE_LIMIT] == [403] * flask_app.MIGRATE_RATE_LIMIT
+        assert statuses[flask_app.MIGRATE_RATE_LIMIT:] == [429, 429]
