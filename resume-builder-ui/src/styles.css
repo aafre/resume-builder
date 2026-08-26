@@ -86,6 +86,42 @@
   opacity: 1;
 }
 
+/* The Ghost Add Button — DESIGN.md's signature "there could be more here"
+   affordance, and the one place a dashed border is permitted. Was open-coded
+   in six places with six different hover treatments; this is the single
+   definition. Accent text is Deep Signal, never #00d47e (1.87:1 on Chalk). */
+.btn-ghost-add {
+  @apply w-full inline-flex min-h-11 items-center justify-center gap-2 rounded-lg
+         border-2 border-dashed border-gray-300 px-4 py-2.5
+         text-[13px] font-medium text-stone-warm
+         transition-colors duration-200
+         hover:border-accent/70 hover:bg-accent/[0.06] hover:text-accent-text;
+}
+
+.btn-ghost-add:focus-visible {
+  @apply outline-none ring-2 ring-accent-text ring-offset-2 ring-offset-white;
+}
+
+/* ── Editor workbench surfaces ──
+   The resume section card. Previously copy-pasted across five components as
+   `bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg … border-l-4 border-l-accent`,
+   which broke four named DESIGN.md rules in one attribute:
+     - Flat-At-Rest: shadow-lg is the Floating tier (modals, toasts, drag
+       overlays), not a resting app card, which is shadow-sm → shadow-md.
+     - Glass Restraint: backdrop-blur on seven static in-flow cards down the
+       editor's longest list is the counter-example the rule names by hand.
+     - The 10% Rule: a 4px Signal Green rail per card stacked seven green bars
+       down the page, which is green as wallpaper rather than as a signal. It
+       also measured 1.70:1 on Chalk Dark, under the 3:1 non-text floor.
+     - The 12px Default: 16px is reserved for marketing feature cards.
+   Depth is now tonal and earned on interaction, which is what a workbench
+   should do. */
+.section-card {
+  @apply bg-white rounded-xl border border-gray-200 shadow-sm
+         p-4 sm:p-6 lg:p-8 mb-4 sm:mb-8
+         transition-shadow duration-200 hover:shadow-md;
+}
+
 /* Glass morphism base */
 .glass {
   @apply bg-white/80 backdrop-blur-xl border border-white/40 shadow-xl;
