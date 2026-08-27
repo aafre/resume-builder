@@ -102,6 +102,24 @@
   @apply outline-none ring-2 ring-accent-text ring-offset-2 ring-offset-white;
 }
 
+/* Destructive secondary action — "Remove section", "Remove social link".
+   At rest it is neutral chrome: this is a workbench, and a red button sitting
+   permanently beside every section title is a page that shouts at you for
+   forty minutes. The destructive reading arrives on hover AND on focus-visible
+   (keyboard users must get the same warning the mouse gets) as a red skin over
+   the system's own Deep Signal focus ring — #00d47e cannot carry a ring, and
+   swapping the ring itself per-variant would fragment the focus vocabulary.
+   min-h-11 because 44px applies in the editor's densest rows too. */
+.btn-destructive-ghost {
+  @apply inline-flex min-h-11 items-center justify-center gap-1.5 rounded-lg
+         border border-gray-300 px-3 text-sm font-medium text-stone-warm
+         transition-colors duration-200
+         hover:border-red-300 hover:bg-red-50 hover:text-red-700
+         focus-visible:border-red-300 focus-visible:bg-red-50 focus-visible:text-red-700
+         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text
+         focus-visible:ring-offset-2 focus-visible:ring-offset-white;
+}
+
 /* ── Editor workbench surfaces ──
    The resume section card. Previously copy-pasted across five components as
    `bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg … border-l-4 border-l-accent`,
@@ -120,6 +138,29 @@
   @apply bg-white rounded-xl border border-gray-200 shadow-sm
          p-4 sm:p-6 lg:p-8 mb-4 sm:mb-8
          transition-shadow duration-200 hover:shadow-md;
+}
+
+/* The in-context "select text to format it" reminder (MarkdownHint).
+   It used to be an always-on line under every editable block — the same
+   sentence eight-plus times down one page, which is wallpaper, not help.
+   It now shows only while the field group it belongs to has focus.
+
+   The subject of the selector is the hint itself and the condition is on its
+   parent, so this needs no :has() and no call-site change: every MarkdownHint
+   is already a direct child of the container that wraps its field(s).
+
+   Space stays reserved at rest (opacity, not display), so revealing the hint
+   never nudges the field the user just focused — the Reserved Space Rule. The
+   150ms/opacity transition is acknowledgement-tier feedback and inherits the
+   global prefers-reduced-motion block below. */
+.markdown-hint {
+  @apply flex items-center gap-1.5 text-xs text-stone-warm;
+  opacity: 0;
+  transition: opacity 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:focus-within > .markdown-hint {
+  opacity: 1;
 }
 
 /* Glass morphism base */
