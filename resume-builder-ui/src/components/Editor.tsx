@@ -405,6 +405,7 @@ const Editor: React.FC = () => {
           isOpeningPreview: editorActions.isOpeningPreview,
         }}
         preview={{
+          previewUrl: preview.previewUrl,
           isGenerating: preview.isGenerating,
           isStale: preview.isStale,
         }}

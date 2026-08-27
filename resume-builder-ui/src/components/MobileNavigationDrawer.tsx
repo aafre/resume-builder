@@ -12,6 +12,7 @@ import {
 } from "react-icons/md";
 import { Link } from "react-router-dom";
 import useFocusTrap from "../hooks/useFocusTrap";
+import useScrollLock from "../hooks/useScrollLock";
 
 interface Section {
   name: string;
@@ -56,6 +57,11 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
   const drawerRef = useRef<HTMLDivElement>(null);
 
   useFocusTrap(isOpen, drawerRef, onClose);
+
+  // aria-modal="true" is a promise that the rest of the page is inert. Measured
+  // at 390x844 with the drawer open, the page still scrolled behind it
+  // (scrollY 600 -> 1400), so the promise was not being kept.
+  useScrollLock(isOpen);
 
   const touchStartX = useRef<number>(0);
   const touchStartY = useRef<number>(0);
@@ -209,14 +215,14 @@ const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                 <button
                   onClick={() => handleAction(onImportYAML)}
                   disabled={loadingLoad}
-                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-green-50 active:bg-green-100 transition-colors flex items-center gap-3 border-b border-gray-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
+                  className="w-full min-h-11 text-left px-4 py-3 hover:bg-black/[0.03] active:bg-black/[0.06] transition-colors flex items-center gap-3 border-b border-gray-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
                 >
                   {loadingLoad ? (
-                    <span className="h-2 w-8 overflow-hidden rounded-full bg-green-100">
-                      <span className="block h-full w-1/2 animate-pulse rounded-full bg-green-600" />
+                    <span className="h-2 w-8 overflow-hidden rounded-full bg-ink/10">
+                      <span className="block h-full w-1/2 animate-pulse rounded-full bg-accent" />
                     </span>
                   ) : (
-                    <MdFileUpload className="text-green-600 text-xl" />
+                    <MdFileUpload className="text-stone-warm text-xl" />
                   )}
                   <div className="flex-1">
                     <div className="font-medium text-gray-900">

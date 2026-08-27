@@ -1,5 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { MdDelete } from 'react-icons/md';
+import { X } from 'lucide-react';
 import { RichTextInput } from './RichTextInput';
 import { MarkdownHint } from './MarkdownLinkPreview';
 import IconManager from './IconManager';
@@ -177,12 +178,17 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
                               className="w-full border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-accent-text focus-within:border-accent transition-all duration-200"
                             />
                           </div>
+                          {/* The most-pressed destructive control in the editor,
+                              one per bullet. Was a bare ✕ glyph at 29x40, red at
+                              rest -- a permanently alarming mark repeated down
+                              every job. Now neutral until you reach for it. */}
                           <button
                             onClick={() => handleDescRemove(descIndex)}
-                            className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0 mt-2"
+                            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-stone-warm hover:text-red-700 hover:bg-red-50 transition-colors duration-150 flex-shrink-0 mt-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                             title="Remove description point"
+                            aria-label="Remove description point"
                           >
-                            ✕
+                            <X className="w-4 h-4" aria-hidden="true" />
                           </button>
                         </div>
                       </SortableItem>

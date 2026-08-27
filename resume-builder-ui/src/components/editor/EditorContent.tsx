@@ -129,6 +129,8 @@ export interface EditorContentEditorActionsProps {
  * Props for preview state
  */
 export interface EditorContentPreviewProps {
+  /** Last generated preview PDF, used to calibrate the live length estimate. */
+  previewUrl: string | null;
   isGenerating: boolean;
   isStale: boolean;
 }
@@ -497,6 +499,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
         isOpeningPreview={editorActions.isOpeningPreview}
         isGeneratingPreview={preview.isGenerating}
         previewIsStale={preview.isStale}
+        previewUrl={preview.previewUrl}
         loadingSave={fileOperations.loadingSave}
         loadingLoad={fileOperations.loadingLoad}
         onCollapseChange={navigation.setIsSidebarCollapsed}

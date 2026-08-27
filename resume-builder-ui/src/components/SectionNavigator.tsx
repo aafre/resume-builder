@@ -30,6 +30,8 @@ import { Link } from "react-router-dom";
 import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
 import { extractJobSearchParams } from "../utils/resumeDataExtractor";
 import type { ContactInfo, Section as ResumeSection } from "../types";
+import DocumentSpine from "./editor/DocumentSpine";
+import { useResumeLength } from "../hooks/editor/useResumeLength";
 
 interface Section {
   name: string;
@@ -60,6 +62,8 @@ interface SectionNavigatorProps {
   isAuthenticated?: boolean;
   contactInfo?: ContactInfo | null;
   resumeSections?: ResumeSection[];
+  /** Last generated preview PDF; calibrates the length estimate against truth. */
+  previewUrl?: string | null;
 }
 
 const STORAGE_KEY = "resume-builder-sidebar-collapsed";
@@ -95,9 +99,17 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
   isAuthenticated = false,
   contactInfo,
   resumeSections,
+  previewUrl,
 }) => {
   // Show loading on button when either opening (save/validate) or generating
   const isPreviewLoading = isOpeningPreview || isGeneratingPreview;
+
+  // Live page-length estimate, corrected against the real PDF whenever one exists.
+  const resumeLength = useResumeLength(
+    contactInfo ?? null,
+    resumeSections ?? [],
+    previewUrl
+  );
   const previewStale = Boolean(previewIsStale) && !isPreviewLoading;
   // Load initial state from localStorage
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -425,6 +437,14 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
         </div>
       </div>
 
+      {/* ── Length — the document the user is actually making ──
+          Sits directly above Actions because "does it still fit on one page?"
+          is the question that decides whether they hit Download or keep
+          editing. */}
+      <div className="shrink-0 border-t border-gray-200/60 bg-white">
+        <DocumentSpine estimate={resumeLength} isCollapsed={isCollapsed} />
+      </div>
+
       {/* ── Actions — pinned below the scroll region so Download is always reachable ── */}
       <div className="shrink-0 border-t border-gray-200/60 bg-white">
         <div className={`${isCollapsed ? "py-3 px-2" : "p-4"}`}>
@@ -634,7 +654,7 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
 
       {/* ── Sponsored — outbound partner links, kept out of the Sections list ── */}
       {showAffiliates && (
-        <div className={`shrink-0 border-t border-gray-200/60 bg-chalk ${isCollapsed ? "py-2 px-1.5" : "px-3 py-3"}`}>
+        <div className={`shrink-0 border-t border-gray-200/60 bg-chalk ${isCollapsed ? "py-2 px-1.5" : "px-2 py-2"}`}>
           {!isCollapsed && (
             <h3 className="mb-2 px-1 font-mono text-[10px] uppercase tracking-[0.15em] text-stone-warm">
               Sponsored
@@ -661,20 +681,16 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                 href={affiliateConfig.resumeReview.url}
                 target="_blank"
                 rel="noopener noreferrer nofollow sponsored"
-                className="block rounded-xl border border-gray-200 bg-white p-3 transition-colors duration-150 hover:bg-chalk-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 group"
+                className="w-full min-h-11 flex items-center gap-2.5 rounded-lg px-2 transition-colors duration-150 hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
               >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg bg-chalk-dark border border-gray-200">
-                    <ShieldCheck className="w-4 h-4 text-stone-warm" aria-hidden="true" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-semibold text-ink">ATS Compatibility</p>
-                    <p className="text-[11px] text-stone-warm leading-tight mt-0.5">
-                      Will your resume pass the filter?
-                    </p>
-                  </div>
-                  <ExternalLink className="w-3.5 h-3.5 text-stone-warm shrink-0" aria-hidden="true" />
-                </div>
+                <ShieldCheck className="w-4 h-4 shrink-0 text-stone-warm" aria-hidden="true" />
+                <span className="flex-1 min-w-0 flex flex-col items-start">
+                  <span className="text-[13px] text-ink leading-tight">ATS Compatibility</span>
+                  <span className="text-[11px] text-stone-warm leading-tight truncate w-full">
+                    Will your resume pass the filter?
+                  </span>
+                </span>
+                <ExternalLink className="w-3.5 h-3.5 text-stone-warm shrink-0" aria-hidden="true" />
                 <span className="sr-only">Sponsored link, opens in a new tab</span>
               </a>
             )
@@ -726,20 +742,16 @@ const SectionNavigator: React.FC<SectionNavigatorProps> = ({
                     } catch { /* ignore */ }
                   }
                 }}
-                className="block mt-2 rounded-xl border border-gray-200 bg-white p-3 transition-colors duration-150 hover:bg-chalk-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 group"
+                className="w-full min-h-11 flex items-center gap-2.5 rounded-lg px-2 transition-colors duration-150 hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
               >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 shrink-0 flex items-center justify-center rounded-lg bg-chalk-dark border border-gray-200">
-                    <JobSparkleIcon className="w-4 h-4 text-stone-warm" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-semibold text-ink">Job Matches</p>
-                    <p className="text-[11px] text-stone-warm leading-tight mt-0.5">
-                      Matched to your resume skills
-                    </p>
-                  </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-stone-warm shrink-0" aria-hidden="true" />
-                </div>
+                <JobSparkleIcon className="w-4 h-4 shrink-0 text-stone-warm" />
+                <span className="flex-1 min-w-0 flex flex-col items-start">
+                  <span className="text-[13px] text-ink leading-tight">Job Matches</span>
+                  <span className="text-[11px] text-stone-warm leading-tight truncate w-full">
+                    Matched to your resume skills
+                  </span>
+                </span>
+                <ChevronRight className="w-3.5 h-3.5 text-stone-warm shrink-0" aria-hidden="true" />
               </Link>
             )
           )}
