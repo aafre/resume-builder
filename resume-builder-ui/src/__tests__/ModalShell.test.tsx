@@ -101,13 +101,43 @@ describe("ModalShell", () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  it("locks body scroll while open and restores it on close", () => {
-    expect(document.body.style.overflow).toBe("");
+  // The lock pins a fixed body at a negative offset rather than setting
+  // `body { overflow: hidden }`. The one-liner does nothing in this app:
+  // styles.css sets `html, body { height: 100%; display: flex }` and the
+  // scrolling element is `html`, so body's overflow never reaches the viewport.
+  // Measured in the running editor, the page still scrolled 600 -> 1400 behind
+  // an open drawer with body overflow hidden. See hooks/useScrollLock.ts.
+  it("locks scrolling while open and restores the offset on close", () => {
+    window.scrollY = 240;
+    const scrollTo = vi.fn();
+    window.scrollTo = scrollTo as unknown as typeof window.scrollTo;
+
+    expect(document.body.style.position).toBe("");
 
     const { unmount } = renderShell();
-    expect(document.body.style.overflow).toBe("hidden");
+    expect(document.body.style.position).toBe("fixed");
+    expect(document.body.style.top).toBe("-240px");
+    expect(document.body.style.width).toBe("100%");
 
     unmount();
-    expect(document.body.style.overflow).toBe("");
+    expect(document.body.style.position).toBe("");
+    expect(document.body.style.top).toBe("");
+    expect(scrollTo).toHaveBeenCalledWith({ top: 240, behavior: "auto" });
+  });
+
+  it("keeps the lock held while a second overlay is stacked on top", () => {
+    window.scrollY = 100;
+    window.scrollTo = vi.fn() as unknown as typeof window.scrollTo;
+
+    const first = renderShell();
+    const second = renderShell();
+    expect(document.body.style.position).toBe("fixed");
+
+    // Closing only the inner overlay must not hand scrolling back to the page.
+    second.unmount();
+    expect(document.body.style.position).toBe("fixed");
+
+    first.unmount();
+    expect(document.body.style.position).toBe("");
   });
 });

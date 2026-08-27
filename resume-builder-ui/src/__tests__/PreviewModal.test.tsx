@@ -302,20 +302,25 @@ describe("PreviewModal", () => {
     expect(buttonWithSpinner).toBeDefined();
   });
 
-  it("prevents body scroll when modal is open", () => {
+  // The lock pins a fixed body at a negative offset instead of setting
+  // `body { overflow: hidden }`, which does nothing in this app -- styles.css
+  // sets `html, body { height: 100%; display: flex }` and the scrolling element
+  // is `html`, so body's overflow never reaches the viewport. See
+  // hooks/useScrollLock.ts.
+  it("prevents scrolling when modal is open", () => {
     const { rerender } = render(<PreviewModal {...defaultProps} isOpen={true} />);
-    expect(document.body.style.overflow).toBe("hidden");
+    expect(document.body.style.position).toBe("fixed");
 
     rerender(<PreviewModal {...defaultProps} isOpen={false} />);
-    expect(document.body.style.overflow).toBe("");
+    expect(document.body.style.position).toBe("");
   });
 
-  it("restores body scroll on unmount", () => {
+  it("restores scrolling on unmount", () => {
     const { unmount } = render(<PreviewModal {...defaultProps} isOpen={true} />);
-    expect(document.body.style.overflow).toBe("hidden");
+    expect(document.body.style.position).toBe("fixed");
 
     unmount();
-    expect(document.body.style.overflow).toBe("");
+    expect(document.body.style.position).toBe("");
   });
 
   it("shows empty state when no preview URL and not generating", () => {
