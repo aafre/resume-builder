@@ -44,7 +44,7 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
     <div
       ref={setNodeRef}
       style={style}
-      className={`relative group rounded-2xl ${
+      className={`relative group rounded-xl ${
         isDragging
           ? 'border-2 border-dashed border-accent/30 bg-accent/[0.06] min-h-[60px]'
           : 'transition-all duration-200 ease-out'
@@ -63,21 +63,32 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, children, disabled = false 
         </div>
       )}
 
-      {/* Drag handle bar - invisible by default, reveals on item hover */}
+      {/* Drag grip. It reads as the card's own top lip rather than a stripe
+          floating in the gap, because ownership was genuinely ambiguous before:
+          the grip sat in the margin BETWEEN two cards, so which one it moved was
+          a guess, and the onboarding tour had to explain it in prose.
+
+          It used to be `h-4 md:h-2 min-h-[44px] md:min-h-0` -- 8px tall on
+          desktop, because `md:min-h-0` explicitly opted out of the project's own
+          44px floor. 8px fails WCAG 2.5.8 (Target Size Minimum, 24x24) outright,
+          and the only focus state was the browser default `outline: auto 1px`,
+          the one unstyled focus state on the surface.
+
+          Quiet by default is preserved: the dots stay hidden until the card is
+          hovered or the grip is focused. The 44px hit area is always there. */}
       {!disabled && (
         <div
           {...attributes}
           {...listeners}
           className={`
             group/handle touch-none
-            w-full h-4 md:h-2 min-h-[44px] md:min-h-0 rounded-t-2xl cursor-grab active:cursor-grabbing
-            ${isDragging
-              ? 'bg-accent/[0.06]'
-              : 'bg-transparent'
-            }
-            transition-all duration-150 ease-out
+            w-full min-h-11 rounded-t-xl cursor-grab active:cursor-grabbing
+            ${isDragging ? 'bg-accent/[0.06]' : 'bg-transparent group-hover:bg-black/[0.03]'}
+            transition-colors duration-150 ease-out
             flex items-center justify-center
             relative
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text
+            focus-visible:ring-offset-2 focus-visible:ring-offset-white
           `}
           aria-label="Drag to reorder section"
           role="button"

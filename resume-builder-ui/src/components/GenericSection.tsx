@@ -155,7 +155,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                             <button
                               type="button"
                               onClick={() => handleRemoveItem(index)}
-                              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
+                              className="inline-flex min-h-11 min-w-11 items-center justify-center text-stone-warm hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white flex-shrink-0"
                               title="Remove Item"
                               aria-label="Remove item"
                             >
@@ -217,7 +217,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                               <button
                                 type="button"
                                 onClick={() => handleRemoveItem(index)}
-                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
+                                className="inline-flex min-h-11 min-w-11 items-center justify-center text-stone-warm hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white flex-shrink-0"
                                 title="Remove Item"
                                 aria-label="Remove item"
                               >
@@ -279,7 +279,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                               <button
                                 type="button"
                                 onClick={() => handleRemoveItem(index)}
-                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
+                                className="inline-flex min-h-11 min-w-11 items-center justify-center text-stone-warm hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white flex-shrink-0"
                                 title="Remove Item"
                                 aria-label="Remove item"
                               >

@@ -95,7 +95,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
         <h3 className="text-lg font-medium">Experience #{index + 1}</h3>
         <button
           onClick={() => onDelete(index)}
-          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center text-stone-warm hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           aria-label="Delete experience entry"
           title="Delete this experience"
         >
