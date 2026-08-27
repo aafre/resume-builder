@@ -920,14 +920,28 @@ footer {
   animation: slide-in-right 0.3s ease-out;
 }
 
+/* Overrides Tailwind's `pulse`, which the `animate-pulse` utility drives with
+   `2s cubic-bezier(0.4,0,0.6,1) infinite`.
+
+   This used to add `transform: scaleY(0.8) → scaleY(1)` on a one-directional
+   0%→100% ramp. Two problems, both measured while building the editor skeleton:
+   the scaleY squashes the element vertically, so `animate-pulse` on a tall
+   skeleton container drags the whole column by ~10% of its height (a container
+   top was observed drifting 73px → 167px); and because the ramp is
+   one-directional rather than symmetric, every loop restart snaps back rather
+   than easing.
+
+   Now opacity-only and symmetric, matching Tailwind's own definition — which is
+   what every call site already assumes. A skeleton should breathe, not move:
+   geometry animation on a loading placeholder is the decorative motion the
+   editor's own rules rule out. */
 @keyframes pulse {
-  0% {
-    opacity: 0.4;
-    transform: scaleY(0.8);
-  }
+  0%,
   100% {
     opacity: 1;
-    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.5;
   }
 }
 
