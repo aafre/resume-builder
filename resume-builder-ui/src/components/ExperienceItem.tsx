@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { MdDelete } from 'react-icons/md';
+import { MdAdd, MdDelete } from 'react-icons/md';
 import { X } from 'lucide-react';
 import { RichTextInput } from './RichTextInput';
 import { MarkdownHint } from './MarkdownLinkPreview';
@@ -7,6 +7,7 @@ import IconManager from './IconManager';
 import ItemDndContext from './ItemDndContext';
 import SortableItem from './SortableItem';
 import { arrayMove } from '@dnd-kit/sortable';
+import { toastUndo } from '../utils/undoToast';
 
 export interface ExperienceItemData {
   company: string;
@@ -80,10 +81,25 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
     onUpdate(index, { ...itemRef.current, description: updatedDescriptions });
   }, [index, onUpdate]);
 
+  // The one destructive path in the editor that does not route through
+  // useSectionManagement — a bullet is not a section entry, so it has its own
+  // convergence point here. Every bullet delete in this component goes through
+  // it, and it is the most-pressed destructive control on the page.
   const handleDescRemove = useCallback((descIndex: number) => {
+    const removed = itemRef.current.description[descIndex];
+    if (removed === undefined) return;
+
     const updatedDescriptions = [...itemRef.current.description];
     updatedDescriptions.splice(descIndex, 1);
     onUpdate(index, { ...itemRef.current, description: updatedDescriptions });
+
+    toastUndo('Bullet point removed', () => {
+      // Read the latest item so an edit to a sibling bullet inside the undo
+      // window survives the restore.
+      const restored = [...itemRef.current.description];
+      restored.splice(Math.min(descIndex, restored.length), 0, removed);
+      onUpdate(index, { ...itemRef.current, description: restored });
+    });
   }, [index, onUpdate]);
 
   const handleDescAdd = useCallback(() => {
@@ -91,7 +107,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
   }, [index, onUpdate]);
 
   return (
-    <div className="bg-gray-50/80 backdrop-blur-sm p-3 sm:p-6 mb-3 sm:mb-6 rounded-xl border border-gray-200 shadow-sm">
+    <div className="bg-chalk-dark p-3 sm:p-6 mb-3 sm:mb-6 rounded-xl border border-gray-200 shadow-sm">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-medium">Experience #{index + 1}</h3>
         <button
@@ -119,7 +135,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Company</label>
+            <label className="block text-ink font-medium mb-1">Company</label>
             <RichTextInput
               value={item.company}
               onChange={(value) => handleUpdateField("company", value)}
@@ -128,7 +144,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
             />
           </div>
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Title</label>
+            <label className="block text-ink font-medium mb-1">Title</label>
             <RichTextInput
               value={item.title}
               onChange={(value) => handleUpdateField("title", value)}
@@ -137,7 +153,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
             />
           </div>
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Dates</label>
+            <label className="block text-ink font-medium mb-1">Dates</label>
             <input
               type="text"
               value={item.dates}
@@ -149,7 +165,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
         </div>
 
         <div className="w-full">
-          <label className="block text-gray-700 font-medium mb-1">
+          <label className="block text-ink font-medium mb-1">
             Job Description & Achievements
           </label>
           <MarkdownHint />
@@ -198,11 +214,23 @@ const ExperienceItem: React.FC<ExperienceItemProps> = React.memo(({
               </ItemDndContext>
             )}
           </div>
+          {item.description.length === 0 && (
+            <p className="mt-2 text-sm text-stone-warm">
+              Nothing here yet. One bullet per line: what you did, and what
+              changed because of it. Numbers land hardest — "cut invoice errors
+              by 30%" beats "improved accuracy".
+            </p>
+          )}
+          {/* .btn-ghost-add, not the accent fill it replaced: adding a bullet is
+              a tertiary action, and the old button carried a hover lift the
+              editor does not allow. */}
           <button
+            type="button"
             onClick={handleDescAdd}
-            className="mt-3 bg-accent text-ink px-4 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
+            className="btn-ghost-add mt-3"
           >
-            + Add Description Point
+            <MdAdd className="text-lg" aria-hidden="true" />
+            <span>Add Description Point</span>
           </button>
         </div>
       </div>

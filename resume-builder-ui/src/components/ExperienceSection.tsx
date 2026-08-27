@@ -3,6 +3,7 @@ import { SectionHeader } from "./SectionHeader";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
 import { GhostButton } from "./shared/GhostButton";
+import { SectionEmptyState } from "./shared/SectionEmptyState";
 import ExperienceItem, { ExperienceItemData } from "./ExperienceItem";
 
 // Icon registry methods passed from parent Editor component
@@ -90,6 +91,21 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
     }
   }, [onUpdate, onDeleteEntry]);
 
+  const handleAddItem = React.useCallback(() => {
+    const newExperience: ExperienceItemData = {
+      company: "",
+      title: "",
+      dates: "",
+      description: [],
+      icon: null,
+      iconFile: null,
+      iconBase64: null,
+    };
+    onUpdate([...experiencesRef.current, newExperience]);
+  }, [onUpdate]);
+
+  const isEmpty = experiences.length === 0;
+
   return (
     <div className="section-card">
       <SectionHeader
@@ -105,7 +121,15 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
         isCollapsed={isCollapsed}
         onToggleCollapse={handleToggleCollapse}
       />
-      {!isCollapsed && (
+      {!isCollapsed && isEmpty && (
+        <SectionEmptyState
+          headline="No roles yet."
+          hint="Add a job, internship, placement or volunteer role. Each one takes a company, a title, dates, and a few bullet points on what you actually did."
+          addLabel="Add Experience"
+          onAdd={handleAddItem}
+        />
+      )}
+      {!isCollapsed && !isEmpty && (
         <ItemDndContext
           items={experiences}
           sectionId={`experience-${sectionName.replace(/\s+/g, '-').toLowerCase()}`}
@@ -139,23 +163,10 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
           )}
         </ItemDndContext>
       )}
-      {!isCollapsed && (
-        <GhostButton
-          onClick={() => {
-            const newExperience: ExperienceItemData = {
-              company: "",
-              title: "",
-              dates: "",
-              description: [],
-              icon: null,
-              iconFile: null,
-              iconBase64: null,
-            };
-            onUpdate([...experiences, newExperience]);
-          }}
-        >
-          Add Experience
-        </GhostButton>
+      {/* The empty state carries its own add control, so this one stands down
+          while the section is empty — never two "add" buttons on one card. */}
+      {!isCollapsed && !isEmpty && (
+        <GhostButton onClick={handleAddItem}>Add Experience</GhostButton>
       )}
     </div>
   );

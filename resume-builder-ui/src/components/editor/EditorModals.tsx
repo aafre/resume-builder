@@ -196,21 +196,27 @@ export const EditorModals: React.FC<EditorModalsProps> = ({
         />
       )}
 
-      {/* Delete Confirmation Dialog */}
+      {/* Delete Section confirmation.
+          Entry deletes no longer come through here — they delete immediately
+          with an undo toast, because a confirm dialog per certification is
+          forty minutes of interruption on a workbench. Sections still ask,
+          because the costs are not comparable: an entry loses one row, a
+          section takes every role, bullet and date inside it, and a five-second
+          toast is not a safety net for that on a surface where being
+          interrupted mid-application is the normal case.
+
+          The copy no longer claims the delete "cannot be undone" — it can, for
+          a few seconds. Saying otherwise was about to become a lie. */}
       <ResponsiveConfirmDialog
         isOpen={modalManager.showDeleteConfirm}
         onClose={modalManager.closeDeleteConfirm}
         onConfirm={actions.confirmDelete}
-        title={
-          modalManager.deleteTarget?.type === 'section'
-            ? 'Delete Section?'
-            : 'Delete Entry?'
-        }
-        message={
-          modalManager.deleteTarget?.type === 'section'
-            ? `Are you sure you want to delete ${modalManager.deleteTarget.sectionName ? `the "${modalManager.deleteTarget.sectionName}"` : 'this'} section? This will remove all content in this section and cannot be undone.`
-            : 'Are you sure you want to delete this entry? This action cannot be undone.'
-        }
+        title="Delete Section?"
+        message={`Deleting ${
+          modalManager.deleteTarget?.sectionName
+            ? `the "${modalManager.deleteTarget.sectionName}"`
+            : 'this'
+        } section removes everything inside it. You'll have a few seconds to undo.`}
         confirmText="Delete"
         cancelText="Cancel"
         isDestructive={true}

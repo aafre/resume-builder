@@ -45,7 +45,7 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
 }) => {
   return (
     <SortableItem id={id}>
-      <div className="bg-gray-50/80 backdrop-blur-sm p-6 mb-6 rounded-xl border border-gray-200 shadow-md">
+      <div className="bg-chalk-dark p-6 mb-6 rounded-xl border border-gray-200 shadow-sm">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">Entry {index + 1}</h3>
           <button
@@ -71,7 +71,7 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
           )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-gray-700 font-medium mb-1">
+              <label className="block text-ink font-medium mb-1">
                 Degree
               </label>
               <RichTextInput
@@ -82,7 +82,7 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-medium mb-1">
+              <label className="block text-ink font-medium mb-1">
                 School
               </label>
               <RichTextInput
@@ -93,7 +93,7 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-medium mb-1">
+              <label className="block text-ink font-medium mb-1">
                 Year
               </label>
               <input
@@ -106,7 +106,7 @@ const EducationItem: React.FC<EducationItemProps> = memo(({
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-medium mb-1">
+              <label className="block text-ink font-medium mb-1">
                 Field of Study
               </label>
               <RichTextInput

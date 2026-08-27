@@ -3,6 +3,7 @@ import { SectionHeader } from "./SectionHeader";
 import { MarkdownHint } from "./MarkdownLinkPreview";
 import ItemDndContext from "./ItemDndContext";
 import { GhostButton } from "./shared/GhostButton";
+import { SectionEmptyState } from "./shared/SectionEmptyState";
 import EducationItem, { EducationItemData, EducationItemValue, IconRegistryMethods } from "./EducationItem";
 
 interface EducationSectionProps {
@@ -78,7 +79,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({
     onUpdate(updatedEducation);
   }, [onUpdate]);
 
-  const handleAddItem = () => {
+  const handleAddItem = useCallback(() => {
     const newEducation: EducationItemData = {
       degree: "",
       school: "",
@@ -88,8 +89,8 @@ const EducationSection: React.FC<EducationSectionProps> = ({
       iconFile: null,
       iconBase64: null,
     };
-    onUpdate([...education, newEducation]);
-  };
+    onUpdate([...educationRef.current, newEducation]);
+  }, [onUpdate]);
 
   const handleRemoveItemStable = useCallback((index: number) => {
     if (onDeleteEntry) {
@@ -133,8 +134,16 @@ const EducationSection: React.FC<EducationSectionProps> = ({
         isCollapsed={isCollapsed}
         onToggleCollapse={handleToggleCollapse}
       />
-      {!isCollapsed && <MarkdownHint className="mb-4" />}
-      {!isCollapsed && (
+      {!isCollapsed && education.length > 0 && <MarkdownHint className="mb-4" />}
+      {!isCollapsed && education.length === 0 && (
+        <SectionEmptyState
+          headline="No education yet."
+          hint="Add a degree, diploma or course — the school, what you studied, and the year you finished. Still studying? Put your expected year."
+          addLabel="Add Entry"
+          onAdd={handleAddItem}
+        />
+      )}
+      {!isCollapsed && education.length > 0 && (
         <ItemDndContext
           items={education}
           sectionId={`education-${sectionName.replace(/\s+/g, '-').toLowerCase()}`}
@@ -168,7 +177,9 @@ const EducationSection: React.FC<EducationSectionProps> = ({
           )}
         </ItemDndContext>
       )}
-      {!isCollapsed && (
+      {/* The empty state carries its own add control, so this one stands down
+          while the section is empty — never two "add" buttons on one card. */}
+      {!isCollapsed && education.length > 0 && (
         <GhostButton onClick={handleAddItem} className="mt-4">
           Add Entry
         </GhostButton>

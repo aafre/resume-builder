@@ -7,6 +7,17 @@ import { Section } from '../../types';
 import { DeleteTarget, UseSectionManagementReturn } from '../../types/editor';
 import { createDefaultSection, deleteSectionItem, reorderSectionItems, SectionType } from '../../services/sectionService';
 import { InsertPosition } from '../../components/SectionTypeModal';
+import { toastUndo } from '../../utils/undoToast';
+
+/**
+ * What to call the thing that was removed, so the undo toast names it.
+ * Anything not listed is a plain list item ("Item removed from Skills").
+ */
+const ENTRY_LABEL: Record<string, string> = {
+  experience: 'Experience entry',
+  education: 'Education entry',
+  'icon-list': 'Certification',
+};
 
 /**
  * Props for useSectionManagement hook
@@ -148,6 +159,13 @@ export const useSectionManagement = ({
 
   /**
    * Request deletion of a section (shows confirmation dialog).
+   *
+   * The confirmation is kept on purpose, even now that undo exists. An entry
+   * delete loses one row; a section delete loses every role, bullet and date
+   * inside it, and the only thing standing between that and permanence is a
+   * five-second toast that the mobile action bar can sit on top of and that a
+   * mid-application interruption will outlast. Undo beats confirmation when the
+   * two costs are comparable; here they are not.
    */
   const handleDeleteSection = useCallback(
     (index: number) => {
@@ -161,18 +179,63 @@ export const useSectionManagement = ({
   );
 
   /**
-   * Request deletion of an entry within a section (shows confirmation dialog).
+   * Delete an entry within a section immediately, with a 5-second undo toast.
+   *
+   * Every entry delete in the editor routes through here — experience roles,
+   * education entries, certifications, and every list item. Putting the undo
+   * here rather than at the buttons means the next section type that calls
+   * `handleDeleteEntry` is protected without doing anything.
+   *
+   * No confirmation dialog: an entry is one row, the toast reverses it, and a
+   * modal per bullet is forty minutes of interruption on a workbench.
+   */
+  const deleteEntryWithUndo = useCallback(
+    (sectionIndex: number, entryIndex: number) => {
+      const section = sectionsRef.current[sectionIndex];
+      if (!section || !Array.isArray(section.content)) return;
+
+      const removed = (section.content as unknown[])[entryIndex];
+      if (removed === undefined) return;
+
+      setSections((currentSections) => {
+        const current = currentSections[sectionIndex];
+        if (!current) return currentSections;
+        const newSections = [...currentSections];
+        newSections[sectionIndex] = deleteSectionItem(current, entryIndex);
+        return newSections;
+      });
+
+      const typeLabel = ENTRY_LABEL[section.type ?? ''];
+      const message = typeLabel
+        ? `${typeLabel} removed`
+        : `Item removed from "${section.name}"`;
+
+      toastUndo(message, () => {
+        // Re-insert into whatever the section looks like now, so an edit made
+        // to a sibling entry inside the undo window is not thrown away.
+        setSections((currentSections) => {
+          const current = currentSections[sectionIndex];
+          if (!current || !Array.isArray(current.content)) return currentSections;
+          const content = [...(current.content as unknown[])];
+          content.splice(Math.min(entryIndex, content.length), 0, removed);
+          const newSections = [...currentSections];
+          newSections[sectionIndex] = { ...current, content } as Section;
+          return newSections;
+        });
+      });
+    },
+    [setSections]
+  );
+
+  /**
+   * Request deletion of an entry within a section.
+   * Deletes immediately and offers undo — see `deleteEntryWithUndo`.
    */
   const handleDeleteEntry = useCallback(
     (sectionIndex: number, entryIndex: number) => {
-      openDeleteConfirm({
-        type: 'entry',
-        sectionIndex,
-        entryIndex,
-        sectionName: sectionsRef.current[sectionIndex]?.name,
-      });
+      deleteEntryWithUndo(sectionIndex, entryIndex);
     },
-    [openDeleteConfirm]
+    [deleteEntryWithUndo]
   );
 
   /**
@@ -207,27 +270,36 @@ export const useSectionManagement = ({
     if (!deleteTarget) return;
 
     if (deleteTarget.type === 'section') {
-      // Delete entire section
-      setSections((currentSections) =>
-        currentSections.filter((_, i) => i !== deleteTarget.sectionIndex)
-      );
-      toast.success(deleteTarget.sectionName ? `Section "${deleteTarget.sectionName}" deleted` : 'Section deleted');
-    } else if (deleteTarget.type === 'entry' && deleteTarget.entryIndex !== undefined) {
-      // Delete entry from section using sectionService
-      setSections((currentSections) => {
-        const section = currentSections[deleteTarget.sectionIndex];
-        if (!section) return currentSections;
+      // A section delete takes every entry and every bullet inside it with it,
+      // so it keeps its confirmation *and* gets an undo. Both, deliberately:
+      // see the note on handleDeleteSection.
+      const at = deleteTarget.sectionIndex;
+      const removed = sectionsRef.current[at];
+      setSections((currentSections) => currentSections.filter((_, i) => i !== at));
 
-        const updatedSection = deleteSectionItem(section, deleteTarget.entryIndex!);
-        const newSections = [...currentSections];
-        newSections[deleteTarget.sectionIndex] = updatedSection;
-        return newSections;
-      });
-      toast.success(deleteTarget.sectionName ? `Entry deleted from "${deleteTarget.sectionName}"` : 'Entry deleted');
+      const message = deleteTarget.sectionName
+        ? `Section "${deleteTarget.sectionName}" removed`
+        : 'Section removed';
+
+      if (removed) {
+        toastUndo(message, () => {
+          setSections((currentSections) => {
+            const newSections = [...currentSections];
+            newSections.splice(Math.min(at, newSections.length), 0, removed);
+            return newSections;
+          });
+        });
+      } else {
+        toast.success(message);
+      }
+    } else if (deleteTarget.type === 'entry' && deleteTarget.entryIndex !== undefined) {
+      // Nothing in the UI opens an entry confirmation any more, but the modal
+      // still accepts the target shape — route it through the same undo path.
+      deleteEntryWithUndo(deleteTarget.sectionIndex, deleteTarget.entryIndex);
     }
 
     closeDeleteConfirm();
-  }, [deleteTarget, setSections, closeDeleteConfirm]);
+  }, [deleteTarget, setSections, closeDeleteConfirm, deleteEntryWithUndo]);
 
   /**
    * Start editing a section title.
