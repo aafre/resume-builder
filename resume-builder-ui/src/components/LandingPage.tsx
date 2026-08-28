@@ -452,13 +452,13 @@ const LandingPage: React.FC = () => {
               {features.map((item, index) => (
                 <div
                   key={index}
-                  className="group flex items-start gap-6 py-8 border-b border-black/[0.06] last:border-b-0 cursor-default"
+                  className="flex items-start gap-6 py-8 border-b border-black/[0.06] last:border-b-0"
                 >
-                  <span className="font-mono text-3xl md:text-4xl text-accent/30 group-hover:text-accent transition-colors duration-300 flex-shrink-0 leading-none mt-1 w-12 md:w-16 text-right">
+                  <span className="font-mono text-3xl md:text-4xl text-accent-text flex-shrink-0 leading-none mt-1 w-12 md:w-16 text-right">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <div>
-                    <h3 className="font-display text-xl font-extrabold text-ink mb-2 group-hover:text-accent transition-colors duration-300">
+                    <h3 className="font-display text-xl font-extrabold text-ink mb-2">
                       {item.title}
                     </h3>
                     <p className="font-display font-extralight text-stone-warm leading-relaxed">
@@ -567,7 +567,7 @@ const LandingPage: React.FC = () => {
                 >
                   <h3 className="font-display text-lg font-extrabold text-ink mb-2 flex items-center justify-between">
                     {resource.title}
-                    <ArrowRightIcon className="w-4 h-4 text-stone-warm group-hover:text-accent group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
+                    <ArrowRightIcon className="w-4 h-4 text-stone-warm group-hover:text-accent-text group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
                   </h3>
                   <p className="font-display font-extralight text-stone-warm text-sm leading-relaxed">
                     {resource.desc}
@@ -597,14 +597,14 @@ const LandingPage: React.FC = () => {
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">Truly Free Downloads — No Surprises</h3>
                 <p className="font-display font-extralight text-stone-warm leading-relaxed">
                   Other resume builders advertise "free" but charge $2–$25 the moment you try to download your PDF. EasyFreeResume is different: every template, every download, and every feature is 100% free. No credit card, no trial, no paywall.{' '}
-                  <Link to="/free-resume-builder-download" className="text-accent hover:underline">Download your resume for free</Link> as many times as you need.
+                  <Link to="/free-resume-builder-download" className="text-accent-text hover:underline">Download your resume for free</Link> as many times as you need.
                 </p>
               </div>
               <div>
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">No Sign-Up Required — Start Instantly</h3>
                 <p className="font-display font-extralight text-stone-warm leading-relaxed">
                   Skip the forms and email verification. Our{' '}
-                  <Link to="/free-resume-builder-no-sign-up" className="text-accent hover:underline">no sign-up resume builder</Link>{' '}
+                  <Link to="/free-resume-builder-no-sign-up" className="text-accent-text hover:underline">no sign-up resume builder</Link>{' '}
                   lets you start creating your resume the moment you arrive. Optionally create a free account later to save your work to the cloud and manage multiple versions.
                 </p>
               </div>
@@ -612,7 +612,7 @@ const LandingPage: React.FC = () => {
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">ATS-Friendly Templates That Get Results</h3>
                 <p className="font-display font-extralight text-stone-warm leading-relaxed">
                   Every template is engineered to pass{' '}
-                  <Link to="/templates/ats-friendly" className="text-accent hover:underline">Applicant Tracking Systems</Link>{' '}
+                  <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">Applicant Tracking Systems</Link>{' '}
                   used by 99% of Fortune 500 companies. Clean formatting, proper heading hierarchy, and machine-readable layouts ensure your resume reaches a human recruiter.
                 </p>
               </div>
@@ -620,10 +620,10 @@ const LandingPage: React.FC = () => {
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">AI-Powered Resume Writing</h3>
                 <p className="font-display font-extralight text-stone-warm leading-relaxed">
                   Use built-in AI features to write compelling bullet points, tailor your resume to job descriptions, and find the right{' '}
-                  <Link to="/resume-keywords" className="text-accent hover:underline">resume keywords</Link>{' '}
+                  <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords</Link>{' '}
                   for your industry. Powered by{' '}
-                  <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">Claude</Link>,{' '}
-                  <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline">Gemini</Link>, and ChatGPT — all free.
+                  <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">Claude</Link>,{' '}
+                  <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">Gemini</Link>, and ChatGPT — all free.
                 </p>
               </div>
             </div>
@@ -663,7 +663,7 @@ const LandingPage: React.FC = () => {
                 },
               ].map((item, i) => (
                 <div key={i} className="bg-white rounded-2xl p-8 border border-black/[0.04] shadow-sm">
-                  <span className="font-mono text-3xl text-accent/30 mb-4 block">{item.step}</span>
+                  <span className="font-mono text-3xl text-accent-text mb-4 block">{item.step}</span>
                   <h3 className="font-display text-lg font-extrabold text-ink mb-2">{item.title}</h3>
                   <p className="font-display font-extralight text-stone-warm leading-relaxed text-sm">{item.desc}</p>
                 </div>
@@ -707,7 +707,7 @@ const LandingPage: React.FC = () => {
                     {faq.question}
                   </h3>
                   <ChevronDownIcon
-                    className="w-5 h-5 text-stone-warm transition-all duration-300 flex-shrink-0 group-open:rotate-180 group-open:text-accent"
+                    className="w-5 h-5 text-stone-warm transition-all duration-300 flex-shrink-0 group-open:rotate-180 group-open:text-accent-text"
                   />
                 </summary>
                 <div className="faq-content">
