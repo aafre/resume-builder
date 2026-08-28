@@ -60,6 +60,14 @@ const LandingPage: React.FC = () => {
   // the card sits below the CTAs, so a load-triggered run would finish unseen)
   const heroVisualRef = useScrollReveal<HTMLDivElement>({ threshold: 0.3 });
 
+  // Pauses the hero's ambient loops (glow, float, bob, title sheen) once the
+  // hero scrolls out of view. They are infinite, and the title sheen repaints
+  // the LCP element via background-clip every 6s - left unpaused they burn
+  // main-thread paint for the whole session on a page users scroll 8000px of.
+  // once:false keeps the observer alive; it toggles 'offscreen', never
+  // un-reveals, so the one-shot build sequence does not replay on scroll-back.
+  const heroFrameRef = useScrollReveal<HTMLElement>({ once: false, rootMargin: '0px' });
+
   const prefersReducedMotion = useMemo(
     () =>
       typeof window.matchMedia === "function" &&
@@ -200,7 +208,7 @@ const LandingPage: React.FC = () => {
       />
 
       {/* ═══════════ HERO — light, asymmetric ═══════════ */}
-      <section className="relative pt-12 pb-20 md:pt-20 md:pb-28">
+      <section ref={heroFrameRef} className="hero-frame relative pt-12 pb-20 md:pt-20 md:pb-28">
         <div className="max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-y-10 gap-x-12 lg:gap-x-16 items-center">
           {/* Eyebrow + headline (mobile: card follows immediately, so both share the first viewport) */}
           <div>
