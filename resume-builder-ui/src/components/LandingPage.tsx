@@ -215,15 +215,20 @@ const LandingPage: React.FC = () => {
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-6 block">
               FREE FOREVER. NO SIGN-UP.
             </span>
-            {/* Two-tier headline. Line sizes use per-breakpoint fluid clamps and
-                [text-wrap:balance] so the promise line always breaks cleanly
-                (no orphaned words); the highlighted phrase is an unbreakable
-                inline-block so the underline never splits across lines. */}
+            {/* Two-tier headline, set on the Two-Weight Rule: the kicker is 200
+                and the promise is 800, so the contrast lives inside the H1
+                itself. Both lines use a single continuous clamp - the previous
+                per-breakpoint lg: overrides resolved SMALLER than the base
+                clamp, so the headline shrank by 6px as the viewport crossed
+                1024px and every section H2 outranked it. [text-wrap:balance]
+                keeps the promise line from orphaning a word; the highlighted
+                phrase stays an unbreakable inline-block so the underline never
+                splits across lines. */}
             <h1 className="font-display tracking-tight text-ink">
-              <span className="hero-title-scan block text-[clamp(1.5rem,7.8vw,2.25rem)] lg:text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-tight mb-2 lg:mb-3">
+              <span className="hero-title-scan block text-[clamp(1.125rem,4.6vw,1.75rem)] font-extralight leading-tight mb-2 lg:mb-3">
                 Free Resume Builder
               </span>{' '}
-              <span className="block text-[clamp(2rem,8.9vw,3.25rem)] lg:text-[clamp(2.5rem,4.45vw,4rem)] font-extrabold leading-[1.08] [text-wrap:balance]">
+              <span className="block text-[clamp(2.125rem,8.6vw,4.5rem)] font-extrabold leading-[1.08] [text-wrap:balance]">
                 Build Resumes That{' '}
                 <span className="relative inline-block">
                   <span className="relative z-10">Get You Hired</span>
