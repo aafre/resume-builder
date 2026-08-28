@@ -62,7 +62,7 @@ const LandingPage: React.FC = () => {
 
   // Pauses the hero's ambient loops (glow, float, bob, title sheen) once the
   // hero scrolls out of view. They are infinite, and the title sheen repaints
-  // the LCP element via background-clip every 6s - left unpaused they burn
+  // the LCP element via background-clip every 6s — left unpaused they burn
   // main-thread paint for the whole session on a page users scroll 8000px of.
   // once:false keeps the observer alive; it toggles 'offscreen', never
   // un-reveals, so the one-shot build sequence does not replay on scroll-back.
@@ -208,7 +208,7 @@ const LandingPage: React.FC = () => {
       />
 
       {/* ═══════════ HERO — light, asymmetric ═══════════ */}
-      <section ref={heroFrameRef} className="hero-frame relative pt-12 pb-20 md:pt-20 md:pb-28">
+      <section ref={heroFrameRef} className="hero-frame relative bg-chalk pt-12 pb-20 md:pt-20 md:pb-28">
         <div className="max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-y-10 gap-x-12 lg:gap-x-16 items-center">
           {/* Eyebrow + headline (mobile: card follows immediately, so both share the first viewport) */}
           <div>
@@ -217,7 +217,7 @@ const LandingPage: React.FC = () => {
             </span>
             {/* Two-tier headline, set on the Two-Weight Rule: the kicker is 200
                 and the promise is 800, so the contrast lives inside the H1
-                itself. Both lines use a single continuous clamp - the previous
+                itself. Both lines use a single continuous clamp — the previous
                 per-breakpoint lg: overrides resolved SMALLER than the base
                 clamp, so the headline shrank by 6px as the viewport crossed
                 1024px and every section H2 outranked it. [text-wrap:balance]
@@ -239,7 +239,7 @@ const LandingPage: React.FC = () => {
           </div>
 
           {/* Subtitle + CTAs. Previously order-last, which pushed the primary
-              CTA to y=833 on a 390x844 viewport - the fold cut the button in
+              CTA to y=833 on a 390x844 viewport — the fold cut the button in
               half and left the "100% free / no sign-up" reassurance line 125px
               below it. Visual order now matches DOM and AT order. The mockup
               still lands inside the first viewport, and its sequence is gated
@@ -400,7 +400,7 @@ const LandingPage: React.FC = () => {
       </div>
 
       {/* ═══════════ STATS ═══════════ */}
-      <section className="py-12">
+      <section className="bg-chalk-dark py-14">
         <RevealSection stagger className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-0 sm:divide-x sm:divide-ink/10">
           <div className="text-center sm:px-16">
             <p className="font-mono text-3xl md:text-4xl font-normal text-ink mb-1">
@@ -452,7 +452,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ FEATURES — light, numbered list ═══════════ */}
-      <section className="bg-chalk py-20 px-4 cv-auto cv-h-600">
+      <section className="bg-chalk-dark py-20 px-4 cv-auto cv-h-600">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block">
@@ -599,7 +599,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ WHY CHOOSE US — keyword-rich prose ═══════════ */}
-      <section className="bg-chalk py-20 px-4 cv-auto cv-h-500">
+      <section className="bg-chalk-dark py-20 px-4 cv-auto cv-h-500">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block">
@@ -651,7 +651,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ HOW TO BUILD — keyword-rich steps ═══════════ */}
-      <section className="bg-chalk-dark py-20 px-4 cv-auto cv-h-400">
+      <section className="bg-chalk py-20 px-4 cv-auto cv-h-400">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
@@ -702,7 +702,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ FAQ — light, minimal ═══════════ */}
-      <section className="bg-chalk py-20 px-4 cv-auto cv-h-500">
+      <section className="bg-chalk-dark py-20 px-4 cv-auto cv-h-500">
         <div className="max-w-3xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
