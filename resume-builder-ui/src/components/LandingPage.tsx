@@ -238,8 +238,13 @@ const LandingPage: React.FC = () => {
             </h1>
           </div>
 
-          {/* Subtitle + CTAs (mobile: rendered after the visual via order-last) */}
-          <div className="order-last lg:order-none lg:col-start-1 lg:row-start-2">
+          {/* Subtitle + CTAs. Previously order-last, which pushed the primary
+              CTA to y=833 on a 390x844 viewport - the fold cut the button in
+              half and left the "100% free / no sign-up" reassurance line 125px
+              below it. Visual order now matches DOM and AT order. The mockup
+              still lands inside the first viewport, and its sequence is gated
+              on scroll-into-view anyway, so it plays when it is actually seen. */}
+          <div className="lg:col-start-1 lg:row-start-2">
             <p className="font-display text-lg md:text-xl font-extralight text-stone-warm max-w-lg leading-relaxed mb-8">
               Build your resume for free online with ATS-friendly templates. Download as PDF instantly — no sign up, no payment, no watermarks.
             </p>
@@ -269,8 +274,9 @@ const LandingPage: React.FC = () => {
 
           {/* CSS-only "builds itself" resume mockup (run-once sequence, delays
               via --d; all animation classes defined in styles.css). Desktop:
-              right column spanning both text rows. Mobile: directly below H1,
-              inside the first viewport so the sequence plays on load. */}
+              right column spanning both text rows. Mobile: below the CTAs,
+              still within the first viewport; the sequence is gated on
+              scroll-into-view so it never plays unseen. */}
           <div
             ref={heroVisualRef}
             className="hero-seq flex items-center justify-center lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:self-center"
