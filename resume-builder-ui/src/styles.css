@@ -305,30 +305,6 @@ details .faq-content > div {
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
 }
-@keyframes hero-title-scan {
-  /* sweep for ~28% of the cycle, then rest — both endpoints render pure ink,
-     so the loop restart is invisible */
-  0%   { background-position: 100% 0; }
-  28%  { background-position: 0% 0; }
-  100% { background-position: 0% 0; }
-}
-
-/* Accent sheen sweeps across "Free Resume Builder" (left → right), looping
-   with a long pause. The text is always painted (gradient is ink except the
-   moving band), so LCP is safe; at rest (and under reduced motion / no
-   background-clip support) it reads as plain ink. */
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .hero-title-scan {
-    background-image: linear-gradient(100deg, #0c0c0c 42%, #00d47e 50%, #0c0c0c 58%);
-    background-size: 300% 100%;
-    background-position: 100% 0;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: hero-title-scan 6s ease-in-out 0.5s infinite;
-  }
-}
-
 /* Accent highlighter behind "Get You Hired" in the H1 — draws in on load
    (above the fold, not gated; text itself never animates so LCP is unaffected) */
 .hero-underline {
@@ -468,27 +444,16 @@ details .faq-content > div {
   animation-play-state: running;
 }
 
-/* The deal is infinite, and .hero-title-scan repaints the H1 (the LCP element)
-   through background-clip every 6s — unpaused they cost main-thread work for
-   the whole session on a page that scrolls ~8000px. useScrollReveal({ once:
-   false }) toggles .offscreen and never removes .revealed, so the one-shot
-   entrance holds its finished state instead of replaying on scroll-back.
-   This rule sits after the .revealed rule on purpose: equal specificity, so
-   the later one wins while the hero is off screen. */
-.hero-frame.offscreen .hero-sheet,
-.hero-frame.offscreen .hero-title-scan {
+/* The deal is infinite — unpaused it would cost main-thread work for the whole
+   session on a page that scrolls ~8000px. useScrollReveal({ once: false })
+   toggles .offscreen and never removes .revealed, so the one-shot entrance
+   holds its finished state instead of replaying on scroll-back. This rule sits
+   after the .revealed rule on purpose: equal specificity, so the later one wins
+   while the hero is off screen. */
+.hero-frame.offscreen .hero-sheet {
   animation-play-state: paused;
 }
 
-/* Windows High Contrast strips background-image but keeps -webkit-text-fill-color,
-   which would render the H1's first line invisible. Hand the text back its colour. */
-@media (forced-colors: active) {
-  .hero-title-scan {
-    background-image: none;
-    -webkit-text-fill-color: currentColor;
-    animation: none;
-  }
-}
 
 /* ── Download Celebration Modal ── */
 @keyframes dcm-scale-in {
@@ -607,7 +572,6 @@ details .faq-content > div {
   .hero-card-in,
   .hero-sheet,
   .hero-stack-exit,
-  .hero-title-scan,
   .demo-typing {
     animation: none !important;
   }

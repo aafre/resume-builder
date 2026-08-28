@@ -230,7 +230,7 @@ const LandingPage: React.FC = () => {
                 phrase stays an unbreakable inline-block so the underline never
                 splits across lines. */}
             <h1 className="font-display tracking-tight text-ink">
-              <span className="hero-title-scan block text-[clamp(1.125rem,4.6vw,1.75rem)] font-extralight leading-tight mb-2 lg:mb-3">
+              <span className="block text-[clamp(1.125rem,4.6vw,1.75rem)] font-extralight leading-tight mb-2 lg:mb-3">
                 Free Resume Builder
               </span>{' '}
               <span className="block text-[clamp(2.125rem,8.6vw,4.5rem)] font-extrabold leading-[1.08] [text-wrap:balance]">
