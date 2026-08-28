@@ -484,6 +484,16 @@ details .faq-content > div {
   animation-play-state: running;
 }
 
+/* Windows High Contrast strips background-image but keeps -webkit-text-fill-color,
+   which would render the H1's first line invisible. Hand the text back its colour. */
+@media (forced-colors: active) {
+  .hero-title-scan {
+    background-image: none;
+    -webkit-text-fill-color: currentColor;
+    animation: none;
+  }
+}
+
 /* ── Download Celebration Modal ── */
 @keyframes dcm-scale-in {
   0% { transform: scale(0); opacity: 0; }
@@ -606,6 +616,7 @@ details .faq-content > div {
   .hero-scan,
   .hero-particle,
   .hero-type-caret::after,
+  .hero-title-scan,
   .demo-typing {
     animation: none !important;
   }
