@@ -10,13 +10,13 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({ onSelect }) => {
       </h2>
       <div className="flex justify-center gap-6 mt-6">
         <button
-          className="bg-accent text-ink py-3 px-6 rounded-lg shadow-md hover:bg-accent transition"
+          className="bg-accent text-ink py-3 px-6 rounded-lg shadow-md hover:bg-accent transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent"
           onClick={() => onSelect("modern-no-icons")}
         >
           Modern (No Icons)
         </button>
         <button
-          className="bg-green-500 text-white py-3 px-6 rounded-lg shadow-md hover:bg-green-600 transition"
+          className="bg-green-500 text-white py-3 px-6 rounded-lg shadow-md hover:bg-green-600 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500"
           onClick={() => onSelect("modern-with-icons")}
         >
           Modern (With Icons)
