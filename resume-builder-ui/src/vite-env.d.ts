@@ -6,6 +6,10 @@ interface ImportMetaEnv {
   readonly VITE_APP_URL: string;
   /** Enable explicit ad placements (in-content, in-feed, sidebar). Default: disabled */
   readonly VITE_ENABLE_EXPLICIT_ADS: string;
+  /** PostHog project API key. Leave empty to disable analytics. */
+  readonly VITE_POSTHOG_KEY?: string;
+  /** PostHog API host. Defaults to https://us.i.posthog.com */
+  readonly VITE_POSTHOG_HOST?: string;
 }
 
 interface ImportMeta {

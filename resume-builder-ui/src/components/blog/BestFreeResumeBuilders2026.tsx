@@ -618,6 +618,16 @@ export default function BestFreeResumeBuilders2026() {
           ))}
         </div>
 
+        <p className="text-lg leading-relaxed text-stone-warm mt-6">
+          Community feedback can help narrow the choice, too: see{" "}
+          <Link
+            to="/best-free-resume-builder-reddit"
+            className="text-accent hover:underline"
+          >
+            which free resume builder Reddit users recommend
+          </Link>.
+        </p>
+
         {/* FAQ section */}
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
           Frequently Asked Questions

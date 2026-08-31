@@ -237,7 +237,11 @@ export default function HumanizeAIResume() {
           <Link to="/templates/ats-friendly" className="text-accent hover:underline font-medium">
             ATS-friendly template
           </Link>{" "}
-          so your specific, humanized content actually parses.
+          so your specific, humanized content actually parses. For the full
+          picture beyond keywords, run through our{" "}
+          <Link to="/blog/free-ats-resume-check" className="text-accent hover:underline font-medium">
+            free ATS resume check guide
+          </Link>.
         </p>
 
         <h2 id="honest-goal" className="text-3xl font-bold text-ink mt-12 mb-6">
