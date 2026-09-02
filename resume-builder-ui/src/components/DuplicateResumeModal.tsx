@@ -49,7 +49,7 @@ export function DuplicateResumeModal({
           <div className="flex items-center gap-3 mb-4">
             <div className="flex-shrink-0">
               <svg
-                className="w-12 h-12 text-accent"
+                className="w-12 h-12 text-accent-text"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"

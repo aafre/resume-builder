@@ -66,7 +66,7 @@ export default function BlogIndex() {
                     <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-extrabold text-white mb-4 leading-tight">
                       <Link
                         to={`/blog/${featuredPost.slug}`}
-                        className="hover:text-accent transition-colors"
+                        className="hover:text-accent-text transition-colors"
                       >
                         {featuredPost.title}
                       </Link>
@@ -153,7 +153,7 @@ export default function BlogIndex() {
                         ) : (
                           <Link
                             to={`/blog/${post.slug}`}
-                            className="text-ink hover:text-accent transition-colors"
+                            className="text-ink hover:text-accent-text transition-colors"
                           >
                             {post.title}
                           </Link>
@@ -186,7 +186,7 @@ export default function BlogIndex() {
                         ) : (
                           <Link
                             to={`/blog/${post.slug}`}
-                            className="text-accent hover:text-ink text-sm font-medium transition-colors"
+                            className="text-accent-text hover:text-ink text-sm font-medium transition-colors"
                           >
                             Read more &rarr;
                           </Link>

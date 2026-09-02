@@ -163,7 +163,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
               <p className="text-red-600 mb-4">{error}</p>
               <button
                 onClick={handleRetry}
-                className="text-accent hover:text-ink/80 font-medium"
+                className="text-accent-text hover:text-ink/80 font-medium"
               >
                 Try Again
               </button>
@@ -212,7 +212,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
                     <div className="flex-1 p-3 lg:p-4 flex flex-col justify-center">
                       <h3
                         className={`font-semibold text-sm lg:text-base ${
-                          isSelected ? 'text-accent' : 'text-gray-800'
+                          isSelected ? 'text-accent-text' : 'text-gray-800'
                         }`}
                       >
                         {template.name}

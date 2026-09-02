@@ -170,7 +170,7 @@ export const FormattingBubbleMenu: React.FC<FormattingBubbleMenuProps> = ({ edit
           type="button"
           onClick={handleOpenLinkModal}
           className={`p-2 rounded transition-all hover:bg-gray-100 focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-1 focus:outline-none ${
-            editor.isActive('link') ? 'bg-accent/10 text-ink/80' : 'text-accent'
+            editor.isActive('link') ? 'bg-accent/10 text-ink/80' : 'text-accent-text'
           }`}
           title="Insert Link (Ctrl+K)"
           aria-label="Insert Link"

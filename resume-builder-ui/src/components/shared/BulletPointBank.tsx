@@ -136,7 +136,7 @@ export default function BulletPointBank({ categories, jobTitle }: BulletPointBan
                               Copied!
                             </span>
                           ) : (
-                            <span className="flex items-center gap-1 text-stone-warm group-hover:text-accent text-sm">
+                            <span className="flex items-center gap-1 text-stone-warm group-hover:text-accent-text text-sm">
                               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                               </svg>
@@ -160,19 +160,19 @@ export default function BulletPointBank({ categories, jobTitle }: BulletPointBan
           </h3>
           <ul className="space-y-2 text-ink">
             <li className="flex items-start gap-2">
-              <span className="text-accent mt-1" aria-hidden="true">&#10003;</span>
+              <span className="text-accent-text mt-1" aria-hidden="true">&#10003;</span>
               <span><strong>Customize the numbers</strong> - Replace percentages and metrics with your actual achievements</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-accent mt-1" aria-hidden="true">&#10003;</span>
+              <span className="text-accent-text mt-1" aria-hidden="true">&#10003;</span>
               <span><strong>Adapt to your experience</strong> - Modify the scope and scale to match your role</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-accent mt-1" aria-hidden="true">&#10003;</span>
+              <span className="text-accent-text mt-1" aria-hidden="true">&#10003;</span>
               <span><strong>Match job descriptions</strong> - Use keywords from the job posting you are applying to</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-accent mt-1" aria-hidden="true">&#10003;</span>
+              <span className="text-accent-text mt-1" aria-hidden="true">&#10003;</span>
               <span><strong>Quantify results</strong> - Always include numbers, percentages, or time frames when possible</span>
             </li>
           </ul>

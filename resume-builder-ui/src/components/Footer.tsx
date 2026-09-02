@@ -139,7 +139,7 @@ export default function Footer() {
                 <span className="text-green-700 font-medium">GDPR</span>
               </div>
               <div className="flex items-center gap-2 bg-accent/[0.06] px-3 py-2 rounded-lg">
-                <FaLock className="text-accent" />
+                <FaLock className="text-accent-text" />
                 <span className="text-ink/80 font-medium">SSL</span>
               </div>
               <a
