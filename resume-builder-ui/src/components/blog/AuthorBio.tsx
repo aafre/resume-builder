@@ -19,14 +19,14 @@ export default function AuthorBio() {
             <div className="flex flex-wrap gap-3">
               <Link
                 to="/blog"
-                className="text-sm font-medium text-accent hover:text-ink transition-colors"
+                className="text-sm font-medium text-accent-text hover:text-ink transition-colors"
               >
                 More articles &rarr;
               </Link>
               <span className="text-stone-warm">|</span>
               <Link
                 to="/templates"
-                className="text-sm font-medium text-accent hover:text-ink transition-colors"
+                className="text-sm font-medium text-accent-text hover:text-ink transition-colors"
               >
                 Browse templates &rarr;
               </Link>

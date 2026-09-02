@@ -30,7 +30,7 @@ export default function EasyFreeResumeFreeBlog() {
             "Are you <em>actually</em> free?"
           </p>
           <p className="text-ink font-bold text-2xl">
-            The answer is simple: <span className="text-accent">Yes. 100%. No catch.</span>
+            The answer is simple: <span className="text-accent-text">Yes. 100%. No catch.</span>
           </p>
         </div>
 
@@ -139,10 +139,10 @@ export default function EasyFreeResumeFreeBlog() {
           <h3 className="font-bold text-green-800 mb-4">
             ✅ Our Philosophy is Different:
           </h3>
-          <p className="text-accent text-lg font-medium mb-4">
+          <p className="text-accent-text text-lg font-medium mb-4">
             All of our features are free, for everyone, forever.
           </p>
-          <div className="space-y-3 text-accent">
+          <div className="space-y-3 text-accent-text">
             <div className="flex items-start space-x-3">
               <span className="text-green-500 font-bold mt-1">✓</span>
               <div>
@@ -253,7 +253,7 @@ export default function EasyFreeResumeFreeBlog() {
               never charge you for features that should be free.
             </p>
             <div className="bg-white p-4 rounded-lg">
-              <p className="text-center font-medium text-accent">
+              <p className="text-center font-medium text-accent-text">
                 Low Operational Costs + Ethical Ad Revenue = Sustainable Free Service
               </p>
             </div>
@@ -293,7 +293,7 @@ export default function EasyFreeResumeFreeBlog() {
 
           <div className="bg-green-50 border border-green-200 rounded-xl p-6">
             <h4 className="font-bold text-green-800 mb-3">✅ What We DO Provide</h4>
-            <ul className="space-y-2 text-accent">
+            <ul className="space-y-2 text-accent-text">
               <li className="flex items-start space-x-2">
                 <span className="text-green-500 font-bold">✓</span>
                 <span>Complete privacy and data protection</span>
@@ -363,7 +363,7 @@ export default function EasyFreeResumeFreeBlog() {
 
           <div className="bg-green-50 border-l-4 border-green-500 p-6">
             <h4 className="font-bold text-green-800 mb-2">🔧 Enhanced Features</h4>
-            <p className="text-accent text-sm">
+            <p className="text-accent-text text-sm">
               Better customization options, improved ATS optimization, and more
               export formats - all free.
             </p>
@@ -431,7 +431,7 @@ export default function EasyFreeResumeFreeBlog() {
           </p>
           <a
             href="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building - It's Actually Free!
           </a>
@@ -456,7 +456,7 @@ export default function EasyFreeResumeFreeBlog() {
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 mt-8">
           <h4 className="font-bold text-green-800 mb-3">💚 Our Promise to You</h4>
-          <p className="text-accent">
+          <p className="text-accent-text">
             EasyFreeResume will always be free. We will never introduce paywalls
             for basic functionality, and we will always be transparent about how
             we operate. Your success in landing your dream job is our success,

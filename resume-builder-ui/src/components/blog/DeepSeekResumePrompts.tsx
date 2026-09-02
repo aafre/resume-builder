@@ -27,7 +27,7 @@ export default function DeepSeekResumePrompts() {
           analyzing job descriptions and tailoring resume content. These 20+ prompts are organized by
           task so you can copy, paste, and customize immediately. If you are new to using AI for resumes,
           start with our{' '}
-          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">
             comprehensive AI resume writing guide
           </Link>{' '}
           for foundational strategies.
@@ -37,15 +37,15 @@ export default function DeepSeekResumePrompts() {
         <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#why-deepseek" className="text-accent hover:underline">Why DeepSeek for Resume Writing</a></li>
-            <li><a href="#professional-summary" className="text-accent hover:underline">Professional Summary Prompts (#1-3)</a></li>
-            <li><a href="#experience-bullets" className="text-accent hover:underline">Experience Bullet Prompts (#4-7)</a></li>
-            <li><a href="#ats-keywords" className="text-accent hover:underline">ATS Keyword Extraction (#8-10)</a></li>
-            <li><a href="#skills-section" className="text-accent hover:underline">Skills Section Prompts (#11-13)</a></li>
-            <li><a href="#cover-letters" className="text-accent hover:underline">Cover Letter Prompts (#14-16)</a></li>
-            <li><a href="#review-polish" className="text-accent hover:underline">Review &amp; Polish Prompts (#17-20)</a></li>
-            <li><a href="#deepseek-vs-others" className="text-accent hover:underline">DeepSeek vs Claude vs ChatGPT</a></li>
-            <li><a href="#tips" className="text-accent hover:underline">Tips for Better Results</a></li>
+            <li><a href="#why-deepseek" className="text-accent-text hover:underline">Why DeepSeek for Resume Writing</a></li>
+            <li><a href="#professional-summary" className="text-accent-text hover:underline">Professional Summary Prompts (#1-3)</a></li>
+            <li><a href="#experience-bullets" className="text-accent-text hover:underline">Experience Bullet Prompts (#4-7)</a></li>
+            <li><a href="#ats-keywords" className="text-accent-text hover:underline">ATS Keyword Extraction (#8-10)</a></li>
+            <li><a href="#skills-section" className="text-accent-text hover:underline">Skills Section Prompts (#11-13)</a></li>
+            <li><a href="#cover-letters" className="text-accent-text hover:underline">Cover Letter Prompts (#14-16)</a></li>
+            <li><a href="#review-polish" className="text-accent-text hover:underline">Review &amp; Polish Prompts (#17-20)</a></li>
+            <li><a href="#deepseek-vs-others" className="text-accent-text hover:underline">DeepSeek vs Claude vs ChatGPT</a></li>
+            <li><a href="#tips" className="text-accent-text hover:underline">Tips for Better Results</a></li>
           </ol>
         </nav>
 
@@ -81,7 +81,7 @@ export default function DeepSeekResumePrompts() {
           Your professional summary is the first thing recruiters read. These prompts produce focused,
           specific summaries without the generic filler that AI tools sometimes generate. For more
           examples, see our{' '}
-          <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+          <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
             professional summary examples guide
           </Link>.
         </p>
@@ -131,7 +131,7 @@ export default function DeepSeekResumePrompts() {
           The most common resume mistake is listing responsibilities instead of achievements. These prompts
           help DeepSeek transform &ldquo;managed X&rdquo; into &ldquo;achieved Y by doing X.&rdquo; For
           the framework behind this, read our{' '}
-          <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+          <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
             guide to quantifying accomplishments
           </Link>.
         </p>
@@ -192,7 +192,7 @@ export default function DeepSeekResumePrompts() {
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
           DeepSeek-R1&rsquo;s reasoning mode excels at extracting keywords from job descriptions. Use
           these prompts to identify exactly what an ATS is scanning for. You can also use our{' '}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
             free ATS keyword scanner
           </Link>{' '}
           to check your match score against a specific job posting.
@@ -236,7 +236,7 @@ export default function DeepSeekResumePrompts() {
             4. Soft skills valued in this field (5-8)<br />
             5. Metrics and KPIs typical for this role (5-8)<br /><br />
             For a deeper list, see our{' '}
-            <Link to="/resume-keywords" className="text-accent hover:underline">resume keywords by job title</Link> pages.
+            <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords by job title</Link> pages.
           </CopyablePrompt>
         </div>
 
@@ -249,7 +249,7 @@ export default function DeepSeekResumePrompts() {
           A well-organized skills section helps both ATS parsers and recruiters quickly assess your
           qualifications. These prompts help categorize and prioritize your skills. For more guidance,
           read our{' '}
-          <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+          <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
             guide to listing skills on your resume
           </Link>.
         </p>
@@ -293,7 +293,7 @@ export default function DeepSeekResumePrompts() {
           DeepSeek writes natural-sounding cover letters when given enough context about the role and
           your background. The key is specificity &mdash; generic inputs produce generic output. For
           prompts that work across all AI tools, see our{' '}
-          <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline">
+          <Link to="/blog/ai-cover-letter-prompts" className="text-accent-text hover:underline">
             AI cover letter prompts guide
           </Link>.
         </p>
@@ -457,11 +457,11 @@ export default function DeepSeekResumePrompts() {
           (it&rsquo;s free and its reasoning is thorough), then use whichever model writes best for
           your style. Many people get the best results by using one AI for analysis and another for writing.
           See our guides for{' '}
-          <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">Claude resume prompts</Link>
+          <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">Claude resume prompts</Link>
           {' '}and{' '}
-          <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline">Gemini resume prompts</Link>
+          <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">Gemini resume prompts</Link>
           {' '}for model-specific techniques. For a broader overview, read our{' '}
-          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">complete AI resume writing guide</Link>.
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">complete AI resume writing guide</Link>.
         </p>
 
         {/* Tips */}

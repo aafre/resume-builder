@@ -51,30 +51,30 @@ const QuantifyResumeAccomplishments = () => {
             Table of Contents
           </h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#why-quantify" className="text-accent hover:underline">Why Quantifying Accomplishments Matters</a></li>
-            <li><a href="#quantification-formula" className="text-accent hover:underline">The Quantification Formula</a></li>
-            <li><a href="#types-of-metrics" className="text-accent hover:underline">Types of Metrics to Include</a></li>
-            <li><a href="#before-after" className="text-accent hover:underline">20+ Before &amp; After Examples</a></li>
-            <li><a href="#industry-examples" className="text-accent hover:underline">Industry-Specific Examples</a></li>
-            <li><a href="#find-your-numbers" className="text-accent hover:underline">How to Find Your Numbers</a></li>
-            <li><a href="#duties-vs-accomplishments" className="text-accent hover:underline">Duties vs. Accomplishments</a></li>
-            <li><a href="#action-verbs" className="text-accent hover:underline">Action Verbs That Enhance Quantified Statements</a></li>
-            <li><a href="#common-mistakes" className="text-accent hover:underline">Common Mistakes to Avoid</a></li>
-            <li><a href="#ai-quantify" className="text-accent hover:underline">Using AI to Quantify Your Achievements</a></li>
-            <li><a href="#interview-prep" className="text-accent hover:underline">Interview Preparation</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">Frequently Asked Questions</a></li>
-            <li><a href="#related-guides" className="text-accent hover:underline">Related Guides</a></li>
+            <li><a href="#why-quantify" className="text-accent-text hover:underline">Why Quantifying Accomplishments Matters</a></li>
+            <li><a href="#quantification-formula" className="text-accent-text hover:underline">The Quantification Formula</a></li>
+            <li><a href="#types-of-metrics" className="text-accent-text hover:underline">Types of Metrics to Include</a></li>
+            <li><a href="#before-after" className="text-accent-text hover:underline">20+ Before &amp; After Examples</a></li>
+            <li><a href="#industry-examples" className="text-accent-text hover:underline">Industry-Specific Examples</a></li>
+            <li><a href="#find-your-numbers" className="text-accent-text hover:underline">How to Find Your Numbers</a></li>
+            <li><a href="#duties-vs-accomplishments" className="text-accent-text hover:underline">Duties vs. Accomplishments</a></li>
+            <li><a href="#action-verbs" className="text-accent-text hover:underline">Action Verbs That Enhance Quantified Statements</a></li>
+            <li><a href="#common-mistakes" className="text-accent-text hover:underline">Common Mistakes to Avoid</a></li>
+            <li><a href="#ai-quantify" className="text-accent-text hover:underline">Using AI to Quantify Your Achievements</a></li>
+            <li><a href="#interview-prep" className="text-accent-text hover:underline">Interview Preparation</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">Frequently Asked Questions</a></li>
+            <li><a href="#related-guides" className="text-accent-text hover:underline">Related Guides</a></li>
           </ol>
         </nav>
 
         <h2 id="why-quantify" className="text-3xl font-bold text-ink mt-12 mb-6">Why Quantifying Accomplishments Matters</h2>
 
         <p className="text-lg leading-relaxed text-stone-warm">
-          Hiring managers scan resumes for just 7.4 seconds on average. During this brief window, quantified accomplishments immediately stand out because they provide concrete proof of your capabilities. Instead of saying you "improved sales," showing you "increased sales by 23% over 6 months" demonstrates real impact. If you are building your resume from scratch, our <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">complete resume writing guide</Link> covers the full process from start to finish.
+          Hiring managers scan resumes for just 7.4 seconds on average. During this brief window, quantified accomplishments immediately stand out because they provide concrete proof of your capabilities. Instead of saying you "improved sales," showing you "increased sales by 23% over 6 months" demonstrates real impact. If you are building your resume from scratch, our <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">complete resume writing guide</Link> covers the full process from start to finish.
         </p>
 
         <p className="text-lg leading-relaxed text-stone-warm">
-          Numbers also serve as powerful <Link to="/resume-keywords" className="text-accent hover:underline">resume keywords</Link> that help your resume pass Applicant Tracking Systems (ATS). Many ATS platforms are designed to parse and weight numerical data, so bullet points with concrete metrics often rank higher in automated screenings than vague duty descriptions.
+          Numbers also serve as powerful <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords</Link> that help your resume pass Applicant Tracking Systems (ATS). Many ATS platforms are designed to parse and weight numerical data, so bullet points with concrete metrics often rank higher in automated screenings than vague duty descriptions.
         </p>
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
@@ -91,7 +91,7 @@ const QuantifyResumeAccomplishments = () => {
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-8 my-6">
           <p className="text-2xl font-bold text-ink text-center mb-4">Action Verb + Task + Metric + Impact</p>
           <div className="space-y-3 text-ink/80">
-            <p><strong>Action Verb:</strong> Start with a strong verb that communicates what you did (<Link to="/blog/resume-action-verbs" className="text-accent hover:underline">see our full action verbs list</Link>)</p>
+            <p><strong>Action Verb:</strong> Start with a strong verb that communicates what you did (<Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">see our full action verbs list</Link>)</p>
             <p><strong>Task:</strong> Describe the specific work or responsibility</p>
             <p><strong>Metric:</strong> Add the number — percentage, dollar amount, time frame, volume</p>
             <p><strong>Impact:</strong> Connect to a business outcome — revenue, efficiency, satisfaction, growth</p>
@@ -165,13 +165,13 @@ const QuantifyResumeAccomplishments = () => {
         </ul>
 
         <p className="text-lg leading-relaxed text-stone-warm">
-          When listing these metrics as part of your <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">skills section</Link>, you can also quantify proficiency levels — for example, "Advanced SQL (5+ years, queried datasets of 10M+ rows)" is far stronger than just listing "SQL."
+          When listing these metrics as part of your <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">skills section</Link>, you can also quantify proficiency levels — for example, "Advanced SQL (5+ years, queried datasets of 10M+ rows)" is far stronger than just listing "SQL."
         </p>
 
         <h2 id="before-after" className="text-3xl font-bold text-ink mt-12 mb-6">20+ Before &amp; After Examples</h2>
 
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
-          Below are real-world transformations across common roles. Each "after" example follows the quantification formula above. For more examples of quantified bullets in context, see our <Link to="/examples/software-engineer" className="text-accent hover:underline">software engineer resume example</Link> and <Link to="/examples/data-analyst" className="text-accent hover:underline">data analyst resume example</Link>.
+          Below are real-world transformations across common roles. Each "after" example follows the quantification formula above. For more examples of quantified bullets in context, see our <Link to="/examples/software-engineer" className="text-accent-text hover:underline">software engineer resume example</Link> and <Link to="/examples/data-analyst" className="text-accent-text hover:underline">data analyst resume example</Link>.
         </p>
 
         <h3 className="text-xl font-bold text-ink mb-3">Sales &amp; Business Development</h3>
@@ -465,13 +465,13 @@ const QuantifyResumeAccomplishments = () => {
         </div>
 
         <p className="text-lg leading-relaxed text-stone-warm">
-          A quick test: if your bullet point could describe anyone in that role, it's a duty. If it could only describe <em>your</em> specific results, it's an accomplishment. For a deeper dive into writing results-oriented bullet points, see our <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">professional summary examples</Link> — the same quantification principles apply to your summary section.
+          A quick test: if your bullet point could describe anyone in that role, it's a duty. If it could only describe <em>your</em> specific results, it's an accomplishment. For a deeper dive into writing results-oriented bullet points, see our <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">professional summary examples</Link> — the same quantification principles apply to your summary section.
         </p>
 
         <h2 id="action-verbs" className="text-3xl font-bold text-ink mt-12 mb-6">Action Verbs That Enhance Quantified Statements</h2>
 
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
-          Pair your numbers with <Link to="/blog/resume-action-verbs" className="text-accent hover:underline">strong action verbs</Link> for maximum impact. Here are the best verbs grouped by the type of achievement they convey:
+          Pair your numbers with <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">strong action verbs</Link> for maximum impact. Here are the best verbs grouped by the type of achievement they convey:
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -575,7 +575,7 @@ const QuantifyResumeAccomplishments = () => {
         <h2 id="ai-quantify" className="text-3xl font-bold text-ink mt-12 mb-6">Using AI to Help Quantify Your Achievements</h2>
 
         <p className="text-lg leading-relaxed text-stone-warm">
-          If you are struggling to quantify your achievements, AI tools can help you identify hidden metrics and transform duty-based bullets into accomplishment statements. Here is a practical approach using <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">Claude or other AI resume tools</Link>:
+          If you are struggling to quantify your achievements, AI tools can help you identify hidden metrics and transform duty-based bullets into accomplishment statements. Here is a practical approach using <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">Claude or other AI resume tools</Link>:
         </p>
 
         <div className="space-y-6 my-6">
@@ -614,7 +614,7 @@ const QuantifyResumeAccomplishments = () => {
               <div className="w-8 h-8 bg-accent text-ink rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">4</div>
               <div>
                 <h3 className="text-xl font-bold text-ink mb-2">Format with an ATS-friendly template</h3>
-                <p className="text-stone-warm">Once your bullets are polished, drop them into a properly formatted template. Our <Link to="/templates/ats-friendly" className="text-accent hover:underline">ATS-friendly templates</Link> are designed to ensure your quantified achievements pass through automated screening systems.</p>
+                <p className="text-stone-warm">Once your bullets are polished, drop them into a properly formatted template. Our <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">ATS-friendly templates</Link> are designed to ensure your quantified achievements pass through automated screening systems.</p>
               </div>
             </div>
           </div>
@@ -642,7 +642,7 @@ const QuantifyResumeAccomplishments = () => {
         </p>
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <p className="text-green-800"><strong className="text-green-800">Practice Tip:</strong> Want to practice discussing your quantified accomplishments? Try <a href="https://prepai.in" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">PrepAI's interview coach</a> — it analyzes your resume and provides personalized practice questions based on your specific achievements, with real-time feedback to help you articulate your impact confidently.</p>
+          <p className="text-green-800"><strong className="text-green-800">Practice Tip:</strong> Want to practice discussing your quantified accomplishments? Try <a href="https://prepai.in" target="_blank" rel="noopener noreferrer" className="text-accent-text hover:underline">PrepAI's interview coach</a> — it analyzes your resume and provides personalized practice questions based on your specific achievements, with real-time feedback to help you articulate your impact confidently.</p>
         </div>
 
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">Next Steps: Putting It All Together</h2>
@@ -657,7 +657,7 @@ const QuantifyResumeAccomplishments = () => {
           <li><strong>Gather Your Numbers:</strong> Check performance reviews, project reports, analytics dashboards, and email archives</li>
           <li><strong>Use AI as a Brainstorming Partner:</strong> If stuck, use Claude or ChatGPT to surface metrics you overlooked</li>
           <li><strong>Aim for 60-70% Quantified Bullets:</strong> Not every bullet needs a number, but the majority should</li>
-          <li><strong>Optimize for ATS:</strong> Ensure your quantified statements include <Link to="/resume-keywords" className="text-accent hover:underline">relevant keywords</Link> from the job description</li>
+          <li><strong>Optimize for ATS:</strong> Ensure your quantified statements include <Link to="/resume-keywords" className="text-accent-text hover:underline">relevant keywords</Link> from the job description</li>
           <li><strong>Practice Your Stories:</strong> Prepare to discuss each quantified achievement in interviews using the STAR method</li>
         </ol>
 
@@ -726,27 +726,27 @@ const QuantifyResumeAccomplishments = () => {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
           <li>
-            <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+            <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
               How to Write a Resume: The Complete Step-by-Step Guide
             </Link>
           </li>
           <li>
-            <Link to="/blog/resume-action-verbs" className="text-accent hover:underline">
+            <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
               200+ Resume Action Verbs to Make Your Bullets Stand Out
             </Link>
           </li>
           <li>
-            <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+            <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
               Professional Summary Examples for Every Career Level
             </Link>
           </li>
           <li>
-            <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+            <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
               How to List Skills on a Resume (With Examples)
             </Link>
           </li>
           <li>
-            <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">
+            <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">
               25+ Claude AI Resume Prompts (Copy-Paste Ready)
             </Link>
           </li>

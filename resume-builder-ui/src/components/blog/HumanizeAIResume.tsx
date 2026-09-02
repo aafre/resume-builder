@@ -67,11 +67,11 @@ export default function HumanizeAIResume() {
         <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#why-flagged" className="text-accent hover:underline">Why AI-Written Resumes Get Flagged</a></li>
-            <li><a href="#the-tells" className="text-accent hover:underline">The Tells That Give AI Away</a></li>
-            <li><a href="#fix-by-fix" className="text-accent hover:underline">Fix-by-Fix: Before and After Rewrites</a></li>
-            <li><a href="#honest-goal" className="text-accent hover:underline">The Honest Goal (It's Not Tricking a Detector)</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">Frequently Asked Questions</a></li>
+            <li><a href="#why-flagged" className="text-accent-text hover:underline">Why AI-Written Resumes Get Flagged</a></li>
+            <li><a href="#the-tells" className="text-accent-text hover:underline">The Tells That Give AI Away</a></li>
+            <li><a href="#fix-by-fix" className="text-accent-text hover:underline">Fix-by-Fix: Before and After Rewrites</a></li>
+            <li><a href="#honest-goal" className="text-accent-text hover:underline">The Honest Goal (It's Not Tricking a Detector)</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">Frequently Asked Questions</a></li>
           </ol>
         </nav>
 
@@ -179,7 +179,7 @@ export default function HumanizeAIResume() {
               "Spearheaded cross-functional initiatives that increased team
               efficiency by 30% and drove impactful business outcomes."
             </p>
-            <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-2">After (Humanized)</p>
+            <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-2">After (Humanized)</p>
             <p className="text-ink">
               "Reorganized the weekly release process with QA and support, cutting
               our average bug-fix turnaround from nine days to three across a team
@@ -193,7 +193,7 @@ export default function HumanizeAIResume() {
               "Leveraged data-driven strategies to optimize marketing performance
               and enhance customer engagement."
             </p>
-            <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-2">After (Humanized)</p>
+            <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-2">After (Humanized)</p>
             <p className="text-ink">
               "Rebuilt our abandoned-cart email flow in Klaviyo after noticing most
               drop-offs happened at shipping cost — recovered roughly one in six
@@ -207,7 +207,7 @@ export default function HumanizeAIResume() {
               "Utilized strong communication skills to facilitate seamless
               collaboration and deliver exceptional results."
             </p>
-            <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase mb-2">After (Humanized)</p>
+            <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-2">After (Humanized)</p>
             <p className="text-ink">
               "Ran the daily standup for a remote team split across three time
               zones and wrote the handoff notes that kept the night shift
@@ -230,11 +230,11 @@ export default function HumanizeAIResume() {
         <p className="text-lg leading-relaxed text-stone-warm">
           Once your bullets are specific, make sure they still carry the terms
           employers scan for. Run the draft through our free{" "}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
             resume keyword scanner
           </Link>{" "}
           to check coverage against a real job posting, and start from an{" "}
-          <Link to="/templates/ats-friendly" className="text-accent hover:underline font-medium">
+          <Link to="/templates/ats-friendly" className="text-accent-text hover:underline font-medium">
             ATS-friendly template
           </Link>{" "}
           so your specific, humanized content actually parses.
@@ -265,7 +265,7 @@ export default function HumanizeAIResume() {
           into first-pass bullets. The mistake is shipping the raw output. Use it
           to start, then rewrite in your own detail and voice. For a full
           walkthrough of using AI well from the first draft, see our{" "}
-          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline font-medium">
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline font-medium">
             AI resume writing guide
           </Link>.
         </p>

@@ -54,17 +54,17 @@ export default function ResumeLengthGuide() {
             Table of Contents
           </h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#golden-rules" className="text-accent hover:underline">The Golden Rules of Resume Length</a></li>
-            <li><a href="#decision-tree" className="text-accent hover:underline">Resume Length Decision Tree</a></li>
-            <li><a href="#industry-guidelines" className="text-accent hover:underline">Industry-Specific Guidelines</a></li>
-            <li><a href="#when-multiple-pages" className="text-accent hover:underline">When to Use Multiple Pages</a></li>
-            <li><a href="#before-after" className="text-accent hover:underline">Before &amp; After: Condensed vs. Bloated</a></li>
-            <li><a href="#common-mistakes" className="text-accent hover:underline">Common Resume Length Mistakes</a></li>
-            <li><a href="#ats-length" className="text-accent hover:underline">Optimizing Resume Length for ATS</a></li>
-            <li><a href="#how-to-cut" className="text-accent hover:underline">How to Cut Your Resume to One Page</a></li>
-            <li><a href="#career-stage" className="text-accent hover:underline">Length Guidelines by Career Stage</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">FAQ</a></li>
-            <li><a href="#related-guides" className="text-accent hover:underline">Related Guides</a></li>
+            <li><a href="#golden-rules" className="text-accent-text hover:underline">The Golden Rules of Resume Length</a></li>
+            <li><a href="#decision-tree" className="text-accent-text hover:underline">Resume Length Decision Tree</a></li>
+            <li><a href="#industry-guidelines" className="text-accent-text hover:underline">Industry-Specific Guidelines</a></li>
+            <li><a href="#when-multiple-pages" className="text-accent-text hover:underline">When to Use Multiple Pages</a></li>
+            <li><a href="#before-after" className="text-accent-text hover:underline">Before &amp; After: Condensed vs. Bloated</a></li>
+            <li><a href="#common-mistakes" className="text-accent-text hover:underline">Common Resume Length Mistakes</a></li>
+            <li><a href="#ats-length" className="text-accent-text hover:underline">Optimizing Resume Length for ATS</a></li>
+            <li><a href="#how-to-cut" className="text-accent-text hover:underline">How to Cut Your Resume to One Page</a></li>
+            <li><a href="#career-stage" className="text-accent-text hover:underline">Length Guidelines by Career Stage</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">FAQ</a></li>
+            <li><a href="#related-guides" className="text-accent-text hover:underline">Related Guides</a></li>
           </ol>
         </nav>
 
@@ -72,7 +72,7 @@ export default function ResumeLengthGuide() {
           <h3 className="text-lg font-bold text-ink mb-2">Quick Facts</h3>
           <p className="text-ink/80">
             Recruiters spend an average of 6-8 seconds on initial resume review. Studies show that over 77% of recruiters prefer resumes that are 1-2 pages long, regardless of experience level. If you are writing your resume for the first time, start with our{' '}
-            <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+            <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
               complete resume writing guide
             </Link>{' '}
             before worrying about length.
@@ -84,7 +84,7 @@ export default function ResumeLengthGuide() {
         <div className="grid md:grid-cols-3 gap-6 my-8">
           <div className="bg-green-50 border border-green-200 rounded-xl p-6">
             <h4 className="font-bold text-green-800 mb-3">Entry Level (0-3 Years)</h4>
-            <div className="text-accent">
+            <div className="text-accent-text">
               <p className="font-bold text-2xl mb-2">1 Page</p>
               <p className="text-sm">Focus on education, internships, projects, and relevant skills. Quality over quantity.</p>
             </div>
@@ -107,11 +107,11 @@ export default function ResumeLengthGuide() {
 
         <p className="text-lg leading-relaxed text-stone-warm">
           These are starting points, not hard rules. The real question is whether every line on your resume earns its space. Use{' '}
-          <Link to="/blog/resume-action-verbs" className="text-accent hover:underline">
+          <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
             strong action verbs
           </Link>{' '}
           and{' '}
-          <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+          <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
             quantified accomplishments
           </Link>{' '}
           to say more in fewer words — that is the single best way to control resume length without sacrificing impact.
@@ -131,7 +131,7 @@ export default function ResumeLengthGuide() {
               <div>
                 <p className="font-bold text-lg">0-3 years of experience</p>
                 <p className="text-white/80">Stick to <strong>1 page</strong>. Lead with education, projects, and internships. If you struggle to fill one page, add relevant coursework, volunteer work, or a{' '}
-                  <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+                  <Link to="/blog/professional-summary-examples" className="text-white underline hover:text-accent">
                     professional summary
                   </Link>.
                 </p>
@@ -170,7 +170,7 @@ export default function ResumeLengthGuide() {
 
         <p className="text-lg leading-relaxed text-stone-warm">
           The key principle: every line should either demonstrate a relevant skill or quantify an achievement. If a bullet point just describes a routine duty that the job title already implies, cut it. For help identifying the right{' '}
-          <Link to="/resume-keywords" className="text-accent hover:underline">
+          <Link to="/resume-keywords" className="text-accent-text hover:underline">
             resume keywords
           </Link>{' '}
           for your target role, use our keyword hub.
@@ -186,7 +186,7 @@ export default function ResumeLengthGuide() {
             <h4 className="font-bold text-ink mb-3">Technology &amp; Startups</h4>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <p className="text-accent font-medium mb-2">Preferred: 1-2 pages</p>
+                <p className="text-accent-text font-medium mb-2">Preferred: 1-2 pages</p>
                 <ul className="list-disc pl-6 space-y-1 text-stone-warm text-sm">
                   <li>Fast-paced industry values concise information</li>
                   <li>Focus on technical skills and project impact</li>
@@ -197,7 +197,7 @@ export default function ResumeLengthGuide() {
               <div>
                 <p className="text-stone-warm text-sm italic">
                   Tech recruiters prefer brief, scannable resumes that highlight coding skills and measurable project outcomes. See our{' '}
-                  <Link to="/examples/software-engineer" className="text-accent hover:underline">
+                  <Link to="/examples/software-engineer" className="text-accent-text hover:underline">
                     software engineer resume example
                   </Link>{' '}
                   for the ideal format.
@@ -261,7 +261,7 @@ export default function ResumeLengthGuide() {
               <div>
                 <p className="text-stone-warm text-sm italic">
                   Academic positions often require CVs rather than resumes, with different length expectations. Learn the key differences in our{' '}
-                  <Link to="/blog/resume-vs-cv-difference" className="text-accent hover:underline">
+                  <Link to="/blog/resume-vs-cv-difference" className="text-accent-text hover:underline">
                     resume vs. CV guide
                   </Link>.
                 </p>
@@ -296,8 +296,8 @@ export default function ResumeLengthGuide() {
           <h4 className="font-bold text-yellow-800 mb-3">Quality vs. Quantity Decision Matrix</h4>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <p className="font-medium text-accent mb-2">Go to Page 2 When You Have:</p>
-              <ul className="list-disc pl-6 space-y-1 text-accent text-sm">
+              <p className="font-medium text-accent-text mb-2">Go to Page 2 When You Have:</p>
+              <ul className="list-disc pl-6 space-y-1 text-accent-text text-sm">
                 <li>10+ years of relevant experience</li>
                 <li>Multiple leadership roles with significant achievements</li>
                 <li>Industry-required certifications or licenses</li>
@@ -361,7 +361,7 @@ export default function ResumeLengthGuide() {
 
         <p className="text-lg leading-relaxed text-stone-warm">
           Notice how the condensed version actually communicates more value in half the space. The secret is replacing task descriptions with{' '}
-          <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+          <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
             quantified accomplishments
           </Link>. Every bullet should answer: "What did I do, and what was the measurable result?"
         </p>
@@ -381,7 +381,7 @@ export default function ResumeLengthGuide() {
             <p className="text-stone-warm mb-2">
               <strong>Example:</strong> Including every job duty from 15 years ago or high school achievements for senior professionals.
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Fix:</strong> Focus on the last 10-15 years and only include achievements relevant to your target role. For older positions, list company name, title, and dates — nothing more.
             </p>
           </div>
@@ -391,7 +391,7 @@ export default function ResumeLengthGuide() {
             <p className="text-stone-warm mb-2">
               <strong>Example:</strong> Using 8pt font and 0.3-inch margins to fit 15 years of experience on one page.
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Fix:</strong> Use 10-12pt body font and at least 0.5-inch margins. If you need tiny text to fit, your content needs editing — not smaller type. A readable two-page resume beats an unreadable one-pager every time.
             </p>
           </div>
@@ -401,12 +401,12 @@ export default function ResumeLengthGuide() {
             <p className="text-stone-warm mb-2">
               <strong>Example:</strong> Creating a 4-page resume that gets truncated by applicant tracking systems.
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Fix:</strong> Keep critical information — your{' '}
-              <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+              <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
                 professional summary
               </Link>,{' '}
-              <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+              <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
                 skills section
               </Link>, and most recent role — on the first page. Many ATS systems give less weight to content beyond page two.
             </p>
@@ -417,7 +417,7 @@ export default function ResumeLengthGuide() {
             <p className="text-stone-warm mb-2">
               <strong>Example:</strong> Listing "Managed team of X people" and "Created reports for leadership" under every role.
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Fix:</strong> For each role, highlight what was unique — the specific challenge, the distinct achievement, the new skill applied. If two jobs had identical duties, keep the details on the more recent one and summarize the earlier one.
             </p>
           </div>
@@ -426,7 +426,7 @@ export default function ResumeLengthGuide() {
         <h2 id="ats-length" className="text-3xl font-bold text-ink mt-12 mb-6">Optimizing Resume Length for ATS</h2>
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
           Applicant Tracking Systems (ATS) parse your resume before a human ever sees it. Length affects how well that parsing works. Use an{' '}
-          <Link to="/templates/ats-friendly" className="text-accent hover:underline">
+          <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">
             ATS-friendly template
           </Link>{' '}
           to ensure your formatting does not interfere with parsing regardless of page count.
@@ -438,7 +438,7 @@ export default function ResumeLengthGuide() {
             <li><strong>Optimal range:</strong> 1-2 pages for best parsing results. Most modern ATS systems handle 3+ pages, but recruiter attention does not.</li>
             <li><strong>File size:</strong> Keep under 1MB to prevent upload issues</li>
             <li><strong>Front-load keywords:</strong> Put the most important{' '}
-              <Link to="/resume-keywords" className="text-accent hover:underline">
+              <Link to="/resume-keywords" className="text-accent-text hover:underline">
                 resume keywords
               </Link>{' '}
               on page 1 — many ATS dashboards show only the first page in preview mode.
@@ -566,7 +566,7 @@ export default function ResumeLengthGuide() {
           <h4 className="font-bold text-yellow-800 mb-3">Pro Tip</h4>
           <p className="text-yellow-700">
             Create multiple versions of your resume: a concise one-page version for quick applications and a comprehensive two-page version for strategic opportunities. Tailor length to the specific role and company culture. Our{' '}
-            <Link to="/free-resume-builder-no-sign-up" className="text-accent hover:underline">
+            <Link to="/free-resume-builder-no-sign-up" className="text-accent-text hover:underline">
               free resume builder
             </Link>{' '}
             lets you create both versions in minutes with no sign-up required.
@@ -634,31 +634,31 @@ export default function ResumeLengthGuide() {
           <h3 className="font-bold text-ink mb-3">Related Guides</h3>
           <ul className="space-y-2 text-ink/80">
             <li>
-              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
                 How to Write a Resume: The Complete Step-by-Step Guide
               </Link>{' '}
               &mdash; our pillar guide covering every section from start to finish
             </li>
             <li>
-              <Link to="/blog/resume-action-verbs" className="text-accent hover:underline">
+              <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
                 200+ Resume Action Verbs That Get Results
               </Link>{' '}
               &mdash; replace weak verbs to say more in fewer words
             </li>
             <li>
-              <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+              <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
                 How to List Skills on a Resume
               </Link>{' '}
               &mdash; choose and format the right skills for your target role
             </li>
             <li>
-              <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+              <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
                 How to Quantify Resume Accomplishments
               </Link>{' '}
               &mdash; turn vague duties into compelling, numbers-driven bullets
             </li>
             <li>
-              <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+              <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
                 Professional Summary Examples for Every Career Level
               </Link>{' '}
               &mdash; write a strong summary that fits in 2-3 lines

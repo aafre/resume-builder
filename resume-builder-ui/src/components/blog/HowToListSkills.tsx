@@ -54,7 +54,7 @@ export default function HowToListSkills() {
           How should you format them? This guide will walk you through
           everything you need to know to create a skills section that gets
           results. If you are starting from scratch, our{" "}
-          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
             complete resume writing guide
           </Link>{" "}
           covers the full picture.
@@ -67,7 +67,7 @@ export default function HowToListSkills() {
             resume being filtered out by ATS or making it to a human recruiter.
             Studies show that over 75% of resumes are rejected by ATS before a
             human ever sees them. See our{" "}
-            <Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">
+            <Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline">
               ATS optimization guide
             </Link>{" "}
             for a full breakdown of how these systems parse your skills.
@@ -110,7 +110,7 @@ export default function HowToListSkills() {
             <h3 className="text-xl font-bold text-green-800 mb-4">
               🤝 Soft Skills (Interpersonal Skills)
             </h3>
-            <div className="text-accent">
+            <div className="text-accent-text">
               <p className="mb-3">
                 Personal attributes that describe your work style and how you
                 interact with others. Harder to quantify but equally important.
@@ -135,7 +135,7 @@ export default function HowToListSkills() {
             Hard skills get you past ATS filters, while soft skills show you'll
             fit well with the team and company culture. When describing what you
             accomplished with each skill, use strong{" "}
-            <Link to="/blog/resume-action-verbs" className="text-accent hover:underline">
+            <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
               resume action verbs
             </Link>{" "}
             to convey proficiency without relying on vague self-ratings.
@@ -152,7 +152,7 @@ export default function HowToListSkills() {
           education, projects, and even hobbies. Don't filter yourself at this
           stage. If you get stuck, try pasting your experience into an AI
           tool — our{" "}
-          <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">
+          <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">
             Claude resume prompts
           </Link>{" "}
           include a dedicated skills-extraction prompt that pulls hidden
@@ -236,12 +236,12 @@ export default function HowToListSkills() {
             WordArt.com) to visually identify the most frequently mentioned
             skills. These should be your priority keywords if you have the
             experience to back them up. Our{" "}
-            <Link to="/resume-keywords" className="text-accent hover:underline">
+            <Link to="/resume-keywords" className="text-accent-text hover:underline">
               resume keywords by job title
             </Link>{" "}
             tool shows you exactly which skills ATS systems scan for in your
             field — for example, see the{" "}
-            <Link to="/resume-keywords/software-engineer" className="text-accent hover:underline">
+            <Link to="/resume-keywords/software-engineer" className="text-accent-text hover:underline">
               software engineer keywords page
             </Link>{" "}
             for a tech-specific breakdown.
@@ -263,11 +263,11 @@ export default function HowToListSkills() {
             <h3 className="text-xl font-bold text-green-800 mb-4">
               Option 1: The Simple Bulleted List
             </h3>
-            <div className="text-accent">
+            <div className="text-accent-text">
               <p className="mb-3">
                 This is the most common and ATS-friendly format. It's clean,
                 easy to read, and effective for most roles. Pair it with an{" "}
-                <Link to="/templates/ats-friendly" className="text-accent hover:underline font-medium">
+                <Link to="/templates/ats-friendly" className="text-accent-text hover:underline font-medium">
                   ATS-friendly template
                 </Link>{" "}
                 for maximum compatibility.
@@ -324,7 +324,7 @@ export default function HowToListSkills() {
                 Useful when you want to indicate your experience level,
                 especially for technical skills. Pairing proficiency labels with
                 measurable outcomes is even stronger — learn how in our guide to{" "}
-                <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+                <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
                   quantifying resume accomplishments
                 </Link>.
               </p>
@@ -451,7 +451,7 @@ export default function HowToListSkills() {
             <h3 className="text-xl font-bold text-green-800 mb-4">
               📊 Marketing & Sales
             </h3>
-            <div className="grid md:grid-cols-3 gap-4 text-accent text-sm">
+            <div className="grid md:grid-cols-3 gap-4 text-accent-text text-sm">
               <div>
                 <h4 className="font-medium mb-2">Digital Marketing:</h4>
                 <ul className="list-disc pl-5 space-y-1">
@@ -675,7 +675,7 @@ export default function HowToListSkills() {
               <strong>Example:</strong> Listing "Microsoft Word" as a key skill
               for a senior developer role
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Better:</strong> Focus on current, relevant skills that
               match the job requirements
             </p>
@@ -689,7 +689,7 @@ export default function HowToListSkills() {
               <strong>Example:</strong> "Good communication skills" or "Team
               player"
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Better:</strong> "Public Speaking & Presentation" or
               "Cross-functional Team Leadership"
             </p>
@@ -703,7 +703,7 @@ export default function HowToListSkills() {
               <strong>Example:</strong> Claiming "Expert in Python" when you've
               only completed online tutorials
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Better:</strong> Be honest about your level - "Python
               (Intermediate)" or "Python (1 year experience)"
             </p>
@@ -717,7 +717,7 @@ export default function HowToListSkills() {
               <strong>Example:</strong> Listing 20+ skills without
               prioritization
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Better:</strong> Curate 8-12 most relevant skills for each
               application
             </p>
@@ -738,7 +738,7 @@ export default function HowToListSkills() {
               title, company description, and "Nice to Have" sections for
               additional relevant skills. Your most impactful skills also belong
               in your{" "}
-              <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+              <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
                 professional summary
               </Link>{" "}
               — it is the first place a recruiter's eyes land.
@@ -753,11 +753,11 @@ export default function HowToListSkills() {
             <h3 className="text-lg font-bold text-green-800 mb-3">
               2. Use Industry-Specific Terminology
             </h3>
-            <p className="text-accent mb-3">
+            <p className="text-accent-text mb-3">
               Each industry has its own language. Use the specific terms and
               acronyms that professionals in your field would recognize.
             </p>
-            <div className="bg-white p-3 rounded text-sm text-accent">
+            <div className="bg-white p-3 rounded text-sm text-accent-text">
               <strong>Example:</strong> Instead of "Customer Service," use "Client
               Relations" in consulting or "Customer Success" in SaaS companies
             </div>
@@ -819,7 +819,7 @@ export default function HowToListSkills() {
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 mt-8">
           <h4 className="font-bold text-green-800 mb-3">🚀 Remember</h4>
-          <p className="text-accent">
+          <p className="text-accent-text">
             Your skills section is prime real estate on your resume. Every word
             should be intentional and relevant to the role you're targeting. When
             done right, it can be the difference between getting filtered out by
@@ -890,37 +890,37 @@ export default function HowToListSkills() {
           <h3 className="font-bold text-ink mb-3">Related Guides</h3>
           <ul className="space-y-2 text-ink/80">
             <li>
-              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
                 How to Write a Resume: The Complete Guide
               </Link>{" "}
               &mdash; the pillar guide covering every resume section end to end
             </li>
             <li>
-              <Link to="/blog/resume-action-verbs" className="text-accent hover:underline">
+              <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
                 120+ Resume Action Verbs
               </Link>{" "}
               &mdash; stronger language to describe what you did with each skill
             </li>
             <li>
-              <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+              <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
                 How to Quantify Resume Accomplishments
               </Link>{" "}
               &mdash; turn vague skill claims into measurable impact
             </li>
             <li>
-              <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+              <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
                 Professional Summary Examples
               </Link>{" "}
               &mdash; showcase your top skills in the summary section
             </li>
             <li>
-              <Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">
+              <Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline">
                 ATS Resume Optimization Guide
               </Link>{" "}
               &mdash; make sure your skills get parsed correctly by ATS
             </li>
             <li>
-              <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">
+              <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">
                 25+ Claude AI Resume Prompts
               </Link>{" "}
               &mdash; use AI to identify and articulate your skills

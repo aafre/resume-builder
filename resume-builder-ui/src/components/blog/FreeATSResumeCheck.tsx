@@ -90,7 +90,7 @@ export default function FreeATSResumeCheck() {
           not contain the terms a recruiter searches for. The four checks below
           test those problems separately. For a closer look at what parsers can and
           cannot read, see our guide to{" "}
-          <Link to="/blog/ats-formatting-rules" className="text-accent hover:underline font-medium">
+          <Link to="/blog/ats-formatting-rules" className="text-accent-text hover:underline font-medium">
             ATS formatting rules
           </Link>.
         </p>
@@ -101,7 +101,7 @@ export default function FreeATSResumeCheck() {
         <p className="text-lg leading-relaxed text-stone-warm">
           Start with the job description because keyword relevance is specific to
           each application. EasyFreeResume&apos;s own{" "}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
             free resume keyword scanner
           </Link>{" "}
           compares your resume with the posting. It is free for unlimited scans,
@@ -233,7 +233,7 @@ export default function FreeATSResumeCheck() {
         </div>
         <p className="text-lg leading-relaxed text-stone-warm">
           If rebuilding the layout would take too long, start with one of our{" "}
-          <Link to="/templates/ats-friendly" className="text-accent hover:underline font-medium">
+          <Link to="/templates/ats-friendly" className="text-accent-text hover:underline font-medium">
             ATS-friendly resume templates
           </Link>. They provide a simple structure, but you should still run the
           plain-text and keyword checks on your finished content.
@@ -288,7 +288,7 @@ export default function FreeATSResumeCheck() {
         </p>
         <p className="text-lg leading-relaxed text-stone-warm mt-4">
           Start now with our{" "}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
             free, unlimited resume keyword scanner
           </Link>; it needs no account and keeps your resume in your browser.
         </p>

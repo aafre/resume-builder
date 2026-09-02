@@ -26,7 +26,7 @@ export default function GrokResumePrompts() {
           AI interactions. Its speed and willingness to iterate quickly make it
           useful for brainstorming and rapid resume refinement. For a broader look at
           using AI for resumes, see our{" "}
-          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">
             complete AI resume writing guide
           </Link>.
         </p>
@@ -192,7 +192,7 @@ export default function GrokResumePrompts() {
 
           <p className="text-stone-warm text-lg leading-relaxed">
             After injecting keywords, verify your optimization with our free{" "}
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
               Resume Keyword Scanner
             </Link>
             {" "}to see how well your resume matches the job description.
@@ -218,7 +218,7 @@ export default function GrokResumePrompts() {
 
         <p className="text-lg leading-relaxed text-stone-warm">
           Once your resume is polished, don't forget the cover letter. Check out our{" "}
-          <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline font-medium">
+          <Link to="/blog/ai-cover-letter-prompts" className="text-accent-text hover:underline font-medium">
             AI cover letter prompts
           </Link>
           {" "}to create a matching, personalized cover letter with any AI tool.
@@ -275,7 +275,7 @@ export default function GrokResumePrompts() {
           <li>
             <Link
               to="/blog/chatgpt-resume-prompts"
-              className="text-accent hover:underline"
+              className="text-accent-text hover:underline"
             >
               25+ ChatGPT Prompts for Resume Writing
             </Link>
@@ -283,7 +283,7 @@ export default function GrokResumePrompts() {
           <li>
             <Link
               to="/blog/ai-resume-writing-guide"
-              className="text-accent hover:underline"
+              className="text-accent-text hover:underline"
             >
               AI Resume Writing: The Complete Guide
             </Link>

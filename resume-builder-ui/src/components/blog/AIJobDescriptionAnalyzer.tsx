@@ -203,7 +203,7 @@ export default function AIJobDescriptionAnalyzer() {
           <h3 className="font-bold text-green-800 mb-3">
             ✅ Best Practices
           </h3>
-          <ul className="list-disc list-inside space-y-2 text-accent">
+          <ul className="list-disc list-inside space-y-2 text-accent-text">
             <li>Analyze 3-5 similar job descriptions to find common patterns</li>
             <li>Use exact keyword phrases, not synonyms (ATS matches exactly)</li>
             <li>Prioritize keywords that appear multiple times in the JD</li>
@@ -221,7 +221,7 @@ export default function AIJobDescriptionAnalyzer() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -233,17 +233,17 @@ export default function AIJobDescriptionAnalyzer() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
           <li>
-            <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">
+            <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
               How to Use Resume Keywords to Beat the ATS
             </Link>
           </li>
           <li>
-            <Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">
+            <Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline">
               ATS Resume Optimization Guide
             </Link>
           </li>
           <li>
-            <Link to="/blog/ai-resume-prompts-hub" className="text-accent hover:underline">
+            <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline">
               AI Resume Prompts Hub — Compare All Tools
             </Link>
           </li>

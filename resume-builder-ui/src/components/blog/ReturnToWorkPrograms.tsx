@@ -176,12 +176,12 @@ export default function ReturnToWorkPrograms() {
         <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#what-is-returnship" className="text-accent hover:underline">What Is a Returnship?</a></li>
-            <li><a href="#programs" className="text-accent hover:underline">Top Return-to-Work Programs (2026)</a></li>
-            <li><a href="#comparison" className="text-accent hover:underline">Program Comparison Table</a></li>
-            <li><a href="#resume-tips" className="text-accent hover:underline">How to Write a Return-to-Work Resume</a></li>
-            <li><a href="#application-tips" className="text-accent hover:underline">Application Tips</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">FAQ</a></li>
+            <li><a href="#what-is-returnship" className="text-accent-text hover:underline">What Is a Returnship?</a></li>
+            <li><a href="#programs" className="text-accent-text hover:underline">Top Return-to-Work Programs (2026)</a></li>
+            <li><a href="#comparison" className="text-accent-text hover:underline">Program Comparison Table</a></li>
+            <li><a href="#resume-tips" className="text-accent-text hover:underline">How to Write a Return-to-Work Resume</a></li>
+            <li><a href="#application-tips" className="text-accent-text hover:underline">Application Tips</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">FAQ</a></li>
           </ol>
         </nav>
 
@@ -234,7 +234,7 @@ export default function ReturnToWorkPrograms() {
               <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
                 <div>
                   <h3 className="text-xl font-bold text-ink">{program.company}</h3>
-                  <p className="text-accent font-medium text-sm">{program.name}</p>
+                  <p className="text-accent-text font-medium text-sm">{program.name}</p>
                 </div>
                 <div className="flex gap-2">
                   {program.paid && (
@@ -262,7 +262,7 @@ export default function ReturnToWorkPrograms() {
                 href={program.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block mt-3 text-accent hover:underline text-sm font-medium"
+                className="inline-block mt-3 text-accent-text hover:underline text-sm font-medium"
               >
                 View program details &rarr;
               </a>
@@ -360,25 +360,25 @@ export default function ReturnToWorkPrograms() {
           <h3 className="font-bold text-ink mb-3">Related Guides</h3>
           <ul className="space-y-2 text-ink/80">
             <li>
-              <Link to="/blog/resume-employment-gaps" className="text-accent hover:underline">
+              <Link to="/blog/resume-employment-gaps" className="text-accent-text hover:underline">
                 How to Explain Employment Gaps on Your Resume
               </Link>{' '}
               &mdash; detailed strategies for every type of gap
             </li>
             <li>
-              <Link to="/blog/career-change-resume-guide" className="text-accent hover:underline">
+              <Link to="/blog/career-change-resume-guide" className="text-accent-text hover:underline">
                 Career Change Resume Guide
               </Link>{' '}
               &mdash; if you are returning to a different field
             </li>
             <li>
-              <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+              <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
                 Professional Summary Examples
               </Link>{' '}
               &mdash; templates for return-to-work summaries
             </li>
             <li>
-              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
                 How to Write a Resume (Complete Guide)
               </Link>{' '}
               &mdash; full step-by-step resume writing walkthrough

@@ -31,14 +31,14 @@ export default function CareerChangeResumeGuide() {
         <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#when-you-need" className="text-accent hover:underline">When You Need a Career Change Resume</a></li>
-            <li><a href="#right-format" className="text-accent hover:underline">Choosing the Right Format</a></li>
-            <li><a href="#summary" className="text-accent hover:underline">Writing a Career Change Summary</a></li>
-            <li><a href="#transferable-skills" className="text-accent hover:underline">The Transferable Skills Framework</a></li>
-            <li><a href="#experience" className="text-accent hover:underline">Rewriting Your Experience Section</a></li>
-            <li><a href="#examples" className="text-accent hover:underline">Career Change Resume Examples</a></li>
-            <li><a href="#mistakes" className="text-accent hover:underline">Common Mistakes to Avoid</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">FAQ</a></li>
+            <li><a href="#when-you-need" className="text-accent-text hover:underline">When You Need a Career Change Resume</a></li>
+            <li><a href="#right-format" className="text-accent-text hover:underline">Choosing the Right Format</a></li>
+            <li><a href="#summary" className="text-accent-text hover:underline">Writing a Career Change Summary</a></li>
+            <li><a href="#transferable-skills" className="text-accent-text hover:underline">The Transferable Skills Framework</a></li>
+            <li><a href="#experience" className="text-accent-text hover:underline">Rewriting Your Experience Section</a></li>
+            <li><a href="#examples" className="text-accent-text hover:underline">Career Change Resume Examples</a></li>
+            <li><a href="#mistakes" className="text-accent-text hover:underline">Common Mistakes to Avoid</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">FAQ</a></li>
           </ol>
         </nav>
 
@@ -60,19 +60,19 @@ export default function CareerChangeResumeGuide() {
 
         <ul className="space-y-3 text-lg text-stone-warm">
           <li className="flex gap-3 items-start">
-            <span className="text-accent mt-1.5">&#x2022;</span>
+            <span className="text-accent-text mt-1.5">&#x2022;</span>
             <span>You are moving to a different industry (e.g., teaching to tech)</span>
           </li>
           <li className="flex gap-3 items-start">
-            <span className="text-accent mt-1.5">&#x2022;</span>
+            <span className="text-accent-text mt-1.5">&#x2022;</span>
             <span>You are changing job functions (e.g., sales to product management)</span>
           </li>
           <li className="flex gap-3 items-start">
-            <span className="text-accent mt-1.5">&#x2022;</span>
+            <span className="text-accent-text mt-1.5">&#x2022;</span>
             <span>You are returning to work after a long gap</span>
           </li>
           <li className="flex gap-3 items-start">
-            <span className="text-accent mt-1.5">&#x2022;</span>
+            <span className="text-accent-text mt-1.5">&#x2022;</span>
             <span>Your most relevant experience is not from your most recent job</span>
           </li>
         </ul>
@@ -108,7 +108,7 @@ export default function CareerChangeResumeGuide() {
                 <td className="px-6 py-4 text-yellow-600 text-sm">Some recruiters dislike it; can look evasive</td>
               </tr>
               <tr>
-                <td className="px-6 py-4 font-medium text-accent font-bold">Hybrid (Recommended)</td>
+                <td className="px-6 py-4 font-medium text-accent-text font-bold">Hybrid (Recommended)</td>
                 <td className="px-6 py-4 text-stone-warm">Career changers. Leads with skills, follows with timeline.</td>
                 <td className="px-6 py-4 text-green-600 text-sm">Low risk &mdash; ATS-friendly and recruiter-approved</td>
               </tr>
@@ -137,7 +137,7 @@ export default function CareerChangeResumeGuide() {
           accomplish three things in 2-3 sentences: establish your new professional identity,
           highlight transferable skills, and explain (briefly) why the transition makes sense.
           For more examples, see our{' '}
-          <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+          <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
             professional summary examples guide
           </Link>.
         </p>
@@ -269,7 +269,7 @@ export default function CareerChangeResumeGuide() {
           </div>
           <p className="text-stone-warm text-sm mt-3">
             For role-specific keyword lists, browse our{' '}
-            <Link to="/resume-keywords" className="text-accent hover:underline">resume keywords by job title</Link> pages.
+            <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords by job title</Link> pages.
           </p>
         </div>
 
@@ -333,7 +333,7 @@ export default function CareerChangeResumeGuide() {
           Notice the pattern: same underlying experience, different framing. The achievements are
           real &mdash; the language has been translated to speak to the new audience. For help
           rewriting your bullets, try our{' '}
-          <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+          <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
             guide to quantifying accomplishments
           </Link>.
         </p>
@@ -345,7 +345,7 @@ export default function CareerChangeResumeGuide() {
 
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
           These simplified examples show the hybrid format in action. Browse our{' '}
-          <Link to="/examples/software-engineer" className="text-accent hover:underline">resume examples library</Link>
+          <Link to="/examples/software-engineer" className="text-accent-text hover:underline">resume examples library</Link>
           {' '}for full, downloadable templates.
         </p>
 
@@ -476,13 +476,13 @@ export default function CareerChangeResumeGuide() {
           <h3 className="font-bold text-ink mb-3">Related Guides</h3>
           <ul className="space-y-2 text-ink/80">
             <li>
-              <Link to="/blog/resume-employment-gaps" className="text-accent hover:underline">
+              <Link to="/blog/resume-employment-gaps" className="text-accent-text hover:underline">
                 How to Explain Employment Gaps on Your Resume
               </Link>{' '}
               &mdash; detailed strategies for every type of gap
             </li>
             <li>
-              <Link to="/blog/return-to-work-programs" className="text-accent hover:underline">
+              <Link to="/blog/return-to-work-programs" className="text-accent-text hover:underline">
                 Return to Work Programs Guide
               </Link>{' '}
               &mdash; paid returnships at top companies for career returners

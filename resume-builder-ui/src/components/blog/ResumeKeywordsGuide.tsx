@@ -65,14 +65,14 @@ export default function ResumeKeywordsGuide() {
             Table of Contents
           </h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#what-are-resume-keywords" className="text-accent hover:underline">What Are Resume Keywords?</a></li>
-            <li><a href="#how-to-identify" className="text-accent hover:underline">How to Identify the Right Resume Keywords</a></li>
-            <li><a href="#extract-from-job-posting" className="text-accent hover:underline">How to Extract Keywords from a Job Posting</a></li>
-            <li><a href="#industry-keywords" className="text-accent hover:underline">Top Resume Keywords by Industry (2026)</a></li>
-            <li><a href="#where-to-place" className="text-accent hover:underline">Where to Place Keywords in Your Resume</a></li>
-            <li><a href="#hard-vs-soft" className="text-accent hover:underline">Hard Skills vs. Soft Skills Keywords</a></li>
-            <li><a href="#final-tips" className="text-accent hover:underline">Final Tips for Resume Keyword Optimization</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">Frequently Asked Questions</a></li>
+            <li><a href="#what-are-resume-keywords" className="text-accent-text hover:underline">What Are Resume Keywords?</a></li>
+            <li><a href="#how-to-identify" className="text-accent-text hover:underline">How to Identify the Right Resume Keywords</a></li>
+            <li><a href="#extract-from-job-posting" className="text-accent-text hover:underline">How to Extract Keywords from a Job Posting</a></li>
+            <li><a href="#industry-keywords" className="text-accent-text hover:underline">Top Resume Keywords by Industry (2026)</a></li>
+            <li><a href="#where-to-place" className="text-accent-text hover:underline">Where to Place Keywords in Your Resume</a></li>
+            <li><a href="#hard-vs-soft" className="text-accent-text hover:underline">Hard Skills vs. Soft Skills Keywords</a></li>
+            <li><a href="#final-tips" className="text-accent-text hover:underline">Final Tips for Resume Keyword Optimization</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">Frequently Asked Questions</a></li>
           </ol>
         </nav>
 
@@ -103,7 +103,7 @@ export default function ResumeKeywordsGuide() {
           <p className="text-green-700 mb-3">
             Want to check if your resume has the right keywords before applying?
             Our{" "}
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
               free Resume Keyword Scanner
             </Link>{" "}
             compares your resume against any job description and shows you
@@ -122,7 +122,7 @@ export default function ResumeKeywordsGuide() {
           job descriptions. When an ATS scans your resume, it compares your
           content against a list of required and preferred keywords — and ranks
           you accordingly. For a deeper dive into how ATS systems work, see our{" "}
-          <Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">
+          <Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline">
             ATS resume optimization guide
           </Link>.
         </p>
@@ -159,7 +159,7 @@ export default function ResumeKeywordsGuide() {
           <p className="text-yellow-800">
             <strong>Using the right keywords isn't about "stuffing."</strong>{" "}
             It's about mirroring the terms employers already value. Learn{" "}
-            <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">
+            <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
               how to use resume keywords naturally
             </Link>{" "}
             without sounding robotic.
@@ -201,7 +201,7 @@ export default function ResumeKeywordsGuide() {
           <ul className="list-disc pl-6 space-y-2 text-green-700">
             <li>
               <strong>
-                <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+                <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
                   EasyFreeResume Keyword Scanner
                 </Link>
               </strong>{" "}
@@ -223,7 +223,7 @@ export default function ResumeKeywordsGuide() {
 
         <p className="text-lg leading-relaxed text-stone-warm mt-6">
           For a complete walkthrough, read our{" "}
-          <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">
+          <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
             step-by-step guide to using resume keywords
           </Link>. It covers matching strategies, density guidelines, and common
           mistakes to avoid.
@@ -249,7 +249,7 @@ export default function ResumeKeywordsGuide() {
               <h3 className="text-xl font-bold text-ink mb-2">Copy the Full Job Posting</h3>
               <p className="text-lg leading-relaxed text-stone-warm">
                 Paste the entire posting into a document or our{" "}
-                <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+                <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
                   keyword scanner tool
                 </Link>. Include the responsibilities, requirements, preferred qualifications,
                 and even the company description — keywords appear in all of these sections.
@@ -283,7 +283,7 @@ export default function ResumeKeywordsGuide() {
                 or "team leadership" are <strong>secondary keywords</strong>. They matter
                 for human reviewers and increasingly for AI-powered ATS systems.
                 See our{" "}
-                <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+                <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
                   skills section guide
                 </Link>{" "}
                 for how to organize these effectively.
@@ -315,16 +315,16 @@ export default function ResumeKeywordsGuide() {
               <p className="text-lg leading-relaxed text-stone-warm">
                 Some job postings miss common keywords that ATS databases still
                 expect. Cross-reference the posting with our{" "}
-                <Link to="/blog/resume-keywords-by-industry" className="text-accent hover:underline">
+                <Link to="/blog/resume-keywords-by-industry" className="text-accent-text hover:underline">
                   resume keywords by industry breakdown
                 </Link>{" "}
                 or browse the{" "}
-                <Link to="/resume-keywords" className="text-accent hover:underline">
+                <Link to="/resume-keywords" className="text-accent-text hover:underline">
                   resume keywords hub
                 </Link>{" "}
                 for your specific role. For example, a software engineering posting might
                 not mention "version control," but every{" "}
-                <Link to="/resume-keywords/software-engineer" className="text-accent hover:underline">
+                <Link to="/resume-keywords/software-engineer" className="text-accent-text hover:underline">
                   software engineer resume
                 </Link>{" "}
                 should include it.
@@ -356,7 +356,7 @@ export default function ResumeKeywordsGuide() {
           </div>
           <p className="text-ink/80 mt-4 text-sm">
             See our full{" "}
-            <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent hover:underline">
+            <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent-text hover:underline">
               customer service resume keywords guide
             </Link>{" "}
             for 100+ keywords organized by category.
@@ -371,7 +371,7 @@ export default function ResumeKeywordsGuide() {
           Below are the <strong>must-have keywords</strong> for major industries
           in 2026. Use these as a starting point, then tailor based on your
           target job posting. For comprehensive lists organized by role, visit our{" "}
-          <Link to="/resume-keywords" className="text-accent hover:underline">
+          <Link to="/resume-keywords" className="text-accent-text hover:underline">
             resume keywords hub
           </Link>{" "}
           which covers 25+ job titles.
@@ -379,7 +379,7 @@ export default function ResumeKeywordsGuide() {
 
         <p className="text-lg leading-relaxed text-stone-warm mb-8">
           Need deeper industry breakdowns? Our{" "}
-          <Link to="/blog/resume-keywords-by-industry" className="text-accent hover:underline">
+          <Link to="/blog/resume-keywords-by-industry" className="text-accent-text hover:underline">
             resume keywords by industry guide
           </Link>{" "}
           has expanded lists for each sector below.
@@ -439,7 +439,7 @@ export default function ResumeKeywordsGuide() {
             </div>
             <p className="text-sm text-stone-warm mt-3">
               Full list:{" "}
-              <Link to="/resume-keywords/software-engineer" className="text-accent hover:underline">
+              <Link to="/resume-keywords/software-engineer" className="text-accent-text hover:underline">
                 Software Engineer Resume Keywords
               </Link>
             </p>
@@ -678,11 +678,11 @@ export default function ResumeKeywordsGuide() {
             </div>
             <p className="text-sm text-stone-warm mt-3">
               Full list:{" "}
-              <Link to="/resume-keywords/customer-service" className="text-accent hover:underline">
+              <Link to="/resume-keywords/customer-service" className="text-accent-text hover:underline">
                 Customer Service Resume Keywords
               </Link>{" "}
               and{" "}
-              <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent hover:underline">
+              <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent-text hover:underline">
                 Customer Service Keywords Guide
               </Link>
             </p>
@@ -766,7 +766,7 @@ export default function ResumeKeywordsGuide() {
               certifications, and software. This section acts as a keyword
               safety net for terms that don't fit naturally in your bullets.
               See our{" "}
-              <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+              <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
                 guide to listing skills on your resume
               </Link>{" "}
               for formatting tips.
@@ -785,7 +785,7 @@ export default function ResumeKeywordsGuide() {
 
         <p className="text-lg leading-relaxed text-stone-warm mt-6">
           Using an{" "}
-          <Link to="/templates/ats-friendly" className="text-accent hover:underline">
+          <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">
             ATS-friendly resume template
           </Link>{" "}
           ensures your keywords land in sections that ATS systems can actually
@@ -875,7 +875,7 @@ export default function ResumeKeywordsGuide() {
           <li>
             <strong>Run your resume through a scanner</strong> before
             submitting. Our{" "}
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
               free keyword scanner
             </Link>{" "}
             shows your match rate in seconds.
@@ -935,7 +935,7 @@ export default function ResumeKeywordsGuide() {
         <p className="text-lg leading-relaxed text-stone-warm mt-4">
           Don't guess which words to use — let the job description guide you.
           And if you want to verify your keyword coverage before hitting submit,{" "}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
             scan your resume for free here
           </Link>.
         </p>
@@ -995,43 +995,43 @@ export default function ResumeKeywordsGuide() {
           </p>
           <ul className="space-y-2 text-ink/80">
             <li>
-              <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">
+              <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
                 How to Use Resume Keywords
               </Link>{' '}
               &mdash; detailed step-by-step with matching strategies
             </li>
             <li>
-              <Link to="/blog/resume-keywords-by-industry" className="text-accent hover:underline">
+              <Link to="/blog/resume-keywords-by-industry" className="text-accent-text hover:underline">
                 Resume Keywords by Industry
               </Link>{' '}
               &mdash; expanded keyword lists for 10+ sectors
             </li>
             <li>
-              <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent hover:underline">
+              <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent-text hover:underline">
                 Customer Service Resume Keywords Guide
               </Link>{' '}
               &mdash; 100+ keywords organized by category
             </li>
             <li>
-              <Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">
+              <Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline">
                 ATS Resume Optimization
               </Link>{' '}
               &mdash; how ATS systems work and how to beat them
             </li>
             <li>
-              <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+              <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
                 How to List Skills on a Resume
               </Link>{' '}
               &mdash; formatting and organization best practices
             </li>
             <li>
-              <Link to="/resume-keywords" className="text-accent hover:underline">
+              <Link to="/resume-keywords" className="text-accent-text hover:underline">
                 Resume Keywords Hub
               </Link>{' '}
               &mdash; browse keywords for 25+ job titles
             </li>
             <li>
-              <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+              <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
                 Free Resume Keyword Scanner
               </Link>{' '}
               &mdash; check your resume against any job posting

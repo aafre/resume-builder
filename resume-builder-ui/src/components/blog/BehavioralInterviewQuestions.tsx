@@ -54,7 +54,7 @@ export default function BehavioralInterviewQuestions() {
           15+ questions by category, and gives you a practice framework so you
           walk into every interview ready. If you're also preparing your
           resume, our{" "}
-          <Link to="/blog/job-interview-guide" className="text-accent hover:underline">
+          <Link to="/blog/job-interview-guide" className="text-accent-text hover:underline">
             comprehensive interview guide
           </Link>{" "}
           covers the full preparation process from application to offer.
@@ -66,19 +66,19 @@ export default function BehavioralInterviewQuestions() {
             Table of Contents
           </h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#what-are-behavioral-questions" className="text-accent hover:underline">What Are Behavioral Interview Questions?</a></li>
-            <li><a href="#star-method" className="text-accent hover:underline">The STAR Method (with Full Example)</a></li>
-            <li><a href="#leadership" className="text-accent hover:underline">Leadership & Management Questions</a></li>
-            <li><a href="#problem-solving" className="text-accent hover:underline">Problem-Solving & Critical Thinking</a></li>
-            <li><a href="#teamwork" className="text-accent hover:underline">Teamwork & Collaboration</a></li>
-            <li><a href="#pressure" className="text-accent hover:underline">Handling Pressure & Challenges</a></li>
-            <li><a href="#communication" className="text-accent hover:underline">Communication & Influence</a></li>
-            <li><a href="#conflict" className="text-accent hover:underline">Conflict Resolution Questions</a></li>
-            <li><a href="#virtual-interviews" className="text-accent hover:underline">Tips for Virtual & Video Interviews</a></li>
-            <li><a href="#how-to-practice" className="text-accent hover:underline">How to Practice Behavioral Answers</a></li>
-            <li><a href="#pro-tips" className="text-accent hover:underline">Pro Tips for STAR Responses</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">FAQ</a></li>
-            <li><a href="#related-guides" className="text-accent hover:underline">Related Guides</a></li>
+            <li><a href="#what-are-behavioral-questions" className="text-accent-text hover:underline">What Are Behavioral Interview Questions?</a></li>
+            <li><a href="#star-method" className="text-accent-text hover:underline">The STAR Method (with Full Example)</a></li>
+            <li><a href="#leadership" className="text-accent-text hover:underline">Leadership & Management Questions</a></li>
+            <li><a href="#problem-solving" className="text-accent-text hover:underline">Problem-Solving & Critical Thinking</a></li>
+            <li><a href="#teamwork" className="text-accent-text hover:underline">Teamwork & Collaboration</a></li>
+            <li><a href="#pressure" className="text-accent-text hover:underline">Handling Pressure & Challenges</a></li>
+            <li><a href="#communication" className="text-accent-text hover:underline">Communication & Influence</a></li>
+            <li><a href="#conflict" className="text-accent-text hover:underline">Conflict Resolution Questions</a></li>
+            <li><a href="#virtual-interviews" className="text-accent-text hover:underline">Tips for Virtual & Video Interviews</a></li>
+            <li><a href="#how-to-practice" className="text-accent-text hover:underline">How to Practice Behavioral Answers</a></li>
+            <li><a href="#pro-tips" className="text-accent-text hover:underline">Pro Tips for STAR Responses</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">FAQ</a></li>
+            <li><a href="#related-guides" className="text-accent-text hover:underline">Related Guides</a></li>
           </ol>
         </nav>
 
@@ -109,7 +109,7 @@ export default function BehavioralInterviewQuestions() {
           The key to answering well is preparation. Before your interview,
           review the job description and identify which competencies the role
           requires. Our{" "}
-          <Link to="/resume-keywords" className="text-accent hover:underline">
+          <Link to="/resume-keywords" className="text-accent-text hover:underline">
             resume keywords tool
           </Link>{" "}
           can help you pinpoint the exact skills and phrases that matter most
@@ -162,7 +162,7 @@ export default function BehavioralInterviewQuestions() {
 
         <div className="space-y-4 my-6">
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-5">
-            <p className="text-sm font-bold text-accent uppercase tracking-wide mb-2">Situation</p>
+            <p className="text-sm font-bold text-accent-text uppercase tracking-wide mb-2">Situation</p>
             <p className="text-ink/80">
               "At my previous company, a mid-size SaaS startup, our customer
               onboarding process was taking an average of 14 days from signup
@@ -172,7 +172,7 @@ export default function BehavioralInterviewQuestions() {
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-5">
-            <p className="text-sm font-bold text-accent uppercase tracking-wide mb-2">Task</p>
+            <p className="text-sm font-bold text-accent-text uppercase tracking-wide mb-2">Task</p>
             <p className="text-ink/80">
               "As the customer success lead, I was asked to reduce onboarding
               time and cut 30-day churn by at least 5 percentage points before
@@ -180,7 +180,7 @@ export default function BehavioralInterviewQuestions() {
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-5">
-            <p className="text-sm font-bold text-accent uppercase tracking-wide mb-2">Action</p>
+            <p className="text-sm font-bold text-accent-text uppercase tracking-wide mb-2">Action</p>
             <p className="text-ink/80">
               "I mapped the entire onboarding journey and found three
               bottlenecks: manual data import, a confusing permission setup
@@ -193,7 +193,7 @@ export default function BehavioralInterviewQuestions() {
             </p>
           </div>
           <div className="bg-chalk-dark border border-black/[0.06] rounded-xl p-5">
-            <p className="text-sm font-bold text-accent uppercase tracking-wide mb-2">Result</p>
+            <p className="text-sm font-bold text-accent-text uppercase tracking-wide mb-2">Result</p>
             <p className="text-ink/80">
               "Onboarding time dropped from 14 days to 5 days. Thirty-day
               churn fell from 22% to 11%, beating the target by 6 points.
@@ -209,7 +209,7 @@ export default function BehavioralInterviewQuestions() {
           personal actions. This is exactly the kind of story that makes
           interviewers take notes. You can use the same approach when writing
           accomplishment bullets on your resume — see our{" "}
-          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
             complete resume writing guide
           </Link>{" "}
           for more on translating STAR stories into resume bullets.
@@ -225,7 +225,7 @@ export default function BehavioralInterviewQuestions() {
           and drive results. If you're targeting a management role, expect 2-3
           of these. For examples of how to present leadership experience on
           paper, check our{" "}
-          <Link to="/examples/project-manager" className="text-accent hover:underline">
+          <Link to="/examples/project-manager" className="text-accent-text hover:underline">
             project manager resume example
           </Link>{" "}
           for strong leadership bullet points.
@@ -578,7 +578,7 @@ export default function BehavioralInterviewQuestions() {
                 collaboration, and innovation. Each story should be versatile
                 enough to answer 2-3 different questions. If you're early in
                 your career, our{" "}
-                <Link to="/blog/resume-no-experience" className="text-accent hover:underline">
+                <Link to="/blog/resume-no-experience" className="text-accent-text hover:underline">
                   guide for candidates without experience
                 </Link>{" "}
                 shows how to draw from academic projects, volunteer work, and
@@ -618,7 +618,7 @@ export default function BehavioralInterviewQuestions() {
               <p className="text-stone-warm">
                 AI tools can simulate an interviewer and give you feedback on
                 your answers. Try using{" "}
-                <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">
+                <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">
                   Claude AI prompts
                 </Link>{" "}
                 to generate follow-up questions based on your STAR stories.
@@ -690,7 +690,7 @@ export default function BehavioralInterviewQuestions() {
             <li>
               <strong>Match stories to the job description:</strong> Review the
               required competencies and map each one to a story. Use our{" "}
-              <Link to="/templates/ats-friendly" className="text-accent hover:underline">
+              <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">
                 ATS-friendly templates
               </Link>{" "}
               to structure your resume around the same competencies you'll

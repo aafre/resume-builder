@@ -59,7 +59,7 @@ export default function AIResumeWritingGuide() {
             <h3 className="text-lg font-bold text-green-800 mb-4">
               ✅ AI Excels At
             </h3>
-            <ul className="list-disc pl-5 space-y-2 text-accent">
+            <ul className="list-disc pl-5 space-y-2 text-accent-text">
               <li>Generating multiple variations quickly</li>
               <li>Transforming duties into achievements</li>
               <li>Identifying relevant keywords from job descriptions</li>
@@ -102,36 +102,36 @@ export default function AIResumeWritingGuide() {
             <tbody className="divide-y divide-black/[0.06]">
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Free Tier</td>
-                <td className="px-4 py-4 text-center text-accent">✓ Yes</td>
-                <td className="px-4 py-4 text-center text-accent">✓ Yes</td>
-                <td className="px-4 py-4 text-center text-accent">✓ Yes</td>
+                <td className="px-4 py-4 text-center text-accent-text">✓ Yes</td>
+                <td className="px-4 py-4 text-center text-accent-text">✓ Yes</td>
+                <td className="px-4 py-4 text-center text-accent-text">✓ Yes</td>
                 <td className="px-4 py-4 text-center text-yellow-600">Limited</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Writing Quality</td>
                 <td className="px-4 py-4 text-center">Very Good</td>
-                <td className="px-4 py-4 text-center text-accent font-bold">Excellent</td>
+                <td className="px-4 py-4 text-center text-accent-text font-bold">Excellent</td>
                 <td className="px-4 py-4 text-center">Good</td>
                 <td className="px-4 py-4 text-center">Very Good</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Professional Tone</td>
                 <td className="px-4 py-4 text-center">Good</td>
-                <td className="px-4 py-4 text-center text-accent font-bold">Excellent</td>
+                <td className="px-4 py-4 text-center text-accent-text font-bold">Excellent</td>
                 <td className="px-4 py-4 text-center">Good</td>
                 <td className="px-4 py-4 text-center">Casual</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Long Context</td>
                 <td className="px-4 py-4 text-center">Good</td>
-                <td className="px-4 py-4 text-center text-accent font-bold">Excellent</td>
-                <td className="px-4 py-4 text-center text-accent font-bold">Excellent</td>
+                <td className="px-4 py-4 text-center text-accent-text font-bold">Excellent</td>
+                <td className="px-4 py-4 text-center text-accent-text font-bold">Excellent</td>
                 <td className="px-4 py-4 text-center">Good</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Following Instructions</td>
                 <td className="px-4 py-4 text-center">Very Good</td>
-                <td className="px-4 py-4 text-center text-accent font-bold">Excellent</td>
+                <td className="px-4 py-4 text-center text-accent-text font-bold">Excellent</td>
                 <td className="px-4 py-4 text-center">Good</td>
                 <td className="px-4 py-4 text-center">Good</td>
               </tr>
@@ -139,7 +139,7 @@ export default function AIResumeWritingGuide() {
                 <td className="px-4 py-4 font-medium text-ink">Keyword Analysis</td>
                 <td className="px-4 py-4 text-center">Good</td>
                 <td className="px-4 py-4 text-center">Very Good</td>
-                <td className="px-4 py-4 text-center text-accent font-bold">Excellent</td>
+                <td className="px-4 py-4 text-center text-accent-text font-bold">Excellent</td>
                 <td className="px-4 py-4 text-center">Good</td>
               </tr>
               <tr>
@@ -147,7 +147,7 @@ export default function AIResumeWritingGuide() {
                 <td className="px-4 py-4 text-center">Fast</td>
                 <td className="px-4 py-4 text-center">Medium</td>
                 <td className="px-4 py-4 text-center">Fast</td>
-                <td className="px-4 py-4 text-center text-accent font-bold">Very Fast</td>
+                <td className="px-4 py-4 text-center text-accent-text font-bold">Very Fast</td>
               </tr>
             </tbody>
           </table>
@@ -231,7 +231,7 @@ export default function AIResumeWritingGuide() {
             </h3>
             <p className="text-stone-warm">
               Use an{" "}
-              <Link to="/templates" className="text-accent underline">
+              <Link to="/templates" className="text-accent-text underline">
                 ATS-friendly resume template
               </Link>{" "}
               to format your AI-generated content. Proper formatting ensures your resume
@@ -392,7 +392,7 @@ export default function AIResumeWritingGuide() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -404,27 +404,27 @@ export default function AIResumeWritingGuide() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
           <li>
-            <Link to="/blog/ai-resume-prompts-hub" className="text-accent hover:underline">
+            <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline">
               AI Resume Prompts Hub — Compare All Tools
             </Link>
           </li>
           <li>
-            <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">
+            <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">
               Claude Prompts for Resume Writing
             </Link>
           </li>
           <li>
-            <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline">
+            <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">
               Gemini Prompts for Resume Writing
             </Link>
           </li>
           <li>
-            <Link to="/blog/ai-resume-builder" className="text-accent hover:underline">
+            <Link to="/blog/ai-resume-builder" className="text-accent-text hover:underline">
               AI Resume Builders: Are They Worth It?
             </Link>
           </li>
           <li>
-            <Link to="/blog/humanize-ai-resume" className="text-accent hover:underline">
+            <Link to="/blog/humanize-ai-resume" className="text-accent-text hover:underline">
               How to Humanize an AI-Written Resume
             </Link>
           </li>

@@ -71,12 +71,12 @@ export default function ATSFormattingRules() {
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6">
           <h2 className="font-bold text-ink mb-4 text-lg">On this page</h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#mechanism" className="text-accent hover:underline">How an ATS actually reads your resume</a></li>
-            <li><a href="#what-breaks" className="text-accent hover:underline">What breaks the parser</a></li>
-            <li><a href="#the-rules" className="text-accent hover:underline">The rules: do this</a></li>
-            <li><a href="#do-dont" className="text-accent hover:underline">Do / Don't at a glance</a></li>
-            <li><a href="#file-format" className="text-accent hover:underline">PDF vs .docx: the honest answer</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">Frequently asked questions</a></li>
+            <li><a href="#mechanism" className="text-accent-text hover:underline">How an ATS actually reads your resume</a></li>
+            <li><a href="#what-breaks" className="text-accent-text hover:underline">What breaks the parser</a></li>
+            <li><a href="#the-rules" className="text-accent-text hover:underline">The rules: do this</a></li>
+            <li><a href="#do-dont" className="text-accent-text hover:underline">Do / Don't at a glance</a></li>
+            <li><a href="#file-format" className="text-accent-text hover:underline">PDF vs .docx: the honest answer</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">Frequently asked questions</a></li>
           </ol>
         </div>
 
@@ -114,7 +114,7 @@ export default function ATSFormattingRules() {
         <p className="text-lg leading-relaxed text-stone-warm">
           For a broader look at how these systems score and rank candidates once
           your resume parses correctly, see our{" "}
-          <Link to="/blog/ats-resume-optimization" className="text-accent hover:underline font-medium">
+          <Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline font-medium">
             ATS resume optimization guide
           </Link>. This page focuses on the earlier, more fundamental step: making
           sure the parser can read you at all.
@@ -183,7 +183,7 @@ export default function ATSFormattingRules() {
               similar builders) frequently combine several of the problems above:
               columns, text boxes, and image-based text. They win the visual
               contest and lose the parsing one. See our{" "}
-              <Link to="/blog/canva-resume-vs-easy-free-resume" className="text-accent hover:underline">
+              <Link to="/blog/canva-resume-vs-easy-free-resume" className="text-accent-text hover:underline">
                 Canva resume vs. ATS breakdown
               </Link>{" "}
               for why.
@@ -255,7 +255,7 @@ export default function ATSFormattingRules() {
         <p className="text-lg leading-relaxed text-stone-warm">
           The simplest way to follow all of these at once is to start from a
           layout that was built for parsing. Our{" "}
-          <Link to="/templates/ats-friendly" className="text-accent hover:underline font-medium">
+          <Link to="/templates/ats-friendly" className="text-accent-text hover:underline font-medium">
             ATS-friendly resume templates
           </Link>{" "}
           are single-column, use standard headings and fonts, and keep every
@@ -354,7 +354,7 @@ export default function ATSFormattingRules() {
             Paste your resume into a plain-text editor. If it reads in a clean,
             logical order with nothing scrambled, a parser will too. Then run it
             through our free{" "}
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
               resume keyword scanner
             </Link>{" "}
             to confirm it contains the exact terms the job posting is scanning
@@ -385,10 +385,10 @@ export default function ATSFormattingRules() {
         </p>
         <p className="text-lg leading-relaxed text-stone-warm mt-4">
           Start from an{" "}
-          <Link to="/templates/ats-friendly" className="text-accent hover:underline font-medium">
+          <Link to="/templates/ats-friendly" className="text-accent-text hover:underline font-medium">
             ATS-friendly template
           </Link>, keep the layout simple, and{" "}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
             scan your resume for free
           </Link>{" "}
           before you apply.

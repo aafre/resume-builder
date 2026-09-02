@@ -35,7 +35,7 @@ export default function ResumeNoExperience() {
           a free ATS-friendly template you can use with our{" "}
           <a
             href="/actual-free-resume-builder"
-            className="text-accent hover:underline font-semibold"
+            className="text-accent-text hover:underline font-semibold"
           >
             actual free resume builder
           </a>{" "}
@@ -98,7 +98,7 @@ export default function ResumeNoExperience() {
             <h4 className="font-bold text-green-800 mb-3">
               ✅ ATS Best Practices
             </h4>
-            <ul className="list-disc pl-6 space-y-1 text-accent text-sm">
+            <ul className="list-disc pl-6 space-y-1 text-accent-text text-sm">
               <li>
                 Use standard headings: Summary, Skills, Projects, Education,
                 Experience
@@ -393,7 +393,7 @@ export default function ResumeNoExperience() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-r from-gray-50 to-slate-50 border border-black/[0.06] rounded-xl p-6">
+          <div className="bg-gradient-to-r from-chalk to-chalk-dark border border-black/[0.06] rounded-xl p-6">
             <h4 className="font-bold text-ink mb-2">
               Finance / Analyst Intern Keywords
             </h4>
@@ -415,7 +415,7 @@ export default function ResumeNoExperience() {
           </p>
           <a
             href="/templates"
-            className="inline-block bg-white text-accent px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </a>
@@ -694,7 +694,7 @@ export default function ResumeNoExperience() {
           </p>
           <a
             href="/templates"
-            className="inline-block bg-white text-accent px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Choose a Template
           </a>
@@ -709,7 +709,7 @@ export default function ResumeNoExperience() {
             <h4 className="font-bold text-ink mb-1">
               ❌ Apologizing for no experience
             </h4>
-            <p className="text-accent text-sm">
+            <p className="text-accent-text text-sm">
               → Replace with proof of potential (projects, results, learning)
             </p>
           </div>
@@ -718,21 +718,21 @@ export default function ResumeNoExperience() {
             <h4 className="font-bold text-ink mb-1">
               ❌ Generic objectives
             </h4>
-            <p className="text-accent text-sm">
+            <p className="text-accent-text text-sm">
               → Use a Summary that states value, skills, and target role
             </p>
           </div>
 
           <div className="bg-red-50 border-l-4 border-red-500 p-4">
             <h4 className="font-bold text-ink mb-1">❌ Wall of text</h4>
-            <p className="text-accent text-sm">
+            <p className="text-accent-text text-sm">
               → Short bullets with numbers
             </p>
           </div>
 
           <div className="bg-red-50 border-l-4 border-red-500 p-4">
             <h4 className="font-bold text-ink mb-1">❌ Irrelevant info</h4>
-            <p className="text-accent text-sm">
+            <p className="text-accent-text text-sm">
               → Prioritize relevant projects/skills to the job post
             </p>
           </div>
@@ -852,11 +852,11 @@ export default function ResumeNoExperience() {
           Not all resume templates work well when you have limited experience.
           Look for templates that emphasize skills and projects over long work
           histories. For inspiration, see our{" "}
-          <Link to="/examples/college-student" className="text-accent hover:underline font-semibold">
+          <Link to="/examples/college-student" className="text-accent-text hover:underline font-semibold">
             college student resume example
           </Link>{" "}
           and{" "}
-          <Link to="/examples/internship" className="text-accent hover:underline font-semibold">
+          <Link to="/examples/internship" className="text-accent-text hover:underline font-semibold">
             internship resume example
           </Link>
           . Here are our top template picks:
@@ -891,7 +891,7 @@ export default function ResumeNoExperience() {
           Start building with our{' '}
           <a
             href="/free-resume-builder-for-students"
-            className="text-accent hover:underline font-semibold"
+            className="text-accent-text hover:underline font-semibold"
           >
             free resume builder for students
           </a>{' '}

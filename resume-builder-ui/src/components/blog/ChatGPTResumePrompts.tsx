@@ -25,7 +25,7 @@ export default function ChatGPTResumePrompts() {
         <p className="text-xl leading-relaxed text-stone-warm font-medium">
           ChatGPT can be a powerful tool for writing your resume, but only if you know how to prompt it correctly.
           Generic prompts give generic results. These carefully crafted prompts — part of our{" "}
-          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">
             comprehensive AI resume writing guide
           </Link>
           {" "}— will help you create compelling, personalized resume content that actually stands out.
@@ -36,7 +36,7 @@ export default function ChatGPTResumePrompts() {
           <h3 className="font-bold text-green-800 mb-3">
             🎯 Top 3 ChatGPT Resume Prompts (Quick Start)
           </h3>
-          <ol className="list-decimal list-inside space-y-3 text-accent">
+          <ol className="list-decimal list-inside space-y-3 text-accent-text">
             <li>
               <strong>Professional Summary:</strong> "Write a 3-sentence professional summary for a [job title] with [X years] experience in [industry]. Highlight expertise in [skill 1], [skill 2], and [skill 3]. Make it confident but not arrogant."
             </li>
@@ -71,7 +71,7 @@ export default function ChatGPTResumePrompts() {
           </h4>
           <p className="text-ink/80 mb-4">
             After generating content with ChatGPT, paste it directly into our{" "}
-            <Link to="/templates" className="text-accent underline font-medium">
+            <Link to="/templates" className="text-accent-text underline font-medium">
               free resume builder
             </Link>
             . Our ATS-friendly templates ensure your AI-generated content is formatted correctly for applicant tracking systems.
@@ -286,7 +286,7 @@ export default function ChatGPTResumePrompts() {
 
           <p className="text-stone-warm text-lg leading-relaxed">
             Want to verify your keyword optimization? Try our free{" "}
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
               Resume Keyword Scanner
             </Link>
             {" "}to instantly compare your resume against any job description.
@@ -405,7 +405,7 @@ export default function ChatGPTResumePrompts() {
           </li>
           <li>
             <strong>Format properly</strong> using an{" "}
-            <Link to="/templates" className="text-accent underline">
+            <Link to="/templates" className="text-accent-text underline">
               ATS-friendly resume template
             </Link>
           </li>
@@ -413,7 +413,7 @@ export default function ChatGPTResumePrompts() {
 
         <p className="text-lg leading-relaxed text-stone-warm mt-6">
           Once your resume is polished, use the same AI approach for your cover letter. Check out our{" "}
-          <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline font-medium">
+          <Link to="/blog/ai-cover-letter-prompts" className="text-accent-text hover:underline font-medium">
             AI cover letter prompts
           </Link>
           {" "}to create a matching, personalized cover letter.
@@ -460,7 +460,7 @@ export default function ChatGPTResumePrompts() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -472,22 +472,22 @@ export default function ChatGPTResumePrompts() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
           <li>
-            <Link to="/blog/resume-action-verbs" className="text-accent hover:underline">
+            <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
               200+ Action Verbs for Resumes
             </Link>
           </li>
           <li>
-            <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">
+            <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
               How to Use Resume Keywords to Beat the ATS
             </Link>
           </li>
           <li>
-            <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+            <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
               Professional Summary Examples
             </Link>
           </li>
           <li>
-            <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+            <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
               How to Quantify Your Resume Accomplishments
             </Link>
           </li>

@@ -176,7 +176,7 @@ export default function BestFreeResumeBuilders2026() {
         {/* 1. EasyFreeResume */}
         <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
           <h3 className="text-xl font-bold text-ink mb-3">1. EasyFreeResume</h3>
-          <p className="text-sm text-accent font-medium mb-4">Best for: People who want a professional resume without creating an account</p>
+          <p className="text-sm text-accent-text font-medium mb-4">Best for: People who want a professional resume without creating an account</p>
           <p className="text-lg leading-relaxed text-stone-warm mb-4">
             EasyFreeResume is a no-sign-up resume builder that generates ATS-optimized PDFs for free. There&rsquo;s no paywall,
             no watermark, and no &ldquo;premium&rdquo; upsell at the download step. The builder uses a YAML-based template
@@ -210,7 +210,7 @@ export default function BestFreeResumeBuilders2026() {
         {/* 2. Canva */}
         <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
           <h3 className="text-xl font-bold text-ink mb-3">2. Canva</h3>
-          <p className="text-sm text-accent font-medium mb-4">Best for: Designers who want visual, creative resumes</p>
+          <p className="text-sm text-accent-text font-medium mb-4">Best for: Designers who want visual, creative resumes</p>
           <p className="text-lg leading-relaxed text-stone-warm mb-4">
             Canva offers the most template variety of any free option. With 1,000+ resume templates, you can find almost
             any style. The free tier includes PDF export without watermarks, which is genuinely generous.
@@ -244,7 +244,7 @@ export default function BestFreeResumeBuilders2026() {
         {/* 3. Google Docs */}
         <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
           <h3 className="text-xl font-bold text-ink mb-3">3. Google Docs</h3>
-          <p className="text-sm text-accent font-medium mb-4">Best for: Minimalists who already use Google Workspace</p>
+          <p className="text-sm text-accent-text font-medium mb-4">Best for: Minimalists who already use Google Workspace</p>
           <p className="text-lg leading-relaxed text-stone-warm mb-4">
             Google Docs has five built-in resume templates accessible from the template gallery. They&rsquo;re
             simple, ATS-compatible, and export cleanly to PDF. If you already have a Google account, this is
@@ -280,7 +280,7 @@ export default function BestFreeResumeBuilders2026() {
         {/* 4. FlowCV */}
         <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
           <h3 className="text-xl font-bold text-ink mb-3">4. FlowCV</h3>
-          <p className="text-sm text-accent font-medium mb-4">Best for: Job seekers who want a polished design with a free tier</p>
+          <p className="text-sm text-accent-text font-medium mb-4">Best for: Job seekers who want a polished design with a free tier</p>
           <p className="text-lg leading-relaxed text-stone-warm mb-4">
             FlowCV offers a genuinely useful free tier with 20+ templates and unlimited PDF downloads. The
             editor is intuitive, and templates are modern and ATS-friendly. You need to create an account,
@@ -315,7 +315,7 @@ export default function BestFreeResumeBuilders2026() {
         {/* 5. Novoresume */}
         <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
           <h3 className="text-xl font-bold text-ink mb-3">5. Novoresume</h3>
-          <p className="text-sm text-accent font-medium mb-4">Best for: First-time resume writers who need guidance</p>
+          <p className="text-sm text-accent-text font-medium mb-4">Best for: First-time resume writers who need guidance</p>
           <p className="text-lg leading-relaxed text-stone-warm mb-4">
             Novoresume has a helpful content assistant that suggests pre-written bullet points for common job
             titles. The editor walks you through each section, which is great for people creating their first
@@ -349,7 +349,7 @@ export default function BestFreeResumeBuilders2026() {
         {/* 6. Resume.io */}
         <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
           <h3 className="text-xl font-bold text-ink mb-3">6. Resume.io</h3>
-          <p className="text-sm text-accent font-medium mb-4">Best for: People willing to pay for a polished resume</p>
+          <p className="text-sm text-accent-text font-medium mb-4">Best for: People willing to pay for a polished resume</p>
           <p className="text-lg leading-relaxed text-stone-warm mb-4">
             Resume.io has a slick editor and attractive templates, but the &ldquo;free&rdquo; marketing is
             misleading. You can build a resume for free, but downloading the PDF requires a subscription
@@ -359,7 +359,7 @@ export default function BestFreeResumeBuilders2026() {
             If you&rsquo;re okay paying, the product is solid. Templates are well-designed and ATS-tested.
             But if you came here looking for something free, Resume.io will disappoint you at the download step.
             For a detailed breakdown, see our{' '}
-            <Link to="/blog/resume-io-vs-easy-free-resume" className="text-accent hover:underline">
+            <Link to="/blog/resume-io-vs-easy-free-resume" className="text-accent-text hover:underline">
               Resume.io pricing analysis
             </Link>.
           </p>
@@ -386,7 +386,7 @@ export default function BestFreeResumeBuilders2026() {
         {/* 7. Zety */}
         <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
           <h3 className="text-xl font-bold text-ink mb-3">7. Zety</h3>
-          <p className="text-sm text-accent font-medium mb-4">Best for: People who need AI-written content and don&rsquo;t mind paying</p>
+          <p className="text-sm text-accent-text font-medium mb-4">Best for: People who need AI-written content and don&rsquo;t mind paying</p>
           <p className="text-lg leading-relaxed text-stone-warm mb-4">
             Zety has one of the best content engines in the resume builder space. Its AI suggests
             pre-written bullets, summaries, and skills tailored to your job title. The editor is smooth
@@ -396,7 +396,7 @@ export default function BestFreeResumeBuilders2026() {
             The problem: downloading costs $2.70 for a 14-day trial or $24.70/month after that. You can
             build your entire resume for free, but the download button triggers a payment form. Many users
             feel this is deceptive. Read our{' '}
-            <Link to="/easyfreeresume-vs-zety" className="text-accent hover:underline">
+            <Link to="/easyfreeresume-vs-zety" className="text-accent-text hover:underline">
               full Zety pricing breakdown
             </Link>{' '}
             for details.
@@ -424,7 +424,7 @@ export default function BestFreeResumeBuilders2026() {
         {/* 8. Resume Genius */}
         <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
           <h3 className="text-xl font-bold text-ink mb-3">8. Resume Genius</h3>
-          <p className="text-sm text-accent font-medium mb-4">Best for: People who want guided resume creation with templates</p>
+          <p className="text-sm text-accent-text font-medium mb-4">Best for: People who want guided resume creation with templates</p>
           <p className="text-lg leading-relaxed text-stone-warm mb-4">
             Resume Genius offers a wizard-style builder that walks you through each resume section. Templates
             are clean and ATS-friendly. However, like Zety and Resume.io, the free tier doesn&rsquo;t include
@@ -433,7 +433,7 @@ export default function BestFreeResumeBuilders2026() {
           <p className="text-lg leading-relaxed text-stone-warm mb-4">
             The guided experience is helpful for beginners, and the pre-written content is decent. But if
             you&rsquo;re looking for free, this isn&rsquo;t it. See our{' '}
-            <Link to="/blog/resume-genius-vs-easy-free-resume" className="text-accent hover:underline">
+            <Link to="/blog/resume-genius-vs-easy-free-resume" className="text-accent-text hover:underline">
               Resume Genius comparison
             </Link>{' '}
             for the full breakdown.
@@ -461,7 +461,7 @@ export default function BestFreeResumeBuilders2026() {
         {/* 9. Microsoft Word */}
         <div className="bg-white border border-black/[0.06] rounded-xl p-6 shadow-sm">
           <h3 className="text-xl font-bold text-ink mb-3">9. Microsoft Word</h3>
-          <p className="text-sm text-accent font-medium mb-4">Best for: People who already have an Office 365 subscription</p>
+          <p className="text-sm text-accent-text font-medium mb-4">Best for: People who already have an Office 365 subscription</p>
           <p className="text-lg leading-relaxed text-stone-warm mb-4">
             Microsoft Word has 40+ built-in resume templates accessible from File &gt; New. If you already pay
             for Microsoft 365 ($7/month), this is a solid option. Templates are professional, ATS-compatible,
@@ -546,12 +546,12 @@ export default function BestFreeResumeBuilders2026() {
         <p className="text-lg leading-relaxed text-stone-warm">
           The safest resume formats are clean, single-column layouts with standard headings (Experience,
           Education, Skills). Tools like{' '}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
             our free ATS keyword scanner
           </Link>{' '}
           can check your resume against a job description to ensure your keywords match. For a deeper dive,
           read our{' '}
-          <Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">
+          <Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline">
             ATS optimization guide
           </Link>.
         </p>
@@ -607,7 +607,7 @@ export default function BestFreeResumeBuilders2026() {
                 <p className="text-stone-warm">
                   <strong>Pick: </strong>
                   {rec.link ? (
-                    <Link to={rec.link} className="text-accent hover:underline">{rec.pick}</Link>
+                    <Link to={rec.link} className="text-accent-text hover:underline">{rec.pick}</Link>
                   ) : (
                     rec.pick
                   )}
@@ -639,7 +639,7 @@ export default function BestFreeResumeBuilders2026() {
             The resume builder market is full of misleading &ldquo;free&rdquo; claims. Before committing
             your time, check whether the builder charges for PDF downloads. If you want something that
             works without a sign-up or credit card, try{' '}
-            <Link to="/templates" className="text-accent hover:underline font-medium">building your resume with EasyFreeResume</Link>
+            <Link to="/templates" className="text-accent-text hover:underline font-medium">building your resume with EasyFreeResume</Link>
             {' '}&mdash; it takes about 10 minutes and the PDF is yours, no strings attached.
           </p>
         </div>

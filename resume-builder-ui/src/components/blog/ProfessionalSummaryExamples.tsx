@@ -56,7 +56,7 @@ export default function ProfessionalSummaryExamples() {
           guide with our{" "}
           <Link
             to="/blog/how-to-write-a-resume-guide"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             complete resume writing guide
           </Link>{" "}
@@ -69,16 +69,16 @@ export default function ProfessionalSummaryExamples() {
             Table of Contents
           </h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#what-makes-effective" className="text-accent hover:underline">What Makes a Professional Summary Effective?</a></li>
-            <li><a href="#formula" className="text-accent hover:underline">Professional Summary Formula (60-Second Template)</a></li>
-            <li><a href="#by-experience" className="text-accent hover:underline">Examples by Experience Level</a></li>
-            <li><a href="#by-industry" className="text-accent hover:underline">Industry-Specific Examples</a></li>
-            <li><a href="#mistakes" className="text-accent hover:underline">Common Mistakes to Avoid</a></li>
-            <li><a href="#summary-vs-objective" className="text-accent hover:underline">Professional Summary vs. Objective Statement</a></li>
-            <li><a href="#ats-optimization" className="text-accent hover:underline">Optimizing Your Summary for ATS</a></li>
-            <li><a href="#power-words" className="text-accent hover:underline">Power Words for Your Summary</a></li>
-            <li><a href="#final-tips" className="text-accent hover:underline">Final Tips for Success</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">Frequently Asked Questions</a></li>
+            <li><a href="#what-makes-effective" className="text-accent-text hover:underline">What Makes a Professional Summary Effective?</a></li>
+            <li><a href="#formula" className="text-accent-text hover:underline">Professional Summary Formula (60-Second Template)</a></li>
+            <li><a href="#by-experience" className="text-accent-text hover:underline">Examples by Experience Level</a></li>
+            <li><a href="#by-industry" className="text-accent-text hover:underline">Industry-Specific Examples</a></li>
+            <li><a href="#mistakes" className="text-accent-text hover:underline">Common Mistakes to Avoid</a></li>
+            <li><a href="#summary-vs-objective" className="text-accent-text hover:underline">Professional Summary vs. Objective Statement</a></li>
+            <li><a href="#ats-optimization" className="text-accent-text hover:underline">Optimizing Your Summary for ATS</a></li>
+            <li><a href="#power-words" className="text-accent-text hover:underline">Power Words for Your Summary</a></li>
+            <li><a href="#final-tips" className="text-accent-text hover:underline">Final Tips for Success</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">Frequently Asked Questions</a></li>
           </ol>
         </nav>
 
@@ -104,14 +104,14 @@ export default function ProfessionalSummaryExamples() {
           best summaries open with a{" "}
           <Link
             to="/blog/resume-action-verbs"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             strong action verb or descriptor
           </Link>{" "}
           and include at least one{" "}
           <Link
             to="/blog/quantify-resume-accomplishments"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             quantified accomplishment
           </Link>{" "}
@@ -122,7 +122,7 @@ export default function ProfessionalSummaryExamples() {
           <h4 className="font-bold text-green-800 mb-3">
             Essential Elements of a Strong Summary:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>Years of Experience:</strong> Establish your experience
               level upfront
@@ -209,7 +209,7 @@ export default function ProfessionalSummaryExamples() {
           work history, our{" "}
           <Link
             to="/blog/resume-no-experience"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             guide to writing a resume with no experience
           </Link>{" "}
@@ -300,7 +300,7 @@ export default function ProfessionalSummaryExamples() {
               See a{" "}
               <Link
                 to="/examples/software-engineer"
-                className="text-accent hover:underline"
+                className="text-accent-text hover:underline"
               >
                 full software engineer resume example
               </Link>{" "}
@@ -493,7 +493,7 @@ export default function ProfessionalSummaryExamples() {
               <strong>Example:</strong> "Hardworking professional with excellent
               communication skills seeking new opportunities for growth."
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Fix:</strong> Customize your summary for each application
               with specific skills, achievements, and keywords relevant to the
               target role.
@@ -508,7 +508,7 @@ export default function ProfessionalSummaryExamples() {
               <strong>Example:</strong> "Seeking a challenging position where I
               can grow my skills and advance my career."
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Fix:</strong> Lead with the value you bring to employers:
               your skills, experience, and proven results.
             </p>
@@ -522,11 +522,11 @@ export default function ProfessionalSummaryExamples() {
               <strong>Example:</strong> "Dynamic, results-oriented professional
               with exceptional leadership capabilities."
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Fix:</strong> Support claims with specific examples and{" "}
               <Link
                 to="/blog/quantify-resume-accomplishments"
-                className="text-accent hover:underline"
+                className="text-accent-text hover:underline"
               >
                 quantifiable achievements
               </Link>{" "}
@@ -542,7 +542,7 @@ export default function ProfessionalSummaryExamples() {
               <strong>Example:</strong> "I am a marketing professional with 5
               years of experience in digital marketing."
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Fix:</strong> Write in third person without pronouns for a
               more professional, concise tone.
             </p>
@@ -591,7 +591,7 @@ export default function ProfessionalSummaryExamples() {
             <h4 className="font-bold text-green-800 mb-3">
               Professional Summary
             </h4>
-            <ul className="list-disc pl-6 space-y-2 text-accent text-sm">
+            <ul className="list-disc pl-6 space-y-2 text-accent-text text-sm">
               <li>Focuses on what you offer employers</li>
               <li>Highlights achievements and quantifiable results</li>
               <li>Demonstrates your value proposition</li>
@@ -624,7 +624,7 @@ export default function ProfessionalSummaryExamples() {
           integration is essential for passing initial screening. Use our{" "}
           <Link
             to="/resume-keywords"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             resume keywords tool
           </Link>{" "}
@@ -662,7 +662,7 @@ export default function ProfessionalSummaryExamples() {
               can be lost if your formatting confuses the parser — start with an{" "}
               <Link
                 to="/templates/ats-friendly"
-                className="text-accent hover:underline"
+                className="text-accent-text hover:underline"
               >
                 ATS-friendly resume template
               </Link>
@@ -682,7 +682,7 @@ export default function ProfessionalSummaryExamples() {
           options, see our{" "}
           <Link
             to="/blog/resume-action-verbs"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             resume action verbs guide
           </Link>.
@@ -751,7 +751,7 @@ export default function ProfessionalSummaryExamples() {
           with our{" "}
           <Link
             to="/blog/how-to-list-skills"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             guide to listing skills on a resume
           </Link>{" "}
@@ -848,7 +848,7 @@ export default function ProfessionalSummaryExamples() {
               For a full walkthrough, see our{" "}
               <Link
                 to="/blog/resume-no-experience"
-                className="text-accent hover:underline"
+                className="text-accent-text hover:underline"
               >
                 resume with no experience guide
               </Link>.
@@ -868,7 +868,7 @@ export default function ProfessionalSummaryExamples() {
               Our{" "}
               <Link
                 to="/resume-keywords"
-                className="text-accent hover:underline"
+                className="text-accent-text hover:underline"
               >
                 resume keywords tool
               </Link>{" "}
@@ -890,7 +890,7 @@ export default function ProfessionalSummaryExamples() {
               by proof. Browse our full list of{" "}
               <Link
                 to="/blog/resume-action-verbs"
-                className="text-accent hover:underline"
+                className="text-accent-text hover:underline"
               >
                 200+ resume action verbs
               </Link>{" "}

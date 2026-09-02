@@ -103,7 +103,7 @@ export default function HowToUseResumeKeywords() {
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
           <h4 className="font-bold text-green-800 mb-3">🔍 Look for:</h4>
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>Hard Skills:</strong> Specific software (e.g., Salesforce,
               Adobe Photoshop), programming languages (Python, Java), or
@@ -197,7 +197,7 @@ export default function HowToUseResumeKeywords() {
               For a detailed guide, read our article on{" "}
               <Link
                 to="/blog/how-to-list-skills"
-                className="text-accent hover:text-ink underline"
+                className="text-accent-text hover:text-ink underline"
               >
                 How to List Skills on a Resume
               </Link>
@@ -218,7 +218,7 @@ export default function HowToUseResumeKeywords() {
             <h4 className="font-bold text-green-800 mb-3">
               💼 Work Experience Section
             </h4>
-            <p className="text-accent mb-3">
+            <p className="text-accent-text mb-3">
               This is where you can use keywords in a natural context. Don't
               just list a keyword; use it to describe an accomplishment.
             </p>
@@ -231,7 +231,7 @@ export default function HowToUseResumeKeywords() {
               </div>
               <div className="bg-green-100 border-l-4 border-green-500 p-3 rounded">
                 <p className="font-medium text-green-800 mb-1">✅ Write:</p>
-                <p className="text-accent text-sm">
+                <p className="text-accent-text text-sm">
                   "Managed a comprehensive{" "}
                   <strong>social media marketing</strong> strategy across three
                   platforms, resulting in a 40% increase in{" "}
@@ -252,7 +252,7 @@ export default function HowToUseResumeKeywords() {
           results. For more on this, check out our guide on{" "}
           <Link
             to="/blog/quantify-resume-accomplishments"
-            className="text-accent hover:text-ink underline"
+            className="text-accent-text hover:text-ink underline"
           >
             How to Quantify Your Resume Accomplishments
           </Link>
@@ -286,7 +286,7 @@ export default function HowToUseResumeKeywords() {
           of them on our{" "}
           <Link
             to="/resume-keywords"
-            className="text-accent hover:text-ink underline"
+            className="text-accent-text hover:text-ink underline"
           >
             Resume Keywords by Industry
           </Link>{" "}
@@ -300,7 +300,7 @@ export default function HowToUseResumeKeywords() {
               Dive into our list of{" "}
               <Link
                 to="/resume-keywords/software-engineer"
-                className="text-accent hover:text-ink underline"
+                className="text-accent-text hover:text-ink underline"
               >
                 120+ Software Engineer Resume Keywords
               </Link>
@@ -319,7 +319,7 @@ export default function HowToUseResumeKeywords() {
               Check out our{" "}
               <Link
                 to="/resume-keywords/customer-service"
-                className="text-accent hover:text-ink underline"
+                className="text-accent-text hover:text-ink underline"
               >
                 100+ Customer Service Resume Keywords
               </Link>
@@ -390,7 +390,7 @@ export default function HowToUseResumeKeywords() {
           <h4 className="font-bold text-green-800 mb-3">
             ✅ ATS-Friendly Formatting:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>Use standard fonts (Arial, Times New Roman, Calibri)</li>
             <li>Avoid headers, footers, and text boxes</li>
             <li>Use simple bullet points (• or -)</li>
@@ -451,7 +451,7 @@ export default function HowToUseResumeKeywords() {
               <strong>Example:</strong> Only writing "SEO" but never "Search
               Engine Optimization"
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Better:</strong> Use both versions throughout your resume
             </p>
           </div>
@@ -464,7 +464,7 @@ export default function HowToUseResumeKeywords() {
               <strong>Example:</strong> Adding "Machine Learning" to your resume
               when you have no ML experience
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Better:</strong> Only include keywords you can actually
               discuss in an interview
             </p>
@@ -478,7 +478,7 @@ export default function HowToUseResumeKeywords() {
               <strong>Example:</strong> Not including "Remote" or specific city
               names when relevant
             </p>
-            <p className="text-accent">
+            <p className="text-accent-text">
               <strong>Better:</strong> Include location preferences and remote
               work capabilities if applicable
             </p>
@@ -506,7 +506,7 @@ export default function HowToUseResumeKeywords() {
 
           <div className="bg-green-50 border border-green-200 rounded-xl p-6">
             <h4 className="font-bold text-green-800 mb-3">⏰ Recency</h4>
-            <p className="text-accent text-sm">
+            <p className="text-accent-text text-sm">
               More recent experience often scores higher. Emphasize your current
               and recent roles, especially for key skills.
             </p>
@@ -539,7 +539,7 @@ export default function HowToUseResumeKeywords() {
           </p>
           <a
             href="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Your Resume
           </a>
@@ -598,7 +598,7 @@ export default function HowToUseResumeKeywords() {
               <strong>content strategy</strong>, improving <strong>SEO</strong> organic
               traffic by 35%."
             </p>
-            <p className="text-accent text-xs mt-1 font-medium">Keywords matched: 8/10</p>
+            <p className="text-accent-text text-xs mt-1 font-medium">Keywords matched: 8/10</p>
           </div>
         </div>
 
@@ -641,10 +641,10 @@ export default function HowToUseResumeKeywords() {
 
         <p className="text-lg leading-relaxed text-stone-warm">
           See the full list on our{' '}
-          <Link to="/resume-keywords" className="text-accent hover:text-ink underline">
+          <Link to="/resume-keywords" className="text-accent-text hover:text-ink underline">
             Resume Keywords Hub
           </Link>, or use our free{' '}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:text-ink underline">
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:text-ink underline">
             ATS Keyword Scanner
           </Link>{' '}
           to check your resume against a specific job description.
@@ -752,7 +752,7 @@ export default function HowToUseResumeKeywords() {
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 mt-8">
           <h4 className="font-bold text-green-800 mb-3">🚀 Your Next Steps:</h4>
-          <ol className="list-decimal pl-6 space-y-2 text-accent">
+          <ol className="list-decimal pl-6 space-y-2 text-accent-text">
             <li>Choose 2-3 target job postings in your field</li>
             <li>Extract and categorize keywords from each posting</li>
             <li>Update your resume template with industry-specific keywords</li>

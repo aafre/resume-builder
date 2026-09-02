@@ -92,7 +92,7 @@ export default function TechResumeGuide() {
         </p>
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
           <h4 className="font-bold text-green-800 mb-3">✅ What to Include:</h4>
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>Full Name & Phone Number</strong>
             </li>
@@ -215,7 +215,7 @@ export default function TechResumeGuide() {
           <h4 className="font-bold text-green-800 mb-3">
             ✅ Example Bullet Points:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               Developed and deployed a RESTful API using Node.js and Express,
               improving data retrieval efficiency by <strong>30%</strong>.

@@ -129,7 +129,7 @@ export default function ATSOptimization() {
           <h4 className="font-bold text-green-800 mb-3">
             ✅ Recommended Formats:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>PDF:</strong> Preserves formatting, widely accepted (use
               if system allows)
@@ -169,7 +169,7 @@ export default function ATSOptimization() {
             <h4 className="font-bold text-green-800 mb-3">
               ✅ ATS-Friendly Headers:
             </h4>
-            <ul className="list-disc pl-6 space-y-1 text-accent">
+            <ul className="list-disc pl-6 space-y-1 text-accent-text">
               <li>Contact Information</li>
               <li>Professional Summary</li>
               <li>Work Experience</li>
@@ -237,9 +237,9 @@ export default function ATSOptimization() {
           Keywords are the foundation of ATS optimization. These systems scan
           for specific terms, skills, and phrases that match job requirements.
           Strategic keyword placement can dramatically improve your ranking.
-          We maintain <Link to="/resume-keywords" className="text-accent hover:underline font-medium">industry-specific keyword lists</Link> for
+          We maintain <Link to="/resume-keywords" className="text-accent-text hover:underline font-medium">industry-specific keyword lists</Link> for
           17+ job categories to help you find the right terms for your field
-          — for example, see our <Link to="/resume-keywords/software-engineer" className="text-accent hover:underline font-medium">software engineer keywords</Link> guide.
+          — for example, see our <Link to="/resume-keywords/software-engineer" className="text-accent-text hover:underline font-medium">software engineer keywords</Link> guide.
         </p>
 
         <h3 className="text-2xl font-bold text-ink mt-8 mb-4">
@@ -372,7 +372,7 @@ export default function ATSOptimization() {
             <h4 className="font-bold text-green-800 mb-3">
               ✅ ATS-Friendly Format:
             </h4>
-            <div className="text-accent space-y-2 text-sm font-mono">
+            <div className="text-accent-text space-y-2 text-sm font-mono">
               <p>
                 John Smith
                 <br />
@@ -444,7 +444,7 @@ export default function ATSOptimization() {
           <h4 className="font-bold text-green-800 mb-3">
             ✅ Effective Skills Section Structure:
           </h4>
-          <div className="text-accent space-y-4">
+          <div className="text-accent-text space-y-4">
             <div>
               <p className="font-medium">Technical Skills:</p>
               <p className="text-sm">
@@ -473,11 +473,11 @@ export default function ATSOptimization() {
         <p className="text-lg leading-relaxed text-stone-warm">
           Before submitting your resume, test how well ATS systems can parse
           your information. Try our free{" "}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">resume keyword scanner</Link>{" "}
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">resume keyword scanner</Link>{" "}
           to instantly check whether your resume includes the right terms for
           your target role.
           {" "}For the complete workflow, follow all four methods in our{" "}
-          <Link to="/blog/free-ats-resume-check" className="text-accent hover:underline font-medium">free ATS resume check guide</Link>.
+          <Link to="/blog/free-ats-resume-check" className="text-accent-text hover:underline font-medium">free ATS resume check guide</Link>.
         </p>
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">

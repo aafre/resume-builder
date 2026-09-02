@@ -189,23 +189,23 @@ export default function ResumeBuilderHiddenCosts() {
                 </td>
               </tr>
               <tr className="bg-green-50">
-                <td className="px-4 py-4 font-bold text-accent">
+                <td className="px-4 py-4 font-bold text-accent-text">
                   EasyFreeResume
                 </td>
-                <td className="px-4 py-4 text-accent font-medium">
+                <td className="px-4 py-4 text-accent-text font-medium">
                   None (no trial)
                 </td>
-                <td className="px-4 py-4 text-accent font-medium">
+                <td className="px-4 py-4 text-accent-text font-medium">
                   Nothing &mdash; stays free
                 </td>
-                <td className="px-4 py-4 text-accent font-medium">
+                <td className="px-4 py-4 text-accent-text font-medium">
                   No billing
                 </td>
-                <td className="px-4 py-4 text-accent font-bold">$0/year</td>
-                <td className="px-4 py-4 text-accent font-medium">
+                <td className="px-4 py-4 text-accent-text font-bold">$0/year</td>
+                <td className="px-4 py-4 text-accent-text font-medium">
                   No &mdash; clean export
                 </td>
-                <td className="px-4 py-4 text-accent font-medium">
+                <td className="px-4 py-4 text-accent-text font-medium">
                   None (no account)
                 </td>
               </tr>
@@ -242,7 +242,7 @@ export default function ResumeBuilderHiddenCosts() {
           breakdown, see our{" "}
           <Link
             to="/blog/resume-io-vs-easy-free-resume"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             Resume.io vs EasyFreeResume comparison
           </Link>
@@ -299,7 +299,7 @@ export default function ResumeBuilderHiddenCosts() {
           See the full numbers in our{" "}
           <Link
             to="/easyfreeresume-vs-zety"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             Zety pricing breakdown
           </Link>
@@ -324,7 +324,7 @@ export default function ResumeBuilderHiddenCosts() {
           applicant tracking systems. Our{" "}
           <Link
             to="/blog/canva-resume-vs-easy-free-resume"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             Canva vs EasyFreeResume comparison
           </Link>{" "}
@@ -344,7 +344,7 @@ export default function ResumeBuilderHiddenCosts() {
 
         <ul className="space-y-3 text-lg text-stone-warm">
           <li className="flex gap-3 items-start">
-            <span className="text-accent mt-1.5">&#x2022;</span>
+            <span className="text-accent-text mt-1.5">&#x2022;</span>
             <span>
               <strong>Auto-renewal is the default.</strong> A trial near $1.95 to
               $2.95 silently becomes a roughly $26&ndash;$30 charge every 4 weeks
@@ -352,7 +352,7 @@ export default function ResumeBuilderHiddenCosts() {
             </span>
           </li>
           <li className="flex gap-3 items-start">
-            <span className="text-accent mt-1.5">&#x2022;</span>
+            <span className="text-accent-text mt-1.5">&#x2022;</span>
             <span>
               <strong>Cancellation paths can be obscured.</strong> As of 2026,
               some Resume.io users report friction cancelling &mdash; unexpected
@@ -362,7 +362,7 @@ export default function ResumeBuilderHiddenCosts() {
             </span>
           </li>
           <li className="flex gap-3 items-start">
-            <span className="text-accent mt-1.5">&#x2022;</span>
+            <span className="text-accent-text mt-1.5">&#x2022;</span>
             <span>
               <strong>The sunk-cost trap.</strong> After 30&ndash;60 minutes of
               building, hitting a paywall makes paying feel easier than starting
@@ -403,12 +403,12 @@ export default function ResumeBuilderHiddenCosts() {
           the model in more depth, read{" "}
           <Link
             to="/blog/how-why-easyfreeresume-completely-free"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             how and why EasyFreeResume is completely free
           </Link>{" "}
           or jump straight to the{" "}
-          <Link to="/templates" className="text-accent hover:underline">
+          <Link to="/templates" className="text-accent-text hover:underline">
             free templates
           </Link>
           .
@@ -425,7 +425,7 @@ export default function ResumeBuilderHiddenCosts() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Build Your Free Resume Now
           </Link>
