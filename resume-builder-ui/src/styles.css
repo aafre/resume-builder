@@ -980,13 +980,20 @@ footer {
 
 /* ── Blog Prose Overrides ── */
 /* Harmonize @tailwindcss/typography with design system */
+/* accent-text (#007a48), not accent (#00d47e): body links sit on chalk/chalk-dark
+   where the brand accent is 1.7:1 (WCAG AA fail). #007a48 is 5.0:1 on chalk. */
 .prose a {
-  color: #00d47e;
+  color: #007a48;
   text-decoration: none;
 }
 .prose a:hover {
   color: #0c0c0c;
   text-decoration: underline;
+}
+/* Links that opt into white (inside bg-ink CTA blocks) must stay white —
+   .prose a would otherwise force #007a48 onto near-black (2.4:1, AA fail). */
+.prose a.text-white {
+  color: #fff;
 }
 .prose code {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
@@ -997,16 +1004,19 @@ footer {
 .prose .text-white h3,
 .prose .text-white h4,
 .prose .text-white p,
-.prose .text-white li {
+.prose .text-white li,
+.prose .text-white strong {
   color: inherit;
 }
 
 /* Design-system .btn-primary must keep its ink color inside .prose.
-   Without this, .prose a { color: #00d47e } wins by specificity (0,1,1)
+   Without this, .prose a { color: #007a48 } wins by specificity (0,1,1)
    over Tailwind's text-ink utility (0,1,0), making the button text
-   invisible (green-on-green). */
+   green-on-green. */
 .prose a.btn-primary,
-.prose a.btn-primary:hover {
+.prose a.btn-primary:hover,
+.prose a.bg-accent,
+.prose a.bg-accent:hover {
   color: #0c0c0c;
   text-decoration: none;
 }

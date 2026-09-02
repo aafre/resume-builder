@@ -33,7 +33,7 @@ module.exports = {
           css: {
             '--tw-prose-body': theme('colors.ink.DEFAULT'),
             '--tw-prose-headings': theme('colors.ink.DEFAULT'),
-            '--tw-prose-links': theme('colors.accent'),
+            '--tw-prose-links': theme('colors.accent-text'),
             '--tw-prose-bold': theme('colors.ink.DEFAULT'),
             '--tw-prose-bullets': theme('colors.accent'),
             '--tw-prose-quotes': theme('colors.ink.DEFAULT'),
@@ -45,7 +45,7 @@ module.exports = {
             '--tw-prose-pre-bg': theme('colors.ink.DEFAULT'),
             fontFamily: theme('fontFamily.display').join(', '),
             a: {
-              color: theme('colors.accent'),
+              color: theme('colors.accent-text'),
               textDecoration: 'none',
               '&:hover': {
                 color: theme('colors.ink.DEFAULT'),
