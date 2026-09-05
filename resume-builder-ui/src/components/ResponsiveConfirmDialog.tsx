@@ -123,8 +123,9 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
               className="w-full lg:w-auto px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700
                 hover:bg-gray-50 active:bg-gray-100
                 transition-colors disabled:opacity-50 disabled:cursor-not-allowed
-                min-h-[48px] lg:min-h-[44px]"
+                min-h-[48px] lg:min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2"
               style={{ WebkitTapHighlightColor: "transparent" }}
+              autoFocus
             >
               {cancelText}
             </button>
@@ -134,7 +135,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
               className={`w-full lg:w-auto px-6 py-3 rounded-lg font-medium
                 shadow-md hover:shadow-lg active:scale-95
                 transition-all disabled:opacity-50 disabled:cursor-not-allowed
-                min-h-[48px] lg:min-h-[44px]
+                min-h-[48px] lg:min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
                 ${confirmClass}`}
               style={{ WebkitTapHighlightColor: "transparent" }}
             >
