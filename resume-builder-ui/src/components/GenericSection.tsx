@@ -6,6 +6,7 @@ import { RichTextArea } from "./RichTextArea";
 import ItemDndContext from "./ItemDndContext";
 import SortableItem from "./SortableItem";
 import { GhostButton } from "./shared/GhostButton";
+import { SectionEmptyState } from "./shared/SectionEmptyState";
 import { MdDelete } from "react-icons/md";
 
 interface Section {
@@ -13,6 +14,26 @@ interface Section {
   type?: string;
   content: any;
 }
+
+/**
+ * What an empty list section teaches. A first-resume writer opening a blank
+ * card learns nothing from it, so each list type says what belongs in it and
+ * what a good entry looks like. Keyed by section type.
+ */
+const LIST_EMPTY_COPY: Record<string, { headline: string; hint: string }> = {
+  "bulleted-list": {
+    headline: "No bullet points yet.",
+    hint: 'One point per line. Start with a verb and add a number where you have one — "Cut onboarding from three weeks to five days" beats "Responsible for onboarding".',
+  },
+  "inline-list": {
+    headline: "No items yet.",
+    hint: "One skill or tool per item. These print as a single comma-separated line, so keep each one to a word or two.",
+  },
+  "dynamic-column-list": {
+    headline: "No items yet.",
+    hint: "One item per line. They lay out in columns on the PDF, so short entries read best.",
+  },
+};
 
 interface GenericSectionProps {
   section: Section;
@@ -78,6 +99,15 @@ const GenericSection: React.FC<GenericSectionProps> = ({
     }
   };
 
+  const handleAddItem = () => {
+    const existing = Array.isArray(section.content) ? section.content : [];
+    onUpdate({ ...section, content: [...existing, ""] });
+  };
+
+  const isEmptyList =
+    !Array.isArray(section.content) || section.content.length === 0;
+  const emptyCopy = LIST_EMPTY_COPY[section.type ?? ""];
+
   const handleRemoveItem = (index: number) => {
     if (onDeleteEntry) {
       // Trigger confirmation dialog
@@ -92,7 +122,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
   };
 
   return (
-    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 mb-4 sm:mb-8 border-l-4 border-l-accent border border-gray-200/60">
+    <div className="section-card">
       <SectionHeader
         title={section.name}
         isEditing={isEditing}
@@ -114,7 +144,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
             <RichTextArea
               value={section.content || ""}
               onChange={(value) => handleContentChange(value)}
-              placeholder="Enter text..."
+              placeholder="Two or three sentences: what you do, how long you have done it, and what you are looking for next."
               className="w-full border border-gray-300 rounded-lg p-2 focus-within:ring-2 focus-within:ring-accent-text focus-within:border-accent transition-all duration-200"
               rows={4}
             />
@@ -155,7 +185,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                             <button
                               type="button"
                               onClick={() => handleRemoveItem(index)}
-                              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
+                              className="inline-flex min-h-11 min-w-11 items-center justify-center text-stone-warm hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white flex-shrink-0"
                               title="Remove Item"
                               aria-label="Remove item"
                             >
@@ -169,15 +199,18 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 )}
               </ItemDndContext>
             )}
-            <GhostButton
-              onClick={() => {
-                const updatedContent = [...(section.content || []), ""];
-                onUpdate({ ...section, content: updatedContent });
-              }}
-              className="mt-2"
-            >
-              Add Item
-            </GhostButton>
+            {isEmptyList && emptyCopy ? (
+              <SectionEmptyState
+                headline={emptyCopy.headline}
+                hint={emptyCopy.hint}
+                addLabel="Add Item"
+                onAdd={handleAddItem}
+              />
+            ) : (
+              <GhostButton onClick={handleAddItem} className="mt-2">
+                Add Item
+              </GhostButton>
+            )}
           </>
         )}
 
@@ -217,7 +250,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                               <button
                                 type="button"
                                 onClick={() => handleRemoveItem(index)}
-                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
+                                className="inline-flex min-h-11 min-w-11 items-center justify-center text-stone-warm hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white flex-shrink-0"
                                 title="Remove Item"
                                 aria-label="Remove item"
                               >
@@ -232,14 +265,16 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 </ItemDndContext>
               )}
             </div>
-            <GhostButton
-              onClick={() => {
-                const updatedContent = [...(section.content || []), ""];
-                onUpdate({ ...section, content: updatedContent });
-              }}
-            >
-              Add Item
-            </GhostButton>
+            {isEmptyList && emptyCopy ? (
+              <SectionEmptyState
+                headline={emptyCopy.headline}
+                hint={emptyCopy.hint}
+                addLabel="Add Item"
+                onAdd={handleAddItem}
+              />
+            ) : (
+              <GhostButton onClick={handleAddItem}>Add Item</GhostButton>
+            )}
           </>
         )}
 
@@ -279,7 +314,7 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                               <button
                                 type="button"
                                 onClick={() => handleRemoveItem(index)}
-                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
+                                className="inline-flex min-h-11 min-w-11 items-center justify-center text-stone-warm hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white flex-shrink-0"
                                 title="Remove Item"
                                 aria-label="Remove item"
                               >
@@ -294,14 +329,16 @@ const GenericSection: React.FC<GenericSectionProps> = ({
                 </ItemDndContext>
               )}
             </div>
-            <GhostButton
-              onClick={() => {
-                const updatedContent = [...(section.content || []), ""];
-                onUpdate({ ...section, content: updatedContent });
-              }}
-            >
-              Add Item
-            </GhostButton>
+            {isEmptyList && emptyCopy ? (
+              <SectionEmptyState
+                headline={emptyCopy.headline}
+                hint={emptyCopy.hint}
+                addLabel="Add Item"
+                onAdd={handleAddItem}
+              />
+            ) : (
+              <GhostButton onClick={handleAddItem}>Add Item</GhostButton>
+            )}
           </>
         )}
         </div>

@@ -86,6 +86,83 @@
   opacity: 1;
 }
 
+/* The Ghost Add Button — DESIGN.md's signature "there could be more here"
+   affordance, and the one place a dashed border is permitted. Was open-coded
+   in six places with six different hover treatments; this is the single
+   definition. Accent text is Deep Signal, never #00d47e (1.87:1 on Chalk). */
+.btn-ghost-add {
+  @apply w-full inline-flex min-h-11 items-center justify-center gap-2 rounded-lg
+         border-2 border-dashed border-gray-300 px-4 py-2.5
+         text-[13px] font-medium text-stone-warm
+         transition-colors duration-200
+         hover:border-accent/70 hover:bg-accent/[0.06] hover:text-accent-text;
+}
+
+.btn-ghost-add:focus-visible {
+  @apply outline-none ring-2 ring-accent-text ring-offset-2 ring-offset-white;
+}
+
+/* Destructive secondary action — "Remove section", "Remove social link".
+   At rest it is neutral chrome: this is a workbench, and a red button sitting
+   permanently beside every section title is a page that shouts at you for
+   forty minutes. The destructive reading arrives on hover AND on focus-visible
+   (keyboard users must get the same warning the mouse gets) as a red skin over
+   the system's own Deep Signal focus ring — #00d47e cannot carry a ring, and
+   swapping the ring itself per-variant would fragment the focus vocabulary.
+   min-h-11 because 44px applies in the editor's densest rows too. */
+.btn-destructive-ghost {
+  @apply inline-flex min-h-11 items-center justify-center gap-1.5 rounded-lg
+         border border-gray-300 px-3 text-sm font-medium text-stone-warm
+         transition-colors duration-200
+         hover:border-red-300 hover:bg-red-50 hover:text-red-700
+         focus-visible:border-red-300 focus-visible:bg-red-50 focus-visible:text-red-700
+         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text
+         focus-visible:ring-offset-2 focus-visible:ring-offset-white;
+}
+
+/* ── Editor workbench surfaces ──
+   The resume section card. Previously copy-pasted across five components as
+   `bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg … border-l-4 border-l-accent`,
+   which broke four named DESIGN.md rules in one attribute:
+     - Flat-At-Rest: shadow-lg is the Floating tier (modals, toasts, drag
+       overlays), not a resting app card, which is shadow-sm → shadow-md.
+     - Glass Restraint: backdrop-blur on seven static in-flow cards down the
+       editor's longest list is the counter-example the rule names by hand.
+     - The 10% Rule: a 4px Signal Green rail per card stacked seven green bars
+       down the page, which is green as wallpaper rather than as a signal. It
+       also measured 1.70:1 on Chalk Dark, under the 3:1 non-text floor.
+     - The 12px Default: 16px is reserved for marketing feature cards.
+   Depth is now tonal and earned on interaction, which is what a workbench
+   should do. */
+.section-card {
+  @apply bg-white rounded-xl border border-gray-200 shadow-sm
+         p-4 sm:p-6 lg:p-8 mb-4 sm:mb-8
+         transition-shadow duration-200 hover:shadow-md;
+}
+
+/* The in-context "select text to format it" reminder (MarkdownHint).
+   It used to be an always-on line under every editable block — the same
+   sentence eight-plus times down one page, which is wallpaper, not help.
+   It now shows only while the field group it belongs to has focus.
+
+   The subject of the selector is the hint itself and the condition is on its
+   parent, so this needs no :has() and no call-site change: every MarkdownHint
+   is already a direct child of the container that wraps its field(s).
+
+   Space stays reserved at rest (opacity, not display), so revealing the hint
+   never nudges the field the user just focused — the Reserved Space Rule. The
+   150ms/opacity transition is acknowledgement-tier feedback and inherits the
+   global prefers-reduced-motion block below. */
+.markdown-hint {
+  @apply flex items-center gap-1.5 text-xs text-stone-warm;
+  opacity: 0;
+  transition: opacity 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:focus-within > .markdown-hint {
+  opacity: 1;
+}
+
 /* Glass morphism base */
 .glass {
   @apply bg-white/80 backdrop-blur-xl border border-white/40 shadow-xl;
@@ -843,14 +920,28 @@ footer {
   animation: slide-in-right 0.3s ease-out;
 }
 
+/* Overrides Tailwind's `pulse`, which the `animate-pulse` utility drives with
+   `2s cubic-bezier(0.4,0,0.6,1) infinite`.
+
+   This used to add `transform: scaleY(0.8) → scaleY(1)` on a one-directional
+   0%→100% ramp. Two problems, both measured while building the editor skeleton:
+   the scaleY squashes the element vertically, so `animate-pulse` on a tall
+   skeleton container drags the whole column by ~10% of its height (a container
+   top was observed drifting 73px → 167px); and because the ramp is
+   one-directional rather than symmetric, every loop restart snaps back rather
+   than easing.
+
+   Now opacity-only and symmetric, matching Tailwind's own definition — which is
+   what every call site already assumes. A skeleton should breathe, not move:
+   geometry animation on a loading placeholder is the decorative motion the
+   editor's own rules rule out. */
 @keyframes pulse {
-  0% {
-    opacity: 0.4;
-    transform: scaleY(0.8);
-  }
+  0%,
   100% {
     opacity: 1;
-    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.5;
   }
 }
 

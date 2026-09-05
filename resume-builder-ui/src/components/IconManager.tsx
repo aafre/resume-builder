@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaPencilAlt, FaTimes, FaImage } from "react-icons/fa";
+// lucide, not FontAwesome: this file was the only one in the editor still
+// pulling react-icons/fa, so its icons carried a different stroke weight from
+// every neighbour. (AuthModal keeps FcGoogle/FaLinkedin -- those are brand
+// marks, where polychrome is correct.)
+import { Image as ImageIcon, Pencil, X } from "lucide-react";
 import { getIconSource } from "../utils/icons";
 
 interface IconManagerProps {
@@ -154,7 +158,7 @@ const IconManager: React.FC<IconManagerProps> = ({
   return (
     <div className={`icon-manager relative w-12 h-12 ${className}`}>
       <label className={`cursor-pointer relative group ${disabled ? 'pointer-events-none opacity-50' : ''}`}>
-        <div className="w-12 h-12 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 group-hover:border-accent group-hover:bg-accent/[0.06] transition-all duration-200">
+        <div className="w-12 h-12 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center overflow-clip bg-chalk group-hover:border-accent group-hover:bg-accent/[0.06] transition-all duration-200">
           {isUploading ? (
             <div className="animate-spin w-4 h-4 border-2 border-accent border-t-transparent rounded-full" />
           ) : iconPreview ? (
@@ -164,12 +168,12 @@ const IconManager: React.FC<IconManagerProps> = ({
               className="w-full h-full object-cover rounded-lg"
             />
           ) : (
-            <FaImage className="text-gray-400 w-4 h-4" />
+            <ImageIcon className="text-stone-warm w-4 h-4" aria-hidden="true" />
           )}
-          
+
           {!isUploading && (
-            <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <FaPencilAlt className="text-white w-3 h-3" />
+            <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+              <Pencil className="text-white w-3.5 h-3.5" aria-hidden="true" />
             </div>
           )}
         </div>
@@ -184,21 +188,36 @@ const IconManager: React.FC<IconManagerProps> = ({
         />
       </label>
 
-      {/* Clear button */}
+      {/* Clear button.
+          Was a 20x20 button whose entire content was a bare <FaTimes />, so it
+          had no accessible name at all -- rendered nine times, these were the
+          only controls on the surface that were both sub-44 and unnamed.
+
+          The badge is now 24x24, which clears WCAG 2.5.8's 24x24 minimum on its
+          own, and `after:-inset-2.5` extends the pointer target to 44px without
+          changing layout.
+
+          ponytail: the 44px target necessarily overlaps the corner of the 48px
+          upload tile it sits on -- two controls cannot both own that pixel. The
+          tile keeps the large majority of its area and is still easy to hit.
+          The real fix is a roomier icon row; that is a layout change to every
+          icon-list section, so it is not folded into this pass. */}
       {iconPreview && !disabled && (
         <button
           type="button"
           onClick={handleClear}
-          className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow-lg transition-colors duration-200"
+          className="absolute -top-2 -right-2 w-6 h-6 flex items-center justify-center rounded-full bg-red-600 text-white shadow-md transition-colors duration-150 hover:bg-red-700 after:absolute after:-inset-2.5 after:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           disabled={isUploading}
+          title="Remove icon"
+          aria-label="Remove icon"
         >
-          <FaTimes />
+          <X className="w-3.5 h-3.5" aria-hidden="true" />
         </button>
       )}
 
       {/* Error message */}
       {error && (
-        <div className="absolute top-14 left-0 bg-red-100 border border-red-400 text-red-700 px-2 py-1 rounded text-xs whitespace-nowrap z-10">
+        <div className="absolute top-14 left-0 bg-red-100 border border-red-400 text-red-700 px-2 py-1 rounded-lg text-xs whitespace-nowrap z-10">
           {error}
         </div>
       )}

@@ -9,6 +9,7 @@ import {
   generateDisplayText,
 } from '../../constants/socialPlatforms';
 import { validateLinkedInUrl } from '../../services/validationService';
+import { toastUndo } from '../../utils/undoToast';
 
 /**
  * Props for useContactForm hook (dependency injection from Layer 1)
@@ -37,9 +38,15 @@ export interface UseContactFormProps {
  * contactForm.handleAddSocialLink();
  */
 export const useContactForm = ({
-  contactInfo: _contactInfo, // Unused - we read state via functional updaters to avoid stale closures
+  contactInfo,
   setContactInfo,
 }: UseContactFormProps): UseContactFormReturn => {
+  // State writes go through functional updaters to avoid stale closures. Reads
+  // that need the *current* value (capturing a deleted item for undo) use this
+  // ref instead: doing that capture inside an updater would be a side effect in
+  // a reducer, which React may invoke twice in StrictMode.
+  const contactInfoRef = useRef(contactInfo);
+  contactInfoRef.current = contactInfo;
   // Social link validation errors (index -> error message)
   const [socialLinkErrors, setSocialLinkErrors] = useState<
     Record<number, string>
@@ -122,6 +129,13 @@ export const useContactForm = ({
    */
   const handleRemoveSocialLink = useCallback(
     (index: number) => {
+      // The last instant, unrecoverable delete in the editor. Sections, entries
+      // and bullets all got undo; this one is not a section entry so it never
+      // routed through useSectionManagement and was missed. Restoring at the
+      // original index into whatever the list looks like *now* means editing a
+      // sibling link inside the undo window is not thrown away.
+      const removed = contactInfoRef.current?.social_links?.[index];
+
       setContactInfo((prev) => {
         if (!prev) return null;
 
@@ -133,6 +147,18 @@ export const useContactForm = ({
           social_links: updatedLinks,
         };
       });
+
+      if (removed) {
+        const restored = removed;
+        toastUndo('Social link removed', () => {
+          setContactInfo((prev) => {
+            if (!prev) return null;
+            const links = [...(prev.social_links || [])];
+            links.splice(Math.min(index, links.length), 0, restored);
+            return { ...prev, social_links: links };
+          });
+        });
+      }
 
       // Remap error indices - items before removed index stay, items after shift down
       setSocialLinkErrors((prev) => {
