@@ -290,108 +290,21 @@ details .faq-content > div {
 }
 
 /* ── Landing Page Keyframes ── */
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotateY(-3deg); }
-  50%      { transform: translateY(-12px) rotateY(-3deg); }
-}
-
-@keyframes typewriter {
-  /* clip-path reveal avoids CLS (no width change); trade-off: caret stays fixed at container edge
-     rather than tracking the text. Acceptable since CLS fix is the higher priority. */
-  from { clip-path: inset(0 100% 0 0); }
-  to   { clip-path: inset(0 0% 0 0); }
-}
-
-@keyframes blink-caret {
-  0%, 100% { border-color: #00d47e; }
-  50%      { border-color: transparent; }
-}
-
 @keyframes pulse-accent {
   0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,126,0.4); }
   50%      { box-shadow: 0 0 0 8px rgba(0,212,126,0); }
 }
 
-/* ── Hero "builds itself" sequence ──
-   Hidden start states live ONLY in keyframe `from` + fill-mode both/forwards
-   (or a base opacity: 0), so `animation: none` (reduced motion) leaves
-   everything in its final visible state. Animates clip-path/opacity/transform
-   only — zero CLS. Delay comes from the per-element --d custom property.
-   The whole sequence is paused until useScrollReveal adds .revealed to the
-   .hero-seq container (matters on mobile, where the card sits below the CTAs). */
-@keyframes hero-rise {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
 @keyframes hero-card-in {
   from { opacity: 0; transform: perspective(1000px) rotateX(14deg) translateY(36px) scale(0.94); }
   60%  { opacity: 1; }
   to   { opacity: 1; transform: perspective(1000px) rotateX(0deg) translateY(0) scale(1); }
-}
-@keyframes hero-pop {
-  0%   { opacity: 0; transform: scale(0.4) rotate(-8deg); }
-  60%  { opacity: 1; transform: scale(1.12) rotate(2deg); }
-  80%  { transform: scale(0.97) rotate(-1deg); }
-  100% { opacity: 1; transform: scale(1) rotate(0deg); }
-}
-@keyframes hero-stamp {
-  0%   { opacity: 0; transform: scale(1.6) rotate(-8deg); }
-  70%  { opacity: 1; transform: scale(0.95) rotate(0deg); }
-  100% { opacity: 1; transform: scale(1); }
-}
-@keyframes hero-caret-blink {
-  0%, 40%, 80% { opacity: 1; }
-  20%, 60%     { opacity: 0; }
-  100%         { opacity: 0; }
-}
-@keyframes hero-progress {
-  0%   { transform: scaleX(0); opacity: 1; }
-  85%  { transform: scaleX(1); opacity: 1; }
-  100% { transform: scaleX(1); opacity: 0; }
-}
-@keyframes hero-scan {
-  from { transform: translateY(0); opacity: 0; }
-  15%  { opacity: 1; }
-  80%  { opacity: 1; }
-  to   { transform: translateY(440px); opacity: 0; }
-}
-@keyframes hero-bob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
-}
-@keyframes hero-glow {
-  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.92); }
-  50%      { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
 }
 
 @keyframes hero-underline {
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
 }
-@keyframes hero-title-scan {
-  /* sweep for ~28% of the cycle, then rest — both endpoints render pure ink,
-     so the loop restart is invisible */
-  0%   { background-position: 100% 0; }
-  28%  { background-position: 0% 0; }
-  100% { background-position: 0% 0; }
-}
-
-/* Accent sheen sweeps across "Free Resume Builder" (left → right), looping
-   with a long pause. The text is always painted (gradient is ink except the
-   moving band), so LCP is safe; at rest (and under reduced motion / no
-   background-clip support) it reads as plain ink. */
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .hero-title-scan {
-    background-image: linear-gradient(100deg, #0c0c0c 42%, #00d47e 50%, #0c0c0c 58%);
-    background-size: 300% 100%;
-    background-position: 100% 0;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: hero-title-scan 6s ease-in-out 0.5s infinite;
-  }
-}
-
 /* Accent highlighter behind "Get You Hired" in the H1 — draws in on load
    (above the fold, not gated; text itself never animates so LCP is unaffected) */
 .hero-underline {
@@ -399,111 +312,148 @@ details .faq-content > div {
   animation: hero-underline 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both;
 }
 
-/* Ambient loops (not part of the gated sequence) */
-.hero-mockup {
-  animation: float 4s ease-in-out infinite;
-}
-.hero-glow {
-  animation: hero-glow 7s ease-in-out infinite;
+/* ── Hero: the deal ──
+   Three real rendered templates stacked as paper, the face-up sheet lifting
+   clear of the stack and settling at the back on a loop. Replaces the previous
+   skeleton-bar wireframe — the hero of a resume product now shows real output.
+
+   Every sheet runs the same 15s cycle; a negative delay per index offsets them
+   so that at any instant one is face-up, one mid, one at the back. The three
+   resting positions are named custom properties, and each sheet's BASE
+   transform is its resting position. That is what makes reduced motion work:
+   the global block near the end of this file sets `animation: none`, which
+   leaves a legible static fan of three real resumes. Note it has to be that
+   block and not the generic duration override, which would run every sheet to
+   its 100% keyframe and collapse all three onto the face-up position.
+
+   Transform-only, so zero CLS. Depth is translateZ inside a preserve-3d stack
+   rather than a z-index ladder: paint order and the size falloff between
+   sheets then come from the same perspective projection, and the dealt sheet
+   genuinely passes in front of the stack instead of being composited over it. */
+.hero-stack {
+  position: relative;
+  width: 240px;
+  height: 311px; /* 8.5:11 — real paper, matching the rendered PDFs */
+  perspective: 1400px;
+  transform-style: preserve-3d;
+
+  --pos-0: translate3d(0, 0, 0) rotate(0deg);
+  --pos-1: translate3d(15px, -10px, -46px) rotate(2.2deg);
+  --pos-2: translate3d(30px, -20px, -92px) rotate(4.4deg);
+  /* Peak of the deal arc: leftward, into the empty gap beside the stack.
+     Rightward is the wrong way on both breakpoints — the stack is already the
+     rightmost thing on the page, and body carries overflow-x: hidden, so a
+     sheet that overshoots gets silently sliced at the viewport edge rather
+     than producing a visible scrollbar. On mobile it is a sideways slide with
+     no vertical component at all: measured at 390x844, the resting stack's top
+     edge sits 36px under the "No paywall" reassurance line, and the rotation
+     and the z translate alone already spend 14px of that. The lift reads
+     through depth (z) rather than through height here. */
+  --pos-lift: translate3d(-30px, 0, 60px) rotate(3.5deg);
 }
 
-/* Sequence steps */
+@media (min-width: 1024px) {
+  .hero-stack {
+    width: 320px;
+    height: 414px;
+    /* The fan spreads with the stack: at 320px the mobile offsets read as a
+       printing misregistration rather than as three separate sheets. */
+    --pos-1: translate3d(21px, -14px, -52px) rotate(2.4deg);
+    --pos-2: translate3d(42px, -28px, -104px) rotate(4.8deg);
+    /* At 1024 the stack has ~124px of clear gap to its left (the H1 measure
+       ends at the column boundary) and only ~60px to its right before the
+       container edge, so the arc goes left and mostly up. Measured at 1024,
+       the tightest case: the airborne sheet's left edge lands ~55px clear of
+       the headline's right edge. Note the sheet grows on the way up (z: 88px
+       against a 1400px perspective) and the rotation widens it further, so
+       roughly 27px of the clearance is spent before the translate applies. */
+    --pos-lift: translate3d(-34px, -92px, 88px) rotate(4.5deg);
+  }
+}
+
+.hero-sheet {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  background: #fff; /* a sheet that has not loaded yet reads as blank paper */
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 14px 40px rgba(0,0,0,0.10);
+  transform: var(--pos);
+  animation: hero-deal 15s linear infinite both;
+}
+/* Delays are chosen so the animated stack at t=0 matches the resting fan
+   above: -10s lands data-i 1 on the mid keyframe, -5s lands data-i 2 on the
+   back one. That is what keeps the entrance and the reduced-motion state
+   showing the same three sheets in the same three places. */
+.hero-sheet[data-i="0"] { --pos: var(--pos-0); }
+.hero-sheet[data-i="1"] { --pos: var(--pos-1); animation-delay: -10s; }
+.hero-sheet[data-i="2"] { --pos: var(--pos-2); animation-delay: -5s; }
+
+@keyframes hero-deal {
+  /* face-up, held there for most of its third of the cycle */
+  0%, 25%  { transform: var(--pos-0); animation-timing-function: cubic-bezier(0.32, 0, 0.3, 1); }
+  /* lifts clear of the stack, turning back on itself as it goes */
+  30%      { transform: var(--pos-lift); animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1); }
+  /* and lands at the back */
+  33.34%   { transform: var(--pos-2); animation-timing-function: linear; }
+  60%      { transform: var(--pos-2); animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
+  /* then advances back → mid → face-up as the sheets ahead of it are dealt */
+  66.67%   { transform: var(--pos-1); animation-timing-function: linear; }
+  93.5%    { transform: var(--pos-1); animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
+  100%     { transform: var(--pos-0); }
+}
+
+/* Entrance for the whole stack. */
 .hero-card-in {
   animation: hero-card-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: var(--d, 0s);
 }
-.hero-type {
-  animation: typewriter 0.8s steps(14, end) both;
-  animation-delay: var(--d, 0s);
+
+/* Secondary motion: as the hero leaves, the deck is set down — a small tilt
+   and drop driven by scroll position rather than by a timer, so it costs
+   nothing while the page is still and needs no pausing. On its own wrapper so
+   it never fights hero-card-in's transform. Firefox has no scroll-driven
+   animations yet and simply gets the untransformed stack, which is the
+   correct fallback rather than a degraded one. */
+@keyframes hero-stack-exit {
+  from { transform: none; }
+  to   { transform: translateY(-22px) rotate(-2.5deg) scale(0.97); }
 }
-.hero-draw {
-  animation: typewriter 0.45s ease-out both;
-  animation-delay: var(--d, 0s);
+.hero-stack-exit {
+  flex: none;
 }
-.hero-pop {
-  animation: hero-pop 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: var(--d, 0s);
-}
-.hero-stamp {
-  animation:
-    hero-stamp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both,
-    pulse-accent 1.4s ease-out 2,
-    hero-bob 5.5s ease-in-out infinite;
-  animation-delay: var(--d, 0s), calc(var(--d, 0s) + 0.7s), calc(var(--d, 0s) + 1.6s);
-}
-.hero-chip {
-  animation:
-    hero-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both,
-    hero-bob 6.5s ease-in-out infinite;
-  animation-delay: var(--d, 0s), calc(var(--d, 0s) + 1.2s);
-}
-.hero-progress {
-  opacity: 0; /* base-hidden so reduced-motion (animation: none) never shows a stuck bar */
-  transform-origin: left;
-  animation: hero-progress 3.4s linear both;
-  animation-delay: var(--d, 0s);
-}
-.hero-scan {
-  opacity: 0;
-  animation: hero-scan 0.8s ease-in-out both;
-  animation-delay: var(--d, 0s);
-}
-.hero-particle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  border-radius: 9999px;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0);
-  animation: dcm-particle-burst 0.7s ease-out both;
-  animation-delay: var(--d, 0s);
-}
-.hero-type-caret {
-  position: relative;
-}
-.hero-type-caret::after {
-  content: '';
-  position: absolute;
-  top: 0.1em;
-  bottom: 0.1em;
-  right: -4px;
-  width: 2px;
-  background: #00d47e;
-  opacity: 0; /* hidden by default so reduced-motion (animation: none) never shows a stuck caret */
-  animation: hero-caret-blink 1.6s step-end forwards;
-  animation-delay: var(--d, 0s);
+@supports (animation-timeline: view()) {
+  .hero-stack-exit {
+    animation: hero-stack-exit linear both;
+    animation-timeline: view();
+    animation-range: exit;
+  }
 }
 
-/* Gate: sequence waits for scroll-into-view (useScrollReveal adds .revealed) */
-.hero-seq :is(.hero-card-in, .hero-type, .hero-draw, .hero-pop, .hero-stamp, .hero-chip, .hero-progress, .hero-scan, .hero-particle),
-.hero-seq .hero-type-caret::after {
+/* Gate: entrance and deal wait for scroll-into-view (useScrollReveal adds
+   .revealed). Matters on mobile, where the stack sits below the CTAs and a
+   load-triggered run would finish unseen. */
+.hero-seq :is(.hero-card-in, .hero-sheet) {
   animation-play-state: paused;
 }
-.hero-seq.revealed :is(.hero-card-in, .hero-type, .hero-draw, .hero-pop, .hero-stamp, .hero-chip, .hero-progress, .hero-scan, .hero-particle),
-.hero-seq.revealed .hero-type-caret::after {
+.hero-seq.revealed :is(.hero-card-in, .hero-sheet) {
   animation-play-state: running;
 }
 
-/* Ambient loops stop when the hero is off screen. These four are infinite, and
-   .hero-title-scan repaints the H1 (the LCP element) through background-clip
-   every 6s - unpaused they cost main-thread paint for the whole session on a
-   page that scrolls ~8000px. useScrollReveal({ once: false }) toggles
-   .offscreen and never removes .revealed, so the one-shot build sequence holds
-   its finished state instead of replaying every time the user scrolls back. */
-.hero-frame.offscreen :is(.hero-glow, .hero-mockup, .hero-stamp, .hero-chip),
-.hero-frame.offscreen .hero-title-scan {
+/* The deal is infinite — unpaused it would cost main-thread work for the whole
+   session on a page that scrolls ~8000px. useScrollReveal({ once: false })
+   toggles .offscreen and never removes .revealed, so the one-shot entrance
+   holds its finished state instead of replaying on scroll-back. This rule sits
+   after the .revealed rule on purpose: equal specificity, so the later one wins
+   while the hero is off screen. */
+.hero-frame.offscreen .hero-sheet {
   animation-play-state: paused;
 }
 
-/* Windows High Contrast strips background-image but keeps -webkit-text-fill-color,
-   which would render the H1's first line invisible. Hand the text back its colour. */
-@media (forced-colors: active) {
-  .hero-title-scan {
-    background-image: none;
-    -webkit-text-fill-color: currentColor;
-    animation: none;
-  }
-}
 
 /* ── Download Celebration Modal ── */
 @keyframes dcm-scale-in {
@@ -612,22 +562,16 @@ details .faq-content > div {
     display: none !important;
   }
 
-  /* Landing page animations: disable (hero-* classes settle in their final
-     visible state; the caret ::after defaults to opacity 0) */
-  .hero-mockup,
-  .hero-glow,
+  /* Landing page animations: disable outright rather than leaning on the
+     0.01ms duration override above. The hero sheets need `animation: none` in
+     particular: run to completion instead, all three would land on the deal's
+     100% keyframe and stack up in the face-up position, hiding two of the
+     three. With animation off they fall back to their per-index base
+     transform, which is the resting fan. */
   .hero-underline,
   .hero-card-in,
-  .hero-type,
-  .hero-draw,
-  .hero-pop,
-  .hero-stamp,
-  .hero-chip,
-  .hero-progress,
-  .hero-scan,
-  .hero-particle,
-  .hero-type-caret::after,
-  .hero-title-scan,
+  .hero-sheet,
+  .hero-stack-exit,
   .demo-typing {
     animation: none !important;
   }

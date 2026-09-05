@@ -10,9 +10,7 @@ import { useResumeCount } from "../hooks/useResumeCount";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 import { InContentAd, AD_CONFIG } from "./ads";
 import {
-  ArrowDownTrayIcon,
   ArrowRightIcon,
-  CheckIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 import { TUTORIAL_VIDEO } from "../config/videoContent";
@@ -20,6 +18,13 @@ import { TUTORIAL_VIDEO } from "../config/videoContent";
 // Animation-delay for the hero build sequence (consumed by hero-* classes in styles.css).
 // Static values only — the landing route must prerender/hydrate byte-identical.
 const d = (delay: string) => ({ "--d": delay }) as React.CSSProperties;
+
+// The templates the hero deals through, as pre-rendered WebP crops of the real
+// PDF output (public/hero/, generated from docs/templates/*.png). Three, not
+// four: modern-no-icons and modern-with-icons are the same John Doe document
+// and read as duplicates at this size, so only one is in the stack. Order is
+// the resting front-to-back order; .hero-sheet[data-i] keys off the index.
+const HERO_SHEETS = ["alex_rivera", "jane_doe", "modern-with-icons"] as const;
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -225,7 +230,7 @@ const LandingPage: React.FC = () => {
                 phrase stays an unbreakable inline-block so the underline never
                 splits across lines. */}
             <h1 className="font-display tracking-tight text-ink">
-              <span className="hero-title-scan block text-[clamp(1.125rem,4.6vw,1.75rem)] font-extralight leading-tight mb-2 lg:mb-3">
+              <span className="block text-[clamp(1.125rem,4.6vw,1.75rem)] font-extralight leading-tight mb-2 lg:mb-3">
                 Free Resume Builder
               </span>{' '}
               <span className="block text-[clamp(2.125rem,8.6vw,4.5rem)] font-extrabold leading-[1.08] [text-wrap:balance]">
@@ -272,118 +277,46 @@ const LandingPage: React.FC = () => {
             </p>
           </div>
 
-          {/* CSS-only "builds itself" resume mockup (run-once sequence, delays
-              via --d; all animation classes defined in styles.css). Desktop:
-              right column spanning both text rows. Mobile: below the CTAs,
-              still within the first viewport; the sequence is gated on
-              scroll-into-view so it never plays unseen. */}
+          {/* The deal — three real rendered templates stacked as paper, the
+              top sheet lifting off and settling at the back on a loop. Replaces
+              the previous skeleton-bar wireframe: the page now shows actual
+              output above the fold. Sheets are pre-rendered WebP crops of the
+              real PDFs; resting positions live in .hero-sheet's base transform,
+              so reduced motion leaves a static fan of three real resumes rather
+              than an empty frame. Desktop: right column spanning both text rows.
+              Mobile: below the CTAs, still within the first viewport; the cycle
+              is gated on scroll-into-view so it never plays unseen. */}
           <div
             ref={heroVisualRef}
             className="hero-seq flex items-center justify-center lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:self-center"
             aria-hidden="true"
           >
-            <div className="relative" style={{ perspective: '1000px' }}>
-              {/* Radial accent glow */}
-              <div className="hero-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] lg:w-[480px] lg:h-[480px] rounded-full bg-accent/[0.07] blur-3xl pointer-events-none" />
-              <div className="hero-card-in relative" style={d('0.15s')}>
-                {/* Shadow copy behind */}
-                <div
-                  className="absolute top-4 left-4 w-full h-full bg-ink/[0.04] rounded-xl"
-                  style={{ transform: 'rotateY(-3deg)' }}
-                />
-                {/* Main mockup */}
-                <div
-                  className="hero-mockup relative w-[240px] h-[330px] lg:w-[280px] lg:h-[380px] bg-white rounded-xl p-5 lg:p-6 flex flex-col gap-2.5 lg:gap-3 border border-black/[0.06]"
-                  style={{
-                    transform: 'rotateY(-3deg)',
-                    boxShadow: '0 8px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)',
-                  }}
-                >
-                  {/* Build progress bar along the card's top edge */}
-                  <div className="hero-progress absolute top-0 left-0 w-full h-0.5 bg-accent/70 rounded-t-xl" style={d('0.4s')} />
-                  {/* Name types in */}
-                  <div className="hero-type hero-type-caret self-start" style={d('0.5s')}>
-                    <span className="font-display text-lg lg:text-xl font-extrabold text-ink leading-none whitespace-nowrap">
-                      John Doe
-                    </span>
-                  </div>
-                  <div className="hero-draw h-2.5 w-24 lg:w-28 bg-accent/60 rounded-sm" style={d('1.25s')} />
-                  {/* Divider */}
-                  <div className="h-px w-full bg-gray-200 my-1" />
-                  {/* Section: experience */}
-                  <div className="hero-draw font-mono text-[8px] lg:text-[9px] tracking-[0.15em] text-ink/50 uppercase" style={d('1.45s')}>
-                    Experience
-                  </div>
-                  <div className="space-y-1.5">
-                    <div className="hero-draw h-1.5 w-full bg-gray-200 rounded-sm" style={d('1.6s')} />
-                    <div className="hero-draw h-1.5 w-[90%] bg-gray-200 rounded-sm" style={d('1.75s')} />
-                    <div className="hero-draw h-1.5 w-[75%] bg-gray-200 rounded-sm" style={d('1.9s')} />
-                  </div>
-                  {/* Section: skills */}
-                  <div className="hero-draw font-mono text-[8px] lg:text-[9px] tracking-[0.15em] text-ink/50 uppercase mt-1.5 lg:mt-2" style={d('2.15s')}>
-                    Skills
-                  </div>
-                  <div className="flex gap-1.5 flex-wrap">
-                    {['React', 'SQL', 'Python', 'Figma'].map((skill, i) => (
-                      <span
-                        key={skill}
-                        className="hero-pop inline-flex items-center h-4 px-2 bg-accent/15 rounded-full font-mono text-[8px] lg:text-[9px] text-accent-text leading-none"
-                        style={d(`${(2.25 + i * 0.12).toFixed(2)}s`)}
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                  {/* Section: education */}
-                  <div className="hero-draw font-mono text-[8px] lg:text-[9px] tracking-[0.15em] text-ink/50 uppercase mt-1.5 lg:mt-2" style={d('2.7s')}>
-                    Education
-                  </div>
-                  <div className="space-y-1.5">
-                    <div className="hero-draw h-1.5 w-[85%] bg-gray-200 rounded-sm" style={d('2.85s')} />
-                    <div className="hero-draw h-1.5 w-[60%] bg-gray-200 rounded-sm" style={d('3s')} />
-                  </div>
-                  {/* ATS scan beam sweeps down the finished resume */}
-                  <div className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
-                    <div
-                      className="hero-scan absolute -top-12 left-0 w-full h-12 bg-gradient-to-b from-transparent via-accent/10 to-accent/30"
-                      style={d('3.1s')}
-                    />
-                  </div>
-                </div>
-                {/* Floating proof chips */}
-                <div
-                  className="hero-stamp absolute -top-4 -right-8 lg:-top-5 lg:-right-10 flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 border border-black/[0.06] shadow-lg"
-                  style={d('3.7s')}
-                >
-                  <CheckIcon className="w-3.5 h-3.5 text-accent" />
-                  <span className="font-mono text-[10px] lg:text-xs tracking-wide font-semibold text-ink">ATS 100%</span>
-                  {/* Particle burst on badge stamp (reuses dcm-particle-burst) */}
-                  {[
-                    { px: '30px', py: '-22px', size: 5, color: '#00d47e' },
-                    { px: '-26px', py: '-24px', size: 4, color: '#34d399' },
-                    { px: '24px', py: '20px', size: 4, color: '#2dd4bf' },
-                    { px: '-22px', py: '26px', size: 5, color: '#00d47e' },
-                  ].map((p, i) => (
-                    <span
-                      key={`particle-${i}`}
-                      className="hero-particle"
-                      style={{
-                        '--px': p.px,
-                        '--py': p.py,
-                        '--d': '4s',
-                        width: p.size,
-                        height: p.size,
-                        background: p.color,
-                      } as React.CSSProperties}
+            {/* Separate wrapper: carries the scroll-driven exit only, so it
+                never fights hero-card-in's entrance transform. */}
+            <div className="hero-stack-exit">
+              <div className="hero-card-in" style={d('0.15s')}>
+                <div className="hero-stack">
+                  {HERO_SHEETS.map((sheet, i) => (
+                    <img
+                      key={sheet}
+                      data-i={i}
+                      className="hero-sheet"
+                      src={`/hero/${sheet}.webp`}
+                      alt=""
+                      width={640}
+                      height={828}
+                      decoding="async"
+                      loading={i === 0 ? "eager" : "lazy"}
+                      // React 18 types accept `fetchPriority`, but the 18.3
+                      // runtime does not map it to an attribute — it warns and
+                      // drops the prop, so the priority hint never reaches the
+                      // fetch. The lowercase spelling passes straight through.
+                      // The back sheets go out at low priority so they cannot
+                      // compete with the face-up one, which is the LCP
+                      // candidate on the page carrying 97% of site clicks.
+                      {...({ fetchpriority: i === 0 ? "high" : "low" } as unknown as React.ImgHTMLAttributes<HTMLImageElement>)}
                     />
                   ))}
-                </div>
-                <div
-                  className="hero-chip absolute -bottom-4 -left-8 lg:-bottom-5 lg:-left-10 flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 border border-black/[0.06] shadow-lg"
-                  style={d('3.95s')}
-                >
-                  <ArrowDownTrayIcon className="w-3.5 h-3.5 text-accent" />
-                  <span className="font-mono text-[10px] lg:text-xs tracking-wide font-semibold text-ink">PDF ready</span>
                 </div>
               </div>
             </div>
