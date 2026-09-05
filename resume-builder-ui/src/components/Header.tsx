@@ -49,7 +49,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white/95 backdrop-blur-xl border-b border-slate-200/80 sticky top-0 z-50">
+    <header className="bg-white/95 backdrop-blur-xl border-b border-gray-200/80 sticky top-0 z-50">
       <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-header-mobile sm:h-header-desktop transition-all duration-200">
           {/* Logo and Home Navigation */}
@@ -107,7 +107,7 @@ export default function Header() {
                   aria-label={`My Resumes${resumeCount > 0 ? ` (${resumeCount})` : ''}`}
                 >
                   <div className="relative">
-                    <FileText className="w-6 h-6 text-gray-700" />
+                    <FileText className="w-6 h-6 text-ink" />
                     {resumeCount > 0 && (
                       <div className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-accent rounded-full flex items-center justify-center ring-2 ring-white">
                         <span className="text-ink text-[10px] font-bold px-1">

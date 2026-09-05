@@ -45,7 +45,7 @@ export default function JobsRoleHub() {
         <div className="h-4 bg-gray-200 rounded w-full mb-8" />
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-16 bg-gray-100 rounded-lg" />
+            <div key={i} className="h-16 bg-chalk-dark rounded-lg" />
           ))}
         </div>
       </div>

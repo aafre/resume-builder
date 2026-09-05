@@ -91,7 +91,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
 
             <button
               onClick={onClose}
-              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 text-stone-warm hover:text-ink hover:bg-chalk-dark rounded-lg transition-colors"
               title="Close (ESC)"
             >
               <MdClose className="text-xl" />
@@ -118,13 +118,13 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
           )}
 
           {/* PDF Viewer Area - fills remaining space */}
-          <div className="flex-1 overflow-auto bg-gray-100 relative">
+          <div className="flex-1 overflow-auto bg-chalk-dark relative">
             {/* Skeleton Loader - fades out when PDF loaded */}
             {loadingState === 'loading' && (
               <div className="absolute inset-0 bg-white flex flex-col items-center justify-center z-10 transition-opacity duration-300">
                 <div className="animate-spin rounded-full h-12 w-12 border-4 border-accent border-t-transparent mb-4"></div>
-                <p className="text-gray-700 font-medium mb-2">Generating PDF preview...</p>
-                <p className="text-gray-500 text-sm">This usually takes 2-5 seconds</p>
+                <p className="text-stone-warm font-medium mb-2">Generating PDF preview...</p>
+                <p className="text-stone-warm text-sm">This usually takes 2-5 seconds</p>
               </div>
             )}
 
@@ -135,7 +135,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                   <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <MdWarning className="text-3xl text-red-600" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  <h3 className="text-lg font-semibold text-ink mb-2">
                     Preview Generation Failed
                   </h3>
                   <p className="text-gray-600 mb-6 max-w-md">{error}</p>
@@ -157,7 +157,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                   <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <MdFileDownload className="text-3xl text-accent-text" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  <h3 className="text-lg font-semibold text-ink mb-2">
                     No Preview Available
                   </h3>
                   <p className="text-gray-600 mb-6">
@@ -179,7 +179,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
                 <Suspense fallback={
                   <div className="absolute inset-0 bg-white flex flex-col items-center justify-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-4 border-accent border-t-transparent mb-4"></div>
-                    <p className="text-gray-700 font-medium">Loading PDF viewer...</p>
+                    <p className="text-stone-warm font-medium">Loading PDF viewer...</p>
                   </div>
                 }>
                   <PdfViewerMobile
@@ -210,7 +210,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
               <button
                 onClick={onRefresh}
                 disabled={isGenerating}
-                className="flex items-center justify-center gap-2 px-4 lg:px-6 py-3.5 bg-white border-2 border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 hover:border-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98] min-h-[52px]"
+                className="flex items-center justify-center gap-2 px-4 lg:px-6 py-3.5 bg-white border-2 border-gray-300 text-ink rounded-xl font-medium hover:bg-chalk hover:border-stone-warm disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98] min-h-[52px]"
                 style={{ WebkitTapHighlightColor: "transparent" }}
               >
                 {isGenerating ? (

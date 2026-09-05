@@ -192,19 +192,19 @@ export function UploadResumeModal({
               className={`border-2 border-dashed rounded-xl p-8 text-center transition-all ${
                 dragActive
                   ? 'border-accent bg-accent/[0.06]'
-                  : 'border-gray-300 hover:border-gray-400'
+                  : 'border-gray-300 hover:border-stone-warm'
               }`}
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
               onDragOver={handleDrag}
               onDrop={handleDrop}
             >
-              <CloudArrowUpIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <CloudArrowUpIcon className="w-16 h-16 text-stone-warm mx-auto mb-4" />
 
-              <p className="text-lg font-medium text-gray-700 mb-2">
+              <p className="text-lg font-medium text-ink mb-2">
                 Drop your resume here
               </p>
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-stone-warm mb-4">
                 or click to browse (PDF or DOCX, max 10MB)
               </p>
 
@@ -230,7 +230,7 @@ export function UploadResumeModal({
           {parsing && (
             <div className="mt-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-ink">
                   Parsing your resume...
                 </span>
                 <span className="text-sm text-gray-600">{progress}%</span>
@@ -247,10 +247,10 @@ export function UploadResumeModal({
 
         {/* Footer */}
         {parseResult && (
-          <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
+          <div className="px-6 py-4 bg-chalk border-t border-gray-200 flex justify-end gap-3">
             <button
               onClick={handleCloseModal}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+              className="px-4 py-2 border border-gray-300 rounded-lg text-ink hover:bg-chalk-dark transition-colors"
             >
               Cancel
             </button>

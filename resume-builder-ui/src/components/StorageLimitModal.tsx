@@ -42,11 +42,11 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
             </div>
             <div>
               <h2 id={titleId} className="text-xl font-bold text-ink">Storage Full</h2>
-              <p className="text-sm text-gray-500 mt-1">You've reached the 5-resume limit</p>
+              <p className="text-sm text-stone-warm mt-1">You've reached the 5-resume limit</p>
             </div>
           </div>
 
-          <p className="text-gray-700 mb-6">
+          <p className="text-stone-warm mb-6">
             You've reached the 5-resume limit for free accounts.
             Delete an old resume to create a new one.
           </p>
@@ -60,7 +60,7 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
             </button>
             <button
               onClick={onClose}
-              className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 bg-gray-200 hover:bg-gray-300 text-ink font-medium py-2 px-4 rounded-lg transition-colors"
             >
               Cancel
             </button>

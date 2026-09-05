@@ -216,17 +216,17 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
               >
                 {/* Visual Area */}
                 <div className={`h-28 sm:h-32 p-4 flex items-center justify-center transition-colors
-                                ${isSelected ? 'bg-accent/[0.06]' : 'bg-gray-50 group-hover:bg-accent/[0.06]'}`}>
+                                ${isSelected ? 'bg-accent/[0.06]' : 'bg-chalk group-hover:bg-accent/[0.06]'}`}>
                   <section.Visual className="w-full h-full" />
                 </div>
 
                 {/* Content Area */}
                 <div className="p-4">
                   <h3 className={`font-semibold mb-1 transition-colors
-                                 ${isSelected ? 'text-ink/80' : 'text-gray-900 group-hover:text-ink/80'}`}>
+                                 ${isSelected ? 'text-ink/80' : 'text-ink group-hover:text-ink/80'}`}>
                     {section.title}
                   </h3>
-                  <p className="text-xs text-gray-500 line-clamp-2">{section.description}</p>
+                  <p className="text-xs text-stone-warm line-clamp-2">{section.description}</p>
                 </div>
               </button>
             );
@@ -236,7 +236,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
         <div className="mt-4 sm:mt-6 flex gap-3">
           <button
             type="button"
-            className="flex-1 bg-gray-100 text-gray-700 px-4 py-2.5 rounded-lg font-medium hover:bg-gray-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text"
+            className="flex-1 bg-chalk-dark text-ink px-4 py-2.5 rounded-lg font-medium hover:bg-gray-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text"
             onClick={onClose}
           >
             Cancel
@@ -248,7 +248,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
             className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text
                        ${selectedType
                          ? 'bg-accent text-ink hover:bg-accent/90'
-                         : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                         : 'bg-gray-200 text-stone-warm cursor-not-allowed'
                        }`}
           >
             Add Section

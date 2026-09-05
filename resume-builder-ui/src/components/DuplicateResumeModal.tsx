@@ -64,13 +64,13 @@ export function DuplicateResumeModal({
             </div>
             <div>
               <h2 id={titleId} className="text-xl font-bold text-ink">Duplicate Resume</h2>
-              <p className="text-sm text-gray-500 mt-1">Create a copy with a new name</p>
+              <p className="text-sm text-stone-warm mt-1">Create a copy with a new name</p>
             </div>
           </div>
 
           <form onSubmit={handleSubmit}>
             <div className="mb-6">
-              <label htmlFor="newTitle" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="newTitle" className="block text-sm font-medium text-ink mb-2">
                 New Resume Title
               </label>
               <input
@@ -80,11 +80,11 @@ export function DuplicateResumeModal({
                 onChange={(e) => setNewTitle(e.target.value)}
                 disabled={isDuplicating}
                 autoFocus
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-text focus:border-accent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-text focus:border-accent disabled:bg-chalk-dark disabled:cursor-not-allowed"
                 placeholder="Enter new title"
                 maxLength={200}
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-stone-warm mt-1">
                 Original: <span className="font-medium">{resume.title}</span>
               </p>
             </div>
@@ -101,7 +101,7 @@ export function DuplicateResumeModal({
                 type="button"
                 onClick={onCancel}
                 disabled={isDuplicating}
-                className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors"
+                className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-chalk-dark text-ink font-medium py-2 px-4 rounded-lg transition-colors"
               >
                 Cancel
               </button>

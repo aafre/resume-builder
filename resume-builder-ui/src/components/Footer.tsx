@@ -62,10 +62,10 @@ function FooterColumn({
   links: { path: string; label: string; external?: boolean }[];
   scrollToTop: (path: string) => () => void;
 }) {
-  const linkClass = "inline-flex min-h-11 items-center rounded-md text-gray-700 hover:text-accent-text font-medium transition-colors duration-200 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2";
+  const linkClass = "inline-flex min-h-11 items-center rounded-md text-stone-warm hover:text-accent-text font-medium transition-colors duration-200 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2";
   return (
     <nav aria-label={title}>
-      <h3 className="font-bold text-gray-900 mb-4 text-sm md:text-base">{title}</h3>
+      <h3 className="font-bold text-ink mb-4 text-sm md:text-base">{title}</h3>
       <ul className="flex flex-col gap-2">
         {links.map(({ path, label, external }) => (
           <li key={path}>

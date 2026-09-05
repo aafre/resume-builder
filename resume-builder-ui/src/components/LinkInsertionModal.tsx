@@ -106,9 +106,9 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
         <div className="space-y-4">
           {/* Link Text Input */}
           <div>
-            <label htmlFor="link-text" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="link-text" className="block text-sm font-medium text-ink mb-1">
               Link Text
-              <span className="text-gray-500 font-normal ml-1">(what users will see)</span>
+              <span className="text-stone-warm font-normal ml-1">(what users will see)</span>
             </label>
             <input
               id="link-text"
@@ -123,7 +123,7 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
 
           {/* URL Input */}
           <div>
-            <label htmlFor="link-url" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="link-url" className="block text-sm font-medium text-ink mb-1">
               URL
               <span className="text-red-500">*</span>
             </label>
@@ -149,9 +149,9 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
 
           {/* Preview */}
           {previewMarkdown && (
-            <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+            <div className="bg-chalk rounded-lg p-3 border border-gray-200">
               <p className="text-xs text-gray-600 mb-1">Preview (markdown):</p>
-              <code className="text-sm text-gray-800 break-all">
+              <code className="text-sm text-ink break-all">
                 {previewMarkdown}
               </code>
             </div>
@@ -180,7 +180,7 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
           )}
           <button
             onClick={onClose}
-            className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200"
+            className="px-6 py-3 border border-gray-300 rounded-lg text-ink hover:bg-chalk transition-all duration-200"
           >
             Cancel
           </button>

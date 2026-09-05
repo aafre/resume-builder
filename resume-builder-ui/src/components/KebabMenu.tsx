@@ -59,7 +59,7 @@ export function KebabMenu({
           e.stopPropagation();
           setIsOpen(!isOpen);
         }}
-        className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-gray-600 hover:bg-chalk-dark rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
         title="More options"
         aria-label="More options"
         aria-haspopup="menu"
@@ -76,7 +76,7 @@ export function KebabMenu({
         >
           <button
             onClick={handleRename}
-            className="flex min-h-11 w-full items-center gap-3 px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors"
+            className="flex min-h-11 w-full items-center gap-3 px-4 py-2 text-left text-sm text-ink hover:bg-chalk focus:bg-chalk focus:outline-none transition-colors"
             role="menuitem"
           >
             <Edit2 className="w-4 h-4" />
@@ -85,14 +85,14 @@ export function KebabMenu({
 
           <button
             onClick={handleDuplicate}
-            className="flex min-h-11 w-full items-center gap-3 px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors"
+            className="flex min-h-11 w-full items-center gap-3 px-4 py-2 text-left text-sm text-ink hover:bg-chalk focus:bg-chalk focus:outline-none transition-colors"
             role="menuitem"
           >
             <Copy className="w-4 h-4" />
             <span>Duplicate</span>
           </button>
 
-          <div className="border-t border-gray-100 my-1" role="separator" />
+          <div className="border-t border-gray-200 my-1" role="separator" />
 
           <button
             onClick={handleDelete}
