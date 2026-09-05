@@ -112,7 +112,7 @@ export function ResumeCard({
 
   return (
     <div
-      className="bg-white rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow duration-200 group"
+      className="bg-white rounded-2xl border border-black/[0.06] shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300 group"
     >
       {/* Thumbnail */}
       <div
@@ -126,7 +126,7 @@ export function ResumeCard({
             e.currentTarget.click();
           }
         }}
-        className={`relative bg-slate-100 h-48 overflow-hidden rounded-t-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
+        className={`relative bg-chalk-dark h-48 overflow-hidden rounded-t-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
           isPreviewLoading ? 'cursor-wait' : 'cursor-pointer'
         }`}
         onClick={() => !isPreviewLoading && onPreview(resume.id)}
@@ -182,11 +182,11 @@ export function ResumeCard({
             autoFocus
             disabled={isSaving}
             maxLength={200}
-            className="font-bold text-xl text-gray-900 w-full bg-white border border-slate-300 rounded-lg px-2 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text disabled:opacity-50 mb-2"
+            className="font-display font-bold text-xl text-ink w-full bg-white border border-gray-300 rounded-lg px-2 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text disabled:opacity-50 mb-2"
           />
         ) : (
           <h3
-            className="font-bold text-xl text-gray-900 truncate mb-2 cursor-text hover:bg-gray-50 rounded-lg px-2 py-2 -mx-2 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text"
+            className="font-display font-bold text-xl text-ink truncate mb-2 cursor-text hover:bg-chalk-dark rounded-lg px-2 py-2 -mx-2 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text"
             role="button"
             tabIndex={0}
             aria-label={`Rename ${resume.title}`}
@@ -208,10 +208,10 @@ export function ResumeCard({
 
         {/* Metadata row */}
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-md">
+          <span className="text-xs bg-chalk-dark text-stone-warm px-2 py-1 rounded-md">
             {getTemplateName(resume.template_id)}
           </span>
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-stone-warm">
             • Updated {formatDate(resume.updated_at)}
           </span>
         </div>
@@ -224,10 +224,8 @@ export function ResumeCard({
               onEdit(resume.id);
             }}
             disabled={isEditButtonLoading}
-            className={`flex-1 min-h-11 bg-accent text-ink py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 ${
-              isEditButtonLoading
-                ? 'opacity-75 cursor-not-allowed'
-                : 'hover:bg-accent/90 active:scale-[0.98]'
+            className={`btn-primary flex-1 gap-2 py-2 px-4 text-sm ${
+              isEditButtonLoading ? 'opacity-75 cursor-not-allowed' : ''
             }`}
           >
             {isEditButtonLoading ? (
@@ -247,7 +245,7 @@ export function ResumeCard({
               e.stopPropagation();
               onDownload(resume.id);
             }}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2"
+            className="btn-ghost min-w-11 px-2"
             title="Download PDF"
             aria-label="Download PDF"
           >
