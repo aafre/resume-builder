@@ -30,13 +30,13 @@ export default function ResumeEmploymentGaps() {
         <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#does-it-matter" className="text-accent hover:underline">Do Employment Gaps Actually Matter?</a></li>
-            <li><a href="#types" className="text-accent hover:underline">How to Explain Each Type of Gap</a></li>
-            <li><a href="#resume-vs-cover-letter" className="text-accent hover:underline">Resume vs Cover Letter: Where to Address Gaps</a></li>
-            <li><a href="#format-strategies" className="text-accent hover:underline">Format Strategies That Minimize Gaps</a></li>
-            <li><a href="#example-language" className="text-accent hover:underline">Example Language for Your Resume</a></li>
-            <li><a href="#mistakes" className="text-accent hover:underline">Common Mistakes to Avoid</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">FAQ</a></li>
+            <li><a href="#does-it-matter" className="text-accent-text hover:underline">Do Employment Gaps Actually Matter?</a></li>
+            <li><a href="#types" className="text-accent-text hover:underline">How to Explain Each Type of Gap</a></li>
+            <li><a href="#resume-vs-cover-letter" className="text-accent-text hover:underline">Resume vs Cover Letter: Where to Address Gaps</a></li>
+            <li><a href="#format-strategies" className="text-accent-text hover:underline">Format Strategies That Minimize Gaps</a></li>
+            <li><a href="#example-language" className="text-accent-text hover:underline">Example Language for Your Resume</a></li>
+            <li><a href="#mistakes" className="text-accent-text hover:underline">Common Mistakes to Avoid</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">FAQ</a></li>
           </ol>
         </nav>
 
@@ -172,7 +172,7 @@ export default function ResumeEmploymentGaps() {
             </div>
             <p className="text-stone-warm text-sm mt-3">
               For a full guide on transitioning, see our{' '}
-              <Link to="/blog/career-change-resume-guide" className="text-accent hover:underline">
+              <Link to="/blog/career-change-resume-guide" className="text-accent-text hover:underline">
                 career change resume guide
               </Link>.
             </p>
@@ -243,7 +243,7 @@ export default function ResumeEmploymentGaps() {
           <strong>The rule of thumb:</strong> your resume states what happened (briefly). Your cover
           letter explains why it makes you a better candidate. Never apologize on either document.
           For resume structure guidance, see our{' '}
-          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
             complete resume writing guide
           </Link>.
         </p>
@@ -295,7 +295,7 @@ export default function ResumeEmploymentGaps() {
 
         <p className="text-lg leading-relaxed text-stone-warm mt-6">
           For professional summary examples that address career gaps, see our{' '}
-          <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+          <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
             professional summary examples guide
           </Link>.
         </p>
@@ -424,13 +424,13 @@ export default function ResumeEmploymentGaps() {
           <h3 className="font-bold text-ink mb-3">Related Guides</h3>
           <ul className="space-y-2 text-ink/80">
             <li>
-              <Link to="/blog/return-to-work-programs" className="text-accent hover:underline">
+              <Link to="/blog/return-to-work-programs" className="text-accent-text hover:underline">
                 Return to Work Programs Guide
               </Link>{' '}
               &mdash; paid returnships at top companies for career returners
             </li>
             <li>
-              <Link to="/blog/career-change-resume-guide" className="text-accent hover:underline">
+              <Link to="/blog/career-change-resume-guide" className="text-accent-text hover:underline">
                 Career Change Resume Guide
               </Link>{' '}
               &mdash; how to rewrite your resume for a new industry

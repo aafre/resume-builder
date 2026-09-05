@@ -108,18 +108,18 @@ export default function HowToWriteResumeGuide() {
             Table of Contents
           </h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#choose-format" className="text-accent hover:underline">Choose the Right Resume Format</a></li>
-            <li><a href="#essential-sections" className="text-accent hover:underline">Essential Resume Sections (In Order)</a></li>
-            <li><a href="#writing-content" className="text-accent hover:underline">Writing Powerful Content</a></li>
-            <li><a href="#action-verbs" className="text-accent hover:underline">Power Words That Make an Impact</a></li>
-            <li><a href="#formatting" className="text-accent hover:underline">Formatting Best Practices</a></li>
-            <li><a href="#tailoring" className="text-accent hover:underline">Tailoring for Each Application</a></li>
-            <li><a href="#ats-optimization" className="text-accent hover:underline">ATS Optimization</a></li>
-            <li><a href="#final-review" className="text-accent hover:underline">Final Review and Optimization</a></li>
-            <li><a href="#common-mistakes" className="text-accent hover:underline">Common Resume Mistakes to Avoid</a></li>
-            <li><a href="#ai-assistance" className="text-accent hover:underline">Using AI to Speed Up Resume Writing</a></li>
-            <li><a href="#faq" className="text-accent hover:underline">Frequently Asked Questions</a></li>
-            <li><a href="#next-steps" className="text-accent hover:underline">Your Next Steps</a></li>
+            <li><a href="#choose-format" className="text-accent-text hover:underline">Choose the Right Resume Format</a></li>
+            <li><a href="#essential-sections" className="text-accent-text hover:underline">Essential Resume Sections (In Order)</a></li>
+            <li><a href="#writing-content" className="text-accent-text hover:underline">Writing Powerful Content</a></li>
+            <li><a href="#action-verbs" className="text-accent-text hover:underline">Power Words That Make an Impact</a></li>
+            <li><a href="#formatting" className="text-accent-text hover:underline">Formatting Best Practices</a></li>
+            <li><a href="#tailoring" className="text-accent-text hover:underline">Tailoring for Each Application</a></li>
+            <li><a href="#ats-optimization" className="text-accent-text hover:underline">ATS Optimization</a></li>
+            <li><a href="#final-review" className="text-accent-text hover:underline">Final Review and Optimization</a></li>
+            <li><a href="#common-mistakes" className="text-accent-text hover:underline">Common Resume Mistakes to Avoid</a></li>
+            <li><a href="#ai-assistance" className="text-accent-text hover:underline">Using AI to Speed Up Resume Writing</a></li>
+            <li><a href="#faq" className="text-accent-text hover:underline">Frequently Asked Questions</a></li>
+            <li><a href="#next-steps" className="text-accent-text hover:underline">Your Next Steps</a></li>
           </ol>
         </nav>
 
@@ -133,10 +133,10 @@ export default function HowToWriteResumeGuide() {
           </p>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
             <li><strong>Format:</strong> Use reverse-chronological unless you are changing careers</li>
-            <li><strong>Length:</strong> One page for under 10 years of experience, two pages maximum (<Link to="/blog/resume-length-guide" className="text-accent hover:underline">full length guide</Link>)</li>
+            <li><strong>Length:</strong> One page for under 10 years of experience, two pages maximum (<Link to="/blog/resume-length-guide" className="text-accent-text hover:underline">full length guide</Link>)</li>
             <li><strong>Summary:</strong> 2-3 sentences with your title, years, top skills, and target</li>
             <li><strong>Experience:</strong> Lead every bullet with an action verb and a measurable result</li>
-            <li><strong>Keywords:</strong> Mirror the exact language from the job description (<Link to="/blog/resume-keywords-guide" className="text-accent hover:underline">keyword guide</Link>)</li>
+            <li><strong>Keywords:</strong> Mirror the exact language from the job description (<Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline">keyword guide</Link>)</li>
             <li><strong>Save as PDF</strong> and name the file <code className="bg-chalk-dark px-1.5 py-0.5 rounded text-sm">FirstName_LastName_Resume.pdf</code></li>
           </ol>
         </div>
@@ -149,7 +149,7 @@ export default function HowToWriteResumeGuide() {
           Your resume format sets the foundation for everything else. Choose the
           wrong format, and even excellent content might not get the attention
           it deserves. Not sure how long your resume should be? Our{' '}
-          <Link to="/blog/resume-length-guide" className="text-accent hover:underline">
+          <Link to="/blog/resume-length-guide" className="text-accent-text hover:underline">
             resume length guide
           </Link>{' '}
           covers when one page is enough and when two pages make sense.
@@ -160,13 +160,13 @@ export default function HowToWriteResumeGuide() {
             <h3 className="text-xl font-bold text-green-800 mb-3">
               Chronological Format (Recommended for Most)
             </h3>
-            <p className="text-accent mb-3">
+            <p className="text-accent-text mb-3">
               Lists your work experience in reverse chronological order. Best
               for candidates with consistent work history and career
               progression. This is also the format ATS software parses most
               reliably.
             </p>
-            <div className="text-accent">
+            <div className="text-accent-text">
               <strong>Use when:</strong> You have relevant work experience and
               no major employment gaps
             </div>
@@ -203,7 +203,7 @@ export default function HowToWriteResumeGuide() {
 
         <p className="text-lg leading-relaxed text-stone-warm mt-6">
           Want to see how these formats look on paper? Browse our{' '}
-          <Link to="/templates/ats-friendly" className="text-accent hover:underline">
+          <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">
             ATS-friendly resume templates
           </Link>{' '}
           to pick a layout that matches your career stage and industry.
@@ -244,7 +244,7 @@ export default function HowToWriteResumeGuide() {
               distill your entire career into a few compelling sentences — get
               this right and the recruiter will keep reading. For inspiration,
               check out our{' '}
-              <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+              <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
                 professional summary examples
               </Link>{' '}
               with 25+ ready-to-customize templates for every career level.
@@ -264,12 +264,12 @@ export default function HowToWriteResumeGuide() {
             <p className="text-stone-warm mb-3">
               The heart of your resume. Use the CAR method (Context, Action,
               Result) and lead every bullet point with a strong{' '}
-              <Link to="/blog/resume-action-verbs" className="text-accent hover:underline">
+              <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
                 action verb
               </Link>. Quantify your impact wherever possible — numbers are what
               separate a forgettable resume from one that lands interviews. Our
               guide on{' '}
-              <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+              <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
                 quantifying resume accomplishments
               </Link>{' '}
               covers exactly how to turn vague duties into measurable achievements.
@@ -324,7 +324,7 @@ export default function HowToWriteResumeGuide() {
               This section is critical for ATS screening — applicant tracking
               systems scan for exact keyword matches, so use the same terms the
               job posting uses. Read our{' '}
-              <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+              <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
                 guide to listing skills on your resume
               </Link>{' '}
               for formatting strategies that work for both humans and machines.
@@ -342,9 +342,9 @@ export default function HowToWriteResumeGuide() {
             </div>
             <p className="text-stone-warm text-sm mt-3">
               See a complete{' '}
-              <Link to="/examples/software-engineer" className="text-accent hover:underline">software engineer resume example</Link>
+              <Link to="/examples/software-engineer" className="text-accent-text hover:underline">software engineer resume example</Link>
               {' '}or browse{' '}
-              <Link to="/resume-keywords/software-engineer" className="text-accent hover:underline">software engineer ATS keywords</Link>
+              <Link to="/resume-keywords/software-engineer" className="text-accent-text hover:underline">software engineer ATS keywords</Link>
               {' '}for more role-specific guidance.
             </p>
           </div>
@@ -390,7 +390,7 @@ export default function HowToWriteResumeGuide() {
             <h4 className="font-bold text-green-800 mb-2">
               Strong Example:
             </h4>
-            <p className="text-accent text-sm">
+            <p className="text-accent-text text-sm">
               "Managed 5 social media accounts and created 50+ pieces of content
               monthly, increasing engagement by 35% and generating 200+
               qualified leads."
@@ -400,7 +400,7 @@ export default function HowToWriteResumeGuide() {
 
         <p className="text-lg leading-relaxed text-stone-warm mt-6">
           For a deeper walkthrough with more before-and-after examples, see our{' '}
-          <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+          <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
             guide to quantifying resume accomplishments
           </Link>.
         </p>
@@ -430,7 +430,7 @@ export default function HowToWriteResumeGuide() {
 
           <div className="bg-green-50 border border-green-200 rounded-xl p-4">
             <h4 className="font-bold text-green-800 mb-2">Achievement</h4>
-            <ul className="list-disc pl-5 text-accent text-sm space-y-1">
+            <ul className="list-disc pl-5 text-accent-text text-sm space-y-1">
               <li>Achieved</li>
               <li>Exceeded</li>
               <li>Delivered</li>
@@ -454,7 +454,7 @@ export default function HowToWriteResumeGuide() {
         <p className="text-lg leading-relaxed text-stone-warm mt-6">
           For a comprehensive list of 200+ action verbs organized by category,
           check out our detailed guide on{' '}
-          <Link to="/blog/resume-action-verbs" className="text-accent hover:underline">
+          <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
             resume action verbs
           </Link>.
         </p>
@@ -484,7 +484,7 @@ export default function HowToWriteResumeGuide() {
             <li>Use bullet points for easy scanning — no dense paragraphs</li>
             <li>
               Keep it to 1 page for under 10 years of experience, 2 pages maximum
-              (<Link to="/blog/resume-length-guide" className="text-accent hover:underline">when to use 2 pages</Link>)
+              (<Link to="/blog/resume-length-guide" className="text-accent-text hover:underline">when to use 2 pages</Link>)
             </li>
             <li>Save as PDF to preserve formatting across devices</li>
             <li>
@@ -524,7 +524,7 @@ export default function HowToWriteResumeGuide() {
             <h4 className="font-bold text-green-800 mb-2">
               2. Adjust Your Professional Summary
             </h4>
-            <p className="text-accent">
+            <p className="text-accent-text">
               Modify your summary to highlight the most relevant experience and
               skills for that specific role. Your summary should read as if it
               were written for this exact job.
@@ -549,12 +549,12 @@ export default function HowToWriteResumeGuide() {
             <p className="text-ink/80">
               Incorporate industry-specific terms and skills mentioned in the
               job posting to pass ATS screening. Our{' '}
-              <Link to="/resume-keywords" className="text-accent hover:underline">
+              <Link to="/resume-keywords" className="text-accent-text hover:underline">
                 resume keywords hub
               </Link>{' '}
               has role-specific keyword lists for 25+ job titles, and
               our{' '}
-              <Link to="/blog/resume-keywords-guide" className="text-accent hover:underline">
+              <Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline">
                 resume keywords guide
               </Link>{' '}
               explains how ATS scoring actually works behind the scenes.
@@ -610,10 +610,10 @@ export default function HowToWriteResumeGuide() {
         <p className="text-lg leading-relaxed text-stone-warm">
           For a complete ATS strategy including keyword density, formatting
           rules, and testing methods, read our{' '}
-          <Link to="/blog/resume-keywords-guide" className="text-accent hover:underline">
+          <Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline">
             complete resume keywords guide
           </Link>. You can also use our{' '}
-          <Link to="/resume-keywords" className="text-accent hover:underline">
+          <Link to="/resume-keywords" className="text-accent-text hover:underline">
             resume keywords tool
           </Link>{' '}
           to find the exact terms hiring managers search for in your industry.
@@ -628,7 +628,7 @@ export default function HowToWriteResumeGuide() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Choose Your Template
           </Link>
@@ -668,7 +668,7 @@ export default function HowToWriteResumeGuide() {
           Even strong candidates sabotage themselves with avoidable errors. Here
           are the most common ones we see — and how to fix them. For a deeper
           dive, read our dedicated{' '}
-          <Link to="/blog/resume-mistakes-to-avoid" className="text-accent hover:underline">
+          <Link to="/blog/resume-mistakes-to-avoid" className="text-accent-text hover:underline">
             resume mistakes guide
           </Link>{' '}
           with 10 critical errors that cost people interviews.
@@ -748,7 +748,7 @@ export default function HowToWriteResumeGuide() {
 
         <p className="text-lg leading-relaxed text-stone-warm mt-6">
           For copy-paste ready prompts you can use right now, see our{' '}
-          <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">
+          <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">
             25+ Claude AI resume prompts
           </Link>{' '}
           guide — it covers professional summaries, experience bullets, ATS
@@ -817,14 +817,14 @@ export default function HowToWriteResumeGuide() {
           <h3 className="font-bold text-green-800 mb-3">
             Action Items for This Week:
           </h3>
-          <ol className="list-decimal pl-6 space-y-2 text-accent">
+          <ol className="list-decimal pl-6 space-y-2 text-accent-text">
             <li>Gather all your career information and achievements</li>
             <li>Choose the right format for your situation</li>
             <li>Write your first draft following this guide</li>
             <li>Have 2-3 people review and provide feedback</li>
             <li>
               Pick an{' '}
-              <Link to="/templates/ats-friendly" className="text-accent hover:underline">
+              <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">
                 ATS-friendly template
               </Link>{' '}
               and build your final version
@@ -859,61 +859,61 @@ export default function HowToWriteResumeGuide() {
           </h3>
           <ul className="space-y-2 text-ink/80">
             <li>
-              <Link to="/blog/resume-length-guide" className="text-accent hover:underline">
+              <Link to="/blog/resume-length-guide" className="text-accent-text hover:underline">
                 How Long Should a Resume Be?
               </Link>{' '}
               &mdash; when one page is enough and when two pages make sense
             </li>
             <li>
-              <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+              <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
                 25+ Professional Summary Examples
               </Link>{' '}
               &mdash; ready-to-customize summaries for every career level
             </li>
             <li>
-              <Link to="/blog/resume-action-verbs" className="text-accent hover:underline">
+              <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline">
                 200+ Resume Action Verbs
               </Link>{' '}
               &mdash; the strongest verbs organized by category
             </li>
             <li>
-              <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+              <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
                 How to Quantify Resume Accomplishments
               </Link>{' '}
               &mdash; turn vague duties into measurable achievements
             </li>
             <li>
-              <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+              <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
                 How to List Skills on Your Resume
               </Link>{' '}
               &mdash; formatting that works for humans and ATS
             </li>
             <li>
-              <Link to="/blog/resume-keywords-guide" className="text-accent hover:underline">
+              <Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline">
                 The Complete Resume Keywords Guide
               </Link>{' '}
               &mdash; how ATS scoring works and which keywords matter
             </li>
             <li>
-              <Link to="/blog/resume-mistakes-to-avoid" className="text-accent hover:underline">
+              <Link to="/blog/resume-mistakes-to-avoid" className="text-accent-text hover:underline">
                 10 Resume Mistakes That Kill Your Job Prospects
               </Link>{' '}
               &mdash; the most common errors and how to fix them
             </li>
             <li>
-              <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">
+              <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">
                 25+ Claude AI Resume Prompts
               </Link>{' '}
               &mdash; copy-paste prompts for AI-assisted resume writing
             </li>
             <li>
-              <Link to="/resume-keywords" className="text-accent hover:underline">
+              <Link to="/resume-keywords" className="text-accent-text hover:underline">
                 Resume Keywords Hub
               </Link>{' '}
               &mdash; role-specific keyword lists for 25+ job titles
             </li>
             <li>
-              <Link to="/templates/ats-friendly" className="text-accent hover:underline">
+              <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">
                 ATS-Friendly Resume Templates
               </Link>{' '}
               &mdash; professionally designed templates that pass ATS screening

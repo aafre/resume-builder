@@ -93,7 +93,7 @@ export default function AIResumeBuilder() {
           Benefits of Using AI in Your Resume Strategy
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>Efficiency & Speed:</strong> Drastically reduce the time
               it takes to create or tailor a resume for each application.

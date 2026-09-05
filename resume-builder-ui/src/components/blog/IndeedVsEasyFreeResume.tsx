@@ -68,9 +68,9 @@ export default function IndeedVsEasyFreeResume() {
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-                <p className="font-bold text-accent text-lg mb-2">EasyFreeResume</p>
+                <p className="font-bold text-accent-text text-lg mb-2">EasyFreeResume</p>
                 <StarRating rating={5} />
-                <p className="text-2xl font-bold text-accent mt-2">Full Control</p>
+                <p className="text-2xl font-bold text-accent-text mt-2">Full Control</p>
                 <p className="text-sm text-stone-warm">Templates, PDF, privacy</p>
               </div>
               <div className="text-center p-4 bg-white rounded-xl shadow-sm">
@@ -146,23 +146,23 @@ export default function IndeedVsEasyFreeResume() {
               <thead>
                 <tr className="bg-chalk-dark">
                   <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
-                  <th className="px-6 py-4 text-center font-bold text-accent">EasyFreeResume</th>
-                  <th className="px-6 py-4 text-center font-bold text-accent">Indeed</th>
+                  <th className="px-6 py-4 text-center font-bold text-accent-text">EasyFreeResume</th>
+                  <th className="px-6 py-4 text-center font-bold text-accent-text">Indeed</th>
                   <th className="px-6 py-4 text-center font-bold text-stone-warm">Winner</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-black/[0.06]">
                 <tr>
                   <td className="px-6 py-4 font-medium text-ink">Cost</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ Free</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ Free</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ Free</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ Free</td>
                   <td className="px-6 py-4 text-center">
-                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">Tie</span>
+                    <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-stone-warm text-white">Tie</span>
                   </td>
                 </tr>
                 <tr className="bg-green-50">
                   <td className="px-6 py-4 font-medium text-ink">Template Variety</td>
-                  <td className="px-6 py-4 text-center text-accent font-bold">✅ Multiple ATS templates</td>
+                  <td className="px-6 py-4 text-center text-accent-text font-bold">✅ Multiple ATS templates</td>
                   <td className="px-6 py-4 text-center text-red-600">❌ Single format</td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -170,15 +170,15 @@ export default function IndeedVsEasyFreeResume() {
                 </tr>
                 <tr>
                   <td className="px-6 py-4 font-medium text-ink">ATS Optimization</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ All templates ATS-ready</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ Basic ATS compatibility</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ All templates ATS-ready</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ Basic ATS compatibility</td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
                   </td>
                 </tr>
                 <tr className="bg-green-50">
                   <td className="px-6 py-4 font-medium text-ink">Account Required</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ No</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ No</td>
                   <td className="px-6 py-4 text-center text-red-600">❌ Yes (Indeed account)</td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -186,7 +186,7 @@ export default function IndeedVsEasyFreeResume() {
                 </tr>
                 <tr>
                   <td className="px-6 py-4 font-medium text-ink">Privacy</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ Local storage</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ Local storage</td>
                   <td className="px-6 py-4 text-center text-red-600">❌ Indeed stores data</td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -194,7 +194,7 @@ export default function IndeedVsEasyFreeResume() {
                 </tr>
                 <tr className="bg-green-50">
                   <td className="px-6 py-4 font-medium text-ink">PDF Download</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ Instant, no watermarks</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ Instant, no watermarks</td>
                   <td className="px-6 py-4 text-center text-yellow-600">⚠️ Available but basic</td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -202,7 +202,7 @@ export default function IndeedVsEasyFreeResume() {
                 </tr>
                 <tr>
                   <td className="px-6 py-4 font-medium text-ink">Customization</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ Full control</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ Full control</td>
                   <td className="px-6 py-4 text-center text-red-600">❌ Minimal</td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -210,7 +210,7 @@ export default function IndeedVsEasyFreeResume() {
                 </tr>
                 <tr className="bg-green-50">
                   <td className="px-6 py-4 font-medium text-ink">AI Features</td>
-                  <td className="px-6 py-4 text-center text-accent">✅ ChatGPT, Claude, Gemini</td>
+                  <td className="px-6 py-4 text-center text-accent-text">✅ ChatGPT, Claude, Gemini</td>
                   <td className="px-6 py-4 text-center text-yellow-600">⚠️ Basic suggestions</td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -253,7 +253,7 @@ export default function IndeedVsEasyFreeResume() {
                 Use EasyFreeResume When:
                 <WinnerBadge />
               </h3>
-              <ul className="space-y-2 text-accent">
+              <ul className="space-y-2 text-accent-text">
                 <li>✓ Applying to multiple platforms</li>
                 <li>✓ Want professional, unique templates</li>
                 <li>✓ Need maximum ATS compatibility</li>
@@ -303,7 +303,7 @@ export default function IndeedVsEasyFreeResume() {
             </p>
             <Link
               to="/templates"
-              className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+              className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
             >
               Build Your Free Resume
             </Link>
@@ -324,7 +324,7 @@ export default function IndeedVsEasyFreeResume() {
             </div>
             <Link
               to="/templates"
-              className="bg-white text-accent px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
+              className="bg-white text-accent-text px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
             >
               Try Free
             </Link>

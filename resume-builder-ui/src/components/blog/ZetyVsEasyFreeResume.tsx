@@ -75,9 +75,9 @@ export default function ZetyVsEasyFreeResume() {
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-accent text-lg mb-2">EasyFreeResume</p>
+              <p className="font-bold text-accent-text text-lg mb-2">EasyFreeResume</p>
               <StarRating rating={5} />
-              <p className="text-3xl font-bold text-accent mt-2">$0</p>
+              <p className="text-3xl font-bold text-accent-text mt-2">$0</p>
               <p className="text-sm text-stone-warm">Forever free</p>
             </div>
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
@@ -132,10 +132,10 @@ export default function ZetyVsEasyFreeResume() {
                 <th className="px-6 py-4 text-left font-bold text-ink">
                   Feature
                 </th>
-                <th className="px-6 py-4 text-center font-bold text-accent">
+                <th className="px-6 py-4 text-center font-bold text-accent-text">
                   EasyFreeResume
                 </th>
-                <th className="px-6 py-4 text-center font-bold text-accent">
+                <th className="px-6 py-4 text-center font-bold text-accent-text">
                   Zety
                 </th>
                 <th className="px-6 py-4 text-center font-bold text-stone-warm">
@@ -146,7 +146,7 @@ export default function ZetyVsEasyFreeResume() {
             <tbody className="divide-y divide-black/[0.06]">
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">Cost</td>
-                <td className="px-6 py-4 text-center text-accent font-bold">
+                <td className="px-6 py-4 text-center text-accent-text font-bold">
                   100% Free
                 </td>
                 <td className="px-6 py-4 text-center text-red-600">
@@ -162,7 +162,7 @@ export default function ZetyVsEasyFreeResume() {
                 <td className="px-6 py-4 font-medium text-ink">
                   PDF Downloads
                 </td>
-                <td className="px-6 py-4 text-center text-accent">
+                <td className="px-6 py-4 text-center text-accent-text">
                   ✅ Unlimited, No Watermark
                 </td>
                 <td className="px-6 py-4 text-center text-red-600">
@@ -178,7 +178,7 @@ export default function ZetyVsEasyFreeResume() {
                 <td className="px-6 py-4 font-medium text-ink">
                   Sign-Up Required
                 </td>
-                <td className="px-6 py-4 text-center text-accent">✅ No</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ No</td>
                 <td className="px-6 py-4 text-center text-red-600">
                   ❌ Yes, mandatory
                 </td>
@@ -192,19 +192,19 @@ export default function ZetyVsEasyFreeResume() {
                 <td className="px-6 py-4 font-medium text-ink">
                   ATS-Friendly Templates
                 </td>
-                <td className="px-6 py-4 text-center text-accent">
+                <td className="px-6 py-4 text-center text-accent-text">
                   ✅ All templates optimized
                 </td>
-                <td className="px-6 py-4 text-center text-accent">✅ Yes</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Yes</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-stone-warm text-white">
                     Tie
                   </span>
                 </td>
               </tr>
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">Privacy</td>
-                <td className="px-6 py-4 text-center text-accent">
+                <td className="px-6 py-4 text-center text-accent-text">
                   ✅ Local storage only
                 </td>
                 <td className="px-6 py-4 text-center text-red-600">
@@ -220,14 +220,14 @@ export default function ZetyVsEasyFreeResume() {
                 <td className="px-6 py-4 font-medium text-ink">
                   Ease of Use
                 </td>
-                <td className="px-6 py-4 text-center text-accent">
+                <td className="px-6 py-4 text-center text-accent-text">
                   ✅ Simple, intuitive editor
                 </td>
-                <td className="px-6 py-4 text-center text-accent">
+                <td className="px-6 py-4 text-center text-accent-text">
                   ✅ User-friendly interface
                 </td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-stone-warm text-white">
                     Tie
                   </span>
                 </td>
@@ -236,7 +236,7 @@ export default function ZetyVsEasyFreeResume() {
                 <td className="px-6 py-4 font-medium text-ink">
                   Multiple Resume Versions
                 </td>
-                <td className="px-6 py-4 text-center text-accent">
+                <td className="px-6 py-4 text-center text-accent-text">
                   ✅ Unlimited
                 </td>
                 <td className="px-6 py-4 text-center text-yellow-600">
@@ -292,14 +292,14 @@ export default function ZetyVsEasyFreeResume() {
                   Use our comprehensive blog guides (like{" "}
                   <Link
                     to="/blog/resume-action-verbs"
-                    className="text-accent underline"
+                    className="text-accent-text underline"
                   >
                     Action Verbs for Resumes
                   </Link>{" "}
                   or{" "}
                   <Link
                     to="/blog/ai-resume-prompts-hub"
-                    className="text-accent underline"
+                    className="text-accent-text underline"
                   >
                     AI Resume Prompts
                   </Link>
@@ -331,7 +331,7 @@ export default function ZetyVsEasyFreeResume() {
                   Check out our{" "}
                   <Link
                     to="/blog/cover-letter-guide"
-                    className="text-accent underline"
+                    className="text-accent-text underline"
                   >
                     Cover Letter Writing Guide
                   </Link>{" "}
@@ -364,14 +364,14 @@ export default function ZetyVsEasyFreeResume() {
                   Use our{" "}
                   <Link
                     to="/blog/ats-resume-optimization"
-                    className="text-accent underline"
+                    className="text-accent-text underline"
                   >
                     ATS Optimization Guide
                   </Link>{" "}
                   or{" "}
                   <Link
                     to="/blog/ai-resume-review"
-                    className="text-accent underline"
+                    className="text-accent-text underline"
                   >
                     AI Resume Review Guide
                   </Link>{" "}
@@ -397,7 +397,7 @@ export default function ZetyVsEasyFreeResume() {
               🔒 EasyFreeResume Privacy
               <WinnerBadge />
             </h3>
-            <ul className="space-y-3 text-accent">
+            <ul className="space-y-3 text-accent-text">
               <li className="flex items-start space-x-2">
                 <span className="text-green-500 font-bold">✓</span>
                 <span>Your resume data never leaves your computer</span>
@@ -521,7 +521,7 @@ export default function ZetyVsEasyFreeResume() {
             💚 EasyFreeResume Cost
             <WinnerBadge />
           </h3>
-          <div className="text-accent text-center">
+          <div className="text-accent-text text-center">
             <p className="text-6xl font-bold mb-2">$0</p>
             <p className="text-xl">Forever. No tricks.</p>
             <p className="text-sm mt-4">
@@ -670,7 +670,7 @@ export default function ZetyVsEasyFreeResume() {
             ✅ EasyFreeResume is Perfect If:
             <WinnerBadge />
           </h3>
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>You want complete control over your resume content and data</li>
             <li>
               You prefer to invest money in other career development areas
@@ -745,7 +745,7 @@ export default function ZetyVsEasyFreeResume() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Build Your Free Resume Now
           </Link>
@@ -795,14 +795,14 @@ export default function ZetyVsEasyFreeResume() {
               'Machine-readable contact information',
             ].map((item) => (
               <li key={item} className="flex items-start gap-2">
-                <span className="text-accent font-bold">✓</span>
+                <span className="text-accent-text font-bold">✓</span>
                 <span className="text-sm">{item}</span>
               </li>
             ))}
           </ul>
           <p className="text-ink/80 mt-4 text-sm">
             Want to verify your resume passes ATS? Check our{' '}
-            <Link to="/resume-keywords" className="text-accent underline">
+            <Link to="/resume-keywords" className="text-accent-text underline">
               resume keywords guide
             </Link>{' '}
             for optimization tips.
@@ -833,7 +833,7 @@ export default function ZetyVsEasyFreeResume() {
         <p className="text-lg leading-relaxed text-stone-warm">
           These are pricing and UX decisions, not safety issues. Your data is as safe with Zety as
           with any major SaaS platform. That said, if you prefer maximum privacy,{' '}
-          <Link to="/free-resume-builder-no-sign-up" className="text-accent underline">
+          <Link to="/free-resume-builder-no-sign-up" className="text-accent-text underline">
             EasyFreeResume stores nothing on servers
           </Link>{' '}
           — your resume data stays entirely in your browser.
@@ -912,7 +912,7 @@ export default function ZetyVsEasyFreeResume() {
           </div>
           <Link
             to="/templates"
-            className="bg-white text-accent px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
+            className="bg-white text-accent-text px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
           >
             Try Free
           </Link>

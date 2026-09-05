@@ -120,7 +120,7 @@ export default function ResumeVsCvDifference() {
           <h4 className="font-bold text-green-800 mb-3">
             Key Characteristics of a CV:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>Length:</strong> 2-5 pages or more, depending on your
               experience (no strict length limit).
@@ -186,7 +186,7 @@ export default function ResumeVsCvDifference() {
             </Link>
             <Link
               to="/cv-templates/ats-friendly"
-              className="inline-flex items-center px-4 py-2 bg-white text-accent font-semibold rounded-lg border-2 border-accent hover:bg-accent/[0.06] transition-colors"
+              className="inline-flex items-center px-4 py-2 bg-white text-accent-text font-semibold rounded-lg border-2 border-accent hover:bg-accent/[0.06] transition-colors"
             >
               Browse CV Templates
             </Link>

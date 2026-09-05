@@ -50,7 +50,7 @@ export default function ResumeActionVerbs() {
           capture recruiters' attention and demonstrate your impact. This guide gives you
           200+ categorized verbs with context on when to use each set, so you can pick the
           right word for every bullet on your{" "}
-          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+          <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
             resume
           </Link>.
         </p>
@@ -86,7 +86,7 @@ export default function ResumeActionVerbs() {
           pass ATS screening, grab human attention, and demonstrate your
           proactive approach to work. Many applicant tracking systems scan for specific
           verbs as{" "}
-          <Link to="/resume-keywords" className="text-accent hover:underline">
+          <Link to="/resume-keywords" className="text-accent-text hover:underline">
             resume keywords
           </Link>, so choosing the right ones can directly affect whether your
           application makes it past the first filter.
@@ -136,7 +136,7 @@ export default function ResumeActionVerbs() {
             <p className="text-ink/80 text-sm mb-4">
               Use these verbs when you supervised people, directed initiatives, or were accountable for team outcomes.
               Ideal for management, executive, and{" "}
-              <Link to="/examples/project-manager" className="text-accent hover:underline">
+              <Link to="/examples/project-manager" className="text-accent-text hover:underline">
                 project manager
               </Link>{" "}
               roles where hiring managers expect evidence of organizational influence.
@@ -193,7 +193,7 @@ export default function ResumeActionVerbs() {
               Reach for these when describing measurable outcomes: revenue growth, cost savings, quota
               attainment, or efficiency gains. They pair naturally with numbers, so combine them
               with{" "}
-              <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+              <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
                 quantified accomplishments
               </Link>{" "}
               for maximum impact. Best for sales, operations, and any results-driven role.
@@ -356,7 +356,7 @@ export default function ResumeActionVerbs() {
               Best for data-heavy roles: analysts, researchers, scientists, and QA professionals.
               Use these when you gathered information, interpreted data, or turned findings into
               recommendations. They also work well in the{" "}
-              <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+              <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
                 skills section
               </Link>{" "}
               of your resume to signal analytical ability.
@@ -413,7 +413,7 @@ export default function ResumeActionVerbs() {
               Reach for these when your role involved teaching, presenting, writing, or stakeholder
               communication. Ideal for educators, HR professionals, marketers, and client-facing roles.
               These verbs also strengthen a{" "}
-              <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+              <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
                 professional summary
               </Link>{" "}
               that highlights interpersonal skills.
@@ -470,7 +470,7 @@ export default function ResumeActionVerbs() {
               Use these for hands-on technical work: building systems, shipping code, managing infrastructure,
               or maintaining equipment. Essential for software engineers, DevOps, IT administrators, and
               operations managers. Pair them with an{" "}
-              <Link to="/templates/ats-friendly" className="text-accent hover:underline">
+              <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">
                 ATS-friendly template
               </Link>{" "}
               to ensure clean parsing.
@@ -556,7 +556,7 @@ export default function ResumeActionVerbs() {
               Action verbs become powerful when combined with specific metrics.
               For a deep dive on adding numbers to your bullets, see our guide
               on{" "}
-              <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+              <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
                 quantifying resume accomplishments
               </Link>.
             </p>
@@ -577,7 +577,7 @@ export default function ResumeActionVerbs() {
             <p className="text-yellow-700 mb-3">
               Avoid repetition by using synonyms and varied vocabulary. If you need help generating
               diverse phrasing, try using{" "}
-              <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">
+              <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">
                 AI resume prompts
               </Link>{" "}
               to brainstorm alternatives.
@@ -643,7 +643,7 @@ export default function ResumeActionVerbs() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Build Your Resume Now
           </Link>
@@ -824,7 +824,7 @@ export default function ResumeActionVerbs() {
           For a complete guide on writing compelling resume content, check out our{" "}
           <Link
             to="/blog/how-to-write-a-resume-guide"
-            className="text-accent hover:underline"
+            className="text-accent-text hover:underline"
           >
             step-by-step resume writing guide
           </Link>
@@ -876,37 +876,37 @@ export default function ResumeActionVerbs() {
           <h3 className="font-bold text-ink mb-3">Related Guides</h3>
           <ul className="space-y-2 text-ink/80">
             <li>
-              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent hover:underline">
+              <Link to="/blog/how-to-write-a-resume-guide" className="text-accent-text hover:underline">
                 How to Write a Resume: Complete Guide
               </Link>{' '}
               &mdash; the pillar guide covering every section of your resume
             </li>
             <li>
-              <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+              <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
                 How to Quantify Accomplishments on Your Resume
               </Link>{' '}
               &mdash; pair action verbs with numbers for stronger bullets
             </li>
             <li>
-              <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+              <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
                 Professional Summary Examples
               </Link>{' '}
               &mdash; see action verbs used in real summary statements
             </li>
             <li>
-              <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+              <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
                 How to List Skills on a Resume
               </Link>{' '}
               &mdash; use action verbs to describe skill proficiency
             </li>
             <li>
-              <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">
+              <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">
                 Claude AI Resume Prompts
               </Link>{' '}
               &mdash; use AI to generate verb variations and rewrite weak bullets
             </li>
             <li>
-              <Link to="/resume-keywords" className="text-accent hover:underline">
+              <Link to="/resume-keywords" className="text-accent-text hover:underline">
                 Resume Keywords by Job Title
               </Link>{' '}
               &mdash; find the right action verbs for your specific role

@@ -43,10 +43,10 @@ export default function ResumeMistakesToAvoid() {
         </p>
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
           <h4 className="font-bold text-green-800 mb-3">✅ Best Practice:</h4>
-          <p className="text-accent mb-3">
+          <p className="text-accent-text mb-3">
             Tailor your resume for each application by:
           </p>
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>Matching keywords from the job description</li>
             <li>Highlighting relevant experience for the specific role</li>
             <li>Adjusting your professional summary for the target position</li>
@@ -67,7 +67,7 @@ export default function ResumeMistakesToAvoid() {
           </div>
           <div className="bg-green-50 border border-green-200 rounded-xl p-6">
             <h4 className="font-bold text-green-800 mb-3">✅ Strong Example:</h4>
-            <p className="text-accent italic">
+            <p className="text-accent-text italic">
               "Results-driven digital marketing specialist with 5+ years driving 200%+ ROI growth for B2B SaaS companies. Expert in SEO, PPC, and marketing automation with proven track record of increasing qualified leads by 150%."
             </p>
           </div>
@@ -76,7 +76,7 @@ export default function ResumeMistakesToAvoid() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">4. Listing Job Duties Instead of Achievements</h2>
         <p className="text-lg leading-relaxed text-stone-warm">
           Employers know what your job title entails. They want to see what you accomplished in that role. Focus on specific, quantifiable achievements rather than generic responsibilities. Need stronger language? Check out our list of{' '}
-          <Link to="/blog/resume-action-verbs" className="text-accent hover:underline font-medium">resume action verbs</Link>{' '}
+          <Link to="/blog/resume-action-verbs" className="text-accent-text hover:underline font-medium">resume action verbs</Link>{' '}
           to replace weak phrasing.
         </p>
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
@@ -87,7 +87,7 @@ export default function ResumeMistakesToAvoid() {
           <div className="space-y-3">
             <div>
               <p className="text-red-700 font-medium">❌ Weak: "Responsible for managing social media accounts"</p>
-              <p className="text-accent font-medium">✅ Strong: "Managed 5 social media accounts, increasing engagement by 85% and driving 300+ monthly website visits"</p>
+              <p className="text-accent-text font-medium">✅ Strong: "Managed 5 social media accounts, increasing engagement by 85% and driving 300+ monthly website visits"</p>
             </div>
           </div>
         </div>
@@ -125,7 +125,7 @@ export default function ResumeMistakesToAvoid() {
           </div>
           <div className="bg-green-50 border border-green-200 rounded-xl p-6">
             <h4 className="font-bold text-green-800 mb-3">✅ Do Include:</h4>
-            <ul className="list-disc pl-6 space-y-1 text-accent">
+            <ul className="list-disc pl-6 space-y-1 text-accent-text">
               <li>Professional email address</li>
               <li>LinkedIn profile URL</li>
               <li>City and state (no full address needed)</li>
@@ -167,7 +167,7 @@ export default function ResumeMistakesToAvoid() {
         <h2 className="text-3xl font-bold text-ink mt-12 mb-6">9. Neglecting ATS Optimization</h2>
         <p className="text-lg leading-relaxed text-stone-warm">
           Over 98% of Fortune 500 companies use Applicant Tracking Systems (ATS) to filter resumes. If your resume isn't ATS-friendly, it may never reach human eyes, regardless of your qualifications. Use our free{' '}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">resume keyword scanner</Link>{' '}
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">resume keyword scanner</Link>{' '}
           to check your resume against a job description before you apply.
         </p>
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
@@ -187,7 +187,7 @@ export default function ResumeMistakesToAvoid() {
         </p>
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
           <h4 className="font-bold text-green-800 mb-3">📞 Contact Info Checklist:</h4>
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>Current phone number with professional voicemail</li>
             <li>Professional email address you check regularly</li>
             <li>Updated LinkedIn profile URL</li>

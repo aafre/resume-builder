@@ -28,18 +28,18 @@ export default function ResumeKeywordsByIndustry() {
           <h2 className="font-bold text-ink mb-4 text-lg">Jump to Your Industry</h2>
           <div className="grid sm:grid-cols-2 gap-x-8 gap-y-2 text-ink/80">
             <div className="space-y-2">
-              <p><a href="#technology" className="text-accent hover:underline">Technology / Software Engineering</a></p>
-              <p><a href="#healthcare" className="text-accent hover:underline">Healthcare / Nursing</a></p>
-              <p><a href="#finance" className="text-accent hover:underline">Finance / Banking / Accounting</a></p>
-              <p><a href="#marketing" className="text-accent hover:underline">Marketing / Digital Marketing</a></p>
-              <p><a href="#sales" className="text-accent hover:underline">Sales / Business Development</a></p>
+              <p><a href="#technology" className="text-accent-text hover:underline">Technology / Software Engineering</a></p>
+              <p><a href="#healthcare" className="text-accent-text hover:underline">Healthcare / Nursing</a></p>
+              <p><a href="#finance" className="text-accent-text hover:underline">Finance / Banking / Accounting</a></p>
+              <p><a href="#marketing" className="text-accent-text hover:underline">Marketing / Digital Marketing</a></p>
+              <p><a href="#sales" className="text-accent-text hover:underline">Sales / Business Development</a></p>
             </div>
             <div className="space-y-2">
-              <p><a href="#education" className="text-accent hover:underline">Education / Teaching</a></p>
-              <p><a href="#manufacturing" className="text-accent hover:underline">Manufacturing / Engineering</a></p>
-              <p><a href="#customer-service" className="text-accent hover:underline">Customer Service / Retail</a></p>
-              <p><a href="#hr" className="text-accent hover:underline">Human Resources</a></p>
-              <p><a href="#project-management" className="text-accent hover:underline">Project Management</a></p>
+              <p><a href="#education" className="text-accent-text hover:underline">Education / Teaching</a></p>
+              <p><a href="#manufacturing" className="text-accent-text hover:underline">Manufacturing / Engineering</a></p>
+              <p><a href="#customer-service" className="text-accent-text hover:underline">Customer Service / Retail</a></p>
+              <p><a href="#hr" className="text-accent-text hover:underline">Human Resources</a></p>
+              <p><a href="#project-management" className="text-accent-text hover:underline">Project Management</a></p>
             </div>
           </div>
         </nav>
@@ -50,7 +50,7 @@ export default function ResumeKeywordsByIndustry() {
             <li>Find your industry section below</li>
             <li>Compare the keywords against the specific job posting you're targeting</li>
             <li>Include matching keywords naturally in your experience bullets and skills section</li>
-            <li>Use our <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">free ATS keyword scanner</Link> to verify your match rate</li>
+            <li>Use our <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">free ATS keyword scanner</Link> to verify your match rate</li>
           </ol>
         </div>
 
@@ -93,7 +93,7 @@ export default function ResumeKeywordsByIndustry() {
         </div>
 
         <p className="text-sm text-stone-warm mt-3">
-          For a deep dive, see our <Link to="/blog/software-engineer-resume-keywords" className="text-accent hover:underline">75+ software engineer resume keywords guide</Link>.
+          For a deep dive, see our <Link to="/blog/software-engineer-resume-keywords" className="text-accent-text hover:underline">75+ software engineer resume keywords guide</Link>.
         </p>
 
         {/* Healthcare */}
@@ -347,7 +347,7 @@ export default function ResumeKeywordsByIndustry() {
         </div>
 
         <p className="text-sm text-stone-warm mt-3">
-          For a comprehensive breakdown, see our <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent hover:underline">customer service resume keywords guide</Link>.
+          For a comprehensive breakdown, see our <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent-text hover:underline">customer service resume keywords guide</Link>.
         </p>
 
         {/* HR */}
@@ -496,7 +496,7 @@ export default function ResumeKeywordsByIndustry() {
           </p>
           <Link
             to="/resume-keyword-scanner"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Open Keyword Scanner
           </Link>
@@ -508,27 +508,27 @@ export default function ResumeKeywordsByIndustry() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
           <li>
-            <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">
+            <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
               How to Use Resume Keywords to Beat the ATS
             </Link>
           </li>
           <li>
-            <Link to="/blog/software-engineer-resume-keywords" className="text-accent hover:underline">
+            <Link to="/blog/software-engineer-resume-keywords" className="text-accent-text hover:underline">
               75+ Software Engineer Resume Keywords
             </Link>
           </li>
           <li>
-            <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent hover:underline">
+            <Link to="/blog/customer-service-resume-keywords-guide" className="text-accent-text hover:underline">
               Customer Service Resume Keywords Guide
             </Link>
           </li>
           <li>
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
               Free ATS Keyword Scanner
             </Link>
           </li>
           <li>
-            <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+            <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
               How to List Skills on a Resume
             </Link>
           </li>

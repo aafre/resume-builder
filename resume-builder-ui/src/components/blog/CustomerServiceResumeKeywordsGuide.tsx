@@ -55,7 +55,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
             </div>
           </div>
           <p className="text-sm text-stone-warm mt-4">
-            For a quick-reference keyword list, see our <Link to="/resume-keywords/customer-service" className="text-accent hover:underline">customer service keyword scanner page</Link>. This guide explains how and where to use each keyword category.
+            For a quick-reference keyword list, see our <Link to="/resume-keywords/customer-service" className="text-accent-text hover:underline">customer service keyword scanner page</Link>. This guide explains how and where to use each keyword category.
           </p>
         </div>
 
@@ -374,7 +374,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
               <strong>Use standard section headers.</strong> "Experience," "Skills," "Education" — not "My Story" or "What I've Done."
             </li>
             <li>
-              <strong>Scan before submitting.</strong> Use our <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">free ATS keyword scanner</Link> to check your match rate against the specific job posting.
+              <strong>Scan before submitting.</strong> Use our <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">free ATS keyword scanner</Link> to check your match rate against the specific job posting.
             </li>
           </ol>
         </div>
@@ -388,7 +388,7 @@ export default function CustomerServiceResumeKeywordsGuide() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Building Free
           </Link>
@@ -400,27 +400,27 @@ export default function CustomerServiceResumeKeywordsGuide() {
 
         <ul className="list-disc list-inside space-y-2 text-lg text-stone-warm">
           <li>
-            <Link to="/resume-keywords/customer-service" className="text-accent hover:underline">
+            <Link to="/resume-keywords/customer-service" className="text-accent-text hover:underline">
               Customer Service Keywords Quick Reference List
             </Link>
           </li>
           <li>
-            <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">
+            <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">
               How to Use Resume Keywords to Beat the ATS
             </Link>
           </li>
           <li>
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
               Free ATS Keyword Scanner
             </Link>
           </li>
           <li>
-            <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+            <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
               Professional Summary Examples
             </Link>
           </li>
           <li>
-            <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+            <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
               How to List Skills on a Resume
             </Link>
           </li>

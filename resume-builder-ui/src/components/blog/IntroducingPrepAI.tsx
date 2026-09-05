@@ -86,7 +86,7 @@ export default function IntroducingPrepAI() {
             href="https://prepai.co.uk/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Start Your Free Mock Interview
           </a>
@@ -118,7 +118,7 @@ export default function IntroducingPrepAI() {
             <h3 className="text-xl font-bold text-green-800 mb-3">
               2. Get Smart Feedback
             </h3>
-            <p className="text-accent">
+            <p className="text-accent-text">
               Receive instant, actionable analysis on your answer's clarity,
               structure, and impact. Our AI coach, trained on thousands of
               successful interviews, provides specific insights on how to
@@ -266,7 +266,7 @@ export default function IntroducingPrepAI() {
                 href="https://prepai.co.uk/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-accent hover:text-ink underline"
+                className="text-accent-text hover:text-ink underline"
               >
                 prepai.co.uk
               </a>{" "}

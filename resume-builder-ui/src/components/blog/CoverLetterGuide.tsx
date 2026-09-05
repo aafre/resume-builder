@@ -39,7 +39,7 @@ export default function CoverLetterGuide() {
           Even in a world of LinkedIn profiles and AI screening, a well-crafted
           cover letter shows effort, interest, and professionalism. If you want
           a head start, try our{" "}
-          <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline font-semibold">
+          <Link to="/blog/ai-cover-letter-prompts" className="text-accent-text hover:underline font-semibold">
             AI cover letter prompts
           </Link>{" "}
           to generate a strong first draft in seconds.
@@ -76,7 +76,7 @@ export default function CoverLetterGuide() {
           How to Structure Your Cover Letter
         </h2>
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <ol className="list-decimal pl-6 space-y-2 text-accent">
+          <ol className="list-decimal pl-6 space-y-2 text-accent-text">
             <li>
               <strong>Header:</strong> Include your contact info, date, and the
               hiring manager's details.
@@ -147,7 +147,7 @@ Sincerely,
         <p className="text-lg leading-relaxed text-stone-warm mt-6">
           Use your cover letter to tell the story your resume can’t. Pair it
           with a polished resume — browse our{" "}
-          <Link to="/examples" className="text-accent hover:underline font-semibold">
+          <Link to="/examples" className="text-accent-text hover:underline font-semibold">
             resume examples
           </Link>{" "}
           for role-specific inspiration. With a little time and the right

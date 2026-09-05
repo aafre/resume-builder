@@ -69,9 +69,9 @@ export default function CanvaVsEasyFreeResume() {
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-              <p className="font-bold text-accent text-lg mb-2">EasyFreeResume</p>
+              <p className="font-bold text-accent-text text-lg mb-2">EasyFreeResume</p>
               <StarRating rating={5} />
-              <p className="text-2xl font-bold text-accent mt-2">ATS-Optimized</p>
+              <p className="text-2xl font-bold text-accent-text mt-2">ATS-Optimized</p>
               <p className="text-sm text-stone-warm">Built for job applications</p>
             </div>
             <div className="text-center p-4 bg-white rounded-xl shadow-sm">
@@ -150,15 +150,15 @@ export default function CanvaVsEasyFreeResume() {
             <thead>
               <tr className="bg-chalk-dark">
                 <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
-                <th className="px-6 py-4 text-center font-bold text-accent">EasyFreeResume</th>
-                <th className="px-6 py-4 text-center font-bold text-accent">Canva</th>
+                <th className="px-6 py-4 text-center font-bold text-accent-text">EasyFreeResume</th>
+                <th className="px-6 py-4 text-center font-bold text-accent-text">Canva</th>
                 <th className="px-6 py-4 text-center font-bold text-stone-warm">Winner</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.06]">
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">ATS Compatibility</td>
-                <td className="px-6 py-4 text-center text-accent font-bold">✅ 100% optimized</td>
+                <td className="px-6 py-4 text-center text-accent-text font-bold">✅ 100% optimized</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Often fails</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -166,15 +166,15 @@ export default function CanvaVsEasyFreeResume() {
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">Cost</td>
-                <td className="px-6 py-4 text-center text-accent">✅ 100% Free</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Free tier available</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ 100% Free</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Free tier available</td>
                 <td className="px-6 py-4 text-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-gray-400 text-white">Tie</span>
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-stone-warm text-white">Tie</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">Resume-Specific</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Built for resumes</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Built for resumes</td>
                 <td className="px-6 py-4 text-center text-yellow-600">⚠️ General design tool</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -182,7 +182,7 @@ export default function CanvaVsEasyFreeResume() {
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">Account Required</td>
-                <td className="px-6 py-4 text-center text-accent">✅ No</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ No</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Yes</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -190,7 +190,7 @@ export default function CanvaVsEasyFreeResume() {
               </tr>
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">Privacy</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Local storage</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Local storage</td>
                 <td className="px-6 py-4 text-center text-red-600">❌ Cloud storage</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -198,15 +198,15 @@ export default function CanvaVsEasyFreeResume() {
               </tr>
               <tr>
                 <td className="px-6 py-4 font-medium text-ink">Template Variety</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Professional options</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Thousands of designs</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Professional options</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Thousands of designs</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-accent text-ink">Canva</span>
                 </td>
               </tr>
               <tr className="bg-green-50">
                 <td className="px-6 py-4 font-medium text-ink">Learning Curve</td>
-                <td className="px-6 py-4 text-center text-accent">✅ Simple, focused</td>
+                <td className="px-6 py-4 text-center text-accent-text">✅ Simple, focused</td>
                 <td className="px-6 py-4 text-center text-yellow-600">⚠️ More complex</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-green-600 text-white">EasyFreeResume</span>
@@ -245,7 +245,7 @@ export default function CanvaVsEasyFreeResume() {
               Use EasyFreeResume When:
               <WinnerBadge />
             </h3>
-            <ul className="space-y-2 text-accent">
+            <ul className="space-y-2 text-accent-text">
               <li>✓ Applying through job portals (LinkedIn, Indeed)</li>
               <li>✓ Corporate or enterprise companies</li>
               <li>✓ Any online application system</li>
@@ -311,7 +311,7 @@ export default function CanvaVsEasyFreeResume() {
           </p>
           <Link
             to="/templates"
-            className="inline-block bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+            className="inline-block bg-white text-accent-text px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
           >
             Build Your ATS Resume
           </Link>
@@ -357,7 +357,7 @@ export default function CanvaVsEasyFreeResume() {
           </div>
           <Link
             to="/templates"
-            className="bg-white text-accent px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
+            className="bg-white text-accent-text px-4 py-2 rounded-lg font-bold text-sm shadow hover:shadow-md transition-all"
           >
             Build Free
           </Link>

@@ -19,7 +19,7 @@ function StarRating({ value }: { value: Rating }) {
       className="inline-flex gap-0.5 text-base leading-none"
     >
       {Array.from({ length: 5 }, (_, i) => (
-        <span key={i} className={i < value ? "text-accent" : "text-black/15"} aria-hidden="true">
+        <span key={i} className={i < value ? "text-accent-text" : "text-black/15"} aria-hidden="true">
           ★
         </span>
       ))}
@@ -544,7 +544,7 @@ export default function AIResumePromptsHub() {
                   <h3 className="font-display text-xl font-bold text-ink">Best for ATS keywords</h3>
                   <p className="mt-3 text-stone-warm leading-relaxed">
                     Claude, ChatGPT, and Gemini all scored 4/5 when paired with a specific job
-                    description and the <Link to="/resume-keyword-scanner" className="text-accent hover:underline">ATS keyword scanner</Link>.
+                    description and the <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">ATS keyword scanner</Link>.
                   </p>
                 </div>
               </div>
@@ -600,14 +600,14 @@ export default function AIResumePromptsHub() {
                     {String(idx + 1).padStart(2, "0")} / {String(MODEL_SECTIONS.length).padStart(2, "0")}
                   </span>
                   <h3 className="font-display text-xl font-bold text-ink">{model.name}</h3>
-                  <p className="mt-2 font-semibold text-accent">Best for: {model.bestFor}</p>
+                  <p className="mt-2 font-semibold text-accent-text">Best for: {model.bestFor}</p>
                   <div className="mt-4 grid gap-4 lg:grid-cols-[1.3fr_1fr]">
                     <div className="space-y-3 text-stone-warm leading-relaxed">
                       <p>{model.strengths}</p>
                       <p>{model.limitations}</p>
                       {model.cta && (
                         <p>
-                          <Link to={model.cta.href} className="font-semibold text-accent hover:underline inline-flex items-center gap-1">
+                          <Link to={model.cta.href} className="font-semibold text-accent-text hover:underline inline-flex items-center gap-1">
                             {model.cta.text}
                             <span aria-hidden="true">→</span>
                           </Link>
@@ -743,7 +743,7 @@ export default function AIResumePromptsHub() {
                     className="bg-chalk-dark rounded-2xl p-5 font-semibold text-ink hover:bg-white hover:shadow-lg border border-transparent hover:border-black/[0.04] transition-all duration-300 inline-flex items-center justify-between gap-2"
                   >
                     <span>{link.label}</span>
-                    <span aria-hidden="true" className="text-accent">→</span>
+                    <span aria-hidden="true" className="text-accent-text">→</span>
                   </Link>
                 ))}
               </div>
@@ -765,7 +765,7 @@ export default function AIResumePromptsHub() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-full bg-chalk-dark px-4 py-2 font-mono text-xs tracking-wide text-ink/80 hover:bg-white hover:text-accent border border-transparent hover:border-black/[0.06] transition-all duration-200"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-chalk-dark px-4 py-2 font-mono text-xs tracking-wide text-ink/80 hover:bg-white hover:text-accent-text border border-transparent hover:border-black/[0.06] transition-all duration-200"
                     >
                       {link.label}
                       <span aria-hidden="true">↗</span>
@@ -791,7 +791,7 @@ export default function AIResumePromptsHub() {
                       <h3 className="font-display text-xl font-bold text-ink">{faq.question}</h3>
                       <span
                         aria-hidden="true"
-                        className="text-accent text-2xl leading-none flex-shrink-0 transition-transform duration-300 group-open:rotate-45 mt-1"
+                        className="text-accent-text text-2xl leading-none flex-shrink-0 transition-transform duration-300 group-open:rotate-45 mt-1"
                       >
                         +
                       </span>

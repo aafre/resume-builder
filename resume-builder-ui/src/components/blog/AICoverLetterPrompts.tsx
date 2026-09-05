@@ -32,16 +32,16 @@ export default function AICoverLetterPrompts() {
         <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#before-you-start" className="text-accent hover:underline">Before You Start: What AI Needs From You</a></li>
-            <li><a href="#tailored-cover-letters" className="text-accent hover:underline">Tailored Cover Letter Prompts (#1-5)</a></li>
-            <li><a href="#opening-hooks" className="text-accent hover:underline">Opening Hook Prompts (#6-9)</a></li>
-            <li><a href="#career-change" className="text-accent hover:underline">Career Change Cover Letters (#10-13)</a></li>
-            <li><a href="#internal-transfer" className="text-accent hover:underline">Internal Transfer &amp; Referral (#14-16)</a></li>
-            <li><a href="#follow-up-emails" className="text-accent hover:underline">Follow-Up Emails (#17-20)</a></li>
-            <li><a href="#thank-you-notes" className="text-accent hover:underline">Thank-You Notes (#21-24)</a></li>
-            <li><a href="#review-polish" className="text-accent hover:underline">Review &amp; Polish (#25-27)</a></li>
-            <li><a href="#which-ai" className="text-accent hover:underline">Which AI Tool to Use</a></li>
-            <li><a href="#tips" className="text-accent hover:underline">Tips for Better Results</a></li>
+            <li><a href="#before-you-start" className="text-accent-text hover:underline">Before You Start: What AI Needs From You</a></li>
+            <li><a href="#tailored-cover-letters" className="text-accent-text hover:underline">Tailored Cover Letter Prompts (#1-5)</a></li>
+            <li><a href="#opening-hooks" className="text-accent-text hover:underline">Opening Hook Prompts (#6-9)</a></li>
+            <li><a href="#career-change" className="text-accent-text hover:underline">Career Change Cover Letters (#10-13)</a></li>
+            <li><a href="#internal-transfer" className="text-accent-text hover:underline">Internal Transfer &amp; Referral (#14-16)</a></li>
+            <li><a href="#follow-up-emails" className="text-accent-text hover:underline">Follow-Up Emails (#17-20)</a></li>
+            <li><a href="#thank-you-notes" className="text-accent-text hover:underline">Thank-You Notes (#21-24)</a></li>
+            <li><a href="#review-polish" className="text-accent-text hover:underline">Review &amp; Polish (#25-27)</a></li>
+            <li><a href="#which-ai" className="text-accent-text hover:underline">Which AI Tool to Use</a></li>
+            <li><a href="#tips" className="text-accent-text hover:underline">Tips for Better Results</a></li>
           </ol>
         </nav>
 
@@ -61,7 +61,7 @@ export default function AICoverLetterPrompts() {
           <p className="text-ink/80 mt-3">
             Generic inputs produce generic cover letters. The more specific you are, the better the output.
             For a full guide on cover letter writing fundamentals, see our{' '}
-            <Link to="/blog/cover-letter-guide" className="text-accent hover:underline">
+            <Link to="/blog/cover-letter-guide" className="text-accent-text hover:underline">
               cover letter writing guide
             </Link>.
           </p>
@@ -221,7 +221,7 @@ export default function AICoverLetterPrompts() {
           Switching careers is one of the hardest cover letter scenarios. You need to acknowledge the
           transition, frame it as a strength, and prove your transferable skills &mdash; all without
           being defensive. For resume-specific guidance, see our{' '}
-          <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+          <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
             professional summary examples
           </Link>{' '}
           for career changers.
@@ -527,32 +527,32 @@ export default function AICoverLetterPrompts() {
             <tbody className="divide-y divide-black/[0.06]">
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Full cover letter draft</td>
-                <td className="px-4 py-4 text-center text-accent font-medium">Claude</td>
+                <td className="px-4 py-4 text-center text-accent-text font-medium">Claude</td>
                 <td className="px-4 py-4 text-stone-warm text-sm">Best writing quality, follows complex instructions precisely</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Company research + letter</td>
-                <td className="px-4 py-4 text-center text-accent font-medium">Copilot</td>
+                <td className="px-4 py-4 text-center text-accent-text font-medium">Copilot</td>
                 <td className="px-4 py-4 text-stone-warm text-sm">Web search finds recent company news to reference</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Quick iterations</td>
-                <td className="px-4 py-4 text-center text-accent font-medium">ChatGPT</td>
+                <td className="px-4 py-4 text-center text-accent-text font-medium">ChatGPT</td>
                 <td className="px-4 py-4 text-stone-warm text-sm">Fast responses, good at generating multiple versions</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Tone matching</td>
-                <td className="px-4 py-4 text-center text-accent font-medium">Claude</td>
+                <td className="px-4 py-4 text-center text-accent-text font-medium">Claude</td>
                 <td className="px-4 py-4 text-stone-warm text-sm">Excellent at adjusting formality and voice</td>
               </tr>
               <tr>
                 <td className="px-4 py-4 font-medium text-ink">Job description analysis</td>
-                <td className="px-4 py-4 text-center text-accent font-medium">DeepSeek R1</td>
+                <td className="px-4 py-4 text-center text-accent-text font-medium">DeepSeek R1</td>
                 <td className="px-4 py-4 text-stone-warm text-sm">Reasoning model catches nuances in requirements</td>
               </tr>
               <tr className="bg-chalk-dark">
                 <td className="px-4 py-4 font-medium text-ink">Free + no sign-up</td>
-                <td className="px-4 py-4 text-center text-accent font-medium">Copilot / DeepSeek</td>
+                <td className="px-4 py-4 text-center text-accent-text font-medium">Copilot / DeepSeek</td>
                 <td className="px-4 py-4 text-stone-warm text-sm">Most generous free tiers for resume/cover letter tasks</td>
               </tr>
             </tbody>
@@ -561,11 +561,11 @@ export default function AICoverLetterPrompts() {
 
         <p className="text-lg leading-relaxed text-stone-warm">
           For model-specific prompts optimized for each tool, see our guides for{' '}
-          <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">Claude</Link>,{' '}
-          <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline">Gemini</Link>, and the{' '}
-          <Link to="/blog/ai-resume-prompts-hub" className="text-accent hover:underline">AI Resume Prompts Hub</Link>.
+          <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">Claude</Link>,{' '}
+          <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">Gemini</Link>, and the{' '}
+          <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline">AI Resume Prompts Hub</Link>.
           For a broader overview of AI resume tools, read our{' '}
-          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">complete AI resume writing guide</Link>.
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">complete AI resume writing guide</Link>.
         </p>
 
         {/* Tips */}

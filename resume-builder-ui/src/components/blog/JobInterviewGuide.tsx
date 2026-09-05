@@ -32,7 +32,7 @@ export default function JobInterviewGuide() {
             Check out our{" "}
             <a
               href="/best-free-resume-builder-reddit"
-              className="text-accent hover:text-ink underline font-medium"
+              className="text-accent-text hover:text-ink underline font-medium"
             >
               best free resume builder
             </a>{" "}
@@ -96,7 +96,7 @@ export default function JobInterviewGuide() {
         </p>
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>S - Situation:</strong> Briefly describe the context.
               (e.g., "In my previous role as a project manager...")
@@ -141,7 +141,7 @@ export default function JobInterviewGuide() {
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
           <h4 className="font-bold text-green-800 mb-2">Good Questions:</h4>
-          <ul className="list-disc pl-6 space-y-1 text-accent">
+          <ul className="list-disc pl-6 space-y-1 text-accent-text">
             <li>
               "What does success look like in this role in the first 90 days?"
             </li>
@@ -234,7 +234,7 @@ export default function JobInterviewGuide() {
           stories. For an in-depth look, check out our guide on{" "}
           <a
             href="/blog/behavioral-interview-questions"
-            className="text-accent hover:text-ink underline"
+            className="text-accent-text hover:text-ink underline"
           >
             15+ Behavioral Interview Questions (and How to Answer with the STAR
             Method)
@@ -304,7 +304,7 @@ export default function JobInterviewGuide() {
         </p>
 
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 my-6">
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>Reply promptly.</strong>
             </li>

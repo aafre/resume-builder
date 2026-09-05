@@ -51,7 +51,7 @@ export default function RemoteWorkResume() {
           <h4 className="font-bold text-green-800 mb-3">
             ✅ What Remote Employers Want to See:
           </h4>
-          <ul className="list-disc pl-6 space-y-2 text-accent">
+          <ul className="list-disc pl-6 space-y-2 text-accent-text">
             <li>
               <strong>Communication Skills:</strong> Experience with async tools
               (Slack, Notion), video meetings, and clear writing
@@ -113,7 +113,7 @@ export default function RemoteWorkResume() {
         <p className="text-lg leading-relaxed text-stone-warm mt-4">
           For a full breakdown of how to structure a tech resume for remote
           roles, see our{" "}
-          <Link to="/examples/software-engineer" className="text-accent hover:underline font-semibold">
+          <Link to="/examples/software-engineer" className="text-accent-text hover:underline font-semibold">
             software engineer resume example
           </Link>.
         </p>
@@ -160,7 +160,7 @@ export default function RemoteWorkResume() {
           handle ambiguity. Highlight achievements that demonstrate remote work
           capabilities. For tips on presenting your skills effectively, read
           our guide on{" "}
-          <Link to="/blog/how-to-list-skills" className="text-accent hover:underline font-semibold">
+          <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline font-semibold">
             how to list skills on a resume
           </Link>.
         </p>
@@ -216,7 +216,7 @@ export default function RemoteWorkResume() {
               </div>
 
               <div>
-                <p className="font-bold text-accent">PROFESSIONAL SUMMARY</p>
+                <p className="font-bold text-accent-text">PROFESSIONAL SUMMARY</p>
                 <p>
                   Remote-ready project manager with 5+ years experience leading
                   cross-functional teams in fully distributed environments.
@@ -227,7 +227,7 @@ export default function RemoteWorkResume() {
               </div>
 
               <div>
-                <p className="font-bold text-accent">REMOTE EXPERIENCE</p>
+                <p className="font-bold text-accent-text">REMOTE EXPERIENCE</p>
                 <p className="font-medium">
                   Project Manager (Remote) – Acme Inc. – 2022–2026
                 </p>
@@ -248,7 +248,7 @@ export default function RemoteWorkResume() {
               </div>
 
               <div>
-                <p className="font-bold text-accent">REMOTE TOOLS & TECH</p>
+                <p className="font-bold text-accent-text">REMOTE TOOLS & TECH</p>
                 <p>
                   Slack, Zoom, Trello, Notion, Confluence, GitHub, Jira, Miro
                 </p>

@@ -26,7 +26,7 @@ export default function CopilotResumePrompts() {
           and Microsoft 365. That makes it one of the most accessible AI assistants for resume writing
           in 2026. These 20+ prompts are organized by task so you can copy, paste, and start improving
           your resume immediately. For a broader look at how AI can help with resumes, see our{' '}
-          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">
             complete AI resume writing guide
           </Link>.
         </p>
@@ -35,15 +35,15 @@ export default function CopilotResumePrompts() {
         <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
           <h2 className="font-bold text-ink mb-4 text-lg">Table of Contents</h2>
           <ol className="space-y-2 text-ink/80 list-decimal list-inside">
-            <li><a href="#why-copilot" className="text-accent hover:underline">Why Microsoft Copilot for Resume Writing</a></li>
-            <li><a href="#professional-summary" className="text-accent hover:underline">Professional Summary Prompts (#1-3)</a></li>
-            <li><a href="#experience-bullets" className="text-accent hover:underline">Experience Bullet Prompts (#4-7)</a></li>
-            <li><a href="#ats-keywords" className="text-accent hover:underline">ATS Keyword Extraction (#8-10)</a></li>
-            <li><a href="#skills-section" className="text-accent hover:underline">Skills Section Prompts (#11-13)</a></li>
-            <li><a href="#cover-letters" className="text-accent hover:underline">Cover Letter Prompts (#14-16)</a></li>
-            <li><a href="#review-polish" className="text-accent hover:underline">Review &amp; Polish Prompts (#17-20)</a></li>
-            <li><a href="#copilot-vs-others" className="text-accent hover:underline">Copilot vs ChatGPT vs Claude</a></li>
-            <li><a href="#tips" className="text-accent hover:underline">Tips for Better Results</a></li>
+            <li><a href="#why-copilot" className="text-accent-text hover:underline">Why Microsoft Copilot for Resume Writing</a></li>
+            <li><a href="#professional-summary" className="text-accent-text hover:underline">Professional Summary Prompts (#1-3)</a></li>
+            <li><a href="#experience-bullets" className="text-accent-text hover:underline">Experience Bullet Prompts (#4-7)</a></li>
+            <li><a href="#ats-keywords" className="text-accent-text hover:underline">ATS Keyword Extraction (#8-10)</a></li>
+            <li><a href="#skills-section" className="text-accent-text hover:underline">Skills Section Prompts (#11-13)</a></li>
+            <li><a href="#cover-letters" className="text-accent-text hover:underline">Cover Letter Prompts (#14-16)</a></li>
+            <li><a href="#review-polish" className="text-accent-text hover:underline">Review &amp; Polish Prompts (#17-20)</a></li>
+            <li><a href="#copilot-vs-others" className="text-accent-text hover:underline">Copilot vs ChatGPT vs Claude</a></li>
+            <li><a href="#tips" className="text-accent-text hover:underline">Tips for Better Results</a></li>
           </ol>
         </nav>
 
@@ -77,7 +77,7 @@ export default function CopilotResumePrompts() {
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
           Your professional summary sits at the top of your resume and sets the tone for everything
           below. These Copilot prompts produce focused, specific summaries. For more examples, see our{' '}
-          <Link to="/blog/professional-summary-examples" className="text-accent hover:underline">
+          <Link to="/blog/professional-summary-examples" className="text-accent-text hover:underline">
             professional summary examples guide
           </Link>.
         </p>
@@ -127,7 +127,7 @@ export default function CopilotResumePrompts() {
           Listing responsibilities instead of achievements is the most common resume mistake. These
           prompts help Copilot transform what you did into what you accomplished. For the framework
           behind this, read our{' '}
-          <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">
+          <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">
             guide to quantifying accomplishments
           </Link>.
         </p>
@@ -188,7 +188,7 @@ export default function CopilotResumePrompts() {
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
           Copilot&rsquo;s web search integration makes it particularly useful for keyword research &mdash;
           it can cross-reference job descriptions with current industry trends. You can also use our{' '}
-          <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+          <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
             free ATS keyword scanner
           </Link>{' '}
           to check your match score against a specific job posting.
@@ -233,7 +233,7 @@ export default function CopilotResumePrompts() {
             4. Soft skills valued in this field (5-8)<br />
             5. Emerging skills trending in 2026 job postings (3-5)<br /><br />
             For a deeper list organized by role, see our{' '}
-            <Link to="/resume-keywords" className="text-accent hover:underline">resume keywords by job title</Link> pages.
+            <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords by job title</Link> pages.
           </CopyablePrompt>
         </div>
 
@@ -245,7 +245,7 @@ export default function CopilotResumePrompts() {
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
           A well-organized skills section helps both ATS parsers and recruiters quickly assess your
           qualifications. For a complete walkthrough, read our{' '}
-          <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">
+          <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">
             guide to listing skills on your resume
           </Link>.
         </p>
@@ -290,7 +290,7 @@ export default function CopilotResumePrompts() {
           Copilot&rsquo;s web access is a real advantage for cover letters &mdash; it can research the
           company, find recent news, and weave genuine details into your letter instead of generic praise.
           For prompts that work across all AI tools, check out our{' '}
-          <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline">
+          <Link to="/blog/ai-cover-letter-prompts" className="text-accent-text hover:underline">
             AI cover letter prompts guide
           </Link>.
         </p>
@@ -461,13 +461,13 @@ export default function CopilotResumePrompts() {
           For pure writing quality, Claude and ChatGPT still have an edge. Many job seekers get the best
           results by using Copilot for research-heavy tasks and another model for final polishing.
           See our guides for{' '}
-          <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">Claude resume prompts</Link>
+          <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">Claude resume prompts</Link>
           ,{' '}
-          <Link to="/blog/deepseek-resume-prompts" className="text-accent hover:underline">DeepSeek resume prompts</Link>
+          <Link to="/blog/deepseek-resume-prompts" className="text-accent-text hover:underline">DeepSeek resume prompts</Link>
           , and{' '}
-          <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline">Gemini resume prompts</Link>
+          <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">Gemini resume prompts</Link>
           . For a broader overview, read our{' '}
-          <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline">complete AI resume writing guide</Link>.
+          <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline">complete AI resume writing guide</Link>.
         </p>
 
         {/* Tips */}
