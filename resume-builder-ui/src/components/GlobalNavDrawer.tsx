@@ -117,7 +117,7 @@ export default function GlobalNavDrawer({
                 className={`flex min-h-11 items-center justify-between gap-3 rounded-lg px-4 py-3 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset ${
                   isCurrent
                     ? "bg-black/5 font-bold text-ink"
-                    : "font-medium text-gray-700 hover:bg-black/5 hover:text-ink"
+                    : "font-medium text-ink hover:bg-black/5 hover:text-ink"
                 }`}
               >
                 <span>{label}</span>

@@ -101,7 +101,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                   className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-accent/70 hover:bg-accent/[0.06] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <FcGoogle size={24} />
-                  <span className="font-semibold text-gray-700">Continue with Google</span>
+                  <span className="font-semibold text-ink">Continue with Google</span>
                 </button>
 
                 <button
@@ -110,7 +110,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                   className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-accent/70 hover:bg-accent/[0.06] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <FaLinkedin size={24} className="text-[#0077B5]" />
-                  <span className="font-semibold text-gray-700">Continue with LinkedIn</span>
+                  <span className="font-semibold text-ink">Continue with LinkedIn</span>
                 </button>
               </div>
 
@@ -120,18 +120,18 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
                   <div className="w-full border-t border-gray-300"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Or use email</span>
+                  <span className="px-2 bg-white text-mist">Or use email</span>
                 </div>
               </div>
 
               {/* Email Sign-In Form */}
               <form onSubmit={handleEmailSignIn} className="space-y-4">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="email" className="block text-sm font-medium text-ink mb-1">
                     Email Address
                   </label>
                   <div className="relative">
-                    <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                    <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 text-mist" size={20} />
                     <input
                       type="email"
                       id="email"
@@ -154,7 +154,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
               </form>
 
               {/* Footer */}
-              <p className="text-xs text-gray-500 text-center mt-6">
+              <p className="text-xs text-mist text-center mt-6">
                 By continuing, you agree to our Terms of Service and Privacy Policy.
                 <br />
                 <strong>Note:</strong> Your resume will continue to save automatically.
@@ -165,7 +165,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <MdEmail className="text-green-600" size={32} />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Check Your Email</h3>
+              <h3 className="text-xl font-semibold text-ink mb-2">Check Your Email</h3>
               <p className="text-gray-600 mb-6">
                 We've sent a magic link to <strong>{email}</strong>.
                 <br />
@@ -173,7 +173,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
               </p>
               <button
                 onClick={onClose}
-                className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                className="px-6 py-2 bg-chalk-dark text-ink rounded-lg hover:bg-gray-200 transition-colors"
               >
                 Got it
               </button>

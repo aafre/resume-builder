@@ -77,7 +77,7 @@ export default function SignInRequiredGate({
             </div>
 
             {/* Heading */}
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-3">
+            <h1 className="text-2xl md:text-3xl font-bold text-ink text-center mb-3">
               {heading}
             </h1>
 
@@ -94,7 +94,7 @@ export default function SignInRequiredGate({
                 className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-accent/70 hover:bg-accent/[0.06] transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
               >
                 <FcGoogle size={24} />
-                <span className="font-semibold text-gray-700">Continue with Google</span>
+                <span className="font-semibold text-ink">Continue with Google</span>
               </button>
 
               <button
@@ -103,7 +103,7 @@ export default function SignInRequiredGate({
                 className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-200 rounded-lg hover:border-accent/70 hover:bg-accent/[0.06] transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
               >
                 <FaLinkedin size={24} className="text-[#0077B5]" />
-                <span className="font-semibold text-gray-700">Continue with LinkedIn</span>
+                <span className="font-semibold text-ink">Continue with LinkedIn</span>
               </button>
             </div>
 
@@ -113,18 +113,18 @@ export default function SignInRequiredGate({
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or use email</span>
+                <span className="px-2 bg-white text-mist">Or use email</span>
               </div>
             </div>
 
             {/* Email Sign-In Form */}
             <form onSubmit={handleEmailSignIn} className="space-y-4 mb-6">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="email" className="block text-sm font-medium text-ink mb-1">
                   Email Address
                 </label>
                 <div className="relative">
-                  <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                  <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 text-mist" size={20} />
                   <input
                     type="email"
                     id="email"
@@ -163,7 +163,7 @@ export default function SignInRequiredGate({
             </div>
 
             {/* Success Message */}
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Check Your Email</h3>
+            <h3 className="text-xl font-semibold text-ink mb-2">Check Your Email</h3>
             <p className="text-gray-600 mb-6">
               We've sent a magic link to <strong>{email}</strong>.
               <br />
@@ -179,7 +179,7 @@ export default function SignInRequiredGate({
 
             <button
               onClick={() => setEmailSent(false)}
-              className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-6 py-2 bg-chalk-dark text-ink rounded-lg hover:bg-gray-200 transition-colors"
             >
               Try a different method
             </button>

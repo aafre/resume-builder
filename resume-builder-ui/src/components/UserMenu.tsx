@@ -98,8 +98,8 @@ const UserMenu: React.FC = () => {
             </span>
           </div>
         )}
-        <span className="hidden sm:block text-sm font-medium text-gray-700">{displayName}</span>
-        <MdExpandMore className={`text-gray-500 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+        <span className="hidden sm:block text-sm font-medium text-ink">{displayName}</span>
+        <MdExpandMore className={`text-mist transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {/* Dropdown panel. Deliberately a disclosure, not an ARIA menu: the
@@ -108,10 +108,10 @@ const UserMenu: React.FC = () => {
           that this does not implement, which is worse than no role at all. */}
       {isOpen && (
         <div className="absolute right-0 mt-3 w-56 bg-white/95 backdrop-blur-xl rounded-xl shadow-xl border border-gray-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-          <div className="px-4 py-3 border-b border-gray-100/50">
-            <p className="text-sm font-semibold text-gray-900">{displayName}</p>
+          <div className="px-4 py-3 border-b border-gray-200/50">
+            <p className="text-sm font-semibold text-ink">{displayName}</p>
             {!isAnonymous && user.email && (
-              <p className="text-xs text-gray-500">{user.email}</p>
+              <p className="text-xs text-mist">{user.email}</p>
             )}
             {isAnonymous && (
               <p className="text-xs text-stone-warm font-medium">Guest — resumes saved on this device</p>
@@ -121,14 +121,14 @@ const UserMenu: React.FC = () => {
           {!isAnonymous && (
             <button
               onClick={handleMyResumes}
-              className="w-full flex min-h-11 items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-accent/[0.06] rounded-lg mx-2 my-1 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
+              className="w-full flex min-h-11 items-center gap-3 px-4 py-2.5 text-sm text-ink hover:bg-accent/[0.06] rounded-lg mx-2 my-1 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
             >
               <MdFolder size={18} className="text-accent-text" />
               <span>My Resumes</span>
             </button>
           )}
 
-          <div className="border-t border-gray-100/50 mt-1 pt-1">
+          <div className="border-t border-gray-200/50 mt-1 pt-1">
             <button
               onClick={handleSignOut}
               disabled={signingOut}
