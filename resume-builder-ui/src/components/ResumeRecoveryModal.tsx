@@ -37,7 +37,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-mist hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-chalk-dark"
+          className="absolute top-4 right-4 text-stone-warm hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-chalk-dark"
           aria-label="Close modal"
         >
           <MdClose size={24} />
@@ -91,7 +91,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
                 {/* Secondary: Continue as Guest */}
                 <button
                   onClick={onContinueAsGuest}
-                  className="w-full flex items-center justify-center gap-2 border-2 border-gray-300 text-ink font-semibold px-6 py-3 rounded-xl hover:border-mist hover:bg-chalk transition-all"
+                  className="w-full flex items-center justify-center gap-2 border-2 border-gray-300 text-ink font-semibold px-6 py-3 rounded-xl hover:border-stone-warm hover:bg-chalk transition-all"
                 >
                   <MdPerson className="text-xl" />
                   Continue as Guest
@@ -122,7 +122,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
                 {onCreateNew && (
                   <button
                     onClick={onCreateNew}
-                    className="w-full flex items-center justify-center gap-2 border-2 border-gray-300 text-ink font-semibold px-6 py-3 rounded-xl hover:border-mist hover:bg-chalk transition-all"
+                    className="w-full flex items-center justify-center gap-2 border-2 border-gray-300 text-ink font-semibold px-6 py-3 rounded-xl hover:border-stone-warm hover:bg-chalk transition-all"
                   >
                     Create New Resume
                   </button>

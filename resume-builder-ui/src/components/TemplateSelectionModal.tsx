@@ -131,14 +131,14 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
             >
               Choose Your Style
             </h2>
-            <p className="text-sm text-mist mt-0.5 hidden lg:block">
+            <p className="text-sm text-stone-warm mt-0.5 hidden lg:block">
               Select a template that matches your professional image
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-mist hover:text-gray-600 transition-colors p-2 rounded-full hover:bg-chalk-dark -mr-2"
+            className="text-stone-warm hover:text-gray-600 transition-colors p-2 rounded-full hover:bg-chalk-dark -mr-2"
             aria-label="Close modal"
             data-testid="template-selection-close"
           >
@@ -219,13 +219,13 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
                       </h3>
                       {bestFor && (
                         <p
-                          className="text-xs text-mist mt-1"
+                          className="text-xs text-stone-warm mt-1"
                           data-testid={`template-bestfor-${template.id}`}
                         >
                           {bestFor}
                         </p>
                       )}
-                      <p className="text-xs text-mist mt-1 line-clamp-2 hidden lg:block">
+                      <p className="text-xs text-stone-warm mt-1 line-clamp-2 hidden lg:block">
                         {template.description}
                       </p>
                     </div>

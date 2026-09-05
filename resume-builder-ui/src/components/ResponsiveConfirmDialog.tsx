@@ -90,7 +90,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
             </div>
             <button
               onClick={onClose}
-              className="flex-shrink-0 text-mist hover:text-gray-600 transition-colors p-1 -mr-1"
+              className="flex-shrink-0 text-stone-warm hover:text-gray-600 transition-colors p-1 -mr-1"
               aria-label="Close dialog"
               disabled={isLoading}
             >

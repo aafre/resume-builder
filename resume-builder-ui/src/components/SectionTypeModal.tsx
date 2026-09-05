@@ -226,7 +226,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
                                  ${isSelected ? 'text-ink/80' : 'text-ink group-hover:text-ink/80'}`}>
                     {section.title}
                   </h3>
-                  <p className="text-xs text-mist line-clamp-2">{section.description}</p>
+                  <p className="text-xs text-stone-warm line-clamp-2">{section.description}</p>
                 </div>
               </button>
             );
@@ -248,7 +248,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
             className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text
                        ${selectedType
                          ? 'bg-accent text-ink hover:bg-accent/90'
-                         : 'bg-gray-200 text-mist cursor-not-allowed'
+                         : 'bg-gray-200 text-stone-warm cursor-not-allowed'
                        }`}
           >
             Add Section

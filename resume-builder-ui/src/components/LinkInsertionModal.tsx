@@ -108,7 +108,7 @@ export const LinkInsertionModal: React.FC<LinkInsertionModalProps> = ({
           <div>
             <label htmlFor="link-text" className="block text-sm font-medium text-ink mb-1">
               Link Text
-              <span className="text-mist font-normal ml-1">(what users will see)</span>
+              <span className="text-stone-warm font-normal ml-1">(what users will see)</span>
             </label>
             <input
               id="link-text"

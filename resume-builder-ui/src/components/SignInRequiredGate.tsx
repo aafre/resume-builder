@@ -113,7 +113,7 @@ export default function SignInRequiredGate({
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-mist">Or use email</span>
+                <span className="px-2 bg-white text-stone-warm">Or use email</span>
               </div>
             </div>
 
@@ -124,7 +124,7 @@ export default function SignInRequiredGate({
                   Email Address
                 </label>
                 <div className="relative">
-                  <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 text-mist" size={20} />
+                  <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-warm" size={20} />
                   <input
                     type="email"
                     id="email"

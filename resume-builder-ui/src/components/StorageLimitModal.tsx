@@ -42,7 +42,7 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
             </div>
             <div>
               <h2 id={titleId} className="text-xl font-bold text-ink">Storage Full</h2>
-              <p className="text-sm text-mist mt-1">You've reached the 5-resume limit</p>
+              <p className="text-sm text-stone-warm mt-1">You've reached the 5-resume limit</p>
             </div>
           </div>
 

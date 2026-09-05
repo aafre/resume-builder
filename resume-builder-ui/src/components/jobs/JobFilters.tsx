@@ -226,7 +226,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
 function FilterField({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-mist mb-1">{label}</label>
+      <label className="block text-xs font-medium text-stone-warm mb-1">{label}</label>
       {children}
     </div>
   );

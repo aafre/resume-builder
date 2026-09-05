@@ -91,7 +91,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
 
             <button
               onClick={onClose}
-              className="p-2 text-mist hover:text-ink hover:bg-chalk-dark rounded-lg transition-colors"
+              className="p-2 text-stone-warm hover:text-ink hover:bg-chalk-dark rounded-lg transition-colors"
               title="Close (ESC)"
             >
               <MdClose className="text-xl" />
@@ -124,7 +124,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
               <div className="absolute inset-0 bg-white flex flex-col items-center justify-center z-10 transition-opacity duration-300">
                 <div className="animate-spin rounded-full h-12 w-12 border-4 border-accent border-t-transparent mb-4"></div>
                 <p className="text-stone-warm font-medium mb-2">Generating PDF preview...</p>
-                <p className="text-mist text-sm">This usually takes 2-5 seconds</p>
+                <p className="text-stone-warm text-sm">This usually takes 2-5 seconds</p>
               </div>
             )}
 
@@ -210,7 +210,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
               <button
                 onClick={onRefresh}
                 disabled={isGenerating}
-                className="flex items-center justify-center gap-2 px-4 lg:px-6 py-3.5 bg-white border-2 border-gray-300 text-ink rounded-xl font-medium hover:bg-chalk hover:border-mist disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98] min-h-[52px]"
+                className="flex items-center justify-center gap-2 px-4 lg:px-6 py-3.5 bg-white border-2 border-gray-300 text-ink rounded-xl font-medium hover:bg-chalk hover:border-stone-warm disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98] min-h-[52px]"
                 style={{ WebkitTapHighlightColor: "transparent" }}
               >
                 {isGenerating ? (

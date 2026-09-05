@@ -99,7 +99,7 @@ const UserMenu: React.FC = () => {
           </div>
         )}
         <span className="hidden sm:block text-sm font-medium text-ink">{displayName}</span>
-        <MdExpandMore className={`text-mist transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+        <MdExpandMore className={`text-stone-warm transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {/* Dropdown panel. Deliberately a disclosure, not an ARIA menu: the
@@ -111,7 +111,7 @@ const UserMenu: React.FC = () => {
           <div className="px-4 py-3 border-b border-gray-200/50">
             <p className="text-sm font-semibold text-ink">{displayName}</p>
             {!isAnonymous && user.email && (
-              <p className="text-xs text-mist">{user.email}</p>
+              <p className="text-xs text-stone-warm">{user.email}</p>
             )}
             {isAnonymous && (
               <p className="text-xs text-stone-warm font-medium">Guest — resumes saved on this device</p>

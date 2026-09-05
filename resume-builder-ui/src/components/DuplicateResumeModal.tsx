@@ -64,7 +64,7 @@ export function DuplicateResumeModal({
             </div>
             <div>
               <h2 id={titleId} className="text-xl font-bold text-ink">Duplicate Resume</h2>
-              <p className="text-sm text-mist mt-1">Create a copy with a new name</p>
+              <p className="text-sm text-stone-warm mt-1">Create a copy with a new name</p>
             </div>
           </div>
 
@@ -84,7 +84,7 @@ export function DuplicateResumeModal({
                 placeholder="Enter new title"
                 maxLength={200}
               />
-              <p className="text-xs text-mist mt-1">
+              <p className="text-xs text-stone-warm mt-1">
                 Original: <span className="font-medium">{resume.title}</span>
               </p>
             </div>

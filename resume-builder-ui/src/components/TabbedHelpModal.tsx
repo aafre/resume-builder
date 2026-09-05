@@ -46,7 +46,7 @@ export default function TabbedHelpModal({
             </h2>
             <button
               onClick={onClose}
-              className="text-mist hover:text-gray-600 transition-colors"
+              className="text-stone-warm hover:text-gray-600 transition-colors"
             >
               <MdClose className="w-6 h-6" />
             </button>
@@ -152,7 +152,7 @@ function EditorGuideContent() {
             <MdTouchApp className="text-accent-text flex-shrink-0" />
             <span><strong>Mobile:</strong> Press and hold any section or item, then drag to reorder</span>
           </p>
-          <p className="text-sm text-mist mt-2">
+          <p className="text-sm text-stone-warm mt-2">
             Works for sections, experience entries, education items, and bullet points.
           </p>
         </div>
