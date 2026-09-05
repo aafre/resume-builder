@@ -66,7 +66,7 @@ export default function ActualFreeResumeBuilder() {
                 <td className="px-4 py-4 font-medium text-ink">
                   PDF Download
                 </td>
-                <td className="px-4 py-4 text-center text-accent font-bold">
+                <td className="px-4 py-4 text-center text-accent-text font-bold">
                   ✓ Free
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
@@ -77,7 +77,7 @@ export default function ActualFreeResumeBuilder() {
                 <td className="px-4 py-4 font-medium text-ink">
                   DOCX Download
                 </td>
-                <td className="px-4 py-4 text-center text-accent font-bold">
+                <td className="px-4 py-4 text-center text-accent-text font-bold">
                   ✓ Free
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
@@ -88,7 +88,7 @@ export default function ActualFreeResumeBuilder() {
                 <td className="px-4 py-4 font-medium text-ink">
                   No Watermark
                 </td>
-                <td className="px-4 py-4 text-center text-accent font-bold">
+                <td className="px-4 py-4 text-center text-accent-text font-bold">
                   ✓ Always
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
@@ -99,7 +99,7 @@ export default function ActualFreeResumeBuilder() {
                 <td className="px-4 py-4 font-medium text-ink">
                   All Templates
                 </td>
-                <td className="px-4 py-4 text-center text-accent font-bold">
+                <td className="px-4 py-4 text-center text-accent-text font-bold">
                   ✓ Access all
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
@@ -110,7 +110,7 @@ export default function ActualFreeResumeBuilder() {
                 <td className="px-4 py-4 font-medium text-ink">
                   No Account Required
                 </td>
-                <td className="px-4 py-4 text-center text-accent font-bold">
+                <td className="px-4 py-4 text-center text-accent-text font-bold">
                   ✓ Optional
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">
@@ -121,7 +121,7 @@ export default function ActualFreeResumeBuilder() {
                 <td className="px-4 py-4 font-medium text-ink">
                   Unlimited Downloads
                 </td>
-                <td className="px-4 py-4 text-center text-accent font-bold">
+                <td className="px-4 py-4 text-center text-accent-text font-bold">
                   ✓ Yes
                 </td>
                 <td className="px-4 py-4 text-center text-red-600">

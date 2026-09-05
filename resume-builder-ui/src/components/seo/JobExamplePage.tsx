@@ -304,7 +304,7 @@ export default function JobExamplePage() {
                   {/* Contact Header */}
                   <div className="text-center border-b border-black/[0.06] pb-6 mb-6">
                     <h3 className="text-2xl font-bold text-ink">{data.resume.contact.name}</h3>
-                    <p className="text-lg text-accent mt-1">{data.resume.contact.title}</p>
+                    <p className="text-lg text-accent-text mt-1">{data.resume.contact.title}</p>
                     <p className="text-stone-warm mt-2 text-sm">
                       {data.resume.contact.email} | {data.resume.contact.phone} | {data.resume.contact.location}
                     </p>
@@ -420,19 +420,19 @@ export default function JobExamplePage() {
                   <h4 className="font-bold text-ink mb-3">What you get:</h4>
                   <ul className="space-y-2 text-sm text-stone-warm">
                     <li className="flex items-center gap-2">
-                      <span className="text-accent">&#10003;</span>
+                      <span className="text-accent-text">&#10003;</span>
                       ATS-optimized format
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="text-accent">&#10003;</span>
+                      <span className="text-accent-text">&#10003;</span>
                       Pre-written bullet points
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="text-accent">&#10003;</span>
+                      <span className="text-accent-text">&#10003;</span>
                       Professional layout
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="text-accent">&#10003;</span>
+                      <span className="text-accent-text">&#10003;</span>
                       Free PDF download
                     </li>
                   </ul>
@@ -491,7 +491,7 @@ export default function JobExamplePage() {
                   <p className="text-sm text-stone-warm line-clamp-2">
                     {job.metaDescription}
                   </p>
-                  <span className="inline-block mt-3 text-accent text-sm font-medium">
+                  <span className="inline-block mt-3 text-accent-text text-sm font-medium">
                     View Example &rarr;
                   </span>
                 </Link>

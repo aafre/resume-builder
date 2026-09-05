@@ -41,7 +41,7 @@ export default function FreeResumeBuilderDownload() {
           <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-12">
             Different situations call for different file formats. EasyFreeResume lets you download your resume in
             both major formats that employers and{' '}
-            <Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">
+            <Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline">
               applicant tracking systems
             </Link>{' '}
             accept — at no cost.
@@ -67,7 +67,7 @@ export default function FreeResumeBuilderDownload() {
                   'Best choice for online job portals',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm text-stone-warm">
-                    <span className="text-accent font-bold mt-0.5 flex-shrink-0">&#10003;</span>
+                    <span className="text-accent-text font-bold mt-0.5 flex-shrink-0">&#10003;</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -93,7 +93,7 @@ export default function FreeResumeBuilderDownload() {
                   'Good for staffing agencies that reformat resumes',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm text-stone-warm">
-                    <span className="text-accent font-bold mt-0.5 flex-shrink-0">&#10003;</span>
+                    <span className="text-accent-text font-bold mt-0.5 flex-shrink-0">&#10003;</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -222,7 +222,7 @@ export default function FreeResumeBuilderDownload() {
           <p className="text-lg md:text-xl font-extralight text-stone-warm max-w-4xl mx-auto text-center leading-relaxed mb-12">
             Some resume tools keep your resume locked inside their platform. EasyFreeResume gives you a file you own and control.
             See how{' '}
-            <Link to="/blog/best-free-resume-builders-2026" className="text-accent hover:underline">
+            <Link to="/blog/best-free-resume-builders-2026" className="text-accent-text hover:underline">
               downloadable resume builders
             </Link>{' '}
             compare to online-only tools.
@@ -232,7 +232,7 @@ export default function FreeResumeBuilderDownload() {
               <thead className="bg-chalk-dark">
                 <tr>
                   <th className="px-6 py-4 text-left font-bold text-ink">Feature</th>
-                  <th className="px-6 py-4 text-center font-bold text-accent">Download Builder (EasyFreeResume)</th>
+                  <th className="px-6 py-4 text-center font-bold text-accent-text">Download Builder (EasyFreeResume)</th>
                   <th className="px-6 py-4 text-center font-bold text-ink">Online-Only Builder</th>
                 </tr>
               </thead>
@@ -248,7 +248,7 @@ export default function FreeResumeBuilderDownload() {
                 ].map((row, i) => (
                   <tr key={row.feature} className={i % 2 === 1 ? 'bg-chalk-dark' : ''}>
                     <td className="px-6 py-4 font-medium text-ink">{row.feature}</td>
-                    <td className="px-6 py-4 text-center text-accent font-bold text-sm">{row.download}</td>
+                    <td className="px-6 py-4 text-center text-accent-text font-bold text-sm">{row.download}</td>
                     <td className="px-6 py-4 text-center text-stone-warm text-sm">{row.online}</td>
                   </tr>
                 ))}
@@ -274,7 +274,7 @@ export default function FreeResumeBuilderDownload() {
             </p>
             <div className="space-y-4 mb-6">
               <div className="flex items-start gap-3">
-                <span className="text-accent font-bold mt-0.5">&#10003;</span>
+                <span className="text-accent-text font-bold mt-0.5">&#10003;</span>
                 <div>
                   <span className="font-bold text-ink">PDF is the safest choice for most applications.</span>
                   <span className="text-stone-warm font-extralight">
@@ -284,7 +284,7 @@ export default function FreeResumeBuilderDownload() {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="text-accent font-bold mt-0.5">&#10003;</span>
+                <span className="text-accent-text font-bold mt-0.5">&#10003;</span>
                 <div>
                   <span className="font-bold text-ink">DOCX is preferred by some older ATS platforms.</span>
                   <span className="text-stone-warm font-extralight">
@@ -294,16 +294,16 @@ export default function FreeResumeBuilderDownload() {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="text-accent font-bold mt-0.5">&#10003;</span>
+                <span className="text-accent-text font-bold mt-0.5">&#10003;</span>
                 <div>
                   <span className="font-bold text-ink">Include the right keywords regardless of format.</span>
                   <span className="text-stone-warm font-extralight">
                     {' '}Format matters, but{' '}
-                    <Link to="/resume-keywords" className="text-accent hover:underline">
+                    <Link to="/resume-keywords" className="text-accent-text hover:underline">
                       resume keywords
                     </Link>{' '}
                     matter more. Use our{' '}
-                    <Link to="/resume-keyword-scanner" className="text-accent hover:underline">
+                    <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">
                       keyword scanner
                     </Link>{' '}
                     to check your resume against a job description before downloading.
@@ -313,11 +313,11 @@ export default function FreeResumeBuilderDownload() {
             </div>
             <p className="text-sm text-stone-warm">
               All EasyFreeResume templates are built to be{' '}
-              <Link to="/templates/ats-friendly" className="text-accent hover:underline">
+              <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">
                 ATS-friendly
               </Link>{' '}
               in both PDF and DOCX formats. Learn more in our{' '}
-              <Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">
+              <Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline">
                 ATS optimization guide
               </Link>.
             </p>

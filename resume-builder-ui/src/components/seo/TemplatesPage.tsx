@@ -67,19 +67,19 @@ export default function TemplatesPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <p className="font-semibold text-ink">Workday</p>
-              <p className="text-accent text-sm">✓ Compatible</p>
+              <p className="text-accent-text text-sm">✓ Compatible</p>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <p className="font-semibold text-ink">Taleo</p>
-              <p className="text-accent text-sm">✓ Compatible</p>
+              <p className="text-accent-text text-sm">✓ Compatible</p>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <p className="font-semibold text-ink">iCIMS</p>
-              <p className="text-accent text-sm">✓ Compatible</p>
+              <p className="text-accent-text text-sm">✓ Compatible</p>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <p className="font-semibold text-ink">Greenhouse</p>
-              <p className="text-accent text-sm">✓ Compatible</p>
+              <p className="text-accent-text text-sm">✓ Compatible</p>
             </div>
           </div>
         </div>

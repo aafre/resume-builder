@@ -103,7 +103,7 @@ export default function ResumeBuilderForITProfessionals() {
           </div>
           <p className="text-lg text-stone-warm font-extralight leading-relaxed mt-8 text-center">
             Not sure which skills to highlight? Use our{' '}
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">resume keyword scanner</Link>{' '}
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">resume keyword scanner</Link>{' '}
             to compare your resume against the job description and identify exactly what is missing.
           </p>
         </div>
@@ -118,7 +118,7 @@ export default function ResumeBuilderForITProfessionals() {
           <p className="text-lg text-stone-warm font-extralight mb-6 leading-relaxed">
             Different IT roles require different keyword strategies. Browse our curated keyword
             lists for your specific role, or read our guide on{' '}
-            <Link to="/blog/how-to-list-skills" className="text-accent hover:underline font-medium">how to list skills on a resume</Link>{' '}
+            <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline font-medium">how to list skills on a resume</Link>{' '}
             for general best practices:
           </p>
           <div className="grid md:grid-cols-2 gap-4">
@@ -177,7 +177,7 @@ export default function ResumeBuilderForITProfessionals() {
           </div>
           <p className="text-lg text-stone-warm font-extralight leading-relaxed mt-8 text-center">
             For a deeper dive, read our complete{' '}
-            <Link to="/blog/tech-resume-guide" className="text-accent hover:underline font-medium">tech resume writing guide</Link>.
+            <Link to="/blog/tech-resume-guide" className="text-accent-text hover:underline font-medium">tech resume writing guide</Link>.
           </p>
         </div>
       </RevealSection>

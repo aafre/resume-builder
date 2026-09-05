@@ -134,7 +134,7 @@ export default function FreeCVBuilder() {
           <div className="max-w-4xl mx-auto bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06]">
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h3 className="font-display text-xl font-bold text-accent mb-4">We DO NOT store:</h3>
+                <h3 className="font-display text-xl font-bold text-accent-text mb-4">We DO NOT store:</h3>
                 <ul className="space-y-2 text-stone-warm list-disc pl-5">
                   <li>Your CV content</li>
                   <li>Your personal information</li>

@@ -60,7 +60,7 @@ export default function FreeResumeBuilderNoPayment() {
             Most "free" resume builders advertise zero cost upfront, but the charges appear the moment you try
             to download, export, or use premium features. Here is exactly what they charge — and what
             EasyFreeResume gives you for free. For a deeper comparison, see our{' '}
-            <Link to="/blog/best-free-resume-builders-2026" className="text-accent hover:underline">
+            <Link to="/blog/best-free-resume-builders-2026" className="text-accent-text hover:underline">
               best free resume builders guide
             </Link>.
           </p>
@@ -120,7 +120,7 @@ export default function FreeResumeBuilderNoPayment() {
                   >
                     <td className="px-6 py-4 font-bold text-ink">
                       {builder.highlight ? (
-                        <span className="text-accent">{builder.name}</span>
+                        <span className="text-accent-text">{builder.name}</span>
                       ) : (
                         builder.name
                       )}
@@ -128,7 +128,7 @@ export default function FreeResumeBuilderNoPayment() {
                     <td className="px-6 py-4 text-stone-warm text-sm">{builder.advertised}</td>
                     <td className="px-6 py-4 text-sm">
                       {builder.highlight ? (
-                        <span className="text-accent font-bold">{builder.cost}</span>
+                        <span className="text-accent-text font-bold">{builder.cost}</span>
                       ) : (
                         <span className="text-red-600 font-medium">{builder.cost}</span>
                       )}
@@ -201,7 +201,7 @@ export default function FreeResumeBuilderNoPayment() {
                   'Transparent ad-supported business model',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm text-stone-warm">
-                    <span className="text-accent font-bold mt-0.5 flex-shrink-0">&#10003;</span>
+                    <span className="text-accent-text font-bold mt-0.5 flex-shrink-0">&#10003;</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -260,7 +260,7 @@ export default function FreeResumeBuilderNoPayment() {
           <p className="text-sm text-stone-warm mt-6 text-center">
             Scenarios based on common user patterns. Want to see how free resume builders compare?
             Read our{' '}
-            <Link to="/blog/best-free-resume-builders-2026" className="text-accent hover:underline">
+            <Link to="/blog/best-free-resume-builders-2026" className="text-accent-text hover:underline">
               detailed comparison
             </Link>.
           </p>
@@ -290,7 +290,7 @@ export default function FreeResumeBuilderNoPayment() {
                 'There is no "premium" tier to upsell you into',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <span className="text-accent font-bold mt-0.5">&#10003;</span>
+                  <span className="text-accent-text font-bold mt-0.5">&#10003;</span>
                   <span className="text-stone-warm font-extralight">{item}</span>
                 </li>
               ))}
@@ -298,7 +298,7 @@ export default function FreeResumeBuilderNoPayment() {
             <p className="text-lg font-extralight text-stone-warm leading-relaxed mt-6">
               We believe a resume builder should help you get a job, not drain your savings before you even start.
               Read more about our philosophy in our{' '}
-              <Link to="/blog/how-why-easyfreeresume-completely-free" className="text-accent hover:underline">
+              <Link to="/blog/how-why-easyfreeresume-completely-free" className="text-accent-text hover:underline">
                 transparency post
               </Link>.
             </p>

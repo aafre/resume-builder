@@ -99,7 +99,7 @@ export default function CVTemplatesPage() {
                 <li>United States</li>
                 <li>Canada</li>
               </ul>
-              <p className="text-accent text-sm mt-3">
+              <p className="text-accent-text text-sm mt-3">
                 Looking for US-style resumes?{' '}
                 <Link to="/templates" className="underline hover:text-ink">
                   View Resume Templates
@@ -126,23 +126,23 @@ export default function CVTemplatesPage() {
             <h3 className="font-display text-xl font-bold text-ink mb-4">Do Include</h3>
             <ul className="space-y-2 text-stone-warm">
               <li className="flex items-start">
-                <span className="text-accent font-bold mr-3" aria-hidden="true">&#10003;</span>
+                <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
                 <span><strong>Personal profile</strong> (3-4 lines summarising your experience)</span>
               </li>
               <li className="flex items-start">
-                <span className="text-accent font-bold mr-3" aria-hidden="true">&#10003;</span>
+                <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
                 <span><strong>Contact details</strong> (phone, email, city/region)</span>
               </li>
               <li className="flex items-start">
-                <span className="text-accent font-bold mr-3" aria-hidden="true">&#10003;</span>
+                <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
                 <span><strong>Work experience</strong> with quantified achievements</span>
               </li>
               <li className="flex items-start">
-                <span className="text-accent font-bold mr-3" aria-hidden="true">&#10003;</span>
+                <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
                 <span><strong>Education</strong> and relevant qualifications</span>
               </li>
               <li className="flex items-start">
-                <span className="text-accent font-bold mr-3" aria-hidden="true">&#10003;</span>
+                <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
                 <span><strong>Key skills</strong> relevant to the role</span>
               </li>
             </ul>
@@ -189,7 +189,7 @@ export default function CVTemplatesPage() {
           </h2>
           <div className="flex flex-col md:flex-row items-center justify-center gap-8">
             <div className="text-center">
-              <div className="text-6xl font-bold text-accent">2</div>
+              <div className="text-6xl font-bold text-accent-text">2</div>
               <div className="text-stone-warm">Pages Maximum</div>
             </div>
             <div className="text-stone-warm max-w-md">

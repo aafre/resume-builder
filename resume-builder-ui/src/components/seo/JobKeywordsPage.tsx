@@ -118,7 +118,7 @@ export default function JobKeywordsPage() {
         <h3 className="font-bold text-ink mb-3">🔗 Part of Our Series</h3>
         <p className="text-ink/80">
           This article is part of our Resume Keywords series. For a complete overview, see our{' '}
-          <a href="/resume-keywords" className="text-accent hover:text-ink underline font-medium">
+          <a href="/resume-keywords" className="text-accent-text hover:text-ink underline font-medium">
             Resume Keywords Hub
           </a>
           .
@@ -311,7 +311,7 @@ export default function JobKeywordsPage() {
               <p className="text-stone-warm mb-4">
                 {example.before}
               </p>
-              <h4 className="font-bold text-accent mb-4">
+              <h4 className="font-bold text-accent-text mb-4">
                 ✅ Optimized (After)
               </h4>
               <HighlightedText
@@ -378,7 +378,7 @@ export default function JobKeywordsPage() {
                   className="bg-white border border-black/[0.06] rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300"
                 >
                   <p className="text-ink/80">
-                    <span className="text-accent font-bold mr-2">•</span>
+                    <span className="text-accent-text font-bold mr-2">•</span>
                     {bullet}
                   </p>
                 </div>
@@ -410,7 +410,7 @@ export default function JobKeywordsPage() {
                   <h4 className="font-bold text-ink mb-1">
                     <span aria-hidden="true">❌</span> {item.mistake}
                   </h4>
-                  <p className="text-accent text-sm">
+                  <p className="text-accent-text text-sm">
                     → {item.fix}
                   </p>
                 </div>
@@ -430,12 +430,12 @@ export default function JobKeywordsPage() {
           <h2 className="text-2xl font-extrabold text-ink tracking-tight mb-4">Related Resources</h2>
           <ul className="space-y-2">
             {matchingExampleSlug && (
-              <li><Link to={`/examples/${matchingExampleSlug}`} className="text-accent hover:underline font-medium">Free {jobData.title} Resume Example — Ready to Customize</Link></li>
+              <li><Link to={`/examples/${matchingExampleSlug}`} className="text-accent-text hover:underline font-medium">Free {jobData.title} Resume Example — Ready to Customize</Link></li>
             )}
-            <li><Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">How to Use Resume Keywords Effectively</Link></li>
-            <li><Link to="/resume-keyword-scanner" className="text-accent hover:underline">ATS Keyword Scanner — Check Your Match Score</Link></li>
-            <li><Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">ATS Resume Optimization Guide</Link></li>
-            <li><Link to="/resume-keywords" className="text-accent hover:underline">Browse All Resume Keywords by Job Title</Link></li>
+            <li><Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">How to Use Resume Keywords Effectively</Link></li>
+            <li><Link to="/resume-keyword-scanner" className="text-accent-text hover:underline">ATS Keyword Scanner — Check Your Match Score</Link></li>
+            <li><Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline">ATS Resume Optimization Guide</Link></li>
+            <li><Link to="/resume-keywords" className="text-accent-text hover:underline">Browse All Resume Keywords by Job Title</Link></li>
           </ul>
         </div>
       </RevealSection>

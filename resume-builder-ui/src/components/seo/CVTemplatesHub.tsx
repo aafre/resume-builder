@@ -48,23 +48,23 @@ export default function CVTemplatesHub() {
           </p>
           <ul className="space-y-3 text-stone-warm">
             <li className="flex items-start">
-              <span className="text-accent font-bold mr-3" aria-hidden="true">&#10003;</span>
+              <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
               <span><strong>Standard fonts</strong> like Arial, Calibri, or Times New Roman</span>
             </li>
             <li className="flex items-start">
-              <span className="text-accent font-bold mr-3" aria-hidden="true">&#10003;</span>
+              <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
               <span><strong>Clear section headers</strong> (Personal Profile, Experience, Education, Skills)</span>
             </li>
             <li className="flex items-start">
-              <span className="text-accent font-bold mr-3" aria-hidden="true">&#10003;</span>
+              <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
               <span><strong>Simple formatting</strong> without complex tables or graphics</span>
             </li>
             <li className="flex items-start">
-              <span className="text-accent font-bold mr-3" aria-hidden="true">&#10003;</span>
+              <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
               <span><strong>Standard bullet points</strong> (avoid special characters)</span>
             </li>
             <li className="flex items-start">
-              <span className="text-accent font-bold mr-3" aria-hidden="true">&#10003;</span>
+              <span className="text-accent-text font-bold mr-3" aria-hidden="true">&#10003;</span>
               <span><strong>Reverse chronological order</strong> (most recent experience first)</span>
             </li>
           </ul>
@@ -131,7 +131,7 @@ export default function CVTemplatesHub() {
             <p className="text-stone-warm text-sm mb-3">
               Clean, modern design that passes all ATS systems. Perfect for UK and international applications.
             </p>
-            <div className="text-accent font-semibold text-sm">
+            <div className="text-accent-text font-semibold text-sm">
               View Template &#8594;
             </div>
           </Link>
@@ -155,7 +155,7 @@ export default function CVTemplatesHub() {
           </p>
           <Link
             to="/blog/resume-vs-cv-difference"
-            className="inline-block mt-4 text-accent hover:text-ink font-semibold"
+            className="inline-block mt-4 text-accent-text hover:text-ink font-semibold"
           >
             Learn more: CV vs Resume differences &#8594;
           </Link>

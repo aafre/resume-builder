@@ -113,7 +113,7 @@ export default function ZetyFreeAlternative() {
                     <span className="text-stone-warm font-extralight text-sm">{item.zety}</span>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="text-accent font-bold mt-0.5">✓</span>
+                    <span className="text-accent-text font-bold mt-0.5">✓</span>
                     <span className="text-stone-warm font-extralight text-sm">{item.efr}</span>
                   </div>
                 </li>
@@ -122,7 +122,7 @@ export default function ZetyFreeAlternative() {
           </div>
           <p className="text-center mt-6 text-stone-warm font-extralight">
             See the full breakdown in our{' '}
-            <Link to="/easyfreeresume-vs-zety" className="text-accent hover:underline font-medium">
+            <Link to="/easyfreeresume-vs-zety" className="text-accent-text hover:underline font-medium">
               detailed EasyFreeResume vs Zety comparison
             </Link>.
           </p>
@@ -154,7 +154,7 @@ export default function ZetyFreeAlternative() {
           </div>
           <p className="text-center mt-8 text-stone-warm font-extralight">
             Read our detailed{' '}
-            <Link to="/easyfreeresume-vs-zety" className="text-accent hover:underline">
+            <Link to="/easyfreeresume-vs-zety" className="text-accent-text hover:underline">
               Zety vs EasyFreeResume comparison
             </Link>{' '}
             for a thorough, factual breakdown.

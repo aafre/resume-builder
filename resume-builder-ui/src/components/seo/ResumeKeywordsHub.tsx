@@ -137,7 +137,7 @@ export default function ResumeKeywordsHub() {
             {/* Table of contents */}
             <div className="bg-chalk rounded-lg p-6 border border-black/[0.06]">
               <h3 className="font-bold text-ink mb-3">On this page</h3>
-              <ul className="space-y-2 text-accent">
+              <ul className="space-y-2 text-accent-text">
                 <li><a href="#popular-keywords" className="hover:underline">Most Popular Keywords Across All Industries</a></li>
                 <li><a href="#quick-reference" className="hover:underline">Quick-Reference Lists by Job Title</a></li>
                 <li><a href="#technology" className="hover:underline">Technology &amp; Engineering Keywords</a></li>
@@ -252,7 +252,7 @@ export default function ResumeKeywordsHub() {
               {/* Software Engineer */}
               <div className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm">
                 <h3 className="text-xl font-bold text-ink mb-3">
-                  <Link to="/resume-keywords/software-engineer" className="text-accent hover:underline">
+                  <Link to="/resume-keywords/software-engineer" className="text-accent-text hover:underline">
                     Software Engineer
                   </Link>
                 </h3>
@@ -266,7 +266,7 @@ export default function ResumeKeywordsHub() {
               {/* Product Manager */}
               <div className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm">
                 <h3 className="text-xl font-bold text-ink mb-3">
-                  <Link to="/resume-keywords/product-manager" className="text-accent hover:underline">
+                  <Link to="/resume-keywords/product-manager" className="text-accent-text hover:underline">
                     Product Manager
                   </Link>
                 </h3>
@@ -280,7 +280,7 @@ export default function ResumeKeywordsHub() {
               {/* Data Analyst */}
               <div className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm">
                 <h3 className="text-xl font-bold text-ink mb-3">
-                  <Link to="/resume-keywords/data-analyst" className="text-accent hover:underline">
+                  <Link to="/resume-keywords/data-analyst" className="text-accent-text hover:underline">
                     Data Analyst
                   </Link>
                 </h3>
@@ -294,7 +294,7 @@ export default function ResumeKeywordsHub() {
               {/* Customer Service */}
               <div className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm">
                 <h3 className="text-xl font-bold text-ink mb-3">
-                  <Link to="/resume-keywords/customer-service" className="text-accent hover:underline">
+                  <Link to="/resume-keywords/customer-service" className="text-accent-text hover:underline">
                     Customer Service
                   </Link>
                 </h3>
@@ -308,7 +308,7 @@ export default function ResumeKeywordsHub() {
               {/* Marketing Manager */}
               <div className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm">
                 <h3 className="text-xl font-bold text-ink mb-3">
-                  <Link to="/resume-keywords/marketing-manager" className="text-accent hover:underline">
+                  <Link to="/resume-keywords/marketing-manager" className="text-accent-text hover:underline">
                     Marketing Manager
                   </Link>
                 </h3>
@@ -348,7 +348,7 @@ export default function ResumeKeywordsHub() {
                   and before/after resume examples for 5 different customer service roles.
                 </p>
               </div>
-              <div className="text-accent font-semibold whitespace-nowrap text-lg">
+              <div className="text-accent-text font-semibold whitespace-nowrap text-lg">
                 View Guide →
               </div>
             </div>

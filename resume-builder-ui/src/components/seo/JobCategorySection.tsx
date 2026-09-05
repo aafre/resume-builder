@@ -42,7 +42,7 @@ export default function JobCategorySection({ title, jobs, id }: JobCategorySecti
                   {job.keywords.technical.length > 0 &&
                     ` including ${job.keywords.technical.slice(0, 2).join(', ')}${job.keywords.technical.length > 2 ? ', and more' : ''}`}
                 </p>
-                <div className="font-semibold text-sm text-accent">
+                <div className="font-semibold text-sm text-accent-text">
                   View Keywords →
                 </div>
               </Link>

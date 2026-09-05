@@ -176,10 +176,10 @@ export default function JobExamplesHub() {
                       className="bg-white rounded-2xl p-6 border border-black/[0.06] shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all duration-300 group"
                     >
                       <div className="flex items-start justify-between">
-                        <h3 className="font-bold text-ink group-hover:text-accent transition-colors">
+                        <h3 className="font-bold text-ink group-hover:text-accent-text transition-colors">
                           {job.title}
                         </h3>
-                        <span className="text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="text-accent-text opacity-0 group-hover:opacity-100 transition-opacity">
                           &rarr;
                         </span>
                       </div>
@@ -216,19 +216,19 @@ export default function JobExamplesHub() {
         <section className="my-16 cv-auto cv-h-200">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
-              <p className="text-3xl font-extrabold text-accent">{totalExamples}+</p>
+              <p className="text-3xl font-extrabold text-accent-text">{totalExamples}+</p>
               <p className="text-stone-warm">Resume Examples</p>
             </div>
             <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
-              <p className="text-3xl font-extrabold text-accent">{JOB_CATEGORIES.length}</p>
+              <p className="text-3xl font-extrabold text-accent-text">{JOB_CATEGORIES.length}</p>
               <p className="text-stone-warm">Industries Covered</p>
             </div>
             <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
-              <p className="text-3xl font-extrabold text-accent">100%</p>
+              <p className="text-3xl font-extrabold text-accent-text">100%</p>
               <p className="text-stone-warm">Free to Use</p>
             </div>
             <div className="bg-white rounded-2xl p-6 text-center card-gradient-border shadow-premium">
-              <p className="text-3xl font-extrabold text-accent">ATS</p>
+              <p className="text-3xl font-extrabold text-accent-text">ATS</p>
               <p className="text-stone-warm">Optimized</p>
             </div>
           </div>

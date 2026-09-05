@@ -98,29 +98,29 @@ export default function MinimalistTemplatesPage() {
               <thead>
                 <tr className="bg-chalk-dark">
                   <th className="px-6 py-4 text-left font-bold text-ink">Aspect</th>
-                  <th className="px-6 py-4 text-center font-bold text-accent">Minimalist</th>
+                  <th className="px-6 py-4 text-center font-bold text-accent-text">Minimalist</th>
                   <th className="px-6 py-4 text-center font-bold text-stone-warm">Complex/Graphic</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-black/[0.06]">
                 <tr>
                   <td className="px-6 py-4 font-medium text-ink">ATS Compatibility</td>
-                  <td className="px-6 py-4 text-center text-accent">Excellent</td>
+                  <td className="px-6 py-4 text-center text-accent-text">Excellent</td>
                   <td className="px-6 py-4 text-center text-red-600">Often fails</td>
                 </tr>
                 <tr className="bg-chalk-dark">
                   <td className="px-6 py-4 font-medium text-ink">Readability</td>
-                  <td className="px-6 py-4 text-center text-accent">High</td>
+                  <td className="px-6 py-4 text-center text-accent-text">High</td>
                   <td className="px-6 py-4 text-center text-yellow-600">Variable</td>
                 </tr>
                 <tr>
                   <td className="px-6 py-4 font-medium text-ink">Industry Versatility</td>
-                  <td className="px-6 py-4 text-center text-accent">Universal</td>
+                  <td className="px-6 py-4 text-center text-accent-text">Universal</td>
                   <td className="px-6 py-4 text-center text-yellow-600">Limited</td>
                 </tr>
                 <tr className="bg-chalk-dark">
                   <td className="px-6 py-4 font-medium text-ink">Printing Quality</td>
-                  <td className="px-6 py-4 text-center text-accent">Consistent</td>
+                  <td className="px-6 py-4 text-center text-accent-text">Consistent</td>
                   <td className="px-6 py-4 text-center text-yellow-600">May vary</td>
                 </tr>
               </tbody>

@@ -104,7 +104,7 @@ export default function ResumeBuilderForNurses() {
           </div>
           <p className="text-lg text-stone-warm font-extralight leading-relaxed mt-8 text-center">
             Want to check that your resume includes the right clinical keywords? Try our{' '}
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">resume keyword scanner</Link>{' '}
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">resume keyword scanner</Link>{' '}
             to compare your resume against any nursing job description.
           </p>
         </div>
@@ -118,9 +118,9 @@ export default function ResumeBuilderForNurses() {
           </h2>
           <p className="text-lg text-stone-warm font-extralight mb-6 leading-relaxed">
             Explore our guides on{' '}
-            <Link to="/blog/how-to-list-skills" className="text-accent hover:underline font-medium">listing skills effectively</Link>{' '}
+            <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline font-medium">listing skills effectively</Link>{' '}
             and{' '}
-            <Link to="/blog/resume-keywords-guide" className="text-accent hover:underline font-medium">using resume keywords</Link>{' '}
+            <Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline font-medium">using resume keywords</Link>{' '}
             to strengthen your nursing application:
           </p>
           <div className="grid md:grid-cols-2 gap-4">
