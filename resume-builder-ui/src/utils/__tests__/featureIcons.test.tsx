@@ -19,11 +19,10 @@ describe('FeatureIcon', () => {
     expect(screen.getByText('🦄')).toBeInTheDocument();
   });
 
-  it('fallback container has neutral gradient classes', () => {
+  it('fallback container has the neutral token background', () => {
     const { container } = render(<FeatureIcon emoji="🦄" index={0} />);
     const wrapper = container.firstElementChild as HTMLElement;
-    expect(wrapper.className).toContain('from-gray-50');
-    expect(wrapper.className).toContain('to-slate-50');
+    expect(wrapper.className).toContain('bg-chalk');
   });
 
   it('applies blue theme for index 0', () => {

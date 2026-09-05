@@ -20,7 +20,7 @@ const ErrorPage: React.FC<{ message?: string }> = ({ message }) => {
           </div>
 
           {/* Error Heading */}
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-ink mb-4">
             Service Temporarily Unavailable
           </h1>
 
@@ -56,7 +56,7 @@ const ErrorPage: React.FC<{ message?: string }> = ({ message }) => {
           </div>
 
           {/* Help Text */}
-          <p className="text-sm text-gray-500 mt-8">
+          <p className="text-sm text-stone-warm mt-8">
             If this keeps happening, try refreshing the page or check your
             internet connection.
           </p>
