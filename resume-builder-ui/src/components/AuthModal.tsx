@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useState, useId } from 'react';
+import ModalShell from './shared/ModalShell';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
@@ -15,6 +15,7 @@ interface AuthModalProps {
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => {
   const { signInWithGoogle, signInWithLinkedIn, signInWithEmail } = useAuth();
   const [email, setEmail] = useState('');
+  const titleId = useId();
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
 
@@ -62,18 +63,18 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
     }
   };
 
-  const modalContent = (
-    <div
-      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto"
-      onClick={onClose}
+  return (
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      closeOnBackdrop={!loading}
+      overlayClassName="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto"
+      panelClassName="bg-white rounded-2xl shadow-2xl max-w-md w-full my-auto max-h-[90vh] flex flex-col"
     >
-      <div
-        className="bg-white rounded-2xl shadow-2xl max-w-md w-full my-auto max-h-[90vh] flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
         {/* Header */}
         <div className="bg-ink px-6 py-4 flex items-center justify-between flex-shrink-0 rounded-t-2xl">
-          <h2 className="text-2xl font-bold text-white">Save Your Resume to the Cloud</h2>
+          <h2 id={titleId} className="text-2xl font-bold text-white">Save Your Resume to the Cloud</h2>
           <button
             onClick={onClose}
             className="text-white/80 hover:text-white transition-colors"
@@ -179,11 +180,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
             </div>
           )}
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
-
-  return isOpen ? createPortal(modalContent, document.body) : null;
 };
 
 export default AuthModal;

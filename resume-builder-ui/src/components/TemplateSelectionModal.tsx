@@ -12,8 +12,8 @@
  * - Touch-friendly with sticky action bar on mobile
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useCallback, useEffect, useId, useState } from 'react';
+import ModalShell from './shared/ModalShell';
 import { MdClose, MdCheck } from 'react-icons/md';
 import { fetchTemplates } from '../services/templates';
 
@@ -52,7 +52,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
   initialTemplateId,
   _testTemplates,
 }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const titleId = useId();
   const [templates, setTemplates] = useState<Template[]>(_testTemplates || []);
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
     initialTemplateId || null
@@ -102,20 +102,6 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
     }
   }, [initialTemplateId]);
 
-  // Auto-focus modal on open
-  useEffect(() => {
-    if (isOpen && modalRef.current) {
-      modalRef.current.focus();
-    }
-  }, [isOpen]);
-
-  // Handle keyboard navigation
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      onClose();
-    }
-  };
-
   const handleContinue = () => {
     if (selectedTemplateId) {
       onSelect(selectedTemplateId);
@@ -126,30 +112,21 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
     loadTemplates();
   };
 
-  if (!isOpen) return null;
-
-  const modalContent = (
-    <div
-      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-3 sm:p-4"
-      onClick={onClose}
-      onKeyDown={handleKeyDown}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="template-selection-modal-title"
-      data-testid="template-selection-modal-backdrop"
+  return (
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      overlayTestId="template-selection-modal-backdrop"
+      overlayClassName="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-3 sm:p-4"
+      panelClassName="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92dvh] sm:max-h-[90vh] overflow-hidden relative flex flex-col"
+      panelTestId="template-selection-modal"
     >
-      <div
-        ref={modalRef}
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92dvh] sm:max-h-[90vh] overflow-hidden relative flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-        tabIndex={-1}
-        data-testid="template-selection-modal"
-      >
         {/* Header - compact with inline close button */}
         <div className="px-4 py-3 lg:py-4 border-b border-gray-200 flex items-center justify-between">
           <div>
             <h2
-              id="template-selection-modal-title"
+              id={titleId}
               className="text-lg lg:text-xl font-bold text-gray-800"
             >
               Choose Your Style
@@ -274,11 +251,8 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
             Use This Style
           </button>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
-
-  return createPortal(modalContent, document.body);
 };
 
 export default TemplateSelectionModal;

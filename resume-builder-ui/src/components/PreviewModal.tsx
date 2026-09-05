@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useId, lazy, Suspense } from 'react';
+import ModalShell from './shared/ModalShell';
 import { MdClose, MdRefresh, MdFileDownload, MdWarning } from 'react-icons/md';
 import { isMobileDevice } from '../utils/deviceDetection';
 
@@ -48,17 +49,8 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
     // Note: 'loaded' state is set by iframe onLoad event
   }, [isGenerating, error, previewUrl]);
 
-  // Handle ESC key to close modal
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
-        onClose();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  // Escape is owned by ModalShell's focus trap. Keeping a second window-level
+  // listener here would fire onClose twice for one keypress.
 
   // Iframe load handler for smooth transitions
   // Wrapped in useCallback to prevent unnecessary re-renders
@@ -67,46 +59,26 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
   }, []);
 
   // PDF.js error handler - stable identity to prevent re-renders
+  const titleId = useId();
+
   const handlePdfError = useCallback(() => {
     setLoadingState('error');
   }, []);
 
-  // Prevent body scroll when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
-
-  if (!isOpen) return null;
-
   return (
-    <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998] transition-opacity duration-200"
-        onClick={onClose}
-      />
-
-      {/* Modal Container - Bottom sheet on mobile, centered on desktop */}
-      <div
-        className="fixed z-[9999] inset-0 flex items-end lg:items-center lg:justify-center animate-fade-in"
-        data-testid="preview-modal-container"
-      >
-        <div
-          className="bg-white rounded-t-2xl lg:rounded-2xl shadow-2xl w-full lg:max-w-5xl lg:mx-4 h-[92dvh] lg:h-[90vh] flex flex-col animate-slide-up lg:animate-scale-in"
-          onClick={(e) => e.stopPropagation()}
-          data-testid="preview-modal-content"
-        >
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      overlayTestId="preview-modal-container"
+      panelTestId="preview-modal-content"
+      overlayClassName="fixed inset-0 z-[9999] flex items-end lg:items-center lg:justify-center bg-black/60 backdrop-blur-sm animate-fade-in"
+      panelClassName="bg-white rounded-t-2xl lg:rounded-2xl shadow-2xl w-full lg:max-w-5xl lg:mx-4 h-[92dvh] lg:h-[90vh] flex flex-col animate-slide-up lg:animate-scale-in"
+    >
           {/* Header */}
           <div className="flex items-center justify-between p-4 lg:p-6 border-b border-gray-200 flex-shrink-0">
             <div className="flex items-center gap-3">
-              <h2 className="text-lg lg:text-xl font-semibold text-gray-800">
+              <h2 id={titleId} className="text-lg lg:text-xl font-semibold text-ink">
                 PDF Preview
               </h2>
               {isStale && !isGenerating && (
@@ -271,9 +243,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
             {/* Safe area padding for devices with notches/home indicators */}
             <div style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }} />
           </div>
-        </div>
-      </div>
-    </>
+    </ModalShell>
   );
 };
 

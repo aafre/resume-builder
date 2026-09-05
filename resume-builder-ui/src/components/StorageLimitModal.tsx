@@ -1,4 +1,6 @@
+import { useId } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ModalShell from './shared/ModalShell';
 
 interface StorageLimitModalProps {
   isOpen: boolean;
@@ -7,8 +9,7 @@ interface StorageLimitModalProps {
 
 export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
   const navigate = useNavigate();
-
-  if (!isOpen) return null;
+  const titleId = useId();
 
   const handleManageResumes = () => {
     onClose();
@@ -16,8 +17,12 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-2xl shadow-xl max-w-md w-full mx-4">
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      panelClassName="bg-white rounded-2xl shadow-xl max-w-md w-full"
+    >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex-shrink-0">
@@ -36,7 +41,7 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Storage Full</h2>
+              <h2 id={titleId} className="text-xl font-bold text-ink">Storage Full</h2>
               <p className="text-sm text-gray-500 mt-1">You've reached the 5-resume limit</p>
             </div>
           </div>
@@ -61,7 +66,6 @@ export function StorageLimitModal({ isOpen, onClose }: StorageLimitModalProps) {
             </button>
           </div>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

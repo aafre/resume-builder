@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useId } from 'react';
+import ModalShell from './shared/ModalShell';
 import { MdVerticalAlignTop, MdVerticalAlignBottom } from 'react-icons/md';
 import { SectionType } from '../services/sectionService';
 import {
@@ -39,6 +40,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   supportsIcons = true,
   sections = [],
 }) => {
+  const titleId = useId();
   const [selectedPosition, setSelectedPosition] = useState<InsertPosition>('bottom');
   const [showAfterSection, setShowAfterSection] = useState(false);
   const [selectedType, setSelectedType] = useState<SectionType | null>(null);
@@ -115,14 +117,14 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
   const isTopOrBottom = selectedPosition === 'top' || selectedPosition === 'bottom';
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div
-        className="bg-white p-4 sm:p-6 rounded-lg max-w-sm sm:max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="section-type-modal-title"
-      >
-        <h2 id="section-type-modal-title" className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
+    <ModalShell
+      // No isOpen prop: the parent (EditorModals) conditionally renders this.
+      isOpen
+      onClose={onClose}
+      labelledBy={titleId}
+      panelClassName="bg-white p-4 sm:p-6 rounded-lg max-w-sm sm:max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+    >
+        <h2 id={titleId} className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
           Select Section Type
         </h2>
 
@@ -252,8 +254,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
             Add Section
           </button>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 };
 

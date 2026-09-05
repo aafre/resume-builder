@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useId } from 'react';
 import { ResumeListItem } from '../types';
+import ModalShell from './shared/ModalShell';
 
 interface DuplicateResumeModalProps {
   resume: ResumeListItem | null;
@@ -17,14 +18,13 @@ export function DuplicateResumeModal({
   isDuplicating = false
 }: DuplicateResumeModalProps) {
   const [newTitle, setNewTitle] = useState('');
+  const titleId = useId();
 
   useEffect(() => {
     if (resume) {
       setNewTitle(`Copy of ${resume.title}`);
     }
   }, [resume]);
-
-  if (!isOpen || !resume) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,9 +33,18 @@ export function DuplicateResumeModal({
     }
   };
 
+  // Data guard, distinct from the open-state guard ModalShell now owns. Safe
+  // after the hooks above, which run unconditionally.
+  if (!resume) return null;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onCancel}
+      labelledBy={titleId}
+      closeOnBackdrop={!isDuplicating}
+      panelClassName="bg-white rounded-lg shadow-xl max-w-md w-full"
+    >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex-shrink-0">
@@ -54,7 +63,7 @@ export function DuplicateResumeModal({
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Duplicate Resume</h2>
+              <h2 id={titleId} className="text-xl font-bold text-ink">Duplicate Resume</h2>
               <p className="text-sm text-gray-500 mt-1">Create a copy with a new name</p>
             </div>
           </div>
@@ -99,7 +108,6 @@ export function DuplicateResumeModal({
             </div>
           </form>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

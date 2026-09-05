@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useId, useRef } from "react";
+import ModalShell from "./shared/ModalShell";
 import { MdEditNote, MdPreview, MdCheckCircle, MdClose } from "react-icons/md";
 import { DocumentArrowUpIcon, CheckCircleIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { useResumeParser } from "../hooks/useResumeParser";
@@ -23,7 +24,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
   const [selectedOption, setSelectedOption] = useState<'empty' | 'example' | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [parseResult, setParseResult] = useState<any>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
+  const titleId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { parseResume, parsing, progress, progressMessage, error, clearError } = useResumeParser();
@@ -37,15 +38,6 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
       clearError();
     }
   }, [isOpen, clearError]);
-
-  // Auto-focus modal on open
-  useEffect(() => {
-    if (isOpen && modalRef.current) {
-      modalRef.current.focus();
-    }
-  }, [isOpen]);
-
-  if (!isOpen) return null;
 
   const handleContinue = () => {
     if (selectedOption === 'empty') {
@@ -103,28 +95,22 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
     }
   };
 
+  // Enter only. Escape belongs to ModalShell's focus trap; handling it here
+  // too would fire onClose twice for one keypress.
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") {
-      onClose();
-    } else if (e.key === "Enter" && selectedOption) {
+    if (e.key === "Enter" && selectedOption) {
       handleContinue();
     }
   };
 
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="template-start-title"
-      onKeyDown={handleKeyDown}
-      tabIndex={-1}
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      panelClassName="bg-white p-6 sm:p-8 rounded-lg max-w-5xl w-full shadow-2xl relative max-h-[90vh] overflow-y-auto"
     >
-      <div
-        ref={modalRef}
-        className="bg-white p-6 sm:p-8 rounded-lg max-w-5xl w-full shadow-2xl relative max-h-[90vh] overflow-y-auto"
-        tabIndex={-1}
-      >
+      <div onKeyDown={handleKeyDown}>
         {/* Close button */}
         <button
           onClick={onClose}
@@ -134,7 +120,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
           <MdClose className="text-2xl" />
         </button>
 
-        <h2 id="template-start-title" className="text-2xl sm:text-3xl font-bold mb-2 text-gray-900">
+        <h2 id={titleId} className="text-2xl sm:text-3xl font-bold mb-2 text-gray-900">
           How would you like to start?
         </h2>
         <p className="text-sm sm:text-base text-gray-600 mb-6">
@@ -355,7 +341,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </ModalShell>
   );
 };
 

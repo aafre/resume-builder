@@ -7,8 +7,8 @@
  * Based on ResumeRecoveryModal pattern for consistency.
  */
 
-import React, { useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useId } from 'react';
+import ModalShell from './shared/ModalShell';
 import { MdClose, MdSecurity, MdPerson, MdInfo } from 'react-icons/md';
 
 export interface ConversionPromptModalProps {
@@ -34,39 +34,19 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
   actionLabel,
   loading = false,
 }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
+  // ModalShell owns focus-in, focus-restore and Escape. The hand-rolled
+  // versions here did focus-in but never restored focus to the opener.
+  const titleId = useId();
 
-  // Auto-focus modal on open
-  useEffect(() => {
-    if (isOpen && modalRef.current) {
-      modalRef.current.focus();
-    }
-  }, [isOpen]);
-
-  // Handle keyboard navigation
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape' && !loading) {
-      onClose();
-    }
-  };
-
-  if (!isOpen) return null;
-
-  const modalContent = (
-    <div
-      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
-      onClick={loading ? undefined : onClose}
-      onKeyDown={handleKeyDown}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="conversion-modal-title"
+  return (
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      closeOnBackdrop={!loading}
+      overlayClassName="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+      panelClassName="bg-white rounded-2xl shadow-2xl max-w-lg w-full relative"
     >
-      <div
-        ref={modalRef}
-        className="bg-white rounded-2xl shadow-2xl max-w-lg w-full relative"
-        onClick={(e) => e.stopPropagation()}
-        tabIndex={-1}
-      >
         {/* Close button */}
         <button
           type="button"
@@ -84,7 +64,7 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
             <div className="bg-accent/20 p-2 rounded-full">
               <MdSecurity className="text-3xl text-accent" />
             </div>
-            <h2 id="conversion-modal-title" className="text-2xl font-bold text-gray-800">
+            <h2 id={titleId} className="text-2xl font-bold text-gray-800">
               Save Your Work
             </h2>
           </div>
@@ -148,11 +128,8 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
             Both options are free. Sign in uses Google, LinkedIn, or email.
           </p>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
-
-  return createPortal(modalContent, document.body);
 };
 
 export default ConversionPromptModal;

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, useCallback } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useRef, useState, useCallback, useId } from "react";
+import ModalShell from "./shared/ModalShell";
 import { ClipboardCheck, ExternalLink, ShieldAlert } from "lucide-react";
 import { affiliateConfig, hasAnyAffiliate } from "../config/affiliate";
 import { ContactInfo, Section } from "../types";
@@ -26,72 +26,14 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
   contactInfo,
   sections,
 }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const titleId = useId();
+  const descriptionId = useId();
   const primaryButtonRef = useRef<HTMLButtonElement>(null);
 
   const [jobs, setJobs] = useState<AdzunaJob[]>([]);
   const [jobsLoading, setJobsLoading] = useState(false);
   const [jobSearchParams, setJobSearchParams] = useState<JobSearchParams | null>(null);
 
-  // Focus management - auto-focus primary button when modal opens
-  useEffect(() => {
-    if (isOpen && primaryButtonRef.current) {
-      primaryButtonRef.current.focus();
-    }
-  }, [isOpen]);
-
-  // Handle ESC key to close modal
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-      // Prevent body scroll when modal is open
-      document.body.style.overflow = "hidden";
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "";
-    };
-  }, [isOpen, onClose]);
-
-  // Focus trap - keep focus within modal
-  useEffect(() => {
-    if (!isOpen || !modalRef.current) return;
-
-    const modal = modalRef.current;
-    const focusableElements = modal.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    const firstElement = focusableElements[0] as HTMLElement;
-    const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
-
-    const handleTab = (e: KeyboardEvent) => {
-      if (e.key !== "Tab") return;
-
-      if (e.shiftKey) {
-        // Shift + Tab
-        if (document.activeElement === firstElement) {
-          e.preventDefault();
-          lastElement?.focus();
-        }
-      } else {
-        // Tab
-        if (document.activeElement === lastElement) {
-          e.preventDefault();
-          firstElement?.focus();
-        }
-      }
-    };
-
-    modal.addEventListener("keydown", handleTab);
-    return () => modal.removeEventListener("keydown", handleTab);
-  }, [isOpen]);
 
   // Fetch jobs when modal opens
   useEffect(() => {
@@ -131,34 +73,19 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
   const showAffiliate = hasAnyAffiliate();
   const showJobSection = affiliateConfig.jobSearch.enabled && (jobsLoading || jobs.length > 0);
 
-  return createPortal(
-    <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm animate-dcm-fade-in"
-        onClick={handleBackdropClick}
-        aria-hidden="true"
-      />
-
-      {/* Modal Container */}
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-        <div
-          ref={modalRef}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="celebration-modal-title"
-          aria-describedby="celebration-modal-description"
-          className="bg-white rounded-2xl shadow-premium max-w-lg w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto animate-dcm-modal-enter"
-        >
+  return (
+    <ModalShell
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy={titleId}
+      describedBy={descriptionId}
+      initialFocusRef={primaryButtonRef}
+      overlayClassName="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-dcm-fade-in"
+      panelClassName="bg-white rounded-2xl shadow-premium max-w-lg w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto animate-dcm-modal-enter"
+    >
           {/* Celebration Icon */}
           <div className="w-20 h-20 mx-auto mb-6 relative">
             {/* Main checkmark circle with gradient */}
@@ -196,13 +123,13 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
           {/* Title + Subtitle */}
           <div className="animate-dcm-content-fade-up" style={{ animationDelay: '75ms' }}>
             <h2
-              id="celebration-modal-title"
+              id={titleId}
               className="text-2xl sm:text-3xl font-bold text-center mb-4 text-ink"
             >
               Resume Downloaded Successfully!
             </h2>
             <p
-              id="celebration-modal-description"
+              id={descriptionId}
               className="text-lg text-stone-warm text-center mb-4"
             >
               Your PDF has been saved to your device.
@@ -415,10 +342,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </>,
-    document.body
+    </ModalShell>
   );
 };
 
