@@ -81,7 +81,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
                 <h2
                   id={titleId}
                   className={`text-lg font-bold ${
-                    isDestructive ? "text-red-900" : "text-gray-900"
+                    isDestructive ? "text-red-900" : "text-ink"
                   }`}
                 >
                   {title}
@@ -90,7 +90,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
             </div>
             <button
               onClick={onClose}
-              className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors p-1 -mr-1"
+              className="flex-shrink-0 text-mist hover:text-gray-600 transition-colors p-1 -mr-1"
               aria-label="Close dialog"
               disabled={isLoading}
             >
@@ -102,7 +102,7 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
           <div className="flex-1 overflow-y-auto p-6">
             <p
               id={descriptionId}
-              className="text-gray-700 leading-relaxed whitespace-pre-line"
+              className="text-stone-warm leading-relaxed whitespace-pre-line"
             >
               {message}
             </p>
@@ -113,8 +113,8 @@ const ResponsiveConfirmDialog: React.FC<ResponsiveConfirmDialogProps> = ({
             <button
               onClick={onClose}
               disabled={isLoading}
-              className="w-full lg:w-auto px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700
-                hover:bg-gray-50 active:bg-gray-100
+              className="w-full lg:w-auto px-6 py-3 border border-gray-300 rounded-lg font-medium text-ink
+                hover:bg-chalk active:bg-chalk-dark
                 transition-colors disabled:opacity-50 disabled:cursor-not-allowed
                 min-h-[48px] lg:min-h-[44px]"
               style={{ WebkitTapHighlightColor: "transparent" }}

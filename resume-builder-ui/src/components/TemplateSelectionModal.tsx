@@ -127,18 +127,18 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
           <div>
             <h2
               id={titleId}
-              className="text-lg lg:text-xl font-bold text-gray-800"
+              className="text-lg lg:text-xl font-bold text-ink"
             >
               Choose Your Style
             </h2>
-            <p className="text-sm text-gray-500 mt-0.5 hidden lg:block">
+            <p className="text-sm text-mist mt-0.5 hidden lg:block">
               Select a template that matches your professional image
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors p-2 rounded-full hover:bg-gray-100 -mr-2"
+            className="text-mist hover:text-gray-600 transition-colors p-2 rounded-full hover:bg-chalk-dark -mr-2"
             aria-label="Close modal"
             data-testid="template-selection-close"
           >
@@ -190,7 +190,7 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
                     aria-pressed={isSelected}
                   >
                     {/* Template Preview Image - fixed width on mobile, full width on desktop */}
-                    <div className="relative w-28 sm:w-32 lg:w-full aspect-[3/4] bg-gray-50 overflow-hidden flex-shrink-0">
+                    <div className="relative w-28 sm:w-32 lg:w-full aspect-[3/4] bg-chalk overflow-hidden flex-shrink-0">
                       <img
                         src={template.image_url}
                         alt={template.name}
@@ -212,20 +212,20 @@ export const TemplateSelectionModal: React.FC<TemplateSelectionModalProps> = ({
                     <div className="flex-1 p-3 lg:p-4 flex flex-col justify-center">
                       <h3
                         className={`font-semibold text-sm lg:text-base ${
-                          isSelected ? 'text-accent-text' : 'text-gray-800'
+                          isSelected ? 'text-accent-text' : 'text-ink'
                         }`}
                       >
                         {template.name}
                       </h3>
                       {bestFor && (
                         <p
-                          className="text-xs text-gray-500 mt-1"
+                          className="text-xs text-mist mt-1"
                           data-testid={`template-bestfor-${template.id}`}
                         >
                           {bestFor}
                         </p>
                       )}
-                      <p className="text-xs text-gray-400 mt-1 line-clamp-2 hidden lg:block">
+                      <p className="text-xs text-mist mt-1 line-clamp-2 hidden lg:block">
                         {template.description}
                       </p>
                     </div>

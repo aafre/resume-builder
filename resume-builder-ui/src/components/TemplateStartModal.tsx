@@ -114,13 +114,13 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100 z-10"
+          className="absolute top-4 right-4 text-mist hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-chalk-dark z-10"
           aria-label="Close modal"
         >
           <MdClose className="text-2xl" />
         </button>
 
-        <h2 id={titleId} className="text-2xl sm:text-3xl font-bold mb-2 text-gray-900">
+        <h2 id={titleId} className="text-2xl sm:text-3xl font-bold mb-2 text-ink">
           How would you like to start?
         </h2>
         <p className="text-sm sm:text-base text-gray-600 mb-6">
@@ -134,7 +134,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
           <div className="border-2 border-accent/20 rounded-xl p-6 bg-accent/[0.04]">
             <div className="flex items-center gap-2 mb-3">
               <DocumentArrowUpIcon className="w-6 h-6 text-accent-text" />
-              <h3 className="font-bold text-xl text-gray-900">Import Your Data</h3>
+              <h3 className="font-bold text-xl text-ink">Import Your Data</h3>
             </div>
             <p className="text-sm text-gray-600 mb-4">
               Upload your existing resume to automatically extract your information
@@ -154,12 +154,12 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                 onClick={() => fileInputRef.current?.click()}
               >
                 <DocumentArrowUpIcon className={`w-12 h-12 mx-auto mb-3 ${
-                  isDragging ? 'text-accent-text' : 'text-gray-400'
+                  isDragging ? 'text-accent-text' : 'text-mist'
                 }`} />
-                <p className="text-sm font-semibold text-gray-700 mb-1">
+                <p className="text-sm font-semibold text-ink mb-1">
                   Drop your PDF or DOCX here
                 </p>
-                <p className="text-xs text-gray-500 mb-3">
+                <p className="text-xs text-mist mb-3">
                   We'll extract your data automatically
                 </p>
                 <button
@@ -179,7 +179,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                   className="hidden"
                   onChange={handleFileInput}
                 />
-                <p className="text-xs text-gray-400 mt-2">Max 10MB • PDF or DOCX</p>
+                <p className="text-xs text-mist mt-2">Max 10MB • PDF or DOCX</p>
               </div>
             )}
 
@@ -189,7 +189,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                 <div className="flex items-center justify-center mb-4">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
                 </div>
-                <p className="text-center text-sm font-semibold text-gray-700 mb-3">
+                <p className="text-center text-sm font-semibold text-ink mb-3">
                   Reading your resume...
                 </p>
                 <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
@@ -198,7 +198,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                     style={{ width: `${progress}%` }}
                   />
                 </div>
-                <p className="text-center text-xs text-gray-500 mt-2">
+                <p className="text-center text-xs text-mist mt-2">
                   {progressMessage || 'Processing...'}
                 </p>
               </div>
@@ -266,7 +266,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
           <div className="border-2 border-accent/20 rounded-xl p-6 bg-accent/[0.04]">
             <div className="flex items-center gap-2 mb-3">
               <MdEditNote className="text-2xl text-accent-text" />
-              <h3 className="font-bold text-xl text-gray-900">Manual Options</h3>
+              <h3 className="font-bold text-xl text-ink">Manual Options</h3>
             </div>
             <p className="text-sm text-gray-600 mb-4">
               Start with a blank slate or use example content
@@ -288,7 +288,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                     <MdEditNote className="text-2xl text-green-600" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-base mb-1 text-gray-900">
+                    <h4 className="font-bold text-base mb-1 text-ink">
                       Start from Scratch
                     </h4>
                     <p className="text-xs text-gray-600">
@@ -316,7 +316,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                     <MdPreview className="text-2xl text-accent-text" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-base mb-1 text-gray-900">
+                    <h4 className="font-bold text-base mb-1 text-ink">
                       Use Example Content
                     </h4>
                     <p className="text-xs text-gray-600">
@@ -332,7 +332,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
 
             {/* Continue Button */}
             <button
-              className="w-full bg-accent text-ink font-semibold px-4 py-3 rounded-lg transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-400"
+              className="w-full bg-accent text-ink font-semibold px-4 py-3 rounded-lg transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleContinue}
               disabled={!selectedOption}
             >

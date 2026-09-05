@@ -37,7 +37,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100"
+          className="absolute top-4 right-4 text-mist hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-chalk-dark"
           aria-label="Close modal"
         >
           <MdClose size={24} />
@@ -49,7 +49,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
             <div className="bg-amber-200/40 p-2 rounded-full">
               <MdWarning className="text-3xl text-amber-600" />
             </div>
-            <h2 id={titleId} className="text-2xl font-bold text-gray-800">
+            <h2 id={titleId} className="text-2xl font-bold text-ink">
               {isAnonymous ? 'Unsaved Work Found' : 'Resume Found'}
             </h2>
           </div>
@@ -60,7 +60,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
           {isAnonymous ? (
             // Anonymous user copy (conversion-focused)
             <>
-              <p className="text-gray-700 text-lg mb-2">
+              <p className="text-stone-warm text-lg mb-2">
                 We noticed you were working on a resume <span className="font-semibold">"{resumeTitle}"</span>.
               </p>
               <p className="text-gray-600 mb-4">
@@ -91,7 +91,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
                 {/* Secondary: Continue as Guest */}
                 <button
                   onClick={onContinueAsGuest}
-                  className="w-full flex items-center justify-center gap-2 border-2 border-gray-300 text-gray-700 font-semibold px-6 py-3 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all"
+                  className="w-full flex items-center justify-center gap-2 border-2 border-gray-300 text-ink font-semibold px-6 py-3 rounded-xl hover:border-mist hover:bg-chalk transition-all"
                 >
                   <MdPerson className="text-xl" />
                   Continue as Guest
@@ -101,7 +101,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
           ) : (
             // Authenticated user copy (de-duplication-focused)
             <>
-              <p className="text-gray-700 text-lg mb-2">
+              <p className="text-stone-warm text-lg mb-2">
                 We noticed you already have a resume <span className="font-semibold">"{resumeTitle}"</span> using the <span className="font-semibold">{templateName}</span> template.
               </p>
               <p className="text-gray-600 mb-6">
@@ -122,7 +122,7 @@ export const ResumeRecoveryModal: React.FC<ResumeRecoveryModalProps> = ({
                 {onCreateNew && (
                   <button
                     onClick={onCreateNew}
-                    className="w-full flex items-center justify-center gap-2 border-2 border-gray-300 text-gray-700 font-semibold px-6 py-3 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all"
+                    className="w-full flex items-center justify-center gap-2 border-2 border-gray-300 text-ink font-semibold px-6 py-3 rounded-xl hover:border-mist hover:bg-chalk transition-all"
                   >
                     Create New Resume
                   </button>
