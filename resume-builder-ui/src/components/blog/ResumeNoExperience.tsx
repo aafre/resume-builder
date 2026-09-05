@@ -7,7 +7,7 @@ export default function ResumeNoExperience() {
       title="How to Write a Resume With No Experience (2026 Guide)"
       description="Step-by-step guide to writing a resume with no work experience. 5+ copy-paste examples, ATS-friendly template, and what to put instead of job history."
       publishDate="2026-01-20"
-      lastUpdated="2026-02-10"
+      lastUpdated="2026-07-25"
       readTime="14–18 min"
       keywords={[
         "entry level resume",
@@ -31,8 +31,9 @@ export default function ResumeNoExperience() {
         </p>
 
         <p className="text-lg leading-relaxed text-stone-warm">
-          This guide gives you copy-paste examples, role-specific keywords, and
-          a free ATS-friendly template you can use with our{" "}
+          This guide walks through how to build a resume with no experience,
+          step by step, with copy-paste examples, role-specific keywords, and a
+          free ATS-friendly template you can use with our{" "}
           <a
             href="/actual-free-resume-builder"
             className="text-accent-text hover:underline font-semibold"
@@ -51,8 +52,63 @@ export default function ResumeNoExperience() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          The Best Resume Format When You Have No Experience
+        {/* Step index — MUST stay in sync with the "Step 1-7" H2 ids below. */}
+        <nav className="bg-chalk-dark border border-black/[0.06] rounded-xl p-6 my-8">
+          <h2 className="text-xl font-bold text-ink mb-3">
+            How to Make a Resume With No Experience (7 Steps)
+          </h2>
+          <p className="text-ink/80 mb-4">
+            To create a resume with no work experience, lead with skills and
+            projects instead of job history. Pick a hybrid format, write a 2–3
+            sentence summary aimed at one specific role, then fill the page with
+            coursework, projects, volunteering, and part-time work – each
+            written as an action plus a measurable outcome. Here is the full
+            process, in order:
+          </p>
+          <ol className="space-y-2 text-ink/80 list-decimal list-inside">
+            <li>
+              <a href="#step-format" className="text-accent hover:underline">
+                Choose a format that leads with skills
+              </a>
+            </li>
+            <li>
+              <a href="#step-ats" className="text-accent hover:underline">
+                Make it ATS-friendly
+              </a>
+            </li>
+            <li>
+              <a href="#step-summary" className="text-accent hover:underline">
+                Write your professional summary
+              </a>
+            </li>
+            <li>
+              <a href="#step-bullets" className="text-accent hover:underline">
+                Write bullets with the action + outcome formula
+              </a>
+            </li>
+            <li>
+              <a href="#step-projects" className="text-accent hover:underline">
+                Use projects as your experience section
+              </a>
+            </li>
+            <li>
+              <a href="#step-skills" className="text-accent hover:underline">
+                Group the skills employers screen for
+              </a>
+            </li>
+            <li>
+              <a href="#step-keywords" className="text-accent hover:underline">
+                Mirror keywords from the job post
+              </a>
+            </li>
+          </ol>
+        </nav>
+
+        <h2
+          id="step-format"
+          className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6"
+        >
+          Step 1: Choose the Best Resume Format When You Have No Experience
         </h2>
 
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
@@ -89,8 +145,8 @@ export default function ResumeNoExperience() {
           </ol>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          Make It ATS-Friendly (So You Get Seen)
+        <h2 id="step-ats" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
+          Step 2: Make It ATS-Friendly (So You Get Seen)
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 my-8">
@@ -124,8 +180,8 @@ export default function ResumeNoExperience() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          Professional Summary Examples (Copy-Paste)
+        <h2 id="step-summary" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
+          Step 3: Write Your Professional Summary (Copy-Paste Examples)
         </h2>
 
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
@@ -205,8 +261,8 @@ export default function ResumeNoExperience() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          Bullet Formula (So Your Points Stand Out)
+        <h2 id="step-bullets" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
+          Step 4: Write Bullets With the Action + Outcome Formula
         </h2>
 
         <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-6 my-6">
@@ -247,8 +303,8 @@ export default function ResumeNoExperience() {
           </p>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          Projects: Your Fastest Path to Credibility
+        <h2 id="step-projects" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
+          Step 5: Use Projects as Your Experience Section
         </h2>
 
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
@@ -314,8 +370,8 @@ export default function ResumeNoExperience() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          Skills That Win Entry-Level Interviews
+        <h2 id="step-skills" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
+          Step 6: Group the Skills That Win Entry-Level Interviews
         </h2>
 
         <p className="text-lg leading-relaxed text-stone-warm mb-6">
@@ -343,8 +399,8 @@ export default function ResumeNoExperience() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-ink mt-12 mb-6">
-          Role-Specific Keywords (Use Naturally)
+        <h2 id="step-keywords" className="scroll-mt-20 text-3xl font-bold text-ink mt-12 mb-6">
+          Step 7: Mirror Role-Specific Keywords From the Job Post
         </h2>
 
         <p className="text-lg leading-relaxed text-stone-warm mb-6">

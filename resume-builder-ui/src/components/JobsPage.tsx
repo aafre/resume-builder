@@ -129,7 +129,7 @@ export default function JobsPage() {
   // Persistent resume context — survives across manual searches and drives UI visibility
   const [resumeContext, setResumeContext] = useState<ResumeContext | null>(null);
   const { session } = useAuth();
-  const { parseResume, parsing: parserBusy, progress: parserProgress, progressMessage } = useResumeParser();
+  const { parseResume, parsing: parserBusy, progress: parserProgress, progressMessage } = useResumeParser({ source: 'job_search' });
 
   const schemas = usePageSchema({
     type: 'website',

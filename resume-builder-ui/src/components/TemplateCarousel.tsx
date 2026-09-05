@@ -11,6 +11,7 @@ import ResumeRecoveryModal from "./ResumeRecoveryModal";
 import AuthModal from "./AuthModal";
 import { InFeedAd, AD_CONFIG } from "./ads";
 import { useResumeCreate } from "../hooks/useResumeCreate";
+import { trackTemplateSelected } from "../lib/analytics";
 
 // Lazy-loaded error components
 const NotFound = lazy(() => import("./NotFound"));
@@ -80,6 +81,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
 
   // Show modal when user clicks "Use Template"
   const handleUseTemplate = async (templateId: string) => {
+    trackTemplateSelected({ template_id: templateId });
     if (!session) {
       toast.error("Please sign in to create a resume");
       return;

@@ -14,7 +14,7 @@ describe("PrivacyPolicy Component", () => {
 
     expect(screen.getByText("Privacy Policy")).toBeInTheDocument();
     expect(
-      screen.getByText(/Last Updated: 1 January 2026/i)
+      screen.getByText(/Last Updated: 4 August 2026/i)
     ).toBeInTheDocument();
   });
 

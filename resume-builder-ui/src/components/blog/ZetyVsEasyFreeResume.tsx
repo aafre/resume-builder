@@ -869,7 +869,14 @@ export default function ZetyVsEasyFreeResume() {
           For the vast majority of job seekers - especially those who value
           privacy, hate hidden fees, and want a straightforward tool to create a
           professional document -{" "}
-          <strong>a free builder is more than enough.</strong>
+          <strong>a free builder is more than enough.</strong> If you want
+          another perspective, see{" "}
+          <Link
+            to="/best-free-resume-builder-reddit"
+            className="text-accent underline"
+          >
+            what Reddit actually recommends for free resume builders
+          </Link>.
         </p>
 
         <p className="text-lg leading-relaxed text-stone-warm mt-6">

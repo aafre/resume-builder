@@ -17,6 +17,7 @@ import { usePreview } from '../hooks/usePreview';
 import { InContentAd, AD_CONFIG } from '../components/ads';
 import RevealSection from '../components/shared/RevealSection';
 import { SectionEmptyState } from '../components/shared/SectionEmptyState';
+import { trackPdfDownloaded, trackPdfDownloadFailed } from '../lib/analytics';
 
 export default function MyResumes() {
   const navigate = useNavigate();
@@ -231,8 +232,17 @@ export default function MyResumes() {
         document.body.removeChild(a);
 
         toast.success('Resume downloaded successfully');
+        trackPdfDownloaded({
+          template_id: resumes.find(r => r.id === id)?.template_id || 'unknown',
+          source: 'my_resumes',
+        });
       } catch (err) {
         console.error('Error downloading resume:', err);
+        trackPdfDownloadFailed({
+          template_id: resumes.find(r => r.id === id)?.template_id || 'unknown',
+          source: 'my_resumes',
+          error_type: err instanceof ApiError && err.data?.missing_icons ? 'missing_icons' : 'unknown',
+        });
 
         // Special handling for missing icons error
         if (err instanceof ApiError && err.data?.missing_icons) {

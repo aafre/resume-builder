@@ -3100,6 +3100,63 @@ def duplicate_resume(resume_id):
         return jsonify({"success": False, "error": "Failed to duplicate resume"}), 500
 
 
+# Two constants bound the no-token compat fallback. BOTH must pass.
+#
+#   MIGRATE_COMPAT_CUTOFF  — bounds WHICH accounts may use it.
+#   MIGRATE_COMPAT_EXPIRES — bounds UNTIL WHEN it may be used at all.
+#
+# CUTOFF: anonymous accounts created before this date predate the frontend
+# storing the session token, so they are allowed through the is_anonymous check.
+# Anything created after has a token by construction and must prove possession.
+# Set deliberately LATER than any plausible deploy date: a cutoff after the deploy
+# only covers accounts that have a token anyway, while a cutoff before it would
+# orphan the resumes of real users who have none.
+#
+# EXPIRES: the cutoff alone does not shrink the exposed set — every anonymous
+# account that exists today was created before it, resumes never expire, and the
+# uid is not secret (resume-thumbnails is a public bucket keyed {user_id}/...).
+# So the whole branch also dies on a wall clock. The fallback only exists for
+# users mid-flow at deploy (anon session, resumes, pending sign-in); they sign in
+# within days, not months. It sits 30 days after the cutoff so the age check has
+# a live window in which it actually bites, and because EXPIRES is the hard cap
+# on exposure, keeping CUTOFF generous costs nothing.
+#
+# ponytail: on 2026-11-01 delete both constants and the entire fallback branch —
+# it is dead code from that date, not merely unused.
+MIGRATE_COMPAT_CUTOFF = datetime(2026, 10, 1, tzinfo=timezone.utc)
+MIGRATE_COMPAT_EXPIRES = datetime(2026, 11, 1, tzinfo=timezone.utc)
+
+# Rate limit for migration attempts, per calling user.
+# ponytail: in-process fixed window — per worker, no lock, resets on restart.
+# Enough to stop uid enumeration through the compat fallback; move to Redis only
+# if we ever run enough workers that a per-process budget stops meaning anything.
+MIGRATE_RATE_LIMIT = 5
+MIGRATE_RATE_WINDOW_SECONDS = 300
+_migrate_attempts: dict[str, list[float]] = {}
+
+
+def _migrate_rate_limited(caller_uid: str) -> bool:
+    """Record an attempt for caller_uid; True if it exceeds the window budget."""
+    global _migrate_attempts
+    now = time.monotonic()
+
+    if len(_migrate_attempts) > 10000:  # bound memory; entries expire anyway
+        _migrate_attempts = {
+            uid: stamps
+            for uid, stamps in _migrate_attempts.items()
+            if stamps and now - stamps[-1] < MIGRATE_RATE_WINDOW_SECONDS
+        }
+
+    recent = [
+        t
+        for t in _migrate_attempts.get(caller_uid, [])
+        if now - t < MIGRATE_RATE_WINDOW_SECONDS
+    ]
+    recent.append(now)
+    _migrate_attempts[caller_uid] = recent
+    return len(recent) > MIGRATE_RATE_LIMIT
+
+
 @app.route("/api/migrate-anonymous-resumes", methods=["POST"])
 @require_auth
 @retry_on_connection_error(max_retries=3, backoff_factor=0.5)
@@ -3108,12 +3165,17 @@ def migrate_anonymous_resumes():
     Migrate all resumes from an old user to the authenticated user.
     Called when a user signs in after creating resumes (handles Supabase account linking).
 
+    The caller must prove possession of the old session by sending its access
+    token; being signed in is not by itself authorization to claim another
+    user's resumes.
+
     Note: Supabase automatically links anonymous accounts to OAuth accounts on sign-in,
     so the old user may no longer appear as "anonymous" when this endpoint is called.
 
     Request body:
         {
-            "old_user_id": "uuid-of-old-user"
+            "old_user_id": "uuid-of-old-user",
+            "old_user_token": "access-token-of-that-old-session"
         }
 
     Returns:
@@ -3132,6 +3194,12 @@ def migrate_anonymous_resumes():
         if not old_user_id:
             return jsonify({"error": "old_user_id is required"}), 400
 
+        if _migrate_rate_limited(new_user_id):
+            logging.warning(
+                f"Migration rate limited | caller={new_user_id} | source={old_user_id}"
+            )
+            return jsonify({"error": "Too many migration attempts"}), 429
+
         if old_user_id == new_user_id:
             return (
                 jsonify(
@@ -3145,10 +3213,76 @@ def migrate_anonymous_resumes():
                 200,
             )
 
-        # NOTE: We don't check if the old user is "anonymous" because Supabase
-        # automatically links anonymous accounts to OAuth accounts on sign-in,
-        # changing app_metadata.provider from 'anonymous' to 'google'/'email'.
-        # Instead, we check if the old user has resumes to migrate.
+        # Authorization: the caller must PROVE POSSESSION of the old session.
+        # "Is the source anonymous?" authorises nothing — every visitor gets an
+        # anonymous session on first page load — so we verify ownership instead:
+        # the client sends the old session's access token and Supabase checks its
+        # signature and expiry for us.
+        old_user_token = request.json.get("old_user_token")
+
+        def deny(reason):
+            logging.warning(
+                f"MIGRATE_DENIED | reason={reason} | caller={new_user_id} | "
+                f"source={old_user_id}"
+            )
+            return (
+                jsonify({"error": "Not authorized to migrate from this user"}),
+                403,
+            )
+
+        if old_user_token:
+            auth_path = "possession"
+            try:
+                anon_user = supabase.auth.get_user(old_user_token).user
+            except Exception as token_error:
+                return deny(f"token-rejected ({token_error})")
+
+            if not anon_user or anon_user.id != old_user_id:
+                return deny(
+                    f"token-subject-mismatch (subject={getattr(anon_user, 'id', None)})"
+                )
+        else:
+            # Backward compatibility: sessions that predate the token being stored
+            # have an anonymous uid in localStorage but no token. Dropping them would
+            # silently lose their resumes, so fall back to the documented is_anonymous
+            # flag. NOT app_metadata.provider — that flips to 'google'/'email' on
+            # account linking, which is what 403'd legitimate migrations in 39e27eed.
+            #
+            # is_anonymous ALONE authorises nothing (every visitor is anonymous and
+            # guest resumes autosave server-side), so the fallback is additionally
+            # bounded twice: MIGRATE_COMPAT_CUTOFF limits WHICH accounts may use it
+            # (only those old enough to predate the token being stored), and
+            # MIGRATE_COMPAT_EXPIRES closes the branch entirely on a wall clock.
+            # That makes it self-closing rather than a permanent bypass.
+            auth_path = "compat-fallback"
+
+            if datetime.now(timezone.utc) > MIGRATE_COMPAT_EXPIRES:
+                return deny("compat_window_closed")
+
+            try:
+                old_user = supabase.auth.admin.get_user_by_id(old_user_id).user
+            except Exception as admin_error:
+                return deny(f"lookup-failed ({admin_error})")
+
+            if not old_user or not old_user.is_anonymous:
+                return deny("no-token-and-not-anonymous")
+
+            created_at = getattr(old_user, "created_at", None)
+            if created_at is None:
+                return deny("no-token-and-unknown-created-at")
+
+            if created_at.tzinfo is None:
+                created_at = created_at.replace(tzinfo=timezone.utc)
+
+            if created_at >= MIGRATE_COMPAT_CUTOFF:
+                # Created after the frontend started storing tokens, so a missing
+                # token means the caller never had this session.
+                return deny(f"no-token-and-account-too-new (created_at={created_at})")
+
+            logging.warning(
+                f"MIGRATE_COMPAT_FALLBACK | caller={new_user_id} | source={old_user_id} | "
+                f"created_at={created_at} | accepted on is_anonymous, no token supplied"
+            )
 
         # Get resume counts
         old_resumes_response = (
@@ -3187,7 +3321,8 @@ def migrate_anonymous_resumes():
             )
 
         logging.info(
-            f"Starting migration: {old_count} resumes from {old_user_id} to {new_user_id} (total: {total_count})"
+            f"MIGRATE_START | caller={new_user_id} | source={old_user_id} | "
+            f"auth_path={auth_path} | resumes={old_count} | total_after={total_count}"
         )
 
         # Get all resume IDs being migrated
@@ -3293,7 +3428,8 @@ def migrate_anonymous_resumes():
             # Non-critical - preferences will be recreated on next interaction
 
         logging.info(
-            f"Migration complete: {old_count} resumes migrated to {new_user_id}"
+            f"MIGRATE_COMPLETE | caller={new_user_id} | source={old_user_id} | "
+            f"auth_path={auth_path} | resumes={old_count}"
         )
 
         return (

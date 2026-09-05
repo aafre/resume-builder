@@ -3,7 +3,7 @@ const PrivacyPolicy = () => {
     <div className="container mx-auto my-10 px-4 sm:px-6 md:px-8">
       <h1 className="text-3xl font-bold text-center mb-6">Privacy Policy</h1>
       <p className="text-center text-stone-warm mb-6">
-        Last Updated: 1 January 2026
+        Last Updated: 4 August 2026
       </p>
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <p>
@@ -86,9 +86,13 @@ const PrivacyPolicy = () => {
 
         <h4 className="font-semibold mt-4">5. Third-Party Services</h4>
         <p>
-          We use Supabase for authentication and database services (account users only). We use analytics tools
-          to understand aggregate usage patterns (page views, feature usage) but do not track individual resume
-          content or personally identifiable information beyond what's required for account functionality.
+          We use Supabase for authentication and database services (account users only). We use PostHog for
+          product analytics to understand how the site is used — page views, which features are used, and
+          click and scroll patterns. If you are signed in, this activity is linked to your account identifier,
+          so it is pseudonymous rather than anonymous; if you are not signed in, it is tied only to a random
+          device identifier. We do <strong>not</strong> record your screen or session, and we never send your
+          resume content, file names, or contact details to any analytics provider. Analytics are loaded after
+          the page has rendered so they stay off the critical path.
         </p>
 
         <h4 className="font-semibold mt-4">6. Data Sharing and Sale</h4>
