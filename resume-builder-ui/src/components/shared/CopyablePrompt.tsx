@@ -39,8 +39,8 @@ export default function CopyablePrompt({
   };
 
   return (
-    <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-      <h4 className="font-bold text-gray-900 mb-3">{title}</h4>
+    <div className="bg-chalk border border-gray-200 rounded-xl p-6">
+      <h4 className="font-bold text-ink mb-3">{title}</h4>
       <div
         className="group relative bg-white border border-gray-300 rounded-lg p-4 font-mono text-sm cursor-pointer hover:border-accent/30 hover:bg-accent/[0.06] transition-colors overflow-x-auto"
         onClick={handleCopy}
@@ -59,7 +59,7 @@ export default function CopyablePrompt({
               <span className="text-xs sm:text-sm">Copied!</span>
             </span>
           ) : (
-            <span className="flex items-center gap-1 text-gray-500 sm:text-gray-400 group-hover:text-accent-text text-sm transition-colors bg-gray-100 px-2 py-1 rounded-full sm:bg-transparent sm:px-0 sm:py-0 sm:rounded-none">
+            <span className="flex items-center gap-1 text-mist group-hover:text-accent-text text-sm transition-colors bg-chalk-dark px-2 py-1 rounded-full sm:bg-transparent sm:px-0 sm:py-0 sm:rounded-none">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>

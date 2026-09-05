@@ -58,7 +58,7 @@ function ScoreRing({ result }: { result: EnhancedScanResult }) {
         {/* Background track */}
         <circle
           cx="60" cy="60" r={radius}
-          stroke="currentColor" className="text-gray-100"
+          stroke="currentColor" className="text-chalk-dark"
           strokeWidth="8" fill="none"
         />
         {/* Matched arc (green) */}
@@ -236,28 +236,28 @@ function LoadingSkeleton() {
       <div className="bg-white rounded-2xl p-8 border border-black/[0.06]">
         <div className="grid md:grid-cols-3 gap-8 items-center">
           <div className="md:col-span-1 flex justify-center">
-            <div className="w-36 h-36 rounded-full bg-gray-100" />
+            <div className="w-36 h-36 rounded-full bg-chalk-dark" />
           </div>
           <div className="md:col-span-2 space-y-3">
-            <div className="h-7 bg-gray-100 rounded-lg w-3/4" />
-            <div className="h-4 bg-gray-100 rounded w-full" />
-            <div className="h-4 bg-gray-100 rounded w-2/3" />
+            <div className="h-7 bg-chalk-dark rounded-lg w-3/4" />
+            <div className="h-4 bg-chalk-dark rounded w-full" />
+            <div className="h-4 bg-chalk-dark rounded w-2/3" />
             <div className="flex gap-6">
-              <div className="h-4 bg-gray-100 rounded w-24" />
-              <div className="h-4 bg-gray-100 rounded w-24" />
+              <div className="h-4 bg-chalk-dark rounded w-24" />
+              <div className="h-4 bg-chalk-dark rounded w-24" />
             </div>
           </div>
         </div>
       </div>
       <div className="bg-white rounded-2xl p-6 border border-black/[0.06]">
         <div className="flex gap-2 mb-6">
-          <div className="h-9 bg-gray-100 rounded-lg w-28" />
-          <div className="h-9 bg-gray-100 rounded-lg w-28" />
-          <div className="h-9 bg-gray-100 rounded-lg w-28" />
+          <div className="h-9 bg-chalk-dark rounded-lg w-28" />
+          <div className="h-9 bg-chalk-dark rounded-lg w-28" />
+          <div className="h-9 bg-chalk-dark rounded-lg w-28" />
         </div>
         <div className="flex flex-wrap gap-2">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-8 bg-gray-100 rounded-full" style={{ width: `${60 + Math.random() * 40}px` }} />
+            <div key={i} className="h-8 bg-chalk-dark rounded-full" style={{ width: `${60 + Math.random() * 40}px` }} />
           ))}
         </div>
       </div>
@@ -465,7 +465,7 @@ export default function ResumeKeywordScanner() {
 
       {/* Scanner Tool */}
       <RevealSection variant="fade-up">
-        <div ref={scannerSectionRef} className="mb-16 rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+        <div ref={scannerSectionRef} className="mb-16 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
           {/* Privacy trust signal */}
           <div className="flex items-center justify-center gap-2 mb-6 text-xs text-stone-warm">
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -485,7 +485,7 @@ export default function ResumeKeywordScanner() {
               </label>
               <textarea
                 id="resume-text"
-                className="w-full h-56 md:h-64 rounded-lg border border-slate-200 bg-white p-4 text-sm text-ink placeholder:text-stone-warm focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-accent/40 resize-none transition-all"
+                className="w-full h-56 md:h-64 rounded-lg border border-gray-200 bg-white p-4 text-sm text-ink placeholder:text-stone-warm focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-accent/40 resize-none transition-all"
                 placeholder="Paste your resume text here..."
                 value={resumeText}
                 onChange={(e) => setResumeText(e.target.value)}
@@ -508,7 +508,7 @@ export default function ResumeKeywordScanner() {
               </label>
               <textarea
                 id="job-description"
-                className="w-full h-56 md:h-64 rounded-lg border border-slate-200 bg-white p-4 text-sm text-ink placeholder:text-stone-warm focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-accent/40 resize-none transition-all"
+                className="w-full h-56 md:h-64 rounded-lg border border-gray-200 bg-white p-4 text-sm text-ink placeholder:text-stone-warm focus:outline-none focus:ring-2 focus:ring-accent-text focus:border-accent/40 resize-none transition-all"
                 placeholder="Paste the job description here..."
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
@@ -589,7 +589,7 @@ export default function ResumeKeywordScanner() {
         <RevealSection variant="fade-up">
           <div className="mb-16">
             {/* Score Overview */}
-            <div className="bg-white rounded-lg p-6 sm:p-8 shadow-sm border border-slate-200 mb-8">
+            <div className="bg-white rounded-lg p-6 sm:p-8 shadow-sm border border-gray-200 mb-8">
               <div className="grid md:grid-cols-3 gap-6 md:gap-8 items-center">
                 <div className="md:col-span-1">
                   <ScoreRing result={result} />
@@ -633,7 +633,7 @@ export default function ResumeKeywordScanner() {
             </div>
 
             {/* Three-Tab Keyword Section */}
-            <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-slate-200">
+            <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-gray-200">
               <div className="flex gap-2 mb-6 overflow-x-auto pb-1 -mb-1 scrollbar-none">
                 {([
                   { key: 'missing' as const, label: 'Missing', count: result.missingCount, activeClass: 'bg-red-50 text-red-600 border border-red-200' },
@@ -750,7 +750,7 @@ export default function ResumeKeywordScanner() {
             ].map((tip) => (
               <div
                 key={tip.title}
-                className="bg-white rounded-lg p-6 shadow-sm border border-slate-200"
+                className="bg-white rounded-lg p-6 shadow-sm border border-gray-200"
               >
                 <h3 className="font-display text-lg font-bold text-ink mb-2">
                   {tip.title}

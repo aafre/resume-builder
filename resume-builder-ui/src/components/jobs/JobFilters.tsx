@@ -136,7 +136,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
         <button
           type="button"
           onClick={() => setExpanded(!expanded)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors ml-auto"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-ink hover:bg-chalk-dark rounded-lg transition-colors ml-auto"
         >
           <SlidersHorizontal className="w-3.5 h-3.5" />
           More
@@ -151,7 +151,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
 
       {/* Expanded Filters Panel */}
       {expanded && (
-        <div className="border-t border-gray-100 p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="border-t border-gray-200 p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Distance (only when location selected) */}
           {hasLocation && (
             <FilterField label="Distance">
@@ -226,7 +226,7 @@ export default function JobFilters({ filters, onChange, hasLocation }: JobFilter
 function FilterField({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-gray-500 mb-1">{label}</label>
+      <label className="block text-xs font-medium text-mist mb-1">{label}</label>
       {children}
     </div>
   );

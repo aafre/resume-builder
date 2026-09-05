@@ -747,7 +747,7 @@ export default function JobsPage() {
                               ? 'bg-accent/10 text-accent-text'
                               : job.match_score >= 40
                                 ? 'bg-amber-50 text-amber-600'
-                                : 'bg-gray-100 text-stone-warm'
+                                : 'bg-chalk-dark text-stone-warm'
                           }`}>
                             {Math.round(job.match_score)}% match
                           </span>
