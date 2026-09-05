@@ -56,7 +56,7 @@ export default function JobsRoleHub() {
     return (
       <div className="max-w-5xl mx-auto px-4 py-12 text-center">
         <p className="text-stone-warm">No data available.</p>
-        <Link to="/jobs" className="text-accent hover:underline mt-2 inline-block">
+        <Link to="/jobs" className="text-accent-text hover:underline mt-2 inline-block">
           Back to Jobs
         </Link>
       </div>
@@ -87,7 +87,7 @@ export default function JobsRoleHub() {
           <p className="text-stone-warm text-base leading-relaxed mb-4">{data.intro_copy}</p>
         )}
         <div className="flex flex-wrap gap-4 text-sm">
-          <span className="text-accent font-medium">{data.total_count}+ jobs across the UK</span>
+          <span className="text-accent-text font-medium">{data.total_count}+ jobs across the UK</span>
           {data.salary_stats?.median > 0 && (
             <span className="text-stone-warm">
               Median salary: {data.salary_stats.currency}
@@ -120,7 +120,7 @@ export default function JobsRoleHub() {
             {data.top_skills.map((skill) => (
               <span
                 key={skill}
-                className="inline-block px-3 py-1 text-xs bg-accent/10 text-accent rounded-full font-medium"
+                className="inline-block px-3 py-1 text-xs bg-accent/10 text-accent-text rounded-full font-medium"
               >
                 {skill}
               </span>
@@ -138,7 +138,7 @@ export default function JobsRoleHub() {
               <Link
                 key={role.slug}
                 to={role.url}
-                className="inline-block px-3 py-1.5 text-sm bg-chalk-dark text-ink rounded-full hover:bg-accent/10 hover:text-accent transition-colors"
+                className="inline-block px-3 py-1.5 text-sm bg-chalk-dark text-ink rounded-full hover:bg-accent/10 hover:text-accent-text transition-colors"
               >
                 {role.name}
               </Link>

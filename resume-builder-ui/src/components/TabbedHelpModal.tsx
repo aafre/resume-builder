@@ -62,7 +62,7 @@ export default function TabbedHelpModal({
                   className={classNames(
                     'py-3 px-4 font-medium text-sm transition-all border-b-2 -mb-px',
                     selected
-                      ? 'text-accent border-accent'
+                      ? 'text-accent-text border-accent'
                       : 'text-gray-600 border-transparent hover:text-gray-900 hover:border-gray-300'
                   )}
                 >
@@ -76,7 +76,7 @@ export default function TabbedHelpModal({
                   className={classNames(
                     'py-3 px-4 font-medium text-sm transition-all border-b-2 -mb-px',
                     selected
-                      ? 'text-accent border-accent'
+                      ? 'text-accent-text border-accent'
                       : 'text-gray-600 border-transparent hover:text-gray-900 hover:border-gray-300'
                   )}
                 >
@@ -90,7 +90,7 @@ export default function TabbedHelpModal({
                   className={classNames(
                     'py-3 px-4 font-medium text-sm transition-all border-b-2 -mb-px',
                     selected
-                      ? 'text-accent border-accent'
+                      ? 'text-accent-text border-accent'
                       : 'text-gray-600 border-transparent hover:text-gray-900 hover:border-gray-300'
                   )}
                 >
@@ -145,11 +145,11 @@ function EditorGuideContent() {
         <h3 className="text-lg font-semibold text-gray-800 mb-3">Reordering Sections & Items</h3>
         <div className="text-gray-600 space-y-2">
           <p className="flex items-center gap-2">
-            <MdMouse className="text-accent flex-shrink-0" />
+            <MdMouse className="text-accent-text flex-shrink-0" />
             <span><strong>Desktop:</strong> Hover over any section or item to reveal the ••• handle, then drag to reorder</span>
           </p>
           <p className="flex items-center gap-2">
-            <MdTouchApp className="text-accent flex-shrink-0" />
+            <MdTouchApp className="text-accent-text flex-shrink-0" />
             <span><strong>Mobile:</strong> Press and hold any section or item, then drag to reorder</span>
           </p>
           <p className="text-sm text-gray-500 mt-2">

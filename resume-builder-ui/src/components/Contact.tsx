@@ -101,7 +101,7 @@ export default function Contact() {
           <nav className="mb-8" aria-label="breadcrumb">
             <ol className="flex items-center space-x-2 text-sm text-stone-warm">
               <li>
-                <Link to="/" className="hover:text-accent transition-colors">
+                <Link to="/" className="hover:text-accent-text transition-colors">
                   Home
                 </Link>
               </li>
@@ -153,7 +153,7 @@ export default function Contact() {
                         submitting another one, or email us directly at{" "}
                         <a
                           href="mailto:support@easyfreeresume.com"
-                          className="text-accent underline hover:text-ink/80"
+                          className="text-accent-text underline hover:text-ink/80"
                         >
                           support@easyfreeresume.com
                         </a>
@@ -297,7 +297,7 @@ export default function Contact() {
                   <div className="flex items-start gap-4">
                     <div className="bg-accent/10 rounded-full p-3">
                       <svg
-                        className="w-6 h-6 text-accent"
+                        className="w-6 h-6 text-accent-text"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -319,7 +319,7 @@ export default function Contact() {
                       </p>
                       <a
                         href="mailto:support@easyfreeresume.com"
-                        className="text-accent hover:text-ink/80 transition-colors"
+                        className="text-accent-text hover:text-ink/80 transition-colors"
                       >
                         support@easyfreeresume.com
                       </a>
@@ -329,7 +329,7 @@ export default function Contact() {
                   <div className="flex items-start gap-4">
                     <div className="bg-accent/10 rounded-full p-3">
                       <svg
-                        className="w-6 h-6 text-accent"
+                        className="w-6 h-6 text-accent-text"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -358,7 +358,7 @@ export default function Contact() {
                   <div className="flex items-start gap-4">
                     <div className="bg-accent/10 rounded-full p-3">
                       <svg
-                        className="w-6 h-6 text-accent"
+                        className="w-6 h-6 text-accent-text"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -380,7 +380,7 @@ export default function Contact() {
                       </p>
                       <Link
                         to="/blog"
-                        className="text-accent hover:text-ink/80 transition-colors"
+                        className="text-accent-text hover:text-ink/80 transition-colors"
                       >
                         Browse Career Resources →
                       </Link>
@@ -443,7 +443,7 @@ export default function Contact() {
                 <div className="mt-6 pt-6 border-t border-black/[0.06]">
                   <p className="text-sm text-stone-warm">
                     Don't see your question?{" "}
-                    <button className="text-accent hover:text-ink/80 transition-colors">
+                    <button className="text-accent-text hover:text-ink/80 transition-colors">
                       Send us a message
                     </button>{" "}
                     and we'll help you out.

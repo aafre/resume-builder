@@ -165,7 +165,7 @@ export function UploadResumeModal({
                       Confidence: {(parseResult.confidence * 100).toFixed(0)}%
                     </span>
                     {parseResult.cached && (
-                      <span className="text-accent">✓ Cached</span>
+                      <span className="text-accent-text">✓ Cached</span>
                     )}
                   </div>
                 </div>

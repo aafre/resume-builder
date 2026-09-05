@@ -171,10 +171,10 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
       {loading ? (
         <div className="w-3.5 h-3.5 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
       ) : (
-        <JobSparkleIcon className="w-3.5 h-3.5 text-accent" />
+        <JobSparkleIcon className="w-3.5 h-3.5 text-accent-text" />
       )}
       <div className="flex flex-col leading-none">
-        <span className="text-[10px] uppercase font-bold text-stone-warm tracking-wider group-hover:text-accent transition-colors">
+        <span className="text-[10px] uppercase font-bold text-stone-warm tracking-wider group-hover:text-accent-text transition-colors">
           Matches
         </span>
         <span className="text-xs font-bold text-ink tabular-nums">

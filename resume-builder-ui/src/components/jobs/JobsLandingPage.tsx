@@ -83,7 +83,7 @@ export default function JobsLandingPage() {
     return (
       <div className="max-w-5xl mx-auto px-4 py-12 text-center">
         <p className="text-stone-warm">No job data available for this page.</p>
-        <Link to="/jobs" className="text-accent hover:underline mt-2 inline-block">
+        <Link to="/jobs" className="text-accent-text hover:underline mt-2 inline-block">
           Back to Jobs
         </Link>
       </div>
@@ -132,7 +132,7 @@ export default function JobsLandingPage() {
         )}
 
         <div className="flex flex-wrap gap-4 text-sm">
-          <span className="text-accent font-medium">{data.total_count}+ jobs found</span>
+          <span className="text-accent-text font-medium">{data.total_count}+ jobs found</span>
           {data.salary_stats?.median > 0 && (
             <span className="text-stone-warm">
               Median salary: {data.salary_stats.currency}
@@ -176,7 +176,7 @@ export default function JobsLandingPage() {
             <ul className="space-y-1">
               {data.related_roles.slice(0, 6).map((role) => (
                 <li key={role.slug}>
-                  <Link to={role.url} className="text-accent hover:text-accent/80 text-sm">
+                  <Link to={role.url} className="text-accent-text hover:text-accent/80 text-sm">
                     {role.name} jobs
                     {data.location_display && ` in ${data.location_display}`}
                   </Link>
@@ -192,7 +192,7 @@ export default function JobsLandingPage() {
             <ul className="space-y-1">
               {data.related_locations.slice(0, 6).map((loc) => (
                 <li key={loc.slug}>
-                  <Link to={loc.url} className="text-accent hover:text-accent/80 text-sm">
+                  <Link to={loc.url} className="text-accent-text hover:text-accent/80 text-sm">
                     {data.role_display} jobs in {loc.name}
                   </Link>
                 </li>
@@ -208,7 +208,7 @@ export default function JobsLandingPage() {
           {data.internal_links.parent && (
             <Link
               to={data.internal_links.parent.url}
-              className="text-sm text-accent hover:underline mr-4"
+              className="text-sm text-accent-text hover:underline mr-4"
             >
               &larr; {data.internal_links.parent.label}
             </Link>
@@ -216,7 +216,7 @@ export default function JobsLandingPage() {
           {data.internal_links.siblings && (
             <div className="flex flex-wrap gap-2 mt-2">
               {data.internal_links.siblings.map((sib) => (
-                <Link key={sib.url} to={sib.url} className="text-sm text-accent hover:underline">
+                <Link key={sib.url} to={sib.url} className="text-sm text-accent-text hover:underline">
                   {sib.label}
                 </Link>
               ))}
@@ -259,7 +259,7 @@ function JobCard({ job }: { job: PseoJob }) {
               href={job.url}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              className="hover:text-accent inline-flex items-center gap-1 transition-colors"
+              className="hover:text-accent-text inline-flex items-center gap-1 transition-colors"
             >
               {job.title}
               <ExternalLink className="w-3 h-3 flex-shrink-0" />
@@ -273,7 +273,7 @@ function JobCard({ job }: { job: PseoJob }) {
         </div>
         <div className="text-right flex-shrink-0">
           {job.salary_min && job.salary_max && !job.salary_is_predicted && (
-            <p className="text-sm font-medium text-accent">
+            <p className="text-sm font-medium text-accent-text">
               {formatSalary(job.salary_min, job.salary_max, 'gb')}
             </p>
           )}

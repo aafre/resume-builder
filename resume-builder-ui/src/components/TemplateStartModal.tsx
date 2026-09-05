@@ -133,7 +133,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
           {/* LEFT SECTION: Import Your Data */}
           <div className="border-2 border-accent/20 rounded-xl p-6 bg-accent/[0.04]">
             <div className="flex items-center gap-2 mb-3">
-              <DocumentArrowUpIcon className="w-6 h-6 text-accent" />
+              <DocumentArrowUpIcon className="w-6 h-6 text-accent-text" />
               <h3 className="font-bold text-xl text-gray-900">Import Your Data</h3>
             </div>
             <p className="text-sm text-gray-600 mb-4">
@@ -154,7 +154,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                 onClick={() => fileInputRef.current?.click()}
               >
                 <DocumentArrowUpIcon className={`w-12 h-12 mx-auto mb-3 ${
-                  isDragging ? 'text-accent' : 'text-gray-400'
+                  isDragging ? 'text-accent-text' : 'text-gray-400'
                 }`} />
                 <p className="text-sm font-semibold text-gray-700 mb-1">
                   Drop your PDF or DOCX here
@@ -265,7 +265,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
           {/* RIGHT SECTION: Manual Options */}
           <div className="border-2 border-accent/20 rounded-xl p-6 bg-accent/[0.04]">
             <div className="flex items-center gap-2 mb-3">
-              <MdEditNote className="text-2xl text-accent" />
+              <MdEditNote className="text-2xl text-accent-text" />
               <h3 className="font-bold text-xl text-gray-900">Manual Options</h3>
             </div>
             <p className="text-sm text-gray-600 mb-4">
@@ -313,7 +313,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
               >
                 <div className="flex items-start gap-3">
                   <div className="p-2 bg-accent/10 rounded-lg">
-                    <MdPreview className="text-2xl text-accent" />
+                    <MdPreview className="text-2xl text-accent-text" />
                   </div>
                   <div className="flex-1">
                     <h4 className="font-bold text-base mb-1 text-gray-900">
@@ -324,7 +324,7 @@ export const TemplateStartModal: React.FC<TemplateStartModalProps> = ({
                     </p>
                   </div>
                   {selectedOption === 'example' && (
-                    <MdCheckCircle className="text-xl text-accent" />
+                    <MdCheckCircle className="text-xl text-accent-text" />
                   )}
                 </div>
               </button>

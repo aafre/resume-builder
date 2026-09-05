@@ -69,7 +69,7 @@ export default function ComparisonTable({
                       >
                         {typeof value === 'boolean' ? (
                           value ? (
-                            <span className="text-accent text-xl">✓</span>
+                            <span className="text-accent-text text-xl">✓</span>
                           ) : (
                             <span className="text-red-500 text-xl">✗</span>
                           )

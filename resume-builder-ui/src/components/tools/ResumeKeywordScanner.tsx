@@ -208,7 +208,7 @@ export function ModelStatusIndicator({
     }
     return (
       <div className="min-h-[32px] flex items-center" style={{ animation: 'fadeIn 0.3s ease-out' }}>
-        <span className="inline-flex items-center gap-1.5 text-xs text-accent font-medium">
+        <span className="inline-flex items-center gap-1.5 text-xs text-accent-text font-medium">
           <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
           AI-Powered
         </span>
@@ -267,7 +267,7 @@ function LoadingSkeleton() {
 
 function KeywordBadge({ kw, variant, index }: { kw: EnhancedKeywordResult; variant: ResultTab; index: number }) {
   const styles = {
-    matched: 'bg-accent/10 text-accent border-accent/20',
+    matched: 'bg-accent/10 text-accent-text border-accent/20',
     partial: 'bg-amber-50 text-amber-700 border-amber-200/60',
     missing: 'bg-red-50 text-red-600 border-red-200/60',
   };
@@ -638,7 +638,7 @@ export default function ResumeKeywordScanner() {
                 {([
                   { key: 'missing' as const, label: 'Missing', count: result.missingCount, activeClass: 'bg-red-50 text-red-600 border border-red-200' },
                   { key: 'partial' as const, label: 'Partial', count: result.partialCount, activeClass: 'bg-amber-50 text-amber-600 border border-amber-200' },
-                  { key: 'matched' as const, label: 'Matched', count: result.matchedCount, activeClass: 'bg-accent/10 text-accent border border-accent/20' },
+                  { key: 'matched' as const, label: 'Matched', count: result.matchedCount, activeClass: 'bg-accent/10 text-accent-text border border-accent/20' },
                 ] as const).map(tab => (
                   <button
                     type="button"
@@ -705,7 +705,7 @@ export default function ResumeKeywordScanner() {
                 key={item.step}
                 className="bg-white rounded-2xl p-6 shadow-sm border border-black/[0.06] text-center"
               >
-                <div className="w-10 h-10 rounded-full bg-accent/10 text-accent font-bold flex items-center justify-center mx-auto mb-4">
+                <div className="w-10 h-10 rounded-full bg-accent/10 text-accent-text font-bold flex items-center justify-center mx-auto mb-4">
                   {item.step}
                 </div>
                 <h3 className="font-display text-lg font-bold text-ink mb-2">
@@ -781,7 +781,7 @@ export default function ResumeKeywordScanner() {
             {/* Step 1 */}
             <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-black/[0.06]">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-accent/10 text-accent font-bold flex items-center justify-center flex-shrink-0 mt-1">
+                <div className="w-10 h-10 rounded-full bg-accent/10 text-accent-text font-bold flex items-center justify-center flex-shrink-0 mt-1">
                   1
                 </div>
                 <div>
@@ -795,15 +795,15 @@ export default function ResumeKeywordScanner() {
                     <p className="text-sm text-ink font-medium mb-2">Tips for this step:</p>
                     <ul className="text-sm text-stone-warm space-y-1.5">
                       <li className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5">&bull;</span>
+                        <span className="text-accent-text mt-0.5">&bull;</span>
                         <span>Don&rsquo;t worry about formatting &mdash; plain text works best for keyword matching.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5">&bull;</span>
-                        <span>Include your <Link to="/blog/how-to-list-skills" className="text-accent hover:underline">skills section</Link> even if it feels repetitive. ATS systems scan the entire document.</span>
+                        <span className="text-accent-text mt-0.5">&bull;</span>
+                        <span>Include your <Link to="/blog/how-to-list-skills" className="text-accent-text hover:underline">skills section</Link> even if it feels repetitive. ATS systems scan the entire document.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5">&bull;</span>
+                        <span className="text-accent-text mt-0.5">&bull;</span>
                         <span>If your resume is in PDF format, open it in a PDF reader and use Ctrl+A (Cmd+A on Mac) to select all text before copying.</span>
                       </li>
                     </ul>
@@ -815,7 +815,7 @@ export default function ResumeKeywordScanner() {
             {/* Step 2 */}
             <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-black/[0.06]">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-accent/10 text-accent font-bold flex items-center justify-center flex-shrink-0 mt-1">
+                <div className="w-10 h-10 rounded-full bg-accent/10 text-accent-text font-bold flex items-center justify-center flex-shrink-0 mt-1">
                   2
                 </div>
                 <div>
@@ -829,15 +829,15 @@ export default function ResumeKeywordScanner() {
                     <p className="text-sm text-ink font-medium mb-2">Tips for this step:</p>
                     <ul className="text-sm text-stone-warm space-y-1.5">
                       <li className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5">&bull;</span>
+                        <span className="text-accent-text mt-0.5">&bull;</span>
                         <span>Copy from the original job posting page, not a summary or shortened version from a job board.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5">&bull;</span>
+                        <span className="text-accent-text mt-0.5">&bull;</span>
                         <span>Include the &ldquo;About Us&rdquo; section &mdash; it often contains industry-specific terms that ATS systems look for.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5">&bull;</span>
+                        <span className="text-accent-text mt-0.5">&bull;</span>
                         <span>Skip the legal boilerplate (equal opportunity statement, etc.) &mdash; it adds noise without useful keywords.</span>
                       </li>
                     </ul>
@@ -849,7 +849,7 @@ export default function ResumeKeywordScanner() {
             {/* Step 3 */}
             <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-black/[0.06]">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-accent/10 text-accent font-bold flex items-center justify-center flex-shrink-0 mt-1">
+                <div className="w-10 h-10 rounded-full bg-accent/10 text-accent-text font-bold flex items-center justify-center flex-shrink-0 mt-1">
                   3
                 </div>
                 <div>
@@ -863,11 +863,11 @@ export default function ResumeKeywordScanner() {
                     <p className="text-sm text-ink font-medium mb-2">Tips for this step:</p>
                     <ul className="text-sm text-stone-warm space-y-1.5">
                       <li className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5">&bull;</span>
+                        <span className="text-accent-text mt-0.5">&bull;</span>
                         <span>Pay close attention to &ldquo;partial matches&rdquo; &mdash; these are the easiest wins because your resume already touches on the concept.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5">&bull;</span>
+                        <span className="text-accent-text mt-0.5">&bull;</span>
                         <span>Click through the Missing and Partial tabs to see context about where the scanner found (or didn&rsquo;t find) each keyword.</span>
                       </li>
                     </ul>
@@ -879,7 +879,7 @@ export default function ResumeKeywordScanner() {
             {/* Step 4 */}
             <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-black/[0.06]">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-accent/10 text-accent font-bold flex items-center justify-center flex-shrink-0 mt-1">
+                <div className="w-10 h-10 rounded-full bg-accent/10 text-accent-text font-bold flex items-center justify-center flex-shrink-0 mt-1">
                   4
                 </div>
                 <div>
@@ -887,26 +887,26 @@ export default function ResumeKeywordScanner() {
                     Add Missing Keywords Naturally to Your Resume
                   </h3>
                   <p className="text-lg font-extralight text-stone-warm leading-relaxed mb-4">
-                    Now comes the critical step. Open your resume and start incorporating the missing keywords. The scanner provides placement suggestions for each term &mdash; use these as a guide. The goal is to integrate keywords in a way that reads naturally to a human recruiter while satisfying ATS requirements. For detailed strategies, see our <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">complete guide to using resume keywords</Link>.
+                    Now comes the critical step. Open your resume and start incorporating the missing keywords. The scanner provides placement suggestions for each term &mdash; use these as a guide. The goal is to integrate keywords in a way that reads naturally to a human recruiter while satisfying ATS requirements. For detailed strategies, see our <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">complete guide to using resume keywords</Link>.
                   </p>
                   <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-4">
                     <p className="text-sm text-ink font-medium mb-2">Tips for this step:</p>
                     <ul className="text-sm text-stone-warm space-y-1.5">
                       <li className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5">&bull;</span>
+                        <span className="text-accent-text mt-0.5">&bull;</span>
                         <span>Add technical skills and tools to a dedicated Skills section &mdash; this is the fastest way to boost your score.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5">&bull;</span>
+                        <span className="text-accent-text mt-0.5">&bull;</span>
                         <span>Weave softer keywords (like &ldquo;cross-functional collaboration&rdquo;) into your experience bullet points with specific examples.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5">&bull;</span>
+                        <span className="text-accent-text mt-0.5">&bull;</span>
                         <span>Never add keywords you can&rsquo;t back up in an interview. Authenticity matters more than a perfect score.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5">&bull;</span>
-                        <span>Use an <Link to="/templates/ats-friendly" className="text-accent hover:underline">ATS-friendly template</Link> so your formatting doesn&rsquo;t undermine your keyword optimization.</span>
+                        <span className="text-accent-text mt-0.5">&bull;</span>
+                        <span>Use an <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">ATS-friendly template</Link> so your formatting doesn&rsquo;t undermine your keyword optimization.</span>
                       </li>
                     </ul>
                   </div>
@@ -917,7 +917,7 @@ export default function ResumeKeywordScanner() {
             {/* Step 5 */}
             <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-black/[0.06]">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-accent/10 text-accent font-bold flex items-center justify-center flex-shrink-0 mt-1">
+                <div className="w-10 h-10 rounded-full bg-accent/10 text-accent-text font-bold flex items-center justify-center flex-shrink-0 mt-1">
                   5
                 </div>
                 <div>
@@ -925,17 +925,17 @@ export default function ResumeKeywordScanner() {
                     Re-Scan to Verify Your Improvement
                   </h3>
                   <p className="text-lg font-extralight text-stone-warm leading-relaxed mb-4">
-                    After updating your resume, come back and run the scan again. Paste your revised resume text and the same job description to see how your score has improved. Most candidates see a 15&ndash;30 percentage point improvement after their first round of keyword optimization. If you&rsquo;re still below 70%, focus on the remaining missing keywords and repeat. For role-specific keyword lists to check against, browse our <Link to="/resume-keywords" className="text-accent hover:underline">resume keywords hub</Link>.
+                    After updating your resume, come back and run the scan again. Paste your revised resume text and the same job description to see how your score has improved. Most candidates see a 15&ndash;30 percentage point improvement after their first round of keyword optimization. If you&rsquo;re still below 70%, focus on the remaining missing keywords and repeat. For role-specific keyword lists to check against, browse our <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords hub</Link>.
                   </p>
                   <div className="bg-accent/[0.06] border border-accent/20 rounded-xl p-4">
                     <p className="text-sm text-ink font-medium mb-2">Tips for this step:</p>
                     <ul className="text-sm text-stone-warm space-y-1.5">
                       <li className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5">&bull;</span>
+                        <span className="text-accent-text mt-0.5">&bull;</span>
                         <span>Track your progress &mdash; screenshot your score before and after so you can see the improvement.</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-accent mt-0.5">&bull;</span>
+                        <span className="text-accent-text mt-0.5">&bull;</span>
                         <span>Aim for at least 70%, but don&rsquo;t obsess over reaching 100%. Some keywords may not apply to your background, and that&rsquo;s okay.</span>
                       </li>
                     </ul>
@@ -970,7 +970,7 @@ export default function ResumeKeywordScanner() {
                 When you submit a resume through an online application portal, the ATS parses your document into structured data. It extracts your contact information, work history, education, and skills, then compares this data against the job requirements set by the hiring manager. The system assigns a relevancy score based on how many required and preferred qualifications your resume matches.
               </p>
               <p className="text-lg font-extralight text-stone-warm leading-relaxed mb-4">
-                Most ATS platforms &mdash; including Workday, Greenhouse, Lever, and iCIMS &mdash; use a combination of keyword matching and section analysis. They look for specific terms in specific contexts. For example, &ldquo;Python&rdquo; in your skills section carries more weight than &ldquo;Python&rdquo; mentioned offhandedly in a project description. This is why a well-structured resume with clear section headings is essential. Our <Link to="/blog/ats-resume-optimization" className="text-accent hover:underline">ATS optimization guide</Link> covers the formatting details.
+                Most ATS platforms &mdash; including Workday, Greenhouse, Lever, and iCIMS &mdash; use a combination of keyword matching and section analysis. They look for specific terms in specific contexts. For example, &ldquo;Python&rdquo; in your skills section carries more weight than &ldquo;Python&rdquo; mentioned offhandedly in a project description. This is why a well-structured resume with clear section headings is essential. Our <Link to="/blog/ats-resume-optimization" className="text-accent-text hover:underline">ATS optimization guide</Link> covers the formatting details.
               </p>
               <p className="text-lg font-extralight text-stone-warm leading-relaxed">
                 Resumes that score below the threshold &mdash; typically around 60&ndash;75% match depending on the company &mdash; are automatically filtered out. The recruiter never sees them. That means your resume could be perfect in every other way, but without the right keywords, it disappears into a digital void.
@@ -989,7 +989,7 @@ export default function ResumeKeywordScanner() {
                 <strong className="text-ink font-medium">Semantic matching</strong> is more sophisticated. It understands that &ldquo;managed projects&rdquo; and &ldquo;project management&rdquo; mean essentially the same thing. Newer ATS platforms and AI-powered screening tools increasingly use semantic analysis. Our scanner uses this approach &mdash; powered by the MiniLM AI model running in your browser &mdash; to give you a more realistic picture of how modern hiring systems evaluate your resume.
               </p>
               <p className="text-lg font-extralight text-stone-warm leading-relaxed">
-                The safest strategy is to optimize for both. Use the exact phrases from the job description where they fit naturally, but also include related terms and variations. For example, if a job requires &ldquo;data analysis,&rdquo; your resume should contain that exact phrase <em>and</em> related terms like &ldquo;data-driven insights,&rdquo; &ldquo;analytics,&rdquo; or &ldquo;statistical analysis.&rdquo; Check our <Link to="/resume-keywords/software-engineer" className="text-accent hover:underline">software engineer keyword page</Link> for an example of how to map keywords for a specific role.
+                The safest strategy is to optimize for both. Use the exact phrases from the job description where they fit naturally, but also include related terms and variations. For example, if a job requires &ldquo;data analysis,&rdquo; your resume should contain that exact phrase <em>and</em> related terms like &ldquo;data-driven insights,&rdquo; &ldquo;analytics,&rdquo; or &ldquo;statistical analysis.&rdquo; Check our <Link to="/resume-keywords/software-engineer" className="text-accent-text hover:underline">software engineer keyword page</Link> for an example of how to map keywords for a specific role.
               </p>
             </div>
 
@@ -1002,7 +1002,7 @@ export default function ResumeKeywordScanner() {
                 Keyword density refers to how frequently a keyword appears relative to your total resume content. A certain level of repetition signals to the ATS that a skill is genuinely central to your experience &mdash; not just mentioned in passing. If &ldquo;project management&rdquo; appears three times across your summary, experience bullets, and skills section, that&rsquo;s a stronger signal than a single mention.
               </p>
               <p className="text-lg font-extralight text-stone-warm leading-relaxed mb-4">
-                However, keyword stuffing &mdash; cramming the same term dozens of times or hiding white text filled with keywords &mdash; backfires badly. Modern ATS platforms have anti-spam algorithms that flag unnatural repetition. Worse, even if the ATS lets it through, a human recruiter will immediately reject a resume that reads like a keyword dump. Our <Link to="/blog/resume-keywords-guide" className="text-accent hover:underline">comprehensive keyword guide</Link> walks through the right balance.
+                However, keyword stuffing &mdash; cramming the same term dozens of times or hiding white text filled with keywords &mdash; backfires badly. Modern ATS platforms have anti-spam algorithms that flag unnatural repetition. Worse, even if the ATS lets it through, a human recruiter will immediately reject a resume that reads like a keyword dump. Our <Link to="/blog/resume-keywords-guide" className="text-accent-text hover:underline">comprehensive keyword guide</Link> walks through the right balance.
               </p>
               <p className="text-lg font-extralight text-stone-warm leading-relaxed">
                 The sweet spot is 2&ndash;4 mentions of your most important keywords distributed across different sections, with each mention providing genuine context. Mention &ldquo;project management&rdquo; in your summary, demonstrate it in an experience bullet with a specific achievement, and list it in your skills section. That pattern satisfies both algorithms and human readers.

@@ -62,7 +62,7 @@ export const ConversionPromptModal: React.FC<ConversionPromptModalProps> = ({
         <div className="bg-accent/10 px-6 py-4 rounded-t-2xl border-b border-accent/20">
           <div className="flex items-center gap-3">
             <div className="bg-accent/20 p-2 rounded-full">
-              <MdSecurity className="text-3xl text-accent" />
+              <MdSecurity className="text-3xl text-accent-text" />
             </div>
             <h2 id={titleId} className="text-2xl font-bold text-gray-800">
               Save Your Work

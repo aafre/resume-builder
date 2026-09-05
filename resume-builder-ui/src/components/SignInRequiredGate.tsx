@@ -72,7 +72,7 @@ export default function SignInRequiredGate({
             {/* Lock Icon */}
             <div className="flex justify-center mb-6">
               <div className="w-20 h-20 bg-gradient-to-br from-accent/10 to-accent/[0.06] rounded-full flex items-center justify-center">
-                <Lock className="w-10 h-10 text-accent" />
+                <Lock className="w-10 h-10 text-accent-text" />
               </div>
             </div>
 

@@ -123,7 +123,7 @@ const UserMenu: React.FC = () => {
               onClick={handleMyResumes}
               className="w-full flex min-h-11 items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-accent/[0.06] rounded-lg mx-2 my-1 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-inset"
             >
-              <MdFolder size={18} className="text-accent" />
+              <MdFolder size={18} className="text-accent-text" />
               <span>My Resumes</span>
             </button>
           )}

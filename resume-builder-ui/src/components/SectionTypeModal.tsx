@@ -171,7 +171,7 @@ const SectionTypeModal: React.FC<SectionTypeModalProps> = ({
                 className={`text-xs font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-text rounded ${
                   showAfterSection || !isTopOrBottom
                     ? 'text-ink/80'
-                    : 'text-accent hover:text-ink/80'
+                    : 'text-accent-text hover:text-ink/80'
                 }`}
               >
                 {showAfterSection ? '− Hide options' : '+ Insert after a specific section'}

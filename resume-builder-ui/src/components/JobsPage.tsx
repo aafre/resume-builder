@@ -484,7 +484,7 @@ export default function JobsPage() {
           {/* Drag overlay */}
           {dragActive && (
             <div className="absolute inset-0 bg-accent/10 border-2 border-dashed border-accent rounded-2xl z-10 flex flex-col items-center justify-center gap-2 pointer-events-none">
-              <Upload className="w-8 h-8 text-accent" />
+              <Upload className="w-8 h-8 text-accent-text" />
               <p className="text-ink font-semibold text-sm">Drop your resume here (PDF or DOCX)</p>
             </div>
           )}
@@ -592,7 +592,7 @@ export default function JobsPage() {
         {suggestions && suggestions.alternative_roles.length > 0 && !loading && (
           <div className="mb-6 bg-chalk-dark border border-black/[0.06] rounded-2xl p-5">
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-4 h-4 text-accent" />
+              <Sparkles className="w-4 h-4 text-accent-text" />
               <h3 className="text-sm font-display font-bold text-ink">Consider these related roles</h3>
             </div>
             <p className="text-xs text-stone-warm mb-3">Based on your resume skills and experience</p>
@@ -601,7 +601,7 @@ export default function JobsPage() {
                 <button
                   key={role}
                   onClick={() => handlePillClick(role)}
-                  className="px-3 py-1.5 bg-white border border-black/[0.06] text-ink text-sm font-medium rounded-full hover:text-accent hover:border-accent/30 transition-all shadow-sm"
+                  className="px-3 py-1.5 bg-white border border-black/[0.06] text-ink text-sm font-medium rounded-full hover:text-accent-text hover:border-accent/30 transition-all shadow-sm"
                 >
                   {role}
                 </button>
@@ -628,7 +628,7 @@ export default function JobsPage() {
             <Info className="w-3.5 h-3.5 flex-shrink-0" />
             <span>Also searched for:</span>
             {aiTermsUsed.map((term) => (
-              <span key={term} className="px-2 py-0.5 bg-accent/10 text-accent rounded-full font-medium">
+              <span key={term} className="px-2 py-0.5 bg-accent/10 text-accent-text rounded-full font-medium">
                 {term}
               </span>
             ))}
@@ -640,7 +640,7 @@ export default function JobsPage() {
           <div className="mb-6 bg-accent/5 border border-accent/20 rounded-2xl p-4">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2 min-w-0">
-                <FileText className="w-4 h-4 text-accent flex-shrink-0" />
+                <FileText className="w-4 h-4 text-accent-text flex-shrink-0" />
                 <span className="text-sm font-medium text-ink truncate">
                   Matching against: {resumeContext.fileName}
                 </span>
@@ -663,7 +663,7 @@ export default function JobsPage() {
               {resumeContext.skills.length > 0 && (
                 <span className="flex items-center gap-1 flex-wrap">
                   {resumeContext.skills.slice(0, 3).map((skill) => (
-                    <span key={skill} className="px-2 py-0.5 bg-accent/10 text-accent rounded-full">
+                    <span key={skill} className="px-2 py-0.5 bg-accent/10 text-accent-text rounded-full">
                       {skill}
                     </span>
                   ))}
@@ -685,7 +685,7 @@ export default function JobsPage() {
         {/* Nudge Banner — when no resume */}
         {hasSearched && !loading && jobs.length > 0 && !resumeContext && (
           <div className="flex items-center gap-2 mb-6 text-xs text-stone-warm">
-            <Upload className="w-3.5 h-3.5 text-accent flex-shrink-0" />
+            <Upload className="w-3.5 h-3.5 text-accent-text flex-shrink-0" />
             <span>Drop your resume on the search box for personalized match scores</span>
           </div>
         )}
@@ -732,7 +732,7 @@ export default function JobsPage() {
                           <span className="text-ink text-sm font-bold">{initial}</span>
                         </div>
                         <div className="min-w-0">
-                          <h3 className="text-base font-display font-bold text-ink group-hover:text-accent transition-colors line-clamp-2">
+                          <h3 className="text-base font-display font-bold text-ink group-hover:text-accent-text transition-colors line-clamp-2">
                             {job.title}
                           </h3>
                         </div>
@@ -744,7 +744,7 @@ export default function JobsPage() {
                         {job.match_score != null && resumeContext && (
                           <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
                             job.match_score >= 70
-                              ? 'bg-accent/10 text-accent'
+                              ? 'bg-accent/10 text-accent-text'
                               : job.match_score >= 40
                                 ? 'bg-amber-50 text-amber-600'
                                 : 'bg-gray-100 text-stone-warm'
@@ -756,7 +756,7 @@ export default function JobsPage() {
                           <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
                             job.salary_is_predicted
                               ? 'bg-amber-50 text-amber-600'
-                              : 'bg-accent/10 text-accent'
+                              : 'bg-accent/10 text-accent-text'
                           }`}>
                             {salary}{job.salary_is_predicted ? ' est.' : ''}
                           </span>
@@ -806,7 +806,7 @@ export default function JobsPage() {
                 <button
                   key={title}
                   onClick={() => handlePillClick(title)}
-                  className="px-3 py-1.5 bg-chalk-dark text-ink text-xs font-medium rounded-full hover:text-accent hover:bg-accent/10 transition-colors"
+                  className="px-3 py-1.5 bg-chalk-dark text-ink text-xs font-medium rounded-full hover:text-accent-text hover:bg-accent/10 transition-colors"
                 >
                   {title}
                 </button>
@@ -826,7 +826,7 @@ export default function JobsPage() {
                 <button
                   key={title}
                   onClick={() => handlePillClick(title)}
-                  className="px-4 py-2 bg-white border border-black/[0.06] text-ink text-sm font-medium rounded-full hover:text-accent hover:border-accent/30 transition-all shadow-sm"
+                  className="px-4 py-2 bg-white border border-black/[0.06] text-ink text-sm font-medium rounded-full hover:text-accent-text hover:border-accent/30 transition-all shadow-sm"
                 >
                   {title}
                 </button>
@@ -856,9 +856,9 @@ export default function JobsPage() {
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="w-14 h-14 bg-chalk-dark rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <FileText className="w-7 h-7 text-accent" />
+                  <FileText className="w-7 h-7 text-accent-text" />
                 </div>
-                <div className="text-sm font-bold text-accent mb-1">Step 1</div>
+                <div className="text-sm font-bold text-accent-text mb-1">Step 1</div>
                 <h3 className="font-display text-lg font-bold text-ink mb-2">Build Your Resume</h3>
                 <p className="text-sm font-extralight text-stone-warm">
                   Create a professional, ATS-friendly resume using our free builder with proven templates.
@@ -866,9 +866,9 @@ export default function JobsPage() {
               </div>
               <div className="text-center">
                 <div className="w-14 h-14 bg-chalk-dark rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Search className="w-7 h-7 text-accent" />
+                  <Search className="w-7 h-7 text-accent-text" />
                 </div>
-                <div className="text-sm font-bold text-accent mb-1">Step 2</div>
+                <div className="text-sm font-bold text-accent-text mb-1">Step 2</div>
                 <h3 className="font-display text-lg font-bold text-ink mb-2">Search Jobs</h3>
                 <p className="text-sm font-extralight text-stone-warm">
                   Find matching openings across 19 countries with salary information and direct apply links.
@@ -876,9 +876,9 @@ export default function JobsPage() {
               </div>
               <div className="text-center">
                 <div className="w-14 h-14 bg-chalk-dark rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Target className="w-7 h-7 text-accent" />
+                  <Target className="w-7 h-7 text-accent-text" />
                 </div>
-                <div className="text-sm font-bold text-accent mb-1">Step 3</div>
+                <div className="text-sm font-bold text-accent-text mb-1">Step 3</div>
                 <h3 className="font-display text-lg font-bold text-ink mb-2">Apply Directly</h3>
                 <p className="text-sm font-extralight text-stone-warm">
                   Click through to apply on the employer's site with your polished resume ready to upload.
@@ -897,9 +897,9 @@ export default function JobsPage() {
             >
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-accent" />
+                  <FileText className="w-5 h-5 text-accent-text" />
                 </div>
-                <h3 className="font-display font-bold text-ink group-hover:text-accent transition-colors">
+                <h3 className="font-display font-bold text-ink group-hover:text-accent-text transition-colors">
                   Resume Templates
                 </h3>
               </div>
@@ -913,9 +913,9 @@ export default function JobsPage() {
             >
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center">
-                  <Target className="w-5 h-5 text-accent" />
+                  <Target className="w-5 h-5 text-accent-text" />
                 </div>
-                <h3 className="font-display font-bold text-ink group-hover:text-accent transition-colors">
+                <h3 className="font-display font-bold text-ink group-hover:text-accent-text transition-colors">
                   Resume Keywords
                 </h3>
               </div>
@@ -929,9 +929,9 @@ export default function JobsPage() {
             >
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center">
-                  <BookOpen className="w-5 h-5 text-accent" />
+                  <BookOpen className="w-5 h-5 text-accent-text" />
                 </div>
-                <h3 className="font-display font-bold text-ink group-hover:text-accent transition-colors">
+                <h3 className="font-display font-bold text-ink group-hover:text-accent-text transition-colors">
                   Interview Guide
                 </h3>
               </div>

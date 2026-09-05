@@ -155,7 +155,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-white">
                 <div className="text-center p-8">
                   <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <MdFileDownload className="text-3xl text-accent" />
+                    <MdFileDownload className="text-3xl text-accent-text" />
                   </div>
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">
                     No Preview Available

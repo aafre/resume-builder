@@ -401,7 +401,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ showHeader = true }
                     <div className="p-6 lg:p-8">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
-                          <h3 className="font-display text-2xl font-bold text-ink mb-2 group-hover:text-accent transition-colors">
+                          <h3 className="font-display text-2xl font-bold text-ink mb-2 group-hover:text-accent-text transition-colors">
                             {template.name}
                           </h3>
                           <p className="text-stone-warm leading-relaxed">

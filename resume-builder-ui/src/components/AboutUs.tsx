@@ -39,7 +39,7 @@ export default function AboutUs() {
           <nav className="mb-8" aria-label="breadcrumb">
             <ol className="flex items-center space-x-2 text-sm text-stone-warm">
               <li>
-                <Link to="/" className="hover:text-accent transition-colors">
+                <Link to="/" className="hover:text-accent-text transition-colors">
                   Home
                 </Link>
               </li>
@@ -92,7 +92,7 @@ export default function AboutUs() {
                     href="https://github.com/aafre/resume-builder"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-accent underline hover:text-ink"
+                    className="text-accent-text underline hover:text-ink"
                   >
                     GitHub repository
                   </a>
@@ -129,7 +129,7 @@ export default function AboutUs() {
             {/* Our Values */}
             <section className="grid md:grid-cols-2 gap-8">
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-premium p-8 border border-black/[0.06]">
-                <div className="text-accent text-3xl mb-4">🎯</div>
+                <div className="text-accent-text text-3xl mb-4">🎯</div>
                 <h3 className="font-display text-xl font-bold text-ink mb-4">
                   Accessibility First
                 </h3>
@@ -141,7 +141,7 @@ export default function AboutUs() {
               </div>
 
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-premium p-8 border border-black/[0.06]">
-                <div className="text-accent text-3xl mb-4">🔒</div>
+                <div className="text-accent-text text-3xl mb-4">🔒</div>
                 <h3 className="font-display text-xl font-bold text-ink mb-4">
                   Privacy Protected
                 </h3>
@@ -153,7 +153,7 @@ export default function AboutUs() {
               </div>
 
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-premium p-8 border border-black/[0.06]">
-                <div className="text-accent text-3xl mb-4">⚡</div>
+                <div className="text-accent-text text-3xl mb-4">⚡</div>
                 <h3 className="font-display text-xl font-bold text-ink mb-4">
                   Simplicity & Power
                 </h3>
@@ -233,19 +233,19 @@ export default function AboutUs() {
 
               <div className="grid md:grid-cols-3 gap-8 text-center">
                 <div>
-                  <div className="text-3xl font-bold text-accent mb-2">
+                  <div className="text-3xl font-bold text-accent-text mb-2">
                     95%
                   </div>
                   <p className="text-stone-warm">User Satisfaction</p>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-accent mb-2">
+                  <div className="text-3xl font-bold text-accent-text mb-2">
                     $0
                   </div>
                   <p className="text-stone-warm">Cost to Users</p>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-accent mb-2">
+                  <div className="text-3xl font-bold text-accent-text mb-2">
                     24/7
                   </div>
                   <p className="text-stone-warm">Available Access</p>
@@ -315,7 +315,7 @@ export default function AboutUs() {
                   </Link>
                   <Link
                     to="/blog"
-                    className="inline-block border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-accent transition-all duration-300"
+                    className="inline-block border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-accent-text transition-all duration-300"
                   >
                     Read Career Tips
                   </Link>

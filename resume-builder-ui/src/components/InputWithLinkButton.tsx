@@ -159,7 +159,7 @@ export const InputWithLinkButton: React.FC<InputWithLinkButtonProps> = ({
           onClick={handleLinkButtonClick}
           disabled={disabled}
           title="Insert Link"
-          className="text-accent hover:text-ink/80 p-2 hover:bg-accent/[0.06] rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+          className="text-accent-text hover:text-ink/80 p-2 hover:bg-accent/[0.06] rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

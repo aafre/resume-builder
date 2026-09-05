@@ -210,7 +210,7 @@ const DownloadCelebrationModal: React.FC<DownloadCelebrationModalProps> = ({
                     rel="noopener noreferrer nofollow"
                     className="flex items-center gap-4 bg-chalk-dark border border-black/[0.06] rounded-xl p-4 cursor-pointer hover:bg-white hover:shadow-lg hover:border-accent/20 hover:-translate-y-0.5 transition-all duration-200"
                   >
-                    <ClipboardCheck className="w-5 h-5 text-accent flex-shrink-0" />
+                    <ClipboardCheck className="w-5 h-5 text-accent-text flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-ink">
                         {affiliateConfig.resumeReview.label}
