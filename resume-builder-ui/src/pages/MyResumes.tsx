@@ -15,6 +15,8 @@ import { useResumes } from '../hooks/useResumes';
 import { useAuth } from '../contexts/AuthContext';
 import { usePreview } from '../hooks/usePreview';
 import { InContentAd, AD_CONFIG } from '../components/ads';
+import RevealSection from '../components/shared/RevealSection';
+import { SectionEmptyState } from '../components/shared/SectionEmptyState';
 
 export default function MyResumes() {
   const navigate = useNavigate();
@@ -298,16 +300,16 @@ export default function MyResumes() {
 
   if (authLoading || isLoading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
-        <div className="text-center rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
-          <div className="mx-auto mb-4 h-2 w-24 overflow-hidden rounded-full bg-slate-200">
+      <div className="min-h-screen bg-chalk flex items-center justify-center px-4">
+        <div className="text-center rounded-2xl border border-black/[0.06] bg-white p-8 shadow-premium">
+          <div className="mx-auto mb-4 h-2 w-24 overflow-hidden rounded-full bg-chalk-dark">
             <div className="h-full w-1/2 animate-pulse rounded-full bg-accent" />
           </div>
-          <p className="text-gray-600">
+          <p className="font-display font-extralight text-stone-warm">
             {authLoading ? 'Initializing authentication...' : 'Loading your resumes...'}
           </p>
           {authLoading && (
-            <p className="text-gray-500 text-sm mt-2">
+            <p className="text-stone-warm text-sm mt-2">
               If this takes more than 10 seconds, try refreshing the page
             </p>
           )}
@@ -323,13 +325,13 @@ export default function MyResumes() {
 
   if (isError) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
-        <div className="text-center max-w-md rounded-lg border border-red-100 bg-white p-8 shadow-sm">
+      <div className="min-h-screen bg-chalk flex items-center justify-center px-4">
+        <div className="text-center max-w-md rounded-2xl border border-red-100 bg-white p-8 shadow-premium">
           <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Resumes</h2>
-          <p className="text-gray-600 mb-4">{error?.message || 'Failed to load resumes'}</p>
+          <h2 className="font-display text-2xl font-extrabold tracking-tight text-ink mb-2">Error Loading Resumes</h2>
+          <p className="font-display font-extralight text-stone-warm mb-4">{error?.message || 'Failed to load resumes'}</p>
           <button
             type="button"
             onClick={() => refetch()}
@@ -343,48 +345,61 @@ export default function MyResumes() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-chalk">
       <div className="container mx-auto px-4 py-8 md:py-10 max-w-[1200px]">
         <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+            <p className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase">
               Dashboard
             </p>
-            <h1 className="mt-1 text-2xl md:text-3xl font-extrabold text-ink font-display">
+            <h1 className="mt-1 font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink">
               My Resumes
             </h1>
           </div>
-          <p className="text-sm font-medium text-slate-600">
+          <p className="text-sm font-medium text-stone-warm">
             {resumes.length} of 5 resumes used
           </p>
         </div>
 
         {/* Resume Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-          {/* Ghost Card - Always first */}
-          <GhostCard
-            isAtLimit={resumes.length >= 5}
-            resumeCount={resumes.length}
-            onCreateNew={handleCreateNew}
-            onUpgrade={() => toast('Pricing coming soon!')}
+        {resumes.length === 0 ? (
+          <SectionEmptyState
+            headline="No resumes yet."
+            hint="Pick a template and your first resume starts as a filled-in draft you edit, not a blank page. You can keep up to 5."
+            addLabel="Create your first resume"
+            onAdd={handleCreateNew}
           />
-
-          {/* Existing resume cards */}
-          {resumes.map(resume => (
-            <ResumeCard
-              key={resume.id}
-              resume={resume}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              onDownload={handleDownload}
-              onPreview={handlePreview}
-              onDuplicate={handleDuplicate}
-              onRename={handleRename}
-              isEditButtonLoading={editingId === resume.id}
-              isPreviewLoading={previewingId === resume.id && isGeneratingPreview}
+        ) : (
+          <RevealSection
+            variant="fade-up"
+            stagger
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"
+          >
+            {/* Ghost Card - Always first */}
+            <GhostCard
+              isAtLimit={resumes.length >= 5}
+              resumeCount={resumes.length}
+              onCreateNew={handleCreateNew}
+              onUpgrade={() => toast('Pricing coming soon!')}
             />
-          ))}
-        </div>
+
+            {/* Existing resume cards */}
+            {resumes.map(resume => (
+              <ResumeCard
+                key={resume.id}
+                resume={resume}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onDownload={handleDownload}
+                onPreview={handlePreview}
+                onDuplicate={handleDuplicate}
+                onRename={handleRename}
+                isEditButtonLoading={editingId === resume.id}
+                isPreviewLoading={previewingId === resume.id && isGeneratingPreview}
+              />
+            ))}
+          </RevealSection>
+        )}
 
         {/* In-content ad below resume grid */}
         <InContentAd
@@ -434,11 +449,11 @@ export default function MyResumes() {
       {/* Loading Overlays - only show for download now */}
       {downloadingId && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-sm mx-4">
-            <div className="mx-auto mb-4 h-2 w-24 overflow-hidden rounded-full bg-slate-200">
+          <div className="bg-white rounded-2xl p-6 max-w-sm mx-4 shadow-premium">
+            <div className="mx-auto mb-4 h-2 w-24 overflow-hidden rounded-full bg-chalk-dark">
               <div className="h-full w-1/2 animate-pulse rounded-full bg-accent" />
             </div>
-            <p className="text-center text-gray-700">
+            <p className="text-center font-display font-extralight text-stone-warm">
               Generating PDF...
             </p>
           </div>
