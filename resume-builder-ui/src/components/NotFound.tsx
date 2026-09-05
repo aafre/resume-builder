@@ -11,17 +11,17 @@ const NotFound: React.FC = () => {
         {/* 404 Card */}
         <div className="glass glass-hover rounded-3xl p-8 md:p-12 text-center">
           {/* 404 Code */}
-          <div className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600 mb-6">
+          <div className="font-display text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600 mb-6">
             404
           </div>
 
           {/* 404 Heading */}
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+          <h1 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">
             Page Not Found
           </h1>
 
           {/* 404 Message */}
-          <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+          <p className="font-display text-lg font-extralight text-stone-warm mb-8 leading-relaxed">
             The page you're looking for doesn't exist. It might have been moved
             or the URL might be incorrect.
           </p>
@@ -45,7 +45,7 @@ const NotFound: React.FC = () => {
           </div>
 
           {/* Help Text */}
-          <p className="text-sm text-gray-500 mt-8">
+          <p className="text-sm text-stone-warm mt-8">
             Looking for templates? Start building your resume from our homepage.
           </p>
         </div>
