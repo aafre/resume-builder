@@ -36,7 +36,7 @@ export default function CustomerServiceKeywords() {
         <h3 className="font-bold text-ink mb-3">🔗 Part of Our Series</h3>
         <p className="text-ink/80">
           This article is part of our Resume Keywords series. For a complete overview, see our{' '}
-          <Link to="/resume-keywords" className="text-accent hover:text-ink underline font-medium">
+          <Link to="/resume-keywords" className="text-accent-text hover:text-ink underline font-medium">
             Resume Keywords Hub
           </Link>.
         </p>
@@ -57,7 +57,7 @@ export default function CustomerServiceKeywords() {
               our{' '}
               <Link
                 to="/examples/customer-service-representative"
-                className="text-accent hover:text-ink underline font-medium"
+                className="text-accent-text hover:text-ink underline font-medium"
               >
                 customer service resume example
               </Link>.
@@ -517,7 +517,7 @@ export default function CustomerServiceKeywords() {
               <p className="text-stone-warm mb-4">
                 "Answered customer emails and helped solve problems."
               </p>
-              <h4 className="font-bold text-accent mb-4">
+              <h4 className="font-bold text-accent-text mb-4">
                 ✅ Optimized (After)
               </h4>
               <p className="text-ink/80">
@@ -539,7 +539,7 @@ export default function CustomerServiceKeywords() {
               <p className="text-stone-warm mb-4">
                 "Took phone calls from customers and resolved their issues."
               </p>
-              <h4 className="font-bold text-accent mb-4">
+              <h4 className="font-bold text-accent-text mb-4">
                 ✅ Optimized (After)
               </h4>
               <p className="text-ink/80">
@@ -562,7 +562,7 @@ export default function CustomerServiceKeywords() {
               <p className="text-stone-warm mb-4">
                 "Managed customer accounts and helped with renewals."
               </p>
-              <h4 className="font-bold text-accent mb-4">
+              <h4 className="font-bold text-accent-text mb-4">
                 ✅ Optimized (After)
               </h4>
               <p className="text-ink/80">
@@ -585,7 +585,7 @@ export default function CustomerServiceKeywords() {
               <p className="text-stone-warm mb-4">
                 "Helped customers with computer problems and fixed technical issues."
               </p>
-              <h4 className="font-bold text-accent mb-4">
+              <h4 className="font-bold text-accent-text mb-4">
                 ✅ Optimized (After)
               </h4>
               <p className="text-ink/80">
@@ -608,7 +608,7 @@ export default function CustomerServiceKeywords() {
               <p className="text-stone-warm mb-4">
                 "Made outbound calls to customers and sold products."
               </p>
-              <h4 className="font-bold text-accent mb-4">
+              <h4 className="font-bold text-accent-text mb-4">
                 ✅ Optimized (After)
               </h4>
               <p className="text-ink/80">
@@ -631,7 +631,7 @@ export default function CustomerServiceKeywords() {
               <p className="text-stone-warm mb-4">
                 "Worked with enterprise clients to ensure satisfaction and renew contracts."
               </p>
-              <h4 className="font-bold text-accent mb-4">
+              <h4 className="font-bold text-accent-text mb-4">
                 ✅ Optimized (After)
               </h4>
               <p className="text-ink/80">
@@ -654,7 +654,7 @@ export default function CustomerServiceKeywords() {
               <p className="text-stone-warm mb-4">
                 "Answered technical questions from customers about the software."
               </p>
-              <h4 className="font-bold text-accent mb-4">
+              <h4 className="font-bold text-accent-text mb-4">
                 ✅ Optimized (After)
               </h4>
               <p className="text-ink/80">
@@ -671,7 +671,7 @@ export default function CustomerServiceKeywords() {
               Want to see a full resume using these keywords?{' '}
               <Link
                 to="/examples/customer-service-representative"
-                className="text-accent hover:text-ink underline font-medium"
+                className="text-accent-text hover:text-ink underline font-medium"
               >
                 View our customer service resume example
               </Link>.
@@ -749,7 +749,7 @@ export default function CustomerServiceKeywords() {
             effectively. For a deeper dive, read our{' '}
             <Link
               to="/blog/how-to-use-resume-keywords"
-              className="text-accent hover:text-ink underline font-medium"
+              className="text-accent-text hover:text-ink underline font-medium"
             >
               complete guide to using resume keywords
             </Link>.
@@ -811,7 +811,7 @@ export default function CustomerServiceKeywords() {
                 and where you need to adjust. Learn more in our{' '}
                 <Link
                   to="/blog/ats-resume-optimization"
-                  className="text-accent hover:text-ink underline font-medium"
+                  className="text-accent-text hover:text-ink underline font-medium"
                 >
                   ATS resume optimization guide
                 </Link>.
@@ -831,13 +831,13 @@ export default function CustomerServiceKeywords() {
           </h2>
           <p className="text-lg text-stone-warm font-extralight mb-6 leading-relaxed">
             Browse keyword guides for other industries and roles on our{' '}
-            <Link to="/resume-keywords" className="text-accent hover:text-ink underline font-medium">
+            <Link to="/resume-keywords" className="text-accent-text hover:text-ink underline font-medium">
               Resume Keywords Hub
             </Link>. For a deeper dive on how to weave keywords naturally into your bullet points, read our{' '}
-            <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:text-ink underline font-medium">
+            <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:text-ink underline font-medium">
               complete guide to using resume keywords
             </Link>. You can also use our free{' '}
-            <Link to="/resume-keyword-scanner" className="text-accent hover:text-ink underline font-medium">
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:text-ink underline font-medium">
               ATS Keyword Scanner
             </Link>{' '}
             to check your resume against a specific job description.

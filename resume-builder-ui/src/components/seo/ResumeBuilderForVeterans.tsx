@@ -78,7 +78,7 @@ export default function ResumeBuilderForVeterans() {
             Civilian recruiters do not understand military terminology. Here is how to translate
             your experience into language that resonates with hiring managers. For a deeper
             dive into reframing your career narrative, read our{' '}
-            <Link to="/blog/career-change-resume-guide" className="text-accent hover:underline">
+            <Link to="/blog/career-change-resume-guide" className="text-accent-text hover:underline">
               career change resume guide
             </Link>.
           </p>
@@ -87,7 +87,7 @@ export default function ResumeBuilderForVeterans() {
               <thead>
                 <tr className="bg-chalk-dark">
                   <th className="px-6 py-4 text-left font-bold text-ink">Military Term</th>
-                  <th className="px-6 py-4 text-left font-bold text-accent">Civilian Translation</th>
+                  <th className="px-6 py-4 text-left font-bold text-accent-text">Civilian Translation</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-black/[0.06]">
@@ -225,7 +225,7 @@ export default function ResumeBuilderForVeterans() {
               >
                 <summary className="flex items-center justify-between cursor-pointer px-6 py-5 font-display font-bold text-ink hover:bg-chalk-dark/50 transition-colors duration-200">
                   <span className="pr-4">{faq.question}</span>
-                  <span className="text-accent text-xl flex-shrink-0 transition-transform duration-300 group-open:rotate-45">
+                  <span className="text-accent-text text-xl flex-shrink-0 transition-transform duration-300 group-open:rotate-45">
                     +
                   </span>
                 </summary>

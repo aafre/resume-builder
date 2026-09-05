@@ -179,7 +179,7 @@ export default function ResumeBuilderForStudents() {
               >
                 <summary className="flex items-center justify-between cursor-pointer px-6 py-5 font-display font-bold text-ink hover:bg-chalk-dark/50 transition-colors duration-200">
                   <span className="pr-4">{faq.question}</span>
-                  <span className="text-accent text-xl flex-shrink-0 transition-transform duration-300 group-open:rotate-45">
+                  <span className="text-accent-text text-xl flex-shrink-0 transition-transform duration-300 group-open:rotate-45">
                     +
                   </span>
                 </summary>

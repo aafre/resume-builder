@@ -148,7 +148,7 @@ export default function FreeResumeBuilderNoSignUp() {
         <div className="max-w-4xl mx-auto bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06]">
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-display text-xl font-bold text-accent mb-4">We DO NOT store:</h3>
+              <h3 className="font-display text-xl font-bold text-accent-text mb-4">We DO NOT store:</h3>
               <ul className="list-disc pl-5 space-y-2 text-stone-warm">
                 <li>Your resume content</li>
                 <li>Your personal information</li>
@@ -181,39 +181,39 @@ export default function FreeResumeBuilderNoSignUp() {
             <thead>
               <tr className="bg-chalk-dark">
                 <th className="px-5 py-4 text-left font-bold text-ink">Feature</th>
-                <th className="px-5 py-4 text-left font-bold text-accent">EasyFreeResume</th>
+                <th className="px-5 py-4 text-left font-bold text-accent-text">EasyFreeResume</th>
                 <th className="px-5 py-4 text-left font-bold text-stone-warm">Paid Builders</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/[0.06]">
               <tr>
                 <td className="px-5 py-3 text-ink font-medium">Account required</td>
-                <td className="px-5 py-3 text-accent font-medium">No</td>
+                <td className="px-5 py-3 text-accent-text font-medium">No</td>
                 <td className="px-5 py-3 text-stone-warm">Yes (email + password)</td>
               </tr>
               <tr>
                 <td className="px-5 py-3 text-ink font-medium">PDF download</td>
-                <td className="px-5 py-3 text-accent font-medium">Free, unlimited</td>
+                <td className="px-5 py-3 text-accent-text font-medium">Free, unlimited</td>
                 <td className="px-5 py-3 text-stone-warm">$5-$25/month</td>
               </tr>
               <tr>
                 <td className="px-5 py-3 text-ink font-medium">Watermarks</td>
-                <td className="px-5 py-3 text-accent font-medium">Never</td>
+                <td className="px-5 py-3 text-accent-text font-medium">Never</td>
                 <td className="px-5 py-3 text-stone-warm">On free tier</td>
               </tr>
               <tr>
                 <td className="px-5 py-3 text-ink font-medium">ATS-friendly templates</td>
-                <td className="px-5 py-3 text-accent font-medium">All included</td>
+                <td className="px-5 py-3 text-accent-text font-medium">All included</td>
                 <td className="px-5 py-3 text-stone-warm">Premium only</td>
               </tr>
               <tr>
                 <td className="px-5 py-3 text-ink font-medium">DOCX export</td>
-                <td className="px-5 py-3 text-accent font-medium">Free</td>
+                <td className="px-5 py-3 text-accent-text font-medium">Free</td>
                 <td className="px-5 py-3 text-stone-warm">Often locked</td>
               </tr>
               <tr>
                 <td className="px-5 py-3 text-ink font-medium">Marketing emails</td>
-                <td className="px-5 py-3 text-accent font-medium">Impossible (no email)</td>
+                <td className="px-5 py-3 text-accent-text font-medium">Impossible (no email)</td>
                 <td className="px-5 py-3 text-stone-warm">Yes, often aggressive</td>
               </tr>
             </tbody>
@@ -221,7 +221,7 @@ export default function FreeResumeBuilderNoSignUp() {
         </div>
         <p className="text-center text-sm text-stone-warm mt-4 max-w-2xl mx-auto">
           Pricing based on published rates for Zety, Resume.io, and Resume Genius as of February 2026.
-          See our detailed <Link to="/best-free-resume-builder-reddit" className="text-accent hover:underline">Reddit-recommended builders comparison</Link>.
+          See our detailed <Link to="/best-free-resume-builder-reddit" className="text-accent-text hover:underline">Reddit-recommended builders comparison</Link>.
         </p>
       </div>
       </RevealSection>
@@ -236,23 +236,23 @@ export default function FreeResumeBuilderNoSignUp() {
           <div className="bg-white rounded-2xl p-6 shadow-premium border border-black/[0.06]">
             <h3 className="font-display text-lg font-bold text-ink mb-3">Resume Sections</h3>
             <ul className="space-y-2 text-stone-warm text-sm">
-              <li className="flex items-start"><span className="text-accent mr-2">+</span> Professional summary / objective</li>
-              <li className="flex items-start"><span className="text-accent mr-2">+</span> Work experience with bullet points</li>
-              <li className="flex items-start"><span className="text-accent mr-2">+</span> Education and certifications</li>
-              <li className="flex items-start"><span className="text-accent mr-2">+</span> Technical and soft skills</li>
-              <li className="flex items-start"><span className="text-accent mr-2">+</span> Projects, volunteering, awards</li>
-              <li className="flex items-start"><span className="text-accent mr-2">+</span> Custom sections (name them anything)</li>
+              <li className="flex items-start"><span className="text-accent-text mr-2">+</span> Professional summary / objective</li>
+              <li className="flex items-start"><span className="text-accent-text mr-2">+</span> Work experience with bullet points</li>
+              <li className="flex items-start"><span className="text-accent-text mr-2">+</span> Education and certifications</li>
+              <li className="flex items-start"><span className="text-accent-text mr-2">+</span> Technical and soft skills</li>
+              <li className="flex items-start"><span className="text-accent-text mr-2">+</span> Projects, volunteering, awards</li>
+              <li className="flex items-start"><span className="text-accent-text mr-2">+</span> Custom sections (name them anything)</li>
             </ul>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-premium border border-black/[0.06]">
             <h3 className="font-display text-lg font-bold text-ink mb-3">Formatting Options</h3>
             <ul className="space-y-2 text-stone-warm text-sm">
-              <li className="flex items-start"><span className="text-accent mr-2">+</span> Multiple professional templates</li>
-              <li className="flex items-start"><span className="text-accent mr-2">+</span> Font and color customization</li>
-              <li className="flex items-start"><span className="text-accent mr-2">+</span> Adjustable margins and spacing</li>
-              <li className="flex items-start"><span className="text-accent mr-2">+</span> Section reordering (drag & drop)</li>
-              <li className="flex items-start"><span className="text-accent mr-2">+</span> Live PDF preview</li>
-              <li className="flex items-start"><span className="text-accent mr-2">+</span> One-click PDF and DOCX download</li>
+              <li className="flex items-start"><span className="text-accent-text mr-2">+</span> Multiple professional templates</li>
+              <li className="flex items-start"><span className="text-accent-text mr-2">+</span> Font and color customization</li>
+              <li className="flex items-start"><span className="text-accent-text mr-2">+</span> Adjustable margins and spacing</li>
+              <li className="flex items-start"><span className="text-accent-text mr-2">+</span> Section reordering (drag & drop)</li>
+              <li className="flex items-start"><span className="text-accent-text mr-2">+</span> Live PDF preview</li>
+              <li className="flex items-start"><span className="text-accent-text mr-2">+</span> One-click PDF and DOCX download</li>
             </ul>
           </div>
         </div>
@@ -268,7 +268,7 @@ export default function FreeResumeBuilderNoSignUp() {
         <div className="max-w-4xl mx-auto bg-white rounded-2xl p-8 shadow-premium border border-black/[0.06]">
           <p className="text-lg md:text-xl font-extralight text-stone-warm leading-relaxed mb-6">
             Over 75% of large employers use Applicant Tracking Systems to filter resumes before a human ever sees them.
-            Our <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">free ATS keyword scanner</Link> analyzes
+            Our <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">free ATS keyword scanner</Link> analyzes
             your resume against any job description and shows you exactly which keywords are missing — so you can
             tailor your resume for every application.
           </p>
@@ -328,7 +328,7 @@ export default function FreeResumeBuilderNoSignUp() {
             <h3 className="font-display text-lg font-bold text-ink mb-2">Tailor for each application</h3>
             <p className="text-stone-warm text-sm leading-relaxed">
               Don't use one generic resume for every job. Read the job description, identify the key skills and
-              keywords, and adjust your resume to match. Our <Link to="/blog/how-to-use-resume-keywords" className="text-accent hover:underline">keyword optimization guide</Link> shows
+              keywords, and adjust your resume to match. Our <Link to="/blog/how-to-use-resume-keywords" className="text-accent-text hover:underline">keyword optimization guide</Link> shows
               you exactly how.
             </p>
           </div>
@@ -336,20 +336,20 @@ export default function FreeResumeBuilderNoSignUp() {
             <h3 className="font-display text-lg font-bold text-ink mb-2">Lead with achievements, not duties</h3>
             <p className="text-stone-warm text-sm leading-relaxed">
               Instead of "Responsible for managing social media," write "Grew social media engagement 40% in
-              6 months by implementing a data-driven content strategy." Learn more in our <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">guide to quantifying accomplishments</Link>.
+              6 months by implementing a data-driven content strategy." Learn more in our <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">guide to quantifying accomplishments</Link>.
             </p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
             <h3 className="font-display text-lg font-bold text-ink mb-2">Keep it to one page (usually)</h3>
             <p className="text-stone-warm text-sm leading-relaxed">
               Unless you have 10+ years of highly relevant experience, a one-page resume is ideal. Recruiters spend
-              an average of 7 seconds on initial review — a concise resume respects their time. Read our <Link to="/blog/resume-length-guide" className="text-accent hover:underline">resume length guide</Link> for exceptions.
+              an average of 7 seconds on initial review — a concise resume respects their time. Read our <Link to="/blog/resume-length-guide" className="text-accent-text hover:underline">resume length guide</Link> for exceptions.
             </p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
             <h3 className="font-display text-lg font-bold text-ink mb-2">Use AI to polish, not to write from scratch</h3>
             <p className="text-stone-warm text-sm leading-relaxed">
-              AI tools like <Link to="/blog/ai-resume-prompts-hub" className="text-accent hover:underline">ChatGPT, Claude, and Gemini</Link> are
+              AI tools like <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline">ChatGPT, Claude, and Gemini</Link> are
               great for refining your resume language, but start with your own content. Recruiters can spot entirely AI-generated resumes.
             </p>
           </div>

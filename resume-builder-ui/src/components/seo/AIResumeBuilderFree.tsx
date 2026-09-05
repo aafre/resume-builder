@@ -79,7 +79,7 @@ export default function AIResumeBuilderFree() {
           </div>
           <p className="text-center mt-8 text-stone-warm font-extralight">
             Want to verify your resume hits the right keywords?{' '}
-            <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">
+            <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">
               Try our free ATS Keyword Scanner
             </Link>{' '}
             to check your match rate before applying.
@@ -109,10 +109,10 @@ export default function AIResumeBuilderFree() {
               <strong className="text-ink">Best for:</strong> Writing bullet points, professional summaries, cover letters, and tailoring content to specific job descriptions.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/blog/ai-resume-prompts-hub" className="text-accent hover:underline font-medium">
+              <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline font-medium">
                 AI resume prompts hub →
               </Link>
-              <Link to="/blog/ai-cover-letter-prompts" className="text-accent hover:underline font-medium">
+              <Link to="/blog/ai-cover-letter-prompts" className="text-accent-text hover:underline font-medium">
                 AI cover letter prompts →
               </Link>
             </div>
@@ -132,7 +132,7 @@ export default function AIResumeBuilderFree() {
             <p className="text-stone-warm font-extralight mb-4">
               <strong className="text-ink">Best for:</strong> Analyzing job descriptions, extracting ATS keywords, comparing your resume to requirements, and identifying gaps.
             </p>
-            <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline font-medium">
+            <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline font-medium">
               See our Claude resume prompts guide →
             </Link>
           </div>
@@ -151,14 +151,14 @@ export default function AIResumeBuilderFree() {
             <p className="text-stone-warm font-extralight mb-4">
               <strong className="text-ink">Best for:</strong> Researching industry-specific keywords, company culture alignment, trending skills, and market-aware optimization.
             </p>
-            <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline font-medium">
+            <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline font-medium">
               See our Gemini resume prompts guide →
             </Link>
           </div>
 
           <p className="text-center mt-4 text-stone-warm font-extralight">
             Not sure which AI to start with? Read our{' '}
-            <Link to="/blog/ai-resume-writing-guide" className="text-accent hover:underline font-medium">
+            <Link to="/blog/ai-resume-writing-guide" className="text-accent-text hover:underline font-medium">
               complete AI resume writing guide
             </Link>{' '}
             for a side-by-side breakdown.
@@ -191,7 +191,7 @@ export default function AIResumeBuilderFree() {
           </div>
           <p className="text-center mt-6 text-stone-warm font-extralight">
             Pair AI-written content with an{' '}
-            <Link to="/templates/ats-friendly" className="text-accent hover:underline font-medium">
+            <Link to="/templates/ats-friendly" className="text-accent-text hover:underline font-medium">
               ATS-friendly template
             </Link>{' '}
             for maximum impact.

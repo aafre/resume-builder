@@ -54,27 +54,27 @@ export default function StudentTemplatesPage() {
               <h3 className="font-display text-xl font-bold text-ink mb-4">Do Include</h3>
               <ul className="space-y-3 text-stone-warm">
                 <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold mt-1">✓</span>
+                  <span className="text-accent-text font-bold mt-1">✓</span>
                   <span><strong>Education:</strong> Degree, major, expected graduation, GPA (if 3.0+)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold mt-1">✓</span>
+                  <span className="text-accent-text font-bold mt-1">✓</span>
                   <span><strong>Projects:</strong> Academic, personal, or capstone projects</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold mt-1">✓</span>
+                  <span className="text-accent-text font-bold mt-1">✓</span>
                   <span><strong>Skills:</strong> Technical and soft skills relevant to your field</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold mt-1">✓</span>
+                  <span className="text-accent-text font-bold mt-1">✓</span>
                   <span><strong>Activities:</strong> Clubs, organizations, leadership roles</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold mt-1">✓</span>
+                  <span className="text-accent-text font-bold mt-1">✓</span>
                   <span><strong>Internships:</strong> Any relevant work experience</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-accent font-bold mt-1">✓</span>
+                  <span className="text-accent-text font-bold mt-1">✓</span>
                   <span><strong>Volunteer Work:</strong> Shows initiative and values</span>
                 </li>
               </ul>
@@ -183,28 +183,28 @@ export default function StudentTemplatesPage() {
               className="block p-4 bg-accent/[0.06] border border-accent/20 rounded-xl hover:bg-accent/10 transition-colors"
             >
               <p className="font-semibold text-ink">Writing a Resume With No Experience</p>
-              <p className="text-accent text-sm">Complete guide for first-time job seekers</p>
+              <p className="text-accent-text text-sm">Complete guide for first-time job seekers</p>
             </Link>
             <Link
               to="/blog/resume-action-verbs"
               className="block p-4 bg-accent/[0.06] border border-accent/20 rounded-xl hover:bg-accent/10 transition-colors"
             >
               <p className="font-semibold text-ink">200+ Action Verbs for Resumes</p>
-              <p className="text-accent text-sm">Powerful words to describe your achievements</p>
+              <p className="text-accent-text text-sm">Powerful words to describe your achievements</p>
             </Link>
             <Link
               to="/blog/how-to-list-skills"
               className="block p-4 bg-accent/[0.06] border border-accent/20 rounded-xl hover:bg-accent/10 transition-colors"
             >
               <p className="font-semibold text-ink">How to List Skills on Your Resume</p>
-              <p className="text-accent text-sm">Showcase your abilities effectively</p>
+              <p className="text-accent-text text-sm">Showcase your abilities effectively</p>
             </Link>
             <Link
               to="/blog/job-interview-guide"
               className="block p-4 bg-accent/[0.06] border border-accent/20 rounded-xl hover:bg-accent/10 transition-colors"
             >
               <p className="font-semibold text-ink">Job Interview Guide</p>
-              <p className="text-accent text-sm">Nail your first professional interview</p>
+              <p className="text-accent-text text-sm">Nail your first professional interview</p>
             </Link>
           </div>
         </div>

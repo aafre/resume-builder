@@ -49,23 +49,23 @@ export default function BestFreeResumeBuilderReddit() {
             </p>
             <ul className="space-y-3 text-stone-warm">
               <li className="flex items-start">
-                <span className="text-accent font-bold mr-3 text-xl">1.</span>
+                <span className="text-accent-text font-bold mr-3 text-xl">1.</span>
                 <span><strong>Actually free</strong> – No hidden paywalls, no "free trial" that requires a credit card</span>
               </li>
               <li className="flex items-start">
-                <span className="text-accent font-bold mr-3 text-xl">2.</span>
+                <span className="text-accent-text font-bold mr-3 text-xl">2.</span>
                 <span><strong>ATS-friendly</strong> – Templates that pass Applicant Tracking Systems</span>
               </li>
               <li className="flex items-start">
-                <span className="text-accent font-bold mr-3 text-xl">3.</span>
+                <span className="text-accent-text font-bold mr-3 text-xl">3.</span>
                 <span><strong>No watermarks</strong> – Professional downloads without branding</span>
               </li>
               <li className="flex items-start">
-                <span className="text-accent font-bold mr-3 text-xl">4.</span>
+                <span className="text-accent-text font-bold mr-3 text-xl">4.</span>
                 <span><strong>Privacy-focused</strong> – No account required, no data collection</span>
               </li>
               <li className="flex items-start">
-                <span className="text-accent font-bold mr-3 text-xl">5.</span>
+                <span className="text-accent-text font-bold mr-3 text-xl">5.</span>
                 <span><strong>No aggressive upselling</strong> – Straightforward tool without constant upgrade prompts</span>
               </li>
             </ul>
@@ -213,27 +213,27 @@ export default function BestFreeResumeBuilderReddit() {
           </p>
           <ul className="space-y-4">
             <li className="flex items-start">
-              <span className="text-accent mr-3 text-xl">☑</span>
+              <span className="text-accent-text mr-3 text-xl">☑</span>
               <span className="text-stone-warm"><strong>Download works without payment</strong> – Test with dummy content first</span>
             </li>
             <li className="flex items-start">
-              <span className="text-accent mr-3 text-xl">☑</span>
+              <span className="text-accent-text mr-3 text-xl">☑</span>
               <span className="text-stone-warm"><strong>No watermark on exported file</strong> – Open the PDF and check every page</span>
             </li>
             <li className="flex items-start">
-              <span className="text-accent mr-3 text-xl">☑</span>
+              <span className="text-accent-text mr-3 text-xl">☑</span>
               <span className="text-stone-warm"><strong>No credit card required</strong> – Free means free, not "free trial"</span>
             </li>
             <li className="flex items-start">
-              <span className="text-accent mr-3 text-xl">☑</span>
+              <span className="text-accent-text mr-3 text-xl">☑</span>
               <span className="text-stone-warm"><strong>All templates accessible</strong> – Not just 1-2 basic options</span>
             </li>
             <li className="flex items-start">
-              <span className="text-accent mr-3 text-xl">☑</span>
+              <span className="text-accent-text mr-3 text-xl">☑</span>
               <span className="text-stone-warm"><strong>PDF and DOCX both available</strong> – Some lock DOCX behind paywall</span>
             </li>
             <li className="flex items-start">
-              <span className="text-accent mr-3 text-xl">☑</span>
+              <span className="text-accent-text mr-3 text-xl">☑</span>
               <span className="text-stone-warm"><strong>Works without signup</strong> – Or at least doesn't require payment info</span>
             </li>
           </ul>
@@ -369,26 +369,26 @@ export default function BestFreeResumeBuilderReddit() {
             <h3 className="font-display text-lg font-bold text-ink mb-2">Tailor your resume for every application</h3>
             <p className="text-stone-warm text-sm leading-relaxed">
               The #1 tip across all subreddits: customize your resume for each job. Match keywords from the job posting.
-              Our <Link to="/resume-keyword-scanner" className="text-accent hover:underline font-medium">ATS keyword scanner</Link> shows exactly which terms to add.
+              Our <Link to="/resume-keyword-scanner" className="text-accent-text hover:underline font-medium">ATS keyword scanner</Link> shows exactly which terms to add.
             </p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
             <h3 className="font-display text-lg font-bold text-ink mb-2">Use AI to polish, not to write</h3>
             <p className="text-stone-warm text-sm leading-relaxed">
-              Reddit is split on AI resumes. The consensus: use <Link to="/blog/ai-resume-prompts-hub" className="text-accent hover:underline">AI tools like ChatGPT or Claude</Link> to refine wording, but write the core content yourself. Recruiters can detect fully AI-generated resumes.
+              Reddit is split on AI resumes. The consensus: use <Link to="/blog/ai-resume-prompts-hub" className="text-accent-text hover:underline">AI tools like ChatGPT or Claude</Link> to refine wording, but write the core content yourself. Recruiters can detect fully AI-generated resumes.
             </p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
             <h3 className="font-display text-lg font-bold text-ink mb-2">Quantify everything</h3>
             <p className="text-stone-warm text-sm leading-relaxed">
               "Led team" → "Led team of 8 engineers." "Improved sales" → "Increased Q4 revenue 23% ($1.2M)."
-              Numbers stand out and are harder to fake. See our <Link to="/blog/quantify-resume-accomplishments" className="text-accent hover:underline">quantification guide</Link> for help.
+              Numbers stand out and are harder to fake. See our <Link to="/blog/quantify-resume-accomplishments" className="text-accent-text hover:underline">quantification guide</Link> for help.
             </p>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-premium border-l-4 border-accent">
             <h3 className="font-display text-lg font-bold text-ink mb-2">One page unless you have 10+ years</h3>
             <p className="text-stone-warm text-sm leading-relaxed">
-              Nearly unanimous Reddit advice: keep it to one page for most roles. Two pages only for senior executives or academics. Check our <Link to="/blog/resume-length-guide" className="text-accent hover:underline">resume length guide</Link> for industry-specific exceptions.
+              Nearly unanimous Reddit advice: keep it to one page for most roles. Two pages only for senior executives or academics. Check our <Link to="/blog/resume-length-guide" className="text-accent-text hover:underline">resume length guide</Link> for industry-specific exceptions.
             </p>
           </div>
         </div>
