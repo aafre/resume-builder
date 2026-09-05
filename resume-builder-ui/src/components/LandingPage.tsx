@@ -60,6 +60,14 @@ const LandingPage: React.FC = () => {
   // the card sits below the CTAs, so a load-triggered run would finish unseen)
   const heroVisualRef = useScrollReveal<HTMLDivElement>({ threshold: 0.3 });
 
+  // Pauses the hero's ambient loops (glow, float, bob, title sheen) once the
+  // hero scrolls out of view. They are infinite, and the title sheen repaints
+  // the LCP element via background-clip every 6s — left unpaused they burn
+  // main-thread paint for the whole session on a page users scroll 8000px of.
+  // once:false keeps the observer alive; it toggles 'offscreen', never
+  // un-reveals, so the one-shot build sequence does not replay on scroll-back.
+  const heroFrameRef = useScrollReveal<HTMLElement>({ once: false, rootMargin: '0px' });
+
   const prefersReducedMotion = useMemo(
     () =>
       typeof window.matchMedia === "function" &&
@@ -200,22 +208,27 @@ const LandingPage: React.FC = () => {
       />
 
       {/* ═══════════ HERO — light, asymmetric ═══════════ */}
-      <section className="relative pt-12 pb-20 md:pt-20 md:pb-28">
+      <section ref={heroFrameRef} className="hero-frame relative bg-chalk pt-12 pb-20 md:pt-20 md:pb-28">
         <div className="max-w-6xl mx-auto w-full grid lg:grid-cols-2 gap-y-10 gap-x-12 lg:gap-x-16 items-center">
           {/* Eyebrow + headline (mobile: card follows immediately, so both share the first viewport) */}
           <div>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-6 block">
               FREE FOREVER. NO SIGN-UP.
             </span>
-            {/* Two-tier headline. Line sizes use per-breakpoint fluid clamps and
-                [text-wrap:balance] so the promise line always breaks cleanly
-                (no orphaned words); the highlighted phrase is an unbreakable
-                inline-block so the underline never splits across lines. */}
+            {/* Two-tier headline, set on the Two-Weight Rule: the kicker is 200
+                and the promise is 800, so the contrast lives inside the H1
+                itself. Both lines use a single continuous clamp — the previous
+                per-breakpoint lg: overrides resolved SMALLER than the base
+                clamp, so the headline shrank by 6px as the viewport crossed
+                1024px and every section H2 outranked it. [text-wrap:balance]
+                keeps the promise line from orphaning a word; the highlighted
+                phrase stays an unbreakable inline-block so the underline never
+                splits across lines. */}
             <h1 className="font-display tracking-tight text-ink">
-              <span className="hero-title-scan block text-[clamp(1.5rem,7.8vw,2.25rem)] lg:text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-tight mb-2 lg:mb-3">
+              <span className="hero-title-scan block text-[clamp(1.125rem,4.6vw,1.75rem)] font-extralight leading-tight mb-2 lg:mb-3">
                 Free Resume Builder
               </span>{' '}
-              <span className="block text-[clamp(2rem,8.9vw,3.25rem)] lg:text-[clamp(2.5rem,4.45vw,4rem)] font-extrabold leading-[1.08] [text-wrap:balance]">
+              <span className="block text-[clamp(2.125rem,8.6vw,4.5rem)] font-extrabold leading-[1.08] [text-wrap:balance]">
                 Build Resumes That{' '}
                 <span className="relative inline-block">
                   <span className="relative z-10">Get You Hired</span>
@@ -225,8 +238,13 @@ const LandingPage: React.FC = () => {
             </h1>
           </div>
 
-          {/* Subtitle + CTAs (mobile: rendered after the visual via order-last) */}
-          <div className="order-last lg:order-none lg:col-start-1 lg:row-start-2">
+          {/* Subtitle + CTAs. Previously order-last, which pushed the primary
+              CTA to y=833 on a 390x844 viewport — the fold cut the button in
+              half and left the "100% free / no sign-up" reassurance line 125px
+              below it. Visual order now matches DOM and AT order. The mockup
+              still lands inside the first viewport, and its sequence is gated
+              on scroll-into-view anyway, so it plays when it is actually seen. */}
+          <div className="lg:col-start-1 lg:row-start-2">
             <p className="font-display text-lg md:text-xl font-extralight text-stone-warm max-w-lg leading-relaxed mb-8">
               Build your resume for free online with ATS-friendly templates. Download as PDF instantly — no sign up, no payment, no watermarks.
             </p>
@@ -256,8 +274,9 @@ const LandingPage: React.FC = () => {
 
           {/* CSS-only "builds itself" resume mockup (run-once sequence, delays
               via --d; all animation classes defined in styles.css). Desktop:
-              right column spanning both text rows. Mobile: directly below H1,
-              inside the first viewport so the sequence plays on load. */}
+              right column spanning both text rows. Mobile: below the CTAs,
+              still within the first viewport; the sequence is gated on
+              scroll-into-view so it never plays unseen. */}
           <div
             ref={heroVisualRef}
             className="hero-seq flex items-center justify-center lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:self-center"
@@ -381,7 +400,7 @@ const LandingPage: React.FC = () => {
       </div>
 
       {/* ═══════════ STATS ═══════════ */}
-      <section className="py-12">
+      <section className="bg-chalk-dark py-14">
         <RevealSection stagger className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-0 sm:divide-x sm:divide-ink/10">
           <div className="text-center sm:px-16">
             <p className="font-mono text-3xl md:text-4xl font-normal text-ink mb-1">
@@ -433,7 +452,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ FEATURES — light, numbered list ═══════════ */}
-      <section className="bg-chalk py-20 px-4 cv-auto cv-h-600">
+      <section className="bg-chalk-dark py-20 px-4 cv-auto cv-h-600">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block">
@@ -452,13 +471,13 @@ const LandingPage: React.FC = () => {
               {features.map((item, index) => (
                 <div
                   key={index}
-                  className="group flex items-start gap-6 py-8 border-b border-black/[0.06] last:border-b-0 cursor-default"
+                  className="flex items-start gap-6 py-8 border-b border-black/[0.06] last:border-b-0"
                 >
-                  <span className="font-mono text-3xl md:text-4xl text-accent/30 group-hover:text-accent transition-colors duration-300 flex-shrink-0 leading-none mt-1 w-12 md:w-16 text-right">
+                  <span className="font-mono text-3xl md:text-4xl text-accent-text flex-shrink-0 leading-none mt-1 w-12 md:w-16 text-right">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <div>
-                    <h3 className="font-display text-xl font-extrabold text-ink mb-2 group-hover:text-accent transition-colors duration-300">
+                    <h3 className="font-display text-xl font-extrabold text-ink mb-2">
                       {item.title}
                     </h3>
                     <p className="font-display font-extralight text-stone-warm leading-relaxed">
@@ -567,7 +586,7 @@ const LandingPage: React.FC = () => {
                 >
                   <h3 className="font-display text-lg font-extrabold text-ink mb-2 flex items-center justify-between">
                     {resource.title}
-                    <ArrowRightIcon className="w-4 h-4 text-stone-warm group-hover:text-accent group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
+                    <ArrowRightIcon className="w-4 h-4 text-stone-warm group-hover:text-accent-text group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
                   </h3>
                   <p className="font-display font-extralight text-stone-warm text-sm leading-relaxed">
                     {resource.desc}
@@ -580,7 +599,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ WHY CHOOSE US — keyword-rich prose ═══════════ */}
-      <section className="bg-chalk py-20 px-4 cv-auto cv-h-500">
+      <section className="bg-chalk-dark py-20 px-4 cv-auto cv-h-500">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block">
@@ -597,14 +616,14 @@ const LandingPage: React.FC = () => {
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">Truly Free Downloads — No Surprises</h3>
                 <p className="font-display font-extralight text-stone-warm leading-relaxed">
                   Other resume builders advertise "free" but charge $2–$25 the moment you try to download your PDF. EasyFreeResume is different: every template, every download, and every feature is 100% free. No credit card, no trial, no paywall.{' '}
-                  <Link to="/free-resume-builder-download" className="text-accent hover:underline">Download your resume for free</Link> as many times as you need.
+                  <Link to="/free-resume-builder-download" className="text-accent-text hover:underline">Download your resume for free</Link> as many times as you need.
                 </p>
               </div>
               <div>
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">No Sign-Up Required — Start Instantly</h3>
                 <p className="font-display font-extralight text-stone-warm leading-relaxed">
                   Skip the forms and email verification. Our{' '}
-                  <Link to="/free-resume-builder-no-sign-up" className="text-accent hover:underline">no sign-up resume builder</Link>{' '}
+                  <Link to="/free-resume-builder-no-sign-up" className="text-accent-text hover:underline">no sign-up resume builder</Link>{' '}
                   lets you start creating your resume the moment you arrive. Optionally create a free account later to save your work to the cloud and manage multiple versions.
                 </p>
               </div>
@@ -612,7 +631,7 @@ const LandingPage: React.FC = () => {
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">ATS-Friendly Templates That Get Results</h3>
                 <p className="font-display font-extralight text-stone-warm leading-relaxed">
                   Every template is engineered to pass{' '}
-                  <Link to="/templates/ats-friendly" className="text-accent hover:underline">Applicant Tracking Systems</Link>{' '}
+                  <Link to="/templates/ats-friendly" className="text-accent-text hover:underline">Applicant Tracking Systems</Link>{' '}
                   used by 99% of Fortune 500 companies. Clean formatting, proper heading hierarchy, and machine-readable layouts ensure your resume reaches a human recruiter.
                 </p>
               </div>
@@ -620,10 +639,10 @@ const LandingPage: React.FC = () => {
                 <h3 className="font-display text-xl font-extrabold text-ink mb-3">AI-Powered Resume Writing</h3>
                 <p className="font-display font-extralight text-stone-warm leading-relaxed">
                   Use built-in AI features to write compelling bullet points, tailor your resume to job descriptions, and find the right{' '}
-                  <Link to="/resume-keywords" className="text-accent hover:underline">resume keywords</Link>{' '}
+                  <Link to="/resume-keywords" className="text-accent-text hover:underline">resume keywords</Link>{' '}
                   for your industry. Powered by{' '}
-                  <Link to="/blog/claude-resume-prompts" className="text-accent hover:underline">Claude</Link>,{' '}
-                  <Link to="/blog/gemini-resume-prompts" className="text-accent hover:underline">Gemini</Link>, and ChatGPT — all free.
+                  <Link to="/blog/claude-resume-prompts" className="text-accent-text hover:underline">Claude</Link>,{' '}
+                  <Link to="/blog/gemini-resume-prompts" className="text-accent-text hover:underline">Gemini</Link>, and ChatGPT — all free.
                 </p>
               </div>
             </div>
@@ -632,7 +651,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ HOW TO BUILD — keyword-rich steps ═══════════ */}
-      <section className="bg-chalk-dark py-20 px-4 cv-auto cv-h-400">
+      <section className="bg-chalk py-20 px-4 cv-auto cv-h-400">
         <div className="max-w-4xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
@@ -663,7 +682,7 @@ const LandingPage: React.FC = () => {
                 },
               ].map((item, i) => (
                 <div key={i} className="bg-white rounded-2xl p-8 border border-black/[0.04] shadow-sm">
-                  <span className="font-mono text-3xl text-accent/30 mb-4 block">{item.step}</span>
+                  <span className="font-mono text-3xl text-accent-text mb-4 block">{item.step}</span>
                   <h3 className="font-display text-lg font-extrabold text-ink mb-2">{item.title}</h3>
                   <p className="font-display font-extralight text-stone-warm leading-relaxed text-sm">{item.desc}</p>
                 </div>
@@ -683,7 +702,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══════════ FAQ — light, minimal ═══════════ */}
-      <section className="bg-chalk py-20 px-4 cv-auto cv-h-500">
+      <section className="bg-chalk-dark py-20 px-4 cv-auto cv-h-500">
         <div className="max-w-3xl mx-auto">
           <RevealSection>
             <span className="font-mono text-xs tracking-[0.15em] text-accent-text uppercase mb-4 block text-center">
@@ -707,7 +726,7 @@ const LandingPage: React.FC = () => {
                     {faq.question}
                   </h3>
                   <ChevronDownIcon
-                    className="w-5 h-5 text-stone-warm transition-all duration-300 flex-shrink-0 group-open:rotate-180 group-open:text-accent"
+                    className="w-5 h-5 text-stone-warm transition-all duration-300 flex-shrink-0 group-open:rotate-180 group-open:text-accent-text"
                   />
                 </summary>
                 <div className="faq-content">
