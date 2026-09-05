@@ -329,6 +329,135 @@ Ad slots must never be restyled to blend into content, and must never be removed
 - **Don't** reintroduce a third warm grey to recover a "tertiary" step. The last one compressed to within five points of Stone Warm and was collapsed. Carry that hierarchy with size and weight.
 - **Don't** use `ring-accent` for a focus state. Signal Green is 1.87:1 on Chalk and cannot carry a focus indicator; `ring-accent-text` is the system's focus ring.
 
+## Implementation Reference
+
+The class-level counterpart to the rules above — what to actually type. These strings
+are the migrated-page contract; where one appears to disagree with a Named Rule above,
+the rule wins.
+
+### Typography Classes
+
+| Element | Classes |
+|---------|---------|
+| **Hero H1** | `font-display text-[clamp(2.5rem,5.5vw,4.5rem)] font-extrabold leading-[1.08] tracking-tight text-ink` |
+| **Section H2** | `font-display text-3xl md:text-4xl font-extrabold tracking-tight text-ink` |
+| **Card H3** | `font-display text-xl font-bold text-ink` |
+| **Body paragraph** | `font-display text-lg md:text-xl font-extralight text-stone-warm leading-relaxed` |
+| **Mono eyebrow (light ground)** | `font-mono text-xs tracking-[0.15em] text-accent-text uppercase` |
+| **Mono eyebrow (on `bg-ink`)** | `font-mono text-xs tracking-[0.15em] text-accent uppercase` |
+| **Meta / small text** | `text-sm text-stone-warm` |
+
+The eyebrow has **two** correct forms, chosen by the ground it sits on — see the Deep
+Signal Rule. `text-accent-text` (5.18:1 on Chalk) on light grounds; `text-accent`
+(9.98:1 on Ink) inside a dark closing-CTA block. Neither is a safe find-replace for the
+other: the ratio inverts with the polarity.
+
+### Button Classes
+
+Defined in `styles.css`. All three are `min-h-11`, `rounded-lg` (control radius, 8px),
+`active:scale-[0.98]`, and share a `ring-2 ring-accent-text ring-offset-2` focus ring.
+
+| Class | Style | Usage |
+|-------|-------|-------|
+| `.btn-primary` | `bg-accent` fill, `text-ink`, `font-bold`, `shadow-sm` → `hover:shadow-md` | Primary CTAs |
+| `.btn-secondary` | White fill, `border-gray-200` → `hover:border-gray-300`, `text-ink`, `font-semibold` | Secondary actions |
+| `.btn-ghost` | No fill, `text-gray-700` → `text-ink`, `hover:bg-black/5`, `font-medium`, `px-3 py-2` | Tertiary / nav links |
+
+Sizes are applied as utilities at the call site: `py-3.5 px-8` (default), `py-4 px-10`
+(hero), `py-2.5 px-5` (compact/header).
+
+`.btn-primary` has **no shimmer sweep** and is **not** `rounded-xl`.
+`.btn-primary::before { content: none }` is a deliberate removal, not dead code.
+
+### Card Patterns
+
+- **Feature card (marketing):** `bg-white rounded-2xl p-8 card-gradient-border shadow-premium shadow-premium-hover hover:-translate-y-1 transition-all duration-300`
+- **Resource card:** `bg-chalk-dark rounded-2xl p-6 border border-transparent hover:bg-white hover:shadow-lg hover:border-black/[0.04] transition-all duration-300`
+- **Template card:** `bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-2xl border-2 border-gray-200 hover:border-accent/30`
+- **App card:** `bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md p-4` — no resting lift, no reveal, no `.shadow-premium`.
+
+### Visual Effect Classes
+
+Defined in `styles.css`:
+
+- **`.glass`** — `bg-white/80 backdrop-blur-xl border-white/40 shadow-xl`, paired with `.glass-hover`. Reserved for true overlays (sticky header, toasts, modal scrims) per the Glass Restraint Rule.
+- **`.card-gradient-border`** — subtle accent gradient border via mask-composite.
+- **`.shadow-premium`** / **`.shadow-premium-hover`** — 4-layer depth; hover adds the accent bloom.
+- **`.bg-grain`** — optional subtle dot texture overlay.
+- **`.ad-surface`** — the documented ad container. Never restyle it to blend into content.
+
+### Layout Classes
+
+| Pattern | Classes |
+|---------|---------|
+| **Section outer** | `py-12 md:py-20 px-4 sm:px-6 lg:px-8` |
+| **Section inner** | `max-w-6xl mx-auto` (wide) / `max-w-4xl mx-auto` (standard) / `max-w-3xl mx-auto` (text-focused) |
+| **Section heading block** | mono eyebrow → H2 → subtitle paragraph → `mb-12 md:mb-16` before content |
+| **Grid** | `grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12` |
+| **Stats row** | flex with `sm:divide-x sm:divide-ink/10` dividers |
+
+Below-fold sections pair `.cv-auto` with a `.cv-h-*` intrinsic-size hint — see the
+Reserved Space Rule.
+
+### Dark Accent Section (closing CTA)
+
+```jsx
+<div className="bg-ink rounded-3xl py-20 px-6 text-center relative overflow-hidden">
+  {/* Radial accent glow — decorative, at 7% opacity */}
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-accent/[0.07] blur-3xl pointer-events-none" />
+  {/* text-white heading, text-stone-warm-inverse subtitle, text-accent eyebrow */}
+</div>
+```
+
+Inside this block the polarity flips: `text-stone-warm-inverse` for supporting copy
+(`stone-warm` fails here at 3.48:1) and `text-accent` for the eyebrow.
+
+### Scroll-Reveal System
+
+Wrap below-fold **marketing** sections in `<RevealSection variant="fade-up">`. The
+variants are `fade-up`, `fade-in`, and `scale-in` — those three only; there is no
+`fade-left`. Pass `stagger` for grids. CSS lives in `styles.css`, the hook in
+`useScrollReveal.ts`; the observer fires once at a 15% threshold. Never apply reveals
+to the editor or my-resumes.
+
+### Transition Defaults
+
+- **Standard:** `transition-all duration-300`
+- **Slow glass:** `transition-all duration-500`
+- **Easing:** `cubic-bezier(0.16, 1, 0.3, 1)` for scroll-reveal and premium shadows
+- **Reduced motion:** all animation and transition is disabled via `@media (prefers-reduced-motion: reduce)` in `styles.css`. Verify content is visible without animation.
+
+### Shared Components (`components/shared/`)
+
+Use these rather than building one-off equivalents:
+
+| Component | Purpose |
+|---|---|
+| `PageHero` | H1 hero with breadcrumbs, subtitle, CTA |
+| `RevealSection` | scroll-triggered entrance animation wrapper |
+| `FAQSection` | animated accordion with grid expand |
+| `FeatureGrid` | numbered feature list with gradient borders |
+| `StepByStep` | numbered step-by-step walkthrough |
+| `ProofSection` | social proof / stats display |
+| `SEOPageLayout` | standard layout shell for SEO landing pages |
+| `ComparisonTable` | feature comparison table |
+| `DownloadCTA` | call-to-action block for downloads |
+| `BreadcrumbsWithSchema` | breadcrumbs with JSON-LD |
+| `BulletPointBank` | reusable bullet-point picker |
+
+### Page Revamp Checklist
+
+1. Replace hardcoded `font-family` / system font stacks with `font-display`.
+2. Replace color literals and `gray-*` / `slate-*` **text** with tokens (`text-ink`, `bg-chalk`, `text-stone-warm`, `text-stone-warm-inverse`, `text-accent-text`). There is no `mist` token — the tertiary step was collapsed into `stone-warm`.
+3. Replace button styles with `.btn-primary` / `.btn-secondary` / `.btn-ghost`.
+4. Wrap below-fold marketing sections in `<RevealSection>`, with `.cv-auto` + `.cv-h-*`.
+5. Use the shared components above where applicable.
+6. Follow the section structure: mono eyebrow → H2 → subtitle → content.
+7. Ensure `rounded-lg`+ on everything; no sharp corners.
+8. Add hover lifts and transitions to interactive elements — marketing surfaces only.
+9. Check every new text color against the measured-contrast tables, on **both** polarities.
+10. Test reduced motion — verify content is visible without animation.
+
 <!--
 Anti-reference: the owner has not yet confirmed a full visual don't-list. The only
 rejection recorded above is the one the codebase itself proves — the upsell-dense
