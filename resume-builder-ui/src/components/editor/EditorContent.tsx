@@ -278,7 +278,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
 
       {/* Imported Resume Review Banner */}
       {modals.showAIWarning && (
-        <div className="mb-4 p-4 rounded-lg border border-slate-200 bg-accent/[0.06] flex items-start gap-3">
+        <div className="mb-4 p-4 rounded-lg border border-gray-200 bg-accent/[0.06] flex items-start gap-3">
           <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-accent-text" />
           <div className="flex-1">
             <h3 className="font-semibold text-sm text-ink">
@@ -368,7 +368,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
           {dragDrop.activeId ? (
             dragDrop.activeLevel === 'section' && dragDrop.draggedSection ? (
               // Section drag preview - lifted appearance with scale and rotation
-              <div className={`bg-white rounded-lg shadow-lg border border-slate-200 px-6 py-4 max-w-md cursor-grabbing ${liftedPreviewClasses}`}>
+              <div className={`bg-white rounded-lg shadow-lg border border-gray-200 px-6 py-4 max-w-md cursor-grabbing ${liftedPreviewClasses}`}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
                     <div className="flex flex-col gap-0.5">
@@ -446,7 +446,7 @@ export const EditorContent: React.FC<EditorContentProps> = ({
               </div>
             ) : dragDrop.activeLevel === 'subitem' ? (
               // Fallback subitem preview - lifted appearance
-              <div className={`bg-white rounded-md shadow-lg border border-slate-200 px-3 py-2 max-w-xs cursor-grabbing ${liftedPreviewClasses}`}>
+              <div className={`bg-white rounded-md shadow-lg border border-gray-200 px-3 py-2 max-w-xs cursor-grabbing ${liftedPreviewClasses}`}>
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded bg-accent/10 flex items-center justify-center">
                     <div className="w-1.5 h-1.5 rounded-full bg-accent" />
