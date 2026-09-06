@@ -176,15 +176,18 @@ implementations. Other pages are still being migrated to match.
 
 - **Tokens, verbatim from `tailwind.config.js`** (the config is authoritative, not this
   file): `ink` `#0c0c0c`, `ink-light` `#1a1a1a`, `chalk` `#fafaf8`, `chalk-dark`
-  `#f0efe9`, `stone-warm` `#6b6761`, `stone-warm-inverse` `#a8a4a0`, `accent`
-  `#00d47e`, `accent-text` `#007a48`. **There is no `mist` token** and `stone-warm` is
-  not `#8a8680`; both were changed by the contrast pass.
+  `#f0efe9`, `accent` `#00d47e`, `accent-text` `#007a48`. **There is no `mist` token
+  and no `stone-warm`/`stone-warm-inverse` token** — muted/secondary text is opacity of
+  an existing token (`text-ink/60`, `text-white/60`), not a standalone grey. The prior
+  `stone-warm` pair (`#6b6761`/`#a8a4a0`) carried a taupe cast that clashed with the
+  rest of the palette and was replaced for that reason — don't reintroduce a bespoke
+  grey hex.
 
-- **Warm grey is surface-polarity-paired, and each token is AA-valid only against the
-  polarity it was measured on. Never use one on the other's ground.** `stone-warm` is
-  for light grounds (Chalk / white / Chalk Dark: 5.38 / 5.62 / 4.88);
-  `stone-warm-inverse` is for dark grounds (Ink / Ink Light / white-5%-over-Ink-Light:
-  7.90 / 7.03 / 6.19). Swapping them fails AA in both directions.
+- **Muted text is surface-polarity-paired, and each value is only AA-valid against the
+  polarity it was measured on. Never use one on the other's ground.** `text-ink/60` is
+  for light grounds (Chalk / white / Chalk Dark: 5.09 / 5.16 / 4.93);
+  `text-white/60` is for dark grounds (Ink / Ink Light / white-5%-over-Ink-Light:
+  7.28 / 6.93 / 6.43). Swapping them fails AA in both directions.
 
 - **`text-accent` is a fill color, not a text color, on light grounds** — `#00d47e`
   measures 1.87:1 on Chalk. Accent text under 24px and *every* focus ring use
@@ -272,3 +275,6 @@ Production `/robots.txt` is a **Cloudflare 301 redirect to a Google Cloud Storag
 - Use: <type>(<scope>): <imperative summary>
 - Types: feat, fix, refactor, perf, test, docs, chore
 - Summary: present tense, <= ~72 chars.
+
+
+When responding to me: Be extremely concise and sacrifice grammar for sake of concision. 
